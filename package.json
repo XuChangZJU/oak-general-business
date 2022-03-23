@@ -1,0 +1,36 @@
+{
+    "name": "oak-general-business",
+    "version": "1.0.0",
+    "description": "oak框架中公共业务逻辑的实现",
+    "dependencies": {
+        "lodash": "^4.17.21"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.12.13",
+        "@babel/core": "^7.12.13",
+        "@babel/plugin-proposal-class-properties": "^7.12.13",
+        "@babel/preset-env": "^7.12.13",
+        "@babel/preset-typescript": "^7.12.13",
+        "@types/assert": "^1.5.6",
+        "@types/fs-extra": "^9.0.13",
+        "@types/lodash": "^4.14.168",
+        "@types/luxon": "^2.0.9",
+        "@types/mocha": "^8.2.0",
+        "@types/node": "^14.14.25",
+        "@types/react": "^17.0.2",
+        "@types/uuid": "^8.3.0",
+        "assert": "^2.0.0",
+        "cross-env": "^7.0.2",
+        "fs-extra": "^10.0.0",
+        "mocha": "^8.2.1",
+        "oak-domain": "file:../oak-domain",
+        "ts-node": "^9.1.1",
+        "typescript": "^4.5.2"
+    },
+    "scripts": {
+        "postinstall": "npm link oak-domain oak-memory-tree-store oak-trigger-executor oak-debug-store",
+        "build": "tsc",
+        "test": "ts-node ./src/features/token.ts"
+    },
+    "main": "src/index"
+}
