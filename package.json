@@ -29,7 +29,7 @@
         "typescript": "^4.5.2"
     },
     "scripts": {
-        "postinstall": "npm link oak-domain oak-memory-tree-store oak-trigger-executor oak-debug-store",
+        "prebuild": "ts-node ./scripts/buildBaseEntityDict",
         "build": "tsc",
         "test": "ts-node ./scripts/getAmapArea.ts"
     },

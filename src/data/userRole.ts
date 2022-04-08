@@ -1,9 +1,8 @@
-import { FormCreateData } from 'oak-domain/lib/types/Entity';
-import { OpSchema as User } from 'oak-domain/lib/base-domain/User/Schema';
-import { OpSchema as Role } from 'oak-domain/lib/base-domain/Role/Schema';
-import { OpSchema as UserRole } from 'oak-domain/lib/base-domain/UserRole/Schema';
+import { CreateOperationData as UserCreate } from '../base-ed/User/Schema';
+import { CreateOperationData as RoleCreate } from '../base-ed/Role/Schema';
+import { CreateOperationData as UserRoleCreate } from '../base-ed/UserRole/Schema';
 import { ROOT_ROLE_ID, ROOT_USER_ID } from '../constants';
-export const users: Array<FormCreateData<User>> = [
+export const users: Array<UserCreate> = [
     {
         password: 'oak@2022',
         name: 'root',
@@ -11,14 +10,14 @@ export const users: Array<FormCreateData<User>> = [
     }
 ];
 
-export const roles: Array<FormCreateData<Role>> = [
+export const roles: Array<RoleCreate> = [
     {
         name: 'root',
         id: ROOT_ROLE_ID,
     }
 ];
 
-export const userRoles: Array<FormCreateData<UserRole>> = [
+export const userRoles: Array<UserRoleCreate> = [
     {
         userId: ROOT_USER_ID,
         roleId: ROOT_ROLE_ID,
