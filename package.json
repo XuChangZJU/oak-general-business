@@ -16,12 +16,13 @@
         "@types/lodash": "^4.14.168",
         "@types/luxon": "^2.0.9",
         "@types/mocha": "^8.2.0",
-        "@types/node": "^14.14.25",
+        "@types/node": "^14.18.12",
         "@types/react": "^17.0.2",
         "@types/uuid": "^8.3.0",
         "assert": "^2.0.0",
         "cross-env": "^7.0.2",
         "fs-extra": "^10.0.0",
+        "isomorphic-fetch": "^3.0.0",
         "mocha": "^8.2.1",
         "oak-domain": "file:../oak-domain",
         "ts-node": "^9.1.1",
@@ -30,7 +31,7 @@
     "scripts": {
         "postinstall": "npm link oak-domain oak-memory-tree-store oak-trigger-executor oak-debug-store",
         "build": "tsc",
-        "test": "ts-node ./src/features/token.ts"
+        "test": "ts-node ./scripts/getAmapArea.ts"
     },
     "main": "src/index"
 }
