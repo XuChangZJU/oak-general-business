@@ -2,9 +2,10 @@
  * 用于更新高德数据库中的adCode信息到本地src/data/area.json中
  */
 import 'isomorphic-fetch';
+import assert from 'assert';
 import { writeFileSync } from 'fs-extra';
 import { FormCreateData } from 'oak-domain/lib/types/Entity';
-import { OpSchema as Area } from 'oak-domain/lib/base-domain/Area/Schema';
+import { OpSchema as Area } from '../src/base-ed/Area/Schema';
 
 
 const KEY = '4f3d4499850ba51429b9dece8cedd8d2';
@@ -81,17 +82,19 @@ function processRepeatedAdCode(districts: any[], parentAdCode: string) {
 
 
 async function main() {
-    const area: FormCreateData<Area>[] = [];
-    function saveAreas(areas: any[], parentId: string | null) {
+    const areasss: FormCreateData<Area>[] = [];
+    const streetsss: FormCreateData<Area>[] = [];
+    function saveAreas(areas: any[], parentId: string | null, depth: 0 | 1 | 2 | 3 | 4, dest: FormCreateData<Area>[] = areasss) {
         areas.forEach(
             (ele) => {
                 const { adcode, center, citycode, level, name } = ele;
                 const coords = center.split(',');
-                area.push({
+                dest.push({
                     code: adcode,
                     level,
                     parentId,
                     name,
+                    depth,
                     id: adcode,
                     center: {
                         type: 'point',
@@ -105,29 +108,33 @@ async function main() {
     const result = await acquireAmap('中国', 1);
     const { districts } = result;
     const country = districts[0];
-    saveAreas([country], null);
+    saveAreas([country], null, 0);
     const { districts: provinces, adcode: countryCode } = country;
-    saveAreas(provinces, countryCode);
+    saveAreas(provinces, countryCode, 1);
 
-    for (const dist of districts) {
+    for (const dist of provinces) {
         const result2 = await acquireAmap(dist.name, 3);
         const { districts: cities, adcode: provinceCode } = result2.districts[0];
-        saveAreas(cities, provinceCode);
+        // cities.forEach((ele: any) => assert(ele.level === 'city'));
+        saveAreas(cities, provinceCode, 2);
         for (const city of cities) {
             const { districts, adcode: cityCode } = city;
             const districts2 = processRepeatedAdCode(districts, cityCode);
-            saveAreas(districts2, cityCode);
+            // districts2.forEach((ele: any) => assert(ele.level === 'district'));
+            saveAreas(districts2, cityCode, 3);
             districts2.forEach(
                 (district) => {
                     const { districts: streets, adcode: districtCode } = district;
                     const streets2 = processRepeatedAdCode(streets, districtCode);
-                    saveAreas(streets2, districtCode);
+                    // streets2.forEach((ele: any) => assert(ele.level === 'street'));
+                    saveAreas(streets2, districtCode, 4, streetsss);
                 }
             );
         }
     }
 
-    writeFileSync(`${__dirname}/../src/data/area.json`, JSON.stringify(area));
+    writeFileSync(`${__dirname}/../src/data/area-debug.json`, JSON.stringify(areasss));
+    writeFileSync(`${__dirname}/../src/data/area.json`, JSON.stringify(areasss.concat(streetsss)));
 }
 
 

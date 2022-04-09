@@ -12,6 +12,7 @@ export type OpSchema = {
     $$removeAt$$?: Datetime | null;
     name: String<32>;
     level: 'province' | 'city' | 'district' | 'street' | 'country';
+    depth: 0 | 1 | 2 | 3 | 4;
     parentId?: ForeignKey<"area"> | null;
     code: String<12>;
     center: Geo;
@@ -24,6 +25,7 @@ export type Schema = {
     $$removeAt$$?: Datetime | null;
     name: String<32>;
     level: 'province' | 'city' | 'district' | 'street' | 'country';
+    depth: 0 | 1 | 2 | 3 | 4;
     parentId?: ForeignKey<"area"> | null;
     code: String<12>;
     center: Geo;
@@ -39,6 +41,7 @@ type AttrFilter = {
     $$updateAt$$: Q_DateValue;
     name: Q_StringValue;
     level: Q_EnumValue<'province' | 'city' | 'district' | 'street' | 'country'>;
+    depth: Q_EnumValue<0 | 1 | 2 | 3 | 4>;
     parentId: Q_StringValue | SubQuery.AreaIdSubQuery;
     parent: Filter;
     code: Q_StringValue;
@@ -52,6 +55,7 @@ export type Projection = {
     $$updateAt$$?: 1;
     name?: 1;
     level?: 1;
+    depth?: 1;
     parentId?: 1;
     parent?: Projection;
     code?: 1;
@@ -67,6 +71,7 @@ export type ExportProjection = {
     $$updateAt$$?: string;
     name?: string;
     level?: string;
+    depth?: string;
     parentId?: string;
     parent?: ExportProjection;
     code?: string;
@@ -84,6 +89,7 @@ export type SortAttr = OneOf<{
     $$updateAt$$: 1;
     name: 1;
     level: 1;
+    depth: 1;
     parentId: 1;
     parent: SortAttr;
     code: 1;

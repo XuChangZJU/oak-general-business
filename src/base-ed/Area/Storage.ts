@@ -14,6 +14,13 @@ export const desc: StorageDesc<OpSchema> = {
                 length: 16
             }
         },
+        depth: {
+            type: "int",
+            params: {
+                precision: 8,
+                scale: 2
+            }
+        },
         parentId: {
             type: "ref",
             ref: "area"
