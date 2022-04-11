@@ -6,6 +6,7 @@ import { Schema as Token } from '../base-ed/Token/Schema';
 
 
 export interface RuntimeContext<ED extends EntityDict> extends Context<ED> {
-    getApplication: () => Application;
-    getToken: () => Token | undefined;
+    getApplication: () => Application | undefined;
+    getToken: () => Token | undefined;    
+    on(event: 'commit' | 'rollback', callback: (context: RuntimeContext<ED>) => Promise<void>): void;
 };

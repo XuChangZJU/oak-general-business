@@ -10,7 +10,7 @@ import { EntityDef as System } from "./System/Schema";
 import { EntityDef as Token } from "./Token/Schema";
 import { EntityDef as User } from "./User/Schema";
 import { EntityDef as WechatUser } from "./WechatUser/Schema";
-export declare type EntityDict = {
+export declare type BaseEntityDict = {
     address: Address;
     application: Application;
     area: Area;
