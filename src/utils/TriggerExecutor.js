@@ -1,96 +1,78 @@
-import assert from 'assert';
-import { assign } from "lodash";
-import { addFilterSegment } from "oak-domain/lib/store/filter";
-import { DeduceCreateOperation, DeduceCreateOperationData, EntityDict } from "oak-domain/lib/types/Entity";
-import { Logger } from "oak-domain/lib/types/Logger";
-import { Checker } from '../types/Auth';
-import { RuntimeContext } from '../types/RuntimeContext';
-import { Trigger, Executor, CreateTriggerCrossTxn, CreateTrigger, CreateTriggerInTxn } from "../types/Trigger";
-
-export class TriggerExecutor<ED extends EntityDict> extends Executor<ED> {
-    private triggerMap: {
-        [T in keyof ED]?: {
-            [A: string]: Array<Trigger<ED, T>>;
-        };
-    };
-    private triggerNameMap: {
-        [N: string]: Trigger<ED, keyof ED>;
-    };
-    private volatileEntities: Array<keyof ED>;
-
-    private logger: Logger;
-
-    constructor(logger: Logger = console) {
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TriggerExecutor = void 0;
+const assert_1 = __importDefault(require("assert"));
+const lodash_1 = require("lodash");
+const filter_1 = require("oak-domain/lib/store/filter");
+const Trigger_1 = require("../types/Trigger");
+class TriggerExecutor extends Trigger_1.Executor {
+    triggerMap;
+    triggerNameMap;
+    volatileEntities;
+    logger;
+    constructor(logger = console) {
         super();
         this.logger = logger;
         this.triggerMap = {};
         this.triggerNameMap = {};
         this.volatileEntities = [];
     }
-
-    registerChecker<T extends keyof ED>(checker: Checker<ED, T>): void {
+    registerChecker(checker) {
         const { entity, action, checker: checkFn } = checker;
-        const ActionNameMatrix: Record<string, string> = {
+        const ActionNameMatrix = {
             'create': '创建',
             'remove': '删除',
         };
         let triggerAction = ActionNameMatrix[action] || '更新';
         const triggerName = `${entity}${triggerAction}权限检查`;
-
         const trigger = {
             name: triggerName,
             entity,
             action,
             fn: checkFn,
             when: 'before',
-        } as CreateTriggerInTxn<ED, T>;
+        };
         this.registerTrigger(trigger);
     }
-
-    registerTrigger<T extends keyof ED>(trigger: Trigger<ED, T>): void {
+    registerTrigger(trigger) {
         // trigger的两种访问方式: by name, by entity/action
         if (this.triggerNameMap.hasOwnProperty(trigger.name)) {
             throw new Error(`不可有同名的触发器「${trigger.name}」`);
         }
-        assign(this.triggerNameMap, {
+        (0, lodash_1.assign)(this.triggerNameMap, {
             [trigger.name]: trigger,
         });
-
-        const triggers = this.triggerMap[trigger.entity] && this.triggerMap[trigger.entity]![trigger.action];
+        const triggers = this.triggerMap[trigger.entity] && this.triggerMap[trigger.entity][trigger.action];
         if (triggers) {
             triggers.push(trigger);
         }
         else if (this.triggerMap[trigger.entity]) {
-            assign(this.triggerMap[trigger.entity], {
+            (0, lodash_1.assign)(this.triggerMap[trigger.entity], {
                 [trigger.action]: [trigger],
             });
         }
         else {
-            assign(this.triggerMap, {
+            (0, lodash_1.assign)(this.triggerMap, {
                 [trigger.entity]: {
                     [trigger.action]: [trigger],
                 }
             });
         }
-
         if (trigger.when === 'commit' && trigger.strict === 'makeSure') {
             if (this.volatileEntities.indexOf(trigger.entity) === -1) {
                 this.volatileEntities.push(trigger.entity);
             }
         }
     }
-
-    private async preCommitTrigger<T extends keyof ED>(
-        entity: T,
-        operation: ED[T]['Operation'],
-        trigger: Trigger<ED, T>,
-        context: RuntimeContext<ED>,
-    ) {
-        assert(trigger.action !== 'select');
-        if ((trigger as CreateTriggerCrossTxn<ED, T>).strict === 'makeSure') {
+    async preCommitTrigger(entity, operation, trigger, context) {
+        (0, assert_1.default)(trigger.action !== 'select');
+        if (trigger.strict === 'makeSure') {
             switch (operation.action) {
                 case 'create': {
-                    if (operation.data.hasOwnProperty(Executor.dataAttr) || operation.data.hasOwnProperty(Executor.timestampAttr)) {
+                    if (operation.data.hasOwnProperty(Trigger_1.Executor.dataAttr) || operation.data.hasOwnProperty(Trigger_1.Executor.timestampAttr)) {
                         throw new Error('同一行数据上不能存在两个跨事务约束');
                     }
                     break;
@@ -98,7 +80,7 @@ export class TriggerExecutor<ED extends EntityDict> extends Executor<ED> {
                 default: {
                     const { filter } = operation;
                     // 此时要保证更新或者删除的行上没有跨事务约束
-                    const filter2 = addFilterSegment({
+                    const filter2 = (0, filter_1.addFilterSegment)({
                         $or: [
                             {
                                 $$triggerData$$: {
@@ -115,132 +97,97 @@ export class TriggerExecutor<ED extends EntityDict> extends Executor<ED> {
                     const { rowStore } = context;
                     const count = await rowStore.count(entity, {
                         filter: filter2
-                    } as Omit<ED[T]['Selection'], 'action' | 'sorter' | 'data'>, context);
+                    }, context);
                     if (count > 0) {
                         throw new Error(`对象${entity}的行「${JSON.stringify(operation)}」上已经存在未完成的跨事务约束`);
                     }
                     break;
                 }
             }
-
-            assign(operation.data, {
-                [Executor.dataAttr]: {
+            (0, lodash_1.assign)(operation.data, {
+                [Trigger_1.Executor.dataAttr]: {
                     name: trigger.name,
                     operation,
                 },
-                [Executor.timestampAttr]: Date.now(),
-            });        
+                [Trigger_1.Executor.timestampAttr]: Date.now(),
+            });
         }
     }
-
-    async preOperation<T extends keyof ED>(
-        entity: T,
-        operation: ED[T]['Operation'],
-        context: RuntimeContext<ED>
-    ): Promise<void> {
-        const triggers = this.triggerMap[entity] && this.triggerMap[entity]![operation.action];
+    async preOperation(entity, operation, context) {
+        const triggers = this.triggerMap[entity] && this.triggerMap[entity][operation.action];
         if (triggers) {
-            const preTriggers = triggers.filter(
-                ele => ele.when === 'before' && (!(ele as CreateTrigger<ED, T>).check || (ele as CreateTrigger<ED, T>).check!(operation as DeduceCreateOperation<ED[T]['Schema']>))
-            );
-
+            const preTriggers = triggers.filter(ele => ele.when === 'before' && (!ele.check || ele.check(operation)));
             for (const trigger of preTriggers) {
-                const number = await (trigger as CreateTrigger<ED, T>).fn({ operation: operation as DeduceCreateOperation<ED[T]['Schema']> }, context);
+                const number = await trigger.fn({ operation: operation }, context);
                 if (number > 0) {
                     this.logger.info(`触发器「${trigger.name}」成功触发了「${number}」行数据更改`);
                 }
             }
-
-            const commitTriggers = triggers.filter(
-                ele => ele.when === 'commit' && (!(ele as CreateTrigger<ED, T>).check || (ele as CreateTrigger<ED, T>).check!(operation as DeduceCreateOperation<ED[T]['Schema']>))
-            );
-
+            const commitTriggers = triggers.filter(ele => ele.when === 'commit' && (!ele.check || ele.check(operation)));
             for (const trigger of commitTriggers) {
                 await this.preCommitTrigger(entity, operation, trigger, context);
             }
         }
     }
-
-    private onCommit<T extends keyof ED>(
-        trigger: Trigger<ED, T>, operation: ED[T]['Operation']) {
-        return async (context: RuntimeContext<ED>) => {
+    onCommit(trigger, operation) {
+        return async (context) => {
             await context.begin();
-            const number = await (trigger as CreateTrigger<ED, T>).fn({
-                operation: operation as DeduceCreateOperation<ED[T]['Schema']>,
+            const number = await trigger.fn({
+                operation: operation,
             }, context);
             const { rowStore } = context;
-            if ((trigger as CreateTriggerCrossTxn<ED, T>).strict === 'makeSure') {
+            if (trigger.strict === 'makeSure') {
                 // 如果是必须完成的trigger，在完成成功后要把trigger相关的属性置null;
                 let filter = {};
                 if (operation.action === 'create') {
                     filter = operation.data instanceof Array ? {
                         filter: {
                             id: {
-                                $in: operation.data.map(ele => (ele.id as string)),
+                                $in: operation.data.map(ele => ele.id),
                             },
                         },
                     } : {
                         filter: {
-                            id: (operation.data.id as string),
+                            id: operation.data.id,
                         }
                     };
                 }
                 else if (operation.filter) {
-                    assign(filter, { filter: operation.filter });
+                    (0, lodash_1.assign)(filter, { filter: operation.filter });
                 }
-                
                 await rowStore.operate(trigger.entity, {
                     action: 'update',
                     data: {
                         $$triggerTimestamp$$: null,
                         $$triggerData$$: null,
-                    } as any,
+                    },
                     ...filter /** as Filter<'update', DeduceFilter<ED[T]['Schema']>> */,
                 }, context);
             }
-
             await context.commit();
             return;
         };
     }
-
-    private async postCommitTrigger<T extends keyof ED>(
-        operation: ED[T]['Operation'],
-        trigger: Trigger<ED, T>,
-        context: RuntimeContext<ED>
-    ) {
+    async postCommitTrigger(operation, trigger, context) {
         context.on('commit', this.onCommit(trigger, operation));
     }
-
-    async postOperation<T extends keyof ED>(
-        entity: T,
-        operation: ED[T]['Operation'],
-        context: RuntimeContext<ED>
-    ): Promise<void> {
-        const triggers = this.triggerMap[entity] && this.triggerMap[entity]![operation.action];
+    async postOperation(entity, operation, context) {
+        const triggers = this.triggerMap[entity] && this.triggerMap[entity][operation.action];
         if (triggers) {
-            const postTriggers = triggers.filter(
-                ele => ele.when === 'after' && (!(ele as CreateTrigger<ED, T>).check || (ele as CreateTrigger<ED, T>).check!(operation as DeduceCreateOperation<ED[T]['Schema']>))
-            );
-
+            const postTriggers = triggers.filter(ele => ele.when === 'after' && (!ele.check || ele.check(operation)));
             for (const trigger of postTriggers) {
-                const number = await (trigger as CreateTrigger<ED, T>).fn({ operation: operation as DeduceCreateOperation<ED[T]['Schema']> }, context);
+                const number = await trigger.fn({ operation: operation }, context);
                 if (number > 0) {
                     this.logger.info(`触发器「${trigger.name}」成功触发了「${number}」行数据更改`);
                 }
             }
-
-            const commitTriggers = (<Array<CreateTrigger<ED, T>>>triggers).filter(
-                ele => ele.when === 'commit' && (!ele.check || ele.check(operation as DeduceCreateOperation<ED[T]['Schema']>))
-            );
-
+            const commitTriggers = triggers.filter(ele => ele.when === 'commit' && (!ele.check || ele.check(operation)));
             for (const trigger of commitTriggers) {
                 await this.postCommitTrigger(operation, trigger, context);
             }
         }
     }
-
-    async checkpoint(context: RuntimeContext<ED>, timestamp: number): Promise<number> {
+    async checkpoint(context, timestamp) {
         let result = 0;
         const { rowStore } = context;
         for (const entity of this.volatileEntities) {
@@ -254,15 +201,15 @@ export class TriggerExecutor<ED extends EntityDict> extends Executor<ED> {
                         $gt: timestamp,
                     }
                 },
-            } as any, context);
+            }, context);
             for (const row of rows) {
                 const { $$triggerData$$ } = row;
-                const { name, operation } = $$triggerData$$!;
+                const { name, operation } = $$triggerData$$;
                 const trigger = this.triggerNameMap[name];
-                await this.onCommit(trigger, operation as ED[typeof entity]['Operation'])(context);
+                await this.onCommit(trigger, operation)(context);
             }
-
         }
         return result;
     }
 }
+exports.TriggerExecutor = TriggerExecutor;
