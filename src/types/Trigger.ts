@@ -1,6 +1,6 @@
 import { GenericAction } from "oak-domain/lib/actions/action";
 import { DeduceCreateOperation, DeduceRemoveOperation, DeduceSelection, DeduceUpdateOperation, EntityDict } from "oak-domain/lib/types/Entity";
-import { EntityDef, EntityShape, OperationResult, SelectionResult, TriggerDataAttribute, TriggerTimestampAttribute } from "oak-domain/src/types/Entity";
+import { EntityDef, EntityShape, OperationResult, SelectionResult2, TriggerDataAttribute, TriggerTimestampAttribute } from "oak-domain/src/types/Entity";
 import { RuntimeContext } from "./RuntimeContext";
 
 export interface CreateTriggerBase<ED extends EntityDict, T extends keyof ED> {
@@ -81,9 +81,9 @@ export interface SelectTriggerBefore<ED extends EntityDict, T extends keyof ED> 
 
 export interface SelectTriggerAfter<ED extends EntityDict, T extends keyof ED> extends SelectTriggerBase<ED, T> {
     when: 'after',
-    fn: (event: { 
-        operation: DeduceSelection<ED[T]['Schema']>;
-        result: SelectionResult<ED, T>;
+    fn: <S extends ED[T]['Selection']>(event: { 
+        operation: S;
+        result: SelectionResult2<ED[T]['Schema'], S['data']>;
     }, context: RuntimeContext<ED>, params?: Object) => Promise<number>;
 };
 
