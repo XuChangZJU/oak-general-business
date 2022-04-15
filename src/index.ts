@@ -1,4 +1,4 @@
-import aspectDict from "./aspects";
+import aspectDict/* , { AspectDict } */ from "./aspects";
 import triggers from "./triggers";
 import checkers from './checkers';
 import data from "./data";
@@ -8,10 +8,7 @@ export {
     triggers,
     data,
     aspectDict,
+    /* AspectDict, */
 };
 
-export * from './types/Trigger';
-export * from './types/Aspect';
-export * from './utils/TriggerExecutor';
-export * from './types/RuntimeContext';
-export * from './types/Auth';
+export * from './RuntimeContext';

@@ -3,7 +3,10 @@
     "version": "1.0.0",
     "description": "oak框架中公共业务逻辑的实现",
     "dependencies": {
-        "lodash": "^4.17.21"
+        "lodash": "^4.17.21",
+        "oak-domain": "file:../oak-domain",
+        "oak-frontend-base": "file:../oak-frontend-base",
+        "oak-memory-tree-store": "file:../oak-memory-tree-store"
     },
     "devDependencies": {
         "@babel/cli": "^7.12.13",
@@ -24,7 +27,6 @@
         "fs-extra": "^10.0.0",
         "isomorphic-fetch": "^3.0.0",
         "mocha": "^8.2.1",
-        "oak-domain": "file:../oak-domain",
         "ts-node": "^9.1.1",
         "typescript": "^4.5.2"
     },

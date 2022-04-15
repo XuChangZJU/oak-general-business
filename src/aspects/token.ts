@@ -1,14 +1,18 @@
-import { RuntimeContext } from '../types/RuntimeContext';
-import { Schema as Token } from '../base-ed/Token/Schema';
-import { EntityDict as BaseEntityDict } from '../base-ed/EntityDict';
-import { EntityDict } from 'oak-domain/lib/types/Entity';
+import { RuntimeContext } from '../RuntimeContext';
+import { EntityDict } from '../base-ed/EntityDict';
 
-export async function loginMp(params: { code: string }, context: RuntimeContext<BaseEntityDict>): Promise<string> {
+export async function loginMp<ED extends EntityDict>(params: { code: string }, context: RuntimeContext<ED>): Promise<string> {
     const { rowStore } = context;
     throw new Error('method not implemented!');
 }
 
-export async function loginByPassword(params: { password: string, mobile: string }, context: RuntimeContext<BaseEntityDict>): Promise<string> {
+export async function loginByPassword<ED extends EntityDict>(params: { password: string, mobile: string }, context: RuntimeContext<ED>): Promise<string> {
     const { rowStore } = context;
     throw new Error('method not implemented!');
 }
+
+/* export type AspectDict<ED extends EntityDict> = {
+    loginMp: (params: { code: string }, context: RuntimeContext<ED>) => Promise<string>;
+    loginByPassword: (params: { password: string, mobile: string }, context: RuntimeContext<ED>) => Promise<string>;
+};
+ */

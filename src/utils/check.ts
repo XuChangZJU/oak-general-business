@@ -1,4 +1,4 @@
-import { AttrIllegalError } from "../types/Auth";
+import { AttrIllegalError } from "oak-domain/lib/types";
 
 export function checkAttributesNotNull<T extends Record<string, any>>(data: T, attributes: Array<keyof T>, allowEmpty?: true) {
     const attrs = attributes.filter(

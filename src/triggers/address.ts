@@ -1,8 +1,9 @@
-import { CreateTriggerInTxn, Trigger } from '../types/Trigger';
+import { CreateTriggerInTxn, Trigger } from 'oak-domain/lib/types/Trigger';
 import { EntityDict } from '../base-ed/EntityDict';
 
-const triggers: CreateTriggerInTxn<EntityDict, 'address'>[] = [
-    
+
+const triggers: Trigger<EntityDict, 'address'>[] = [
+
 ];
 
 export default triggers;

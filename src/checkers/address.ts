@@ -1,5 +1,5 @@
 import { isMobile } from 'oak-domain/lib/utils/validator';
-import { AttrIllegalError, Checker } from "../types/Auth";
+import { AttrIllegalError, Checker, CreateChecker, DeduceCreateOperation, InstinctiveAttributes } from "oak-domain/lib/types";
 import { EntityDict } from '../base-ed/EntityDict';
 import { checkAttributesNotNull } from '../utils/check';
 
@@ -12,6 +12,7 @@ const checkers: Checker<EntityDict, 'address'> [] = [
             if (data instanceof Array) {
                 data.forEach(
                     ele => {
+                        const a: Exclude<keyof EntityDict['address']['OpSchema'], 'aa'> = 'name';
                         checkAttributesNotNull(ele, ['name', 'detail', 'phone', 'areaId']);
                         if (!isMobile(ele.phone)) {
                             throw new AttrIllegalError(['phone'], '手机号非法');

@@ -9,4 +9,4 @@ export declare function select<ED extends EntityDict, T extends keyof ED>(option
     entity: T;
     selection: ED[T]['Selection'];
     params?: object;
-}, context: RuntimeContext<ED>): Promise<import("oak-domain/lib/types/Entity").SelectionResult<ED, T>>;
+}, context: RuntimeContext<ED>): Promise<import("oak-domain/lib/types/Entity").SelectionResult2<ED[T]["Schema"], ED[T]["Selection"]["data"]>>;
