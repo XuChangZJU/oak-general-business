@@ -1,8 +1,10 @@
-import { Context } from 'oak-domain/lib/types/Context';
-import { EntityDict } from 'oak-domain/lib/types/Entity';
-import { Schema as Application } from './base-ed/Application/Schema';
-import { Schema as Token } from './base-ed/Token/Schema';
-export interface RuntimeContext<ED extends EntityDict> extends Context<ED> {
-    getApplication: () => Application;
-    getToken: () => Token | undefined;
+import { Context } from 'oak-domain/lib/types';
+import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
+import { EntityDict } from './base-ed/EntityDict';
+import { RowStore } from 'oak-domain/lib/types';
+export declare class RuntimeContext<ED extends EntityDict> extends UniversalContext<ED> implements Context<ED> {
+    applicationId: string;
+    constructor(store: RowStore<ED>, appId: string);
+    getApplication(): Promise<import("oak-domain/lib/types").SelectionResult2<ED["application"]["Schema"], ED["application"]["Selection"]["data"]>>;
+    getToken(): void;
 }

@@ -1,0 +1,49 @@
+/**  index.wxss  **/
+@import "../../../styles/base.less";
+@import "../../../styles/cpn.less";
+
+.page-body {
+  height: 100vh;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: @background-color-base;
+}
+
+.label-bar {
+  padding: 20rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  background-color: whitesmoke;
+  margin-bottom: 2rpx;
+}
+
+.label-bar-hover:extend(.label-bar) {
+  background-color: gainsboro;
+}
+
+.label-bar text {
+  margin-right: 20rpx;
+  width: 200rpx;
+}
+
+.label-bar input {
+  flex: 1;
+}
+
+.label-bar textarea {
+  flex: 1;
+  height: 300rpx;
+}
+
+.focused {
+  background-color: pink;
+}
+
+.btn-box {
+  display: flex;
+  margin: @size-spacing-small 0rpx;
+  padding: @size-spacing-small;
+}

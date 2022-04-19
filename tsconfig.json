@@ -61,9 +61,14 @@
     // "experimentalDecorators": true,        /* Enables experimental support for ES7 decorators. */
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
     /* Advanced Options */
+    "skipLibCheck": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true /* Disallow inconsistently-cased references to the same file. */
+    "resolveJsonModule": true, /* Disallow inconsistently-cased references to the same file. */
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/miniprogram-api-typings"
+    ]
   },
   "include": [ "src/**/*" ],
   "exclude": [
