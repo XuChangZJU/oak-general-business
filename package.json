@@ -36,5 +36,5 @@
         "build": "tsc",
         "test": "ts-node ./scripts/getAmapArea.ts"
     },
-    "main": "src/index"
+    "main": "lib/index"
 }
