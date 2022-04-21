@@ -74,7 +74,6 @@
   "exclude": [
     "node_modules",
     "**/*.spec.ts",
-    "src/base-app-domain/**/*",
     "test"
   ]
 }
