@@ -1,5 +1,5 @@
 import { RuntimeContext } from '../RuntimeContext';
-import { EntityDict } from '../base-ed/EntityDict';
+import { EntityDict } from 'oak-app-domain/EntityDict';
 
 export async function loginMp<ED extends EntityDict>(params: { code: string }, context: RuntimeContext<ED>): Promise<string> {
     const { rowStore } = context;

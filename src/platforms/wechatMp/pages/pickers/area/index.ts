@@ -1,4 +1,3 @@
-import { OpSchema as Area } from 'oak-app-domain/Area/Schema';
 import { OakPage } from '../../../../../typings/polyfill';
 
 OakPage({
@@ -27,7 +26,7 @@ OakPage({
     },
     methods: {
         onItemClicked(options: WechatMiniprogram.Touch) {            
-            const item = (this.data.arealist as Array<Area>).find(
+            const item = (this.data.arealist).find(
                 (ele) => ele.id === options.currentTarget.dataset.id
             );
 
@@ -38,7 +37,7 @@ OakPage({
                 }]);
             }
             else {
-                this.setForeignKey(id);
+                this.setForeignKey(id!);
             }
         }
     }

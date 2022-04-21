@@ -1,7 +1,7 @@
 // declare const getRandomValues: (length: number) => Promise<Uint8Array>;
 
 import { MakeOakComponent, MakeOakPage } from 'oak-frontend-base';
-import { EntityDict } from '../base-ed/EntityDict';
+import { EntityDict } from 'oak-app-domain/EntityDict';
 import { RuntimeContext } from '../RuntimeContext';
 import aspectDict from '../aspects';
 declare const OakPage: MakeOakPage<EntityDict, RuntimeContext<EntityDict>, typeof aspectDict, {}>;
