@@ -1,4 +1,4 @@
-import { OpSchema as Area } from '../../../../../base-ed/Area/Schema';
+import { OpSchema as Area } from 'oak-app-domain/Area/Schema';
 import { OakPage } from '../../../../../typings/polyfill';
 
 OakPage({
