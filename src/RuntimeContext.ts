@@ -5,7 +5,7 @@ import { EntityDict } from 'oak-app-domain/EntityDict';
 import { RowStore } from 'oak-domain/lib/types';
 
 
-export class RuntimeContext<ED extends EntityDict> extends UniversalContext<ED> implements Context<ED> {
+export class GeneralRuntimeContext<ED extends EntityDict> extends UniversalContext<ED> implements Context<ED> {
     applicationId: string;
     constructor(store: RowStore<ED>, appId: string) {
         super(store);
