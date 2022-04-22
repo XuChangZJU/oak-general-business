@@ -1,5 +1,5 @@
 
-import { Context } from 'oak-domain/lib/types';
+import { Context, SelectionResult } from 'oak-domain/lib/types';
 import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
 import { EntityDict } from 'oak-app-domain/EntityDict';
 import { RowStore } from 'oak-domain/lib/types';
@@ -12,8 +12,8 @@ export class RuntimeContext<ED extends EntityDict> extends UniversalContext<ED> 
         this.applicationId = appId;
     }
 
-    getApplication () {
-        return this.rowStore.select('application', {
+    async getApplication () {
+        const { result: [application] } = await this.rowStore.select('application', {
             data: {
                 id: 1,
                 name: 1,
@@ -21,7 +21,9 @@ export class RuntimeContext<ED extends EntityDict> extends UniversalContext<ED> 
             filter: {
                 id: this.applicationId,
             }
-        }, this);
+        }, this) as SelectionResult<ED['application']['Schema'], {id: 1, name: 1}>;
+        
+        return application;
     }
     
     getToken() {

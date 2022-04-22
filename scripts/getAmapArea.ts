@@ -5,7 +5,7 @@ import 'isomorphic-fetch';
 import assert from 'assert';
 import { writeFileSync } from 'fs-extra';
 import { FormCreateData } from 'oak-domain/lib/types/Entity';
-import { OpSchema as Area } from '../src/base-ed/Area/Schema';
+import { OpSchema as Area } from 'oak-app-domain/Area/Schema';
 
 
 const KEY = '4f3d4499850ba51429b9dece8cedd8d2';
