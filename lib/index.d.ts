@@ -1,4 +1,3 @@
-import './typings/polyfill';
 import aspectDict from "./aspects";
 import triggers from "./triggers";
 import checkers from './checkers';

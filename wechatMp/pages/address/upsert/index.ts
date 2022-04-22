@@ -5,7 +5,8 @@ OakPage({
     projection: {
         id: 1,
         name: 1,
-        phone: 1,        
+        phone: 1,
+        detail: 1,
         area: {
             id: 1,
             name: 1,
