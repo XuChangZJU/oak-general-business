@@ -1,6 +1,5 @@
 // index.ts
-// 获取应用实例
-import { OakPage } from '../../../../../typings/polyfill';
+
 OakPage({
     path: 'address-list',
     entity: 'address',

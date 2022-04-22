@@ -1,4 +1,3 @@
-import { OakPage } from '../../../../../typings/polyfill';
 
 OakPage({
     path: 'area-picker',
@@ -7,7 +6,7 @@ OakPage({
         id: 1,
         name: 1,
         depth: 1,
-        level: 1,        
+        level: 1, 
     },
     filters: [
         {
