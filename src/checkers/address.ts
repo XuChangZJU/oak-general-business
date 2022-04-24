@@ -2,8 +2,9 @@ import { isMobile } from 'oak-domain/lib/utils/validator';
 import { AttrIllegalError, Checker, CreateChecker, DeduceCreateOperation, InstinctiveAttributes } from "oak-domain/lib/types";
 import { EntityDict } from 'oak-app-domain/EntityDict';
 import { checkAttributesNotNull } from '../utils/check';
+import { GeneralRuntimeContext } from '../RuntimeContext';
 
-const checkers: Checker<EntityDict, 'address'> [] = [
+const checkers: Checker<EntityDict, 'address', GeneralRuntimeContext<EntityDict>> [] = [
     {
         action: 'create',
         entity: 'address',
