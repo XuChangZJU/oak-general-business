@@ -1,19 +1,21 @@
 
-import { Context } from 'oak-domain/lib/types';
+import { SelectionResult } from 'oak-domain/lib/types';
 import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
 import { EntityDict } from 'oak-app-domain/EntityDict';
 import { RowStore } from 'oak-domain/lib/types';
 
 
-export class RuntimeContext<ED extends EntityDict> extends UniversalContext<ED> implements Context<ED> {
+export abstract class GeneralRuntimeContext<ED extends EntityDict> extends UniversalContext<ED> {
     applicationId: string;
-    constructor(store: RowStore<ED>, appId: string) {
+    token?: string;
+    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, appId: string, token?: string) {
         super(store);
         this.applicationId = appId;
+        this.token = token;
     }
 
-    getApplication () {
-        return this.rowStore.select('application', {
+    async getApplication () {
+        const { result: [application] } = await this.rowStore.select('application', {
             data: {
                 id: 1,
                 name: 1,
@@ -21,10 +23,26 @@ export class RuntimeContext<ED extends EntityDict> extends UniversalContext<ED> 
             filter: {
                 id: this.applicationId,
             }
-        }, this);
+        }, this) as SelectionResult<ED['application']['Schema'], {id: 1, name: 1}>;
+        
+        return application;
     }
     
-    getToken() {
+    async getToken() {
+        if (this.token) {
+            const { result: [token] } = await this.rowStore.select('token', {
+                data: {
+                    id: 1,
+                    userId: 1,
+                    playerId: 1,
+                },
+                filter: {
+                    id: this.token,
+                    ableState: 'enabled',
+                }
+            }, this) as SelectionResult<ED['token']['Schema'], {id: 1, userId: 1, playerId: 1}>;
 
+            return token;
+        }
     }
 };

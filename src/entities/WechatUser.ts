@@ -1,6 +1,7 @@
 import { String, Int, Datetime, Image, Boolean } from 'oak-domain/lib/types/DataType';
 import { Schema as User } from './User';
 import { Schema as Application } from './Application';
+import { Schema as Token } from './Token';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 
 export interface Schema extends EntityShape {
@@ -14,4 +15,5 @@ export interface Schema extends EntityShape {
     unsubscribedAt?: Datetime;
     user?: User;
     application: Application;
+    tokens: Array<Token>;
 };

@@ -70,10 +70,13 @@
       "./node_modules/miniprogram-api-typings"
     ]
   },
-  "include": [ "src/**/*" ],
+  "include": [ "./**/*.ts" ],
   "exclude": [
+    "lib",
     "node_modules",
     "**/*.spec.ts",
-    "test"
+    "test",
+    "scripts",
+    "wechatMp"
   ]
 }
