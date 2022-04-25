@@ -1,8 +1,13 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <view class="g-form" style="flex: 1" wx:for="{{arealist}}" wx:key="index">
-        <view class="g-form-item" data-id="{{item.id}}" bindtap="onItemClicked">
-            <text>{{item.name}}</text>
+    <block wx:if={{loggedIn}}>
+        <view class="g-cell">
+            <button class="g-btn g-btn-fullWidth" size="default" bindtap="onLoginClicked">登录</button>
         </view>
-    </view>
+    </block>
+    <block wx:else>
+        <view class="g-cell">
+            <button class="g-btn g-btn-fullWidth" size="default" bindtap="onReturnClicked">返回</button>
+        </view>
+    </block>
 </view>
