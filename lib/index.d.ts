@@ -3,5 +3,7 @@ import triggers from "./triggers";
 import checkers from './checkers';
 import data from "./data";
 import { initialize as initializeFeatures } from './features';
-export { checkers, triggers, data, aspectDict, initializeFeatures, };
+import { routers as exceptionRouters } from './exceptionRouters';
+export { checkers, triggers, data, aspectDict, initializeFeatures, exceptionRouters, };
 export * from './RuntimeContext';
+export * from './types/Exceptions';
