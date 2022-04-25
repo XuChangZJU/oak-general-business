@@ -1,4 +1,4 @@
-import { AttrIllegalError } from "oak-domain/lib/types";
+import { OakInputIllegalException } from "oak-domain/lib/types";
 
 export function checkAttributesNotNull<T extends Record<string, any>>(data: T, attributes: Array<keyof T>, allowEmpty?: true) {
     const attrs = attributes.filter(
@@ -13,7 +13,7 @@ export function checkAttributesNotNull<T extends Record<string, any>>(data: T, a
     ) as string[];
 
     if (attrs.length > 0) {
-        throw new AttrIllegalError(attrs, '属性不能为空');
+        throw new OakInputIllegalException(attrs, '属性不能为空');
     }
 };
 
@@ -23,6 +23,6 @@ export function checkAttributesScope<T extends Record<string, any>>(data: T, att
     ) as string[];    
 
     if (attrs.length > 0) {
-        throw new AttrIllegalError(attrs, '多余的属性');
+        throw new OakInputIllegalException(attrs, '多余的属性');
     }
 }

@@ -4,7 +4,7 @@
         <view class="g-form-item">
             <view class="g-form-item-label">收货人</view>
             <view class="g-form-item-content {{oakFocused.name}}">
-                <input placeholder="姓名" value="{{name}}" type="string" data-path="name" focus="{{!!oakFocused.name}}" bindinput="setUpdateData" confirm-type="done" />
+                <input placeholder="姓名" oak:value="name" bindinput="setUpdateData" confirm-type="done" />
             </view>
         </view>
         <view class="g-form-item">

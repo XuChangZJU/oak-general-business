@@ -1,5 +1,5 @@
 import { isMobile } from 'oak-domain/lib/utils/validator';
-import { AttrIllegalError, Checker, CreateChecker, DeduceCreateOperation, InstinctiveAttributes } from "oak-domain/lib/types";
+import { OakInputIllegalException, Checker } from "oak-domain/lib/types";
 import { EntityDict } from 'oak-app-domain/EntityDict';
 import { checkAttributesNotNull } from '../utils/check';
 import { GeneralRuntimeContext } from '../RuntimeContext';
@@ -16,7 +16,7 @@ const checkers: Checker<EntityDict, 'address', GeneralRuntimeContext<EntityDict>
                         const a: Exclude<keyof EntityDict['address']['OpSchema'], 'aa'> = 'name';
                         checkAttributesNotNull(ele, ['name', 'detail', 'phone', 'areaId']);
                         if (!isMobile(ele.phone)) {
-                            throw new AttrIllegalError(['phone'], '手机号非法');
+                            throw new OakInputIllegalException(['phone'], '手机号非法');
                         }
                     } 
                 );
@@ -24,7 +24,7 @@ const checkers: Checker<EntityDict, 'address', GeneralRuntimeContext<EntityDict>
             else {
                 checkAttributesNotNull(data, ['name', 'detail', 'phone', 'areaId']);
                 if (!isMobile(data.phone)) {
-                    throw new AttrIllegalError(['phone'], '手机号非法');
+                    throw new OakInputIllegalException(['phone'], '手机号非法');
                 }
             }      
             return 0;
