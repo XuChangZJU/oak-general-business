@@ -1,0 +1,44 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <view class="g-cell">
+        <button class="g-btn" size="default" inline>行内按钮1</button>
+        <button class="g-btn" size="default" inline>行内按钮2</button>
+        <button class="g-btn" size="default" inline>行内按钮3</button>
+    </view>
+    <view class="g-cell">
+        <button class="g-btn" size="default">基本按钮</button>
+    </view>
+    <view class="g-cell">
+        <button class="g-btn g-btn-large" size="default">大按钮</button>
+    </view>
+    <view class="g-cell">
+        <button class="g-btn g-btn-small" size="default">小按钮</button>
+    </view>
+    <view class="g-cell">
+        <button class="g-btn g-btn-fullWidth" size="default">全宽按钮</button>
+    </view>
+    <view class="g-cell">
+        <button class="g-btn g-btn-warning g-btn-small" size="default">warning</button>
+    </view>
+    <view class="g-cell">
+        <button class="g-btn g-btn-primary g-btn-small" size="default">warning</button>
+    </view>
+    <view class="g-cell">
+        <button class="g-btn g-btn-error g-btn-small" size="default">error</button>
+    </view>
+    <view class="g-cell">
+        <button class="g-btn g-btn-info g-btn-small" size="default">info</button>
+    </view>
+    <view class="g-cell">
+        <button class="g-btn g-btn-success g-btn-small" size="default">success</button>
+    </view>
+    <view class="g-cell">
+        <button class="g-btn g-btn-ghost g-btn-small" size="default">ghost</button>
+    </view>
+    <view class="g-cell">
+        <button class="g-btn g-btn-primary g-btn-small g-btn-loading" size="default">
+            <view class="g-btn-loading-inner" wx:if="{{true}}"></view>
+            loading
+        </button>
+    </view>
+</view>

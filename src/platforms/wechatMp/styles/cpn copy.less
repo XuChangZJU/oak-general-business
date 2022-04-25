@@ -120,6 +120,7 @@
 //form
 
 .g-form {
+  position: relative;
   display: flex;
   flex-direction: column;
   background-color: @background-color-base;
@@ -128,18 +129,17 @@
   border-bottom-width: 1px;
 
   &-item {
+    position: relative;
     display: flex;
     align-items: center;
     background-color: #fff;
-    padding: @size-spacing-base 0rpx;
-    padding-right: 24rpx;
-    margin-left: @size-spacing-base;
+    padding: @size-spacing-base;
 
     &-label {
       color: @title-color;
       line-height: 1;
       min-width: 150rpx;
-      padding-right: 30rpx;
+      padding-right: 20rpx;
     }
 
     &-content {
@@ -151,8 +151,12 @@
   }
 }
 
-.g-form > view:not(:last-child) {
-  margin-bottom: 1px;
+.g-form > view:not(:last-child)::after {
+  .hairline();
+
+  border-bottom-width: 1px;
+  left: 15px;
+  right: 0;
 }
 
 //input
@@ -166,13 +170,16 @@
   &-border {
     text-align: right;
   }
+
+  &-error {
+    color: @error-color;
+  }
 }
 
 //pannel
 .g-cell {
   padding: @size-spacing-base;
   display: flex;
-  flex: 1;
   align-items: center;
   justify-content: space-between;
   background-color: #fff;
@@ -192,4 +199,23 @@
 .g-border-radius {
   border: 1px solid @border-color-base;
   border-radius: @btn-border-radius;
+}
+
+.g-border-error {
+  border-color: @error-color;
+}
+
+//hairline
+.hairline() {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  transform: scale(0.5);
+  transform-origin: 0 0;
+  pointer-events: none;
+  box-sizing: border-box;
+  border: 0 solid @border-color-split;
 }

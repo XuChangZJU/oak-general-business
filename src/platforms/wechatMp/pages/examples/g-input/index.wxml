@@ -1,0 +1,42 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <view class="g-pannel">
+        <view class="g-pannel-title">外标题输入框</view>
+        <view class="g-cell">
+            <input placeholder="请输入内容" class="g-input" />
+        </view>
+    </view>
+    <view class="g-pannel">
+        <view class="g-pannel-title">圆角输入框</view>
+        <view class="g-cell">
+            <view class="g-cell g-border-radius" style="flex: 1">
+                <view class="g-form-item-label">消费金额</view>
+                <view class="g-form-content">
+                    <input class="g-input g-input-border" placeholder="请输入" />
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="g-pannel">
+        <view class="g-pannel-title">圆角输入框</view>
+        <view class="g-cell">
+            <view class="g-cell g-border-radius {{error ? 'g-border-error' : ''}}" style="flex: 1">
+                <view class="g-form-item-label">消费金额</view>
+                <view class="g-form-content">
+                    <input class="g-input g-input-border {{error ? 'g-input-error' : ''}}" placeholder="自动聚焦错误的" bindfocus="clearError" />
+                </view>
+            </view>
+        </view>
+    </view>
+    <!-- <view class="g-pannel">
+        <view class="g-pannel-title">圆角输入框</view>
+        <view class="g-cell">
+            <view class="g-cell g-border-radius {{error ? 'g-border-error' : ''}}" style="flex: 1">
+                <view class="g-form-item-label">消费金额</view>
+                <view class="g-form-content">
+                    <input class="g-input g-input-border {{error ? 'g-input-error' : ''}}" focus="{{error}}" placeholder="自动聚焦错误的" />
+                </view>
+            </view>
+        </view>
+    </view> -->
+</view>
