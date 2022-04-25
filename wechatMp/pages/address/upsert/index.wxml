@@ -31,7 +31,7 @@
     </view>
     <view class="btn-box">
         <button
-            class="g-btn g-btn-primary {{ oakExecuting && 'g-btn-loading'}} {{ !oakDirty && 'g-btn-disabled'}}"
+            class="g-btn g-btn-primary {{ oakExecuting ? 'g-btn-loading' : ''}} {{ !oakDirty ? 'g-btn-disabled' : ''}}"
             type="primary"
             disabled="{{oakExecuting || !oakDirty}}"
             bind:tap="execute"
