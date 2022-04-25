@@ -20,6 +20,10 @@ export async function loginByPassword<ED extends EntityDict, Cxt extends General
     throw new Error('method not implemented!');
 }
 
+export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(code: string, context: Cxt): Promise<string> {
+    throw new Error('method not implemented!');
+}
+
 /* export type AspectDict<ED extends EntityDict> = {
     loginMp: (params: { code: string }, context: GeneralRuntimeContext<ED>) => Promise<string>;
     loginByPassword: (params: { password: string, mobile: string }, context: GeneralRuntimeContext<ED>) => Promise<string>;

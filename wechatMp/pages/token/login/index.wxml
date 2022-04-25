@@ -1,0 +1,8 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <view class="g-form" style="flex: 1" wx:for="{{arealist}}" wx:key="index">
+        <view class="g-form-item" data-id="{{item.id}}" bindtap="onItemClicked">
+            <text>{{item.name}}</text>
+        </view>
+    </view>
+</view>

@@ -13,6 +13,11 @@ export class Token extends Feature<EntityDict, GeneralRuntimeContext<EntityDict>
     }
 
     @Action
+    async loginWechatMp(code: string) {
+        this.token = await this.getAspectProxy().loginWechatMp(code);
+    }
+
+    @Action
     async logout() {
         this.token = undefined;
     }
