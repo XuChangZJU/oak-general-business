@@ -1,6 +1,6 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <block wx:if={{loggedIn}}>
+    <block wx:if={{!loggedIn}}>
         <view class="g-cell">
             <button class="g-btn g-btn-fullWidth" size="default" bindtap="onLoginClicked">登录</button>
         </view>

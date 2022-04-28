@@ -19,11 +19,13 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
             data: {
                 id: 1,
                 name: 1,
+                config: 1,
+                type: 1,
             },
             filter: {
                 id: this.applicationId,
             }
-        }, this) as SelectionResult<ED['application']['Schema'], {id: 1, name: 1}>;
+        }, this) as SelectionResult<EntityDict['application']['Schema'], {id: 1, name: 1, config: 1, type: 1}>;
         
         return application;
     }

@@ -7,3 +7,4 @@ export declare function loginByPassword<ED extends EntityDict, Cxt extends Gener
     password: string;
     mobile: string;
 }, context: Cxt): Promise<string>;
+export declare function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(code: string, context: Cxt): Promise<string>;

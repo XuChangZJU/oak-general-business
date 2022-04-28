@@ -4,9 +4,11 @@ OakPage({
     entity: 'token',
     projection: {
         id: 1,
-        name: 1,
-        depth: 1,
-        level: 1, 
+        wechatUser: {
+            id: 1,
+        },
+        userId: 1,
+        playerId: 1,
     },
     isList: true,
     formData: (tokenList, features) => {
@@ -23,8 +25,8 @@ OakPage({
 }, {
     methods: {
         async onLoginClicked(options: WechatMiniprogram.Touch) {
-            const code = await wx.login();
-            console.log(code);
+            const { code } = await wx.login();
+            await this.features.token.loginWechatMp(code);
         },
 
         onReturnClicked() {
