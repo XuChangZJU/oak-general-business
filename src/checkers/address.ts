@@ -1,6 +1,6 @@
 import { isMobile } from 'oak-domain/lib/utils/validator';
 import { OakInputIllegalException, Checker } from "oak-domain/lib/types";
-import { EntityDict } from 'oak-app-domain/EntityDict';
+import { EntityDict } from 'oak-app-domain';
 import { checkAttributesNotNull } from '../utils/check';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 

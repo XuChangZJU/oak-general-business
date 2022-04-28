@@ -1,7 +1,7 @@
 
 import { SelectionResult } from 'oak-domain/lib/types';
 import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
-import { EntityDict } from 'oak-app-domain/EntityDict';
+import { EntityDict } from 'oak-app-domain';
 import { RowStore } from 'oak-domain/lib/types';
 
 
@@ -21,11 +21,12 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
                 name: 1,
                 config: 1,
                 type: 1,
+                systemId: 1,                
             },
             filter: {
                 id: this.applicationId,
             }
-        }, this) as SelectionResult<EntityDict['application']['Schema'], {id: 1, name: 1, config: 1, type: 1}>;
+        }, this) as SelectionResult<EntityDict['application']['Schema'], {id: 1, name: 1, config: 1, type: 1, systemId: 1}>;
         
         return application;
     }

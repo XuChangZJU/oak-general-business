@@ -82,9 +82,9 @@ function processRepeatedAdCode(districts: any[], parentAdCode: string) {
 
 
 async function main() {
-    const areasss: FormCreateData<Area>[] = [];
-    const streetsss: FormCreateData<Area>[] = [];
-    function saveAreas(areas: any[], parentId: string | null, depth: 0 | 1 | 2 | 3 | 4, dest: FormCreateData<Area>[] = areasss) {
+    const areaDebug: FormCreateData<Area>[] = [];
+    const areaTotal: FormCreateData<Area>[] = [];
+    function saveAreas(areas: any[], parentId: string | null, depth: 0 | 1 | 2 | 3 | 4, dest: FormCreateData<Area>[] = areaDebug) {
         areas.forEach(
             (ele) => {
                 const { adcode, center, citycode, level, name } = ele;
@@ -109,32 +109,40 @@ async function main() {
     const { districts } = result;
     const country = districts[0];
     saveAreas([country], null, 0);
+    saveAreas([country], null, 0, areaTotal);
     const { districts: provinces, adcode: countryCode } = country;
-    saveAreas(provinces, countryCode, 1);
 
-    for (const dist of provinces) {
-        const result2 = await acquireAmap(dist.name, 3);
-        const { districts: cities, adcode: provinceCode } = result2.districts[0];
-        // cities.forEach((ele: any) => assert(ele.level === 'city'));
-        saveAreas(cities, provinceCode, 2);
-        for (const city of cities) {
-            const { districts, adcode: cityCode } = city;
-            const districts2 = processRepeatedAdCode(districts, cityCode);
-            // districts2.forEach((ele: any) => assert(ele.level === 'district'));
-            saveAreas(districts2, cityCode, 3);
-            districts2.forEach(
-                (district) => {
-                    const { districts: streets, adcode: districtCode } = district;
-                    const streets2 = processRepeatedAdCode(streets, districtCode);
-                    // streets2.forEach((ele: any) => assert(ele.level === 'street'));
-                    saveAreas(streets2, districtCode, 4, streetsss);
-                }
-            );
+    async function saveBelowProvinces(dest: FormCreateData<Area>[], limit?: number) {
+        for (const dist of provinces) {
+            const result2 = await acquireAmap(dist.name, 3);
+            const { districts: cities, adcode: provinceCode } = result2.districts[0];
+            // cities.forEach((ele: any) => assert(ele.level === 'city'));
+            const cities2 = limit ? cities.slice(0, limit) : cities;
+            saveAreas(cities2, provinceCode, 2, dest);
+            for (const city of cities2) {
+                const { districts, adcode: cityCode } = city;
+                const districts2 = processRepeatedAdCode(districts, cityCode);
+                const districts3 = limit ? districts2.slice(0, limit) : districts2;
+                // districts2.forEach((ele: any) => assert(ele.level === 'district'));
+                saveAreas(districts3, cityCode, 3, dest);
+                districts2.forEach(
+                    (district) => {
+                        const { districts: streets, adcode: districtCode } = district;
+                        const streets2 = processRepeatedAdCode(streets, districtCode);
+                        const streets3 = limit ? streets2.slice(0, limit) : streets2;
+                        // streets2.forEach((ele: any) => assert(ele.level === 'street'));
+                        saveAreas(streets3, districtCode, 4, dest);
+                    }
+                );
+            }
         }
     }
 
-    writeFileSync(`${__dirname}/../src/data/area-debug.json`, JSON.stringify(areasss));
-    writeFileSync(`${__dirname}/../src/data/area.json`, JSON.stringify(areasss.concat(streetsss)));
+    await saveBelowProvinces(areaDebug, 1);
+    await saveBelowProvinces(areaTotal);
+
+    writeFileSync(`${__dirname}/../src/data/area-debug.json`, JSON.stringify(areaDebug));
+    writeFileSync(`${__dirname}/../src/data/area.json`, JSON.stringify(areaTotal));
 }
 
 

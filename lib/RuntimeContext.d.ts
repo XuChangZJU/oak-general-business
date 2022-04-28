@@ -1,5 +1,5 @@
 import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
-import { EntityDict } from 'oak-app-domain/EntityDict';
+import { EntityDict } from 'oak-app-domain';
 import { RowStore } from 'oak-domain/lib/types';
 export declare abstract class GeneralRuntimeContext<ED extends EntityDict> extends UniversalContext<ED> {
     applicationId: string;
@@ -10,6 +10,7 @@ export declare abstract class GeneralRuntimeContext<ED extends EntityDict> exten
         name: 1;
         config: 1;
         type: 1;
+        systemId: 1;
     }>>;
     getToken(): Promise<import("oak-domain/lib/types").SelectRowShape<ED["token"]["Schema"], {
         id: 1;

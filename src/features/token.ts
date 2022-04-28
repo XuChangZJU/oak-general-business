@@ -1,6 +1,7 @@
 import { EntityDict } from 'oak-app-domain';
 import { Action, Feature } from 'oak-frontend-base';
 import { Aspect, Context } from 'oak-domain/lib/types';
+import { WechatMpEnv } from 'oak-app-domain/Token/Schema';
 
 export class Token<ED extends EntityDict, Cxt extends Context<ED>, AD extends Record<string, Aspect<ED, Cxt>>> extends Feature<ED, Cxt, AD> {
 
@@ -12,8 +13,11 @@ export class Token<ED extends EntityDict, Cxt extends Context<ED>, AD extends Re
     }
 
     @Action
-    async loginWechatMp(code: string) {
-        this.token = await this.getAspectProxy().loginWechatMp(code);
+    async loginWechatMp(code: string, env: WechatMpEnv) {
+        this.token = await this.getAspectProxy().loginWechatMp({
+            code,
+            env,
+        });
     }
 
     @Action

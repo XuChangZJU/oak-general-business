@@ -75,6 +75,7 @@
     "node_modules",
     "**/*.spec.ts",
     "test",
-    "scripts"
+    "scripts",
+    "wechatMp"
   ]
 }

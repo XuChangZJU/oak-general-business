@@ -5,7 +5,7 @@ import { Schema as ExtraFile } from './ExtraFile';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 
 export interface Schema extends EntityShape {
-    name: String<16>;
+    name?: String<16>;
     nickname?: String<64>;
     password?: Text;
     birth?: Datetime;
