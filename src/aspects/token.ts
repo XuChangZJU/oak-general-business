@@ -6,7 +6,7 @@ import WechatSDK from 'oak-wechat-sdk';
 import { CreateOperationData as CreateToken, WechatMpEnv } from 'oak-app-domain/Token/Schema';
 import { CreateOperationData as CreateWechatUser } from 'oak-app-domain/WechatUser/Schema';
 import { CreateOperationData as CreateUser } from 'oak-app-domain/User/Schema';
-import { assign } from 'lodash';
+import { assign, eq } from 'lodash';
 import { SelectRowShape } from 'oak-domain/lib/types';
 
 export async function loginMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: { code: string }, context: Cxt): Promise<string> {
@@ -72,6 +72,38 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
             });
         }
         if (wechatUser2.userId) {
+            // 若用户没有更换任何环境，则重用原来的token，避免token表增长过快
+            const { result: [token] } = await rowStore.select('token', {
+                data: {
+                    id: 1,
+                    applicationId: 1,
+                    env: 1,
+                },
+                filter: {
+                    applicationId: application.id,
+                    ableState: 'enabled',
+                    userId: wechatUser2.userId,
+                    playerId: wechatUser2.userId,
+                    entity: 'wechatUser',
+                    entityId: wechatUser2.id,
+                },
+            }, context);
+            if (token && eq(token.env, env)) {
+                await rowStore.operate('token', {
+                    action: 'update',
+                    data: {
+                        wechatUser: {
+                            action: 'update',
+                            data: wechatUserUpdateData,
+                        }
+                    },
+                    filter: {
+                        id: token.id as string,
+                    },
+                }, context);
+                return token.id as string;
+            }
+
             await rowStore.operate('token', {
                 action: 'disable',
                 data: {
@@ -119,7 +151,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
     }
     else if (unionId) {
         // 如果有unionId，查找同一个system下有没有相同的unionId
-        const { result: [wechatUser2] } = await rowStore.select('wechatUser', {
+        const { result: [wechatUser3] } = await rowStore.select('wechatUser', {
             data: {
                 id: 1,
                 userId: 1,
@@ -131,7 +163,12 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                 },
                 unionId,
             }
-        }, context);
+        }, context);        
+        const wechatUser2 = wechatUser3 as SelectRowShape<EntityDict['wechatUser']['Schema'], {
+            id: 1,
+            userId: 1,
+            unionId: 1,
+        }>;
         if (wechatUser2 && wechatUser2.userId) {
             await rowStore.operate('token', {
                 action: 'disable',
