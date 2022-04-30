@@ -6,6 +6,7 @@ import { GeneralRuntimeContext } from '../RuntimeContext';
 
 const checkers: Checker<EntityDict, 'address', GeneralRuntimeContext<EntityDict>> [] = [
     {
+        type: 'data',
         action: 'create',
         entity: 'address',
         checker: async ({ operation }) => {

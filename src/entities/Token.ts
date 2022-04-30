@@ -1,7 +1,7 @@
 import { String, Int, Datetime, Image, Boolean } from 'oak-domain/lib/types/DataType';
 import { Schema as User } from './User';
 import { Schema as Application } from './Application';
-import { AbleAction } from 'oak-domain/lib/actions/action';
+import { AbleAction, makeAbleActionDef } from 'oak-domain/lib/actions/action';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 // https://developers.weixin.qq.com/miniprogram/dev/api/base/system/wx.getSystemInfoSync.html
 export type WechatMpEnv = {
@@ -39,3 +39,5 @@ export interface Schema extends EntityShape {
 };
 
 type Action = AbleAction;
+
+const AbleActionDef = makeAbleActionDef('enabled');

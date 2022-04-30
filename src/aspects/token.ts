@@ -6,7 +6,7 @@ import WechatSDK from 'oak-wechat-sdk';
 import { CreateOperationData as CreateToken, WechatMpEnv } from 'oak-app-domain/Token/Schema';
 import { CreateOperationData as CreateWechatUser } from 'oak-app-domain/WechatUser/Schema';
 import { CreateOperationData as CreateUser } from 'oak-app-domain/User/Schema';
-import { assign, eq } from 'lodash';
+import { assign, isEqual } from 'lodash';
 import { SelectRowShape } from 'oak-domain/lib/types';
 
 export async function loginMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: { code: string }, context: Cxt): Promise<string> {
@@ -88,7 +88,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     entityId: wechatUser2.id,
                 },
             }, context);
-            if (token && eq(token.env, env)) {
+            if (token && isEqual(token.env, env)) {
                 await rowStore.operate('token', {
                     action: 'update',
                     data: {
@@ -128,24 +128,24 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     },
                 },
             });
-
-            await rowStore.operate('token', {
-                action: 'create',
-                data: {
-                    id,
-                    userId: wechatUser2.userId as string,
-                    playerId: wechatUser2.userId as string,
-                    applicationId: application.id,
-                    entity: 'wechatUser',
-                    entityId: wechatUser2.id as string,
-                    wechatUser: {
-                        action: 'update',
-                        data: wechatUserUpdateData,
-                    },
-                    env
-                } as CreateToken
-            }, context);
         }
+
+        await rowStore.operate('token', {
+            action: 'create',
+            data: {
+                id,
+                userId: wechatUser2.userId as string,
+                playerId: wechatUser2.userId as string,
+                applicationId: application.id,
+                entity: 'wechatUser',
+                entityId: wechatUser2.id as string,
+                wechatUser: {
+                    action: 'update',
+                    data: wechatUserUpdateData,
+                },
+                env
+            } as CreateToken
+        }, context);
         return id;
 
     }
