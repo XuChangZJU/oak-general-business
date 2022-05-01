@@ -1,5 +1,4 @@
 declare const _default: {
-    userRole: import("oak-app-domain/UserRole/Schema").CreateOperationData[];
     user: import("oak-app-domain/User/Schema").CreateOperationData[];
     role: import("oak-app-domain/Role/Schema").CreateOperationData[];
     area: ({

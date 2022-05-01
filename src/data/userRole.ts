@@ -17,11 +17,12 @@ export const roles: Array<RoleCreate> = [
     }
 ];
 
-export const userRoles: Array<UserRoleCreate> = [
+// 由触发器默认创建
+/* export const userRoles: Array<UserRoleCreate> = [
     {
         userId: ROOT_USER_ID,
         roleId: ROOT_ROLE_ID,
         relation: 'owner',
         id: 'root_user_role',
     }
-];
+]; */
