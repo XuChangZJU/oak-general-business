@@ -7,11 +7,11 @@ import { RowStore } from 'oak-domain/lib/types';
 
 export abstract class GeneralRuntimeContext<ED extends EntityDict> extends UniversalContext<ED> {
     applicationId: string;
-    token?: string;
-    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, appId: string, token?: string) {
+    getTokenFn: () => Promise<string | undefined>;
+    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, appId: string, getToken: () => Promise<string | undefined>) {
         super(store);
         this.applicationId = appId;
-        this.token = token;
+        this.getTokenFn = getToken;
     }
 
     async getApplication () {
@@ -32,7 +32,8 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
     }
     
     async getToken() {
-        if (this.token) {
+        const tokenValue = await this.getTokenFn();
+        if (tokenValue) {
             const { result: [token] } = await this.rowStore.select('token', {
                 data: {
                     id: 1,
@@ -40,7 +41,7 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
                     playerId: 1,
                 },
                 filter: {
-                    id: this.token,
+                    id: tokenValue,
                     ableState: 'enabled',
                 }
             }, this) as SelectionResult<ED['token']['Schema'], {id: 1, userId: 1, playerId: 1}>;

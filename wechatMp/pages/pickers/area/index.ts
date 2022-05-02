@@ -16,7 +16,7 @@ OakPage({
         }
     ],
     isList: true,
-    formData: (arealist) => ({
+    formData: async (arealist) => ({
         arealist,
     }),
 }, {

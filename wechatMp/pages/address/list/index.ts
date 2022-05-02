@@ -22,7 +22,7 @@ OakPage({
         },
     },
     isList: true,
-    formData: (addresses) => ({
+    formData: async (addresses) => ({
         addresses: addresses.map(
             (address) => ({
                 name: address?.name!,

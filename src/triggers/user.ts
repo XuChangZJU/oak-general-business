@@ -13,7 +13,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
         entity: 'user',
         action: 'create',
         when: 'before',
-        fn: async ({ operation }, context) => {
+        fn: async ({ operation }, context, params) => {
             if (NO_ANY_USER) {
                 const { rowStore } = context;
                 const { result } = await rowStore.select('user', {
@@ -27,7 +27,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
                     },
                     indexFrom: 0,
                     count: 1,
-                }, context);
+                }, context, params);
                 if (result.length === 0) {
                     const { data } = operation;
                     const userData = data instanceof Array ? data[0] : data;
