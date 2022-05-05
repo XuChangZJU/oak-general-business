@@ -1,44 +1,23 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <view class="g-cell">
-        <button class="g-btn" size="default" inline>行内按钮1</button>
-        <button class="g-btn" size="default" inline>行内按钮2</button>
-        <button class="g-btn" size="default" inline>行内按钮3</button>
+    <view class="row">
+        <text>一般用法</text>
     </view>
-    <view class="g-cell">
-        <button class="g-btn" size="default">基本按钮</button>
-    </view>
-    <view class="g-cell">
-        <button class="g-btn g-btn-large" size="default">大按钮</button>
-    </view>
-    <view class="g-cell">
-        <button class="g-btn g-btn-small" size="default">小按钮</button>
-    </view>
-    <view class="g-cell">
-        <button class="g-btn g-btn-fullWidth" size="default">全宽按钮</button>
-    </view>
-    <view class="g-cell">
-        <button class="g-btn g-btn-warning g-btn-small" size="default">warning</button>
-    </view>
-    <view class="g-cell">
-        <button class="g-btn g-btn-primary g-btn-small" size="default">warning</button>
-    </view>
-    <view class="g-cell">
-        <button class="g-btn g-btn-error g-btn-small" size="default">error</button>
-    </view>
-    <view class="g-cell">
-        <button class="g-btn g-btn-info g-btn-small" size="default">info</button>
-    </view>
-    <view class="g-cell">
-        <button class="g-btn g-btn-success g-btn-small" size="default">success</button>
-    </view>
-    <view class="g-cell">
-        <button class="g-btn g-btn-ghost g-btn-small" size="default">ghost</button>
-    </view>
-    <view class="g-cell">
-        <button class="g-btn g-btn-primary g-btn-small g-btn-loading" size="default">
-            <view class="g-btn-loading-inner" wx:if="{{true}}"></view>
-            loading
-        </button>
-    </view>
+    <g-btn bind:click="handleClick" inline>行内按钮</g-btn>
+    <g-btn bind:click="handleClick" inline type="primary">行内按钮</g-btn>
+    <g-btn bind:click="handleClick" inline type="success">行内按钮</g-btn>
+    <g-btn bind:click="handleClick">默认按钮</g-btn>
+    <g-btn bind:click="handleClick" type="error" long="true">联通两边按钮</g-btn>
+    <g-btn bind:click="handleClick" type="primary">Primary</g-btn>
+    <g-btn bind:click="handleClick" type="ghost">Ghost</g-btn>
+    <g-btn bind:click="handleClick" type="info">Info</g-btn>
+    <g-btn bind:click="handleClick" type="success">Success</g-btn>
+    <g-btn bind:click="handleClick" type="warning">Warning</g-btn>
+    <g-btn bind:click="handleClick" type="error">Error</g-btn>
+    <text>不同尺寸</text>
+    <g-btn bind:click="handleClick" type="primary" size="large">大尺寸</g-btn>
+    <g-btn bind:click="handleClick" type="primary" size="default">默认尺寸</g-btn>
+    <g-btn bind:click="handleClick" type="primary" size="small">小尺寸</g-btn>
+    <g-btn bind:click="handleClick" type="primary" loading="true">加载中按钮</g-btn>
+    <g-btn bind:click="handleClick" type="primary" disabled>禁用按钮</g-btn>
 </view>
