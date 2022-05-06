@@ -35,7 +35,8 @@
     "scripts": {
         "prebuild": "ts-node ./scripts/buildBaseEntityDict && npm link ./src/base-app-domain",
         "build": "tsc",
-        "test": "ts-node ./scripts/getAmapArea.ts"
+        "test": "ts-node ./scripts/getAmapArea.ts",
+        "clean:mp": "ts-node ./scripts/cleanDtsInWechatMp"
     },
     "main": "src/index"
 }

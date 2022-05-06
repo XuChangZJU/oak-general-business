@@ -1,0 +1,34 @@
+/**  index.wxss  **/
+@import "../../../styles/base.less";
+@import "../../../styles/cpn.less";
+
+.page-body {
+  height: 100vh;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: @background-color-base;
+}
+
+.userInfo {
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: @background-color-base;  
+}
+
+.avatar {
+  font-size: 188rpx;
+  color: @text-color;
+  height: 200rpx;
+  width: 200rpx;
+  border-radius: 20rpx;
+}
+
+.nickname {
+  font-size: @size-font-large;
+  color: @text-color;
+  padding-top: @size-spacing-small;
+  padding-bottom: @size-spacing-base;
+}

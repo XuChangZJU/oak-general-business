@@ -6,12 +6,15 @@ import { RowStore } from 'oak-domain/lib/types';
 
 
 export abstract class GeneralRuntimeContext<ED extends EntityDict> extends UniversalContext<ED> {
-    applicationId: string;
-    getTokenFn: () => Promise<string | undefined>;
-    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, appId: string, getToken: () => Promise<string | undefined>) {
+    private applicationId: string;
+    private getTokenFn: () => Promise<string | undefined>;
+    private scene: string;
+
+    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, appId: string, getToken: () => Promise<string | undefined>, scene: string) {
         super(store);
         this.applicationId = appId;
         this.getTokenFn = getToken;
+        this.scene = scene;
     }
 
     async getApplication () {
@@ -48,5 +51,9 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
 
             return token;
         }
+    }
+
+    getScene() {
+        return this.scene;
     }
 };

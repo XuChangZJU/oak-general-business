@@ -12,3 +12,15 @@ export declare function loginWechatMp<ED extends EntityDict, Cxt extends General
     code: string;
     env: WechatMpEnv;
 }, context: Cxt): Promise<string>;
+/**
+ * 同步从wx.getUserProfile拿到的用户信息
+ * @param param0
+ * @param context
+ */
+export declare function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ nickname, avatarUrl, encryptedData, iv, signature }: {
+    nickname: string;
+    avatarUrl: string;
+    encryptedData: string;
+    iv: string;
+    signature: string;
+}, context: Cxt): Promise<void>;

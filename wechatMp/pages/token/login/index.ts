@@ -1,7 +1,7 @@
 import { WechatMpEnv } from "oak-app-domain/Token/Schema";
 
 OakPage({
-    path: 'token-login',
+    path: 'token:login',
     entity: 'token',
     projection: {
         id: 1,
@@ -28,7 +28,7 @@ OakPage({
         async onLoginClicked(options: WechatMiniprogram.Touch) {
             const { code } = await wx.login();
             const env = await wx.getSystemInfo();
-            await this.features.token.loginWechatMp(code, Object.assign(env, { type: 'wechatMp' }) as WechatMpEnv);
+            await this.features.token.loginWechatMp('token:login');
         },
 
         onReturnClicked() {

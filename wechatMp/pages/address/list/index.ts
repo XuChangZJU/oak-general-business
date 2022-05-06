@@ -1,7 +1,7 @@
 // index.ts
 
 OakPage({
-    path: 'address-list',
+    path: 'address:list',
     entity: 'address',
     projection: {
         id: 1,

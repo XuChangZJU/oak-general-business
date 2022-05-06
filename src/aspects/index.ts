@@ -1,11 +1,10 @@
-import { EntityDict } from 'oak-domain/lib/types';
-import { EntityDict as BaseEntityDict } from 'oak-app-domain/EntityDict';
-import { loginByPassword, loginMp, loginWechatMp } from './token';
+import { loginByPassword, loginMp, loginWechatMp, syncUserInfoWechatMp } from './token';
 
 export const aspectDict = {
     loginByPassword,
     loginMp,
     loginWechatMp,
+    syncUserInfoWechatMp,
 };
 
 // export type AspectDict<ED extends EntityDict & BaseEntityDict> = TokenAD<ED> & CrudAD<ED>;

@@ -1,6 +1,6 @@
 
 OakPage({
-    path: 'area-picker',
+    path: 'area:picker',
     entity: 'area',
     projection: {
         id: 1,

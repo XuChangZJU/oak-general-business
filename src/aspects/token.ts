@@ -1,13 +1,15 @@
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { EntityDict } from 'oak-app-domain';
+import WechatSDK from 'oak-wechat-sdk';
 import assert from 'assert';
 import { WechatMpConfig } from 'oak-app-domain/Application/Schema';
-import WechatSDK from 'oak-wechat-sdk';
 import { CreateOperationData as CreateToken, WechatMpEnv } from 'oak-app-domain/Token/Schema';
 import { CreateOperationData as CreateWechatUser } from 'oak-app-domain/WechatUser/Schema';
-import { CreateOperationData as CreateUser } from 'oak-app-domain/User/Schema';
-import { assign, isEqual } from 'lodash';
+import { CreateOperationData as CreateUser, Schema as User } from 'oak-app-domain/User/Schema';
+import { Operation as ExtraFileOperation } from 'oak-app-domain/ExtraFile/Schema';
+import { assign, isEqual, keys } from 'lodash';
 import { SelectRowShape } from 'oak-domain/lib/types';
+import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
 
 export async function loginMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: { code: string }, context: Cxt): Promise<string> {
     const { rowStore } = context;
@@ -241,6 +243,105 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
     }, context);
 
     return id;
+}
+
+/**
+ * 同步从wx.getUserProfile拿到的用户信息
+ * @param param0 
+ * @param context 
+ */
+export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({
+    nickname, avatarUrl, encryptedData, iv, signature
+}: {nickname: string, avatarUrl: string, encryptedData: string, iv: string, signature: string}, context: Cxt) {
+    const { rowStore } = context;
+    const { userId } = (await context.getToken())!;
+    const application = await context.getApplication();
+    const { result: [{ sessionKey, user }]} = await rowStore.select('wechatUser', {
+        data: {
+            id: 1,
+            sessionKey: 1,
+            user: {
+                id: 1,
+                nickname: 1,
+                extraFile$entity: {
+                    $entity: 'extraFile',
+                    data: {
+                        id: 1,
+                        tag1: 1,
+                        origin: 1,
+                        bucket: 1,
+                        objectId: 1,
+                        filename: 1,
+                        extra1: 1,
+                    },
+                    filter: {
+                        tag1: 'avatar',
+                    },
+                }
+            }
+        },
+        filter: {
+            userId: userId!,
+            applicationId: application.id,
+        }
+    }, context);
+
+
+    // console.log(avatarUrl);
+    // const { type, config } = application;
+
+    // assert(type === 'wechatMp' || config.type === 'wechatMp');
+    // const config2 = config as WechatMpConfig;
+    // const { appId, appSecret } = config2;
+    // const wechatInstance = WechatSDK.getInstance(appId, appSecret, 'wechatMp');
+    // const result = wechatInstance.decryptData(sessionKey as string, encryptedData, iv, signature);
+    // 实测发现解密出来的和userInfo完全一致……
+    // console.log(result);
+    const { nickname: originNickname, extraFile$entity } = user as User;
+    const updateData = {};
+    if (nickname !== originNickname) {
+        Object.assign(updateData, {
+            nickname,
+        });
+    }
+    if (extraFile$entity?.length === 0 || composeFileUrl(extraFile$entity![0]) !== avatarUrl) {
+        // 需要更新新的avatar extra file
+        const extraFileOperations: ExtraFileOperation['data'][] = [
+            {
+                action: 'create',
+                data: assign({
+                    id: await generateNewId(),
+                    tag1: 'avatar',
+                    entity: 'user',
+                    entityId: userId,
+                }, decomposeFileUrl(avatarUrl))
+            }
+        ];
+        if (extraFile$entity!.length > 0) {
+            extraFileOperations.push(
+                {
+                    action: 'remove',
+                    data: {},
+                    filter: {
+                        id: extraFile$entity![0].id,
+                    }
+                }
+            );
+        }
+        assign(updateData, {
+            extraFile$entity: extraFileOperations,
+        });
+    }
+
+    if (keys(updateData).length > 0) {
+        await rowStore.operate('user', {
+            action: 'update',
+            data: updateData,
+            filter: {
+                id: userId!,
+            }
+        }, context);
+    }
 }
 
 /* export type AspectDict<ED extends EntityDict> = {

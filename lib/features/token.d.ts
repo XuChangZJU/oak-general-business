@@ -4,8 +4,11 @@ import { Aspect, Context } from 'oak-domain/lib/types';
 import { WechatMpEnv } from 'oak-app-domain/Token/Schema';
 export declare class Token<ED extends EntityDict, Cxt extends Context<ED>, AD extends Record<string, Aspect<ED, Cxt>>> extends Feature<ED, Cxt, AD> {
     private token?;
+    private rwLock;
+    constructor();
     loginByPassword(mobile: string, password: string): Promise<void>;
     loginWechatMp(code: string, env: WechatMpEnv): Promise<void>;
+    syncUserInfoWechatMp(): Promise<void>;
     logout(): Promise<void>;
-    getToken(): string | undefined;
+    getToken(): Promise<string | undefined>;
 }

@@ -5,6 +5,7 @@ import { ROOT_ROLE_ID, ROOT_USER_ID } from '../constants';
 export const users: Array<UserCreate> = [
     {
         password: 'oak@2022',
+        nickname: 'root',
         name: 'root',
         id: ROOT_USER_ID,
     }

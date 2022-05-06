@@ -5,6 +5,9 @@ import { CreateOperationData as UserRole } from 'oak-app-domain/UserRole/Schema'
 import assert from 'assert';
 import { ROOT_ROLE_ID, ROOT_USER_ID } from '../constants';
 import { DeduceCreateOperationData } from 'oak-domain/lib/types';
+import { OakUnloggedInException } from '../types/Exceptions';
+import { assign } from 'lodash';
+import { combineFilters } from 'oak-domain/lib/store/filter';
 
 let NO_ANY_USER = true;
 const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[] = [
@@ -53,7 +56,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
             }
             return 0;
         }
-    }
+    },
 ];
 
 export default triggers;

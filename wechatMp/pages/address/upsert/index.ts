@@ -1,6 +1,6 @@
 
 OakPage({
-    path: 'address-upsert',
+    path: 'address:upsert',
     entity: 'address',
     projection: {
         id: 1,
@@ -34,7 +34,7 @@ OakPage({
 }, {
     methods: {
         afterUpsert() {
-            if (this.data.oakFrom === 'address-list') {
+            if (this.data.oakFrom === 'address:list') {
                 wx.navigateBack();
             }
         }
