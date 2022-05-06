@@ -1,1 +1,5 @@
-Page({});
+Page({
+    handleClick() {
+        console.log('btn');
+    }
+});
