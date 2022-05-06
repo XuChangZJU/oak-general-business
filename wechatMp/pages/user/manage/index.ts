@@ -9,6 +9,7 @@ OakPage({
         id: 1,
         nickname: 1,
         name: 1,
+        userState: 1,
         extraFile$entity: {
             $entity: 'extraFile',
             data: {
@@ -38,7 +39,7 @@ OakPage({
     formData: async (users) => {
         const userData = users.map(
             (user) => {
-                const { id, nickname, name, mobile$user, extraFile$entity } = user;
+                const { id, nickname, userState, name, mobile$user, extraFile$entity } = user;
                 const mobile = mobile$user && mobile$user[0]?.mobile;
                 const avatar = extraFile$entity && extraFile$entity[0] && composeFileUrl(extraFile$entity[0]);
                 return {
@@ -47,6 +48,7 @@ OakPage({
                     name,
                     mobile,
                     avatar,
+                    userState,
                 };
             }
         );
@@ -56,5 +58,11 @@ OakPage({
     },
 }, {
     methods: {
+        goUserManageDetail(options: WechatMiniprogram.Touch) {
+            const { id } = options.currentTarget.dataset;
+            this.navigateTo({
+                url: `detail/index?oakId=${id}`,
+            });
+        }
     }
 });

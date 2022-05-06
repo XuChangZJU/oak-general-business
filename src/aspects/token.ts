@@ -125,9 +125,8 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     action: 'create',
                     data: {
                         id: await generateNewId(),
-                        name: '',
-                        nickname: ''
-                    },
+                        userState: 'normal',
+                    } as CreateUser,
                 },
             });
         }
@@ -214,6 +213,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
     // 到这里都是要同时创建wechatUser和user对象了
     const userData : CreateUser = {
         id: await generateNewId(),
+        userState: 'normal',
     };
     const wechatUserCreateData: CreateWechatUser = {
         id: await generateNewId(),

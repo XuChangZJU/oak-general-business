@@ -1,22 +1,33 @@
 import { CreateTriggerInTxn, Trigger } from 'oak-domain/lib/types/Trigger';
 import { EntityDict } from 'oak-app-domain/EntityDict';
 import { GeneralRuntimeContext } from '../RuntimeContext';
-import { CreateOperationData as UserRole } from 'oak-app-domain/UserRole/Schema';
+import { CreateOperationData as CreateUserRoleData } from 'oak-app-domain/UserRole/Schema';
+import { CreateOperationData as CreateUserData } from 'oak-app-domain/User/Schema';
 import assert from 'assert';
 import { ROOT_ROLE_ID, ROOT_USER_ID } from '../constants';
-import { DeduceCreateOperationData } from 'oak-domain/lib/types';
-import { OakUnloggedInException } from '../types/Exceptions';
-import { assign } from 'lodash';
-import { combineFilters } from 'oak-domain/lib/store/filter';
 
 let NO_ANY_USER = true;
 const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[] = [
     {
-        name: '系统生成的第一个用户默认注册为root',
+        name: '系统生成的第一个用户默认注册为root，用户的初始状态默认为shadow',
         entity: 'user',
         action: 'create',
         when: 'before',
         fn: async ({ operation }, context, params) => {
+            const { data } = operation;
+            const setDefaultState = (userData: CreateUserData) => {
+                if (!userData.userState) {
+                    userData.userState = 'shadow';
+                }
+            };
+            if (data instanceof Array) {
+                data.forEach(
+                    ele => setDefaultState(ele)
+                );
+            }
+            else {
+                setDefaultState(data);
+            }
             if (NO_ANY_USER) {
                 const { rowStore } = context;
                 const { result } = await rowStore.select('user', {
@@ -32,9 +43,8 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
                     count: 1,
                 }, context, params);
                 if (result.length === 0) {
-                    const { data } = operation;
                     const userData = data instanceof Array ? data[0] : data;
-                    const userRoleData: UserRole = {
+                    const userRoleData: CreateUserRoleData = {
                         id: await generateNewId(),
                         userId: userData.id,
                         roleId: ROOT_ROLE_ID,

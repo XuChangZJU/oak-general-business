@@ -1,32 +1,37 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <view class="g-form" style="flex: 1">
+    <view class="user-list">
         <view wx:for="{{userData}}" wx:key="index">
-            <view class="g-form-item">
+            <view class="g-cell" bind:tap="goUserManageDetail" data-id="{{item.id}}">
                 <block wx:if="{{item.avatar}}">
                     <image class="avatar" src="{{item.avatar}}" mode="aspectFit" />
                 </block>
                 <block wx:else>
                     <span class="material-icons avatar">person_outline</span>
                 </block>
-                <view class="g-form-item-content" style="flex-direction:column; margin-left: 22rpx">
-                    <view class="nickname">{{item.nickname || '未设置'}}</view>
-                    <view class="name">
-                        <span class="material-icons" style="font-size:28rpx;margin-right:8rpx" color="#495060">tag_faces</span>
-                        {{item.name || '未设置'}}
+                <view class="g-cell-content">
+                    <view class="user-info">
+                        <view class="nickname">{{item.nickname || '未设置'}}</view>
+                        <view class="name">
+                            <span class="material-icons" style="font-size:28rpx;margin-right:8rpx" color="#495060">
+                                tag_faces
+                            </span>
+                            {{item.name || '未设置'}}
+                        </view>
+                        <view class="mobile">
+                            <span class="material-icons" style="font-size:28rpx;margin-right:8rpx" color="#495060">
+                                phone_android
+                            </span>
+                            {{item.mobile || '未设置'}}
+                        </view>
                     </view>
-                    <view class="mobile">
-                        <span class="material-icons" style="font-size:28rpx;margin-right:8rpx" color="#495060">phone_android</span>
-                        {{item.mobile || '未设置'}}
+                    <view class="user-state-{{item.userState}}">
+                        {{item.userState}}
                     </view>
+                    <span class="material-icons" color="#495060">chevron_right</span>
                 </view>
-                <span class="material-icons" color="#495060">chevron_right</span>
             </view>
         </view>
     </view>
-    <view class="btn-box">
-        <button class="g-btn g-btn-primary g-btn-fullWidth" type="primary" bind:tap="goNewAddress" size="default">
-            新建
-        </button>
-    </view>
+    <g-btn size="long" type="primary" bind:tap="goNewUser">新建</g-btn>
 </view>

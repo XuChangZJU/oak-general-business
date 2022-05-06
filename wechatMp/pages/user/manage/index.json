@@ -1,6 +1,6 @@
 {
     "navigationBarTitleText": "用户管理",
     "usingComponents": {
-        
+        "g-btn": "../../../components/UI/g-btn/index"
     }
 }

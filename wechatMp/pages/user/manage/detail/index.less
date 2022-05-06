@@ -1,0 +1,74 @@
+/**  index.wxss  **/
+@import "../../../../styles/cell.less";
+
+.page-body {
+  height: 100vh;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  background-color: @background-color-base;
+}
+
+.user-state {
+  padding: 10rpx;
+  font-size: @size-font-small;
+  color: white;
+  align-self: flex-start;
+  background-color: @error-color;
+  &-shadow:extend(.user-state) {
+    background-color: @warning-color;
+  }
+  &-normal:extend(.user-state) {
+    background-color: @success-color;
+  }
+  &-disabled:extend(.user-state) {
+    background-color: @error-color;
+  }
+}
+
+.id-state {
+  padding: 10rpx;
+  font-size: @size-font-small;
+  color: white;
+  align-self: flex-start;
+  background-color: @error-color;
+  &-verifying:extend(.user-state) {
+    background-color: @warning-color;
+  }
+  &-verified:extend(.user-state) {
+    background-color: @success-color;
+  }
+  &-unverified:extend(.user-state) {
+    background-color: @error-color;
+  }
+}
+
+.avatar {
+  font-size: 128rpx;
+  color: @text-color;
+  height: 140rpx;
+  width: 140rpx;
+  border-radius: 14rpx;
+}
+
+.nickname {
+  font-size: 44rpx;
+  font-weight: bold;
+}
+
+.avatar {
+  font-size: 188rpx;
+  color: @text-color;
+  height: 200rpx;
+  width: 200rpx;
+  border-radius: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.info-panel {
+  align-self: stretch;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}

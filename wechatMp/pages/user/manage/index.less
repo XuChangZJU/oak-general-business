@@ -1,5 +1,5 @@
 /**  index.wxss  **/
-@import "../../../styles/base.less";
+@import "../../../styles/cell.less";
 
 .page-body {
   height: 100vh;
@@ -7,6 +7,36 @@
   flex: 1;
   flex-direction: column;
   background-color: @background-color-base;
+}
+
+.user-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-info {
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 22rpx;
+  flex: 1;
+}
+
+.user-state {
+  margin-right: 20rpx;
+  padding: 10rpx;
+  font-size: @size-font-small;
+  color: white;
+  align-self: flex-start;
+  &-shadow:extend(.user-state) {
+    background-color: @warning-color;
+  }
+  &-normal:extend(.user-state) {
+    background-color: @success-color;
+  }
+  &-disabled:extend(.user-state) {
+    background-color: @error-color;
+  }
 }
 
 .avatar {
@@ -18,7 +48,7 @@
 }
 
 .nickname {
-  font-size: @size-font-large;
+  font-size: 44rpx;
   font-weight: bold;
 }
 
@@ -31,5 +61,5 @@
 .mobile {
   display: flex;
   align-items: center;
-  font-size: @size-font-small;
+  font-size: @size-font-base;
 }
