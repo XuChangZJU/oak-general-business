@@ -1,45 +1,19 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <view class="g-form" style="flex: 1">
-        <view class="g-form-item">
-            <view class="g-form-item-label">收货人</view>
-            <view class="g-form-item-content {{oakFocused.name}}">
-                <input placeholder="姓名" oak:value="name" type="string" bindinput="setUpdateData" confirm-type="done" />
+    <g-panel>
+        <g-input class="{{oakFocused.name}}" oak:value="name" title="收货人" autofocus placeholder="姓名" confirm-type="done" bind:change="setUpdateData" />
+        <g-input class="{{oakFocused.phone}}" oak:value="phone" title="手机号" autofocus placeholder="11位手机号码" confirm-type="done" bind:change="setUpdateData" />
+        <view class="g-cell {{oakFocused.areaId}}" hover-class="g-cell-hover" bindtap="callPicker" data-path="area" data-depth="{{3}}">
+            <view class="g-input-title">所在地区</view>
+            <view class="g-input-input" style="display: flex; flex: 1; align-items: center; justify-content:space-between">
+                <text>{{areaText || '请选择'}}</text>
+                <span class="material-icons" color="#495060">chevron_right</span>
             </view>
         </view>
-        <view class="g-form-item">
-            <view class="g-form-item-label">手机号</view>
-            <view class="g-form-item-content {{oakFocused.phone}}">
-                <input placeholder="请输入" type="string" oak:value="phone" bindinput="setUpdateData" confirm-type="done" />
-            </view>
-        </view>
-        <view class="g-form-item" hover-class="label-bar-hover" bindtap="callPicker" data-path="area" data-depth="{{3}}">
-            <view class="g-form-item-label">所在地区</view>
-            <view class="g-form-item-content {{oakFocused.areaId}}">
-                <view style="display: flex; flex: 1; align-items: center; justify-content:space-between">
-                    <text>{{areaText || '请选择'}}</text>
-                    <span class="material-icons" color="#495060">chevron_right</span>
-                </view>
-            </view>
-        </view>
-        <view class="g-form-item">
-            <view class="g-form-item-label">详细地址</view>
-            <view class="g-form-item-content {{oakFocused.detail}}">
-                <textarea class="g-input" placeholder="请输入" auto-height maxlength="50" oak:value="detail" bindinput="setUpdateData" confirm-type="done" />
-            </view>
-        </view>
-    </view>
-    <view class="btn-box">
-        <button
-            class="g-btn g-btn-primary {{ oakExecuting ? 'g-btn-loading' : ''}} {{ !oakDirty ? 'g-btn-disabled' : ''}}"
-            type="primary"
-            disabled="{{oakExecuting || !oakDirty}}"
-            bind:tap="execute"
-            data-then="afterUpsert"
-            size="default"
-        >
-            <view class="g-btn-loading-inner" wx:if="{{oakExecuting}}"></view>
-            确定
-        </button>
-    </view>
+        <g-input class="{{oakFocused.detail}}" oak:value="detail" title="详细地址" autofocus placeholder="精确到门牌号码" confirm-type="done" bind:change="setUpdateData" />
+    </g-panel>
+    <g-btn type="primary" long="true" class="{{ oakExecuting ? 'g-btn-loading' : ''}} {{ !oakDirty ? 'g-btn-disabled' : ''}}" disabled="{{oakExecuting || !oakDirty}}" bind:tap="execute" data-then="afterUpsert">
+        <view class="g-btn-loading-inner" wx:if="{{oakExecuting}}"></view>
+        确定
+    </g-btn>
 </view>

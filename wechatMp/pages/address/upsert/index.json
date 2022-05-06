@@ -1,6 +1,9 @@
 {
     "navigationBarTitleText": "修改地址",
     "usingComponents": {
-        "area-upsert": "../../../components/area/upsert/index"
+        "area-upsert": "../../../components/area/upsert/index",
+        "g-btn": "../../../components/UI/g-btn/index",
+        "g-input": "../../../components/UI/g-input/index",
+        "g-panel": "../../../components/UI/g-panel/index"  
     }
 }
