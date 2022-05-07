@@ -4,8 +4,9 @@ import { RowStore } from 'oak-domain/lib/types';
 export declare abstract class GeneralRuntimeContext<ED extends EntityDict> extends UniversalContext<ED> {
     private applicationId;
     private getTokenFn;
-    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, appId: string, getToken: () => Promise<string | undefined>);
-    getApplication(): Promise<import("oak-domain/lib/types").SelectRowShape<import("oak-app-domain/Application/Schema").Schema, {
+    private scene;
+    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, appId: string, getToken: () => Promise<string | undefined>, scene: string);
+    getApplication(): Promise<import("oak-domain/lib/types").SelectRowShape<EntityDict, {
         id: 1;
         name: 1;
         config: 1;
@@ -17,4 +18,5 @@ export declare abstract class GeneralRuntimeContext<ED extends EntityDict> exten
         userId: 1;
         playerId: 1;
     }> | undefined>;
+    getScene(): string;
 }
