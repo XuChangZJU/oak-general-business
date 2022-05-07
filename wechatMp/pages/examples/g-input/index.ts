@@ -7,5 +7,8 @@ Page({
         value5: '',
         value6: '',
         value7: ''
+    },
+    changeValue(e: any) {
+        console.log(e)
     }
 });
