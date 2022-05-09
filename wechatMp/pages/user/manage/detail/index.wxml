@@ -46,4 +46,11 @@
             </view>
         </view>
     </view>
+    <view style="flex:1" />
+    <action-panel
+        style="align-self:stretch"
+        actions="{{oakLegalActions}}"
+        actionDescriptions="{{actionDescriptions}}"
+        bind:click="onActionClick"
+    />
 </view>

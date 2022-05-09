@@ -51,7 +51,69 @@ OakPage({
             idState,
         };
     },
+    actions: ['accept', 'activate', 'disable', 'enable', 'remove', 'update', 'verify'],
 }, {
+    data: {
+        actionDescriptions: {
+            accept: {
+                icon: {
+                    name: 'pan_tool',
+                },
+                label: '通过',
+            },
+            activate: {
+                icon: {
+                    name: 'check',
+                },
+                label: '激活',
+            },
+            disable: {
+                icon: {
+                    name: 'flash_off',
+                },
+                label: '禁用',
+            },
+            enable: {
+                icon: {
+                    name: 'flash_on',
+                },
+                label: '启用',
+            },
+            remove: {
+                icon: {
+                    name: 'clear',
+                },
+                label: '删除',
+            },
+            update: {
+                icon: {
+                    name: 'edit',
+                },
+                label: '更新',
+            },
+            verify: {
+                icon: {
+                    name: 'how_to_reg',
+                },
+                label: '验证',
+            }
+        }
+    },
     methods: {
+        onActionClick({ detail }: WechatMiniprogram.CustomEvent) {
+            const { action } = detail;
+            switch (action) {
+                case 'update': {
+                    this.navigateTo({
+                        url: '../upsert/index',
+                        oakId: this.data.oakId,
+                    });
+                    break;
+                }
+                default: {
+                    console.error(`尚未实现的action: ${action}`)
+                }
+            }
+        }
     }
 });

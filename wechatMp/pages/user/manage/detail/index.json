@@ -1,6 +1,7 @@
 {
     "navigationBarTitleText": "用户详情",
     "usingComponents": {
-        "g-btn": "../../../../components/UI/g-btn/index"
+        "g-btn": "../../../../components/UI/g-btn/index",
+        "action-panel": "../../../../components/Func/action-panel/index"
     }
 }

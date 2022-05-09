@@ -1,0 +1,6 @@
+<view class="panel">
+    <view class="btn-container" wx:for="{{actionss}}" wx:key="index" bind:tap="onClick" data-index="{{index}}">
+        <g-icon class="btn-icon" size="64" family="{{item.icon.family}}" name="{{item.icon.name}}" />
+        <text class="btn-label">{{item.label}}</text>
+    </view>
+</view>
