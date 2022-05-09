@@ -61,9 +61,14 @@ OakPage({
         goUserManageDetail(options: WechatMiniprogram.Touch) {
             const { id } = options.currentTarget.dataset;
             this.navigateTo({
-                url: `detail/index`,
+                url: 'detail/index',
                 oakId: id,
             });
-        }
+        },
+        goNewUser() {
+            this.navigateTo({
+                url: 'upsert/index',
+            });
+        },
     }
 });

@@ -1,0 +1,18 @@
+/**  index.wxss  **/
+@import "../../../../styles/cell.less";
+
+.page-body {
+  height: 100vh;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: @background-color-base;
+}
+
+.g-cell-hover:extend(.g-cell) {
+  background-color: gainsboro;
+}
+
+.focused {
+  background-color: pink;
+}
