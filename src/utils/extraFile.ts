@@ -1,4 +1,4 @@
-import { OpSchema as ExtraFile } from '../base-app-domain/ExtraFile/Schema';
+import { OpSchema as ExtraFile } from 'oak-app-domain/ExtraFile/Schema';
 
 export function composeFileUrl(extraFile: ExtraFile) {
     const { type, bucket, filename, origin, extra1 } = extraFile;
