@@ -10,7 +10,7 @@ const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [
         action: 'create',
         entity: 'user',
         checker: async ({ operation }) => {
-            const { action, data } = operation;
+            /* const { action, data } = operation;
             if (data instanceof Array) {
                 data.forEach(
                     ele => {
@@ -20,7 +20,7 @@ const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [
             }
             else {
                 checkAttributesNotNull(data, ['nickname']);
-            }      
+            } */
             return 0;
         },
     }
