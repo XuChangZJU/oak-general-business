@@ -33,10 +33,23 @@ OakPage({
     }),
 }, {
     methods: {
-        afterUpsert() {
-            if (this.data.oakFrom === 'address:list') {
-                wx.navigateBack();
-            }
+        setValue(input: WechatMiniprogram.Input) {
+            const { target, detail } = input;
+            const { dataset: { attr } } = target;
+            const { value } = detail;
+            this.setUpdateData(attr, value);
+        },
+        callAreaPicker() {
+            this.callPicker('area', {
+                depth: 3,
+            });
+        },
+        async confirm() {
+            await this.execute(this.data.oakId ? 'update': 'create', () => {            
+                if (this.data.oakFrom === 'address:list') {
+                    wx.navigateBack();
+                }
+            });
         }
     }
 });

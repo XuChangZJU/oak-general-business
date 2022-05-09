@@ -1,19 +1,19 @@
 <!-- index.wxml -->
 <view class="page-body">
     <g-panel>
-        <g-input error="{{!!oakFocused.name}}" oak:value="name" title="收货人" placeholder="姓名" confirm-type="done" bind:change="setUpdateData" />
-        <g-input error="{{!!oakFocused.phone}}" oak:value="phone" title="手机号" placeholder="11位手机号码" confirm-type="done" bind:change="setUpdateData" />
-        <view class="g-cell {{oakFocused.areaId}}" hover-class="g-cell-hover" bindtap="callPicker" data-path="area" data-depth="{{3}}">
+        <g-input error="{{!!oakFocused.name}}" oak:value="name" title="收货人" placeholder="姓名" confirm-type="done" bind:change="setValue" />
+        <g-input error="{{!!oakFocused.phone}}" oak:value="phone" title="手机号" placeholder="11位手机号码" confirm-type="done" bind:change="setValue" />
+        <view class="g-cell {{oakFocused.areaId}}" hover-class="g-cell-hover" bindtap="callAreaPicker">
             <view class="g-input-title">所在地区</view>
             <view class="g-input-input" style="display: flex; flex: 1; align-items: center; justify-content:space-between">
                 <text>{{areaText || '请选择'}}</text>
                 <g-icon name="chevron_right" />
             </view>
         </view>
-        <g-input error="{{!!oakFocused.detail}}" oak:value="detail" title="详细地址" placeholder="精确到门牌号码" confirm-type="done" bind:change="setUpdateData" />
+        <g-input error="{{!!oakFocused.detail}}" oak:value="detail" title="详细地址" placeholder="精确到门牌号码" confirm-type="done" bind:change="setValue" />
     </g-panel>
     <view style="flex: 1" />
-    <g-btn type="primary" long="true" class="{{ oakExecuting ? 'g-btn-loading' : ''}} {{ !oakDirty ? 'g-btn-disabled' : ''}}" disabled="{{oakExecuting || !oakDirty}}" bind:click="execute" data-then="afterUpsert">
+    <g-btn type="primary" long="true" class="{{ oakExecuting ? 'g-btn-loading' : ''}} {{ !oakDirty ? 'g-btn-disabled' : ''}}" disabled="{{oakExecuting || !oakDirty}}" bind:click="confirm">
         <view class="g-btn-loading-inner" wx:if="{{oakExecuting}}"></view>
         确定
     </g-btn>

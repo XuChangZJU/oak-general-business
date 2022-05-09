@@ -1,7 +1,7 @@
 <!-- index.wxml -->
 <view class="page-body">
     <g-panel>
-        <view wx:for="{{addresses}}" wx:key="index">
+        <block wx:for="{{addresses}}" wx:key="index">
             <view class="item-container">
                 <view class="upper-container">
                     <text style="font-size:22px;font-weight:bold">{{item.name}}</text>
@@ -9,7 +9,7 @@
                 </view>
                 <text style="font-size:14px; margin-top: 6px">{{item.areaText}}</text>
             </view>
-        </view>
+        </block>
     </g-panel>
     <g-btn type="primary" size="large" bind:click="goNewAddress">
         新建
