@@ -113,6 +113,8 @@ async function main() {
     const { districts: provinces, adcode: countryCode } = country;
 
     async function saveBelowProvinces(dest: FormCreateData<Area>[], limit?: number) {
+        const provinces2 = limit ? provinces.slice(0, limit) : provinces;
+        saveAreas(provinces2, countryCode, 1, dest);
         for (const dist of provinces) {
             const result2 = await acquireAmap(dist.name, 3);
             const { districts: cities, adcode: provinceCode } = result2.districts[0];

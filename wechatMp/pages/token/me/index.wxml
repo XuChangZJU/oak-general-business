@@ -5,7 +5,7 @@
             <image class="avatar" src="{{avatar}}" mode="aspectFit" />
         </block>
         <block wx:else>
-            <span class="material-icons avatar" style="width:auto">person_outline</span>
+            <span class="material-symbols-rounded avatar" style="width:auto">person_outline</span>
         </block>
         <span class="nickname">{{ nickname || '未设置'}}</span>
         <block wx:if="{{isLoggedIn && !isPlayingAnother}}">
@@ -26,7 +26,7 @@
                 <view wx:if="{{mobileCount > 1}}">{{mobileCount}}条手机号</view>
                 <view wx:elif="{{mobileCount === 1}}">{{mobile}}</view>
                 <view wx:else>未设置</view>
-                <span class="material-icons" color="#495060">chevron_right</span>
+                <span class="material-symbols-rounded" color="#495060">chevron_right</span>
             </view>
         </view>
         <view class="g-cell">
@@ -36,7 +36,7 @@
         <view wx:if="{{isRoot}}" class="g-cell" bind:tap="goUserManage">
             <view class="g-cell-label">用户管理</view>
             <view class="g-cell-content-right">
-                <span class="material-icons" color="#495060">chevron_right</span>
+                <span class="material-symbols-rounded" color="#495060">chevron_right</span>
             </view>
         </view>
     </view>

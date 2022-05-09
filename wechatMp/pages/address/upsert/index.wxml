@@ -1,18 +1,19 @@
 <!-- index.wxml -->
 <view class="page-body">
     <g-panel>
-        <g-input class="{{oakFocused.name}}" oak:value="name" title="收货人" autofocus placeholder="姓名" confirm-type="done" bind:change="setUpdateData" />
-        <g-input class="{{oakFocused.phone}}" oak:value="phone" title="手机号" autofocus placeholder="11位手机号码" confirm-type="done" bind:change="setUpdateData" />
+        <g-input error="{{!!oakFocused.name}}" oak:value="name" title="收货人" placeholder="姓名" confirm-type="done" bind:change="setUpdateData" />
+        <g-input error="{{!!oakFocused.phone}}" oak:value="phone" title="手机号" placeholder="11位手机号码" confirm-type="done" bind:change="setUpdateData" />
         <view class="g-cell {{oakFocused.areaId}}" hover-class="g-cell-hover" bindtap="callPicker" data-path="area" data-depth="{{3}}">
             <view class="g-input-title">所在地区</view>
             <view class="g-input-input" style="display: flex; flex: 1; align-items: center; justify-content:space-between">
                 <text>{{areaText || '请选择'}}</text>
-                <span class="material-icons" color="#495060">chevron_right</span>
+                <g-icon name="chevron_right" />
             </view>
         </view>
-        <g-input class="{{oakFocused.detail}}" oak:value="detail" title="详细地址" autofocus placeholder="精确到门牌号码" confirm-type="done" bind:change="setUpdateData" />
+        <g-input error="{{!!oakFocused.detail}}" oak:value="detail" title="详细地址" placeholder="精确到门牌号码" confirm-type="done" bind:change="setUpdateData" />
     </g-panel>
-    <g-btn type="primary" long="true" class="{{ oakExecuting ? 'g-btn-loading' : ''}} {{ !oakDirty ? 'g-btn-disabled' : ''}}" disabled="{{oakExecuting || !oakDirty}}" bind:tap="execute" data-then="afterUpsert">
+    <view style="flex: 1" />
+    <g-btn type="primary" long="true" class="{{ oakExecuting ? 'g-btn-loading' : ''}} {{ !oakDirty ? 'g-btn-disabled' : ''}}" disabled="{{oakExecuting || !oakDirty}}" bind:click="execute" data-then="afterUpsert">
         <view class="g-btn-loading-inner" wx:if="{{oakExecuting}}"></view>
         确定
     </g-btn>

@@ -5,7 +5,7 @@
             <image class="avatar" src="{{avatar}}" mode="aspectFit" />
         </block>
         <block wx:else>
-            <span class="material-icons avatar" style="width:auto">person_outline</span>
+            <span class="material-symbols-rounded avatar" style="width:auto">person_outline</span>
         </block>
     </view>
     <view class="info-panel" style="display:flex; flex-direction:column; flex: 1">

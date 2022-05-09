@@ -18,7 +18,7 @@ Component({
             type: String,
             value: ''
         },
-        autofocus: {
+        focus: {
             type: Boolean,
             value: false
         },
@@ -41,20 +41,20 @@ Component({
     },
 
     methods: {
-        handleInputChange(event:any) {
-            const { detail = {} } = event;
-            const { value = '' } = detail;
+        handleInputChange(event: WechatMiniprogram.Input) {
+            const { detail } = event;
+            const { value } = detail;
             this.setData({ value });
 
-            this.triggerEvent('change', event);
+            this.triggerEvent('change', event.detail);
         },
 
-        handleInputFocus(event:any) {
-            this.triggerEvent('focus', event);
+        handleInputFocus(event: WechatMiniprogram.InputFocus) {
+            this.triggerEvent('focus', event.detail);
         },
 
-        handleInputBlur(event:any) {
-            this.triggerEvent('blur', event);
+        handleInputBlur(event: WechatMiniprogram.InputBlur) {
+            this.triggerEvent('blur', event.detail);
         }
     }
 });

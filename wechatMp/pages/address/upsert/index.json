@@ -4,6 +4,7 @@
         "area-upsert": "../../../components/area/upsert/index",
         "g-btn": "../../../components/UI/g-btn/index",
         "g-input": "../../../components/UI/g-input/index",
+        "g-icon": "../../../components/UI/g-icon/index",
         "g-panel": "../../../components/UI/g-panel/index"  
     }
 }
