@@ -1,5 +1,3 @@
-import { assign } from "lodash";
-
 const GenderOptions = [
     {
         value: 'male', label: '男',
@@ -56,7 +54,7 @@ OakPage({
             ele => ele.value === gender
         );
         const now = new Date();
-        return assign({}, user, {
+        return Object.assign({}, user, {
             birthText,
             genderText,
             idCardTypeText,

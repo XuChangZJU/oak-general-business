@@ -11,6 +11,7 @@
             </view>
         </block>
     </g-panel>
+    <view style="flex: 1" />
     <g-btn type="primary" size="large" bind:click="goNewAddress">
         新建
     </g-btn>

@@ -10,9 +10,11 @@ OakPage({
     },
     filters: [
         {
-            parent: {
-                level: 'country',
-            },
+            filter: {
+                parent: {
+                    level: 'country',
+                },
+            }
         }
     ],
     isList: true,
@@ -32,7 +34,9 @@ OakPage({
             const { depth, id } = item!;
             if (depth !== this.data.depth) {
                 this.setFilters([{
-                    parentId: id,
+                    filter: {                        
+                        parentId: id,
+                    }
                 }]);
             }
             else {
