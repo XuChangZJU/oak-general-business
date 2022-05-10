@@ -51,7 +51,7 @@ OakPage({
             idState,
         };
     },
-    actions: ['accept', 'activate', 'disable', 'enable', 'remove', 'update', 'verify'],
+    actions: ['accept', 'activate', 'disable', 'enable', 'remove', 'update', 'verify', 'play'],
 }, {
     data: {
         actionDescriptions: {
@@ -96,11 +96,17 @@ OakPage({
                     name: 'how_to_reg',
                 },
                 label: '验证',
+            },
+            play: {
+                icon: {
+                    name: 'play_circle',
+                },
+                label: '切换',
             }
         }
     },
     methods: {
-        onActionClick({ detail }: WechatMiniprogram.CustomEvent) {
+        async onActionClick({ detail }: WechatMiniprogram.CustomEvent) {
             const { action } = detail;
             switch (action) {
                 case 'update': {
@@ -108,11 +114,25 @@ OakPage({
                         url: '../upsert/index',
                         oakId: this.data.oakId,
                     });
+                    return;
+                }
+                case 'enable':
+                case 'disable':
+                case 'accept':
+                case 'verify':
+                case 'activate':
+                case 'play': {
+                    await this.execute(action);
                     break;
                 }
                 default: {
                     console.error(`尚未实现的action: ${action}`)
                 }
+            }
+            if (action === 'play') {
+                wx.navigateBack({
+                    delta: 2,                    
+                });
             }
         }
     }

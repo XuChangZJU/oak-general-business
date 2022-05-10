@@ -3,7 +3,8 @@ import { EntityDict } from 'oak-app-domain';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { OakUnloggedInException } from "../types/Exceptions";
 import { assign } from "lodash";
-import { combineFilters } from "oak-domain/lib/store/filter";
+import { addFilterSegment, combineFilters } from "oak-domain/lib/store/filter";
+import { checkIsRoot } from "../utils/check";
 
 const checkers: Checker<EntityDict, 'token', GeneralRuntimeContext<EntityDict>> [] = [
     {
@@ -31,7 +32,22 @@ const checkers: Checker<EntityDict, 'token', GeneralRuntimeContext<EntityDict>> 
                 return 0;
             }
             // 对获取token的权限进行精细化控制，除了root
-            throw new OakUserUnpermittedException();
+            if (filter && filter.id === await context.getTokenValue()) {
+                return 0;
+            }
+            const isRoot = await checkIsRoot(context);
+            if (!isRoot) {
+                // 不是root只能访问自己的token
+                if (!filter) {
+                    throw new OakUserUnpermittedException();
+                }
+                assign(operation, {
+                    filter: addFilterSegment(filter, {
+                        id: await context.getTokenValue(),
+                    })
+                });
+            }
+            return 0;
         },
     }
 ];

@@ -1,28 +1,23 @@
-import { OakInputIllegalException } from "oak-domain/lib/types";
+import { EntityDict } from "oak-app-domain";
+import { ROOT_ROLE_ID } from "../constants";
+import { GeneralRuntimeContext } from "../RuntimeContext";
 
-export function checkAttributesNotNull<T extends Record<string, any>>(data: T, attributes: Array<keyof T>, allowEmpty?: true) {
-    const attrs = attributes.filter(
-        (attr) => {
-            if (data[attr] === null || data[attr] === '') {
-                return true;
-            }
-            if (!allowEmpty && !data.hasOwnProperty(attr)) {
-                return true;
-            }
-        }
-    ) as string[];
 
-    if (attrs.length > 0) {
-        throw new OakInputIllegalException(attrs, '属性不能为空');
+export async function checkIsRoot(context: GeneralRuntimeContext<EntityDict>) {
+    const token = await context.getToken();
+    if (!token) {
+        return false;
     }
-};
-
-export function checkAttributesScope<T extends Record<string, any>>(data: T, attributes: Array<keyof T>) {
-    const attrs = attributes.filter(
-        attr => !data.hasOwnProperty(attr)
-    ) as string[];    
-
-    if (attrs.length > 0) {
-        throw new OakInputIllegalException(attrs, '多余的属性');
+    const { playerId } = token!;
+    const count = await context.rowStore.count('userRole', {
+        filter: {
+            userId: playerId!,
+            roleId: ROOT_ROLE_ID,
+        },
+    }, context);
+    if (count === 0) {
+        // 只有root允许扮演其他用户身份
+        return false;
     }
+    return true;
 }

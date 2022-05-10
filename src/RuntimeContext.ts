@@ -53,6 +53,10 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
         }
     }
 
+    async getTokenValue() {
+        return await this.getTokenFn();
+    }
+
     getScene() {
         return this.scene;
     }

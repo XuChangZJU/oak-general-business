@@ -40,7 +40,9 @@ const UserActionDef: ActionDef<UserAction, UserState> = {
     },
 };
 
-type Action = UserAction | IdAction;
+type CascadeAction = 'play';
+
+type Action = UserAction | IdAction | CascadeAction;
 
 const indexes: Index<Schema>[] = [
     {

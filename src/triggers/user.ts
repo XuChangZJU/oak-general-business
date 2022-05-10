@@ -67,6 +67,27 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
             return 0;
         }
     },
+    {
+        name: '当扮演某个用户时，切换当前用户的token中的userId',
+        entity: 'user',
+        action: 'play',
+        when: 'after',
+        fn: async ({ operation }, context, params) => {
+            const { filter } = operation;
+            assert (filter!.id);
+            const { id } = (await context.getToken())!;
+            await context.rowStore.operate('token', {
+                action: 'update',
+                data: {
+                    userId: filter!.id,
+                },
+                filter: {
+                    id,
+                }
+            }, context);
+            return 1;
+        }
+    }
 ];
 
 export default triggers;
