@@ -1,6 +1,12 @@
-<view class="panel">
-    <view class="btn-container" wx:for="{{actionss}}" wx:key="index" bind:tap="onClick" data-index="{{index}}">
-        <g-icon class="btn-icon" size="64" family="{{item.icon.family}}" name="{{item.icon.name}}" />
-        <text class="btn-label">{{item.label}}</text>
+<g-drawer mode="bottom" visible="{{show}}" bind:close="closeDrawer">
+    <view class="drawer-container" solt="container">
+        <view class="grid">
+            <view class="grid-item" wx:for="{{actionss}}" wx:key="index" bind:tap="onClick" data-index="{{index}}">
+                <view class="btn-container">
+                    <g-icon class="btn-icon" size="48" family="{{item.icon.family}}" name="{{item.icon.name}}" color="#5f6368" />
+                    <text class="btn-label">{{item.label}}</text>
+                </view>
+            </view>
+        </view>
     </view>
-</view>
+</g-drawer>

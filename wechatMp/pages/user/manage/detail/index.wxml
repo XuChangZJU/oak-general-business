@@ -19,38 +19,26 @@
         </view>
         <view class="g-cell">
             <view class="g-cell-label">昵称</view>
-            <view class="g-cell-content-right">
-                {{nickname || '未设置'}}
-            </view>
+            <view class="g-cell-content-right">{{nickname || '未设置'}}</view>
         </view>
         <view class="g-cell">
             <view class="g-cell-label">姓名</view>
-            <view class="g-cell-content-right">
-                {{name || '未设置'}}
-            </view>
+            <view class="g-cell-content-right">{{name || '未设置'}}</view>
         </view>
         <view class="g-cell">
             <view class="g-cell-label">用户状态</view>
             <view class="g-cell-content-right">
-                <view class="user-state-{{userState}}">
-                    {{userState}}
-                </view>
+                <view class="user-state-{{userState}}">{{userState}}</view>
             </view>
         </view>
         <view class="g-cell">
             <view class="g-cell-label">实名验证</view>
             <view class="g-cell-content-right">
-                <view class="id-state-{{idState}}">
-                    {{idState}}
-                </view>
+                <view class="id-state-{{idState}}">{{idState}}</view>
             </view>
         </view>
     </view>
     <view style="flex:1" />
-    <action-panel
-        style="align-self:stretch"
-        actions="{{oakLegalActions}}"
-        actionDescriptions="{{actionDescriptions}}"
-        bind:click="onActionClick"
-    />
+    <g-btn bind:click="openDrawer">更多</g-btn>
+    <action-panel show="{{show}}" bind:close="closeDrawer" style="align-self:stretch" actions="{{oakLegalActions}}" actionDescriptions="{{actionDescriptions}}" bind:click="onActionClick" />
 </view>
