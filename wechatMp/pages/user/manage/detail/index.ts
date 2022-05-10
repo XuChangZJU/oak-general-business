@@ -54,6 +54,7 @@ OakPage({
     actions: ['accept', 'activate', 'disable', 'enable', 'remove', 'update', 'verify', 'play'],
 }, {
     data: {
+        show: false,
         actionDescriptions: {
             accept: {
                 icon: {
@@ -106,6 +107,16 @@ OakPage({
         }
     },
     methods: {
+        openDrawer() {
+            this.setData({
+                show: true,
+            });
+        },
+        closeDrawer() {
+            this.setData({
+                show: false,
+            });
+        },
         async onActionClick({ detail }: WechatMiniprogram.CustomEvent) {
             const { action } = detail;
             switch (action) {

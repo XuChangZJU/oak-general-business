@@ -2,6 +2,10 @@ Component({
     properties: {
         actions: Array,
         actionDescriptions: Object,
+        show: {
+            type: Boolean,
+            value: false,
+        }
     },
 
     methods: {
@@ -11,6 +15,9 @@ Component({
 
             const action = actions[index];
             this.triggerEvent('click', { action });
+        },
+        closeDrawer() {
+            this.triggerEvent('close');
         }
     },
 

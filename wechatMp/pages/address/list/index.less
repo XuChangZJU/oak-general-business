@@ -1,12 +1,14 @@
 /**  index.wxss  **/
 @import "../../../styles/cell.less";
-
+@import "../../../styles/mixins.less";
 .page-body {
   height: 100vh;
   display: flex;
   flex: 1;
   flex-direction: column;
   background-color: @background-color-base;
+  box-sizing: border-box;
+  .safe-area-inset-bottom();
 }
 
 .item-container {
