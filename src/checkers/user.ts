@@ -1,26 +1,38 @@
-import { isMobile } from 'oak-domain/lib/utils/validator';
-import { OakInputIllegalException, Checker } from "oak-domain/lib/types";
+import { checkFilterContains } from 'oak-domain/lib/store/actionDef';
+import { OakInputIllegalException, Checker, OakUserUnpermittedException, OakRowInconsistencyException } from "oak-domain/lib/types";
 import { EntityDict } from 'oak-app-domain';
-import { checkAttributesNotNull } from '../utils/check';
 import { GeneralRuntimeContext } from '../RuntimeContext';
+import { ROOT_ROLE_ID } from '../constants';
+import { assign } from 'lodash';
+import { checkIsRoot } from '../utils/check';
 
 const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [] = [
     {
         type: 'data',
-        action: 'create',
+        action: 'remove',
         entity: 'user',
-        checker: async ({ operation }) => {
-            /* const { action, data } = operation;
-            if (data instanceof Array) {
-                data.forEach(
-                    ele => {
-                        checkAttributesNotNull(ele, ['nickname']);
-                    } 
-                );
+        checker: async ({ operation }, context) => {
+            const { filter } = operation;
+            await checkFilterContains('user', context.rowStore.getSchema(), {
+                idState: 'shadow',
+            }, context, filter);
+            return 0;
+        },
+    },
+    {
+        type: 'user',
+        action: 'play',
+        entity: 'user',
+        checker: async ({ operation }, context) => {
+            const isRoot = await checkIsRoot(context);
+            if (!isRoot) {
+                throw new OakUserUnpermittedException();
             }
-            else {
-                checkAttributesNotNull(data, ['nickname']);
-            } */
+            const token = await context.getToken();
+            const { userId } = token!;
+            if (userId === operation.filter!.id) {
+                throw new OakRowInconsistencyException();
+            }
             return 0;
         },
     }

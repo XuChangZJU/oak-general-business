@@ -1,2 +1,3 @@
-export declare function checkAttributesNotNull<T extends Record<string, any>>(data: T, attributes: Array<keyof T>, allowEmpty?: true): void;
-export declare function checkAttributesScope<T extends Record<string, any>>(data: T, attributes: Array<keyof T>): void;
+import { EntityDict } from "oak-app-domain";
+import { GeneralRuntimeContext } from "../RuntimeContext";
+export declare function checkIsRoot(context: GeneralRuntimeContext<EntityDict>): Promise<boolean>;

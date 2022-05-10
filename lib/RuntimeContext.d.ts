@@ -18,5 +18,6 @@ export declare abstract class GeneralRuntimeContext<ED extends EntityDict> exten
         userId: 1;
         playerId: 1;
     }> | undefined>;
+    getTokenValue(): Promise<string | undefined>;
     getScene(): string;
 }

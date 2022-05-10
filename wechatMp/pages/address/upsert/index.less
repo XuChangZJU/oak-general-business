@@ -1,5 +1,6 @@
 /**  index.wxss  **/
 @import "../../../styles/cell.less";
+@import "../../../styles/mixins.less";
 
 .page-body {
   height: 100vh;
@@ -7,6 +8,8 @@
   flex: 1;
   flex-direction: column;
   background-color: @background-color-base;
+  box-sizing: border-box;
+  .safe-area-inset-bottom();
 }
 
 .g-cell-hover:extend(.g-cell) {
