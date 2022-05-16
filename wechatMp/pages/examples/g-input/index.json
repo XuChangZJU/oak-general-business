@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "Input 输入框",
-  "usingComponents": {
-    "g-input": "../../../components/UI/g-input/index",
-    "g-pannel": "../../../components/UI/g-panel/index"
-  }
-}
