@@ -36,7 +36,6 @@ OakPage({
 }, {
     methods: {
         goNewAddress() {
-            this.data.a
             this.navigateTo({
                 url: '../upsert/index',
             });
