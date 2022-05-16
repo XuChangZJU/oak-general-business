@@ -1,5 +1,5 @@
 import { MakeOakComponent, MakeOakPage } from 'oak-frontend-base';
-import { EntityDict } from 'oak-app-domain/EntityDict';
+import { EntityDict } from 'oak-app-domain';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import aspectDict from '../aspects';
 import { initialize } from '../features';
