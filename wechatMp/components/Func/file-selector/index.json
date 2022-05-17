@@ -1,0 +1,10 @@
+{
+  "component": true,
+  "usingComponents": {
+      "g-btn": "../../UI/g-btn/index",
+      "g-icon": "../../UI/g-icon/index"
+  },
+  "componentGenerics": {
+    "item": true
+  }
+}

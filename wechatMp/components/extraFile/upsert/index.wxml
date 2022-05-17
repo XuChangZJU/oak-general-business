@@ -1,4 +1,2 @@
 <!-- index.wxml -->
-<view class="container">
-    <image src="{{src}}" mode="aspectFit" />
-</view>
+<image src="{{src}}" mode="aspectFit" />
