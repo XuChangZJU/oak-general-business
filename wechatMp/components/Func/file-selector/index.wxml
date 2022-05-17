@@ -1,8 +1,8 @@
 <view class="default-item-container item-container">
     <view class="default-item item" wx:for="{{oakValue}}" wx:key="index">
-        <item oak:value="item"/>
+        <item oakValue="{{item}}" oakPath="{{index}}" oakParent="{{oakFullpath}}" />
     </view>
-    <view class="default-item item insert-btn" wx:if="{{!disableInsert}}">
-        <g-icon name="add"></g-icon>>
+    <view class="default-item item insert-btn" wx:if="{{!disableInsert}}" bind:tap="onAdd">
+        <g-icon name="add" size="80"/>
     </view>    
 </view>

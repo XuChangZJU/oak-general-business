@@ -6,7 +6,7 @@ export function composeFileUrl(extraFile: Pick<ExtraFile, 'type' | 'bucket' | 'f
         // 未知第三方源
         return extra1!;
     }
-    throw new Error('not implemented yet');
+    return '';
 }
 
 export function decomposeFileUrl(url: string): Pick<ExtraFile, 'bucket' | 'filename' | 'origin' | 'type' | 'extra1'> {
