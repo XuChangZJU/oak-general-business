@@ -21,6 +21,7 @@ OakPage({
                 objectId: 1,
                 filename: 1,
                 extra1: 1,
+                type: 1,
             },
             filter: {
                 tag1: 'avatar',

@@ -1,6 +1,6 @@
 import { String, Text } from 'oak-domain/lib/types/DataType';
-import { EntityShape } from 'oak-domain/lib/types/Entity';
-export interface Schema extends EntityShape {
+import { FileCarrierEntityShape } from 'oak-domain/lib/types/Entity';
+export interface Schema extends FileCarrierEntityShape {
     origin: 'qiniu' | 'unknown';
     type: 'image' | 'pdf' | 'video' | 'audio' | 'file';
     bucket: String<16>;
