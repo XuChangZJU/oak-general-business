@@ -36,15 +36,14 @@ Component({
                     sourceType,
                 });
                 if (errMsg !== 'chooseMedia:ok') {
-                    this.setData({
-                        oakError: {
-                            level: 'warning',
-                            msg: errMsg,
-                        },
+                    this.triggerEvent('error', {
+                        level: 'warning',
+                        msg: errMsg,
                     });
                 }
                 else {
-                    const { globalData: { features } } = getApp();
+                    this.triggerEvent('add', tempFiles);
+                   /*  const { globalData: { features } } = getApp();
                     const { oakFullpath } = this.data;
                     for (const file of tempFiles) {
                         await features.runningNode.addNode({
@@ -52,16 +51,14 @@ Component({
                             fileCarrier: new WechatMpFileCarrier(file),
                             updateData: oakUpdateData,
                         });
-                    }
+                    } */
                 }
             }
             catch (err: any) {
                 if (err.errMsg !== 'chooseMedia:fail cancel') {
-                    this.setData({
-                        oakError: {
-                            level: 'error',
-                            msg: err.errMsg,
-                        },
+                    this.triggerEvent('error', {
+                        level: 'error',
+                        msg: err.errMsg,
                     });
                 }
             }

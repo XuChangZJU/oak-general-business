@@ -2,8 +2,8 @@ import { OpSchema as ExtraFile } from 'oak-app-domain/ExtraFile/Schema';
 
 export function composeFileUrl(extraFile: Pick<ExtraFile, 'type' | 'bucket' | 'filename' | 'origin' | 'extra1'>) {
     const { type, bucket, filename, origin, extra1 } = extraFile;
-    if (origin === 'unknown') {
-        // 未知第三方源
+    if (extra1) {
+        // 有extra1就用extra1
         return extra1!;
     }
     return '';
