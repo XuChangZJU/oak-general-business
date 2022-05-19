@@ -1,5 +1,3 @@
-import { WechatMpFileCarrier } from "oak-frontend-base";
-
 Component({
     externalClasses: ['item-container', 'item'],
     properties: {
