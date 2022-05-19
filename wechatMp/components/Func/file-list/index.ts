@@ -41,7 +41,7 @@ Component({
                 }
                 else {
                     // this.triggerEvent('add', tempFiles);
-                    this.data.createData(tempFiles);
+                    this.createData(tempFiles);
                    /*  const { globalData: { features } } = getApp();
                     const { oakFullpath } = this.data;
                     for (const file of tempFiles) {
@@ -54,6 +54,7 @@ Component({
                 }
             }
             catch (err: any) {
+                console.error(err);
                 if (err.errMsg !== 'chooseMedia:fail cancel') {
                     this.triggerEvent('error', {
                         level: 'error',

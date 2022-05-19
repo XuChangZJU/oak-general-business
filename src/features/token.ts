@@ -4,10 +4,12 @@ import { Action, Feature } from 'oak-frontend-base';
 import { Aspect, Context } from 'oak-domain/lib/types';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
 import { WechatMpEnv } from 'oak-app-domain/Token/Schema';
+import { Cache } from 'oak-frontend-base';
 
 export class Token<ED extends EntityDict, Cxt extends Context<ED>, AD extends Record<string, Aspect<ED, Cxt>>> extends Feature<ED, Cxt, AD> {
     private token?: string;
     private rwLock: RWLock;
+    private cache?: Cache<ED, Cxt, AD>;
 
     constructor() {
         super();
@@ -95,5 +97,23 @@ export class Token<ED extends EntityDict, Cxt extends Context<ED>, AD extends Re
             this.rwLock.release();
             throw err;
         }
+    }
+
+    setCache(cache: Cache<ED, Cxt, AD>) {
+        this.cache = cache;
+    }
+    
+    async getUserId() {     
+        const token = await this.getToken();
+        const result = await this.cache!.get('token', {
+            data: {
+                id: 1,
+                userId: 1,                    
+            },
+            filter: {
+                id: token!,
+            }
+        }, 'token:getUserId');
+        return result[0].userId;
     }
 }
