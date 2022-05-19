@@ -1,2 +1,2 @@
 <!-- index.wxml -->
-<image src="{{src}}" mode="aspectFit" class="img"/>
+<image src="{{src}}" mode="aspectFit" class="img {{isTmp ? 'img-tmp' : ''}}"/>

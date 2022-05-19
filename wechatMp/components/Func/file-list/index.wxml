@@ -1,8 +1,12 @@
 <view class="default-item-container item-container">
-    <view class="default-item item" wx:for="{{oakValue}}" wx:key="index">
-        <item oakValue="{{item}}" oakPath="{{index}}" oakParent="{{oakFullpath}}" />
+    <view class="default-item item" wx:for="{{oakValue}}" wx:key="index" bind:tap="onItemTapped" data-index="{{index}}">
+        <view wx:if="{{selected === index}}" class="item-selected">
+            <g-icon name="aspect_ratio" />
+            <g-icon name="delete" catchtap="onDelete" data-value="{{item}}" data-index="{{index}}" />
+        </view>
+        <item oakValue="{{item}}" oakPath="{{index}}" oakParent="{{oakFullpath}}"/>
     </view>
     <view class="default-item item insert-btn" wx:if="{{!disableInsert}}" bind:tap="onPick">
-        <g-icon name="add" size="80"/>
-    </view>    
+        <g-icon name="add" size="80" />
+    </view>
 </view>

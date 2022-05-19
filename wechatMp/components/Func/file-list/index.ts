@@ -1,6 +1,12 @@
+import { isMockId } from "oak-frontend-base/src/utils/mockId";
+
 Component({
+    data: {
+        selected: -1,
+    },
     externalClasses: ['item-container', 'item'],
     properties: {
+        oakFullpath: String,
         oakUpdateData: Object,
         oakValue: Array,
         oakParent: String,
@@ -89,8 +95,41 @@ Component({
         add(options: any[]) {
             const { globalData: { features }} = getApp();
             options.forEach(
-                ele => features.runningNode.addNode(this.data.oakFullpath, ele)
+                ele => features.runningNode.addNode(Object.assign({
+                    parent: this.data.oakFullpath,
+                }, ele))
             );
+        },
+        onItemTapped(event: WechatMiniprogram.Touch) {
+            const { index } = event.currentTarget.dataset;
+            if (this.data.selected === index) {
+                this.setData({
+                    selected: -1,
+                });
+            }
+            else {
+                this.setData({
+                    selected: index,
+                });
+            }
+        },
+        async onDelete(event: WechatMiniprogram.Touch) {
+            const { globalData: { features }} = getApp();
+            const { value, index } = event.currentTarget.dataset;
+            const { id } = value;
+            if (isMockId(id)) {
+                features.runningNode.removeNode({
+                    parent: this.data.oakFullpath,
+                    path: `${index}`,
+                })
+            }
+            else {
+                const result = await wx.showModal({
+                    title: '确认删除吗',
+                    content: '删除现有文件',                    
+                });
+                console.log(result);
+            }
         }
     },
 
