@@ -42,7 +42,8 @@ Component({
                     });
                 }
                 else {
-                    this.triggerEvent('add', tempFiles);
+                    // this.triggerEvent('add', tempFiles);
+                    this.data.createData(tempFiles);
                    /*  const { globalData: { features } } = getApp();
                     const { oakFullpath } = this.data;
                     for (const file of tempFiles) {

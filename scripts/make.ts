@@ -24,9 +24,16 @@ import spawn from 'cross-spawn';
     console.log(`${chalk.greenBright(`npm link oak-app-domain`)}`);
 
     const isMac = process.platform === 'darwin';
-    const result2 = spawn.sync(
-        `${isMac ? 'sudo' : ''}`,
+    const result2 = isMac? spawn.sync(
+        'sudo',
         [`npm link ${process.cwd()}/src/base-app-domain`],
+        {
+            stdio: 'inherit',
+            shell: true,
+        }
+    ) : spawn.sync(
+        'npm',
+        [`link ${process.cwd()}/src/base-app-domain`],
         {
             stdio: 'inherit',
             shell: true,
