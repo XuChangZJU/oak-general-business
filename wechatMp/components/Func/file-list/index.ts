@@ -25,7 +25,7 @@ Component({
     },
 
     methods: {
-        async onAdd() {
+        async onPick() {
             const { selectCount, mediaType, sourceType, oakUpdateData } = this.data;
             try {
                 const { errMsg, tempFiles } = await wx.chooseMedia({
@@ -40,8 +40,9 @@ Component({
                     });
                 }
                 else {
-                    // this.triggerEvent('add', tempFiles);
-                    this.createData(tempFiles);
+                    const result = this.triggerEvent('pick', tempFiles);
+                    // console.log(result);
+                    // this.properties.createData(tempFiles);
                    /*  const { globalData: { features } } = getApp();
                     const { oakFullpath } = this.data;
                     for (const file of tempFiles) {
@@ -74,7 +75,6 @@ Component({
         },
         async setFullpath(oakParent: string) {
             const { globalData: { features }} = getApp();
-            console.log(this.data);
             if (oakParent) {
                 const oakFullpath = `${oakParent}.${this.data.oakPath}`;
                 await features.runningNode.createNode({
@@ -85,6 +85,12 @@ Component({
                     oakFullpath,
                 });
             }
+        },
+        add(options: any[]) {
+            const { globalData: { features }} = getApp();
+            options.forEach(
+                ele => features.runningNode.addNode(this.data.oakFullpath, ele)
+            );
         }
     },
 
