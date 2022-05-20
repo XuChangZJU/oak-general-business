@@ -6,7 +6,7 @@ Component({
         // 根据 size 不同，计算的图片显示大小不同
         itemSizePercentage: '',
     },
-    externalClasses: ['l-container-class', 'l-item-class'],
+    externalClasses: ['l-class', 'l-item-class'],
     properties: {
         oakFullpath: String,
         oakUpdateData: Object,

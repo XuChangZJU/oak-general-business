@@ -1,4 +1,4 @@
-<view class="file-list__container l-container-class">
+<view class="file-list__container l-class">
     <block wx:for="{{oakValue}}" wx:key="index">
        <view
           class="file-list__item  file-list__item--{{size}} l-item-class"
