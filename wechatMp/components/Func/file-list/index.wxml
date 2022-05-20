@@ -1,12 +1,33 @@
-<view class="default-item-container item-container">
-    <view class="default-item item" wx:for="{{oakValue}}" wx:key="index" bind:tap="onItemTapped" data-index="{{index}}">
-        <view wx:if="{{selected === index}}" class="item-selected">
-            <g-icon name="aspect_ratio" />
-            <g-icon name="delete" catchtap="onDelete" data-value="{{item}}" data-index="{{index}}" />
+<view class="file-list__container l-container-class">
+    <block wx:for="{{oakValue}}" wx:key="index">
+       <view
+          class="file-list__item  file-list__item--{{size}} l-item-class"
+          bind:tap="onItemTapped"
+          data-index="{{index}}"
+          style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:'xxx'}}"
+        >
+        <item mode="{{mode}}" oakValue="{{item}}" oakPath="{{index}}" oakParent="{{oakFullpath}}" />
+          <!-- <view mut-bind:tap="onDelete" class="file-list__remove" data-value="{{item}}" data-index="{{ index }}">
+              <g-icon name="delete" color="#ffffff" size="24" />
+          </view> -->
+        <view wx:if="{{selected === index}}" class="file-list__item--selected">
+            <g-icon name="aspect_ratio" color="#ffffff" />
+            <g-icon name="delete"  color="#ffffff" catchtap="onDelete" data-value="{{item}}" data-index="{{index}}" />
         </view>
-        <item oakValue="{{item}}" oakPath="{{index}}" oakParent="{{oakFullpath}}"/>
     </view>
-    <view class="default-item item insert-btn" wx:if="{{!disableInsert}}" bind:tap="onPick">
-        <g-icon name="add" size="80" />
+    </block>
+
+    <view
+        class="file-list__item file-list__item--add  file-list__item--{{size}} l-item-class"
+        style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:''}}"
+        wx:if="{{!disableInsert}}"
+        bind:tap="onPick"
+    >
+        <view class="file-list__item-slot-wrapper">
+            <slot />
+        </view>
+       <view class="file-list__image--add">
+           <g-icon name="add" size="80" /> 
+       </view>
     </view>
 </view>
