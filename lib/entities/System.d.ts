@@ -3,8 +3,11 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 export declare type SystemConfig = {
     Cos: {
         qiniu: {
-            appKey: string;
-            appSecret: string;
+            accessKey: string;
+            secretKey: string;
+            uploadHost: string;
+            bucket: string;
+            domain: string;
         };
     };
     Map: {
