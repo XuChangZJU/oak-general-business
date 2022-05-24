@@ -1,4 +1,5 @@
 import { isMockId } from "oak-frontend-base/src/utils/mockId";
+import { composeFileUrl } from '../../../../src/utils/extraFile';
 
 Component({
     data: {
@@ -44,6 +45,11 @@ Component({
         size: {
             type: Number,
             value: 3,
+        },
+        // 图片是否可预览
+        disableDelete: {
+            type: Boolean,
+            value: false,
         },
     },
 
@@ -150,16 +156,26 @@ Component({
                 )
             );
         },
-        onItemTapped(event: WechatMiniprogram.Touch) {
+        async onItemTapped(event: WechatMiniprogram.Touch) {
+            const { oakValue } = this.data;
             const { index } = event.currentTarget.dataset;
-            if (this.data.selected === index) {
-                this.setData({
-                    selected: -1,
+            const imageUrl = composeFileUrl(oakValue[index]);
+            const urls = oakValue?.map((ele) => composeFileUrl(ele));
+
+            const detail = {
+                all: oakValue,
+                index,
+                urls: urls,
+                current: imageUrl,
+            };
+            this.triggerEvent('tap', detail);
+            // 预览图片
+            if (this.data.preview) {
+                const rrr = await wx.previewImage({
+                    urls: urls,
+                    current: imageUrl,
                 });
-            } else {
-                this.setData({
-                    selected: index,
-                });
+                this.triggerEvent('preview', detail);
             }
         },
         async onDelete(event: WechatMiniprogram.Touch) {
@@ -208,10 +224,11 @@ Component({
                 this,
                 '.file-list__container'
             );
-            const widthRpx = this.px2rpx((res.right - res.left));
+            const widthRpx = this.px2rpx(res.right - res.left);
 
             // 根据容器宽度计算单张图片宽度百分比
-            const itemSizePercentage = (10 / size) * 10 - (20 / widthRpx) * 100 + '%;';
+            const itemSizePercentage =
+                (10 / size) * 10 - (20 / widthRpx) * 100 + '%;';
             this.setData({ itemSizePercentage: itemSizePercentage });
         },
     },
