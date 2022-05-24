@@ -171,7 +171,7 @@ Component({
             this.triggerEvent('tap', detail);
             // 预览图片
             if (this.data.preview) {
-                const rrr = await wx.previewImage({
+                const result = await wx.previewImage({
                     urls: urls,
                     current: imageUrl,
                 });
