@@ -2,18 +2,12 @@
     <block wx:for="{{oakValue}}" wx:key="index">
        <view
           class="file-list__item  file-list__item--{{size}} l-item-class"
-          bind:tap="onItemTapped"
-          data-index="{{index}}"
           style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:'xxx'}}"
         >
-        <item mode="{{mode}}" oakValue="{{item}}" oakPath="{{index}}" oakParent="{{oakFullpath}}" />
-          <!-- <view mut-bind:tap="onDelete" class="file-list__remove" data-value="{{item}}" data-index="{{ index }}">
-              <g-icon name="delete" color="#ffffff" size="24" />
-          </view> -->
-        <view wx:if="{{selected === index}}" class="file-list__item--selected">
-            <g-icon name="aspect_ratio" color="#ffffff" />
-            <g-icon name="delete"  color="#ffffff" catchtap="onDelete" data-value="{{item}}" data-index="{{index}}" />
-        </view>
+        <item data-index="{{index}}" bind:tap="onItemTapped" mode="{{mode}}" oakValue="{{item}}" oakPath="{{index}}" oakParent="{{oakFullpath}}" />
+          <view wx:if="{{!disableDelete}}" mut-bind:tap="onDelete" class="file-list__remove" data-value="{{item}}" data-index="{{ index }}">
+              <g-icon name="clear" color="#ffffff" size="24" />
+          </view>
     </view>
     </block>
 

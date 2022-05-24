@@ -4,16 +4,19 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 export type SystemConfig = {
     Cos: {
         qiniu: {
-            appKey: string;
-            appSecret: string;
-        }
-    },
+            accessKey: string;
+            secretKey: string;
+            uploadHost: string; //七牛上传域名
+            bucket: string;
+            domain: string;
+        };
+    };
     Map: {
         amap: {
-            webApiKey: string;      // 高德访问rest服务接口的key
-        }
-    }
-}
+            webApiKey: string; // 高德访问rest服务接口的key
+        };
+    };
+};
 
 export interface Schema extends EntityShape {
     name: String<32>;
