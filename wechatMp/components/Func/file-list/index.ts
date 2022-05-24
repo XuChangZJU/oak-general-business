@@ -178,7 +178,13 @@ Component({
                     title: '确认删除吗',
                     content: '删除现有文件',
                 });
-                console.log(result);
+                const { confirm } = result;
+                if (confirm) {
+                    features.runningNode.removeNode({
+                        parent: this.data.oakFullpath,
+                        path: `${index}`,
+                    });
+                }
             }
         },
     },
