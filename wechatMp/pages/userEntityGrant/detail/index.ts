@@ -38,36 +38,15 @@ OakPage({
         ...userEntityGrant,
     }),
 }, {
-    properties: {
-        entity: String,
-        entityId: String,
-        relations: String,
-    },
     data: {
     },
     lifetimes: {
         ready(options) {
-            this.data.entity && this.setUpdateData('entity', this.data.entity);
-            this.data.entityId && this.setUpdateData('entityId', this.data.entityId);
-            this.setUpdateData('action', 'grant');
-            this.setData({
-                relationArr: JSON.parse(this.data.relations),
-            })
             if (!this.data.wechatQrCode$entity[0] || this.data.wechatQrCode$entity[0].expiresAt) {
                 //请求创建wechatQrcode
-                // const result = await requestWechatQrcode();
-                this.setData({
-                    url: result.url,
-                })
             }
         }
     },
     methods: {
-        radioChange(e) {
-            this.setUpdateData('relation', e.detail.value);
-        },
-        requestWechatQrcode() {
-            
-        }
     }
 });

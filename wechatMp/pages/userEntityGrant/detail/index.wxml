@@ -1,0 +1,6 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <view class="col">
+        <image src="{{url}}" />
+    </view>
+</view>

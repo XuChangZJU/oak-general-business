@@ -38,6 +38,18 @@ OakPage({
     methods: {
         radioChange(e) {
             this.setUpdateData('relation', e.detail.value);
+        },
+        handleConfirm() {
+            try {
+                this.execute(
+                    this.data.oakId ? 'update' : 'create',
+                    () => {
+                    }
+                );
+            }
+            catch (error) {
+                console.log(error);
+            }
         }
     }
 });

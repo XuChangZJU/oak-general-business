@@ -4,11 +4,11 @@
         <radio-group bindchange="radioChange" class="test">
             <label class="label" wx:for="{{relationArr}}" wx:key="*this">
                 <view>
-                    <radio value="{{item}}" checked="true" />
+                    <radio value="{{item}}" />
                 </view>
                 <view>{{item}}</view>
             </label>
         </radio-group>
     </view>
-    <g-btn type="primary">确定</g-btn>
+    <g-btn type="primary" bind:click="handleConfirm">确定</g-btn>
 </view>
