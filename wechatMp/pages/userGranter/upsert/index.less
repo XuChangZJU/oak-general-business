@@ -1,0 +1,26 @@
+/**  index.wxss  **/
+@import "../../../styles/cell.less";
+@import "../../../styles/mixins.less";
+
+.page-body {
+  height: 100vh;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: @background-color-base;
+  box-sizing: border-box;
+  .safe-area-inset-bottom();
+}
+.label {
+  display: flex;
+  align-items: center;
+  padding: @size-spacing-base;
+  border-bottom: 1px solid @background-color-base;
+  
+}
+.cell-col {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-top: 1px solid @background-color-base
+}

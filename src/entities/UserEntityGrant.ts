@@ -2,6 +2,8 @@ import { String, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Index } from 'oak-domain/lib/types/Storage';
 import { Schema as User } from './User';
+import { Schema as WechatQrCode } from './WechatQrCode';
+import { ActionDef } from 'oak-domain/lib/types/Action';
 
 export interface Schema extends EntityShape {
     entity: String<32>;
@@ -12,8 +14,18 @@ export interface Schema extends EntityShape {
     uuid: String<32>;
     granter: User;
     grantee?: User;
+    files: Array<WechatQrCode>;
 }
 
+type IAction = 'confirm';
+type IState = | 'init'| 'expire';
+
+const IActionDef: ActionDef<IAction, IState> = {
+    stm: {
+        confirm: ['init', 'expire'],
+    },
+    is: 'init'
+};
 
 const indexes: Index<Schema>[] = [
     {
