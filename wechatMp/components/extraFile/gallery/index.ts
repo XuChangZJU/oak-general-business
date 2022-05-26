@@ -1,11 +1,14 @@
+import assert from 'assert';
+import { EntityDict } from "oak-app-domain";
+import { DeduceCreateOperationData } from "oak-domain/lib/types";
 import { isMockId } from "oak-frontend-base/src/utils/mockId";
 import { composeFileUrl } from '../../../../src/utils/extraFile';
 
 OakComponent({
     entity: 'extraFile',
-    async formData (files, features) {
+    async formData (files) {
         const number2 = this.data.maxNumber;
-        if (typeof number2 === 'number' && files?.length >= number2) {
+        if (typeof number2 === 'number' && (number2 === 0 || files?.length >= number2)) {
             return {
                 files,
                 disableInsert: true,
@@ -25,8 +28,6 @@ OakComponent({
     externalClasses: ['l-class', 'l-item-class'],
     properties: {
         oakFullpath: String,
-        oakUpdateData: Object,
-        oakValue: Array,
         oakParent: String,
         oakPath: String,
         maxNumber: {
@@ -45,7 +46,6 @@ OakComponent({
             type: Array,
             value: ['image'],
         },
-        disableInsert: Boolean,
         // 图片显示模式
         mode: {
             type: String,
@@ -66,6 +66,10 @@ OakComponent({
             type: Boolean,
             value: false,
         },
+        type: String,
+        origin: String,
+        tag1: String,
+        tag2: String,
     },
 
     methods: {
@@ -95,7 +99,7 @@ OakComponent({
             return (750 / windowWidth) * px;
         },
         async onPick() {
-            const { selectCount, mediaType, sourceType, oakUpdateData } =
+            const { selectCount, mediaType, sourceType, type, origin, tag1, tag2} =
                 this.data;
             try {
                 const { errMsg, tempFiles } = await wx.chooseMedia({
@@ -109,18 +113,35 @@ OakComponent({
                         msg: errMsg,
                     });
                 } else {
-                    const result = this.triggerEvent('pick', tempFiles);
-                    // console.log(result);
-                    // this.properties.createData(tempFiles);
-                    /*  const { globalData: { features } } = getApp();
-                    const { oakFullpath } = this.data;
-                    for (const file of tempFiles) {
-                        await features.runningNode.addNode({
-                            parent: oakFullpath,
-                            fileCarrier: new WechatMpFileCarrier(file),
-                            updateData: oakUpdateData,
-                        });
-                    } */
+                    await Promise.all(tempFiles.map(
+                        async (tempExtraFile) => {
+                            const { tempFilePath, thumbTempFilePath } = tempExtraFile;
+                            const filePath = tempFilePath || thumbTempFilePath;
+                            const filename = filePath.match(/[^/]+(?!.*\/)/g)![0];
+    
+                            assert(origin === 'qiniu');     // 目前只支持七牛上传
+                            const ele: Parameters<typeof this['pushNode']>[1] = {
+                                updateData: {
+                                    extra1: filePath,
+                                    origin,
+                                    type,
+                                    tag1,
+                                    tag2,
+                                    objectId: await generateNewId(),
+                                    filename: filename,
+                                },
+                                beforeExecute: async (updateData) => {
+                                    const { url, bucket } = await this.features.extraFile.upload(updateData as DeduceCreateOperationData<EntityDict['extraFile']['Schema']>, "extraFile:gallery:upload");
+                                    Object.assign(updateData, {
+                                        bucket,
+                                        extra1: url,
+                                    });
+                                },
+                            };
+                            
+                            this.pushNode(undefined, ele);
+                        }
+                    ));
                 }
             } catch (err: any) {
                 console.error(err);
@@ -132,19 +153,14 @@ OakComponent({
                 }
             }
         },
-        add(options: any[]) {
-            options.forEach((ele) =>
-                this.pushNode(undefined, ele)
-            );
-        },
         async onItemTapped(event: WechatMiniprogram.Touch) {
-            const { oakValue } = this.data;
+            const { files } = this.data;
             const { index } = event.currentTarget.dataset;
-            const imageUrl = composeFileUrl(oakValue[index]);
-            const urls = oakValue?.map((ele) => composeFileUrl(ele));
+            const imageUrl = composeFileUrl(files[index]);
+            const urls = files?.map((ele) => composeFileUrl(ele));
 
             const detail = {
-                all: oakValue,
+                all: files,
                 index,
                 urls: urls,
                 current: imageUrl,

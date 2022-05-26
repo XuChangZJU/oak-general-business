@@ -1,23 +1,19 @@
 import { EntityDict } from 'oak-app-domain';
 import { Action, Feature } from 'oak-frontend-base';
-import { Aspect, Context } from 'oak-domain/lib/types';
+import { Aspect, Context, DeduceCreateOperationData } from 'oak-domain/lib/types';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
-import { Upload } from 'oak-frontend-base/lib/features/uplpad';
+import { Upload } from 'oak-frontend-base';
 
 export class ExtraFile<
     ED extends EntityDict,
     Cxt extends Context<ED>,
     AD extends Record<string, Aspect<ED, Cxt>>
 > extends Feature<ED, Cxt, AD> {
-    private rwLock: RWLock;
-
     constructor() {
         super();
-        this.rwLock = new RWLock();
     }
     @Action
-    async upload(extraFile: EntityDict['extraFile']['Schema'], scene: string) {
-        await this.rwLock.acquire('X');
+    async upload(extraFile: DeduceCreateOperationData<ED['extraFile']['Schema']>, scene: string) {
         try {
             const { origin, extra1: filePath, filename: fileName } = extraFile;
             const uploadInfo =
@@ -33,14 +29,13 @@ export class ExtraFile<
                 // 微信小程序使用wx.uploadFile, 封装upload，上传源为origin
                 const up = new Upload();                
                 const result = await up.uploadFile(origin, filePath!, uploadInfo);
-                this.rwLock.release();
                 return result;
             }
-            
-            this.rwLock.release();
+            else {
+                throw new Error('not implemented yet');
+            }            
         } catch (err) {
-            this.rwLock.release();
-            throw err;
+            throw err; 
         }
     }
 }
