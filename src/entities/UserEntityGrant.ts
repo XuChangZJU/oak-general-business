@@ -27,6 +27,8 @@ const IActionDef: ActionDef<IAction, IState> = {
     is: 'init'
 };
 
+type Action = IAction;
+
 const indexes: Index<Schema>[] = [
     {
         name: 'index_entity_entityId',
