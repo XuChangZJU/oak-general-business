@@ -1,7 +1,22 @@
 import { isMockId } from "oak-frontend-base/src/utils/mockId";
 import { composeFileUrl } from '../../../../src/utils/extraFile';
 
-Component({
+OakComponent({
+    entity: 'extraFile',
+    async formData (files, features) {
+        const number2 = this.data.maxNumber;
+        if (typeof number2 === 'number' && files?.length >= number2) {
+            return {
+                files,
+                disableInsert: true,
+            };
+        }
+        return {
+            files,
+            disableInsert: false,
+        };
+    }
+}, {
     data: {
         selected: -1,
         // 根据 size 不同，计算的图片显示大小不同
@@ -117,43 +132,9 @@ Component({
                 }
             }
         },
-        checkAllowInsert(value?: Array<any>, num?: number) {
-            const number2 = num || this.data.maxNumber;
-            const value2 = value || this.data.oakValue;
-            if (typeof number2 === 'number' && value2?.length >= number2) {
-                this.setData({
-                    disableInsert: true,
-                });
-            }
-        },
-        async setFullpath(oakParent: string) {
-            const {
-                globalData: { features },
-            } = getApp();
-            if (oakParent) {
-                const oakFullpath = `${oakParent}.${this.data.oakPath}`;
-                await features.runningNode.createNode({
-                    path: this.data.oakPath,
-                    parent: oakParent,
-                });
-                this.setData({
-                    oakFullpath,
-                });
-            }
-        },
         add(options: any[]) {
-            const {
-                globalData: { features },
-            } = getApp();
             options.forEach((ele) =>
-                features.runningNode.addNode(
-                    Object.assign(
-                        {
-                            parent: this.data.oakFullpath,
-                        },
-                        ele
-                    )
-                )
+                this.pushNode(undefined, ele)
             );
         },
         async onItemTapped(event: WechatMiniprogram.Touch) {
@@ -179,16 +160,10 @@ Component({
             }
         },
         async onDelete(event: WechatMiniprogram.Touch) {
-            const {
-                globalData: { features },
-            } = getApp();
             const { value, index } = event.currentTarget.dataset;
             const { id } = value;
             if (isMockId(id)) {
-                features.runningNode.removeNode({
-                    parent: this.data.oakFullpath,
-                    path: `${index}`,
-                });
+                this.removeNode(this.data.oakFullpath, `${index}`);
             } else {
                 const result = await wx.showModal({
                     title: '确认删除吗',
@@ -196,24 +171,15 @@ Component({
                 });
                 const { confirm } = result;
                 if (confirm) {
-                    features.runningNode.removeNode({
-                        parent: this.data.oakFullpath,
-                        path: `${index}`,
-                    });
+                    this.removeNode(this.data.oakFullpath, `${index}`);
                 }
             }
         },
     },
 
     observers: {
-        oakValue: function (oakValue) {
-            this.checkAllowInsert(oakValue);
-        },
         maxNumber: function (maxNumber) {
-            this.checkAllowInsert(undefined, maxNumber);
-        },
-        oakParent: async function (oakParent) {
-            await this.setFullpath(oakParent);
+            this.reRender();
         },
         /**
          * size 属性变化时，重新调整图片大小
@@ -236,15 +202,6 @@ Component({
             const itemSizePercentage =
                 (10 / size) * 10 - (20 / widthRpx) * 100 + '%;';
             this.setData({ itemSizePercentage: itemSizePercentage });
-        },
-    },
-
-    lifetimes: {
-        ready() {
-            this.checkAllowInsert();
-            if (this.data.oakParent) {
-                this.setFullpath(this.data.oakParent);
-            }
         },
     },
 });
