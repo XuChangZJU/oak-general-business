@@ -4,14 +4,15 @@ OakPage({
     entity: 'userEntityGrant',
     
     projection: {
+        id: 1,
         entity: 1,
         entityId: 1,
         relation: 1,
         action: 1,
         remark: 1,
         uuid: 1,
-        granter: 1,
-        grantee: 1,
+        granterId: 1,
+        granteeId: 1,
     },
     isList: false,
     formData: async ([userEntityGrant]) => ({
@@ -26,7 +27,7 @@ OakPage({
     data: {
     },
     lifetimes: {
-        ready(options) {
+        ready() {
             this.setUpdateData('entity', this.data.entity);
             this.setUpdateData('entityId', this.data.entityId);
             this.setUpdateData('action', 'grant');
@@ -36,7 +37,7 @@ OakPage({
         }
     },
     methods: {
-        radioChange(e) {
+        radioChange(e: WechatMiniprogram.RadioGroupChange) {
             this.setUpdateData('relation', e.detail.value);
         },
         handleConfirm() {

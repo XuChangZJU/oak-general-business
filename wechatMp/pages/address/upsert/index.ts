@@ -50,6 +50,9 @@ OakPage({
                     wx.navigateBack();
                 }
             });
+        },
+        reset() {
+            this.resetUpdateData();
         }
     }
 });

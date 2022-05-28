@@ -13,8 +13,13 @@
         <g-input error="{{!!oakFocused.detail}}" oak:value="detail" title="详细地址" placeholder="精确到门牌号码" confirm-type="done" bind:change="setValue" />
     </g-panel>
     <view style="flex: 1" />
-    <g-btn type="primary" long="true" class="{{ oakExecuting ? 'g-btn-loading' : ''}} {{ !oakDirty ? 'g-btn-disabled' : ''}}" disabled="{{oakExecuting || !oakDirty}}" bind:click="confirm">
-        <view class="g-btn-loading-inner" wx:if="{{oakExecuting}}"></view>
-        确定
-    </g-btn>
+    <view style="display:flex;flex-direction:row;align-items:center">
+        <g-btn type="primary" style="flex: 2" class="{{ oakExecuting ? 'g-btn-loading' : ''}} {{ !oakDirty ? 'g-btn-disabled' : ''}}" disabled="{{oakExecuting || !oakDirty}}" bind:click="confirm">
+            <view class="g-btn-loading-inner" wx:if="{{oakExecuting}}"></view>
+            确定
+        </g-btn>
+        <g-btn type="warning" style="flex: 1" disabled="{{!oakDirty}}" bind:click="reset">
+            重置
+        </g-btn>
+    </view>
 </view>

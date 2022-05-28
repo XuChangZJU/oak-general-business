@@ -6,7 +6,7 @@ import { CreateOperationData as CreateUserEntityGrantData } from 'oak-app-domain
 import { assign, keys } from 'lodash';
 import { OakRowInconsistencyException } from 'oak-domain/lib/types';
 import assert from 'assert';
-import { OpRecord } from '../../../oak-domain/src/types/Entity';
+
 const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<EntityDict>>[] = [
     {
         name: '当创建userEntityGrant时,查询是否有未过期的实体',
@@ -43,7 +43,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                 assert('授权不存在一对多的情况')
             }
             else {
-                fn(data)
+                await fn(data);
             }
             return 0;
         }
