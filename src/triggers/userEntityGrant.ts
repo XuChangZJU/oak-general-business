@@ -36,7 +36,18 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                     count: 1,
                 }, context, params);
                 if (result.length) {
-                    throw new OakRowInconsistencyException(result[0] as any, '该userEntityGrant未过期');
+                    const d = {};
+                    result.forEach(
+                        (ele) => assign(d, {
+                            [ele.id]: ele,
+                        })
+                    );
+                    throw new OakRowInconsistencyException({
+                        a: 's',
+                        d: {
+                            userEntityGrant: d,
+                        }
+                    }, '有可重用的userEntityGrant');
                 }
             }
             if (data instanceof Array) {

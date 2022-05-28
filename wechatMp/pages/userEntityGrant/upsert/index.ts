@@ -1,3 +1,4 @@
+import { OakRowInconsistencyException } from "oak-domain/lib/types";
 
 OakPage({
     path: 'userEntityGrant:upsert',
@@ -40,16 +41,18 @@ OakPage({
         radioChange(e: WechatMiniprogram.RadioGroupChange) {
             this.setUpdateData('relation', e.detail.value);
         },
-        handleConfirm() {
+        async handleConfirm() {
             try {
-                this.execute(
+                const result = await this.execute(
                     this.data.oakId ? 'update' : 'create',
-                    () => {
-                    }
+                    [OakRowInconsistencyException]
                 );
             }
             catch (error) {
                 console.log(error);
+                if (error instanceof OakRowInconsistencyException) {
+                    const data = error.getData();
+                }
             }
         }
     }

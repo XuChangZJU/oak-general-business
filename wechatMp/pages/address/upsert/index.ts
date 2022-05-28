@@ -45,11 +45,10 @@ OakPage({
             });
         },
         async confirm() {
-            await this.execute(this.data.oakId ? 'update': 'create', () => {            
-                if (this.data.oakFrom === 'address:list') {
-                    wx.navigateBack();
-                }
-            });
+            await this.execute(this.data.oakId ? 'update': 'create');                      
+            if (this.data.oakFrom === 'address:list') {
+                wx.navigateBack();
+            }
         },
         reset() {
             this.resetUpdateData();
