@@ -94,11 +94,10 @@ OakPage({
             this.setUpdateData('idCardType', IDCardTypeOptions[value as unknown as number].value)
         },
         async confirm() {
-            await this.execute(this.data.oakId ? 'update': 'create', () => {            
-                if (this.data.oakFrom === 'user:manage:list') {
-                    wx.navigateBack();
-                }
-            });
+            await this.execute(this.data.oakId ? 'update': 'create');
+            if (this.data.oakFrom === 'user:manage:list') {
+                wx.navigateBack();
+            }
         }
     }
 });
