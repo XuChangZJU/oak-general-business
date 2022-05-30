@@ -12,7 +12,6 @@ OakPage({
         relation: 1,
         action: 1,
         remark: 1,
-        uuid: 1,
         granterId: 1,
         granteeId: 1,
     },

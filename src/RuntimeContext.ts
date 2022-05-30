@@ -17,6 +17,10 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
         this.scene = scene;
     }
 
+    getApplicationId() {
+        return this.applicationId;
+    }
+
     async getApplication () {
         const { result: [application] } = await this.rowStore.select('application', {
             data: {
@@ -24,12 +28,28 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
                 name: 1,
                 config: 1,
                 type: 1,
-                systemId: 1,                
+                systemId: 1,
+                system: {
+                    id: 1,
+                    name: 1,
+                    config: 1,
+                }
             },
             filter: {
                 id: this.applicationId,
             }
-        }, this) as SelectionResult<EntityDict['application']['Schema'], {id: 1, name: 1, config: 1, type: 1, systemId: 1}>;
+        }, this) as SelectionResult<EntityDict['application']['Schema'], {
+            id: 1,
+            name: 1,
+            config: 1,
+            type: 1,
+            systemId: 1,
+            system: {
+                id: 1,
+                name: 1,
+                config: 1,
+            },
+        }>;
         
         return application;
     }

@@ -131,7 +131,8 @@ OakComponent({
                                     filename: filename,
                                 },
                                 beforeExecute: async (updateData) => {
-                                    const { url, bucket } = await this.features.extraFile.upload(updateData as DeduceCreateOperationData<EntityDict['extraFile']['Schema']>, "extraFile:gallery:upload");
+                                    const { url, bucket } = await this.features.extraFile.upload(
+                                        updateData as DeduceCreateOperationData<EntityDict['extraFile']['Schema']>, "extraFile:gallery:upload");
                                     Object.assign(updateData, {
                                         bucket,
                                         extra1: url,

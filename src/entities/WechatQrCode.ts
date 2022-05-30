@@ -3,25 +3,30 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Index } from 'oak-domain/lib/types/Storage';
 import { Schema as Application } from './Application';
 
+export type WechatQrCodeProps = {
+    pathname: string;
+    props?: Record<string, any>;
+    state?: Record<string, any>;
+};
+
 export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
-    type?: String<32>; //类型
-    expiresAt: Datetime; // 过期时间
-    expired: Boolean; //是否过期
-    autoExtend: Boolean;
-    sceneStr?: Text;
+    type: 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp',
+    tag?: String<32>;       // 调用者加的tag
+    expiresAt?: Datetime; // 过期时间
+    expired?: Boolean; //是否过期
     ticket?: Text;
     url?: String<64>;
-    isPermanent: Boolean; //是否永久码
+    permanent: Boolean; //是否永久码
     buffer?: Text;  // 若没有url，使用buffer存储生成的小程序码数据（base64)
     application: Application;
-    props?: Object;
+    props: WechatQrCodeProps;
 }
 
 const indexes: Index<Schema>[] = [
     {
-        name: 'index_entity_entityId',
+        name: 'index_entity_entityId_tag',
         attributes: [
             {
                 name: 'entity',
@@ -29,6 +34,9 @@ const indexes: Index<Schema>[] = [
             {
                 name: 'entityId',
             },
+            {
+                name: 'tag',
+            }
         ],
     },
     {

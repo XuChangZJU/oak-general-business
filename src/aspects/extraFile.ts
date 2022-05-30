@@ -25,7 +25,7 @@ export async function getUploadInfo<ED extends EntityDict, Cxt extends GeneralRu
     }, context);
     try {
         const { config: systemConfig } = system;
-        const originConfig = (systemConfig as SystemConfig)?.Cos[
+        const originConfig = (systemConfig as SystemConfig).Cos![
             origin as keyof typeof systemConfig
         ];
 

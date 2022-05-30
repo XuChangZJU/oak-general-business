@@ -7,6 +7,7 @@ export type WechatMpConfig = {
     type: 'wechatMp';
     appId: string;
     appSecret: string;
+    qrCodePrefix?: string;      // 扫描二维码跳转的前缀(在小程序后台配置，必须统一跳转到weCharQrCode/scan/index)
 };
 
 export type WebConfig = {

@@ -6,6 +6,7 @@ export declare type WechatMpConfig = {
     type: 'wechatMp';
     appId: string;
     appSecret: string;
+    qrCodePrefix?: string;
 };
 export declare type WebConfig = {
     type: 'web';

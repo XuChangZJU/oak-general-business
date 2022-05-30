@@ -1,8 +1,8 @@
 import { String, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 export declare type SystemConfig = {
-    Cos: {
-        qiniu: {
+    Cos?: {
+        qiniu?: {
             accessKey: string;
             secretKey: string;
             uploadHost: string;
@@ -10,10 +10,13 @@ export declare type SystemConfig = {
             domain: string;
         };
     };
-    Map: {
-        amap: {
+    Map?: {
+        amap?: {
             webApiKey: string;
         };
+    };
+    UserEntityGrant?: {
+        lifetimeLength: number;
     };
 };
 export interface Schema extends EntityShape {

@@ -13,7 +13,7 @@ export class ExtraFile<
         super();
     }
     @Action
-    async upload(extraFile: DeduceCreateOperationData<ED['extraFile']['Schema']>, scene: string) {
+    async upload(extraFile: DeduceCreateOperationData<EntityDict['extraFile']['OpSchema']>, scene: string) {
         try {
             const { origin, extra1: filePath, filename: fileName } = extraFile;
             const uploadInfo =

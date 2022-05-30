@@ -9,7 +9,6 @@ OakPage({
         relation: 1,
         action: 1,
         remark: 1,
-        uuid: 1,
         granterId: 1,
         granteeId: 1,
         wechatQrCode$entity: {
@@ -21,15 +20,9 @@ OakPage({
                 type: 1,//类型
                 expiresAt: 1,// 过期时间
                 expired: 1, //是否过期
-                autoExtend: 1,
-                sceneStr: 1,
                 ticket: 1,
                 url: 1,
-                isPermanent: 1, //是否永久码
-            },
-            filter: {
-                entity: 'userEntityGrant',
-                expired: false,
+                buffer: 1,
             },
             indexFrom: 0,
             count: 1,
