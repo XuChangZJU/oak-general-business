@@ -8,8 +8,8 @@
             </view>
         </view>
         <view class="col">
-            <text class="relation">{{relation}}</text>
-            <image src="{{qrcodeUrl}} mode="aspectFit" class="image" />
+            <text class="relation">{{relation || '-'}}</text>
+            <image src="{{qrcodeUrl}}" mode="aspectFit" class="image" />
             <text class="text">微信扫一扫 添加用户权限</text>
         </view>
     </view>
