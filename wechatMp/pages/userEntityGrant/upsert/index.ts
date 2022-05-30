@@ -1,4 +1,5 @@
-import { OakRowInconsistencyException } from "oak-domain/lib/types";
+import { EntityDict } from "oak-app-domain";
+import { DeduceCreateOperation, DeduceCreateSingleOperation, OakException, OakCongruentRowExists } from "oak-domain/lib/types";
 
 OakPage({
     path: 'userEntityGrant:upsert',
@@ -45,13 +46,28 @@ OakPage({
             try {
                 const result = await this.execute(
                     this.data.oakId ? 'update' : 'create',
-                    [OakRowInconsistencyException]
+                    [OakCongruentRowExists.name]
                 );
+
+                console.log(result);
+                const { data } = result as DeduceCreateSingleOperation<EntityDict['userEntityGrant']['OpSchema']>;
+                const { id } = data;
+
+                this.navigateTo({
+                    url: '../detail/index',
+                    oakId: id,
+                });
             }
             catch (error) {
                 console.log(error);
-                if (error instanceof OakRowInconsistencyException) {
-                    const data = error.getData();
+                if ((<OakException>error).constructor.name === OakCongruentRowExists.name) {
+                    // 这里由于编译的问题，用instanceof会不通过检查
+                    const data = (<OakCongruentRowExists<EntityDict, 'userEntityGrant'>>error).getData();
+                    console.log(data);
+                    this.navigateTo({
+                        url: '../detail/index',
+                        oakId: data.id,
+                    });
                 }
             }
         }

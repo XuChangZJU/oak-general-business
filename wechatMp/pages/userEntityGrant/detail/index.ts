@@ -3,17 +3,19 @@ OakPage({
     path: 'userEntityGrant:detail',
     entity: 'userEntityGrant',
     projection: {
+        id: 1,
         entity: 1,
         entityId: 1,
         relation: 1,
         action: 1,
         remark: 1,
         uuid: 1,
-        granter: 1,
-        grantee: 1,
+        granterId: 1,
+        granteeId: 1,
         wechatQrCode$entity: {
             $entity: 'wechatQrCode',
             data: {
+                id: 1,
                 entity: 1,
                 entityId: 1,
                 type: 1,//类型
@@ -41,7 +43,7 @@ OakPage({
     data: {
     },
     lifetimes: {
-        ready(options) {
+        ready() {
             if (!this.data.wechatQrCode$entity[0] || this.data.wechatQrCode$entity[0].expiresAt) {
                 //请求创建wechatQrcode
             }
