@@ -21,10 +21,8 @@ OakPage({
                 type: 1,//类型
                 expiresAt: 1,// 过期时间
                 expired: 1, //是否过期
-                autoExtend: 1,
-                sceneStr: 1,
-                ticket: 1,
                 url: 1,
+                buffer: 1,
                 isPermanent: 1, //是否永久码
             },
             filter: {
@@ -37,17 +35,14 @@ OakPage({
     },
     isList: false,
     formData: async ([userEntityGrant]) => ({
-        ...userEntityGrant,
+        relation: userEntityGrant && userEntityGrant.relation,
+        qrcodeUrl: userEntityGrant && userEntityGrant.wechatQrCode$entity[0]
+            && userEntityGrant.wechatQrCode$entity[0].url || 'data:image/jpeg;base64,' + wx.arrayBufferToBase64(userEntityGrant.wechatQrCode$entity[0].buffer)
     }),
 }, {
     data: {
     },
     lifetimes: {
-        ready() {
-            if (!this.data.wechatQrCode$entity[0] || this.data.wechatQrCode$entity[0].expiresAt) {
-                //请求创建wechatQrcode
-            }
-        }
     },
     methods: {
     }

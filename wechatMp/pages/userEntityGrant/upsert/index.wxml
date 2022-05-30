@@ -4,7 +4,7 @@
         <radio-group bindchange="radioChange" class="test">
             <label class="label" wx:for="{{relationArr}}" wx:key="*this">
                 <view>
-                    <radio value="{{item}}" />
+                    <radio value="{{item}}" color="#2d8cf0" />
                 </view>
                 <view>{{item}}</view>
             </label>
