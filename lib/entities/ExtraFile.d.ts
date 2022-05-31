@@ -1,4 +1,4 @@
-import { String, Text } from 'oak-domain/lib/types/DataType';
+import { String, Int, Text } from 'oak-domain/lib/types/DataType';
 import { FileCarrierEntityShape } from 'oak-domain/lib/types/Entity';
 export interface Schema extends FileCarrierEntityShape {
     origin: 'qiniu' | 'unknown';
@@ -12,4 +12,6 @@ export interface Schema extends FileCarrierEntityShape {
     entity: String<32>;
     entityId: String<64>;
     extra1?: Text;
+    extension: String<16>;
+    size?: Int<4>;
 }
