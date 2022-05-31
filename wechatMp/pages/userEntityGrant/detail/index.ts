@@ -46,6 +46,7 @@ OakPage({
         }
         return {
             relation: userEntityGrant?.relation,
+            entity: userEntityGrant?.entity,
             url: qrcodeUrl || userEntityGrant?.wechatQrCode$entity[0]?.url
         };
     },

@@ -2,15 +2,15 @@
 <view class="page-body">
     <view class="qrcode_view">
         <view class="row">
-            <text class="text">赋予权限</text>
+            <text class="text">分享权限</text>
             <view class="icon-view">
                 <g-icon name="person_add" size="30" />
             </view>
         </view>
         <view class="col">
-            <text class="relation">{{relation || '-'}}</text>
+            <text class="relation">{{entity || '-' }}上的{{relation || '-'}}</text>
             <image src="{{url}}" mode="aspectFit" class="image" />
-            <text class="text">微信扫一扫 添加用户权限</text>
+            <text class="tip">分享此页面，或让用户扫码领取</text>
         </view>
     </view>
 </view>
