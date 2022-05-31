@@ -158,8 +158,8 @@ OakComponent({
         async onItemTapped(event: WechatMiniprogram.Touch) {
             const { files } = this.data;
             const { index } = event.currentTarget.dataset;
-            const imageUrl = composeFileUrl(files[index]);
-            const urls = files?.map((ele) => composeFileUrl(ele));
+            const imageUrl = composeFileUrl(files[index]!);
+            const urls = files?.filter(ele => !!ele).map((ele) => composeFileUrl(ele!));
 
             const detail = {
                 all: files,

@@ -40,7 +40,7 @@ OakPage({
     formData: async ({ data: users }) => {
         const userData = users.map(
             (user) => {
-                const { id, nickname, userState, name, mobile$user, extraFile$entity } = user;
+                const { id, nickname, userState, name, mobile$user, extraFile$entity } = user || {};
                 const mobile = mobile$user && mobile$user[0]?.mobile;
                 const avatar = extraFile$entity && extraFile$entity[0] && composeFileUrl(extraFile$entity[0]);
                 return {

@@ -28,7 +28,7 @@ OakPage({
     methods: {
         onItemClicked(options: WechatMiniprogram.Touch) {            
             const item = (this.data.arealist!).find(
-                (ele) => ele.id === options.currentTarget.dataset.id
+                (ele) => ele?.id === options.currentTarget.dataset.id
             );
 
             const { depth, id } = item!;
