@@ -38,7 +38,7 @@ const checkers: Checker<
                 );
             }
             else {
-                checkAttributesNotNull(data, []);
+                checkAttributesNotNull(data, ['action', 'entity', 'entityId', 'relation']);
                 if (!data.hasOwnProperty('number')) {
                     assign(data, {
                         number: 1,
