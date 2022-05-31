@@ -20,8 +20,8 @@ const checkers: Checker<
             if (data instanceof Array) {
                 data.forEach(
                     ele => {
-                        checkAttributesNotNull(ele, ['action', 'entity', 'entityId', 'relation']);
-                        if (!ele.hasOwnProperty('number')) {
+                        checkAttributesNotNull(ele, ['type', 'entity', 'entityId', 'relation']);
+                        if (!ele.hasOwnProperty('number') || ele.type === 'transfer') {
                             assign(ele, {
                                 number: 1,
                             });
@@ -38,8 +38,8 @@ const checkers: Checker<
                 );
             }
             else {
-                checkAttributesNotNull(data, ['action', 'entity', 'entityId', 'relation']);
-                if (!data.hasOwnProperty('number')) {
+                checkAttributesNotNull(data, ['type', 'entity', 'entityId', 'relation']);
+                if (!data.hasOwnProperty('number') || data.type === 'transfer') {
                     assign(data, {
                         number: 1,
                     });

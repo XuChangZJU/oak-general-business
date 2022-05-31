@@ -8,7 +8,7 @@ export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
     relation: String<32>;
-    action: String<32>;
+    type: 'grant' | 'transfer';
     number: Int<2>;
     confirmed: Int<2>;
     remark?: Text;
@@ -18,6 +18,8 @@ export interface Schema extends EntityShape {
     expiresAt?: Datetime;
     expired?: Boolean;
 }
+
+type Action = 'confirm';
 
 const indexes: Index<Schema>[] = [
     {

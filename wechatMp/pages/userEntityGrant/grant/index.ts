@@ -10,7 +10,7 @@ OakPage({
         entity: 1,
         entityId: 1,
         relation: 1,
-        action: 1,
+        type: 1,
         remark: 1,
         granterId: 1,
         granteeId: 1,
@@ -24,6 +24,7 @@ OakPage({
         entity: String,
         entityId: String,
         relations: String,
+        type: String,
     },
     data: {
     },
@@ -31,7 +32,7 @@ OakPage({
         ready() {
             this.setUpdateData('entity', this.data.entity);
             this.setUpdateData('entityId', this.data.entityId);
-            this.setUpdateData('action', 'grant');
+            this.setUpdateData('type', this.data.type);
             this.setData({
                 relationArr: JSON.parse(this.data.relations),
             })

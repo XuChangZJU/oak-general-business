@@ -21,11 +21,11 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                 const { userId } = (await context.getToken())!;
                 const { id: applicationId, config: appConfig, system: { config: SystemConfig }} = (await context.getApplication());
                 assert(userId);
-                const { action, entity, entityId, relation, id } = userEntityGrantData;
+                const { type, entity, entityId, relation, id } = userEntityGrantData;
                 const { result } = await context.rowStore.select('userEntityGrant', {
                     data: {
                         id: 1,
-                        action: 1,
+                        type: 1,
                         entity: 1,
                         entityId: 1,
                         relation: 1,
@@ -37,7 +37,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                         expiresAt: {
                             $gt: Date.now() - 600 * 1000,
                         },      // 至少有10分钟有效期的
-                        action,
+                        type,
                         entity,
                         entityId,
                         granterId: userId,
