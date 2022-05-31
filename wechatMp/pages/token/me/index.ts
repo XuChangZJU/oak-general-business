@@ -51,7 +51,7 @@ OakPage({
             },
         }
     },
-    formData: async ([token]) => {
+    formData: async ({ data: [ token ] }) => {
         const user = token?.user;
         const player = token?.player;
         const avatarFile = user && user.extraFile$entity && user.extraFile$entity[0];

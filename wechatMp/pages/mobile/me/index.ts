@@ -9,7 +9,7 @@ OakPage({
         mobile: 1,
         userId: 1,
     },
-    formData: async (mobiles) => ({
+    formData: async ({ data: mobiles }) => ({
         mobiles,
     }),
 }, {

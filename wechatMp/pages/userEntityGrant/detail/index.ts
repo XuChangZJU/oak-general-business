@@ -31,7 +31,7 @@ OakPage({
         },
     },
     isList: false,
-    formData: async ([userEntityGrant]) => ({
+    formData: async ({ data: userEntityGrant}) => ({
         relation: userEntityGrant && userEntityGrant.relation,
         qrcodeUrl: userEntityGrant && userEntityGrant.wechatQrCode$entity[0]
             && userEntityGrant.wechatQrCode$entity[0].url || 'data:image/jpeg;base64,' + wx.arrayBufferToBase64(userEntityGrant.wechatQrCode$entity[0].buffer)

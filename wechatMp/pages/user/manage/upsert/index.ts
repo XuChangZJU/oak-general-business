@@ -33,7 +33,7 @@ OakPage({
         idNumber: 1,
     },
     isList: false,
-    formData: async ([user]) => {
+    formData: async ({ data: user }) => {
         const { birth, gender, idCardType } = user || {};
         const birthText = birth && (new Date(birth)).toLocaleDateString();
         const GenderDict = {

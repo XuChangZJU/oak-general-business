@@ -12,7 +12,7 @@ OakPage({
         playerId: 1,
     },
     isList: true,
-    formData: async (tokenList, features) => {
+    formData: async ({ features }) => {
         const tokenValue = await features.token.getToken();
         if (tokenValue) {
             return {

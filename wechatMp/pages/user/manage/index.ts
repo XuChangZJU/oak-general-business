@@ -37,7 +37,7 @@ OakPage({
         },
     },
     isList: true,
-    formData: async (users) => {
+    formData: async ({ data: users }) => {
         const userData = users.map(
             (user) => {
                 const { id, nickname, userState, name, mobile$user, extraFile$entity } = user;

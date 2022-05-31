@@ -21,7 +21,7 @@ OakPage({
         },
     },
     isList: false,
-    formData: async ([address]) => ({
+    formData: async ({ data: address }) => ({
         name: address?.name!,
         phone: address?.phone!,
         // areaName: `${address?.area?.parent.parent.name}${address?.area?.parent.name}${address?.area?.name}`,

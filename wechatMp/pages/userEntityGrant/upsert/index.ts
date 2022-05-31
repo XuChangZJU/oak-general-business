@@ -16,7 +16,7 @@ OakPage({
         granteeId: 1,
     },
     isList: false,
-    formData: async ([userEntityGrant]) => ({
+    formData: async ({ data: userEntityGrant }) => ({
         ...userEntityGrant
     }),
 }, {

@@ -1,27 +1,20 @@
 <view class="file-list__container l-class">
     <block wx:for="{{files}}" wx:key="index">
-       <view
-          class="file-list__item  file-list__item--{{size}} l-item-class"
-          style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:'xxx'}}"
-        >
-        <item data-index="{{index}}" bind:tap="onItemTapped" mode="{{mode}}" oakValue="{{item}}" oakPath="{{index}}" oakParent="{{oakFullpath}}" />
-          <view wx:if="{{!disableDelete}}" mut-bind:tap="onDelete" class="file-list__remove" data-value="{{item}}" data-index="{{ index }}">
-              <g-icon name="clear" color="#ffffff" size="24" />
-          </view>
-    </view>
+        <block wx:if="{{item}}">
+            <view class="file-list__item  file-list__item--{{size}} l-item-class" style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:'xxx'}}">
+                <item data-index="{{index}}" bind:tap="onItemTapped" mode="{{mode}}" oakValue="{{item}}" oakPath="{{index}}" oakParent="{{oakFullpath}}" />
+                <view wx:if="{{!disableDelete}}" mut-bind:tap="onDelete" class="file-list__remove" data-value="{{item}}" data-index="{{ index }}">
+                    <g-icon name="clear" color="#ffffff" size="24" />
+                </view>
+            </view>
+        </block>
     </block>
-
-    <view
-        class="file-list__item file-list__item--add  file-list__item--{{size}} l-item-class"
-        style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:''}}"
-        wx:if="{{!disableInsert}}"
-        bind:tap="onPick"
-    >
+    <view class="file-list__item file-list__item--add  file-list__item--{{size}} l-item-class" style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:''}}" wx:if="{{!disableInsert}}" bind:tap="onPick">
         <view class="file-list__item-slot-wrapper">
             <slot />
         </view>
-       <view class="file-list__image--add">
-           <g-icon name="add" size="80" /> 
-       </view>
+        <view class="file-list__image--add">
+            <g-icon name="add" size="80" />
+        </view>
     </view>
 </view>
