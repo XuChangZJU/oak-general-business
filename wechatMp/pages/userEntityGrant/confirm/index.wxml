@@ -1,0 +1,6 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <text>{{relation}}</text>
+    <g-btn type="primary" bind:click="handleConfirm">确认</g-btn>
+    <g-btn type="default">取消</g-btn>
+</view>

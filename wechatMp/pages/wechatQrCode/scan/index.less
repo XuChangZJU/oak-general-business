@@ -1,0 +1,26 @@
+/**  index.wxss  **/
+@import "../../../styles/cell.less";
+@import "../../../styles/mixins.less";
+
+.page-body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  flex-direction: column;
+  background-color: @primary-color;
+  box-sizing: border-box;
+  .safe-area-inset-bottom();
+}
+.qrcode_view {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  margin: 0 @size-spacing-large;
+  padding: @size-spacing-large;
+  border-radius: 8px;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);
+}
+.text {
+  color: @text-color;
+}

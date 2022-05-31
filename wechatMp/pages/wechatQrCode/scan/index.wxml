@@ -1,0 +1,9 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <block wx:if="expire">
+        <text class="text">二维码已过期</text>
+    </block>
+    <block wx:else>
+        <text class="text">跳转中...</text>
+    </block>
+</view>
