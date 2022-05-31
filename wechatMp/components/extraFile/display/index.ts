@@ -4,10 +4,12 @@ OakComponent(
     {
         entity: 'extraFile',
         isList: false,
-        formData: async ({ data: extraFile }) => {
+        formData: async ({ data: extraFile, features }) => {
+            const application = features.application.getApplication();
+
             const isTmp = extraFile?.id && isMockId(extraFile.id);
             return {
-                src: extraFile && composeFileUrl(extraFile),
+                src: extraFile && composeFileUrl(extraFile, application?.system?.config),
                 isTmp,
             };
         },

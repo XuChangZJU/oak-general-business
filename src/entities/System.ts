@@ -8,7 +8,8 @@ export type SystemConfig = {
             secretKey: string;
             uploadHost: string; //七牛上传域名
             bucket: string;
-            domain: string;
+            domain: string; //域名
+            protocol: string | string[];
         };
     };
     Map?: {

@@ -160,7 +160,7 @@ OakComponent({
                                             );
                                         Object.assign(updateData, {
                                             bucket,
-                                            extra1: url,
+                                            extra1: null,
                                         });
                                     },
                                 };

@@ -8,6 +8,7 @@ export declare type SystemConfig = {
             uploadHost: string;
             bucket: string;
             domain: string;
+            protocol: string | string[];
         };
     };
     Map?: {
