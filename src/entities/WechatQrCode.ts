@@ -13,6 +13,7 @@ export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
     type: 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp',
+    allowShare: Boolean;        // 是否允许通过分享授权
     tag?: String<32>;       // 调用者加的tag
     expiresAt?: Datetime; // 过期时间
     expired?: Boolean; //是否过期
