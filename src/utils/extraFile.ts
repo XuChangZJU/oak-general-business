@@ -17,7 +17,6 @@ export function composeFileUrl(
 ) {
     const { type, bucket, filename, origin, extra1, objectId, extension, entity } =
         extraFile;
-        console.log(extraFile);
     if (extra1) {
         // 有extra1就用extra1
         return extra1;
