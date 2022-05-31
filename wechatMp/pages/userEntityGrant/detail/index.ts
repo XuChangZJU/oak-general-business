@@ -31,11 +31,24 @@ OakPage({
         },
     },
     isList: false,
-    formData: async ([userEntityGrant]) => ({
-        relation: userEntityGrant && userEntityGrant.relation,
-        qrcodeUrl: userEntityGrant && userEntityGrant.wechatQrCode$entity[0]
-            && userEntityGrant.wechatQrCode$entity[0].url || 'data:image/jpeg;base64,' + wx.arrayBufferToBase64(userEntityGrant.wechatQrCode$entity[0].buffer)
-    }),
+    formData: async ([userEntityGrant]) => {
+        let qrcodeUrl;
+        const str = userEntityGrant?.wechatQrCode$entity[0]?.buffer;
+        console.log('str', str);
+        if (str) {
+            const buf = new ArrayBuffer(str.length * 2);
+            const buf2 = new Uint16Array(buf);
+            for (let i = 0; i < str.length; i++) {
+                buf2[i] = str.charCodeAt(i);
+            }
+            qrcodeUrl = 'data:image/jpeg;base64,' + wx.arrayBufferToBase64(buf2);
+            console.log('url', qrcodeUrl);
+        }
+        return {
+            relation: userEntityGrant?.relation,
+            url: qrcodeUrl || userEntityGrant?.wechatQrCode$entity[0]?.url
+        }
+    },
 }, {
     data: {
     },
