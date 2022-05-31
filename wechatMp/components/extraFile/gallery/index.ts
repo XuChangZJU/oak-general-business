@@ -6,7 +6,8 @@ import { composeFileUrl } from '../../../../src/utils/extraFile';
 
 OakComponent({
     entity: 'extraFile',
-    async formData (files) {
+    isList: true,
+    async formData ({ data: files }) {
         const number2 = this.data.maxNumber;
         if (typeof number2 === 'number' && (number2 === 0 || files?.length >= number2)) {
             return {

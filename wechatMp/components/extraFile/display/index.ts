@@ -3,7 +3,8 @@ import { composeFileUrl } from '../../../../src/utils/extraFile';
 OakComponent(
     {
         entity: 'extraFile',
-        formData: async ([extraFile], _features) => {
+        isList: false,
+        formData: async ({ data: extraFile }) => {
             const isTmp = isMockId(extraFile!.id);
             return {
                 src: composeFileUrl(extraFile!),

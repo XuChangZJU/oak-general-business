@@ -2,7 +2,8 @@
 
 OakComponent({
     entity: 'area',
-    formData: async ([area]) => ({
-        name: area.name!,
+    isList: false,
+    formData: async ({ data: area }) => ({
+        name: area?.name!,
     }),
 }, {});
