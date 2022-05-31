@@ -18,3 +18,4 @@ export {
 
 export * from './RuntimeContext';
 export * from './types/Exceptions';
+export { composeFileUrl, decomposeFileUrl } from './utils/extraFile';
