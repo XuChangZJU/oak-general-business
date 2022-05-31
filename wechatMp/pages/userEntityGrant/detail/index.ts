@@ -32,22 +32,20 @@ OakPage({
     },
     isList: false,
     formData: async ({ data: userEntityGrant }) => {
-        let qrcodeUrl;
+        let qrCodeUrl;
         const str = userEntityGrant?.wechatQrCode$entity[0]?.buffer;
-        console.log('str', str);
         if (str) {
             const buf = new ArrayBuffer(str.length * 2);
             const buf2 = new Uint16Array(buf);
             for (let i = 0; i < str.length; i++) {
                 buf2[i] = str.charCodeAt(i);
             }
-            qrcodeUrl = 'data:image/jpeg;base64,' + wx.arrayBufferToBase64(buf2);
-            console.log('url', qrcodeUrl);
+            qrCodeUrl = 'data:image/jpeg;base64,' + wx.arrayBufferToBase64(buf2);
         }
         return {
             relation: userEntityGrant?.relation,
             entity: userEntityGrant?.entity,
-            url: qrcodeUrl || userEntityGrant?.wechatQrCode$entity[0]?.url
+            url: qrCodeUrl || userEntityGrant?.wechatQrCode$entity[0]?.url,
         };
     },
 }, {

@@ -71,6 +71,7 @@ OakComponent({
         origin: String,
         tag1: String,
         tag2: String,
+        entity: String,
     },
 
     methods: {
@@ -100,8 +101,16 @@ OakComponent({
             return (750 / windowWidth) * px;
         },
         async onPick() {
-            const { selectCount, mediaType, sourceType, type, origin, tag1, tag2} =
-                this.data;
+            const {
+                selectCount,
+                mediaType,
+                sourceType,
+                type,
+                origin,
+                tag1,
+                tag2,
+                entity,
+            } = this.data;
             try {
                 const { errMsg, tempFiles } = await wx.chooseMedia({
                     count: selectCount,
@@ -116,30 +125,45 @@ OakComponent({
                 } else {
                     await Promise.all(tempFiles.map(
                         async (tempExtraFile) => {
-                            const { tempFilePath, thumbTempFilePath } = tempExtraFile;
+                            const { tempFilePath, thumbTempFilePath, fileType, size } = tempExtraFile;
                             const filePath = tempFilePath || thumbTempFilePath;
-                            const filename = filePath.match(/[^/]+(?!.*\/)/g)![0];
-    
-                            assert(origin === 'qiniu');     // 目前只支持七牛上传
-                            const ele: Parameters<typeof this['pushNode']>[1] = {
-                                updateData: {
-                                    extra1: filePath,
-                                    origin,
-                                    type,
-                                    tag1,
-                                    tag2,
-                                    objectId: await generateNewId(),
-                                    filename: filename,
-                                },
-                                beforeExecute: async (updateData) => {
-                                    const { url, bucket } = await this.features.extraFile.upload(
-                                        updateData as DeduceCreateOperationData<EntityDict['extraFile']['Schema']>, "extraFile:gallery:upload");
-                                    Object.assign(updateData, {
-                                        bucket,
-                                        extra1: url,
-                                    });
-                                },
-                            };
+                            const fileFullName = filePath.match(/[^/]+(?!.*\/)/g)![0];
+                            const extension = fileFullName.substring(
+                                fileFullName.lastIndexOf('.') + 1
+                            );
+                            const filename = fileFullName.substring(
+                                0, fileFullName.lastIndexOf('.')
+                            );
+                            assert(entity, '必须传入entity');
+                            assert(origin === 'qiniu', '目前只支持七牛上传');     // 目前只支持七牛上传
+                            const ele: Parameters<typeof this['pushNode']>[1] =
+                                {
+                                    updateData: {
+                                        extra1: filePath,
+                                        origin,
+                                        type: type || fileType,
+                                        tag1,
+                                        tag2,
+                                        objectId: await generateNewId(),
+                                        entity,
+                                        filename: filename,
+                                        size: size,
+                                        extension,
+                                    },
+                                    beforeExecute: async (updateData) => {
+                                        const { url, bucket } =
+                                            await this.features.extraFile.upload(
+                                                updateData as DeduceCreateOperationData<
+                                                    EntityDict['extraFile']['Schema']
+                                                >,
+                                                'extraFile:gallery:upload'
+                                            );
+                                        Object.assign(updateData, {
+                                            bucket,
+                                            extra1: url,
+                                        });
+                                    },
+                                };
                             
                             this.pushNode(undefined, ele);
                         }

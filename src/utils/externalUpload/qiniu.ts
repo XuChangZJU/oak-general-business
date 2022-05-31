@@ -22,10 +22,9 @@ export default class qiniuInstance {
         this.domain = domain;
     }
 
-    async getUploadInfo(fileName: string) {
+    async getUploadInfo(key: string) {
         try {
             const { uploadHost, domain, bucket } = this;
-            const key = `${Date.now()}/${fileName}`;
             const scope = `${bucket}:${key}`;
             const uploadToken = this.getToken(scope);
             return {
@@ -47,10 +46,13 @@ export default class qiniuInstance {
             deadline: 3600 + Math.floor(Date.now() / 1000),
         };
         // 构造凭证
-        const encodedFlags = this.urlSafeBase64Encode(JSON.stringify(putPolicy));
+        const encodedFlags = this.urlSafeBase64Encode(
+            JSON.stringify(putPolicy)
+        );
         const encoded = this.hmacSha1(encodedFlags, this.secretKey);
         const encodedSign = this.base64ToUrlSafe(encoded);
-        const uploadToken = this.accessKey + ':' + encodedSign + ':' + encodedFlags;
+        const uploadToken =
+            this.accessKey + ':' + encodedSign + ':' + encodedFlags;
         return uploadToken;
     }
 

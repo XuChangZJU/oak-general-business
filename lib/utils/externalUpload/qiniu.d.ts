@@ -11,7 +11,7 @@ export default class qiniuInstance {
         bucket: string;
         domain: string;
     });
-    getUploadInfo(fileName: string): Promise<{
+    getUploadInfo(key: string): Promise<{
         key: string;
         uploadToken: string;
         uploadHost: string;
