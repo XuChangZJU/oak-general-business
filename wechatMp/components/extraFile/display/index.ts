@@ -5,9 +5,9 @@ OakComponent(
         entity: 'extraFile',
         isList: false,
         formData: async ({ data: extraFile }) => {
-            const isTmp = isMockId(extraFile!.id);
+            const isTmp = extraFile?.id && isMockId(extraFile.id);
             return {
-                src: composeFileUrl(extraFile!),
+                src: extraFile && composeFileUrl(extraFile),
                 isTmp,
             };
         },
