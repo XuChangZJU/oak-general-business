@@ -24,6 +24,7 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', GeneralRuntimeContext<Entity
             const { appId, appSecret } = config2;
             for (const code of result) {
                 const { type, expired, url, id } = code;
+                console.log('code', code);
                 if (type === 'wechatMpWxaCode') {
                     // 小程序码去实时获取（暂时不考虑缓存）
                     const wechatInstance = WechatSDK.getInstance(appId, appSecret, 'wechatMp');

@@ -13,20 +13,22 @@ OakPage({
         url: 1,
         expired: 1,
         buffer: 1,
+        props: 1,
     },
     isList: true,
     filter: async (options) => {
         const scene = decodeURIComponent(options.scene);
         const uuid = expandUuidTo36Bytes(scene);
+        console.log(options);
+        console.log(uuid);
         return {
             id: uuid,
         }
     },
     formData: async ({data: wechatQrCodes}) => {
-        const expired = wechatQrCodes[0]?.expired;
-        if (!expired) {
+        if (wechatQrCodes[0] && !wechatQrCodes[0]?.expired) {
             wx.navigateTo({
-                url: `${wechatQrCodes[0].props.pathname}?oakId=${wechatQrCodes[0].props.props.id}`
+                url: `${wechatQrCodes[0]?.props?.pathname}?oakId=${wechatQrCodes[0]?.props?.props?.id}`
             })
         }
     },
