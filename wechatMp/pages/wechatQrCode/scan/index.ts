@@ -29,12 +29,40 @@ OakPage(
             },
         ],
         formData: async ({ data: wechatQrCodes }) => {
-            if (wechatQrCodes[0] && !wechatQrCodes[0]?.expired) {
-                wx.redirectTo({
-                    url: `/${wechatQrCodes[0]?.props?.pathname}/index?oakId=${wechatQrCodes[0]?.props?.props?.oakId}`,
-                });
+            const wechatQrCode = wechatQrCodes[0];
+            if (!wechatQrCode) {
+                return {
+                    isExist: false,
+                };
             }
-            return {};
+            if (!wechatQrCode.expired) {
+                const { props, pathname } = wechatQrCode.props;
+                let url =
+                    pathname.substring(0, 1) === '/'
+                        ? pathname
+                        : `/${pathname}`;
+                if (props) {
+                    for (const param in props) {
+                        const param2 = param as unknown as keyof typeof props;
+                        url += url.includes('?') ? '&' : '?';
+                        url += `${param}=${
+                            typeof props[param2] === 'string'
+                                ? props[param2]
+                                : JSON.stringify(props[param2])
+                        }`;
+                    }
+                }
+                wx.redirectTo({
+                    url: url,
+                });
+                return {
+                    expired: false,
+                };
+            } else {
+                return {
+                    expired: true,
+                };
+            }
         },
     },
     {
