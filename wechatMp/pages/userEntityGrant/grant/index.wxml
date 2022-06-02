@@ -6,9 +6,9 @@
                 <view>
                     <radio value="{{item}}" color="#2d8cf0" />
                 </view>
-                <view>{{item}}</view>
+                <view>{{t(entity + ':relation.' + item)}}</view>
             </label>
         </radio-group>
     </view>
-    <g-btn type="primary" bind:click="handleConfirm">确定</g-btn>
+    <g-btn type="primary" bind:click="handleConfirm">{{t('common:action.confirm')}}</g-btn>
 </view>
