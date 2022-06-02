@@ -1,5 +1,6 @@
 import { String, Text, Datetime, Boolean } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
+import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Index } from 'oak-domain/lib/types/Storage';
 import { Schema as Application } from './Application';
 
@@ -60,3 +61,33 @@ const indexes: Index<Schema>[] = [
         ],
     },
 ];
+
+const locale: LocaleDef<Schema, '', '', {
+    type: Schema['type'];
+}> = {
+    zh_CN: {
+        attr: {
+            entity: '关联对象',
+            entityId: '关联对象id',
+            type: '类型',
+            allowShare: '允许分享',
+            tag: 'tag',
+            ticket: 'ticket',
+            url: 'url',
+            permanent: '是否永久码',
+            buffer: '小程序码数据（动态）',
+            expired: '是否过期',
+            expiresAt: '过期时间',
+            application: '应用',
+            props: '属性',
+        },
+        v: {
+            type: {
+                wechatMpDomainUrl: '小程序域名跳转',
+                wechatMpWxaCode: '小程序码',
+                wechatPublic: '公众号码',
+                wechatPublicForMp: '公众号跳小程序',
+            }
+        }
+    },
+ };

@@ -1,5 +1,6 @@
 import { String, Int, Datetime, Image, Boolean, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
+import { LocaleDef } from 'oak-domain/lib/types/Locale';
 
 export type SystemConfig = {
     Cos?: {
@@ -29,3 +30,18 @@ export interface Schema extends EntityShape {
 };
 
 export type Relation = 'owner';
+
+
+const locale: LocaleDef<Schema, '', Relation, {}> = {
+    zh_CN: {
+        attr: {
+            name: '名称',
+            description: '描述',
+            config: '设置',
+        },
+        r: {
+            owner: '所有者',
+        }
+    },
+ };
+ 
