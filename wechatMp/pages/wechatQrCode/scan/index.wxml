@@ -1,15 +1,27 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <block wx:if="{{!expired}}">
+    <block wx:if="{{oakLoading}}">
         <view class="circle-view">
             <g-icon name="near_me" size="80" />
-            <text class="text">跳转中</text>
+            <text class="text">加载中</text>
+        </view>
+    </block>
+    <block wx:elif="{{!isExist}}">
+        <view class="circle-view">
+            <g-icon name="near_me" size="80" />
+            <text class="text">二维码非法</text>
+        </view>
+    </block>
+    <block wx:elif="{{expired}}">
+        <view class="circle-view">
+            <g-icon name="timer_off" size="80" />
+            <text class="text">二维码已过期</text>
         </view>
     </block>
     <block wx:else>
         <view class="circle-view">
-            <g-icon name="timer_off" size="80" />
-            <text class="text">二维码已过期</text>
+            <g-icon name="near_me" size="80" />
+            <text class="text">跳转中</text>
         </view>
     </block>
 </view>

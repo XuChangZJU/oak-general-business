@@ -30,9 +30,17 @@ OakPage(
         ],
         formData: async ({ data: wechatQrCodes }) => {
             const wechatQrCode = wechatQrCodes[0];
-            if (wechatQrCode && !wechatQrCode.expired) {
+            if (!wechatQrCode) {
+                return {
+                    isExist: false,
+                };
+            }
+            if (!wechatQrCode.expired) {
                 const { props, pathname } = wechatQrCode.props;
-                let url = pathname.substring(0, 1) === '/' ? pathname : `/${pathname}`;
+                let url =
+                    pathname.substring(0, 1) === '/'
+                        ? pathname
+                        : `/${pathname}`;
                 if (props) {
                     for (const param in props) {
                         const param2 = param as unknown as keyof typeof props;
@@ -47,8 +55,14 @@ OakPage(
                 wx.redirectTo({
                     url: url,
                 });
+                return {
+                    expired: false,
+                };
+            } else {
+                return {
+                    expired: true,
+                };
             }
-            return {};
         },
     },
     {
