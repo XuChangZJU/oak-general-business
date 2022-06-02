@@ -1,9 +1,15 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <block wx:if="expire">
-        <text class="text">二维码已过期</text>
+    <block wx:if="{{!expired}}">
+        <view class="circle-view">
+            <g-icon name="near_me" size="80" />
+            <text class="text">跳转中</text>
+        </view>
     </block>
     <block wx:else>
-        <text class="text">跳转中...</text>
+        <view class="circle-view">
+            <g-icon name="timer_off" size="80" />
+            <text class="text">二维码已过期</text>
+        </view>
     </block>
 </view>

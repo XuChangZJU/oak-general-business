@@ -1,6 +1,11 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <text>{{relation}}</text>
+    <view class="content">
+        <text class="text">获取权限</text>
+        <view class="circle-view">
+            <g-icon name="person" size="80" />
+            <text class="relation">{{relation || '无数据'}}</text>
+        </view>
+    </view>
     <g-btn type="primary" bind:click="handleConfirm">确认</g-btn>
-    <g-btn type="default">取消</g-btn>
 </view>

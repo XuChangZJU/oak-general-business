@@ -30,8 +30,8 @@ OakPage(
         ],
         formData: async ({ data: wechatQrCodes }) => {
             if (wechatQrCodes[0] && !wechatQrCodes[0]?.expired) {
-                wx.navigateTo({
-                    url: `${wechatQrCodes[0]?.props?.pathname}?oakId=${wechatQrCodes[0]?.props?.props?.id}`,
+                wx.redirectTo({
+                    url: `/${wechatQrCodes[0]?.props?.pathname}/index?oakId=${wechatQrCodes[0]?.props?.props?.oakId}`,
                 });
             }
             return {};

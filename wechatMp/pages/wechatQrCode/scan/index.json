@@ -1,5 +1,6 @@
 {
     "navigationBarTitleText": "跳转页",
     "usingComponents": {
+        "g-icon": "../../../components/UI/g-icon/index"
     }
 }
