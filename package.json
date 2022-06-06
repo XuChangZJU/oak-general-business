@@ -7,7 +7,7 @@
         "oak-domain": "file:../oak-domain",
         "oak-frontend-base": "file:../oak-frontend-base",
         "oak-memory-tree-store": "file:../oak-memory-tree-store",
-        "oak-wechat-sdk": "file:../oak-wechat-sdk"
+        "oak-external-sdk": "file:../oak-external-sdk"
     },
     "devDependencies": {
         "@babel/cli": "^7.12.13",

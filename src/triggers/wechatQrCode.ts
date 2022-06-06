@@ -3,7 +3,7 @@ import { SelectTriggerAfter, Trigger } from 'oak-domain/lib/types/Trigger';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 
 import assert from 'assert';
-import { WechatSDK } from 'oak-wechat-sdk';
+import { WechatSDK } from 'oak-external-sdk';
 import { WechatMpConfig } from 'oak-app-domain/Application/Schema';
 import { shrinkUuidTo32Bytes } from 'oak-domain/lib/utils/uuid';
 import { assign } from 'lodash';

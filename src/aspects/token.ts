@@ -1,6 +1,6 @@
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { EntityDict } from 'oak-app-domain';
-import { WechatSDK } from 'oak-wechat-sdk';
+import { WechatSDK } from 'oak-external-sdk';
 import assert from 'assert';
 import { WechatMpConfig } from 'oak-app-domain/Application/Schema';
 import { CreateOperationData as CreateToken, WechatMpEnv } from 'oak-app-domain/Token/Schema';
