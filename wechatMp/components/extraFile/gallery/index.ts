@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { EntityDict } from "oak-app-domain";
+import { EntityDict } from 'general-app-domain';
 import { DeduceCreateOperationData } from "oak-domain/lib/types";
 import { isMockId } from "oak-frontend-base/src/utils/mockId";
 import { composeFileUrl } from '../../../../src/utils/extraFile';

@@ -1,4 +1,4 @@
-import { WechatMpEnv } from "oak-app-domain/Token/Schema";
+import { WechatMpEnv } from "general-app-domain/Token/Schema";
 
 OakPage({
     path: 'token:login',
