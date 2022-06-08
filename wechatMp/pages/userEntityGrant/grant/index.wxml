@@ -6,7 +6,7 @@
                 <view>
                     <radio value="{{item}}" color="#2d8cf0" />
                 </view>
-                <view>{{t(entity + ':relation.' + item)}}</view>
+                <view>{{t(entity + ':r.' + item)}}</view>
             </label>
         </radio-group>
     </view>
