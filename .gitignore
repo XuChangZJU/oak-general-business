@@ -65,5 +65,5 @@ jspm_packages/
 build
 package-lock.json
 dist
-src/base-app-domain
-lib/base-app-domain
+src/general-app-domain
+lib/general-app-domain

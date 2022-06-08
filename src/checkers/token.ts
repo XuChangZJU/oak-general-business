@@ -1,5 +1,5 @@
 import { Checker, OakUserUnpermittedException } from "oak-domain/lib/types";
-import { EntityDict } from 'oak-app-domain';
+import { EntityDict } from 'general-app-domain';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { OakUnloggedInException } from "../types/Exceptions";
 import { assign } from "lodash";

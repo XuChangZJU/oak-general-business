@@ -1,7 +1,7 @@
 
 import { SelectionResult } from 'oak-domain/lib/types';
 import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
-import { EntityDict } from 'oak-app-domain';
+import { EntityDict } from 'general-app-domain';
 import { RowStore } from 'oak-domain/lib/types';
 
 

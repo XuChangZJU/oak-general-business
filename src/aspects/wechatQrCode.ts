@@ -1,7 +1,7 @@
 import assert from "assert";
-import { EntityDict } from "oak-app-domain";
-import { WechatMpConfig } from "oak-app-domain/Application/Schema";
-import { CreateOperationData as CreateWechatQrcodeData, WechatQrCodeProps } from 'oak-app-domain/WechatQrCode/Schema';
+import { EntityDict } from "general-app-domain";
+import { WechatMpConfig } from "general-app-domain/Application/Schema";
+import { CreateOperationData as CreateWechatQrcodeData, WechatQrCodeProps } from 'general-app-domain/WechatQrCode/Schema';
 import { GeneralRuntimeContext } from "../RuntimeContext";
 
 export async function createWechatQrCode<ED extends EntityDict, T extends keyof ED, Cxt extends GeneralRuntimeContext<ED>>(options: {

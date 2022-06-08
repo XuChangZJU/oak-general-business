@@ -1,9 +1,9 @@
 import { pick } from 'lodash';
-import { EntityDict } from 'oak-app-domain';
+import { EntityDict } from 'general-app-domain';
 import { Action, Feature } from 'oak-frontend-base';
 import { Aspect, Context, SelectRowShape } from 'oak-domain/lib/types';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
-import { WechatMpEnv } from 'oak-app-domain/Token/Schema';
+import { WechatMpEnv } from 'general-app-domain/Token/Schema';
 import { Cache } from 'oak-frontend-base';
 import assert from 'assert';
 

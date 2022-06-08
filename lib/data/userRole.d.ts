@@ -1,4 +1,4 @@
-import { CreateOperationData as UserCreate } from 'oak-app-domain/User/Schema';
-import { CreateOperationData as RoleCreate } from 'oak-app-domain/Role/Schema';
+import { CreateOperationData as UserCreate } from 'general-app-domain/User/Schema';
+import { CreateOperationData as RoleCreate } from 'general-app-domain/Role/Schema';
 export declare const users: Array<UserCreate>;
 export declare const roles: Array<RoleCreate>;

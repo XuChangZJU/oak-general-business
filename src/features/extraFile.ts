@@ -1,4 +1,4 @@
-import { EntityDict } from 'oak-app-domain';
+import { EntityDict } from 'general-app-domain';
 import { Action, Feature } from 'oak-frontend-base';
 import { Aspect, Context, DeduceCreateOperationData } from 'oak-domain/lib/types';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';

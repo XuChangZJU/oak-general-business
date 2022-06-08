@@ -1,12 +1,12 @@
 import { GeneralRuntimeContext } from '../RuntimeContext';
-import { EntityDict } from 'oak-app-domain';
+import { EntityDict } from 'general-app-domain';
 import { WechatSDK } from 'oak-external-sdk';
 import assert from 'assert';
-import { WechatMpConfig } from 'oak-app-domain/Application/Schema';
-import { CreateOperationData as CreateToken, WechatMpEnv } from 'oak-app-domain/Token/Schema';
-import { CreateOperationData as CreateWechatUser } from 'oak-app-domain/WechatUser/Schema';
-import { CreateOperationData as CreateUser, Schema as User } from 'oak-app-domain/User/Schema';
-import { Operation as ExtraFileOperation } from 'oak-app-domain/ExtraFile/Schema';
+import { WechatMpConfig } from 'general-app-domain/Application/Schema';
+import { CreateOperationData as CreateToken, WechatMpEnv } from 'general-app-domain/Token/Schema';
+import { CreateOperationData as CreateWechatUser } from 'general-app-domain/WechatUser/Schema';
+import { CreateOperationData as CreateUser, Schema as User } from 'general-app-domain/User/Schema';
+import { Operation as ExtraFileOperation } from 'general-app-domain/ExtraFile/Schema';
 import { assign, isEqual, keys } from 'lodash';
 import { SelectRowShape } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';

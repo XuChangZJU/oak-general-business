@@ -1,9 +1,9 @@
 import { pick } from 'lodash';
-import { EntityDict } from 'oak-app-domain';
+import { EntityDict } from 'general-app-domain';
 import { Action, Feature } from 'oak-frontend-base';
 import { Aspect, Context } from 'oak-domain/lib/types';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
-import { WechatMpEnv } from 'oak-app-domain/Token/Schema';
+import { WechatMpEnv } from 'general-app-domain/Token/Schema';
 import { Cache } from 'oak-frontend-base';
 
 export class Token<ED extends EntityDict, Cxt extends Context<ED>, AD extends Record<string, Aspect<ED, Cxt>>> extends Feature<ED, Cxt, AD> {

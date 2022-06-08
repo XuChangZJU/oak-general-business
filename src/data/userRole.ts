@@ -1,6 +1,6 @@
-import { CreateOperationData as UserCreate } from 'oak-app-domain/User/Schema';
-import { CreateOperationData as RoleCreate } from 'oak-app-domain/Role/Schema';
-import { CreateOperationData as UserRoleCreate } from 'oak-app-domain/UserRole/Schema';
+import { CreateOperationData as UserCreate } from 'general-app-domain/User/Schema';
+import { CreateOperationData as RoleCreate } from 'general-app-domain/Role/Schema';
+import { CreateOperationData as UserRoleCreate } from 'general-app-domain/UserRole/Schema';
 import { ROOT_ROLE_ID, ROOT_USER_ID } from '../constants';
 export const users: Array<UserCreate> = [
     {

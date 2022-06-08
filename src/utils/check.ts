@@ -1,4 +1,4 @@
-import { EntityDict } from "oak-app-domain";
+import { EntityDict } from "general-app-domain";
 import { ROOT_ROLE_ID } from "../constants";
 import { GeneralRuntimeContext } from "../RuntimeContext";
 

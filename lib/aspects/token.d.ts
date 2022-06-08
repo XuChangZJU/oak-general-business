@@ -1,6 +1,6 @@
 import { GeneralRuntimeContext } from '../RuntimeContext';
-import { EntityDict } from 'oak-app-domain';
-import { WechatMpEnv } from 'oak-app-domain/Token/Schema';
+import { EntityDict } from 'general-app-domain';
+import { WechatMpEnv } from 'general-app-domain/Token/Schema';
 export declare function loginMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: {
     code: string;
 }, context: Cxt): Promise<string>;

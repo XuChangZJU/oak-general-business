@@ -1,4 +1,4 @@
-import { EntityDict } from 'oak-app-domain';
+import { EntityDict } from 'general-app-domain';
 import { Feature } from 'oak-frontend-base';
 import { Aspect, Context, SelectRowShape } from 'oak-domain/lib/types';
 import { Cache } from 'oak-frontend-base';

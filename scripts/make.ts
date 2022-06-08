@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import spawn from 'cross-spawn';
 
     // ts-node scripts/build-app-domain & npm link ./app-domain
-    console.log(`${chalk.greenBright(`build oak-app-domain`)}`);
+    console.log(`${chalk.greenBright(`build general-app-domain`)}`);
 
     const result = spawn.sync(
         'ts-node',
@@ -21,19 +21,19 @@ import spawn from 'cross-spawn';
         process.exit(1);
     }
 
-    console.log(`${chalk.greenBright(`npm link oak-app-domain`)}`);
+    console.log(`${chalk.greenBright(`npm link general-app-domain`)}`);
 
-    const isMac = process.platform === 'darwin';
-    const result2 = isMac? spawn.sync(
+    const isWin = process.platform === 'win32';
+    const result2 = !isWin ? spawn.sync(
         'sudo',
-        [`npm link ${process.cwd()}/src/base-app-domain`],
+        [`npm link ${process.cwd()}/src/general-app-domain`],
         {
             stdio: 'inherit',
             shell: true,
         }
     ) : spawn.sync(
         'npm',
-        [`link ${process.cwd()}/src/base-app-domain`],
+        [`link ${process.cwd()}/src/general-app-domain`],
         {
             stdio: 'inherit',
             shell: true,

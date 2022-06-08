@@ -1,7 +1,7 @@
 import {
     Checker, OakInputIllegalException,
 } from 'oak-domain/lib/types';
-import { EntityDict } from 'oak-app-domain';
+import { EntityDict } from 'general-app-domain';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { checkAttributesNotNull } from 'oak-domain/lib/utils/validator';
 import { assign } from 'lodash';

@@ -1,4 +1,4 @@
-import { EntityDict } from 'oak-app-domain';
+import { EntityDict } from 'general-app-domain';
 import { Aspect, Context } from 'oak-domain/lib/types';
 import { Token } from './token';
 import { ExtraFile } from './extraFile';

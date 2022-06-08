@@ -1,6 +1,6 @@
 import { checkFilterContains } from 'oak-domain/lib/store/actionDef';
 import { OakInputIllegalException, Checker, OakUserUnpermittedException, OakRowInconsistencyException } from "oak-domain/lib/types";
-import { EntityDict } from 'oak-app-domain';
+import { EntityDict } from 'general-app-domain';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { ROOT_ROLE_ID } from '../constants';
 import { assign } from 'lodash';
