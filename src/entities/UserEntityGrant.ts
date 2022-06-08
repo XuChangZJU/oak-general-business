@@ -21,6 +21,7 @@ export interface Schema extends EntityShape {
 }
 
 type Action = 'confirm';
+type IState = 'init';
 
 const indexes: Index<Schema>[] = [
     {
@@ -49,6 +50,7 @@ const indexes: Index<Schema>[] = [
 
 const locale: LocaleDef<Schema, Action, '', {
     type: Schema['type'];
+    iState: IState;
 }> = {
     zh_CN: {
         attr: {
@@ -73,6 +75,9 @@ const locale: LocaleDef<Schema, Action, '', {
                 grant: '授予',
                 transfer: '转交',
             },
-        }
+            iState: {
+                init: '初始',
+            },
+        },
     },
  };

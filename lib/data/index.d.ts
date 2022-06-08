@@ -1,6 +1,6 @@
 declare const _default: {
-    user: import("general-app-domain/User/Schema").CreateOperationData[];
-    role: import("general-app-domain/Role/Schema").CreateOperationData[];
+    user: UserCreate[];
+    role: RoleCreate[];
     area: ({
         code: string;
         level: string;
