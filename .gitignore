@@ -67,3 +67,5 @@ package-lock.json
 dist
 src/general-app-domain
 lib/general-app-domain
+src/base-app-domain
+lib/base-app-domain
