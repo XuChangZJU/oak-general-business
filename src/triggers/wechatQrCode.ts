@@ -10,7 +10,7 @@ import { assign } from 'lodash';
 
 const triggers: Trigger<EntityDict, 'wechatQrCode', GeneralRuntimeContext<EntityDict>>[] = [
     {
-        name: '选择userEntityGrant时，动态生成需要的数据',
+        name: '选择wechatQrCode时，动态生成需要的数据',
         entity: 'wechatQrCode',
         action: 'select',
         when: 'after',
@@ -23,9 +23,8 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', GeneralRuntimeContext<Entity
             const config2 = config as WechatMpConfig;
             const { appId, appSecret } = config2;
             for (const code of result) {
-                const { type, expired, url, id } = code;
-                console.log('code', code);
-                if (type === 'wechatMpWxaCode') {
+                const { type, expired, id } = code;
+                if (type === 'wechatMpWxaCode' && code.hasOwnProperty('buffer')) {
                     // 小程序码去实时获取（暂时不考虑缓存）
                     const wechatInstance = WechatSDK.getInstance(appId, appSecret, 'wechatMp');
                     const buffer = await wechatInstance.getMpUnlimitWxaCode({
@@ -37,8 +36,9 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', GeneralRuntimeContext<Entity
                     assign(code, {
                         buffer: str,
                     });
+                    count ++;
                 }
-                else if (expired) {
+                else if (expired && code.hasOwnProperty('url')) {
                     // 如果过期了，在这里生成新的临时码并修改值（公众号）
                     throw new Error('not implemented yet');
                 }
