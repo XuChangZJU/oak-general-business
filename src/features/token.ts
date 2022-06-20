@@ -114,6 +114,6 @@ export class Token<ED extends EntityDict, Cxt extends Context<ED>, AD extends Re
                 id: token!,
             }
         }, 'token:getUserId');
-        return result[0].userId;
+        return result[0]?.userId;
     }
 }

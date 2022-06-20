@@ -1,4 +1,4 @@
-import { MakeOakComponent, MakeOakPage, I18nWechatMpRuntimeBase } from 'oak-frontend-base';
+import { MakeOakComponent, MakeOakPage } from 'oak-frontend-base';
 import { EntityDict } from 'general-app-domain';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import aspectDict from '../aspects';
@@ -18,8 +18,5 @@ declare global {
         ReturnType<typeof initialize>
     >;
     const generateNewId: (options?: { timestamp?: boolean }) => Promise<string>;
-    const OakI18n: {
-        i18nInstance: I18nWechatMpRuntimeBase | null;
-    };
 }
 export {}
