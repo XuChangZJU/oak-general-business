@@ -19,8 +19,5 @@ declare global {
         ReturnType<typeof initialize>
     >;
     const generateNewId: (options?: { timestamp?: boolean }) => Promise<string>;
-    const OakI18n: {
-        i18nInstance: I18nWechatMpRuntimeBase | null;
-    };
 }
 export {}
