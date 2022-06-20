@@ -3,6 +3,7 @@ import { SelectionResult } from 'oak-domain/lib/types';
 import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
 import { EntityDict } from 'general-app-domain';
 import { RowStore } from 'oak-domain/lib/types';
+import { assign } from 'lodash';
 
 
 export abstract class GeneralRuntimeContext<ED extends EntityDict> extends UniversalContext<ED> {
@@ -79,5 +80,33 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
 
     getScene() {
         return this.scene;
+    }
+
+    async toString(): Promise<string> {
+        const data = {
+            applicationId: this.applicationId,
+            scene: this.scene,
+        };
+        const token = await this.getTokenFn();
+        if (token) {
+            assign(data, {
+                token,
+            });
+        }
+        return JSON.stringify(data);
+    }
+
+    protected static destructString(strCxt: string) {
+        const {
+            applicationId,
+            scene,
+            token,
+        } = JSON.parse(strCxt);
+
+        return {
+            applicationId,
+            scene,
+            getTokenFn: async () => token,
+        };
     }
 };

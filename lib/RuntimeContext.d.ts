@@ -26,4 +26,5 @@ export declare abstract class GeneralRuntimeContext<ED extends EntityDict> exten
     }> | undefined>;
     getTokenValue(): Promise<string | undefined>;
     getScene(): string;
+    toString(): Promise<string>;
 }
