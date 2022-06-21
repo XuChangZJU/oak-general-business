@@ -2,16 +2,19 @@ import { GeneralRuntimeContext } from '../RuntimeContext';
 import { EntityDict } from 'general-app-domain';
 import { SystemConfig } from 'general-app-domain/System/Schema';
 import qiniuInstance from '../utils/externalUpload/qiniu';
+import { QiniuUploadInfo } from 'oak-frontend-base/src/types/Upload';
 
 const ExternalUploadClazz = {
     qiniu: qiniuInstance,
 };
 
 
-export async function getUploadInfo<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: { origin: string, fileName: string }, context: Cxt): Promise<object> {
+export async function getUploadInfo<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(
+    params: { origin: string, fileName: string },
+    context: Cxt): Promise<QiniuUploadInfo> {
     const { rowStore } = context;
     const application = await context.getApplication();
-    const { type, config, systemId } = application;
+    const { type, config, systemId } = application!;
     const { origin, fileName } = params;
 
     const { result: [system] } = await rowStore.select('system', {

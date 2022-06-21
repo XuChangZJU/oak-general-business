@@ -22,9 +22,12 @@ export declare type WechatMpEnv = {
 export declare type WebEnv = {
     type: 'web';
 };
-export declare type Environment = WechatMpEnv | WebEnv;
+export declare type ServerEnv = {
+    type: 'server';
+};
+export declare type Environment = WechatMpEnv | WebEnv | ServerEnv;
 export interface Schema extends EntityShape {
-    application: Application;
+    application?: Application;
     entity: String<32>;
     entityId: String<64>;
     user?: User;

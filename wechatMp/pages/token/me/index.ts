@@ -88,7 +88,7 @@ OakPage(
                     refreshing: true,
                 });
                 try {
-                    await this.features.token.syncUserInfoWechatMp('token:me');
+                    await this.features.token.syncUserInfoWechatMp();
                 } catch (err) {
                     console.error(err);
                 }

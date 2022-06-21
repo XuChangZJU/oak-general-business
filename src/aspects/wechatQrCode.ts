@@ -14,7 +14,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
     props: WechatQrCodeProps;
 }, context: Cxt) {
     const { entity, entityId, applicationId, tag, lifetimeLength, permanent, props } = options;
-    const { type: appType, config } = await context.getApplication();
+    const { type: appType, config } = (await context.getApplication())!;
 
     if (appType === 'wechatMp') {
         const { qrCodePrefix } = (<WechatMpConfig>config);

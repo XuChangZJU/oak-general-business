@@ -1,11 +1,12 @@
-import { pick } from 'lodash';
 import { EntityDict } from 'general-app-domain';
 import { Action, Feature } from 'oak-frontend-base';
-import { Aspect, Context, SelectRowShape } from 'oak-domain/lib/types';
+import { Aspect, AspectWrapper, Context, SelectRowShape } from 'oak-domain/lib/types';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
-import { WechatMpEnv } from 'general-app-domain/Token/Schema';
 import { Cache } from 'oak-frontend-base';
 import assert from 'assert';
+
+import { AspectDict } from '../aspects/aspectDict';
+import { GeneralRuntimeContext } from '..';
 
 const projection : {    
     id: 1,
@@ -31,34 +32,30 @@ const projection : {
     }
 };
 
-export class Application<ED extends EntityDict, Cxt extends Context<ED>, AD extends Record<string, Aspect<ED, Cxt>>> extends Feature<ED, Cxt, AD> {
-    private applicationId?: string;
+export class Application<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature<ED, Cxt, AD> {
+    private applicationId: string;
     private application?: SelectRowShape<ED['application']['Schema'], typeof projection>;
     private rwLock: RWLock;
-    private cache?: Cache<ED, Cxt, AD>;
+    private cache: Cache<ED, Cxt, AD>;
 
-    constructor() {
-        super();
+    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD>, applicationId: string, cache: Cache<ED, Cxt, AD>) {
+        super(aspectWrapper);
         this.rwLock = new RWLock();
+        this.applicationId = applicationId;
+        this.cache = cache;
     }
 
-    @Action
-    async setApplicationId(id: string) {
+    private async refresh() {
         this.rwLock.acquire('X');
-        this.applicationId = id;
         const { result } = await this.cache!.refresh('application', {
             data: projection,
             filter: {
-                id,
+                id: this.applicationId,
             }
-        }, 'Application:setApplicationId');
+        });
         assert(result.length === 1);
         this.application = result[0] as any;
         this.rwLock.release();
-    }
-
-    setCache(cache: Cache<ED, Cxt, AD>) {
-        this.cache = cache;
     }
 
     getApplication() {
@@ -70,7 +67,7 @@ export class Application<ED extends EntityDict, Cxt extends Context<ED>, AD exte
 
     getApplicationId() {
         this.rwLock.acquire('S');
-        const result = this.applicationId!;
+        const result = this.applicationId;
         this.rwLock.release();
         return result;
     }

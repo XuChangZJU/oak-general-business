@@ -1,19 +1,20 @@
 import { EntityDict } from 'general-app-domain';
 import { Action, Feature } from 'oak-frontend-base';
-import { Aspect, Context, DeduceCreateOperationData } from 'oak-domain/lib/types';
-import { RWLock } from 'oak-domain/lib/utils/concurrent';
+import { AspectWrapper, DeduceCreateOperationData } from 'oak-domain/lib/types';
 import { Upload } from 'oak-frontend-base';
+import { AspectDict } from '../aspects/aspectDict';
+import { GeneralRuntimeContext } from '..';
 
 export class ExtraFile<
     ED extends EntityDict,
-    Cxt extends Context<ED>,
-    AD extends Record<string, Aspect<ED, Cxt>>
+    Cxt extends GeneralRuntimeContext<ED>,
+    AD extends AspectDict<ED, Cxt>
 > extends Feature<ED, Cxt, AD> {
-    constructor() {
-        super();
+    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD>) {
+        super(aspectWrapper);
     }
     @Action
-    async upload(extraFile: DeduceCreateOperationData<EntityDict['extraFile']['OpSchema']>, scene: string) {
+    async upload(extraFile: DeduceCreateOperationData<EntityDict['extraFile']['OpSchema']>) {
         try {
             const {
                 origin,
@@ -25,12 +26,11 @@ export class ExtraFile<
             } = extraFile;
             // 构造文件上传所需的fileName
             const fileName = `${entity}/${objectId}.${extension}`;
-            const uploadInfo = await this.getAspectProxy().getUploadInfo(
+            const { result: uploadInfo } = await this.getAspectWrapper().exec('getUploadInfo',
                 {
                     origin,
                     fileName,
-                },
-                scene
+                }
             );
 
             if (process.env.OAK_PLATFORM === 'wechatMp') {

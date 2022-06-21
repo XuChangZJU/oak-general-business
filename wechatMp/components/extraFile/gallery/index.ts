@@ -155,8 +155,7 @@ OakComponent({
                                             await this.features.extraFile.upload(
                                                 updateData as DeduceCreateOperationData<
                                                     EntityDict['extraFile']['Schema']
-                                                >,
-                                                'extraFile:gallery:upload'
+                                                >
                                             );
                                         Object.assign(updateData, {
                                             bucket,

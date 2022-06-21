@@ -1,27 +1,34 @@
 import { pick } from 'lodash';
 import { EntityDict } from 'general-app-domain';
 import { Action, Feature } from 'oak-frontend-base';
-import { Aspect, Context } from 'oak-domain/lib/types';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
 import { WechatMpEnv } from 'general-app-domain/Token/Schema';
 import { Cache } from 'oak-frontend-base';
+import { AspectDict } from '../aspects/aspectDict';
+import { GeneralRuntimeContext } from '..';
+import { AspectWrapper } from 'oak-domain/lib/types';
 
-export class Token<ED extends EntityDict, Cxt extends Context<ED>, AD extends Record<string, Aspect<ED, Cxt>>> extends Feature<ED, Cxt, AD> {
+export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature<ED, Cxt, AD> {
     private token?: string;
     private rwLock: RWLock;
-    private cache?: Cache<ED, Cxt, AD>;
+    private cache: Cache<ED, Cxt, AD>;
+    private context: Cxt;
 
-    constructor() {
-        super();
+    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD>, cache: Cache<ED, Cxt, AD>, context: Cxt) {
+        super(aspectWrapper);
         this.rwLock = new RWLock();
+        this.cache = cache;
+        this.context = context;
     }
 
     @Action
-    async loginByPassword(mobile: string, password: string, scene: string) {
+    async loginByPassword(mobile: string, password: string) {
         await this.rwLock.acquire('X');
         try {
-            this.token = await this.getAspectProxy().loginByPassword({ password, mobile }, scene);
+            const { result } = await this.getAspectWrapper().exec('loginByPassword', { password, mobile });
+            this.token = result;
             this.rwLock.release();
+            this.context.setToken(result);
         }
         catch (err) {
             this.rwLock.release();
@@ -33,7 +40,6 @@ export class Token<ED extends EntityDict, Cxt extends Context<ED>, AD extends Re
     async loginWechatMp(scene: string) {   
         await this.rwLock.acquire('X');
         try {
-
             const { code } = await wx.login();
             const env = await wx.getSystemInfo();
             const env2 = pick(env, [
@@ -52,10 +58,12 @@ export class Token<ED extends EntityDict, Cxt extends Context<ED>, AD extends Re
                 'fontSizeSetting',
                 'SDKVersion'
             ]);
-            this.token = await this.getAspectProxy().loginWechatMp({
+            const { result } = await this.getAspectWrapper().exec('loginWechatMp', {
                 code,
                 env: Object.assign(env2, { type: 'wechatMp' }) as WechatMpEnv,
-            }, scene);
+            });
+            this.token = result;
+            this.context.setToken(result);
             this.rwLock.release();
         }
         catch(err) {
@@ -65,25 +73,26 @@ export class Token<ED extends EntityDict, Cxt extends Context<ED>, AD extends Re
     }
 
     @Action
-    async syncUserInfoWechatMp(scene: string) {        
+    async syncUserInfoWechatMp() {        
         const info = await wx.getUserProfile({
             desc: '同步微信昵称和头像信息',
         });
 
         const { userInfo: { nickName: nickname, avatarUrl }, encryptedData, signature, iv } = info;
         
-        await this.getAspectProxy().syncUserInfoWechatMp({
+        await this.getAspectWrapper().exec('syncUserInfoWechatMp', {
             nickname,
             avatarUrl,
             encryptedData,
             signature,
             iv,
-        }, scene);
+        });
     }
 
     @Action
     async logout() {
         this.token = undefined;
+        this.context.setToken(undefined);
     }
 
     async getToken() {     
@@ -98,14 +107,10 @@ export class Token<ED extends EntityDict, Cxt extends Context<ED>, AD extends Re
             throw err;
         }
     }
-
-    setCache(cache: Cache<ED, Cxt, AD>) {
-        this.cache = cache;
-    }
     
     async getUserId() {     
         const token = await this.getToken();
-        const result = await this.cache!.get('token', {
+        const result = await this.cache.get('token', {
             data: {
                 id: 1,
                 userId: 1,                    
@@ -113,7 +118,7 @@ export class Token<ED extends EntityDict, Cxt extends Context<ED>, AD extends Re
             filter: {
                 id: token!,
             }
-        }, 'token:getUserId');
+        });
         return result[0]?.userId;
     }
 }

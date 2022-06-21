@@ -35,7 +35,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
     env: WechatMpEnv;
 }, context: Cxt): Promise<string> {
     const { rowStore } = context;
-    const application = await context.getApplication();
+    const application = (await context.getApplication())!;
     const { type, config } = application;
 
     assert(type === 'wechatMp' || config.type === 'wechatMp');
@@ -255,7 +255,7 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ge
 }: {nickname: string, avatarUrl: string, encryptedData: string, iv: string, signature: string}, context: Cxt) {
     const { rowStore } = context;
     const { userId } = (await context.getToken())!;
-    const application = await context.getApplication();
+    const application = (await context.getApplication())!;
     const { result: [{ sessionKey, user }]} = await rowStore.select('wechatUser', {
         data: {
             id: 1,

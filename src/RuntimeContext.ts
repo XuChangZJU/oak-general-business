@@ -7,24 +7,41 @@ import { assign } from 'lodash';
 
 
 export abstract class GeneralRuntimeContext<ED extends EntityDict> extends UniversalContext<ED> {
-    private applicationId: string;
-    private getTokenFn: () => Promise<string | undefined>;
-    private scene: string;
+    private applicationId?: string;
+    private token?: string;
 
-    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, appId: string, getToken: () => Promise<string | undefined>, scene: string) {
+    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, appId?: string) {
         super(store);
         this.applicationId = appId;
-        this.getTokenFn = getToken;
-        this.scene = scene;
     }
 
     getApplicationId() {
         return this.applicationId;
     }
 
+    setToken(token?: string) {
+        this.token = token;
+    }
+
     async getApplication () {
-        const { result: [application] } = await this.rowStore.select('application', {
-            data: {
+        if (this.applicationId) {
+            const { result: [application] } = await this.rowStore.select('application', {
+                data: {
+                    id: 1,
+                    name: 1,
+                    config: 1,
+                    type: 1,
+                    systemId: 1,
+                    system: {
+                        id: 1,
+                        name: 1,
+                        config: 1,
+                    }
+                },
+                filter: {
+                    id: this.applicationId,
+                }
+            }, this) as SelectionResult<EntityDict['application']['Schema'], {
                 id: 1,
                 name: 1,
                 config: 1,
@@ -34,29 +51,15 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
                     id: 1,
                     name: 1,
                     config: 1,
-                }
-            },
-            filter: {
-                id: this.applicationId,
-            }
-        }, this) as SelectionResult<EntityDict['application']['Schema'], {
-            id: 1,
-            name: 1,
-            config: 1,
-            type: 1,
-            systemId: 1,
-            system: {
-                id: 1,
-                name: 1,
-                config: 1,
-            },
-        }>;
-        
-        return application;
+                },
+            }>;
+            
+            return application;
+        }
     }
     
     async getToken() {
-        const tokenValue = await this.getTokenFn();
+        const tokenValue = this.token;
         if (tokenValue) {
             const { result: [token] } = await this.rowStore.select('token', {
                 data: {
@@ -74,23 +77,23 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
         }
     }
 
-    async getTokenValue() {
-        return await this.getTokenFn();
-    }
-
-    getScene() {
-        return this.scene;
+    getTokenValue() {
+        return this.token;
     }
 
     async toString(): Promise<string> {
         const data = {
             applicationId: this.applicationId,
-            scene: this.scene,
         };
-        const token = await this.getTokenFn();
-        if (token) {
+        if (this.token) {
             assign(data, {
-                token,
+                token: this.token,
+            });
+        }
+        const scene = this.getScene();
+        if (scene) {
+            assign(data, {
+                scene,
             });
         }
         return JSON.stringify(data);
@@ -106,7 +109,7 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
         return {
             applicationId,
             scene,
-            getTokenFn: async () => token,
+            token,
         };
     }
 };

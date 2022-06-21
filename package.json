@@ -4,6 +4,7 @@
     "description": "oak框架中公共业务逻辑的实现",
     "dependencies": {
         "lodash": "^4.17.21",
+        "oak-common-aspect": "file:../oak-common-aspect",
         "oak-domain": "file:../oak-domain",
         "oak-frontend-base": "file:../oak-frontend-base",
         "oak-memory-tree-store": "file:../oak-memory-tree-store",
