@@ -2,7 +2,7 @@ import { GeneralRuntimeContext } from '../RuntimeContext';
 import { EntityDict } from 'general-app-domain';
 import { SystemConfig } from 'general-app-domain/System/Schema';
 import qiniuInstance from '../utils/externalUpload/qiniu';
-import { QiniuUploadInfo } from 'oak-frontend-base/src/types/Upload';
+import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
 
 const ExternalUploadClazz = {
     qiniu: qiniuInstance,

@@ -3,6 +3,7 @@ import { Action, Feature } from 'oak-frontend-base';
 import { Aspect, AspectWrapper, Context, SelectRowShape } from 'oak-domain/lib/types';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
 import { Cache } from 'oak-frontend-base';
+import { AspectDict as CommonAspectDict } from 'oak-common-aspect/lib/aspectDict';
 import assert from 'assert';
 
 import { AspectDict } from '../aspects/aspectDict';
@@ -32,13 +33,13 @@ const projection : {
     }
 };
 
-export class Application<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature<ED, Cxt, AD> {
+export class Application<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
     private applicationId: string;
     private application?: SelectRowShape<ED['application']['Schema'], typeof projection>;
     private rwLock: RWLock;
-    private cache: Cache<ED, Cxt, AD>;
+    private cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
 
-    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD>, applicationId: string, cache: Cache<ED, Cxt, AD>) {
+    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD>, applicationId: string, cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>) {
         super(aspectWrapper);
         this.rwLock = new RWLock();
         this.applicationId = applicationId;

@@ -4,17 +4,18 @@ import { Action, Feature } from 'oak-frontend-base';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
 import { WechatMpEnv } from 'general-app-domain/Token/Schema';
 import { Cache } from 'oak-frontend-base';
+import { AspectDict as CommonAspectDict } from 'oak-common-aspect/lib/aspectDict';
 import { AspectDict } from '../aspects/aspectDict';
 import { GeneralRuntimeContext } from '..';
 import { AspectWrapper } from 'oak-domain/lib/types';
 
-export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature<ED, Cxt, AD> {
+export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
     private token?: string;
     private rwLock: RWLock;
-    private cache: Cache<ED, Cxt, AD>;
+    private cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
     private context: Cxt;
 
-    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD>, cache: Cache<ED, Cxt, AD>, context: Cxt) {
+    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, context: Cxt) {
         super(aspectWrapper);
         this.rwLock = new RWLock();
         this.cache = cache;

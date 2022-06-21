@@ -2,6 +2,7 @@ import { EntityDict } from 'general-app-domain';
 import { Action, Feature } from 'oak-frontend-base';
 import { AspectWrapper, DeduceCreateOperationData } from 'oak-domain/lib/types';
 import { Upload } from 'oak-frontend-base';
+import { AspectDict as CommonAspectDict } from 'oak-common-aspect/lib/aspectDict';
 import { AspectDict } from '../aspects/aspectDict';
 import { GeneralRuntimeContext } from '..';
 
@@ -9,8 +10,8 @@ export class ExtraFile<
     ED extends EntityDict,
     Cxt extends GeneralRuntimeContext<ED>,
     AD extends AspectDict<ED, Cxt>
-> extends Feature<ED, Cxt, AD> {
-    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD>) {
+> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
+    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>) {
         super(aspectWrapper);
     }
     @Action
