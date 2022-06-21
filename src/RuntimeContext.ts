@@ -19,6 +19,10 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
         return this.applicationId;
     }
 
+    setApplicationId(appId: string) {
+        this.applicationId = appId;
+    }
+
     setToken(token?: string) {
         this.token = token;
     }

@@ -14,9 +14,10 @@ export function initialize<ED extends EntityDict, Cxt extends GeneralRuntimeCont
     applicationId: string,
     context: Cxt,
 ) {
+    context.setApplicationId(applicationId);
+    const application = new Application<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(aspectWrapper, applicationId, basicFeatures.cache);    
     const token = new Token<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(aspectWrapper, basicFeatures.cache, context);
     const extraFile = new ExtraFile<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(aspectWrapper);
-    const application = new Application<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(aspectWrapper, applicationId, basicFeatures.cache);
     return {
         token,
         extraFile,
