@@ -38,7 +38,7 @@ export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>,
     }
 
     @Action
-    async loginWechatMp(scene: string) {   
+    async loginWechatMp() {   
         await this.rwLock.acquire('X');
         try {
             const { code } = await wx.login();

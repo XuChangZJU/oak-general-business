@@ -28,7 +28,7 @@ OakPage({
         async onLoginClicked(options: WechatMiniprogram.Touch) {
             const { code } = await wx.login();
             const env = await wx.getSystemInfo();
-            await this.features.token.loginWechatMp('token:login');
+            await this.features.token.loginWechatMp();
         },
 
         onReturnClicked() {

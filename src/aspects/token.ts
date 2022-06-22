@@ -89,7 +89,9 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     entity: 'wechatUser',
                     entityId: wechatUser2.id,
                 },
-            }, context);
+            }, context, {
+                omitTrigger: true,
+            });
             if (token && isEqual(token.env, env)) {
                 await rowStore.operate('token', {
                     action: 'update',

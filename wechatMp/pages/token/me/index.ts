@@ -101,7 +101,7 @@ OakPage(
                     refreshing: true,
                 });
                 try {
-                    await this.features.token.loginWechatMp('token:me');
+                    await this.features.token.loginWechatMp();
                 } catch (err) {
                     console.error(err);
                 }
