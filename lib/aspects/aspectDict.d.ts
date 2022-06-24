@@ -1,7 +1,6 @@
 import { EntityDict } from "general-app-domain";
 import { WechatMpEnv } from "general-app-domain/Token/Schema";
 import { QiniuUploadInfo } from "oak-frontend-base/src/types/Upload";
-import { AspectDict as CommonAspectDict } from 'oak-common-aspect/src/aspectDict';
 import { GeneralRuntimeContext } from "..";
 declare type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>> = {
     loginByPassword: (params: {
@@ -27,5 +26,5 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntime
         fileName: string;
     }, context: Cxt) => Promise<QiniuUploadInfo>;
 };
-export declare type AspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>> = CommonAspectDict<ED, Cxt> & GeneralAspectDict<ED, Cxt>;
+export declare type AspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
 export {};

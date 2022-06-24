@@ -6,6 +6,7 @@ export declare abstract class GeneralRuntimeContext<ED extends EntityDict> exten
     private token?;
     constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, appId?: string);
     getApplicationId(): string | undefined;
+    setApplicationId(appId: string): void;
     setToken(token?: string): void;
     getApplication(): Promise<import("oak-domain/lib/types").SelectRowShape<import("general-app-domain/Application/Schema").Schema, {
         id: 1;
