@@ -4,8 +4,8 @@ import { Action, Feature } from 'oak-frontend-base';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
 import { WechatMpEnv } from 'general-app-domain/Token/Schema';
 import { Cache } from 'oak-frontend-base';
-import { AspectDict as CommonAspectDict } from 'oak-common-aspect/lib/aspectDict';
-import { AspectDict } from '../aspects/aspectDict';
+import { CommonAspectDict } from 'oak-common-aspect';
+import { AspectDict } from '../aspects/AspectDict';
 import { GeneralRuntimeContext } from '..';
 import { AspectWrapper } from 'oak-domain/lib/types';
 

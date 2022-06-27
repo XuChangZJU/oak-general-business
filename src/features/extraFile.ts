@@ -2,8 +2,8 @@ import { EntityDict } from 'general-app-domain';
 import { Action, Feature } from 'oak-frontend-base';
 import { AspectWrapper, DeduceCreateOperationData } from 'oak-domain/lib/types';
 import { Upload } from 'oak-frontend-base';
-import { AspectDict as CommonAspectDict } from 'oak-common-aspect/lib/aspectDict';
-import { AspectDict } from '../aspects/aspectDict';
+import { CommonAspectDict } from 'oak-common-aspect';
+import { AspectDict } from '../aspects/AspectDict';
 import { GeneralRuntimeContext } from '..';
 
 export class ExtraFile<

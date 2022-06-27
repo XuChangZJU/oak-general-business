@@ -2,8 +2,8 @@ import { EntityDict } from 'general-app-domain';
 import { Feature } from 'oak-frontend-base';
 import { AspectWrapper, SelectRowShape } from 'oak-domain/lib/types';
 import { Cache } from 'oak-frontend-base';
-import { AspectDict as CommonAspectDict } from 'oak-common-aspect/lib/aspectDict';
-import { AspectDict } from '../aspects/aspectDict';
+import { CommonAspectDict } from 'oak-common-aspect';
+import { AspectDict } from '../aspects/AspectDict';
 import { GeneralRuntimeContext } from '..';
 export declare class Application<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
     private applicationId;

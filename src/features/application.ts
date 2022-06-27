@@ -3,10 +3,10 @@ import { Action, Feature } from 'oak-frontend-base';
 import { Aspect, AspectWrapper, Context, SelectRowShape } from 'oak-domain/lib/types';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
 import { Cache } from 'oak-frontend-base';
-import { AspectDict as CommonAspectDict } from 'oak-common-aspect/lib/aspectDict';
+import { CommonAspectDict } from 'oak-common-aspect';
 import assert from 'assert';
 
-import { AspectDict } from '../aspects/aspectDict';
+import { AspectDict } from '../aspects/AspectDict';
 import { GeneralRuntimeContext } from '..';
 
 const projection : {    
