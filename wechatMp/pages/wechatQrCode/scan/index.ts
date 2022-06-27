@@ -64,10 +64,5 @@ OakPage(
                 };
             }
         },
-    },
-    {
-        data: {},
-        lifetimes: {},
-        methods: {},
     }
 );

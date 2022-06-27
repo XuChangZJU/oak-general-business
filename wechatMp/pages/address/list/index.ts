@@ -33,7 +33,6 @@ OakPage({
             })
         ),
     }),
-}, {
     methods: {
         goNewAddress() {
             this.navigateTo({

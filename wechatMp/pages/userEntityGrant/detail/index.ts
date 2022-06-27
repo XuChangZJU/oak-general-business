@@ -49,11 +49,4 @@ OakPage({
             url: qrCodeUrl || userEntityGrant?.wechatQrCode$entity[0]?.url,
         };
     },
-}, {
-    data: {
-    },
-    lifetimes: {
-    },
-    methods: {
-    }
 });

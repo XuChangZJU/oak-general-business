@@ -1,4 +1,4 @@
-import { MakeOakComponent, MakeOakPage } from 'oak-frontend-base/src/platforms/wechatMp/index';
+import { MakeOakComponent, MakeOakPage } from 'oak-frontend-base/src/page.mp';
 import { EntityDict } from 'general-app-domain';
 import { GeneralRuntimeContext } from '../../src/RuntimeContext';
 import { aspectDict } from '../../src/aspects';

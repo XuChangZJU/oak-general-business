@@ -80,11 +80,12 @@ OakPage(
                 isRoot,
             };
         },
-    },
-    {
+        data: {
+            refreshing: false,
+        },
         methods: {
             async onRefresh() {
-                this.setData({
+                this.setState({
                     refreshing: true,
                 });
                 try {
@@ -92,12 +93,12 @@ OakPage(
                 } catch (err) {
                     console.error(err);
                 }
-                this.setData({
+                this.setState({
                     refreshing: false,
                 });
             },
             async doLogin() {
-                this.setData({
+                this.setState({
                     refreshing: true,
                 });
                 try {
@@ -105,7 +106,7 @@ OakPage(
                 } catch (err) {
                     console.error(err);
                 }
-                this.setData({
+                this.setState({
                     refreshing: false,
                 });
             },

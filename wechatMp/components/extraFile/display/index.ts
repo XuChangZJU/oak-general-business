@@ -13,10 +13,6 @@ OakComponent(
                 isTmp,
             };
         },
-    },
-    {
-        methods: {},
-        lifetimes: {},
         properties: {
             // 图片显示模式
             mode: {

@@ -68,11 +68,11 @@ OakPage(
                 userData,
             };
         },
-    },
-    {
         methods: {
-            goUserManageDetail(options: WechatMiniprogram.Touch) {
-                const { id } = options.currentTarget.dataset;
+            goUserManageDetail(input: any) {
+                // resolveInput拿的是target，原来代码拿的是currentTarget
+                const { dataset } = this.resolveInput(input);
+                const { id } = dataset!;
                 this.navigateTo({
                     url: 'detail/index',
                     oakId: id,

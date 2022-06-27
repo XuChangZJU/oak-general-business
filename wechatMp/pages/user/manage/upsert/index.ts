@@ -64,20 +64,17 @@ OakPage({
             idCardTypeIndex,
         });
     },
-}, {
     data: {
         GenderOptions,
         IDCardTypeOptions,
     },
     methods: {
-        setValue(input: WechatMiniprogram.Input) {
-            const { target, detail } = input;
-            const { dataset: { attr } } = target;
-            const { value } = detail;
-            this.setUpdateData(attr, value);
+        setValue(input:any) {
+            const { dataset, value } = this.resolveInput(input);
+            this.setUpdateData(dataset!.attr, value);
         },
-        onBirthChange(e: WechatMiniprogram.PickerChange) {
-            const { value } = e.detail;
+        onBirthChange(input: any) {
+            const { value } = this.resolveInput(input);
             const birth = new Date(value as string);
             birth.setHours(0);
             birth.setMinutes(0);
@@ -85,18 +82,18 @@ OakPage({
             birth.setMilliseconds(0);
             this.setUpdateData('birth', birth);
         },
-        onGenderChange(e: WechatMiniprogram.PickerChange) {
-            const { value } = e.detail;
+        onGenderChange(input: any) {
+            const { value } = this.resolveInput(input);
             this.setUpdateData('gender', GenderOptions[value as unknown as number].value)
         },
-        onIdCardTypeChange(e: WechatMiniprogram.PickerChange) {
-            const { value } = e.detail;
+        onIdCardTypeChange(input: any) {
+            const { value } = this.resolveInput(input);
             this.setUpdateData('idCardType', IDCardTypeOptions[value as unknown as number].value)
         },
         async confirm() {
-            await this.execute(this.data.oakId ? 'update': 'create');
-            if (this.data.oakFrom === 'user:manage:list') {
-                wx.navigateBack();
+            await this.execute(this.props.oakId ? 'update': 'create');
+            if (this.props.oakFrom === 'user:manage:list') {
+                this.navigateBack();
             }
         }
     }

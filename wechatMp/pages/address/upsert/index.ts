@@ -31,13 +31,10 @@ OakPage({
         areaText: address?.area && `${address?.area?.parent?.parent?.name}${address?.area?.parent?.name}${address?.area?.name}`,
         detail: address?.detail,
     }),
-}, {
     methods: {
-        setValue(input: WechatMiniprogram.Input) {
-            const { target, detail } = input;
-            const { dataset: { attr } } = target;
-            const { value } = detail;
-            this.setUpdateData(attr, value);
+        setValue(input: any) {
+            const { dataset, value} = this.resolveInput(input);
+            this.setUpdateData(dataset!.attr, value);
         },
         callAreaPicker() {
             this.callPicker('area', {
@@ -45,9 +42,9 @@ OakPage({
             });
         },
         async confirm() {
-            await this.execute(this.data.oakId ? 'update': 'create');                      
-            if (this.data.oakFrom === 'address:list') {
-                wx.navigateBack();
+            await this.execute(this.props.oakId ? 'update': 'create');                      
+            if (this.props.oakFrom === 'address:list') {
+                this.navigateBack();
             }
         },
         reset() {

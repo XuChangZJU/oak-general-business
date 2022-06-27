@@ -1,5 +1,3 @@
-import { WechatMpEnv } from "general-app-domain/Token/Schema";
-
 OakPage({
     path: 'token:login',
     entity: 'token',
@@ -23,7 +21,6 @@ OakPage({
             loggedIn: false,
         }
     },
-}, {
     methods: {
         async onLoginClicked(options: WechatMiniprogram.Touch) {
             const { code } = await wx.login();
@@ -32,7 +29,7 @@ OakPage({
         },
 
         onReturnClicked() {
-            wx.navigateBack();
+            this.navigateBack();
         }
     }
 });

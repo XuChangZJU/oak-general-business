@@ -19,7 +19,6 @@ OakPage({
     formData: async ({ data: userEntityGrant }) => ({
         ...userEntityGrant
     }),
-}, {
     properties: {
         entity: String,
         entityId: String,
@@ -30,26 +29,26 @@ OakPage({
     },
     lifetimes: {
         ready() {
-            this.setUpdateData('entity', this.data.entity);
-            this.setUpdateData('entityId', this.data.entityId);
-            this.setUpdateData('type', this.data.type);
-            this.setData({
-                relationArr: JSON.parse(this.data.relations),
+            this.setUpdateData('entity', this.props.entity);
+            this.setUpdateData('entityId', this.props.entityId);
+            this.setUpdateData('type', this.props.type);
+            this.setState({
+                relationArr: JSON.parse(this.props.relations),
             })
         }
     },
     methods: {
-        radioChange(e: WechatMiniprogram.RadioGroupChange) {
-            this.setUpdateData('relation', e.detail.value);
+        radioChange(input: any) {
+            const { value } = this.resolveInput(input);
+            this.setUpdateData('relation', value!);
         },
         async handleConfirm() {
             try {
                 const result = await this.execute(
-                    this.data.oakId ? 'update' : 'create',
+                    this.props.oakId ? 'update' : 'create',
                     [OakCongruentRowExists.name]
                 );
 
-                console.log(result);
                 const { data } = result as DeduceCreateSingleOperation<EntityDict['userEntityGrant']['OpSchema']>;
                 const { id } = data;
 
@@ -59,17 +58,15 @@ OakPage({
                 });
             }
             catch (error) {
-                console.log(error);
                 if ((<OakException>error).constructor.name === OakCongruentRowExists.name) {
                     // 这里由于编译的问题，用instanceof会不通过检查
                     const data = (<OakCongruentRowExists<EntityDict, 'userEntityGrant'>>error).getData();
-                    console.log(data);
                     this.navigateTo({
                         url: '../detail/index',
                         oakId: data.id,
                     });
                 }
             }
-        }
+        },
     }
 });

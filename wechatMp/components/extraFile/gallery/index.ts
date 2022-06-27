@@ -8,7 +8,7 @@ OakComponent({
     entity: 'extraFile',
     isList: true,
     async formData ({ data: files }) {
-        const number2 = this.data.maxNumber;
+        const number2 = this.props.maxNumber;
         if (typeof number2 === 'number' && (number2 === 0 || files?.length >= number2)) {
             return {
                 files,
@@ -19,8 +19,7 @@ OakComponent({
             files,
             disableInsert: false,
         };
-    }
-}, {
+    },
     data: {
         selected: -1,
         // 根据 size 不同，计算的图片显示大小不同
@@ -110,7 +109,7 @@ OakComponent({
                 tag1,
                 tag2,
                 entity,
-            } = this.data;
+            } = this.props;
             try {
                 const { errMsg, tempFiles } = await wx.chooseMedia({
                     count: selectCount,
@@ -179,7 +178,7 @@ OakComponent({
             }
         },
         async onItemTapped(event: WechatMiniprogram.Touch) {
-            const { files } = this.data;
+            const { files } = this.state;
             const { index } = event.currentTarget.dataset;
             const imageUrl = composeFileUrl(files[index]!);
             const urls = files?.filter(ele => !!ele).map((ele) => composeFileUrl(ele!));
@@ -192,7 +191,7 @@ OakComponent({
             };
             this.triggerEvent('tap', detail);
             // 预览图片
-            if (this.data.preview) {
+            if (this.props.preview) {
                 const result = await wx.previewImage({
                     urls: urls,
                     current: imageUrl,
@@ -204,7 +203,7 @@ OakComponent({
             const { value, index } = event.currentTarget.dataset;
             const { id } = value;
             if (isMockId(id)) {
-                this.removeNode(this.data.oakFullpath, `${index}`);
+                this.removeNode(this.state.oakFullpath, `${index}`);
             } else {
                 const result = await wx.showModal({
                     title: '确认删除吗',
@@ -212,14 +211,14 @@ OakComponent({
                 });
                 const { confirm } = result;
                 if (confirm) {
-                    this.removeNode(this.data.oakFullpath, `${index}`);
+                    this.removeNode(this.state.oakFullpath, `${index}`);
                 }
             }
         },
     },
 
     observers: {
-        maxNumber: function (maxNumber) {
+        maxNumber: function () {
             this.reRender();
         },
         /**
@@ -228,7 +227,7 @@ OakComponent({
          */
         size: async function (size: number) {
             if (!size) {
-                this.setData({ itemSizePercentage: '' });
+                this.setState({ itemSizePercentage: '' });
                 return;
             }
 
@@ -242,7 +241,7 @@ OakComponent({
             // 根据容器宽度计算单张图片宽度百分比
             const itemSizePercentage =
                 (10 / size) * 10 - (20 / widthRpx) * 100 + '%;';
-            this.setData({ itemSizePercentage: itemSizePercentage });
+            this.setState({ itemSizePercentage: itemSizePercentage });
         },
     },
 });

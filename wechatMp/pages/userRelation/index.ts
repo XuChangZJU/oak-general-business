@@ -73,7 +73,7 @@ OakPage(
         ],
         isList: true,
         formData: async function ({ data: users, params }) {
-            const { entity } = params;
+            const { entity } = params!;
             const entityStr = entity.charAt(0).toUpperCase() + entity.subString(1);
 
             const filters = await this.getFilters();
@@ -83,7 +83,7 @@ OakPage(
                 users: users?.map((ele) => {
                     const { mobile$user, extraFile$entity } =
                         ele || {};
-                    const userEntity = ele[`user${entityStr}$user`];
+                    const userEntity = ele![`user${entityStr}$user`];
                     const mobile = mobile$user && mobile$user[0]?.mobile;
                     const avatar =
                         extraFile$entity &&
@@ -102,8 +102,6 @@ OakPage(
                 )[0].name.$includes,
             };
         },
-    },
-    {
         properties: {
             entity: String,
             entityId: String,
@@ -112,21 +110,19 @@ OakPage(
         data: {},
         lifetimes: {},
         methods: {
-            async searchChange(event: WechatMiniprogram.CustomEvent) {
-                const {
-                    detail: { value },
-                } = event;
+            async searchChange(input: any) {
+                const { value } = this.resolveInput(input);
                 this.addNamedFilter({
                     filter: {
                         $or: [
                             {
                                 name: {
-                                    $includes: value,
+                                    $includes: value!,
                                 },
                             },
                             {
                                 nickname: {
-                                    $includes: value,
+                                    $includes: value!,
                                 },
                             },
                         ],
@@ -141,7 +137,7 @@ OakPage(
                 this.refresh();
             },
             goUpsert() {
-                const { entity, entityId } = this.data;
+                const { entity, entityId } = this.props;
                 console.log(entity, entityId);
                 this.navigateTo({
                     url: '../userEntityGrant/grant/index',

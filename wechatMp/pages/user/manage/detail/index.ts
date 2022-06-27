@@ -76,8 +76,6 @@ OakPage(
             'verify',
             'play',
         ],
-    },
-    {
         data: {
             show: false,
             actionDescriptions: {
@@ -133,12 +131,12 @@ OakPage(
         },
         methods: {
             openDrawer() {
-                this.setData({
+                this.setState({
                     show: true,
                 });
             },
             closeDrawer() {
-                this.setData({
+                this.setState({
                     show: false,
                 });
             },
@@ -148,7 +146,7 @@ OakPage(
                     case 'update': {
                         this.navigateTo({
                             url: '../upsert/index',
-                            oakId: this.data.oakId,
+                            oakId: this.props.oakId,
                         });
                         return;
                     }
@@ -166,7 +164,7 @@ OakPage(
                     }
                 }
                 if (action === 'play') {
-                    wx.navigateBack({
+                    this.navigateBack({
                         delta: 2,
                     });
                 }

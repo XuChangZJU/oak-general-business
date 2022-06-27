@@ -6,4 +6,4 @@ OakComponent({
     formData: async ({ data: area }) => ({
         name: area?.name!,
     }),
-}, {});
+});

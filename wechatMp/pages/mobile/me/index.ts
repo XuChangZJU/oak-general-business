@@ -12,10 +12,9 @@ OakPage({
     formData: async ({ data: mobiles }) => ({
         mobiles,
     }),
-}, {
     methods: {
         async onRefreshMobile(e: any) {
-            this.setData({
+            this.setState({
                 refreshing: true,
             });
             try {
@@ -24,7 +23,7 @@ OakPage({
             catch (err) {
                 console.error(err);
             }
-            this.setData({
+            this.setState({
                 refreshing: false,
             });
         }

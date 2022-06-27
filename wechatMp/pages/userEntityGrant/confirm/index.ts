@@ -11,12 +11,7 @@ OakPage({
         return {
             relation: userEntityGrant?.relation,
         }
-    },
-}, {
-    data: {
-    },
-    lifetimes: {
-    },
+    },    
     methods: {
         handleConfirm() {
             this.execute('confirm');
