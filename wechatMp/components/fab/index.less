@@ -1,0 +1,82 @@
+@import "../../config/styles/_base.less";
+
+.btn-view {
+  position: fixed;
+}
+
+.fab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  outline: 0;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  color: #fff;
+  width: 112rpx;
+  height: 112rpx;
+  z-index: 1050;
+  font-size: 0.875rem;
+  line-height: 1.75;
+  text-transform: uppercase;
+  border-radius: 50%;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  box-shadow: 0 3px 5px -1px rgb(0 0 0 / 20%), 0 6px 10px 0 rgb(0 0 0 / 14%), 0 1px 18px 0 rgb(0 0 0 / 12%);
+
+  &:active {
+    box-shadow: 0 7px 8px -4px rgb(0 0 0 / 20%), 0 12px 17px 2px rgb(0 0 0 / 14%), 0 5px 22px 4px rgb(0 0 0 / 12%);
+  }
+
+  &-default {
+    background-color: @default-color;
+  }
+
+  &-success {
+    background-color: @success-color;
+  }
+
+  &-warning {
+    background-color: @warning-color;
+  }
+
+  &-error {
+    background-color: @error-color;
+  }
+}
+
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple:focus {
+  outline: none;
+}
+
+.ripple::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  pointer-events: none;
+  background-color: #888;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.ripple:active::after {
+  opacity: 0.3;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0s;
+}
