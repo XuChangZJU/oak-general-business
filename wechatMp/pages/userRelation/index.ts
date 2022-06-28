@@ -1,11 +1,13 @@
 import { composeFileUrl } from '../../../src/utils/extraFile';
+import { EntityDict } from 'general-app-domain';
+
 OakPage(
     {
         path: 'userRelation:list',
         entity: 'user',
-        projection: (data) => {
-            const { entity } = data;
-            const entityStr = entity.charAt(0).toUpperCase() + entity.subString(1);
+        projection: async ({onLoadOptions}) => {
+            const { entity } = onLoadOptions;
+            const entityStr = entity && entity.charAt(0).toUpperCase() + entity.substring(1);
             return {
                 id: 1,
                 name: 1,
@@ -47,17 +49,17 @@ OakPage(
                     indexFrom: 0,
                     count: 1,
                 },
-            }
+            };
         },
         filters: [
             {
-                filter: async ({ features, rest: params }) => {
-                    const { entityId, relations, entity } = params;
-                    const entityStr = entity.charAt(0).toUpperCase() + entity.subString(1);
+                filter: async ({ onLoadOptions }) => {
+                    const { entityId, relations, entity } = onLoadOptions;
+                    const entityStr = entity && entity.charAt(0).toUpperCase() + entity.substring(1);
                     const userRelationFilter = {
                         [`${entity}Id`]: entityId,
                     };
-                    return {
+                    return Object.assign({} as EntityDict, {
                         id: {
                             $in: {
                                 entity: `user${entityStr}`,
@@ -67,7 +69,7 @@ OakPage(
                                 filter: userRelationFilter,
                             },
                         },
-                    };
+                    });
                 },
             },
         ],
