@@ -1,5 +1,4 @@
 import { composeFileUrl } from '../../../src/utils/extraFile';
-import { EntityDict } from 'general-app-domain';
 
 OakPage(
     {
@@ -59,7 +58,7 @@ OakPage(
                     const userRelationFilter = {
                         [`${entity}Id`]: entityId,
                     };
-                    return Object.assign({} as EntityDict, {
+                    return {
                         id: {
                             $in: {
                                 entity: `user${entityStr}`,
@@ -69,7 +68,7 @@ OakPage(
                                 filter: userRelationFilter,
                             },
                         },
-                    });
+                    } as any;
                 },
             },
         ],
