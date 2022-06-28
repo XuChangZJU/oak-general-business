@@ -80,7 +80,7 @@ OakPage(
             const filter = await this.getFilterByName('name');
 
             return {
-                users: users?.map((ele) => {
+                users: users?.map((ele: any) => {
                     const { mobile$user, extraFile$entity } =
                         ele || {};
                     const userEntity = ele![`user${entityStr}$user`];
@@ -89,7 +89,7 @@ OakPage(
                         extraFile$entity &&
                         extraFile$entity[0] &&
                         composeFileUrl(extraFile$entity[0]);
-                    const relations = userEntity?.map((ele) => ele.relation);
+                    const relations = userEntity?.map((ele: any) => ele.relation);
                     const user2 = Object.assign({}, ele, {
                         mobile,
                         avatar,
