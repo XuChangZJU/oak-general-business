@@ -59,7 +59,8 @@ export class Application<ED extends EntityDict, Cxt extends GeneralRuntimeContex
         this.rwLock.release();
     }
 
-    getApplication() {
+    async getApplication() {
+        await this.refresh();
         this.rwLock.acquire('S');
         const result = this.application!;
         this.rwLock.release();
