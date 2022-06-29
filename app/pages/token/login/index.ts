@@ -1,4 +1,4 @@
-OakPage({
+export default OakPage({
     path: 'token:login',
     entity: 'token',
     projection: {
@@ -19,7 +19,7 @@ OakPage({
         }
         return {
             loggedIn: false,
-        }
+        };
     },
     methods: {
         async onLoginClicked(options: WechatMiniprogram.Touch) {
@@ -30,6 +30,6 @@ OakPage({
 
         onReturnClicked() {
             this.navigateBack();
-        }
-    }
+        },
+    },
 });

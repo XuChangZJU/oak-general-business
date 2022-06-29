@@ -1,6 +1,6 @@
 import { composeFileUrl } from '../../../../src/utils/extraFile';
 
-OakPage({
+export default OakPage({
     path: 'mobile:me',
     entity: 'mobile',
     isList: true,
@@ -19,13 +19,12 @@ OakPage({
             });
             try {
                 console.log(e.detail.code);
-            }
-            catch (err) {
+            } catch (err) {
                 console.error(err);
             }
             this.setState({
                 refreshing: false,
             });
-        }
-    }
+        },
+    },
 });

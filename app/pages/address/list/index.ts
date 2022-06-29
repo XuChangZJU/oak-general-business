@@ -1,6 +1,6 @@
 // index.ts
 
-OakPage({
+export default OakPage({
     path: 'address:list',
     entity: 'address',
     projection: {
@@ -23,21 +23,21 @@ OakPage({
     },
     isList: true,
     formData: async ({ data }) => ({
-        addresses: data.map(
-            (address) => ({
-                name: address?.name!,
-                phone: address?.phone!,
-                districtName: address?.area?.name!,
-                areaText: address?.area && `${address?.area?.parent?.parent?.name}${address?.area?.parent?.name}${address?.area?.name}`,
-                detail: address?.detail,
-            })
-        ),
+        addresses: data.map((address) => ({
+            name: address?.name!,
+            phone: address?.phone!,
+            districtName: address?.area?.name!,
+            areaText:
+                address?.area &&
+                `${address?.area?.parent?.parent?.name}${address?.area?.parent?.name}${address?.area?.name}`,
+            detail: address?.detail,
+        })),
     }),
     methods: {
         goNewAddress() {
             this.navigateTo({
                 url: '../upsert/index',
             });
-        }
-    }
+        },
+    },
 });

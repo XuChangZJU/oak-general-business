@@ -1,6 +1,6 @@
 import { composeFileUrl } from '../../../src/utils/extraFile';
 
-OakPage(
+export default OakPage(
     {
         path: 'userRelation:list',
         entity: 'user',

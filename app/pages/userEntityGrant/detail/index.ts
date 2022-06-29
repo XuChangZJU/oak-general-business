@@ -1,5 +1,5 @@
 
-OakPage({
+export default OakPage({
     path: 'userEntityGrant:detail',
     entity: 'userEntityGrant',
     projection: {
@@ -17,7 +17,7 @@ OakPage({
                 id: 1,
                 entity: 1,
                 entityId: 1,
-                type: 1,//类型
+                type: 1, //类型
                 ticket: 1,
                 url: 1,
                 buffer: 1,
@@ -41,7 +41,8 @@ OakPage({
             for (let i = 0; i < str.length; i++) {
                 buf2[i] = str.charCodeAt(i);
             }
-            qrCodeUrl = 'data:image/jpeg;base64,' + wx.arrayBufferToBase64(buf2);
+            qrCodeUrl =
+                'data:image/jpeg;base64,' + wx.arrayBufferToBase64(buf2);
         }
         return {
             relation: userEntityGrant?.relation,

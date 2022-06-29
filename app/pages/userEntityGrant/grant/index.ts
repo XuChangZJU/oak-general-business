@@ -1,10 +1,10 @@
 import { EntityDict } from 'general-app-domain';
 import { DeduceCreateOperation, DeduceCreateSingleOperation, OakException, OakCongruentRowExists } from "oak-domain/lib/types";
 
-OakPage({
+export default OakPage({
     path: 'userEntityGrant:upsert',
     entity: 'userEntityGrant',
-    
+
     projection: {
         id: 1,
         entity: 1,
@@ -17,7 +17,7 @@ OakPage({
     },
     isList: false,
     formData: async ({ data: userEntityGrant }) => ({
-        ...userEntityGrant
+        ...userEntityGrant,
     }),
     properties: {
         entity: String,
@@ -25,8 +25,7 @@ OakPage({
         relations: String,
         type: String,
     },
-    data: {
-    },
+    data: {},
     lifetimes: {
         ready() {
             this.setUpdateData('entity', this.props.entity);
@@ -34,8 +33,8 @@ OakPage({
             this.setUpdateData('type', this.props.type);
             this.setState({
                 relationArr: JSON.parse(this.props.relations),
-            })
-        }
+            });
+        },
     },
     methods: {
         radioChange(input: any) {
@@ -49,18 +48,24 @@ OakPage({
                     [OakCongruentRowExists.name]
                 );
 
-                const { data } = result as DeduceCreateSingleOperation<EntityDict['userEntityGrant']['OpSchema']>;
+                const { data } = result as DeduceCreateSingleOperation<
+                    EntityDict['userEntityGrant']['OpSchema']
+                >;
                 const { id } = data;
 
                 this.navigateTo({
                     url: '../detail/index',
                     oakId: id,
                 });
-            }
-            catch (error) {
-                if ((<OakException>error).constructor.name === OakCongruentRowExists.name) {
+            } catch (error) {
+                if (
+                    (<OakException>error).constructor.name ===
+                    OakCongruentRowExists.name
+                ) {
                     // 这里由于编译的问题，用instanceof会不通过检查
-                    const data = (<OakCongruentRowExists<EntityDict, 'userEntityGrant'>>error).getData();
+                    const data = (<
+                        OakCongruentRowExists<EntityDict, 'userEntityGrant'>
+                    >error).getData();
                     this.navigateTo({
                         url: '../detail/index',
                         oakId: data.id,
@@ -68,5 +73,5 @@ OakPage({
                 }
             }
         },
-    }
+    },
 });

@@ -19,7 +19,7 @@ const IDCardTypeOptions = [
     }
 ];
 
-OakPage({
+export default OakPage({
     path: 'user:manage:upsert',
     entity: 'user',
     projection: {
@@ -35,31 +35,31 @@ OakPage({
     isList: false,
     formData: async ({ data: user }) => {
         const { birth, gender, idCardType } = user || {};
-        const birthText = birth && (new Date(birth)).toLocaleDateString();
+        const birthText = birth && new Date(birth).toLocaleDateString();
         const GenderDict = {
             male: '男',
             female: '女',
         };
         const genderText = gender && GenderDict[gender];
-        const genderIndex = gender && GenderOptions.find(
-            ele => ele.value === gender
-        );
+        const genderIndex =
+            gender && GenderOptions.find((ele) => ele.value === gender);
         const IdCardTypeDict = {
             'ID-Card': '身份证',
-            'passport': '护照',
+            passport: '护照',
             'Mainland-passport': '港澳通行证',
         };
         const idCardTypeText = idCardType && IdCardTypeDict[idCardType];
-        const idCardTypeIndex = idCardType && IDCardTypeOptions.find(
-            ele => ele.value === gender
-        );
+        const idCardTypeIndex =
+            idCardType && IDCardTypeOptions.find((ele) => ele.value === gender);
         const now = new Date();
         return Object.assign({}, user, {
             birthText,
             genderText,
             idCardTypeText,
             oldestBirthday: `${now.getFullYear() - 120}-01-01`,
-            today: `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`,
+            today: `${now.getFullYear()}-${
+                now.getMonth() + 1
+            }-${now.getDate()}`,
             genderIndex,
             idCardTypeIndex,
         });
@@ -69,7 +69,7 @@ OakPage({
         IDCardTypeOptions,
     },
     methods: {
-        setValue(input:any) {
+        setValue(input: any) {
             const { dataset, value } = this.resolveInput(input);
             this.setUpdateData(dataset!.attr, value);
         },
@@ -84,17 +84,23 @@ OakPage({
         },
         onGenderChange(input: any) {
             const { value } = this.resolveInput(input);
-            this.setUpdateData('gender', GenderOptions[value as unknown as number].value)
+            this.setUpdateData(
+                'gender',
+                GenderOptions[value as unknown as number].value
+            );
         },
         onIdCardTypeChange(input: any) {
             const { value } = this.resolveInput(input);
-            this.setUpdateData('idCardType', IDCardTypeOptions[value as unknown as number].value)
+            this.setUpdateData(
+                'idCardType',
+                IDCardTypeOptions[value as unknown as number].value
+            );
         },
         async confirm() {
-            await this.execute(this.props.oakId ? 'update': 'create');
+            await this.execute(this.props.oakId ? 'update' : 'create');
             if (this.props.oakFrom === 'user:manage:list') {
                 this.navigateBack();
             }
-        }
-    }
+        },
+    },
 });
