@@ -9,7 +9,7 @@ export declare function createWechatQrCode<ED extends EntityDict, T extends keyo
     lifetimeLength?: number;
     permanent?: boolean;
     props: WechatQrCodeProps;
-}, context: Cxt): Promise<Omit<Omit<import("general-app-domain/WechatQrCode/Schema").OpSchema, "entity" | "entityId" | "applicationId">, import("oak-domain/lib/types").InstinctiveAttributes> & {
+}, context: Cxt): Promise<Omit<Omit<import("general-app-domain/WechatQrCode/Schema").OpSchema, "applicationId" | "entity" | "entityId">, import("oak-domain/lib/types").InstinctiveAttributes> & {
     id: string;
 } & {
     applicationId: string;

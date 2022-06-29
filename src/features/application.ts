@@ -44,6 +44,7 @@ export class Application<ED extends EntityDict, Cxt extends GeneralRuntimeContex
         this.rwLock = new RWLock();
         this.applicationId = applicationId;
         this.cache = cache;
+        this.refresh();
     }
 
     private async refresh() {
@@ -60,7 +61,6 @@ export class Application<ED extends EntityDict, Cxt extends GeneralRuntimeContex
     }
 
     async getApplication() {
-        await this.refresh();
         this.rwLock.acquire('S');
         const result = this.application!;
         this.rwLock.release();
