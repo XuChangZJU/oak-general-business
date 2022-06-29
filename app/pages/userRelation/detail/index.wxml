@@ -1,0 +1,16 @@
+<!-- index.wxml -->
+<view class="container">
+    <view class="primary-bg"></view>
+    <view class="content">
+        <image mode="aspectFill" class="img" src="{{user.avatar}}" lazy-load></image>
+        <text class="name">{{user.name}}</text>
+        <text class="mobile">{{user.mobile}}</text>
+        <divider />
+        <view class="row-end">
+            <l-button type="default" size="mini" bind:lintap="goRelationUpsert">更新权限</l-button>
+        </view>
+        <block wx:for="{{user.relations}}" wx:for-index="relationIndex" wx:for-item="relation" wx:key="relationIndex">
+            <l-tag class="tag" shape="circle" plain="{{true}}">{{relation}}</l-tag>
+        </block>
+    </view>
+</view>

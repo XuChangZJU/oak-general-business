@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "权限详情",
+  "usingComponents": {
+      "l-button": "../../../lin-ui/button/index",
+      "l-tag": "../../../lin-ui/tag/index",
+      "l-icon": "../../../lin-ui/icon/index",
+      "divider": "../../../components/divider/index",
+      "fab": "../../../components/fab/index"
+  }
+}

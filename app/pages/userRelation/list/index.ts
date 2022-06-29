@@ -1,4 +1,4 @@
-import { composeFileUrl } from '../../../src/utils/extraFile';
+import { composeFileUrl } from '../../../../src/utils/extraFile';
 
 OakPage(
     {
@@ -24,7 +24,7 @@ OakPage(
                     data: {
                         id: 1,
                         userId: 1,
-                        entityId: 1,
+                        [`${entity}Id`]: 1,
                         relation: 1,
                     },
                 },
@@ -75,8 +75,7 @@ OakPage(
         isList: true,
         formData: async function ({ data: users, params }) {
             const { entity } = params!;
-            console.log();
-            const entityStr = entity.charAt(0).toUpperCase() + entity.subString(1);
+            const entityStr = entity.charAt(0).toUpperCase() + entity.substring(1);
 
             const filters = await this.getFilters();
             const filter = await this.getFilterByName('name');
@@ -140,13 +139,24 @@ OakPage(
             },
             goUpsert() {
                 const { entity, entityId } = this.props;
-                console.log(entity, entityId);
                 this.navigateTo({
                     url: '../userEntityGrant/grant/index',
                     entity,
                     entityId,
                     relations: ['manager'],
                     type: 'grant',
+                });
+            },
+            handleCardClick(event: any) {
+                const { entity, entityId } = this.props;
+                const { dataset } = this.resolveInput(event);
+                const { id } = dataset!;
+                this.navigateTo({
+                    url: '../detail/index',
+                    oakId: id,
+                    entity,
+                    entityId,
+                    relations: ['manager'],
                 });
             },
         },
