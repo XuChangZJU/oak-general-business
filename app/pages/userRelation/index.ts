@@ -75,6 +75,7 @@ OakPage(
         isList: true,
         formData: async function ({ data: users, params }) {
             const { entity } = params!;
+            console.log();
             const entityStr = entity.charAt(0).toUpperCase() + entity.subString(1);
 
             const filters = await this.getFilters();

@@ -78,6 +78,6 @@
     "**/*.spec.ts",
     "test",
     "scripts",
-    "wechatMp"
+    "app"
   ]
 }
