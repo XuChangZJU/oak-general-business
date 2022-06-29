@@ -5,7 +5,7 @@ OakComponent(
         entity: 'extraFile',
         isList: false,
         formData: async ({ data: extraFile, features }) => {
-            const application = features.application.getApplication();
+            const application = await features.application.getApplication();
 
             const isTmp = extraFile?.id && isMockId(extraFile.id);
             return {
