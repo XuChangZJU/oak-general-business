@@ -1,7 +1,7 @@
 import { expandUuidTo36Bytes } from 'oak-domain/lib/utils/uuid'
 
 
-OakPage(
+export default OakPage(
     {
         path: 'wechatQrCode:scan',
         entity: 'wechatQrCode',

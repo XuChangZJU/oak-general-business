@@ -1,5 +1,5 @@
 
-OakPage({
+export default OakPage({
     path: 'address:upsert',
     entity: 'address',
     projection: {
@@ -28,12 +28,14 @@ OakPage({
         // provinceName: address?.area?.parent.parent.name,
         districtName: address?.area?.name!,
         area: address?.area,
-        areaText: address?.area && `${address?.area?.parent?.parent?.name}${address?.area?.parent?.name}${address?.area?.name}`,
+        areaText:
+            address?.area &&
+            `${address?.area?.parent?.parent?.name}${address?.area?.parent?.name}${address?.area?.name}`,
         detail: address?.detail,
     }),
     methods: {
         setValue(input: any) {
-            const { dataset, value} = this.resolveInput(input);
+            const { dataset, value } = this.resolveInput(input);
             this.setUpdateData(dataset!.attr, value);
         },
         callAreaPicker() {
@@ -42,13 +44,13 @@ OakPage({
             });
         },
         async confirm() {
-            await this.execute(this.props.oakId ? 'update': 'create');                      
+            await this.execute(this.props.oakId ? 'update' : 'create');
             if (this.props.oakFrom === 'address:list') {
                 this.navigateBack();
             }
         },
         reset() {
             this.resetUpdateData();
-        }
-    }
+        },
+    },
 });

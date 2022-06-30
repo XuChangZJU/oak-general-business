@@ -1,5 +1,5 @@
 
-OakPage({
+export default OakPage({
     path: 'userEntityGrant:confirm',
     entity: 'userEntityGrant',
     projection: {
@@ -7,14 +7,14 @@ OakPage({
         relation: 1,
     },
     isList: false,
-    formData: async ({data: userEntityGrant}) => {
+    formData: async ({ data: userEntityGrant }) => {
         return {
             relation: userEntityGrant?.relation,
-        }
-    },    
+        };
+    },
     methods: {
         handleConfirm() {
             this.execute('confirm');
-        }
-    }
+        },
+    },
 });
