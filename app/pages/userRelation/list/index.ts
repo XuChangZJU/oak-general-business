@@ -156,7 +156,7 @@ OakPage(
                     oakId: id,
                     entity,
                     entityId,
-                    relations: ['manager'],
+                    relations: JSON.stringify(['manager', 'owner']),
                 });
             },
         },

@@ -60,6 +60,7 @@ Component({
     parentPlacement: ''
   },
   ready() {
+    console.log(this.data.checked);
     const parent = this.getRelationNodes('../checkbox-group/index')[0];
     let {placement: parentPlacement} = parent.properties;
     this.setData({parentPlacement});

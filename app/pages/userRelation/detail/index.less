@@ -4,7 +4,6 @@
 
 page {
   height: 100%;
-  background-color: @background-color-base;
 }
 
 .container {
@@ -18,31 +17,64 @@ page {
   .safe-area-inset-bottom();
 }
 
-.search-bar {
-  background-color: #fff;
-  padding-top: 10rpx;
-  padding-bottom: 10rpx;
-  z-index: 1;
+.primary-bg {
+  width: 100%;
+  height: 400rpx;
+  background-color: @default-color;
 }
-
-.card-view {
-  margin-top: @size-spacing-small !important;
+.img {
+  width: 180rpx;
+  height: 180rpx;
+  margin: 0 auto;
+  border-radius: 50%;
+  background-color: @background-color-base;
 }
-
+.row-end {
+  display: flex;
+  justify-content: flex-end;
+}
+.white-bg {
+  display: flex;
+  flex-direction: column;
+  padding: @size-spacing-base;
+}
 .content {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(-110rpx);
+}
+.name {
+  margin: @size-spacing-small auto;
+  font-size: @size-font-large;
+  color: @title-color;
+}
+.mobile {
+  margin: 0 auto;
+  font-size: @size-font-base;
+  color: @text-color;
+}
+.tag-view {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: @size-spacing-small;
+}
+.tag {
+  margin: 2rpx;
+}
+.btn-view {
+  display: flex;
+  justify-content: center;
+}
+.check-view {
+  width: 700rpx;
   display: flex;
   flex: 1;
   flex-direction: column;
-  font-size: 28rpx;
-  color: @text-color;
+  background-color: #fff;
 }
-
-.row {
+.col {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.tag {
-  margin-right: 8rpx;
+  flex-direction: column;
+  flex: 1;
 }

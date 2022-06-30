@@ -5,7 +5,7 @@
     </view>
     <block wx:if="{{ users && users.length > 0 }}">
         <block wx:for="{{users}}" wx:key="index" wx:for-item="item">
-            <l-card l-class="card-view" title="{{item.name}}"  describe="{{item.nickname}}" data-id="{{item.id}}" bind:tap="handleCardClick" type="avatar" image="{{item.avatar}}" >
+            <l-card l-class="card-view" title="{{item.name}}" describe="{{item.nickname}}" data-id="{{item.id}}" bind:tap="handleCardClick" type="avatar" image="{{item.avatar}}">
                 <!-- 此处为content -->
                 <view class="content">
                     <view class="row">

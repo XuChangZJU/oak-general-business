@@ -24,7 +24,7 @@ OakPage(
                     data: {
                         id: 1,
                         userId: 1,
-                        entityId: 1,
+                        [`${entity}Id`]: 1,
                         relation: 1,
                     },
                 },
@@ -52,14 +52,20 @@ OakPage(
         },
         isList: false,
         formData: async function ({ data: user, params }) {
-            const { entity } = params!;
+            const { entity, relations } = params!;
             const entityStr = entity.charAt(0).toUpperCase() + entity.substring(1);
             const userRelation = user![`user${entityStr}$user`];
-            const relations = userRelation?.map((ele: any) => ele.relation);
+            const relationArr = userRelation?.map((ele: any) => ele.relation) || [];
+            const relationList = JSON.parse(relations) as Array<string>;
+            const relationArr2 = [];
+            relationList.forEach(ele => {
+                relationArr2.push([ele, relationArr.includes(ele) ? true : false]);
+            })
             const { extraFile$entity } = user || {};
             const avatar = extraFile$entity![0] && composeFileUrl(extraFile$entity[0]);
             return Object.assign(user, {
-                relations,
+                relationArr,
+                relationArr2,
                 avatar,
             })
         },
@@ -68,10 +74,29 @@ OakPage(
             entityId: String,
             relations: String,
         },
-        data: {},
-        lifetimes: {},
+        data: {
+            show: false,
+        },
+        lifetimes: {
+        },
         methods: {
-            goRelationUpsert() {}
+            handleShow() {
+                this.setState({
+                    show: true,
+                });
+            },
+            onChangeTap(input: WechatMiniprogram.Touch) {
+                const { key, checked } = this.resolveInput(input, ['key', 'checked']);
+                const { relationArr2 } = this.data;
+                relationArr2.forEach((ele: any) => {
+                    if (ele[0] === key) {
+                        ele[1] = checked;
+                    }
+                })
+                this.setState({
+                    relationArr2
+                })
+            },
         },
     }
 );

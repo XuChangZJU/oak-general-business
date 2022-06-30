@@ -5,6 +5,9 @@
       "l-tag": "../../../lin-ui/tag/index",
       "l-icon": "../../../lin-ui/icon/index",
       "divider": "../../../components/divider/index",
-      "fab": "../../../components/fab/index"
+      "fab": "../../../components/fab/index",
+      "l-dialog": "../../../lin-ui/dialog/index",
+      "l-checkbox-group": "../../../lin-ui/checkbox-group/index",
+      "l-checkbox": "../../../lin-ui/checkbox/index"
   }
 }

@@ -70,6 +70,10 @@ Component({
     openApi: {
       type: Boolean,
       value: true
+    },
+    width: {
+      type: Number,
+      value: 520,
     }
   },
   data: {
