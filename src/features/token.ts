@@ -7,7 +7,7 @@ import { Cache } from 'oak-frontend-base';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { AspectDict } from '../aspects/AspectDict';
 import { GeneralRuntimeContext } from '..';
-import { AspectWrapper } from 'oak-domain/lib/types';
+import { AspectWrapper, SelectRowShape } from 'oak-domain/lib/types';
 import { ROOT_ROLE_ID } from '../constants';
 
 export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
@@ -112,16 +112,19 @@ export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>,
     
     async getUserId() {     
         const token = await this.getToken();
+        if (!token) {
+            return;
+        }
         const result = await this.cache.get('token', {
             data: {
                 id: 1,
                 userId: 1,                    
             },
             filter: {
-                id: token!,
+                id: token,
             }
         });
-        return result[0]?.userId;
+        return result[0]?.userId as string;
     }
 
     async isRoot(): Promise<boolean> {   
@@ -129,7 +132,7 @@ export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>,
         if (!token) {
             return false;
         }
-        const [tokenValue] = await this.cache.get('token', {
+        const [tokenValue] = (await this.cache.get('token', {
             data: {
                 id: 1,
                 userId: 1, 
@@ -148,7 +151,21 @@ export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>,
             filter: {
                 id: token,
             }
-        });
-        return tokenValue?.player?.userRole$user && tokenValue?.player?.userRole$user[0]?.roleId === ROOT_ROLE_ID || false;
+        })) as SelectRowShape<ED['token']['Schema'], {
+            id: 1,
+            userId: 1, 
+            player: {
+                id: 1,
+                userRole$user: {
+                    $entity: 'userRole',
+                    data: {
+                        id: 1,
+                        userId: 1,
+                        roleId: 1,
+                    },
+                },
+            },                   
+        }>[];
+        return (tokenValue?.player?.userRole$user as any).length > 0 ? (tokenValue?.player?.userRole$user as any)[0]?.roleId === ROOT_ROLE_ID : false;
     }
 }
