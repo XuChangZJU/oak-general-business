@@ -8,6 +8,7 @@ import { CommonAspectDict } from 'oak-common-aspect';
 import { AspectDict } from '../aspects/AspectDict';
 import { GeneralRuntimeContext } from '..';
 import { AspectWrapper } from 'oak-domain/lib/types';
+import { ROOT_ROLE_ID } from '../constants';
 
 export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
     private token?: string;
@@ -121,5 +122,33 @@ export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>,
             }
         });
         return result[0]?.userId;
+    }
+
+    async isRoot(): Promise<boolean> {   
+        const token = await this.getToken();
+        if (!token) {
+            return false;
+        }
+        const [tokenValue] = await this.cache.get('token', {
+            data: {
+                id: 1,
+                userId: 1, 
+                player: {
+                    id: 1,
+                    userRole$user: {
+                        $entity: 'userRole',
+                        data: {
+                            id: 1,
+                            userId: 1,
+                            roleId: 1,
+                        },
+                    },
+                },                   
+            },
+            filter: {
+                id: token,
+            }
+        });
+        return tokenValue?.player?.userRole$user && tokenValue?.player?.userRole$user[0]?.roleId === ROOT_ROLE_ID || false;
     }
 }

@@ -73,11 +73,11 @@ export default OakPage(
             },
         ],
         isList: true,
-        formData: async function ({ data: users, params }) {
+        formData: async function ({ data: users, params, features }) {
             const { entity } = params!;
             const entityStr = entity.charAt(0).toUpperCase() + entity.substring(1);
 
-            const filters = await this.getFilters();
+            const isRoot = await features.token.isRoot();
             const filter = await this.getFilterByName('name');
 
             return {
@@ -101,6 +101,7 @@ export default OakPage(
                 searchValue: (
                     filter?.$or as [{ name: { $includes: string } }]
                 )[0].name.$includes,
+                isRoot,
             };
         },
         properties: {
@@ -137,14 +138,10 @@ export default OakPage(
             async searchConfirm() {
                 this.refresh();
             },
-            goUpsert() {
+            goUpsertUser() {
                 const { entity, entityId } = this.props;
                 this.navigateTo({
-                    url: '../userEntityGrant/grant/index',
-                    entity,
-                    entityId,
-                    relations: ['manager'],
-                    type: 'grant',
+                    url: '../user/manage/upsert/index',
                 });
             },
             handleCardClick(event: any) {
