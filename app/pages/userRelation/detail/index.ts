@@ -55,15 +55,15 @@ OakPage(
             const { entity, relations } = params!;
             const entityStr = entity.charAt(0).toUpperCase() + entity.substring(1);
             const userRelation = user![`user${entityStr}$user`];
-            const relationArr = userRelation?.map((ele: any) => ele.relation) || [];
+            const relationArr = (userRelation as any)?.map((ele: any) => ele.relation) || [];
             const relationList = JSON.parse(relations) as Array<string>;
-            const relationArr2 = [];
+            const relationArr2: [string, boolean][] = [];
             relationList.forEach(ele => {
                 relationArr2.push([ele, relationArr.includes(ele) ? true : false]);
             })
             const { extraFile$entity } = user || {};
-            const avatar = extraFile$entity![0] && composeFileUrl(extraFile$entity[0]);
-            return Object.assign(user, {
+            const avatar = extraFile$entity![0] && composeFileUrl(extraFile$entity![0]);
+            return Object.assign(user!, {
                 relationArr,
                 relationArr2,
                 avatar,
@@ -76,6 +76,7 @@ OakPage(
         },
         data: {
             show: false,
+            relationArr2: [],
         },
         lifetimes: {
         },
@@ -87,7 +88,7 @@ OakPage(
             },
             onChangeTap(input: WechatMiniprogram.Touch) {
                 const { key, checked } = this.resolveInput(input, ['key', 'checked']);
-                const { relationArr2 } = this.data;
+                const { relationArr2 } = this.state;
                 relationArr2.forEach((ele: any) => {
                     if (ele[0] === key) {
                         ele[1] = checked;
