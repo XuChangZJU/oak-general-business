@@ -1,3 +1,4 @@
+import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { composeFileUrl } from '../../../../src/utils/extraFile';
 
 OakPage(
@@ -5,8 +6,9 @@ OakPage(
         path: 'userRelation:detail',
         entity: 'user',
         projection: async ({onLoadOptions}) => {
-            const { entity } = onLoadOptions;
-            const entityStr = entity && entity.charAt(0).toUpperCase() + entity.substring(1);
+            const { entity, entityIds, nameExpression, relations } = onLoadOptions;
+            const entityStr = firstLetterUpperCase(entity!);
+            const entityIds2 = JSON.parse(entityIds!) as string[];
             return {
                 id: 1,
                 name: 1,
@@ -27,6 +29,14 @@ OakPage(
                         [`${entity}Id`]: 1,
                         relation: 1,
                     },
+                    filter: {
+                        [`${entity}Id`]: {
+                            $in: entityIds2,
+                        },
+                        relation: {
+                            $in: JSON.parse(relations!),
+                        }
+                    }
                 },
                 extraFile$entity: {
                     $entity: 'extraFile',
@@ -51,34 +61,46 @@ OakPage(
             };
         },
         isList: false,
-        formData: async function ({ data: user, params }) {
-            const { entity, relations } = params!;
-            const entityStr = entity.charAt(0).toUpperCase() + entity.substring(1);
-            const userRelation = user![`user${entityStr}$user`];
-            const relationArr = (userRelation as any)?.map((ele: any) => ele.relation) || [];
-            const relationList = JSON.parse(relations) as Array<string>;
-            const relationArr2: [string, boolean][] = [];
-            relationList.forEach(ele => {
-                relationArr2.push([ele, relationArr.includes(ele) ? true : false]);
-            })
-            const { extraFile$entity } = user || {};
+        formData: async function ({ data: user, props }) {
+            const { entity, relations, entityIds } = props;
+            const entityStr = firstLetterUpperCase(entity!);
+            const { name, nickname, mobile, [`user${entityStr}$user`]: relationRows, extraFile$entity } = user!;
+            // entity按id聚集
+            const entityIds2 = JSON.parse(entityIds!) as string[];
+            const entityRows = entityIds2.map(
+                (id, idx) => ({
+                    id,
+                    name: entityNames[idx],
+                    relations: (relationRows as {
+                        relation: string;
+                        [A: string]: string;
+                    }[]).filter(
+                        ele => ele[`${entity}Id`] === id
+                    ).map(
+                        ele => ele.relation
+                    )
+                })
+            );
             const avatar = extraFile$entity![0] && composeFileUrl(extraFile$entity![0]);
-            return Object.assign(user!, {
-                relationArr,
-                relationArr2,
+            return {
+                name,
+                nickname,
                 avatar,
-            })
+                relations,
+                entityRows,
+                mobile,
+            }
         },
         properties: {
             entity: String,
-            entityId: String,
+            entityIds: String,
+            nameExpression: String,
             relations: String,
+            entityNames: String,
         },
         data: {
             show: false,
             relationArr2: [],
-        },
-        lifetimes: {
         },
         methods: {
             handleShow() {

@@ -1,3 +1,4 @@
+import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { composeFileUrl } from '../../../../src/utils/extraFile';
 
 export default OakPage(
@@ -51,7 +52,8 @@ export default OakPage(
             };
         },
         filters: [
-            {
+            // 暂时注掉
+            /* {
                 filter: async ({ onLoadOptions }) => {
                     const { entityId, relations, entity } = onLoadOptions;
                     const entityStr = entity && entity.charAt(0).toUpperCase() + entity.substring(1);
@@ -70,12 +72,12 @@ export default OakPage(
                         },
                     } as any;
                 },
-            },
+            }, */
         ],
         isList: true,
-        formData: async function ({ data: users, params, features }) {
-            const { entity } = params!;
-            const entityStr = entity.charAt(0).toUpperCase() + entity.substring(1);
+        formData: async function ({ data: users, props, features }) {
+            const { entity } = props;
+            const entityStr = firstLetterUpperCase(entity!);
 
             const isRoot = await features.token.isRoot();
             const filter = await this.getFilterByName('name');
@@ -106,10 +108,13 @@ export default OakPage(
         },
         properties: {
             entity: String,
-            entityId: String,
+            entityIds: String,
             relations: String,
+            nameExpression: String,
         },
-        data: {},
+        data: {
+            searchValue: '',
+        },
         lifetimes: {},
         methods: {
             async searchChange(input: any) {
@@ -139,21 +144,22 @@ export default OakPage(
                 this.refresh();
             },
             goUpsertUser() {
-                const { entity, entityId } = this.props;
+                const { entity, entityIds } = this.props;
                 this.navigateTo({
                     url: '../../user/manage/upsert/index',
                 });
             },
             handleCardClick(event: any) {
-                const { entity, entityId } = this.props;
+                const { entity, entityIds, nameExpression, relations } = this.props;
                 const { dataset } = this.resolveInput(event);
                 const { id } = dataset!;
                 this.navigateTo({
                     url: '../detail/index',
                     oakId: id,
                     entity,
-                    entityId,
-                    relations: JSON.stringify(['manager', 'owner']),
+                    entityIds,
+                    nameExpression,
+                    relations,
                 });
             },
         },

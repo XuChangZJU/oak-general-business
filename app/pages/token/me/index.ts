@@ -53,6 +53,14 @@ export default OakPage({
             },
         },
     },
+    filters: [{
+        filter: async ({ features }) => {
+            const token = await features.token.getToken();
+            return {
+                id: token,
+            };
+        },
+    }],
     formData: async ({ data: [token] }) => {
         const user = token?.user;
         const player = token?.player;

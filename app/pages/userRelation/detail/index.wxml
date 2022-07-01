@@ -4,7 +4,7 @@
     <view class="white-bg">
         <view class="content">
             <image mode="aspectFill" class="img" src="{{avatar}}" lazy-load></image>
-            <text class="name">{{name || '--'}}</text>
+            <text class="name">{{name || nickname || '--'}}</text>
             <text class="mobile">{{mobile || '--'}}</text>
             <divider />
             <view wx:if="{{relationArr.length}}" class="tag-view">

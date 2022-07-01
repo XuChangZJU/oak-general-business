@@ -12,7 +12,7 @@ const checkers: Checker<EntityDict, 'token', GeneralRuntimeContext<EntityDict>> 
         action: 'select',
         entity: 'token',
         checker: async ({ operation }, context) => {
-            const scene = context.getScene();
+            /* const scene = context.getScene();
             const { filter } = operation;
             if (scene === 'token:me') {
                 if (!filter || !filter.id) {
@@ -46,7 +46,7 @@ const checkers: Checker<EntityDict, 'token', GeneralRuntimeContext<EntityDict>> 
                         id: await context.getTokenValue(),
                     })
                 });
-            }
+            } */
             return 0;
         },
     }

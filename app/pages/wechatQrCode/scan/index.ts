@@ -19,7 +19,7 @@ export default OakPage(
         isList: true,
         filters: [
             {
-                filter: async ({ features, rest, onLoadOptions }) => {
+                filter: async ({ onLoadOptions }) => {
                     const scene = decodeURIComponent(onLoadOptions.scene!);
                     const uuid = scene && expandUuidTo36Bytes(scene!);
                     return {
