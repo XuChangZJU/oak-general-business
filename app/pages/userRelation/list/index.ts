@@ -141,7 +141,7 @@ export default OakPage(
             goUpsertUser() {
                 const { entity, entityId } = this.props;
                 this.navigateTo({
-                    url: '../user/manage/upsert/index',
+                    url: '../../user/manage/upsert/index',
                 });
             },
             handleCardClick(event: any) {

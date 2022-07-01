@@ -50,6 +50,19 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
             id: 1,
             userId: 1,
             unionId: 1,
+            user: {
+                id: 1,
+                name: 1,
+                nickname: 1,
+                userRole$user: {
+                    $entity: 'userRole',
+                    data: {
+                        id: 1,
+                        userId: 1,
+                        roleId: 1,
+                    },
+                }
+            }
         },
         filter: {
             applicationId: application.id,
