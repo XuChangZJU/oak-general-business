@@ -22,7 +22,7 @@ export default OakPage({
     properties: {
         entity: String,
         entityId: String,
-        relations: String,
+        relations: Array,
         type: String,
     },
     data: {},
@@ -31,9 +31,6 @@ export default OakPage({
             this.setUpdateData('entity', this.props.entity);
             this.setUpdateData('entityId', this.props.entityId);
             this.setUpdateData('type', this.props.type);
-            this.setState({
-                relationArr: JSON.parse(this.props.relations),
-            });
         },
     },
     methods: {

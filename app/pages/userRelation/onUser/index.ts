@@ -5,9 +5,9 @@ export default OakPage(
     {
         path: 'userRelation:list',
         entity: 'user',
-        projection: async ({onLoadOptions}) => {
-            const { entity } = onLoadOptions;
-            const entityStr = entity && entity.charAt(0).toUpperCase() + entity.substring(1);
+        projection: async ({ props }) => {
+            const { entity } = props;
+            const entityStr = firstLetterUpperCase(entity!);
             return {
                 id: 1,
                 name: 1,
@@ -28,6 +28,12 @@ export default OakPage(
                         [`${entity}Id`]: 1,
                         relation: 1,
                     },
+                    filter: {
+                        relation: {
+                            $in: props.relations!,
+                        },
+                        [`${entity}Id`]: props.entityId!,
+                    }
                 },
                 extraFile$entity: {
                     $entity: 'extraFile',
@@ -52,39 +58,17 @@ export default OakPage(
             };
         },
         filters: [
-            // 暂时注掉
-            /* {
-                filter: async ({ onLoadOptions }) => {
-                    const { entityId, relations, entity } = onLoadOptions;
-                    const entityStr = entity && entity.charAt(0).toUpperCase() + entity.substring(1);
-                    const userRelationFilter = {
-                        [`${entity}Id`]: entityId,
-                    };
-                    return {
-                        id: {
-                            $in: {
-                                entity: `user${entityStr}`,
-                                data: {
-                                    userId: 1,
-                                },
-                                filter: userRelationFilter,
-                            },
-                        },
-                    } as any;
-                },
-            }, */
+            // 由调用者注入oakFilter
         ],
         isList: true,
         formData: async function ({ data: users, props, features }) {
             const { entity } = props;
             const entityStr = firstLetterUpperCase(entity!);
-
-            const isRoot = await features.token.isRoot();
             const filter = await this.getFilterByName('name');
 
             return {
                 users: users?.map((ele: any) => {
-                    const { mobile$user, extraFile$entity } =
+                    const { mobile$user, extraFile$entity  } =
                         ele || {};
                     const userEntity = ele![`user${entityStr}$user`];
                     const mobile = mobile$user && mobile$user[0]?.mobile;
@@ -93,27 +77,28 @@ export default OakPage(
                         extraFile$entity[0] &&
                         composeFileUrl(extraFile$entity[0]);
                     const relations = userEntity?.map((ele: any) => ele.relation);
+                    const hasRelation: boolean[] = this.props.relations.map(ele2 => relations.includes(ele2));
                     const user2 = Object.assign({}, ele, {
                         mobile,
                         avatar,
                         relations,
+                        hasRelation,
                     });
                     return user2;
                 }),
                 searchValue: (
                     filter?.$or as [{ name: { $includes: string } }]
                 )[0].name.$includes,
-                isRoot,
             };
         },
         properties: {
             entity: String,
-            entityIds: String,
-            relations: String,
-            nameExpression: String,
+            entityId: String,
+            relations: Array,
         },
         data: {
             searchValue: '',
+            singleRelation: false,
         },
         lifetimes: {},
         methods: {
@@ -143,25 +128,24 @@ export default OakPage(
             async searchConfirm() {
                 this.refresh();
             },
-            goUpsertUser() {
-                const { entity, entityIds } = this.props;
-                this.navigateTo({
-                    url: '../../user/manage/upsert/index',
-                });
+            onChange(input: any) {
+                const { dataset, checked } = this.resolveInput(input, ['checked']);
+                const { id: userId, relation, index } = dataset as {
+                    id: string,
+                    relation: string,
+                    index: number;
+                };
+                const { entity, entityId } = this.props;
+                const entityStr = firstLetterUpperCase(entity!);
+                this.toggleNode({
+                    relation,
+                    [`${entity}Id`]: entityId,
+                }, checked, `${index}.user${entityStr}$user`)
             },
-            handleCardClick(event: any) {
-                const { entity, entityIds, nameExpression, relations } = this.props;
-                const { dataset } = this.resolveInput(event);
-                const { id } = dataset!;
-                this.navigateTo({
-                    url: '../detail/index',
-                    oakId: id,
-                    entity,
-                    entityIds,
-                    nameExpression,
-                    relations,
-                });
-            },
+            async confirm() {
+                await this.execute();
+                await this.navigateBack();
+            }
         },
     }
 );

@@ -1,0 +1,35 @@
+<!-- index.wxml -->
+<view class="container">
+    <view class="search-bar">
+        <l-search-bar placeholder="搜索" cancel-text="搜索" shape="circle" value="{{searchValue}}" bind:lincancel="searchConfirm" bind:linclear="searchCancel" bind:linchange="searchChange" bind:linconfirm="searchConfirm" />
+    </view>
+    <block wx:if="{{ users && users.length > 0 }}">
+        <block wx:for="{{users}}" wx:for-index="index" wx:for-item="item" wx:key="idx">
+            <l-card l-class="card-view" title="{{item.name}}" describe="{{item.nickname}}" data-id="{{item.id}}" bind:tap="handleCardClick" type="avatar" image="{{item.avatar}}">
+                <block wx:if="{{singleRelation}}">
+                    <view slot="more">
+                        <l-switch />
+                    </view>
+                </block>
+                <block wx:else>
+                    <divider />
+                    <view class="content">
+                        <block wx:for="{{relations}}" wx:key="idx" wx:for-index="index2" wx:for-item="relation">
+                            <view class="relation-item">
+                                <text>{{relation}}</text>
+                                <l-switch checked="{{item.hasRelation[index2]}}" bind:linchange="onChange" data-id="{{item.id}}" data-relation="{{relation}}" data-index="{{index}}" />
+                            </view>
+                        </block>
+                    </view>
+                </block>
+            </l-card>
+        </block>
+        <view class="btn-container">
+            <l-button icon="research" size="long" class="btn" icon-size="20" icon-color="#fff" bind:lintap="goSearchUser">搜索人员</l-button>
+            <l-button type="success" size="long" class="btn" bind:lintap="confirm" disabled="{{!oakDirty}}">确定</l-button>
+        </view>
+    </block>
+    <block wx:else>
+        <l-status-show show="{{true}}" type="data" button-text="搜索人员" bind:lintap="goSearchUser"></l-status-show>
+    </block>
+</view>

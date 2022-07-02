@@ -5,10 +5,9 @@ OakPage(
     {
         path: 'userRelation:detail',
         entity: 'user',
-        projection: async ({onLoadOptions}) => {
-            const { entity, entityIds, nameExpression, relations } = onLoadOptions;
+        projection: async ({ props }) => {
+            const { entity, entityIds, nameExpression, relations } = props;
             const entityStr = firstLetterUpperCase(entity!);
-            const entityIds2 = JSON.parse(entityIds!) as string[];
             return {
                 id: 1,
                 name: 1,
@@ -31,10 +30,10 @@ OakPage(
                     },
                     filter: {
                         [`${entity}Id`]: {
-                            $in: entityIds2,
+                            $in: entityIds,
                         },
                         relation: {
-                            $in: JSON.parse(relations!),
+                            $in: relations!,
                         }
                     }
                 },
@@ -62,15 +61,15 @@ OakPage(
         },
         isList: false,
         formData: async function ({ data: user, props }) {
-            const { entity, relations, entityIds } = props;
+            const { entity, entityIds, relations } = props;
             const entityStr = firstLetterUpperCase(entity!);
             const { name, nickname, mobile, [`user${entityStr}$user`]: relationRows, extraFile$entity } = user!;
             // entity按id聚集
-            const entityIds2 = JSON.parse(entityIds!) as string[];
-            const entityRows = entityIds2.map(
-                (id, idx) => ({
+            const { entityRows } = this.state;
+            const entityRowData = entityIds!.map(
+                (id) => ({
                     id,
-                    name: entityNames[idx],
+                    name: entityRows.find(ele => ele.id === id)?.$expr,
                     relations: (relationRows as {
                         relation: string;
                         [A: string]: string;
@@ -81,44 +80,42 @@ OakPage(
                     )
                 })
             );
-            const avatar = extraFile$entity![0] && composeFileUrl(extraFile$entity![0]);
+            const avatar = (extraFile$entity![0] && composeFileUrl(extraFile$entity![0])) as string;
             return {
                 name,
                 nickname,
                 avatar,
-                relations,
-                entityRows,
+                entityRowData,
                 mobile,
+                singleRelation: relations!.length === 1,
             }
         },
         properties: {
             entity: String,
-            entityIds: String,
-            nameExpression: String,
-            relations: String,
-            entityNames: String,
+            entityIds: Array,
+            nameExpression: Object,
+            relations: Array,
         },
         data: {
-            show: false,
-            relationArr2: [],
+            entityRows: [] as any[],
         },
         methods: {
-            handleShow() {
-                this.setState({
-                    show: true,
-                });
-            },
-            onChangeTap(input: WechatMiniprogram.Touch) {
-                const { key, checked } = this.resolveInput(input, ['key', 'checked']);
-                const { relationArr2 } = this.state;
-                relationArr2.forEach((ele: any) => {
-                    if (ele[0] === key) {
-                        ele[1] = checked;
+            async onLoad() {
+                const { nameExpression, entity, entityIds } = this.props;
+                const entityRows = await this.features.cache.get(entity as any, {
+                    data: {
+                        id: 1,
+                        $expr: nameExpression,
+                    },
+                    filter: {
+                        id: {
+                            $in: entityIds,
+                        }
                     }
-                })
+                });
                 this.setState({
-                    relationArr2
-                })
+                    entityRows,
+                });
             },
         },
     }

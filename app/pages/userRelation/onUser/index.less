@@ -32,17 +32,26 @@ page {
 .content {
   display: flex;
   flex: 1;
-  flex-direction: column;
-  font-size: 28rpx;
-  color: @text-color;
-}
-
-.row {
-  display: flex;
-  align-items: center;
+  flex-direction: row;
   flex-wrap: wrap;
+  align-items: center;
+
+  .relation-item {
+    display: flex;
+    padding: 10rpx;
+    flex-direction: row;
+    font-size: 28rpx;
+    color: @text-color;
+  }
 }
 
-.tag {
-  margin-right: 8rpx;
+.btn-container {
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  .btn {
+    flex: 1;
+  }
 }

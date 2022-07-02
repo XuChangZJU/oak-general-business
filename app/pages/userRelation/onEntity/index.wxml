@@ -1,0 +1,23 @@
+<!-- index.wxml -->
+<view class="container">
+    <view class="primary-bg"></view>
+    <view class="white-bg">
+        <view class="content">
+            <image mode="aspectFill" class="img" src="{{avatar}}" lazy-load></image>
+            <text class="name">{{name || nickname || '--'}}</text>
+            <text class="mobile">{{mobile || '--'}}</text>
+            <divider />
+            <block wx:if="{{singleRelation}}">
+                <view class="list" wx:for="{{entityRowData}}">
+                    <view class="singleRelationItem">
+                        <view class="name">{{item.name}}</view>
+                        <l-switch />
+                    </view>
+                </view>
+            </block>
+            <block wx:else>
+                222
+            </block>
+        </view>
+    </view>
+</view>

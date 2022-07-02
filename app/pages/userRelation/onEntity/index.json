@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "权限详情",
+  "navigationBarTitleText": "修改权限",
   "usingComponents": {
       "l-button": "../../../lin-ui/button/index",
       "l-tag": "../../../lin-ui/tag/index",
@@ -8,6 +8,7 @@
       "fab": "../../../components/fab/index",
       "l-dialog": "../../../lin-ui/dialog/index",
       "l-checkbox-group": "../../../lin-ui/checkbox-group/index",
-      "l-checkbox": "../../../lin-ui/checkbox/index"
+      "l-checkbox": "../../../lin-ui/checkbox/index",
+      "l-switch": "../../../lin-ui/switch/index"
   }
 }
