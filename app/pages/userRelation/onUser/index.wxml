@@ -6,9 +6,9 @@
     <block wx:if="{{ users && users.length > 0 }}">
         <block wx:for="{{users}}" wx:for-index="index" wx:for-item="item" wx:key="idx">
             <l-card l-class="card-view" title="{{item.name}}" describe="{{item.nickname}}" data-id="{{item.id}}" bind:tap="handleCardClick" type="avatar" image="{{item.avatar}}">
-                <block wx:if="{{singleRelation}}">
+                <block wx:if="{{relations.length === 1}}">
                     <view slot="more">
-                        <l-switch />
+                                <l-switch checked="{{item.hasRelation[0]}}" bind:linchange="onChange" data-id="{{item.id}}" data-relation="{{relations[0]}}" data-index="{{index}}" />
                     </view>
                 </block>
                 <block wx:else>
