@@ -1,7 +1,7 @@
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { composeFileUrl } from '../../../../src/utils/extraFile';
 
-OakPage(
+export default OakPage(
     {
         path: 'userRelation:detail',
         entity: 'user',
