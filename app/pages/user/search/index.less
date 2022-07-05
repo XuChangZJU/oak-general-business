@@ -1,0 +1,75 @@
+/**  index.wxss  **/
+@import "../../../config/styles/_base.less";
+@import "../../../config/styles/_mixins.less";
+
+page {
+  height: 100%;
+  background-color: @background-color-base;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: stretch;
+  padding: 0;
+  .safe-area-inset-bottom();
+}
+
+.search-bar {
+  display: flex;
+  height: 40px;
+  background-color: #fff;
+  z-index: 1;
+}
+
+
+.col {
+  padding: @size-spacing-small;
+  display: flex;
+  flex-direction: column;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.title {
+  font-size: @size-font-base;
+  margin-bottom: @size-spacing-small;
+}
+.drawer-view {
+  position: fixed;
+  top: 40px;
+  width: 100%;
+  background-color: @background-color-base;
+}
+.drawer-item {
+  display: flex;
+  align-items: center;
+  height: 38px;
+  color: @text-color;
+  margin-top: 1px;
+  padding: 0rpx @size-spacing-small;
+  background-color: #fff;
+}
+.search-value {
+  color: @error-color;
+}
+.null {
+  text-align: center;
+}
+.delete-btn {
+  padding: @size-spacing-small;
+  font-size: @size-font-base;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: @default-color;
+}
+.tag {
+  margin: 4rpx;
+}

@@ -1,0 +1,68 @@
+/**  index.wxss  **/
+@import "../../config/styles/_base.less";
+@import "../../config/styles/_mixins.less";
+
+page {
+  height: 100%;
+  background-color: @background-color-base;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: stretch;
+  padding: 0;
+  .safe-area-inset-bottom();
+}
+
+.search-bar {
+  background-color: #fff;
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+  z-index: 1;
+}
+
+.card-view {
+  margin-top: @size-spacing-small !important;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  font-size: 28rpx;
+  color: @text-color;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+.row {
+  display: flex;
+  align-items: center;
+}
+.name {
+  font-size: @size-font-large;
+  color: @title-color;
+}
+.mobile {
+  font-size: @size-font-base;
+  color: @text-color;
+}
+.img {
+  width: 140rpx;
+  height: 140rpx;
+  margin-right: @size-spacing-small;
+  border-radius: 50%;
+  background-color: @background-color-base;
+}
+.card-view {
+  margin: @size-spacing-small;
+  padding: @size-spacing-small;
+  margin-bottom: 0;
+  background-color: #fff;
+}
