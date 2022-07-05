@@ -119,12 +119,12 @@ export default OakPage({
         },
         goMyMobile() {
             this.navigateTo({
-                url: '../../mobile/me/index',
+                url: '/pages/mobile/me/index',
             });
         },
         goUserManage() {
             this.navigateTo({
-                url: '../../user/manage/index',
+                url: '/pages/user/manage/index',
             });
         },
     },

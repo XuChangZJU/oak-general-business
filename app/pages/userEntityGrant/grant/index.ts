@@ -64,7 +64,7 @@ export default OakPage({
                         OakCongruentRowExists<EntityDict, 'userEntityGrant'>
                     >error).getData();
                     this.navigateTo({
-                        url: '../detail/index',
+                        url: '/pages/userEntityGrant/detail/index',
                         oakId: data.id,
                     });
                 }

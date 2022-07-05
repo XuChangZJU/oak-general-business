@@ -73,13 +73,13 @@ export default OakPage({
             const { dataset } = this.resolveInput(input);
             const { id } = dataset!;
             this.navigateTo({
-                url: 'detail/index',
+                url: '/pages/user/detail/index',
                 oakId: id,
             });
         },
         goNewUser() {
             this.navigateTo({
-                url: 'upsert/index',
+                url: '/pages/user/upsert/index',
             });
         },
     },
