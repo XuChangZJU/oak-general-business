@@ -119,7 +119,7 @@ export default OakPage({
         },
         goMyMobile() {
             this.navigateTo({
-                url: '../../mobile/me/index',
+                url: '/pages/mobile/me/index',
             });
         },
         goUserManage() {
@@ -133,8 +133,12 @@ export default OakPage({
             this.sub(event, onItemClicked);
 
             this.navigateTo({
+<<<<<<< HEAD
                 url: '../../user/manage/index',
                 event,
+=======
+                url: '/pages/user/manage/index',
+>>>>>>> 418c883d600916aa8c0a11f6f746bcd030b92037
             });
         },
     },

@@ -1,0 +1,23 @@
+<!-- index.wxml -->
+<view class="container">
+    <view class="search-bar">
+        <l-search-bar style="width: 100%; margin: auto 0rpx" placeholder="输入手机号/姓名" shape="circle" value="{{searchValue}}" bind:lincancel="searchCancel" bind:linclear="searchCancel" bind:linchange="searchChange" bind:linconfirm="goPage" />
+    </view>
+    <block wx:if="{{showList}}">
+        <view class="drawer-view">
+            <rich-text nodes="{{nodeStr}}" bind:tap="itemClick"></rich-text>
+        </view>
+    </block>
+    <view wx:if="{{searchArr.length}}" class="col">
+        <text class="title">搜索历史</text>
+        <view class="row">
+            <l-tag wx:for="{{searchArr}}" bind:tap="tagClick" wx:key="index" wx:for-item="searchItem" class="tag" data-value="searchItem">
+                {{searchItem}}
+            </l-tag>
+        </view>
+        <view class="delete-btn" bind:tap="clearSearchHistory">
+            <l-icon name="delete" size="28"></l-icon>
+            <text style="margin-left: 4px">清空搜索历史</text>
+        </view>
+    </view>
+</view>

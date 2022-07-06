@@ -1,6 +1,6 @@
 import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
 
-OakPage(
+export default OakPage(
     {
         path: 'userRelation:detail',
         isList: true,

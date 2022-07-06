@@ -2,6 +2,9 @@
     "navigationBarTitleText": "用户详情",
     "usingComponents": {
         "g-btn": "../../../../components/UI/g-btn/index",
-        "action-panel": "../../../../components/Func/action-panel/index"
+        "action-panel": "../../../../components/Func/action-panel/index",
+        "g-icon": "../../../../components/UI/g-icon/index",
+        "g-panel": "../../../../components/UI/g-panel/index",
+        "g-cell": "../../../../components/UI/g-cell/index"
     }
 }

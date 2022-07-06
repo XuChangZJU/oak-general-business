@@ -1,17 +1,18 @@
 Component({
+    externalClasses: ['g-class', 'g-title-class', 'g-content-class'],
     properties: {
         title: {
             type: String,
-            value: ''
+            value: '',
         },
         // 标题顶部距离
         hideTop: {
             type: Boolean,
-            value: false
+            value: false,
         },
         hideBorder: {
             type: Boolean,
-            value: false
-        }
-    }
+            value: false,
+        },
+    },
 });

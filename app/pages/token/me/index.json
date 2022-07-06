@@ -2,6 +2,12 @@
     "navigationBarTitleText": "个人信息",
     "usingComponents": {
         "g-btn": "../../../components/UI/g-btn/index",
+<<<<<<< HEAD
         "component-menu": "@project/components/token/menu/index"
+=======
+        "g-cell": "../../../components/UI/g-cell/index",
+        "g-panel": "../../../components/UI/g-panel/index",
+        "g-icon": "../../../components/UI/g-icon/index"
+>>>>>>> 418c883d600916aa8c0a11f6f746bcd030b92037
     }
 }
