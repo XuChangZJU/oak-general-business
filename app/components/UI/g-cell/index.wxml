@@ -1,0 +1,13 @@
+
+
+ <view class="g-cell g-class">
+     <block wx:if="{{ !!label }}">
+        <view class="g-cell-label  g-label-class">{{label}}</view>
+     </block>
+     
+     <view class="g-cell-content g-cell-content-right g-content-class">
+        <slot></slot>
+
+        <g-icon name="chevron_right" color="#495060"></g-icon>
+     </view>
+ </view>

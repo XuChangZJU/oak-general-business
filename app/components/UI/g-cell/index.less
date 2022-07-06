@@ -1,0 +1,54 @@
+@import "../../../styles/base.less";
+@import "../../../styles/mixins.less";
+
+.g-cell {
+    position: relative;
+    padding: 12px 15px;
+    display: flex;
+    background: #fff;
+    align-items: center;
+    line-height: 1.4;
+    font-size: @size-font-base;
+    overflow: hidden;
+
+
+    &-label {
+        color: @text-color;
+        min-width: 65px;
+        padding-right: 10px;
+    }
+
+    &-content {
+        flex: 1;
+        line-height: 1.6;
+        padding: 4px 0;
+        min-height: 22px;
+        height: auto;
+        font-size: 14px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    &-content-right:extend(&-content) {
+        // 不会写，这里
+        flex: 1;
+        line-height: 1.6;
+        padding: 4px 0;
+        min-height: 22px;
+        height: auto;
+        font-size: 14px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    &::after {
+        .hairline();
+
+        border-bottom-width: 1px;
+        left: 15px;
+        right: 0;
+    }
+}
