@@ -7,7 +7,7 @@ import { addFilterSegment, combineFilters } from "oak-domain/lib/store/filter";
 
 const checkers: Checker<EntityDict, 'token', GeneralRuntimeContext<EntityDict>> [] = [
     {
-        type: 'user',
+        type: 'data',
         action: 'select',
         entity: 'token',
         checker: async ({ operation }, context) => {
