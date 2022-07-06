@@ -67,15 +67,15 @@ export default OakPage({
             userData,
         };
     },
+    properties: {
+        event: String,
+    },
     methods: {
-        goUserManageDetail(input: any) {
+        async onCellClicked(input: any) {
             // resolveInput拿的是target，原来代码拿的是currentTarget
             const { dataset } = this.resolveInput(input);
             const { id } = dataset!;
-            this.navigateTo({
-                url: 'detail/index',
-                oakId: id,
-            });
+            this.pub(this.props.event, this.state.userData.find(ele => ele.id === id));
         },
         goNewUser() {
             this.navigateTo({
@@ -83,4 +83,9 @@ export default OakPage({
             });
         },
     },
+    lifetimes: {
+        detached() {
+            this.unsubAll(this.props.event);
+        },
+    }
 });

@@ -4,7 +4,6 @@ import { EntityDict } from 'general-app-domain';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { ROOT_ROLE_ID } from '../constants';
 import { assign } from 'lodash';
-import { checkIsRoot } from '../utils/check';
 
 const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [] = [
     {
@@ -23,11 +22,16 @@ const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [
         type: 'user',
         action: 'play',
         entity: 'user',
+        checker: async () => {
+            // 只有root才能play
+            throw new OakUserUnpermittedException();
+        },
+    },    
+    {
+        type: 'data',
+        action: 'play',
+        entity: 'user',
         checker: async ({ operation }, context) => {
-            const isRoot = await checkIsRoot(context);
-            if (!isRoot) {
-                throw new OakUserUnpermittedException();
-            }
             const token = await context.getToken();
             const { userId } = token!;
             if (userId === operation.filter!.id) {

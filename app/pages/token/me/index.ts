@@ -123,8 +123,18 @@ export default OakPage({
             });
         },
         goUserManage() {
+            const event = `user:manage:itemclicked:${Date.now()}`;
+            const onItemClicked = async ({ id }: { id: string }) => {
+                this.navigateTo({
+                    url: '../../user/manage/detail/index',
+                    oakId: id,
+                });
+            }
+            this.sub(event, onItemClicked);
+
             this.navigateTo({
                 url: '../../user/manage/index',
+                event,
             });
         },
     },

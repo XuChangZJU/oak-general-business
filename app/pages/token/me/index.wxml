@@ -29,9 +29,13 @@
                 <span class="material-symbols-rounded" color="#495060">chevron_right</span>
             </view>
         </view>
-        <view class="g-cell">
-            <view class="g-cell-label">收货地址</view>
-        </view>
+        <component-menu
+            g-cell="g-cell"
+            g-cell-content-right="g-cell-content-right"
+            g-cell-label="g-cell-label"
+            g-cell-content="g-cell-content"
+            material-symbols-rounded="material-symbols-rounded"
+        />        
         <view style="flex:1" />
         <view wx:if="{{isRoot}}" class="g-cell" bind:tap="goUserManage">
             <view class="g-cell-label">用户管理</view>

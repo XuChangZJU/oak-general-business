@@ -98,7 +98,6 @@ export default OakPage(
         },
         data: {
             searchValue: '',
-            singleRelation: false,
         },
         lifetimes: {},
         methods: {

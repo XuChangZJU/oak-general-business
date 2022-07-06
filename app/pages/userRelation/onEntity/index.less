@@ -3,95 +3,157 @@
 @import "../../../config/styles/_mixins.less";
 
 page {
-  height: 100%;
+    height: 100%;
 }
 
 .container {
-  height: 100%;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  box-sizing: border-box;
-  align-items: stretch;
-  padding: 0;
-  .safe-area-inset-bottom();
+    height: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    box-sizing: border-box;
+    align-items: stretch;
+    padding: 0;
+    .safe-area-inset-bottom();
 }
 
 .primary-bg {
-  width: 100%;
-  height: 140rpx;
-  background-color: @default-color;
+    width: 100%;
+    height: 140rpx;
+    background-color: @default-color;
 }
+
 .img {
-  width: 180rpx;
-  height: 180rpx;
-  margin: 0 auto;
-  border-radius: 50%;
-  background-color: @background-color-base;
+    width: 180rpx;
+    height: 180rpx;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: @background-color-base;
 }
+
 .row-end {
-  display: flex;
-  justify-content: flex-end;
+    display: flex;
+    justify-content: flex-end;
 }
+
 .white-bg {
-  display: flex;
-  flex-direction: column;
-  padding: @size-spacing-base;
+    display: flex;
+    flex-direction: column;
+    padding: @size-spacing-base;
 }
+
 .content {
-  display: flex;
-  flex-direction: column;
-  transform: translateY(-110rpx);
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-110rpx);
 }
+
 .name {
-  margin: @size-spacing-small auto;
-  font-size: @size-font-large;
-  color: @title-color;
+    margin: @size-spacing-small auto;
+    font-size: @size-font-large;
+    color: @title-color;
 }
+
 .mobile {
-  margin: 0 auto;
-  font-size: @size-font-base;
-  color: @text-color;
+    margin: 0 auto;
+    font-size: @size-font-base;
+    color: @text-color;
 }
+
 .tag-view {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: @size-spacing-small;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: @size-spacing-small;
 }
+
 .tag {
-  margin: 2rpx;
+    margin: 2rpx;
 }
+
 .btn-view {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
 }
+
 .check-view {
-  width: 700rpx;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  background-color: #fff;
-}
-.col {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-.list {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-}
-.singleRelationItem {
-  display: flex;
-  padding: 10rpx;
-  flex-direction: row;
-  align-items: center;
-  .name {
-    color: @text-color;    
+    width: 700rpx;
+    display: flex;
     flex: 1;
-    margin-right: 10rpx;
-  };  
+    flex-direction: column;
+    background-color: #fff;
 }
+
+.col {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.singleRelationItem {
+    display: flex;
+    padding: 18rpx;
+    flex-direction: row;
+    align-items: center;
+    width: 92%;
+    box-shadow: 0 4rpx 20rpx 0 rgba(212, 217, 223, 0.5);
+    border-radius: 4px;
+
+    .name {
+        color: @text-color;
+        flex: 1;
+        margin-right: 10rpx;
+    }
+}
+
+.multiRelationItem {
+    display: flex;
+    padding: 18rpx;
+    flex-direction: column;
+    align-items: stretch;
+    width: 92%;
+    box-shadow: 0 4rpx 20rpx 0 rgba(212, 217, 223, 0.5);
+    border-radius: 4px;
+
+    .name {
+        color: @text-color;
+    }
+
+    .relationList {
+        display: flex;
+        flex-direction: row;
+
+        .relationItem {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10rpx;
+
+            text {
+                color: @subsidiary-color;
+                font-size: @size-font-supermini;
+            }
+        }
+    }
+}
+
+.btn-container {
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    .btn {
+      flex: 1;
+    }
+    padding-left: 10rpx;
+    padding-right: 10rpx;
+  }
+  

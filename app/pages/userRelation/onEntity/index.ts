@@ -1,122 +1,54 @@
-import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
-import { composeFileUrl } from '../../../../src/utils/extraFile';
+import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
 
 OakPage(
     {
         path: 'userRelation:detail',
-        entity: 'user',
-        projection: async ({ props }) => {
-            const { entity, entityIds, nameExpression, relations } = props;
-            const entityStr = firstLetterUpperCase(entity!);
+        isList: true,
+        formData: async function ({ data, props }) {
+            const { nameProperty } = props;
+            const { oakEntity } = this.props;
+            const entityStr = firstLetterUpperCase(oakEntity);
+
+            const rows = data?.map(
+                (ele) => {
+                    const { id, [nameProperty!]: name, [`user${entityStr}$${oakEntity}`]: userEntity } = ele as any;                    
+                    const relations = userEntity?.map((ele: any) => ele.relation);
+                    const hasRelation: boolean[] = props.relations!.map(ele2 => relations.includes(ele2));
+                    return {
+                        id,
+                        name,
+                        hasRelation,
+                    };
+                }
+            );
             return {
-                id: 1,
-                name: 1,
-                nickname: 1,
-                mobile$user: {
-                    $entity: 'mobile',
-                    data: {
-                        id: 1,
-                        userId: 1,
-                        mobile: 1,
-                    },
-                },
-                [`user${entityStr}$user`]: {
-                    $entity: `user${entityStr}`,
-                    data: {
-                        id: 1,
-                        userId: 1,
-                        [`${entity}Id`]: 1,
-                        relation: 1,
-                    },
-                    filter: {
-                        [`${entity}Id`]: {
-                            $in: entityIds,
-                        },
-                        relation: {
-                            $in: relations!,
-                        }
-                    }
-                },
-                extraFile$entity: {
-                    $entity: 'extraFile',
-                    data: {
-                        id: 1,
-                        tag1: 1,
-                        origin: 1,
-                        bucket: 1,
-                        objectId: 1,
-                        filename: 1,
-                        extra1: 1,
-                        type: 1,
-                        entity: 1,
-                        extension: 1,
-                    },
-                    filter: {
-                        tag1: 'avatar',
-                    },
-                    indexFrom: 0,
-                    count: 1,
-                },
+                rows,
             };
         },
-        isList: false,
-        formData: async function ({ data: user, props }) {
-            const { entity, entityIds, relations } = props;
-            const entityStr = firstLetterUpperCase(entity!);
-            const { name, nickname, mobile, [`user${entityStr}$user`]: relationRows, extraFile$entity } = user!;
-            // entity按id聚集
-            const { entityRows } = this.state;
-            const entityRowData = entityIds!.map(
-                (id) => ({
-                    id,
-                    name: entityRows.find(ele => ele.id === id)?.$expr,
-                    relations: (relationRows as {
-                        relation: string;
-                        [A: string]: string;
-                    }[]).filter(
-                        ele => ele[`${entity}Id`] === id
-                    ).map(
-                        ele => ele.relation
-                    )
-                })
-            );
-            const avatar = (extraFile$entity![0] && composeFileUrl(extraFile$entity![0])) as string;
-            return {
-                name,
-                nickname,
-                avatar,
-                entityRowData,
-                mobile,
-                singleRelation: relations!.length === 1,
-            }
-        },
         properties: {
-            entity: String,
-            entityIds: Array,
-            nameExpression: Object,
+            nameProperty: String,
+            user: Object,
             relations: Array,
         },
-        data: {
-            entityRows: [] as any[],
-        },
-        methods: {
-            async onLoad() {
-                const { nameExpression, entity, entityIds } = this.props;
-                const entityRows = await this.features.cache.get(entity as any, {
-                    data: {
-                        id: 1,
-                        $expr: nameExpression,
-                    },
-                    filter: {
-                        id: {
-                            $in: entityIds,
-                        }
-                    }
-                });
-                this.setState({
-                    entityRows,
-                });
+        methods: {            
+            onChange(input: any) {
+                const { dataset, checked } = this.resolveInput(input, ['checked']);
+                const { id: entityId, relation, index } = dataset as {
+                    id: string,
+                    relation: string,
+                    index: number;
+                };
+                const { oakEntity } = this.props;
+                const entityStr = firstLetterUpperCase(oakEntity!);
+                this.toggleNode({
+                    relation,
+                    [`${oakEntity}Id`]: entityId,
+                }, checked, `${index}.user${entityStr}$${oakEntity}`)
             },
+            async confirm() {
+                await this.execute();
+                await this.navigateBack();
+            }
         },
     }
 );
