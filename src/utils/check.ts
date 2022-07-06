@@ -31,7 +31,7 @@ export function processCheckers<ED extends EntityDict, Cxt extends GeneralRuntim
         if (type === 'user') {
             assign(checker, {
                 checker: async (dummy: any, context: Cxt) => {
-                    if (await checkIsRoot(context)) {
+                    if (await checkIsRoot<ED, Cxt>(context)) {
                         return;
                     }
                     await fn(dummy, context);
