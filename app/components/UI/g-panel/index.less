@@ -1,1 +1,20 @@
-@import "../../../styles/panel.less";
+@import "../../../styles/base.less";
+
+
+.g-panel {
+    position: relative;
+    overflow: hidden;
+
+    &-title {
+        font-size: @size-font-base;
+        line-height: 1;
+        color: @title-color;
+        padding: 20px 16px 10px;
+    }
+
+    &-content {
+        position: relative;
+        background: #fff;
+        overflow: hidden;
+    }
+}

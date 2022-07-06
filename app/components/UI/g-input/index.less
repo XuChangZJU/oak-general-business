@@ -1,1 +1,107 @@
-@import "../../../styles/cell.less";
+@import "../../../styles/base.less";
+@import "../../../styles/mixins.less";
+
+.g-cell {
+    position: relative;
+    padding: 12px 15px;
+    display: flex;
+    background: #fff;
+    align-items: center;
+    line-height: 1.4;
+    font-size: @size-font-base;
+    overflow: hidden;
+
+
+    &-label {
+        color: @text-color;
+        min-width: 65px;
+        padding-right: 10px;
+    }
+
+    &-content {
+        flex: 1;
+        line-height: 1.6;
+        padding: 4px 0;
+        min-height: 22px;
+        height: auto;
+        font-size: 14px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    &-content-right:extend(&-content) {
+        // 不会写，这里
+        flex: 1;
+        line-height: 1.6;
+        padding: 4px 0;
+        min-height: 22px;
+        height: auto;
+        font-size: 14px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    &::after {
+        .hairline();
+
+        border-bottom-width: 1px;
+        left: 15px;
+        right: 0;
+    }
+}
+
+.g-input {
+    padding: 15px;
+    color: @text-color;
+
+    &-wrapped {
+        margin: 10px 15px;
+        background-color: #fff;
+
+        &::after {
+            left: 0;
+            border-width: 1px;
+            border-radius: 4px;
+        }
+    }
+
+    &-error {
+        color: @error-color;
+    }
+
+    &-title {
+        color: @text-color;
+        min-width: 65px;
+        padding-right: 10px;
+    }
+
+    &-input {
+        flex: 1;
+        line-height: 1.6;
+        padding: 4px 0;
+        min-height: 22px;
+        height: auto;
+        font-size: 14px;
+    }
+
+    &-placeholder {
+        font-size: @size-font-base;
+    }
+
+    &-input-right {
+        text-align: right;
+    }
+}
+
+/* 圆角输入框，强制展示边框 */
+.g-input.g-input-wrapped::after {
+    display: block;
+}
+
+/* 圆角输入框出现错误时，将边框也置红 */
+.g-input-wrapped.g-input-error::after {
+    border-color: @error-color;
+}
