@@ -2,11 +2,7 @@
 <view class="page-body">
     <view class="user-list">
         <view wx:for="{{userData}}" wx:key="index">
-<<<<<<< HEAD
-            <view class="g-cell" bind:tap="onCellClicked" data-id="{{item.id}}">
-=======
             <g-cell bind:tap="goUserManageDetail" data-id="{{item.id}}">
->>>>>>> 418c883d600916aa8c0a11f6f746bcd030b92037
                 <block wx:if="{{item.avatar}}">
                     <image class="avatar" src="{{item.avatar}}" mode="aspectFit" />
                 </block>

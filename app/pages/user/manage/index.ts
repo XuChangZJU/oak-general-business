@@ -75,14 +75,7 @@ export default OakPage({
             // resolveInput拿的是target，原来代码拿的是currentTarget
             const { dataset } = this.resolveInput(input);
             const { id } = dataset!;
-<<<<<<< HEAD
             this.pub(this.props.event, this.state.userData.find(ele => ele.id === id));
-=======
-            this.navigateTo({
-                url: '/pages/user/manage/detail/index',
-                oakId: id,
-            });
->>>>>>> 418c883d600916aa8c0a11f6f746bcd030b92037
         },
         goNewUser() {
             this.navigateTo({

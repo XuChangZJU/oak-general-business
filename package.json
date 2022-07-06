@@ -6,9 +6,9 @@
         "lodash": "^4.17.21",
         "oak-common-aspect": "file:../oak-common-aspect",
         "oak-domain": "file:../oak-domain",
+        "oak-external-sdk": "file:../oak-external-sdk",
         "oak-frontend-base": "file:../oak-frontend-base",
-        "oak-memory-tree-store": "file:../oak-memory-tree-store",
-        "oak-external-sdk": "file:../oak-external-sdk"
+        "oak-memory-tree-store": "file:../oak-memory-tree-store"
     },
     "devDependencies": {
         "@babel/cli": "^7.12.13",
@@ -33,14 +33,14 @@
         "isomorphic-fetch": "^3.0.0",
         "miniprogram-api-typings": "^3.4.6",
         "mocha": "^8.2.1",
-        "ts-node": "^9.1.1",
-        "typescript": "^4.5.2"
+        "ts-node": "^10.8.2",
+        "typescript": "^4.7.4"
     },
     "scripts": {
         "prebuild": "ts-node ./scripts/make.ts",
         "build": "tsc",
         "get:area": "ts-node ./scripts/getAmapArea.ts",
-        "clean:mp": "ts-node ./scripts/cleanDtsInWechatMp"
+        "clean:dts": "ts-node ./scripts/cleanDtsAndJs"
     },
     "main": "src/index"
 }

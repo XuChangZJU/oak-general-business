@@ -19,17 +19,12 @@
             </button>
         </block>
     </view>
-<<<<<<< HEAD
-    <view class="g-panel" style="display:flex; flex-direction:column; flex: 1">
-        <view class="g-cell" bind:tap="goMyMobile">
-            <view class="g-cell-label">手机号</view>
-            <view class="g-cell-content-right">
-                <view wx:if="{{mobileCount > 1}}">{{mobileCount}}条手机号</view>
-                <view wx:elif="{{mobileCount === 1}}">{{mobile}}</view>
-                <view wx:else>未设置</view>
-                <span class="material-symbols-rounded" color="#495060">chevron_right</span>
-            </view>
-        </view>
+    <g-panel g-class="panel">
+        <g-cell label="手机号" bind:tap="goMyMobile">
+             <view wx:if="{{mobileCount > 1}}">{{mobileCount}}条手机号</view>
+             <view wx:elif="{{mobileCount === 1}}">{{mobile}}</view>
+             <view wx:else>未设置</view>
+        </g-cell>
         <component-menu
             g-cell="g-cell"
             g-cell-content-right="g-cell-content-right"
@@ -38,24 +33,8 @@
             material-symbols-rounded="material-symbols-rounded"
         />        
         <view style="flex:1" />
-        <view wx:if="{{isRoot}}" class="g-cell" bind:tap="goUserManage">
-            <view class="g-cell-label">用户管理</view>
-            <view class="g-cell-content-right">
-                <span class="material-symbols-rounded" color="#495060">chevron_right</span>
-            </view>
-        </view>
-    </view>
-=======
-    <g-panel g-class="panel">
-        <g-cell label="手机号" bind:tap="goMyMobile">
-             <view wx:if="{{mobileCount > 1}}">{{mobileCount}}条手机号</view>
-             <view wx:elif="{{mobileCount === 1}}">{{mobile}}</view>
-             <view wx:else>未设置</view>
-        </g-cell>
-        <g-cell label="收货地址"></g-cell>
         <block wx:if="{{isRoot}}">
            <g-cell label="用户管理" bind:tap="goUserManage"></g-cell>
         </block>
     </g-panel>
->>>>>>> 418c883d600916aa8c0a11f6f746bcd030b92037
 </view>
