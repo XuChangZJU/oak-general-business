@@ -38,11 +38,11 @@ export default OakPage(
                     relation: string,
                     index: number;
                 };
-                const { oakEntity } = this.props;
+                const { oakEntity, user } = this.props;
                 const entityStr = firstLetterUpperCase(oakEntity!);
                 this.toggleNode({
                     relation,
-                    [`${oakEntity}Id`]: entityId,
+                    userId: user.id,
                 }, checked, `${index}.user${entityStr}$${oakEntity}`)
             },
             async confirm() {

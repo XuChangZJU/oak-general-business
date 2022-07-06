@@ -142,7 +142,7 @@ export default OakPage(
                 }, checked, `${index}.user${entityStr}$user`)
             },
             async confirm() {
-                await this.execute();
+                await this.execute('grant');
                 await this.navigateBack();
             }
         },

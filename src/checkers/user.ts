@@ -39,6 +39,18 @@ const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [
             }
             return 0;
         },
+    },
+    {
+        type: 'data',
+        action: 'grant',
+        entity: 'user',
+        checker: async({ operation }) => {
+            const { data } = operation;
+            if (Object.keys(data).filter(ele => !ele.includes('$')).length > 0) {
+                throw new OakInputIllegalException(Object.keys(data), '授权不允许传入其它属性');
+            }
+            return 0;
+        }
     }
 ];
 

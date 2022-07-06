@@ -41,9 +41,9 @@ const UserActionDef: ActionDef<UserAction, UserState> = {
     },
 };
 
-type CascadeAction = 'play';
+type MoreAction = 'play' | 'grant';
 
-type Action = UserAction | IdAction | CascadeAction;
+type Action = UserAction | IdAction | MoreAction;
 
 const indexes: Index<Schema>[] = [
     {
@@ -101,6 +101,7 @@ const locale: LocaleDef<Schema, Action, '', {
             disable: '禁用',
             mergeTo: '合并',
             mergeFrom: '使合并',
+            grant: '授权',
         },
         v: {
             userState: {
