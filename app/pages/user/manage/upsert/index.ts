@@ -1,3 +1,4 @@
+import {DateTime} from 'luxon';
 const GenderOptions = [
     {
         value: 'male', label: '男',
@@ -72,29 +73,6 @@ export default OakPage({
         setValue(input: any) {
             const { dataset, value } = this.resolveInput(input);
             this.setUpdateData(dataset!.attr, value);
-        },
-        onBirthChange(input: any) {
-            const { value } = this.resolveInput(input);
-            const birth = new Date(value as string);
-            birth.setHours(0);
-            birth.setMinutes(0);
-            birth.setSeconds(0);
-            birth.setMilliseconds(0);
-            this.setUpdateData('birth', birth);
-        },
-        onGenderChange(input: any) {
-            const { value } = this.resolveInput(input);
-            this.setUpdateData(
-                'gender',
-                GenderOptions[value as unknown as number].value
-            );
-        },
-        onIdCardTypeChange(input: any) {
-            const { value } = this.resolveInput(input);
-            this.setUpdateData(
-                'idCardType',
-                IDCardTypeOptions[value as unknown as number].value
-            );
         },
         async confirm() {
             await this.execute(this.props.oakId ? 'update' : 'create');

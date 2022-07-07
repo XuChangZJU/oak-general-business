@@ -3,9 +3,11 @@
     <view class="content">
         <text class="text">获取权限</text>
         <view class="circle-view">
-            <g-icon name="person" size="80" />
+            <l-icon name="person" size="80" />
             <text class="relation">{{relation || '无数据'}}</text>
         </view>
     </view>
-    <g-btn type="primary" bind:click="handleConfirm">确认</g-btn>
+    <view class="btn-view">
+        <l-button type="default" bind:lintap="handleConfirm" size="large">确定</l-button>
+    </view>
 </view>

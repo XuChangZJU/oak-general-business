@@ -8,12 +8,16 @@
   flex: 1;
   flex-direction: column;
   background-color: @background-color-base;
+  box-sizing: border-box;
+  .safe-area-inset-bottom();
 }
-
-.g-cell-hover:extend(.g-cell) {
-  background-color: gainsboro;
+.btn-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-
-.focused {
-  background-color: pink;
+.col {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
 }

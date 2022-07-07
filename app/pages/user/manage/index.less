@@ -8,6 +8,8 @@
   flex: 1;
   flex-direction: column;
   background-color: @background-color-base;
+  box-sizing: border-box;
+  .safe-area-inset-bottom();
 }
 
 .user-list {
@@ -23,44 +25,52 @@
   flex: 1;
 }
 
-.user-state {
-  margin-right: 20rpx;
-  padding: 10rpx;
-  font-size: @size-font-mini;
-  color: white;
-  align-self: flex-start;
-  &-shadow:extend(.user-state) {
-    background-color: @warning-color;
-  }
-  &-normal:extend(.user-state) {
-    background-color: @success-color;
-  }
-  &-disabled:extend(.user-state) {
-    background-color: @error-color;
-  }
+.cell {
+  display: flex;
+  align-items: center;
+  padding: @size-spacing-base;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #fff;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  margin-bottom: @size-spacing-small;
 }
 
 .avatar {
-  font-size: 128rpx;
-  color: @text-color;
   height: 140rpx;
   width: 140rpx;
-  border-radius: 14rpx;
+  border-radius: 50%;
+}
+.img-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 140rpx;
+  width: 140rpx;
+  border-radius: 50%;
+  background-color: @background-color-base;
 }
 
 .nickname {
-  font-size: 44rpx;
-  font-weight: bold;
+  margin-right: @size-spacing-base;
+  font-size: @size-font-large;
 }
 
 .name {
-  display: flex;
-  align-items: center;
   font-size: @size-font-base;
+  color: @text-color;
+  margin-bottom: 4rpx;
 }
 
 .mobile {
-  display: flex;
-  align-items: center;
   font-size: @size-font-base;
+  color: @text-color;
+}
+.btn-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

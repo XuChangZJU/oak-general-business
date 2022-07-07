@@ -1,9 +1,6 @@
 {
     "navigationBarTitleText": "授予权限",
     "usingComponents": {
-        "g-btn": "../../../components/UI/g-btn/index",
-        "g-input": "../../../components/UI/g-input/index",
-        "g-icon": "../../../components/UI/g-icon/index",
-        "g-panel": "../../../components/UI/g-panel/index"  
+        "l-button": "../../../lin-ui/button/index"
     }
 }

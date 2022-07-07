@@ -70,6 +70,13 @@ export default OakPage({
     properties: {
         event: String,
     },
+    data: {
+        stateColor: {
+            shadow: '#FFE57F',
+            normal: '#34BFA3',
+            disabled: '#F4516C'
+        }
+    },
     methods: {
         async onCellClicked(input: any) {
             // resolveInput拿的是target，原来代码拿的是currentTarget
