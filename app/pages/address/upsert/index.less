@@ -1,21 +1,20 @@
 /**  index.wxss  **/
-@import "../../../styles/base.less";
-@import "../../../styles/mixins.less";
+@import "../../../config/styles/_base.less";
+@import "../../../config/styles/_mixins.less";
 
 .page-body {
   height: 100vh;
   display: flex;
   flex: 1;
   flex-direction: column;
-  background-color: @background-color-base;
+  background-color: #fff;
   box-sizing: border-box;
   .safe-area-inset-bottom();
 }
 
-.g-cell-hover:extend(.g-cell) {
-  background-color: gainsboro;
-}
-
-.focused {
-  background-color: pink;
+.row {
+  display: flex;
+  align-items: center;
+  margin: 0rpx @size-spacing-small;
+  justify-content: space-between;
 }

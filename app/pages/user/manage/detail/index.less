@@ -1,5 +1,6 @@
 /**  index.wxss  **/
-@import "../../../../styles/base.less";
+@import "../../../../config/styles/_base.less";
+@import "../../../../config/styles/_mixins.less";
 
 .page-body {
   height: 100vh;
@@ -7,41 +8,10 @@
   flex: 1;
   flex-direction: column;
   background-color: @background-color-base;
+  box-sizing: border-box;
+  .safe-area-inset-bottom();
 }
 
-.user-state {
-  padding: 10rpx;
-  font-size: @size-font-small;
-  color: white;
-  align-self: flex-start;
-  background-color: @error-color;
-  &-shadow:extend(.user-state) {
-    background-color: @warning-color;
-  }
-  &-normal:extend(.user-state) {
-    background-color: @success-color;
-  }
-  &-disabled:extend(.user-state) {
-    background-color: @error-color;
-  }
-}
-
-.id-state {
-  padding: 10rpx;
-  font-size: @size-font-small;
-  color: white;
-  align-self: flex-start;
-  background-color: @error-color;
-  &-verifying:extend(.user-state) {
-    background-color: @warning-color;
-  }
-  &-verified:extend(.user-state) {
-    background-color: @success-color;
-  }
-  &-unverified:extend(.user-state) {
-    background-color: @error-color;
-  }
-}
 
 .avatar {
   font-size: 128rpx;
@@ -54,6 +24,14 @@
 .nickname {
   font-size: 44rpx;
   font-weight: bold;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  padding: 0rpx @size-spacing-base;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #fff;
 }
 
 .avatar {
@@ -69,5 +47,11 @@
 .userInfo {
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.btn-view {
+  display: flex;
+  justify-content: center;
   align-items: center;
 }

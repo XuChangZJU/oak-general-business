@@ -2,31 +2,34 @@
 <view class="page-body">
     <view class="user-list">
         <view wx:for="{{userData}}" wx:key="index">
-            <g-cell bind:tap="onCellClicked" data-id="{{item.id}}">
+            <view class="cell" bind:tap="onCellClicked" data-id="{{item.id}}">
                 <block wx:if="{{item.avatar}}">
                     <image class="avatar" src="{{item.avatar}}" mode="aspectFit" />
                 </block>
                 <block wx:else>
-                    <g-icon name="person_outline" size="120"></g-icon>
+                    <view class="img-view">
+                        <l-icon name="person_outline" type="material" size="80" />
+                    </view>
                 </block>
                 <view class="user-info">
-                    <view class="nickname">{{item.nickname || '未设置'}}</view>
-                    <view class="name">
-                        <span class="material-symbols-rounded" style="font-size:28rpx;margin-right:8rpx" color="#495060">
-                            tag_faces
-                        </span>
-                        {{item.name || '未设置'}}
+                    <view class="row">
+                        <view class="nickname">{{item.nickname || '未设置'}}</view>
+                        <l-tag bg-color="{{stateColor[item.userState]}}" shape="circle" size="mini">
+                            {{item.userState}}
+                        </l-tag>
                     </view>
+                    <view class="name">姓名：
+                        {{item.name || '未设置'}}</view>
                     <view class="mobile">
-                        <span class="material-symbols-rounded" style="font-size:28rpx;margin-right:8rpx" color="#495060">
-                            phone_android
-                        </span>
+                        手机号：
                         {{item.mobile || '未设置'}}
                     </view>
                 </view>
-                <view class="user-state-{{item.userState}}">{{item.userState}}</view>
-            </g-cell>
+                <l-icon name="right" size="24" color="#888" />
+            </view>
         </view>
     </view>
-    <g-btn size="long" type="primary" bind:tap="goNewUser">新建</g-btn>
+    <view class="btn-view">
+        <l-button size="large" type="default" bind:lintap="goNewUser">新建</l-button>
+    </view>
 </view>

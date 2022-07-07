@@ -1,40 +1,17 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <g-panel>
-        <g-input error="{{!!oakFocused.nickname}}" oak:value="nickname" title="昵称 *" placeholder="昵称" confirm-type="next" bind:change="setValue" />
-        <g-input error="{{!!oakFocused.name}}" oak:value="name" title="姓名" placeholder="姓名" confirm-type="next" bind:change="setValue" />
-        <picker mode="date" bindchange="onBirthChange" start="{{oldestBirthday}}" end="{{today}}">
-            <view class="g-cell {{oakFocused.birth}}" hover-class="g-cell-hover">
-                <view class="g-input-title">出生日期</view>
-                <view class="g-input-input" style="display: flex; flex: 1; align-items: center; justify-content:space-between">
-                    <text>{{birthText || '请选择'}}</text>
-                </view>
-                <g-icon name="chevron_right" />
-            </view>
-        </picker>
-        <picker mode="selector" range="{{GenderOptions}}" range-key="label" value="{{genderIndex}}" bindchange="onGenderChange">
-            <view class="g-cell {{oakFocused.gender}}" hover-class="g-cell-hover">
-                <view class="g-input-title">性别</view>
-                <view class="g-input-input" style="display: flex; flex: 1; align-items: center; justify-content:space-between">
-                    <text>{{genderText || '请选择'}}</text>
-                </view>
-                <g-icon name="chevron_right" />
-            </view>
-        </picker>
-        <picker mode="selector" range="{{IDCardTypeOptions}}" range-key="label" value="{{idCardTypeIndex}}" bindchange="onIdCardTypeChange">
-            <view class="g-cell {{oakFocused.idCardType}}" hover-class="g-cell-hover">
-                <view class="g-input-title">证件类别</view>
-                <view class="g-input-input" style="display: flex; flex: 1; align-items: center; justify-content:space-between">
-                    <text>{{idCardTypeText || '请选择'}}</text>
-                </view>
-                <g-icon name="chevron_right" />
-            </view>
-        </picker>
-        <g-input error="{{!!oakFocused.idCardNumber}}" oak:value="idCardNumber" title="证件号" placeholder="请输入证件号码" confirm-type="done" bind:change="setValue" />
-    </g-panel>
+    <view class="col">
+        <l-input required="{{true}}" label="昵称" placeholder="请输入" oak:value="nickname" bind:lininput="setValue" confirm-type="next" />
+        <l-input required="{{true}}" label="姓名" placeholder="请输入" oak:value="name" bind:lininput="setValue" confirm-type="next" />
+        <l-picker required="{{true}}" label="出生日期" placeholder="请选择" mode="date" data-attr="birth" value="{{birthText}}" bind:linchange="setValue" />
+        <l-picker required="{{true}}" label="性别" placeholder="请选择" arr="{{GenderOptions}}" rangeKey="label" oak:value="gender" bind:linchange="setValue" />
+        <l-picker required="{{true}}" label="证件类别" placeholder="请选择" arr="{{IDCardTypeOptions}}" rangeKey="label" oak:value="idCardType" bind:linchange="setValue" />
+        <l-input required="{{true}}" label="证件号" placeholder="请输入" oak:value="idNumber" bind:lininput="setValue" confirm-type="done" />
+    </view>
     <view style="flex: 1" />
-    <g-btn type="primary" long="true" class="{{ oakExecuting ? 'g-btn-loading' : ''}} {{ !oakDirty ? 'g-btn-disabled' : ''}}" disabled="{{oakExecuting || !oakDirty}}" bind:click="confirm">
-        <view class="g-btn-loading-inner" wx:if="{{oakExecuting}}"></view>
-        确定
-    </g-btn>
+    <view class="btn-view">
+        <l-button type="default" size="large" bind:lintap="confirm" loading="{{oakExecuting}}" disabled="{{oakExecuting || !oakDirty}}">
+            确定
+        </l-button>
+    </view>
 </view>

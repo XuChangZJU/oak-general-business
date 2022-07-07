@@ -1,5 +1,6 @@
 {
     "navigationBarTitleText": "手机号",
     "usingComponents": {
+        "l-button": "../../../lin-ui/button/index"
     }
 }

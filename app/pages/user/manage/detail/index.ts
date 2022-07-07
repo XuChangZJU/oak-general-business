@@ -76,6 +76,16 @@ export default OakPage({
         'play',
     ],
     data: {
+        stateColor: {
+            shadow: '#FFE57F',
+            normal: '#34BFA3',
+            disabled: '#F4516C'
+        },
+        idStateColor: {
+            verifying: '#FFE57F',
+            verified: '#34BFA3',
+            unverified: '#F4516C'
+        },
         show: false,
         actionDescriptions: {
             accept: {

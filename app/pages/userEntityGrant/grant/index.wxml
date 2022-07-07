@@ -10,5 +10,9 @@
             </label>
         </radio-group>
     </view>
-    <g-btn type="primary" bind:click="handleConfirm">{{t('common:action.confirm')}}</g-btn>
+    <view class="btn-view">
+        <l-button type="default" size="large" bind:lintap="handleConfirm">
+            {{t('common:action.confirm')}}
+        </l-button>
+    </view>
 </view>

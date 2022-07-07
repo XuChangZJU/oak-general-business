@@ -1,7 +1,7 @@
 {
     "navigationBarTitleText": "获取权限",
     "usingComponents": {
-        "g-btn": "../../../components/UI/g-btn/index",
-        "g-icon": "../../../components/UI/g-icon/index"
+        "l-button": "../../../lin-ui/button/index",
+        "l-icon": "../../../lin-ui/icon/index"
     }
 }

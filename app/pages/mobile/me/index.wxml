@@ -1,24 +1,17 @@
 <!-- index.wxml -->
 <view class="page-body">
     <block wx:if="{{mobiles && mobiles.length > 0}}">
-        <view class="g-form" style="flex: 1">
-            <view wx:for="{{mobiles}}" wx:key="index">
-                <view class="g-form-item">
-                    <view class="g-form-item-label">
-                        {{mobile.mobile}}
-                    </view>
-                </view>
-            </view>
+        <view wx:for="{{mobiles}}" wx:key="index" class="card">
+            <text>{{item.mobile}}</text>
         </view>
     </block>
     <block wx:else>
-        <view style="flex:1; display:flex; align-items:center;justify-content:center">
-            尚未授权手机号
-        </view>
+        <view style="flex:1; display:flex; align-items:center;justify-content:center">尚未授权手机号</view>
     </block>
+    <view style="display: flex; flex: 1"></view>
     <view class="btn-box">
-        <button open-type="getPhoneNumber" class="g-btn g-btn-primary g-btn-fullWidth" type="primary" bindgetphonenumber="onRefreshMobile">
+        <l-button open-type="getPhoneNumber" type="default" size="large" bindgetphonenumber="onRefreshMobile">
             授权手机号
-        </button>
+        </l-button>
     </view>
 </view>
