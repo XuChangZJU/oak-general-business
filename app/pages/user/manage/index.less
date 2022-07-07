@@ -1,5 +1,6 @@
 /**  index.wxss  **/
-@import "../../../styles/base.less";
+@import "../../../config/styles/_base.less";
+@import "../../../config/styles/_mixins.less";
 
 .page-body {
   height: 100vh;
@@ -25,7 +26,7 @@
 .user-state {
   margin-right: 20rpx;
   padding: 10rpx;
-  font-size: @size-font-small;
+  font-size: @size-font-mini;
   color: white;
   align-self: flex-start;
   &-shadow:extend(.user-state) {

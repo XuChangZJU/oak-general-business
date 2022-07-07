@@ -1,33 +1,31 @@
 /**  index.wxss  **/
-@import "../../../styles/base.less";
+@import "../../../config/styles/_base.less";
+@import "../../../config/styles/_mixins.less";
 
 .page-body {
   height: 100vh;
   display: flex;
   flex: 1;
   flex-direction: column;
+  box-sizing: border-box;
   background-color: @background-color-base;
+  .safe-area-inset-bottom();
 }
 
-.userInfo {
-  padding: 20rpx;
+.container {
   display: flex;
   flex-direction: column;
+  flex: 1;
+}
+.card {
+  display: flex;
+  background-color: #fff;
+  padding: @size-spacing-base;
+  margin: @size-spacing-base;
+  margin-bottom: 0;
+}
+.btn-box {
+  display: flex;
   align-items: center;
-  background-color: @background-color-base;  
-}
-
-.avatar {
-  font-size: 188rpx;
-  color: @text-color;
-  height: 200rpx;
-  width: 200rpx;
-  border-radius: 20rpx;
-}
-
-.nickname {
-  font-size: @size-font-large;
-  color: @text-color;
-  padding-top: @size-spacing-small;
-  padding-bottom: @size-spacing-base;
+  justify-content: center;
 }

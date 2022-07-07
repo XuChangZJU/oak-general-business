@@ -1,6 +1,6 @@
 /**  index.wxss  **/
-@import "../../../styles/base.less";
-@import "../../../styles/mixins.less";
+@import "../../../config/styles/_base.less";
+@import "../../../config/styles/_mixins.less";
 
 .page-body {
   height: 100vh;
@@ -16,11 +16,28 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 12rpx;
+  margin: @size-spacing-base;
+  padding: @size-spacing-base;
+  margin-bottom: 0rpx;
+  background-color: #fff;
 }
 
-.upper-container {
+.phone {
+  size: @size-font-base;
+  margin-left: @size-spacing-base;
+}
+.area {
+  margin-left: @size-spacing-base;
+  color: @text-color;
+}
+
+.row {
   display: flex;
-  align-items: flex-end;
-  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.btn-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

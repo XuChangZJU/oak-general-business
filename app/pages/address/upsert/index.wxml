@@ -1,25 +1,15 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <g-panel>
-        <g-input error="{{!!oakFocused.name}}" oak:value="name" title="收货人" placeholder="姓名" confirm-type="done" bind:change="setValue" />
-        <g-input error="{{!!oakFocused.phone}}" oak:value="phone" title="手机号" placeholder="11位手机号码" confirm-type="done" bind:change="setValue" />
-        <view class="g-cell {{oakFocused.areaId}}" hover-class="g-cell-hover" bindtap="callAreaPicker">
-            <view class="g-input-title">所在地区</view>
-            <view class="g-input-input" style="display: flex; flex: 1; align-items: center; justify-content:space-between">
-                <text>{{areaText || '请选择'}}</text>
-                <g-icon name="chevron_right" />
-            </view>
-        </view>
-        <g-input error="{{!!oakFocused.detail}}" oak:value="detail" title="详细地址" placeholder="精确到门牌号码" confirm-type="done" bind:change="setValue" />
-    </g-panel>
+    <l-list title="购物车" />
+    <l-input required="{{true}}" label="收货人" placeholder="姓名" oak:value="name" confirm-type="done" bind:lininput="setValue" />
+    <l-input required="{{true}}" label="手机号" placeholder="11位手机号码" oak:value="phone" confirm-type="done" bind:lininput="setValue" />
+    <l-label required="{{true}}" label="所在地区" placeholder="请选择" oak:value="areaText" bind:lintap="callAreaPicker" confirm-type="done" />
+    <l-textarea placeholder="详细地址" confirm-type="done" bind:lininput="setValue" oak:value="detail" />
     <view style="flex: 1" />
-    <view style="display:flex;flex-direction:row;align-items:center">
-        <g-btn type="primary" style="flex: 2" class="{{ oakExecuting ? 'g-btn-loading' : ''}} {{ !oakDirty ? 'g-btn-disabled' : ''}}" disabled="{{oakExecuting || !oakDirty}}" bind:click="confirm">
-            <view class="g-btn-loading-inner" wx:if="{{oakExecuting}}"></view>
+    <view class="row">
+        <l-button width="500" type="default" loading="{{oakExecuting}}" disabled="{{oakExecuting || !oakDirty}}" bind:lintap="confirm">
             确定
-        </g-btn>
-        <g-btn type="warning" style="flex: 1" disabled="{{!oakDirty}}" bind:click="reset">
-            重置
-        </g-btn>
+        </l-button>
+        <l-button type="error" disabled="{{!oakDirty}}" bind:lintap="reset">重置</l-button>
     </view>
 </view>

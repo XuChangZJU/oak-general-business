@@ -2,9 +2,10 @@
     "navigationBarTitleText": "修改地址",
     "usingComponents": {
         "area-upsert": "../../../components/area/upsert/index",
-        "g-btn": "../../../components/UI/g-btn/index",
-        "g-input": "../../../components/UI/g-input/index",
-        "g-icon": "../../../components/UI/g-icon/index",
-        "g-panel": "../../../components/UI/g-panel/index"  
+        "l-input": "../../../lin-ui/input/index",
+        "l-label": "../../../lin-ui/label/index",
+        "l-textarea": "../../../lin-ui/textarea/index",
+        "l-list": "../../../lin-ui/list/index",
+        "l-button": "../../../lin-ui/button/index"
     }
 }
