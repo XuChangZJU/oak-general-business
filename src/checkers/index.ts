@@ -4,10 +4,16 @@ import userCheckers from './user';
 import userEntityGrantCheckers from './userEntityGrant';
 import wechatQrCodeCheckers from './wechatQrCode';
 
-export default [
+import { processCheckers } from '../utils/check';
+
+const checkers = [
     ...addressCheckers,
     ...tokenCheckers,
     ...userCheckers,
     ...userEntityGrantCheckers,
     ...wechatQrCodeCheckers,
 ];
+
+processCheckers(checkers as any);
+
+export default checkers;
