@@ -51,7 +51,7 @@ export default OakPage({
                 const { id } = data;
 
                 this.navigateTo({
-                    url: '../detail/index',
+                    url: '/userEntityGrant/detail',
                     oakId: id,
                 });
             } catch (error) {
@@ -64,7 +64,7 @@ export default OakPage({
                         OakCongruentRowExists<EntityDict, 'userEntityGrant'>
                     >error).getData();
                     this.navigateTo({
-                        url: '/pages/userEntityGrant/detail/index',
+                        url: '/userEntityGrant/detail',
                         oakId: data.id,
                     });
                 }

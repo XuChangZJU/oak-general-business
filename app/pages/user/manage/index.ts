@@ -79,7 +79,7 @@ export default OakPage({
         },
         goNewUser() {
             this.navigateTo({
-                url: '/pages/user/manage/upsert/index',
+                url: '/user/manage/upsert',
             });
         },
     },

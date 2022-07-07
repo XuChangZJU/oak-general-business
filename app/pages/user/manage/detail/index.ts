@@ -144,7 +144,7 @@ export default OakPage({
             switch (action) {
                 case 'update': {
                     this.navigateTo({
-                        url: '/pages/user/upsert/index',
+                        url: '/user/upsert',
                         oakId: this.props.oakId,
                     });
                     return;

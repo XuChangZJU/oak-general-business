@@ -168,7 +168,7 @@ export default OakComponent(
             goUpsertUser() {
                 const { entity, entityId } = this.props;
                 this.navigateTo({
-                    url: '../../user/manage/upsert/index',
+                    url: '/user/manage/upsert',
                 });
             },
             handleCardClick(event: any) {
@@ -176,7 +176,7 @@ export default OakComponent(
                 const { dataset } = this.resolveInput(event);
                 const { id } = dataset!;
                 this.navigateTo({
-                    url: '../detail/index',
+                    url: '/user/manage/detail',
                     oakId: id,
                     entity,
                     entityId,

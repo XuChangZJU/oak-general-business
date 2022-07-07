@@ -119,21 +119,21 @@ export default OakPage({
         },
         goMyMobile() {
             this.navigateTo({
-                url: '/pages/mobile/me/index',
+                url: '/mobile/me',
             });
         },
         goUserManage() {
             const event = `user:manage:itemclicked:${Date.now()}`;
             const onItemClicked = async ({ id }: { id: string }) => {
                 this.navigateTo({
-                    url: '../../user/manage/detail/index',
+                    url: '/user/manage/detail',
                     oakId: id,
                 });
             }
             this.sub(event, onItemClicked);
 
             this.navigateTo({
-                url: '/pages/user/manage/index',
+                url: '/user/manage',
                 event,
             });
         },
