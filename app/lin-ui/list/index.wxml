@@ -3,12 +3,12 @@
     <l-badge wx:if="{{(badgeCount > 0 || dotBadge ) && badgePosition ==='left'}}" value="{{badgeCount}}" dot="{{dotBadge}}" max-count="{{badgeMaxCount}}" number-type="{{badgeCountType}}">
         <template is="cell-left-main" data="{{image,icon,title,desc,tagContent,tagPosition,tagColor,tagShape,tagPlain,iconSize,iconColor}}" />
     </l-badge>
-    <template is="cell-left-main" data="{{image,icon,title,desc,tagContent,tagPosition,tagColor,tagShape,tagPlain,iconSize,iconColor}}" wx:else />
+    <template wx:else is="cell-left-main" data="{{image,icon,title,desc,tagContent,tagPosition,tagColor,tagShape,tagPlain,iconSize,iconColor}}" />
     <!-- right -->
     <l-badge l-class="badge-right" wx:if="{{(badgeCount > 0 || dotBadge ) && badgePosition ==='right'}}" value="{{badgeCount}}" dot="{{dotBadge}}" max-count="{{badgeMaxCount}}" number-type="{{badgeCountType}}">
         <template is="cell-right-main" data="{{rightDesc,tagContent,tagPosition,isLink,tagColor,tagShape,tagPlain}}" />
     </l-badge>
-    <template is="cell-right-main" data="{{rightDesc,tagContent,tagPosition,isLink,tagColor,tagShape,tagPlain}}" wx:else />
+    <template wx:else is="cell-right-main" data="{{rightDesc,tagContent,tagPosition,isLink,tagColor,tagShape,tagPlain}}" />
 </view>
 <template name="cell-left-main">
     <view class="left-section ">
