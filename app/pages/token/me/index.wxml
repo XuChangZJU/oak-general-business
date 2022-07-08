@@ -24,6 +24,9 @@
             </view>
         </l-list>
         <component-menu />
+        <view style="flex:1" />
+        <block wx:if="{{isRoot}}">
         <l-list title="用户管理" bind:lintap="goUserManage" />
+        </block>
     </view>
 </view>
