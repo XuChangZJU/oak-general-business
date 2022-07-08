@@ -55,9 +55,9 @@ export default OakPage({
     },
     filters: [{
         filter: async ({ features }) => {
-            const token = await features.token.getToken();
+            const tokenId = await features.token.getToken();
             return {
-                id: token,
+                id: tokenId,
             };
         },
     }],
@@ -109,13 +109,24 @@ export default OakPage({
                 refreshing: true,
             });
             try {
-                await this.features.token.loginWechatMp();
+                switch(process.env.OAK_PLATFORM) {
+                    case 'wechatMp': {
+                        await this.features.token.loginWechatMp();
+                        this.setState({
+                            refreshing: false,
+                        });
+                        break;
+                    }
+                    case 'web': {
+                        this.navigateTo({
+                            url: '/mobile/me'
+                        });
+                        break;
+                    }
+                }
             } catch (err) {
                 console.error(err);
             }
-            this.setState({
-                refreshing: false,
-            });
         },
         goMyMobile() {
             this.navigateTo({

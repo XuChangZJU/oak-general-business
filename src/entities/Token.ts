@@ -1,7 +1,7 @@
 import { String, Int, Datetime, Image, Boolean } from 'oak-domain/lib/types/DataType';
 import { Schema as User } from './User';
 import { Schema as Application } from './Application';
-import { AbleAction, makeAbleActionDef } from 'oak-domain/lib/actions/action';
+import { AbleAction, AbleState, makeAbleActionDef } from 'oak-domain/lib/actions/action';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 // https://developers.weixin.qq.com/miniprogram/dev/api/base/system/wx.getSystemInfoSync.html
@@ -48,7 +48,9 @@ type Action = AbleAction;
 const AbleActionDef = makeAbleActionDef('enabled');
 
 
-const locale: LocaleDef<Schema, Action, '', {}> = {
+const locale: LocaleDef<Schema, Action, '', {
+    ableState: AbleState,
+}> = {
     zh_CN: {
         attr: {
             application: '应用',
@@ -57,10 +59,17 @@ const locale: LocaleDef<Schema, Action, '', {}> = {
             user: '用户',
             player: '扮演者',
             env: '环境',
+            ableState: '状态',
         },
         action: {
             enable: '激活',
             disable: '禁用',
-        }
+        },
+        v: {
+            ableState: {
+                enabled: '使用中',
+                disabled: '已禁用'
+            },
+        },
     },
  };

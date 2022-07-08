@@ -90,6 +90,8 @@ const locale: LocaleDef<Schema, Action, '', {
             idNumber: '证件号码',
             ref: '介绍人',
             files: '相关文件',
+            userState: '用户状态',
+            idState: '身份验证状态',
         },
         action: {
             activate: '激活',

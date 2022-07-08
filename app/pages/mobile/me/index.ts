@@ -9,6 +9,27 @@ export default OakPage({
         mobile: 1,
         userId: 1,
     },
+    filters: [{
+        filter: async ({ features }) => {           
+            const tokenId = await features.token.getToken();
+            return {
+                user: {
+                    id: {
+                        $in: {
+                            entity: 'token',
+                            data: {
+                                userId: 1,
+                            },
+                            filter: {
+                                id: tokenId,
+                                ableState: 'enabled',
+                            }
+                        }
+                    }
+                },
+            };
+        },
+    }],
     formData: async ({ data: mobiles }) => ({
         mobiles,
     }),

@@ -40,7 +40,7 @@
         "prebuild": "ts-node ./scripts/make.ts",
         "build": "tsc",
         "get:area": "ts-node ./scripts/getAmapArea.ts",
-        "clean:dts": "ts-node ./scripts/cleanDtsAndJs"
+        "clean:dir": "ts-node ./scripts/cleanDtsAndJs"
     },
     "main": "src/index"
 }

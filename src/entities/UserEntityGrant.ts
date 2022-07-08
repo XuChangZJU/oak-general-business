@@ -65,7 +65,8 @@ const locale: LocaleDef<Schema, Action, '', {
             granter: '授权人',
             files: '微信码',
             expired: '是否过期',
-            expiresAt: '过期时间'
+            expiresAt: '过期时间',
+            iState: '状态',
         },
         action: {
             confirm: '确认'
