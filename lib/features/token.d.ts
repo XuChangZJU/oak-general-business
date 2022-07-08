@@ -18,4 +18,5 @@ export declare class Token<ED extends EntityDict, Cxt extends GeneralRuntimeCont
     getToken(): Promise<string | undefined>;
     getUserId(): Promise<string | undefined>;
     isRoot(): Promise<boolean>;
+    sendCaptcha(mobile: string, type: 'web'): Promise<string>;
 }

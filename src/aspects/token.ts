@@ -3,12 +3,12 @@ import { EntityDict } from 'general-app-domain';
 import { WechatSDK } from 'oak-external-sdk';
 import assert from 'assert';
 import { WechatMpConfig } from 'general-app-domain/Application/Schema';
-import { CreateOperationData as CreateToken, WechatMpEnv } from 'general-app-domain/Token/Schema';
+import { CreateOperationData as CreateToken, WebEnv, WechatMpEnv } from 'general-app-domain/Token/Schema';
 import { CreateOperationData as CreateWechatUser } from 'general-app-domain/WechatUser/Schema';
 import { CreateOperationData as CreateUser, Schema as User } from 'general-app-domain/User/Schema';
 import { Operation as ExtraFileOperation } from 'general-app-domain/ExtraFile/Schema';
 import { assign, isEqual, keys } from 'lodash';
-import { SelectRowShape } from 'oak-domain/lib/types';
+import { OakUserException, SelectRowShape } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
 
 export async function loginMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: { code: string }, context: Cxt): Promise<string> {
@@ -360,8 +360,99 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ge
     }
 }
 
-/* export type AspectDict<ED extends EntityDict> = {
-    loginMp: (params: { code: string }, context: GeneralRuntimeContext<ED>) => Promise<string>;
-    loginByPassword: (params: { password: string, mobile: string }, context: GeneralRuntimeContext<ED>) => Promise<string>;
-};
- */
+
+export async function sendCaptcha<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ mobile, env }: {
+    mobile: string;
+    env: WechatMpConfig | WebEnv
+}, context: Cxt): Promise<string> {
+    const { type } = env;
+
+    assert(type === 'web');
+    let { visitorId } = env;
+
+    const { rowStore } = context;
+    const now = Date.now();
+    const [count1, count2] = await Promise.all(
+        [
+            rowStore.count('captcha', {
+                filter: {
+                    visitorId,
+                    $$createAt$$: {
+                        $gt: now - 3600 * 1000,
+                    },
+                },
+            }, context),
+            rowStore.count('captcha', {
+                filter: {
+                    mobile,
+                    $$createAt$$: {
+                        $gt: now - 3600 * 1000,
+                    },
+                }
+            }, context)
+        ]
+    );
+    if (count1 > 5 || count2 > 5) {
+        throw new OakUserException('您已发送很多次短信，请休息会再发吧');
+    }
+    const { result: [captcha] } = await rowStore.select('captcha', {
+        data: {
+            id: 1,
+            code: 1,
+            $$createAt$$: 1,
+        },
+        filter: {
+            mobile,
+            $$createAt$$: {
+                $gt: now - 600 * 1000,
+            },
+            expired: false,
+        }
+    }, context);
+    if (captcha) {
+        if (process.env.NODE_ENV === 'development') {
+            const { code } = captcha;
+            return `验证码[${code}]已创建`;
+        }
+        else if (captcha.$$createAt$$! as number - now < 60000) {
+            throw new OakUserException('您的操作太迅捷啦，请稍等再点吧');
+        }
+        else {
+            // todo 再次发送
+            return '验证码已发送';
+        }
+    }
+    else {
+        let code: string;
+        if (process.env.NODE_ENV === 'development') {
+            code = mobile.substring(7);
+        }
+        else {
+            code = Math.floor(Math.random() * 10000).toString();
+            while (code.length < 4) {
+                code += '0';
+            }
+        }
+    
+        const { v1 } = require('uuid');
+        await rowStore.operate('captcha', {
+            action: 'create',
+            data: {
+                id: v1(), 
+                mobile,
+                code,
+                visitorId,
+                env,
+                expired: false,
+                expiresAt: now + 660 * 1000,
+            }
+        }, context);
+    
+        if (process.env.NODE_ENV === 'development') {
+            return `验证码[${code}]已创建`;
+        }
+        else {
+            return '验证码已创建';
+        }
+    }
+}

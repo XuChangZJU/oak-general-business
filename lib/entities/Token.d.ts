@@ -21,6 +21,19 @@ export declare type WechatMpEnv = {
 };
 export declare type WebEnv = {
     type: 'web';
+    visitorId: string;
+    platform: {
+        value: string;
+    };
+    timezone: {
+        value: string;
+    };
+    vendor: {
+        value: string;
+    };
+    vendorFlavors: {
+        value: string[];
+    };
 };
 export declare type ServerEnv = {
     type: 'server';

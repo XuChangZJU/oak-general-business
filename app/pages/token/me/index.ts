@@ -119,7 +119,7 @@ export default OakPage({
                     }
                     case 'web': {
                         this.navigateTo({
-                            url: '/mobile/me'
+                            url: '/mobile/login'
                         });
                         break;
                     }

@@ -1,10 +1,10 @@
-import { pick } from 'lodash';
 import { EntityDict } from 'general-app-domain';
 import { Action, Feature } from 'oak-frontend-base';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
-import { WechatMpEnv } from 'general-app-domain/Token/Schema';
+import { WebEnv, WechatMpEnv } from 'general-app-domain/Token/Schema';
 import { Cache } from 'oak-frontend-base';
 import { CommonAspectDict } from 'oak-common-aspect';
+import { getEnv } from '../utils/env';
 import { AspectDict } from '../aspects/AspectDict';
 import { GeneralRuntimeContext } from '..';
 import { AspectWrapper, SelectRowShape } from 'oak-domain/lib/types';
@@ -43,26 +43,11 @@ export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>,
         await this.rwLock.acquire('X');
         try {
             const { code } = await wx.login();
-            const env = await wx.getSystemInfo();
-            const env2 = pick(env, [
-                'brand',
-                'model',
-                'pixelRatio',
-                'screenWidth',
-                'screenHeight',
-                'windowWidth',
-                'windowHeight',
-                'statusBarHeight',
-                'language',
-                'version',
-                'system',
-                'platform',
-                'fontSizeSetting',
-                'SDKVersion'
-            ]);
+            
+            const env = await getEnv();
             const { result } = await this.getAspectWrapper().exec('loginWechatMp', {
                 code,
-                env: Object.assign(env2, { type: 'wechatMp' }) as WechatMpEnv,
+                env: env as WechatMpEnv,
             });
             this.token = result;
             this.context.setToken(result);
@@ -167,5 +152,14 @@ export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>,
             },                   
         }>[];
         return (tokenValue?.player?.userRole$user as any).length > 0 ? (tokenValue?.player?.userRole$user as any)[0]?.roleId === ROOT_ROLE_ID : false;
+    }
+
+    async sendCaptcha(mobile: string, type: 'web') {
+        const env = await getEnv();
+        const { result } = await this.getAspectWrapper().exec('sendCaptcha', {
+            mobile,
+            env: env as WebEnv,
+        });
+        return result as string;
     }
 }

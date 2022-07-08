@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "oak框架中公共业务逻辑的实现",
     "dependencies": {
+        "@fingerprintjs/fingerprintjs": "^3.3.3",
         "lodash": "^4.17.21",
         "oak-common-aspect": "file:../oak-common-aspect",
         "oak-domain": "file:../oak-domain",
@@ -40,7 +41,8 @@
         "prebuild": "ts-node ./scripts/make.ts",
         "build": "tsc",
         "get:area": "ts-node ./scripts/getAmapArea.ts",
-        "clean:dir": "ts-node ./scripts/cleanDtsAndJs"
+        "clean:dir": "ts-node ./scripts/cleanDtsAndJs",
+        "postinstall": "npm run prebuild"
     },
     "main": "src/index"
 }

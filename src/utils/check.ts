@@ -16,7 +16,7 @@ async function checkIsRoot<ED extends EntityDict, Cxt extends GeneralRuntimeCont
             userId: playerId!,
             roleId: ROOT_ROLE_ID,
         },
-    } as any, context);
+    }, context);
     if (count === 0) {
         // 只有root允许扮演其他用户身份
         return false;

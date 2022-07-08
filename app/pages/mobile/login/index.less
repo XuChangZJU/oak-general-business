@@ -1,0 +1,31 @@
+/**  index.wxss  **/
+@import "../../../config/styles/_base.less";
+@import "../../../config/styles/_mixins.less";
+
+.page-body {
+  height: 100vh;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  background-color: @background-color-base;
+  .safe-area-inset-bottom();
+}
+
+.card {
+  width: 90%;
+  align-self: center;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+.ant-tabs-nav-list {
+  width: 100%;
+  .ant-tabs-tab {
+    width: 50%;
+  }
+}

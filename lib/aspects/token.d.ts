@@ -1,6 +1,7 @@
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { EntityDict } from 'general-app-domain';
-import { WechatMpEnv } from 'general-app-domain/Token/Schema';
+import { WechatMpConfig } from 'general-app-domain/Application/Schema';
+import { WebEnv, WechatMpEnv } from 'general-app-domain/Token/Schema';
 export declare function loginMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: {
     code: string;
 }, context: Cxt): Promise<string>;
@@ -24,3 +25,7 @@ export declare function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends 
     iv: string;
     signature: string;
 }, context: Cxt): Promise<void>;
+export declare function sendCaptcha<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ mobile, env }: {
+    mobile: string;
+    env: WechatMpConfig | WebEnv;
+}, context: Cxt): Promise<string>;

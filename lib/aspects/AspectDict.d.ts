@@ -1,5 +1,5 @@
+import { WebEnv, WechatMpEnv } from "general-app-domain/Token/Schema";
 import { EntityDict } from "general-app-domain";
-import { WechatMpEnv } from "general-app-domain/Token/Schema";
 import { QiniuUploadInfo } from "oak-frontend-base/src/types/Upload";
 import { GeneralRuntimeContext } from "..";
 declare type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>> = {
@@ -25,6 +25,10 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntime
         origin: string;
         fileName: string;
     }, context: Cxt) => Promise<QiniuUploadInfo>;
+    sendCaptcha: (params: {
+        mobile: string;
+        env: WechatMpEnv | WebEnv;
+    }) => Promise<string>;
 };
 export declare type AspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
 export {};
