@@ -1,4 +1,4 @@
-import { String, Datetime, Boolean } from 'oak-domain/lib/types/DataType';
+import { String, Datetime, Image, Boolean } from 'oak-domain/lib/types/DataType';
 import { Schema as User } from './User';
 import { Schema as Application } from './Application';
 import { Schema as Token } from './Token';
@@ -15,4 +15,6 @@ export interface Schema extends EntityShape {
     user?: User;
     application: Application;
     tokens: Array<Token>;
+    nickname?: String<128>;
+    avatar?: Image;
 }

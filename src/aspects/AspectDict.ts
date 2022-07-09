@@ -5,7 +5,7 @@ import { QiniuUploadInfo } from "oak-frontend-base/src/types/Upload";
 import { GeneralRuntimeContext } from "..";
 
 type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>> = {
-    loginByPassword: (params: { password: string, mobile: string }, context: Cxt) => Promise<string>,
+    loginByMobile: (params: { captcha?: string, password?: string, mobile: string, env: WebEnv | WechatMpEnv }, context: Cxt) => Promise<string>,
     loginMp: (params: { code: string }, context: Cxt) => Promise<string>,
     loginWechatMp: ({ code, env }: {
         code: string;

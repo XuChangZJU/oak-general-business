@@ -103,7 +103,7 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
         return JSON.stringify(data);
     }
 
-    protected static destructString(strCxt: string) {
+    protected static fromString(strCxt: string) {
         const {
             applicationId,
             scene,

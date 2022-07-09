@@ -5,9 +5,11 @@ import { WebEnv, WechatMpEnv } from 'general-app-domain/Token/Schema';
 export declare function loginMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: {
     code: string;
 }, context: Cxt): Promise<string>;
-export declare function loginByPassword<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: {
-    password: string;
+export declare function loginByMobile<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: {
+    captcha?: string;
+    password?: string;
     mobile: string;
+    env: WebEnv | WechatMpEnv;
 }, context: Cxt): Promise<string>;
 export declare function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ code, env }: {
     code: string;

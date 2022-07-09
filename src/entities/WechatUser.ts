@@ -17,6 +17,8 @@ export interface Schema extends EntityShape {
     user?: User;
     application: Application;
     tokens: Array<Token>;
+    nickname?: String<128>;
+    avatar?: Image;
 };
 
 const locale: LocaleDef<Schema, '', '', {
@@ -35,6 +37,8 @@ const locale: LocaleDef<Schema, '', '', {
             user: '用户',
             tokens: '相关令牌',
             application: '应用',
+            nickname: '昵称',
+            avatar: '头像',
         },
         v: {
             origin: {

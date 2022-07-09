@@ -5,6 +5,7 @@ export interface Schema extends EntityShape {
     name?: String<16>;
     nickname?: String<64>;
     password?: Text;
+    passwordOrigin?: Text;
     birth?: Datetime;
     gender?: 'male' | 'female';
     avatar?: Image;

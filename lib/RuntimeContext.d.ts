@@ -27,7 +27,7 @@ export declare abstract class GeneralRuntimeContext<ED extends EntityDict> exten
     }> | undefined>;
     getTokenValue(): string | undefined;
     toString(): Promise<string>;
-    protected static destructString(strCxt: string): {
+    protected static fromString(strCxt: string): {
         applicationId: any;
         scene: any;
         token: any;

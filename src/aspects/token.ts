@@ -10,24 +10,194 @@ import { Operation as ExtraFileOperation } from 'general-app-domain/ExtraFile/Sc
 import { assign, isEqual, keys } from 'lodash';
 import { OakUserException, SelectRowShape } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
+import { OakDistinguishUserByBusinessException, OakDistinguishUserByWechatUserException, OakUserDisabledException } from '../types/Exceptions';
 
 export async function loginMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: { code: string }, context: Cxt): Promise<string> {
     const { rowStore } = context;
     throw new Error('method not implemented!');
 }
 
-export async function loginByPassword<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: { password: string, mobile: string }, context: Cxt): Promise<string> {
+async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(mobile: string, env: WebEnv | WechatMpEnv, context: Cxt) {
     const { rowStore } = context;
+    const currentToken = await context.getToken();
+    const applicationId = context.getApplicationId();
 
-    const { result: [mobile] } = await rowStore.select('mobile', {
+    const { result: result2 } = await rowStore.select('mobile', {
         data: {
             id: 1,
             mobile: 1,
             userId: 1,
+            ableState: 1,
+            user: {
+                id: 1,
+                userState: 1,
+                wechatUser$user: {
+                    $entity: 'wechatUser',
+                    data: {
+                        id: 1,
+                    },
+                },
+            },
         },
-    }, context);
+        filter: {
+            mobile,
+            ableState: 'enabled',
+        }
+    }, context, { notCollect: true });
+    if (result2.length > 0) {
+        // 此手机号已经存在
+        assert(result2.length === 1);
+        const [ mobileRow ] = result2;
+        if (currentToken) {
+            if (currentToken.userId === mobileRow.userId) {
+                return currentToken.id;
+            }
+            else  {
+                // 此时可能要合并用户，如果用户有wechatUser信息，则抛出OakDistinguishUserByWechatUser异常，否则抛出
+                const { user } = mobileRow;
+                const { wechatUser$user } = user as {
+                    wechatUser$user: any[];
+                };
+                if (wechatUser$user.length > 0) {
+                    throw new OakDistinguishUserByWechatUserException(mobileRow.userId as string);
+                }
+                else {
+                    throw new OakDistinguishUserByBusinessException(mobileRow.userId as string);
+                }
+            }
+        }
+        else {
+            // 此时以该手机号登录 todo根据环境来判断，用户也有可能是新获得此手机号，未来再进一步处理
+            const tokenData: EntityDict['token']['CreateSingle']['data'] = {
+                id: await generateNewId(),
+                applicationId,
+                playerId: mobileRow.userId as string,
+                env,
+            };
+            const { user } = mobileRow;
+            const { userState } = user as SelectRowShape<EntityDict['user']['Schema'], {
+                id: 1,
+                userState: 1,
+            }>;
+            switch (userState) {
+                case 'disabled': {
+                    throw new OakUserDisabledException();
+                }
+                case 'shadow': {
+                    assign(tokenData, {
+                        userId: mobileRow.userId,
+                        user: {
+                            action: 'activate',
+                        }
+                    });
+                    break;
+                }
+                default: {
+                    assert(userState === 'normal');
+                    assign(tokenData, {
+                        userId: mobileRow.id,
+                    });
+                }
+            }
 
-    throw new Error('method not implemented!');
+            await rowStore.operate('token', {
+                data: tokenData,
+                action: 'create',
+            }, context);
+
+            return tokenData.id;
+        }
+    }
+    else {
+        //此手机号不存在
+        if (currentToken) {
+            // 创建手机号并与之关联即可
+            const mobileData: EntityDict['mobile']['CreateSingle']['data'] = {
+                id: await generateNewId(),
+                mobile,
+                userId: currentToken.userId!,
+            };
+            await rowStore.operate('mobile', {
+                action: 'create',
+                data: mobileData
+            }, context);
+            return currentToken.id;
+        }
+        else {
+            // 创建token, mobile, user
+            const userData: EntityDict['user']['CreateSingle']['data'] = {
+                id: await generateNewId(),
+                userState: 'normal',
+            };
+            await rowStore.operate('user', {
+                action: 'create',
+                data: userData,
+            }, context);
+            const tokenData: EntityDict['token']['CreateSingle']['data'] = {
+                id: await generateNewId(),
+                userId: userData.id,
+                playerId: userData.id,
+                env,
+                mobile: {
+                    action: 'create',
+                    data: {
+                        id: await generateNewId(),
+                        mobile,    
+                        userId: userData.id,                    
+                    }
+                }
+            };
+            await rowStore.operate('token', {
+                action: 'create',
+                data: tokenData,
+            }, context);
+
+            return tokenData.id;
+        }
+    }
+}
+
+export async function loginByMobile<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(
+    params: { captcha?: string, password?: string, mobile: string, env: WebEnv | WechatMpEnv },
+    context: Cxt): Promise<string> {
+    const { mobile, captcha, password, env } = params;
+    const { rowStore } = context;
+    if (captcha) {
+        const { result } = await rowStore.select('captcha', {
+            data: {
+                id: 1,
+                expired: 1,
+            },
+            filter: {
+                mobile,
+                code: captcha,
+            },
+            sorter: [{
+                $attr: {
+                    $$createAt$$: 1,
+                },
+                $direction: 'desc',
+            }],
+            indexFrom: 0,
+            count: 1,
+        }, context, { notCollect: true });
+        if (result.length > 0) {
+            const [captchaRow] = result;
+            if (captchaRow.expired) {
+                throw new OakUserException('验证码已经过期');
+            }
+
+            // 到这里说明验证码已经通过
+            return await setupMobile<ED, Cxt>(mobile, env, context);
+        }
+        else {
+            throw new OakUserException('验证码无效');
+        }
+    }
+    else {
+        assert(password);
+        throw new Error('method not implemented!');
+    }
 }
 
 export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ code, env }: {
@@ -180,7 +350,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                 },
                 unionId,
             }
-        }, context);        
+        }, context);
         const wechatUser2 = wechatUser3 as SelectRowShape<EntityDict['wechatUser']['Schema'], {
             id: 1,
             userId: 1,
@@ -227,7 +397,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
     }
 
     // 到这里都是要同时创建wechatUser和user对象了
-    const userData : CreateUser = {
+    const userData: CreateUser = {
         id: await generateNewId(),
         userState: 'normal',
     };
@@ -268,14 +438,16 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
  */
 export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({
     nickname, avatarUrl, encryptedData, iv, signature
-}: {nickname: string, avatarUrl: string, encryptedData: string, iv: string, signature: string}, context: Cxt) {
+}: { nickname: string, avatarUrl: string, encryptedData: string, iv: string, signature: string }, context: Cxt) {
     const { rowStore } = context;
     const { userId } = (await context.getToken())!;
     const application = (await context.getApplication())!;
-    const { result: [{ sessionKey, user }]} = await rowStore.select('wechatUser', {
+    const { result: [{ sessionKey, user }] } = await rowStore.select('wechatUser', {
         data: {
             id: 1,
             sessionKey: 1,
+            nickname: 1,
+            avatar:1,
             user: {
                 id: 1,
                 nickname: 1,
@@ -358,6 +530,8 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ge
             }
         }, context);
     }
+
+    // todo update nickname/avatar in wechatUser
 }
 
 
@@ -372,28 +546,30 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends GeneralRunt
 
     const { rowStore } = context;
     const now = Date.now();
-    const [count1, count2] = await Promise.all(
-        [
-            rowStore.count('captcha', {
-                filter: {
-                    visitorId,
-                    $$createAt$$: {
-                        $gt: now - 3600 * 1000,
+    if (process.env.NODE_ENV !== 'development') {
+        const [count1, count2] = await Promise.all(
+            [
+                rowStore.count('captcha', {
+                    filter: {
+                        visitorId,
+                        $$createAt$$: {
+                            $gt: now - 3600 * 1000,
+                        },
                     },
-                },
-            }, context),
-            rowStore.count('captcha', {
-                filter: {
-                    mobile,
-                    $$createAt$$: {
-                        $gt: now - 3600 * 1000,
-                    },
-                }
-            }, context)
-        ]
-    );
-    if (count1 > 5 || count2 > 5) {
-        throw new OakUserException('您已发送很多次短信，请休息会再发吧');
+                }, context),
+                rowStore.count('captcha', {
+                    filter: {
+                        mobile,
+                        $$createAt$$: {
+                            $gt: now - 3600 * 1000,
+                        },
+                    }
+                }, context)
+            ]
+        );
+        if (count1 > 5 || count2 > 5) {
+            throw new OakUserException('您已发送很多次短信，请休息会再发吧');
+        }
     }
     const { result: [captcha] } = await rowStore.select('captcha', {
         data: {
@@ -404,7 +580,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends GeneralRunt
         filter: {
             mobile,
             $$createAt$$: {
-                $gt: now - 600 * 1000,
+                $gt: now - 60 * 1000,
             },
             expired: false,
         }
@@ -433,12 +609,13 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends GeneralRunt
                 code += '0';
             }
         }
-    
-        const { v1 } = require('uuid');
+
+        const id = await generateNewId();
+        console.log('captcha created', id);
         await rowStore.operate('captcha', {
             action: 'create',
             data: {
-                id: v1(), 
+                id,
                 mobile,
                 code,
                 visitorId,
@@ -447,7 +624,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends GeneralRunt
                 expiresAt: now + 660 * 1000,
             }
         }, context);
-    
+
         if (process.env.NODE_ENV === 'development') {
             return `验证码[${code}]已创建`;
         }

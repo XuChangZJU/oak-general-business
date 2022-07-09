@@ -1,7 +1,7 @@
-import { loginByPassword, loginMp, loginWechatMp, syncUserInfoWechatMp, sendCaptcha } from './token';
+import { loginByMobile, loginMp, loginWechatMp, syncUserInfoWechatMp, sendCaptcha } from './token';
 import { getUploadInfo } from './extraFile';
 export declare const aspectDict: {
-    loginByPassword: typeof loginByPassword;
+    loginByMobile: typeof loginByMobile;
     loginMp: typeof loginMp;
     loginWechatMp: typeof loginWechatMp;
     syncUserInfoWechatMp: typeof syncUserInfoWechatMp;

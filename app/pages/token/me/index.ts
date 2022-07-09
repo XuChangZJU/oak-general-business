@@ -118,8 +118,13 @@ export default OakPage({
                         break;
                     }
                     case 'web': {
+                        const eventLoggedIn = `token:me:login:${Date.now()}`;
+                        this.sub(eventLoggedIn, () => {
+                            this.navigateBack();
+                        })
                         this.navigateTo({
-                            url: '/mobile/login'
+                            url: '/mobile/login',
+                            eventLoggedIn,
                         });
                         break;
                     }

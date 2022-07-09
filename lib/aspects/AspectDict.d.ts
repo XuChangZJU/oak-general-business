@@ -3,9 +3,11 @@ import { EntityDict } from "general-app-domain";
 import { QiniuUploadInfo } from "oak-frontend-base/src/types/Upload";
 import { GeneralRuntimeContext } from "..";
 declare type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>> = {
-    loginByPassword: (params: {
-        password: string;
+    loginByMobile: (params: {
+        captcha?: string;
+        password?: string;
         mobile: string;
+        env: WebEnv | WechatMpEnv;
     }, context: Cxt) => Promise<string>;
     loginMp: (params: {
         code: string;

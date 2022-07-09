@@ -11,12 +11,12 @@ export declare class Token<ED extends EntityDict, Cxt extends GeneralRuntimeCont
     private cache;
     private context;
     constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, context: Cxt);
-    loginByPassword(mobile: string, password: string): Promise<void>;
+    loginByMobile(mobile: string, password?: string, captcha?: string): Promise<void>;
     loginWechatMp(): Promise<void>;
     syncUserInfoWechatMp(): Promise<void>;
     logout(): Promise<void>;
     getToken(): Promise<string | undefined>;
     getUserId(): Promise<string | undefined>;
     isRoot(): Promise<boolean>;
-    sendCaptcha(mobile: string, type: 'web'): Promise<string>;
+    sendCaptcha(mobile: string): Promise<string>;
 }

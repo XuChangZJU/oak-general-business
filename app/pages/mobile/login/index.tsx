@@ -7,10 +7,7 @@ import { isMobile, isPassword, isCaptcha } from 'oak-domain/lib/utils/validator'
 const { TabPane } = Tabs;
 
 export default function render() {
-    const { mobile, captcha, password } = this.state;
-    const onFinish = (values: any) => {
-        console.log('Received values of form: ', values);
-    };
+    const { mobile, captcha, password, counter} = this.state;
     const validMobile = isMobile(mobile);
     const validCaptcha = isCaptcha(captcha);
     const validPassword = isPassword(password);
@@ -28,11 +25,9 @@ export default function render() {
                             name="normal_login"
                             className="login-form"
                             initialValues={{ remember: true }}
-                            onFinish={onFinish}
                         >
                             <Form.Item
                                 name="mobile"
-                                rules={[{ required: true, message: 'Please input your Mobile!' }]}
                             >
                                 <Input
                                     allowClear
@@ -47,7 +42,6 @@ export default function render() {
                             </Form.Item>
                             <Form.Item
                                 name="password"
-                                rules={[{ required: true, message: 'Please input your Password!' }]}
                             >
                                 <Input
                                     allowClear
@@ -71,6 +65,7 @@ export default function render() {
                                     htmlType="submit"
                                     className="login-form-button"
                                     disabled={!allowSubmit}
+                                    onClick={() => this.loginByMobile()}
                                 >
                                     Log in
                                 </Button>
@@ -82,11 +77,9 @@ export default function render() {
                             name="normal_login"
                             className="login-form"
                             initialValues={{ remember: true }}
-                            onFinish={onFinish}
                         >
                             <Form.Item
                                 name="mobile"
-                                rules={[{ required: true, message: 'Please input your Mobile!' }]}
                             >
                                 <Input.Group compact>
                                     <Input
@@ -102,16 +95,18 @@ export default function render() {
                                     />
                                     <Button
                                         type="primary"
-                                        disabled={!validMobile}
-                                        onClick={() => this.sendCaptcha('web')}
+                                        style={{
+                                            width:65,
+                                        }}
+                                        disabled={!validMobile || counter > 0}
+                                        onClick={() => this.sendCaptcha()}
                                     >
-                                        Send
+                                        {counter > 0 ? counter : 'Send'}
                                     </Button>
                                 </Input.Group>
                             </Form.Item>
                             <Form.Item
                                 name="captcha"
-                                rules={[{ required: true, message: 'Please input the captcha received!' }]}
                             >
                                 <Input
                                     allowClear
@@ -136,6 +131,7 @@ export default function render() {
                                     htmlType="submit"
                                     className="login-form-button"
                                     disabled={!allowSubmit}
+                                    onClick={() => this.loginByMobile()}
                                 >
                                     Log in
                                 </Button>

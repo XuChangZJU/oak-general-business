@@ -9,6 +9,7 @@ export interface Schema extends EntityShape {
     name?: String<16>;
     nickname?: String<64>;
     password?: Text;
+    passwordOrigin?: Text;
     birth?: Datetime;
     gender?: 'male' | 'female';
     avatar?: Image;
@@ -84,6 +85,7 @@ const locale: LocaleDef<Schema, Action, '', {
             nickname: '昵称',
             birth: '生日',
             password: '密码',
+            passwordOrigin: '明文密码',
             gender: '性别',
             avatar: '头像',
             idCardType: '证件类型',

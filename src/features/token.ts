@@ -24,10 +24,11 @@ export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>,
     }
 
     @Action
-    async loginByPassword(mobile: string, password: string) {
+    async loginByMobile(mobile: string, password?: string, captcha?: string) {
+        const env = await getEnv();
         await this.rwLock.acquire('X');
         try {
-            const { result } = await this.getAspectWrapper().exec('loginByPassword', { password, mobile });
+            const { result } = await this.getAspectWrapper().exec('loginByMobile', { password, mobile, captcha, env });
             this.token = result;
             this.rwLock.release();
             this.context.setToken(result);
@@ -154,7 +155,8 @@ export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>,
         return (tokenValue?.player?.userRole$user as any).length > 0 ? (tokenValue?.player?.userRole$user as any)[0]?.roleId === ROOT_ROLE_ID : false;
     }
 
-    async sendCaptcha(mobile: string, type: 'web') {
+    @Action
+    async sendCaptcha(mobile: string) {
         const env = await getEnv();
         const { result } = await this.getAspectWrapper().exec('sendCaptcha', {
             mobile,
