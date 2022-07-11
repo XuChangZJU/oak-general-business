@@ -65,7 +65,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                             entityId: id,
                             applicationId,
                             props: {
-                                pathname: 'pages/userEntityGrant/confirm/index',
+                                pathname: '/userEntityGrant/confirm',
                                 props: {
                                     oakId: id,
                                 },
