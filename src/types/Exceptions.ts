@@ -20,7 +20,7 @@ export class OakDistinguishUserByWechatUserException extends OakUserException {
 
     toString() {
         return JSON.stringify({
-            name: this.name,
+            name: this.constructor.name,
             message: this.message,
             userId: this.userId,
         });
@@ -36,7 +36,7 @@ export class OakDistinguishUserByBusinessException extends OakUserException {
 
     toString() {
         return JSON.stringify({
-            name: this.name,
+            name: this.constructor.name,
             message: this.message,
             userId: this.userId,
         });

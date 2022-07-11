@@ -42,7 +42,6 @@
         "build": "tsc",
         "get:area": "ts-node ./scripts/getAmapArea.ts",
         "clean:dir": "ts-node ./scripts/cleanDtsAndJs",
-        "postinstall": "npm run prebuild",
         "test": "ts-node ./test/test.ts"
     },
     "main": "src/index"
