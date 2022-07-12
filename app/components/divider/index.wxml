@@ -1,2 +1,0 @@
-<!-- index.wxml -->
-<hr class="divider {{mode === 'vertical' ? mode : 'horizontal'}} {{flexItem === true ? 'flexItem' : ''}}" />
