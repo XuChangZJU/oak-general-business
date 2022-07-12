@@ -1,6 +1,6 @@
 {
     "navigationBarTitleText": "扫码结果",
     "usingComponents": {
-        "g-icon": "../../../components/UI/g-icon/index"
+        "l-icon": "../../../lin-ui/icon/index"
     }
 }

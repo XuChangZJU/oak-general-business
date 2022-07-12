@@ -1,8 +1,8 @@
 {
   "component": true,
   "usingComponents": {
-      "g-btn": "../../UI/g-btn/index",
-      "g-icon": "../../UI/g-icon/index",
-      "g-drawer": "../../UI/g-drawer/index"
+      "g-btn": "../../UI/btn/index",
+      "g-icon": "../../UI/icon/index",
+      "g-drawer": "../../UI/drawer/index"
   }
 }
