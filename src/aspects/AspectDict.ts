@@ -2,7 +2,7 @@ import { WebEnv, WechatMpEnv } from "general-app-domain/Token/Schema";
 import { EntityDict } from "general-app-domain";
 import { QiniuUploadInfo } from "oak-frontend-base/src/types/Upload";
 // import { AspectDict as CommonAspectDict } from 'oak-common-aspect/src/aspectDict';
-import { GeneralRuntimeContext } from "..";
+import { GeneralRuntimeContext } from "../RuntimeContext";
 
 type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>> = {
     loginByMobile: (params: { captcha?: string, password?: string, mobile: string, env: WebEnv | WechatMpEnv }, context: Cxt) => Promise<string>,

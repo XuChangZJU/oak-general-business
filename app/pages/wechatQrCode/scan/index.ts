@@ -28,7 +28,7 @@ export default OakPage(
                 },
             },
         ],
-        formData: async ({ data: wechatQrCodes }) => {
+        formData: async function({ data: wechatQrCodes }) {
             const wechatQrCode = wechatQrCodes[0];
             if (!wechatQrCode) {
                 return {
@@ -52,7 +52,7 @@ export default OakPage(
                         }`;
                     }
                 }
-                wx.redirectTo({
+                this.redirectTo({
                     url: url,
                 });
                 return {
