@@ -2,8 +2,8 @@
     "navigationBarTitleText": "个人信息",
     "usingComponents": {
         "component-menu": "@project/components/token/menu/index",
-        "l-list": "../../../lin-ui/list/index",
-        "l-icon": "../../../lin-ui/icon/index",
-        "l-button": "../../../lin-ui/button/index"
+        "l-list": "../../../miniprogram_npm/lin-ui/list/index",
+        "l-icon": "../../../miniprogram_npm/lin-ui/icon/index",
+        "l-button": "../../../miniprogram_npm/lin-ui/button/index"
     }
 }

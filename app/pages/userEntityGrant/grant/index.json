@@ -1,6 +1,6 @@
 {
     "navigationBarTitleText": "授予权限",
     "usingComponents": {
-        "l-button": "../../../lin-ui/button/index"
+        "l-button": "../../../miniprogram_npm/lin-ui/button/index"
     }
 }
