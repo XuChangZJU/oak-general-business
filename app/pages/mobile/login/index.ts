@@ -58,7 +58,12 @@ export default OakPage({
             const { eventLoggedIn } = this.props;
             const { mobile, password, captcha } = this.state;
             await this.features.token.loginByMobile(mobile, password, captcha);
-            this.pub(eventLoggedIn);
+            if (eventLoggedIn) {
+                this.pub(eventLoggedIn);
+            }
+            else {
+                this.navigateBack();
+            }
         }
     },
 });
