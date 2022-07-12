@@ -7,10 +7,10 @@ const { Meta } = Card;
 
 
 export default function render() {
-    const { t } = this.props;
+    const { t, click } = this.props;
     const { iState, name, mobile, nickname, avatar, stateColor, userState } = this.state;
     return (
-        <div className="cell" onClick={(e) => this.onCellClicked(e)}>
+        <div className="cell" onClick={() => click()}>
             {avatar ? (
                 <img className="avatar" src="{{item.avatar}}" />
             ) : (

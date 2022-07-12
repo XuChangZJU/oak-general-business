@@ -31,6 +31,7 @@ export default function render() {
                         key={index}
                         oak:path={index.toString()}
                         oakId={ele.id}
+                        click={() => this.onCellClicked()}
                     />
                 );
             })}

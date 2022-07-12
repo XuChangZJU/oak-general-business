@@ -43,9 +43,5 @@ export default OakComponent({
         }
     },
     methods: {
-        async onCellClicked(event: any) {
-            // resolveInput拿的是target，原来代码拿的是currentTarget
-            this.pub(this.props.event, this.state.user);
-        },
     },
 });
