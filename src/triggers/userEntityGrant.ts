@@ -59,7 +59,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                     expired: false,
                 });
                 // 如果是微信体系的应用，为之创建一个默认的weChatQrCode
-                if (['wechatPublic', 'wechatMp'].includes(appConfig.type)) {
+                if (['wechatPublic', 'wechatMp'].includes(appConfig!.type)) {
                     await createWechatQrCode(
                         {
                             entity: 'userEntityGrant',

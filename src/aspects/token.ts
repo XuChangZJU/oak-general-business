@@ -447,7 +447,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                 id,
                 userId: wechatUser2.userId as string,
                 playerId: wechatUser2.userId as string,
-                applicationId: application.id,
+                applicationId: application!.id,
                 entity: 'wechatUser',
                 entityId: wechatUser2.id as string,
                 wechatUser: {

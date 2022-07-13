@@ -71,7 +71,7 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
                     id: this.applicationId,
                 },
             }, this);
-            result = application;
+            result = application as AppType;
             this.application = application as AppType;
         }
         this.rwLockApplication.release();

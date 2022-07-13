@@ -15,12 +15,12 @@ declare type AppType = SelectRowShape<EntityDict['application']['Schema'], {
     };
 }>;
 export declare abstract class GeneralRuntimeContext<ED extends EntityDict> extends UniversalContext<ED> {
+    private applicationId?;
     private application?;
     private token?;
     private rwLockApplication;
     constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, applicationId?: string);
-    private loadApplication;
-    getApplicationId(): string;
+    getApplicationId(): string | undefined;
     getSystemId(): string;
     setToken(token?: string): void;
     getApplication(): Promise<SelectRowShape<import("general-app-domain/Application/Schema").Schema, {
@@ -34,7 +34,7 @@ export declare abstract class GeneralRuntimeContext<ED extends EntityDict> exten
             name: 1;
             config: 1;
         };
-    }>>;
+    }> | undefined>;
     setApplication(app: AppType): void;
     getToken(): Promise<SelectRowShape<ED["token"]["Schema"], {
         id: 1;
