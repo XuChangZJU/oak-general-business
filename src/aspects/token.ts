@@ -103,7 +103,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
     const { rowStore } = context;
     const currentToken = await context.getToken();
     const applicationId = context.getApplicationId();
-    const systemId = context.getSystemId();
+    const systemId = await context.getSystemId();
 
     const { result: result2 } = await rowStore.select('mobile', {
         data: {
@@ -206,7 +206,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
             const userData: EntityDict['user']['CreateSingle']['data'] = {
                 id: await generateNewId(),
                 userState: 'normal',
-                systemId,
+                systemId: systemId!,
             };
             await rowStore.operate('user', {
                 action: 'create',
@@ -241,7 +241,7 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends GeneralRu
     context: Cxt): Promise<string> {
     const { mobile, captcha, password, env } = params;
     const { rowStore } = context;
-    const systemId = context.getSystemId();
+    const systemId = await context.getSystemId();
     if (captcha) {
         const { result } = await rowStore.select('captcha', {
             data: {

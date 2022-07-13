@@ -39,8 +39,9 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
         return this.applicationId;
     }
 
-    getSystemId() {
-        return this.application!.systemId;
+    async getSystemId() {
+        const app = await this.getApplication();
+        return app?.systemId;
     }
 
     setToken(token?: string) {

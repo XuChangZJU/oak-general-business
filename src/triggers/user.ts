@@ -32,7 +32,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
             }
             if (NO_ANY_USER) {
                 const { rowStore } = context;
-                const systemId = context.getSystemId();
+                const systemId = await context.getSystemId();
                 const { result } = await rowStore.select('user', {
                     data: {
                         id: 1,
