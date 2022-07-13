@@ -21,6 +21,7 @@ type AppType = SelectRowShape<EntityDict['application']['Schema'], {
 }>;
 
 export abstract class GeneralRuntimeContext<ED extends EntityDict> extends UniversalContext<ED> {
+    private applicationId?: string;
     private application?: AppType;
     private token?: string;
     private rwLockApplication: RWLock;
@@ -28,37 +29,14 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
     constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, applicationId?: string) {
         super(store);
         this.rwLockApplication = new RWLock();
-        this.rwLockApplication.acquire('X');
-        if (applicationId) {
-            this.loadApplication(applicationId);
+        this.applicationId = applicationId;
+        if (!applicationId) {
+            this.rwLockApplication.acquire('X');
         }
     }
 
-    private async loadApplication(id: string) {
-        const { result: [application] } = await this.rowStore.select('application', {
-            data: {
-                id: 1,
-                name: 1,
-                config: 1,
-                type: 1,
-                systemId: 1,
-                system: {
-                    id: 1,
-                    name: 1,
-                    config: 1,
-                },
-            },
-            filter: {
-                id,
-            },
-        }, this);
-        this.application = application as AppType;
-        this.rwLockApplication.release();
-    }
-
     getApplicationId() {
-        const result = this.application?.id;
-        return result!;
+        return this.applicationId;
     }
 
     getSystemId() {
@@ -69,9 +47,33 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
         this.token = token;
     }
 
-    async getApplication () {
-        await this.rwLockApplication.acquire('S');
-        const result =  this.application!;
+    async getApplication() {
+        let result;
+        await this.rwLockApplication.acquire('X');
+        if (this.application) {
+            result = this.application;
+        }
+        else if (this.applicationId) {
+            const { result: [application]} = await this.rowStore.select('application', {
+                data: {
+                    id: 1,
+                    name: 1,
+                    config: 1,
+                    type: 1,
+                    systemId: 1,
+                    system: {
+                        id: 1,
+                        name: 1,
+                        config: 1,
+                    },
+                },
+                filter: {
+                    id: this.applicationId,
+                },
+            }, this);
+            result = application;
+            this.application = application as AppType;
+        }
         this.rwLockApplication.release();
         return result;
     }
@@ -79,9 +81,10 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
     setApplication(app: AppType) {
         assert(!this.application);
         this.application = app;
+        this.applicationId = app.id;
         this.rwLockApplication.release();
     }
-    
+
     async getToken() {
         const tokenValue = this.token;
         if (tokenValue) {
@@ -95,7 +98,7 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
                     id: tokenValue,
                     ableState: 'enabled',
                 }
-            }, this) as SelectionResult<ED['token']['Schema'], {id: 1, userId: 1, playerId: 1}>;
+            }, this) as SelectionResult<ED['token']['Schema'], { id: 1, userId: 1, playerId: 1 }>;
 
             return token;
         }
