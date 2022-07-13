@@ -17,9 +17,9 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', GeneralRuntimeContext<Entity
         fn: async ({ result }, context, params) => {
             let count = 0;
             const application = await context.getApplication();
-            const { type, config } = application;
+            const { type, config } = application!;
         
-            assert(type === 'wechatMp' || config.type === 'wechatMp');
+            assert(type === 'wechatMp' || config!.type === 'wechatMp');
             const config2 = config as WechatMpConfig;
             const { appId, appSecret } = config2;
             for (const code of result) {

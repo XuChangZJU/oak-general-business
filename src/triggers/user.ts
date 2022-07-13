@@ -99,22 +99,25 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
         when: 'before',
         fn: async ({ operation}, context) => {
             const app = await context.getApplication();
-            const { filter } = operation;
-            if (!filter) {
-                assign(operation, {
-                    filter: {
-                        systemId: app.systemId,
-                    },
-                });
+            if (app) {
+                const { filter } = operation;
+                if (!filter) {
+                    assign(operation, {
+                        filter: {
+                            systemId: app.systemId,
+                        },
+                    });
+                }
+                else {
+                    assign(operation, {
+                        filter: addFilterSegment({
+                            systemId: app.systemId,
+                        }, filter),
+                    });
+                }
+                return 1;
             }
-            else {
-                assign(operation, {
-                    filter: addFilterSegment({
-                        systemId: app.systemId,
-                    }, filter),
-                });
-            }
-            return 1;
+            return 0;
         }
     }
 ];

@@ -330,7 +330,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
 }, context: Cxt): Promise<string> {
     const { rowStore } = context;
     const application = await context.getApplication();
-    const { type, config, systemId } = application;
+    const { type, config, systemId } = application!;
 
     assert(type === 'wechatMp' || config.type === 'wechatMp');
     const config2 = config as WechatMpConfig;
@@ -359,7 +359,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
             }
         },
         filter: {
-            applicationId: application.id,
+            applicationId: application!.id,
             openId,
         }
     }, context);
@@ -389,7 +389,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     env: 1,
                 },
                 filter: {
-                    applicationId: application.id,
+                    applicationId: application!.id,
                     ableState: 'enabled',
                     userId: wechatUser2.userId,
                     playerId: wechatUser2.userId,
@@ -421,7 +421,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                 data: {
                 },
                 filter: {
-                    applicationId: application.id,
+                    applicationId: application!.id,
                     ableState: 'enabled',
                     userId: wechatUser2.userId,
                     playerId: wechatUser2.userId,
@@ -470,7 +470,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
             },
             filter: {
                 application: {
-                    systemId: application.systemId,
+                    systemId: application!.systemId,
                 },
                 unionId,
             }
@@ -486,7 +486,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                 data: {
                 },
                 filter: {
-                    applicationId: application.id,
+                    applicationId: application!.id,
                     ableState: 'enabled',
                     userId: wechatUser2.userId,
                     playerId: wechatUser2.userId,
@@ -499,7 +499,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                 unionId,
                 origin: 'mp',
                 openId,
-                applicationId: application.id,
+                applicationId: application!.id,
                 userId: wechatUser2.userId,
             };
             await rowStore.operate('token', {
@@ -508,7 +508,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     id,
                     userId: wechatUser2.userId,
                     playerId: wechatUser2.userId,
-                    applicationId: application.id,
+                    applicationId: application!.id,
                     wechatUser: {
                         action: 'create',
                         data: wechatUserCreateData,
@@ -532,7 +532,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
         unionId,
         origin: 'mp',
         openId,
-        applicationId: application.id,
+        applicationId: application!.id,
         user: {
             action: 'create',
             data: userData,
@@ -544,7 +544,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
             id,
             userId: userData.id,
             playerId: userData.id,
-            applicationId: application.id,
+            applicationId: application!.id,
             wechatUser: {
                 action: 'create',
                 data: wechatUserCreateData,
@@ -595,7 +595,7 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ge
         },
         filter: {
             userId: userId!,
-            applicationId: application.id,
+            applicationId: application!.id,
         }
     }, context);
 

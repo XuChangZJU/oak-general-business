@@ -20,7 +20,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
             const { data, filter } = operation;
             const fn = async (userEntityGrantData: CreateUserEntityGrantData) => {
                 const { userId } = (await context.getToken())!;
-                const { id: applicationId, config: appConfig, system: { config: SystemConfig }} = await context.getApplication();
+                const { id: applicationId, config: appConfig, system: { config: SystemConfig }} = (await context.getApplication())!;
                 assert(userId);
                 const { type, entity, entityId, relation, id } = userEntityGrantData;
                 const { result } = await context.rowStore.select('userEntityGrant', {
