@@ -1,4 +1,5 @@
 import { WebEnv, WechatMpEnv } from "general-app-domain/Token/Schema";
+import { AppType } from 'general-app-domain/Application/Schema';
 import { EntityDict } from "general-app-domain";
 import { QiniuUploadInfo } from "oak-frontend-base/src/types/Upload";
 // import { AspectDict as CommonAspectDict } from 'oak-common-aspect/src/aspectDict';
@@ -19,6 +20,10 @@ type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<
         mobile: string;
         env: WechatMpEnv | WebEnv;
     }) => Promise<string>,
+    getApplication: (params: {
+        type: AppType;
+        url: string;
+    }, context: Cxt) => Promise<string>;
 };
 
 export type AspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;

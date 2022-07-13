@@ -5,14 +5,21 @@ export declare class OakUnloggedInException extends OakUserException {
 export declare class OakNotEnoughMoneyException extends OakUserException {
     constructor(message?: string);
 }
-export declare class OakDistinguishUserByWechatUserException extends OakUserException {
+export declare class OakDistinguishUserException extends OakUserException {
     userId: string;
-    constructor(userId: string, message?: string);
+    usingPassword: boolean;
+    usingIdCard: boolean;
+    usingWechatUser: boolean;
+    usingEmail: boolean;
+    constructor(userId: string, usingPassword: boolean, usingIdCard: boolean, usingWechatUser: boolean, usingEmail: boolean, message?: string);
     toString(): string;
 }
-export declare class OakDistinguishUserByBusinessException extends OakUserException {
+export declare class OakChangLoginWayException extends OakUserException {
     userId: string;
-    constructor(userId: string, message?: string);
+    usingIdCard: boolean;
+    usingWechatUser: boolean;
+    usingEmail: boolean;
+    constructor(userId: string, usingIdCard: boolean, usingWechatUser: boolean, usingEmail: boolean, message?: string);
     toString(): string;
 }
 export declare class OakUserDisabledException extends OakUserException {

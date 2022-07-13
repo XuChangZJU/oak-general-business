@@ -7,7 +7,8 @@ import { GeneralRuntimeContext } from '..';
 import { BasicFeatures } from 'oak-frontend-base';
 import { AspectDict } from '../aspects/AspectDict';
 import { AspectWrapper } from 'oak-domain/lib/types';
-export declare function initialize<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>>(aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, basicFeatures: BasicFeatures<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, applicationId: string, context: Cxt): {
+import { AppType } from 'general-app-domain/Application/Schema';
+export declare function initialize<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>>(aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, basicFeatures: BasicFeatures<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, type: AppType, url: string, context: Cxt): {
     token: Token<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
     extraFile: ExtraFile<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
     application: Application<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;

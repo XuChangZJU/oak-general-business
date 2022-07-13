@@ -13,6 +13,7 @@
         "oak-external-sdk": "file:../oak-external-sdk",
         "oak-frontend-base": "file:../oak-frontend-base",
         "oak-memory-tree-store": "file:../oak-memory-tree-store",
+        "sha1": "^1.1.1",
         "uuid": "^8.3.2"
     },
     "devDependencies": {
@@ -29,6 +30,7 @@
         "@types/mocha": "^8.2.0",
         "@types/node": "^14.18.12",
         "@types/react": "^17.0.2",
+        "@types/sha1": "^1.1.3",
         "@types/uuid": "^8.3.0",
         "assert": "^2.0.0",
         "chalk": "^4.1.0",

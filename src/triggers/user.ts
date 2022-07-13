@@ -5,6 +5,8 @@ import { CreateOperationData as CreateUserRoleData } from 'general-app-domain/Us
 import { CreateOperationData as CreateUserData } from 'general-app-domain/User/Schema';
 import assert from 'assert';
 import { ROOT_ROLE_ID, ROOT_USER_ID } from '../constants';
+import { assign } from 'lodash';
+import { addFilterSegment } from 'oak-domain/lib/store/filter';
 
 let NO_ANY_USER = true;
 const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[] = [
@@ -30,6 +32,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
             }
             if (NO_ANY_USER) {
                 const { rowStore } = context;
+                const application = await context.getApplication();
                 const { result } = await rowStore.select('user', {
                     data: {
                         id: 1,
@@ -38,6 +41,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
                         id: {
                             $ne: ROOT_USER_ID,
                         },
+                        systemId: application.systemId,
                     },
                     indexFrom: 0,
                     count: 1,
@@ -85,6 +89,31 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
                     id,
                 }
             }, context);
+            return 1;
+        }
+    },
+    {
+        name: '查询用户时，默认加上systemId',
+        entity: 'user',
+        action: 'select',
+        when: 'before',
+        fn: async ({ operation}, context) => {
+            const app = await context.getApplication();
+            const { filter } = operation;
+            if (!filter) {
+                assign(operation, {
+                    filter: {
+                        systemId: app.systemId,
+                    },
+                });
+            }
+            else {
+                assign(operation, {
+                    filter: addFilterSegment({
+                        systemId: app.systemId,
+                    }, filter),
+                });
+            }
             return 1;
         }
     }

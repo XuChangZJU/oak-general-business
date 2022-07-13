@@ -8,3 +8,4 @@ export { checkers, triggers, watchers, data, aspectDict, exceptionRouters, };
 export * from './RuntimeContext';
 export * from './types/Exceptions';
 export { composeFileUrl, decomposeFileUrl } from './utils/extraFile';
+export * from './data/DEV-ID';

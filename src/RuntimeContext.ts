@@ -1,26 +1,45 @@
 
-import { SelectionResult } from 'oak-domain/lib/types';
+import { SelectRowShape, SelectionResult } from 'oak-domain/lib/types';
 import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
 import { EntityDict } from 'general-app-domain';
 import { RowStore } from 'oak-domain/lib/types';
 import { assign } from 'lodash';
+import { RWLock } from 'oak-domain/lib/utils/concurrent';
 
+type AppType = SelectRowShape<EntityDict['application']['Schema'], {
+    id: 1,
+    name: 1,
+    config: 1,
+    type: 1,
+    systemId: 1,
+    system: {
+        id: 1,
+        name: 1,
+        config: 1,
+    },
+}>;
 
 export abstract class GeneralRuntimeContext<ED extends EntityDict> extends UniversalContext<ED> {
-    private applicationId?: string;
+    private application?: AppType;
     private token?: string;
+    private rwLockApplication: RWLock;
 
-    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, appId?: string) {
+    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, application?: AppType) {
         super(store);
-        this.applicationId = appId;
+        this.rwLockApplication = new RWLock();
+        this.application = application;
+        if (!application) {
+            this.rwLockApplication.acquire('X');
+        }
     }
 
     getApplicationId() {
-        return this.applicationId;
+        const result = this.application?.id;
+        return result!;
     }
 
-    setApplicationId(appId: string) {
-        this.applicationId = appId;
+    getSystemId() {
+        return this.application!.systemId;
     }
 
     setToken(token?: string) {
@@ -28,38 +47,15 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
     }
 
     async getApplication () {
-        if (this.applicationId) {
-            const { result: [application] } = await this.rowStore.select('application', {
-                data: {
-                    id: 1,
-                    name: 1,
-                    config: 1,
-                    type: 1,
-                    systemId: 1,
-                    system: {
-                        id: 1,
-                        name: 1,
-                        config: 1,
-                    }
-                },
-                filter: {
-                    id: this.applicationId,
-                }
-            }, this) as SelectionResult<EntityDict['application']['Schema'], {
-                id: 1,
-                name: 1,
-                config: 1,
-                type: 1,
-                systemId: 1,
-                system: {
-                    id: 1,
-                    name: 1,
-                    config: 1,
-                },
-            }>;
-            
-            return application;
-        }
+        await this.rwLockApplication.acquire('S');
+        const result =  this.application!;
+        this.rwLockApplication.release();
+        return result;
+    }
+
+    setApplication(app: AppType) {
+        this.application = app;
+        this.rwLockApplication.release();
     }
     
     async getToken() {
@@ -87,7 +83,7 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
 
     async toString(): Promise<string> {
         const data = {
-            applicationId: this.applicationId,
+            applicationId: this.getApplicationId(),
         };
         if (this.token) {
             assign(data, {

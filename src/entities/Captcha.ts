@@ -1,7 +1,7 @@
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { String, Text, Boolean, Datetime } from 'oak-domain/lib/types/DataType';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
-import { ActionDef } from 'oak-domain/lib/types';
+import { ActionDef, Index } from 'oak-domain/lib/types';
 
 export interface Schema extends EntityShape {
     mobile: String<11>;
@@ -26,6 +26,26 @@ const IActionDef: ActionDef<IAction, IState> = {
 };
 
 type Action = IAction;
+
+const indexes: Index<Schema>[] = [
+    {
+        name: 'index_mobile_code',
+        attributes: [
+            {
+                name: 'mobile',
+                direction: 'ASC',
+            },
+            {
+                name: 'code',
+                direction: 'ASC',
+            },
+            {
+                name: '$$createAt$$',
+                direction: 'DESC',
+            }
+        ],
+    },
+];
 
 const locale: LocaleDef<Schema, Action, '', {
     iState: IState,

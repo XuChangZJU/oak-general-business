@@ -7,15 +7,17 @@ import { GeneralRuntimeContext } from '..';
 import { BasicFeatures } from 'oak-frontend-base';
 import { AspectDict } from '../aspects/AspectDict';
 import { AspectWrapper } from 'oak-domain/lib/types';
+import { AppType } from 'general-app-domain/Application/Schema';
 
 export function initialize<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>>(
     aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
     basicFeatures: BasicFeatures<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
-    applicationId: string,
+    type: AppType,
+    url: string,
     context: Cxt,
 ) {
-    context.setApplicationId(applicationId);
-    const application = new Application<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(aspectWrapper, applicationId, basicFeatures.cache);    
+    const application = new Application<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(
+        aspectWrapper, type, url, basicFeatures.cache, (application) => context.setApplication(application));
     const token = new Token<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(aspectWrapper, basicFeatures.cache, context);
     const extraFile = new ExtraFile<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(aspectWrapper);
     return {

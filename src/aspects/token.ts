@@ -10,17 +10,100 @@ import { Operation as ExtraFileOperation } from 'general-app-domain/ExtraFile/Sc
 import { assign, isEqual, keys } from 'lodash';
 import { OakUserException, SelectRowShape } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
-import { OakDistinguishUserByBusinessException, OakDistinguishUserByWechatUserException, OakUserDisabledException } from '../types/Exceptions';
+import { OakChangLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exceptions';
+import { encryptPassword } from '../utils/password';
 
 export async function loginMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: { code: string }, context: Cxt): Promise<string> {
     const { rowStore } = context;
     throw new Error('method not implemented!');
 }
 
+async function makeDistinguishException<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(userId: string, context: Cxt) {
+    const { rowStore } = context;
+
+    const { result: [user] } = await rowStore.select('user', {
+        data: {
+            id: 1,
+            password: 1,
+            passwordOrigin: 1,
+            idState: 1,
+            wechatUser$user: {
+                $entity: 'wechatUser',
+                data: {
+                    id: 1,
+                },
+            },
+            email$user: {
+                $entity: 'email',
+                data: {
+                    id: 1,
+                    email: 1,
+                }
+            }
+        },
+        filter: {
+            id: userId,
+        }
+    }, context);
+    assert(user);
+    const { password, passwordOrigin, idState, wechatUser$user, email$user } = user;
+
+    return new OakDistinguishUserException(userId, !!(password || passwordOrigin),
+        idState === 'verified', (<any[]>wechatUser$user).length > 0, (<any[]>email$user).length > 0);
+}
+
+async function tryMakeChangeLoginWay<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(userId: string, context: Cxt) {
+    const { rowStore } = context;
+    const { result: [user] } = await rowStore.select('user', {
+        data: {
+            id: 1,
+            idState: 1,
+            wechatUser$user: {
+                $entity: 'wechatUser',
+                data: {
+                    id: 1,
+                },
+            },
+            email$user: {
+                $entity: 'email',
+                data: {
+                    id: 1,
+                    email: 1,
+                }
+            }
+        },
+        filter: {
+            id: userId,
+        }
+    }, context);
+    assert(user);
+    const { idState, wechatUser$user, email$user } = user as SelectRowShape<EntityDict['user']['Schema'], {
+        id: 1,
+        idState: 1,
+        wechatUser$user: {
+            $entity: 'wechatUser',
+            data: {
+                id: 1,
+            },
+        },
+        email$user: {
+            $entity: 'email',
+            data: {
+                id: 1,
+                email: 1,
+            }
+        }
+    }>;
+    if (idState === 'verified' || wechatUser$user.length > 0 || email$user.length > 0) {
+        return new OakChangLoginWayException(userId, idState === 'verified', wechatUser$user.length > 0, email$user.length > 0)
+    }
+}
+
 async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(mobile: string, env: WebEnv | WechatMpEnv, context: Cxt) {
     const { rowStore } = context;
     const currentToken = await context.getToken();
     const applicationId = context.getApplicationId();
+    const systemId = context.getSystemId();
 
     const { result: result2 } = await rowStore.select('mobile', {
         data: {
@@ -42,6 +125,9 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
         filter: {
             mobile,
             ableState: 'enabled',
+            user: {
+                systemId,
+            }
         }
     }, context, { notCollect: true });
     if (result2.length > 0) {
@@ -54,16 +140,8 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
             }
             else  {
                 // 此时可能要合并用户，如果用户有wechatUser信息，则抛出OakDistinguishUserByWechatUser异常，否则抛出
-                const { user } = mobileRow;
-                const { wechatUser$user } = user as {
-                    wechatUser$user: any[];
-                };
-                if (wechatUser$user.length > 0) {
-                    throw new OakDistinguishUserByWechatUserException(mobileRow.userId as string);
-                }
-                else {
-                    throw new OakDistinguishUserByBusinessException(mobileRow.userId as string);
-                }
+                const { userId } = mobileRow;
+                throw await makeDistinguishException<ED, Cxt>(userId as string, context);
             }
         }
         else {
@@ -128,6 +206,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
             const userData: EntityDict['user']['CreateSingle']['data'] = {
                 id: await generateNewId(),
                 userState: 'normal',
+                systemId,
             };
             await rowStore.operate('user', {
                 action: 'create',
@@ -162,6 +241,7 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends GeneralRu
     context: Cxt): Promise<string> {
     const { mobile, captcha, password, env } = params;
     const { rowStore } = context;
+    const systemId = context.getSystemId();
     if (captcha) {
         const { result } = await rowStore.select('captcha', {
             data: {
@@ -196,8 +276,46 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends GeneralRu
     }
     else {
         assert(password);
-        throw new Error('method not implemented!');
+        const { result } = await rowStore.select('mobile', {
+            data: {
+                id: 1,
+                userId: 1,
+                ableState: 1,
+            },
+            filter: {
+                mobile: mobile,                
+                user: {
+                    $or: [
+                        {
+                            passwordOrigin: password,
+                        },
+                        {
+                            password: encryptPassword(password),
+                        }
+                    ],
+                    systemId,
+                },
+            }
+        }, context);
+        switch (result.length) {
+            case 0: {
+                throw new OakUserException('用户名与密码不匹配');
+            }
+            case 1: {
+                const [mobile] = result;
+                const { ableState, userId } = mobile;
+                if (ableState === 'disabled') {
+                    // 虽然密码和手机号匹配，但手机号已经禁用了，在可能的情况下提醒用户使用其它方法登录
+                    const exception = await tryMakeChangeLoginWay<ED, Cxt>(userId as string, context);
+                }
+                break;
+            }
+            case 2: {
+                throw new Error(`手机号和密码匹配出现雷同，mobile id是[${result.map(ele => ele.id).join(',')}], mobile是${mobile}`);
+            }
+        }
     }
+    throw new Error('not implemented yet');
 }
 
 export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ code, env }: {
@@ -205,8 +323,8 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
     env: WechatMpEnv;
 }, context: Cxt): Promise<string> {
     const { rowStore } = context;
-    const application = (await context.getApplication())!;
-    const { type, config } = application;
+    const application = await context.getApplication();
+    const { type, config, systemId } = application;
 
     assert(type === 'wechatMp' || config.type === 'wechatMp');
     const config2 = config as WechatMpConfig;
@@ -400,6 +518,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
     const userData: CreateUser = {
         id: await generateNewId(),
         userState: 'normal',
+        systemId,
     };
     const wechatUserCreateData: CreateWechatUser = {
         id: await generateNewId(),
@@ -441,7 +560,7 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ge
 }: { nickname: string, avatarUrl: string, encryptedData: string, iv: string, signature: string }, context: Cxt) {
     const { rowStore } = context;
     const { userId } = (await context.getToken())!;
-    const application = (await context.getApplication())!;
+    const application = await context.getApplication();
     const { result: [{ sessionKey, user }] } = await rowStore.select('wechatUser', {
         data: {
             id: 1,

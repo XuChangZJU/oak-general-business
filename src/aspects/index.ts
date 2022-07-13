@@ -1,5 +1,6 @@
 import { loginByMobile, loginMp, loginWechatMp, syncUserInfoWechatMp, sendCaptcha } from './token';
 import { getUploadInfo } from './extraFile';
+import { getApplication } from './application';
 // import  commonAspectDict from 'oak-common-aspect';
 import { assign } from 'lodash';
 export const aspectDict = assign({
@@ -9,6 +10,7 @@ export const aspectDict = assign({
     syncUserInfoWechatMp,
     getUploadInfo,
     sendCaptcha,
+    getApplication,
 }/* , commonAspectDict */);
 
 // export type AspectDict<ED extends EntityDict & BaseEntityDict> = TokenAD<ED> & CrudAD<ED>;

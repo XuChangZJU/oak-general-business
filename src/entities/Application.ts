@@ -1,9 +1,9 @@
 import { String, Int, Datetime, Image, Boolean, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as System } from './System';
-import { Schema as ExtraFile } from './ExtraFile';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 
+export type AppType = 'web' | 'wechatMp' | 'wechatPublic';
 export type WechatMpConfig = {
     type: 'wechatMp';
     appId: string;
@@ -13,7 +13,6 @@ export type WechatMpConfig = {
 
 export type WebConfig = {
     type: 'web';
-    domain: string;
 };
 
 export type WechatPublicCofig = {
@@ -25,7 +24,7 @@ export type WechatPublicCofig = {
 export interface Schema extends EntityShape {
     name: String<32>;
     description: Text;
-    type: 'web' | 'wechatPublic' | 'wechatMp';
+    type: AppType;
     system: System;
     config: WebConfig | WechatMpConfig| WechatPublicCofig;
 };

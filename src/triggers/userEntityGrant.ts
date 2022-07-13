@@ -8,6 +8,7 @@ import { OakCongruentRowExists } from 'oak-domain/lib/types';
 import assert from 'assert';
 import { DefaultConfig } from '../constants';
 import { createWechatQrCode } from '../aspects/wechatQrCode';
+import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 
 const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<EntityDict>>[] = [
     {
@@ -19,7 +20,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
             const { data, filter } = operation;
             const fn = async (userEntityGrantData: CreateUserEntityGrantData) => {
                 const { userId } = (await context.getToken())!;
-                const { id: applicationId, config: appConfig, system: { config: SystemConfig }} = (await context.getApplication())!;
+                const { id: applicationId, config: appConfig, system: { config: SystemConfig }} = await context.getApplication();
                 assert(userId);
                 const { type, entity, entityId, relation, id } = userEntityGrantData;
                 const { result } = await context.rowStore.select('userEntityGrant', {
@@ -106,7 +107,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                 count: 1,
             }, context, params);
             const { entity, entityId, relation } = result[0];
-            const entityStr = entity[0].toLocaleUpperCase() + entity.substring(1, entity.length);
+            const entityStr = firstLetterUpperCase(entity!);
             const userRelation = `user${entityStr}` as keyof EntityDict;
             const {result: result2} = await context.rowStore.select(userRelation, {
                 data: {

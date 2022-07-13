@@ -1,14 +1,28 @@
+import { SelectRowShape } from 'oak-domain/lib/types';
 import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
 import { EntityDict } from 'general-app-domain';
 import { RowStore } from 'oak-domain/lib/types';
+declare type AppType = SelectRowShape<EntityDict['application']['Schema'], {
+    id: 1;
+    name: 1;
+    config: 1;
+    type: 1;
+    systemId: 1;
+    system: {
+        id: 1;
+        name: 1;
+        config: 1;
+    };
+}>;
 export declare abstract class GeneralRuntimeContext<ED extends EntityDict> extends UniversalContext<ED> {
-    private applicationId?;
+    private application?;
     private token?;
-    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, appId?: string);
-    getApplicationId(): string | undefined;
-    setApplicationId(appId: string): void;
+    private rwLockApplication;
+    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, application?: AppType);
+    getApplicationId(): string;
+    getSystemId(): string;
     setToken(token?: string): void;
-    getApplication(): Promise<import("oak-domain/lib/types").SelectRowShape<import("general-app-domain/Application/Schema").Schema, {
+    getApplication(): Promise<SelectRowShape<import("general-app-domain/Application/Schema").Schema, {
         id: 1;
         name: 1;
         config: 1;
@@ -19,8 +33,9 @@ export declare abstract class GeneralRuntimeContext<ED extends EntityDict> exten
             name: 1;
             config: 1;
         };
-    }> | undefined>;
-    getToken(): Promise<import("oak-domain/lib/types").SelectRowShape<ED["token"]["Schema"], {
+    }>>;
+    setApplication(app: AppType): void;
+    getToken(): Promise<SelectRowShape<ED["token"]["Schema"], {
         id: 1;
         userId: 1;
         playerId: 1;
@@ -33,3 +48,4 @@ export declare abstract class GeneralRuntimeContext<ED extends EntityDict> exten
         token: any;
     };
 }
+export {};

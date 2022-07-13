@@ -7,7 +7,7 @@ import { AbleAction, AbleState, makeAbleActionDef } from 'oak-domain/lib/actions
 import { Index } from 'oak-domain/lib/types';
 
 export interface Schema extends EntityShape {
-    mobile: String<16>;
+    email: String<16>;
     user: User;
     tokens: Array<Token>;
 };
@@ -17,10 +17,10 @@ const AbleActionDef = makeAbleActionDef('enabled');
 
 const indexes: Index<Schema>[] = [
     {
-        name: 'index_mobile_ableState',
+        name: 'index_email_ableState',
         attributes: [
             {
-                name: 'mobile',
+                name: 'email',
                 direction: 'ASC',
             },
             {
@@ -37,7 +37,7 @@ const locale: LocaleDef<Schema, Action, '', {
     zh_CN: {
         attr: {
             ableState: '是否可用',
-            mobile: '手机号',
+            email: '邮箱',
             user: '关联用户',
             tokens: '相关令牌',
         },

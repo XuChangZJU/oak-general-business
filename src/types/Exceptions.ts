@@ -11,11 +11,19 @@ export class OakNotEnoughMoneyException extends OakUserException {
     }
 };
 
-export class OakDistinguishUserByWechatUserException extends OakUserException {
+export class OakDistinguishUserException extends OakUserException {
     userId: string;
-    constructor(userId: string, message?: string) {
-        super(message || '系统中发现可能属于您的另一帐户');
+    usingPassword: boolean;
+    usingIdCard: boolean;
+    usingWechatUser: boolean;
+    usingEmail: boolean;
+    constructor(userId: string, usingPassword: boolean, usingIdCard: boolean, usingWechatUser: boolean, usingEmail: boolean, message?: string) {
+        super(message || '系统中发现相同帐户，需要您加以甄别');
         this.userId = userId;
+        this.usingIdCard = usingIdCard;
+        this.usingPassword = usingPassword;
+        this.usingWechatUser = usingWechatUser;
+        this.usingEmail = usingEmail;
     }
 
     toString() {
@@ -23,15 +31,25 @@ export class OakDistinguishUserByWechatUserException extends OakUserException {
             name: this.constructor.name,
             message: this.message,
             userId: this.userId,
+            usingIdCard: this.usingIdCard,
+            usingPassword: this.usingPassword,
+            usingWechatUser: this.usingWechatUser,
+            usingEmail: this.usingEmail,
         });
     }
-}
+};
 
-export class OakDistinguishUserByBusinessException extends OakUserException {
+export class OakChangLoginWayException extends OakUserException {
     userId: string;
-    constructor(userId: string, message?: string) {
-        super(message || '系统中发现可能属于您的另一帐户');
+    usingIdCard: boolean;
+    usingWechatUser: boolean;
+    usingEmail: boolean;
+    constructor(userId: string, usingIdCard: boolean, usingWechatUser: boolean, usingEmail: boolean, message?: string) {
+        super(message || '系统中发现相同帐户，需要您加以甄别');
         this.userId = userId;
+        this.usingIdCard = usingIdCard;
+        this.usingWechatUser = usingWechatUser;
+        this.usingEmail = usingEmail;
     }
 
     toString() {
@@ -39,9 +57,13 @@ export class OakDistinguishUserByBusinessException extends OakUserException {
             name: this.constructor.name,
             message: this.message,
             userId: this.userId,
+            usingIdCard: this.usingIdCard,
+            usingWechatUser: this.usingWechatUser,
+            usingEmail: this.usingEmail,
         });
     }
 }
+
 
 export class OakUserDisabledException extends OakUserException {
     constructor(message?: string) {
@@ -67,11 +89,8 @@ export function makeException(data: {
         case OakNotEnoughMoneyException.name: {
             return new OakNotEnoughMoneyException(message);
         }
-        case OakDistinguishUserByWechatUserException.name: {
-            return new OakDistinguishUserByWechatUserException(data.userId, message);
-        }
-        case OakDistinguishUserByBusinessException.name: {
-            return new OakDistinguishUserByBusinessException(data.userId, message);
+        case OakDistinguishUserException.name: {
+            return new OakDistinguishUserException(data.userId, data.usingPassword, data.usingIdCard, data.usingWechatUser, data.usingEmail, message);
         }
         case OakUserDisabledException.name: {
             return new OakUserDisabledException(message);

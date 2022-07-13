@@ -1,6 +1,7 @@
 import { String, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as System } from './System';
+export declare type AppType = 'web' | 'wechatMp' | 'wechatPublic';
 export declare type WechatMpConfig = {
     type: 'wechatMp';
     appId: string;
@@ -9,7 +10,6 @@ export declare type WechatMpConfig = {
 };
 export declare type WebConfig = {
     type: 'web';
-    domain: string;
 };
 export declare type WechatPublicCofig = {
     type: 'wechatPublic';
@@ -19,7 +19,7 @@ export declare type WechatPublicCofig = {
 export interface Schema extends EntityShape {
     name: String<32>;
     description: Text;
-    type: 'web' | 'wechatPublic' | 'wechatMp';
+    type: AppType;
     system: System;
     config: WebConfig | WechatMpConfig | WechatPublicCofig;
 }
