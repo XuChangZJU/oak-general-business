@@ -1,4 +1,4 @@
-Component({
+export default OakComponent({
     options: {
         multipleSlots: true,
     },
@@ -22,8 +22,8 @@ Component({
         content: String,
         type: {
             type: String,
-            value: 'primary',
-            options: ['primary', 'warning', 'success', 'error'],
+            value: 'info',
+            options: ['info', 'warning', 'success', 'error', 'loading'],
         },
         duration: {
             type: Number,
@@ -71,45 +71,51 @@ Component({
 
     methods: {
         changeStatus() {
-            this.setData({
+            this.setState({
                 status: true,
             });
             // @ts-ignore
             if (this.data.timer) clearTimeout(this.data.timer);
             // @ts-ignore
             this.data.timer = setTimeout(() => {
-                this.setData({
+                this.setState({
                     status: false,
                 });
                 // @ts-ignore
                 if (this.data.success) this.data.success();
                 // @ts-ignore
                 this.data.timer = null;
-            }, this.properties.duration);
+            }, this.data.duration);
         },
         initMessage() {
-            // @ts-ignore
-            wx.oak = wx.oak || {};
-            // @ts-ignore
-            wx.oak.showMessage = (options = {}) => {
+            let oak;
+            // 小程序有wx、web有window
+            if (process.env.OAK_PLATFORM === 'wechatMp') {
+                // @ts-ignore
+                oak = wx.oak || {};
+            } else {
+                // @ts-ignore
+                oak = window.oak || {};
+            }
+            oak.showMessage = (options: {
+                content: string;
+                image: string;
+                type: string;
+                duration: number;
+                success: any;
+                top: number;
+            }) => {
                 const {
                     content = '',
                     image = '',
-                    type = 'primary',
+                    type = 'info',
                     duration = 1500,
                     success = null,
                     top = 0,
-                } = options as {
-                    content: string;
-                    image: string;
-                    type: string;
-                    duration: number;
-                    success: any;
-                    top: number;
-                };
-                // @ts-ignore
+                } = options;
                 this.data.success = success;
-                this.setData({
+                this.setState({
+                    // @ts-ignore
                     content,
                     image,
                     duration,
@@ -119,9 +125,8 @@ Component({
                 this.changeStatus();
                 return this;
             };
-            // @ts-ignore
-            wx.oak.hideMessage = () => {
-                this.setData({
+            oak.hideMessage = () => {
+                this.setState({
                     status: false,
                 });
             };
