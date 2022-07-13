@@ -5,6 +5,7 @@ import { EntityDict } from 'general-app-domain';
 import { RowStore } from 'oak-domain/lib/types';
 import { assign } from 'lodash';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
+import assert from 'assert';
 
 type AppType = SelectRowShape<EntityDict['application']['Schema'], {
     id: 1,
@@ -24,13 +25,35 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
     private token?: string;
     private rwLockApplication: RWLock;
 
-    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, application?: AppType) {
+    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, applicationId?: string) {
         super(store);
         this.rwLockApplication = new RWLock();
-        this.application = application;
-        if (!application) {
-            this.rwLockApplication.acquire('X');
+        this.rwLockApplication.acquire('X');
+        if (applicationId) {
+            this.loadApplication(applicationId);
         }
+    }
+
+    private async loadApplication(id: string) {
+        const { result: [application] } = await this.rowStore.select('application', {
+            data: {
+                id: 1,
+                name: 1,
+                config: 1,
+                type: 1,
+                systemId: 1,
+                system: {
+                    id: 1,
+                    name: 1,
+                    config: 1,
+                },
+            },
+            filter: {
+                id,
+            },
+        }, this);
+        this.application = application as AppType;
+        this.rwLockApplication.release();
     }
 
     getApplicationId() {
@@ -54,6 +77,7 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
     }
 
     setApplication(app: AppType) {
+        assert(!this.application);
         this.application = app;
         this.rwLockApplication.release();
     }

@@ -18,7 +18,8 @@ export declare abstract class GeneralRuntimeContext<ED extends EntityDict> exten
     private application?;
     private token?;
     private rwLockApplication;
-    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, application?: AppType);
+    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, applicationId?: string);
+    private loadApplication;
     getApplicationId(): string;
     getSystemId(): string;
     setToken(token?: string): void;

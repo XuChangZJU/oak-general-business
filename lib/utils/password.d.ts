@@ -1,1 +1,1 @@
-export declare function encryptPassword(password: string): string;
+export declare function encryptPasswordSha1(password: string): string;
