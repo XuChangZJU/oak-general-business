@@ -28,19 +28,18 @@ export default function render() {
         show,
     } = this.props;
     const { status } = this.state;
-    console.log('show', this.props.show)
     return (
         <div
             className={classNames('l-message', 'l-class', {
                 [`l-message-${type}`]: type,
-                'l-message-show': show,
+                'l-message-show': status,
             })}
             style={{
                 zIndex: zIndex,
                 top: `${top}px`,
             }}
         >
-            {show && (
+            {status && (
                 <React.Fragment>
                     <div
                         style={{
