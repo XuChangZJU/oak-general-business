@@ -6,6 +6,7 @@
         "@ant-design/icons": "^4.7.0",
         "@fingerprintjs/fingerprintjs": "^3.3.3",
         "antd": "^4.21.5",
+        "classnames": "^2.3.1",
         "lodash": "^4.17.21",
         "moment": "^2.29.4",
         "oak-common-aspect": "file:../oak-common-aspect",
@@ -15,6 +16,10 @@
         "oak-memory-tree-store": "file:../oak-memory-tree-store",
         "sha1": "^1.1.1",
         "uuid": "^8.3.2"
+    },
+    "peerDependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.1.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.12.13",
@@ -50,6 +55,7 @@
         "get:area": "ts-node ./scripts/getAmapArea.ts",
         "clean:dir": "ts-node ./scripts/cleanDtsAndJs",
         "test": "ts-node ./test/test.ts",
+        "postinstall": "npm run prebuild",
         "prepare": "rimraf node_modules/react & rimraf node_modules/react-dom & rimraf node_modules/react-router"
     },
     "main": "src/index"
