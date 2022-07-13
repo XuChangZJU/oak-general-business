@@ -11,7 +11,7 @@ import { assign, isEqual, keys } from 'lodash';
 import { OakUserException, SelectRowShape } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
 import { OakChangLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exceptions';
-import { encryptPassword } from '../utils/password';
+import { encryptPasswordSha1 } from '../utils/password';
 
 export async function loginMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: { code: string }, context: Cxt): Promise<string> {
     const { rowStore } = context;
@@ -139,7 +139,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                 return currentToken.id;
             }
             else  {
-                // 此时可能要合并用户，如果用户有wechatUser信息，则抛出OakDistinguishUserByWechatUser异常，否则抛出
+                // 此时可能要合并用户，抛出OakDistinguishUser异常，用户根据自身情况选择合并
                 const { userId } = mobileRow;
                 throw await makeDistinguishException<ED, Cxt>(userId as string, context);
             }
@@ -287,10 +287,10 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends GeneralRu
                 user: {
                     $or: [
                         {
-                            passwordOrigin: password,
+                            password,
                         },
                         {
-                            password: encryptPassword(password),
+                            passwordSha1: encryptPasswordSha1(password),
                         }
                     ],
                     systemId,
@@ -302,20 +302,26 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends GeneralRu
                 throw new OakUserException('用户名与密码不匹配');
             }
             case 1: {
-                const [mobile] = result;
-                const { ableState, userId } = mobile;
+                const [mobileRow] = result;
+                const { ableState, userId } = mobileRow as SelectRowShape<EntityDict['mobile']['Schema'], {
+                    id: 1,
+                    userId: 1,
+                    ableState: 1,
+                }>;
                 if (ableState === 'disabled') {
                     // 虽然密码和手机号匹配，但手机号已经禁用了，在可能的情况下提醒用户使用其它方法登录
                     const exception = await tryMakeChangeLoginWay<ED, Cxt>(userId as string, context);
+                    if (exception) {
+                        throw exception;
+                    }
                 }
-                break;
+                return await setupMobile<ED, Cxt>(mobile, env, context);
             }
-            case 2: {
+            default: {
                 throw new Error(`手机号和密码匹配出现雷同，mobile id是[${result.map(ele => ele.id).join(',')}], mobile是${mobile}`);
             }
         }
     }
-    throw new Error('not implemented yet');
 }
 
 export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ code, env }: {
