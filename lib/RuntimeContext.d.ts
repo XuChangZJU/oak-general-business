@@ -21,7 +21,7 @@ export declare abstract class GeneralRuntimeContext<ED extends EntityDict> exten
     private rwLockApplication;
     constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, applicationId?: string);
     getApplicationId(): string | undefined;
-    getSystemId(): string;
+    getSystemId(): Promise<string | undefined>;
     setToken(token?: string): void;
     getApplication(): Promise<SelectRowShape<import("general-app-domain/Application/Schema").Schema, {
         id: 1;

@@ -1,5 +1,5 @@
 import { EntityDict } from 'general-app-domain';
-import { Feature } from 'oak-frontend-base';
+import { Feature, LocalStorage } from 'oak-frontend-base';
 import { Cache } from 'oak-frontend-base';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { AspectDict } from '../aspects/AspectDict';
@@ -10,7 +10,8 @@ export declare class Token<ED extends EntityDict, Cxt extends GeneralRuntimeCont
     private rwLock;
     private cache;
     private context;
-    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, context: Cxt);
+    private storage;
+    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, context: Cxt);
     loginByMobile(mobile: string, password?: string, captcha?: string): Promise<void>;
     loginWechatMp(): Promise<void>;
     syncUserInfoWechatMp(): Promise<void>;

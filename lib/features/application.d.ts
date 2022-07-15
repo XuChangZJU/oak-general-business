@@ -1,6 +1,6 @@
 import { EntityDict } from 'general-app-domain';
 import { AppType } from 'general-app-domain/Application/Schema';
-import { Feature } from 'oak-frontend-base';
+import { Feature, LocalStorage } from 'oak-frontend-base';
 import { AspectWrapper, SelectRowShape } from 'oak-domain/lib/types';
 import { Cache } from 'oak-frontend-base';
 import { CommonAspectDict } from 'oak-common-aspect';
@@ -23,7 +23,9 @@ export declare class Application<ED extends EntityDict, Cxt extends GeneralRunti
     private application?;
     private rwLock;
     private cache;
-    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD>, type: AppType, url: string, cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, callback: (application: SelectRowShape<ED['application']['Schema'], typeof projection>) => void);
+    private storage;
+    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD>, type: AppType, url: string, cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, callback: (application: SelectRowShape<ED['application']['Schema'], typeof projection>) => void);
+    private getApplicationFromCache;
     private refresh;
     getApplication(): Promise<SelectRowShape<ED["application"]["Schema"], {
         id: 1;
