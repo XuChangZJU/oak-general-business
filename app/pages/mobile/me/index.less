@@ -8,6 +8,7 @@
   flex: 1;
   flex-direction: column;
   box-sizing: border-box;
+  align-items: stretch;
   background-color: @background-color-base;
   .safe-area-inset-bottom();
 }
@@ -23,6 +24,12 @@
   padding: @size-spacing-base;
   margin: @size-spacing-base;
   margin-bottom: 0;
+  align-items: center;
+  justify-content: space-between;
+
+  text {
+    font-size: x-large;
+  }
 }
 .btn-box {
   display: flex;

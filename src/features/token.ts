@@ -1,5 +1,5 @@
 import { EntityDict } from 'general-app-domain';
-import { Action, Feature } from 'oak-frontend-base';
+import { Action, Feature, LocalStorage } from 'oak-frontend-base';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
 import { WebEnv, WechatMpEnv } from 'general-app-domain/Token/Schema';
 import { Cache } from 'oak-frontend-base';
@@ -15,12 +15,20 @@ export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>,
     private rwLock: RWLock;
     private cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
     private context: Cxt;
+    private storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
 
-    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, context: Cxt) {
+    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
+        cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, context: Cxt) {
         super(aspectWrapper);
         this.rwLock = new RWLock();
         this.cache = cache;
         this.context = context;
+        this.storage = storage;
+        const token = storage.load('token:token');
+        if (token) {
+            this.token = token;
+            this.context.setToken(token);
+        }
     }
 
     @Action
@@ -31,6 +39,7 @@ export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>,
             const { result } = await this.getAspectWrapper().exec('loginByMobile', { password, mobile, captcha, env });
             this.token = result;
             this.rwLock.release();
+            this.storage.save('token:token', result);
             this.context.setToken(result);
         }
         catch (err) {
@@ -51,8 +60,9 @@ export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>,
                 env: env as WechatMpEnv,
             });
             this.token = result;
-            this.context.setToken(result);
             this.rwLock.release();
+            this.storage.save('token:token', result);
+            this.context.setToken(result);
         }
         catch(err) {
             this.rwLock.release();
@@ -81,6 +91,7 @@ export class Token<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>,
     async logout() {
         this.token = undefined;
         this.context.setToken(undefined);
+        this.storage.remove('token:token');
     }
 
     async getToken() {     

@@ -3,7 +3,7 @@ import { composeFileUrl } from '../../../../src/utils/extraFile';
 const SEND_KEY = 'captcha:sendAt';
 export default OakPage({
     path: 'mobile:me',
-    entity: 'mobile',
+    isList: false,
     projection: {
         id: 1,
         mobile: 1,
@@ -14,6 +14,10 @@ export default OakPage({
         password: '',
         captcha: '',
         counter: 0,
+    },
+    properties: {
+        onlyCaptcha: Boolean,
+        onlyPassword: Boolean,
     },
     async formData({ features }) {
         const lastSendAt = features.localStorage.load(SEND_KEY);

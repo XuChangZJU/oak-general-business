@@ -1,135 +1,57 @@
+import { concat, without } from "lodash";
+import { NotificationData } from "oak-frontend-base";
+
+interface TimedNotificationdata extends NotificationData {
+    dieAt: number;
+};
+
+let KILLER: number | undefined = undefined;
 export default OakComponent({
-    options: {
-        multipleSlots: true,
-    },
-    externalClasses: ['l-class', 'l-image-class', 'l-lass-image'],
-    properties: {
-        zIndex: {
-            type: Number,
-            value: 777,
-        },
-        show: Boolean,
-        icon: String,
-        iconColor: {
-            type: String,
-            value: '#fff',
-        },
-        iconSize: {
-            type: String,
-            value: '28',
-        },
-        image: String,
-        content: String,
-        type: {
-            type: String,
-            value: 'info',
-            options: ['info', 'warning', 'success', 'error', 'loading'],
-        },
-        duration: {
-            type: Number,
-            value: 1500,
-        },
-        openApi: {
-            type: Boolean,
-            value: true,
-        },
-        /**
-         * message距离顶部的距离
-         */
-        top: {
-            type: Number,
-            value: 0,
-        },
-    },
-
     data: {
-        status: false,
+        messages: [] as TimedNotificationdata[],
     },
-
-    // 解决 addListener undefined 的错误
+    async formData({ }) {
+        const data = this.consumeNotification();
+        if (data) {
+            const now = Date.now();
+            return {
+                messages: [
+                    ...this.state.messages,
+                    Object.assign(data, {
+                        dieAt: now + (data.duration || 3000),
+                    })
+                ],
+            };
+        }
+        return {};
+    },
     observers: {
-        show: function (show) {
-            show && this.changeStatus();
-            if (!show)
-                this.setData({
-                    status: show,
-                });
-        },
-    },
+        messages(messages: TimedNotificationdata[]) {
+            if (messages.length > 0) {
+                let firstDieAt: number = Number.MAX_VALUE;
+                let vicitim: TimedNotificationdata;
+                for (const message of messages) {
+                    if (message.dieAt < firstDieAt) {
+                        vicitim = message;
+                        firstDieAt = vicitim.dieAt;
+                    }
+                }
 
-    lifetimes: {
-        attached() {
-            this.initMessage();
-        },
-    },
-
-    pageLifetimes: {
-        show() {
-            this.initMessage();
-        },
-    },
-
-    methods: {
-        changeStatus() {
-            this.setState({
-                status: true,
-            });
-            // @ts-ignore
-            if (this.data.timer) clearTimeout(this.data.timer);
-            // @ts-ignore
-            this.data.timer = setTimeout(() => {
-                this.setState({
-                    status: false,
-                });
-                // @ts-ignore
-                if (this.data.success) this.data.success();
-                // @ts-ignore
-                this.data.timer = null;
-            }, this.data.duration);
-        },
-        initMessage() {
-            let oak;
-            // 小程序有wx、web有window
-            if (process.env.OAK_PLATFORM === 'wechatMp') {
-                // @ts-ignore
-                oak = wx.oak || {};
-            } else {
-                // @ts-ignore
-                oak = window.oak || {};
+                if (typeof KILLER === 'number') {
+                    clearTimeout(KILLER);
+                }
+                KILLER = setTimeout(
+                    () => {
+                        const messages = without(this.state.messages, vicitim);
+                        this.setState({
+                            messages,
+                        });
+                    }
+                , Math.max(firstDieAt - Date.now(), 0));
             }
-            oak.showMessage = (options: {
-                content: string;
-                image: string;
-                type: string;
-                duration: number;
-                success: any;
-                top: number;
-            }) => {
-                const {
-                    content = '',
-                    image = '',
-                    type = 'info',
-                    duration = 1500,
-                    success = null,
-                    top = 0,
-                } = options;
-                this.data.success = success;
-                this.setState({
-                    // @ts-ignore
-                    content,
-                    image,
-                    duration,
-                    type,
-                    top,
-                });
-                this.changeStatus();
-                return this;
-            };
-            oak.hideMessage = () => {
-                this.setState({
-                    status: false,
-                });
-            };
-        },
-    },
+            else {
+                KILLER = undefined;
+            }            
+        }
+    }
 });

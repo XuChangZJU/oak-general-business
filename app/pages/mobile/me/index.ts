@@ -33,6 +33,11 @@ export default OakPage({
     formData: async ({ data: mobiles }) => ({
         mobiles,
     }),
+    data: {
+        confirmDeleteModalVisible: false,
+        refreshing: false,
+        deleteIdx: undefined,
+    },
     methods: {
         async onRefreshMobile(e: any) {
             this.setState({
@@ -47,5 +52,17 @@ export default OakPage({
                 refreshing: false,
             });
         },
+
+        goAddMobile() {
+            const eventLoggedIn = `mobile:me:login:${Date.now()}`;
+            this.sub(eventLoggedIn, () => {
+                this.navigateBack();
+            })
+            this.navigateTo({
+                url: '/mobile/login',
+                onlyCaptcha: true,    
+                eventLoggedIn,
+            });
+        }
     },
 });

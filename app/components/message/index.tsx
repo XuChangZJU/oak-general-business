@@ -16,61 +16,60 @@ const typeToIcon = {
 };
 
 export default function render() {
+    console.log('message render');
     const {
-        type,
-        content,
-        image,
-        zIndex = 777,
-        top = 100,
-        icon,
-        iconColor = '#fff',
-        iconSize = 16,
-        show,
-    } = this.props;
-    const { status } = this.state;
-    return (
-        <div
-            className={classNames('l-message', 'l-class', {
-                [`l-message-${type}`]: type,
-                'l-message-show': status,
-            })}
-            style={{
-                zIndex: zIndex,
-                top: `${top}px`,
-            }}
-        >
-            {status && (
-                <React.Fragment>
-                    <div
-                        style={{
-                            marginRight: '15rpx',
-                        }}
-                    >
-                        <Icon
-                            name={type}
-                            size={iconSize}
-                            color={type === 'warning' ? '#333' : iconColor}
-                        />
-                    </div>
-                    {image && (
-                        <img
-                            src={image}
-                            className={classNames(
-                                'l-message-image',
-                                'l-class-image',
-                                'l-image-class'
-                            )}
-                        />
-                    )}
-                    {content}
-                </React.Fragment>
-            )}
-        </div>
-    );
+        messages,
+    } = this.state;
+    if (messages.length > 0) {
+        return (
+            <div>
+                {
+                    messages.map(
+                        (ele, index) => {
+                            const {
+                                type,
+                                content,
+                                icon,
+                                iconColor = '#fff',
+                                iconSize = 16
+                            } = ele;
+                            return (
+                                <div
+                                    className={classNames('l-message', 'l-message-show', {
+                                        [`l-message-${type}`]: type,
+                                    })}
+                                    style={{
+                                        zIndex: 777,
+                                        top: 31 * index,
+                                    }}
+                                >
+                                    <React.Fragment>
+                                        <div
+                                            style={{
+                                                marginRight: '15rpx',
+                                            }}
+                                        >
+                                            <Icon
+                                                name={type}
+                                                size={iconSize}
+                                                color={type === 'warning' ? '#333' : iconColor}
+                                            />
+                                        </div>
+                                        {content}
+                                    </React.Fragment>
+                                </div>
+                            )
+                        }
+                    )
+                }
+            </div>
+        );
+    }
+    return null;
 }
 
 function Icon({ name, size, color }) {
     const I = typeToIcon[name]
-    
+
     return <I style={{ fontSize: `${size}px`, color }} />;
 }

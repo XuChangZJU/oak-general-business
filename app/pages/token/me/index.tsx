@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { UserOutlined, RightOutlined } from '@ant-design/icons';
-import { Avatar, Image, Button, List } from 'antd';
+import { Avatar, Image, Button, List, Drawer, Input } from 'antd';
 
 export default function render() {
-    const { avatar, nickname, isLoggedIn, refreshing, mobile, mobileCount } = this.state;
+    const { avatar, nickname, isLoggedIn, refreshing, mobile, mobileCount, showDrawer, oakDirty, bbb } = this.state;
     const mobileText = mobileCount > 1 ? `${mobileCount}条手机号` : ( mobile || '未设置');
     return (
         <div className='page-body'>
@@ -18,7 +18,9 @@ export default function render() {
                             size="small"
                             disabled={refreshing}
                             loading={refreshing}
-                            onClick={() => this.onRefresh()}
+                            onClick={() => this.setState({
+                                showDrawer: true,
+                            })}
                         >
                             更新
                         </Button> :
@@ -41,12 +43,48 @@ export default function render() {
                         <List.Item.Meta
                             title="手机号"
                             description={mobileText}
-                            onClick={() => console.log('aaa')}
+                            onClick={() => this.goMyMobile()}
                         />
                         <RightOutlined />
                     </List.Item>
                 </List>
             </div>
+            <Drawer
+                height={150}
+                closable={false}
+                placement="bottom"
+                visible={showDrawer}
+                onClose={() => {
+                    this.setState({ showDrawer: false });
+                    this.resetUpdateData();
+                }}
+            >
+                <Input
+                    size="large"
+                    placeholder="请输入昵称"
+                    value={bbb}
+                    onChange={(input) => {
+                        console.log(input.currentTarget.value);
+                        this.setState({
+                            bbb: input.currentTarget.value,
+                        });
+                    }}
+                />
+                <div style={{ height: 15 }} />
+                <Button 
+                    size="large"
+                    type="primary"
+                    disabled={!oakDirty}
+                    block 
+                    onClick={async () => {
+                        await this.execute('update', undefined, '0.user');
+                        this.setState({ showDrawer: false });
+                        this.resetUpdateData();
+                    }}
+                >
+                    {this.t('common:confirm')}
+                </Button>
+            </Drawer>
         </div>
     );
 }

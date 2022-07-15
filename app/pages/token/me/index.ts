@@ -56,8 +56,13 @@ export default OakPage({
     filters: [{
         filter: async ({ features }) => {
             const tokenId = await features.token.getToken();
+            if (tokenId) {
+                return {
+                    id: tokenId,
+                };
+            }
             return {
-                id: tokenId,
+                id: 'none',
             };
         },
     }],
@@ -89,8 +94,13 @@ export default OakPage({
     },
     data: {
         refreshing: false,
+        showDrawer: false,
     },
     methods: {
+        setValue(input: any) {
+            const { dataset, value } = this.resolveInput(input);
+            this.setUpdateData(dataset!.attr, value);
+        },
         async onRefresh() {
             this.setState({
                 refreshing: true,
