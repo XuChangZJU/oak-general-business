@@ -4,7 +4,7 @@ import { DeduceCreateOperationData } from "oak-domain/lib/types";
 import { isMockId } from "oak-frontend-base/src/utils/mockId";
 import { composeFileUrl } from '../../../../src/utils/extraFile';
 
-OakComponent({
+export default OakComponent({
     entity: 'extraFile',
     isList: true,
     async formData ({ data: files }) {
