@@ -1,0 +1,29 @@
+<!-- index.wxml -->
+<view class="container">
+    <view class="col">
+        <block wx:for="{{users}}" wx:key="index">
+            <view class="card-view">
+                <block wx:if="{{item.avatar}}">
+                    <image class="avatar" src="{{item.avatar}}" mode="aspectFit" />
+                </block>
+                <block wx:else>
+                    <view class="img-view">
+                        <l-icon name="picture" size="80" />
+                    </view>
+                </block>
+                <view class="row">
+                    <view class="col">
+                        <text class="nickname">{{item.nickname || '未设置'}}</text>
+                        <text class="mobile">姓名: {{item.name  || '未设置'}}</text>
+                        <text class="mobile">手机: {{item.mobile  || '未设置'}}</text>
+                    </view>
+                    <l-tag shape="circle" data-index="{{index}}" bind:tap="onRemove">移除</l-tag>
+                </view>
+            </view>
+        </block>
+    </view>
+    <fab bind:click="goSearch">
+        <l-icon name="add" type="material" color="#fff" size="48" />
+    </fab>
+    <l-dialog show="{{show}}" type="confirm" title="提示" content="确定移除吗" bind:linconfirm="handleConfirm" />
+</view>

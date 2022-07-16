@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "Upload 上传",
+  "usingComponents": {
+    "single": "./single",
+    "multiple": "./multiple"
+  }
+}

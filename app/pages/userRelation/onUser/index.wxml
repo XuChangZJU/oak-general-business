@@ -8,7 +8,7 @@
             <l-card l-class="card-view" title="{{item.name}}" describe="{{item.nickname}}" data-id="{{item.id}}" bind:tap="handleCardClick" type="avatar" image="{{item.avatar}}">
                 <block wx:if="{{relations.length === 1}}">
                     <view slot="more">
-                                <l-switch checked="{{item.hasRelation[0]}}" bind:linchange="onChange" data-id="{{item.id}}" data-relation="{{relations[0]}}" data-index="{{index}}" />
+                        <l-switch checked="{{item.hasRelation[0]}}" bind:linchange="onChange" data-id="{{item.id}}" data-relation="{{relations[0]}}" data-index="{{index}}" />
                     </view>
                 </block>
                 <block wx:else>
@@ -25,8 +25,12 @@
             </l-card>
         </block>
         <view class="btn-container">
-            <l-button icon="research" size="long" class="btn" icon-size="20" icon-color="#fff" bind:lintap="goSearchUser">搜索人员</l-button>
-            <l-button type="success" size="long" class="btn" bind:lintap="confirm" disabled="{{!oakDirty}}">确定</l-button>
+            <l-button icon="research" size="long" class="btn" icon-size="20" icon-color="#fff" bind:lintap="goSearchUser">
+                搜索人员
+            </l-button>
+            <l-button type="success" size="long" class="btn" bind:lintap="confirm" disabled="{{!oakDirty}}">
+                确定
+            </l-button>
         </view>
     </block>
     <block wx:else>

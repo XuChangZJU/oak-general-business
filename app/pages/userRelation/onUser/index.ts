@@ -139,7 +139,7 @@ export default OakPage(
                 this.toggleNode({
                     relation,
                     [`${entity}Id`]: entityId,
-                }, checked, `${index}.user${entityStr}$user`)
+                }, checked, `${index}.user${entityStr}$user`) 
             },
             async confirm() {
                 await this.execute('grant');

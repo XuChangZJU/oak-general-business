@@ -40,6 +40,7 @@ export default OakPage({
         },
     },
     isList: false,
+    
     formData: async ({ data: user }) => {
         const {
             id,

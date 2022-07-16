@@ -11,9 +11,11 @@
     <view wx:if="{{searchArr.length}}" class="col">
         <text class="title">搜索历史</text>
         <view class="row">
-            <l-tag wx:for="{{searchArr}}" bind:tap="tagClick" wx:key="index" wx:for-item="searchItem" class="tag" data-value="searchItem">
-                {{searchItem}}
-            </l-tag>
+            <block wx:for="{{searchArr}}" wx:key="index" wx:for-item="searchItem">
+                <l-tag bind:tap="tagClick" class="tag" data-value="{{searchItem}}">
+                    {{searchItem}}
+                </l-tag>
+            </block>
         </view>
         <view class="delete-btn" bind:tap="clearSearchHistory">
             <l-icon name="delete" size="28"></l-icon>

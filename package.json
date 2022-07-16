@@ -15,6 +15,7 @@
         "oak-frontend-base": "file:../oak-frontend-base",
         "oak-memory-tree-store": "file:../oak-memory-tree-store",
         "sha1": "^1.1.1",
+        "tdesign-miniprogram": "^0.15.1",
         "uuid": "^8.3.2"
     },
     "peerDependencies": {

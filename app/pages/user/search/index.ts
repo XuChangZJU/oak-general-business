@@ -64,7 +64,6 @@ export default OakPage(
                 userIds,
                 nodeStr,
                 isRoot,
-                showList: !!userIds.length
             };
         },
         properties: {
@@ -170,12 +169,18 @@ export default OakPage(
             },
             async searchChange(input: any) {
                 const { value } = this.resolveInput(input);
+                const { users } = this.state;
                 if (!value) {
                     this.setState({
                         searchValue: value,
                         showList: false,
                     })
                     return;
+                }
+                if (users.length) {
+                    this.setState({
+                        showList: true,
+                    })
                 }
                 this.setFilter(value);
                 this.setState({
