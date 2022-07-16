@@ -24,7 +24,7 @@ export declare class Application<ED extends EntityDict, Cxt extends GeneralRunti
     private rwLock;
     private cache;
     private storage;
-    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD>, type: AppType, url: string, cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, callback: (application: SelectRowShape<ED['application']['Schema'], typeof projection>) => void);
+    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD>, type: AppType, cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, callback: (application: SelectRowShape<ED['application']['Schema'], typeof projection>) => void);
     private getApplicationFromCache;
     private refresh;
     getApplication(): Promise<SelectRowShape<ED["application"]["Schema"], {

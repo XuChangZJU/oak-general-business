@@ -5,7 +5,6 @@ import { GeneralRuntimeContext } from "../RuntimeContext";
 
 export async function getApplication<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: {
     type: AppType;
-    url: string;
 }, context: Cxt) {
     const { type } = params;
     const appId = type === 'web' ? DEV_WEB_APPLICATION_ID : DEV_WECHATMP_APPLICATION_ID;

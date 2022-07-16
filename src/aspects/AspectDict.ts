@@ -22,7 +22,6 @@ type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<
     }) => Promise<string>,
     getApplication: (params: {
         type: AppType;
-        url: string;
     }, context: Cxt) => Promise<string>;
 };
 
