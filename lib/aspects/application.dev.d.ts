@@ -3,5 +3,4 @@ import { AppType } from "general-app-domain/Application/Schema";
 import { GeneralRuntimeContext } from "../RuntimeContext";
 export declare function getApplication<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: {
     type: AppType;
-    url: string;
 }, context: Cxt): Promise<string>;

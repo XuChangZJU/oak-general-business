@@ -5,7 +5,7 @@ interface TimedNotificationdata extends NotificationData {
     dieAt: number;
 };
 
-let KILLER: number | undefined = undefined;
+let KILLER: NodeJS.Timeout | undefined = undefined;
 export default OakComponent({
     data: {
         messages: [] as TimedNotificationdata[],
@@ -37,7 +37,7 @@ export default OakComponent({
                     }
                 }
 
-                if (typeof KILLER === 'number') {
+                if (KILLER) {
                     clearTimeout(KILLER);
                 }
                 KILLER = setTimeout(

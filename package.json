@@ -55,7 +55,6 @@
         "get:area": "ts-node ./scripts/getAmapArea.ts",
         "clean:dir": "ts-node ./scripts/cleanDtsAndJs",
         "test": "ts-node ./test/test.ts",
-        "postinstall": "npm run prebuild",
         "prepare": "rimraf node_modules/react & rimraf node_modules/react-dom & rimraf node_modules/react-router"
     },
     "main": "src/index"

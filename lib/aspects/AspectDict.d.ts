@@ -34,7 +34,6 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntime
     }) => Promise<string>;
     getApplication: (params: {
         type: AppType;
-        url: string;
     }, context: Cxt) => Promise<string>;
 };
 export declare type AspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;

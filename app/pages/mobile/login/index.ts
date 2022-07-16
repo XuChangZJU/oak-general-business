@@ -30,7 +30,7 @@ export default OakPage({
             }
             else if (this.counterHandler) {
                 clearTimeout(this.couuterHandler);
-                this.counterHandler = undefined;            
+                this.counterHandler = undefined;
             }
         }
         return {
@@ -40,33 +40,47 @@ export default OakPage({
     methods: {
         onInput(e: any) {
             const { dataset, value } = this.resolveInput(e);
-            const{ attr } = dataset;
+            const { attr } = dataset;
             this.setState({
                 [attr]: value,
             });
         },
         async sendCaptcha() {
             const { mobile } = this.state;
-            const result = await this.features.token.sendCaptcha(mobile);
-            // 显示返回消息
-            this.setState({
-                oakError: {
+            try {
+                const result = await this.features.token.sendCaptcha(mobile);
+                // 显示返回消息
+                this.setNotification({
                     type: 'success',
-                    msg: result,
-                }
-            });
-            this.save(SEND_KEY, Date.now());
-            this.reRender();
+                    content: result,
+                });
+                this.save(SEND_KEY, Date.now());
+                this.reRender();
+            }
+            catch (err) {
+                this.setNotification({
+                    type: 'error',
+                    content: (err as Error).message,
+                });
+            }
         },
         async loginByMobile() {
             const { eventLoggedIn } = this.props;
             const { mobile, password, captcha } = this.state;
-            await this.features.token.loginByMobile(mobile, password, captcha);
-            if (eventLoggedIn) {
-                this.pub(eventLoggedIn);
+            try {
+                await this.features.token.loginByMobile(mobile, password, captcha);
+                if (eventLoggedIn) {
+                    this.pub(eventLoggedIn);
+                }
+                else {
+                    this.navigateBack();
+                }
             }
-            else {
-                this.navigateBack();
+            catch (err) {
+                this.setNotification({
+                    type: 'error',
+                    content: (err as Error).message,
+                });
             }
         }
     },

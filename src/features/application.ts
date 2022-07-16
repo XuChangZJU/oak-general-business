@@ -44,7 +44,6 @@ export class Application<ED extends EntityDict, Cxt extends GeneralRuntimeContex
     constructor(
         aspectWrapper: AspectWrapper<ED, Cxt, AD>,
         type: AppType,
-        url: string,
         cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
         storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
         callback: (application: SelectRowShape<ED['application']['Schema'], typeof projection>) => void) {
@@ -59,7 +58,7 @@ export class Application<ED extends EntityDict, Cxt extends GeneralRuntimeContex
             this.getApplicationFromCache(callback);
         }
         else {
-            this.refresh(type, url, callback);
+            this.refresh(type, callback);
         }
         this.rwLock.release();
     }
@@ -76,9 +75,8 @@ export class Application<ED extends EntityDict, Cxt extends GeneralRuntimeContex
         callback(this.application!);
     }
 
-    private async refresh(type: AppType, url: string, callback: (application: SelectRowShape<ED['application']['Schema'], typeof projection>) => void) {
+    private async refresh(type: AppType, callback: (application: SelectRowShape<ED['application']['Schema'], typeof projection>) => void) {
         const { result: applicationId } = await this.getAspectWrapper().exec('getApplication', {
-            url,
             type,
         });
         this.applicationId = applicationId;
