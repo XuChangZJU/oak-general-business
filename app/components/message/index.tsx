@@ -35,9 +35,14 @@ export default function render() {
                             } = ele;
                             return (
                                 <div
-                                    className={classNames('l-message', 'l-message-show', {
-                                        [`l-message-${type}`]: type,
-                                    })}
+                                    key={index}
+                                    className={classNames(
+                                        'l-message',
+                                        'l-message-show',
+                                        {
+                                            [`l-message-${type}`]: type,
+                                        }
+                                    )}
                                     style={{
                                         zIndex: 777,
                                         top: 31 * index,
@@ -52,13 +57,17 @@ export default function render() {
                                             <Icon
                                                 name={type}
                                                 size={iconSize}
-                                                color={type === 'warning' ? '#333' : iconColor}
+                                                color={
+                                                    type === 'warning'
+                                                        ? '#333'
+                                                        : iconColor
+                                                }
                                             />
                                         </div>
                                         {content}
                                     </React.Fragment>
                                 </div>
-                            )
+                            );
                         }
                     )
                 }
