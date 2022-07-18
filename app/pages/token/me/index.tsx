@@ -3,7 +3,7 @@ import { UserOutlined, RightOutlined } from '@ant-design/icons';
 import { Avatar, Image, Button, List, Drawer, Input } from 'antd';
 
 export default function render() {
-    const { avatar, nickname, isLoggedIn, refreshing, mobile, mobileCount, showDrawer, oakDirty, bbb } = this.state;
+    const { avatar, nickname, isLoggedIn, refreshing, mobile, mobileCount, showDrawer, oakDirty } = this.state;
     const mobileText = mobileCount > 1 ? `${mobileCount}条手机号` : ( mobile || '未设置');
     return (
         <div className='page-body'>
@@ -62,13 +62,9 @@ export default function render() {
                 <Input
                     size="large"
                     placeholder="请输入昵称"
-                    value={bbb}
-                    onChange={(input) => {
-                        console.log(input.currentTarget.value);
-                        this.setState({
-                            bbb: input.currentTarget.value,
-                        });
-                    }}
+                    oak:value="0.user.nickname"
+                    value={nickname}
+                    onChange={this.setValue}
                 />
                 <div style={{ height: 15 }} />
                 <Button 
