@@ -3,8 +3,8 @@
     "usingComponents": {
         "component-menu": "@project/components/token/menu/index",
         "l-list": "../../../miniprogram_npm/lin-ui/list/index",
-        "l-icon": "../../../miniprogram_npm/lin-ui/icon/index",
-        "l-button": "../../../miniprogram_npm/lin-ui/button/index",
+        "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
+        "t-cell": "../../../miniprogram_npm/tdesign/cell/cell",
         "t-button": "../../../miniprogram_npm/tdesign/button/button"
     }
 }

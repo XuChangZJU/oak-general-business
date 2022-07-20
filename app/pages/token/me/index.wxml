@@ -5,7 +5,7 @@
             <image class="avatar" src="{{avatar}}" mode="aspectFit" />
         </block>
         <block wx:else>
-            <l-icon name="person_outline" size="120" />
+            <t-icon name="user-avatar" size="50px"/>
         </block>
         <span class="nickname">{{ nickname || '未设置'}}</span>
         <block wx:if="{{isLoggedIn && !isPlayingAnother}}">
@@ -16,17 +16,17 @@
         </block>
     </view>
     <view class="cell">
-        <l-list title="手机号" is-link="true">
-            <view slot="right-section">
+        <t-cell title="手机号" hover>
+            <view slot="note">
                 <view wx:if="{{mobileCount > 1}}">{{mobileCount}}条手机号</view>
                 <view wx:elif="{{mobileCount === 1}}">{{mobile}}</view>
                 <view wx:else>未设置</view>
             </view>
-        </l-list>
+        </t-cell>
         <component-menu />
         <view style="flex:1" />
         <block wx:if="{{isRoot}}">
-        <l-list title="用户管理" bind:lintap="goUserManage" />
+        <t-cell title="用户管理" hover bind:click="goUserManage" arrow />
         </block>
     </view>
 </view>
