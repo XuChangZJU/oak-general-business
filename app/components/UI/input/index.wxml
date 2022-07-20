@@ -1,5 +1,0 @@
-<view class="g-cell g-input {{ error ? 'g-input-error' : '' }} {{ mode === 'wrapped' ? 'g-input-wrapped' : '' }}">
-    <view wx:if="{{ title }}" class="g-input-title {{ error ? 'g-input-error' : '' }}">{{ title }}</view>
-    <textarea wx:if="{{ type === 'textarea' }}" auto-height disabled="{{ disabled }}" focus="{{ focus }}" value="{{ value }}" placeholder="{{ placeholder }}" maxlength="{{ maxlength }}" class="g-input-input {{ right ? 'g-input-input-right' : '' }}" placeholder-class="g-input-placeholder" bindinput="handleInputChange" bindfocus="handleInputFocus" bindblur="handleInputBlur"></textarea>
-    <input wx:else type="{{ type }}" disabled="{{ disabled }}" focus="{{ focus }}" value="{{ value }}" placeholder="{{ placeholder }}" maxlength="{{ maxlength }}" class="g-input-input g-cell-bd {{ right ? 'g-input-input-right' : '' }}" placeholder-class="g-input-placeholder" bindinput="handleInputChange" bindfocus="handleInputFocus" bindblur="handleInputBlur" />
-</view>

@@ -1,7 +1,0 @@
-<view class="g-drawer {{ visible ? 'g-drawer-show' : '' }} {{ 'g-drawer-' + mode }}">
-    <view wx:if="{{ true }}" class="g-drawer-mask" bindtap="handleMaskClick"></view>
-    <view class="g-drawer-container">
-        <slot></slot>
-        <slot name="container"></slot>
-    </view>
-</view>

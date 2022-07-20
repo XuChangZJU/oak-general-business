@@ -1,6 +1,0 @@
-<view class="g-panel g-class">
-    <view wx:if="{{ title }}" class="g-panel-title  g-title-class">{{ title }}</view>
-    <view class="g-panel-content  g-content-class">
-        <slot></slot>
-    </view>
-</view>

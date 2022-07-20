@@ -1,3 +1,0 @@
-<span class="material-symbols-rounded material" style="{{ size ? 'font-size:'+size+'rpx;':''}}{{ color ? 'color:' + color+';' : '' }}">
-    {{name}}
-</span>
