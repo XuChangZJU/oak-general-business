@@ -7,7 +7,7 @@
                 <text class="phone">{{item.phone}}</text>
             </view>
             <view class="row">
-                <l-icon name="address" />
+                <t-icon name="location" color="blue" size="xl" />
                 <text class="area">{{item.areaText}}</text>
             </view>
         </view>
