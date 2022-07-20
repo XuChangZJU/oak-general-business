@@ -72,9 +72,9 @@ export default OakPage({
     },
     data: {
         stateColor: {
-            shadow: '#FFE57F',
-            normal: '#34BFA3',
-            disabled: '#F4516C'
+            shadow: 'primary',
+            normal: 'success',
+            disabled: 'danger'
         }
     },
     methods: {
