@@ -2,11 +2,8 @@
     "navigationBarTitleText": "修改地址",
     "usingComponents": {
         "area-upsert": "../../../components/area/upsert/index",
-        "l-input": "../../../miniprogram_npm/lin-ui/input/index",
-        "l-label": "../../../miniprogram_npm/lin-ui/label/index",
-        "l-textarea": "../../../miniprogram_npm/lin-ui/textarea/index",
-        "l-list": "../../../miniprogram_npm/lin-ui/list/index",
-        "l-button": "../../../miniprogram_npm/lin-ui/button/index",
+        "t-input": "../../../miniprogram_npm/tdesign/input/input",
+        "t-textarea": "../../../miniprogram_npm/tdesign/textarea/textarea",
         "t-button": "../../../miniprogram_npm/tdesign/button/button",
         "t-button-group": "../../../miniprogram_npm/tdesign/button-group/button-group"
     }
