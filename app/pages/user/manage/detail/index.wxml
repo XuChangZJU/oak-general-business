@@ -42,8 +42,6 @@
         </l-list>
     </view>
     <view style="flex:1" />
-    <view class="btn-view">
-        <l-button type="default" size="large" bind:lintap="openDrawer">更多</l-button>
-    </view>
+    <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="openDrawer" content="更多" />
     <action-panel show="{{show}}" bind:close="closeDrawer" style="align-self:stretch" actions="{{oakLegalActions}}" actionDescriptions="{{actionDescriptions}}" bind:click="onActionClick" />
 </view>

@@ -29,7 +29,5 @@
             </view>
         </view>
     </view>
-    <view class="btn-view">
-        <l-button size="large" type="default" bind:lintap="goNewUser">新建</l-button>
-    </view>
+    <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="goNewUser" content="新建" />
 </view>

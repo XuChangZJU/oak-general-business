@@ -9,9 +9,5 @@
         <l-input required="{{true}}" label="证件号" placeholder="请输入" oak:value="idNumber" bind:lininput="setValue" confirm-type="done" />
     </view>
     <view style="flex: 1" />
-    <view class="btn-view">
-        <l-button type="default" size="large" bind:lintap="confirm" loading="{{oakExecuting}}" disabled="{{oakExecuting || !oakDirty}}">
-            确定
-        </l-button>
-    </view>
+    <t-button theme="primary" disabled="{{oakExecuting || !oakDirty}}" style="margin: 16rpx" loading="{{oakExecuting}}" block size="large" bind:tap="confirm" content="确定" />
 </view>

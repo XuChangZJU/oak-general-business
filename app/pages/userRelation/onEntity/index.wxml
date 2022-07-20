@@ -28,9 +28,5 @@
             </view>
         </view>
     </view>
-    <view class="btn-container">
-        <l-button type="success" size="long" class="btn" bind:lintap="confirm" disabled="{{!oakDirty}}">
-            确定
-        </l-button>
-    </view>
+    <t-button theme="primary" style="margin: 16rpx" disabled="{{!oakDirty}}" block size="large" bind:tap="confirm" content="确定" />
 </view>

@@ -4,6 +4,7 @@
         "l-list": "../../../../miniprogram_npm/lin-ui/list/index",
         "l-input": "../../../../miniprogram_npm/lin-ui/input/index",
         "l-button": "../../../../miniprogram_npm/lin-ui/button/index",
-        "l-picker": "../../../../miniprogram_npm/lin-ui/picker/index"
+        "l-picker": "../../../../miniprogram_npm/lin-ui/picker/index",
+        "t-button": "../../../../miniprogram_npm/tdesign/button/button"
     }
 }

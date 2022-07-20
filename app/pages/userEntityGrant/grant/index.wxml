@@ -10,9 +10,5 @@
             </label>
         </radio-group>
     </view>
-    <view class="btn-view">
-        <l-button type="default" size="large" bind:lintap="handleConfirm">
-            {{t('common:action.confirm')}}
-        </l-button>
-    </view>
+    <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="handleConfirm" content="{{t('common:action.confirm')}}" />
 </view>

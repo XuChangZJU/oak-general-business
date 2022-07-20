@@ -32,6 +32,10 @@
                 确定
             </l-button>
         </view>
+        <!-- <t-button-group>
+            <t-button icon="research" icon-props="{{ color: '#fff', size: '20' }}" theme="primary" style="margin: 16rpx" block size="large" bind:tap="goSearchUser" content="搜索人员" />
+            <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="confirm" disabled="{{!oakDirty}}" content="确定" />
+        </t-button-group> -->
     </block>
     <block wx:else>
         <l-status-show show="{{true}}" type="data" button-text="搜索人员" bind:lintap="goSearchUser"></l-status-show>

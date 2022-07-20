@@ -9,6 +9,8 @@
       "l-search-bar": "../../../miniprogram_npm/lin-ui/search-bar/index",
       "l-switch": "../../../miniprogram_npm/lin-ui/switch/index",
       "divider": "../../../components/UI/divider/index",
-      "fab": "../../../components/UI/fab/index"
+      "fab": "../../../components/UI/fab/index",
+      "t-button": "../../../miniprogram_npm/tdesign/button/button",
+      "t-button-group": "../../../miniprogram_npm/tdesign/button-group/button-group"
   }
 }

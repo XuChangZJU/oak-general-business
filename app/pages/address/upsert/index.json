@@ -6,6 +6,8 @@
         "l-label": "../../../miniprogram_npm/lin-ui/label/index",
         "l-textarea": "../../../miniprogram_npm/lin-ui/textarea/index",
         "l-list": "../../../miniprogram_npm/lin-ui/list/index",
-        "l-button": "../../../miniprogram_npm/lin-ui/button/index"
+        "l-button": "../../../miniprogram_npm/lin-ui/button/index",
+        "t-button": "../../../miniprogram_npm/tdesign/button/button",
+        "t-button-group": "../../../miniprogram_npm/tdesign/button-group/button-group"
     }
 }

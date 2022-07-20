@@ -7,7 +7,5 @@
             <text class="relation">{{relation || '无数据'}}</text>
         </view>
     </view>
-    <view class="btn-view">
-        <l-button type="default" bind:lintap="handleConfirm" size="large">确定</l-button>
-    </view>
+    <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="handleConfirm" content="确定" />
 </view>

@@ -9,6 +9,7 @@
       "l-checkbox": "../../../miniprogram_npm/lin-ui/checkbox/index",
       "l-switch": "../../../miniprogram_npm/lin-ui/switch/index",
       "divider": "../../../components/UI/divider/index",
-      "fab": "../../../components/UI/fab/index"
+      "fab": "../../../components/UI/fab/index",
+      "t-button": "../../../miniprogram_npm/tdesign/button/button"
   }
 }

@@ -6,10 +6,8 @@
     <l-label required="{{true}}" label="所在地区" placeholder="请选择" oak:value="areaText" bind:lintap="callAreaPicker" confirm-type="done" />
     <l-textarea placeholder="详细地址" confirm-type="done" bind:lininput="setValue" oak:value="detail" />
     <view style="flex: 1" />
-    <view class="row">
-        <l-button width="500" type="default" loading="{{oakExecuting}}" disabled="{{oakExecuting || !oakDirty}}" bind:lintap="confirm">
-            确定
-        </l-button>
-        <l-button type="error" disabled="{{!oakDirty}}" bind:lintap="reset">重置</l-button>
-    </view>
+    <t-button-group>
+        <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="confirm" content="确定" />
+        <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="reset" content="重置" />
+    </t-button-group>
 </view>

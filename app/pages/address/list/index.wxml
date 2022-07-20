@@ -13,7 +13,5 @@
         </view>
     </block>
     <view style="flex: 1" />
-    <view class="btn-view">
-        <l-button type="default" size="large" bind:lintap="goNewAddress">新建</l-button>
-    </view>
+    <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="goNewAddress" content="新建" />
 </view>

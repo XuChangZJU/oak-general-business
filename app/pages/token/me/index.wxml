@@ -9,10 +9,10 @@
         </block>
         <span class="nickname">{{ nickname || '未设置'}}</span>
         <block wx:if="{{isLoggedIn && !isPlayingAnother}}">
-            <l-button type="default" bind:lintap="onRefresh" disabled="{{refreshing}}">更新</l-button>
+            <t-button theme="primary" style="margin: 16rpx" block size="medium" disabled="{{refreshing}}" bind:tap="onRefresh" content="更新" />
         </block>
         <block wx:elif="{{!isLoggedIn}}">
-            <l-button type="success" bind:lintap="doLogin" disabled="{{refreshing}}">登录</l-button>
+            <t-button theme="primary" style="margin: 16rpx" block size="medium" disabled="{{refreshing}}" bind:tap="doLogin" content="登录" />
         </block>
     </view>
     <view class="cell">
