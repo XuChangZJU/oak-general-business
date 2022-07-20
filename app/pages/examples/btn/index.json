@@ -1,6 +1,0 @@
-{
-    "navigationBarTitleText": "g-button",
-    "usingComponents": {
-        "g-btn": "../../../components/UI/btn/index"
-    }
-}
