@@ -5,41 +5,33 @@
             <image class="avatar" src="{{avatar}}" mode="aspectFit" />
         </block>
         <block wx:else>
-            <l-icon name="person_outline" size="120"></l-icon>
+            <t-icon name="user-avatar" size="35px" />
         </block>
     </view>
     <view class="col">
-        <l-list title="手机号" is-link="true">
-            <view slot="right-section">
+        <t-cell title="手机号" hover>
+            <view slot="note">
                 <view wx:if="{{mobileCount > 1}}">{{mobileCount}}条手机号</view>
                 <view wx:elif="{{mobileCount === 1}}">{{mobile}}</view>
                 <view wx:else>未设置</view>
             </view>
-        </l-list>
-        <l-list title="昵称" is-link="true">
-            <view slot="right-section">
-                <text>{{nickname || '未设置'}}</text>
-            </view>
-        </l-list>
-        <l-list title="姓名" is-link="true">
-            <view slot="right-section">
-                <text>{{name || '未设置'}}</text>
-            </view>
-        </l-list>
-        <l-list title="用户状态" is-link="true">
-            <view slot="right-section">
-                <l-tag bg-color="{{stateColor[userState]}}" shape="circle" size="mini">
-                    {{userState}}
-                </l-tag>
-            </view>
-        </l-list>
-        <l-list title="实名验证" is-link="true">
-            <view slot="right-section">
-                <l-tag bg-color="{{idStateColor[idState]}}" shape="circle" size="mini">
-                    {{idState}}
-                </l-tag>
-            </view>
-        </l-list>
+        </t-cell>
+        <t-cell title="昵称" hover>
+            <text slot="note">{{nickname || '未设置'}}</text>
+        </t-cell>
+        <t-cell title="姓名" hover>
+            <text slot="note">{{name || '未设置'}}</text>
+        </t-cell>
+        <t-cell title="用户状态" hover arrow>
+            <t-tag slot="note" shape="round" size="medium" theme="{{stateColor[userState]}}">
+                {{userState}}
+            </t-tag>
+        </t-cell>
+        <t-cell title="实名验证" hover arrow>
+            <t-tag slot="note" shape="round" size="medium" theme="{{idStateColor[idState]}}">
+                {{idState}}
+            </t-tag>
+        </t-cell>
     </view>
     <view style="flex:1" />
     <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="openDrawer" content="更多" />

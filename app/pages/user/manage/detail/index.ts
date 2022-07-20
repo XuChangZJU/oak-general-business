@@ -78,14 +78,14 @@ export default OakPage({
     ],
     data: {
         stateColor: {
-            shadow: '#FFE57F',
-            normal: '#34BFA3',
-            disabled: '#F4516C'
+            shadow: 'primary',
+            normal: 'success',
+            disabled: ''
         },
         idStateColor: {
-            verifying: '#FFE57F',
-            verified: '#34BFA3',
-            unverified: '#F4516C'
+            verifying: 'primary',
+            verified: 'success',
+            unverified: 'warning'
         },
         show: false,
         actionDescriptions: {
