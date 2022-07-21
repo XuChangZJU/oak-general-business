@@ -1,13 +1,14 @@
 <!-- index.wxml -->
 <view class="container">
     <view class="search-bar">
-        <l-search-bar style="width: 100%; margin: auto 0rpx" placeholder="输入手机号/姓名" shape="circle" value="{{searchValue}}" bind:lincancel="searchCancel" bind:linclear="searchCancel" bind:linchange="searchChange" bind:linconfirm="goPage" />
+        <l-search-bar style="width: 100%; margin: auto 0rpx" placeholder="输入手机号/姓名" shape="circle" value="{{searchValue}}" bind:lincancel="searchCancel" bind:linclear="searchCancel" bind:linchange="searchChange" bind:linconfirm="searchConfirm" />
     </view>
     <block wx:if="{{showList}}">
         <view class="drawer-view">
             <rich-text nodes="{{nodeStr}}" bind:tap="itemClick"></rich-text>
         </view>
     </block>
+    <view wx:if="{{showList}}" class="overlay" bind:tap="closeList"></view>
     <view wx:if="{{searchArr.length}}" class="col">
         <text class="title">搜索历史</text>
         <view class="row">

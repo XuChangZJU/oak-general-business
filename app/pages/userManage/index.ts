@@ -1,16 +1,22 @@
-import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
-import { composeFileUrl } from "../../../../src/utils/extraFile";
+import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
+import { composeFileUrl } from '../../../../src/utils/extraFile';
 
 export default OakPage(
     {
-        path: 'userRelation:detail',
+        path: 'userManage:list',
         entity: 'user',
         projection: {
             id: 1,
-            nickname: 1,
             name: 1,
-            userState: 1,
-            idState: 1,
+            nickname: 1,
+            mobile$user: {
+                $entity: 'mobile',
+                data: {
+                    id: 1,
+                    userId: 1,
+                    mobile: 1,
+                },
+            },
             extraFile$entity: {
                 $entity: 'extraFile',
                 data: {
@@ -30,13 +36,6 @@ export default OakPage(
                 },
                 indexFrom: 0,
                 count: 1,
-            },
-            mobile$user: {
-                $entity: 'mobile',
-                data: {
-                    id: 1,
-                    mobile: 1,
-                },
             },
         },
         filters: [
@@ -76,14 +75,44 @@ export default OakPage(
             };
         },
         properties: {
+            entity: String,
+            entityId: String,
             userIds: Array,
         },
+        data: {
+            show: false,
+            searchValue: '',
+            deleteIndex: '',
+        },
+        lifetimes: {},
         methods: {
-            onCellClicked(e, options) {
-                const { id } = options;
+            onRemove(event: any) {
+                const { index } = event.target.dataset;
+                this.setState({
+                    show: true,
+                    deleteIndex: index,
+                })
             },
-            addUserRelation() {
-                
+            handleCancel() {
+                this.setState({
+                    show: false,
+                    deleteIndex: '',
+                })
+            },
+            handleConfirm() {
+                const { entity } = this.props;
+                const entityStr = firstLetterUpperCase(entity);
+                const { deleteIndex } = this.state;
+                deleteIndex && this.toggleNode({}, false, `${deleteIndex}.user${entityStr}$user`);
+                this.setState({
+                    show: false,
+                })
+            },
+            goSearch() {
+                this.navigateTo({
+                    url: '/user/search',
+                    toUrl: '/userRelation/detail'
+                })
             }
         },
     }
