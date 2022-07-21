@@ -79,9 +79,9 @@ export default OakPage({
         setValue(input: any) {
             const { dataset, value } = this.resolveInput(input);
             const { key } = dataset;
-            if (key === 'sex') {
+            if (['sex', 'idCard'].includes(key)) {
                 this.setUpdateData(dataset!.attr, value[0]);
-                return
+                return;
             }
             this.setUpdateData(dataset!.attr, value);
         },
