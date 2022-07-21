@@ -22,7 +22,7 @@ const IDCardTypeOptions = [
 
 const PICKER_KEY = {
     SEX: 'sex',
-    IDCARD: 'IDCard'
+    IDCARD: 'idCard'
   };
 
 export default OakPage({
@@ -74,11 +74,16 @@ export default OakPage({
         GenderOptions,
         IDCardTypeOptions,
         PICKER_KEY,
-        sexVisible: true,
     },
     methods: {
         setValue(input: any) {
+            console.log(input, 123123);
             const { dataset, value } = this.resolveInput(input);
+            const { key } = dataset;
+            if (key === 'sex') {
+                this.setUpdateData(dataset!.attr, value[0]);
+                return
+            }
             this.setUpdateData(dataset!.attr, value);
         },
         async confirm() {
@@ -89,17 +94,16 @@ export default OakPage({
         },
         onClickPicker(e) {
             const { key } = e?.currentTarget?.dataset;
-            console.log(key);
 
             this.setData({
                 [`${key}Visible`]: true,
             });
         },
-        onPickerCancel(e) {
+        onPickerClose(e) {
             const { key } = e?.currentTarget?.dataset;
             this.setData({
               [`${key}Visible`]: false,
             });
-          },
+        },
     },
 });
