@@ -1,5 +1,4 @@
-import { DateTime } from 'luxon';
-import moment from 'moment';
+import {DateTime} from 'luxon';
 const GenderOptions = [
     {
         value: 'male', label: '男',
@@ -41,7 +40,6 @@ export default OakPage({
     },
     isList: false,
     formData: async ({ data: user }) => {
-        console.log(moment(new Date().getTime()).format('YYYY-MM-DD'));
         const { birth, gender, idCardType } = user || {};
         const birthText = birth && new Date(birth).toLocaleDateString();
         const GenderDict = {
@@ -76,18 +74,9 @@ export default OakPage({
         GenderOptions,
         IDCardTypeOptions,
         PICKER_KEY,
-<<<<<<< HEAD
-=======
-        [`${PICKER_KEY.SEX}Visible`]: false,
-        [`${PICKER_KEY.IDCARD}Visible`]: false,
-        dateTimeVisible: false,
-        start: '1900-01-01',
-        end: moment(new Date().getTime()).format('YYYY-MM-DD'),
->>>>>>> 57bd9a0d10a908bf51843c116ac392f2a1137beb
     },
     methods: {
         setValue(input: any) {
-            console.log(input, 123123);
             const { dataset, value } = this.resolveInput(input);
             const { key } = dataset;
             if (key === 'sex') {
@@ -104,34 +93,16 @@ export default OakPage({
         },
         onClickPicker(e) {
             const { key } = e?.currentTarget?.dataset;
-<<<<<<< HEAD
 
-=======
->>>>>>> 57bd9a0d10a908bf51843c116ac392f2a1137beb
             this.setData({
                 [`${key}Visible`]: true,
             });
         },
-<<<<<<< HEAD
         onPickerClose(e) {
-=======
-        onPickerCancel(e:any) {
->>>>>>> 57bd9a0d10a908bf51843c116ac392f2a1137beb
             const { key } = e?.currentTarget?.dataset;
-            this.setState({
+            this.setData({
               [`${key}Visible`]: false,
             });
         },
-<<<<<<< HEAD
-=======
-        onPickerConfirm(e: any) {
-            const { key, attr } = e?.currentTarget?.dataset;
-            const { value } = e.detail;
-            this.setUpdateData(attr, value);
-            this.setState({
-              [`${key}Visible`]: false,
-            })
-        }
->>>>>>> 57bd9a0d10a908bf51843c116ac392f2a1137beb
     },
 });
