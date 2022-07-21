@@ -8,13 +8,15 @@
                 </block>
                 <block wx:else>
                     <view class="img-view">
-                        <t-icon name="user-avatar" type="material" size="35px" />
+                        <t-icon name="image" size="40px" color="#3963BC" />
                     </view>
                 </block>
                 <view class="user-info">
                     <view class="row">
                         <view class="nickname">{{item.nickname || '未设置'}}</view>
-                        <t-tag theme="{{stateColor[item.userState]}}" size="small" shape="round">{{item.userState}}</t-tag>
+                        <t-tag theme="{{stateColor[item.userState]}}" size="small" shape="round">
+                            {{item.userState || '未设置'}}
+                        </t-tag>
                     </view>
                     <view class="name">姓名：
                         {{item.name || '未设置'}}</view>
@@ -23,7 +25,7 @@
                         {{item.mobile || '未设置'}}
                     </view>
                 </view>
-                <t-icon name="chevron-right" size="24px" color="#888"/>
+                <t-icon name="chevron-right" size="24px" color="#888" />
             </view>
         </view>
     </view>
