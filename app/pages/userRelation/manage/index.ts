@@ -64,12 +64,14 @@ export default OakPage(
         lifetimes: {},
         methods: {
             handleClick(e: any) {
-                const { entity } = this.props;
-                const { ids } = e.currentTarget.dataset;
+                const { entity, entityId } = this.props;
+                const { ids, relation } = e.currentTarget.dataset;
                 this.navigateTo({
                     url: '/userRelation/list',
                     entity,
                     userIds: ids,
+                    relation,
+                    entityId,
                 })
             },
             
