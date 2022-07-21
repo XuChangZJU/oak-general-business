@@ -75,7 +75,7 @@ export default OakPage(
         },
         lifetimes: {
             ready() {
-                const searchStr = wx.getStorageSync('user_searchList') as string;
+                const searchStr = this.load('user_searchList') as string;
                 if (searchStr.length) {
                     this.setState({
                         searchArr: JSON.parse(searchStr),
@@ -84,6 +84,11 @@ export default OakPage(
             }
         },
         methods: {
+            closeList() {
+                this.setState({
+                    showList: false,
+                })
+            },
             setFilter(value: string) {
                 this.addNamedFilter({
                     filter: {
@@ -121,6 +126,7 @@ export default OakPage(
                     userIds,
                 });
                 this.setState({
+                    showList: false,
                     go: false,
                 })
             },
@@ -131,6 +137,15 @@ export default OakPage(
                     go: true,
                 })
                 this.refresh();
+            },
+            //搜索框聚焦时，如果有输入值且搜索有值，也应该显示搜索结果list
+            onFocus(event: any) {
+                const { searchValue, userIds } = this.data;
+                if (searchValue && userIds.length) {
+                    this.setState({
+                        showList: true,
+                    })
+                }
             },
             itemClick(event: any) {
                 //由于rich-text屏蔽了所有子节点的事件，所以这里根据触摸点进行判断
@@ -144,7 +159,7 @@ export default OakPage(
                     })
                     return;
                 }
-                const searchStr = wx.getStorageSync('user_searchList') as string;
+                const searchStr = this.load('user_searchList') as string;
                 let searchArr: Array<string> = [];
                 if (!searchStr) {
                     searchArr.push(searchValue)
@@ -155,17 +170,18 @@ export default OakPage(
                         searchArr.push(searchValue);
                     }
                 }
-                wx.setStorageSync('user_searchList', JSON.stringify(searchArr));
+                this.save('user_searchList', JSON.stringify(searchArr));
+                this.setState({showList: false})
                 this.navigateTo({
                     url: toUrl,
-                    userIds: userIds[index],
+                    userIds: [userIds[index]],
                 })
             },
             clearSearchHistory() {
                 this.setState({
                     searchArr: [],
                 });
-                wx.setStorageSync('user_searchList', '');
+                this.save('user_searchList', '');
             },
             async searchChange(input: any) {
                 const { value } = this.resolveInput(input);
@@ -196,12 +212,13 @@ export default OakPage(
             },
             async searchConfirm(input: any) {
                 const { value } = this.resolveInput(input);
-                const searchStr = wx.getStorageSync('user_searchList') as string;
+                const searchStr = this.load('user_searchList') as string;
                 let searchArr: Array<string> = [];
                 if (!searchStr) {
                     searchArr.push(value)
                     this.setState({
                         searchArr,
+                        go: true,
                     })
                 }
                 else {
@@ -211,9 +228,10 @@ export default OakPage(
                     }
                     this.setState({
                         searchArr,
+                        go: true,
                     })
                 }
-                wx.setStorageSync('user_searchList', JSON.stringify(searchArr));
+                this.save('user_searchList', JSON.stringify(searchArr));
                 this.setFilter(value);
                 this.refresh();
             },
