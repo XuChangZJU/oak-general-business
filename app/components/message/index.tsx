@@ -24,10 +24,10 @@ export default function render() {
     //                             <div
     //                                 key={index}
     //                                 className={classNames(
-    //                                     'l-message',
-    //                                     'l-message-show',
+    //                                     'o-message',
+    //                                     'o-message-show',
     //                                     {
-    //                                         [`l-message-${type}`]: type,
+    //                                         [`o-message-${type}`]: type,
     //                                     }
     //                                 )}
     //                                 style={{
