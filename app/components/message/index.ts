@@ -69,7 +69,7 @@ export default OakComponent({
     async formData({}) {
         const data = this.consumeNotification() as NotificationProps;
         if (data) {
-            this[data.type as any](
+            (this as any)[data.type as keyof typeof MessageType](
                 Object.assign(
                     {
                         offset: [20, 32],
@@ -83,7 +83,7 @@ export default OakComponent({
     },
     observers: {},
     methods: {
-        getInstance(context, selector = '#t-message') {
+        getInstance(context: any, selector = '#t-message') {
             const instance = context.selectComponent(selector);
             if (!instance) {
                 return Promise.reject(
@@ -92,7 +92,7 @@ export default OakComponent({
             }
             return instance;
         },
-        showMessage(options, theme = MessageType.info) {
+        showMessage(options: NotificationProps, theme = MessageType.info) {
             const instance = this.getInstance(this);
             instance.resetData(() => {
                 instance.setData(
@@ -102,16 +102,16 @@ export default OakComponent({
             });
             return instance;
         },
-        info(options) {
+        info(options: NotificationProps) {
             return this.showMessage(options, MessageType.info);
         },
-        success(options) {
+        success(options: NotificationProps) {
             return this.showMessage(options, MessageType.success);
         },
-        warning(options) {
+        warning(options: NotificationProps) {
             return this.showMessage(options, MessageType.warning);
         },
-        error(options) {
+        error(options: NotificationProps) {
             return this.showMessage(options, MessageType.error);
         },
         hide() {
