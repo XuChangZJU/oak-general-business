@@ -1,12 +1,48 @@
 <!-- index.wxml -->
 <view class="page-body">
     <view class="col">
-        <l-input required="{{true}}" label="昵称" placeholder="请输入" oak:value="nickname" bind:lininput="setValue" confirm-type="next" />
-        <l-input required="{{true}}" label="姓名" placeholder="请输入" oak:value="name" bind:lininput="setValue" confirm-type="next" />
+        <t-input placeholder="请输入" label="slot" size="medium" confirm-type="next" oak:value="nickname" bind:change="setValue">
+            <text slot="label">
+                <text style="color: #e34d59"> *</text>昵称
+            </text>
+        </t-input>
+        <t-input placeholder="请输入" label="slot" size="medium" confirm-type="next" oak:value="name" bind:change="setValue">
+            <text slot="label">
+                <text style="color: #e34d59"> *</text>姓名
+            </text>
+        </t-input>
+        <t-date-time-picker
+            title="出生日期"
+            value="{{birthText}}"
+            bindchange="setValue"
+        >
+        </t-date-time-picker>
+        <t-cell title="性别" hover arrow bind:click="chooseSex" />
+        <view class="pannel-item" bind:tap="onClickPicker" data-key="{{PICKER_KEY.SEX}}">
+            <view class="pannel-label">性别</view>
+            <view class="pannel-text">{{genderText || '选择性别'}}</view>
+            <t-icon name="chevron-right" color="rgba(0, 0, 0, 0.26)" size="24px" />
+        </view>
+        <t-picker
+            visible="{{sexVisiable}}"
+            oak:value="gender"
+            title="选择性别"
+            cancelBtn="取消"
+            confirmBtn="确认"
+            bindchange="setValue"
+            bindcancel="onPickerCancel"
+            bindconfirm="close"
+        >
+            <t-picker-item options="{{GenderOptions}}"></t-picker-item>
+        </t-picker>
+        <t-input placeholder="请输入" label="slot" size="medium" type="number" confirm-type="done" oak:value="idNumber" bind:change="setValue">
+            <text slot="label">
+                <text style="color: #e34d59"> *</text>证件号
+            </text>
+        </t-input>
         <l-picker required="{{true}}" label="出生日期" placeholder="请选择" mode="date" data-attr="birth" value="{{birthText}}" bind:linchange="setValue" />
         <l-picker required="{{true}}" label="性别" placeholder="请选择" arr="{{GenderOptions}}" rangeKey="label" oak:value="gender" bind:linchange="setValue" />
         <l-picker required="{{true}}" label="证件类别" placeholder="请选择" arr="{{IDCardTypeOptions}}" rangeKey="label" oak:value="idCardType" bind:linchange="setValue" />
-        <l-input required="{{true}}" label="证件号" placeholder="请输入" oak:value="idNumber" bind:lininput="setValue" confirm-type="done" />
     </view>
     <view style="flex: 1" />
     <t-button theme="primary" disabled="{{oakExecuting || !oakDirty}}" style="margin: 16rpx" loading="{{oakExecuting}}" block size="large" bind:tap="confirm" content="确定" />
