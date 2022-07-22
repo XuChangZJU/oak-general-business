@@ -1,7 +1,7 @@
 <!-- index.wxml -->
 <view class="container">
     <view class="search-bar">
-        <l-search-bar style="width: 100%; margin: auto 0rpx" placeholder="输入手机号/姓名" shape="circle" value="{{searchValue}}" bind:lincancel="searchCancel" bind:linclear="searchCancel" bind:linchange="searchChange" bind:linconfirm="searchConfirm" />
+        <t-search style="width: 100%; margin: auto 0rpx" placeholder="输入手机号/姓名" shape="round" value="{{searchValue}}" bind:change="searchChange" bind:submit="searchConfirm" bind:clear="searchCancel" />
     </view>
     <block wx:if="{{showList}}">
         <view class="drawer-view">
@@ -13,13 +13,13 @@
         <text class="title">搜索历史</text>
         <view class="row">
             <block wx:for="{{searchArr}}" wx:key="index" wx:for-item="searchItem">
-                <l-tag bind:tap="tagClick" class="tag" data-value="{{searchItem}}">
+                <t-tag bind:tap="tagClick" shape="square" variant="light-outline" class="tag" theme="primary" size="medium" data-value="{{searchItem}}">
                     {{searchItem}}
-                </l-tag>
+                </t-tag>
             </block>
         </view>
         <view class="delete-btn" bind:tap="clearSearchHistory">
-            <l-icon name="delete" size="28"></l-icon>
+            <t-icon name="delete" />
             <text style="margin-left: 4px">清空搜索历史</text>
         </view>
     </view>

@@ -1,16 +1,13 @@
 {
   "navigationBarTitleText": "人员管理",
   "usingComponents": {
-      "l-button": "../../../miniprogram_npm/lin-ui/button/index",
-      "l-card": "../../../miniprogram_npm/lin-ui/card/index",
-      "l-tag": "../../../miniprogram_npm/lin-ui/tag/index",
-      "l-icon": "../../../miniprogram_npm/lin-ui/icon/index",
-      "l-status-show": "../../../miniprogram_npm/lin-ui/status-show/index",
-      "l-search-bar": "../../../miniprogram_npm/lin-ui/search-bar/index",
-      "l-price": "../../../miniprogram_npm/lin-ui/price/index",
-      "l-checkbox": "../../../miniprogram_npm/lin-ui/checkbox/index",
-      "l-message": "../../../miniprogram_npm/lin-ui/message/index",
       "divider": "../../../components/UI/divider/index",
-      "fab": "../../../components/UI/fab/index"
+      "fab": "../../../components/UI/fab/index",
+      "t-button": "../../../miniprogram_npm/tdesign/button/button",
+      "t-tag": "../../../miniprogram_npm/tdesign/tag/tag",
+      "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
+      "t-checkbox": "../../../miniprogram_npm/tdesign/checkbox/checkbox",
+      "t-message": "../../../miniprogram_npm/tdesign/message/message",
+      "t-search": "../../../miniprogram_npm/tdesign/search/search"
   }
 }
