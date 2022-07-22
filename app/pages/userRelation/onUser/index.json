@@ -1,17 +1,13 @@
 {
   "navigationBarTitleText": "修改权限",
   "usingComponents": {
-      "l-button": "../../../miniprogram_npm/lin-ui/button/index",
       "l-card": "../../../miniprogram_npm/lin-ui/card/index",
-      "l-tag": "../../../miniprogram_npm/lin-ui/tag/index",
-      "l-icon": "../../../miniprogram_npm/lin-ui/icon/index",
-      "l-status-show": "../../../miniprogram_npm/lin-ui/status-show/index",
-      "l-switch": "../../../miniprogram_npm/lin-ui/switch/index",
       "divider": "../../../components/UI/divider/index",
       "fab": "../../../components/UI/fab/index",
       "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
       "t-button": "../../../miniprogram_npm/tdesign/button/button",
       "t-switch": "../../../miniprogram_npm/tdesign/switch/switch",
+      "t-cell": "../../../miniprogram_npm/tdesign/cell/cell",
       "t-search": "../../../miniprogram_npm/tdesign/search/search",
       "t-button-group": "../../../miniprogram_npm/tdesign/button-group/button-group"
   }
