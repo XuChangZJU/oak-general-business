@@ -57,23 +57,26 @@
 // });
 
 import { NotificationProps } from 'oak-frontend-base';
-
-const MessageType = {
-    info: 'info',
-    success: 'success',
-    warning: 'warning',
-    error: 'error',
-};
+import Message from '../../utils/message';
 
 export default OakComponent({
-    async formData({}) {
+    async formData({ props }) {
+        const { width } = props;
         const data = this.consumeNotification() as NotificationProps;
         if (data) {
-            (this as any)[data.type as keyof typeof MessageType](
+            const self = this;
+            Message[data.type as NotificationProps['type']](
                 Object.assign(
-                    {
+                    {},
+                    width === 'xs' && {
+                        //处理mobile
+                        icon: true,
+                    },
+                    process.env.OAK_PLATFORM === 'wechatMp' && {
+                        // 处理小程序
                         offset: [20, 32],
                         icon: true,
+                        context: self,
                     },
                     data
                 )
@@ -83,43 +86,6 @@ export default OakComponent({
     },
     observers: {},
     methods: {
-        getInstance(context: any, selector = '#t-message') {
-            const instance = context.selectComponent(selector);
-            if (!instance) {
-                return Promise.reject(
-                    new Error('未找到Message组件, 请检查selector是否正确')
-                );
-            }
-            return instance;
-        },
-        showMessage(options: NotificationProps, theme = MessageType.info) {
-            const instance = this.getInstance(this);
-            instance.resetData(() => {
-                instance.setData(
-                    Object.assign({ theme }, options),
-                    instance.show
-                );
-            });
-            return instance;
-        },
-        info(options: NotificationProps) {
-            return this.showMessage(options, MessageType.info);
-        },
-        success(options: NotificationProps) {
-            return this.showMessage(options, MessageType.success);
-        },
-        warning(options: NotificationProps) {
-            return this.showMessage(options, MessageType.warning);
-        },
-        error(options: NotificationProps) {
-            return this.showMessage(options, MessageType.error);
-        },
-        hide() {
-            const instance = this.getInstance(this);
-            if (!instance) {
-                return;
-            }
-            instance.hide();
-        },
+
     },
 });
