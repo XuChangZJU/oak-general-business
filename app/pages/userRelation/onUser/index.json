@@ -1,7 +1,6 @@
 {
   "navigationBarTitleText": "修改权限",
   "usingComponents": {
-      "l-card": "../../../miniprogram_npm/lin-ui/card/index",
       "divider": "../../../components/UI/divider/index",
       "fab": "../../../components/UI/fab/index",
       "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",

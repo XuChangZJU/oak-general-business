@@ -26,7 +26,42 @@ page {
 }
 
 .card-view {
-  margin-top: @size-spacing-small !important;
+  margin: @size-spacing-base;
+  margin-bottom: 0rpx;
+  padding: @size-spacing-base;
+  border-radius: 4rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4rpx 20rpx 0 rgba(212, 217, 223, 0.5);
+  background-color: #fff;
+  flex-direction: column;
+}
+
+.row {
+  margin-left: @size-spacing-base;
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.col {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.nickname {
+  margin-bottom: 8rpx;
+  font-size: @size-font-large;
+}
+.mobile {
+  font-size: @size-font-base;
+  color: @text-color;
+}
+.avatar {
+  height: 140rpx;
+  width: 140rpx;
+  border-radius: 50%;
 }
 
 .content {

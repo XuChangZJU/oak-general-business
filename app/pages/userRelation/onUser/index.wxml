@@ -5,7 +5,22 @@
     </view>
     <block wx:if="{{ users && users.length > 0 }}">
         <block wx:for="{{users}}" wx:for-index="index" wx:for-item="item" wx:key="idx">
-            <l-card l-class="card-view" title="{{item.name}}" describe="{{item.nickname}}" data-id="{{item.id}}" bind:tap="handleCardClick" type="avatar" image="{{item.avatar}}">
+            <view class="card-view">
+                <block wx:if="{{item.avatar}}">
+                    <image class="avatar" src="{{item.avatar}}" mode="aspectFit" />
+                </block>
+                <block wx:else>
+                    <view class="img-view">
+                        <t-icon name="user-avatar" size="25px" />
+                    </view>
+                </block>
+                <view class="row">
+                    <view class="col">
+                        <text class="nickname">{{item.nickname || '未设置'}}</text>
+                        <text class="mobile">姓名: {{item.name  || '未设置'}}</text>
+                        <text class="mobile">手机: {{item.mobile  || '未设置'}}</text>
+                    </view>
+                </view>
                 <block wx:if="{{relations.length === 1}}">
                     <view slot="more">
                         <t-switch value="{{item.hasRelation[0]}}" bind:change="onChange" data-id="{{item.id}}" data-relation="{{relations[0]}}" data-index="{{index}}" />
@@ -22,7 +37,7 @@
                         </block>
                     </view>
                 </block>
-            </l-card>
+            </view>
         </block>
         <t-button-group class="btn-container">
             <t-button icon="search" theme="primary" style="margin: 16rpx" block size="large" bind:tap="goSearchUser" content="搜索人员" />
