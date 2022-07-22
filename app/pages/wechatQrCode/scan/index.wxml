@@ -3,6 +3,7 @@
     <block wx:if="{{oakLoading}}">
         <view class="circle-view">
             <l-icon name="loading" size="80" />
+            <t-icon name="loading" size="80" />
             <text class="text">加载中</text>
         </view>
     </block>

@@ -5,7 +5,6 @@
       "t-tag": "../../../miniprogram_npm/tdesign/tag/tag",
       "t-fab": "../../../miniprogram_npm/tdesign/fab/fab",
       "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
-      "l-search-bar": "../../../miniprogram_npm/lin-ui/search-bar/index",
       "fab": "../../../components/UI/fab/index"
   }
 }
