@@ -128,7 +128,8 @@ export default OakPage(
                 this.refresh();
             },
             onChange(input: any) {
-                const { dataset, checked } = this.resolveInput(input, ['checked']);
+                console.log(input, 123);
+                const { dataset, value } = this.resolveInput(input);
                 const { id: userId, relation, index } = dataset as {
                     id: string,
                     relation: string,
@@ -139,7 +140,7 @@ export default OakPage(
                 this.toggleNode({
                     relation,
                     [`${entity}Id`]: entityId,
-                }, checked, `${index}.user${entityStr}$user`) 
+                }, value, `${index}.user${entityStr}$user`) 
             },
             async confirm() {
                 await this.execute('grant');
