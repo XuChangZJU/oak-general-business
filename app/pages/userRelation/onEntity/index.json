@@ -1,9 +1,9 @@
 {
   "navigationBarTitleText": "修改权限",
   "usingComponents": {
-      "l-switch": "../../../miniprogram_npm/lin-ui/switch/index",
       "divider": "../../../components/UI/divider/index",
       "fab": "../../../components/UI/fab/index",
-      "t-button": "../../../miniprogram_npm/tdesign/button/button"
+      "t-button": "../../../miniprogram_npm/tdesign/button/button",
+      "t-switch": "../../../miniprogram_npm/tdesign/switch/switch"
   }
 }

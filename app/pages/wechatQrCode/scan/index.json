@@ -1,7 +1,6 @@
 {
     "navigationBarTitleText": "扫码结果",
     "usingComponents": {
-        "l-icon": "../../../miniprogram_npm/lin-ui/icon/index",
         "t-icon": "../../../miniprogram_npm/tdesign/icon/icon"
     }
 }

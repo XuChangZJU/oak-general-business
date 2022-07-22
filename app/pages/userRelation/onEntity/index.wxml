@@ -11,7 +11,7 @@
                 <block wx:if="{{relations.length === 1}}">
                     <view class="singleRelationItem">
                         <view class="name">{{item.name}}</view>
-                        <l-switch checked="{{item.hasRelation[0]}}" bind:linchange="onChange" data-id="{{item.id}}" data-relation="{{relations[0]}}" data-index="{{index}}" />
+                        <t-switch value="{{item.hasRelation[0]}}" bind:change="onChange" data-id="{{item.id}}" data-relation="{{relations[0]}}" data-index="{{index}}" />
                     </view>
                 </block>
                 <block wx:else>
@@ -19,7 +19,7 @@
                         <view class="name">{{item.name}}</view>
                         <view class="relationList">
                             <view class="relationItem" wx:for="{{relations}}" wx:key="idx2" wx:for-item="relation" wx:for-index="index2">
-                                <l-switch checked="{{item.hasRelation[index2]}}" bind:linchange="onChange" data-id="{{item.id}}" data-relation="{{relation}}" data-index="{{index}}" />
+                                <t-switch value="{{item.hasRelation[index2]}}" bind:change="onChange" data-id="{{item.id}}" data-relation="{{relation}}" data-index="{{index}}" />
                                 <text>{{relation}}</text>
                             </view>
                         </view>
