@@ -19,7 +19,7 @@ export class ExtraFile<
         try {
             const {
                 origin,
-                extra1: filePath,
+                extra1,
                 filename,
                 objectId,
                 extension,
@@ -37,14 +37,12 @@ export class ExtraFile<
             if (process.env.OAK_PLATFORM === 'wechatMp') {
                 // 微信小程序使用wx.uploadFile, 封装upload，上传源为origin
                 const up = new Upload();
-                const result = await up.uploadFile(
-                    origin,
-                    filePath!,
-                    uploadInfo
-                );
+                const result = await up.uploadFile(origin, extra1!, uploadInfo);
                 return result;
             } else {
-                throw new Error('not implemented yet');
+                const up = new Upload();
+                const result = await up.uploadFile(origin, extra1!, uploadInfo);
+                return result;
             }
         } catch (err) {
             throw err; 

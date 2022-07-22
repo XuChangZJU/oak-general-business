@@ -84,8 +84,4 @@ export default OakComponent({
         }
         return {};
     },
-    observers: {},
-    methods: {
-
-    },
 });

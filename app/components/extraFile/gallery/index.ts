@@ -2,22 +2,29 @@ import assert from 'assert';
 import { EntityDict } from 'general-app-domain';
 import { DeduceCreateOperationData } from "oak-domain/lib/types";
 import { isMockId } from "oak-frontend-base/src/utils/mockId";
-import { composeFileUrl } from '../../../../src/utils/extraFile';
+import { composeFileUrl } from '../../../../lib/utils/extraFile';
+import Dialog from '../../../utils/dialog/index';
 
 export default OakComponent({
     entity: 'extraFile',
     isList: true,
-    async formData ({ data: files }) {
+    async formData({ data: files, features }) {
+        const application = await features.application.getApplication();
         const number2 = this.props.maxNumber;
-        if (typeof number2 === 'number' && (number2 === 0 || files?.length >= number2)) {
+        if (
+            typeof number2 === 'number' &&
+            (number2 === 0 || files?.length >= number2)
+        ) {
             return {
                 files,
                 disableInsert: true,
+                systemConfig: application?.system?.config,
             };
         }
         return {
             files,
             disableInsert: false,
+            systemConfig: application?.system?.config,
         };
     },
     data: {
@@ -104,11 +111,6 @@ export default OakComponent({
                 selectCount,
                 mediaType,
                 sourceType,
-                type,
-                origin,
-                tag1,
-                tag2,
-                entity,
             } = this.props;
             try {
                 const { errMsg, tempFiles } = await wx.chooseMedia({
@@ -122,50 +124,25 @@ export default OakComponent({
                         msg: errMsg,
                     });
                 } else {
-                    await Promise.all(tempFiles.map(
-                        async (tempExtraFile) => {
-                            const { tempFilePath, thumbTempFilePath, fileType, size } = tempExtraFile;
+                    await Promise.all(
+                        tempFiles.map(async (tempExtraFile) => {
+                            const {
+                                tempFilePath,
+                                thumbTempFilePath,
+                                fileType,
+                                size,
+                            } = tempExtraFile;
                             const filePath = tempFilePath || thumbTempFilePath;
-                            const fileFullName = filePath.match(/[^/]+(?!.*\/)/g)![0];
-                            const extension = fileFullName.substring(
-                                fileFullName.lastIndexOf('.') + 1
-                            );
-                            const filename = fileFullName.substring(
-                                0, fileFullName.lastIndexOf('.')
-                            );
-                            assert(entity, '必须传入entity');
-                            assert(origin === 'qiniu', '目前只支持七牛上传');     // 目前只支持七牛上传
-                            const ele: Parameters<typeof this['pushNode']>[1] =
-                                {
-                                    updateData: {
-                                        extra1: filePath,
-                                        origin,
-                                        type: type || fileType,
-                                        tag1,
-                                        tag2,
-                                        objectId: await generateNewId(),
-                                        entity,
-                                        filename: filename,
-                                        size: size,
-                                        extension,
-                                    },
-                                    beforeExecute: async (updateData) => {
-                                        const { url, bucket } =
-                                            await this.features.extraFile.upload(
-                                                updateData as DeduceCreateOperationData<
-                                                    EntityDict['extraFile']['Schema']
-                                                >
-                                            );
-                                        Object.assign(updateData, {
-                                            bucket,
-                                            extra1: null,
-                                        });
-                                    },
-                                };
-                            
-                            this.pushNode(undefined, ele);
-                        }
-                    ));
+                            const fileFullName =
+                                filePath.match(/[^/]+(?!.*\/)/g)![0];
+                            this.pushExtraFile({
+                                name: fileFullName,
+                                fileType,
+                                size,
+                                extra1: filePath,
+                            });
+                        })
+                    );
                 }
             } catch (err: any) {
                 console.error(err);
@@ -177,11 +154,62 @@ export default OakComponent({
                 }
             }
         },
+        async onWebPick(value) {
+            await Promise.all(
+                value.map(async (uploadFile) => {
+                    const { name, type: fileType, size, raw } = uploadFile;
+                    this.pushExtraFile({
+                        name,
+                        fileType,
+                        size,
+                        extra1: raw,
+                    });
+                })
+            );
+        },
+        async pushExtraFile(options: { name: string, extra1: any, fileType: string, size: number }) {
+            const { type, origin, tag1, tag2, entity } = this.props;
+            const { name, extra1, fileType, size } = options;
+            const extension = name.substring(name.lastIndexOf('.') + 1);
+            const filename = name.substring(0, name.lastIndexOf('.'));
+            assert(entity, '必须传入entity');
+            assert(origin === 'qiniu', '目前只支持七牛上传'); // 目前只支持七牛上传
+            const ele: Parameters<typeof this['pushNode']>[1] = {
+                updateData: {
+                    extra1,
+                    origin,
+                    type: type || fileType,
+                    tag1,
+                    tag2,
+                    objectId: await generateNewId(),
+                    entity,
+                    filename,
+                    size,
+                    extension,
+                },
+                beforeExecute: async (updateData) => {
+                    const { url, bucket } =
+                        await this.features.extraFile.upload(
+                            updateData as DeduceCreateOperationData<
+                                EntityDict['extraFile']['Schema']
+                            >
+                        );
+                    Object.assign(updateData, {
+                        bucket,
+                        extra1: null,
+                    });
+                },
+            };
+
+            this.pushNode(undefined, ele);
+        },
         async onItemTapped(event: WechatMiniprogram.Touch) {
-            const { files } = this.state;
+            const { files, systemConfig } = this.state;
             const { index } = event.currentTarget.dataset;
-            const imageUrl = composeFileUrl(files[index]!);
-            const urls = files?.filter(ele => !!ele).map((ele) => composeFileUrl(ele!));
+            const imageUrl = composeFileUrl(files[index]!, systemConfig);
+            const urls = files
+                ?.filter((ele) => !!ele)
+                .map((ele) => composeFileUrl(ele!, systemConfig));
 
             const detail = {
                 all: files,
@@ -213,6 +241,26 @@ export default OakComponent({
                 if (confirm) {
                     this.removeNode('', `${index}`);
                 }
+            }
+        },
+        async onWebDelete(value, index) {
+            const { id } = value;
+            if (isMockId(id)) {
+                this.removeNode('', `${index}`);
+            } else {
+                const confirm = Dialog.confirm({
+                    title: '确认删除当前文件？',
+                    cancelBtn: '取消',
+                    confirmBtn: '确定',
+                    content: '删除后，文件不可恢复',
+                    onConfirm: () => {
+                        this.removeNode('', `${index}`);
+                        confirm.hide();
+                    },
+                    onCancel: () => {
+                        confirm.hide();
+                    },
+                });
             }
         },
     },

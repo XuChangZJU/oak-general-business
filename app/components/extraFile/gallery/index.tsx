@@ -1,23 +1,41 @@
-import React, { Component } from 'react';
-import { Upload } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import React from 'react';
+import { Upload, UploadFile } from 'tdesign-mobile-react';
+import { composeFileUrl } from '../../../../lib/utils/extraFile';
+
+function extraFileToUploadFile(extraFile, systemConfig) {
+    return Object.assign({}, extraFile, {
+        url: composeFileUrl(extraFile, systemConfig),
+        name: extraFile.filename,
+    });
+}
+
+interface ExtraFile extends UploadFile {
+    id?: string;
+}
 
 export default function render() {
-    const { type } = this.props;
-    const { files } = this.state;
+    const { mediaType, maxNumber = 100, multiple = true } = this.props;
+    const { files, systemConfig } = this.state;
+
     return (
         <Upload
-            accept={type}
-            listType="picture-card"
-            fileList={files || []}
-            onChange={(event) => {}}
-        >
-            {files?.length >= 8 ? null : (
-                <div>
-                    <PlusOutlined />
-                    <div style={{ marginTop: 8 }}>上传</div>
-                </div>
+            multiple={multiple}
+            autoUpload={false}
+            max={maxNumber}
+            accept={mediaType}
+            files={(files || []).map((ele) =>
+                extraFileToUploadFile(ele, systemConfig)
             )}
-        </Upload>
+            onChange={(value) => {
+                const value2 = value?.filter((ele: ExtraFile) => !ele.id) || [];
+                this.onWebPick(value2);
+            }}
+            onRemove={({ file, index, e }) => {
+                this.onWebDelete(file, index);
+            }}
+            onPreview={({ file, e }) => {
+                // this.onWebDelete(file, e);
+            }}
+        />
     );
 }
