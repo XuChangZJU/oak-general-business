@@ -3,7 +3,7 @@
     <view class="content">
         <text class="text">获取权限</text>
         <view class="circle-view">
-            <l-icon name="person" size="80" />
+            <t-icon name="user-circle" size="20px"/>
             <text class="relation">{{relation || '无数据'}}</text>
         </view>
     </view>
