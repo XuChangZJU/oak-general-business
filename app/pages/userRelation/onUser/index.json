@@ -11,6 +11,8 @@
       "divider": "../../../components/UI/divider/index",
       "fab": "../../../components/UI/fab/index",
       "t-button": "../../../miniprogram_npm/tdesign/button/button",
+      "t-switch": "../../../miniprogram_npm/tdesign/switch/switch",
+      "t-search": "../../../miniprogram_npm/tdesign/search/search",
       "t-button-group": "../../../miniprogram_npm/tdesign/button-group/button-group"
   }
 }
