@@ -22,7 +22,8 @@ const IDCardTypeOptions = [
 
 const PICKER_KEY = {
     SEX: 'sex',
-    IDCARD: 'idCard'
+    IDCARD: 'idCard',
+    BIRTH: 'birth'
   };
 
 export default OakPage({
@@ -77,10 +78,18 @@ export default OakPage({
     },
     methods: {
         setValue(input: any) {
+            console.log(input, 123);
             const { dataset, value } = this.resolveInput(input);
             const { key } = dataset;
             if (['sex', 'idCard'].includes(key)) {
                 this.setUpdateData(dataset!.attr, value[0]);
+                return;
+            }
+            if (key === 'birth') {
+                this.setUpdateData(dataset!.attr, value);
+                this.setData({
+                    birthVisible: false,
+                });
                 return;
             }
             this.setUpdateData(dataset!.attr, value);

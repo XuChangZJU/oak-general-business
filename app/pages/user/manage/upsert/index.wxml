@@ -25,6 +25,13 @@
             <view class="pannel-text">{{idCardTypeText || '选择证件类别'}}</view>
             <t-icon name="chevron-right" color="rgba(0, 0, 0, 0.26)" size="24px" />
         </view>
+        <view class="pannel-item" bind:tap="onClickPicker" data-key="{{PICKER_KEY.BIRTH}}">
+            <view class="pannel-label">
+                <text style="color: #e34d59"> *</text>出生日期
+            </view>
+            <view class="pannel-text">{{birthText || '选择日期'}}</view>
+            <t-icon name="chevron-right" color="rgba(0, 0, 0, 0.26)" size="24px" />
+        </view>
         <t-picker
             data-key="{{PICKER_KEY.SEX}}"
             visible="{{sexVisible}}"
@@ -56,7 +63,21 @@
                 <text style="color: #e34d59"> *</text>证件号
             </text>
         </t-input>
-        <l-picker required="{{true}}" label="出生日期" placeholder="请选择" mode="date" data-attr="birth" value="{{birthText}}" bind:linchange="setValue" />
+        <t-date-time-picker
+            title="选择日期和时间"
+            data-key="{{PICKER_KEY.BIRTH}}"
+            data-attr="birth"
+            visible="{{birthVisible}}"
+            default-value="{{today}}"
+            mode="date"
+            value="{{birthText}}"
+            format="YYYY-MM-DD"
+            bindchange="setValue"
+            bindcancel="onPickerClose"
+            start="{{oldestBirthday}}"
+            end="{{today}}"
+        >
+        </t-date-time-picker>
     </view>
     <view style="flex: 1" />
     <t-button theme="primary" disabled="{{oakExecuting || !oakDirty}}" style="margin: 16rpx" loading="{{oakExecuting}}" block size="large" bind:tap="confirm" content="确定" />
