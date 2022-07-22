@@ -203,7 +203,7 @@ export default OakComponent({
             const { value, index } = event.currentTarget.dataset;
             const { id } = value;
             if (isMockId(id)) {
-                this.removeNode(this.state.oakFullpath, `${index}`);
+                this.removeNode('', `${index}`);
             } else {
                 const result = await wx.showModal({
                     title: '确认删除吗',
@@ -211,7 +211,7 @@ export default OakComponent({
                 });
                 const { confirm } = result;
                 if (confirm) {
-                    this.removeNode(this.state.oakFullpath, `${index}`);
+                    this.removeNode('', `${index}`);
                 }
             }
         },
