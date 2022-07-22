@@ -17,20 +17,14 @@
                         <text class="mobile">姓名: {{item.name  || '未设置'}}</text>
                         <text class="mobile">手机: {{item.mobile  || '未设置'}}</text>
                     </view>
-                    <t-tag theme="{{item.hasRelation ? 'danger' :'primary'}}" shape="round" size="large" data-index="{{index}}" bind:tap="{{item.hasRelation ? 'onRemove': 'onAdd'}}">
-                        <block wx:if="{{item.hasRelation}}">
-                            <t-icon name="delete" size="16px" slot="icon" />
-                            移除
-                        </block>
-                        <block wx:else>
-                            <t-icon name="add" size="16px" slot="icon" />
-                            增加
-                        </block>
+                    <t-tag theme="primary" shape="round" size="large" data-index="{{index}}" bind:tap="onRemove">
+                        <t-icon name="delete" size="16px" slot="icon" />
+                        移除
                     </t-tag>
                 </view>
             </view>
         </block>
     </view>
-    <t-button theme="primary" size="large" disabled="{{!oakDirty}}" bind:tap="confirm" block>确认</t-button>
-    <t-dialog visible="{{show}}" title="确定移除吗" confirm-btn="确定" cancel-btn="取消" bind:cancel="cancelDelete" bind:confirm="confirmDelete"></t-dialog>
+    <t-fab icon="add" bind:click="goSearch" />
+    <t-dialog visible="{{show}}" title="确定移除吗" confirm-btn="确定" cancel-btn="取消" bind:cancel="handleCancel" bind:confirm="handleConfirm"></t-dialog>
 </view>

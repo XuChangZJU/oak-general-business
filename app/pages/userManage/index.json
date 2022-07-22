@@ -1,7 +1,6 @@
 {
   "navigationBarTitleText": "修改权限",
   "usingComponents": {
-      "t-button": "../../../miniprogram_npm/tdesign/button/button",
       "t-dialog": "../../../miniprogram_npm/tdesign/dialog/dialog",
       "t-tag": "../../../miniprogram_npm/tdesign/tag/tag",
       "t-fab": "../../../miniprogram_npm/tdesign/fab/fab",

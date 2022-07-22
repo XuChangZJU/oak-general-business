@@ -20,6 +20,12 @@ const IDCardTypeOptions = [
     }
 ];
 
+const PICKER_KEY = {
+    SEX: 'sex',
+    IDCARD: 'idCard',
+    BIRTH: 'birth'
+  };
+
 export default OakPage({
     path: 'user:manage:upsert',
     entity: 'user',
@@ -68,10 +74,24 @@ export default OakPage({
     data: {
         GenderOptions,
         IDCardTypeOptions,
+        PICKER_KEY,
     },
     methods: {
         setValue(input: any) {
+            console.log(input, 123);
             const { dataset, value } = this.resolveInput(input);
+            const { key } = dataset;
+            if (['sex', 'idCard'].includes(key)) {
+                this.setUpdateData(dataset!.attr, value[0]);
+                return;
+            }
+            if (key === 'birth') {
+                this.setUpdateData(dataset!.attr, value);
+                this.setData({
+                    birthVisible: false,
+                });
+                return;
+            }
             this.setUpdateData(dataset!.attr, value);
         },
         async confirm() {
@@ -79,6 +99,19 @@ export default OakPage({
             if (this.props.oakFrom === 'user:manage:list') {
                 this.navigateBack();
             }
+        },
+        onClickPicker(e) {
+            const { key } = e?.currentTarget?.dataset;
+
+            this.setData({
+                [`${key}Visible`]: true,
+            });
+        },
+        onPickerClose(e) {
+            const { key } = e?.currentTarget?.dataset;
+            this.setData({
+              [`${key}Visible`]: false,
+            });
         },
     },
 });
