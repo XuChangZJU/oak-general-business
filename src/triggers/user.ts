@@ -3,9 +3,8 @@ import { EntityDict } from 'general-app-domain/EntityDict';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { CreateOperationData as CreateUserRoleData } from 'general-app-domain/UserRole/Schema';
 import { CreateOperationData as CreateUserData } from 'general-app-domain/User/Schema';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { ROOT_ROLE_ID, ROOT_USER_ID } from '../constants';
-import { assign } from 'lodash';
 import { addFilterSegment } from 'oak-domain/lib/store/filter';
 
 let NO_ANY_USER = true;
@@ -102,14 +101,14 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
             if (app) {
                 const { filter } = operation;
                 if (!filter) {
-                    assign(operation, {
+                    Object.assign(operation, {
                         filter: {
                             systemId: app.systemId,
                         },
                     });
                 }
                 else {
-                    assign(operation, {
+                    Object.assign(operation, {
                         filter: addFilterSegment({
                             systemId: app.systemId,
                         }, filter),

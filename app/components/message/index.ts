@@ -56,7 +56,7 @@
 //     },
 // });
 
-import { NotificationProps } from 'oak-frontend-base';
+import { NotificationProps } from 'oak-frontend-base/lib/types/Notification';
 import Message from '../../utils/message';
 
 export default OakComponent({

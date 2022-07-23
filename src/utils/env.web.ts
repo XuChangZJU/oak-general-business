@@ -1,6 +1,6 @@
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import { WebEnv } from 'general-app-domain/Token/Schema';
-import { assign, pick } from 'lodash';
+import { pick } from 'oak-domain/lib/utils/lodash';
 
 /**
  * fingerprintJs当中的一些敏感项
@@ -11,7 +11,7 @@ export async function getEnv() {
     const result = await fp.get();
 
     const { visitorId, components } = result;
-    return assign(
+    return Object.assign(
         pick(components, [
             'platform',
             'timezone',

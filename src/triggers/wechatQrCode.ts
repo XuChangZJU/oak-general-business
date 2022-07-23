@@ -2,11 +2,10 @@ import { EntityDict } from 'general-app-domain/EntityDict';
 import { SelectTriggerAfter, Trigger } from 'oak-domain/lib/types/Trigger';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { WechatSDK } from 'oak-external-sdk';
 import { WechatMpConfig } from 'general-app-domain/Application/Schema';
 import { shrinkUuidTo32Bytes } from 'oak-domain/lib/utils/uuid';
-import { assign } from 'lodash';
 
 const triggers: Trigger<EntityDict, 'wechatQrCode', GeneralRuntimeContext<EntityDict>>[] = [
     {
@@ -33,7 +32,7 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', GeneralRuntimeContext<Entity
                     });
                     // 把arrayBuffer转成字符串返回
                     const str = String.fromCharCode(...new Uint8Array(buffer));
-                    assign(code, {
+                    Object.assign(code, {
                         buffer: str,
                     });
                     count ++;

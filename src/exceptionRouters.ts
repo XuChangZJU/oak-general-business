@@ -1,4 +1,4 @@
-import { ExceptionRouters } from "oak-frontend-base";
+import { ExceptionRouters } from "oak-frontend-base/lib/types/ExceptionRoute";
 import { OakUnloggedInException } from "./types/Exceptions";
 
 export const routers: ExceptionRouters = [

@@ -1,9 +1,6 @@
 import { Checker, OakUserUnpermittedException } from "oak-domain/lib/types";
 import { EntityDict } from 'general-app-domain';
 import { GeneralRuntimeContext } from '../RuntimeContext';
-import { OakUnloggedInException } from "../types/Exceptions";
-import { assign } from "lodash";
-import { addFilterSegment, combineFilters } from "oak-domain/lib/store/filter";
 
 const checkers: Checker<EntityDict, 'token', GeneralRuntimeContext<EntityDict>> [] = [
     {

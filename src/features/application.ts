@@ -1,11 +1,12 @@
 import { EntityDict } from 'general-app-domain';
 import { AppType } from 'general-app-domain/Application/Schema';
-import { Action, Feature, LocalStorage } from 'oak-frontend-base';
-import { Aspect, AspectWrapper, Context, SelectRowShape } from 'oak-domain/lib/types';
+import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
+import { Cache } from 'oak-frontend-base/lib/features/cache';
+import { Feature } from 'oak-frontend-base/lib/types/Feature';
+import { AspectWrapper, SelectRowShape } from 'oak-domain/lib/types';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
-import { Cache } from 'oak-frontend-base';
 import { CommonAspectDict } from 'oak-common-aspect';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 
 import { AspectDict } from '../aspects/AspectDict';
 import { GeneralRuntimeContext } from '../RuntimeContext';

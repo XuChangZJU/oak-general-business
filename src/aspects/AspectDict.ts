@@ -1,7 +1,7 @@
 import { WebEnv, WechatMpEnv } from "general-app-domain/Token/Schema";
 import { AppType } from 'general-app-domain/Application/Schema';
 import { EntityDict } from "general-app-domain";
-import { QiniuUploadInfo } from "oak-frontend-base/src/types/Upload";
+import { QiniuUploadInfo } from "oak-frontend-base/lib/types/Upload";
 // import { AspectDict as CommonAspectDict } from 'oak-common-aspect/src/aspectDict';
 import { GeneralRuntimeContext } from "../RuntimeContext";
 

@@ -4,7 +4,6 @@ import {
 import { EntityDict } from 'general-app-domain';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { checkAttributesNotNull } from 'oak-domain/lib/utils/validator';
-import { assign } from 'lodash';
 
 const checkers: Checker<
     EntityDict,
@@ -22,7 +21,7 @@ const checkers: Checker<
                     ele => {
                         checkAttributesNotNull(ele, ['type', 'entity', 'entityId', 'relation']);
                         if (!ele.hasOwnProperty('number') || ele.type === 'transfer') {
-                            assign(ele, {
+                            Object.assign(ele, {
                                 number: 1,
                             });
                         }
@@ -31,7 +30,7 @@ const checkers: Checker<
                                 throw new OakInputIllegalException(['number', '分享的权限数量必须大于0']);
                             }
                         }
-                        assign(ele, {
+                        Object.assign(ele, {
                             confirmed: 0,
                         });
                     }
@@ -40,7 +39,7 @@ const checkers: Checker<
             else {
                 checkAttributesNotNull(data, ['type', 'entity', 'entityId', 'relation']);
                 if (!data.hasOwnProperty('number') || data.type === 'transfer') {
-                    assign(data, {
+                    Object.assign(data, {
                         number: 1,
                     });
                 }
@@ -49,7 +48,7 @@ const checkers: Checker<
                         throw new OakInputIllegalException(['number', '分享的权限数量必须大于0']);
                     }
                 }
-                assign(data, {
+                Object.assign(data, {
                     confirmed: 0,
                 });
             }

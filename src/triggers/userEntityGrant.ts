@@ -3,9 +3,8 @@ import { CreateTriggerInTxn, Trigger } from 'oak-domain/lib/types/Trigger';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { CreateOperationData as CreateUserEntityGrantData } from 'general-app-domain/UserEntityGrant/Schema';
 
-import { assign, keys } from 'lodash';
 import { OakCongruentRowExists } from 'oak-domain/lib/types';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { DefaultConfig } from '../constants';
 import { createWechatQrCode } from '../aspects/wechatQrCode';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
@@ -53,7 +52,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
 
                 const expiresAt = Date.now() + (SystemConfig.UserEntityGrant?.lifetimeLength || DefaultConfig.userEntityGrant.lifetimeLength);
 
-                assign(userEntityGrantData, {
+                Object.assign(userEntityGrantData, {
                     granterId: userId,
                     expiresAt,
                     expired: false,

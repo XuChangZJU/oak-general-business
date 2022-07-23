@@ -1,5 +1,4 @@
 import { EntityDict } from "general-app-domain";
-import { assign } from "lodash";
 import { Checker } from "oak-domain/lib/types";
 import { ROOT_ROLE_ID } from "../constants";
 import { GeneralRuntimeContext } from "../RuntimeContext";
@@ -29,7 +28,7 @@ export function processCheckers<ED extends EntityDict, Cxt extends GeneralRuntim
     for (const checker of checkers) {
         const { type, checker: fn } = checker;
         if (type === 'user') {
-            assign(checker, {
+            Object.assign(checker, {
                 checker: async (dummy: any, context: Cxt) => {
                     if (await checkIsRoot<ED, Cxt>(context)) {
                         return;

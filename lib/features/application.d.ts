@@ -1,8 +1,9 @@
 import { EntityDict } from 'general-app-domain';
 import { AppType } from 'general-app-domain/Application/Schema';
-import { Feature, LocalStorage } from 'oak-frontend-base';
+import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
+import { Cache } from 'oak-frontend-base/lib/features/cache';
+import { Feature } from 'oak-frontend-base/lib/types/Feature';
 import { AspectWrapper, SelectRowShape } from 'oak-domain/lib/types';
-import { Cache } from 'oak-frontend-base';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { AspectDict } from '../aspects/AspectDict';
 import { GeneralRuntimeContext } from '../RuntimeContext';

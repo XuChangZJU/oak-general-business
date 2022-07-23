@@ -1,5 +1,5 @@
 import { WechatMpEnv } from "general-app-domain/Token/Schema";
-import { pick, assign } from "lodash";
+import { pick } from "oak-domain/lib/utils/lodash";
 
 export async function getEnv() {
     const env = await wx.getSystemInfo();
@@ -19,7 +19,7 @@ export async function getEnv() {
         'fontSizeSetting',
         'SDKVersion'
     ]);
-    return assign(env2, {
+    return Object.assign(env2, {
         type: 'wechatMp',
     }) as any;
 }

@@ -4,7 +4,7 @@ import { Token } from './token';
 import { ExtraFile } from './extraFile';
 import { Application } from './application';
 import { GeneralRuntimeContext } from '..';
-import { BasicFeatures } from 'oak-frontend-base';
+import { BasicFeatures } from 'oak-frontend-base/lib/features';
 import { AspectDict } from '../aspects/AspectDict';
 import { AspectWrapper } from 'oak-domain/lib/types';
 import { AppType } from 'general-app-domain/Application/Schema';

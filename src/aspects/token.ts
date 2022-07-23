@@ -1,13 +1,13 @@
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { EntityDict } from 'general-app-domain';
 import { WechatSDK } from 'oak-external-sdk';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { WechatMpConfig } from 'general-app-domain/Application/Schema';
 import { CreateOperationData as CreateToken, WebEnv, WechatMpEnv } from 'general-app-domain/Token/Schema';
 import { CreateOperationData as CreateWechatUser } from 'general-app-domain/WechatUser/Schema';
 import { CreateOperationData as CreateUser, Schema as User } from 'general-app-domain/User/Schema';
 import { Operation as ExtraFileOperation } from 'general-app-domain/ExtraFile/Schema';
-import { assign, isEqual, keys } from 'lodash';
+import { isEqual } from 'oak-domain/lib/utils/lodash';
 import { OakUserException, SelectRowShape } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
 import { OakChangLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exceptions';
@@ -162,7 +162,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                     throw new OakUserDisabledException();
                 }
                 case 'shadow': {
-                    assign(tokenData, {
+                    Object.assign(tokenData, {
                         userId: mobileRow.userId,
                         user: {
                             action: 'activate',
@@ -172,7 +172,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                 }
                 default: {
                     assert(userState === 'normal');
-                    assign(tokenData, {
+                    Object.assign(tokenData, {
                         userId: mobileRow.id,
                     });
                 }
@@ -376,7 +376,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
             sessionKey,
         };
         if (unionId !== wechatUser.unionId as any) {
-            assign(wechatUserUpdateData, {
+            Object.assign(wechatUserUpdateData, {
                 unionId,
             });
         }
@@ -430,7 +430,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
         }
         else {
             // 创建user
-            assign(wechatUserUpdateData, {
+            Object.assign(wechatUserUpdateData, {
                 user: {
                     action: 'create',
                     data: {
@@ -622,7 +622,7 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ge
         const extraFileOperations: ExtraFileOperation['data'][] = [
             {
                 action: 'create',
-                data: assign({
+                data: Object.assign({
                     id: await generateNewId(),
                     tag1: 'avatar',
                     entity: 'user',
@@ -641,12 +641,12 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ge
                 }
             );
         }
-        assign(updateData, {
+        Object.assign(updateData, {
             extraFile$entity: extraFileOperations,
         });
     }
 
-    if (keys(updateData).length > 0) {
+    if (Object.keys(updateData).length > 0) {
         await rowStore.operate('user', {
             action: 'update',
             data: updateData,

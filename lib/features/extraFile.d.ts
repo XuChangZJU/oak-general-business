@@ -1,5 +1,5 @@
 import { EntityDict } from 'general-app-domain';
-import { Feature } from 'oak-frontend-base';
+import { Feature } from 'oak-frontend-base/lib/types/Feature';
 import { AspectWrapper, DeduceCreateOperationData } from 'oak-domain/lib/types';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { AspectDict } from '../aspects/AspectDict';

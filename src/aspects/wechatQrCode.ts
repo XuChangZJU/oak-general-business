@@ -1,4 +1,4 @@
-import assert from "assert";
+import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict } from "general-app-domain";
 import { WechatMpConfig } from "general-app-domain/Application/Schema";
 import { CreateOperationData as CreateWechatQrcodeData, WechatQrCodeProps } from 'general-app-domain/WechatQrCode/Schema';

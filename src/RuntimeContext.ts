@@ -3,9 +3,9 @@ import { SelectRowShape, SelectionResult } from 'oak-domain/lib/types';
 import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
 import { EntityDict } from 'general-app-domain';
 import { RowStore } from 'oak-domain/lib/types';
-import { assign } from 'lodash';
+
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 
 type AppType = SelectRowShape<EntityDict['application']['Schema'], {
     id: 1,
@@ -114,13 +114,13 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
             applicationId: this.getApplicationId(),
         };
         if (this.token) {
-            assign(data, {
+            Object.assign(data, {
                 token: this.token,
             });
         }
         const scene = this.getScene();
         if (scene) {
-            assign(data, {
+            Object.assign(data, {
                 scene,
             });
         }

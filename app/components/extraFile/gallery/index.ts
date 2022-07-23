@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { EntityDict } from 'general-app-domain';
 import { DeduceCreateOperationData } from "oak-domain/lib/types";
-import { isMockId } from "oak-frontend-base/src/utils/mockId";
+import { isMockId } from "oak-frontend-base/lib/utils/mockId";
 import { composeFileUrl } from '../../../../src/utils/extraFile';
 
 export default OakComponent({

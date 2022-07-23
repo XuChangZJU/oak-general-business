@@ -1,4 +1,4 @@
-import { isMockId } from 'oak-frontend-base/src/utils/mockId';
+import { isMockId } from 'oak-frontend-base/lib/utils/mockId';
 import { composeFileUrl } from '../../../../src/utils/extraFile';
 OakComponent(
     {

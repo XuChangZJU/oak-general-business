@@ -1,6 +1,7 @@
 import { EntityDict } from 'general-app-domain';
-import { Feature, LocalStorage } from 'oak-frontend-base';
-import { Cache } from 'oak-frontend-base';
+import { Feature } from 'oak-frontend-base/lib/types/Feature';
+import { Cache } from 'oak-frontend-base/lib/features/cache';
+import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { AspectDict } from '../aspects/AspectDict';
 import { GeneralRuntimeContext } from '..';
