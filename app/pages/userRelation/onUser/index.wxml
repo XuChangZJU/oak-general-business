@@ -11,7 +11,7 @@
                 </block>
                 <block wx:else>
                     <view class="img-view">
-                        <t-icon name="user-avatar" size="25px" />
+                        <t-icon name="user-avatar" size="59px" />
                     </view>
                 </block>
                 <view class="row">
@@ -31,8 +31,12 @@
                     <view class="content">
                         <block wx:for="{{relations}}" wx:key="idx" wx:for-index="index2" wx:for-item="relation">
                             <view class="relation-item">
-                                <text>{{relation}}</text>
-                                <t-switch value="{{item.hasRelation[index2]}}" bind:change="onChange" data-id="{{item.id}}" data-relation="{{relation}}" data-index="{{index}}" />
+                                <view>
+                                    <text>{{relation}}</text>
+                                </view>
+                                <view>
+                                    <t-switch value="{{item.hasRelation[index2]}}" bind:change="onChange" data-id="{{item.id}}" data-relation="{{relation}}" data-index="{{index}}" />
+                                </view>
                             </view>
                         </block>
                     </view>

@@ -18,7 +18,13 @@ export function composeFileUrl(
     const { type, bucket, filename, origin, extra1, objectId, extension, entity } =
         extraFile;
     if (extra1) {
-        // 有extra1就用extra1
+        // 有extra1就用extra1 可能File对象
+        if (typeof extra1 === 'string') {
+            return extra1;
+        }
+        if ((extra1 as any) instanceof File) {
+            return getFileURL(extra1);
+        }
         return extra1;
     }
     if (systemConfig && systemConfig.Cos) {
@@ -45,4 +51,23 @@ export function decomposeFileUrl(url: string): Pick<ExtraFile, 'bucket' | 'filen
         filename: '',
         bucket: '',
     };
+}
+
+//获取file文件url
+export function getFileURL(file: File) {
+    let getUrl = null;
+
+    // @ts-ignore
+    if (window.createObjectURL !== undefined) {
+        // basic
+        // @ts-ignore
+        getUrl = window.createObjectURL(file);
+    } else if (window.URL !== undefined) {
+        // mozilla(firefox)
+        getUrl = window.URL.createObjectURL(file);
+    } else if (window.webkitURL !== undefined) {
+        // webkit or chrome
+        getUrl = window.webkitURL.createObjectURL(file);
+    }
+    return getUrl;
 }
