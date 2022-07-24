@@ -1,4 +1,0 @@
-<span wx:if="{{type === 'material'}}" class="material-symbols-rounded material" style="{{ size ? 'font-size:'+size+'rpx;':''}}{{ color ? 'color:' + color+';' : '' }}">
-    {{name}}
-</span>
-<view wx:else class="l-class l-icon {{ name === '' ? '' : 'l-icon-' +  name }}" style="{{ size ? 'font-size:'+size+'rpx;':''}}{{ color ? 'color:' + color+';' : '' }}" />

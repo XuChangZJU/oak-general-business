@@ -1,8 +1,8 @@
 {
   "component": true,
   "usingComponents": {
-      "l-button": "../../../miniprogram_npm/lin-ui/button/index",
-      "l-icon": "../../../miniprogram_npm/lin-ui/icon/index",
-      "l-drawer": "../../../miniprogram_npm/lin-ui/mask/index"
+      "t-button": "../../../miniprogram_npm/tdesign/button/button",
+      "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
+      "t-drawer": "../../../miniprogram_npm/tdesign/drawer/drawer"
   }
 }
