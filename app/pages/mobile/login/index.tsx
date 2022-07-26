@@ -1,10 +1,18 @@
-import React, { Component } from 'react';
-import { Card, Form, Input, Checkbox, Button, Tabs } from 'antd';
-import { LockOutlined, FieldNumberOutlined, MobileOutlined } from '@ant-design/icons';
+import React from 'react';
 import { isMobile, isPassword, isCaptcha } from 'oak-domain/lib/utils/validator';
+import { DesktopIcon, LockOnIcon, MobileIcon } from 'tdesign-icons-react';
+import {
+    Form,
+    Input,
+    Button,
+    MessagePlugin,
+    Checkbox,
+    Tabs,
+} from 'tdesign-react';
 
 
-const { TabPane } = Tabs;
+const { TabPanel } = Tabs;
+const { FormItem } = Form;
 
 export default function render() {
     const { onlyCaptcha, onlyPassword } = this.props;
@@ -15,121 +23,111 @@ export default function render() {
     const allowSubmit = validMobile && (validCaptcha || validPassword);
 
     const LoginPassword = (
-        <Form
-            name="normal_login"
-            className="login-form"
-            initialValues={{ remember: true }}
-        >
-            <Form.Item
-                name="mobile"
-            >
+        <Form colon={true} labelWidth={0}>
+            <FormItem name="mobile">
                 <Input
-                    allowClear
+                    clearable
                     value={mobile}
                     type="tel"
                     data-attr="mobile"
-                    maxLength={11}
-                    prefix={<MobileOutlined className="site-form-item-icon" />}
+                    maxlength={11}
+                    prefixIcon={<MobileIcon className="site-form-item-icon" />}
                     placeholder="Mobile"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.onInput(e)}
+                    onChange={(value, context) => {
+                        this.setState({
+                            mobile: value,
+                        });
+                    }}
                 />
-            </Form.Item>
-            <Form.Item
-                name="password"
-            >
+            </FormItem>
+            <FormItem name="password">
                 <Input
-                    allowClear
+                    clearable
                     value={password}
                     data-attr="password"
-                    prefix={<LockOutlined className="site-form-item-icon" />}
+                    prefixIcon={<LockOnIcon className="site-form-item-icon" />}
                     type="password"
                     placeholder="Password"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.onInput(e)}
+                    onChange={(value, context) => {
+                        this.setState({
+                            password: value,
+                        });
+                    }}
                 />
-            </Form.Item>
-            <Form.Item>
-                <Form.Item name="remember" valuePropName="checked" noStyle>
-                    <Checkbox>Remember me</Checkbox>
-                </Form.Item>
-            </Form.Item>
+            </FormItem>
+            <FormItem>
+                <Checkbox>Remember me</Checkbox>
+            </FormItem>
 
-            <Form.Item>
+            <FormItem>
                 <Button
-                    type="primary"
-                    htmlType="submit"
+                    block
+                    theme="primary"
+                    type="submit"
                     className="login-form-button"
                     disabled={!allowSubmit}
                     onClick={() => this.loginByMobile()}
                 >
                     Log in
                 </Button>
-            </Form.Item>
+            </FormItem>
         </Form>
     );
     const LoginCaptcha = (
-        <Form
-            name="normal_login"
-            className="login-form"
-            initialValues={{ remember: true }}
-        >
-            <Form.Item
-                name="mobile"
-            >
-                <Input.Group compact>
-                    <Input
-                        allowClear
-                        value={mobile}
-                        data-attr="mobile"
-                        type="tel"
-                        maxLength={11}
-                        prefix={<MobileOutlined className="site-form-item-icon" />}
-                        placeholder="Mobile"
-                        style={{ width: 'calc(100% - 65px)' }}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.onInput(e)}
-                    />
-                    <Button
-                        type="primary"
-                        style={{
-                            width: 65,
-                        }}
-                        disabled={!validMobile || counter > 0}
-                        onClick={() => this.sendCaptcha()}
-                    >
-                        {counter > 0 ? counter : 'Send'}
-                    </Button>
-                </Input.Group>
-            </Form.Item>
-            <Form.Item
-                name="captcha"
-            >
+        <Form colon={true} labelWidth={0}>
+            <FormItem name="mobile">
                 <Input
-                    allowClear
+                    clearable
+                    value={mobile}
+                    data-attr="mobile"
+                    type="tel"
+                    maxlength={11}
+                    prefixIcon={<MobileIcon className="site-form-item-icon" />}
+                    placeholder="Mobile"
+                    style={{ width: 'calc(100% - 65px)' }}
+                    onChange={(value, context) => {
+                        this.setState({
+                            mobile: value,
+                        });
+                    }}
+                />
+            </FormItem>
+            <FormItem name="captcha">
+                <Input
+                    clearable
                     value={captcha}
                     data-attr="captcha"
-                    prefix={<FieldNumberOutlined className="site-form-item-icon" />}
                     type="number"
-                    maxLength={4}
+                    maxlength={4}
                     placeholder="Captcha"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.onInput(e)}
+                    onChange={(value, context) => {
+                        this.setState({
+                            captcha: value,
+                        });
+                    }}
                 />
-            </Form.Item>
-            <Form.Item>
-                <Form.Item name="remember" valuePropName="checked" noStyle>
-                    <Checkbox>Remember me</Checkbox>
-                </Form.Item>
-            </Form.Item>
-
-            <Form.Item>
                 <Button
-                    type="primary"
-                    htmlType="submit"
+                    theme="primary"
+                    disabled={!validMobile || counter > 0}
+                    onClick={() => this.sendCaptcha()}
+                >
+                    {counter > 0 ? counter : 'Send'}
+                </Button>
+            </FormItem>
+            <FormItem>
+                <Checkbox>Remember me</Checkbox>
+            </FormItem>
+
+            <FormItem>
+                <Button
+                    theme="primary"
                     className="login-form-button"
                     disabled={!allowSubmit}
                     onClick={() => this.loginByMobile()}
                 >
                     Log in
                 </Button>
-            </Form.Item>
+            </FormItem>
         </Form>
     );
     if (onlyCaptcha) {
@@ -159,23 +157,36 @@ export default function render() {
         );
     }
     return (
-        <div className='page-body'>
+        <div className="page-body">
+            <div
+                style={{
+                    flex: 2,
+                }}
+            />
             <div style={{
-                flex: 2,
-            }} />
-            <Card className="card">
-                <Tabs defaultActiveKey="1" size="large" tabBarStyle={{ width: '100%' }}>
-                    <TabPane tab="in Password" key="1">
+                minHeight: 500,
+                lineHeight: 22,
+            }}>
+                <Tabs
+                    theme="normal"
+                    placement="top"
+                    defaultValue="1"
+                    size="medium"
+                    style={{ width: '100%' }}
+                >
+                    <TabPanel label="in Password" value="1">
                         {LoginPassword}
-                    </TabPane>
-                    <TabPane tab="in Captcha" key="2">
+                    </TabPanel>
+                    <TabPanel label="in Captcha" key="2">
                         {LoginCaptcha}
-                    </TabPane>
+                    </TabPanel>
                 </Tabs>
-            </Card>
-            <div style={{
-                flex: 3,
-            }} />
+            </div>
+            <div
+                style={{
+                    flex: 3,
+                }}
+            />
         </div>
     );
 }

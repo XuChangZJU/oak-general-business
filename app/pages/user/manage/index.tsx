@@ -1,30 +1,12 @@
 import * as React from 'react';
-import { Input, Tooltip, Button } from 'antd';
-const { Search } = Input;
+import { Fab } from 'tdesign-mobile-react';
+import { Icon } from 'tdesign-icons-react';
 
 import UserCell from '../../../components/user/cell';
 
 export default function render() {
     return (
-        <div>
-            <Search
-                placeholder="请输入"
-                value={this.state.searchValue || ''}
-                enterButton="搜索"
-                size="middle"
-                loading={this.state.oakLoading}
-                onChange={this.searchChange}
-                allowClear
-                onSearch={(value, event) => {
-                    // value清空
-                    if (value) {
-                        this.searchConfirm();
-                    } else {
-                        this.searchCancel();
-                    }
-                }}
-            />
-
+        <div style={{ height: '100vh' }}>
             {this.state.userData?.map((ele, index) => {
                 return (
                     <UserCell
@@ -36,19 +18,19 @@ export default function render() {
                 );
             })}
 
-            <Tooltip title="创建">
-                <Button
-                    className="add-btn"
-                    type="primary"
-                    shape="circle"
-                    size="large"
-                    onClick={(event) => {
-                        this.goNewUser();
-                    }}
-                >
-                    +
-                </Button>
-            </Tooltip>
+            <Fab
+                style={{
+                    bottom: 50,
+                    right: 16,
+                }}
+                buttonProps={{
+                    theme: 'primary',
+                }}
+                onClick={(event) => {
+                    this.goNewUser();
+                }}
+                icon={<Icon name="add" />}
+            ></Fab>
         </div>
     );
 }

@@ -81,7 +81,7 @@ export default OakPage({
         const isPlayingAnother = token && token.userId !== token.playerId;
         const isRoot =
             player?.userRole$user &&
-            player.userRole$user[0].roleId === ROOT_ROLE_ID;
+            player.userRole$user[0]?.roleId === ROOT_ROLE_ID;
         return {
             avatar,
             nickname,
