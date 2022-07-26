@@ -1,0 +1,31 @@
+<!-- index.wxml -->
+<view class="container">
+    <view class="content">
+        <view class="row">
+            <block wx:if="{{avatar}}">
+                <image class="avatar" src="{{avatar}}" mode="aspectFit" />
+            </block>
+            <block wx:else>
+                <view class="img-view">
+                    <t-icon name="icon" size="xl" />
+                </view>
+            </block>
+            <view class="col">
+                <view class="row2">
+                    <text class="nickname">{{nickname || '未设置'}}</text>
+                    <t-tag theme="{{stateColor[userState]}}" shape="round">{{userState}}</t-tag>
+                </view>
+                <text class="mobile">姓名: {{name  || '未设置'}}</text>
+                <text class="mobile">手机: {{mobile  || '未设置'}}</text>
+            </view>
+        </view>
+        <t-divider t-class="demo-1" t-class-content="t-class-content">
+            <text slot="content">权限设置</text>
+        </t-divider>
+        <block wx:for="{{relationArr}}">
+            <t-checkbox data-value="{{item}}" checked="{{item.checked}}" label="{{item.value}}" bind:change="onChange" />
+        </block>
+    </view>
+    <view class=""></view>
+    <t-button theme="primary" bind:tap="onConfirm" block>保存</t-button>
+</view>

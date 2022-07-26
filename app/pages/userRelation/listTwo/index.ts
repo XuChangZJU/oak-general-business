@@ -1,5 +1,6 @@
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { composeFileUrl } from '../../../../src/utils/extraFile';
+import React from 'react';
 
 export default OakPage(
     {
@@ -28,10 +29,6 @@ export default OakPage(
                         [`${entity}Id`]: 1,
                         relation: 1,
                     },
-                    filter: {
-                        relation,
-                        [`${entity}Id`]: entityId,
-                    }
                 },
                 extraFile$entity: {
                     $entity: 'extraFile',
@@ -59,10 +56,19 @@ export default OakPage(
             // 由调用者注入oakFilter
             {
                 filter: async ({ features, props, onLoadOptions }) => {
-                    const { userIds } = props;
+                    const { entityId, entity } = props;
+                    const entityStr = firstLetterUpperCase(entity!);
                     return {
                         id: {
-                            $in: userIds,
+                            $in: {
+                                entity: `user${entityStr}`,
+                                data: {
+                                    userId: 1,
+                                },
+                                filter: {
+                                    [`${entity}Id`]: entityId,
+                                }
+                            },
                         },
                     };
                 },
@@ -85,29 +91,65 @@ export default OakPage(
                     const user2 = Object.assign({}, ele, {
                         mobile,
                         avatar,
+                        relations: userEntities,
                         hasRelation: userEntities.length > 0,
                     });
                     return user2;
                 }),
-                searchValue: (
-                    filter?.$or as [{ name: { $includes: string } }]
-                )[0].name.$includes,
             };
         },
         properties: {
             entity: String,
             entityId: String,
             userIds: Array,
-            relation: String,
+            relations: Array,
         },
         data: {
             show: false,
             searchValue: '',
             deleteIndex: '',
         },
-        lifetimes: {},
+        lifetimes: {
+            created() {
+                if (process.env.OAK_PLATFORM === 'web') {
+                    const classStyles = `
+                    <style>
+                    .t-table-demo__editable-row .table-operations > button {
+                    padding: 0 8px;
+                    line-height: 22px;
+                    height: 22px;
+                    }
+                    .t-table-demo__editable-row .t-demo-col__datepicker .t-date-picker {
+                    width: 120px;
+                    }
+                    </style>
+                    `;
+                    this.tableRef = React.createRef();
+                    document.head.insertAdjacentHTML('beforeend', classStyles);
+                }
+            }
+        },
         methods: {
-            
+            goDetail(e: any) {
+                const { relations, entity, entityId } = this.props;
+                const { id } = e.currentTarget.dataset;
+                this.navigateTo({
+                    url: '/userRelation/detail2',
+                    oakId: id,
+                    relations,
+                    entity,
+                    entityId,
+                })
+            },
+            goUpsert() {
+                const { entity, entityId, relations } = this.props;
+                this.navigateTo({
+                    url: '/userRelation/upsert',
+                    entity,
+                    entityId,
+                    relations,
+                })
+            },
             onRemove(event: any) {
                 const { index } = event.target.dataset;
                 this.setState({

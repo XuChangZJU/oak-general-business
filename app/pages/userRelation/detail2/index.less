@@ -1,0 +1,65 @@
+/**  index.wxss  **/
+@import "../../../config/styles/_base.less";
+@import "../../../config/styles/_mixins.less";
+
+page {
+  height: 100%;
+  background-color: #fff;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: stretch;
+  padding: 0;
+  .safe-area-inset-bottom();
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  padding: @spacer-2;
+}
+
+.col {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-left: @spacer-2;
+}
+
+.nickname {
+  margin-right: @spacer-1;
+  font-size: @font-size-l;
+}
+.mobile {
+  font-size: @font-size-base;
+  color: @text-level-3-color;
+}
+.avatar {
+  height: 140rpx;
+  width: 140rpx;
+  border-radius: 50%;
+}
+.img-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 140rpx;
+  width: 140rpx;
+  border-radius: 50%;
+  background-color: @bg-color;
+}
+.row2 {
+  display: flex;
+  align-items: center;
+  margin-bottom: @spacer-1;
+}
