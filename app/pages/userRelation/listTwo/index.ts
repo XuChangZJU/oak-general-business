@@ -1,7 +1,6 @@
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { composeFileUrl } from '../../../../src/utils/extraFile';
-import React from 'react';
-
+import React from '../../../utils/react';
 export default OakPage(
     {
         path: 'userRelation:list',
