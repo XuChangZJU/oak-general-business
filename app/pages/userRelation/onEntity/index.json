@@ -1,8 +1,7 @@
 {
   "navigationBarTitleText": "修改权限",
   "usingComponents": {
-      "divider": "../../../components/UI/divider/index",
-      "fab": "../../../components/UI/fab/index",
+      "t-divider": "../../../miniprogram_npm/tdesign/divider/divider",
       "t-button": "../../../miniprogram_npm/tdesign/button/button",
       "t-switch": "../../../miniprogram_npm/tdesign/switch/switch"
   }

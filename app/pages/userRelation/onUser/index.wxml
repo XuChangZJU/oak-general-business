@@ -27,7 +27,7 @@
                     </view>
                 </block>
                 <block wx:else>
-                    <divider />
+                    <t-divider />
                     <view class="content">
                         <block wx:for="{{relations}}" wx:key="idx" wx:for-index="index2" wx:for-item="relation">
                             <view class="relation-item">

@@ -6,7 +6,7 @@
             <image mode="aspectFill" class="img" src="{{user.avatar}}" lazy-load></image>
             <text class="name">{{user.name || user.nickname || '--'}}</text>
             <text class="mobile">{{user.mobile || '--'}}</text>
-            <divider />
+            <t-divider />
             <view class="list" wx:for="{{rows}}" wx:key="idx">
                 <block wx:if="{{relations.length === 1}}">
                     <view class="singleRelationItem">

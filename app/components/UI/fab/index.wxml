@@ -1,5 +1,0 @@
-<view class="btn-view" style="bottom: {{bottom}}rpx; right: {{right}}rpx">
-  <button class="fab fab-{{type}} ripple" id="{{name}}" lang="{{lang}}" form-type="{{formType}}" open-type="{{openType}}" app-parameter="{{ appParameter }}" hover-stop-propagation="{{ hoverStopPropagation }}" hover-start-time="{{ hoverStartTime }}" hover-stay-time="{{ hoverStayTime }}" session-from="{{ sessionFrom }}" send-message-title="{{ sendMessageTitle }}" send-message-path="{{ sendMessagePath }}" send-message-img="{{ sendMessageImg }}" show-message-card="{{ showMessageCard }}" bindcontact="openTypeEvent" bindgetuserinfo="openTypeEvent" bindgetphonenumber="openTypeEvent" bindopensetting="openTypeEvent" bind:tap="handleTap">
-    <slot />
-  </button>
-</view>

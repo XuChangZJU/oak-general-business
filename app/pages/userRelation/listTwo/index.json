@@ -6,7 +6,6 @@
       "t-divider": "../../../miniprogram_npm/tdesign/divider/divider",
       "t-tag": "../../../miniprogram_npm/tdesign/tag/tag",
       "t-fab": "../../../miniprogram_npm/tdesign/fab/fab",
-      "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
-      "fab": "../../../components/UI/fab/index"
+      "t-icon": "../../../miniprogram_npm/tdesign/icon/icon"
   }
 }

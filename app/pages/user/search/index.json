@@ -1,8 +1,6 @@
 {
   "navigationBarTitleText": "人员管理",
   "usingComponents": {
-      "divider": "../../../components/UI/divider/index",
-      "fab": "../../../components/UI/fab/index",
       "t-button": "../../../miniprogram_npm/tdesign/button/button",
       "t-tag": "../../../miniprogram_npm/tdesign/tag/tag",
       "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",

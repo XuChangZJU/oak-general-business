@@ -1,8 +1,6 @@
 {
   "navigationBarTitleText": "修改权限",
   "usingComponents": {
-      "t-cell": "../../../miniprogram_npm/tdesign/cell/cell",
-      "divider": "../../../components/UI/divider/index",
-      "fab": "../../../components/UI/fab/index"
+      "t-cell": "../../../miniprogram_npm/tdesign/cell/cell"
   }
 }
