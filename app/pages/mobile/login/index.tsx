@@ -1,21 +1,18 @@
 import React from 'react';
-import { isMobile, isPassword, isCaptcha } from 'oak-domain/lib/utils/validator';
-import { DesktopIcon, LockOnIcon, MobileIcon } from 'tdesign-icons-react';
 import {
-    Form,
-    Input,
-    Button,
-    MessagePlugin,
-    Checkbox,
-    Tabs,
-} from 'tdesign-react';
-
+    isMobile,
+    isPassword,
+    isCaptcha,
+} from 'oak-domain/lib/utils/validator';
+import { DesktopIcon, LockOnIcon, MobileIcon } from 'tdesign-icons-react';
+import { Form, Input, Button, Checkbox, Tabs } from 'tdesign-react';
 
 const { TabPanel } = Tabs;
 const { FormItem } = Form;
 
 export default function render() {
-    const { onlyCaptcha, onlyPassword } = this.props;
+    const { t } = this;
+    const { onlyCaptcha, onlyPassword, width } = this.props;
     const { mobile, captcha, password, counter } = this.state;
     const validMobile = isMobile(mobile);
     const validCaptcha = isCaptcha(captcha);
@@ -31,8 +28,9 @@ export default function render() {
                     type="tel"
                     data-attr="mobile"
                     maxlength={11}
-                    prefixIcon={<MobileIcon className="site-form-item-icon" />}
+                    prefixIcon={<MobileIcon />}
                     placeholder="Mobile"
+                    size="large"
                     onChange={(value, context) => {
                         this.setState({
                             mobile: value,
@@ -45,9 +43,10 @@ export default function render() {
                     clearable
                     value={password}
                     data-attr="password"
-                    prefixIcon={<LockOnIcon className="site-form-item-icon" />}
+                    prefixIcon={<LockOnIcon />}
                     type="password"
                     placeholder="Password"
+                    size="large"
                     onChange={(value, context) => {
                         this.setState({
                             password: value,
@@ -56,19 +55,19 @@ export default function render() {
                 />
             </FormItem>
             <FormItem>
-                <Checkbox>Remember me</Checkbox>
+                <Checkbox>{t('Remember me')}</Checkbox>
             </FormItem>
 
             <FormItem>
                 <Button
                     block
+                    size="large"
                     theme="primary"
                     type="submit"
-                    className="login-form-button"
                     disabled={!allowSubmit}
                     onClick={() => this.loginByMobile()}
                 >
-                    Log in
+                    {t('Log in')}
                 </Button>
             </FormItem>
         </Form>
@@ -82,9 +81,9 @@ export default function render() {
                     data-attr="mobile"
                     type="tel"
                     maxlength={11}
-                    prefixIcon={<MobileIcon className="site-form-item-icon" />}
+                    prefixIcon={<MobileIcon />}
                     placeholder="Mobile"
-                    style={{ width: 'calc(100% - 65px)' }}
+                    size="large"
                     onChange={(value, context) => {
                         this.setState({
                             mobile: value,
@@ -100,6 +99,7 @@ export default function render() {
                     type="number"
                     maxlength={4}
                     placeholder="Captcha"
+                    size="large"
                     onChange={(value, context) => {
                         this.setState({
                             captcha: value,
@@ -107,52 +107,59 @@ export default function render() {
                     }}
                 />
                 <Button
+                    size="large"
                     theme="primary"
                     disabled={!validMobile || counter > 0}
                     onClick={() => this.sendCaptcha()}
                 >
-                    {counter > 0 ? counter : 'Send'}
+                    {counter > 0 ? counter : t('Send')}
                 </Button>
-            </FormItem>
-            <FormItem>
-                <Checkbox>Remember me</Checkbox>
             </FormItem>
 
             <FormItem>
                 <Button
+                    block
+                    size="large"
                     theme="primary"
-                    className="login-form-button"
+                    type="submit"
                     disabled={!allowSubmit}
                     onClick={() => this.loginByMobile()}
                 >
-                    Log in
+                    {t('Log in')}
                 </Button>
             </FormItem>
         </Form>
     );
     if (onlyCaptcha) {
         return (
-            <div className='page-body'>
-                <div style={{
-                    flex: 2,
-                }} />
+            <div className="page-body">
+                <div
+                    style={{
+                        flex: 2,
+                    }}
+                />
                 {LoginCaptcha}
-                <div style={{
-                    flex: 3,
-                }} />
+                <div
+                    style={{
+                        flex: 3,
+                    }}
+                />
             </div>
         );
-    }
-    else if (onlyPassword) {
+    } else if (onlyPassword) {
         return (
-            <div className='page-body'>
-                <div style={{
-                    flex: 2,
-                }} />
+            <div className="page-body">
+                <div
+                    style={{
+                        flex: 2,
+                    }}
+                />
                 {LoginPassword}
-                <div style={{
-                    flex: 3,
-                }} />
+                <div
+                    style={{
+                        flex: 3,
+                    }}
+                />
             </div>
         );
     }
@@ -163,21 +170,38 @@ export default function render() {
                     flex: 2,
                 }}
             />
-            <div style={{
-                minHeight: 500,
-                lineHeight: 22,
-            }}>
+            <div
+                style={{
+                    minHeight: 500,
+                    lineHeight: 22,
+                    width: width === 'xs' ? 320 : 400,
+                }}
+            >
                 <Tabs
                     theme="normal"
                     placement="top"
                     defaultValue="1"
                     size="medium"
-                    style={{ width: '100%' }}
+                    onChange={(value) => {
+                        this.setState({
+                            tabValue: value,
+                        });
+                    }}
                 >
-                    <TabPanel label="in Password" value="1">
+                    <TabPanel
+                        className="tabPanel"
+                        key="tab_1"
+                        label={t('in Password')}
+                        value="1"
+                    >
                         {LoginPassword}
                     </TabPanel>
-                    <TabPanel label="in Captcha" key="2">
+                    <TabPanel
+                        className="tabPanel"
+                        key="tab_2"
+                        label={t('in Captcha')}
+                        value="2"
+                    >
                         {LoginCaptcha}
                     </TabPanel>
                 </Tabs>

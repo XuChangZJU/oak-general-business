@@ -1,4 +1,3 @@
-import { composeFileUrl } from '../../../../src/utils/extraFile';
 
 const SEND_KEY = 'captcha:sendAt';
 export default OakPage({
@@ -29,7 +28,7 @@ export default OakPage({
                 this.counterHandler = setTimeout(() => this.reRender(), 1000);
             }
             else if (this.counterHandler) {
-                clearTimeout(this.couuterHandler);
+                clearTimeout(this.counterHandler);
                 this.counterHandler = undefined;
             }
         }
