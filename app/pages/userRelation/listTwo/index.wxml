@@ -1,5 +1,8 @@
 <!-- index.wxml -->
 <view class="container">
+    <view class="search-bar">
+        <t-search placeholder="搜索" value="{{searchValue || ''}}" action="搜索" bind:lincancel="searchConfirm" bind:clear="searchCancel" bind:change="searchChange" bind:submit="searchConfirm" bind:action-click="searchConfirm" />
+    </view>
     <view class="col">
         <block wx:for="{{users}}" wx:key="index">
             <view class="card-view" data-id="{{item.id}}" bind:tap="goDetail">

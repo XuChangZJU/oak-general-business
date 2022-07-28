@@ -1,11 +1,12 @@
 {
-  "navigationBarTitleText": "修改权限",
+  "navigationBarTitleText": "人员列表",
   "usingComponents": {
       "t-button": "../../../miniprogram_npm/tdesign/button/button",
       "t-dialog": "../../../miniprogram_npm/tdesign/dialog/dialog",
       "t-divider": "../../../miniprogram_npm/tdesign/divider/divider",
       "t-tag": "../../../miniprogram_npm/tdesign/tag/tag",
       "t-fab": "../../../miniprogram_npm/tdesign/fab/fab",
+      "t-search": "../../../miniprogram_npm/tdesign/search/search",
       "t-icon": "../../../miniprogram_npm/tdesign/icon/icon"
   }
 }

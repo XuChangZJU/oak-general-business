@@ -130,54 +130,39 @@ export default OakPage(
             goUpsert() {
                 const { entity, entityId, relations } = this.props;
                 this.navigateTo({
-                    url: '/userRelation/upsert',
+                    url: '/userRelation/chooseMethod',
                     entity,
                     entityId,
                     relations,
                 })
             },
-            onRemove(event: any) {
-                const { index } = event.target.dataset;
-                this.setState({
-                    show: true,
-                    deleteIndex: Number(index),
-                })
+            async searchChange(event: any) {
+                const { value } = this.resolveInput(event);
+                this.addNamedFilter({
+                    filter: {
+                        id: {
+                            $in: {
+                                entity: 'mobile',
+                                data: {
+                                    userId: 1,
+                                },
+                                filter: {
+                                    mobile: {
+                                        $includes: value,
+                                    }
+                                }
+                            },
+                        },
+                    },
+                    '#name': 'mobile',
+                });
             },
-            cancelDelete() {
-                this.setState({
-                    show: false,
-                    deleteIndex: '',
-                })
+            async searchCancel() {
+                this.removeNamedFilterByName('mobile');
             },
-            confirmDelete() {
-                const { entity } = this.props;
-                const entityStr = firstLetterUpperCase(entity);
-                const { deleteIndex } = this.state;
-                typeof deleteIndex === 'number' && this.removeNode(`user.user${entityStr}$user`, deleteIndex);
-                this.setState({
-                    show: false,
-                    deleteIndex: '',
-                })
+            async searchConfirm() {
+                this.refresh();
             },
-            onAdd(event: any) {
-                const { entity, entityId, relation } = this.props;
-                const entityStr = firstLetterUpperCase(entity);
-                const { index } = event.target.dataset;
-                this.toggleNode({
-                    [`${entity}Id`]: entityId,
-                    relation,
-                }, true, `${index}.user${entityStr}$user`);
-            },
-            async confirm() {
-                await this.execute();
-                this.navigateBack();
-            },
-            goSearch() {
-                this.navigateTo({
-                    url: '/user/search',
-                    toUrl: '/userRelation/detail'
-                })
-            }
         },
     }
 );

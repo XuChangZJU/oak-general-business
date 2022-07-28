@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "选中添加方式",
+  "usingComponents": {
+      "t-cell": "../../../miniprogram_npm/tdesign/cell/cell"
+  }
+}
