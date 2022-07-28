@@ -50,12 +50,13 @@
         "typescript": "^4.7.4"
     },
     "scripts": {
-        "prebuild": "ts-node ./scripts/make.ts",
+        "make:domain": "ts-node ./scripts/make.ts",
+        "prebuild": "npm run make:domain",
         "build": "tsc",
         "get:area": "ts-node ./scripts/getAmapArea.ts",
         "clean:dir": "ts-node ./scripts/cleanDtsAndJs",
         "test": "ts-node ./test/test.ts",
-        "postinstall": "npm run prebuild",
+        "postinstall": "npm run make:domain",
         "prepare": "rimraf node_modules/react & rimraf node_modules/react-dom & rimraf node_modules/react-router"
     },
     "main": "lib/index"

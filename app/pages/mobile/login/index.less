@@ -1,5 +1,4 @@
 /**  index.wxss  **/
-@import "../../../config/styles/_base.less";
 @import "../../../config/styles/_mixins.less";
 
 .page-body {
@@ -10,22 +9,23 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  background-color: @background-color-base;
+  background-color: #fff;
   .safe-area-inset-bottom();
 }
 
-.card {
-  width: 90%;
-  align-self: center;
-}
-
-.login-form-button {
-  width: 100%;
-}
-
-.ant-tabs-nav-list {
-  width: 100%;
-  .ant-tabs-tab {
-    width: 50%;
+.t-tabs {
+  &__nav {
+    width: 100%;
   }
+  &__nav-wrap {
+    width: 100%;
+  }
+  &__nav-item {
+    width: 50%;
+    justify-content: center;
+  }
+}
+
+.tabPanel {
+  padding-top: 16px;
 }
