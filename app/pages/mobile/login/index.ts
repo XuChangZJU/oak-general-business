@@ -49,7 +49,7 @@ export default OakPage({
             try {
                 const result = await this.features.token.sendCaptcha(mobile);
                 // 显示返回消息
-                this.setNotification({
+                this.setMessage({
                     type: 'success',
                     content: result,
                 });
@@ -57,7 +57,7 @@ export default OakPage({
                 this.reRender();
             }
             catch (err) {
-                this.setNotification({
+                this.setMessage({
                     type: 'error',
                     content: (err as Error).message,
                 });
@@ -76,7 +76,7 @@ export default OakPage({
                 }
             }
             catch (err) {
-                this.setNotification({
+                this.setMessage({
                     type: 'error',
                     content: (err as Error).message,
                 });
