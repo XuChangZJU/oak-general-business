@@ -20,7 +20,7 @@ page {
 .primary-bg {
     width: 100%;
     height: 140rpx;
-    background-color: @default-color;
+    background-color: @primary-color;
 }
 
 .img {
@@ -28,7 +28,7 @@ page {
     height: 180rpx;
     margin: 0 auto;
     border-radius: 50%;
-    background-color: @background-color-base;
+    background-color: @bg-color-fade;
 }
 
 .row-end {
@@ -39,7 +39,7 @@ page {
 .white-bg {
     display: flex;
     flex-direction: column;
-    padding: @size-spacing-base;
+    padding: @spacer;
 }
 
 .content {
@@ -49,22 +49,22 @@ page {
 }
 
 .name {
-    margin: @size-spacing-small auto;
-    font-size: @size-font-large;
-    color: @title-color;
+    margin: @spacer auto;
+    font-size: @font-size-base;
+    color: @text-level-2-color;
 }
 
 .mobile {
     margin: 0 auto;
-    font-size: @size-font-base;
-    color: @text-color;
+    font-size: @font-size-base;
+    color: @text-level-3-color;
 }
 
 .tag-view {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    margin-bottom: @size-spacing-small;
+    margin-bottom: @spacer;
 }
 
 .tag {
@@ -107,7 +107,7 @@ page {
     border-radius: 4px;
 
     .name {
-        color: @text-color;
+        color: @text-level-3-color;
         flex: 1;
         margin-right: 10rpx;
     }
@@ -123,7 +123,7 @@ page {
     border-radius: 4px;
 
     .name {
-        color: @text-color;
+        color: @text-level-3-color;
     }
 
     .relationList {
@@ -137,8 +137,8 @@ page {
             padding: 10rpx;
 
             text {
-                color: @subsidiary-color;
-                font-size: @size-font-supermini;
+                color: @text-level-4-color;
+                font-size: @font-size-base;
             }
         }
     }

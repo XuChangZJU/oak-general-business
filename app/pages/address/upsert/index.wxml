@@ -10,15 +10,19 @@
             <text style="color: #e34d59"> *</text>手机号
         </text>
     </t-input>
-    <t-input placeholder="请选择" label="slot" size="medium" confirm-type="done" oak:value="areaText" bind:focus="callAreaPicker" suffix-icon="chevron-right">
+    <t-input placeholder="请选择地区" label="slot" size="medium" confirm-type="done" oak:value="areaText" bind:focus="callAreaPicker" suffix-icon="chevron-right">
         <text slot="label">
             <text style="color: #e34d59"> *</text>所在地区
         </text>
     </t-input>
-    <t-textarea label="详细地址" placeholder="请输入" confirm-type="done" bind:change="setValue" oak:value="detail" />
+    <t-textarea placeholder="请输入详细地址" confirm-type="done" bind:change="setValue" oak:value="detail">
+        <text slot="label">
+            <text style="color: #e34d59"> *</text>详细地址
+        </text>
+    </t-textarea>
     <view style="flex: 1" />
     <t-button-group>
+        <t-button theme="danger" style="margin: 16rpx"  variant="outline" block size="large" bind:tap="reset" content="重置" />
         <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="confirm" content="确定" />
-        <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="reset" content="重置" />
     </t-button-group>
 </view>

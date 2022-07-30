@@ -27,7 +27,6 @@ export default OakPage({
     },
     methods: {
         onItemClicked(input: any) {
-            // resolveInput里用的是target，原来的代码用的是currentTarget，可能有问题
             const { dataset } = this.resolveInput(input);
             const item = this.state.arealist!.find(
                 (ele) => ele?.id === dataset!.id

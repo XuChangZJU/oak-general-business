@@ -4,7 +4,7 @@
 
 page {
   height: 100%;
-  background-color: @background-color-base;
+  background-color: @bg-color-fade;
 }
 
 .container {
@@ -35,7 +35,7 @@ page {
 }
 
 .col {
-  padding: @size-spacing-small;
+  padding: @font-size-base;
   display: flex;
   flex-direction: column;
 }
@@ -46,23 +46,23 @@ page {
 }
 
 .title {
-  font-size: @size-font-base;
-  margin-bottom: @size-spacing-small;
+  font-size: @font-size-base;
+  margin-bottom: @font-size-base;
 }
 .drawer-view {
   position: fixed;
   top: 40px;
   width: 100%;
-  background-color: @background-color-base;
+  background-color: @bg-color-fade;
   z-index: 4;
 }
 .drawer-item {
   display: flex;
   align-items: center;
   height: 38px;
-  color: @text-color;
+  color: @text-level-3-color;
   margin-top: 1px;
-  padding: 0rpx @size-spacing-small;
+  padding: 0rpx @font-size-base;
   background-color: #fff;
 }
 .search-value {
@@ -72,12 +72,12 @@ page {
   text-align: center;
 }
 .delete-btn {
-  padding: @size-spacing-small;
-  font-size: @size-font-base;
+  padding: @font-size-base;
+  font-size: @font-size-base;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: @default-color;
+  color: @primary-color;
 }
 .tag {
   margin: 4rpx;

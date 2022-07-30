@@ -2,21 +2,21 @@
 <view class="page-body">
     <view class="userInfo">
         <block wx:if="{{avatar}}">
-            <image class="avatar" src="{{avatar}}" mode="aspectFit" />
+            <t-avatar icon="user" image="{{avatar}}" />
         </block>
         <block wx:else>
-            <t-icon name="user-avatar" size="50px"/>
+            <t-avatar icon="user" />
         </block>
         <span class="nickname">{{ nickname || '未设置'}}</span>
         <block wx:if="{{isLoggedIn && !isPlayingAnother}}">
-            <t-button theme="primary" style="margin: 16rpx" block size="medium" disabled="{{refreshing}}" bind:tap="onRefresh" content="更新" />
+            <t-button theme="primary" block size="small" disabled="{{refreshing}}" bind:tap="onRefresh" content="更新" />
         </block>
         <block wx:elif="{{!isLoggedIn}}">
-            <t-button theme="primary" style="margin: 16rpx" block size="medium" disabled="{{refreshing}}" bind:tap="doLogin" content="登录" />
+            <t-button theme="primary" block size="small" disabled="{{refreshing}}" bind:tap="doLogin" content="登录" />
         </block>
     </view>
     <view class="cell">
-        <t-cell title="手机号" hover>
+        <t-cell title="手机号" hover bind:tap="goMyMobile" arrow>
             <view slot="note">
                 <view wx:if="{{mobileCount > 1}}">{{mobileCount}}条手机号</view>
                 <view wx:elif="{{mobileCount === 1}}">{{mobile}}</view>
@@ -24,9 +24,8 @@
             </view>
         </t-cell>
         <component-menu />
-        <view style="flex:1" />
         <block wx:if="{{isRoot}}">
-        <t-cell title="用户管理" hover bind:click="goUserManage" arrow />
+            <t-cell title="用户管理" hover bind:click="goUserManage" arrow />
         </block>
     </view>
 </view>

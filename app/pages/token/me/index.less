@@ -7,37 +7,25 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  background-color: @background-color-base;
+  background-color: @bg-color-fade;
 }
 
 .userInfo {
-  padding: 20rpx;
+  padding: @spacer-1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: @background-color-base;  
-}
-
-.avatar {
-  font-size: 188rpx;
-  color: @text-color;
-  height: 200rpx;
-  width: 200rpx;
-  border-radius: 20rpx;
 }
 
 .nickname {
-  font-size: @size-font-large;
-  color: @text-color;
-  padding-top: @size-spacing-small;
-  padding-bottom: @size-spacing-base;
+  font-size: @font-size-base;
+  color: @text-level-3-color;
+  padding-top: @spacer-1;
+  padding-bottom: @spacer-1;
 }
 
-.btn-refresh {
-  background-color: @primary-color;
-}
+
 .cell {
-  padding: 0rpx @size-spacing-base;
   background-color: #fff;
   flex: 1;
 }

@@ -4,6 +4,7 @@
         "component-menu": "@project/components/token/menu/index",
         "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
         "t-cell": "../../../miniprogram_npm/tdesign/cell/cell",
-        "t-button": "../../../miniprogram_npm/tdesign/button/button"
+        "t-button": "../../../miniprogram_npm/tdesign/button/button",
+        "t-avatar": "../../../miniprogram_npm/tdesign/avatar/avatar"
     }
 }

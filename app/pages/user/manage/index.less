@@ -7,7 +7,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  background-color: @background-color-base;
+  background-color: @bg-color-fade;
   box-sizing: border-box;
   .safe-area-inset-bottom();
 }
@@ -28,7 +28,7 @@
 .cell {
   display: flex;
   align-items: center;
-  padding: @size-spacing-base;
+  padding: @spacer;
   border-bottom: 1px solid #e0e0e0;
   background-color: #fff;
 }
@@ -36,7 +36,7 @@
 .row {
   display: flex;
   align-items: center;
-  margin-bottom: @size-spacing-small;
+  margin-bottom: @font-size-base;
 }
 
 .avatar {
@@ -51,23 +51,23 @@
   height: 140rpx;
   width: 140rpx;
   border-radius: 50%;
-  background-color: @background-color-base;
+  background-color: @bg-color-fade;
 }
 
 .nickname {
-  margin-right: @size-spacing-base;
-  font-size: @size-font-large;
+  margin-right: @spacer;
+  font-size: @font-size-base;
 }
 
 .name {
-  font-size: @size-font-base;
-  color: @text-color;
+  font-size: @font-size-base;
+  color:@text-level-3-color;
   margin-bottom: 4rpx;
 }
 
 .mobile {
-  font-size: @size-font-base;
-  color: @text-color;
+  font-size: @font-size-base;
+  color: @text-level-3-color;
 }
 .btn-view {
   display: flex;

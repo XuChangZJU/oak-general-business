@@ -1,4 +1,3 @@
-import { composeFileUrl } from '../../../../src/utils/extraFile';
 
 export default OakPage({
     path: 'mobile:me',
