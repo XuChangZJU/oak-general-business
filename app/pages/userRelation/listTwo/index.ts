@@ -129,12 +129,22 @@ export default OakPage(
             },
             goUpsert() {
                 const { entity, entityId, relations } = this.props;
-                this.navigateTo({
-                    url: '/userRelation/chooseMethod',
-                    entity,
-                    entityId,
-                    relations,
-                })
+                if (process.env.OAK_PLATFORM === 'web') {
+                    this.navigateTo({
+                        url: '/userRelation/upsert',
+                        entity,
+                        entityId,
+                        relations,
+                    })
+                }
+                else {
+                    this.navigateTo({
+                        url: '/userRelation/chooseMethod',
+                        entity,
+                        entityId,
+                        relations,
+                    })
+                }
             },
             async searchChange(event: any) {
                 const { value } = this.resolveInput(event);

@@ -1,119 +1,102 @@
 import * as React from 'react';
-import { Form, Input, Radio, Checkbox, Button, Switch, MessagePlugin, DatePicker, Tooltip, CheckboxGroup } from 'tdesign-react';
-
+import { Form, Input, Row, Col,  Radio, Checkbox, Button, Switch, MessagePlugin, DatePicker, Tooltip, CheckboxGroup } from 'tdesign-react';
+import { LockOnIcon } from 'tdesign-icons-react';
 const { FormItem } = Form;
 export default function render() {
-    const { name, mobile } = this.state;
+    const { relations, entity } = this.props;
+    const { name, mobile, password, relationArr } = this.state;
+    const relationArr2 = relations && JSON.parse(relations);
     return (
         <div>
-           <Form
-                colon={false}
-                labelAlign="right"
-                labelWidth="100px"
-                layout="vertical"
-                preventSubmitDefault
-                resetType="empty"
-                showErrorMessage
-                submitWithWarningMessage={false}
-                >
-                <FormItem
-                    label="姓名"
-                    name="name"
-                    successBorder={false}
-                >
-                    <Input
-                        onChange={(value, context) => {
-                            this.setUpdateData('name', value);
-                        }}
-                        value={name}
-                        align="left"
-                        autoWidth={false}
-                        autofocus={false}
-                        clearable={false}
-                        defaultValue=""
-                        placeholder="请输入内容"
-                        readonly={false}
-                        showClearIconOnEmpty={false}
-                        size="medium"
-                        status="default"
-                        type="text"
-                    />
-                </FormItem>
-                <FormItem
-                    label="手机号码"
-                    name="mobile"
-                    successBorder={false}
-                >
-                    <Input
-                        value={mobile}
-                        align="left"
-                        autoWidth={false}
-                        autofocus={false}
-                        clearable={false}
-                        defaultValue=""
-                        placeholder="请输入内容"
-                        readonly={false}
-                        showClearIconOnEmpty={false}
-                        size="medium"
-                        status="default"
-                        type="text"
-                    />
-                </FormItem>
-                <FormItem
-                    initialData={[
-                    '1'
-                    ]}
-                    label="课程"
-                    name="course"
-                    successBorder={false}
-                >
-                <Checkbox.Group
-                    defaultValue={[]}
-                    max={undefined}
+            <Row gutter={16}>
+                <Col span={4}>
+                    <Form
+                        colon={false}
+                        labelAlign="right"
+                        labelWidth="100px"
+                        layout="vertical"
+                        preventSubmitDefault
+                        resetType="empty"
+                        showErrorMessage
+                        submitWithWarningMessage={false}
                     >
-                    <Checkbox
-                        checkAll={false}
-                        defaultChecked={false}
-                        disabled={undefined}
-                        indeterminate={false}
-                        readonly={false}
-                        value="1"
-                    >
-                        语文
-                    </Checkbox>
-                    <Checkbox
-                        checkAll={false}
-                        defaultChecked={false}
-                        disabled={undefined}
-                        indeterminate={false}
-                        readonly={false}
-                        value="2"
-                    >
-                        数学
-                    </Checkbox>
-                    <Checkbox
-                        checkAll={false}
-                        defaultChecked={false}
-                        disabled={undefined}
-                        indeterminate={false}
-                        readonly={false}
-                        value="3"
-                    >
-                        英语
-                    </Checkbox>
-                    <Checkbox
-                        checkAll={false}
-                        defaultChecked={false}
-                        disabled={undefined}
-                        indeterminate={false}
-                        readonly={false}
-                        value="4"
-                    >
-                        体育
-                    </Checkbox>
-                    </Checkbox.Group>
-                </FormItem>
-            </Form>
+                        <FormItem
+                            label="姓名"
+                            name="name"
+                            rules={[
+                                { required: true, message: '姓名不能为空', type: 'error' },
+                            ]}
+                        >
+                            <Input
+                                onChange={(value, context) => {
+                                    this.setUpdateData('name', value);
+                                }}
+                                value={name}
+                                align="left"
+                                placeholder="请输入内容"
+                                type="text"
+                            />
+                        </FormItem>
+                        <FormItem
+                            label="手机号码"
+                            name="mobile"
+                            rules={[
+                                { required: true, message: '手机号不能为空', type: 'error' },
+                                { min: 11, message: '请输入11位手机号', type: 'error' },
+                                { max: 11, message: '请输入11位手机号', type: 'error' },
+                            ]}
+                        >
+                            <Input
+                                onChange={(value, context) => {
+                                    this.setUpdateData('mobile$user.0.mobile', value);
+                                }}
+                                value={mobile}
+                                align="left"
+                                placeholder="请输入内容"
+                                size="medium"
+                                type="text"
+                            />
+                        </FormItem>
+                        <FormItem
+                            initialData="123456"
+                            label="密码"
+                            name="mobile"
+                            rules={[
+                                { required: true, message: '密码不能为空', type: 'error' },
+                            ]}
+                        >
+                            <Input
+                                value={password}
+                                align="left"
+                                placeholder="请输入内容"
+                                showClearIconOnEmpty={false}
+                                size="medium"
+                                status="default"
+                                type="text"
+                            />
+                        </FormItem>
+                        <FormItem
+                            label="权限"
+                            rules={[
+                                { required: true, message: '请至少选择一个权限', type: 'error' },
+                            ]}
+                        >
+                            <Checkbox.Group
+                                value={relationArr}
+                                onChange={(value) => { this.setRelationValue(value) }}
+                                options={relationArr2.map(ele => ({value: ele, label: this.t && this.t(entity + ':r.' + ele) || ele}))}
+                            >
+                            </Checkbox.Group>
+                        </FormItem>
+                        <FormItem style={{ marginLeft: 100 }}>
+                            <Button theme="primary" type="submit" style={{ marginRight: 10 }} onClick={()=>{this.onConfirm()}}>
+                                提交
+                            </Button>
+                            <Button type="reset">重置</Button>
+                        </FormItem>
+                    </Form>
+                </Col>
+            </Row>
         </div>
     );
 }

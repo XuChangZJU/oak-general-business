@@ -10,11 +10,20 @@ import {
 
 export default function render() {
   const { users = [], oakLoading } = this.state;
-    
+    console.log(this.tableRef);
 
   // 当前示例包含：输入框、单选、多选、日期 等场景
   return (
       <div>
+          <Button
+            shape="rectangle"
+            size="medium"
+            type="button"
+              variant="base"
+              onClick={()=>this.goUpsert()}
+        >
+            添加
+        </Button>
           <Table
               loading={oakLoading}
               resizable

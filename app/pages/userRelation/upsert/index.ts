@@ -70,9 +70,12 @@ export default OakPage(
                 this.setUpdateData('mobile$user.0.mobile', value);
             },
             onCheckBoxChange(event: any) {
+                const { value } = event.detail as { value: Array<string> };
+                this.setRelationValue(value);
+            },
+            setRelationValue(value: Array<string>) {
                 const { entity, entityId, relations } = this.props;
                 const entityStr = firstLetterUpperCase(entity!);
-                const { value } = event.detail as { value: Array<string> };
                 const { relationArr } = this.state;
                 //由于是根据index 进行删除, 所以将之前设置的node从头开始删除
                 relationArr.forEach((ele, index) => {
