@@ -21,9 +21,7 @@ export default OakComponent({
             this.setVisible(true);
         },
         onVisibleChange(e: any) {
-            this.setData({
-                visible: e.detail.visible,
-            });
+            this.setVisible(e.detail.visible);
         },
     },
 });
