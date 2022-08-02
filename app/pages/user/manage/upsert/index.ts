@@ -98,6 +98,8 @@ export default OakPage({
             await this.execute(this.props.oakId ? 'update' : 'create');
             if (this.props.oakFrom === 'user:manage:list') {
                 this.navigateBack();
+            } else if (this.props.oakFrom === 'user:manage:detail') {
+                this.navigateBack();
             }
         },
         onClickPicker(e) {

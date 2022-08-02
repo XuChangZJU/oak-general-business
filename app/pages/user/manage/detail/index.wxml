@@ -9,19 +9,20 @@
         </block>
     </view>
     <view class="col">
-        <t-cell title="手机号" hover>
-            <view slot="note">
-                <view wx:if="{{mobileCount > 1}}">{{mobileCount}}条手机号</view>
-                <view wx:elif="{{mobileCount === 1}}">{{mobile}}</view>
-                <view wx:else>未设置</view>
-            </view>
-        </t-cell>
+       
         <t-cell title="昵称" hover>
             <text slot="note">{{nickname || '未设置'}}</text>
         </t-cell>
         <t-cell title="姓名" hover>
             <text slot="note">{{name || '未设置'}}</text>
         </t-cell>
+        <t-cell title="手机号" hover>
+             <view slot="note">
+                 <view wx:if="{{mobileCount > 1}}">{{mobileCount}}条手机号</view>
+                 <view wx:elif="{{mobileCount === 1}}">{{mobile}}</view>
+                 <view wx:else>未设置</view>
+             </view>
+         </t-cell>
         <t-cell title="用户状态" hover arrow>
             <t-tag slot="note" shape="round" size="medium" theme="{{stateColor[userState]}}">
                 {{userState}}
