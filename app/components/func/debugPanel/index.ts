@@ -12,9 +12,17 @@ export default OakComponent({
         printRunningTree() {
             console.log(this.features.runningTree.getRoot());
         },
-        setVisible(visible) {
+        setVisible(visible: boolean) {
             this.setState({
                 visible,
+            });
+        },
+        handlePopup() {
+            this.setVisible(true);
+        },
+        onVisibleChange(e: any) {
+            this.setData({
+                visible: e.detail.visible,
             });
         },
     },

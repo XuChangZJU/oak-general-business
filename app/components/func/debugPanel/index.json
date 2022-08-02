@@ -1,6 +1,7 @@
 {
     "component": true,
     "usingComponents": {
-        "t-message": "../../miniprogram_npm/tdesign/message/message"
+        "t-button": "../../../miniprogram_npm/tdesign/button/button",
+        "t-popup": "../../../miniprogram_npm/tdesign/popup/popup"
     }
 }

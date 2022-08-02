@@ -1,2 +1,10 @@
-
-<t-message id="t-message" />
+<t-button bind:tap="handlePopup" t-class="btn-popup" variant="text" theme="primary" icon="chevron-up" shape="circle"></t-button>
+<t-popup visible="{{visible}}" bind:visible-change="onVisibleChange" placement="bottom" close-btn="true">
+    <view class="block block--bottom">
+        <view class="btn-box">
+            <t-button bind:tap="printRunningTree" t-class="btn-item" theme="primary" size="small" shape="circle">R</t-button>
+            <t-button bind:tap="printDebugStore" t-class="btn-item" theme="primary" size="small" shape="circle">S</t-button>
+            <t-button bind:tap="printCachedStore" t-class="btn-item" theme="primary" size="small" shape="circle">C</t-button>
+        </view>
+    </view>
+</t-popup>
