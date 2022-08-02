@@ -3,6 +3,8 @@
   "usingComponents": {
       "t-button": "../../../miniprogram_npm/tdesign/button/button",
       "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
-      "t-drawer": "../../../miniprogram_npm/tdesign/drawer/drawer"
+      "t-popup": "../../../miniprogram_npm/tdesign/popup/popup",
+      "t-grid": "../../../miniprogram_npm/tdesign/grid/grid",
+      "t-grid-item": "../../../miniprogram_npm/tdesign/grid/grid-item"
   }
 }

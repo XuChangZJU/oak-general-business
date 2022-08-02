@@ -84,9 +84,13 @@ export default OakPage({
             const { id } = dataset!;
             if (event) {
                 this.pub(event, this.state.userData.find(ele => ele.id === id));
+                // this.navigateBack();
             }
             else {
-                this.navigateBack();
+                 this.navigateTo({
+                     url: '/user/manage/detail',
+                     oakId: id,
+                 });
             }
         },
         goNewUser() {
