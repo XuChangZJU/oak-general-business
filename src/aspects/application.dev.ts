@@ -1,6 +1,10 @@
 import { EntityDict } from "general-app-domain";
 import { AppType } from "general-app-domain/Application/Schema";
-import { DEV_WEB_APPLICATION_ID, DEV_WECHATMP_APPLICATION_ID } from "..";
+import {
+    DEV_WEB_APPLICATION_ID,
+    DEV_WECHATMP_APPLICATION_ID,
+    DEV_WECHATPUPLIC_APPLICATION_ID,
+} from '..';
 import { GeneralRuntimeContext } from "../RuntimeContext";
 
 export async function getApplication<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: {

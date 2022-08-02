@@ -35,5 +35,5 @@
     </view>
     <view style="flex:1" />
     <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="openDrawer" content="更多" />
-    <action-panel show="{{show}}" bind:close="closeDrawer" style="align-self:stretch" actions="{{oakLegalActions}}" actionDescriptions="{{actionDescriptions}}" bind:click="onActionClick" />
+    <actionPanel show="{{show}}" bind:close="closeDrawer" style="align-self:stretch" actions="{{oakLegalActions}}" actionDescriptions="{{actionDescriptions}}" bind:click="onActionClick" />
 </view>

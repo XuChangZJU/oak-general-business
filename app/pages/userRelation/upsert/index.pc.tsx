@@ -1,11 +1,21 @@
-import * as React from 'react';
-import { Form, Input, Row, Col,  Radio, Checkbox, Button, Switch, MessagePlugin, DatePicker, Tooltip, CheckboxGroup } from 'tdesign-react';
-import { LockOnIcon } from 'tdesign-icons-react';
+import React from 'react';
+import {
+    Form,
+    Input,
+    Row,
+    Col,
+    Checkbox,
+    Button,
+} from 'tdesign-react';
 const { FormItem } = Form;
+
 export default function render() {
     const { relations, entity } = this.props;
     const { name, mobile, password, relationArr } = this.state;
-    const relationArr2 = relations && JSON.parse(relations);
+    const relationArr2 =
+        typeof relations === 'object'
+            ? relations
+            : relations && JSON.parse(relations);
     return (
         <div>
             <Row gutter={16}>
@@ -24,7 +34,11 @@ export default function render() {
                             label="姓名"
                             name="name"
                             rules={[
-                                { required: true, message: '姓名不能为空', type: 'error' },
+                                {
+                                    required: true,
+                                    message: '姓名不能为空',
+                                    type: 'error',
+                                },
                             ]}
                         >
                             <Input
@@ -41,14 +55,29 @@ export default function render() {
                             label="手机号码"
                             name="mobile"
                             rules={[
-                                { required: true, message: '手机号不能为空', type: 'error' },
-                                { min: 11, message: '请输入11位手机号', type: 'error' },
-                                { max: 11, message: '请输入11位手机号', type: 'error' },
+                                {
+                                    required: true,
+                                    message: '手机号不能为空',
+                                    type: 'error',
+                                },
+                                {
+                                    min: 11,
+                                    message: '请输入11位手机号',
+                                    type: 'error',
+                                },
+                                {
+                                    max: 11,
+                                    message: '请输入11位手机号',
+                                    type: 'error',
+                                },
                             ]}
                         >
                             <Input
                                 onChange={(value, context) => {
-                                    this.setUpdateData('mobile$user.0.mobile', value);
+                                    this.setUpdateData(
+                                        'mobile$user.0.mobile',
+                                        value
+                                    );
                                 }}
                                 value={mobile}
                                 align="left"
@@ -62,7 +91,11 @@ export default function render() {
                             label="密码"
                             name="mobile"
                             rules={[
-                                { required: true, message: '密码不能为空', type: 'error' },
+                                {
+                                    required: true,
+                                    message: '密码不能为空',
+                                    type: 'error',
+                                },
                             ]}
                         >
                             <Input
@@ -78,18 +111,36 @@ export default function render() {
                         <FormItem
                             label="权限"
                             rules={[
-                                { required: true, message: '请至少选择一个权限', type: 'error' },
+                                {
+                                    required: true,
+                                    message: '请至少选择一个权限',
+                                    type: 'error',
+                                },
                             ]}
                         >
                             <Checkbox.Group
                                 value={relationArr}
-                                onChange={(value) => { this.setRelationValue(value) }}
-                                options={relationArr2.map(ele => ({value: ele, label: this.t && this.t(entity + ':r.' + ele) || ele}))}
-                            >
-                            </Checkbox.Group>
+                                onChange={(value) => {
+                                    this.setRelationValue(value);
+                                }}
+                                options={relationArr2.map((ele) => ({
+                                    value: ele,
+                                    label:
+                                        (this.t &&
+                                            this.t(entity + ':r.' + ele)) ||
+                                        ele,
+                                }))}
+                            ></Checkbox.Group>
                         </FormItem>
                         <FormItem style={{ marginLeft: 100 }}>
-                            <Button theme="primary" type="submit" style={{ marginRight: 10 }} onClick={()=>{this.onConfirm()}}>
+                            <Button
+                                theme="primary"
+                                type="submit"
+                                style={{ marginRight: 10 }}
+                                onClick={() => {
+                                    this.onConfirm();
+                                }}
+                            >
                                 提交
                             </Button>
                             <Button type="reset">重置</Button>

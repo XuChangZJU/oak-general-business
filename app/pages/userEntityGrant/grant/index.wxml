@@ -1,7 +1,7 @@
 <!-- index.wxml -->
 <view class="page-body">
     <view class="cell-col">
-        <radio-group bindchange="radioChange" class="test">
+        <radio-group bindchange="onRadioChange" class="test">
             <label class="label" wx:for="{{relations}}" wx:key="*this">
                 <view>
                     <radio value="{{item}}" color="#2d8cf0" />
@@ -10,5 +10,5 @@
             </label>
         </radio-group>
     </view>
-    <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="handleConfirm" content="{{t('common:action.confirm')}}" />
+    <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="confirm" content="{{t('common:action.confirm')}}" />
 </view>

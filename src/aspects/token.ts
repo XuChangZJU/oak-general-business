@@ -13,11 +13,6 @@ import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
 import { OakChangLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exceptions';
 import { encryptPasswordSha1 } from '../utils/password';
 
-export async function loginMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: { code: string }, context: Cxt): Promise<string> {
-    const { rowStore } = context;
-    throw new Error('method not implemented!');
-}
-
 async function makeDistinguishException<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(userId: string, context: Cxt) {
     const { rowStore } = context;
 
@@ -324,6 +319,22 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends GeneralRu
     }
 }
 
+/**
+ * 公众号授权登录
+ * @param params 
+ * @param context 
+ */
+export async function loginWechatPublic<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: { code: string }, context: Cxt): Promise<string> {
+    const { rowStore } = context;
+    throw new Error('method not implemented!');
+}
+
+/**
+ * 小程序授权登录
+ * @param param0 
+ * @param context 
+ * @returns 
+ */
 export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ code, env }: {
     code: string;
     env: WechatMpEnv;

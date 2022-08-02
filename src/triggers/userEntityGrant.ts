@@ -57,7 +57,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                     expiresAt,
                     expired: false,
                 });
-                // 如果是微信体系的应用，为之创建一个默认的weChatQrCode
+                // 如果是微信体系的应用，为之创建一个默认的weChatQrCode， web下可以生成公众号码
                 if (['wechatPublic', 'wechatMp'].includes(appConfig!.type)) {
                     await createWechatQrCode(
                         {
@@ -74,6 +74,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                         context
                     );
                 }
+                
             }
             if (data instanceof Array) {
                 assert('授权不存在一对多的情况')
@@ -92,47 +93,63 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
         fn: async ({ operation }, context, params) => {
             const { data, filter } = operation;
             const { userId } = (await context.getToken())!;
-            const { result } = await context.rowStore.select('userEntityGrant', {
-                data: {
-                    id: 1,
-                    entity: 1,
-                    entityId: 1,
-                    relation: 1,
+            const { result } = await context.rowStore.select(
+                'userEntityGrant',
+                {
+                    data: {
+                        id: 1,
+                        entity: 1,
+                        entityId: 1,
+                        relation: 1,
+                    },
+                    filter: {
+                        id: filter!.id,
+                    },
+                    indexFrom: 0,
+                    count: 1,
                 },
-                filter: {
-                    id: filter!.id,
-                },
-                indexFrom: 0,
-                count: 1,
-            }, context, params);
-            const { entity, entityId, relation } = result[0];
+                context,
+                params
+            );
+            const { entity, entityId, relation, type } = result[0];
             const entityStr = firstLetterUpperCase(entity!);
             const userRelation = `user${entityStr}` as keyof EntityDict;
-            const {result: result2} = await context.rowStore.select(userRelation, {
-                data: {
-                    id: 1,
-                },
-                filter: {
-                    userId,
-                    relation,
-                    [`${entity}Id`]: entityId,
-                },
-                indexFrom: 0,
-                count: 1,
-            }, context, params);
-            if (result2.length) {
-                throw new OakCongruentRowExists(result2[0] as any, '已领用该权限');
-            }
-            else {
-                await context.rowStore.operate(userRelation, {
-                    action: 'create',
+            //如果是relation是transfer，需要处理授权者名下entity关系转让给接收者
+            const { result: result2 } = await context.rowStore.select(
+                userRelation,
+                {
                     data: {
+                        id: 1,
+                    },
+                    filter: {
                         userId,
-                        [`${entity}Id`]: entityId,
                         relation,
-                    } as any,
-                }, context);
-                console.log(context.rowStore);
+                        [`${entity}Id`]: entityId,
+                    },
+                    indexFrom: 0,
+                    count: 1,
+                },
+                context,
+                params
+            );
+            if (result2.length) {
+                throw new OakCongruentRowExists(
+                    result2[0] as any,
+                    '已领用该权限'
+                );
+            } else {
+                await context.rowStore.operate(
+                    userRelation,
+                    {
+                        action: 'create',
+                        data: {
+                            userId,
+                            [`${entity}Id`]: entityId,
+                            relation,
+                        } as any,
+                    },
+                    context
+                );
                 return 1;
             }
         }

@@ -30,15 +30,22 @@ export default OakPage({
         ready() {
             this.setUpdateData('entity', this.props.entity);
             this.setUpdateData('entityId', this.props.entityId);
-            this.setUpdateData('type', this.props.type);
+            // 默认type为授权
+            this.setUpdateData('type', this.props.type || 'grant');
         },
     },
     methods: {
-        radioChange(input: any) {
+        bindRadioChange(input: any) {
             const { value } = this.resolveInput(input);
-            this.setUpdateData('relation', value!);
+            this.setRadioValue(value);
         },
-        async handleConfirm() {
+        setRadioValue(value: any) {
+            this.setUpdateData('relation', value);
+        },
+        reset() {
+            this.resetUpdateData();
+        },
+        async confirm() {
             try {
                 const result = await this.execute(
                     this.props.oakId ? 'update' : 'create',
@@ -68,6 +75,10 @@ export default OakPage({
                         oakId: data.id,
                     });
                 }
+                    this.navigateTo({
+                        url: '/userEntityGrant/detail',
+                        oakId: error.data.id,
+                    });
             }
         },
     },

@@ -1,7 +1,7 @@
 {
     "navigationBarTitleText": "用户详情",
     "usingComponents": {
-        "action-panel": "../../../../components/func/action-panel/index",
+        "actionPanel": "../../../../components/func/actionPanel/index",
         "t-button": "../../../../miniprogram_npm/tdesign/button/button",
         "t-cell": "../../../../miniprogram_npm/tdesign/cell/cell",
         "t-icon": "../../../../miniprogram_npm/tdesign/icon/icon",
