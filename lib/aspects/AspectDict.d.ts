@@ -10,14 +10,15 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntime
         mobile: string;
         env: WebEnv | WechatMpEnv;
     }, context: Cxt) => Promise<string>;
-    loginMp: (params: {
+    loginWechatPublic: ({ code, env, }: {
         code: string;
+        env: WebEnv;
     }, context: Cxt) => Promise<string>;
-    loginWechatMp: ({ code, env }: {
+    loginWechatMp: ({ code, env, }: {
         code: string;
         env: WechatMpEnv;
     }, context: Cxt) => Promise<string>;
-    syncUserInfoWechatMp: ({ nickname, avatarUrl, encryptedData, iv, signature }: {
+    syncUserInfoWechatMp: ({ nickname, avatarUrl, encryptedData, iv, signature, }: {
         nickname: string;
         avatarUrl: string;
         encryptedData: string;

@@ -1,10 +1,17 @@
-import { loginByMobile, loginMp, loginWechatMp, syncUserInfoWechatMp, sendCaptcha } from './token';
+import {
+    loginByMobile,
+    loginWechatPublic,
+    loginWechatMp,
+    syncUserInfoWechatMp,
+    sendCaptcha,
+} from './token';
 import { getUploadInfo } from './extraFile';
 import { getApplication } from './application';
 // import  commonAspectDict from 'oak-common-aspect';
+
 export const aspectDict = {
     loginByMobile,
-    loginMp,
+    loginWechatPublic,
     loginWechatMp,
     syncUserInfoWechatMp,
     getUploadInfo,

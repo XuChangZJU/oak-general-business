@@ -75,10 +75,6 @@ export default OakPage({
                         oakId: data.id,
                     });
                 }
-                    this.navigateTo({
-                        url: '/userEntityGrant/detail',
-                        oakId: error.data.id,
-                    });
             }
         },
     },

@@ -2,15 +2,27 @@ import { GeneralRuntimeContext } from '../RuntimeContext';
 import { EntityDict } from 'general-app-domain';
 import { WechatMpConfig } from 'general-app-domain/Application/Schema';
 import { WebEnv, WechatMpEnv } from 'general-app-domain/Token/Schema';
-export declare function loginMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: {
-    code: string;
-}, context: Cxt): Promise<string>;
 export declare function loginByMobile<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: {
     captcha?: string;
     password?: string;
     mobile: string;
     env: WebEnv | WechatMpEnv;
 }, context: Cxt): Promise<string>;
+/**
+ * 公众号授权登录
+ * @param param0
+ * @param context
+ */
+export declare function loginWechatPublic<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ code, env }: {
+    code: string;
+    env: WebEnv;
+}, context: Cxt): Promise<string>;
+/**
+ * 小程序授权登录
+ * @param param0
+ * @param context
+ * @returns
+ */
 export declare function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ code, env }: {
     code: string;
     env: WechatMpEnv;
