@@ -6,7 +6,7 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 
 export interface Schema extends EntityShape {
-    origin: 'mp' | 'public';
+    origin: 'mp' | 'public' | 'web';
     openId?: String<32>;
     unionId?: String<32>;
     accessToken?: String<32>;
@@ -44,6 +44,7 @@ const locale: LocaleDef<Schema, '', '', {
             origin: {
                 mp: '小程序',
                 public: '公众号',
+                web: '网站',
             },
         }
     },

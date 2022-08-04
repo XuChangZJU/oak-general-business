@@ -2,7 +2,7 @@ import { GeneralRuntimeContext } from '../RuntimeContext';
 import { EntityDict } from 'general-app-domain';
 import { WechatSDK } from 'oak-external-sdk';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { WechatMpConfig, WechatPublicCofig, WebConfig } from 'general-app-domain/Application/Schema';
+import { WechatMpConfig, WechatPublicConfig, WebConfig } from 'general-app-domain/Application/Schema';
 import { CreateOperationData as CreateToken, WebEnv, WechatMpEnv } from 'general-app-domain/Token/Schema';
 import { CreateOperationData as CreateWechatUser } from 'general-app-domain/WechatUser/Schema';
 import { CreateOperationData as CreateUser, Schema as User } from 'general-app-domain/User/Schema';
@@ -324,7 +324,7 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends GeneralRu
  * @param param0 
  * @param context 
  */
-export async function loginWechatPublic<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ code, env }: {
+export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ code, env }: {
     code: string;
     env: WebEnv;
 }, context: Cxt): Promise<string> {
@@ -332,10 +332,16 @@ export async function loginWechatPublic<ED extends EntityDict, Cxt extends Gener
         const application = await context.getApplication();
     const { type, config, systemId } = application!;
 
-    assert(type === 'wechatPublic' || config.type === 'wechatPublic');
-    const config2 = config as WechatPublicCofig;
+    // 可能type是web或者wechatPublic
+    assert(type !== 'wechatMp' && config.type !== 'wechatMp');
+    let config2;
+    if (type === 'wechatPublic') {
+        config2 = config as WechatPublicConfig;
+    } else {
+        config2 = config as WebConfig;
+    }
     const { appId, appSecret } = config2;
-    const wechatInstance = WechatSDK.getInstance(appId, appSecret, 'wechatPublic');
+    const wechatInstance = WechatSDK.getInstance(appId, appSecret, type);
 
     const { sessionKey, openId, unionId } = await wechatInstance.code2Session(code);
 
@@ -530,7 +536,7 @@ export async function loginWechatPublic<ED extends EntityDict, Cxt extends Gener
         id: await generateNewId(),
         sessionKey,
         unionId,
-        origin: 'mp',
+        origin: type === 'wechatPublic' ? 'public' : 'web',
         openId,
         applicationId: application!.id,
         user: {

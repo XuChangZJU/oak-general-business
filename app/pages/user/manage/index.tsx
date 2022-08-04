@@ -1,19 +1,34 @@
 import * as React from 'react';
-import { Fab } from 'tdesign-mobile-react';
+import { Fab, Cell, Tag } from 'tdesign-mobile-react';
 import { Icon } from 'tdesign-icons-react';
 
-import UserCell from '../../../components/user/cell';
-
 export default function render() {
+    const {
+        event
+    } = this.props;
+    const { stateColor, userArr } = this.state;
     return (
         <div style={{ height: '100vh' }}>
-            {this.state.userData?.map((ele, index) => {
+            {userArr?.map((ele, index) => {
                 return (
-                    <UserCell
+                    <Cell
                         key={index}
-                        oak:path={index.toString()}
-                        oakId={ele.id}
-                        click={() => this.onCellClicked()}
+                        onClick={() => this.onCellClicked(ele.id, event)}
+                        image={<img className="avatar" src={ele.avatar} />}
+                        title={ele.name || '未设置'}
+                        description={
+                            <div>
+                                <div className="mobile">
+                                    手机号：
+                                    {ele.mobile || '未设置'}
+                                </div>
+                                <div style={{ display: 'flex' }}>
+                                    <Tag theme={stateColor[ele.userState]}>
+                                        {ele.userState}
+                                    </Tag>
+                                </div>
+                            </div>
+                        }
                     />
                 );
             })}

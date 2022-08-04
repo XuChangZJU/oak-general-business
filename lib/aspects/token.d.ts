@@ -13,7 +13,7 @@ export declare function loginByMobile<ED extends EntityDict, Cxt extends General
  * @param param0
  * @param context
  */
-export declare function loginWechatPublic<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ code, env }: {
+export declare function loginWechat<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ code, env }: {
     code: string;
     env: WebEnv;
 }, context: Cxt): Promise<string>;

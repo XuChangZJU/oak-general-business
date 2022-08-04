@@ -4,7 +4,7 @@ import { Schema as Application } from './Application';
 import { Schema as Token } from './Token';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 export interface Schema extends EntityShape {
-    origin: 'mp' | 'public';
+    origin: 'mp' | 'public' | 'web';
     openId?: String<32>;
     unionId?: String<32>;
     accessToken?: String<32>;

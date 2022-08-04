@@ -13,9 +13,11 @@ export type WechatMpConfig = {
 
 export type WebConfig = {
     type: 'web';
+    appId: string;
+    appSecret: string; //网站 微信扫码登录
 };
 
-export type WechatPublicCofig = {
+export type WechatPublicConfig = {
     type: 'wechatPublic';
     appId: string;
     appSecret: string;
@@ -26,7 +28,7 @@ export interface Schema extends EntityShape {
     description: Text;
     type: AppType;
     system: System;
-    config: WebConfig | WechatMpConfig| WechatPublicCofig;
+    config: WebConfig | WechatMpConfig | WechatPublicConfig;
 };
 
 const locale: LocaleDef<Schema, '', '', {

@@ -60,12 +60,12 @@ export class Token<
     }
 
     @Action
-    async loginWechatPublic(code: string) {
+    async loginWechat(code: string) {
         await this.rwLock.acquire('X');
         try {
             const env = await getEnv();
             const { result } = await this.getAspectWrapper().exec(
-                'loginWechatPublic',
+                'loginWechat',
                 {
                     code,
                     env: env as WebEnv,

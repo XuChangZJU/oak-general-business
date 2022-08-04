@@ -1,8 +1,8 @@
 <!-- index.wxml -->
 <view class="page-body">
     <view class="user-list">
-        <view wx:for="{{userData}}" wx:key="index">
-            <view class="cell" bind:tap="onCellClicked" data-id="{{item.id}}">
+        <view wx:for="{{userArr}}" wx:key="index">
+            <view class="cell" bind:tap="bindClicked" data-id="{{item.id}}">
                 <block wx:if="{{item.avatar}}">
                     <image class="avatar" src="{{item.avatar}}" mode="aspectFit" />
                 </block>

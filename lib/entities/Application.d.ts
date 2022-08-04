@@ -10,8 +10,10 @@ export declare type WechatMpConfig = {
 };
 export declare type WebConfig = {
     type: 'web';
+    appId: string;
+    appSecret: string;
 };
-export declare type WechatPublicCofig = {
+export declare type WechatPublicConfig = {
     type: 'wechatPublic';
     appId: string;
     appSecret: string;
@@ -21,5 +23,5 @@ export interface Schema extends EntityShape {
     description: Text;
     type: AppType;
     system: System;
-    config: WebConfig | WechatMpConfig | WechatPublicCofig;
+    config: WebConfig | WechatMpConfig | WechatPublicConfig;
 }

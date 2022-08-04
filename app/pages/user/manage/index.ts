@@ -40,7 +40,7 @@ export default OakPage({
     },
     isList: true,
     formData: async ({ data: users }) => {
-        const userData = users.map((user) => {
+        const userArr = users.map((user) => {
             const {
                 id,
                 nickname,
@@ -64,7 +64,7 @@ export default OakPage({
             };
         });
         return {
-            userData,
+            userArr,
         };
     },
     properties: {
@@ -74,23 +74,28 @@ export default OakPage({
         stateColor: {
             shadow: 'primary',
             normal: 'success',
-            disabled: 'danger'
-        }
+            disabled: 'danger',
+        },
     },
     methods: {
-        async onCellClicked(input: any) {
+        async bindClicked(input: any) {
             // resolveInput拿的是target，原来代码拿的是currentTarget
             const { dataset, event } = this.resolveInput(input);
             const { id } = dataset!;
+            this.onCellClicked(id, event);
+        },
+        async onCellClicked(id: any, event: any) {
             if (event) {
-                this.pub(event, this.state.userData.find(ele => ele.id === id));
+                this.pub(
+                    event,
+                    this.state.userArr.find((ele) => ele.id === id)
+                );
                 // this.navigateBack();
-            }
-            else {
-                 this.navigateTo({
-                     url: '/user/manage/detail',
-                     oakId: id,
-                 });
+            } else {
+                this.navigateTo({
+                    url: '/user/manage/detail',
+                    oakId: id,
+                });
             }
         },
         goNewUser() {
@@ -103,5 +108,5 @@ export default OakPage({
         detached() {
             this.unsubAll(this.props.event);
         },
-    }
+    },
 });

@@ -1,4 +1,3 @@
-import { EntityDict } from 'general-app-domain';
 import URL from 'url';
 
 export default OakPage({
@@ -64,7 +63,8 @@ export default OakPage({
             } else {
                 console.log('token不存在或失效');
                 try {
-                    await features.token.loginWechatPublic(code as string);
+                    // web微信扫码跟公众号授权
+                    await features.token.loginWechat(code as string);
                     // 如果 query2 存在isGoBack为true 返回上一页
                     if (query2 && query2.isGoBack) {
                         this.navigateBack({

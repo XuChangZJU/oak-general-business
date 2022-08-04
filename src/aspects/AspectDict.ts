@@ -18,7 +18,7 @@ type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<string>;
-    loginWechatPublic: (
+    loginWechat: (
         {
             code,
             env,

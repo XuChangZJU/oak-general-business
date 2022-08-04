@@ -1,6 +1,6 @@
 import {
     loginByMobile,
-    loginWechatPublic,
+    loginWechat,
     loginWechatMp,
     syncUserInfoWechatMp,
     sendCaptcha,
@@ -11,7 +11,7 @@ import { getApplication } from './application';
 
 export const aspectDict = {
     loginByMobile,
-    loginWechatPublic,
+    loginWechat,
     loginWechatMp,
     syncUserInfoWechatMp,
     getUploadInfo,

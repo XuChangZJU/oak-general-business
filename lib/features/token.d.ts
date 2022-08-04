@@ -14,7 +14,7 @@ export declare class Token<ED extends EntityDict, Cxt extends GeneralRuntimeCont
     private storage;
     constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, context: Cxt);
     loginByMobile(mobile: string, password?: string, captcha?: string): Promise<void>;
-    loginWechatPublic(code: string): Promise<void>;
+    loginWechat(code: string): Promise<void>;
     loginWechatMp(): Promise<void>;
     syncUserInfoWechatMp(): Promise<void>;
     logout(): Promise<void>;
