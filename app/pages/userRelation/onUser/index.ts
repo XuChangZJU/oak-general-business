@@ -128,7 +128,6 @@ export default OakPage(
                 this.refresh();
             },
             onChange(input: any) {
-                console.log(input, 123);
                 const { dataset, value } = this.resolveInput(input);
                 const { id: userId, relation, index } = dataset as {
                     id: string,

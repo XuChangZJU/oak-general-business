@@ -11,7 +11,12 @@ export async function getApplication<ED extends EntityDict, Cxt extends GeneralR
     type: AppType;
 }, context: Cxt) {
     const { type } = params;
-    const appId = type === 'web' ? DEV_WEB_APPLICATION_ID : DEV_WECHATMP_APPLICATION_ID;
+    const APP_ID = {
+        web: DEV_WEB_APPLICATION_ID,
+        wechatMp: DEV_WECHATMP_APPLICATION_ID,
+        wechatPublic: DEV_WECHATPUPLIC_APPLICATION_ID,
+    };
+    const appId = APP_ID[type];
 
     const { result: [application]} = await context.rowStore.select('application', {
         data: {

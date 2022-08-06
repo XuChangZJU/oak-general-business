@@ -9,7 +9,7 @@ export declare type WechatQrCodeProps = {
 export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
-    type: 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp';
+    type: 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp' | 'webForWechatPublic';
     allowShare: Boolean;
     tag?: String<32>;
     expiresAt?: Datetime;

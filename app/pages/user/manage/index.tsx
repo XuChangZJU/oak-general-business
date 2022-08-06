@@ -3,6 +3,7 @@ import { Fab, Cell, Tag } from 'tdesign-mobile-react';
 import { Icon } from 'tdesign-icons-react';
 
 export default function render() {
+    const { t } = this;
     const {
         event
     } = this.props;
@@ -24,7 +25,7 @@ export default function render() {
                                 </div>
                                 <div style={{ display: 'flex' }}>
                                     <Tag theme={stateColor[ele.userState]}>
-                                        {ele.userState}
+                                        {t(`user:v.userState.${ele.userState}`)}
                                     </Tag>
                                 </div>
                             </div>

@@ -13,15 +13,20 @@ export type WechatQrCodeProps = {
 export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
-    type: 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp',
-    allowShare: Boolean;        // 是否允许通过分享授权
-    tag?: String<32>;       // 调用者加的tag
+    type:
+        | 'wechatMpDomainUrl'
+        | 'wechatMpWxaCode'
+        | 'wechatPublic'
+        | 'wechatPublicForMp'
+        | 'webForWechatPublic';
+    allowShare: Boolean; // 是否允许通过分享授权
+    tag?: String<32>; // 调用者加的tag
     expiresAt?: Datetime; // 过期时间
     expired?: Boolean; //是否过期
     ticket?: Text;
     url?: String<64>;
     permanent: Boolean; //是否永久码
-    buffer?: Text;  // 若没有url，使用buffer存储生成的小程序码数据（base64)
+    buffer?: Text; // 若没有url，使用buffer存储生成的小程序码数据（base64)
     application: Application;
     props: WechatQrCodeProps;
 }
@@ -87,6 +92,7 @@ const locale: LocaleDef<Schema, '', '', {
                 wechatMpWxaCode: '小程序码',
                 wechatPublic: '公众号码',
                 wechatPublicForMp: '公众号跳小程序',
+                webForWechatPublic: '网站跳公众号'
             }
         }
     },

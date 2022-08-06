@@ -70,7 +70,7 @@ export default OakPage({
                     const data = (<
                         OakCongruentRowExists<EntityDict, 'userEntityGrant'>
                     >error).getData();
-                    this.navigateTo({
+                    this.redirectTo({
                         url: '/userEntityGrant/detail',
                         oakId: data.id,
                     });

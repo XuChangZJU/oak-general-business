@@ -1,37 +1,24 @@
 <!-- index.wxml -->
-<view class="container">
+<view class="page-body">
     <view class="search-bar">
         <t-search placeholder="搜索" value="{{searchValue || ''}}" action="搜索" bind:lincancel="searchConfirm" bind:clear="searchCancel" bind:change="searchChange" bind:submit="searchConfirm" bind:action-click="searchConfirm" />
     </view>
-    <view class="col">
-        <block wx:for="{{users}}" wx:key="index">
-            <view class="card-view" data-id="{{item.id}}" bind:tap="goDetail">
-                <block wx:if="{{item.avatar}}">
-                    <image class="avatar" src="{{item.avatar}}" mode="aspectFit" />
-                </block>
-                <block wx:else>
-                    <view class="img-view">
-                        <t-icon name="image" size="xl" />
-                    </view>
-                </block>
-                <view class="row">
-                    <view class="col">
-                        <text class="nickname">{{item.nickname || '未设置'}}</text>
-                        <text class="mobile">姓名: {{item.name  || '未设置'}}</text>
-                        <text class="mobile">手机: {{item.mobile  || '未设置'}}</text>
-                        <view class="relation">
-                            权限:
-                            <block wx:if="{{item.relations.length}}" wx:for="{{item.relations}}" wx:for-item="item2" wx:for-index="index2" wx:key="index2">
-                                <text>{{item2.relation}}</text>
-                                <block wx:if="{{index2 !== item.relations.length - 1}}">
-                                    <t-divider layout="vertical"></t-divider>
-                                </block>
-                            </block>
-                        </view>
-                    </view>
-                </view>
+    <block wx:for="{{users}}" wx:key="index">
+        <t-cell data-id="{{item.id}}" bind:tap="bindClicked" title="{{item.nickname}}">
+            <t-image slot="left-icon" t-class="avatar" src="{{item.avatar}}" mode="aspectFit" shape="circle"></t-image>
+            <view slot="description" class="description">
+                  <text class="name">姓名: {{item.name  || '未设置'}}</text>
+                  <text class="mobile">手机: {{item.mobile  || '未设置'}}</text>
+                  <view class="relation">
+                      <block wx:if="{{item.relations.length}}" wx:for="{{item.relations}}" wx:for-item="item2" wx:for-index="index2" wx:key="index2">
+                          <t-tag variant="outline" theme="primary" >
+                              {{t(entity + ':r.' +  item2)}}
+                          </t-tag>
+                      </block>
+                  </view>
             </view>
-        </block>
-        <t-fab icon="add" bind:click="goUpsert" />
-    </view>
+        </t-cell>
+    </block>
+    <t-fab style="right: 0; bottom: 32px" icon="add" bind:click="goUpsert" />
 </view>
+<t-action-sheet id="t-action-sheet" items="{{btnItems}}" visible="{{visible}}" bind:selected="onActionSelect" bind:cancel="onActionCancel" bind:close="onActionClose" />

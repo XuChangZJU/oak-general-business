@@ -1,14 +1,10 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <view class="cell-col">
-        <radio-group bindchange="onRadioChange" class="test">
-            <label class="label" wx:for="{{relations}}" wx:key="*this">
-                <view>
-                    <radio value="{{item}}" color="#2d8cf0" />
-                </view>
-                <view>{{t(entity + ':r.' + item)}}</view>
-            </label>
-        </radio-group>
-    </view>
-    <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="confirm" content="{{t('common:action.confirm')}}" />
+    <t-radio-group bind:change="bindRadioChange">
+       <block wx:for="{{relations}}" wx:key="index">
+           <t-radio value="{{item}}" label="{{t(entity + ':r.' + item)}}" />
+       </block>
+   </t-radio-group>
+    <view style="flex: 1" />
+    <t-button style="margin: 16rpx" theme="primary" block size="large" bind:tap="confirm" content="{{t('common:action.confirm')}}" />
 </view>

@@ -17,7 +17,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
     const { type: appType, config } = (await context.getApplication())!;
 
     if (appType === 'wechatMp') {
-        const { qrCodePrefix } = (<WechatMpConfig>config);
+        const { qrCodePrefix } = <WechatMpConfig>config;
         const id = await generateNewId();
         if (qrCodePrefix) {
             // 设置了域名跳转，优先使用域名 + id来生成对应的ur
@@ -34,14 +34,17 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                 expired: false,
                 props,
             };
-            await context.rowStore.operate('wechatQrCode', {
-                action: 'create',
-                data,
-            }, context);
+            await context.rowStore.operate(
+                'wechatQrCode',
+                {
+                    action: 'create',
+                    data,
+                },
+                context
+            );
 
             return data;
-        }
-        else {
+        } else {
             // 没有域名跳转，使用小程序码
             // todo这里如果有同组的公众号，应该优先使用公众号的关注链接
             const data: CreateWechatQrcodeData = {
@@ -57,16 +60,64 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                 props,
             };
 
-            await context.rowStore.operate('wechatQrCode', {
-                action: 'create',
-                data,
-            }, context);
+            await context.rowStore.operate(
+                'wechatQrCode',
+                {
+                    action: 'create',
+                    data,
+                },
+                context
+            );
             return data;
         }
-    }
-    else {
-        assert(appType === 'wechatPublic');
-        // 还未实现，记得
-        throw new Error('method not implemented yet');
+    } else if (appType === 'wechatPublic') {
+        const id = await generateNewId();
+        const data: CreateWechatQrcodeData = {
+            id,
+            type: 'wechatPublic',
+            tag,
+            entity,
+            entityId,
+            applicationId,
+            allowShare: true,
+            permanent: false,
+            expired: false,
+            props,
+        };
+
+        await context.rowStore.operate(
+            'wechatQrCode',
+            {
+                action: 'create',
+                data,
+            },
+            context
+        );
+        return data;
+    } else {
+        assert(appType === 'web');
+        const id = await generateNewId();
+        const data: CreateWechatQrcodeData = {
+            id,
+            type: 'webForWechatPublic',
+            tag,
+            entity,
+            entityId,
+            applicationId,
+            allowShare: true,
+            permanent: false,
+            expired: false,
+            props,
+        };
+
+        await context.rowStore.operate(
+            'wechatQrCode',
+            {
+                action: 'create',
+                data,
+            },
+            context
+        );
+        return data;
     }
 }

@@ -1,6 +1,0 @@
-<!-- index.wxml -->
-<view class="container">
-    <!-- index.wxml -->
-        <t-cell title="二维码分享授权" hover arrow bind:tap="goQrcodeShare"/>
-        <t-cell title="手动添加授权" hover arrow bind:tap="goUpsert"/>
-</view>

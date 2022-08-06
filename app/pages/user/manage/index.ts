@@ -39,7 +39,8 @@ export default OakPage({
         },
     },
     isList: true,
-    formData: async ({ data: users }) => {
+    formData: async function({ data: users, features }) {
+        const pagination = this.getPagination();
         const userArr = users.map((user) => {
             const {
                 id,
@@ -65,6 +66,7 @@ export default OakPage({
         });
         return {
             userArr,
+            pagination,
         };
     },
     properties: {

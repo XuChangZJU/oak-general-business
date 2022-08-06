@@ -1,5 +1,4 @@
 import React from 'react';
-import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 
 import {
     Table,
@@ -8,10 +7,12 @@ import {
     Button,
     Avatar,
     Space,
+    Tag
 } from 'tdesign-react';
 
 export default function render() {
-  const { users = [], oakLoading, editableRowKeys = [],  } = this.state;
+    const { t } = this;
+    const { users = [], oakLoading, editableRowKeys = [] } = this.state;
     const { relations, entity, entityId } = this.props;
     const relationArr =
         typeof relations === 'object'
@@ -58,7 +59,7 @@ export default function render() {
                           return avatar ? (
                               <Avatar
                                   hideOnLoadFailed={false}
-                                  image="https://tdesign.gtimg.com/site/avatar.jpg"
+                                  image={avatar}
                                   shape="circle"
                               />
                           ) : (
@@ -101,9 +102,18 @@ export default function render() {
                   {
                       colKey: 'relations',
                       title: '权限',
+                      cell: ({ row, rowIndex, col, colIndex }) => {
+                          return (
+                              <Space>
+                                  {row.relations?.map((ele, index) => (
+                                      <Tag key={index}>
+                                          {t(entity + ':r.' + ele)}
+                                      </Tag>
+                                  ))}
+                              </Space>
+                          );
+                      },
 
-                      cell: ({ row, rowIndex, col, colIndex }) =>
-                          row?.relations?.join('、'),
                       edit: {
                           component: Select,
                           // props, 透传全部属性到 Select 组件
@@ -117,12 +127,7 @@ export default function render() {
                                       relationArr &&
                                       relationArr.map((ele, index) => ({
                                           value: ele,
-                                          label:
-                                              (this.t &&
-                                                  this.t(
-                                                      entity + ':r.' + ele
-                                                  )) ||
-                                              ele,
+                                          label: t(entity + ':r.' + ele),
                                       })),
                               };
                           },
@@ -138,7 +143,14 @@ export default function render() {
                       cell: ({ row }) => {
                           const editable = editableRowKeys.includes(row.id);
                           return (
-                              <div className="table-operations">
+                              <Space>
+                                  <Button
+                                      theme="primary"
+                                      variant="text"
+                                      onClick={(e) => this.goDetail(row.id)}
+                                  >
+                                      详情
+                                  </Button>
                                   {!editable && (
                                       <Button
                                           theme="primary"
@@ -169,7 +181,7 @@ export default function render() {
                                           取消
                                       </Button>
                                   )}
-                              </div>
+                              </Space>
                           );
                       },
                   },

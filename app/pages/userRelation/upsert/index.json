@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "修改权限",
+  "navigationBarTitleText": "添加权限",
   "usingComponents": {
       "t-checkbox": "../../../miniprogram_npm/tdesign/checkbox/checkbox",
       "t-checkbox-group": "../../../miniprogram_npm/tdesign/checkbox-group/checkbox-group",

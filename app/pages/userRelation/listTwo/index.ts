@@ -109,6 +109,15 @@ export default OakPage({
         searchValue: '',
         deleteIndex: '',
         editableRowKeys: [],
+        btnItems: [
+            {
+                label: '二维码授权',
+            },
+            {
+                label: '添加授权',
+            },
+        ],
+        visible: false,
     },
     lifetimes: {
         created() {
@@ -120,9 +129,43 @@ export default OakPage({
         },
     },
     methods: {
-        goDetail(e: any) {
-            const { relations, entity, entityId } = this.props;
+        onActionSelect(e: any) {
+            const { index, selected } = e.detail;
+            const { entity, entityId, relations } = this.props;
+
+            switch (index) {
+                case 0: {
+                    this.navigateTo({
+                        url: '/userEntityGrant/grant',
+                        entity,
+                        entityId,
+                        relations,
+                    });
+                }
+                case 1: {
+                    this.navigateTo({
+                        url: '/userRelation/upsert',
+                        entity,
+                        entityId,
+                        relations,
+                    });
+                }
+            }
+        },
+        onActionCancel() {
+            this.setState({
+                visible: false,
+            });
+        },
+        onActionClose() {
+            this.onActionCancel();
+        },
+        bindClicked(e: any) {
             const { id } = e.currentTarget.dataset;
+            this.goDetail(id);
+        },
+        goDetail(id) {
+            const { relations, entity, entityId } = this.props;
             this.navigateTo({
                 url: '/userRelation/detail2',
                 oakId: id,
@@ -141,11 +184,8 @@ export default OakPage({
                     relations,
                 });
             } else {
-                this.navigateTo({
-                    url: '/userRelation/chooseMethod',
-                    entity,
-                    entityId,
-                    relations,
+                this.setState({
+                    visible: true,
                 });
             }
         },

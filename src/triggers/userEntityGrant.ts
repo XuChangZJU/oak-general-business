@@ -3,7 +3,7 @@ import { CreateTriggerInTxn, Trigger } from 'oak-domain/lib/types/Trigger';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { CreateOperationData as CreateUserEntityGrantData } from 'general-app-domain/UserEntityGrant/Schema';
 
-import { OakCongruentRowExists } from 'oak-domain/lib/types';
+import { OakCongruentRowExists, OakException } from 'oak-domain/lib/types';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { DefaultConfig } from '../constants';
 import { createWechatQrCode } from '../aspects/wechatQrCode';
@@ -19,7 +19,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
             const { data, filter } = operation;
             const fn = async (userEntityGrantData: CreateUserEntityGrantData) => {
                 const { userId } = (await context.getToken())!;
-                const { id: applicationId, config: appConfig, system: { config: SystemConfig }} = (await context.getApplication())!;
+                const { id: applicationId, config: appConfig, system: { config: SystemConfig }, systemId } = (await context.getApplication())!;
                 assert(userId);
                 const { type, entity, entityId, relation, id } = userEntityGrantData;
                 const { result } = await context.rowStore.select('userEntityGrant', {
@@ -57,8 +57,9 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                     expiresAt,
                     expired: false,
                 });
-                // 如果是微信体系的应用，为之创建一个默认的weChatQrCode， web下可以生成公众号码
-                if (['wechatPublic', 'wechatMp'].includes(appConfig!.type)) {
+                // 如果是微信体系的应用，为之创建一个默认的weChatQrCode
+                // 如果网站支持公众号码生成
+                if (['wechatPublic', 'wechatMp', 'web'].includes(appConfig!.type)) {
                     await createWechatQrCode(
                         {
                             entity: 'userEntityGrant',
