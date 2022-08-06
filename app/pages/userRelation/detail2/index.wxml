@@ -11,7 +11,7 @@
         <text slot="content">权限设置</text>
     </t-divider>
     <block wx:for="{{relationArr}}">
-        <t-checkbox data-value="{{item}}" checked="{{item.checked}}" label="{{t(entity + ':r.' + item.value)}}" bind:change="onChange" />
+        <t-checkbox data-value="{{item.value}}" checked="{{item.checked}}" label="{{t(entity + ':r.' + item.value)}}" bind:change="onChange" />
     </block>
     <view style="flex: 1"></view>
     <t-button theme="primary" bind:tap="onConfirm" block>保存</t-button>
