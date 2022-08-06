@@ -6,6 +6,8 @@
       "t-tag": "../../../miniprogram_npm/tdesign/tag/tag",
       "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
       "t-divider": "../../../miniprogram_npm/tdesign/divider/divider",
-      "t-button": "../../../miniprogram_npm/tdesign/button/button"
+      "t-button": "../../../miniprogram_npm/tdesign/button/button",
+      "t-cell": "../../../miniprogram_npm/tdesign/cell/cell",
+      "t-image": "../../../miniprogram_npm/tdesign/image/image"
   }
 }

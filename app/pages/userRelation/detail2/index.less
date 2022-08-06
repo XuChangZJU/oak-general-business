@@ -7,7 +7,7 @@ page {
   background-color: #fff;
 }
 
-.container {
+.page-body {
   height: 100%;
   display: flex;
   flex: 1;
@@ -17,49 +17,41 @@ page {
   padding: 0;
   .safe-area-inset-bottom();
 }
-.content {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+
+.cell {
+  &::after {
+    border-bottom: none !important;
+    border-bottom-width: 0px;
+  }
 }
 
-.row {
+.description {
   display: flex;
-  align-items: center;
-  padding: @spacer-2;
+  flex-direction: column;
 }
 
 .col {
   display: flex;
   flex: 1;
   flex-direction: column;
-  margin-left: @spacer-2;
 }
 
-.nickname {
-  margin-right: @spacer-1;
-  font-size: @font-size-l;
+.name {
+  font-size: @font-size-base;
+  color: @text-level-2-color;
 }
+
 .mobile {
   font-size: @font-size-base;
-  color: @text-level-3-color;
+  color: @text-level-2-color;
 }
+
 .avatar {
-  height: 140rpx;
-  width: 140rpx;
-  border-radius: 50%;
+  height: 160rpx;
+  width: 160rpx;
 }
-.img-view {
+
+.relation {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 140rpx;
-  width: 140rpx;
-  border-radius: 50%;
-  background-color: @bg-color;
-}
-.row2 {
-  display: flex;
-  align-items: center;
-  margin-bottom: @spacer-1;
+  flex-wrap: wrap;
 }
