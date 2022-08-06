@@ -20,27 +20,13 @@ page {
 
 .search-bar {
   background-color: #fff;
-  padding-top: 10rpx;
-  padding-bottom: 10rpx;
+  padding: 10rpx;
   z-index: 1;
 }
 
-.card-view {
-  margin: @spacer;
-  margin-bottom: 0rpx;
-  padding: @spacer;
-  border-radius: 4rpx;
+.description {
   display: flex;
-  align-items: center;
-  box-shadow: 0 4rpx 20rpx 0 rgba(212, 217, 223, 0.5);
-  background-color: #fff;
-}
-
-.row {
-  margin-left: @spacer;
-  display: flex;
-  flex: 1;
-  align-items: center;
+  flex-direction: column;
 }
 
 .col {
@@ -49,21 +35,27 @@ page {
   flex-direction: column;
 }
 
-.nickname {
-  margin-bottom: 8rpx;
+.name {
   font-size: @font-size-base;
-}
-.mobile {
-  font-size: @font-size-base;
-  color: @text-level-3-color;
-}
-.avatar {
-  height: 140rpx;
-  width: 140rpx;
-  border-radius: 50%;
+  color: @text-level-2-color;
 }
 
-.content {
+.mobile {
+  font-size: @font-size-base;
+  color: @text-level-2-color;
+}
+
+.avatar {
+  height: 160rpx;
+  width: 160rpx;
+}
+
+.relation {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.relation-content {
   display: flex;
   flex: 1;
   flex-direction: row;
@@ -82,13 +74,12 @@ page {
 
 .btn-container {
   position: fixed;
-  bottom: 0;
+  bottom: constant(safe-area-inset-bottom) !important;
+    /* 兼容 iOS < 11.2 */
+  bottom: env(safe-area-inset-bottom) !important;
   display: flex;
   flex-direction: row;
   width: 100%;
-  .btn {
-    flex: 1;
-  }
 }
 
 .btn-search {

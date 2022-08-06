@@ -7,6 +7,7 @@
       "t-switch": "../../../miniprogram_npm/tdesign/switch/switch",
       "t-cell": "../../../miniprogram_npm/tdesign/cell/cell",
       "t-search": "../../../miniprogram_npm/tdesign/search/search",
+      "t-image": "../../../miniprogram_npm/tdesign/image/image",
       "t-button-group": "../../../miniprogram_npm/tdesign/button-group/button-group"
   }
 }

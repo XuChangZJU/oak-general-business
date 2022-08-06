@@ -6,7 +6,7 @@ export default OakPage(
         path: 'userRelation:list',
         entity: 'user',
         projection: async ({ props }) => {
-            const { entity } = props;
+            const { entity, relations, entityId } = props;
             const entityStr = firstLetterUpperCase(entity!);
             return {
                 id: 1,
@@ -30,10 +30,10 @@ export default OakPage(
                     },
                     filter: {
                         relation: {
-                            $in: props.relations!,
+                            $in: relations!,
                         },
-                        [`${entity}Id`]: props.entityId!,
-                    }
+                        [`${entity}Id`]: entityId!,
+                    },
                 },
                 extraFile$entity: {
                     $entity: 'extraFile',
@@ -68,16 +68,19 @@ export default OakPage(
 
             return {
                 users: users?.map((ele: any) => {
-                    const { mobile$user, extraFile$entity  } =
-                        ele || {};
+                    const { mobile$user, extraFile$entity } = ele || {};
                     const userEntity = ele![`user${entityStr}$user`];
                     const mobile = mobile$user && mobile$user[0]?.mobile;
                     const avatar =
                         extraFile$entity &&
                         extraFile$entity[0] &&
                         composeFileUrl(extraFile$entity[0]);
-                    const relations = userEntity?.map((ele: any) => ele.relation);
-                    const hasRelation: boolean[] = this.props.relations.map(ele2 => relations.includes(ele2));
+                    const relations = userEntity?.map(
+                        (ele: any) => ele.relation
+                    );
+                    const hasRelation: boolean[] = props.relations?.map(
+                        (ele2) => relations.includes(ele2)
+                    );
                     const user2 = Object.assign({}, ele, {
                         mobile,
                         avatar,
@@ -86,9 +89,10 @@ export default OakPage(
                     });
                     return user2;
                 }),
-                searchValue: (
-                    filter?.$or as [{ name: { $includes: string } }]
-                )[0].name.$includes,
+                searchValue:
+                    filter?.$or &&
+                    (filter.$or as [{ name: { $includes: string } }])[0]?.name
+                        .$includes,
             };
         },
         properties: {
