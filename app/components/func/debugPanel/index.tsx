@@ -13,7 +13,7 @@ export default function render() {
                 theme="primary"
                 icon={<ChevronUpIcon />}
                 style={{
-                    position: 'absolute',
+                    position: 'fixed',
                     bottom: 0,
                     right: '45vw',
                     ...style,
