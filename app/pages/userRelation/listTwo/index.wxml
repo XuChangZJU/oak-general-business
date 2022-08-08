@@ -19,6 +19,6 @@
             </view>
         </t-cell>
     </block>
-    <t-fab style="right: 0; bottom: 32px" icon="add" bind:click="goUpsert" />
+    <t-fab style="right: 0; bottom: 32px" icon="add" bind:click="onAdd" />
 </view>
 <t-action-sheet id="t-action-sheet" items="{{btnItems}}" visible="{{visible}}" bind:selected="onActionSelect" bind:cancel="onActionCancel" bind:close="onActionClose" />
