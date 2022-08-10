@@ -4,8 +4,9 @@ import {
     isPassword,
     isCaptcha,
 } from 'oak-domain/lib/utils/validator';
-import { DesktopIcon, LockOnIcon, MobileIcon } from 'tdesign-icons-react';
-import { Form, Input, Button, Checkbox, Tabs } from 'tdesign-react';
+import { DesktopIcon, LockOnIcon, MobileIcon, Icon } from 'tdesign-icons-react';
+import { Form, Input, Button, Checkbox, Tabs, Radio } from 'tdesign-react';
+import classNames from 'classnames';
 
 const { TabPanel } = Tabs;
 const { FormItem } = Form;
@@ -13,7 +14,7 @@ const { FormItem } = Form;
 export default function render() {
     const { t } = this;
     const { onlyCaptcha, onlyPassword, width } = this.props;
-    const { mobile, captcha, password, counter } = this.state;
+    const { mobile, captcha, password, counter, tabValue = 1} = this.state;
     const validMobile = isMobile(mobile);
     const validCaptcha = isCaptcha(captcha);
     const validPassword = isPassword(password);
@@ -29,13 +30,14 @@ export default function render() {
                     data-attr="mobile"
                     maxlength={11}
                     prefixIcon={<MobileIcon />}
-                    placeholder="Mobile"
+                    placeholder={t('placeholder.Mobile')}
                     size="large"
                     onChange={(value, context) => {
                         this.setState({
                             mobile: value,
                         });
                     }}
+                    className="loginbox-input"
                 />
             </FormItem>
             <FormItem name="password">
@@ -45,17 +47,15 @@ export default function render() {
                     data-attr="password"
                     prefixIcon={<LockOnIcon />}
                     type="password"
-                    placeholder="Password"
+                    placeholder={t('placeholder.Password')}
                     size="large"
                     onChange={(value, context) => {
                         this.setState({
                             password: value,
                         });
                     }}
+                    className="loginbox-input"
                 />
-            </FormItem>
-            <FormItem>
-                <Checkbox>{t('Remember me')}</Checkbox>
             </FormItem>
 
             <FormItem>
@@ -82,13 +82,14 @@ export default function render() {
                     type="tel"
                     maxlength={11}
                     prefixIcon={<MobileIcon />}
-                    placeholder="Mobile"
+                    placeholder={t('placeholder.Mobile')}
                     size="large"
                     onChange={(value, context) => {
                         this.setState({
                             mobile: value,
                         });
                     }}
+                    className="loginbox-input"
                 />
             </FormItem>
             <FormItem name="captcha">
@@ -96,24 +97,28 @@ export default function render() {
                     clearable
                     value={captcha}
                     data-attr="captcha"
-                    type="number"
+                    // type="number"
                     maxlength={4}
-                    placeholder="Captcha"
+                    placeholder={t('placeholder.Captcha')}
                     size="large"
                     onChange={(value, context) => {
                         this.setState({
                             captcha: value,
                         });
                     }}
+                    className="loginbox-input"
+                    suffix={
+                        <Button
+                            variant="text"
+                            size="small"
+                            theme="primary"
+                            disabled={!validMobile || counter > 0}
+                            onClick={() => this.sendCaptcha()}
+                        >
+                            {counter > 0 ? `${counter}秒后可重发` : t('Send')}
+                        </Button>
+                    }
                 />
-                <Button
-                    size="large"
-                    theme="primary"
-                    disabled={!validMobile || counter > 0}
-                    onClick={() => this.sendCaptcha()}
-                >
-                    {counter > 0 ? counter : t('Send')}
-                </Button>
             </FormItem>
 
             <FormItem>
@@ -130,87 +135,122 @@ export default function render() {
             </FormItem>
         </Form>
     );
+
     if (onlyCaptcha) {
-        return (
-            <div className="page-body">
-                <div
-                    style={{
-                        flex: 2,
-                    }}
-                />
-                {LoginCaptcha}
-                <div
-                    style={{
-                        flex: 3,
-                    }}
-                />
-            </div>
-        );
+          return (
+              <div className="loginbox-main">
+                  <div className="loginbox-wrap">
+                      <div className="loginbox-bd">
+                          <div className="loginbox-mobile loginbox-only">
+                              {LoginCaptcha}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          );
     } else if (onlyPassword) {
-        return (
-            <div className="page-body">
-                <div
-                    style={{
-                        flex: 2,
-                    }}
-                />
-                {LoginPassword}
-                <div
-                    style={{
-                        flex: 3,
-                    }}
-                />
-            </div>
-        );
+          return (
+              <div className="loginbox-main">
+                  <div className="loginbox-wrap">
+                      <div className="loginbox-bd">
+                          <div className="loginbox-password loginbox-only">
+                              {LoginPassword}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          );
     }
     return (
-        <div className="page-body">
-            <div
-                style={{
-                    flex: 2,
-                }}
-            />
-            <div
-                style={{
-                    minHeight: 500,
-                    lineHeight: 22,
-                    width: width === 'xs' ? 320 : 400,
-                }}
-            >
-                <Tabs
-                    theme="normal"
-                    placement="top"
-                    defaultValue="1"
-                    size="medium"
-                    onChange={(value) => {
-                        this.setState({
-                            tabValue: value,
-                        });
-                    }}
-                >
-                    <TabPanel
-                        className="tabPanel"
-                        key="tab_1"
-                        label={t('in Password')}
-                        value="1"
+        <div className="loginbox-main">
+            <div className="loginbox-wrap">
+                <div className="loginbox-hd">
+                    <Radio.Group
+                        variant="default-filled"
+                        defaultValue={tabValue}
+                        onChange={(value) => {
+                            this.setState({
+                                tabValue: value,
+                            });
+                        }}
+                        className="loginbox-hd__tab"
+                    >
+                        <Radio.Button
+                            value={1}
+                            className={classNames('loginbox-hd__tabcon', {
+                                current: tabValue === 1,
+                            })}
+                        >
+                            {t('in Password')}
+                        </Radio.Button>
+                        <Radio.Button
+                            value={2}
+                            className={classNames('loginbox-hd__tabcon', {
+                                current: tabValue === 2,
+                            })}
+                        >
+                            {t('in Captcha')}
+                        </Radio.Button>
+                        <Radio.Button
+                            value={3}
+                            className={classNames('loginbox-hd__tabcon', {
+                                current: tabValue === 3,
+                            })}
+                        >
+                            {t('in QrCode')}
+                        </Radio.Button>
+                    </Radio.Group>
+                </div>
+                <div className="loginbox-bd">
+                    <div
+                        className="loginbox-password"
+                        style={tabValue === 1 ? {} : { display: 'none' }}
                     >
                         {LoginPassword}
-                    </TabPanel>
-                    <TabPanel
-                        className="tabPanel"
-                        key="tab_2"
-                        label={t('in Captcha')}
-                        value="2"
+                    </div>
+                    <div
+                        className="loginbox-mobile"
+                        style={tabValue === 2 ? {} : { display: 'none' }}
                     >
                         {LoginCaptcha}
-                    </TabPanel>
-                </Tabs>
+                    </div>
+                    <div
+                        className="loginbox-qrcode"
+                        style={tabValue === 3 ? {} : { display: 'none' }}
+                    >
+                        <div className="loginbox-qrcode__sociallogin">
+                            请使用微信扫一扫登录
+                            <span
+                                className="loginbox-qrcode__refresh"
+                                onClick={() => {
+                                    this.setMessage({
+                                        type: 'success',
+                                        content: '刷新二维码'
+                                    })
+                                }}
+                            >
+                                刷新
+                                <Icon
+                                    name="refresh"
+                                    className="loginbox-qrcode__refresh-icon"
+                                />
+                            </span>
+                        </div>
+                        <div className="loginbox-qrcode__iframe"></div>
+                    </div>
+                </div>
+                <div className="loginbox-ft">
+                    <div className="loginbox-ft__btn">
+                        <div className="loginbox-protocal">
+                            <Checkbox
+                                label={
+                                    <div>阅读并同意 服务条款 和 隐私政策</div>
+                                }
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div
-                style={{
-                    flex: 3,
-                }}
-            />
         </div>
     );
 }
