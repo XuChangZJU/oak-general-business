@@ -403,7 +403,6 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
                     entityId: wechatUser2.id,
                 },
             }, context, {
-                dummy: 1,
                 ignoreTrigger: true,
             });
             if (token && isEqual(token.env, env)) {
