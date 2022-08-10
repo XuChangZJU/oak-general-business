@@ -133,26 +133,50 @@ export default OakPage({
         },
     },
     methods: {
+        onAdd() {
+            if (process.env.OAK_PLATFORM === 'web') {
+                this.goUpsert();
+            } else {
+                this.setState({
+                    visible: true,
+                });
+            }
+        },
+        goUpsert() {
+             const { entity, entityId, relations } = this.props;
+             this.navigateTo(
+                 {
+                     url: '/userRelation/upsert',
+                     entity,
+                     entityId,
+                     relations,
+                 },
+                 {
+                     relations,
+                 }
+             );
+        },
+        goUserEntityGrantWithGrant() {
+            const { entity, entityId, relations } = this.props;
+            this.navigateTo(
+                {
+                    url: '/userEntityGrant/grant',
+                    entity,
+                    entityId,
+                },
+                {
+                    relations,
+                }
+            );
+        },
         onActionSelect(e: any) {
             const { index, selected } = e.detail;
-            const { entity, entityId, relations } = this.props;
-
             switch (index) {
                 case 0: {
-                    this.navigateTo({
-                        url: '/userEntityGrant/grant',
-                        entity,
-                        entityId,
-                        relations,
-                    });
+                    this.goUserEntityGrantWithGrant();
                 }
                 case 1: {
-                    this.navigateTo({
-                        url: '/userRelation/upsert',
-                        entity,
-                        entityId,
-                        relations,
-                    });
+                    this.goUpsert();
                 }
             }
         },
@@ -176,30 +200,6 @@ export default OakPage({
                 relations,
                 entity,
                 entityId,
-            });
-        },
-        goUpsert() {
-            const { entity, entityId, relations } = this.props;
-            if (process.env.OAK_PLATFORM === 'web') {
-                this.navigateTo({
-                    url: '/userRelation/upsert',
-                    entity,
-                    entityId,
-                    relations,
-                });
-            } else {
-                this.setState({
-                    visible: true,
-                });
-            }
-        },
-        goUserEntityGrantWithGrant() {
-            const { entity, entityId, relations } = this.props;
-            this.navigateTo({
-                url: '/userEntityGrant/grant',
-                entity,
-                entityId,
-                relations,
             });
         },
         async searchChange(event: any) {

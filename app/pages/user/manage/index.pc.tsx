@@ -6,7 +6,7 @@ export default function render() {
     const { t } = this;
     const { event } = this.props;
     const { userArr = [], oakLoading, stateColor, pagination } = this.state;
-    const { step } = pagination || {};
+    const { pageSize, total, currentPage } = pagination || {};
 
     return (
         <div style={{ padding: 16 }}>
@@ -118,11 +118,11 @@ export default function render() {
                     },
                 ]}
                 pagination={{
-                    total: 30,
-                    pageSize: step,
+                    total: total,
+                    pageSize: pageSize,
+                    current: currentPage,
                     onPageSizeChange: (pageSize: number) => {
-                        this.setPageSize(pageSize)
-                        
+                        this.setPageSize(pageSize);
                     },
                 }}
             />
