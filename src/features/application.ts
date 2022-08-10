@@ -65,14 +65,14 @@ export class Application<ED extends EntityDict, Cxt extends GeneralRuntimeContex
     }
 
     private async getApplicationFromCache(callback: (application: SelectRowShape<ED['application']['Schema'], typeof projection>) => void) {
-        const { result } = await this.cache.refresh('application', {
+        const { data } = await this.cache.refresh('application', {
             data: projection,
             filter: {
                 id: this.applicationId,
             }
         });
-        assert(result.length === 1);
-        this.application = result[0] as any;
+        assert(data.length === 1);
+        this.application = data[0] as any;
         callback(this.application!);
     }
 

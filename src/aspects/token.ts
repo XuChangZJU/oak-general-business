@@ -124,7 +124,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                 systemId,
             }
         }
-    }, context, { notCollect: true });
+    }, context, { dontCollect: true });
     if (result2.length > 0) {
         // 此手机号已经存在
         assert(result2.length === 1);
@@ -255,7 +255,7 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends GeneralRu
             }],
             indexFrom: 0,
             count: 1,
-        }, context, { notCollect: true });
+        }, context, { dontCollect: true });
         if (result.length > 0) {
             const [captchaRow] = result;
             if (captchaRow.expired) {
@@ -402,10 +402,10 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
                     entity: 'wechatUser',
                     entityId: wechatUser2.id,
                 },
-                hint: {
-                    ignoreTrigger: true,
-                },
-            }, context);
+            }, context, {
+                dummy: 1,
+                ignoreTrigger: true,
+            });
             if (token && isEqual(token.env, env)) {
                 await rowStore.operate('token', {
                     action: 'update',
@@ -640,10 +640,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     entity: 'wechatUser',
                     entityId: wechatUser2.id,
                 },
-                hint: {
-                    ignoreTrigger: true,
-                },
-            }, context);
+            }, context, { dummy: 1, ignoreTrigger: true });
             if (token && isEqual(token.env, env)) {
                 await rowStore.operate('token', {
                     action: 'update',

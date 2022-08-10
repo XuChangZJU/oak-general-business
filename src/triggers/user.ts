@@ -91,7 +91,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
             await context.rowStore.operate('token', {
                 action: 'update',
                 data: {
-                    userId: filter!.id,
+                    userId: filter!.id as string,
                 },
                 filter: {
                     id,

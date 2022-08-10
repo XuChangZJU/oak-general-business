@@ -7,7 +7,7 @@ function removeDts(path: string) {
     files.forEach(
         (file) => {
             const stat = statSync(join(path, file));
-            if (stat.isDirectory() && !['types', 'typings', 'lin-ui'].includes(file)) {
+            if (stat.isDirectory() && !['types', 'typings', 'miniprogram_npm'].includes(file)) {
                 removeDts(join(path, file));
             }
             else if (file.endsWith('.d.ts') || file.endsWith('.js')) {
