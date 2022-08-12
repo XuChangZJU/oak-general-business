@@ -55,17 +55,18 @@ export default function render() {
                         C
                     </Button>
                     <Button
-                        theme="primary"
+                        theme="warning"
                         shape="circle"
                         onClick={() => {
                             const confirmDia = DialogPlugin.confirm({
                                 header: '重置数据',
-                                body: '重置后，原来的数据不可恢复？',
+                                body: '重置后，原来的数据不可恢复',
                                 confirmBtn: '确定',
                                 cancelBtn: '取消',
                                 onConfirm: ({ e }) => {
-                                    this.setInitialData();
+                                    this.resetInitialData();
                                     confirmDia.hide();
+                                    window.location.reload();
                                 },
                                 onClose: ({ e, trigger }) => {
                                     confirmDia.hide();
@@ -73,7 +74,7 @@ export default function render() {
                             });
                         }}
                     >
-                        Rest
+                        Reset
                     </Button>
                 </Space>
             </Drawer>
