@@ -13,8 +13,8 @@ export type WechatMpConfig = {
 
 export type WebConfig = {
     type: 'web';
-    appId: string;
-    appSecret: string; //网站 微信扫码登录
+    appId?: string;
+    appSecret?: string; //网站 微信扫码登录
 };
 
 export type WechatPublicConfig = {

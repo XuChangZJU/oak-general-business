@@ -26,9 +26,9 @@ export default function render() {
             files={(files || []).map((ele) =>
                 extraFileToUploadFile(ele, systemConfig)
             )}
-            onChange={(value) => {
-                const value2 = value?.filter((ele: ExtraFile) => !ele.id) || [];
-                this.onWebPick(value2);
+            onChange={(uploadFiles) => {
+                const newUploadFiles = uploadFiles?.filter((ele: ExtraFile) => !ele.id) || [];
+                this.onWebPick(newUploadFiles);
             }}
             onRemove={({ file, index, e }) => {
                 this.onWebDelete(file, index);

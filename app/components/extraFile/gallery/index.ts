@@ -249,15 +249,20 @@ export default OakComponent({
                 this.removeNode('', `${index}`);
             } else {
                 const confirm = Dialog.confirm({
+                    header: '确认删除当前文件？',
+                    body: '删除后，文件不可恢复',
                     title: '确认删除当前文件？',
+                    content: '删除后，文件不可恢复',
                     cancelBtn: '取消',
                     confirmBtn: '确定',
-                    content: '删除后，文件不可恢复',
                     onConfirm: () => {
                         this.removeNode('', `${index}`);
                         confirm.hide();
                     },
                     onCancel: () => {
+                        confirm.hide();
+                    },
+                    onClose: () => {
                         confirm.hide();
                     },
                 });

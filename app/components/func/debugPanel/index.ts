@@ -12,6 +12,9 @@ export default OakComponent({
         printRunningTree() {
             console.log(this.features.runningTree.getRoot());
         },
+        setInitialData() {
+            this.features.cache.setInitialData();
+        },
         setVisible(visible: boolean) {
             this.setState({
                 visible,
