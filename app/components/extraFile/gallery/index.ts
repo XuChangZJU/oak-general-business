@@ -107,11 +107,7 @@ export default OakComponent({
             return (750 / windowWidth) * px;
         },
         async onPick() {
-            const {
-                selectCount,
-                mediaType,
-                sourceType,
-            } = this.props;
+            const { selectCount, mediaType, sourceType } = this.props;
             try {
                 const { errMsg, tempFiles } = await wx.chooseMedia({
                     count: selectCount,
@@ -154,9 +150,9 @@ export default OakComponent({
                 }
             }
         },
-        async onWebPick(value) {
+        async onWebPick(uploadFiles) {
             await Promise.all(
-                value.map(async (uploadFile) => {
+                uploadFiles.map(async (uploadFile) => {
                     const { name, type: fileType, size, raw } = uploadFile;
                     this.pushExtraFile({
                         name,
@@ -167,7 +163,12 @@ export default OakComponent({
                 })
             );
         },
-        async pushExtraFile(options: { name: string, extra1: any, fileType: string, size: number }) {
+        async pushExtraFile(options: {
+            name: string;
+            extra1: any;
+            fileType: string;
+            size: number;
+        }) {
             const { type, origin, tag1, tag2, entity } = this.props;
             const { name, extra1, fileType, size } = options;
             const extension = name.substring(name.lastIndexOf('.') + 1);
