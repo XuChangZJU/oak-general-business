@@ -1,4 +1,3 @@
-import { WechatMpEnv } from "general-app-domain/Token/Schema";
 import { pick } from "oak-domain/lib/utils/lodash";
 
 export async function getEnv() {

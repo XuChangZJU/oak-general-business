@@ -1,8 +1,8 @@
 import { CreateTriggerInTxn, Trigger } from 'oak-domain/lib/types/Trigger';
-import { EntityDict } from 'general-app-domain/EntityDict';
+import { EntityDict } from '../general-app-domain/EntityDict';
 import { GeneralRuntimeContext } from '../RuntimeContext';
-import { CreateOperationData as CreateUserRoleData } from 'general-app-domain/UserRole/Schema';
-import { CreateOperationData as CreateUserData } from 'general-app-domain/User/Schema';
+import { CreateOperationData as CreateUserRoleData } from '../general-app-domain/UserRole/Schema';
+import { CreateOperationData as CreateUserData } from '../general-app-domain/User/Schema';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { ROOT_ROLE_ID, ROOT_USER_ID } from '../constants';
 import { addFilterSegment } from 'oak-domain/lib/store/filter';

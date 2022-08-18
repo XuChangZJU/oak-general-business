@@ -1,12 +1,12 @@
 import { GeneralRuntimeContext } from '../RuntimeContext';
-import { EntityDict } from 'general-app-domain';
+import { EntityDict } from '../general-app-domain';
 import { WechatSDK } from 'oak-external-sdk';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { WechatMpConfig, WechatPublicConfig, WebConfig } from 'general-app-domain/Application/Schema';
-import { CreateOperationData as CreateToken, WebEnv, WechatMpEnv } from 'general-app-domain/Token/Schema';
-import { CreateOperationData as CreateWechatUser } from 'general-app-domain/WechatUser/Schema';
-import { CreateOperationData as CreateUser, Schema as User } from 'general-app-domain/User/Schema';
-import { Operation as ExtraFileOperation } from 'general-app-domain/ExtraFile/Schema';
+import { WechatMpConfig, WechatPublicConfig, WebConfig } from '../general-app-domain/Application/Schema';
+import { CreateOperationData as CreateToken, WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
+import { CreateOperationData as CreateWechatUser } from '../general-app-domain/WechatUser/Schema';
+import { CreateOperationData as CreateUser, Schema as User } from '../general-app-domain/User/Schema';
+import { Operation as ExtraFileOperation } from '../general-app-domain/ExtraFile/Schema';
 import { isEqual } from 'oak-domain/lib/utils/lodash';
 import { OakUserException, SelectRowShape } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
@@ -341,7 +341,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
         config2 = config as WebConfig;
     }
     const { appId, appSecret } = config2;
-    const wechatInstance = WechatSDK.getInstance(appId, appSecret, type);
+    const wechatInstance = WechatSDK.getInstance(appId!, appSecret!, type);
 
     const { sessionKey, openId, unionId } = await wechatInstance.code2Session(code);
 

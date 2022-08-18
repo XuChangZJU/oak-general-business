@@ -2,7 +2,7 @@ import { checkFilterContains } from 'oak-domain/lib/store/actionDef';
 import {
     Checker,
 } from 'oak-domain/lib/types';
-import { EntityDict } from 'general-app-domain';
+import { EntityDict } from '../general-app-domain';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 
 const checkers: Checker<

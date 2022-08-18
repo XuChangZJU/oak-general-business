@@ -1,6 +1,6 @@
 import { SelectRowShape } from 'oak-domain/lib/types';
 import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
-import { EntityDict } from 'general-app-domain';
+import { EntityDict } from './general-app-domain';
 import { RowStore } from 'oak-domain/lib/types';
 declare type AppType = SelectRowShape<EntityDict['application']['Schema'], {
     id: 1;
@@ -23,7 +23,7 @@ export declare abstract class GeneralRuntimeContext<ED extends EntityDict> exten
     getApplicationId(): string | undefined;
     getSystemId(): Promise<string | undefined>;
     setToken(token?: string): void;
-    getApplication(): Promise<SelectRowShape<import("general-app-domain/Application/Schema").Schema, {
+    getApplication(): Promise<SelectRowShape<import("./general-app-domain/Application/Schema").Schema, {
         id: 1;
         name: 1;
         config: 1;

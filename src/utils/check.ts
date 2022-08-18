@@ -1,8 +1,7 @@
-import { EntityDict } from "general-app-domain";
 import { Checker } from "oak-domain/lib/types";
 import { ROOT_ROLE_ID } from "../constants";
 import { GeneralRuntimeContext } from "../RuntimeContext";
-
+import { EntityDict } from "../general-app-domain";
 
 async function checkIsRoot<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(context: Cxt) {
     const token = await context.getToken();

@@ -1,5 +1,4 @@
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import { WebEnv } from 'general-app-domain/Token/Schema';
 import { pick } from 'oak-domain/lib/utils/lodash';
 
 /**

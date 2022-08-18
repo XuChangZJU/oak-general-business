@@ -1,6 +1,6 @@
-import { WebEnv, WechatMpEnv } from "general-app-domain/Token/Schema";
-import { AppType } from 'general-app-domain/Application/Schema';
-import { EntityDict } from "general-app-domain";
+import { WebEnv, WechatMpEnv } from "../general-app-domain/Token/Schema";
+import { AppType } from '../general-app-domain/Application/Schema';
+import { EntityDict } from "../general-app-domain";
 import { QiniuUploadInfo } from "oak-frontend-base/lib/types/Upload";
 import { GeneralRuntimeContext } from "../RuntimeContext";
 declare type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>> = {

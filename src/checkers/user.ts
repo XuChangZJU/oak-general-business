@@ -1,6 +1,6 @@
 import { checkFilterContains } from 'oak-domain/lib/store/actionDef';
 import { OakInputIllegalException, Checker, OakUserUnpermittedException, OakRowInconsistencyException } from "oak-domain/lib/types";
-import { EntityDict } from 'general-app-domain';
+import { EntityDict } from '../general-app-domain';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 
 const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [] = [

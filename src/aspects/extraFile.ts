@@ -1,6 +1,6 @@
 import { GeneralRuntimeContext } from '../RuntimeContext';
-import { EntityDict } from 'general-app-domain';
-import { SystemConfig } from 'general-app-domain/System/Schema';
+import { EntityDict } from '../general-app-domain';
+import { SystemConfig } from '../general-app-domain/System/Schema';
 import qiniuInstance from '../utils/externalUpload/qiniu';
 import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
 

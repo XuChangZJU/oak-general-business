@@ -1,5 +1,5 @@
-import { OpSchema as ExtraFile } from 'general-app-domain/ExtraFile/Schema';
-import { SystemConfig } from 'general-app-domain/System/Schema';
+import { OpSchema as ExtraFile } from '../general-app-domain/ExtraFile/Schema';
+import { SystemConfig } from '../general-app-domain/System/Schema';
 
 export function composeFileUrl(
     extraFile: Pick<

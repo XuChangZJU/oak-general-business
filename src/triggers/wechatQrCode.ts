@@ -1,11 +1,11 @@
-import { EntityDict } from 'general-app-domain/EntityDict';
 import { SelectTriggerAfter, Trigger } from 'oak-domain/lib/types/Trigger';
-import { GeneralRuntimeContext } from '../RuntimeContext';
-
+import { shrinkUuidTo32Bytes } from 'oak-domain/lib/utils/uuid';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { WechatSDK, WechatMpInstance } from 'oak-external-sdk';
-import { WechatMpConfig } from 'general-app-domain/Application/Schema';
-import { shrinkUuidTo32Bytes } from 'oak-domain/lib/utils/uuid';
+
+import { WechatMpConfig } from '../general-app-domain/Application/Schema';
+import { EntityDict } from '../general-app-domain/EntityDict';
+import { GeneralRuntimeContext } from '../RuntimeContext';
 
 const triggers: Trigger<EntityDict, 'wechatQrCode', GeneralRuntimeContext<EntityDict>>[] = [
     {

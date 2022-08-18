@@ -1,5 +1,3 @@
-import { EntityDict } from 'general-app-domain';
-import { AppType } from 'general-app-domain/Application/Schema';
 import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
@@ -8,6 +6,8 @@ import { RWLock } from 'oak-domain/lib/utils/concurrent';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { assert } from 'oak-domain/lib/utils/assert';
 
+import { EntityDict } from '../general-app-domain';
+import { AppType } from '../general-app-domain/Application/Schema';
 import { AspectDict } from '../aspects/AspectDict';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 

@@ -1,7 +1,7 @@
-import { EntityDict } from 'general-app-domain/EntityDict';
 import { CreateTriggerInTxn, Trigger } from 'oak-domain/lib/types/Trigger';
 import { GeneralRuntimeContext } from '../RuntimeContext';
-import { CreateOperationData as CreateUserEntityGrantData } from 'general-app-domain/UserEntityGrant/Schema';
+import { CreateOperationData as CreateUserEntityGrantData } from '../general-app-domain/UserEntityGrant/Schema';
+import { EntityDict } from '../general-app-domain/EntityDict';
 
 import { OakCongruentRowExists, OakException } from 'oak-domain/lib/types';
 import { assert } from 'oak-domain/lib/utils/assert';

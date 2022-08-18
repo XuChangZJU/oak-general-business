@@ -77,7 +77,6 @@
     "node_modules",
     "**/*.spec.ts",
     "test",
-    "scripts",
-    "app"
+    "scripts"
   ]
 }

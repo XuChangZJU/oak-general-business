@@ -1,5 +1,5 @@
-import { EntityDict } from "general-app-domain";
-import { AppType } from "general-app-domain/Application/Schema";
+import { EntityDict } from "../general-app-domain";
+import { AppType } from "../general-app-domain/Application/Schema";
 import {
     DEV_WEB_APPLICATION_ID,
     DEV_WECHATMP_APPLICATION_ID,

@@ -1,4 +1,4 @@
-import { EntityDict } from 'general-app-domain';
+import { EntityDict } from '../general-app-domain';
 import { Watcher } from 'oak-domain/lib/types';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 

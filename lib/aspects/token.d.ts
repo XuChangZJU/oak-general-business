@@ -1,7 +1,7 @@
 import { GeneralRuntimeContext } from '../RuntimeContext';
-import { EntityDict } from 'general-app-domain';
-import { WechatMpConfig } from 'general-app-domain/Application/Schema';
-import { WebEnv, WechatMpEnv } from 'general-app-domain/Token/Schema';
+import { EntityDict } from '../general-app-domain';
+import { WechatMpConfig } from '../general-app-domain/Application/Schema';
+import { WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
 export declare function loginByMobile<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: {
     captcha?: string;
     password?: string;

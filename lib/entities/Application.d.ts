@@ -10,8 +10,8 @@ export declare type WechatMpConfig = {
 };
 export declare type WebConfig = {
     type: 'web';
-    appId: string;
-    appSecret: string;
+    appId?: string;
+    appSecret?: string;
 };
 export declare type WechatPublicConfig = {
     type: 'wechatPublic';

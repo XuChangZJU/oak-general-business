@@ -1,7 +1,7 @@
 
 import { SelectRowShape, SelectionResult } from 'oak-domain/lib/types';
 import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
-import { EntityDict } from 'general-app-domain';
+import { EntityDict } from './general-app-domain';
 import { RowStore } from 'oak-domain/lib/types';
 
 import { RWLock } from 'oak-domain/lib/utils/concurrent';

@@ -1,10 +1,10 @@
-import { EntityDict } from 'general-app-domain';
 import { Action, Feature } from 'oak-frontend-base/lib/types/Feature';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
-import { WebEnv, WechatMpEnv } from 'general-app-domain/Token/Schema';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
 import { CommonAspectDict } from 'oak-common-aspect';
+import { WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
+import { EntityDict } from '../general-app-domain';
 import { getEnv } from '../utils/env';
 import { AspectDict } from '../aspects/AspectDict';
 import { GeneralRuntimeContext } from '..';
