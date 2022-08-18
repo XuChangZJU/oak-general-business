@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Icon } from 'tdesign-icons-react';
 
-export default function render() {
+export default function render(this: any) {
     const { oakLoading, isExist, expired } = this.state;
 
     let V;

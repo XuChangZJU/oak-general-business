@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input, Row, Col, Checkbox, Button } from 'tdesign-react';
 const { FormItem } = Form;
 
-export default function render() {
+export default function render(this: any) {
     const { t } = this;
     const { relations, entity } = this.props;
     const { name, mobile, password, relationArr } = this.state;
@@ -117,7 +117,7 @@ export default function render() {
                                 onChange={(value) => {
                                     this.setRelationValue(value);
                                 }}
-                                options={relations2.map((ele) => ({
+                                options={relations2.map((ele: string) => ({
                                     value: ele,
                                     label: t(entity + ':r.' + ele),
                                 }))}

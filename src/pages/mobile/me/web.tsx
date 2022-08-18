@@ -2,12 +2,12 @@ import React from 'react';
 import { CellGroup, Cell, Button, Dialog } from 'tdesign-mobile-react';
 import { Icon } from 'tdesign-icons-react';
 
-export default function render() {
+export default function render(this: any) {
     const { mobiles, confirmDeleteModalVisible, deleteIdx } = this.state;
     return (
         <div className="page-body">
             <CellGroup>
-                {mobiles?.map((ele, index) => (
+                {mobiles?.map((ele: any, index: number) => (
                     <Cell
                         key={index}
                         title={ele.mobile}

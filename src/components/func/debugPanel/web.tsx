@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Space, Drawer, DialogPlugin } from 'tdesign-react';
 import { ChevronUpIcon } from 'tdesign-icons-react';
 
-export default function render() {
+export default function render(this: any) {
     const { placement = 'bottom', style = {} } = this.props;
     const { visible } = this.state;
     return (
@@ -58,18 +58,18 @@ export default function render() {
                         theme="warning"
                         shape="circle"
                         onClick={() => {
-                            const confirmDia = DialogPlugin.confirm({
+                            const confirmDia = DialogPlugin.confirm!({
                                 header: '重置数据',
                                 body: '重置后，原来的数据不可恢复',
                                 confirmBtn: '确定',
                                 cancelBtn: '取消',
                                 onConfirm: ({ e }) => {
                                     this.resetInitialData();
-                                    confirmDia.hide();
+                                    confirmDia.hide!();
                                     window.location.reload();
                                 },
                                 onClose: ({ e, trigger }) => {
-                                    confirmDia.hide();
+                                    confirmDia.hide!();
                                 },
                             });
                         }}

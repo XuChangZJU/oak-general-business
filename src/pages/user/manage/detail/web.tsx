@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Cell, Tag, Avatar } from 'tdesign-mobile-react';
 
-export default function render() {
+export default function render(this: any) {
     const { t } = this;
     const {
         nickname,

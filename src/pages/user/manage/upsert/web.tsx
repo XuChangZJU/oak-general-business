@@ -3,7 +3,7 @@ import { Button, Checkbox, Input, Form, Radio, DatePicker, Row, Col } from 'tdes
 import { DateTime } from 'luxon';
 const { FormItem } = Form;
 
-export default function render() {
+export default function render(this: any) {
     const { gender, birth, GenderOptions, IDCardTypeOptions } = this.state;
     return (
         <div

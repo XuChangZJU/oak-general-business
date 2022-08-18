@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Cell, Image, Tag, Fab } from 'tdesign-mobile-react';
 import { Icon } from 'tdesign-icons-react';
 
-export default function render() {
+export default function render(this: any) {
     const { t } = this;
     const { entity } = this.props;
     const { users } = this.state;
@@ -12,7 +12,7 @@ export default function render() {
                 height: '100vh',
             }}
         >
-            {users?.map((ele, index) => {
+            {users?.map((ele: any, index: number) => {
                 return (
                     <Cell
                         onClick={(e) => this.goDetail(ele.id)}
@@ -34,7 +34,7 @@ export default function render() {
                                     手机: {ele.mobile || '未设置'}
                                 </div>
                                 <div className="relation">
-                                    {ele.relations?.map((relation, index) => (
+                                    {ele.relations?.map((relation: string, index: number) => (
                                         <Tag
                                             key={index}
                                             variant="outline"

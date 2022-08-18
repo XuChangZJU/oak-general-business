@@ -3,7 +3,7 @@ import { UserCircleIcon } from 'tdesign-icons-react';
 import { Avatar, Button, Cell, CellGroup, Input, Popup } from 'tdesign-mobile-react';
 import styles from './index.module.less';
 
-export default function render() {
+export default function render(this: any) {
     const { avatar, nickname, isLoggedIn, refreshing, mobile, mobileCount, showDrawer, oakDirty } = this.state;
     const mobileText = mobileCount > 1 ? `${mobileCount}条手机号` : ( mobile || '未设置');
     return (

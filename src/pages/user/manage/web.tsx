@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Fab, Cell, Tag } from 'tdesign-mobile-react';
 import { Icon } from 'tdesign-icons-react';
 
-export default function render() {
+export default function render(this: any) {
     const { t } = this;
     const {
         event
@@ -10,7 +10,7 @@ export default function render() {
     const { stateColor, userArr } = this.state;
     return (
         <div style={{ height: '100vh' }}>
-            {userArr?.map((ele, index) => {
+            {userArr?.map((ele: any, index: number) => {
                 return (
                     <Cell
                         key={index}

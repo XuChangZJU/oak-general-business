@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Radio, Button } from 'tdesign-react';
 const { FormItem } = Form;
 
-export default function render() {
+export default function render(this: any) {
     const { relation } = this.state;
     const { relations, entity, entityId } = this.props;
     const relationArr =
@@ -27,7 +27,7 @@ export default function render() {
                         onChange={(value) => {
                             this.setRadioValue(value);
                         }}
-                        options={relationArr.map((ele) => ({
+                        options={relationArr.map((ele: string) => ({
                             value: ele,
                             label:
                                 (this.t && this.t(entity + ':r.' + ele)) || ele,

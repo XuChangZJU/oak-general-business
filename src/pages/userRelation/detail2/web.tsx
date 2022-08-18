@@ -3,7 +3,7 @@ import { Cell, Image, Tag, Checkbox } from 'tdesign-mobile-react';
 import { Button } from 'tdesign-react';
 
 
-export default function render() {
+export default function render(this: any) {
     const {t} = this;
     const { entity } = this.props;
     const { avatar, nickname, name, mobile, relationArr } = this.state;
@@ -25,7 +25,7 @@ export default function render() {
                     </div>
                 }
             />
-            {relationArr?.map((item) => (
+            {relationArr?.map((item: any) => (
                 <Checkbox
                     checked={item.checked}
                     label={t(entity + ':r.' + item.value)}

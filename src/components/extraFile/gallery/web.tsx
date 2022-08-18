@@ -1,8 +1,8 @@
 import React from 'react';
 import { Upload, UploadFile } from 'tdesign-react';
-import { composeFileUrl } from '../../../../lib/utils/extraFile';
+import { composeFileUrl } from '../../../utils/extraFile';
 
-function extraFileToUploadFile(extraFile, systemConfig) {
+function extraFileToUploadFile(extraFile: any, systemConfig: any) {
     return Object.assign({}, extraFile, {
         url: composeFileUrl(extraFile, systemConfig),
         name: extraFile.filename,
@@ -13,7 +13,7 @@ interface ExtraFile extends UploadFile {
     id?: string;
 }
 
-export default function render() {
+export default function render(this: any) {
     const { mediaType, maxNumber = 100, multiple = true } = this.props;
     const { files, systemConfig } = this.state;
 
@@ -25,7 +25,7 @@ export default function render() {
             accept={mediaType}
             showUploadProgress={false}
             theme="image"
-            files={(files || []).map((ele) =>
+            files={(files || []).map((ele: any) =>
                 extraFileToUploadFile(ele, systemConfig)
             )}
             onChange={(uploadFiles) => {

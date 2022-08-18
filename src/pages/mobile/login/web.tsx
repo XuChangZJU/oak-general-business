@@ -11,7 +11,7 @@ import classNames from 'classnames';
 const { TabPanel } = Tabs;
 const { FormItem } = Form;
 
-export default function render() {
+export default function render(this: any) {
     const { t } = this;
     const { onlyCaptcha, onlyPassword, width } = this.props;
     const { mobile, captcha, password, counter, tabValue = 1} = this.state;

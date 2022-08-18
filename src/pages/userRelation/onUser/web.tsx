@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Search, Fab, Cell, Image, Switch, Button } from 'tdesign-mobile-react';
 import { SearchIcon, Icon } from 'tdesign-icons-react';
 
-export default function render() {
+export default function render(this: any) {
     const { t } = this;
     const { entity, relations } = this.props;
     const { searchValue, users, oakDirty } = this.state;
@@ -31,7 +31,7 @@ export default function render() {
                 leftIcon={<SearchIcon />}
             />
 
-            {users?.map((ele, index) => {
+            {users?.map((ele: any, index: number) => {
                 return (
                     <Cell
                         key={index}
@@ -52,7 +52,7 @@ export default function render() {
                                     手机: {ele.mobile || '未设置'}
                                 </div>
                                 <div className="relation">
-                                    {relations2?.map((relation, index2) => (
+                                    {relations2?.map((relation: string, index2: number) => (
                                         <Switch
                                             key={index2}
                                             defaultValue={

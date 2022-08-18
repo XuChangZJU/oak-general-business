@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'tdesign-react';
 import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
 
-export default function render() {
+export default function render(this: any) {
     const { error } = this.state;
 
     return (
