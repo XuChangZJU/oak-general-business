@@ -1,5 +1,5 @@
 import React from 'react';
-import { Upload, UploadFile } from 'tdesign-mobile-react';
+import { Upload, UploadFile } from 'tdesign-react';
 import { composeFileUrl } from '../../../../lib/utils/extraFile';
 
 function extraFileToUploadFile(extraFile, systemConfig) {
@@ -23,6 +23,8 @@ export default function render() {
             autoUpload={false}
             max={maxNumber}
             accept={mediaType}
+            showUploadProgress={false}
+            theme="image"
             files={(files || []).map((ele) =>
                 extraFileToUploadFile(ele, systemConfig)
             )}

@@ -20,7 +20,7 @@ const locale: LocaleDef<Schema, '', '', {
             depth: '深度',
             parent: '上级地区',
             name: '名称',
-            code: '邮政编码',
+            code: '地区编码',
             center: '中心坐标',
         },
         v: {
