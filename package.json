@@ -45,6 +45,7 @@
         "@types/uuid": "^8.3.0",
         "assert": "^2.0.0",
         "chalk": "^4.1.0",
+        "copyfiles": "^2.4.1",
         "cross-env": "^7.0.2",
         "cross-spawn": "^6.0.5",
         "fs-extra": "^10.0.0",
@@ -57,7 +58,9 @@
     },
     "scripts": {
         "make:domain": "ts-node ./scripts/make.ts",
-        "build": "tsc",
+        "clean": "rimraf lib/",
+        "copy-files": "copyfiles -u 1 src/**/*.less lib/ & copyfiles -u 1 src/**/*.wxml lib/ & copyfiles -u 1 src/**/*.wxs lib/ & copyfiles -u 1 src/miniprogram_npm/**/*.js lib/ ",
+        "build": "tsc && npm run copy-files",
         "get:area": "ts-node ./scripts/getAmapArea.ts",
         "clean:dir": "ts-node ./scripts/cleanDtsAndJs",
         "test": "ts-node ./test/test.ts",
@@ -65,3 +68,4 @@
     },
     "main": "lib/index"
 }
+
