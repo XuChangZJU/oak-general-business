@@ -1,0 +1,20 @@
+/**  index.wxss  **/
+@import "../../../config/styles/_base.less";
+@import "../../../config/styles/_mixins.less";
+
+.page-body {
+  height: 100vh;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: @bg-color-block;
+  box-sizing: border-box;
+  .safe-area-inset-bottom();
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  margin: 0rpx @spacer;
+  justify-content: space-between;
+}

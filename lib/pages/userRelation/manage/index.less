@@ -1,0 +1,25 @@
+/**  index.wxss  **/
+@import "../../../config/styles/_base.less";
+@import "../../../config/styles/_mixins.less";
+
+page {
+  height: 100%;
+  background-color: @bg-color-fade;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: stretch;
+  padding: 0;
+  .safe-area-inset-bottom();
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}

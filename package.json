@@ -18,6 +18,7 @@
         "oak-frontend-base": "file:../oak-frontend-base",
         "oak-memory-tree-store": "file:../oak-memory-tree-store",
         "sha1": "^1.1.1",
+        "tslib": "^2.4.0",
         "uuid": "^8.3.2"
     },
     "peerDependencies": {
@@ -58,7 +59,7 @@
     },
     "scripts": {
         "make:domain": "ts-node ./scripts/make.ts",
-        "clean": "rimraf lib/",
+        "clean": "rimraf lib/*",
         "copy-files": "copyfiles -u 1 src/**/*.less lib/ & copyfiles -u 1 src/**/*.wxml lib/ & copyfiles -u 1 src/**/*.wxs lib/ & copyfiles -u 1 src/miniprogram_npm/**/*.js lib/ ",
         "build": "tsc && npm run copy-files",
         "get:area": "ts-node ./scripts/getAmapArea.ts",

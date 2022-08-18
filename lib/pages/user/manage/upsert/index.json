@@ -1,0 +1,12 @@
+{
+    "navigationBarTitleText": "修改用户信息",
+    "usingComponents": {
+        "t-button": "../../../../miniprogram_npm/tdesign/button/button",
+        "t-picker": "../../../../miniprogram_npm/tdesign/picker/picker",
+        "t-picker-item": "../../../../miniprogram_npm/tdesign/picker/picker-item",
+        "t-date-time-picker": "../../../../miniprogram_npm/tdesign/date-time-picker/date-time-picker",
+        "t-cell": "../../../../miniprogram_npm/tdesign/cell/cell",
+        "t-input": "../../../../miniprogram_npm/tdesign/input/input",
+        "t-icon": "../../../../miniprogram_npm/tdesign/icon/icon"
+    }
+}

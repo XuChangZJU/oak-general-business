@@ -1,0 +1,7 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <view class="label-bar">
+        <text>地区名称</text>
+        <input placeholder="请输入名称" value="{{name}}" type="string" data-path="name" bindinput="setUpdateData" />
+    </view>
+</view>
