@@ -1,8 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import { Table, Tag, Button, DialogPlugin, Space, Avatar } from 'tdesign-react';
 import { UserIcon } from 'tdesign-icons-react';
 
-export default function render() {
+export default function render(this: any) {
     const { t } = this;
     const { event } = this.props;
     const { userArr = [], oakLoading, stateColor, pagination } = this.state;
@@ -87,7 +87,7 @@ export default function render() {
                                         variant="text"
                                         onClick={() => {
                                             const confirmDia =
-                                                DialogPlugin.confirm({
+                                                DialogPlugin.confirm!({
                                                     header: '确认删除该用户吗？',
                                                     body: '删除后，用户不可恢复',
                                                     confirmBtn: '确定',
@@ -98,13 +98,13 @@ export default function render() {
                                                         await this.execute(
                                                             'remove'
                                                         );
-                                                        confirmDia.hide();
+                                                        confirmDia.hide!();
                                                     },
                                                     onClose: ({
                                                         e,
                                                         trigger,
                                                     }) => {
-                                                        confirmDia.hide();
+                                                        confirmDia.hide!();
                                                     },
                                                 });
                                         }}

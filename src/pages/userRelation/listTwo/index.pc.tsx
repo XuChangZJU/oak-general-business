@@ -10,7 +10,7 @@ import {
     Tag
 } from 'tdesign-react';
 
-export default function render() {
+export default function render(this: any) {
     const { t } = this;
     const { users = [], oakLoading, editableRowKeys = [] } = this.state;
     const { relations, entity, entityId } = this.props;
@@ -105,7 +105,7 @@ export default function render() {
                       cell: ({ row, rowIndex, col, colIndex }) => {
                           return (
                               <Space>
-                                  {row.relations?.map((ele, index) => (
+                                  {row.relations?.map((ele: string, index: number) => (
                                       <Tag key={index}>
                                           {t(entity + ':r.' + ele)}
                                       </Tag>
@@ -118,14 +118,14 @@ export default function render() {
                           component: Select,
                           // props, 透传全部属性到 Select 组件
                           // props 为函数时，参数有：col, row, rowIndex, colIndex, editedRow。一般用于实现编辑组件之间的联动
-                          props: ({ editedRow }) => {
+                          props: () => {
                               return {
                                   multiple: true,
                                   minCollapsedNum: 1,
                                   autoWidth: true,
                                   options:
                                       relationArr &&
-                                      relationArr.map((ele, index) => ({
+                                      relationArr.map((ele: any, index: number) => ({
                                           value: ele,
                                           label: t(entity + ':r.' + ele),
                                       })),

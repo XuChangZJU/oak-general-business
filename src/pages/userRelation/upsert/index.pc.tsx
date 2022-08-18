@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import {
     Form,
     Input,
@@ -9,10 +9,11 @@ import {
 } from 'tdesign-react';
 const { FormItem } = Form;
 
-export default function render() {
+
+export default function render(this: any) {
     const { relations, entity } = this.props;
     const { name, mobile, password, relationArr } = this.state;
-    const relationArr2 =
+    const relationArr2: string[] =
         typeof relations === 'object'
             ? relations
             : relations && JSON.parse(relations);

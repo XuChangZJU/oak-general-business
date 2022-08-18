@@ -3,7 +3,7 @@
     "jsx": "preserve",
     /* Basic Options */
     // "incremental": true,                   /* Enable incremental compilation */
-    "target": "ES5", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */
+    "target": "es5", /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */
     "module": "commonjs", /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
     "lib": [
       "esnext",
@@ -14,6 +14,7 @@
     // "checkJs": true,                       /* Report errors in .js files. */
     // "jsx": "preserve",                     /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */
     "declaration": true, /* Generates corresponding '.d.ts' file. */
+    "importHelpers": true,
     // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
     // "sourceMap": true,                     /* Generates corresponding '.map' file. */
     // "outFile": "./",                       /* Concatenate and emit output to single file. */
@@ -33,7 +34,7 @@
     // "strictFunctionTypes": true,           /* Enable strict checking of function types. */
     // "strictBindCallApply": true,           /* Enable strict 'bind', 'call', and 'apply' methods on functions. */
     // "strictPropertyInitialization": true,  /* Enable strict checking of property initialization in classes. */
-    "noImplicitThis": true,                /* Raise error on 'this' expressions with an implied 'any' type. */
+    // "noImplicitThis": true,                /* Raise error on 'this' expressions with an implied 'any' type. */
     // "alwaysStrict": true,                  /* Parse in strict mode and emit "use strict" for each source file. */
     /* Additional Checks */
     // "noUnusedLocals": true,                /* Report errors on unused locals. */
@@ -70,12 +71,19 @@
     ]
   },
   "include": [
-    "./**/*.ts"
+    "./**/*.ts",
+    "./**/*.tsx",
+    "./**/*.less",
+    "./**/*.wxml",
+    "./**/*.json"
   ],
   "exclude": [
     "lib",
     "node_modules",
     "**/*.spec.ts",
+    "package.json",
+    "tsconfig.json",
+    "package-lock.json",
     "test",
     "scripts"
   ]
