@@ -3,6 +3,7 @@ import { buildSchema, analyzeEntities } from 'oak-domain/lib/compiler/schemalBui
 
 process.env.NODE_ENV = 'development';
 process.env.COMPLING_AS_LIB = 'yes';
+analyzeEntities('node_modules/oak-domain/src/entities');
 analyzeEntities('src/entities');
 buildSchema('src/general-app-domain/');
 unset(process.env, 'COMPLING_AS_LIB');

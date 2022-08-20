@@ -112,18 +112,19 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                 context,
                 params
             );
-            const { entity, entityId, relation, type } = result[0];
+            const { entity, entityId, relation } = result[0];
             const entityStr = firstLetterUpperCase(entity!);
             const userRelation = `user${entityStr}` as keyof EntityDict;
             //如果是relation是transfer，需要处理授权者名下entity关系转让给接收者
             const { result: result2 } = await context.rowStore.select(
                 userRelation,
                 {
+                    id: await generateNewId(),
                     data: {
                         id: 1,
                     },
                     filter: {
-                        userId,
+                        userId: userId!,
                         relation,
                         [`${entity}Id`]: entityId,
                     },
@@ -142,6 +143,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                 await context.rowStore.operate(
                     userRelation,
                     {
+                        id: await generateNewId(),
                         action: 'create',
                         data: {
                             userId,

@@ -37,6 +37,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
             await context.rowStore.operate(
                 'wechatQrCode',
                 {
+                    id: await generateNewId(),
                     action: 'create',
                     data,
                 },
@@ -63,6 +64,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
             await context.rowStore.operate(
                 'wechatQrCode',
                 {
+                    id: await generateNewId(),
                     action: 'create',
                     data,
                 },
@@ -88,6 +90,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
         await context.rowStore.operate(
             'wechatQrCode',
             {
+                id: await generateNewId(),
                 action: 'create',
                 data,
             },
@@ -113,6 +116,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
         await context.rowStore.operate(
             'wechatQrCode',
             {
+                id: await generateNewId(),
                 action: 'create',
                 data,
             },

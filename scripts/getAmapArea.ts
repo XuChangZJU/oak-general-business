@@ -5,7 +5,7 @@ import 'isomorphic-fetch';
 import assert from 'assert';
 import { writeFileSync } from 'fs-extra';
 import { FormCreateData } from 'oak-domain/lib/types/Entity';
-import { OpSchema as Area } from 'oak-app-domain/Area/Schema';
+import { OpSchema as Area } from '../src/general-app-domain/Area/Schema';
 
 
 const KEY = '4f3d4499850ba51429b9dece8cedd8d2';
@@ -81,10 +81,10 @@ function processRepeatedAdCode(districts: any[], parentAdCode: string) {
 } */
 
 
-async function main() {
+async function main(provinceName?: string) {
     const areaDebug: FormCreateData<Area>[] = [];
     const areaTotal: FormCreateData<Area>[] = [];
-    function saveAreas(areas: any[], parentId: string | null, depth: 0 | 1 | 2 | 3 | 4, dest: FormCreateData<Area>[] = areaDebug) {
+    function saveAreas(areas: any[], parentId: string | null, depth: 0 | 1 | 2 | 3 | 4, dest: FormCreateData<Area>[]) {
         areas.forEach(
             (ele) => {
                 const { adcode, center, citycode, level, name } = ele;
@@ -108,47 +108,61 @@ async function main() {
     const result = await acquireAmap('中国', 1);
     const { districts } = result;
     const country = districts[0];
-    saveAreas([country], null, 0);
+    saveAreas([country], null, 0, areaDebug);
     saveAreas([country], null, 0, areaTotal);
     const { districts: provinces, adcode: countryCode } = country;
 
-    async function saveBelowProvinces(dest: FormCreateData<Area>[], limit?: number) {
-        const provinces2 = limit ? provinces.slice(0, limit) : provinces;
-        saveAreas(provinces2, countryCode, 1, dest);
-        for (const dist of provinces) {
-            const result2 = await acquireAmap(dist.name, 3);
-            const { districts: cities, adcode: provinceCode } = result2.districts[0];
-            // cities.forEach((ele: any) => assert(ele.level === 'city'));
-            const cities2 = limit ? cities.slice(0, limit) : cities;
-            saveAreas(cities2, provinceCode, 2, dest);
-            for (const city of cities2) {
-                const { districts, adcode: cityCode } = city;
-                const districts2 = processRepeatedAdCode(districts, cityCode);
-                const districts3 = limit ? districts2.slice(0, limit) : districts2;
-                // districts2.forEach((ele: any) => assert(ele.level === 'district'));
-                saveAreas(districts3, cityCode, 3, dest);
-                districts2.forEach(
-                    (district) => {
-                        const { districts: streets, adcode: districtCode } = district;
-                        const streets2 = processRepeatedAdCode(streets, districtCode);
-                        const streets3 = limit ? streets2.slice(0, limit) : streets2;
-                        // streets2.forEach((ele: any) => assert(ele.level === 'street'));
-                        saveAreas(streets3, districtCode, 4, dest);
-                    }
-                );
-            }
+    // debug 省只存一个
+    const provinces2 = provinceName ? provinces.filter((ele: any) => ele.name === provinceName) : provinces.slice(0, 1);
+    saveAreas(provinces, countryCode, 1, areaTotal);
+    saveAreas(provinces2, countryCode, 1, areaDebug);
+    
+    // debug的数据
+    for (const dist of provinces2) {
+        const result2 = await acquireAmap(dist.name, 3);
+        const { districts: cities, adcode: provinceCode } = result2.districts[0];
+        const cities2 =  cities.sort((ele1: any, ele2: any) => parseInt(ele1.adcode) - parseInt(ele2.adcode)).slice(0, 2);        // debug 城市取一个
+        saveAreas(cities2, provinceCode, 2, areaDebug);
+        for (const city of cities2) {
+            const { districts, adcode: cityCode } = city;
+            const districts2 = processRepeatedAdCode(districts, cityCode);
+            const districts3 = districts2.slice(0, 3);      // debug district取三个
+            saveAreas(districts3, cityCode, 3, areaDebug);
+            districts3.forEach(
+                (district) => {
+                    const { districts: streets, adcode: districtCode } = district;
+                    const streets2 = processRepeatedAdCode(streets, districtCode);
+                    saveAreas(streets2, districtCode, 4, areaDebug);           // street全取
+                }
+            );
         }
     }
 
-    await saveBelowProvinces(areaDebug, 1);
-    await saveBelowProvinces(areaTotal);
+    // 完整的数据
+    for (const dist of provinces) {
+        const result2 = await acquireAmap(dist.name, 3);
+        const { districts: cities, adcode: provinceCode } = result2.districts[0];
+        saveAreas(cities, provinceCode, 2, areaTotal);
+        for (const city of cities) {
+            const { districts, adcode: cityCode } = city;
+            const districts2 = processRepeatedAdCode(districts, cityCode);
+            saveAreas(districts2, cityCode, 3, areaTotal);
+            districts2.forEach(
+                (district) => {
+                    const { districts: streets, adcode: districtCode } = district;
+                    const streets2 = processRepeatedAdCode(streets, districtCode);
+                    saveAreas(streets2, districtCode, 4, areaTotal);
+                }
+            );
+        }
+    }
 
     writeFileSync(`${__dirname}/../src/data/area-debug.json`, JSON.stringify(areaDebug));
     writeFileSync(`${__dirname}/../src/data/area.json`, JSON.stringify(areaTotal));
 }
 
 
-main().then(
+main(process.argv[2]).then(
     () => console.log('success')
 );
 /* 

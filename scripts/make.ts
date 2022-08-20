@@ -6,7 +6,7 @@ import spawn from 'cross-spawn';
 
     const result = spawn.sync(
         'ts-node',
-        [require.resolve('./buildBaseEntityDict.ts')],
+        [require.resolve('./buildGeneralEntityDict.ts')],
         {
             stdio: 'inherit',
             shell: true,

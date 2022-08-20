@@ -89,6 +89,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
             assert (filter!.id);
             const { id } = (await context.getToken())!;
             await context.rowStore.operate('token', {
+                id: await generateNewId(),
                 action: 'update',
                 data: {
                     userId: filter!.id as string,

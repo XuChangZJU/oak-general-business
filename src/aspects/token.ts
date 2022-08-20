@@ -174,6 +174,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
             }
 
             await rowStore.operate('token', {
+                id: await generateNewId(),
                 data: tokenData,
                 action: 'create',
             }, context);
@@ -191,6 +192,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                 userId: currentToken.userId!,
             };
             await rowStore.operate('mobile', {
+                id: await generateNewId(),
                 action: 'create',
                 data: mobileData
             }, context);
@@ -204,6 +206,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                 systemId: systemId!,
             };
             await rowStore.operate('user', {
+                id: await generateNewId(),
                 action: 'create',
                 data: userData,
             }, context);
@@ -222,6 +225,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                 }
             };
             await rowStore.operate('token', {
+                id: await generateNewId(),
                 action: 'create',
                 data: tokenData,
             }, context);
@@ -407,6 +411,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
             });
             if (token && isEqual(token.env, env)) {
                 await rowStore.operate('token', {
+                    id: await generateNewId(),
                     action: 'update',
                     data: {
                         wechatUser: {
@@ -422,6 +427,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
             }
 
             await rowStore.operate('token', {
+                id: await generateNewId(),
                 action: 'disable',
                 data: {
                 },
@@ -447,6 +453,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
         }
 
         await rowStore.operate('token', {
+            id: await generateNewId(),
             action: 'create',
             data: {
                 id,
@@ -487,6 +494,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
         }>;
         if (wechatUser2 && wechatUser2.userId) {
             await rowStore.operate('token', {
+                id: await generateNewId(),
                 action: 'disable',
                 data: {
                 },
@@ -508,6 +516,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
                 userId: wechatUser2.userId,
             };
             await rowStore.operate('token', {
+                id: await generateNewId(),
                 action: 'create',
                 data: {
                     id,
@@ -539,11 +548,13 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
         openId,
         applicationId: application!.id,
         user: {
+            id: await generateNewId(),
             action: 'create',
             data: userData,
         }
     };
     await rowStore.operate('token', {
+        id: await generateNewId(),
         action: 'create',
         data: {
             id,
@@ -642,6 +653,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
             }, context, { dummy: 1, ignoreTrigger: true });
             if (token && isEqual(token.env, env)) {
                 await rowStore.operate('token', {
+                    id: await generateNewId(),
                     action: 'update',
                     data: {
                         wechatUser: {
@@ -657,6 +669,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
             }
 
             await rowStore.operate('token', {
+                id: await generateNewId(),
                 action: 'disable',
                 data: {
                 },
@@ -682,6 +695,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
         }
 
         await rowStore.operate('token', {
+            id: await generateNewId(),
             action: 'create',
             data: {
                 id,
@@ -722,6 +736,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
         }>;
         if (wechatUser2 && wechatUser2.userId) {
             await rowStore.operate('token', {
+                id: await generateNewId(),
                 action: 'disable',
                 data: {
                 },
@@ -743,6 +758,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                 userId: wechatUser2.userId,
             };
             await rowStore.operate('token', {
+                id: await generateNewId(),
                 action: 'create',
                 data: {
                     id,
@@ -774,11 +790,13 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
         openId,
         applicationId: application!.id,
         user: {
+            id: await generateNewId(),
             action: 'create',
             data: userData,
         }
     };
     await rowStore.operate('token', {
+        id: await generateNewId(),
         action: 'create',
         data: {
             id,
@@ -786,6 +804,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
             playerId: userData.id,
             applicationId: application!.id,
             wechatUser: {
+                id: await generateNewId(),
                 action: 'create',
                 data: wechatUserCreateData,
             },
@@ -888,6 +907,7 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ge
 
     if (Object.keys(updateData).length > 0) {
         await rowStore.operate('user', {
+            id: await generateNewId(),
             action: 'update',
             data: updateData,
             filter: {
@@ -978,6 +998,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends GeneralRunt
         const id = await generateNewId();
         console.log('captcha created', id);
         await rowStore.operate('captcha', {
+            id: await generateNewId(),
             action: 'create',
             data: {
                 id,
