@@ -1,6 +1,16 @@
 import * as React from 'react';
-import { Cell, Image, Tag, Fab } from 'tdesign-mobile-react';
+import { Cell, Image, Tag, Fab, TagProps } from 'tdesign-mobile-react';
 import { Icon } from 'tdesign-icons-react';
+
+type CustomTagProps = {
+    children?: any;
+};
+
+const CustomTag: React.MemoExoticComponent<
+    React.ForwardRefExoticComponent<
+        CustomTagProps & TagProps & React.RefAttributes<HTMLDivElement>
+    >
+> = Tag;
 
 export default function render(this: any) {
     const { t } = this;
@@ -34,15 +44,19 @@ export default function render(this: any) {
                                     手机: {ele.mobile || '未设置'}
                                 </div>
                                 <div className="relation">
-                                    {ele.relations?.map((relation: string, index: number) => (
-                                        <Tag
-                                            key={index}
-                                            variant="outline"
-                                            theme="primary"
-                                        >
-                                            {t(`${entity}:r.${relation}`)}
-                                        </Tag>
-                                    ))}
+                                    {ele.relations?.map(
+                                        (relation: string, index: number) => (
+                                            <CustomTag
+                                                key={index}
+                                                variant="outline"
+                                                theme="primary"
+                                                className=""
+                                                style={{}}
+                                            >
+                                                {t(`${entity}:r.${relation}`)}
+                                            </CustomTag>
+                                        )
+                                    )}
                                 </div>
                             </div>
                         }

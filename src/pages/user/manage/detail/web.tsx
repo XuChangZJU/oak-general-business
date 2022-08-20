@@ -1,5 +1,15 @@
 import React, { Component } from 'react';
-import { Cell, Tag, Avatar } from 'tdesign-mobile-react';
+import { Cell, Tag, Avatar, TagProps } from 'tdesign-mobile-react';
+
+type CustomTagProps = {
+    children?: any;
+};
+
+const CustomTag: React.MemoExoticComponent<
+    React.ForwardRefExoticComponent<
+        CustomTagProps & TagProps & React.RefAttributes<HTMLDivElement>
+    >
+> = Tag;
 
 export default function render(this: any) {
     const { t } = this;
@@ -36,24 +46,29 @@ export default function render(this: any) {
             />
             <Cell title="昵称" note={nickname || '未设置'} />
             <Cell title="姓名" note={name || '未设置'} />
-            <Cell
-                title="手机号"
-                note={getMobile()}
-            />
+            <Cell title="手机号" note={getMobile()} />
             <Cell
                 title="用户状态"
                 note={
-                    <Tag theme={stateColor[userState]}>
+                    <CustomTag
+                        theme={stateColor[userState]}
+                        className=""
+                        style={{}}
+                    >
                         {t(`user:v.userState.${userState}`)}
-                    </Tag>
+                    </CustomTag>
                 }
             />
             <Cell
                 title="实名验证"
                 note={
-                    <Tag theme={idStateColor[idState]}>
+                    <CustomTag
+                        theme={idStateColor[idState]}
+                        className=""
+                        style={{}}
+                    >
                         {t(`user:v.idState.${idState}`)}
-                    </Tag>
+                    </CustomTag>
                 }
             />
         </div>
