@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Checkbox, Input, Form, Radio, DatePicker, Row, Col } from 'tdesign-react';
-import { DateTime } from 'luxon';
+import dayjs from 'dayjs';
 const { FormItem } = Form;
 
 export default function render(this: any) {
@@ -47,14 +47,13 @@ export default function render(this: any) {
                                     presetsPlacement="bottom"
                                     value={
                                         this.state.birth
-                                            ? DateTime.fromMillis(
-                                                  this.state.birth
-                                              ).toFormat('yyyy-LL-dd')
+                                            ? dayjs(this.state.birth).format(
+                                                  'YYYY-MM-DD'
+                                              )
                                             : ''
                                     }
                                     onChange={(value) => {
-                                        const val =
-                                            DateTime.fromISO(value).toMillis();
+                                        const val = dayjs(value).valueOf();
                                         this.setUpdateData('birth', val);
                                     }}
                                     valueType="YYYY-MM-DD"

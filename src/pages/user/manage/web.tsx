@@ -1,6 +1,16 @@
 import * as React from 'react';
-import { Fab, Cell, Tag } from 'tdesign-mobile-react';
+import { Fab, Cell, Tag, TagProps } from 'tdesign-mobile-react';
 import { Icon } from 'tdesign-icons-react';
+
+type CustomTagProps = {
+    children?: any;
+};
+
+const CustomTag: React.MemoExoticComponent<
+    React.ForwardRefExoticComponent<
+        CustomTagProps & TagProps & React.RefAttributes<HTMLDivElement>
+    >
+> = Tag;
 
 export default function render(this: any) {
     const { t } = this;
@@ -24,9 +34,13 @@ export default function render(this: any) {
                                     {ele.mobile || '未设置'}
                                 </div>
                                 <div style={{ display: 'flex' }}>
-                                    <Tag theme={stateColor[ele.userState]}>
+                                    <CustomTag
+                                        theme={stateColor[ele.userState]}
+                                        className=""
+                                        style={{}}
+                                    >
                                         {t(`user:v.userState.${ele.userState}`)}
-                                    </Tag>
+                                    </CustomTag>
                                 </div>
                             </div>
                         }
