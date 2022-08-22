@@ -2,12 +2,14 @@ import { String, Text, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/t
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as System from "../System/Schema";
 import * as Token from "../Token/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
 import * as WechatUser from "../WechatUser/Schema";
+import * as OperEntity from "../OperEntity/Schema";
+import * as ModiEntity from "../ModiEntity/Schema";
 export declare type AppType = 'web' | 'wechatMp' | 'wechatPublic';
 export declare type WechatMpConfig = {
     type: 'wechatMp';
@@ -51,6 +53,8 @@ export declare type Schema = {
     token$application?: Array<Token.Schema>;
     wechatQrCode$application?: Array<WechatQrCode.Schema>;
     wechatUser$application?: Array<WechatUser.Schema>;
+    operEntity$entity?: Array<OperEntity.Schema>;
+    modiEntity$entity?: Array<ModiEntity.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -64,7 +68,7 @@ declare type AttrFilter = {
     systemId: Q_StringValue | SubQuery.SystemIdSubQuery;
     system: System.Filter;
 };
-export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
+export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -86,7 +90,13 @@ export declare type Projection = {
     wechatUser$application?: WechatUser.Selection & {
         $entity: "wechatUser";
     };
-} & Partial<ExprOp<OpAttr | string>>;
+    operEntity$entity?: OperEntity.Selection & {
+        $entity: "operEntity";
+    };
+    modiEntity$entity?: ModiEntity.Selection & {
+        $entity: "modiEntity";
+    };
+} & Partial<ExprOp<OpAttr>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -108,7 +118,13 @@ export declare type ExportProjection = {
     wechatUser$application?: WechatUser.Exportation & {
         $entity: "wechatUser";
     };
-} & Partial<ExprOp<OpAttr | string>>;
+    operEntity$entity?: OperEntity.Exportation & {
+        $entity: "operEntity";
+    };
+    modiEntity$entity?: ModiEntity.Exportation & {
+        $entity: "modiEntity";
+    };
+} & Partial<ExprOp<OpAttr>>;
 declare type ApplicationIdProjection = OneOf<{
     id: 1;
 }>;
@@ -133,7 +149,7 @@ export declare type SortAttr = {
     system: System.SortAttr;
 } | {
     [k: string]: any;
-} | OneOf<ExprOp<OpAttr | string>>;
+} | OneOf<ExprOp<OpAttr>>;
 export declare type SortNode = {
     $attr: SortAttr;
     $direction?: "asc" | "desc";
@@ -150,9 +166,11 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "systemI
     system?: System.UpdateOperation;
 })) & {
     [k: string]: any;
-    token$application?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "application" | "applicationId">, Token.Filter> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "application" | "applicationId"> | Omit<Token.CreateOperationData, "application" | "applicationId">[]> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "application" | "applicationId">, Token.Filter>>;
-    wechatQrCode$application?: OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "application" | "applicationId">, WechatQrCode.Filter> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId"> | Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">[]> | OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "application" | "applicationId">, WechatQrCode.Filter>>;
-    wechatUser$application?: OakOperation<WechatUser.UpdateOperation["action"], Omit<WechatUser.UpdateOperationData, "application" | "applicationId">, WechatUser.Filter> | Array<OakOperation<"create", Omit<WechatUser.CreateOperationData, "application" | "applicationId"> | Omit<WechatUser.CreateOperationData, "application" | "applicationId">[]> | OakOperation<WechatUser.UpdateOperation["action"], Omit<WechatUser.UpdateOperationData, "application" | "applicationId">, WechatUser.Filter>>;
+    token$application?: OakOperation<"update", Omit<Token.UpdateOperationData, "application" | "applicationId">, Token.Filter> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "application" | "applicationId"> | Omit<Token.CreateOperationData, "application" | "applicationId">[]> | OakOperation<"update", Omit<Token.UpdateOperationData, "application" | "applicationId">, Token.Filter>>;
+    wechatQrCode$application?: OakOperation<"update", Omit<WechatQrCode.UpdateOperationData, "application" | "applicationId">, WechatQrCode.Filter> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId"> | Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">[]> | OakOperation<"update", Omit<WechatQrCode.UpdateOperationData, "application" | "applicationId">, WechatQrCode.Filter>>;
+    wechatUser$application?: OakOperation<"update", Omit<WechatUser.UpdateOperationData, "application" | "applicationId">, WechatUser.Filter> | Array<OakOperation<"create", Omit<WechatUser.CreateOperationData, "application" | "applicationId"> | Omit<WechatUser.CreateOperationData, "application" | "applicationId">[]> | OakOperation<"update", Omit<WechatUser.UpdateOperationData, "application" | "applicationId">, WechatUser.Filter>>;
+    operEntity$entity?: OakOperation<"update", Omit<OperEntity.UpdateOperationData, "entity" | "entityId">, OperEntity.Filter> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId"> | Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | OakOperation<"update", Omit<OperEntity.UpdateOperationData, "entity" | "entityId">, OperEntity.Filter>>;
+    modiEntity$entity?: OakOperation<"update", Omit<ModiEntity.UpdateOperationData, "entity" | "entityId">, ModiEntity.Filter> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId"> | Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | OakOperation<"update", Omit<ModiEntity.UpdateOperationData, "entity" | "entityId">, ModiEntity.Filter>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -168,8 +186,10 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "systemI
     tokens$application?: Token.UpdateOperation | Token.RemoveOperation | Array<OakOperation<"create", Omit<Token.CreateOperationData, "application" | "applicationId"> | Omit<Token.CreateOperationData, "application" | "applicationId">[]> | Token.UpdateOperation | Token.RemoveOperation>;
     wechatQrCodes$application?: WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId"> | Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">[]> | WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation>;
     wechatUsers$application?: WechatUser.UpdateOperation | WechatUser.RemoveOperation | Array<OakOperation<"create", Omit<WechatUser.CreateOperationData, "application" | "applicationId"> | Omit<WechatUser.CreateOperationData, "application" | "applicationId">[]> | WechatUser.UpdateOperation | WechatUser.RemoveOperation>;
+    operEntitys$entity?: OperEntity.UpdateOperation | OperEntity.RemoveOperation | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId"> | Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | OperEntity.UpdateOperation | OperEntity.RemoveOperation>;
+    modiEntitys$entity?: ModiEntity.UpdateOperation | ModiEntity.RemoveOperation | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId"> | Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | ModiEntity.UpdateOperation | ModiEntity.RemoveOperation>;
 };
-export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
+export declare type UpdateOperation = OakOperation<"update", UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
     system?: System.UpdateOperation;
 } | {
@@ -180,11 +200,11 @@ export declare type Operation = CreateOperation | UpdateOperation | RemoveOperat
 export declare type SystemIdSubQuery = Selection<SystemIdProjection>;
 export declare type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
 export declare type NativeAttr = OpAttr | `system.${System.NativeAttr}`;
-export declare type FullAttr = NativeAttr | `tokens$${number}.${Token.NativeAttr}` | `wechatQrCodes$${number}.${WechatQrCode.NativeAttr}` | `wechatUsers$${number}.${WechatUser.NativeAttr}`;
+export declare type FullAttr = NativeAttr | `tokens$${number}.${Token.NativeAttr}` | `wechatQrCodes$${number}.${WechatQrCode.NativeAttr}` | `wechatUsers$${number}.${WechatUser.NativeAttr}` | `operEntitys$${number}.${OperEntity.NativeAttr}` | `modiEntitys$${number}.${ModiEntity.NativeAttr}`;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: OakMakeAction<GenericAction | string>;
+    Action: GenericAction;
     Selection: Selection;
     Operation: Operation;
     Create: CreateOperation;

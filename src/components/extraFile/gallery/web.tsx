@@ -14,17 +14,27 @@ interface ExtraFile extends UploadFile {
 }
 
 export default function render(this: any) {
-    const { mediaType, maxNumber = 100, multiple = true } = this.props;
+    const {
+        mediaType,
+        maxNumber = 100,
+        multiple = true,
+        useMockProgress = false,
+        draggable = false,
+        showUploadProgress = false,
+        theme = 'image',
+    } = this.props;
     const { files, systemConfig } = this.state;
 
     return (
         <Upload
             multiple={multiple}
             autoUpload={false}
+            draggable={draggable}
+            useMockProgress={useMockProgress}
             max={maxNumber}
             accept={mediaType}
-            showUploadProgress={false}
-            theme="image"
+            showUploadProgress={showUploadProgress}
+            theme={theme}
             files={(files || []).map((ele: any) =>
                 extraFileToUploadFile(ele, systemConfig)
             )}

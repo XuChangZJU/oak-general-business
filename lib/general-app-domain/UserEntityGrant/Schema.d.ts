@@ -2,7 +2,7 @@ import { String, Int, Boolean, Text, Datetime, PrimaryKey, ForeignKey } from "oa
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction } from "./Action";
 import * as User from "../User/Schema";
 import * as OperEntity from "../OperEntity/Schema";
@@ -68,7 +68,7 @@ declare type AttrFilter = {
     expiresAt: Q_DateValue;
     expired: Q_BooleanValue;
 };
-export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
+export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -97,7 +97,7 @@ export declare type Projection = {
     wechatQrCode$entity?: WechatQrCode.Selection & {
         $entity: "wechatQrCode";
     };
-} & Partial<ExprOp<OpAttr | string>>;
+} & Partial<ExprOp<OpAttr>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -126,7 +126,7 @@ export declare type ExportProjection = {
     wechatQrCode$entity?: WechatQrCode.Exportation & {
         $entity: "wechatQrCode";
     };
-} & Partial<ExprOp<OpAttr | string>>;
+} & Partial<ExprOp<OpAttr>>;
 declare type UserEntityGrantIdProjection = OneOf<{
     id: 1;
 }>;
@@ -168,7 +168,7 @@ export declare type SortAttr = {
     expired: 1;
 } | {
     [k: string]: any;
-} | OneOf<ExprOp<OpAttr | string>>;
+} | OneOf<ExprOp<OpAttr>>;
 export declare type SortNode = {
     $attr: SortAttr;
     $direction?: "asc" | "desc";
@@ -191,9 +191,9 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "granter
     grantee?: User.UpdateOperation;
 })) & {
     [k: string]: any;
-    operEntity$entity?: OakOperation<OperEntity.UpdateOperation["action"], Omit<OperEntity.UpdateOperationData, "entity" | "entityId">, OperEntity.Filter> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId"> | Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | OakOperation<OperEntity.UpdateOperation["action"], Omit<OperEntity.UpdateOperationData, "entity" | "entityId">, OperEntity.Filter>>;
-    modiEntity$entity?: OakOperation<ModiEntity.UpdateOperation["action"], Omit<ModiEntity.UpdateOperationData, "entity" | "entityId">, ModiEntity.Filter> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId"> | Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | OakOperation<ModiEntity.UpdateOperation["action"], Omit<ModiEntity.UpdateOperationData, "entity" | "entityId">, ModiEntity.Filter>>;
-    wechatQrCode$entity?: OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, WechatQrCode.Filter> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId"> | Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">[]> | OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, WechatQrCode.Filter>>;
+    operEntity$entity?: OakOperation<"update", Omit<OperEntity.UpdateOperationData, "entity" | "entityId">, OperEntity.Filter> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId"> | Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | OakOperation<"update", Omit<OperEntity.UpdateOperationData, "entity" | "entityId">, OperEntity.Filter>>;
+    modiEntity$entity?: OakOperation<"update", Omit<ModiEntity.UpdateOperationData, "entity" | "entityId">, ModiEntity.Filter> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId"> | Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | OakOperation<"update", Omit<ModiEntity.UpdateOperationData, "entity" | "entityId">, ModiEntity.Filter>>;
+    wechatQrCode$entity?: OakOperation<"update", Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, WechatQrCode.Filter> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId"> | Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">[]> | OakOperation<"update", Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, WechatQrCode.Filter>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -216,7 +216,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "granter
     modiEntitys$entity?: ModiEntity.UpdateOperation | ModiEntity.RemoveOperation | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId"> | Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | ModiEntity.UpdateOperation | ModiEntity.RemoveOperation>;
     wechatQrCodes$entity?: WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId"> | Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">[]> | WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation>;
 };
-export declare type UpdateOperation = OakOperation<ParticularAction | "update" | string, UpdateOperationData, Filter, Sorter>;
+export declare type UpdateOperation = OakOperation<ParticularAction | "update", UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
     granter?: User.UpdateOperation;
 } | {
@@ -235,7 +235,7 @@ export declare type FullAttr = NativeAttr | `operEntitys$${number}.${OperEntity.
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: OakMakeAction<Action | string>;
+    Action: Action;
     Selection: Selection;
     Operation: Operation;
     Create: CreateOperation;

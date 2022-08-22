@@ -2,7 +2,7 @@ import { String, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/D
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as User from "../User/Schema";
 import * as Role from "../Role/Schema";
@@ -39,7 +39,7 @@ declare type AttrFilter = {
     role: Role.Filter;
     relation: Q_EnumValue<'owner'>;
 };
-export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
+export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -51,7 +51,7 @@ export declare type Projection = {
     roleId?: 1;
     role?: Role.Projection;
     relation?: 1;
-} & Partial<ExprOp<OpAttr | string>>;
+} & Partial<ExprOp<OpAttr>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -63,7 +63,7 @@ export declare type ExportProjection = {
     roleId?: string;
     role?: Role.ExportProjection;
     relation?: string;
-} & Partial<ExprOp<OpAttr | string>>;
+} & Partial<ExprOp<OpAttr>>;
 declare type UserRoleIdProjection = OneOf<{
     id: 1;
 }>;
@@ -91,7 +91,7 @@ export declare type SortAttr = {
     relation: 1;
 } | {
     [k: string]: any;
-} | OneOf<ExprOp<OpAttr | string>>;
+} | OneOf<ExprOp<OpAttr>>;
 export declare type SortNode = {
     $attr: SortAttr;
     $direction?: "asc" | "desc";
@@ -133,7 +133,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId"
 })) & {
     [k: string]: any;
 };
-export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
+export declare type UpdateOperation = OakOperation<"update", UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
     user?: User.UpdateOperation;
 } | {
@@ -153,7 +153,7 @@ export declare type FullAttr = NativeAttr;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: OakMakeAction<GenericAction | string>;
+    Action: GenericAction;
     Selection: Selection;
     Operation: Operation;
     Create: CreateOperation;

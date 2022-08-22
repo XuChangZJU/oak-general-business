@@ -2,12 +2,14 @@ import { String, Text, Datetime, PrimaryKey } from "oak-domain/lib/types/DataTyp
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as Application from "../Application/Schema";
 import * as Domain from "../Domain/Schema";
 import * as UserSystem from "../UserSystem/Schema";
 import * as User from "../User/Schema";
+import * as OperEntity from "../OperEntity/Schema";
+import * as ModiEntity from "../ModiEntity/Schema";
 export declare type SystemConfig = {
     Cos?: {
         qiniu?: {
@@ -50,6 +52,8 @@ export declare type Schema = {
     domain$system?: Array<Domain.Schema>;
     userSystem$system?: Array<UserSystem.Schema>;
     user$system?: Array<User.Schema>;
+    operEntity$entity?: Array<OperEntity.Schema>;
+    modiEntity$entity?: Array<ModiEntity.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -61,7 +65,7 @@ declare type AttrFilter = {
     description: Q_StringValue;
     config: Q_EnumValue<SystemConfig>;
 };
-export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
+export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -83,7 +87,13 @@ export declare type Projection = {
     user$system?: User.Selection & {
         $entity: "user";
     };
-} & Partial<ExprOp<OpAttr | string>>;
+    operEntity$entity?: OperEntity.Selection & {
+        $entity: "operEntity";
+    };
+    modiEntity$entity?: ModiEntity.Selection & {
+        $entity: "modiEntity";
+    };
+} & Partial<ExprOp<OpAttr>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -105,7 +115,13 @@ export declare type ExportProjection = {
     user$system?: User.Exportation & {
         $entity: "user";
     };
-} & Partial<ExprOp<OpAttr | string>>;
+    operEntity$entity?: OperEntity.Exportation & {
+        $entity: "operEntity";
+    };
+    modiEntity$entity?: ModiEntity.Exportation & {
+        $entity: "modiEntity";
+    };
+} & Partial<ExprOp<OpAttr>>;
 declare type SystemIdProjection = OneOf<{
     id: 1;
 }>;
@@ -123,7 +139,7 @@ export declare type SortAttr = {
     config: 1;
 } | {
     [k: string]: any;
-} | OneOf<ExprOp<OpAttr | string>>;
+} | OneOf<ExprOp<OpAttr>>;
 export declare type SortNode = {
     $attr: SortAttr;
     $direction?: "asc" | "desc";
@@ -134,10 +150,12 @@ export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<OpSchema> & {
     [k: string]: any;
-    application$system?: OakOperation<Application.UpdateOperation["action"], Omit<Application.UpdateOperationData, "system" | "systemId">, Application.Filter> | Array<OakOperation<"create", Omit<Application.CreateOperationData, "system" | "systemId"> | Omit<Application.CreateOperationData, "system" | "systemId">[]> | OakOperation<Application.UpdateOperation["action"], Omit<Application.UpdateOperationData, "system" | "systemId">, Application.Filter>>;
-    domain$system?: OakOperation<Domain.UpdateOperation["action"], Omit<Domain.UpdateOperationData, "system" | "systemId">, Domain.Filter> | Array<OakOperation<"create", Omit<Domain.CreateOperationData, "system" | "systemId"> | Omit<Domain.CreateOperationData, "system" | "systemId">[]> | OakOperation<Domain.UpdateOperation["action"], Omit<Domain.UpdateOperationData, "system" | "systemId">, Domain.Filter>>;
-    userSystem$system?: OakOperation<UserSystem.UpdateOperation["action"], Omit<UserSystem.UpdateOperationData, "system" | "systemId">, UserSystem.Filter> | Array<OakOperation<"create", Omit<UserSystem.CreateOperationData, "system" | "systemId"> | Omit<UserSystem.CreateOperationData, "system" | "systemId">[]> | OakOperation<UserSystem.UpdateOperation["action"], Omit<UserSystem.UpdateOperationData, "system" | "systemId">, UserSystem.Filter>>;
-    user$system?: OakOperation<User.UpdateOperation["action"], Omit<User.UpdateOperationData, "system" | "systemId">, User.Filter> | Array<OakOperation<"create", Omit<User.CreateOperationData, "system" | "systemId"> | Omit<User.CreateOperationData, "system" | "systemId">[]> | OakOperation<User.UpdateOperation["action"], Omit<User.UpdateOperationData, "system" | "systemId">, User.Filter>>;
+    application$system?: OakOperation<"update", Omit<Application.UpdateOperationData, "system" | "systemId">, Application.Filter> | Array<OakOperation<"create", Omit<Application.CreateOperationData, "system" | "systemId"> | Omit<Application.CreateOperationData, "system" | "systemId">[]> | OakOperation<"update", Omit<Application.UpdateOperationData, "system" | "systemId">, Application.Filter>>;
+    domain$system?: OakOperation<"update", Omit<Domain.UpdateOperationData, "system" | "systemId">, Domain.Filter> | Array<OakOperation<"create", Omit<Domain.CreateOperationData, "system" | "systemId"> | Omit<Domain.CreateOperationData, "system" | "systemId">[]> | OakOperation<"update", Omit<Domain.UpdateOperationData, "system" | "systemId">, Domain.Filter>>;
+    userSystem$system?: OakOperation<"update", Omit<UserSystem.UpdateOperationData, "system" | "systemId">, UserSystem.Filter> | Array<OakOperation<"create", Omit<UserSystem.CreateOperationData, "system" | "systemId"> | Omit<UserSystem.CreateOperationData, "system" | "systemId">[]> | OakOperation<"update", Omit<UserSystem.UpdateOperationData, "system" | "systemId">, UserSystem.Filter>>;
+    user$system?: OakOperation<"update", Omit<User.UpdateOperationData, "system" | "systemId">, User.Filter> | Array<OakOperation<"create", Omit<User.CreateOperationData, "system" | "systemId"> | Omit<User.CreateOperationData, "system" | "systemId">[]> | OakOperation<"update", Omit<User.UpdateOperationData, "system" | "systemId">, User.Filter>>;
+    operEntity$entity?: OakOperation<"update", Omit<OperEntity.UpdateOperationData, "entity" | "entityId">, OperEntity.Filter> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId"> | Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | OakOperation<"update", Omit<OperEntity.UpdateOperationData, "entity" | "entityId">, OperEntity.Filter>>;
+    modiEntity$entity?: OakOperation<"update", Omit<ModiEntity.UpdateOperationData, "entity" | "entityId">, ModiEntity.Filter> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId"> | Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | OakOperation<"update", Omit<ModiEntity.UpdateOperationData, "entity" | "entityId">, ModiEntity.Filter>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -148,18 +166,20 @@ export declare type UpdateOperationData = FormUpdateData<OpSchema> & {
     domains$system?: Domain.UpdateOperation | Domain.RemoveOperation | Array<OakOperation<"create", Omit<Domain.CreateOperationData, "system" | "systemId"> | Omit<Domain.CreateOperationData, "system" | "systemId">[]> | Domain.UpdateOperation | Domain.RemoveOperation>;
     userSystems$system?: UserSystem.UpdateOperation | UserSystem.RemoveOperation | Array<OakOperation<"create", Omit<UserSystem.CreateOperationData, "system" | "systemId"> | Omit<UserSystem.CreateOperationData, "system" | "systemId">[]> | UserSystem.UpdateOperation | UserSystem.RemoveOperation>;
     users$system?: User.UpdateOperation | User.RemoveOperation | Array<OakOperation<"create", Omit<User.CreateOperationData, "system" | "systemId"> | Omit<User.CreateOperationData, "system" | "systemId">[]> | User.UpdateOperation | User.RemoveOperation>;
+    operEntitys$entity?: OperEntity.UpdateOperation | OperEntity.RemoveOperation | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId"> | Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | OperEntity.UpdateOperation | OperEntity.RemoveOperation>;
+    modiEntitys$entity?: ModiEntity.UpdateOperation | ModiEntity.RemoveOperation | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId"> | Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | ModiEntity.UpdateOperation | ModiEntity.RemoveOperation>;
 };
-export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
+export declare type UpdateOperation = OakOperation<"update", UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {};
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type SystemIdSubQuery = Selection<SystemIdProjection>;
 export declare type NativeAttr = OpAttr;
-export declare type FullAttr = NativeAttr | `applications$${number}.${Application.NativeAttr}` | `domains$${number}.${Domain.NativeAttr}` | `userSystems$${number}.${UserSystem.NativeAttr}` | `users$${number}.${User.NativeAttr}`;
+export declare type FullAttr = NativeAttr | `applications$${number}.${Application.NativeAttr}` | `domains$${number}.${Domain.NativeAttr}` | `userSystems$${number}.${UserSystem.NativeAttr}` | `users$${number}.${User.NativeAttr}` | `operEntitys$${number}.${OperEntity.NativeAttr}` | `modiEntitys$${number}.${ModiEntity.NativeAttr}`;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: OakMakeAction<GenericAction | string>;
+    Action: GenericAction;
     Selection: Selection;
     Operation: Operation;
     Create: CreateOperation;
