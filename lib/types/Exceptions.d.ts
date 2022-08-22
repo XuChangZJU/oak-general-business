@@ -1,7 +1,4 @@
 import { OakUserException } from "oak-domain/lib/types";
-export declare class OakUnloggedInException extends OakUserException {
-    constructor(message?: string);
-}
 export declare class OakNotEnoughMoneyException extends OakUserException {
     constructor(message?: string);
 }
@@ -14,7 +11,7 @@ export declare class OakDistinguishUserException extends OakUserException {
     constructor(userId: string, usingPassword: boolean, usingIdCard: boolean, usingWechatUser: boolean, usingEmail: boolean, message?: string);
     toString(): string;
 }
-export declare class OakChangLoginWayException extends OakUserException {
+export declare class OakChangeLoginWayException extends OakUserException {
     userId: string;
     usingIdCard: boolean;
     usingWechatUser: boolean;

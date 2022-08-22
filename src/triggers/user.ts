@@ -1,4 +1,4 @@
-import { CreateTriggerInTxn, Trigger } from 'oak-domain/lib/types/Trigger';
+import { CreateTrigger, CreateTriggerInTxn, SelectTriggerBefore, Trigger, UpdateTrigger } from 'oak-domain/lib/types/Trigger';
 import { EntityDict } from '../general-app-domain/EntityDict';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { CreateOperationData as CreateUserRoleData } from '../general-app-domain/UserRole/Schema';
@@ -65,6 +65,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
                     Object.assign(userData, {
                         userRole$user: [
                             {
+                                id: await generateNewId(),
                                 action: 'create',
                                 data: userRoleData,
                             }
@@ -78,7 +79,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
             }
             return 0;
         }
-    },
+    } as CreateTrigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>,
     {
         name: '当扮演某个用户时，切换当前用户的token中的userId',
         entity: 'user',
@@ -100,7 +101,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
             }, context);
             return 1;
         }
-    },
+    } as UpdateTrigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>,
     {
         name: '查询用户时，默认加上systemId',
         entity: 'user',
@@ -128,7 +129,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
             }
             return 0;
         }
-    }
+    } as SelectTriggerBefore<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>
 ];
 
 export default triggers;

@@ -2,21 +2,9 @@ import { String, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/D
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as Oper from "../Oper/Schema";
-import * as Modi from "../Modi/Schema";
-import * as Address from "../Address/Schema";
-import * as Application from "../Application/Schema";
-import * as Area from "../Area/Schema";
-import * as Captcha from "../Captcha/Schema";
-import * as Domain from "../Domain/Schema";
-import * as Email from "../Email/Schema";
-import * as ExtraFile from "../ExtraFile/Schema";
-import * as Mobile from "../Mobile/Schema";
-import * as Role from "../Role/Schema";
-import * as System from "../System/Schema";
-import * as Token from "../Token/Schema";
 import * as User from "../User/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
@@ -27,7 +15,7 @@ export declare type OpSchema = {
     $$updateAt$$: Datetime;
     $$deleteAt$$?: Datetime | null;
     operId: ForeignKey<"oper">;
-    entity: "modi" | "address" | "application" | "area" | "captcha" | "domain" | "email" | "extraFile" | "mobile" | "role" | "system" | "token" | "user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string;
+    entity: "user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string;
     entityId: String<64>;
 };
 export declare type OpAttr = keyof OpSchema;
@@ -37,21 +25,9 @@ export declare type Schema = {
     $$updateAt$$: Datetime;
     $$deleteAt$$?: Datetime | null;
     operId: ForeignKey<"oper">;
-    entity: "modi" | "address" | "application" | "area" | "captcha" | "domain" | "email" | "extraFile" | "mobile" | "role" | "system" | "token" | "user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string;
+    entity: "user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string;
     entityId: String<64>;
     oper: Oper.Schema;
-    modi?: Modi.Schema;
-    address?: Address.Schema;
-    application?: Application.Schema;
-    area?: Area.Schema;
-    captcha?: Captcha.Schema;
-    domain?: Domain.Schema;
-    email?: Email.Schema;
-    extraFile?: ExtraFile.Schema;
-    mobile?: Mobile.Schema;
-    role?: Role.Schema;
-    system?: System.Schema;
-    token?: Token.Schema;
     user?: User.Schema;
     userEntityGrant?: UserEntityGrant.Schema;
     wechatQrCode?: WechatQrCode.Schema;
@@ -68,7 +44,7 @@ declare type AttrFilter<E> = {
     entity: E;
     entityId: Q_StringValue;
 };
-export declare type Filter<E = Q_EnumValue<"modi" | "address" | "application" | "area" | "captcha" | "domain" | "email" | "extraFile" | "mobile" | "role" | "system" | "token" | "user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr>>;
+export declare type Filter<E = Q_EnumValue<"user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -79,23 +55,11 @@ export declare type Projection = {
     oper?: Oper.Projection;
     entity?: 1;
     entityId?: 1;
-    modi?: Modi.Projection;
-    address?: Address.Projection;
-    application?: Application.Projection;
-    area?: Area.Projection;
-    captcha?: Captcha.Projection;
-    domain?: Domain.Projection;
-    email?: Email.Projection;
-    extraFile?: ExtraFile.Projection;
-    mobile?: Mobile.Projection;
-    role?: Role.Projection;
-    system?: System.Projection;
-    token?: Token.Projection;
     user?: User.Projection;
     userEntityGrant?: UserEntityGrant.Projection;
     wechatQrCode?: WechatQrCode.Projection;
     wechatUser?: WechatUser.Projection;
-} & Partial<ExprOp<OpAttr>>;
+} & Partial<ExprOp<OpAttr | string>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -106,64 +70,16 @@ export declare type ExportProjection = {
     oper?: Oper.ExportProjection;
     entity?: string;
     entityId?: string;
-    modi?: Modi.ExportProjection;
-    address?: Address.ExportProjection;
-    application?: Application.ExportProjection;
-    area?: Area.ExportProjection;
-    captcha?: Captcha.ExportProjection;
-    domain?: Domain.ExportProjection;
-    email?: Email.ExportProjection;
-    extraFile?: ExtraFile.ExportProjection;
-    mobile?: Mobile.ExportProjection;
-    role?: Role.ExportProjection;
-    system?: System.ExportProjection;
-    token?: Token.ExportProjection;
     user?: User.ExportProjection;
     userEntityGrant?: UserEntityGrant.ExportProjection;
     wechatQrCode?: WechatQrCode.ExportProjection;
     wechatUser?: WechatUser.ExportProjection;
-} & Partial<ExprOp<OpAttr>>;
+} & Partial<ExprOp<OpAttr | string>>;
 declare type OperEntityIdProjection = OneOf<{
     id: 1;
 }>;
 declare type OperIdProjection = OneOf<{
     operId: 1;
-}>;
-declare type ModiIdProjection = OneOf<{
-    entityId: 1;
-}>;
-declare type AddressIdProjection = OneOf<{
-    entityId: 1;
-}>;
-declare type ApplicationIdProjection = OneOf<{
-    entityId: 1;
-}>;
-declare type AreaIdProjection = OneOf<{
-    entityId: 1;
-}>;
-declare type CaptchaIdProjection = OneOf<{
-    entityId: 1;
-}>;
-declare type DomainIdProjection = OneOf<{
-    entityId: 1;
-}>;
-declare type EmailIdProjection = OneOf<{
-    entityId: 1;
-}>;
-declare type ExtraFileIdProjection = OneOf<{
-    entityId: 1;
-}>;
-declare type MobileIdProjection = OneOf<{
-    entityId: 1;
-}>;
-declare type RoleIdProjection = OneOf<{
-    entityId: 1;
-}>;
-declare type SystemIdProjection = OneOf<{
-    entityId: 1;
-}>;
-declare type TokenIdProjection = OneOf<{
-    entityId: 1;
 }>;
 declare type UserIdProjection = OneOf<{
     entityId: 1;
@@ -192,30 +108,6 @@ export declare type SortAttr = {
 } | {
     entityId: 1;
 } | {
-    modi: Modi.SortAttr;
-} | {
-    address: Address.SortAttr;
-} | {
-    application: Application.SortAttr;
-} | {
-    area: Area.SortAttr;
-} | {
-    captcha: Captcha.SortAttr;
-} | {
-    domain: Domain.SortAttr;
-} | {
-    email: Email.SortAttr;
-} | {
-    extraFile: ExtraFile.SortAttr;
-} | {
-    mobile: Mobile.SortAttr;
-} | {
-    role: Role.SortAttr;
-} | {
-    system: System.SortAttr;
-} | {
-    token: Token.SortAttr;
-} | {
     user: User.SortAttr;
 } | {
     userEntityGrant: UserEntityGrant.SortAttr;
@@ -225,7 +117,7 @@ export declare type SortAttr = {
     wechatUser: WechatUser.SortAttr;
 } | {
     [k: string]: any;
-} | OneOf<ExprOp<OpAttr>>;
+} | OneOf<ExprOp<OpAttr | string>>;
 export declare type SortNode = {
     $attr: SortAttr;
     $direction?: "asc" | "desc";
@@ -241,102 +133,6 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "operId"
     operId: String<64>;
     oper?: Oper.UpdateOperation;
 })) & ({
-    entity?: never;
-    entityId?: never;
-    modi: Modi.CreateSingleOperation;
-} | {
-    entity: "modi";
-    entityId: String<64>;
-    modi?: Modi.UpdateOperation;
-} | {
-    entity?: never;
-    entityId?: never;
-    address: Address.CreateSingleOperation;
-} | {
-    entity: "address";
-    entityId: String<64>;
-    address?: Address.UpdateOperation;
-} | {
-    entity?: never;
-    entityId?: never;
-    application: Application.CreateSingleOperation;
-} | {
-    entity: "application";
-    entityId: String<64>;
-    application?: Application.UpdateOperation;
-} | {
-    entity?: never;
-    entityId?: never;
-    area: Area.CreateSingleOperation;
-} | {
-    entity: "area";
-    entityId: String<64>;
-    area?: Area.UpdateOperation;
-} | {
-    entity?: never;
-    entityId?: never;
-    captcha: Captcha.CreateSingleOperation;
-} | {
-    entity: "captcha";
-    entityId: String<64>;
-    captcha?: Captcha.UpdateOperation;
-} | {
-    entity?: never;
-    entityId?: never;
-    domain: Domain.CreateSingleOperation;
-} | {
-    entity: "domain";
-    entityId: String<64>;
-    domain?: Domain.UpdateOperation;
-} | {
-    entity?: never;
-    entityId?: never;
-    email: Email.CreateSingleOperation;
-} | {
-    entity: "email";
-    entityId: String<64>;
-    email?: Email.UpdateOperation;
-} | {
-    entity?: never;
-    entityId?: never;
-    extraFile: ExtraFile.CreateSingleOperation;
-} | {
-    entity: "extraFile";
-    entityId: String<64>;
-    extraFile?: ExtraFile.UpdateOperation;
-} | {
-    entity?: never;
-    entityId?: never;
-    mobile: Mobile.CreateSingleOperation;
-} | {
-    entity: "mobile";
-    entityId: String<64>;
-    mobile?: Mobile.UpdateOperation;
-} | {
-    entity?: never;
-    entityId?: never;
-    role: Role.CreateSingleOperation;
-} | {
-    entity: "role";
-    entityId: String<64>;
-    role?: Role.UpdateOperation;
-} | {
-    entity?: never;
-    entityId?: never;
-    system: System.CreateSingleOperation;
-} | {
-    entity: "system";
-    entityId: String<64>;
-    system?: System.UpdateOperation;
-} | {
-    entity?: never;
-    entityId?: never;
-    token: Token.CreateSingleOperation;
-} | {
-    entity: "token";
-    entityId: String<64>;
-    token?: Token.UpdateOperation;
-} | {
     entity?: never;
     entityId?: never;
     user: User.CreateSingleOperation;
@@ -383,54 +179,6 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "operId"
     oper?: undefined;
     operId?: String<64> | null;
 })) & ({
-    modi?: Modi.CreateSingleOperation | Modi.UpdateOperation | Modi.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
-} | {
-    address?: Address.CreateSingleOperation | Address.UpdateOperation | Address.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
-} | {
-    application?: Application.CreateSingleOperation | Application.UpdateOperation | Application.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
-} | {
-    area?: Area.CreateSingleOperation | Area.UpdateOperation | Area.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
-} | {
-    captcha?: Captcha.CreateSingleOperation | Captcha.UpdateOperation | Captcha.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
-} | {
-    domain?: Domain.CreateSingleOperation | Domain.UpdateOperation | Domain.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
-} | {
-    email?: Email.CreateSingleOperation | Email.UpdateOperation | Email.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
-} | {
-    extraFile?: ExtraFile.CreateSingleOperation | ExtraFile.UpdateOperation | ExtraFile.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
-} | {
-    mobile?: Mobile.CreateSingleOperation | Mobile.UpdateOperation | Mobile.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
-} | {
-    role?: Role.CreateSingleOperation | Role.UpdateOperation | Role.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
-} | {
-    system?: System.CreateSingleOperation | System.UpdateOperation | System.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
-} | {
-    token?: Token.CreateSingleOperation | Token.UpdateOperation | Token.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
-} | {
     user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
     entityId?: undefined;
     entity?: undefined;
@@ -447,65 +195,17 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "operId"
     entityId?: undefined;
     entity?: undefined;
 } | {
-    entity?: ("modi" | "address" | "application" | "area" | "captcha" | "domain" | "email" | "extraFile" | "mobile" | "role" | "system" | "token" | "user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string) | null;
+    entity?: ("user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string) | null;
     entityId?: String<64> | null;
 }) & {
     [k: string]: any;
 };
-export declare type UpdateOperation = OakOperation<"update", UpdateOperationData, Filter, Sorter>;
+export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
     oper?: Oper.UpdateOperation;
 } | {
     oper?: Oper.RemoveOperation;
 })) & ({
-    modi?: Modi.UpdateOperation;
-} | {
-    modi?: Modi.RemoveOperation;
-} | {
-    address?: Address.UpdateOperation;
-} | {
-    address?: Address.RemoveOperation;
-} | {
-    application?: Application.UpdateOperation;
-} | {
-    application?: Application.RemoveOperation;
-} | {
-    area?: Area.UpdateOperation;
-} | {
-    area?: Area.RemoveOperation;
-} | {
-    captcha?: Captcha.UpdateOperation;
-} | {
-    captcha?: Captcha.RemoveOperation;
-} | {
-    domain?: Domain.UpdateOperation;
-} | {
-    domain?: Domain.RemoveOperation;
-} | {
-    email?: Email.UpdateOperation;
-} | {
-    email?: Email.RemoveOperation;
-} | {
-    extraFile?: ExtraFile.UpdateOperation;
-} | {
-    extraFile?: ExtraFile.RemoveOperation;
-} | {
-    mobile?: Mobile.UpdateOperation;
-} | {
-    mobile?: Mobile.RemoveOperation;
-} | {
-    role?: Role.UpdateOperation;
-} | {
-    role?: Role.RemoveOperation;
-} | {
-    system?: System.UpdateOperation;
-} | {
-    system?: System.RemoveOperation;
-} | {
-    token?: Token.UpdateOperation;
-} | {
-    token?: Token.RemoveOperation;
-} | {
     user?: User.UpdateOperation;
 } | {
     user?: User.RemoveOperation;
@@ -527,29 +227,17 @@ export declare type RemoveOperationData = {} & (({
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type OperIdSubQuery = Selection<OperIdProjection>;
-export declare type ModiIdSubQuery = Selection<ModiIdProjection>;
-export declare type AddressIdSubQuery = Selection<AddressIdProjection>;
-export declare type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
-export declare type AreaIdSubQuery = Selection<AreaIdProjection>;
-export declare type CaptchaIdSubQuery = Selection<CaptchaIdProjection>;
-export declare type DomainIdSubQuery = Selection<DomainIdProjection>;
-export declare type EmailIdSubQuery = Selection<EmailIdProjection>;
-export declare type ExtraFileIdSubQuery = Selection<ExtraFileIdProjection>;
-export declare type MobileIdSubQuery = Selection<MobileIdProjection>;
-export declare type RoleIdSubQuery = Selection<RoleIdProjection>;
-export declare type SystemIdSubQuery = Selection<SystemIdProjection>;
-export declare type TokenIdSubQuery = Selection<TokenIdProjection>;
 export declare type UserIdSubQuery = Selection<UserIdProjection>;
 export declare type UserEntityGrantIdSubQuery = Selection<UserEntityGrantIdProjection>;
 export declare type WechatQrCodeIdSubQuery = Selection<WechatQrCodeIdProjection>;
 export declare type WechatUserIdSubQuery = Selection<WechatUserIdProjection>;
 export declare type OperEntityIdSubQuery = Selection<OperEntityIdProjection>;
-export declare type NativeAttr = OpAttr | `oper.${Oper.NativeAttr}` | `entity.${Modi.NativeAttr}` | `entity.${Address.NativeAttr}` | `entity.${Application.NativeAttr}` | `entity.${Area.NativeAttr}` | `entity.${Captcha.NativeAttr}` | `entity.${Domain.NativeAttr}` | `entity.${Email.NativeAttr}` | `entity.${ExtraFile.NativeAttr}` | `entity.${Mobile.NativeAttr}` | `entity.${Role.NativeAttr}` | `entity.${System.NativeAttr}` | `entity.${Token.NativeAttr}` | `entity.${User.NativeAttr}` | `entity.${UserEntityGrant.NativeAttr}` | `entity.${WechatQrCode.NativeAttr}` | `entity.${WechatUser.NativeAttr}`;
+export declare type NativeAttr = OpAttr | `oper.${Oper.NativeAttr}` | `entity.${User.NativeAttr}` | `entity.${UserEntityGrant.NativeAttr}` | `entity.${WechatQrCode.NativeAttr}` | `entity.${WechatUser.NativeAttr}`;
 export declare type FullAttr = NativeAttr;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: GenericAction;
+    Action: OakMakeAction<GenericAction | string>;
     Selection: Selection;
     Operation: Operation;
     Create: CreateOperation;

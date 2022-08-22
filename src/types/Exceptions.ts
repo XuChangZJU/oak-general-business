@@ -1,10 +1,6 @@
 import { OakUserException, makeException as makeException2 } from "oak-domain/lib/types";
 
-export class OakUnloggedInException extends OakUserException {
-    constructor(message?: string) {
-        super(message || '您尚未登录');
-    }
-};
+
 export class OakNotEnoughMoneyException extends OakUserException {
     constructor(message?: string) {
         super(message || '您的余额不足');
@@ -39,7 +35,7 @@ export class OakDistinguishUserException extends OakUserException {
     }
 };
 
-export class OakChangLoginWayException extends OakUserException {
+export class OakChangeLoginWayException extends OakUserException {
     userId: string;
     usingIdCard: boolean;
     usingWechatUser: boolean;
@@ -83,9 +79,6 @@ export function makeException(data: {
 
     const { name, message } = data;
     switch (name) {
-        case OakUnloggedInException.name: {
-            return new OakUnloggedInException(message);
-        }
         case OakNotEnoughMoneyException.name: {
             return new OakNotEnoughMoneyException(message);
         }

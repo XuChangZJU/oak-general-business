@@ -1,5 +1,5 @@
 import { checkFilterContains } from 'oak-domain/lib/store/actionDef';
-import { OakInputIllegalException, Checker, OakUserUnpermittedException, OakRowInconsistencyException } from "oak-domain/lib/types";
+import { OakInputIllegalException, Checker, OakUserUnpermittedException, OakRowInconsistencyException, RemoveChecker, UpdateChecker } from "oak-domain/lib/types";
 import { EntityDict } from '../general-app-domain';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 
@@ -15,7 +15,7 @@ const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [
             }, context, filter);
             return 0;
         },
-    },
+    } as RemoveChecker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>,
     {
         type: 'user',
         action: 'play',
@@ -24,7 +24,7 @@ const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [
             // 只有root才能play
             throw new OakUserUnpermittedException();
         },
-    },    
+    } as UpdateChecker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> ,    
     {
         type: 'data',
         action: 'play',
@@ -37,7 +37,7 @@ const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [
             }
             return 0;
         },
-    },
+    } as UpdateChecker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> ,
     {
         type: 'data',
         action: 'grant',
@@ -49,7 +49,7 @@ const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [
             }
             return 0;
         }
-    }
+    } as UpdateChecker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> 
 ];
 
 export default checkers;

@@ -1,5 +1,5 @@
 import {
-    Checker, OakInputIllegalException,
+    Checker, CreateChecker, OakInputIllegalException,
 } from 'oak-domain/lib/types';
 import { EntityDict } from '../general-app-domain';
 import { GeneralRuntimeContext } from '../RuntimeContext';
@@ -54,7 +54,8 @@ const checkers: Checker<
             }
             return 0;
         },
-    },
+    } as CreateChecker<EntityDict, 'userEntityGrant', GeneralRuntimeContext<EntityDict>
+>,
 ];
 
 export default checkers;

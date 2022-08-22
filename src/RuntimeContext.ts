@@ -109,6 +109,11 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
         return this.token;
     }
 
+    async getCurrentUserId(): Promise<string | undefined> {
+        const token = await this.getToken();
+        return token?.userId as string;
+    }
+
     async toString(): Promise<string> {
         const data = {
             applicationId: this.getApplicationId(),

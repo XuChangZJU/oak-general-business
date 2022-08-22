@@ -10,7 +10,7 @@ import { Operation as ExtraFileOperation } from '../general-app-domain/ExtraFile
 import { isEqual } from 'oak-domain/lib/utils/lodash';
 import { OakUserException, SelectRowShape } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
-import { OakChangLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exceptions';
+import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exceptions';
 import { encryptPasswordSha1 } from '../utils/password';
 
 async function makeDistinguishException<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(userId: string, context: Cxt) {
@@ -90,7 +90,7 @@ async function tryMakeChangeLoginWay<ED extends EntityDict, Cxt extends GeneralR
         }
     }>;
     if (idState === 'verified' || wechatUser$user.length > 0 || email$user.length > 0) {
-        return new OakChangLoginWayException(userId, idState === 'verified', wechatUser$user.length > 0, email$user.length > 0)
+        return new OakChangeLoginWayException(userId, idState === 'verified', wechatUser$user.length > 0, email$user.length > 0)
     }
 }
 
@@ -160,6 +160,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                     Object.assign(tokenData, {
                         userId: mobileRow.userId,
                         user: {
+                            id: await generateNewId(),
                             action: 'activate',
                         }
                     });
@@ -216,6 +217,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                 playerId: userData.id,
                 env,
                 mobile: {
+                    id: await generateNewId(),
                     action: 'create',
                     data: {
                         id: await generateNewId(),
@@ -415,6 +417,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
                     action: 'update',
                     data: {
                         wechatUser: {
+                            id: await generateNewId(),
                             action: 'update',
                             data: wechatUserUpdateData,
                         }
@@ -443,6 +446,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
             // 创建user
             Object.assign(wechatUserUpdateData, {
                 user: {
+                    id: await generateNewId(),
                     action: 'create',
                     data: {
                         id: await generateNewId(),
@@ -463,6 +467,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
                 entity: 'wechatUser',
                 entityId: wechatUser2.id as string,
                 wechatUser: {
+                    id: await generateNewId(),
                     action: 'update',
                     data: wechatUserUpdateData,
                 },
@@ -524,6 +529,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
                     playerId: wechatUser2.userId,
                     applicationId: application!.id,
                     wechatUser: {
+                        id: await generateNewId(),
                         action: 'create',
                         data: wechatUserCreateData,
                     },
@@ -562,6 +568,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
             playerId: userData.id,
             applicationId: application!.id,
             wechatUser: {
+                id: await generateNewId(),
                 action: 'create',
                 data: wechatUserCreateData,
             },
@@ -657,6 +664,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     action: 'update',
                     data: {
                         wechatUser: {
+                            id: await generateNewId(),
                             action: 'update',
                             data: wechatUserUpdateData,
                         }
@@ -685,6 +693,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
             // 创建user
             Object.assign(wechatUserUpdateData, {
                 user: {
+                    id: await generateNewId(),
                     action: 'create',
                     data: {
                         id: await generateNewId(),
@@ -705,6 +714,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                 entity: 'wechatUser',
                 entityId: wechatUser2.id as string,
                 wechatUser: {
+                    id: await generateNewId(),
                     action: 'update',
                     data: wechatUserUpdateData,
                 },
@@ -766,6 +776,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     playerId: wechatUser2.userId,
                     applicationId: application!.id,
                     wechatUser: {
+                        id: await generateNewId(),
                         action: 'create',
                         data: wechatUserCreateData,
                     },
@@ -880,6 +891,7 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ge
         // 需要更新新的avatar extra file
         const extraFileOperations: ExtraFileOperation['data'][] = [
             {
+                id: await generateNewId(),
                 action: 'create',
                 data: Object.assign({
                     id: await generateNewId(),

@@ -2,6 +2,7 @@ import * as Modi from "./Modi/Schema";
 import * as ModiEntity from "./ModiEntity/Schema";
 import * as Oper from "./Oper/Schema";
 import * as OperEntity from "./OperEntity/Schema";
+import * as User from "./User/Schema";
 import * as Address from "./Address/Schema";
 import * as Application from "./Application/Schema";
 import * as Area from "./Area/Schema";
@@ -15,7 +16,6 @@ import * as Role from "./Role/Schema";
 import * as UserSystem from "./UserSystem/Schema";
 import * as System from "./System/Schema";
 import * as Token from "./Token/Schema";
-import * as User from "./User/Schema";
 import * as UserEntityGrant from "./UserEntityGrant/Schema";
 import * as WechatQrCode from "./WechatQrCode/Schema";
 import * as WechatUser from "./WechatUser/Schema";
@@ -41,6 +41,29 @@ export declare type OperIdSubQuery = {
 export declare type OperEntityIdSubQuery = {
     [K in "$in" | "$nin"]?: (OperEntity.OperEntityIdSubQuery & {
         entity: "operEntity";
+    }) | any;
+};
+export declare type UserIdSubQuery = {
+    [K in "$in" | "$nin"]?: (Oper.UserIdSubQuery & {
+        entity: "oper";
+    }) | (Email.UserIdSubQuery & {
+        entity: "email";
+    }) | (Mobile.UserIdSubQuery & {
+        entity: "mobile";
+    }) | (UserRole.UserIdSubQuery & {
+        entity: "userRole";
+    }) | (UserSystem.UserIdSubQuery & {
+        entity: "userSystem";
+    }) | (Token.UserIdSubQuery & {
+        entity: "token";
+    }) | (User.UserIdSubQuery & {
+        entity: "user";
+    }) | (UserEntityGrant.UserIdSubQuery & {
+        entity: "userEntityGrant";
+    }) | (WechatUser.UserIdSubQuery & {
+        entity: "wechatUser";
+    }) | (User.UserIdSubQuery & {
+        entity: "user";
     }) | any;
 };
 export declare type AddressIdSubQuery = {
@@ -126,27 +149,6 @@ export declare type SystemIdSubQuery = {
 export declare type TokenIdSubQuery = {
     [K in "$in" | "$nin"]?: (Token.TokenIdSubQuery & {
         entity: "token";
-    }) | any;
-};
-export declare type UserIdSubQuery = {
-    [K in "$in" | "$nin"]?: (Email.UserIdSubQuery & {
-        entity: "email";
-    }) | (Mobile.UserIdSubQuery & {
-        entity: "mobile";
-    }) | (UserRole.UserIdSubQuery & {
-        entity: "userRole";
-    }) | (UserSystem.UserIdSubQuery & {
-        entity: "userSystem";
-    }) | (Token.UserIdSubQuery & {
-        entity: "token";
-    }) | (User.UserIdSubQuery & {
-        entity: "user";
-    }) | (UserEntityGrant.UserIdSubQuery & {
-        entity: "userEntityGrant";
-    }) | (WechatUser.UserIdSubQuery & {
-        entity: "wechatUser";
-    }) | (User.UserIdSubQuery & {
-        entity: "user";
     }) | any;
 };
 export declare type UserEntityGrantIdSubQuery = {

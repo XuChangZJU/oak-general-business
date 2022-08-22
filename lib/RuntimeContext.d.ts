@@ -42,6 +42,7 @@ export declare abstract class GeneralRuntimeContext<ED extends EntityDict> exten
         playerId: 1;
     }> | undefined>;
     getTokenValue(): string | undefined;
+    getCurrentUserId(): Promise<string | undefined>;
     toString(): Promise<string>;
     protected static fromString(strCxt: string): {
         applicationId: any;

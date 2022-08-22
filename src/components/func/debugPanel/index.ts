@@ -16,6 +16,7 @@ export default OakComponent({
         },
         resetInitialData() {
             this.features.cache.resetInitialData();
+            this.features.token.logout();
         },
         setVisible(visible: boolean) {
             this.setState({

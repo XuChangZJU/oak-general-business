@@ -1,4 +1,4 @@
-import { CreateTriggerInTxn, Trigger } from 'oak-domain/lib/types/Trigger';
+import { Trigger, CreateTrigger, UpdateTrigger } from 'oak-domain/lib/types/Trigger';
 import { GeneralRuntimeContext } from '../RuntimeContext';
 import { CreateOperationData as CreateUserEntityGrantData } from '../general-app-domain/UserEntityGrant/Schema';
 import { EntityDict } from '../general-app-domain/EntityDict';
@@ -85,9 +85,9 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
             }
             return 0;
         }
-    },
+    } as CreateTrigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<EntityDict>>,
     {
-        name: '当创建userEntityGrant确认时，附上被授权者id',
+        name: '当userEntityGrant被确认时，附上被授权者id',
         entity: 'userEntityGrant',
         action: 'confirm',
         when: 'after',
@@ -156,6 +156,6 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                 return 1;
             }
         }
-    }
+    } as UpdateTrigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<EntityDict>>
 ];
 export default triggers;
