@@ -11,28 +11,36 @@ export class ExtraFile<
     Cxt extends GeneralRuntimeContext<ED>,
     AD extends AspectDict<ED, Cxt>
 > extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
-    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>) {
+    constructor(
+        aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>
+    ) {
         super(aspectWrapper);
     }
+
     @Action
-    async upload(extraFile: DeduceCreateOperationData<EntityDict['extraFile']['OpSchema']>) {
-        try {
-            const {
+    async getUploadInfo(origin: string, key?: string) {
+        const { result: uploadInfo } = await this.getAspectWrapper().exec(
+            'getUploadInfo',
+            {
                 origin,
-                extra1,
-                filename,
-                objectId,
-                extension,
-                entity,
-            } = extraFile;
+                key,
+            }
+        );
+        return uploadInfo;
+    }
+
+    @Action
+    async upload(
+        extraFile: DeduceCreateOperationData<
+            EntityDict['extraFile']['OpSchema']
+        >
+    ) {
+        try {
+            const { origin, extra1, filename, objectId, extension, entity } =
+                extraFile;
             // 构造文件上传所需的fileName
-            const fileName = `${entity}/${objectId}.${extension}`;
-            const { result: uploadInfo } = await this.getAspectWrapper().exec('getUploadInfo',
-                {
-                    origin,
-                    fileName,
-                }
-            );
+            const key = `${entity}/${objectId}.${extension}`;
+            const uploadInfo = await this.getUploadInfo(origin, key);
 
             if (process.env.OAK_PLATFORM === 'wechatMp') {
                 // 微信小程序使用wx.uploadFile, 封装upload，上传源为origin
@@ -45,7 +53,7 @@ export class ExtraFile<
                 return result;
             }
         } catch (err) {
-            throw err; 
+            throw err;
         }
     }
 }

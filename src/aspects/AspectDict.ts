@@ -55,7 +55,7 @@ type GeneralAspectDict<
         context: Cxt
     ) => Promise<void>;
     getUploadInfo: (
-        params: { origin: string; fileName: string },
+        params: { origin: string; key?: string },
         context: Cxt
     ) => Promise<QiniuUploadInfo>;
     sendCaptcha: (params: {
