@@ -22,10 +22,9 @@ export default class aliyunInstance {
         this.domain = domain;
     }
 
-    async getUploadInfo(fileName: string) {
+    getUploadInfo(key?: string) {
         try {
             const { uploadHost, domain, bucket, accessKey } = this;
-            const key = `${Date.now()}/${fileName}`;
             const policy = this.getPolicyBase64();
             const signature = this.getSignature(policy);
             return {

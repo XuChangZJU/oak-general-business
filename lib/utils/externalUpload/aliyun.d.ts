@@ -11,15 +11,15 @@ export default class aliyunInstance {
         bucket: string;
         domain: string;
     });
-    getUploadInfo(fileName: string): Promise<{
-        key: string;
+    getUploadInfo(key?: string): {
+        key: string | undefined;
         signature: string;
         policy: string;
         uploadHost: string;
         bucket: string;
         domain: string;
         accessKey: string;
-    }>;
+    };
     getPolicyBase64(timeout?: number): string;
     getSignature(policyBase64: string): string;
     hmacSha1(encodedFlags: any, secretKey: string): string;

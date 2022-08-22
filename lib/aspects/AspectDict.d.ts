@@ -27,7 +27,7 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntime
     }, context: Cxt) => Promise<void>;
     getUploadInfo: (params: {
         origin: string;
-        fileName: string;
+        key?: string;
     }, context: Cxt) => Promise<QiniuUploadInfo>;
     sendCaptcha: (params: {
         mobile: string;

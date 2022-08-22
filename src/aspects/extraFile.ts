@@ -8,14 +8,13 @@ const ExternalUploadClazz = {
     qiniu: qiniuInstance,
 };
 
-
 export async function getUploadInfo<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(
-    params: { origin: string, fileName: string },
+    params: { origin: string, key?: string },
     context: Cxt): Promise<QiniuUploadInfo> {
     const { rowStore } = context;
     const application = await context.getApplication();
     const { type, config, systemId } = application!;
-    const { origin, fileName } = params;
+    const { origin, key } = params;
 
     const { result: [system] } = await rowStore.select('system', {
         data: {
@@ -35,7 +34,7 @@ export async function getUploadInfo<ED extends EntityDict, Cxt extends GeneralRu
         const instance = new ExternalUploadClazz[
             origin as keyof typeof ExternalUploadClazz
         ](originConfig);
-        const uploadInfo = await instance.getUploadInfo(fileName);
+        const uploadInfo = instance.getUploadInfo(key);
         return uploadInfo;
     } catch (err) {
         throw err;

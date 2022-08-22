@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import { Buffer } from 'buffer';
+import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
 
 export default class qiniuInstance {
     accessKey: string;
@@ -22,10 +23,10 @@ export default class qiniuInstance {
         this.domain = domain;
     }
 
-    async getUploadInfo(key: string) {
+    getUploadInfo(key?: string): QiniuUploadInfo {
         try {
             const { uploadHost, domain, bucket } = this;
-            const scope = `${bucket}:${key}`;
+            const scope = key ? `${bucket}:${key}` : bucket;
             const uploadToken = this.getToken(scope);
             return {
                 key,
