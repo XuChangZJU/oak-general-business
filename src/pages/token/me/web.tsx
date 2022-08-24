@@ -1,7 +1,15 @@
 import React from 'react';
 import { UserCircleIcon } from 'tdesign-icons-react';
 import { Avatar, Button, Cell, CellGroup, Input, Popup } from 'tdesign-mobile-react';
+import { CellGroupProps } from 'tdesign-mobile-react/es/cell-group/CellGroup';
 import styles from './web.module.less';
+
+type CustomCellGroupProps = {
+    children?: React.ReactNode;
+};
+
+const CustomCellGroup: React.FC<CellGroupProps & CustomCellGroupProps> =
+    CellGroup;
 
 export default function render(this: any) {
     const { avatar, nickname, isLoggedIn, refreshing, mobile, mobileCount, showDrawer, oakDirty } = this.state;
@@ -40,14 +48,14 @@ export default function render(this: any) {
                     </Button>
                 )}
             </div>
-            <CellGroup>
+            <CustomCellGroup>
                 <Cell
                     title="手机号"
                     arrow
                     note={mobileText}
                     onClick={() => this.goMyMobile()}
                 />
-            </CellGroup>
+            </CustomCellGroup>
             <Popup
                 placement="bottom"
                 visible={showDrawer}

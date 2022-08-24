@@ -7,6 +7,7 @@ import {
 import { DesktopIcon, LockOnIcon, MobileIcon, Icon } from 'tdesign-icons-react';
 import { Form, Input, Button, Checkbox, Tabs, Radio } from 'tdesign-react';
 import classNames from 'classnames';
+import Style from './web.module.less';
 
 const { TabPanel } = Tabs;
 const { FormItem } = Form;
@@ -162,7 +163,7 @@ export default function render(this: any) {
           );
     }
     return (
-        <div className="loginbox-main">
+        <div className={Style['loginbox-main']}>
             <div className="loginbox-wrap">
                 <div className="loginbox-hd">
                     <Radio.Group
@@ -225,8 +226,8 @@ export default function render(this: any) {
                                 onClick={() => {
                                     this.setMessage({
                                         type: 'success',
-                                        content: '刷新二维码'
-                                    })
+                                        content: '刷新二维码',
+                                    });
                                 }}
                             >
                                 刷新
