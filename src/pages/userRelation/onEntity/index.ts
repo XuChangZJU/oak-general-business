@@ -46,7 +46,7 @@ export default OakPage(
                 }, checked, `${index}.user${entityStr}$${oakEntity}`)
             },
             async confirm() {
-                await this.execute();
+                await this.execute('create');
                 await this.navigateBack();
             }
         },

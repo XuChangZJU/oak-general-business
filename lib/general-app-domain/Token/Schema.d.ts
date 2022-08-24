@@ -2,7 +2,7 @@ import { String, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/D
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { AbleState } from 'oak-domain/lib/actions/action';
 import { Action, ParticularAction } from "./Action";
 import * as Application from "../Application/Schema";
@@ -10,8 +10,6 @@ import * as User from "../User/Schema";
 import * as Email from "../Email/Schema";
 import * as Mobile from "../Mobile/Schema";
 import * as WechatUser from "../WechatUser/Schema";
-import * as OperEntity from "../OperEntity/Schema";
-import * as ModiEntity from "../ModiEntity/Schema";
 export declare type WechatMpEnv = {
     type: 'wechatMp';
     brand: string;
@@ -81,8 +79,6 @@ export declare type Schema = {
     email?: Email.Schema;
     mobile?: Mobile.Schema;
     wechatUser?: WechatUser.Schema;
-    operEntity$entity?: Array<OperEntity.Schema>;
-    modiEntity$entity?: Array<ModiEntity.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -101,7 +97,7 @@ declare type AttrFilter<E> = {
     env: Q_EnumValue<Environment>;
     ableState: Q_EnumValue<AbleState>;
 };
-export declare type Filter<E = Q_EnumValue<"email" | "mobile" | "wechatUser" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr>>;
+export declare type Filter<E = Q_EnumValue<"email" | "mobile" | "wechatUser" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -121,13 +117,7 @@ export declare type Projection = {
     email?: Email.Projection;
     mobile?: Mobile.Projection;
     wechatUser?: WechatUser.Projection;
-    operEntity$entity?: OperEntity.Selection & {
-        $entity: "operEntity";
-    };
-    modiEntity$entity?: ModiEntity.Selection & {
-        $entity: "modiEntity";
-    };
-} & Partial<ExprOp<OpAttr>>;
+} & Partial<ExprOp<OpAttr | string>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -147,13 +137,7 @@ export declare type ExportProjection = {
     email?: Email.ExportProjection;
     mobile?: Mobile.ExportProjection;
     wechatUser?: WechatUser.ExportProjection;
-    operEntity$entity?: OperEntity.Exportation & {
-        $entity: "operEntity";
-    };
-    modiEntity$entity?: ModiEntity.Exportation & {
-        $entity: "modiEntity";
-    };
-} & Partial<ExprOp<OpAttr>>;
+} & Partial<ExprOp<OpAttr | string>>;
 declare type TokenIdProjection = OneOf<{
     id: 1;
 }>;
@@ -207,7 +191,7 @@ export declare type SortAttr = {
     wechatUser: WechatUser.SortAttr;
 } | {
     [k: string]: any;
-} | OneOf<ExprOp<OpAttr>>;
+} | OneOf<ExprOp<OpAttr | string>>;
 export declare type SortNode = {
     $attr: SortAttr;
     $direction?: "asc" | "desc";
@@ -262,8 +246,6 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "applica
     [K: string]: any;
 }) & {
     [k: string]: any;
-    operEntity$entity?: OakOperation<"update", Omit<OperEntity.UpdateOperationData, "entity" | "entityId">, OperEntity.Filter> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId"> | Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | OakOperation<"update", Omit<OperEntity.UpdateOperationData, "entity" | "entityId">, OperEntity.Filter>>;
-    modiEntity$entity?: OakOperation<"update", Omit<ModiEntity.UpdateOperationData, "entity" | "entityId">, ModiEntity.Filter> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId"> | Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | OakOperation<"update", Omit<ModiEntity.UpdateOperationData, "entity" | "entityId">, ModiEntity.Filter>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -303,10 +285,8 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "applica
     entityId?: String<64> | null;
 }) & {
     [k: string]: any;
-    operEntitys$entity?: OperEntity.UpdateOperation | OperEntity.RemoveOperation | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId"> | Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | OperEntity.UpdateOperation | OperEntity.RemoveOperation>;
-    modiEntitys$entity?: ModiEntity.UpdateOperation | ModiEntity.RemoveOperation | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId"> | Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | ModiEntity.UpdateOperation | ModiEntity.RemoveOperation>;
 };
-export declare type UpdateOperation = OakOperation<ParticularAction | "update", UpdateOperationData, Filter, Sorter>;
+export declare type UpdateOperation = OakOperation<ParticularAction | "update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
     application?: Application.UpdateOperation;
 } | {
@@ -343,11 +323,11 @@ export declare type MobileIdSubQuery = Selection<MobileIdProjection>;
 export declare type WechatUserIdSubQuery = Selection<WechatUserIdProjection>;
 export declare type TokenIdSubQuery = Selection<TokenIdProjection>;
 export declare type NativeAttr = OpAttr | `application.${Application.NativeAttr}` | `user.${User.NativeAttr}` | `player.${User.NativeAttr}` | `entity.${Email.NativeAttr}` | `entity.${Mobile.NativeAttr}` | `entity.${WechatUser.NativeAttr}`;
-export declare type FullAttr = NativeAttr | `operEntitys$${number}.${OperEntity.NativeAttr}` | `modiEntitys$${number}.${ModiEntity.NativeAttr}`;
+export declare type FullAttr = NativeAttr;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: Action;
+    Action: OakMakeAction<Action> | string;
     Selection: Selection;
     Operation: Operation;
     Create: CreateOperation;

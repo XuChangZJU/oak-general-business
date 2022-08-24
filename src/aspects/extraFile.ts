@@ -24,7 +24,9 @@ export async function getUploadInfo<ED extends EntityDict, Cxt extends GeneralRu
         filter: {
             id: systemId
         }
-    }, context);
+    }, context, {
+        dontCollect: true,
+    });
     try {
         const { config: systemConfig } = system;
         const originConfig = (systemConfig as SystemConfig).Cos![

@@ -110,7 +110,9 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                     count: 1,
                 },
                 context,
-                params
+                {
+                    dontCollect: true,
+                }
             );
             const { entity, entityId, relation } = result[0];
             const entityStr = firstLetterUpperCase(entity!);
@@ -131,8 +133,10 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                     indexFrom: 0,
                     count: 1,
                 },
-                context,
-                params
+                context,                
+                {
+                    dontCollect: true,
+                }
             );
             if (result2.length) {
                 throw new OakCongruentRowExists(
@@ -151,7 +155,8 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                             relation,
                         } as any,
                     },
-                    context
+                    context,
+                    params
                 );
                 return 1;
             }

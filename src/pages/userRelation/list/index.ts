@@ -141,7 +141,7 @@ export default OakPage(
                 }, true, `${index}.user${entityStr}$user`);
             },
             async confirm() {
-                await this.execute();
+                await this.execute('create');
                 this.navigateBack();
             },
             goSearch() {

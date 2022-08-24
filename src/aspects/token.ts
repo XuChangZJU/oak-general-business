@@ -39,7 +39,9 @@ async function makeDistinguishException<ED extends EntityDict, Cxt extends Gener
         filter: {
             id: userId,
         }
-    }, context);
+    }, context, {
+        dontCollect: true,
+    });
     assert(user);
     const { password, passwordOrigin, idState, wechatUser$user, email$user } = user;
 
@@ -70,7 +72,9 @@ async function tryMakeChangeLoginWay<ED extends EntityDict, Cxt extends GeneralR
         filter: {
             id: userId,
         }
-    }, context);
+    }, context, {
+        dontCollect: true,
+    });
     assert(user);
     const { idState, wechatUser$user, email$user } = user as SelectRowShape<EntityDict['user']['Schema'], {
         id: 1,
@@ -178,7 +182,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                 id: await generateNewId(),
                 data: tokenData,
                 action: 'create',
-            }, context);
+            }, context, {});
 
             return tokenData.id;
         }
@@ -196,7 +200,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                 id: await generateNewId(),
                 action: 'create',
                 data: mobileData
-            }, context);
+            }, context, {});
             return currentToken.id;
         }
         else {
@@ -210,7 +214,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                 id: await generateNewId(),
                 action: 'create',
                 data: userData,
-            }, context);
+            }, context, {});
             const tokenData: EntityDict['token']['CreateSingle']['data'] = {
                 id: await generateNewId(),
                 userId: userData.id,
@@ -230,7 +234,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                 id: await generateNewId(),
                 action: 'create',
                 data: tokenData,
-            }, context);
+            }, context, {});
 
             return tokenData.id;
         }
@@ -297,7 +301,9 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends GeneralRu
                     systemId,
                 },
             }
-        }, context);
+        }, context, {
+            dontCollect: true,
+        });
         switch (result.length) {
             case 0: {
                 throw new OakUserException('用户名与密码不匹配');
@@ -374,7 +380,9 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
             applicationId: application!.id,
             openId,
         }
-    }, context);
+    }, context, {
+        dontCollect: true,
+    });
 
     const id = await generateNewId();
     if (wechatUser) {
@@ -425,7 +433,9 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
                     filter: {
                         id: token.id as string,
                     },
-                }, context);
+                }, context, {
+                    dontCollect: true,
+                });
                 return token.id as string;
             }
 
@@ -440,7 +450,9 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
                     userId: wechatUser2.userId,
                     playerId: wechatUser2.userId,
                 },
-            }, context);
+            }, context, {
+                dontCollect: true,
+            });
         }
         else {
             // 创建user
@@ -473,7 +485,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
                 },
                 env
             } as CreateToken
-        }, context);
+        }, context, {});
         return id;
 
     }
@@ -491,7 +503,9 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
                 },
                 unionId,
             }
-        }, context);
+        }, context, {
+            dontCollect: true,
+        });
         const wechatUser2 = wechatUser3 as SelectRowShape<EntityDict['wechatUser']['Schema'], {
             id: 1,
             userId: 1,
@@ -509,7 +523,9 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
                     userId: wechatUser2.userId,
                     playerId: wechatUser2.userId,
                 },
-            }, context);
+            }, context, {
+                dontCollect: true,
+            });
 
             const wechatUserCreateData: CreateWechatUser = {
                 id: await generateNewId(),
@@ -535,7 +551,9 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
                     },
                     env,
                 }
-            }, context);
+            }, context, {
+                dontCollect: true,
+            });
             return id;
         }
     }
@@ -574,7 +592,9 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
             },
             env,
         }
-    }, context);
+    }, context, {
+        dontCollect: true,
+    });
 
     return id;
 }
@@ -623,7 +643,9 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
             applicationId: application!.id,
             openId,
         }
-    }, context);
+    }, context, {
+        dontCollect: true,
+    });
 
     const id = await generateNewId();
     if (wechatUser) {
@@ -657,7 +679,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     entity: 'wechatUser',
                     entityId: wechatUser2.id,
                 },
-            }, context, { dummy: 1, ignoreTrigger: true });
+            }, context, { dummy: 1, ignoreTrigger: true, dontCollect: true });
             if (token && isEqual(token.env, env)) {
                 await rowStore.operate('token', {
                     id: await generateNewId(),
@@ -672,7 +694,9 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     filter: {
                         id: token.id as string,
                     },
-                }, context);
+                }, context, {
+                    dontCollect: true,
+                });
                 return token.id as string;
             }
 
@@ -687,7 +711,9 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     userId: wechatUser2.userId,
                     playerId: wechatUser2.userId,
                 },
-            }, context);
+            }, context, {
+                dontCollect: true,
+            });
         }
         else {
             // 创建user
@@ -720,7 +746,9 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                 },
                 env
             } as CreateToken
-        }, context);
+        }, context, {
+            dontCollect: true,
+        });
         return id;
 
     }
@@ -738,7 +766,9 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                 },
                 unionId,
             }
-        }, context);
+        }, context, {
+            dontCollect: true,
+        });
         const wechatUser2 = wechatUser3 as SelectRowShape<EntityDict['wechatUser']['Schema'], {
             id: 1,
             userId: 1,
@@ -756,7 +786,9 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     userId: wechatUser2.userId,
                     playerId: wechatUser2.userId,
                 },
-            }, context);
+            }, context, {
+                dontCollect: true,
+            });
 
             const wechatUserCreateData: CreateWechatUser = {
                 id: await generateNewId(),
@@ -782,7 +814,9 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     },
                     env,
                 }
-            }, context);
+            }, context, {
+                dontCollect: true,
+            });
             return id;
         }
     }
@@ -821,7 +855,9 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
             },
             env,
         }
-    }, context);
+    }, context, {
+        dontCollect: true,
+    });
 
     return id;
 }
@@ -867,7 +903,9 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ge
             userId: userId!,
             applicationId: application!.id,
         }
-    }, context);
+    }, context, {
+        dontCollect: true,
+    });
 
 
     // console.log(avatarUrl);
@@ -925,7 +963,9 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ge
             filter: {
                 id: userId!,
             }
-        }, context);
+        }, context, {
+            dontCollect: true,
+        });
     }
 
     // todo update nickname/avatar in wechatUser
@@ -953,7 +993,9 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends GeneralRunt
                             $gt: now - 3600 * 1000,
                         },
                     },
-                }, context),
+                }, context, {
+                    dontCollect: true,
+                }),
                 rowStore.count('captcha', {
                     filter: {
                         mobile,
@@ -961,7 +1003,9 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends GeneralRunt
                             $gt: now - 3600 * 1000,
                         },
                     }
-                }, context)
+                }, context, {
+                    dontCollect: true,
+                })
             ]
         );
         if (count1 > 5 || count2 > 5) {
@@ -981,7 +1025,9 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends GeneralRunt
             },
             expired: false,
         }
-    }, context);
+    }, context, {
+        dontCollect: true,
+    });
     if (captcha) {
         if (process.env.NODE_ENV === 'development') {
             const { code } = captcha;
@@ -1021,7 +1067,9 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends GeneralRunt
                 expired: false,
                 expiresAt: now + 660 * 1000,
             }
-        }, context);
+        }, context, {
+            dontCollect: true,
+        });
 
         if (process.env.NODE_ENV === 'development') {
             return `验证码[${code}]已创建`;

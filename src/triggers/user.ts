@@ -14,7 +14,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
         entity: 'user',
         action: 'create',
         when: 'before',
-        fn: async ({ operation }, context, params) => {
+        fn: async ({ operation }, context) => {
             const { data } = operation;
             const systemId = await context.getSystemId();
             const setDefaultState = (userData: CreateUserData) => {
@@ -53,7 +53,9 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
                     },
                     indexFrom: 0,
                     count: 1,
-                }, context, params);
+                }, context, {
+                    dontCollect: true,
+                });
                 if (result.length === 0) {
                     const userData = data instanceof Array ? data[0] : data;
                     const userRoleData: CreateUserRoleData = {
@@ -85,7 +87,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
         entity: 'user',
         action: 'play',
         when: 'after',
-        fn: async ({ operation }, context, params) => {
+        fn: async ({ operation }, context) => {
             const { filter } = operation;
             assert (filter!.id);
             const { id } = (await context.getToken())!;
@@ -98,7 +100,9 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
                 filter: {
                     id,
                 }
-            }, context);
+            }, context, {
+                dontCollect: true,
+            });
             return 1;
         }
     } as UpdateTrigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>,

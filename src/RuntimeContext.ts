@@ -71,7 +71,7 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
                 filter: {
                     id: this.applicationId,
                 },
-            }, this);
+            }, this, {});
             result = application as AppType;
             this.application = application as AppType;
         }
@@ -99,7 +99,7 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
                     id: tokenValue,
                     ableState: 'enabled',
                 }
-            }, this) as SelectionResult<ED['token']['Schema'], { id: 1, userId: 1, playerId: 1 }>;
+            }, this, {}) as SelectionResult<ED['token']['Schema'], { id: 1, userId: 1, playerId: 1 }>;
 
             return token;
         }

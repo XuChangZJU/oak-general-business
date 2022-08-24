@@ -34,7 +34,7 @@ export async function getApplication<ED extends EntityDict, Cxt extends GeneralR
         filter: {
             id: appId
         }
-    }, context);
+    }, context, {});
 
     return application.id as string;
 }

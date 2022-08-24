@@ -41,7 +41,10 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                     action: 'create',
                     data,
                 },
-                context
+                context,
+                {
+                    dontCollect: true,
+                }
             );
 
             return data;
@@ -68,7 +71,10 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                     action: 'create',
                     data,
                 },
-                context
+                context,
+                {
+                    dontCollect: true,
+                }
             );
             return data;
         }
@@ -94,7 +100,10 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                 action: 'create',
                 data,
             },
-            context
+            context,
+            {
+                dontCollect: true,
+            }
         );
         return data;
     } else {
@@ -120,7 +129,10 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                 action: 'create',
                 data,
             },
-            context
+            context,
+            {
+                dontCollect: true,
+            }
         );
         return data;
     }

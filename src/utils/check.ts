@@ -14,7 +14,9 @@ async function checkIsRoot<ED extends EntityDict, Cxt extends GeneralRuntimeCont
             userId: playerId!,
             roleId: ROOT_ROLE_ID,
         },
-    }, context);
+    }, context, {
+        dontCollect: true,
+    });
     if (count === 0) {
         // 只有root允许扮演其他用户身份
         return false;
@@ -28,11 +30,11 @@ export function processCheckers<ED extends EntityDict, Cxt extends GeneralRuntim
         const { type, checker: fn } = checker;
         if (type === 'user') {
             Object.assign(checker, {
-                checker: async (dummy: any, context: Cxt) => {
+                checker: async (dummy: any, context: Cxt, option: any) => {
                     if (await checkIsRoot<ED, Cxt>(context)) {
                         return;
                     }
-                    await fn(dummy, context);
+                    await fn(dummy, context, option);
                 },
             });
         }
