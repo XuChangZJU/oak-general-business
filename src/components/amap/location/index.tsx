@@ -1,7 +1,5 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Map, APILoader } from '@uiw/react-amap';
-
 import {
     Dialog,
     Row,
@@ -12,15 +10,16 @@ import {
     Button,
     Loading,
 } from 'tdesign-react'; 
-import { SearchIcon, CheckIcon, CheckCircleFilledIcon } from 'tdesign-icons-react';
+import { SearchIcon, CheckCircleFilledIcon } from 'tdesign-icons-react';
+import { Geolocation, GeolocationProps } from '@uiw/react-amap';
+import Map from './../map';
 import PositionPicker from './PositionPicker'
 import Style from './index.module.less';
-import { clear } from 'console';
 
 const { ListItem, ListItemMeta } = List;
 
 export type LocationProps = {
-    amapkey: string;
+    akey: string;
     version?: string;
     header?: React.ReactNode;
     visible?: boolean;
@@ -31,6 +30,8 @@ export type LocationProps = {
         poi: Poi,
         result?: AMap.SearchResult | AMapUI.PositionPickerResult
     ) => void;
+    geolocationProps?: GeolocationProps;
+    useGeolocation?: boolean;
 };
 
 export type Poi = {
@@ -61,10 +62,12 @@ const Location = (props: LocationProps) => {
     const {
         visible,
         header,
-        amapkey,
+        akey,
         version = '2.0',
         onClose,
         onConfirm,
+        geolocationProps = {},
+        useGeolocation = true,
     } = props;
     const searchRef = useRef();
     const [searchValue, setSearchValue] = useState<InputValue>('');
@@ -225,7 +228,6 @@ const Location = (props: LocationProps) => {
             onClose={() => {
                 onClose && onClose();
                 clearData();
-            
             }}
             onConfirm={() => {
                 if (!currentPoi) {
@@ -241,31 +243,50 @@ const Location = (props: LocationProps) => {
         >
             <Row>
                 <Col xs={12} sm={7}>
-                    <div className={Style.map}>
-                        <APILoader akay={amapkey} version={version}>
-                            <Map
-                                ref={(instance) => {
-                                    if (instance && instance.map && !map) {
-                                        setMap(instance.map);
-                                    }
+                    <Map
+                        className={Style.map}
+                        akey={akey}
+                        version={version}
+                        useAMapUI={true}
+                        mapRef={(instance) => {
+                            if (instance && instance.map && !map) {
+                                setMap(instance.map);
+                            }
+                        }}
+                        mapProps={{
+                            onDragStart: () => {
+                                setRefresh(true);
+                                setMode('dragMap');
+                                setSearchValue('');
+                                setShow(false);
+                            },
+                        }}
+                    >
+                        <PositionPicker
+                            loadUI={loadUI}
+                            __map__={map}
+                            onSuccess={(result) => {
+                                setPositionPickerResult(result);
+                            }}
+                        />
+                        {useGeolocation && (
+                            <Geolocation
+                                maximumAge={100000}
+                                borderRadius="5px"
+                                position="RB"
+                                offset={[10, 10]}
+                                zoomToAccuracy={true}
+                                showCircle={true}
+                                {...geolocationProps}
+                                onComplete={(data) => {
+                                   
                                 }}
-                                onDragStart={() => {
-                                    setRefresh(true);
-                                    setMode('dragMap');
-                                    setSearchValue('');
-                                    setShow(false);
+                                onError={(err) => {
+                                    console.error(err);
                                 }}
-                            >
-                                <PositionPicker
-                                    loadUI={loadUI}
-                                    __map__={map}
-                                    onSuccess={(result) => {
-                                        setPositionPickerResult(result);
-                                    }}
-                                />
-                            </Map>
-                        </APILoader>
-                    </div>
+                            />
+                        )}
+                    </Map>
                 </Col>
                 <Col xs={12} sm={5}>
                     <div>

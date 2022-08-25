@@ -1,7 +1,8 @@
 /// <reference types="@uiw/react-amap-types" />
 import React from 'react';
+import { GeolocationProps } from '@uiw/react-amap';
 export declare type LocationProps = {
-    amapkey: string;
+    akey: string;
     version?: string;
     header?: React.ReactNode;
     visible?: boolean;
@@ -9,6 +10,8 @@ export declare type LocationProps = {
     children?: React.ReactNode;
     onClose?: () => void;
     onConfirm?: (poi: Poi, result?: AMap.SearchResult | AMapUI.PositionPickerResult) => void;
+    geolocationProps?: GeolocationProps;
+    useGeolocation?: boolean;
 };
 export declare type Poi = {
     id: string;

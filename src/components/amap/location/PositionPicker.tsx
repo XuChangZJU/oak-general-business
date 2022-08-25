@@ -15,10 +15,10 @@ export default memo((props: PositionProps) => {
     const { onSuccess, onFail } = props;
 
     useEffect(() => {
-        if (map && loadUI) {
+        if (map && window.AMapUI) {
             dragSiteSelection();
         }
-    }, [map, loadUI]);
+    }, [map, window.AMapUI]);
 
     const dragSiteSelection = () => {
         window.AMapUI.loadUI(
