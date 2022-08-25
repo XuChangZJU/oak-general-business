@@ -9,6 +9,7 @@ import {
     InputValue,
     Button,
     Loading,
+    DialogProps,
 } from 'tdesign-react'; 
 import { SearchIcon, CheckCircleFilledIcon } from 'tdesign-icons-react';
 import { Geolocation, GeolocationProps } from '@uiw/react-amap';
@@ -21,7 +22,6 @@ const { ListItem, ListItemMeta } = List;
 export type LocationProps = {
     akey: string;
     version?: string;
-    header?: React.ReactNode;
     visible?: boolean;
     className?: string;
     children?: React.ReactNode;
@@ -32,6 +32,7 @@ export type LocationProps = {
     ) => void;
     geolocationProps?: GeolocationProps;
     useGeolocation?: boolean;
+    dialogProps?: DialogProps;
 };
 
 export type Poi = {
@@ -61,13 +62,13 @@ type Mode = 'dragMap' | 'searchPoi';
 const Location = (props: LocationProps) => {
     const {
         visible,
-        header,
         akey,
         version = '2.0',
         onClose,
         onConfirm,
         geolocationProps = {},
         useGeolocation = true,
+        dialogProps = {},
     } = props;
     const searchRef = useRef();
     const [searchValue, setSearchValue] = useState<InputValue>('');
@@ -222,8 +223,8 @@ const Location = (props: LocationProps) => {
 
     return (
         <Dialog
-            header={header}
             width="80%"
+            {...dialogProps}
             visible={visible}
             onClose={() => {
                 onClose && onClose();
@@ -278,9 +279,7 @@ const Location = (props: LocationProps) => {
                                 zoomToAccuracy={true}
                                 showCircle={true}
                                 {...geolocationProps}
-                                onComplete={(data) => {
-                                   
-                                }}
+                                onComplete={(data) => {}}
                                 onError={(err) => {
                                     console.error(err);
                                 }}

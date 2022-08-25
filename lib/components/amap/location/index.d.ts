@@ -1,10 +1,10 @@
 /// <reference types="@uiw/react-amap-types" />
 import React from 'react';
+import { DialogProps } from 'tdesign-react';
 import { GeolocationProps } from '@uiw/react-amap';
 export declare type LocationProps = {
     akey: string;
     version?: string;
-    header?: React.ReactNode;
     visible?: boolean;
     className?: string;
     children?: React.ReactNode;
@@ -12,6 +12,7 @@ export declare type LocationProps = {
     onConfirm?: (poi: Poi, result?: AMap.SearchResult | AMapUI.PositionPickerResult) => void;
     geolocationProps?: GeolocationProps;
     useGeolocation?: boolean;
+    dialogProps?: DialogProps;
 };
 export declare type Poi = {
     id: string;
