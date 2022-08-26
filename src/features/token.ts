@@ -37,26 +37,6 @@ export class Token<
         if (token) {
             this.token = token;
             this.context.setToken(token);
-            this.rwLock.acquire('X');
-            this.cache.refresh('token', {
-                data: {
-                    id: 1,
-                    userId: 1,
-                    user: {
-                        id: 1,
-                        name: 1,
-                        nickname: 1,
-                    },
-                    playerId: 1,
-                    player: {
-                        id: 1,
-                        name: 1,
-                        nickname: 1,
-                    }
-                }
-            }).then(
-                () => this.rwLock.release()
-            );
         }
     }
 
@@ -171,7 +151,7 @@ export class Token<
         if (!token) {
             return;
         }
-        const result = await this.cache.get('token', {
+        let result = await this.cache.get('token', {
             data: {
                 id: 1,
                 userId: 1,
@@ -180,6 +160,18 @@ export class Token<
                 id: token,
             },
         });
+        if (result.length === 0) {
+            // user信息未取到
+            result = (await this.cache.refresh('token', {
+                data: {
+                    id: 1,
+                    userId: 1,
+                },
+                filter: {
+                    id: token,
+                },
+            })).data as any;
+        }
         return result[0]?.userId as string;
     }
 
