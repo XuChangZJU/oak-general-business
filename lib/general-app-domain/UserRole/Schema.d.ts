@@ -112,9 +112,7 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "userId"
 } | {
     roleId?: String<64>;
     role?: Role.UpdateOperation;
-})) & {
-    [k: string]: any;
-};
+}));
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;

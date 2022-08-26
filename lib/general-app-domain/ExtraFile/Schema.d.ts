@@ -159,7 +159,7 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
-export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entityId" | "entity">> & ({
+export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
     entity?: never;
     entityId?: never;
     user: User.CreateSingleOperation;
@@ -168,14 +168,14 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entityI
     entityId: String<64>;
     user?: User.UpdateOperation;
 } | {
+    entity?: string;
+    entityId?: string;
     [K: string]: any;
-}) & {
-    [k: string]: any;
-};
+});
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entityId" | "entity">> & ({
+export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId">> & ({
     user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
     entityId?: undefined;
     entity?: undefined;
