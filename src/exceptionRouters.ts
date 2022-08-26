@@ -4,7 +4,7 @@ import { OakUnloggedInException } from "oak-domain/lib/types/Exception";
 export const routers: ExceptionRouters = [
     [
         OakUnloggedInException, {
-            router: '/mobile/login',
+            router: '/login',
         }
     ]
 ];
