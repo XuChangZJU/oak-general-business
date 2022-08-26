@@ -8,35 +8,34 @@ import { GeneralRuntimeContext } from '../src/RuntimeContext';
 import { aspectDict } from '../src/aspects';
 import { initialize } from '../src/features';
 
-
 declare global {
     const generateNewId: (options?: { timestamp?: boolean }) => Promise<string>;
 
-     const OakPage:
-         | MakeOakPage<
-               EntityDict,
-               RuntimeContext,
-               typeof aspectDict,
-               ReturnType<typeof initialize>['features']
-           >
-         | MakeOakWebPage<
-               EntityDict,
-               RuntimeContext,
-               typeof aspectDict,
-               ReturnType<typeof initialize>['features']
-           >;
-     const OakComponent:
-         | MakeOakComponent<
-               EntityDict,
-               RuntimeContext,
-               typeof aspectDict,
-               ReturnType<typeof initialize>['features']
-           >
-         | MakeOakWebComponent<
-               EntityDict,
-               RuntimeContext,
-               typeof aspectDict,
-               ReturnType<typeof initialize>['features']
-           >;
+    const OakPage:
+        | MakeOakPage<
+              EntityDict,
+              RuntimeContext,
+              typeof aspectDict,
+              ReturnType<typeof initialize>['features']
+          >
+        | MakeOakWebPage<
+              EntityDict,
+              RuntimeContext,
+              typeof aspectDict,
+              ReturnType<typeof initialize>['features']
+          >;
+    const OakComponent:
+        | MakeOakComponent<
+              EntityDict,
+              RuntimeContext,
+              typeof aspectDict,
+              ReturnType<typeof initialize>['features']
+          >
+        | MakeOakWebComponent<
+              EntityDict,
+              RuntimeContext,
+              typeof aspectDict,
+              ReturnType<typeof initialize>['features']
+          >;
 }
-export {}
+export {};

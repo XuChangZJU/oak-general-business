@@ -1,12 +1,20 @@
 import React from 'react';
 import { CellGroup, Cell, Button, Dialog } from 'tdesign-mobile-react';
 import { Icon } from 'tdesign-icons-react';
+import { CellGroupProps } from 'tdesign-mobile-react/es/cell-group/CellGroup';
+
+type CustomCellGroupProps = {
+    children?: React.ReactNode;
+};
+
+const CustomCellGroup: React.FC<CellGroupProps & CustomCellGroupProps> =
+    CellGroup;
 
 export default function render(this: any) {
     const { mobiles, confirmDeleteModalVisible, deleteIdx } = this.state;
     return (
         <div className="page-body">
-            <CellGroup>
+            <CustomCellGroup>
                 {mobiles?.map((ele: any, index: number) => (
                     <Cell
                         key={index}
@@ -21,7 +29,7 @@ export default function render(this: any) {
                         rightIcon={<Icon name="delete" />}
                     />
                 ))}
-            </CellGroup>
+            </CustomCellGroup>
             <div style={{ flex: 1 }} />
             <Button
                 size="large"

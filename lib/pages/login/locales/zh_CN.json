@@ -1,0 +1,13 @@
+{
+    "Log in": "登录",
+    "Remember me": "记住账号",
+    "in Password": "账号登录",
+    "in Captcha": "手机号登录",
+    "in QrCode": "扫码登录",
+    "Send": "发送验证码",
+    "placeholder": {
+        "Captcha": "输入4位短信验证码",
+        "Mobile": "请输入手机号",
+        "Password": "请输入密码"
+    }
+}
