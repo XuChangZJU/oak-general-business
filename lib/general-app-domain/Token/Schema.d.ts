@@ -200,7 +200,7 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
-export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "applicationId" | "userId" | "playerId" | "entityId" | "entity">> & (({
+export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "applicationId" | "userId" | "playerId">> & (({
     applicationId?: never | null;
     application?: Application.CreateSingleOperation;
 } | {
@@ -243,14 +243,14 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "applica
     entityId: String<64>;
     wechatUser?: WechatUser.UpdateOperation;
 } | {
+    entity?: string;
+    entityId?: string;
     [K: string]: any;
-}) & {
-    [k: string]: any;
-};
+});
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "applicationId" | "userId" | "playerId" | "entityId" | "entity">> & (({
+export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "applicationId" | "userId" | "playerId">> & (({
     application?: Application.CreateSingleOperation | Application.UpdateOperation | Application.RemoveOperation;
     applicationId?: undefined;
 } | {

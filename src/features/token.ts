@@ -37,6 +37,26 @@ export class Token<
         if (token) {
             this.token = token;
             this.context.setToken(token);
+            this.rwLock.acquire('X');
+            this.cache.refresh('token', {
+                data: {
+                    id: 1,
+                    userId: 1,
+                    user: {
+                        id: 1,
+                        name: 1,
+                        nickname: 1,
+                    },
+                    playerId: 1,
+                    player: {
+                        id: 1,
+                        name: 1,
+                        nickname: 1,
+                    }
+                }
+            }).then(
+                () => this.rwLock.release()
+            );
         }
     }
 

@@ -75,7 +75,6 @@ export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select"
 export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<OpSchema> & {
-    [k: string]: any;
     userRole$role?: OakOperation<UserRole.UpdateOperation["action"], Omit<UserRole.UpdateOperationData, "role" | "roleId">, UserRole.Filter> | Array<OakOperation<"create", Omit<UserRole.CreateOperationData, "role" | "roleId"> | Omit<UserRole.CreateOperationData, "role" | "roleId">[]> | OakOperation<UserRole.UpdateOperation["action"], Omit<UserRole.UpdateOperationData, "role" | "roleId">, UserRole.Filter>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
