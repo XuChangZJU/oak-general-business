@@ -10,6 +10,7 @@ export declare type OpSchema = {
     $$createAt$$: Datetime;
     $$updateAt$$: Datetime;
     $$deleteAt$$?: Datetime | null;
+    targetEntity: String<32>;
     entity: String<32>;
     entityId: String<64>;
     action: String<16>;
@@ -24,6 +25,7 @@ export declare type Schema = {
     $$createAt$$: Datetime;
     $$updateAt$$: Datetime;
     $$deleteAt$$?: Datetime | null;
+    targetEntity: String<32>;
     entity: String<32>;
     entityId: String<64>;
     action: String<16>;
@@ -39,6 +41,7 @@ declare type AttrFilter = {
     id: Q_StringValue | SubQuery.ModiIdSubQuery;
     $$createAt$$: Q_DateValue;
     $$updateAt$$: Q_DateValue;
+    targetEntity: Q_StringValue;
     entity: Q_StringValue;
     entityId: Q_StringValue;
     action: Q_StringValue;
@@ -51,6 +54,7 @@ export declare type Projection = {
     id: 1;
     $$createAt$$?: 1;
     $$updateAt$$?: 1;
+    targetEntity?: 1;
     entity?: 1;
     entityId?: 1;
     action?: 1;
@@ -68,6 +72,7 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
+    targetEntity?: string;
     entity?: string;
     entityId?: string;
     action?: string;
@@ -88,6 +93,8 @@ export declare type SortAttr = {
     $$createAt$$: 1;
 } | {
     $$updateAt$$: 1;
+} | {
+    targetEntity: 1;
 } | {
     entity: 1;
 } | {

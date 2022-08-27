@@ -43,6 +43,10 @@ declare type AttrFilter<E> = {
     oper: Oper.Filter;
     entity: E;
     entityId: Q_StringValue;
+    user: User.Filter;
+    userEntityGrant: UserEntityGrant.Filter;
+    wechatQrCode: WechatQrCode.Filter;
+    wechatUser: WechatUser.Filter;
 };
 export declare type Filter<E = Q_EnumValue<"user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
 export declare type Projection = {

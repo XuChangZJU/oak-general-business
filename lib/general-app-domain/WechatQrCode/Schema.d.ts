@@ -76,6 +76,7 @@ declare type AttrFilter<E> = {
     applicationId: Q_StringValue | SubQuery.ApplicationIdSubQuery;
     application: Application.Filter;
     props: Q_EnumValue<WechatQrCodeProps>;
+    userEntityGrant: UserEntityGrant.Filter;
 };
 export declare type Filter<E = Q_EnumValue<"userEntityGrant" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
 export declare type Projection = {

@@ -64,6 +64,7 @@ declare type AttrFilter<E> = {
     extra1: Q_StringValue;
     extension: Q_StringValue;
     size: Q_NumberValue;
+    user: User.Filter;
 };
 export declare type Filter<E = Q_EnumValue<"user" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
 export declare type Projection = {

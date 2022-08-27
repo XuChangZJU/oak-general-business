@@ -96,6 +96,9 @@ declare type AttrFilter<E> = {
     player: User.Filter;
     env: Q_EnumValue<Environment>;
     ableState: Q_EnumValue<AbleState>;
+    email: Email.Filter;
+    mobile: Mobile.Filter;
+    wechatUser: WechatUser.Filter;
 };
 export declare type Filter<E = Q_EnumValue<"email" | "mobile" | "wechatUser" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
 export declare type Projection = {
