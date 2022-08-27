@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Checkbox, Input, Form, Radio, DatePicker, Row, Col } from 'tdesign-react';
 import dayjs from 'dayjs';
+import Style from './web.module.less';
+
 const { FormItem } = Form;
 
 export default function render(this: any) {

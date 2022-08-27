@@ -2,6 +2,7 @@ import React from 'react';
 import { CellGroup, Cell, Button, Dialog } from 'tdesign-mobile-react';
 import { Icon } from 'tdesign-icons-react';
 import { CellGroupProps } from 'tdesign-mobile-react/es/cell-group/CellGroup';
+import Style from './web.module.less';
 
 type CustomCellGroupProps = {
     children?: React.ReactNode;

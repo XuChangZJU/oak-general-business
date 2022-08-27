@@ -117,7 +117,9 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "areaId"
 } | {
     areaId: String<64>;
     area?: Area.UpdateOperation;
-}));
+})) & {
+    [k: string]: any;
+};
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;

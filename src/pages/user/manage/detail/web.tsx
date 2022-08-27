@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Cell, Tag, Avatar, TagProps } from 'tdesign-mobile-react';
+import Style from './web.module.less';
 
 type CustomTagProps = {
     children?: any;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Input, Textarea } from 'tdesign-mobile-react';
+import Style from './web.module.less';
 
 export default function render(this: any) {
     return (
