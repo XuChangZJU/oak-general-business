@@ -289,7 +289,6 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "refId" 
     systemId: String<64>;
     system?: System.UpdateOperation;
 })) & {
-    [k: string]: any;
     oper$operator?: OakOperation<Oper.UpdateOperation["action"], Omit<Oper.UpdateOperationData, "operator" | "operatorId">, Oper.Filter> | Array<OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId"> | Omit<Oper.CreateOperationData, "operator" | "operatorId">[]> | OakOperation<Oper.UpdateOperation["action"], Omit<Oper.UpdateOperationData, "operator" | "operatorId">, Oper.Filter>>;
     email$user?: OakOperation<Email.UpdateOperation["action"], Omit<Email.UpdateOperationData, "user" | "userId">, Email.Filter> | Array<OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId"> | Omit<Email.CreateOperationData, "user" | "userId">[]> | OakOperation<Email.UpdateOperation["action"], Omit<Email.UpdateOperationData, "user" | "userId">, Email.Filter>>;
     mobile$user?: OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Mobile.Filter> | Array<OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId"> | Omit<Mobile.CreateOperationData, "user" | "userId">[]> | OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Mobile.Filter>>;
