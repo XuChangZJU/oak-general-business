@@ -7,6 +7,7 @@ export declare type UserState = 'shadow' | 'normal' | 'disabled' | 'merged';
 export declare type MoreAction = 'play' | 'grant';
 export declare type ParticularAction = UserAction | IdAction | MoreAction;
 export declare type Action = GenericAction | ParticularAction;
+export declare const actions: string[];
 export declare const ActionDefDict: {
     idState: ActionDef<IdAction, IdState>;
     userState: ActionDef<UserAction, UserState>;

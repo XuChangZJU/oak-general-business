@@ -4,6 +4,7 @@ export declare type IState = 'unsent' | 'sending' | 'sent' | 'failure';
 export declare type IAction = 'send' | 'success' | 'fail';
 export declare type ParticularAction = IAction;
 export declare type Action = GenericAction | ParticularAction;
+export declare const actions: string[];
 export declare const ActionDefDict: {
     iState: ActionDef<IAction, IState>;
 };

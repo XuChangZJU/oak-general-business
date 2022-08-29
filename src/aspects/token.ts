@@ -417,7 +417,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
                     entityId: wechatUser2.id,
                 },
             }, context, {
-                ignoreTrigger: true,
+                blockTrigger: true,
             });
             if (token && isEqual(token.env, env)) {
                 await rowStore.operate('token', {
@@ -679,7 +679,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
                     entity: 'wechatUser',
                     entityId: wechatUser2.id,
                 },
-            }, context, { dummy: 1, ignoreTrigger: true, dontCollect: true });
+            }, context, { dummy: 1, blockTrigger: true, dontCollect: true });
             if (token && isEqual(token.env, env)) {
                 await rowStore.operate('token', {
                     id: await generateNewId(),
