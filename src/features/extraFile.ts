@@ -38,8 +38,8 @@ export class ExtraFile<
         try {
             const { origin, extra1, filename, objectId, extension, entity } =
                 extraFile;
-            // 构造文件上传所需的fileName
-            const key = `${entity}/${objectId}.${extension}`;
+            // 构造文件上传所需的key
+            const key = `${entity ? entity + '/' : ''}${objectId}.${extension}`;
             const uploadInfo = await this.getUploadInfo(origin, key);
 
             if (process.env.OAK_PLATFORM === 'wechatMp') {

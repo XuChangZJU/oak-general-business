@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button } from 'tdesign-react';
 import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
-import styles from './web.module.less';
+import Style from './web.module.less';
 
 export default function render(this: any) {
     const { error } = this.state;
 
     return (
-        <div className={styles.container}>
+        <div className={Style.container}>
             <div
                 style={{
                     padding: 16,

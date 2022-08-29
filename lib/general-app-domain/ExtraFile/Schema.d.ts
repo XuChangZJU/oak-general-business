@@ -64,7 +64,6 @@ declare type AttrFilter<E> = {
     extra1: Q_StringValue;
     extension: Q_StringValue;
     size: Q_NumberValue;
-    user: User.Filter;
 };
 export declare type Filter<E = Q_EnumValue<"user" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -160,7 +159,7 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
-export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
+export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entityId" | "entity">> & ({
     entity?: never;
     entityId?: never;
     user: User.CreateSingleOperation;
@@ -169,14 +168,14 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     entityId: String<64>;
     user?: User.UpdateOperation;
 } | {
-    entity?: string;
-    entityId?: string;
     [K: string]: any;
-});
+}) & {
+    [k: string]: any;
+};
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId">> & ({
+export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entityId" | "entity">> & ({
     user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
     entityId?: undefined;
     entity?: undefined;

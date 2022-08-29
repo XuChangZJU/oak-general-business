@@ -20,7 +20,9 @@ import * as UserEntityGrant from "./UserEntityGrant/Schema";
 import * as WechatQrCode from "./WechatQrCode/Schema";
 import * as WechatUser from "./WechatUser/Schema";
 export declare type ModiIdSubQuery = {
-    [K in "$in" | "$nin"]?: (ModiEntity.ModiIdSubQuery & {
+    [K in "$in" | "$nin"]?: (Modi.ModiIdSubQuery & {
+        entity: "modi";
+    }) | (ModiEntity.ModiIdSubQuery & {
         entity: "modiEntity";
     }) | (Modi.ModiIdSubQuery & {
         entity: "modi";

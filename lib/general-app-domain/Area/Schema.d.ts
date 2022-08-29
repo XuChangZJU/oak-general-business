@@ -129,6 +129,7 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "parentI
     parentId?: String<64>;
     parent?: UpdateOperation;
 })) & {
+    [k: string]: any;
     address$area?: OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "area" | "areaId">, Address.Filter> | Array<OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId"> | Omit<Address.CreateOperationData, "area" | "areaId">[]> | OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "area" | "areaId">, Address.Filter>>;
     area$parent?: OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "parent" | "parentId">, Filter> | Array<OakOperation<"create", Omit<CreateOperationData, "parent" | "parentId"> | Omit<CreateOperationData, "parent" | "parentId">[]> | OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "parent" | "parentId">, Filter>>;
 };

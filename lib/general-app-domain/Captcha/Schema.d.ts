@@ -112,7 +112,9 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
-export declare type CreateOperationData = FormCreateData<OpSchema>;
+export declare type CreateOperationData = FormCreateData<OpSchema> & {
+    [k: string]: any;
+};
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;

@@ -16,9 +16,8 @@ export declare function createWechatQrCode<ED extends EntityDict, T extends keyo
     application?: import("../general-app-domain/Application/Schema").UpdateOperation | undefined;
 } & {
     [K: string]: any;
-    entity?: string | undefined;
-    entityId?: string | undefined;
 } & {
+    [k: string]: any;
     operEntity$entity?: import("oak-domain/lib/types").Operation<string, Omit<import("../general-app-domain/OperEntity/Schema").UpdateOperationData, "entity" | "entityId">, import("../general-app-domain/OperEntity/Schema").Filter<import("oak-domain/lib/types").Q_EnumValue<string>>, undefined> | (import("oak-domain/lib/types").Operation<string, Omit<import("../general-app-domain/OperEntity/Schema").UpdateOperationData, "entity" | "entityId">, import("../general-app-domain/OperEntity/Schema").Filter<import("oak-domain/lib/types").Q_EnumValue<string>>, undefined> | import("oak-domain/lib/types").Operation<"create", Omit<import("../general-app-domain/OperEntity/Schema").CreateOperationData, "entity" | "entityId"> | Omit<import("../general-app-domain/OperEntity/Schema").CreateOperationData, "entity" | "entityId">[], undefined, undefined>)[] | undefined;
     modiEntity$entity?: import("oak-domain/lib/types").Operation<string, Omit<import("../general-app-domain/ModiEntity/Schema").UpdateOperationData, "entity" | "entityId">, import("../general-app-domain/ModiEntity/Schema").Filter<import("oak-domain/lib/types").Q_EnumValue<string>>, undefined> | (import("oak-domain/lib/types").Operation<string, Omit<import("../general-app-domain/ModiEntity/Schema").UpdateOperationData, "entity" | "entityId">, import("../general-app-domain/ModiEntity/Schema").Filter<import("oak-domain/lib/types").Q_EnumValue<string>>, undefined> | import("oak-domain/lib/types").Operation<"create", Omit<import("../general-app-domain/ModiEntity/Schema").CreateOperationData, "entity" | "entityId"> | Omit<import("../general-app-domain/ModiEntity/Schema").CreateOperationData, "entity" | "entityId">[], undefined, undefined>)[] | undefined;
 }>;

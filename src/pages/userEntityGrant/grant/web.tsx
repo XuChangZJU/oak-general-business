@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Radio, Button } from 'tdesign-react';
+import Style from './web.module.less';
 const { FormItem } = Form;
 
 export default function render(this: any) {

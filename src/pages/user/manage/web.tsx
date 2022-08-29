@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Fab, Cell, Tag, TagProps } from 'tdesign-mobile-react';
 import { Icon } from 'tdesign-icons-react';
+import Style from './web.module.less';
 
 type CustomTagProps = {
     children?: any;

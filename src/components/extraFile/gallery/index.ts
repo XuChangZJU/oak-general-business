@@ -179,7 +179,7 @@ export default OakComponent({
                 updateData: {
                     extra1,
                     origin,
-                    type: type || fileType,
+                    type: type || 'file',
                     tag1,
                     tag2,
                     objectId: await generateNewId(),
