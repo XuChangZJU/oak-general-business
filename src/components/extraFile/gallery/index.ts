@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { DeduceCreateOperationData } from "oak-domain/lib/types";
+import { DeduceCreateOperationData, OakException, OakUnloggedInException } from 'oak-domain/lib/types';
 import { isMockId } from "oak-frontend-base/lib/utils/mockId";
 import Dialog from '../../../utils/dialog/index';
 import { EntityDict } from '../../../general-app-domain';
@@ -173,40 +173,57 @@ export default OakComponent({
             fileType: string;
             size: number;
         }) {
-            const { type, origin, tag1, tag2, entity } = this.props;
+            const { type, origin, tag1, tag2, entity, autoUpload } = this.props;
             const { name, extra1, fileType, size } = options;
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
             assert(entity, '必须传入entity');
             assert(origin === 'qiniu', '目前只支持七牛上传'); // 目前只支持七牛上传
-            const ele: Parameters<typeof this['pushNode']>[1] = {
-                updateData: {
-                    extra1,
-                    origin,
-                    type: type || 'file',
-                    tag1,
-                    tag2,
-                    objectId: await generateNewId(),
-                    entity,
-                    filename,
-                    size,
-                    extension,
-                },
-                beforeExecute: async (updateData) => {
+            const updateData = {
+                extra1,
+                origin,
+                type: type || 'file',
+                tag1,
+                tag2,
+                objectId: await generateNewId(),
+                entity,
+                filename,
+                size,
+                extension,
+            } as DeduceCreateOperationData<EntityDict['extraFile']['Schema']>;
+            // autoUpload为true, 选择直接上传七牛，再提交extraFile
+            if (autoUpload) {
+                try {
                     const { url, bucket } =
-                        await this.features.extraFile.upload(
-                            updateData as DeduceCreateOperationData<
-                                EntityDict['extraFile']['Schema']
-                            >
-                        );
+                        await this.features.extraFile.upload(updateData);
                     Object.assign(updateData, {
                         bucket,
                         extra1: null,
+                        id: await generateNewId(),
                     });
-                },
-            };
+                    await this.addExtraFile(updateData);
+                    const ele: Parameters<typeof this['pushNode']>[1] = {
+                        updateData: updateData,
+                    };
+                    this.pushNode(undefined, ele);
+                } catch (error) {
+                    //上传七牛失败或保存extraFile失败 需要remove
+                }
+            } else {
+                const ele: Parameters<typeof this['pushNode']>[1] = {
+                    updateData: updateData,
+                    beforeExecute: async (updateData) => {
+                        const { url, bucket } =
+                            await this.features.extraFile.upload(updateData);
+                        Object.assign(updateData, {
+                            bucket,
+                            extra1: null,
+                        });
+                    },
+                };
 
-            this.pushNode(undefined, ele);
+                this.pushNode(undefined, ele);
+            }
         },
         async onItemTapped(event: WechatMiniprogram.Touch) {
             const { files, systemConfig } = this.state;
@@ -271,6 +288,31 @@ export default OakComponent({
                         confirm.hide();
                     },
                 });
+            }
+        },
+        async addExtraFile(
+            extraFile: DeduceCreateOperationData<
+                EntityDict['extraFile']['Schema']
+            >
+        ) {
+            try {
+                const result = await this.features.cache.operate('extraFile', {
+                    action: 'create',
+                    data: extraFile,
+                    id: await generateNewId(),
+                });
+                return result;
+            } catch (error) {
+                if (
+                    (<OakException>error).constructor.name ===
+                    OakUnloggedInException.name
+                ) {
+                    this.navigateTo({
+                        url: '/login',
+                    });
+                    return;
+                }
+                throw error;
             }
         },
     },
