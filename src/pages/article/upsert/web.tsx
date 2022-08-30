@@ -52,7 +52,7 @@ function customCheckImageFn(
 interface OakGalleryProps {
     maxNumber?: number;
     oakPath?: string;
-    oakFullpath?: string;
+    oakParent?: string;
     type: string;
     origin: 'qiniu';
     tag1?: string;
@@ -274,9 +274,7 @@ export default function render(this: any) {
                                             <CustomOakGallery
                                                 maxNumber={1}
                                                 oakPath="extraFile$entity"
-                                                oakFullpath={
-                                                    this.state.oakFullpath
-                                                }
+                                                oakParent={this.state.oakFullpath}
                                                 type="image"
                                                 origin="qiniu"
                                                 tag1="cover"

@@ -37,6 +37,10 @@ export default OakComponent({
         oakFullpath: String,
         oakParent: String,
         oakPath: String,
+        autoUpload: {
+            type: Boolean,
+            value: false,
+        },
         maxNumber: {
             type: Number,
             value: 100,
