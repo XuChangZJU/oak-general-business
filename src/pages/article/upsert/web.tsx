@@ -49,21 +49,6 @@ function customCheckImageFn(
     // 3. 返回 undefined（即没有任何返回），说明检查未通过，编辑器会阻止插入。但不会提示任何信息
 }
 
-interface OakGalleryProps {
-    maxNumber?: number;
-    oakPath?: string;
-    oakParent?: string;
-    type: string;
-    origin: 'qiniu';
-    tag1?: string;
-    entity: string;
-}
-
-//@ts-ignore
-const CustomOakGallery: React.ForwardRefExoticComponent<
-    OakGalleryProps & React.RefAttributes<unknown>
-> = OakGallery;
-
 export default function render(this: any) {
     const { t, features, addExtraFile } = this;
     const {
@@ -271,7 +256,7 @@ export default function render(this: any) {
                                 >
                                     <Row>
                                         <Col flex="none">
-                                            <CustomOakGallery
+                                            <OakGallery
                                                 maxNumber={1}
                                                 oakPath="extraFile$entity"
                                                 oakParent={this.state.oakFullpath}
@@ -279,7 +264,7 @@ export default function render(this: any) {
                                                 origin="qiniu"
                                                 tag1="cover"
                                                 entity="article"
-                                            ></CustomOakGallery>
+                                            ></OakGallery>
                                         </Col>
                                         <Col flex="auto">
                                             <Textarea
