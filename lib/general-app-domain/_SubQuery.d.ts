@@ -6,6 +6,7 @@ import * as User from "./User/Schema";
 import * as Address from "./Address/Schema";
 import * as Application from "./Application/Schema";
 import * as Area from "./Area/Schema";
+import * as Article from "./Article/Schema";
 import * as Captcha from "./Captcha/Schema";
 import * as Domain from "./Domain/Schema";
 import * as Email from "./Email/Schema";
@@ -89,6 +90,11 @@ export declare type AreaIdSubQuery = {
         entity: "area";
     }) | (Area.AreaIdSubQuery & {
         entity: "area";
+    }) | any;
+};
+export declare type ArticleIdSubQuery = {
+    [K in "$in" | "$nin"]?: (Article.ArticleIdSubQuery & {
+        entity: "article";
     }) | any;
 };
 export declare type CaptchaIdSubQuery = {

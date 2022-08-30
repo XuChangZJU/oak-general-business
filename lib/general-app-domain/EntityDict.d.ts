@@ -6,6 +6,7 @@ import { EntityDef as User } from "./User/Schema";
 import { EntityDef as Address } from "./Address/Schema";
 import { EntityDef as Application } from "./Application/Schema";
 import { EntityDef as Area } from "./Area/Schema";
+import { EntityDef as Article } from "./Article/Schema";
 import { EntityDef as Captcha } from "./Captcha/Schema";
 import { EntityDef as Domain } from "./Domain/Schema";
 import { EntityDef as Email } from "./Email/Schema";
@@ -28,6 +29,7 @@ export declare type EntityDict = {
     address: Address;
     application: Application;
     area: Area;
+    article: Article;
     captcha: Captcha;
     domain: Domain;
     email: Email;
