@@ -4,12 +4,11 @@ import {
     isPassword,
     isCaptcha,
 } from 'oak-domain/lib/utils/validator';
-import { DesktopIcon, LockOnIcon, MobileIcon, Icon } from 'tdesign-icons-react';
-import { Form, Input, Button, Checkbox, Tabs, Radio } from 'tdesign-react';
+import { LockOnIcon, MobileIcon, Icon } from 'tdesign-icons-react';
+import { Form, Input, Button, Checkbox, Radio } from 'tdesign-react';
 import classNames from 'classnames';
 import Style from './web.module.less';
 
-const { TabPanel } = Tabs;
 const { FormItem } = Form;
 
 export default function render(this: any) {
@@ -98,7 +97,6 @@ export default function render(this: any) {
                     clearable
                     value={captcha}
                     data-attr="captcha"
-                    // type="number"
                     maxlength={4}
                     placeholder={t('placeholder.Captcha')}
                     size="large"
