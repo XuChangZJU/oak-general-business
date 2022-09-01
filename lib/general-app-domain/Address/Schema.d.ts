@@ -111,31 +111,20 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
-export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "areaId">> & (({
-    areaId?: never | null;
-    area: Area.CreateSingleOperation;
-} | {
+export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "areaId">> & ({
     areaId: String<64>;
-    area?: Area.UpdateOperation;
-}));
+});
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "areaId">> & (({
-    area?: Area.CreateSingleOperation | Area.UpdateOperation | Area.RemoveOperation;
-    areaId?: undefined;
-} | {
-    area?: undefined;
+export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "areaId">> & ({
+    area?: never;
     areaId?: String<64> | null;
-})) & {
+}) & {
     [k: string]: any;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
-export declare type RemoveOperationData = {} & (({
-    area?: Area.UpdateOperation;
-} | {
-    area?: Area.RemoveOperation;
-}));
+export declare type RemoveOperationData = {};
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type AreaIdSubQuery = Selection<AreaIdProjection>;

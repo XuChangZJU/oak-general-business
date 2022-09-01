@@ -9,7 +9,7 @@ export declare function createWechatQrCode<ED extends EntityDict, T extends keyo
     lifetimeLength?: number;
     permanent?: boolean;
     props: WechatQrCodeProps;
-}, context: Cxt): Promise<Omit<Omit<import("../general-app-domain/WechatQrCode/Schema").OpSchema, "applicationId" | "entity" | "entityId">, import("oak-domain/lib/types").InstinctiveAttributes> & {
+}, context: Cxt): Promise<(Omit<Omit<import("../general-app-domain/WechatQrCode/Schema").OpSchema, "applicationId" | "entity" | "entityId">, import("oak-domain/lib/types").InstinctiveAttributes> & {
     id: string;
 } & {
     applicationId: string;
@@ -19,6 +19,17 @@ export declare function createWechatQrCode<ED extends EntityDict, T extends keyo
     entity?: string | undefined;
     entityId?: string | undefined;
 } & {
-    operEntity$entity?: import("oak-domain/lib/types").Operation<string, Omit<import("../general-app-domain/OperEntity/Schema").UpdateOperationData, "entity" | "entityId">, import("../general-app-domain/OperEntity/Schema").Filter<import("oak-domain/lib/types").Q_EnumValue<string>>, undefined> | (import("oak-domain/lib/types").Operation<string, Omit<import("../general-app-domain/OperEntity/Schema").UpdateOperationData, "entity" | "entityId">, import("../general-app-domain/OperEntity/Schema").Filter<import("oak-domain/lib/types").Q_EnumValue<string>>, undefined> | import("oak-domain/lib/types").Operation<"create", Omit<import("../general-app-domain/OperEntity/Schema").CreateOperationData, "entity" | "entityId"> | Omit<import("../general-app-domain/OperEntity/Schema").CreateOperationData, "entity" | "entityId">[], undefined, undefined>)[] | undefined;
-    modiEntity$entity?: import("oak-domain/lib/types").Operation<string, Omit<import("../general-app-domain/ModiEntity/Schema").UpdateOperationData, "entity" | "entityId">, import("../general-app-domain/ModiEntity/Schema").Filter<import("oak-domain/lib/types").Q_EnumValue<string>>, undefined> | (import("oak-domain/lib/types").Operation<string, Omit<import("../general-app-domain/ModiEntity/Schema").UpdateOperationData, "entity" | "entityId">, import("../general-app-domain/ModiEntity/Schema").Filter<import("oak-domain/lib/types").Q_EnumValue<string>>, undefined> | import("oak-domain/lib/types").Operation<"create", Omit<import("../general-app-domain/ModiEntity/Schema").CreateOperationData, "entity" | "entityId"> | Omit<import("../general-app-domain/ModiEntity/Schema").CreateOperationData, "entity" | "entityId">[], undefined, undefined>)[] | undefined;
-}>;
+    operEntity$entity?: import("oak-domain/lib/types").Operation<"create", Omit<import("../general-app-domain/OperEntity/Schema").CreateOperationData, "entity" | "entityId">[], undefined, undefined> | import("oak-domain/lib/types").Operation<"create", Omit<import("../general-app-domain/OperEntity/Schema").CreateOperationData, "entity" | "entityId">, undefined, undefined>[] | undefined;
+    modiEntity$entity?: import("oak-domain/lib/types").Operation<"create", Omit<import("../general-app-domain/ModiEntity/Schema").CreateOperationData, "entity" | "entityId">[], undefined, undefined> | import("oak-domain/lib/types").Operation<"create", Omit<import("../general-app-domain/ModiEntity/Schema").CreateOperationData, "entity" | "entityId">, undefined, undefined>[] | undefined;
+}) | (Omit<Omit<import("../general-app-domain/WechatQrCode/Schema").OpSchema, "applicationId" | "entity" | "entityId">, import("oak-domain/lib/types").InstinctiveAttributes> & {
+    id: string;
+} & {
+    applicationId: string;
+} & {
+    [K: string]: any;
+    entity?: string | undefined;
+    entityId?: string | undefined;
+} & {
+    operEntity$entity?: import("oak-domain/lib/types").Operation<"create", Omit<import("../general-app-domain/OperEntity/Schema").CreateOperationData, "entity" | "entityId">[], undefined, undefined> | import("oak-domain/lib/types").Operation<"create", Omit<import("../general-app-domain/OperEntity/Schema").CreateOperationData, "entity" | "entityId">, undefined, undefined>[] | undefined;
+    modiEntity$entity?: import("oak-domain/lib/types").Operation<"create", Omit<import("../general-app-domain/ModiEntity/Schema").CreateOperationData, "entity" | "entityId">[], undefined, undefined> | import("oak-domain/lib/types").Operation<"create", Omit<import("../general-app-domain/ModiEntity/Schema").CreateOperationData, "entity" | "entityId">, undefined, undefined>[] | undefined;
+})>;

@@ -105,29 +105,35 @@ export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select"
 export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "systemId">> & (({
-    systemId?: never | null;
+    systemId?: never;
     system: System.CreateSingleOperation;
 } | {
     systemId: String<64>;
     system?: System.UpdateOperation;
+} | {
+    systemId: String<64>;
 }));
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "systemId">> & (({
-    system?: System.CreateSingleOperation | System.UpdateOperation | System.RemoveOperation;
-    systemId?: undefined;
+    system: System.CreateSingleOperation;
+    systemId?: never;
 } | {
-    system?: undefined;
+    system: System.UpdateOperation;
+    systemId?: never;
+} | {
+    system: System.RemoveOperation;
+    systemId?: never;
+} | {
+    system?: never;
     systemId?: String<64> | null;
 })) & {
     [k: string]: any;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
-    system?: System.UpdateOperation;
-} | {
-    system?: System.RemoveOperation;
+    system?: System.UpdateOperation | System.RemoveOperation;
 }));
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;

@@ -192,11 +192,13 @@ export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select"
 export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "applicationId">> & (({
-    applicationId?: never | null;
+    applicationId?: never;
     application: Application.CreateSingleOperation;
 } | {
     applicationId: String<64>;
     application?: Application.UpdateOperation;
+} | {
+    applicationId: String<64>;
 })) & ({
     entity?: never;
     entityId?: never;
@@ -204,45 +206,50 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 } | {
     entity: "userEntityGrant";
     entityId: String<64>;
-    userEntityGrant?: UserEntityGrant.UpdateOperation;
+    userEntityGrant: UserEntityGrant.UpdateOperation;
+} | {
+    entity: "userEntityGrant";
+    entityId: String<64>;
 } | {
     entity?: string;
     entityId?: string;
     [K: string]: any;
 }) & {
-    operEntity$entity?: OakOperation<OperEntity.UpdateOperation["action"], Omit<OperEntity.UpdateOperationData, "entity" | "entityId">, OperEntity.Filter> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId"> | Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | OakOperation<OperEntity.UpdateOperation["action"], Omit<OperEntity.UpdateOperationData, "entity" | "entityId">, OperEntity.Filter>>;
-    modiEntity$entity?: OakOperation<ModiEntity.UpdateOperation["action"], Omit<ModiEntity.UpdateOperationData, "entity" | "entityId">, ModiEntity.Filter> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId"> | Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | OakOperation<ModiEntity.UpdateOperation["action"], Omit<ModiEntity.UpdateOperationData, "entity" | "entityId">, ModiEntity.Filter>>;
+    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
+    modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "applicationId">> & (({
-    application?: Application.CreateSingleOperation | Application.UpdateOperation | Application.RemoveOperation;
-    applicationId?: undefined;
+    application: Application.CreateSingleOperation;
+    applicationId?: never;
 } | {
-    application?: undefined;
+    application: Application.UpdateOperation;
+    applicationId?: never;
+} | {
+    application: Application.RemoveOperation;
+    applicationId?: never;
+} | {
+    application?: never;
     applicationId?: String<64> | null;
 })) & ({
     userEntityGrant?: UserEntityGrant.CreateSingleOperation | UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
+    entityId?: never;
+    entity?: never;
 } | {
     entity?: ("userEntityGrant" | string) | null;
     entityId?: String<64> | null;
 }) & {
     [k: string]: any;
-    operEntitys$entity?: OperEntity.UpdateOperation | OperEntity.RemoveOperation | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId"> | Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | OperEntity.UpdateOperation | OperEntity.RemoveOperation>;
-    modiEntitys$entity?: ModiEntity.UpdateOperation | ModiEntity.RemoveOperation | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId"> | Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | ModiEntity.UpdateOperation | ModiEntity.RemoveOperation>;
+    operEntitys$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
+    modiEntitys$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
-    application?: Application.UpdateOperation;
-} | {
-    application?: Application.RemoveOperation;
+    application?: Application.UpdateOperation | Application.RemoveOperation;
 })) & ({
-    userEntityGrant?: UserEntityGrant.UpdateOperation;
-} | {
-    userEntityGrant?: UserEntityGrant.RemoveOperation;
+    userEntityGrant?: UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation;
 } | {
     [k: string]: any;
 });

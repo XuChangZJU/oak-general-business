@@ -119,14 +119,14 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     entityId?: string;
     [K: string]: any;
 }) & {
-    modiEntity$modi?: OakOperation<ModiEntity.UpdateOperation["action"], Omit<ModiEntity.UpdateOperationData, "modi" | "modiId">, ModiEntity.Filter> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "modi" | "modiId"> | Omit<ModiEntity.CreateOperationData, "modi" | "modiId">[]> | OakOperation<ModiEntity.UpdateOperation["action"], Omit<ModiEntity.UpdateOperationData, "modi" | "modiId">, ModiEntity.Filter>>;
+    modiEntity$modi?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "modi" | "modiId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "modi" | "modiId">>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export declare type UpdateOperationData = FormUpdateData<OpSchema> & {
     [k: string]: any;
-    modiEntitys$modi?: ModiEntity.UpdateOperation | ModiEntity.RemoveOperation | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "modi" | "modiId"> | Omit<ModiEntity.CreateOperationData, "modi" | "modiId">[]> | ModiEntity.UpdateOperation | ModiEntity.RemoveOperation>;
+    modiEntitys$modi?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "modi" | "modiId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "modi" | "modiId">>>;
 };
 export declare type UpdateOperation = OakOperation<ParticularAction | "update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {};

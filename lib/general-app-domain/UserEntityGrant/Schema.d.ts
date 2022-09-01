@@ -178,56 +178,68 @@ export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select"
 export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "granterId" | "granteeId">> & (({
-    granterId?: never | null;
+    granterId?: never;
     granter: User.CreateSingleOperation;
 } | {
     granterId: String<64>;
     granter?: User.UpdateOperation;
+} | {
+    granterId: String<64>;
 }) & ({
-    granteeId?: never | null;
+    granteeId?: never;
     grantee?: User.CreateSingleOperation;
 } | {
-    granteeId?: String<64>;
+    granteeId: String<64>;
     grantee?: User.UpdateOperation;
+} | {
+    granteeId?: String<64>;
 })) & ({
     entity?: string;
     entityId?: string;
     [K: string]: any;
 }) & {
-    operEntity$entity?: OakOperation<OperEntity.UpdateOperation["action"], Omit<OperEntity.UpdateOperationData, "entity" | "entityId">, OperEntity.Filter> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId"> | Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | OakOperation<OperEntity.UpdateOperation["action"], Omit<OperEntity.UpdateOperationData, "entity" | "entityId">, OperEntity.Filter>>;
-    modiEntity$entity?: OakOperation<ModiEntity.UpdateOperation["action"], Omit<ModiEntity.UpdateOperationData, "entity" | "entityId">, ModiEntity.Filter> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId"> | Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | OakOperation<ModiEntity.UpdateOperation["action"], Omit<ModiEntity.UpdateOperationData, "entity" | "entityId">, ModiEntity.Filter>>;
-    wechatQrCode$entity?: OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, WechatQrCode.Filter> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId"> | Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">[]> | OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, WechatQrCode.Filter>>;
+    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
+    modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
+    wechatQrCode$entity?: OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, WechatQrCode.Filter> | OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">> | OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, WechatQrCode.Filter>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "granterId" | "granteeId">> & (({
-    granter?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
-    granterId?: undefined;
+    granter: User.CreateSingleOperation;
+    granterId?: never;
 } | {
-    granter?: undefined;
+    granter: User.UpdateOperation;
+    granterId?: never;
+} | {
+    granter: User.RemoveOperation;
+    granterId?: never;
+} | {
+    granter?: never;
     granterId?: String<64> | null;
 }) & ({
-    grantee?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
-    granteeId?: undefined;
+    grantee: User.CreateSingleOperation;
+    granteeId?: never;
 } | {
-    grantee?: undefined;
+    grantee: User.UpdateOperation;
+    granteeId?: never;
+} | {
+    grantee: User.RemoveOperation;
+    granteeId?: never;
+} | {
+    grantee?: never;
     granteeId?: String<64> | null;
 })) & {
     [k: string]: any;
-    operEntitys$entity?: OperEntity.UpdateOperation | OperEntity.RemoveOperation | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId"> | Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | OperEntity.UpdateOperation | OperEntity.RemoveOperation>;
-    modiEntitys$entity?: ModiEntity.UpdateOperation | ModiEntity.RemoveOperation | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId"> | Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | ModiEntity.UpdateOperation | ModiEntity.RemoveOperation>;
-    wechatQrCodes$entity?: WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId"> | Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">[]> | WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation>;
+    operEntitys$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
+    modiEntitys$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
+    wechatQrCodes$entity?: WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation | OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">> | WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation>;
 };
 export declare type UpdateOperation = OakOperation<ParticularAction | "update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
-    granter?: User.UpdateOperation;
-} | {
-    granter?: User.RemoveOperation;
+    granter?: User.UpdateOperation | User.RemoveOperation;
 }) & ({
-    grantee?: User.UpdateOperation;
-} | {
-    grantee?: User.RemoveOperation;
+    grantee?: User.UpdateOperation | User.RemoveOperation;
 }));
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;

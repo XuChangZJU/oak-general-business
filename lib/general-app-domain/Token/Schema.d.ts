@@ -204,23 +204,29 @@ export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select"
 export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "applicationId" | "userId" | "playerId">> & (({
-    applicationId?: never | null;
+    applicationId?: never;
     application?: Application.CreateSingleOperation;
 } | {
-    applicationId?: String<64>;
+    applicationId: String<64>;
     application?: Application.UpdateOperation;
+} | {
+    applicationId?: String<64>;
 }) & ({
-    userId?: never | null;
+    userId?: never;
     user?: User.CreateSingleOperation;
 } | {
-    userId?: String<64>;
+    userId: String<64>;
     user?: User.UpdateOperation;
+} | {
+    userId?: String<64>;
 }) & ({
-    playerId?: never | null;
+    playerId?: never;
     player?: User.CreateSingleOperation;
 } | {
-    playerId?: String<64>;
+    playerId: String<64>;
     player?: User.UpdateOperation;
+} | {
+    playerId?: String<64>;
 })) & ({
     entity?: never;
     entityId?: never;
@@ -228,7 +234,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 } | {
     entity: "email";
     entityId: String<64>;
-    email?: Email.UpdateOperation;
+    email: Email.UpdateOperation;
+} | {
+    entity: "email";
+    entityId: String<64>;
 } | {
     entity?: never;
     entityId?: never;
@@ -236,7 +245,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 } | {
     entity: "mobile";
     entityId: String<64>;
-    mobile?: Mobile.UpdateOperation;
+    mobile: Mobile.UpdateOperation;
+} | {
+    entity: "mobile";
+    entityId: String<64>;
 } | {
     entity?: never;
     entityId?: never;
@@ -244,7 +256,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 } | {
     entity: "wechatUser";
     entityId: String<64>;
-    wechatUser?: WechatUser.UpdateOperation;
+    wechatUser: WechatUser.UpdateOperation;
+} | {
+    entity: "wechatUser";
+    entityId: String<64>;
 } | {
     entity?: string;
     entityId?: string;
@@ -254,35 +269,53 @@ export declare type CreateSingleOperation = OakOperation<"create", CreateOperati
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "applicationId" | "userId" | "playerId">> & (({
-    application?: Application.CreateSingleOperation | Application.UpdateOperation | Application.RemoveOperation;
-    applicationId?: undefined;
+    application: Application.CreateSingleOperation;
+    applicationId?: never;
 } | {
-    application?: undefined;
+    application: Application.UpdateOperation;
+    applicationId?: never;
+} | {
+    application: Application.RemoveOperation;
+    applicationId?: never;
+} | {
+    application?: never;
     applicationId?: String<64> | null;
 }) & ({
-    user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
-    userId?: undefined;
+    user: User.CreateSingleOperation;
+    userId?: never;
 } | {
-    user?: undefined;
+    user: User.UpdateOperation;
+    userId?: never;
+} | {
+    user: User.RemoveOperation;
+    userId?: never;
+} | {
+    user?: never;
     userId?: String<64> | null;
 }) & ({
-    player?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
-    playerId?: undefined;
+    player: User.CreateSingleOperation;
+    playerId?: never;
 } | {
-    player?: undefined;
+    player: User.UpdateOperation;
+    playerId?: never;
+} | {
+    player: User.RemoveOperation;
+    playerId?: never;
+} | {
+    player?: never;
     playerId?: String<64> | null;
 })) & ({
     email?: Email.CreateSingleOperation | Email.UpdateOperation | Email.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
+    entityId?: never;
+    entity?: never;
 } | {
     mobile?: Mobile.CreateSingleOperation | Mobile.UpdateOperation | Mobile.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
+    entityId?: never;
+    entity?: never;
 } | {
     wechatUser?: WechatUser.CreateSingleOperation | WechatUser.UpdateOperation | WechatUser.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
+    entityId?: never;
+    entity?: never;
 } | {
     entity?: ("email" | "mobile" | "wechatUser" | string) | null;
     entityId?: String<64> | null;
@@ -291,29 +324,17 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
 };
 export declare type UpdateOperation = OakOperation<ParticularAction | "update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
-    application?: Application.UpdateOperation;
-} | {
-    application?: Application.RemoveOperation;
+    application?: Application.UpdateOperation | Application.RemoveOperation;
 }) & ({
-    user?: User.UpdateOperation;
-} | {
-    user?: User.RemoveOperation;
+    user?: User.UpdateOperation | User.RemoveOperation;
 }) & ({
-    player?: User.UpdateOperation;
-} | {
-    player?: User.RemoveOperation;
+    player?: User.UpdateOperation | User.RemoveOperation;
 })) & ({
-    email?: Email.UpdateOperation;
+    email?: Email.UpdateOperation | Email.RemoveOperation;
 } | {
-    email?: Email.RemoveOperation;
+    mobile?: Mobile.UpdateOperation | Mobile.RemoveOperation;
 } | {
-    mobile?: Mobile.UpdateOperation;
-} | {
-    mobile?: Mobile.RemoveOperation;
-} | {
-    wechatUser?: WechatUser.UpdateOperation;
-} | {
-    wechatUser?: WechatUser.RemoveOperation;
+    wechatUser?: WechatUser.UpdateOperation | WechatUser.RemoveOperation;
 } | {
     [k: string]: any;
 });

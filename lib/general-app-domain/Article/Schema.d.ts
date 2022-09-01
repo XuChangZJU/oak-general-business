@@ -121,14 +121,14 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     entityId?: string;
     [K: string]: any;
 }) & {
-    extraFile$entity?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, ExtraFile.Filter> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId"> | Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, ExtraFile.Filter>>;
+    extraFile$entity?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, ExtraFile.Filter> | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, ExtraFile.Filter>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export declare type UpdateOperationData = FormUpdateData<OpSchema> & {
     [k: string]: any;
-    extraFiles$entity?: ExtraFile.UpdateOperation | ExtraFile.RemoveOperation | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId"> | Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | ExtraFile.UpdateOperation | ExtraFile.RemoveOperation>;
+    extraFiles$entity?: ExtraFile.UpdateOperation | ExtraFile.RemoveOperation | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | ExtraFile.UpdateOperation | ExtraFile.RemoveOperation>;
 };
 export declare type UpdateOperation = OakOperation<ParticularAction | "update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {};

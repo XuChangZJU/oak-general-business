@@ -3,7 +3,7 @@ import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, Ex
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
-import { GenericAction } from "oak-domain/lib/actions/action";
+import { AppendOnlyAction } from "oak-domain/lib/actions/action";
 import * as Oper from "../Oper/Schema";
 import * as User from "../User/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
@@ -131,11 +131,10 @@ export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select"
 export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "operId">> & (({
-    operId?: never | null;
+    operId?: never;
     oper: Oper.CreateSingleOperation;
 } | {
     operId: String<64>;
-    oper?: Oper.UpdateOperation;
 })) & ({
     entity?: never;
     entityId?: never;
@@ -143,7 +142,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 } | {
     entity: "user";
     entityId: String<64>;
-    user?: User.UpdateOperation;
+    user: User.UpdateOperation;
+} | {
+    entity: "user";
+    entityId: String<64>;
 } | {
     entity?: never;
     entityId?: never;
@@ -151,7 +153,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 } | {
     entity: "userEntityGrant";
     entityId: String<64>;
-    userEntityGrant?: UserEntityGrant.UpdateOperation;
+    userEntityGrant: UserEntityGrant.UpdateOperation;
+} | {
+    entity: "userEntityGrant";
+    entityId: String<64>;
 } | {
     entity?: never;
     entityId?: never;
@@ -159,7 +164,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 } | {
     entity: "wechatQrCode";
     entityId: String<64>;
-    wechatQrCode?: WechatQrCode.UpdateOperation;
+    wechatQrCode: WechatQrCode.UpdateOperation;
+} | {
+    entity: "wechatQrCode";
+    entityId: String<64>;
 } | {
     entity?: never;
     entityId?: never;
@@ -167,7 +175,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 } | {
     entity: "wechatUser";
     entityId: String<64>;
-    wechatUser?: WechatUser.UpdateOperation;
+    wechatUser: WechatUser.UpdateOperation;
+} | {
+    entity: "wechatUser";
+    entityId: String<64>;
 } | {
     entity?: string;
     entityId?: string;
@@ -177,27 +188,27 @@ export declare type CreateSingleOperation = OakOperation<"create", CreateOperati
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "operId">> & (({
-    oper?: Oper.CreateSingleOperation | Oper.UpdateOperation | Oper.RemoveOperation;
-    operId?: undefined;
+    oper: Oper.CreateSingleOperation;
+    operId?: never;
 } | {
-    oper?: undefined;
+    oper?: never;
     operId?: String<64> | null;
 })) & ({
     user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
+    entityId?: never;
+    entity?: never;
 } | {
     userEntityGrant?: UserEntityGrant.CreateSingleOperation | UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
+    entityId?: never;
+    entity?: never;
 } | {
     wechatQrCode?: WechatQrCode.CreateSingleOperation | WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
+    entityId?: never;
+    entity?: never;
 } | {
     wechatUser?: WechatUser.CreateSingleOperation | WechatUser.UpdateOperation | WechatUser.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
+    entityId?: never;
+    entity?: never;
 } | {
     entity?: ("user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string) | null;
     entityId?: String<64> | null;
@@ -205,26 +216,14 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     [k: string]: any;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
-export declare type RemoveOperationData = {} & (({
-    oper?: Oper.UpdateOperation;
+export declare type RemoveOperationData = {} & ({
+    user?: User.UpdateOperation | User.RemoveOperation;
 } | {
-    oper?: Oper.RemoveOperation;
-})) & ({
-    user?: User.UpdateOperation;
+    userEntityGrant?: UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation;
 } | {
-    user?: User.RemoveOperation;
+    wechatQrCode?: WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation;
 } | {
-    userEntityGrant?: UserEntityGrant.UpdateOperation;
-} | {
-    userEntityGrant?: UserEntityGrant.RemoveOperation;
-} | {
-    wechatQrCode?: WechatQrCode.UpdateOperation;
-} | {
-    wechatQrCode?: WechatQrCode.RemoveOperation;
-} | {
-    wechatUser?: WechatUser.UpdateOperation;
-} | {
-    wechatUser?: WechatUser.RemoveOperation;
+    wechatUser?: WechatUser.UpdateOperation | WechatUser.RemoveOperation;
 } | {
     [k: string]: any;
 });
@@ -241,7 +240,7 @@ export declare type FullAttr = NativeAttr;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: OakMakeAction<GenericAction> | string;
+    Action: OakMakeAction<AppendOnlyAction> | string;
     Selection: Selection;
     Operation: Operation;
     Create: CreateOperation;

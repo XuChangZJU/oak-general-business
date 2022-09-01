@@ -191,7 +191,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 } | {
     entity: "article";
     entityId: String<64>;
-    article?: Article.UpdateOperation;
+    article: Article.UpdateOperation;
+} | {
+    entity: "article";
+    entityId: String<64>;
 } | {
     entity?: never;
     entityId?: never;
@@ -199,7 +202,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 } | {
     entity: "user";
     entityId: String<64>;
-    user?: User.UpdateOperation;
+    user: User.UpdateOperation;
+} | {
+    entity: "user";
+    entityId: String<64>;
 } | {
     entity?: string;
     entityId?: string;
@@ -210,12 +216,12 @@ export declare type CreateMultipleOperation = OakOperation<"create", Array<Creat
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId">> & ({
     article?: Article.CreateSingleOperation | Article.UpdateOperation | Article.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
+    entityId?: never;
+    entity?: never;
 } | {
     user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
-    entityId?: undefined;
-    entity?: undefined;
+    entityId?: never;
+    entity?: never;
 } | {
     entity?: ("article" | "user" | string) | null;
     entityId?: String<64> | null;
@@ -224,13 +230,9 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & ({
-    article?: Article.UpdateOperation;
+    article?: Article.UpdateOperation | Article.RemoveOperation;
 } | {
-    article?: Article.RemoveOperation;
-} | {
-    user?: User.UpdateOperation;
-} | {
-    user?: User.RemoveOperation;
+    user?: User.UpdateOperation | User.RemoveOperation;
 } | {
     [k: string]: any;
 });

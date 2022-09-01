@@ -2,6 +2,7 @@ import { MessageProps } from 'oak-frontend-base/lib/types/Message';
 import Message from '../../utils/message';
 
 export default OakComponent({
+    isList: false,
     async formData({ props }) {
         const { width } = props;
         const data = this.consumeMessage() as MessageProps;

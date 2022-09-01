@@ -3,7 +3,7 @@ import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, Ex
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
-import { GenericAction } from "oak-domain/lib/actions/action";
+import { ReadOnlyAction } from "oak-domain/lib/actions/action";
 import * as Address from "../Address/Schema";
 export declare type OpSchema = {
     id: PrimaryKey;
@@ -122,36 +122,23 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
-export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "parentId">> & (({
-    parentId?: never | null;
-    parent?: CreateSingleOperation;
-} | {
+export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "parentId">> & ({
     parentId?: String<64>;
-    parent?: UpdateOperation;
-})) & {
-    address$area?: OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "area" | "areaId">, Address.Filter> | Array<OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId"> | Omit<Address.CreateOperationData, "area" | "areaId">[]> | OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "area" | "areaId">, Address.Filter>>;
-    area$parent?: OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "parent" | "parentId">, Filter> | Array<OakOperation<"create", Omit<CreateOperationData, "parent" | "parentId"> | Omit<CreateOperationData, "parent" | "parentId">[]> | OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "parent" | "parentId">, Filter>>;
+}) & {
+    address$area?: OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "area" | "areaId">, Address.Filter> | OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId">> | OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "area" | "areaId">, Address.Filter>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "parentId">> & (({
-    parent?: CreateSingleOperation | UpdateOperation | RemoveOperation;
-    parentId?: undefined;
-} | {
-    parent?: undefined;
+export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "parentId">> & ({
+    parent?: never;
     parentId?: String<64> | null;
-})) & {
+}) & {
     [k: string]: any;
-    addresss$area?: Address.UpdateOperation | Address.RemoveOperation | Array<OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId"> | Omit<Address.CreateOperationData, "area" | "areaId">[]> | Address.UpdateOperation | Address.RemoveOperation>;
-    areas$parent?: UpdateOperation | RemoveOperation | Array<OakOperation<"create", Omit<CreateOperationData, "parent" | "parentId"> | Omit<CreateOperationData, "parent" | "parentId">[]> | UpdateOperation | RemoveOperation>;
+    addresss$area?: Address.UpdateOperation | Address.RemoveOperation | OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId">> | Address.UpdateOperation | Address.RemoveOperation>;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
-export declare type RemoveOperationData = {} & (({
-    parent?: UpdateOperation;
-} | {
-    parent?: RemoveOperation;
-}));
+export declare type RemoveOperationData = {};
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type AreaIdSubQuery = Selection<AreaIdProjection>;
@@ -160,7 +147,7 @@ export declare type FullAttr = NativeAttr | `addresss$${number}.${Address.Native
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: OakMakeAction<GenericAction> | string;
+    Action: OakMakeAction<ReadOnlyAction> | string;
     Selection: Selection;
     Operation: Operation;
     Create: CreateOperation;

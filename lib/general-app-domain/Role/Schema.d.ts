@@ -3,7 +3,7 @@ import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey }
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
-import { GenericAction } from "oak-domain/lib/actions/action";
+import { ReadOnlyAction } from "oak-domain/lib/actions/action";
 import * as UserRole from "../UserRole/Schema";
 export declare type OpSchema = {
     id: PrimaryKey;
@@ -75,14 +75,14 @@ export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select"
 export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<OpSchema> & {
-    userRole$role?: OakOperation<UserRole.UpdateOperation["action"], Omit<UserRole.UpdateOperationData, "role" | "roleId">, UserRole.Filter> | Array<OakOperation<"create", Omit<UserRole.CreateOperationData, "role" | "roleId"> | Omit<UserRole.CreateOperationData, "role" | "roleId">[]> | OakOperation<UserRole.UpdateOperation["action"], Omit<UserRole.UpdateOperationData, "role" | "roleId">, UserRole.Filter>>;
+    userRole$role?: OakOperation<"create", Omit<UserRole.CreateOperationData, "role" | "roleId">[]> | Array<OakOperation<"create", Omit<UserRole.CreateOperationData, "role" | "roleId">>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export declare type UpdateOperationData = FormUpdateData<OpSchema> & {
     [k: string]: any;
-    userRoles$role?: UserRole.UpdateOperation | UserRole.RemoveOperation | Array<OakOperation<"create", Omit<UserRole.CreateOperationData, "role" | "roleId"> | Omit<UserRole.CreateOperationData, "role" | "roleId">[]> | UserRole.UpdateOperation | UserRole.RemoveOperation>;
+    userRoles$role?: UserRole.RemoveOperation | OakOperation<"create", Omit<UserRole.CreateOperationData, "role" | "roleId">[]> | Array<OakOperation<"create", Omit<UserRole.CreateOperationData, "role" | "roleId">> | UserRole.RemoveOperation>;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {};
@@ -94,7 +94,7 @@ export declare type FullAttr = NativeAttr | `userRoles$${number}.${UserRole.Nati
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: OakMakeAction<GenericAction> | string;
+    Action: OakMakeAction<ReadOnlyAction> | string;
     Selection: Selection;
     Operation: Operation;
     Create: CreateOperation;

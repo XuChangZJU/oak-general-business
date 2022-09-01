@@ -3,7 +3,7 @@ import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, Ex
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
-import { GenericAction } from "oak-domain/lib/actions/action";
+import { ExcludeUpdateAction } from "oak-domain/lib/actions/action";
 import * as User from "../User/Schema";
 import * as Role from "../Role/Schema";
 export declare type OpSchema = {
@@ -101,45 +101,40 @@ export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select"
 export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "userId" | "roleId">> & (({
-    userId?: never | null;
+    userId?: never;
     user?: User.CreateSingleOperation;
 } | {
-    userId?: String<64>;
+    userId: String<64>;
     user?: User.UpdateOperation;
-}) & ({
-    roleId?: never | null;
-    role?: Role.CreateSingleOperation;
 } | {
+    userId?: String<64>;
+}) & {
     roleId?: String<64>;
-    role?: Role.UpdateOperation;
-}));
+});
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId" | "roleId">> & (({
-    user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
-    userId?: undefined;
+    user: User.CreateSingleOperation;
+    userId?: never;
 } | {
-    user?: undefined;
+    user: User.UpdateOperation;
+    userId?: never;
+} | {
+    user: User.RemoveOperation;
+    userId?: never;
+} | {
+    user?: never;
     userId?: String<64> | null;
-}) & ({
-    role?: Role.CreateSingleOperation | Role.UpdateOperation | Role.RemoveOperation;
-    roleId?: undefined;
-} | {
-    role?: undefined;
+}) & {
+    role?: never;
     roleId?: String<64> | null;
-})) & {
+}) & {
     [k: string]: any;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
-    user?: User.UpdateOperation;
-} | {
-    user?: User.RemoveOperation;
-}) & ({
-    role?: Role.UpdateOperation;
-} | {
-    role?: Role.RemoveOperation;
+    user?: User.UpdateOperation | User.RemoveOperation;
 }));
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
@@ -151,7 +146,7 @@ export declare type FullAttr = NativeAttr;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: OakMakeAction<GenericAction> | string;
+    Action: OakMakeAction<ExcludeUpdateAction> | string;
     Selection: Selection;
     Operation: Operation;
     Create: CreateOperation;

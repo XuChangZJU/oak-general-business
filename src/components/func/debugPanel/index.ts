@@ -1,5 +1,6 @@
  
 export default OakComponent({
+    isList: true,
     data: {
         visible: false,
         dialogVisible: false,
