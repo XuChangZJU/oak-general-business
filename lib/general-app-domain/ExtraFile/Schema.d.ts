@@ -12,7 +12,7 @@ export declare type OpSchema = {
     $$updateAt$$: Datetime;
     $$deleteAt$$?: Datetime | null;
     origin: 'qiniu' | 'unknown';
-    type: 'image' | 'pdf' | 'video' | 'audio' | 'file';
+    type: 'image' | 'video' | 'audio' | 'file' | 'pdf';
     bucket: String<16>;
     objectId: String<64>;
     tag1: String<16>;
@@ -25,6 +25,7 @@ export declare type OpSchema = {
     extension: String<16>;
     size?: Int<4> | null;
     sort?: Int<4> | null;
+    fileType: String<16>;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = {
@@ -33,7 +34,7 @@ export declare type Schema = {
     $$updateAt$$: Datetime;
     $$deleteAt$$?: Datetime | null;
     origin: 'qiniu' | 'unknown';
-    type: 'image' | 'pdf' | 'video' | 'audio' | 'file';
+    type: 'image' | 'video' | 'audio' | 'file' | 'pdf';
     bucket: String<16>;
     objectId: String<64>;
     tag1: String<16>;
@@ -46,6 +47,7 @@ export declare type Schema = {
     extension: String<16>;
     size?: Int<4> | null;
     sort?: Int<4> | null;
+    fileType: String<16>;
     article?: Article.Schema;
     user?: User.Schema;
 } & {
@@ -56,7 +58,7 @@ declare type AttrFilter<E> = {
     $$createAt$$: Q_DateValue;
     $$updateAt$$: Q_DateValue;
     origin: Q_EnumValue<'qiniu' | 'unknown'>;
-    type: Q_EnumValue<'image' | 'pdf' | 'video' | 'audio' | 'file'>;
+    type: Q_EnumValue<'image' | 'video' | 'audio' | 'file' | 'pdf'>;
     bucket: Q_StringValue;
     objectId: Q_StringValue;
     tag1: Q_StringValue;
@@ -69,6 +71,7 @@ declare type AttrFilter<E> = {
     extension: Q_StringValue;
     size: Q_NumberValue;
     sort: Q_NumberValue;
+    fileType: Q_StringValue;
     article: Article.Filter;
     user: User.Filter;
 };
@@ -93,6 +96,7 @@ export declare type Projection = {
     extension?: 1;
     size?: 1;
     sort?: 1;
+    fileType?: 1;
     article?: Article.Projection;
     user?: User.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
@@ -116,6 +120,7 @@ export declare type ExportProjection = {
     extension?: string;
     size?: string;
     sort?: string;
+    fileType?: string;
     article?: Article.ExportProjection;
     user?: User.ExportProjection;
 } & Partial<ExprOp<OpAttr | string>>;
@@ -162,6 +167,8 @@ export declare type SortAttr = {
     size: 1;
 } | {
     sort: 1;
+} | {
+    fileType: 1;
 } | {
     article: Article.SortAttr;
 } | {

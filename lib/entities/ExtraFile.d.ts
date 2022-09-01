@@ -2,7 +2,7 @@ import { String, Int, Text } from 'oak-domain/lib/types/DataType';
 import { FileCarrierEntityShape } from 'oak-domain/lib/types/Entity';
 export interface Schema extends FileCarrierEntityShape {
     origin: 'qiniu' | 'unknown';
-    type: 'image' | 'pdf' | 'video' | 'audio' | 'file';
+    type: 'image' | 'video' | 'audio' | 'file' | 'pdf';
     bucket: String<16>;
     objectId: String<64>;
     tag1: String<16>;
@@ -15,4 +15,5 @@ export interface Schema extends FileCarrierEntityShape {
     extension: String<16>;
     size?: Int<4>;
     sort?: Int<4>;
+    fileType: String<16>;
 }

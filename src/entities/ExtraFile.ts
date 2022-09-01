@@ -4,7 +4,7 @@ import { LocaleDef } from 'oak-domain/lib/types/Locale';
 
 export interface Schema extends FileCarrierEntityShape {
     origin: 'qiniu' | 'unknown';
-    type: 'image' | 'pdf' | 'video' | 'audio' | 'file';
+    type: 'image' | 'video' | 'audio' | 'file' | 'pdf';
     bucket: String<16>;
     objectId: String<64>;
     tag1: String<16>;
@@ -17,6 +17,7 @@ export interface Schema extends FileCarrierEntityShape {
     extension: String<16>;
     size?: Int<4>;
     sort?: Int<4>;
+    fileType: String<16>;
 };
 
 const locale: LocaleDef<
@@ -44,6 +45,7 @@ const locale: LocaleDef<
             extension: '后缀名',
             size: '文件大小',
             sort: '排序',
+            fileType: '文件类型',
         },
         v: {
             origin: {
@@ -52,10 +54,10 @@ const locale: LocaleDef<
             },
             type: {
                 image: '图像',
-                pdf: 'pdf',
                 video: '视频',
                 audio: '音频',
                 file: '文件',
+                pdf: 'pdf',
             },
         },
     },

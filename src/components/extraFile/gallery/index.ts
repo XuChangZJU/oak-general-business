@@ -82,6 +82,7 @@ export default OakComponent({
         tag1: String,
         tag2: String,
         entity: String,
+        entityId: String,
     },
 
     methods: {
@@ -173,7 +174,7 @@ export default OakComponent({
             fileType: string;
             size: number;
         }) {
-            const { type, origin, tag1, tag2, entity, autoUpload } = this.props;
+            const { type, origin, tag1, tag2, entity, entityId, autoUpload } = this.props;
             const { name, extra1, fileType, size } = options;
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
@@ -190,30 +191,36 @@ export default OakComponent({
                 filename,
                 size,
                 extension,
+                fileType,
             } as DeduceCreateOperationData<EntityDict['extraFile']['Schema']>;
             // autoUpload为true, 选择直接上传七牛，再提交extraFile
             if (autoUpload) {
                 try {
-                    const { url, bucket } =
+                    const { bucket } =
                         await this.features.extraFile.upload(updateData);
-                    Object.assign(updateData, {
-                        bucket,
-                        extra1: null,
-                        id: await generateNewId(),
-                    });
-                    await this.addExtraFile(updateData);
-                    const ele: Parameters<typeof this['pushNode']>[1] = {
-                        updateData: updateData,
-                    };
-                    this.pushNode(undefined, ele);
-                } catch (error) {
-                    //上传七牛失败或保存extraFile失败 需要remove
+                    try {
+                        Object.assign(updateData, {
+                            bucket,
+                            extra1: null,
+                            id: await generateNewId(),
+                            entityId,
+                        });
+                        await this.addExtraFile(updateData);
+                        const ele: Parameters<typeof this['pushNode']>[1] = {
+                            updateData,
+                        };
+                        this.pushNode(undefined, ele);
+                    } catch (error) {
+                        //todo 保存extraFile失败 需要remove七牛图片
+                    }
+                } catch (err) {
+                    //上传七牛失败
                 }
             } else {
                 const ele: Parameters<typeof this['pushNode']>[1] = {
-                    updateData: updateData,
+                    updateData,
                     beforeExecute: async (updateData) => {
-                        const { url, bucket } =
+                        const { bucket } =
                             await this.features.extraFile.upload(updateData);
                         Object.assign(updateData, {
                             bucket,

@@ -22,11 +22,25 @@ export default function render(this: any) {
         draggable = false,
         showUploadProgress = false,
         theme = 'image',
+        tips,
+        placeholder,
+        beforeUpload,
+        disabled,
+        style,
+        className,
+        sizeLimit,
     } = this.props;
     const { files, systemConfig } = this.state;
 
     return (
         <Upload
+            sizeLimit={sizeLimit}
+            className={className}
+            style={style}
+            disabled={disabled}
+            beforeUpload={beforeUpload}
+            placeholder={placeholder}
+            tips={tips}
             multiple={multiple}
             autoUpload={false}
             draggable={draggable}
@@ -39,15 +53,14 @@ export default function render(this: any) {
                 extraFileToUploadFile(ele, systemConfig)
             )}
             onChange={(uploadFiles) => {
-                const newUploadFiles = uploadFiles?.filter((ele: ExtraFile) => !ele.id) || [];
+                const newUploadFiles =
+                    uploadFiles?.filter((ele: ExtraFile) => !ele.id) || [];
                 this.onWebPick(newUploadFiles);
             }}
             onRemove={({ file, index, e }) => {
                 this.onWebDelete(file, index);
             }}
-            onPreview={({ file, e }) => {
-                // this.onWebDelete(file, e);
-            }}
+            onPreview={({ file, e }) => {}}
         />
     );
 }
