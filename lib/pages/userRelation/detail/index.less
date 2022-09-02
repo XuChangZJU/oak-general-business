@@ -1,0 +1,65 @@
+/**  index.wxss  **/
+@import "../../../config/styles/_base.less";
+@import "../../../config/styles/_mixins.less";
+
+page {
+  height: 100%;
+  background-color: @bg-color-fade;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: stretch;
+  padding: 0;
+  .safe-area-inset-bottom();
+}
+
+.card-view {
+  margin: @spacer;
+  margin-bottom: 0rpx;
+  padding: @spacer;
+  border-radius: 4rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4rpx 20rpx 0 rgba(212, 217, 223, 0.5);
+  background-color: #fff;
+}
+.row {
+  margin-left: @spacer;
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.col {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.nickname {
+  margin-bottom: @spacer;
+  font-size: @font-size-base;
+}
+.mobile {
+  font-size: @spacer;
+  color: @text-level-3-color;
+}
+.avatar {
+  height: 140rpx;
+  width: 140rpx;
+  border-radius: 50%;
+}
+.img-view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 140rpx;
+  width: 140rpx;
+  border-radius: 50%;
+  background-color: @bg-color-fade;
+}

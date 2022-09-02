@@ -1,0 +1,18 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <t-cell title="{{nickname}}" t-class="cell">
+        <t-image slot="left-icon" t-class="avatar" src="{{avatar}}" mode="aspectFit" shape="circle"></t-image>
+        <view slot="description" class="description">
+            <text class="name">姓名: {{name  || '未设置'}}</text>
+            <text class="mobile">手机: {{mobile  || '未设置'}}</text>
+        </view>
+    </t-cell>
+    <t-divider t-class-content="t-class-content">
+        <text slot="content">权限设置</text>
+    </t-divider>
+    <block wx:for="{{relationArr}}">
+        <t-checkbox data-value="{{item.value}}" checked="{{item.checked}}" label="{{t(entity + ':r.' + item.value)}}" bind:change="onChange" />
+    </block>
+    <view style="flex: 1"></view>
+    <t-button theme="primary" bind:tap="onConfirm" block>保存</t-button>
+</view>
