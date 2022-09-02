@@ -27,8 +27,8 @@ export declare type Schema = {
     user: User.Schema;
     role: Role.Schema;
 } & {
-    [A in ExpressionKey]?: any;
-};
+        [A in ExpressionKey]?: any;
+    };
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.UserRoleIdSubQuery;
     $$createAt$$: Q_DateValue;
@@ -155,4 +155,4 @@ export declare type EntityDef = {
     CreateSingle: CreateSingleOperation;
     CreateMulti: CreateMultipleOperation;
 };
-export {};
+export { };

@@ -31,6 +31,7 @@ export default OakComponent({
         selected: -1,
         // 根据 size 不同，计算的图片显示大小不同
         itemSizePercentage: '',
+        newUploadFiles: [],
     },
     externalClasses: ['l-class', 'l-item-class'],
     properties: {
@@ -155,7 +156,7 @@ export default OakComponent({
                 }
             }
         },
-        async onWebPick(uploadFiles: any[]) {
+        async onWebPick(uploadFiles: any[], callback?: (file: any) => void) {
             await Promise.all(
                 uploadFiles.map(async (uploadFile) => {
                     const { name, type: fileType, size, raw } = uploadFile;
@@ -164,7 +165,7 @@ export default OakComponent({
                         fileType,
                         size,
                         extra1: raw,
-                    });
+                    }, callback);
                 })
             );
         },
@@ -173,7 +174,7 @@ export default OakComponent({
             extra1: any;
             fileType: string;
             size: number;
-        }) {
+        }, callback?: (file:any) => void) {
             const { type, origin, tag1, tag2, entity, entityId, autoUpload } = this.props;
             const { name, extra1, fileType, size } = options;
             const extension = name.substring(name.lastIndexOf('.') + 1);
@@ -206,6 +207,9 @@ export default OakComponent({
                             entityId,
                         });
                         await this.addExtraFile(updateData);
+                        if (callback) {
+                            callback(updateData);
+                        };
                         const ele: Parameters<typeof this['pushNode']>[1] = {
                             updateData,
                         };
@@ -232,6 +236,18 @@ export default OakComponent({
                 this.pushNode(undefined, ele);
             }
         },
+        setNewUploadFiles(file: any) {
+            const { filename, size, id } = file;
+            const { newUploadFiles } = this.state;
+            const file2 = newUploadFiles.find((ele: any) => ele.filename = filename && ele.size === size) as any;
+            Object.assign(file2, {
+                status: 'success',
+                id,
+            })
+            this.setState({
+                newUploadFiles: [...newUploadFiles],
+            })
+        },
         async onItemTapped(event: WechatMiniprogram.Touch) {
             const { files, systemConfig } = this.state;
             const { index } = event.currentTarget.dataset;
@@ -243,7 +259,7 @@ export default OakComponent({
             const detail = {
                 all: files,
                 index,
-                urls: urls,
+                urls,
                 current: imageUrl,
             };
             this.triggerEvent('tap', detail);
@@ -271,6 +287,14 @@ export default OakComponent({
                     this.removeNode('', `${index}`);
                 }
             }
+        },
+        async customDelete(index: number) {
+            const { newUploadFiles } = this.state;
+            const arr = [...newUploadFiles];
+            arr.splice(index, 1);
+            this.setState({
+                newUploadFiles: arr,
+            })
         },
         async onWebDelete(value: any, index: number) {
             const { id } = value;

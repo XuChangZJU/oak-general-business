@@ -71,3 +71,19 @@ export function getFileURL(file: File) {
     }
     return getUrl;
 }
+
+export function bytesToSize(sizes: any) {
+    let mYsize = sizes;
+    if (mYsize === 0) return 0 + 'B';
+    if (mYsize < 0.1) { // 小于0.1KB转换为B
+        mYsize = parseFloat((mYsize * 1024).toFixed(2)) + 'B'
+    } else if (mYsize > (0.1 * 1024)) { // 大于0.1MB转换为MB
+        mYsize = parseFloat((mYsize / 1024).toFixed(2)) + 'MB'
+    } else if (mYsize > (0.1 * 1024 * 1024)) {// 大于0.1GB转换为GB
+        mYsize = parseFloat((mYsize / 1024 / 1024).toFixed(2)) + 'GB'
+    } else {
+        mYsize = (mYsize).toFixed(2) + 'KB'
+    }
+
+    return mYsize;
+}
