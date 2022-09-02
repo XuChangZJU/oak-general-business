@@ -1,0 +1,50 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <view class="col">
+        <t-input placeholder="请输入" label="slot" size="medium" confirm-type="next" oak:value="nickname" bind:change="setValue">
+            <text slot="label">
+                <text style="color: #e34d59">*</text>昵称
+            </text>
+        </t-input>
+        <t-input placeholder="请输入" label="slot" size="medium" confirm-type="next" oak:value="name" bind:change="setValue">
+            <text slot="label">
+                <text style="color: #e34d59">*</text>姓名
+            </text>
+        </t-input>
+        <view class="pannel-item" bind:tap="onClickPicker" data-key="{{PICKER_KEY.SEX}}">
+            <view class="pannel-label">
+                <text style="color: #e34d59">*</text>性别
+            </view>
+            <view class="pannel-text">{{genderText || '选择性别'}}</view>
+            <t-icon name="chevron-right" color="rgba(0, 0, 0, 0.26)" size="24px" />
+        </view>
+        <view class="pannel-item" bind:tap="onClickPicker" data-key="{{PICKER_KEY.IDCARD}}">
+            <view class="pannel-label">
+                <text style="color: #e34d59">*</text>证件类别
+            </view>
+            <view class="pannel-text">{{idCardTypeText || '选择证件类别'}}</view>
+            <t-icon name="chevron-right" color="rgba(0, 0, 0, 0.26)" size="24px" />
+        </view>
+        <view class="pannel-item" bind:tap="onClickPicker" data-key="{{PICKER_KEY.BIRTH}}">
+            <view class="pannel-label">
+                <text style="color: #e34d59">*</text>出生日期
+            </view>
+            <view class="pannel-text">{{birthText || '选择日期'}}</view>
+            <t-icon name="chevron-right" color="rgba(0, 0, 0, 0.26)" size="24px" />
+        </view>
+        <t-picker data-key="{{PICKER_KEY.SEX}}" visible="{{sexVisible}}" oak:value="gender" title="选择性别" cancelBtn="取消" confirmBtn="确认" bindchange="setValue" bindcancel="onPickerClose" bindconfirm="onPickerClose">
+            <t-picker-item options="{{GenderOptions}}"></t-picker-item>
+        </t-picker>
+        <t-picker data-key="{{PICKER_KEY.IDCARD}}" visible="{{idCardVisible}}" oak:value="idCardType" title="选择证件类型" cancelBtn="取消" confirmBtn="确认" bindchange="setValue" bindcancel="onPickerClose" bindconfirm="onPickerClose">
+            <t-picker-item options="{{IDCardTypeOptions}}"></t-picker-item>
+        </t-picker>
+        <t-input placeholder="请输入" label="slot" size="medium" type="number" confirm-type="done" oak:value="idNumber" bind:change="setValue">
+            <text slot="label">
+                <text style="color: #e34d59">*</text>证件号
+            </text>
+        </t-input>
+        <t-date-time-picker title="选择日期和时间" data-key="{{PICKER_KEY.BIRTH}}" data-attr="birth" visible="{{birthVisible}}" default-value="{{today}}" mode="date" value="{{birthText}}" format="YYYY-MM-DD" bindchange="setValue" bindcancel="onPickerClose" start="{{oldestBirthday}}" end="{{today}}"></t-date-time-picker>
+    </view>
+    <view style="flex: 1" />
+    <t-button theme="primary" disabled="{{oakExecuting || !oakDirty}}" style="margin: 16rpx" loading="{{oakExecuting}}" block size="large" bind:tap="confirm" content="确定" />
+</view>

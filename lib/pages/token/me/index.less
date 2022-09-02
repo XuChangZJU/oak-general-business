@@ -1,0 +1,31 @@
+/**  index.wxss  **/
+@import "../../../config/styles/_base.less";
+@import "../../../config/styles/_mixins.less";
+
+.page-body {
+  height: 100vh;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: @bg-color-fade;
+}
+
+.userInfo {
+  padding: @spacer-1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nickname {
+  font-size: @font-size-base;
+  color: @text-level-3-color;
+  padding-top: @spacer-1;
+  padding-bottom: @spacer-1;
+}
+
+
+.cell {
+  background-color: #fff;
+  flex: 1;
+}

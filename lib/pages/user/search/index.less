@@ -1,0 +1,84 @@
+/**  index.wxss  **/
+@import "../../../config/styles/_base.less";
+@import "../../../config/styles/_mixins.less";
+
+page {
+  height: 100%;
+  background-color: @bg-color-fade;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  box-sizing: border-box;
+  align-items: stretch;
+  padding: 0;
+  .safe-area-inset-bottom();
+}
+
+.search-bar {
+  display: flex;
+  height: 40px;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 3;
+}
+
+.col {
+  padding: @font-size-base;
+  display: flex;
+  flex-direction: column;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.title {
+  font-size: @font-size-base;
+  margin-bottom: @font-size-base;
+}
+.drawer-view {
+  position: fixed;
+  top: 40px;
+  width: 100%;
+  background-color: @bg-color-fade;
+  z-index: 4;
+}
+.drawer-item {
+  display: flex;
+  align-items: center;
+  height: 38px;
+  color: @text-level-3-color;
+  margin-top: 1px;
+  padding: 0rpx @font-size-base;
+  background-color: #fff;
+}
+.search-value {
+  color: @error-color;
+}
+.null {
+  text-align: center;
+}
+.delete-btn {
+  padding: @font-size-base;
+  font-size: @font-size-base;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: @primary-color;
+}
+.tag {
+  margin: 4rpx;
+}
