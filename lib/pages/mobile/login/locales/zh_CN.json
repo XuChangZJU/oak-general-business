@@ -1,0 +1,8 @@
+{
+    "Log in": "进入",
+    "Send": "发送验证码",
+    "placeholder": {
+        "Captcha": "输入4位短信验证码",
+        "Mobile": "请输入手机号"
+    }
+}

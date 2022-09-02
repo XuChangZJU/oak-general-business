@@ -1,0 +1,6 @@
+{
+    "navigationBarTitleText": "选择地区",
+    "usingComponents": {
+        "t-cell": "../../../miniprogram_npm/tdesign/cell/cell"
+    }
+}

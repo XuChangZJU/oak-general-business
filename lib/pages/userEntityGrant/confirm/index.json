@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText": "获取权限",
+    "usingComponents": {
+        "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
+        "t-button": "../../../miniprogram_npm/tdesign/button/button"
+    }
+}

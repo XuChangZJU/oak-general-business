@@ -1,0 +1,9 @@
+{
+    "navigationBarTitleText": "地址列表",
+    "usingComponents": {
+        "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
+        "t-button": "../../../miniprogram_npm/tdesign/button/button",
+        "t-empty": "../../../miniprogram_npm/tdesign/empty/empty",
+        "t-cell": "../../../miniprogram_npm/tdesign/cell/cell"
+    }
+}
