@@ -1,5 +1,5 @@
 import { String, Geo } from 'oak-domain/lib/types/DataType';
-import { EntityShape, ActionType } from 'oak-domain/lib/types/Entity';
+import { EntityShape, Configuration } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 
 export interface Schema extends EntityShape {
@@ -11,7 +11,10 @@ export interface Schema extends EntityShape {
     center: Geo;
 };
 
-const actionType: ActionType = 'readOnly';
+const config: Configuration = {
+    actionType: 'readOnly',
+    static: true,
+ };
 
 const locale: LocaleDef<Schema, '', '', {
     level: Schema['level'];
