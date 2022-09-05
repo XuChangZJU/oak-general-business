@@ -5,6 +5,7 @@ export const routers: ExceptionRouters = [
     [
         OakUnloggedInException, {
             router: '/login',
+            disableNamespace: true,
         }
     ]
 ];
