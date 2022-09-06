@@ -11,6 +11,7 @@ import * as Captcha from "./Captcha/Schema";
 import * as Domain from "./Domain/Schema";
 import * as Email from "./Email/Schema";
 import * as ExtraFile from "./ExtraFile/Schema";
+import * as Livestream from "./Livestream/Schema";
 import * as Mobile from "./Mobile/Schema";
 import * as UserRole from "./UserRole/Schema";
 import * as Role from "./Role/Schema";
@@ -115,6 +116,11 @@ export declare type EmailIdSubQuery = {
 export declare type ExtraFileIdSubQuery = {
     [K in "$in" | "$nin"]?: (ExtraFile.ExtraFileIdSubQuery & {
         entity: "extraFile";
+    }) | any;
+};
+export declare type LivestreamIdSubQuery = {
+    [K in "$in" | "$nin"]?: (Livestream.LivestreamIdSubQuery & {
+        entity: "livestream";
     }) | any;
 };
 export declare type MobileIdSubQuery = {

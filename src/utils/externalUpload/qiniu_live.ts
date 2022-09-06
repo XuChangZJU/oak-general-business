@@ -1,10 +1,10 @@
 import {base64ToUrlSafe, hmacSha1, urlSafeBase64Encode} from '../sign';
 
-export default class qiniuLiveInstance {
+export default class QiniuLiveInstance {
     accessKey: string;
     secretKey: string;
     host: string; // 请求域名，
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE'; 
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE';
     path: string; // 请求路径 实际的请求路径详见各七牛直播云接口说明的请求包
     rawQuery?: string;
     contentType?: string;
@@ -45,11 +45,11 @@ export default class qiniuLiveInstance {
             data += `\nContent-Type: ${contentType}`
         }
         data += "\n\n"
-        if(contentLength && bodyStr && contentType && contentType !== "application/octet-stream") {
+        if(bodyStr && contentType && contentType !== "application/octet-stream") {
             data+=bodyStr;
         }
         const sign = hmacSha1(data, secretKey);
-        const encodedSign = urlSafeBase64Encode(sign);
+        const encodedSign = base64ToUrlSafe(sign);
         const toke = "Qiniu " + accessKey + ":" + encodedSign;
         return toke;
     }

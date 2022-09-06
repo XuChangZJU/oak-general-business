@@ -11,6 +11,7 @@ import { EntityDef as Captcha } from "./Captcha/Schema";
 import { EntityDef as Domain } from "./Domain/Schema";
 import { EntityDef as Email } from "./Email/Schema";
 import { EntityDef as ExtraFile } from "./ExtraFile/Schema";
+import { EntityDef as Livestream } from "./Livestream/Schema";
 import { EntityDef as Mobile } from "./Mobile/Schema";
 import { EntityDef as UserRole } from "./UserRole/Schema";
 import { EntityDef as Role } from "./Role/Schema";
@@ -34,6 +35,7 @@ export declare type EntityDict = {
     domain: Domain;
     email: Email;
     extraFile: ExtraFile;
+    livestream: Livestream;
     mobile: Mobile;
     userRole: UserRole;
     role: Role;
