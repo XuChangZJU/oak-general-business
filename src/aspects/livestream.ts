@@ -3,9 +3,8 @@ import { EntityDict } from '../general-app-domain';
 import { SystemConfig } from '../general-app-domain/System/Schema';
 import { Schema as Livestream } from '../general-app-domain/Livestream/Schema';
 import QiniuLive from '../utils/externalUpload/qiniu_live';
-import { Datetime } from 'oak-domain/lib/types/DataType';
-import { Md5 } from 'ts-md5';
 import { hmacSha1, base64ToUrlSafe } from '../utils/sign';
+import { Md5 } from 'ts-md5';
 
 async function getQiniuUploadInfo<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(
     context: Cxt
@@ -77,7 +76,7 @@ async function getQiniuToken(
 export async function getLivestream<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(
     params: {
         streamTitle: string,
-        expireAt: Datetime,
+        expireAt: number,
     },
     context: Cxt
 ): Promise<Pick<Livestream,
@@ -148,7 +147,7 @@ export async function getLivestream<ED extends EntityDict, Cxt extends GeneralRu
 export async function getLivestream2<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(
     params: {
         streamTitle: string,
-        expireAt: Datetime,
+        expireAt: number,
     },
     context: Cxt
 ): Promise<Pick<Livestream,
@@ -175,7 +174,7 @@ async function getStreamObj(
         playKey: string,
     },
     streamTitle: string,
-    expireAt: Datetime
+    expireAt: number
 )
     : Promise<Pick<Livestream,
         |'streamTitle'

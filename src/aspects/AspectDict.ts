@@ -3,7 +3,6 @@ import { AppType } from '../general-app-domain/Application/Schema';
 import { EntityDict } from "../general-app-domain";
 import { QiniuUploadInfo } from "oak-frontend-base/lib/types/Upload";
 import { GeneralRuntimeContext } from "../RuntimeContext";
-import { Datetime } from 'oak-domain/lib/types/DataType';
 import { Schema as Livestream } from '../general-app-domain/Livestream/Schema';
 
 
@@ -60,36 +59,42 @@ type GeneralAspectDict<
         params: { origin: string; key?: string },
         context: Cxt
     ) => Promise<QiniuUploadInfo>;
-        getLivestream: (
-            params: {
-                streamTitle: string,
-                expireAt: Datetime,
-            },
-            context: Cxt
-        ) => Promise<Pick<Livestream,
+    getLivestream: (
+        params: {
+            streamTitle: string;
+            expireAt: number;
+        },
+        context: Cxt
+    ) => Promise<
+        Pick<
+            Livestream,
             | 'streamTitle'
             | 'hub'
             | 'rtmpPushUrl'
             | 'rtmpPlayUrl'
             | 'pcPushUrl'
             | 'streamKey'
-            | 'expireAt'>
-        >;
-        getLivestream2: (
-            params: {
-                streamTitle: string,
-                expireAt: Datetime,
-            },
-            context: Cxt
-        ) => Promise<Pick<Livestream,
+            | 'expireAt'
+        >
+    >;
+    getLivestream2: (
+        params: {
+            streamTitle: string;
+            expireAt: number;
+        },
+        context: Cxt
+    ) => Promise<
+        Pick<
+            Livestream,
             | 'streamTitle'
             | 'hub'
             | 'rtmpPushUrl'
             | 'rtmpPlayUrl'
             | 'pcPushUrl'
             | 'streamKey'
-            | 'expireAt'>
-        >;
+            | 'expireAt'
+        >
+    >;
     sendCaptcha: (params: {
         mobile: string;
         env: WechatMpEnv | WebEnv;
