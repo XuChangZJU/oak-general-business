@@ -111,7 +111,7 @@ export async function getLivestream<ED extends EntityDict, Cxt extends GeneralRu
         bodyStr,
     });
 
-    const url = 'http://pili.qiniuapi.com/v2/hubs/test-play-space/streams';
+    const url = `http://pili.qiniuapi.com/v2/hubs/${hub}/streams`;
     console.log(bodyStr, url, token);
    fetch(url, {
         method: 'POST',
