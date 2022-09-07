@@ -48,6 +48,7 @@ export default class QiniuLiveInstance {
         if(bodyStr && contentType && contentType !== "application/octet-stream") {
             data+=bodyStr;
         }
+        console.log('data', data);
         const sign = hmacSha1(data, secretKey);
         const encodedSign = base64ToUrlSafe(sign);
         const toke = "Qiniu " + accessKey + ":" + encodedSign;

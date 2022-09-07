@@ -5,7 +5,7 @@ import { Schema as Livestream } from '../general-app-domain/Livestream/Schema';
 import QiniuLive from '../utils/externalUpload/qiniu_live';
 import { Datetime } from 'oak-domain/lib/types/DataType';
 import { Md5 } from 'ts-md5';
-import { hmacSha1, urlSafeBase64Encode } from '../utils/sign';
+import { hmacSha1, base64ToUrlSafe } from '../utils/sign';
 
 async function getQiniuUploadInfo<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(
     context: Cxt
@@ -103,24 +103,31 @@ export async function getLivestream<ED extends EntityDict, Cxt extends GeneralRu
     const bodyStr = JSON.stringify({
         key,
     })
+    const contentType = 'application/json';
     const { token } = await getQiniuToken(config, {
         method: 'POST',
         path,
-        contentType: 'application/json',
+        contentType,
         bodyStr,
     });
 
-    const url = `http://pili.qiniuapi.com/v2/hubs/${hub}/stearms`;
-    await fetch(url, {
+    const url = 'http://pili.qiniuapi.com/v2/hubs/test-play-space/streams';
+    console.log(bodyStr, url, token);
+   fetch(url, {
         method: 'POST',
-        headers: new Headers({
-            'Authorization': token,
-            'Content-Type': 'application/json',
-        }),
+        headers: {
+            Authorization: token,
+           'Content-Type': contentType,
+       },
         body: bodyStr,
         mode: 'no-cors',
-    }).then((res) => {
-        console.log(res.json());
+   })
+       .then((res) => {
+           console.log(res.json());
+       }).then((res) => {
+        console.log(res);
+       }).catch((e) => {
+        console.log(e);
     })
     const obj = await getStreamObj(config, streamTitle, expireAt);
     return obj;
@@ -184,7 +191,7 @@ async function getStreamObj(
     const {hub, publishDomain, rtmpPlayDomain, publishKey, playKey } = config;
     const signStr = `/${hub}/${streamTitle}?expire=${expireAt}`;
     const sourcePath = `/${hub}/${streamTitle}`;
-    const token = urlSafeBase64Encode(hmacSha1(signStr, publishKey));
+    const token = base64ToUrlSafe(hmacSha1(signStr, publishKey));
     const rtmpPushUrl = `rtmp://${publishDomain}${signStr}&token=${token}`
     // 生成播放地址
     const t = expireAt.toString(16).toLowerCase();
