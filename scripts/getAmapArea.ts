@@ -126,13 +126,14 @@ async function main(provinceName?: string) {
         for (const city of cities2) {
             const { districts, adcode: cityCode } = city;
             const districts2 = processRepeatedAdCode(districts, cityCode);
-            const districts3 = districts2.slice(0, 3);      // debug district取三个
-            saveAreas(districts3, cityCode, 3, areaDebug);
-            districts3.forEach(
+            // const districts3 = districts2.slice(0, 3);      // debug district取三个
+            saveAreas(districts2, cityCode, 3, areaDebug);
+            districts2.forEach(
                 (district) => {
                     const { districts: streets, adcode: districtCode } = district;
                     const streets2 = processRepeatedAdCode(streets, districtCode);
-                    saveAreas(streets2, districtCode, 4, areaDebug);           // street全取
+                    const streets3 = streets2.slice(0, 3);
+                    saveAreas(streets2, districtCode, 4, areaDebug);           // street取三个
                 }
             );
         }
