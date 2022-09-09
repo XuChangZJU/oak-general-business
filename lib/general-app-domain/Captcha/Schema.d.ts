@@ -43,6 +43,7 @@ declare type AttrFilter = {
     code: Q_StringValue;
     visitorId: Q_StringValue;
     reason: Q_StringValue;
+    env: Object;
     expired: Q_BooleanValue;
     expiresAt: Q_DateValue;
     iState: Q_EnumValue<IState>;
