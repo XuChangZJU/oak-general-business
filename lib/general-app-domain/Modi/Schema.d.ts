@@ -45,6 +45,9 @@ declare type AttrFilter = {
     entity: Q_StringValue;
     entityId: Q_StringValue;
     action: Q_StringValue;
+    data: Object;
+    filter: Object;
+    extra: Object;
     iState: Q_EnumValue<IState>;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
@@ -111,8 +114,8 @@ export declare type SortNode = {
     $direction?: "asc" | "desc";
 };
 export declare type Sorter = SortNode[];
-export declare type SelectOperation<P = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
-export declare type Selection<P = Projection> = Omit<SelectOperation<P>, "action">;
+export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
+export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
     entity?: string;

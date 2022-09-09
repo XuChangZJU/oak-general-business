@@ -11,18 +11,29 @@ export default OakComponent({
     async formData({ data: files, features }) {
         const application = await features.application.getApplication();
         const number2 = this.props.maxNumber;
+        let files2 = files;
+        if (this.props.tag1) {
+            files2 = files2.filter(
+                ele => ele?.tag1 === this.props.tag1
+            );
+        }
+        if (this.props.tag2) {
+            files2 = files2.filter(
+                ele => ele?.tag2 === this.props.tag2
+            );
+        }
         if (
             typeof number2 === 'number' &&
             (number2 === 0 || files?.length >= number2)
         ) {
             return {
-                files,
+                files: files2,
                 disableInsert: true,
                 systemConfig: application?.system?.config,
             };
         }
         return {
-            files,
+            files: files2,
             disableInsert: false,
             systemConfig: application?.system?.config,
         };
