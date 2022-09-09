@@ -49,5 +49,6 @@ export declare abstract class GeneralRuntimeContext<ED extends EntityDict> exten
         scene: any;
         token: any;
     };
+    isRoot(): Promise<boolean>;
 }
 export {};

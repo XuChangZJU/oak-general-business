@@ -6,6 +6,7 @@ import { RowStore } from 'oak-domain/lib/types';
 
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
 import { assert } from 'oak-domain/lib/utils/assert';
+import { ROOT_ROLE_ID } from './constants';
 
 type AppType = SelectRowShape<EntityDict['application']['Schema'], {
     id: 1,
@@ -20,13 +21,18 @@ type AppType = SelectRowShape<EntityDict['application']['Schema'], {
     },
 }>;
 
-export abstract class GeneralRuntimeContext<ED extends EntityDict> extends UniversalContext<ED> {
+export abstract class GeneralRuntimeContext<
+    ED extends EntityDict
+> extends UniversalContext<ED> {
     private applicationId?: string;
     private application?: AppType;
     private token?: string;
     private rwLockApplication: RWLock;
 
-    constructor(store: RowStore<ED, GeneralRuntimeContext<ED>>, applicationId?: string) {
+    constructor(
+        store: RowStore<ED, GeneralRuntimeContext<ED>>,
+        applicationId?: string
+    ) {
         super(store);
         this.rwLockApplication = new RWLock();
         this.applicationId = applicationId;
@@ -53,25 +59,31 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
         await this.rwLockApplication.acquire('X');
         if (this.application) {
             result = this.application;
-        }
-        else if (this.applicationId) {
-            const { result: [application]} = await this.rowStore.select('application', {
-                data: {
-                    id: 1,
-                    name: 1,
-                    config: 1,
-                    type: 1,
-                    systemId: 1,
-                    system: {
+        } else if (this.applicationId) {
+            const {
+                result: [application],
+            } = await this.rowStore.select(
+                'application',
+                {
+                    data: {
                         id: 1,
                         name: 1,
                         config: 1,
+                        type: 1,
+                        systemId: 1,
+                        system: {
+                            id: 1,
+                            name: 1,
+                            config: 1,
+                        },
+                    },
+                    filter: {
+                        id: this.applicationId,
                     },
                 },
-                filter: {
-                    id: this.applicationId,
-                },
-            }, this, {});
+                this,
+                {}
+            );
             result = application as AppType;
             this.application = application as AppType;
         }
@@ -89,17 +101,27 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
     async getToken() {
         const tokenValue = this.token;
         if (tokenValue) {
-            const { result: [token] } = await this.rowStore.select('token', {
-                data: {
-                    id: 1,
-                    userId: 1,
-                    playerId: 1,
+            const {
+                result: [token],
+            } = (await this.rowStore.select(
+                'token',
+                {
+                    data: {
+                        id: 1,
+                        userId: 1,
+                        playerId: 1,
+                    },
+                    filter: {
+                        id: tokenValue,
+                        ableState: 'enabled',
+                    },
                 },
-                filter: {
-                    id: tokenValue,
-                    ableState: 'enabled',
-                }
-            }, this, {}) as SelectionResult<ED['token']['Schema'], { id: 1, userId: 1, playerId: 1 }>;
+                this,
+                {}
+            )) as SelectionResult<
+                ED['token']['Schema'],
+                { id: 1; userId: 1; playerId: 1 }
+            >;
 
             return token;
         }
@@ -133,16 +155,68 @@ export abstract class GeneralRuntimeContext<ED extends EntityDict> extends Unive
     }
 
     protected static fromString(strCxt: string) {
-        const {
-            applicationId,
-            scene,
-            token,
-        } = JSON.parse(strCxt);
+        const { applicationId, scene, token } = JSON.parse(strCxt);
 
         return {
             applicationId,
             scene,
             token,
         };
+    }
+
+    async isRoot(): Promise<boolean> {
+        const tokenValue = this.token;
+        if (!tokenValue) {
+            return false;
+        }
+        const {
+            result: [token],
+        } = (await this.rowStore.select(
+            'token',
+            {
+                data: {
+                    id: 1,
+                    userId: 1,
+                    ableState: 1,
+                    player: {
+                        id: 1,
+                        userRole$user: {
+                            $entity: 'userRole',
+                            data: {
+                                id: 1,
+                                userId: 1,
+                                roleId: 1,
+                            },
+                        },
+                    },
+                },
+                filter: {
+                    id: tokenValue,
+                },
+            },
+            this,
+            {}
+        )) as SelectionResult<
+            ED['token']['Schema'],
+            {
+                id: 1;
+                userId: 1;
+                ableState: 1;
+                player: {
+                    id: 1;
+                    userRole$user: {
+                        $entity: 'userRole';
+                        data: {
+                            id: 1;
+                            userId: 1;
+                            roleId: 1;
+                        };
+                    };
+                };
+            }
+        >;
+        return (token?.player?.userRole$user as any).length > 0
+            ? (token?.player?.userRole$user as any)[0]?.roleId === ROOT_ROLE_ID
+            : false;
     }
 };
