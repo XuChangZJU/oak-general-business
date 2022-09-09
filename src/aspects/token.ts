@@ -150,6 +150,8 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                 applicationId,
                 playerId: mobileRow.userId as string,
                 env,
+                entity: 'mobile',
+                entityId: mobileRow.id as string,                
             };
             const { user } = mobileRow;
             const { userState } = user as SelectRowShape<EntityDict['user']['Schema'], {
@@ -173,7 +175,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
                 default: {
                     assert(userState === 'normal');
                     Object.assign(tokenData, {
-                        userId: mobileRow.id,
+                        userId: mobileRow.userId,
                     });
                 }
             }
