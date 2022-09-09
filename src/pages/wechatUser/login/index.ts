@@ -2,7 +2,6 @@ import URL from 'url';
 
 export default OakPage({
     isList: false,
-    path: 'wechatUser:login',
     data: {
         error: '',
     },

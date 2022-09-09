@@ -1,7 +1,6 @@
 
 
 export default OakPage({
-    path: 'article:preview',
     isList: false,
     formData: async function ({ features }) {
         return {};

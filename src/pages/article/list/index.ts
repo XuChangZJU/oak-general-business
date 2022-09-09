@@ -2,7 +2,6 @@ import { OpSchema as ExtraFile } from '../../../general-app-domain/ExtraFile/Sch
 import { composeFileUrl } from '../../../utils/extraFile';
 
 export default OakPage({
-    path: 'article:list',
     entity: 'article',
     projection: {
         id: 1,

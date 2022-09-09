@@ -8,7 +8,6 @@ import {
 import { EntityDict } from '../../../general-app-domain';
 
 export default OakPage({
-    path: 'article:upsert',
     entity: 'article',
     projection: {
         id: 1,

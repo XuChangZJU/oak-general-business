@@ -1,7 +1,6 @@
 
 
 export default OakPage({
-    path: 'article:detail',
     entity: 'article',
     projection: {
         id: 1,

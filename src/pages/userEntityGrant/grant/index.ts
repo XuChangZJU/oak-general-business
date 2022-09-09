@@ -2,7 +2,6 @@ import { DeduceCreateSingleOperation, OakException, OakCongruentRowExists } from
 import { EntityDict } from '../../../general-app-domain';
 
 export default OakPage({
-    path: 'userEntityGrant:upsert',
     entity: 'userEntityGrant',
 
     projection: {

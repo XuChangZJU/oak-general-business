@@ -1,7 +1,6 @@
 // index.ts
 
 export default OakPage({
-    path: 'address:list',
     entity: 'address',
     projection: {
         id: 1,

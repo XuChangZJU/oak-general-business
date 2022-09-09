@@ -2,7 +2,6 @@ import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { composeFileUrl } from '../../../utils/extraFile';
 
 export default OakPage({
-    path: 'userRelation:list',
     entity: 'user',
     projection: async ({ props }) => {
         const { entity, relations, entityId } = props;

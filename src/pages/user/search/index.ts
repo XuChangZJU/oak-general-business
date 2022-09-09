@@ -1,7 +1,6 @@
 
 export default OakPage(
     {
-        path: 'userSearch:search',
         entity: 'user',
         projection: {
             id: 1,

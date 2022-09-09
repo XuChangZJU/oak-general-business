@@ -3,7 +3,6 @@ import { composeFileUrl } from '../../../utils/extraFile';
 import React from '../../../utils/react';
 
 export default OakPage({
-    path: 'userRelation:list',
     entity: 'user',
     projection: async ({ props }) => {
         const { entity, entityId } = props;

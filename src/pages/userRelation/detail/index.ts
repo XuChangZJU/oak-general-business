@@ -2,7 +2,6 @@ import { composeFileUrl } from "../../../utils/extraFile";
 
 export default OakPage(
     {
-        path: 'userRelation:detail',
         entity: 'user',
         projection: {
             id: 1,

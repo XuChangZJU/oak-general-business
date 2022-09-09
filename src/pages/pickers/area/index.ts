@@ -1,6 +1,5 @@
 
 export default OakPage({
-    path: 'area:picker',
     entity: 'area',
     projection: {
         id: 1,

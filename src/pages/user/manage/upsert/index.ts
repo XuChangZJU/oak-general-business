@@ -27,7 +27,6 @@ const PICKER_KEY = {
   };
 
 export default OakPage({
-    path: 'user:manage:upsert',
     entity: 'user',
     projection: {
         id: 1,

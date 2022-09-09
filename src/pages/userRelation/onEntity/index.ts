@@ -2,7 +2,6 @@ import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
 
 export default OakPage(
     {
-        path: 'userRelation:detail',
         isList: true,
         formData: async function ({ data, props }) {
             const { nameProperty } = props;

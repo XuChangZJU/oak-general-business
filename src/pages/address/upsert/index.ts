@@ -1,6 +1,5 @@
 
 export default OakPage({
-    path: 'address:upsert',
     entity: 'address',
     projection: {
         id: 1,

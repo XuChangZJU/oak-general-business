@@ -1,6 +1,5 @@
 
 export default OakPage({
-    path: 'mobile:me',
     entity: 'mobile',
     isList: true,
     projection: {

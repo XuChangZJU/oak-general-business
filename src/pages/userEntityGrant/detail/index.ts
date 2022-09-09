@@ -1,6 +1,5 @@
 
 export default OakPage({
-    path: 'userEntityGrant:detail',
     entity: 'userEntityGrant',
     projection: {
         id: 1,

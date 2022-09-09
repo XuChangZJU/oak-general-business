@@ -2,7 +2,6 @@ import { ROOT_ROLE_ID } from '../../../constants';
 import { composeFileUrl } from '../../../utils/extraFile';
 
 export default OakPage({
-    path: 'token:me',
     entity: 'token',
     isList: true,
     projection: {
