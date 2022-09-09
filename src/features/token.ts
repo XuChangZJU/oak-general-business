@@ -155,6 +155,7 @@ export class Token<
             data: {
                 id: 1,
                 userId: 1,
+                ableState: 1,
             },
             filter: {
                 id: token,
@@ -162,15 +163,18 @@ export class Token<
         });
         if (result.length === 0) {
             // user信息未取到
-            result = (await this.cache.refresh('token', {
-                data: {
-                    id: 1,
-                    userId: 1,
-                },
-                filter: {
-                    id: token,
-                },
-            })).data as any;
+            result = (
+                await this.cache.refresh('token', {
+                    data: {
+                        id: 1,
+                        userId: 1,
+                        ableState: 1,
+                    },
+                    filter: {
+                        id: token,
+                    },
+                })
+            ).data as any;
         }
         return result[0]?.userId as string;
     }
@@ -184,6 +188,7 @@ export class Token<
             data: {
                 id: 1,
                 userId: 1,
+                ableState: 1,
                 player: {
                     id: 1,
                     userRole$user: {
@@ -204,6 +209,7 @@ export class Token<
             {
                 id: 1;
                 userId: 1;
+                ableState: 1;
                 player: {
                     id: 1;
                     userRole$user: {
