@@ -8,34 +8,32 @@ import { composeFileUrl } from '../../../utils/extraFile';
 export default OakComponent({
     entity: 'extraFile',
     isList: true,
-    async formData({ data: files, features }) {
+    async formData({ data: originalFiles, features }) {
         const application = await features.application.getApplication();
         const number2 = this.props.maxNumber;
-        let files2 = files;
+        let files = originalFiles as Array<EntityDict['extraFile']['OpSchema']>;
         if (this.props.tag1) {
-            files2 = files2.filter(
-                ele => ele?.tag1 === this.props.tag1
-            );
+            files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
         }
         if (this.props.tag2) {
-            files2 = files2.filter(
-                ele => ele?.tag2 === this.props.tag2
-            );
+            files = files?.filter((ele) => ele?.tag2 === this.props.tag2);
         }
         if (
             typeof number2 === 'number' &&
             (number2 === 0 || files?.length >= number2)
         ) {
             return {
-                files: files2,
+                files,
                 disableInsert: true,
                 systemConfig: application?.system?.config,
+                originalFiles,
             };
         }
         return {
-            files: files2,
+            files,
             disableInsert: false,
             systemConfig: application?.system?.config,
+            originalFiles,
         };
     },
     data: {
@@ -171,22 +169,29 @@ export default OakComponent({
             await Promise.all(
                 uploadFiles.map(async (uploadFile) => {
                     const { name, type: fileType, size, raw } = uploadFile;
-                    this.pushExtraFile({
-                        name,
-                        fileType,
-                        size,
-                        extra1: raw,
-                    }, callback);
+                    this.pushExtraFile(
+                        {
+                            name,
+                            fileType,
+                            size,
+                            extra1: raw,
+                        },
+                        callback
+                    );
                 })
             );
         },
-        async pushExtraFile(options: {
-            name: string;
-            extra1: any;
-            fileType: string;
-            size: number;
-        }, callback?: (file:any) => void) {
-            const { type, origin, tag1, tag2, entity, entityId, autoUpload } = this.props;
+        async pushExtraFile(
+            options: {
+                name: string;
+                extra1: any;
+                fileType: string;
+                size: number;
+            },
+            callback?: (file: any) => void
+        ) {
+            const { type, origin, tag1, tag2, entity, entityId, autoUpload } =
+                this.props;
             const { name, extra1, fileType, size } = options;
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
@@ -208,8 +213,9 @@ export default OakComponent({
             // autoUpload为true, 选择直接上传七牛，再提交extraFile
             if (autoUpload) {
                 try {
-                    const { bucket } =
-                        await this.features.extraFile.upload(updateData);
+                    const { bucket } = await this.features.extraFile.upload(
+                        updateData
+                    );
                     try {
                         Object.assign(updateData, {
                             bucket,
@@ -220,7 +226,7 @@ export default OakComponent({
                         await this.addExtraFile(updateData);
                         if (callback) {
                             callback(updateData);
-                        };
+                        }
                         const ele: Parameters<typeof this['pushNode']>[1] = {
                             updateData,
                         };
@@ -235,8 +241,9 @@ export default OakComponent({
                 const ele: Parameters<typeof this['pushNode']>[1] = {
                     updateData,
                     beforeExecute: async (updateData) => {
-                        const { bucket } =
-                            await this.features.extraFile.upload(updateData);
+                        const { bucket } = await this.features.extraFile.upload(
+                            updateData
+                        );
                         Object.assign(updateData, {
                             bucket,
                             extra1: null,
@@ -246,18 +253,6 @@ export default OakComponent({
 
                 this.pushNode(undefined, ele);
             }
-        },
-        setNewUploadFiles(file: any) {
-            const { filename, size, id } = file;
-            const { newUploadFiles } = this.state;
-            const file2 = newUploadFiles.find((ele: any) => ele.filename = filename && ele.size === size) as any;
-            Object.assign(file2, {
-                status: 'success',
-                id,
-            })
-            this.setState({
-                newUploadFiles: [...newUploadFiles],
-            })
         },
         async onItemTapped(event: WechatMiniprogram.Touch) {
             const { files, systemConfig } = this.state;
@@ -284,10 +279,13 @@ export default OakComponent({
             }
         },
         async onDelete(event: WechatMiniprogram.Touch) {
+            const { originalFiles } = this.state;
             const { value, index } = event.currentTarget.dataset;
             const { id } = value;
+            const findIndex = originalFiles?.findIndex((ele) => ele?.id === id);
+
             if (isMockId(id)) {
-                this.removeNode('', `${index}`);
+                this.removeNode('', `${findIndex}`);
             } else {
                 const result = await wx.showModal({
                     title: '确认删除吗',
@@ -295,22 +293,16 @@ export default OakComponent({
                 });
                 const { confirm } = result;
                 if (confirm) {
-                    this.removeNode('', `${index}`);
+                    this.removeNode('', `${findIndex}`);
                 }
             }
         },
-        async customDelete(index: number) {
-            const { newUploadFiles } = this.state;
-            const arr = [...newUploadFiles];
-            arr.splice(index, 1);
-            this.setState({
-                newUploadFiles: arr,
-            })
-        },
-        async onWebDelete(value: any, index: number) {
+        async onWebDelete(value: any) {
+            const { originalFiles } = this.state;
             const { id } = value;
+            const findIndex = originalFiles?.findIndex((ele) => ele?.id === id);
             if (isMockId(id)) {
-                this.removeNode('', `${index}`);
+                this.removeNode('', `${findIndex}`);
             } else {
                 const confirm = Dialog.confirm({
                     header: '确认删除当前文件？',
@@ -320,7 +312,7 @@ export default OakComponent({
                     cancelBtn: '取消',
                     confirmBtn: '确定',
                     onConfirm: () => {
-                        this.removeNode('', `${index}`);
+                        this.removeNode('', `${findIndex}`);
                         confirm.hide();
                     },
                     onCancel: () => {
@@ -349,13 +341,39 @@ export default OakComponent({
                     (<OakException>error).constructor.name ===
                     OakUnloggedInException.name
                 ) {
-                    this.navigateTo({
-                        url: '/login',
-                    });
+                    this.navigateTo(
+                        {
+                            url: '/login',
+                        },
+                        undefined,
+                        true
+                    );
                     return;
                 }
                 throw error;
             }
+        },
+        setNewUploadFiles(file: any) {
+            const { filename, size, id } = file;
+            const { newUploadFiles } = this.state;
+            const file2 = newUploadFiles.findIndex(
+                (ele: any) => (ele.filename = filename && ele.size === size)
+            ) as any;
+            Object.assign(file2, {
+                status: 'success',
+                id,
+            });
+            this.setState({
+                newUploadFiles: [...newUploadFiles],
+            });
+        },
+        async customDelete(index: number) {
+            const { newUploadFiles } = this.state;
+            const arr = [...newUploadFiles];
+            arr.splice(index, 1);
+            this.setState({
+                newUploadFiles: arr,
+            });
         },
     },
 
