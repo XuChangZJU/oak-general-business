@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space, Upload, UploadFile, Table, Button } from 'tdesign-react';
+import { Space, Upload, UploadFile, Table, Button, Tag, Loading } from 'tdesign-react';
 import { composeFileUrl, bytesToSize } from '../../../utils/extraFile';
 
 function extraFileToUploadFile(extraFile: any, systemConfig: any) {
@@ -96,12 +96,27 @@ export default function render(this: any) {
                                     const b = row?.size / 1024;
                                     return bytesToSize(b)
                                 },
-                                width: 120,
                             },
                             {
                                 colKey: 'status',
                                 title: '状态',
-                                width: 100,
+                                cell: ({row}) => {
+                                    let cpn: any;
+                                    switch(row.status) {
+                                        case 'success':
+                                            cpn = (<Tag theme="success" variant="light">success</Tag>)
+                                            break;
+                                        case 'uploading':
+                                            cpn = (
+                                                <Loading loading={true} text="uploading..."></Loading>
+                                            )
+                                            break;
+                                        default:
+                                            cpn = (<Tag theme="warning" variant="light">waiting</Tag>)
+                                            break;
+                                    }
+                                    return cpn;
+                                }
                             },
                             {
                                 colKey: 'op',
@@ -140,8 +155,8 @@ export default function render(this: any) {
                             </Button>
                             <Button
                                 onClick={() => {
-                                    this.onWebPick(newUploadFiles, (file: any) => {
-                                        this.setNewUploadFiles(file);
+                                    this.onWebPick(newUploadFiles, (file: any, status: string) => {
+                                        this.setNewUploadFiles(file, status);
                                     });
                                 }}
                             >
