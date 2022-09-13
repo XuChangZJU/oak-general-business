@@ -14,7 +14,7 @@ export function initialize<ED extends EntityDict, Cxt extends GeneralRuntimeCont
     basicFeatures: BasicFeatures<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
     type: AppType,
     context: Cxt,
-) {
+): GeneralFeatures<ED, Cxt, AD> {
     const application = new Application<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(
         aspectWrapper, type, basicFeatures.cache, basicFeatures.localStorage, (application) => context.setApplication(application));
     const token = new Token<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(aspectWrapper, basicFeatures.cache, basicFeatures.localStorage, context);
@@ -25,3 +25,9 @@ export function initialize<ED extends EntityDict, Cxt extends GeneralRuntimeCont
         application,
     };
 }
+
+export type GeneralFeatures<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> = {
+    token: Token<ED, Cxt, AD>;
+    extraFile: ExtraFile<ED, Cxt, AD>;
+    application: Application<ED, Cxt, AD>;
+};
