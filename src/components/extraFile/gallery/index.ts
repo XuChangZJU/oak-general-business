@@ -165,7 +165,7 @@ export default OakComponent({
                 }
             }
         },
-        async onWebPick(uploadFiles: any[], callback?: (file: any) => void) {
+        async onWebPick(uploadFiles: any[], callback?: (file: any, status: string) => void) {
             await Promise.all(
                 uploadFiles.map(async (uploadFile) => {
                     const { name, type: fileType, size, raw } = uploadFile;
@@ -188,7 +188,7 @@ export default OakComponent({
                 fileType: string;
                 size: number;
             },
-            callback?: (file: any) => void
+            callback?: (file: any, status: string) => void
         ) {
             const { type, origin, tag1, tag2, entity, entityId, autoUpload } =
                 this.props;
@@ -213,6 +213,9 @@ export default OakComponent({
             // autoUpload为true, 选择直接上传七牛，再提交extraFile
             if (autoUpload) {
                 try {
+                    if (callback) {
+                        callback(updateData, 'uploading');
+                    }
                     const { bucket } = await this.features.extraFile.upload(
                         updateData
                     );
@@ -225,16 +228,22 @@ export default OakComponent({
                         });
                         await this.addExtraFile(updateData);
                         if (callback) {
-                            callback(updateData);
+                            callback(updateData, 'success');
                         }
                         const ele: Parameters<typeof this['pushNode']>[1] = {
                             updateData,
                         };
                         this.pushNode(undefined, ele);
                     } catch (error) {
+                        if (callback) {
+                            callback(updateData, 'failed');
+                        }
                         //todo 保存extraFile失败 需要remove七牛图片
                     }
                 } catch (err) {
+                    if (callback) {
+                        callback(updateData, 'failed');
+                    }
                     //上传七牛失败
                 }
             } else {
@@ -353,18 +362,18 @@ export default OakComponent({
                 throw error;
             }
         },
-        setNewUploadFiles(file: any) {
+        setNewUploadFiles(file: any, status: string) {
             const { filename, size, id } = file;
             const { newUploadFiles } = this.state;
-            const file2 = newUploadFiles.findIndex(
+            const file2 = newUploadFiles.find(
                 (ele: any) => (ele.filename = filename && ele.size === size)
             ) as any;
             Object.assign(file2, {
-                status: 'success',
+                status,
                 id,
             });
             this.setState({
-                newUploadFiles: [...newUploadFiles],
+                newUploadFiles,
             });
         },
         async customDelete(index: number) {
