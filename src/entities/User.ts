@@ -44,7 +44,7 @@ const UserActionDef: ActionDef<UserAction, UserState> = {
     },
 };
 
-type MoreAction = 'play' | 'grant';
+type MoreAction = 'play';
 
 type Action = UserAction | IdAction | MoreAction;
 
@@ -108,7 +108,6 @@ const locale: LocaleDef<Schema, Action, '', {
             disable: '禁用',
             mergeTo: '合并',
             mergeFrom: '使合并',
-            grant: '授权',
         },
         v: {
             userState: {

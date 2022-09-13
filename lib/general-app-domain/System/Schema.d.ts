@@ -3,7 +3,7 @@ import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, Ex
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
-import { GenericAction } from "oak-domain/lib/actions/action";
+import { GenericAction, RelationAction } from "oak-domain/lib/actions/action";
 import * as Application from "../Application/Schema";
 import * as Domain from "../Domain/Schema";
 import * as UserSystem from "../UserSystem/Schema";
@@ -154,7 +154,7 @@ export declare type UpdateOperationData = FormUpdateData<OpSchema> & {
     userSystems$system?: UserSystem.RemoveOperation | OakOperation<"create", Omit<UserSystem.CreateOperationData, "system" | "systemId">[]> | Array<OakOperation<"create", Omit<UserSystem.CreateOperationData, "system" | "systemId">> | UserSystem.RemoveOperation>;
     users$system?: User.UpdateOperation | User.RemoveOperation | OakOperation<"create", Omit<User.CreateOperationData, "system" | "systemId">[]> | Array<OakOperation<"create", Omit<User.CreateOperationData, "system" | "systemId">> | User.UpdateOperation | User.RemoveOperation>;
 };
-export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
+export declare type UpdateOperation = OakOperation<"update" | RelationAction | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {};
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
@@ -164,7 +164,7 @@ export declare type FullAttr = NativeAttr | `applications$${number}.${Applicatio
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: OakMakeAction<GenericAction> | string;
+    Action: OakMakeAction<GenericAction | RelationAction> | string;
     Selection: Selection;
     Operation: Operation;
     Create: CreateOperation;

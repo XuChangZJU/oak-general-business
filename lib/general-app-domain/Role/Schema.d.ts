@@ -3,7 +3,7 @@ import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey }
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
-import { ReadOnlyAction } from "oak-domain/lib/actions/action";
+import { ReadOnlyAction, RelationAction } from "oak-domain/lib/actions/action";
 import * as UserRole from "../UserRole/Schema";
 export declare type OpSchema = {
     id: PrimaryKey;
@@ -84,7 +84,7 @@ export declare type UpdateOperationData = FormUpdateData<OpSchema> & {
     [k: string]: any;
     userRoles$role?: UserRole.RemoveOperation | OakOperation<"create", Omit<UserRole.CreateOperationData, "role" | "roleId">[]> | Array<OakOperation<"create", Omit<UserRole.CreateOperationData, "role" | "roleId">> | UserRole.RemoveOperation>;
 };
-export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
+export declare type UpdateOperation = OakOperation<"update" | RelationAction | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {};
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
@@ -94,7 +94,7 @@ export declare type FullAttr = NativeAttr | `userRoles$${number}.${UserRole.Nati
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: OakMakeAction<ReadOnlyAction> | string;
+    Action: OakMakeAction<ReadOnlyAction | RelationAction> | string;
     Selection: Selection;
     Operation: Operation;
     Create: CreateOperation;

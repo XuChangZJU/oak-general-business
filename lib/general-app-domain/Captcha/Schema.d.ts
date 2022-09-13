@@ -120,7 +120,7 @@ export declare type CreateOperation = CreateSingleOperation | CreateMultipleOper
 export declare type UpdateOperationData = FormUpdateData<OpSchema> & {
     [k: string]: any;
 };
-export declare type UpdateOperation = OakOperation<ParticularAction | "update" | string, UpdateOperationData, Filter, Sorter>;
+export declare type UpdateOperation = OakOperation<"update" | ParticularAction | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {};
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;

@@ -322,7 +322,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
 }) & {
     [k: string]: any;
 };
-export declare type UpdateOperation = OakOperation<ParticularAction | "update" | string, UpdateOperationData, Filter, Sorter>;
+export declare type UpdateOperation = OakOperation<"update" | ParticularAction | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
     application?: Application.UpdateOperation | Application.RemoveOperation;
 }) & ({
