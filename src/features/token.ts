@@ -42,7 +42,7 @@ export class Token<
     }
 
     async loadTokenInfo() {
-        this.rwLock.acquire('X');
+        await this.rwLock.acquire('X');
         await this.cache.refresh('token', {
             data: {
                 id: 1,
