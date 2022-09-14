@@ -37,7 +37,7 @@ export class Token<
         if (token) {
             this.token = token;
             this.context.setToken(token);
-            this.loadTokenInfo();
+            // this.loadTokenInfo();
         }
     }
 
