@@ -67,6 +67,14 @@ export class OakUserDisabledException extends OakUserException {
     }
 }
 
+
+export class OakTokenExpiredException extends OakUserException {
+    constructor(message?: string) {
+        super(message || '当前登录状态已经过期');
+    }
+}
+
+
 export function makeException(data: {
     name: string;
     message?: string;

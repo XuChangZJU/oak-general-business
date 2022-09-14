@@ -1,4 +1,4 @@
-import { GeneralRuntimeContext } from '../RuntimeContext';
+import { RuntimeContext } from '../context/RuntimeContext';
 import { EntityDict } from '../general-app-domain';
 import { Schema as Livestream } from '../general-app-domain/Livestream/Schema';
 /**
@@ -8,7 +8,7 @@ import { Schema as Livestream } from '../general-app-domain/Livestream/Schema';
  * @param context context
  * @returns Livestream 对象
  */
-export declare function getLivestream<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: {
+export declare function getLivestream<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(params: {
     streamTitle: string;
     expireAt: number;
 }, context: Cxt): Promise<Pick<Livestream, 'streamTitle' | 'hub' | 'rtmpPushUrl' | 'rtmpPlayUrl' | 'pcPushUrl' | 'streamKey' | 'expireAt'>>;
@@ -19,7 +19,7 @@ export declare function getLivestream<ED extends EntityDict, Cxt extends General
  * @param context context
  * @returns livestream对象
  */
-export declare function getLivestream2<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: {
+export declare function getLivestream2<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(params: {
     streamTitle: string;
     expireAt: number;
 }, context: Cxt): Promise<Pick<Livestream, 'streamTitle' | 'hub' | 'rtmpPushUrl' | 'rtmpPlayUrl' | 'pcPushUrl' | 'streamKey' | 'expireAt'>>;

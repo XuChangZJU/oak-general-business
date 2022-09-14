@@ -22,6 +22,9 @@ export declare class OakChangeLoginWayException extends OakUserException {
 export declare class OakUserDisabledException extends OakUserException {
     constructor(message?: string);
 }
+export declare class OakTokenExpiredException extends OakUserException {
+    constructor(message?: string);
+}
 export declare function makeException(data: {
     name: string;
     message?: string;

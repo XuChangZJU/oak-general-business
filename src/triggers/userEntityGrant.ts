@@ -1,5 +1,5 @@
 import { Trigger, CreateTrigger, UpdateTrigger } from 'oak-domain/lib/types/Trigger';
-import { GeneralRuntimeContext } from '../RuntimeContext';
+import { RuntimeContext } from '../context/RuntimeContext';
 import { CreateOperationData as CreateUserEntityGrantData } from '../general-app-domain/UserEntityGrant/Schema';
 import { EntityDict } from '../general-app-domain/EntityDict';
 
@@ -9,7 +9,7 @@ import { DefaultConfig } from '../constants';
 import { createWechatQrCode } from '../aspects/wechatQrCode';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 
-const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<EntityDict>>[] = [
+const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict>>[] = [
     {
         name: '当创建userEntityGrant时，查询是否有未过期可重用的对象',
         entity: 'userEntityGrant',
@@ -85,7 +85,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
             }
             return 0;
         }
-    } as CreateTrigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<EntityDict>>,
+    } as CreateTrigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict>>,
     {
         name: '当userEntityGrant被确认时，附上被授权者id',
         entity: 'userEntityGrant',
@@ -161,6 +161,6 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<Ent
                 return 1;
             }
         }
-    } as UpdateTrigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<EntityDict>>
+    } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict>>
 ];
 export default triggers;

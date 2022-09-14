@@ -1,5 +1,5 @@
 import { Trigger } from 'oak-domain/lib/types/Trigger';
-import { GeneralRuntimeContext } from '../RuntimeContext';
+import { RuntimeContext } from '../context/RuntimeContext';
 import { EntityDict } from '../general-app-domain/EntityDict';
-declare const triggers: Trigger<EntityDict, 'userEntityGrant', GeneralRuntimeContext<EntityDict>>[];
+declare const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict>>[];
 export default triggers;

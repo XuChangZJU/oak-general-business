@@ -2,13 +2,13 @@ import {
     Checker, CreateChecker, OakInputIllegalException,
 } from 'oak-domain/lib/types';
 import { EntityDict } from '../general-app-domain';
-import { GeneralRuntimeContext } from '../RuntimeContext';
+import { RuntimeContext } from '../context/RuntimeContext';
 import { checkAttributesNotNull } from 'oak-domain/lib/utils/validator';
 
 const checkers: Checker<
     EntityDict,
     'userEntityGrant',
-    GeneralRuntimeContext<EntityDict>
+    RuntimeContext<EntityDict>
 >[] = [
     {
         type: 'data',
@@ -54,7 +54,7 @@ const checkers: Checker<
             }
             return 0;
         },
-    } as CreateChecker<EntityDict, 'userEntityGrant', GeneralRuntimeContext<EntityDict>
+    } as CreateChecker<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict>
 >,
 ];
 

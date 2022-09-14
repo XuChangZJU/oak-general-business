@@ -4,11 +4,11 @@ import { Upload } from 'oak-frontend-base/lib/utils/upload';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { AspectDict } from '../aspects/AspectDict';
 import { EntityDict } from '../general-app-domain';
-import { GeneralRuntimeContext } from '../RuntimeContext';
+import { RuntimeContext } from '../context/RuntimeContext';
 
 export class ExtraFile<
     ED extends EntityDict,
-    Cxt extends GeneralRuntimeContext<ED>,
+    Cxt extends RuntimeContext<ED>,
     AD extends AspectDict<ED, Cxt>
 > extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
     constructor(

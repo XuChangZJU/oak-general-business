@@ -5,9 +5,9 @@ import {
     DEV_WECHATMP_APPLICATION_ID,
     DEV_WECHATPUPLIC_APPLICATION_ID,
 } from '..';
-import { GeneralRuntimeContext } from "../RuntimeContext";
+import { RuntimeContext } from '../context/RuntimeContext';
 
-export async function getApplication<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(params: {
+export async function getApplication<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(params: {
     type: AppType;
 }, context: Cxt) {
     const { type } = params;

@@ -2,9 +2,9 @@ import { WebEnv, WechatMpEnv } from "../general-app-domain/Token/Schema";
 import { AppType } from '../general-app-domain/Application/Schema';
 import { EntityDict } from "../general-app-domain";
 import { QiniuUploadInfo } from "oak-frontend-base/lib/types/Upload";
-import { GeneralRuntimeContext } from "../RuntimeContext";
+import { RuntimeContext } from '../context/RuntimeContext';
 import { Schema as Livestream } from '../general-app-domain/Livestream/Schema';
-declare type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>> = {
+declare type GeneralAspectDict<ED extends EntityDict, Cxt extends RuntimeContext<ED>> = {
     loginByMobile: (params: {
         captcha?: string;
         password?: string;
@@ -46,5 +46,5 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends GeneralRuntime
         type: AppType;
     }, context: Cxt) => Promise<string>;
 };
-export declare type AspectDict<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
+export declare type AspectDict<ED extends EntityDict, Cxt extends RuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
 export {};

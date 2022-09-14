@@ -1,4 +1,4 @@
-import { GeneralRuntimeContext } from '../RuntimeContext';
+import { RuntimeContext } from '../context/RuntimeContext';
 import { EntityDict } from '../general-app-domain';
 import { WechatSDK } from 'oak-external-sdk';
 import { assert } from 'oak-domain/lib/utils/assert';
@@ -13,7 +13,7 @@ import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
 import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exceptions';
 import { encryptPasswordSha1 } from '../utils/password';
 
-async function makeDistinguishException<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(userId: string, context: Cxt) {
+async function makeDistinguishException<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(userId: string, context: Cxt) {
     const { rowStore } = context;
 
     const { result: [user] } = await rowStore.select('user', {
@@ -49,7 +49,7 @@ async function makeDistinguishException<ED extends EntityDict, Cxt extends Gener
         idState === 'verified', (<any[]>wechatUser$user).length > 0, (<any[]>email$user).length > 0);
 }
 
-async function tryMakeChangeLoginWay<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(userId: string, context: Cxt) {
+async function tryMakeChangeLoginWay<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(userId: string, context: Cxt) {
     const { rowStore } = context;
     const { result: [user] } = await rowStore.select('user', {
         data: {
@@ -98,10 +98,10 @@ async function tryMakeChangeLoginWay<ED extends EntityDict, Cxt extends GeneralR
     }
 }
 
-async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(mobile: string, env: WebEnv | WechatMpEnv, context: Cxt) {
+async function setupMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(mobile: string, env: WebEnv | WechatMpEnv, context: Cxt) {
     const { rowStore } = context;
     const currentToken = await context.getToken();
-    const applicationId = context.getApplicationId();
+    const applicationId = await context.getApplicationId();
     const systemId = await context.getSystemId();
 
     const { result: result2 } = await rowStore.select('mobile', {
@@ -147,7 +147,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
             // 此时以该手机号登录 todo根据环境来判断，用户也有可能是新获得此手机号，未来再进一步处理
             const tokenData: EntityDict['token']['CreateSingle']['data'] = {
                 id: await generateNewId(),
-                applicationId,
+                applicationId: applicationId!,
                 playerId: mobileRow.userId as string,
                 env,
                 entity: 'mobile',
@@ -243,7 +243,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends GeneralRuntimeCont
     }
 }
 
-async function loadTokenInfo<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(tokenId: string, context: Cxt ) {
+async function loadTokenInfo<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(tokenId: string, context: Cxt ) {
     await context.rowStore.select('token', {
         data: {
             id: 1,
@@ -272,7 +272,7 @@ async function loadTokenInfo<ED extends EntityDict, Cxt extends GeneralRuntimeCo
     }, context, {});
 }
 
-export async function loginByMobile<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(
+export async function loginByMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(
     params: { captcha?: string, password?: string, mobile: string, env: WebEnv | WechatMpEnv },
     context: Cxt): Promise<string> {
     const loginLogic = async () => {
@@ -374,7 +374,7 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends GeneralRu
  * @param param0 
  * @param context 
  */
-export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ code, env }: {
+export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeContext<ED>>({ code, env }: {
     code: string;
     env: WebEnv;
 }, context: Cxt): Promise<string> {
@@ -650,7 +650,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends GeneralRunt
  * @param context 
  * @returns 
  */
-export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ code, env }: {
+export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeContext<ED>>({ code, env }: {
     code: string;
     env: WechatMpEnv;
 }, context: Cxt): Promise<string> {
@@ -919,7 +919,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends GeneralRu
  * @param param0 
  * @param context 
  */
-export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({
+export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends RuntimeContext<ED>>({
     nickname, avatarUrl, encryptedData, iv, signature
 }: { nickname: string, avatarUrl: string, encryptedData: string, iv: string, signature: string }, context: Cxt) {
     const { rowStore } = context;
@@ -1024,7 +1024,7 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ge
 }
 
 
-export async function sendCaptcha<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>({ mobile, env }: {
+export async function sendCaptcha<ED extends EntityDict, Cxt extends RuntimeContext<ED>>({ mobile, env }: {
     mobile: string;
     env: WechatMpConfig | WebEnv
 }, context: Cxt): Promise<string> {

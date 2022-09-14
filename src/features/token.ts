@@ -7,36 +7,32 @@ import { WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
 import { EntityDict } from '../general-app-domain';
 import { getEnv } from '../utils/env';
 import { AspectDict } from '../aspects/AspectDict';
-import { GeneralRuntimeContext } from '..';
+import { RuntimeContext } from '../context/RuntimeContext';
 import { AspectWrapper, SelectRowShape } from 'oak-domain/lib/types';
 import { ROOT_ROLE_ID } from '../constants';
 
 export class Token<
     ED extends EntityDict,
-    Cxt extends GeneralRuntimeContext<ED>,
+    Cxt extends RuntimeContext<ED>,
     AD extends AspectDict<ED, Cxt>
     > extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
     private token?: string;
     private rwLock: RWLock;
     private cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
-    private context: Cxt;
     private storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
 
     constructor(
         aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
         cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
-        storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
-        context: Cxt
+        storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>
     ) {
         super(aspectWrapper);
         this.rwLock = new RWLock();
         this.cache = cache;
-        this.context = context;
         this.storage = storage;
         const token = storage.load('token:token');
         if (token) {
             this.token = token;
-            this.context.setToken(token);
             this.loadTokenInfo();
         }
     }
@@ -59,6 +55,7 @@ export class Token<
                         },
                     },
                 },
+                playerId: 1,
             },
             filter: {
                 id: this.token!,
@@ -79,7 +76,6 @@ export class Token<
             this.token = result;
             this.rwLock.release();
             this.storage.save('token:token', result);
-            this.context.setToken(result);
         } catch (err) {
             this.rwLock.release();
             throw err;
@@ -101,7 +97,6 @@ export class Token<
             this.token = result;
             this.rwLock.release();
             this.storage.save('token:token', result);
-            this.context.setToken(result);
         } catch (err) {
             this.rwLock.release();
             throw err;
@@ -125,7 +120,6 @@ export class Token<
             this.token = result;
             this.rwLock.release();
             this.storage.save('token:token', result);
-            this.context.setToken(result);
         } catch (err) {
             this.rwLock.release();
             throw err;
@@ -157,24 +151,20 @@ export class Token<
     @Action
     async logout() {
         this.token = undefined;
-        this.context.setToken(undefined);
         this.storage.remove('token:token');
     }
 
-    async getToken() {
-        await this.rwLock.acquire('S');
-        try {
-            const token = this.token;
-            this.rwLock.release();
-            return token;
-        } catch (err) {
-            this.rwLock.release();
-            throw err;
+    async getTokenValue(noWait?: true) {
+        if (noWait) {
+            return this.token;
         }
+        await this.rwLock.acquire('S');
+        const token = this.token;
+        this.rwLock.release();
     }
 
-    async getUserId() {
-        const token = await this.getToken();
+    async getToken() {
+        const token = await this.getTokenValue();
         if (!token) {
             return;
         }
@@ -183,6 +173,7 @@ export class Token<
                 id: 1,
                 userId: 1,
                 ableState: 1,
+                playerId: 1,
             },
             filter: {
                 id: token,
@@ -196,6 +187,7 @@ export class Token<
                         id: 1,
                         userId: 1,
                         ableState: 1,
+                        playerId: 1,
                     },
                     filter: {
                         id: token,
@@ -203,19 +195,30 @@ export class Token<
                 })
             ).data as any;
         }
-        return result[0]?.userId as string;
+        return result[0] as SelectRowShape<EntityDict['token']['Schema'], {
+            id: 1,
+            userId: 1,
+            ableState: 1,
+            playerId: 1,
+        }>;
+    }
+
+    async getUserId() {
+        const token = await this.getToken();
+        return token?.userId as string | undefined;
     }
 
     async isRoot(): Promise<boolean> {
-        const token = await this.getToken();
-        if (!token) {
+        const tokenValue = await this.getTokenValue();
+        if (!tokenValue) {
             return false;
         }
-        const [tokenValue] = (await this.cache.get('token', {
+        const [tokens] = (await this.cache.get('token', {
             data: {
                 id: 1,
                 userId: 1,
                 ableState: 1,
+                playerId: 1,
                 player: {
                     id: 1,
                     userRole$user: {
@@ -229,7 +232,7 @@ export class Token<
                 },
             },
             filter: {
-                id: token,
+                id: tokenValue,
             },
         })) as SelectRowShape<
             ED['token']['Schema'],
@@ -250,10 +253,12 @@ export class Token<
                 };
             }
         >[];
-        return (tokenValue?.player?.userRole$user as any).length > 0
-            ? (tokenValue?.player?.userRole$user as any)[0]?.roleId ===
-            ROOT_ROLE_ID
-            : false;
+
+        const { player } = tokens;
+        const { userRole$user} = player!;
+        return (userRole$user as any).length > 0 && (userRole$user as any).find(
+            (ele: any) => ele.role.name === 'root'
+        );
     }
 
     @Action

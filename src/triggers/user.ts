@@ -1,6 +1,6 @@
 import { CreateTrigger, CreateTriggerInTxn, SelectTriggerBefore, Trigger, UpdateTrigger } from 'oak-domain/lib/types/Trigger';
 import { EntityDict } from '../general-app-domain/EntityDict';
-import { GeneralRuntimeContext } from '../RuntimeContext';
+import { RuntimeContext } from '../context/RuntimeContext';
 import { CreateOperationData as CreateUserRoleData } from '../general-app-domain/UserRole/Schema';
 import { CreateOperationData as CreateUserData } from '../general-app-domain/User/Schema';
 import { assert } from 'oak-domain/lib/utils/assert';
@@ -8,7 +8,7 @@ import { ROOT_ROLE_ID, ROOT_USER_ID } from '../constants';
 import { addFilterSegment } from 'oak-domain/lib/store/filter';
 
 let NO_ANY_USER = true;
-const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[] = [
+const triggers: Trigger<EntityDict, 'user', RuntimeContext<EntityDict>>[] = [
     {
         name: '系统生成的第一个用户默认注册为root，用户的初始状态默认为shadow',
         entity: 'user',
@@ -81,7 +81,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
             }
             return 0;
         }
-    } as CreateTrigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>,
+    } as CreateTrigger<EntityDict, 'user', RuntimeContext<EntityDict>>,
     {
         name: '当扮演某个用户时，切换当前用户的token中的userId',
         entity: 'user',
@@ -105,7 +105,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
             });
             return 1;
         }
-    } as UpdateTrigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>,
+    } as UpdateTrigger<EntityDict, 'user', RuntimeContext<EntityDict>>,
     {
         name: '查询用户时，默认加上systemId',
         entity: 'user',
@@ -133,7 +133,7 @@ const triggers: Trigger<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>[]
             }
             return 0;
         }
-    } as SelectTriggerBefore<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>
+    } as SelectTriggerBefore<EntityDict, 'user', RuntimeContext<EntityDict>>
 ];
 
 export default triggers;

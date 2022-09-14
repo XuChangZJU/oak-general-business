@@ -1,4 +1,4 @@
-import { GeneralRuntimeContext } from '../RuntimeContext';
+import { RuntimeContext } from '../context/RuntimeContext';
 import { EntityDict } from '../general-app-domain';
 import { SystemConfig } from '../general-app-domain/System/Schema';
 import { Schema as Livestream } from '../general-app-domain/Livestream/Schema';
@@ -6,7 +6,7 @@ import QiniuLive from '../utils/externalUpload/qiniu_live';
 import { hmacSha1, base64ToUrlSafe } from '../utils/sign';
 import { Md5 } from 'ts-md5';
 
-async function getQiniuUploadInfo<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(
+async function getQiniuUploadInfo<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(
     context: Cxt
 ) {
     // 请求鉴权
@@ -73,7 +73,7 @@ async function getQiniuToken(
  * @param context context
  * @returns Livestream 对象
  */
-export async function getLivestream<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(
+export async function getLivestream<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(
     params: {
         streamTitle: string,
         expireAt: number,
@@ -144,7 +144,7 @@ export async function getLivestream<ED extends EntityDict, Cxt extends GeneralRu
  * @param context context
  * @returns livestream对象
  */
-export async function getLivestream2<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(
+export async function getLivestream2<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(
     params: {
         streamTitle: string,
         expireAt: number,

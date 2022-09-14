@@ -1,9 +1,9 @@
 import { checkFilterContains } from 'oak-domain/lib/store/actionDef';
 import { OakInputIllegalException, Checker, OakUserUnpermittedException, OakRowInconsistencyException, RemoveChecker, UpdateChecker } from "oak-domain/lib/types";
 import { EntityDict } from '../general-app-domain';
-import { GeneralRuntimeContext } from '../RuntimeContext';
+import { RuntimeContext } from '../context/RuntimeContext';
 
-const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [] = [
+const checkers: Checker<EntityDict, 'user', RuntimeContext<EntityDict>> [] = [
     {
         type: 'data',
         action: 'remove',
@@ -15,7 +15,7 @@ const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [
             }, context, filter);
             return 0;
         },
-    } as RemoveChecker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>>,
+    } as RemoveChecker<EntityDict, 'user', RuntimeContext<EntityDict>>,
     {
         type: 'user',
         action: 'play',
@@ -24,7 +24,7 @@ const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [
             // 只有root才能play
             throw new OakUserUnpermittedException();
         },
-    } as UpdateChecker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> ,    
+    } as UpdateChecker<EntityDict, 'user', RuntimeContext<EntityDict>> ,    
     {
         type: 'data',
         action: 'play',
@@ -37,7 +37,7 @@ const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [
             }
             return 0;
         },
-    } as UpdateChecker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> ,
+    } as UpdateChecker<EntityDict, 'user', RuntimeContext<EntityDict>> ,
     {
         type: 'data',
         action: 'grant',
@@ -49,7 +49,7 @@ const checkers: Checker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> [
             }
             return 0;
         }
-    } as UpdateChecker<EntityDict, 'user', GeneralRuntimeContext<EntityDict>> 
+    } as UpdateChecker<EntityDict, 'user', RuntimeContext<EntityDict>> 
 ];
 
 export default checkers;

@@ -5,9 +5,9 @@ import { WechatSDK, WechatMpInstance } from 'oak-external-sdk';
 
 import { WechatMpConfig } from '../general-app-domain/Application/Schema';
 import { EntityDict } from '../general-app-domain/EntityDict';
-import { GeneralRuntimeContext } from '../RuntimeContext';
+import { RuntimeContext } from '../context/RuntimeContext';
 
-const triggers: Trigger<EntityDict, 'wechatQrCode', GeneralRuntimeContext<EntityDict>>[] = [
+const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeContext<EntityDict>>[] = [
     {
         name: '选择wechatQrCode时，动态生成需要的数据',
         entity: 'wechatQrCode',
@@ -58,6 +58,6 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', GeneralRuntimeContext<Entity
             }
             return count;
         }
-    } as SelectTriggerAfter<EntityDict, 'wechatQrCode', GeneralRuntimeContext<EntityDict>>,
+    } as SelectTriggerAfter<EntityDict, 'wechatQrCode', RuntimeContext<EntityDict>>,
 ];
 export default triggers;

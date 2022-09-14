@@ -3,12 +3,12 @@ import {
     Checker, CreateChecker,
 } from 'oak-domain/lib/types';
 import { EntityDict } from '../general-app-domain';
-import { GeneralRuntimeContext } from '../RuntimeContext';
+import { RuntimeContext } from '../context/RuntimeContext';
 
 const checkers: Checker<
     EntityDict,
     'wechatQrCode',
-    GeneralRuntimeContext<EntityDict>
+    RuntimeContext<EntityDict>
 >[] = [
     {
         type: 'data',
@@ -17,7 +17,7 @@ const checkers: Checker<
         checker: async ({ operation }, context) => {
             return 0;
         },
-    } as CreateChecker<EntityDict, 'wechatQrCode', GeneralRuntimeContext<EntityDict>
+    } as CreateChecker<EntityDict, 'wechatQrCode', RuntimeContext<EntityDict>
 >,
 ];
 

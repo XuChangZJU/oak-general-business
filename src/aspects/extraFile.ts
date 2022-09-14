@@ -1,4 +1,4 @@
-import { GeneralRuntimeContext } from '../RuntimeContext';
+import { RuntimeContext } from '../context/RuntimeContext';
 import { EntityDict } from '../general-app-domain';
 import { SystemConfig } from '../general-app-domain/System/Schema';
 import qiniuInstance from '../utils/externalUpload/qiniu';
@@ -8,7 +8,7 @@ const ExternalUploadClazz = {
     qiniu: qiniuInstance,
 };
 
-export async function getUploadInfo<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>>(
+export async function getUploadInfo<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(
     params: { origin: string, key?: string },
     context: Cxt): Promise<QiniuUploadInfo> {
     const { rowStore } = context;

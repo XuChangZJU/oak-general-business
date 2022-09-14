@@ -2,9 +2,9 @@ import { isMobile } from 'oak-domain/lib/utils/validator';
 import { OakInputIllegalException, Checker, CreateChecker } from "oak-domain/lib/types";
 import { EntityDict } from '../general-app-domain';
 import { checkAttributesNotNull } from 'oak-domain/lib/utils/validator';
-import { GeneralRuntimeContext } from '../RuntimeContext';
+import { RuntimeContext } from '../context/RuntimeContext';
 
-const checkers: Checker<EntityDict, 'address', GeneralRuntimeContext<EntityDict>> [] = [
+const checkers: Checker<EntityDict, 'address', RuntimeContext<EntityDict>> [] = [
     {
         type: 'data',
         action: 'create',
@@ -30,7 +30,7 @@ const checkers: Checker<EntityDict, 'address', GeneralRuntimeContext<EntityDict>
             }      
             return 0;
         },
-    } as CreateChecker<EntityDict, 'address', GeneralRuntimeContext<EntityDict>>
+    } as CreateChecker<EntityDict, 'address', RuntimeContext<EntityDict>>
 ];
 
 export default checkers;

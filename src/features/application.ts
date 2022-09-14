@@ -9,7 +9,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict } from '../general-app-domain';
 import { AppType } from '../general-app-domain/Application/Schema';
 import { AspectDict } from '../aspects/AspectDict';
-import { GeneralRuntimeContext } from '../RuntimeContext';
+import { RuntimeContext } from '../context/RuntimeContext';
 
 const projection: {
     id: 1,
@@ -35,7 +35,7 @@ const projection: {
     }
 };
 
-export class Application<ED extends EntityDict, Cxt extends GeneralRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
+export class Application<ED extends EntityDict, Cxt extends RuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
     private applicationId?: string;
     private application?: SelectRowShape<ED['application']['Schema'], typeof projection>;
     private rwLock: RWLock;
@@ -46,8 +46,7 @@ export class Application<ED extends EntityDict, Cxt extends GeneralRuntimeContex
         aspectWrapper: AspectWrapper<ED, Cxt, AD>,
         type: AppType,
         cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
-        storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
-        callback: (application: SelectRowShape<ED['application']['Schema'], typeof projection>) => void) {
+        storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>) {
         super(aspectWrapper);
         this.rwLock = new RWLock();
         this.cache = cache;
@@ -56,44 +55,45 @@ export class Application<ED extends EntityDict, Cxt extends GeneralRuntimeContex
         this.rwLock.acquire('X');
         if (applicationId) {
             this.applicationId = applicationId;
-            this.getApplicationFromCache(callback);
         }
         else {
-            this.refresh(type, callback);
+            this.refresh(type);
         }
         this.rwLock.release();
     }
 
-    private async getApplicationFromCache(callback: (application: SelectRowShape<ED['application']['Schema'], typeof projection>) => void) {
-        const { data } = await this.cache.refresh('application', {
+    private async getApplicationFromCache() {
+        const data = await this.cache.get('application', {
             data: projection,
             filter: {
                 id: this.applicationId,
             }
-        });
+        } as any);
         assert(data.length === 1);
-        this.application = data[0] as any;
-        callback(this.application!);
+        this.application = data[0];
     }
 
-    private async refresh(type: AppType, callback: (application: SelectRowShape<ED['application']['Schema'], typeof projection>) => void) {
+    private async refresh(type: AppType) {
         const { result: applicationId } = await this.getAspectWrapper().exec('getApplication', {
             type,
         });
         this.applicationId = applicationId;
         this.storage.save('application:applicationId', applicationId);
-        this.getApplicationFromCache(callback);
+        this.getApplicationFromCache();
     }
 
     async getApplication() {
-        this.rwLock.acquire('S');
+        await this.rwLock.acquire('S');
         const result = this.application!;
         this.rwLock.release();
         return result;
     }
 
-    getApplicationId() {
-        this.rwLock.acquire('S');
+    async getApplicationId(noWait?: true) {
+        if (noWait) {
+            return this.applicationId!;
+        }
+        await this.rwLock.acquire('S');
         const result = this.applicationId;
         this.rwLock.release();
         return result!;
