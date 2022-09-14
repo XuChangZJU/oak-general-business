@@ -15,7 +15,7 @@ export class Token<
     ED extends EntityDict,
     Cxt extends GeneralRuntimeContext<ED>,
     AD extends AspectDict<ED, Cxt>
-> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
+    > extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
     private token?: string;
     private rwLock: RWLock;
     private cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
@@ -37,7 +37,34 @@ export class Token<
         if (token) {
             this.token = token;
             this.context.setToken(token);
+            this.loadTokenInfo();
         }
+    }
+
+    async loadTokenInfo() {
+        this.rwLock.acquire('X');
+        await this.cache.refresh('token', {
+            data: {
+                id: 1,
+                userId: 1,
+                ableState: 1,
+                player: {
+                    id: 1,
+                    userRole$user: {
+                        $entity: 'userRole',
+                        data: {
+                            id: 1,
+                            userId: 1,
+                            roleId: 1,
+                        },
+                    },
+                },
+            },
+            filter: {
+                id: this.token!,
+            },
+        });
+        this.rwLock.release();
     }
 
     @Action
@@ -225,7 +252,7 @@ export class Token<
         >[];
         return (tokenValue?.player?.userRole$user as any).length > 0
             ? (tokenValue?.player?.userRole$user as any)[0]?.roleId ===
-                  ROOT_ROLE_ID
+            ROOT_ROLE_ID
             : false;
     }
 
