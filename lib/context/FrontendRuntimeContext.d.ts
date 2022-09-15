@@ -97,6 +97,10 @@ export declare class FrontendRuntimeContext<ED extends EntityDict, Cxt extends R
                     id: 1;
                     userId: 1;
                     roleId: 1;
+                    role: {
+                        id: 1;
+                        name: 1;
+                    };
                 };
             };
         };

@@ -18,6 +18,10 @@ declare type TokenProjection = {
                 id: 1;
                 userId: 1;
                 roleId: 1;
+                role: {
+                    id: 1;
+                    name: 1;
+                };
             };
         };
     };

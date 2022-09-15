@@ -23,6 +23,10 @@ type TokenProjection = {
                 id: 1,
                 userId: 1,
                 roleId: 1,
+                role: {
+                    id: 1,
+                    name: 1,
+                },
             },
         },
     },
@@ -40,6 +44,10 @@ const tokenProjection: TokenProjection = {
                 id: 1,
                 userId: 1,
                 roleId: 1,
+                role: {
+                    id: 1,
+                    name: 1,
+                },
             },
         },
     },
@@ -76,23 +84,7 @@ export class Token<
         await this.rwLock.acquire('X');
         if (!this.token) {
             const { data } = await this.cache.refresh('token', {
-                data: {
-                    id: 1,
-                    userId: 1,
-                    ableState: 1,
-                    player: {
-                        id: 1,
-                        userRole$user: {
-                            $entity: 'userRole',
-                            data: {
-                                id: 1,
-                                userId: 1,
-                                roleId: 1,
-                            },
-                        },
-                    },
-                    playerId: 1,
-                },
+                data: tokenProjection,
                 filter: {
                     id: this.tokenValue!,
                 },
