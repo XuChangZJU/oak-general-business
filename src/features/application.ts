@@ -55,10 +55,22 @@ export class Application<ED extends EntityDict, Cxt extends RuntimeContext<ED>, 
         this.rwLock.acquire('X');
         if (applicationId) {
             this.applicationId = applicationId;
+            this.syncApplicationInfoFromBackend();
         }
         else {
             this.refresh(type);
         }
+    }
+
+    private async syncApplicationInfoFromBackend() {
+        const { data } = await this.cache.refresh('application', {
+            data: projection,
+            filter: {
+                id: this.applicationId,
+            }
+        });
+        assert(data.length === 1, `applicationId${this.applicationId}没有取到有效数据`);
+        this.application = data[0] as any;
         this.rwLock.release();
     }
 
@@ -69,8 +81,9 @@ export class Application<ED extends EntityDict, Cxt extends RuntimeContext<ED>, 
                 id: this.applicationId,
             }
         } as any);
-        assert(data.length === 1);
+        assert(data.length === 1, `applicationId${this.applicationId}没有取到有效数据`);
         this.application = data[0];
+        this.rwLock.release();
     }
 
     private async refresh(type: AppType) {

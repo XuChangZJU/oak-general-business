@@ -14,6 +14,7 @@ export declare class Application<ED extends EntityDict, Cxt extends RuntimeConte
     private cache;
     private storage;
     constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD>, type: AppType, cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>);
+    private syncApplicationInfoFromBackend;
     private getApplicationFromCache;
     private refresh;
     getApplication(): Promise<SelectRowShape<ED["application"]["Schema"], {
