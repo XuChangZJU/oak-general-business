@@ -52,25 +52,26 @@ export class Application<ED extends EntityDict, Cxt extends RuntimeContext<ED>, 
         this.cache = cache;
         this.storage = storage;
         const applicationId = storage.load('application:applicationId');
-        this.rwLock.acquire('X');
         if (applicationId) {
             this.applicationId = applicationId;
-            this.syncApplicationInfoFromBackend();
         }
         else {
             this.refresh(type);
         }
     }
 
-    private async syncApplicationInfoFromBackend() {
-        const { data } = await this.cache.refresh('application', {
-            data: projection,
-            filter: {
-                id: this.applicationId,
-            }
-        });
-        assert(data.length === 1, `applicationId${this.applicationId}没有取到有效数据`);
-        this.application = data[0] as any;
+    private async loadApplicationInfo() {
+        await this.rwLock.acquire('X');
+        if (!this.application) {
+            const { data } = await this.cache.refresh('application', {
+                data: projection,
+                filter: {
+                    id: this.applicationId!,
+                }
+            });
+            assert(data.length === 1, `applicationId${this.applicationId}没有取到有效数据`);
+            this.application = data[0] as any;
+        }
         this.rwLock.release();
     }
 
@@ -83,28 +84,33 @@ export class Application<ED extends EntityDict, Cxt extends RuntimeContext<ED>, 
         } as any);
         assert(data.length === 1, `applicationId${this.applicationId}没有取到有效数据`);
         this.application = data[0];
-        this.rwLock.release();
     }
 
     private async refresh(type: AppType) {
+        await this.rwLock.acquire('X');
         const { result: applicationId } = await this.getAspectWrapper().exec('getApplication', {
             type,
         });
         this.applicationId = applicationId;
         this.storage.save('application:applicationId', applicationId);
         this.getApplicationFromCache();
+        this.rwLock.release();
     }
 
     async getApplication() {
-        await this.rwLock.acquire('S');
-        const result = this.application!;
-        this.rwLock.release();
-        return result;
+        if (this.application) {
+            return this.application!;
+        }
+        await this.loadApplicationInfo();
+        return this.application!;
     }
 
     async getApplicationId(noWait?: true) {
         if (noWait) {
             return this.applicationId!;
+        }
+        if (this.applicationId) {
+            return this.applicationId;
         }
         await this.rwLock.acquire('S');
         const result = this.applicationId;

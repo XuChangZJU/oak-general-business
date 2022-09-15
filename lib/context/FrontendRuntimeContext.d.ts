@@ -12,11 +12,11 @@ export declare type SerializedData = {
     t?: string;
 };
 export declare class FrontendRuntimeContext<ED extends EntityDict, Cxt extends RuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends UniversalContext<ED> implements RuntimeContext<ED> {
-    private application;
-    private token;
-    constructor(store: RowStore<ED, Cxt>, application: Application<ED, Cxt, AD>, token: Token<ED, Cxt, AD>);
-    getApplicationId(): Promise<string>;
-    getSystemId(): Promise<"systemId" extends infer T ? T extends "systemId" ? T extends keyof ED["application"]["Schema"] ? {
+    private application?;
+    private token?;
+    constructor(store: RowStore<ED, Cxt>, application?: Application<ED, Cxt, AD>, token?: Token<ED, Cxt, AD>);
+    getApplicationId(): Promise<string | undefined>;
+    getSystemId(): Promise<("systemId" extends infer T ? T extends "systemId" ? T extends keyof ED["application"]["Schema"] ? {
         id: 1;
         name: 1;
         config: 1;
@@ -71,7 +71,7 @@ export declare class FrontendRuntimeContext<ED extends EntityDict, Cxt extends R
             name: 1;
             config: 1;
         };
-    }[T]> : never : never : never>;
+    }[T]> : never : never : never) | undefined>;
     getApplication(): Promise<import("oak-domain/lib/types").SelectRowShape<ED["application"]["Schema"], {
         id: 1;
         name: 1;
@@ -83,12 +83,23 @@ export declare class FrontendRuntimeContext<ED extends EntityDict, Cxt extends R
             name: 1;
             config: 1;
         };
-    }>>;
+    }> | undefined>;
     getTokenValue(): Promise<string | undefined>;
-    getToken(): Promise<import("oak-domain/lib/types").SelectRowShape<import("../general-app-domain/Token/Schema").Schema, {
+    getToken(): Promise<import("oak-domain/lib/types").SelectRowShape<ED["token"]["Schema"], {
         id: 1;
         userId: 1;
         ableState: 1;
+        player: {
+            id: 1;
+            userRole$user: {
+                $entity: "userRole";
+                data: {
+                    id: 1;
+                    userId: 1;
+                    roleId: 1;
+                };
+            };
+        };
         playerId: 1;
     }> | undefined>;
     getCurrentUserId(): Promise<string | undefined>;

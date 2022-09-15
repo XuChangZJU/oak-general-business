@@ -11,12 +11,48 @@ import { RuntimeContext } from '../context/RuntimeContext';
 import { AspectWrapper, SelectRowShape } from 'oak-domain/lib/types';
 import { ROOT_ROLE_ID } from '../constants';
 
+type TokenProjection = {
+    id: 1,
+    userId: 1,
+    ableState: 1,
+    player: {
+        id: 1,
+        userRole$user: {
+            $entity: 'userRole',
+            data: {
+                id: 1,
+                userId: 1,
+                roleId: 1,
+            },
+        },
+    },
+    playerId: 1,
+};
+const tokenProjection: TokenProjection = {
+    id: 1,
+    userId: 1,
+    ableState: 1,
+    player: {
+        id: 1,
+        userRole$user: {
+            $entity: 'userRole',
+            data: {
+                id: 1,
+                userId: 1,
+                roleId: 1,
+            },
+        },
+    },
+    playerId: 1,
+};
+
 export class Token<
     ED extends EntityDict,
     Cxt extends RuntimeContext<ED>,
     AD extends AspectDict<ED, Cxt>
     > extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
-    private token?: string;
+    private tokenValue?: string;
+    private token?: SelectRowShape<ED['token']['Schema'], TokenProjection>;
     private rwLock: RWLock;
     private cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
     private storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
@@ -30,37 +66,39 @@ export class Token<
         this.rwLock = new RWLock();
         this.cache = cache;
         this.storage = storage;
-        const token = storage.load('token:token');
-        if (token) {
-            this.token = token;
-            this.loadTokenInfo();
+        const tokenValue = storage.load('token:token');
+        if (tokenValue) {
+            this.tokenValue = tokenValue;
         }
     }
 
     async loadTokenInfo() {
         await this.rwLock.acquire('X');
-        await this.cache.refresh('token', {
-            data: {
-                id: 1,
-                userId: 1,
-                ableState: 1,
-                player: {
+        if (!this.token) {
+            const { data } = await this.cache.refresh('token', {
+                data: {
                     id: 1,
-                    userRole$user: {
-                        $entity: 'userRole',
-                        data: {
-                            id: 1,
-                            userId: 1,
-                            roleId: 1,
+                    userId: 1,
+                    ableState: 1,
+                    player: {
+                        id: 1,
+                        userRole$user: {
+                            $entity: 'userRole',
+                            data: {
+                                id: 1,
+                                userId: 1,
+                                roleId: 1,
+                            },
                         },
                     },
+                    playerId: 1,
                 },
-                playerId: 1,
-            },
-            filter: {
-                id: this.token!,
-            },
-        });
+                filter: {
+                    id: this.tokenValue!,
+                },
+            });
+            this.token = data as any;
+        }
         this.rwLock.release();
     }
 
@@ -73,7 +111,7 @@ export class Token<
                 'loginByMobile',
                 { password, mobile, captcha, env }
             );
-            this.token = result;
+            this.tokenValue = result;
             this.rwLock.release();
             this.storage.save('token:token', result);
         } catch (err) {
@@ -94,7 +132,7 @@ export class Token<
                     env: env as WebEnv,
                 }
             );
-            this.token = result;
+            this.tokenValue = result;
             this.rwLock.release();
             this.storage.save('token:token', result);
         } catch (err) {
@@ -117,7 +155,7 @@ export class Token<
                     env: env as WechatMpEnv,
                 }
             );
-            this.token = result;
+            this.tokenValue = result;
             this.rwLock.release();
             this.storage.save('token:token', result);
         } catch (err) {
@@ -150,58 +188,26 @@ export class Token<
 
     @Action
     async logout() {
-        this.token = undefined;
+        this.tokenValue = undefined;
         this.storage.remove('token:token');
     }
 
     async getTokenValue(noWait?: true) {
         if (noWait) {
-            return this.token;
+            return this.tokenValue;
         }
         await this.rwLock.acquire('S');
-        const token = this.token;
+        const token = this.tokenValue;
         this.rwLock.release();
         return token;
     }
 
     async getToken() {
-        const token = await this.getTokenValue();
-        if (!token) {
-            return;
+        if (this.token) {
+            return this.token;
         }
-        let result = await this.cache.get('token', {
-            data: {
-                id: 1,
-                userId: 1,
-                ableState: 1,
-                playerId: 1,
-            },
-            filter: {
-                id: token,
-            },
-        });
-        if (result.length === 0) {
-            // user信息未取到
-            result = (
-                await this.cache.refresh('token', {
-                    data: {
-                        id: 1,
-                        userId: 1,
-                        ableState: 1,
-                        playerId: 1,
-                    },
-                    filter: {
-                        id: token,
-                    },
-                })
-            ).data as any;
-        }
-        return result[0] as SelectRowShape<EntityDict['token']['Schema'], {
-            id: 1,
-            userId: 1,
-            ableState: 1,
-            playerId: 1,
-        }>;
+        await this.loadTokenInfo();
+        return this.token!;
     }
 
     async getUserId() {
@@ -210,52 +216,9 @@ export class Token<
     }
 
     async isRoot(): Promise<boolean> {
-        const tokenValue = await this.getTokenValue();
-        if (!tokenValue) {
-            return false;
-        }
-        const [tokens] = (await this.cache.get('token', {
-            data: {
-                id: 1,
-                userId: 1,
-                ableState: 1,
-                playerId: 1,
-                player: {
-                    id: 1,
-                    userRole$user: {
-                        $entity: 'userRole',
-                        data: {
-                            id: 1,
-                            userId: 1,
-                            roleId: 1,
-                        },
-                    },
-                },
-            },
-            filter: {
-                id: tokenValue,
-            },
-        })) as SelectRowShape<
-            ED['token']['Schema'],
-            {
-                id: 1;
-                userId: 1;
-                ableState: 1;
-                player: {
-                    id: 1;
-                    userRole$user: {
-                        $entity: 'userRole';
-                        data: {
-                            id: 1;
-                            userId: 1;
-                            roleId: 1;
-                        };
-                    };
-                };
-            }
-        >[];
+        const token = await this.getToken();
 
-        const { player } = tokens;
+        const { player } = token;
         const { userRole$user} = player!;
         return (userRole$user as any).length > 0 && (userRole$user as any).find(
             (ele: any) => ele.role.name === 'root'

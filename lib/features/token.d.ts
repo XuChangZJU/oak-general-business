@@ -6,7 +6,25 @@ import { EntityDict } from '../general-app-domain';
 import { AspectDict } from '../aspects/AspectDict';
 import { RuntimeContext } from '../context/RuntimeContext';
 import { AspectWrapper, SelectRowShape } from 'oak-domain/lib/types';
+declare type TokenProjection = {
+    id: 1;
+    userId: 1;
+    ableState: 1;
+    player: {
+        id: 1;
+        userRole$user: {
+            $entity: 'userRole';
+            data: {
+                id: 1;
+                userId: 1;
+                roleId: 1;
+            };
+        };
+    };
+    playerId: 1;
+};
 export declare class Token<ED extends EntityDict, Cxt extends RuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
+    private tokenValue?;
     private token?;
     private rwLock;
     private cache;
@@ -19,13 +37,9 @@ export declare class Token<ED extends EntityDict, Cxt extends RuntimeContext<ED>
     syncUserInfoWechatMp(): Promise<void>;
     logout(): Promise<void>;
     getTokenValue(noWait?: true): Promise<string | undefined>;
-    getToken(): Promise<SelectRowShape<import("../general-app-domain/Token/Schema").Schema, {
-        id: 1;
-        userId: 1;
-        ableState: 1;
-        playerId: 1;
-    }> | undefined>;
+    getToken(): Promise<SelectRowShape<ED["token"]["Schema"], TokenProjection>>;
     getUserId(): Promise<string | undefined>;
     isRoot(): Promise<boolean>;
     sendCaptcha(mobile: string): Promise<string>;
 }
+export {};

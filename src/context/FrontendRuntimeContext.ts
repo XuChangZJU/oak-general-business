@@ -17,53 +17,58 @@ export type SerializedData = {
 }
 
 export class FrontendRuntimeContext<ED extends EntityDict, Cxt extends RuntimeContext<ED>, AD extends AspectDict<ED, Cxt>>  extends UniversalContext<ED> implements RuntimeContext<ED> {
-    private application: Application<ED, Cxt, AD>;
-    private token: Token<ED, Cxt, AD>;
-    constructor(store: RowStore<ED, Cxt>, application: Application<ED, Cxt, AD>, token: Token<ED, Cxt, AD>) {
+    private application?: Application<ED, Cxt, AD>;
+    private token?: Token<ED, Cxt, AD>;
+    constructor(store: RowStore<ED, Cxt>, application?: Application<ED, Cxt, AD>, token?: Token<ED, Cxt, AD>) {
         super(store);
         this.application = application;
         this.token = token;
     }
 
-    getApplicationId() {
-        return this.application.getApplicationId();
+    async getApplicationId() {
+        return this.application?.getApplicationId();
     }
 
     async getSystemId() {
-        const app = await this.application.getApplication();
-        return app.systemId;
+        const app = await this.application?.getApplication();
+        return app?.systemId;
     }
 
     async getApplication() {
-        return this.application.getApplication();
+        return this.application?.getApplication();
     }
 
     async getTokenValue() {
-        return this.token.getTokenValue();
+        return this.token?.getTokenValue();
     }
 
-    getToken() {
-        return this.token.getToken();
+    async getToken() {
+        return this.token?.getToken();
     }
 
     async getCurrentUserId(): Promise<string | undefined> {
-        return this.token.getUserId();
+        return this.token?.getUserId();
     }
 
     async toString(): Promise<string> {
         const data = {
-            a: await this.application.getApplicationId(true),
         };
-        const tokenValue = await this.token.getTokenValue(true);
-        if (tokenValue) {
+        const a = await this.application?.getApplicationId(true);
+        const t = await this.token?.getTokenValue(true);
+        if (t) {
             Object.assign(data, {
-                t: tokenValue,
+                t,
+            });
+        }
+        if (a) {
+            Object.assign(data, {
+                a,
             });
         }
         return JSON.stringify(data);
     }
 
-    isRoot() {
-        return this.token.isRoot();
+    async isRoot() {
+        return this.token?.isRoot() || false;
     }
 };
