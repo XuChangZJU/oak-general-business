@@ -82,16 +82,20 @@ export class Token<
 
     async loadTokenInfo() {
         await this.rwLock.acquire('X');
-        if (!this.token) {
-            const { data } = await this.cache.refresh('token', {
-                data: tokenProjection,
-                filter: {
-                    id: this.tokenValue!,
-                },
-            });
-            this.token = data[0] as any;
+        try {
+            if (!this.token) {
+                const { data } = await this.cache.refresh('token', {
+                    data: tokenProjection,
+                    filter: {
+                        id: this.tokenValue!,
+                    },
+                });
+                this.token = data[0] as any;
+            }
         }
-        this.rwLock.release();
+        finally {
+            this.rwLock.release();
+        }
     }
 
     @Action
@@ -104,11 +108,11 @@ export class Token<
                 { password, mobile, captcha, env }
             );
             this.tokenValue = result;
-            this.rwLock.release();
             this.storage.save('token:token', result);
         } catch (err) {
-            this.rwLock.release();
             throw err;
+        } finally {
+            this.rwLock.release();
         }
     }
 
@@ -128,8 +132,9 @@ export class Token<
             this.rwLock.release();
             this.storage.save('token:token', result);
         } catch (err) {
-            this.rwLock.release();
             throw err;
+        } finally {
+            this.rwLock.release();
         }
     }
 
@@ -148,11 +153,11 @@ export class Token<
                 }
             );
             this.tokenValue = result;
-            this.rwLock.release();
             this.storage.save('token:token', result);
         } catch (err) {
-            this.rwLock.release();
             throw err;
+        } finally {
+            this.rwLock.release();
         }
     }
 
