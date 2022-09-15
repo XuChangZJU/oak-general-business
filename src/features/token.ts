@@ -129,7 +129,6 @@ export class Token<
                 }
             );
             this.tokenValue = result;
-            this.rwLock.release();
             this.storage.save('token:token', result);
         } catch (err) {
             throw err;
