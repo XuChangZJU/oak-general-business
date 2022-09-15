@@ -97,7 +97,7 @@ export class Token<
                     id: this.tokenValue!,
                 },
             });
-            this.token = data as any;
+            this.token = data[0] as any;
         }
         this.rwLock.release();
     }
