@@ -161,6 +161,7 @@ export class Token<
         await this.rwLock.acquire('S');
         const token = this.token;
         this.rwLock.release();
+        return token;
     }
 
     async getToken() {
