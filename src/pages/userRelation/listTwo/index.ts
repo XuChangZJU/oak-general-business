@@ -73,7 +73,7 @@ export default OakPage({
         },
     ],
     isList: true,
-    formData: async function ({ data: users, props, features }) {
+    async formData ({ data: users, props, features }) {
         const { entity, entityId } = props;
         const entityStr = firstLetterUpperCase(entity!);
         const filter = await this.getFilterByName('name');
@@ -82,8 +82,8 @@ export default OakPage({
                 const { mobile$user, extraFile$entity } = ele || {};
                 const mobile = mobile$user && mobile$user[0]?.mobile;
                 const relations = ele[`user${entityStr}$user`]
-                    ?.filter((ele: any) => ele[`${entity}Id`] === entityId)
-                    .map((ele: any) => ele.relation);
+                    ?.filter((rt: any) => rt[`${entity}Id`] === entityId)
+                    .map((rt2: any) => rt2.relation);
                 const avatar =
                     extraFile$entity &&
                     extraFile$entity[0] &&
@@ -228,7 +228,7 @@ export default OakPage({
         async searchConfirm() {
             this.refresh();
         },
-        //web table methods
+        // web table methods
         onEdit(e: any) {
             const { editableRowKeys } = this.state;
 

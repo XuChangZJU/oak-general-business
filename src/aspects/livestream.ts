@@ -111,7 +111,6 @@ export async function getLivestream<ED extends EntityDict, Cxt extends RuntimeCo
     });
 
     const url = `http://pili.qiniuapi.com/v2/hubs/${hub}/streams`;
-    console.log(bodyStr, url, token);
    fetch(url, {
         method: 'POST',
         headers: {
@@ -168,7 +167,7 @@ export async function getLivestream2<ED extends EntityDict, Cxt extends RuntimeC
 async function getStreamObj(
     config: {
         publishDomain: string,
-        rtmpPlayDomain: string,
+        playDomain: string,
         hub: string,
         publishKey: string,
         playKey: string,
@@ -187,7 +186,7 @@ async function getStreamObj(
         >
     {
     // 生成推流地址
-    const {hub, publishDomain, rtmpPlayDomain, publishKey, playKey } = config;
+    const { hub, publishDomain, playDomain, publishKey, playKey } = config;
     const signStr = `/${hub}/${streamTitle}?expire=${expireAt}`;
     const sourcePath = `/${hub}/${streamTitle}`;
     const token = base64ToUrlSafe(hmacSha1(signStr, publishKey));
@@ -195,7 +194,7 @@ async function getStreamObj(
     // 生成播放地址
     const t = expireAt.toString(16).toLowerCase();
     const playSign = Md5.hashStr(playKey + sourcePath + t).toString().toLowerCase();
-    const rtmpPlayUrl = `rtmp://${rtmpPlayDomain}${sourcePath}?sign=${playSign}&t=${t}`;
+    const rtmpPlayUrl = `https://${playDomain}${sourcePath}.m3u8?sign=${playSign}&t=${t}`;
     // obs推流需要的地址和串流密钥
     const pcPushUrl = `rtmp://${publishDomain}/${hub}/`;
     const streamKey = `${streamTitle}?expire=${expireAt}&token=${token}`
