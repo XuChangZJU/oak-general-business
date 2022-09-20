@@ -84,12 +84,19 @@ export class Token<
         await this.rwLock.acquire('X');
         try {
             if (!this.token) {
-                const { data } = await this.cache.refresh('token', {
-                    data: tokenProjection,
-                    filter: {
-                        id: this.tokenValue!,
+                /**
+                 * 这里不能用cache.refresh，以防action再触发页面重渲染，造成递归acquire X lock
+                 */
+                const { result } = await this.getAspectWrapper().exec('select', {
+                    entity: 'token',
+                    selection: {
+                        data: tokenProjection,
+                        filter: {
+                            id: this.tokenValue!,
+                        },
                     },
-                });
+                } as any); 
+                const { data } = result;
                 this.token = data[0] as any;
             }
         }
