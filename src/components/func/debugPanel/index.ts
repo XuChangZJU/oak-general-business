@@ -58,5 +58,12 @@ export default OakComponent({
                 dialogVisible: false,
             });
         },
+        downloadEnv() {
+            const data = this.features.localStorage.loadAll();
+            
+        },
+        uploadEnv() {
+
+        }
     },
 });

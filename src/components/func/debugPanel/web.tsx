@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Space, Drawer, DialogPlugin } from 'tdesign-react';
 import { ChevronUpIcon } from 'tdesign-icons-react';
+// import { saveAs } from 'file-saver';
 
 export default function render(this: any) {
     const { placement = 'bottom', style = {} } = this.props;
@@ -32,6 +33,33 @@ export default function render(this: any) {
                 header="Debug控制台"
                 footer={<></>}
             >
+                <input 
+                    type="file"
+                    accept='application/json'
+                    hidden
+                    id="upload"
+                    onChange={()=>{
+                        const that = this;
+                        const file = (document.getElementById('upload') as any).files[0];
+                        if (typeof FileReader === undefined) {
+                            alert('浏览器版本太老了');
+                        }
+                        else {
+                            const reader = new FileReader();
+                            reader.readAsText(file);
+                            reader.onload = function() {
+                                try {
+                                    const data = JSON.parse(this.result as string);
+                                    that.features.localStorage.resetAll(data);
+                                    window.location.reload();
+                                }
+                                catch(err) {
+                                    console.error(err);
+                                }
+                            }
+                        }
+                    }}
+                />
                 <Space breakLine={true} direction="horizontal" size="medium">
                     <Button
                         theme="primary"
@@ -53,6 +81,36 @@ export default function render(this: any) {
                         onClick={() => this.printCachedStore()}
                     >
                         C
+                    </Button>
+                    <Button
+                        theme="primary"
+                        shape="circle"
+                        onClick={() => {
+                            const data = this.features.localStorage.loadAll();
+                            const element = document.createElement('a');
+                            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(data)));
+                            element.setAttribute('download', 'data.json');
+                          
+                            element.style.display = 'none';
+                            document.body.appendChild(element);
+                          
+                            element.click();
+                          
+                            document.body.removeChild(element);
+                        }}
+                    >
+                        D
+                    </Button>
+
+                    <Button
+                        theme="primary"
+                        shape="circle"
+                        onClick={() => {
+                            const element = document.getElementById('upload');
+                            element!.click();
+                        }}
+                    >
+                        U
                     </Button>
                     <Button
                         theme="warning"
