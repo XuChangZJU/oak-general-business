@@ -87,7 +87,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends UniversalConte
                         id: tokenValue,
                     },
                 }, this, {});
-                assert(result.length > 0, `构建BackendRuntimeContext对应tokenValue「${tokenValue}user`);
+                assert(result.length > 0, `构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`);
                 const token = result[0] as SelectRowShape<ED['token']['Schema'], GetTokeShape2>;
                 if (token.ableState === 'disabled') {
                     throw new OakTokenExpiredException();
