@@ -3,7 +3,7 @@ import { RuntimeContext } from '../context/RuntimeContext';
 import { CreateOperationData as CreateUserEntityGrantData } from '../general-app-domain/UserEntityGrant/Schema';
 import { EntityDict } from '../general-app-domain/EntityDict';
 
-import { OakCongruentRowExists, OakException } from 'oak-domain/lib/types';
+import { OakCongruentRowExists, OakException, OakRowInconsistencyException } from 'oak-domain/lib/types';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { DefaultConfig } from '../constants';
 import { createWechatQrCode } from '../aspects/wechatQrCode';
@@ -47,7 +47,11 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                     count: 1,
                 }, context, params);
                 if (result.length) {
-                    throw new OakCongruentRowExists(result[0] as any, '有可重用的userEntityGrant');
+                    throw new OakRowInconsistencyException({
+                        a: 'c',
+                        e: 'userEntityGrant',
+                        d: result as any,
+                    }, '有可重用的userEntityGrant');
                 }
 
                 const expiresAt = Date.now() + (SystemConfig.UserEntityGrant?.lifetimeLength || DefaultConfig.userEntityGrant.lifetimeLength);
@@ -121,9 +125,11 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
             const { result: result2 } = await context.rowStore.select(
                 userRelation,
                 {
-                    id: await generateNewId(),
                     data: {
                         id: 1,
+                        userId: 1,
+                        relation: 1,
+                        [`${entity}Id`]: 1,
                     },
                     filter: {
                         userId: userId!,
@@ -139,8 +145,12 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                 }
             );
             if (result2.length) {
-                throw new OakCongruentRowExists(
-                    result2[0] as any,
+                throw new OakRowInconsistencyException(
+                    {
+                        a: 'c',
+                        e: userRelation,
+                        d: result2 as any,
+                    },
                     '已领用该权限'
                 );
             } else {
