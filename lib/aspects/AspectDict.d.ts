@@ -38,6 +38,11 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends RuntimeContext
         streamTitle: string;
         expireAt: number;
     }, context: Cxt) => Promise<Pick<Livestream, 'streamTitle' | 'hub' | 'rtmpPushUrl' | 'rtmpPlayUrl' | 'pcPushUrl' | 'streamKey' | 'expireAt'>>;
+    getPlayBackUrl: (params: {
+        streamTitle: string;
+        start: number;
+        end: number;
+    }, context: Cxt) => Promise<string>;
     sendCaptcha: (params: {
         mobile: string;
         env: WechatMpEnv | WebEnv;

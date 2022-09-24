@@ -17,6 +17,7 @@ export declare type SystemConfig = {
             liveHost?: string;
             puhlishDomain?: string;
             playDomain?: string;
+            playBackDomain?: string;
             hub?: string;
             publisthKey?: string;
             playKey?: string;

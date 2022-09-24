@@ -95,6 +95,14 @@ type GeneralAspectDict<
             | 'expireAt'
         >
     >;
+        getPlayBackUrl: (
+            params: {
+                streamTitle: string,
+                start: number,
+                end: number,
+            },
+            context: Cxt
+        ) => Promise<string>;
     sendCaptcha: (params: {
         mobile: string;
         env: WechatMpEnv | WebEnv;

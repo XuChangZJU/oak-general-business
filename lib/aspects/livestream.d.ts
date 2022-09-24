@@ -23,3 +23,8 @@ export declare function getLivestream2<ED extends EntityDict, Cxt extends Runtim
     streamTitle: string;
     expireAt: number;
 }, context: Cxt): Promise<Pick<Livestream, 'streamTitle' | 'hub' | 'rtmpPushUrl' | 'rtmpPlayUrl' | 'pcPushUrl' | 'streamKey' | 'expireAt'>>;
+export declare function getPlayBackUrl<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(params: {
+    streamTitle: string;
+    start: number;
+    end: number;
+}, context: Cxt): Promise<string>;

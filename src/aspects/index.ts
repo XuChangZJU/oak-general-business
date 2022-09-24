@@ -7,7 +7,7 @@ import {
 } from './token';
 import { getUploadInfo } from './extraFile';
 import { getApplication } from './application';
-import { getLivestream, getLivestream2 } from './livestream';
+import { getLivestream, getLivestream2, getPlayBackUrl } from './livestream';
 // import  commonAspectDict from 'oak-common-aspect';
 
 export const aspectDict = {
@@ -20,6 +20,7 @@ export const aspectDict = {
     getApplication,
     getLivestream,
     getLivestream2,
+    getPlayBackUrl,
 };
 
 // export type AspectDict<ED extends EntityDict & BaseEntityDict> = TokenAD<ED> & CrudAD<ED>;

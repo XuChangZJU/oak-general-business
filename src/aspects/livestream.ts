@@ -110,7 +110,7 @@ export async function getLivestream<ED extends EntityDict, Cxt extends RuntimeCo
         bodyStr,
     });
 
-    const url = `http://pili.qiniuapi.com/v2/hubs/${hub}/streams`;
+    const url = `https://pili.qiniuapi.com/v2/hubs/${hub}/streams`;
    fetch(url, {
         method: 'POST',
         headers: {
@@ -207,4 +207,53 @@ async function getStreamObj(
         streamKey,
         expireAt,
     };
+}
+
+// 生成直播回放
+export async function getPlayBackUrl<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(
+    params: {
+        streamTitle: string,
+        start: number,
+        end: number,
+    },
+    context: Cxt
+) {
+    const { streamTitle, start, end } = params;
+    // 获取七牛直播云信息
+    const config = await getQiniuUploadInfo<ED, Cxt>(context);
+    const { hub, playBackDomain } = config;
+    // 七牛创建直播流接口路径
+    const encodeStreamTitle = base64ToUrlSafe(streamTitle);
+    const path = `/v2/hubs/${hub}/streams/${encodeStreamTitle}/saveas`;
+    const bodyStr = JSON.stringify({
+        fname: streamTitle,
+        start,
+        end,
+    })
+    const contentType = 'application/json';
+    const { token } = await getQiniuToken(config, {
+        method: 'POST',
+        path,
+        contentType,
+        bodyStr,
+    });
+
+    const url = `https://pili.qiniuapi.com${path}`;
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            Authorization: token,
+            'Content-Type': contentType,
+        },
+        body: bodyStr,
+        mode: 'no-cors',
+    })
+        .then((res) => {
+            console.log(res.json());
+        }).then((res) => {
+            console.log(res);
+        }).catch((e) => {
+            console.log(e);
+        })
+    return `https://${playBackDomain}/${streamTitle}.m3u8`;
 }
