@@ -3,7 +3,7 @@ import { CreateOperationData as RoleCreate } from '../general-app-domain/Role/Sc
 import { CreateOperationData as MobileCreate } from '../general-app-domain/Mobile/Schema';
 import { CreateOperationData as TokenCreate } from '../general-app-domain/Token/Schema';
 import { ROOT_MOBILE_ID, ROOT_ROLE_ID, ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
-import { DEV_SYSTEM_ID } from './DEV-ID';
+import { DEV_SYSTEM_ID } from './DEV-CONFIG';
 export const users: Array<UserCreate> = [
     {
         password: 'oak@2022',

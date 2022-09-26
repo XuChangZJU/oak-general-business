@@ -1,22 +1,10 @@
-import { String, Text } from 'oak-domain/lib/types/DataType';
+import { String, Boolean, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
+import { QiniuConfig } from '../types/Config';
+import { Schema as Platform } from './Platform';
 export declare type SystemConfig = {
     Cos?: {
-        qiniu?: {
-            accessKey: string;
-            secretKey: string;
-            uploadHost: string;
-            liveHost?: string;
-            puhlishDomain?: string;
-            playDomain?: string;
-            playBackDomain?: string;
-            hub?: string;
-            publisthKey?: string;
-            playKey?: string;
-            bucket: string;
-            domain: string;
-            protocol: string | string[];
-        };
+        qiniu?: QiniuConfig;
     };
     Map?: {
         amap?: {
@@ -31,5 +19,6 @@ export interface Schema extends EntityShape {
     name: String<32>;
     description: Text;
     config: SystemConfig;
+    platform: Platform;
+    super?: Boolean;
 }
-export declare type Relation = 'owner';

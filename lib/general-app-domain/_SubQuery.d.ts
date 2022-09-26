@@ -13,9 +13,9 @@ import * as Email from "./Email/Schema";
 import * as ExtraFile from "./ExtraFile/Schema";
 import * as Livestream from "./Livestream/Schema";
 import * as Mobile from "./Mobile/Schema";
+import * as Platform from "./Platform/Schema";
 import * as UserRole from "./UserRole/Schema";
 import * as Role from "./Role/Schema";
-import * as UserSystem from "./UserSystem/Schema";
 import * as System from "./System/Schema";
 import * as Token from "./Token/Schema";
 import * as UserEntityGrant from "./UserEntityGrant/Schema";
@@ -54,8 +54,6 @@ export declare type UserIdSubQuery = {
         entity: "mobile";
     }) | (UserRole.UserIdSubQuery & {
         entity: "userRole";
-    }) | (UserSystem.UserIdSubQuery & {
-        entity: "userSystem";
     }) | (Token.UserIdSubQuery & {
         entity: "token";
     }) | (User.UserIdSubQuery & {
@@ -128,6 +126,13 @@ export declare type MobileIdSubQuery = {
         entity: "mobile";
     }) | any;
 };
+export declare type PlatformIdSubQuery = {
+    [K in "$in" | "$nin"]?: (System.PlatformIdSubQuery & {
+        entity: "system";
+    }) | (Platform.PlatformIdSubQuery & {
+        entity: "platform";
+    }) | any;
+};
 export declare type UserRoleIdSubQuery = {
     [K in "$in" | "$nin"]?: (UserRole.UserRoleIdSubQuery & {
         entity: "userRole";
@@ -140,18 +145,11 @@ export declare type RoleIdSubQuery = {
         entity: "role";
     }) | any;
 };
-export declare type UserSystemIdSubQuery = {
-    [K in "$in" | "$nin"]?: (UserSystem.UserSystemIdSubQuery & {
-        entity: "userSystem";
-    }) | any;
-};
 export declare type SystemIdSubQuery = {
     [K in "$in" | "$nin"]?: (Application.SystemIdSubQuery & {
         entity: "application";
     }) | (Domain.SystemIdSubQuery & {
         entity: "domain";
-    }) | (UserSystem.SystemIdSubQuery & {
-        entity: "userSystem";
     }) | (User.SystemIdSubQuery & {
         entity: "user";
     }) | (System.SystemIdSubQuery & {

@@ -16,4 +16,4 @@ export {
 
 export * from './types/Exceptions';
 export { composeFileUrl, decomposeFileUrl } from './utils/extraFile';
-export * from './data/DEV-ID';
+export * from './data/DEV-CONFIG';

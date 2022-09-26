@@ -4,7 +4,7 @@ import {
     DEV_WEB_APPLICATION_ID,
     DEV_WECHATMP_APPLICATION_ID,
     DEV_WECHATPUPLIC_APPLICATION_ID,
-} from '..';
+} from '../data/DEV-CONFIG';
 import { RuntimeContext } from '../context/RuntimeContext';
 
 export async function getApplication<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(params: {
@@ -20,6 +20,7 @@ export async function getApplication<ED extends EntityDict, Cxt extends RuntimeC
     const url = context.getHeader('url');
     console.log('url is', url);
 
+    // TODO
     const { result: [application]} = await context.rowStore.select('application', {
         data: {
             id: 1,

@@ -7,4 +7,4 @@ import { routers as exceptionRouters } from './exceptionRouters';
 export { checkers, triggers, watchers, data, aspectDict, exceptionRouters, };
 export * from './types/Exceptions';
 export { composeFileUrl, decomposeFileUrl } from './utils/extraFile';
-export * from './data/DEV-ID';
+export * from './data/DEV-CONFIG';
