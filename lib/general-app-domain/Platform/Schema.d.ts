@@ -4,22 +4,8 @@ import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { QiniuConfig } from "../../types/Config";
 import * as System from "../System/Schema";
-export declare type QiniuConfig = {
-    accessKey: string;
-    secretKey: string;
-    uploadHost: string;
-    liveHost?: string;
-    puhlishDomain?: string;
-    playDomain?: string;
-    playBackDomain?: string;
-    hub?: string;
-    publisthKey?: string;
-    playKey?: string;
-    bucket: string;
-    domain: string;
-    protocol: string | string[];
-};
 export declare type PlatformConfig = {
     Cos?: {
         qiniu?: QiniuConfig;
