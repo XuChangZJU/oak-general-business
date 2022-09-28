@@ -56,6 +56,11 @@ export default OakPage(
             relationArr: [] as string[],
         },
         methods: {
+            async onLoad() {
+                if (!this.props.oakId) {
+                    this.setUpdateData('password', '12345678');
+                }
+            },
             setValue(input: any) {
                 const { dataset, value, Context } = this.resolveInput(input);
                 this.setUpdateData(dataset!.attr, value);
@@ -68,14 +73,14 @@ export default OakPage(
                 this.setUpdateData('mobile$user.0.mobile', value);
             },
             onCheckBoxChange(event: any) {
-                const { value } = event.detail as { value: Array<string> };
+                const { value } = event.detail as { value: string[] };
                 this.setRelationValue(value);
             },
-            setRelationValue(value: Array<string>) {
+            setRelationValue(value: string[]) {
                 const { entity, entityId, relations } = this.props;
                 const entityStr = firstLetterUpperCase(entity!);
                 const { relationArr } = this.state;
-                //由于是根据index 进行删除, 所以将之前设置的node从头开始删除
+                // 由于是根据index 进行删除, 所以将之前设置的node从头开始删除
                 relationArr.forEach((ele, index) => {
                     this.removeNode(`user${entityStr}$user`, '0');
                 })
@@ -90,7 +95,7 @@ export default OakPage(
             async onConfirm() {
                 await this.execute('create');
                 this.navigateBack();
-            },        
+            },
         },
     }
 );
