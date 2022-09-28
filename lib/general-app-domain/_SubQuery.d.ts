@@ -12,6 +12,8 @@ import * as Domain from "./Domain/Schema";
 import * as Email from "./Email/Schema";
 import * as ExtraFile from "./ExtraFile/Schema";
 import * as Livestream from "./Livestream/Schema";
+import * as Message from "./Message/Schema";
+import * as MessageSent from "./MessageSent/Schema";
 import * as MessageType from "./MessageType/Schema";
 import * as Mobile from "./Mobile/Schema";
 import * as Platform from "./Platform/Schema";
@@ -51,6 +53,8 @@ export declare type UserIdSubQuery = {
         entity: "oper";
     }) | (Email.UserIdSubQuery & {
         entity: "email";
+    }) | (Message.UserIdSubQuery & {
+        entity: "message";
     }) | (Mobile.UserIdSubQuery & {
         entity: "mobile";
     }) | (UserRole.UserIdSubQuery & {
@@ -122,6 +126,18 @@ export declare type LivestreamIdSubQuery = {
         entity: "livestream";
     }) | any;
 };
+export declare type MessageIdSubQuery = {
+    [K in "$in" | "$nin"]?: (MessageSent.MessageIdSubQuery & {
+        entity: "messageSent";
+    }) | (Message.MessageIdSubQuery & {
+        entity: "message";
+    }) | any;
+};
+export declare type MessageSentIdSubQuery = {
+    [K in "$in" | "$nin"]?: (MessageSent.MessageSentIdSubQuery & {
+        entity: "messageSent";
+    }) | any;
+};
 export declare type MessageTypeIdSubQuery = {
     [K in "$in" | "$nin"]?: (MessageType.MessageTypeIdSubQuery & {
         entity: "messageType";
@@ -156,6 +172,8 @@ export declare type SystemIdSubQuery = {
         entity: "application";
     }) | (Domain.SystemIdSubQuery & {
         entity: "domain";
+    }) | (Message.SystemIdSubQuery & {
+        entity: "message";
     }) | (User.SystemIdSubQuery & {
         entity: "user";
     }) | (System.SystemIdSubQuery & {
