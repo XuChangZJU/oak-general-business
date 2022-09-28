@@ -1,0 +1,1 @@
+{ "attr": { "user": "关联用户", "system": "系统", "type": "消息类型", "weight": "优先级", "iState": "状态", "props": "属性", "params": "渠道定制参数", "data": "透传数据" }, "action": { "succeed": "成功", "fail": "失败" }, "v": { "iState": { "sending": "发送中", "success": "发送成功", "failure": "发送失败" }, "weight": { "high": "高", "medium": "中", "low": "低", "data": "数据" }, "type": { "adminNotification": "管理员通知" } } }
