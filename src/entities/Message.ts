@@ -58,6 +58,7 @@ const locale: LocaleDef<Schema, Action, '', {
                 high: '高',
                 medium: '中',
                 low: '低',
+                data: '数据',
             },
             type: {
                 adminNotification: '管理员通知'
