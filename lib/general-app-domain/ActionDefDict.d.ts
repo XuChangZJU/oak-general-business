@@ -11,6 +11,12 @@ export declare const ActionDefDict: {
     email: {
         ableState: import("oak-domain/lib/types").ActionDef<import("oak-domain/lib/actions/action").AbleAction, import("oak-domain/lib/actions/action").AbleState>;
     };
+    message: {
+        iState: import("oak-domain/lib/types").ActionDef<import("./Message/Action").IAction, import("./Message/Action").IState>;
+    };
+    messageSent: {
+        iState: import("oak-domain/lib/types").ActionDef<import("./MessageSent/Action").IAction, import("./MessageSent/Action").IState>;
+    };
     mobile: {
         ableState: import("oak-domain/lib/types").ActionDef<import("oak-domain/lib/actions/action").AbleAction, import("oak-domain/lib/actions/action").AbleState>;
     };

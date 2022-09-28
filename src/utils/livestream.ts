@@ -4,7 +4,7 @@ import { Schema as Livestream } from '../general-app-domain/Livestream/Schema';
 import { Origin, QiniuLiveConfig } from '../types/Config';
 import { getConfig } from './getContextConfig';
 import { QiniuCloudInstance } from 'oak-external-sdk';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 
 /**
  * 创建直播流并生成推拉流地址

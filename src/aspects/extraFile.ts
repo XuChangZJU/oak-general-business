@@ -3,7 +3,7 @@ import { EntityDict } from '../general-app-domain';
 import { Origin, QiniuCosConfig } from '../types/Config';
 import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
 import { getConfig } from '../utils/getContextConfig';
-import { assert } from 'console';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { QiniuCloudInstance } from 'oak-external-sdk';
 
 
