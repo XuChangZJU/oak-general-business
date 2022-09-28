@@ -77,6 +77,7 @@ export default OakPage({
         const { entity, entityId } = props;
         const entityStr = firstLetterUpperCase(entity!);
         const filter = await this.getFilterByName('name');
+        const pagination = this.getPagination();
         return {
             users: users?.map((ele: any) => {
                 const { mobile$user, extraFile$entity } = ele || {};
@@ -99,6 +100,7 @@ export default OakPage({
                 filter?.$or &&
                 (filter.$or as [{ name: { $includes: string } }])[0]?.name
                     .$includes,
+            pagination,
         };
     },
     properties: {
