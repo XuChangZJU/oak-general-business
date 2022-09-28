@@ -37,7 +37,7 @@ export async function getLivestream<ED extends EntityDict, Cxt extends RuntimeCo
     } = await getConfig<ED, Cxt>(context, 'Live', origin);
     assert(origin === 'qiniu');
     const { hub, liveHost, publishDomain, playDomain, playKey, publishKey } = config as QiniuLiveConfig;
-    return (<QiniuCloudInstance>instance).getLiveStream(hub, 'POST', streamTitle, liveHost, publishDomain, playDomain, publishKey, playKey, expireAt);
+    return (instance as QiniuCloudInstance).getLiveStream(hub, 'POST', streamTitle, liveHost, publishDomain, playDomain, publishKey, playKey, expireAt);
 }
 
 // 获取推拉流地址
@@ -69,10 +69,10 @@ export async function getStreamObj<ED extends EntityDict, Cxt extends RuntimeCon
         instance,
         config,
     } = await getConfig<ED, Cxt>(context, 'Live', origin);
-    
+
     assert(origin === 'qiniu');
     const { publishDomain: publishDomain, publishKey: publishKey, playDomain, playKey, hub } = config as QiniuLiveConfig;
-    return (<QiniuCloudInstance>instance).getStreamObj(publishDomain, playDomain, hub, publishKey, playKey, streamTitle, expireAt);
+    return (instance as QiniuCloudInstance).getStreamObj(publishDomain, playDomain, hub, publishKey, playKey, streamTitle, expireAt);
 }
 
 // 生成直播回放
@@ -92,5 +92,5 @@ export async function getPlayBackUrl<ED extends EntityDict, Cxt extends RuntimeC
         instance
     } = await getConfig<ED, Cxt>(context, 'Live', origin);
     const { hub, playBackDomain, liveHost } = config as QiniuLiveConfig;
-    return (<QiniuCloudInstance>instance).getPlayBackUrl(hub, playBackDomain, streamTitle, start, end, 'POST', liveHost);
+    return (instance as QiniuCloudInstance).getPlayBackUrl(hub, playBackDomain, streamTitle, start, end, 'POST', liveHost);
 }

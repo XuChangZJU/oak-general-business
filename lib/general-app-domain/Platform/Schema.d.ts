@@ -4,7 +4,7 @@ import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
-import { Config } from "../../types/Config";
+import { Config } from "..\\..\\types\\Config";
 import * as System from "../System/Schema";
 export declare type OpSchema = {
     id: PrimaryKey;
