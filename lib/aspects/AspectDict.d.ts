@@ -3,7 +3,7 @@ import { AppType } from '../general-app-domain/Application/Schema';
 import { EntityDict } from "../general-app-domain";
 import { QiniuUploadInfo } from "oak-frontend-base/lib/types/Upload";
 import { RuntimeContext } from '../context/RuntimeContext';
-import { Schema as Livestream } from '../general-app-domain/Livestream/Schema';
+import { Origin } from "../types/Config";
 declare type GeneralAspectDict<ED extends EntityDict, Cxt extends RuntimeContext<ED>> = {
     loginByMobile: (params: {
         captcha?: string;
@@ -27,22 +27,10 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends RuntimeContext
         signature: string;
     }, context: Cxt) => Promise<void>;
     getUploadInfo: (params: {
-        origin: string;
+        origin: Origin;
+        bucket?: string;
         key?: string;
     }, context: Cxt) => Promise<QiniuUploadInfo>;
-    getLivestream: (params: {
-        streamTitle: string;
-        expireAt: number;
-    }, context: Cxt) => Promise<Pick<Livestream, 'streamTitle' | 'hub' | 'rtmpPushUrl' | 'rtmpPlayUrl' | 'pcPushUrl' | 'streamKey' | 'expireAt'>>;
-    getLivestream2: (params: {
-        streamTitle: string;
-        expireAt: number;
-    }, context: Cxt) => Promise<Pick<Livestream, 'streamTitle' | 'hub' | 'rtmpPushUrl' | 'rtmpPlayUrl' | 'pcPushUrl' | 'streamKey' | 'expireAt'>>;
-    getPlayBackUrl: (params: {
-        streamTitle: string;
-        start: number;
-        end: number;
-    }, context: Cxt) => Promise<string>;
     sendCaptcha: (params: {
         mobile: string;
         env: WechatMpEnv | WebEnv;

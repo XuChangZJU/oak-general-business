@@ -12,6 +12,7 @@ import { EntityDef as Domain } from "./Domain/Schema";
 import { EntityDef as Email } from "./Email/Schema";
 import { EntityDef as ExtraFile } from "./ExtraFile/Schema";
 import { EntityDef as Livestream } from "./Livestream/Schema";
+import { EntityDef as MessageType } from "./MessageType/Schema";
 import { EntityDef as Mobile } from "./Mobile/Schema";
 import { EntityDef as Platform } from "./Platform/Schema";
 import { EntityDef as UserRole } from "./UserRole/Schema";
@@ -36,6 +37,7 @@ export declare type EntityDict = {
     email: Email;
     extraFile: ExtraFile;
     livestream: Livestream;
+    messageType: MessageType;
     mobile: Mobile;
     platform: Platform;
     userRole: UserRole;

@@ -13,10 +13,15 @@ export declare type WebConfig = {
     appId?: string;
     appSecret?: string;
 };
+declare type WechatPublicTemplateMsgsConfig = Record<string, {
+    templateId: string;
+    dataDef: [string, string][];
+}>;
 export declare type WechatPublicConfig = {
     type: 'wechatPublic';
     appId: string;
     appSecret: string;
+    templateMsgs?: WechatPublicTemplateMsgsConfig;
 };
 export interface Schema extends EntityShape {
     name: String<32>;
@@ -25,3 +30,4 @@ export interface Schema extends EntityShape {
     system: System;
     config: WebConfig | WechatMpConfig | WechatPublicConfig;
 }
+export {};

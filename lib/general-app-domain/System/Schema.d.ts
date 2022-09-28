@@ -4,24 +4,11 @@ import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
-import { QiniuConfig } from "../../types/Config";
+import { Config } from "../../types/Config";
 import * as Platform from "../Platform/Schema";
 import * as Application from "../Application/Schema";
 import * as Domain from "../Domain/Schema";
 import * as User from "../User/Schema";
-export declare type SystemConfig = {
-    Cos?: {
-        qiniu?: QiniuConfig;
-    };
-    Map?: {
-        amap?: {
-            webApiKey: string;
-        };
-    };
-    UserEntityGrant?: {
-        lifetimeLength: number;
-    };
-};
 export declare type OpSchema = {
     id: PrimaryKey;
     $$createAt$$: Datetime;
@@ -29,7 +16,7 @@ export declare type OpSchema = {
     $$deleteAt$$?: Datetime | null;
     name: String<32>;
     description: Text;
-    config: SystemConfig;
+    config: Config;
     platformId: ForeignKey<"platform">;
     super?: Boolean | null;
 };
@@ -41,7 +28,7 @@ export declare type Schema = {
     $$deleteAt$$?: Datetime | null;
     name: String<32>;
     description: Text;
-    config: SystemConfig;
+    config: Config;
     platformId: ForeignKey<"platform">;
     super?: Boolean | null;
     platform: Platform.Schema;
@@ -57,7 +44,7 @@ declare type AttrFilter = {
     $$updateAt$$: Q_DateValue;
     name: Q_StringValue;
     description: Q_StringValue;
-    config: Q_EnumValue<SystemConfig>;
+    config: Q_EnumValue<Config>;
     platformId: Q_StringValue | SubQuery.PlatformIdSubQuery;
     platform: Platform.Filter;
     super: Q_BooleanValue;

@@ -12,6 +12,7 @@ import * as Domain from "./Domain/Schema";
 import * as Email from "./Email/Schema";
 import * as ExtraFile from "./ExtraFile/Schema";
 import * as Livestream from "./Livestream/Schema";
+import * as MessageType from "./MessageType/Schema";
 import * as Mobile from "./Mobile/Schema";
 import * as Platform from "./Platform/Schema";
 import * as UserRole from "./UserRole/Schema";
@@ -119,6 +120,11 @@ export declare type ExtraFileIdSubQuery = {
 export declare type LivestreamIdSubQuery = {
     [K in "$in" | "$nin"]?: (Livestream.LivestreamIdSubQuery & {
         entity: "livestream";
+    }) | any;
+};
+export declare type MessageTypeIdSubQuery = {
+    [K in "$in" | "$nin"]?: (MessageType.MessageTypeIdSubQuery & {
+        entity: "messageType";
     }) | any;
 };
 export declare type MobileIdSubQuery = {

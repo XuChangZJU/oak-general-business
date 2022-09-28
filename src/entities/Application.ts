@@ -17,10 +17,16 @@ export type WebConfig = {
     appSecret?: string; //网站 微信扫码登录
 };
 
+type WechatPublicTemplateMsgsConfig = Record<string, {
+    templateId: string;
+    dataDef: [string, string][];    // 前一个代表keyword，后一个代表color
+}>;     // key值代表messageTypeId
+
 export type WechatPublicConfig = {
     type: 'wechatPublic';
     appId: string;
     appSecret: string;
+    templateMsgs?: WechatPublicTemplateMsgsConfig;
 };
 
 export interface Schema extends EntityShape {

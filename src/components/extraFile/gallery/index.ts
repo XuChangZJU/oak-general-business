@@ -355,7 +355,6 @@ export default OakComponent({
                             url: '/login',
                         },
                         undefined,
-                        true
                     );
                     return;
                 }

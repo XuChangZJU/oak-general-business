@@ -5,6 +5,7 @@ import { CommonAspectDict } from 'oak-common-aspect';
 import { AspectDict } from '../aspects/AspectDict';
 import { EntityDict } from '../general-app-domain';
 import { RuntimeContext } from '../context/RuntimeContext';
+import { Origin } from '../types/Config';
 
 export class ExtraFile<
     ED extends EntityDict,
@@ -17,8 +18,7 @@ export class ExtraFile<
         super(aspectWrapper);
     }
 
-    @Action
-    async getUploadInfo(origin: string, key?: string) {
+    private async getUploadInfo(origin: Origin, key?: string) {
         const { result: uploadInfo } = await this.getAspectWrapper().exec(
             'getUploadInfo',
             {

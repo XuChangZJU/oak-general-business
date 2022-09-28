@@ -1,5 +1,5 @@
 import { OpSchema as ExtraFile } from '../general-app-domain/ExtraFile/Schema';
-import { SystemConfig } from '../general-app-domain/System/Schema';
+import { Config } from '../types/Config';
 
 export function composeFileUrl(
     extraFile: Pick<
@@ -13,7 +13,7 @@ export function composeFileUrl(
         | 'extension'
         | 'entity'
     >,
-    systemConfig?: SystemConfig
+    config?: Config
 ) {
     const { type, bucket, filename, origin, extra1, objectId, extension, entity } =
         extraFile;
@@ -27,9 +27,9 @@ export function composeFileUrl(
         }
         return extra1;
     }
-    if (systemConfig && systemConfig.Cos) {
+    if (config && config.Cos) {
         const { domain, protocol } =
-            systemConfig.Cos[origin as keyof typeof systemConfig.Cos]!;
+            config.Cos[origin as keyof typeof config.Cos]!;
         let protocol2 = protocol;    
         if (protocol instanceof Array) {
             // protocol存在https 说明域名有证书

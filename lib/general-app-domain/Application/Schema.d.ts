@@ -20,10 +20,18 @@ export declare type WebConfig = {
     appId?: string;
     appSecret?: string;
 };
+declare type WechatPublicTemplateMsgsConfig = Record<string, {
+    templateId: string;
+    dataDef: [
+        string,
+        string
+    ][];
+}>;
 export declare type WechatPublicConfig = {
     type: 'wechatPublic';
     appId: string;
     appSecret: string;
+    templateMsgs?: WechatPublicTemplateMsgsConfig;
 };
 export declare type OpSchema = {
     id: PrimaryKey;

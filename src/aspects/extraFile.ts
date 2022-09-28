@@ -1,44 +1,22 @@
 import { RuntimeContext } from '../context/RuntimeContext';
 import { EntityDict } from '../general-app-domain';
-import { SystemConfig } from '../general-app-domain/System/Schema';
-import qiniuInstance from '../utils/externalUpload/qiniu';
+import { Origin, QiniuCosConfig } from '../types/Config';
 import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
+import { getConfig } from '../utils/getContextConfig';
+import { assert } from 'console';
+import { QiniuCloudInstance } from 'oak-external-sdk';
 
-const ExternalUploadClazz = {
-    qiniu: qiniuInstance,
-};
 
 export async function getUploadInfo<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(
-    params: { origin: string, key?: string },
+    params: { origin: Origin; bucket?: string; key?: string },
     context: Cxt): Promise<QiniuUploadInfo> {
-    const { rowStore } = context;
-    const application = await context.getApplication();
-    const { type, config, systemId } = application!;
-    const { origin, key } = params;
+    const { origin, key, bucket } = params;
 
-    const { result: [system] } = await rowStore.select('system', {
-        data: {
-            id: 1,
-            config: 1
-        },
-        filter: {
-            id: systemId
-        }
-    }, context, {
-        dontCollect: true,
-    });
-    try {
-        const { config: systemConfig } = system;
-        const originConfig = (systemConfig as SystemConfig).Cos![
-            origin as keyof typeof systemConfig
-        ];
-
-        const instance = new ExternalUploadClazz[
-            origin as keyof typeof ExternalUploadClazz
-        ](originConfig);
-        const uploadInfo = instance.getUploadInfo(key);
-        return uploadInfo;
-    } catch (err) {
-        throw err;
-    }
+    const {
+        instance,
+        config,
+    } = await getConfig<ED, Cxt>(context, 'Cos', origin);
+    assert(origin === 'qiniu');
+    const { uploadHost, domain, bucket: bucket2 } = config as QiniuCosConfig;
+    return (instance as QiniuCloudInstance).getUploadInfo(uploadHost, domain, bucket || bucket2, key);
 }
