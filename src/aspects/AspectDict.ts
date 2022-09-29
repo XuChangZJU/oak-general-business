@@ -4,7 +4,7 @@ import { EntityDict } from "../general-app-domain";
 import { QiniuUploadInfo } from "oak-frontend-base/lib/types/Upload";
 import { RuntimeContext } from '../context/RuntimeContext';
 import { Schema as Livestream } from '../general-app-domain/Livestream/Schema';
-import { Origin } from "../types/Config";
+import { Config, Origin } from "../types/Config";
 
 
 type GeneralAspectDict<
@@ -71,6 +71,13 @@ type GeneralAspectDict<
             },
             context: Cxt
         ) => Promise<string>;
+        updateConfig: (
+            params: {
+            entity: 'platform' | 'system',
+            entityId: string,
+            config: Config,
+        }, context: Cxt
+        ) => Promise<void>;
     };
 
 export type AspectDict<ED extends EntityDict, Cxt extends RuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;

@@ -2,6 +2,7 @@ import { CommonAspectDict } from 'oak-common-aspect';
 import { Token } from './token';
 import { ExtraFile } from './extraFile';
 import { Application } from './application';
+import { Config } from './config';
 import { RuntimeContext } from '../context/RuntimeContext';
 import { BasicFeatures } from 'oak-frontend-base/lib/features';
 import { AspectDict } from '../aspects/AspectDict';
@@ -18,10 +19,12 @@ export function initialize<ED extends EntityDict, Cxt extends RuntimeContext<ED>
         aspectWrapper, type, basicFeatures.cache, basicFeatures.localStorage);
     const token = new Token<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(aspectWrapper, basicFeatures.cache, basicFeatures.localStorage);
     const extraFile = new ExtraFile<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(aspectWrapper);
+    const config = new Config<ED, Cxt, AD>(aspectWrapper);
     return {
         token,
         extraFile,
         application,
+        config,
     };
 }
 
@@ -29,4 +32,5 @@ export type GeneralFeatures<ED extends EntityDict, Cxt extends RuntimeContext<ED
     token: Token<ED, Cxt, AD>;
     extraFile: ExtraFile<ED, Cxt, AD>;
     application: Application<ED, Cxt, AD>;
+    config: Config<ED, Cxt, AD>;
 };
