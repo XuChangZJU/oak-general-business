@@ -3,7 +3,7 @@ import { AppType } from '../general-app-domain/Application/Schema';
 import { EntityDict } from "../general-app-domain";
 import { QiniuUploadInfo } from "oak-frontend-base/lib/types/Upload";
 import { RuntimeContext } from '../context/RuntimeContext';
-import { Origin } from "../types/Config";
+import { Config, Origin } from "../types/Config";
 declare type GeneralAspectDict<ED extends EntityDict, Cxt extends RuntimeContext<ED>> = {
     loginByMobile: (params: {
         captcha?: string;
@@ -38,6 +38,11 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends RuntimeContext
     getApplication: (params: {
         type: AppType;
     }, context: Cxt) => Promise<string>;
+    updateConfig: (params: {
+        entity: 'platform' | 'system';
+        entityId: string;
+        config: Config;
+    }, context: Cxt) => Promise<void>;
 };
 export declare type AspectDict<ED extends EntityDict, Cxt extends RuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
 export {};

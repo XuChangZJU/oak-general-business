@@ -2,6 +2,7 @@ import { CommonAspectDict } from 'oak-common-aspect';
 import { Token } from './token';
 import { ExtraFile } from './extraFile';
 import { Application } from './application';
+import { Config } from './config';
 import { RuntimeContext } from '../context/RuntimeContext';
 import { BasicFeatures } from 'oak-frontend-base/lib/features';
 import { AspectDict } from '../aspects/AspectDict';
@@ -13,4 +14,5 @@ export declare type GeneralFeatures<ED extends EntityDict, Cxt extends RuntimeCo
     token: Token<ED, Cxt, AD>;
     extraFile: ExtraFile<ED, Cxt, AD>;
     application: Application<ED, Cxt, AD>;
+    config: Config<ED, Cxt, AD>;
 };
