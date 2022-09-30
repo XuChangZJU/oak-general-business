@@ -15,8 +15,8 @@ interface ExtraFile extends UploadFile {
 
 export default function render(this: any) {
     const {
-        mediaType,
-        maxNumber = 100,
+        accept = 'image/*',
+        maxNumber = 20,
         multiple = true,
         useMockProgress = false,
         draggable = false,
@@ -47,18 +47,22 @@ export default function render(this: any) {
                 draggable={draggable}
                 useMockProgress={useMockProgress}
                 max={maxNumber}
-                accept={mediaType}
+                accept={accept}
                 showUploadProgress={showUploadProgress}
                 theme={theme}
-                files={theme === 'custom' ? [] : (files || []).map((ele: any) =>
-                    extraFileToUploadFile(ele, systemConfig)
-                )}
+                files={
+                    theme === 'custom'
+                        ? []
+                        : (files || []).map((ele: any) =>
+                              extraFileToUploadFile(ele, systemConfig)
+                          )
+                }
                 onChange={(uploadFiles) => {
                     const arr =
                         uploadFiles?.filter((ele: ExtraFile) => !ele.id) || [];
                     this.setState({
                         newUploadFiles: arr,
-                    })
+                    });
                     if (theme !== 'custom') {
                         this.onWebPick(arr);
                     }
@@ -69,7 +73,9 @@ export default function render(this: any) {
                 onPreview={({ file, e }) => {}}
             >
                 {theme === 'custom' && (
-                    <Button variant="outline" theme="default">选择文件</Button>
+                    <Button variant="outline" theme="default">
+                        选择文件
+                    </Button>
                 )}
             </Upload>
             {theme === 'custom' && (
@@ -82,7 +88,7 @@ export default function render(this: any) {
                                 align: 'center',
                                 colKey: 'tableIndex',
                                 title: '序号',
-                                cell: ({row, rowIndex}) => rowIndex + 1,
+                                cell: ({ row, rowIndex }) => rowIndex + 1,
                                 width: 100,
                             },
                             {
@@ -94,29 +100,46 @@ export default function render(this: any) {
                                 title: '文件大小',
                                 cell: ({ row }) => {
                                     const b = row?.size / 1024;
-                                    return bytesToSize(b)
+                                    return bytesToSize(b);
                                 },
                             },
                             {
                                 colKey: 'status',
                                 title: '状态',
-                                cell: ({row}) => {
+                                cell: ({ row }) => {
                                     let cpn: any;
-                                    switch(row.status) {
+                                    switch (row.status) {
                                         case 'success':
-                                            cpn = (<Tag theme="success" variant="light">success</Tag>)
+                                            cpn = (
+                                                <Tag
+                                                    theme="success"
+                                                    variant="light"
+                                                >
+                                                    success
+                                                </Tag>
+                                            );
                                             break;
                                         case 'uploading':
                                             cpn = (
-                                                <Loading loading={true} text="uploading..."></Loading>
-                                            )
+                                                <Loading
+                                                    loading={true}
+                                                    text="uploading..."
+                                                ></Loading>
+                                            );
                                             break;
                                         default:
-                                            cpn = (<Tag theme="warning" variant="light">waiting</Tag>)
+                                            cpn = (
+                                                <Tag
+                                                    theme="warning"
+                                                    variant="light"
+                                                >
+                                                    waiting
+                                                </Tag>
+                                            );
                                             break;
                                     }
                                     return cpn;
-                                }
+                                },
                             },
                             {
                                 colKey: 'op',
@@ -131,7 +154,9 @@ export default function render(this: any) {
                                                     theme="primary"
                                                     variant="text"
                                                     onClick={() => {
-                                                        this.customDelete(rowIndex);
+                                                        this.customDelete(
+                                                            rowIndex
+                                                        );
                                                     }}
                                                 >
                                                     删除
@@ -144,20 +169,31 @@ export default function render(this: any) {
                             },
                         ]}
                     />
-                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <div
+                        style={{ display: 'flex', justifyContent: 'flex-end' }}
+                    >
                         <Space>
-                            <Button theme="default" onClick={() => {
-                                this.setState({
-                                    newUploadFiles: [],
-                                })
-                            }}>
+                            <Button
+                                theme="default"
+                                onClick={() => {
+                                    this.setState({
+                                        newUploadFiles: [],
+                                    });
+                                }}
+                            >
                                 全部清空
                             </Button>
                             <Button
                                 onClick={() => {
-                                    this.onWebPick(newUploadFiles, (file: any, status: string) => {
-                                        this.setNewUploadFiles(file, status);
-                                    });
+                                    this.onWebPick(
+                                        newUploadFiles,
+                                        (file: any, status: string) => {
+                                            this.setNewUploadFiles(
+                                                file,
+                                                status
+                                            );
+                                        }
+                                    );
                                 }}
                             >
                                 上传

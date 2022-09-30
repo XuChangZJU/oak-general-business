@@ -53,9 +53,10 @@ export default OakComponent({
         },
         maxNumber: {
             type: Number,
-            value: 100,
+            value: 20,
         },
         selectCount: {
+            //小程序独有 文件一次选择几个
             type: Number,
             value: 1,
         },
@@ -64,8 +65,14 @@ export default OakComponent({
             value: ['album', 'camera'],
         },
         mediaType: {
+            //小程序独有 文件上传类型
             type: Array,
             value: ['image'],
+        },
+        accept: {
+            // web独有 文件上传类型
+            type: String,
+            value: 'image/*',
         },
         // 图片显示模式
         mode: {
@@ -82,7 +89,7 @@ export default OakComponent({
             type: Number,
             value: 3,
         },
-        // 图片是否可预览
+        // 图片是否可删除
         disableDelete: {
             type: Boolean,
             value: false,
@@ -165,7 +172,10 @@ export default OakComponent({
                 }
             }
         },
-        async onWebPick(uploadFiles: any[], callback?: (file: any, status: string) => void) {
+        async onWebPick(
+            uploadFiles: any[],
+            callback?: (file: any, status: string) => void
+        ) {
             await Promise.all(
                 uploadFiles.map(async (uploadFile) => {
                     const { name, type: fileType, size, raw } = uploadFile;
@@ -354,7 +364,7 @@ export default OakComponent({
                         {
                             url: '/login',
                         },
-                        undefined,
+                        undefined
                     );
                     return;
                 }
