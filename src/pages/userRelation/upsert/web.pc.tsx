@@ -86,7 +86,7 @@ export default function render(this: any) {
                                     align="left"
                                     placeholder="请输入内容"
                                     size="medium"
-                                    type="text"
+                                    type="tel"
                                 />
                             </FormItem>
                             <FormItem
