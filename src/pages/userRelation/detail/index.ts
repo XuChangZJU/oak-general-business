@@ -1,14 +1,37 @@
+import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
 import { composeFileUrl } from "../../../utils/extraFile";
 
-export default OakPage(
-    {
-        entity: 'user',
-        projection: {
+export default OakPage({
+    entity: 'user',
+    projection: async ({ props }) => {
+        const { entity, entityId } = props;
+        const entityStr = firstLetterUpperCase(entity!);
+        return {
             id: 1,
-            nickname: 1,
             name: 1,
-            userState: 1,
+            nickname: 1,
+            mobile$user: {
+                $entity: 'mobile',
+                data: {
+                    id: 1,
+                    userId: 1,
+                    mobile: 1,
+                },
+            },
             idState: 1,
+            userState: 1,
+            [`user${entityStr}$user`]: {
+                $entity: `user${entityStr}`,
+                data: {
+                    id: 1,
+                    userId: 1,
+                    [`${entity}Id`]: 1,
+                    relation: 1,
+                },
+                filter: {
+                    [`${entity}Id`]: entityId,
+                },
+            },
             extraFile$entity: {
                 $entity: 'extraFile',
                 data: {
@@ -29,60 +52,81 @@ export default OakPage(
                 indexFrom: 0,
                 count: 1,
             },
-            mobile$user: {
-                $entity: 'mobile',
-                data: {
-                    id: 1,
-                    mobile: 1,
-                },
-            },
+        };
+    },
+    isList: false,
+    formData: async ({ data: user, props }) => {
+        const { entity, relations } = props;
+        const relations2 =
+            typeof relations === 'object'
+                ? relations
+                : relations && JSON.parse(relations);
+        const entityStr = firstLetterUpperCase(entity!);
+        const relationArr: Array<any> = [];
+        const {
+            id,
+            nickname,
+            idState,
+            userState,
+            name,
+            mobile$user,
+            extraFile$entity,
+        } = user || {};
+        let userRelations =
+            user && (user[`user${entityStr}$user`] as Array<any>);
+        userRelations = userRelations?.map((ele) => ele.relation);
+        relations2?.forEach((ele) => {
+            relationArr.push({
+                checked: userRelations?.includes(ele),
+                value: ele,
+            });
+        });
+        const mobile = mobile$user && mobile$user[0]?.mobile;
+        const avatar =
+            extraFile$entity &&
+            extraFile$entity[0] &&
+            composeFileUrl(extraFile$entity[0]);
+        return {
+            id,
+            nickname,
+            name,
+            mobile,
+            avatar,
+            userState,
+            idState,
+            relationArr,
+        };
+    },
+    properties: {
+        entity: String,
+        entityId: String,
+        relations: Array,
+    },
+    data: {
+        stateColor: {
+            shadow: 'primary',
+            normal: 'success',
+            disabled: '',
         },
-        filters: [
-            // 由调用者注入oakFilter
-            {
-                filter: async ({ features, props, onLoadOptions }) => {
-                    const { userIds } = props;
-                    return {
-                        id: {
-                            $in: userIds,
-                        },
-                    };
-                },
-            },
-        ],
-        isList: true,
-        formData: async function ({ data: users, props, features }) {
-            const filter = await this.getFilterByName('name');
-            return {
-                users: users?.map((ele: any) => {
-                    const { mobile$user, extraFile$entity  } =
-                        ele || {};
-                    const mobile = mobile$user && mobile$user[0]?.mobile;
-                    const avatar =
-                        extraFile$entity &&
-                        extraFile$entity[0] &&
-                        composeFileUrl(extraFile$entity[0]);
-                    const user2 = Object.assign({}, ele, {
-                        mobile,
-                        avatar,
-                    });
-                    return user2;
-                }),
-                searchValue: (
-                    filter?.$or as [{ name: { $includes: string } }]
-                )[0].name.$includes,
+    },
+    methods: {
+        onChange(event: any) {
+            const { value } = event.currentTarget.dataset;
+            const { checked } = event.detail;
+            this.onChangeValue(value, checked);
+        },
+        onChangeValue(value: string, checked: boolean) {
+            const { entity, entityId } = this.props;
+            const entityStr = firstLetterUpperCase(entity!);
+            const nodeData = {
+                [`${entity}Id`]: entityId,
+                relation: value,
             };
+            this.toggleNode(nodeData, checked, `user${entityStr}$user`);
         },
-        properties: {
-            userIds: Array,
+        async onConfirm() {
+            await this.execute('grant');
+            await this.navigateBack();
         },
-        methods: {
-            onCellClicked(e: any, options: any) {
-                const { id } = options;
-            },
-            addUserRelation() {
-                
-            }
-        },
-    }
-);
+    },
+});

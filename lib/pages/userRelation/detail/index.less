@@ -4,10 +4,10 @@
 
 page {
   height: 100%;
-  background-color: @bg-color-fade;
+  background-color: #fff;
 }
 
-.container {
+.page-body {
   height: 100%;
   display: flex;
   flex: 1;
@@ -18,21 +18,16 @@ page {
   .safe-area-inset-bottom();
 }
 
-.card-view {
-  margin: @spacer;
-  margin-bottom: 0rpx;
-  padding: @spacer;
-  border-radius: 4rpx;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 4rpx 20rpx 0 rgba(212, 217, 223, 0.5);
-  background-color: #fff;
+.cell {
+  &::after {
+    border-bottom: none !important;
+    border-bottom-width: 0px;
+  }
 }
-.row {
-  margin-left: @spacer;
+
+.description {
   display: flex;
-  flex: 1;
-  align-items: center;
+  flex-direction: column;
 }
 
 .col {
@@ -41,25 +36,22 @@ page {
   flex-direction: column;
 }
 
-.nickname {
-  margin-bottom: @spacer;
+.name {
   font-size: @font-size-base;
+  color: @text-level-2-color;
 }
+
 .mobile {
-  font-size: @spacer;
-  color: @text-level-3-color;
+  font-size: @font-size-base;
+  color: @text-level-2-color;
 }
+
 .avatar {
-  height: 140rpx;
-  width: 140rpx;
-  border-radius: 50%;
+  height: 160rpx;
+  width: 160rpx;
 }
-.img-view {
+
+.relation {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 140rpx;
-  width: 140rpx;
-  border-radius: 50%;
-  background-color: @bg-color-fade;
+  flex-wrap: wrap;
 }

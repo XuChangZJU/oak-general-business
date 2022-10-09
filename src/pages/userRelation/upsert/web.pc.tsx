@@ -7,8 +7,9 @@ import {
     Checkbox,
     Button,
 } from 'tdesign-react';
-const { FormItem } = Form;
+import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
+const { FormItem } = Form;
 
 export default function render(this: any) {
     const { relations, entity } = this.props;
@@ -18,8 +19,8 @@ export default function render(this: any) {
             ? relations
             : relations && JSON.parse(relations);
     return (
-        <div className={Style.pageWithPadding}>
-            <div className={Style.formContainer}>
+        <PageHeader showBack={true} title="添加权限">
+            <div className={Style.container}>
                 <Row gutter={16}>
                     <Col span={8}>
                         <Form
@@ -149,12 +150,14 @@ export default function render(this: any) {
                                 >
                                     提交
                                 </Button>
-                                <Button theme="default" type="reset">重置</Button>
+                                <Button theme="default" type="reset">
+                                    重置
+                                </Button>
                             </FormItem>
                         </Form>
                     </Col>
                 </Row>
             </div>
-        </div>
+        </PageHeader>
     );
 }

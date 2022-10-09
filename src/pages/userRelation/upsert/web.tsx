@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input, Row, Col, Checkbox, Button } from 'tdesign-react';
 const { FormItem } = Form;
+import Style from './mobile.module.less';
 
 export default function render(this: any) {
     const { t } = this;
