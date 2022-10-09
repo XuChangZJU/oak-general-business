@@ -76,20 +76,23 @@ export default function render(this: any) {
                                         },
                                     ]}
                                 >
-                                    <Input
-                                        onChange={(value, context) => {
-                                            this.setUpdateData(
-                                                'mobile$user.0.mobile',
-                                                value
-                                            );
-                                        }}
-                                        maxlength={11}
-                                        value={mobile}
-                                        align="left"
-                                        placeholder="请输入内容"
-                                        size="medium"
-                                        type="tel"
-                                    />
+                                    <>
+                                        <Input
+                                            maxlength={11}
+                                            value={mobile}
+                                            onChange={(value, context) => {
+                                                const strValue = String(value);
+                                                this.setUpdateData(
+                                                    'mobile$user.0.mobile',
+                                                    strValue.replace(/[^\d\-\d]/g, '')
+                                                );
+                                            }}
+                                            align="left"
+                                            placeholder="请输入内容"
+                                            size="medium"
+                                            type="tel"
+                                        />
+                                    </>
                                 </FormItem>
                                 <FormItem
                                     initialData="12345678"
