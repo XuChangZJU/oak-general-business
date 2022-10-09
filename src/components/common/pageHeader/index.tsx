@@ -43,7 +43,6 @@ export default memo((props: PageHeaderProps) => {
                             <Button
                                 shape="square"
                                 variant="text"
-                                theme="primary"
                                 className={Style.back}
                                 onClick={() => {
                                     if (typeof onBack === 'function') {
