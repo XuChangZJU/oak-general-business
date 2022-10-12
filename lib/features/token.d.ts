@@ -43,6 +43,7 @@ export declare class Token<ED extends EntityDict, Cxt extends RuntimeContext<ED>
     getTokenValue(noWait?: true): Promise<string | undefined>;
     getToken(): Promise<SelectRowShape<ED["token"]["Schema"], TokenProjection>>;
     getUserId(): Promise<string | undefined>;
+    getUserInfo(): Promise<SelectRowShape<ED["user"]["Schema"], ED["user"]["Selection"]["data"]> | undefined>;
     isRoot(): Promise<boolean>;
     sendCaptcha(mobile: string): Promise<string>;
 }

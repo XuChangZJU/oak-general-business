@@ -58,7 +58,7 @@ export class Token<
     ED extends EntityDict,
     Cxt extends RuntimeContext<ED>,
     AD extends AspectDict<ED, Cxt>
-    > extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
+> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
     private tokenValue?: string;
     private token?: SelectRowShape<ED['token']['Schema'], TokenProjection>;
     private rwLock: RWLock;
@@ -87,20 +87,22 @@ export class Token<
                 /**
                  * 这里不能用cache.refresh，以防action再触发页面重渲染，造成递归acquire X lock
                  */
-                const { result } = await this.getAspectWrapper().exec('select', {
-                    entity: 'token',
-                    selection: {
-                        data: tokenProjection,
-                        filter: {
-                            id: this.tokenValue!,
+                const { result } = await this.getAspectWrapper().exec(
+                    'select',
+                    {
+                        entity: 'token',
+                        selection: {
+                            data: tokenProjection,
+                            filter: {
+                                id: this.tokenValue!,
+                            },
                         },
-                    },
-                } as any); 
+                    } as any
+                );
                 const { data } = result;
                 this.token = data[0] as any;
             }
-        }
-        finally {
+        } finally {
             this.rwLock.release();
         }
     }
@@ -218,13 +220,60 @@ export class Token<
         return token?.userId as string | undefined;
     }
 
+    async getUserInfo() {
+        const userId = await this.getUserId();
+        if (userId) {
+            const data = await this.cache.get('user', {
+                data: {
+                    id: 1,
+                    nickname: 1,
+                    name: 1,
+                    userState: 1,
+                    extraFile$entity: {
+                        $entity: 'extraFile',
+                        data: {
+                            id: 1,
+                            tag1: 1,
+                            origin: 1,
+                            bucket: 1,
+                            objectId: 1,
+                            filename: 1,
+                            extra1: 1,
+                            type: 1,
+                            entity: 1,
+                            extension: 1,
+                        },
+                        filter: {
+                            tag1: 'avatar',
+                        },
+                        indexFrom: 0,
+                        count: 1,
+                    },
+                    mobile$user: {
+                        $entity: 'mobile',
+                        data: {
+                            id: 1,
+                            mobile: 1,
+                        },
+                    },
+                },
+                filter: {
+                    id: userId,
+                },
+            });
+            return data[0];
+        }
+        return;
+    }
+
     async isRoot(): Promise<boolean> {
         const token = await this.getToken();
 
         const { player } = token;
-        const { userRole$user} = player!;
-        return (userRole$user as any).length > 0 && (userRole$user as any).find(
-            (ele: any) => ele.role.name === 'root'
+        const { userRole$user } = player!;
+        return (
+            (userRole$user as any).length > 0 &&
+            (userRole$user as any).find((ele: any) => ele.role.name === 'root')
         );
     }
 
