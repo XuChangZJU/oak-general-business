@@ -20,7 +20,6 @@
         "oak-external-sdk": "file:../oak-external-sdk",
         "oak-frontend-base": "file:../oak-frontend-base",
         "oak-memory-tree-store": "file:../oak-memory-tree-store",
-        "react-router-dom": "^6.3.0",
         "sha1": "^1.1.1",
         "tslib": "^2.4.0",
         "uuid": "^8.3.2"
@@ -30,7 +29,8 @@
         "react-dom": ">=18.1.0",
         "tdesign-icons-react": ">=0.1.4",
         "tdesign-mobile-react": ">=0.2.0",
-        "tdesign-react": ">=0.40.5"
+        "tdesign-react": ">=0.40.5",
+        "react-router-dom": "^6.3.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.12.13",
@@ -64,7 +64,6 @@
     },
     "scripts": {
         "make:domain": "ts-node ./scripts/make.ts",
-        "prebuild": "npm run make:domain",
         "clean": "rimraf lib/*",
         "copy-files": "copyfiles -u 1 src/**/*.less lib/ & copyfiles -u 1 src/**/*.wxml lib/ & copyfiles -u 1 src/**/*.wxs lib/ & copyfiles -u 1 src/miniprogram_npm/**/*.js lib/ ",
         "build": "tsc && npm run copy-files",
