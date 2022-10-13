@@ -36,36 +36,43 @@ export default memo((props: PageHeaderProps) => {
 
     return (
         <div className={Style.pageHeader}>
-            <div className={Style.title}>
-                <Row>
-                    <Col flex="auto">
-                        {showBack && (
-                            <Button
-                                shape="square"
-                                variant="text"
-                                className={Style.back}
-                                onClick={() => {
-                                    if (typeof onBack === 'function') {
-                                        onBack();
-                                        return;
-                                    }
-                                    navigate(delta || -1);
-                                }}
-                            >
-                                {backIcon || (
-                                    <ArrowLeftIcon className={Style.backIcon} />
-                                )}
-                            </Button>
-                        )}
-                        {title && <h2 className={Style.h2}>{title}</h2>}
-                        {subTitle && (
-                            <span className={Style.subTitle}>{subTitle}</span>
-                        )}
-                        {tags}
-                    </Col>
-                    <Col flex="auto">{extra}</Col>
-                </Row>
-            </div>
+            {(title || showBack || subTitle || tags || extra) && (
+                <div className={Style.title}>
+                    <Row>
+                        <Col flex="auto">
+                            {showBack && (
+                                <Button
+                                    shape="square"
+                                    variant="text"
+                                    className={Style.back}
+                                    onClick={() => {
+                                        if (typeof onBack === 'function') {
+                                            onBack();
+                                            return;
+                                        }
+                                        navigate(delta || -1);
+                                    }}
+                                >
+                                    {backIcon || (
+                                        <ArrowLeftIcon
+                                            className={Style.backIcon}
+                                        />
+                                    )}
+                                </Button>
+                            )}
+                            {title && <h2 className={Style.h2}>{title}</h2>}
+                            {subTitle && (
+                                <span className={Style.subTitle}>
+                                    {subTitle}
+                                </span>
+                            )}
+                            {tags}
+                        </Col>
+                        <Col flex="auto">{extra}</Col>
+                    </Row>
+                </div>
+            )}
+
             <div
                 className={classNames(Style.content, {
                     [Style.contentMargin]: contentMargin,
