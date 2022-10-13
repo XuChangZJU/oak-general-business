@@ -211,7 +211,9 @@ export class Token<
         if (this.token) {
             return this.token;
         }
-        await this.loadTokenInfo();
+        if (this.tokenValue) {
+            await this.loadTokenInfo();
+        }
         return this.token!;
     }
 
