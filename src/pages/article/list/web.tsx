@@ -17,7 +17,6 @@ import Style from './web.module.less';
 const { ListItem, ListItemMeta } = List;
 
 export default function render(this: any) {
-    const { t } = this;
     const { width } = this.props;
     const { pagination, articles = [], oakLoading, searchValue } = this.state;
     const { pageSize, total, currentPage } = pagination || {};
@@ -34,7 +33,7 @@ export default function render(this: any) {
                                 this.goUpsert();
                             }}
                         >
-                            {t('action.add')}
+                            {this.t('action.add')}
                         </Button>
                     </Space>
                 </Col>
@@ -70,33 +69,33 @@ export default function render(this: any) {
                     },
                     {
                         colKey: 'iState',
-                        title: t('book:attr.iState'),
+                        title: this.t('book:attr.iState'),
                         cell: ({ row, rowIndex }) => {
                             return (
                                 <Tag theme="primary" size="small">
-                                    {t(`book:v.iState.${row.iState}`)}
+                                    {this.t(`book:v.iState.${row.iState}`)}
                                 </Tag>
                             );
                         },
                     },
                     {
                         colKey: 'title',
-                        title: t('article:attr.title'),
+                        title: this.t('article:attr.title'),
                     },
                     {
                         colKey: 'author',
-                        title: t('article:attr.author'),
+                        title: this.t('article:attr.author'),
                     },
                     {
                         colKey: 'abstract',
-                        title: t('article:attr.abstract'),
+                        title: this.t('article:attr.abstract'),
                     },
                     {
                         colKey: 'op',
                         width: 300,
                         title: '操作',
                         align: 'center',
-                        cell: ({ row, rowIndex }) => {
+                        cell: ({ row }) => {
                             return (
                                 <>
                                     <Button
@@ -128,9 +127,7 @@ export default function render(this: any) {
                                                 confirmBtn: '确定',
                                                 cancelBtn: '取消',
                                                 onConfirm: async ({ e }) => {
-                                                    this.onRemove(
-                                                        `${rowIndex}`
-                                                    );
+                                                    this.onRemove(row.id);
                                                     confirmDia!.hide!();
                                                 },
                                                 onClose: ({ e, trigger }) => {

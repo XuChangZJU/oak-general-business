@@ -50,7 +50,7 @@ function customCheckImageFn(
 }
 
 export default function render(this: any) {
-    const { t, features, addExtraFile } = this;
+    const { features, addExtraFile } = this;
     const {
         editor,
         title,
@@ -60,6 +60,7 @@ export default function render(this: any) {
         html,
         origin,
         contentTip,
+        oakFullpath,
     } = this.state;
 
     return (
@@ -82,7 +83,7 @@ export default function render(this: any) {
                                         this.setUpdateData('title', value);
                                     }}
                                     value={title}
-                                    placeholder={t('placeholder.title')}
+                                    placeholder={this.t('placeholder.title')}
                                     size="large"
                                     maxlength={64}
                                     suffix={`${[...(title || '')].length}/64`}
@@ -95,14 +96,14 @@ export default function render(this: any) {
                                         this.setUpdateData('author', value);
                                     }}
                                     value={author}
-                                    placeholder={t('placeholder.author')}
+                                    placeholder={this.t('placeholder.author')}
                                     inputClass={[Style.input]}
                                 />
                             </div>
                             {contentTip && (
                                 <Alert
                                     theme="info"
-                                    message={t('tips.content')}
+                                    message={this.t('tips.content')}
                                     close
                                     onClose={() => {
                                         this.setState({
@@ -114,7 +115,7 @@ export default function render(this: any) {
                             <Editor
                                 defaultConfig={{
                                     // TS 语法
-                                    placeholder: t('placeholder.content'),
+                                    placeholder: this.t('placeholder.content'),
                                     MENU_CONF: {
                                         // fontSize: {
                                         //     fontSizeList: [
@@ -258,8 +259,12 @@ export default function render(this: any) {
                                         <Col flex="none">
                                             <OakGallery
                                                 maxNumber={1}
-                                                oakPath="extraFile$entity"
-                                                oakParent={this.state.oakFullpath}
+                                                oakPath={oakFullpath ? `${oakFullpath}.extraFile$entity` : undefined}
+                                                oakFilters={[{
+                                                    tag1: {
+                                                        $in: ['cover'],
+                                                    },
+                                                }]}
                                                 type="image"
                                                 origin="qiniu"
                                                 tag1="cover"
@@ -272,7 +277,7 @@ export default function render(this: any) {
                                                     minRows: 4,
                                                 }}
                                                 maxlength={120}
-                                                placeholder={t(
+                                                placeholder={this.t(
                                                     'placeholder.abstract'
                                                 )}
                                                 onChange={(value) => {

@@ -1,7 +1,7 @@
 import { OpSchema as ExtraFile } from '../../../general-app-domain/ExtraFile/Schema';
 import { composeFileUrl } from '../../../utils/extraFile';
 
-export default OakPage({
+export default OakComponent({
     entity: 'article',
     projection: {
         id: 1,
@@ -10,26 +10,6 @@ export default OakPage({
         author: 1,
         abstract: 1,
         content: 1,
-        extraFile$entity: {
-            $entity: 'extraFile',
-            data: {
-                id: 1,
-                tag1: 1,
-                origin: 1,
-                bucket: 1,
-                objectId: 1,
-                filename: 1,
-                extra1: 1,
-                extension: 1,
-                type: 1,
-                entity: 1,
-            },
-            filter: {
-                tag1: {
-                    $in: ['cover'],
-                },
-            },
-        },
     },
     isList: true,
     formData: async function ({ data: articles, features }) {
@@ -39,26 +19,6 @@ export default OakPage({
 
         return {
             articles: articles?.map((article, index: number) => {
-                const extraFile$entity =
-                    article?.extraFile$entity as Array<ExtraFile>;
-                const coverPictures = extraFile$entity
-                    ?.filter((ele: ExtraFile) => ['cover'].includes(ele.tag1))
-                    .map((ele: ExtraFile) =>
-                        composeFileUrl(
-                            ele as Pick<
-                                ExtraFile,
-                                | 'type'
-                                | 'bucket'
-                                | 'filename'
-                                | 'origin'
-                                | 'extra1'
-                                | 'objectId'
-                                | 'extension'
-                                | 'entity'
-                            >,
-                            application?.system?.config
-                        )
-                    );
                 return {
                     index,
                     id: article?.id,
@@ -67,7 +27,6 @@ export default OakPage({
                     abstract: article?.abstract,
                     author: article?.author,
                     content: article?.content,
-                    coverPicture: coverPictures?.[0],
                 };
             }),
             pagination,
@@ -94,8 +53,15 @@ export default OakPage({
                 oakId: id,
             });
         },
-        onRemove(path: string) {
-            this.execute('remove', [], path);
+        async onRemove(id: string) {
+            await this.addOperation({
+                action: 'remove',
+                data: {},
+                filter: {
+                    id,
+                }
+            });
+            await this.execute();
         },
         async searchChange(event: any) {
             const { value } = this.resolveInput(event);

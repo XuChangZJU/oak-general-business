@@ -1,6 +1,6 @@
 
 
-export default OakPage({
+export default OakComponent({
     entity: 'article',
     projection: {
         id: 1,
@@ -9,26 +9,6 @@ export default OakPage({
         author: 1,
         abstract: 1,
         content: 1,
-        extraFile$entity: {
-            $entity: 'extraFile',
-            data: {
-                id: 1,
-                tag1: 1,
-                origin: 1,
-                bucket: 1,
-                objectId: 1,
-                filename: 1,
-                extra1: 1,
-                extension: 1,
-                type: 1,
-                entity: 1,
-            },
-            filter: {
-                tag1: {
-                    $in: ['cover'],
-                },
-            },
-        },
     },
     isList: false,
     formData: async function ({ data: article, features }) {
@@ -39,7 +19,6 @@ export default OakPage({
             abstract: article?.abstract,
             author: article?.author,
             content: article?.content,
-            extraFile$entity: article?.extraFile$entity,
         };
     },
     observers: {
@@ -49,11 +28,5 @@ export default OakPage({
                  ac.innerHTML = val;
             }
         }
-    },
-    data: {
-    },
-    methods: {
-
-    },
-    
+    },    
 });

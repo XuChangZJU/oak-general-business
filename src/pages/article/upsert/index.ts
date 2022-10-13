@@ -7,7 +7,7 @@ import {
 } from 'oak-domain/lib/types';
 import { EntityDict } from '../../../general-app-domain';
 
-export default OakPage({
+export default OakComponent({
     entity: 'article',
     projection: {
         id: 1,
@@ -16,26 +16,6 @@ export default OakPage({
         author: 1,
         abstract: 1,
         content: 1,
-        extraFile$entity: {
-            $entity: 'extraFile',
-            data: {
-                id: 1,
-                tag1: 1,
-                origin: 1,
-                bucket: 1,
-                objectId: 1,
-                filename: 1,
-                extra1: 1,
-                extension: 1,
-                type: 1,
-                entity: 1,
-            },
-            filter: {
-                tag1: {
-                    $in: ['cover'],
-                },
-            },
-        },
     },
     isList: false,
     formData: async function ({ data: article, features }) {
@@ -46,7 +26,6 @@ export default OakPage({
             abstract: article?.abstract,
             author: article?.author,
             content: article?.content,
-            extraFile$entity: article?.extraFile$entity,
         };
     },
     data: {
@@ -63,13 +42,15 @@ export default OakPage({
             }
         },
     },
-    methods: {
-        onUnload() {
+    lifetimes: {
+        detached() {
             const { editor } = this.state;
             if (editor == null) return;
             editor.destroy();
             this.setEditor(null);
-        },
+        }
+    },
+    methods: {
         async addExtraFile(
             extraFile: DeduceCreateOperationData<
                 EntityDict['extraFile']['Schema']
@@ -100,12 +81,12 @@ export default OakPage({
                 editor,
             });
         },
-        setHtml(html: string) {
+        async setHtml(html: string) {
             this.setState({
                 html,
             });
             if (html && html !== '<p><br></p>') {
-                this.state.oakFullpath && this.setUpdateData('content', html);
+                await this.setUpdateData('content', html);
             }
         },
         async confirm() {
@@ -117,7 +98,7 @@ export default OakPage({
 
                 return;
             }
-            await this.execute(this.props.oakId ? 'update' : 'create');
+            await this.execute();
             if (this.props.oakFrom === 'article:list') {
                 this.navigateBack();
                 return;
