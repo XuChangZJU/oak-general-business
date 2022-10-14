@@ -76,8 +76,8 @@ export default OakPage({
     async formData ({ data: users, props, features }) {
         const { entity, entityId } = props;
         const entityStr = firstLetterUpperCase(entity!);
-        const filter = await this.getFilterByName('name');
-        const pagination = this.getPagination();
+        const filter = this.state.oakFullpath && await this.getFilterByName('name') as any;
+        const pagination = this.state.oakFullpath && this.getPagination();
         return {
             users: users?.map((ele: any) => {
                 const { mobile$user, extraFile$entity } = ele || {};

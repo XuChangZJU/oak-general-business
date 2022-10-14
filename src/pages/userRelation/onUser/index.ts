@@ -62,7 +62,7 @@ export default OakPage({
     formData: async function ({ data: users, props, features }) {
         const { entity } = props;
         const entityStr = firstLetterUpperCase(entity!);
-        const filter = await this.getFilterByName('name');
+        const filter = this.state.oakFullpath && await this.getFilterByName('name') as any;
 
         return {
             users: users?.map((ele: any) => {
