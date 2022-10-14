@@ -12,7 +12,7 @@ export default function render(this: any) {
             ? relations
             : relations && JSON.parse(relations);
     return (
-        <div>
+        <div className={Style.container}>
             <Row gutter={16}>
                 <Col xs={12} sm={4}>
                     <Form
