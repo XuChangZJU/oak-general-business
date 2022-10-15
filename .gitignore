@@ -66,4 +66,3 @@ build
 package-lock.json
 src/general-app-domain
 scripts/local
-areaDebug.json
