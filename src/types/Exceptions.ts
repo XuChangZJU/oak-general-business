@@ -96,6 +96,9 @@ export function makeException(data: {
         case OakUserDisabledException.name: {
             return new OakUserDisabledException(message);
         }
+        case OakTokenExpiredException.name: {
+            return new OakTokenExpiredException(message);
+        }
         default: {
             return;
         }
