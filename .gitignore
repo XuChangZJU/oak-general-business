@@ -65,4 +65,5 @@ jspm_packages/
 build
 package-lock.json
 src/general-app-domain
-scripts/getAmapArea.ts
+scripts/local
+areaDebug.json

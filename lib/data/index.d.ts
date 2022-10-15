@@ -9,7 +9,7 @@ declare const _default: {
     area: ({
         code: string;
         level: string;
-        parentId: null;
+        parentId: string;
         name: string;
         depth: number;
         id: string;
@@ -20,21 +20,10 @@ declare const _default: {
     } | {
         code: string;
         level: string;
-        parentId: string;
+        parentId: null;
         name: string;
         depth: number;
         id: string;
-        center: {
-            type: string;
-            coordinate: number[];
-        };
-    } | {
-        code: number;
-        level: string;
-        parentId: string;
-        name: string;
-        depth: number;
-        id: number;
         center: {
             type: string;
             coordinate: number[];
