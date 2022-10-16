@@ -6,6 +6,7 @@ import { CreateOperationData as CreateUserData } from '../general-app-domain/Use
 import { assert } from 'oak-domain/lib/utils/assert';
 import { ROOT_ROLE_ID, ROOT_USER_ID } from '../constants';
 import { addFilterSegment } from 'oak-domain/lib/store/filter';
+import { randomName } from '../utils/randomUser';
 
 let NO_ANY_USER = true;
 const triggers: Trigger<EntityDict, 'user', RuntimeContext<EntityDict>>[] = [
@@ -20,6 +21,9 @@ const triggers: Trigger<EntityDict, 'user', RuntimeContext<EntityDict>>[] = [
             const setDefaultState = (userData: CreateUserData) => {
                 if (!userData.userState) {
                     userData.userState = 'shadow';
+                }
+                if (!userData.nickname) {
+                    userData.nickname = randomName('用户', 8);
                 }
             };
             if (data instanceof Array) {

@@ -194,6 +194,7 @@ export class Token<
     @Action
     async logout() {
         this.tokenValue = undefined;
+        this.token = undefined;
         this.storage.remove('token:token');
     }
 

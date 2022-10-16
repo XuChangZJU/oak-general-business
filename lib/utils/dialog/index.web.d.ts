@@ -1,1 +1,2 @@
-declare const getBrowserWidth: any;
+import { DialogPlugin } from 'tdesign-react';
+export default DialogPlugin;
