@@ -11,30 +11,103 @@ import { RuntimeContext } from '../context/RuntimeContext';
 import { AspectWrapper, SelectRowShape } from 'oak-domain/lib/types';
 import { ROOT_ROLE_ID } from '../constants';
 
-type TokenProjection = {
+type UserProjection = {
+    id: 1;
+    nickname: 1;
+    name: 1;
+    userState: 1;
+    extraFile$entity: {
+        $entity: 'extraFile';
+        data: {
+            id: 1;
+            tag1: 1;
+            origin: 1;
+            bucket: 1;
+            objectId: 1;
+            filename: 1;
+            extra1: 1;
+            type: 1;
+            entity: 1;
+            extension: 1;
+        };
+        filter: {
+            tag1: 'avatar';
+        };
+        indexFrom: 0;
+        count: 1;
+    };
+    mobile$user: {
+        $entity: 'mobile';
+        data: {
+            id: 1;
+            mobile: 1;
+            userId: 1;
+        };
+    };
+};
+
+const userProjection: UserProjection = {
     id: 1,
-    userId: 1,
-    ableState: 1,
-    player: {
-        id: 1,
-        userRole$user: {
-            $entity: 'userRole',
-            data: {
-                id: 1,
-                userId: 1,
-                roleId: 1,
-                role: {
-                    id: 1,
-                    name: 1,
-                },
-            },
+    nickname: 1,
+    name: 1,
+    userState: 1,
+    extraFile$entity: {
+        $entity: 'extraFile',
+        data: {
+            id: 1,
+            tag1: 1,
+            origin: 1,
+            bucket: 1,
+            objectId: 1,
+            filename: 1,
+            extra1: 1,
+            type: 1,
+            entity: 1,
+            extension: 1,
+        },
+        filter: {
+            tag1: 'avatar',
+        },
+        indexFrom: 0,
+        count: 1,
+    },
+    mobile$user: {
+        $entity: 'mobile',
+        data: {
+            id: 1,
+            mobile: 1,
+            userId: 1,
         },
     },
-    playerId: 1,
 };
+
+type TokenProjection = {
+    id: 1;
+    userId: 1;
+    user: UserProjection;
+    ableState: 1;
+    player: {
+        id: 1;
+        userRole$user: {
+            $entity: 'userRole';
+            data: {
+                id: 1;
+                userId: 1;
+                roleId: 1;
+                role: {
+                    id: 1;
+                    name: 1;
+                };
+            };
+        };
+    };
+    playerId: 1;
+};
+
 const tokenProjection: TokenProjection = {
     id: 1,
     userId: 1,
+    user: userProjection,
     ableState: 1,
     player: {
         id: 1,
@@ -224,44 +297,16 @@ export class Token<
     }
 
     async getUserInfo() {
-        const userId = await this.getUserId();
-        if (userId) {
+        const token = await this.getToken();
+        if (token?.user) {
+            return token.user
+        }
+
+        if (token?.userId) {
             const data = await this.cache.get('user', {
-                data: {
-                    id: 1,
-                    nickname: 1,
-                    name: 1,
-                    userState: 1,
-                    extraFile$entity: {
-                        $entity: 'extraFile',
-                        data: {
-                            id: 1,
-                            tag1: 1,
-                            origin: 1,
-                            bucket: 1,
-                            objectId: 1,
-                            filename: 1,
-                            extra1: 1,
-                            type: 1,
-                            entity: 1,
-                            extension: 1,
-                        },
-                        filter: {
-                            tag1: 'avatar',
-                        },
-                        indexFrom: 0,
-                        count: 1,
-                    },
-                    mobile$user: {
-                        $entity: 'mobile',
-                        data: {
-                            id: 1,
-                            mobile: 1,
-                        },
-                    },
-                },
+                data: userProjection,
                 filter: {
-                    id: userId,
+                    id: token.userId,
                 },
             });
             return data[0];
