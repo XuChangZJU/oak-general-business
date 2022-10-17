@@ -1,12 +1,11 @@
 import React from 'react';
-import { Button, Input, Textarea } from 'tdesign-mobile-react';
+import { Button, Input, Textarea } from 'tdesign-react';
 import Style from './web.module.less';
 
 export default function render(this: any) {
     return (
         <div>
             <Input
-                required={true}
                 label="姓名"
                 placeholder="姓名"
                 onChange={this.setValue} 
@@ -14,7 +13,6 @@ export default function render(this: any) {
                 data-attr="name"
             />
             <Input
-                required={true}
                 label="手机号"
                 placeholder="手机号"
                 onChange={this.setValue}
@@ -22,7 +20,6 @@ export default function render(this: any) {
                 data-attr="phone"
             />
             <Input
-                required={true}
                 label="所在地区"
                 placeholder="所在地区"
                 onChange={this.setValue}

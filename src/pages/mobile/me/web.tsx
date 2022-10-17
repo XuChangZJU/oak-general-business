@@ -1,51 +1,49 @@
 import React from 'react';
-import { CellGroup, Cell, Button, Dialog } from 'tdesign-mobile-react';
+import { List, Button, Dialog } from 'tdesign-react';
 import { Icon } from 'tdesign-icons-react';
-import { CellGroupProps } from 'tdesign-mobile-react/es/cell-group/CellGroup';
 import Style from './web.module.less';
 
-type CustomCellGroupProps = {
-    children?: React.ReactNode;
-};
 
-const CustomCellGroup: React.FC<CellGroupProps & CustomCellGroupProps> =
-    CellGroup;
+const { ListItem, ListItemMeta } = List;
 
 export default function render(this: any) {
     const { mobiles, confirmDeleteModalVisible, deleteIdx } = this.state;
     return (
-        <div className="page-body">
-            <CustomCellGroup>
+        <div className={Style.container}>
+            <List layout="horizontal" size="medium" className={Style.list} split={true}>
                 {mobiles?.map((ele: any, index: number) => (
-                    <Cell
+                    <ListItem
                         key={index}
-                        title={ele.mobile}
-                        onClick={() => {
-                            this.setState({
-                                confirmDeleteModalVisible: true,
-                                deleteIdx: index,
-                            });
-                        }}
-                        leftIcon={<Icon name="mobile" />}
-                        rightIcon={<Icon name="delete" />}
-                    />
+                        action={
+                            <div
+                                onClick={() => {
+                                    this.setState({
+                                        confirmDeleteModalVisible: true,
+                                        deleteIdx: index,
+                                    });
+                                }}
+                            >
+                                <Icon size={18} name="delete" />
+                            </div>
+                        }
+                    >
+                        <ListItemMeta
+                            image={<Icon size={18} name="mobile" />}
+                            title={ele.mobile}
+                        />
+                    </ListItem>
                 ))}
-            </CustomCellGroup>
+            </List>
             <div style={{ flex: 1 }} />
-            <Button
-                size="large"
-                theme="primary"
-                block
-                onClick={() => this.goAddMobile()}
-            >
+            <Button block size="large" theme="primary" onClick={() => this.goAddMobile()}>
                 添加
             </Button>
             <Dialog
                 visible={confirmDeleteModalVisible}
-                title="确认删除手机号吗？"
+                header="确认删除手机号吗？"
                 confirmBtn="确定"
                 cancelBtn="取消"
-                content="删除后，不可恢复"
+                body="删除后，不可恢复"
                 destroyOnClose
                 onClose={() => {
                     this.setState({

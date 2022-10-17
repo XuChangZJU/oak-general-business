@@ -1,16 +1,10 @@
-import React, { Component } from 'react';
-import { Cell, Tag, Avatar, TagProps } from 'tdesign-mobile-react';
+import React from 'react';
+
+import { List, Tag, Avatar } from 'tdesign-react';
+
 import Style from './web.module.less';
+const { ListItem, ListItemMeta } = List;
 
-type CustomTagProps = {
-    children?: any;
-};
-
-const CustomTag: React.MemoExoticComponent<
-    React.ForwardRefExoticComponent<
-        CustomTagProps & TagProps & React.RefAttributes<HTMLDivElement>
-    >
-> = Tag;
 
 export default function render(this: any) {
     const { t } = this;
@@ -41,37 +35,45 @@ export default function render(this: any) {
 
     return (
         <div>
-            <Cell
-                title="头像"
-                note={avatar ? <Avatar image={avatar} /> : '未设置'}
-            />
-            <Cell title="昵称" note={nickname || '未设置'} />
-            <Cell title="姓名" note={name || '未设置'} />
-            <Cell title="手机号" note={getMobile()} />
-            <Cell
-                title="用户状态"
-                note={
-                    <CustomTag
-                        theme={stateColor[userState]}
-                        className=""
-                        style={{}}
-                    >
-                        {t(`user:v.userState.${userState}`)}
-                    </CustomTag>
-                }
-            />
-            <Cell
-                title="实名验证"
-                note={
-                    <CustomTag
-                        theme={idStateColor[idState]}
-                        className=""
-                        style={{}}
-                    >
-                        {t(`user:v.idState.${idState}`)}
-                    </CustomTag>
-                }
-            />
+            <List split={true} className={Style.list}>
+                <ListItem
+                    action={avatar ? <Avatar image={avatar} /> : '未设置'}
+                >
+                    <ListItemMeta title="头像"></ListItemMeta>
+                </ListItem>
+
+                <ListItem action={nickname || '未设置'}>
+                    <ListItemMeta title="昵称"></ListItemMeta>
+                </ListItem>
+
+                <ListItem action={name || '未设置'}>
+                    <ListItemMeta title="真实姓名"></ListItemMeta>
+                </ListItem>
+
+                <ListItem action={getMobile()}>
+                    <ListItemMeta title="手机号"></ListItemMeta>
+                </ListItem>
+
+                <ListItem
+                    action={
+                        <Tag theme={stateColor[userState]}>
+                            {t(`user:v.userState.${userState}`)}
+                        </Tag>
+                    }
+                >
+                    <ListItemMeta title="用户状态"></ListItemMeta>
+                </ListItem>
+
+                <ListItem
+                    action={
+                        <Tag theme={idStateColor[idState]}>
+                            {t(`user:v.idState.${idState}`)}
+                        </Tag>
+                    }
+                >
+                    <ListItemMeta title="实名验证"></ListItemMeta>
+                </ListItem>
+            </List>
         </div>
     );
 }

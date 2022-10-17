@@ -9,7 +9,7 @@ export default OakPage({
     },
     filters: [{
         filter: async ({ features }) => {           
-            const tokenId = await features.token.getToken();
+            const token = await features.token.getToken();
             return {
                 user: {
                     id: {
@@ -19,11 +19,11 @@ export default OakPage({
                                 userId: 1,
                             },
                             filter: {
-                                id: tokenId,
+                                id: token?.id,
                                 ableState: 'enabled',
-                            }
-                        }
-                    }
+                            },
+                        },
+                    },
                 },
             };
         },

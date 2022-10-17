@@ -5,3 +5,4 @@
  * @returns
  */
 export declare function randomName(prefix?: string, randomLength?: number): string;
+export declare function getName(name?: string, start?: number, end?: number): string;

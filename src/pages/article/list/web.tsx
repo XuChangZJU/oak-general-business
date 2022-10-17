@@ -5,8 +5,6 @@ import {
     Button,
     DialogPlugin,
     Space,
-    List,
-    Image,
     Row,
     Col,
     Input,
@@ -14,11 +12,9 @@ import {
 import { Icon } from 'tdesign-icons-react';
 import Style from './web.module.less';
 
-const { ListItem, ListItemMeta } = List;
 
 export default function render(this: any) {
     const { t } = this;
-    const { width } = this.props;
     const { pagination, articles = [], oakLoading, searchValue } = this.state;
     const { pageSize, total, currentPage } = pagination || {};
 
@@ -65,7 +61,7 @@ export default function render(this: any) {
                 columns={[
                     {
                         align: 'center',
-                        colKey: 'index',
+                        colKey: 'serial-number',
                         title: '序号',
                     },
                     {

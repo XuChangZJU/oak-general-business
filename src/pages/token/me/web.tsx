@@ -1,15 +1,10 @@
 import React from 'react';
-import { UserCircleIcon } from 'tdesign-icons-react';
-import { Avatar, Button, Cell, CellGroup, Input, Popup } from 'tdesign-mobile-react';
-import { CellGroupProps } from 'tdesign-mobile-react/es/cell-group/CellGroup';
+import { List, Button, Avatar, Input, Drawer } from 'tdesign-react';
+import { UserCircleIcon, Icon } from 'tdesign-icons-react';
+
 import Style from './web.module.less';
 
-type CustomCellGroupProps = {
-    children?: React.ReactNode;
-};
-
-const CustomCellGroup: React.FC<CellGroupProps & CustomCellGroupProps> =
-    CellGroup;
+const { ListItem, ListItemMeta } = List;
 
 export default function render(this: any) {
     const { avatar, nickname, isLoggedIn, refreshing, mobile, mobileCount, showDrawer, oakDirty } = this.state;
@@ -18,11 +13,14 @@ export default function render(this: any) {
         <div className={Style.container}>
             <div className={Style.userInfo}>
                 {avatar ? (
-                    <Avatar image={avatar} size="48px" />
+                    <Avatar className={Style.avatar} image={avatar} />
                 ) : (
-                    <Avatar icon={<UserCircleIcon />} size="48px" />
+                    <Avatar
+                        className={Style.avatar}
+                        icon={<UserCircleIcon className={Style.userIcon} />}
+                    />
                 )}
-                <span className="nickname">{nickname || '未设置'}</span>
+                <span className={Style.nickname}>{nickname || '未设置'}</span>
                 {isLoggedIn ? (
                     <Button
                         theme="primary"
@@ -48,47 +46,48 @@ export default function render(this: any) {
                     </Button>
                 )}
             </div>
-            <CustomCellGroup>
-                <Cell
-                    title="手机号"
-                    arrow
-                    note={mobileText}
-                    onClick={() => this.goMyMobile()}
-                />
-            </CustomCellGroup>
-            <Popup
+            <List
+                layout="horizontal"
+                size="medium"
+                className={Style.list}
+                split={true}
+            >
+                <div onClick={() => this.goMyMobile()}>
+                    <ListItem action={<Icon size={18} name="chevron-right" />}>
+                        <ListItemMeta
+                            image={<Icon size={18} name="mobile" />}
+                            title="手机号"
+                            description={mobileText}
+                        />
+                    </ListItem>
+                </div>
+            </List>
+            <Drawer
                 placement="bottom"
                 visible={showDrawer}
-                onVisibleChange={() => {
+                header="修改昵称"
+                onConfirm={async () => {
+                    await this.execute('update', undefined, '0.user');
+                    this.setState({ showDrawer: false });
+                    this.resetUpdateData();
+                }}
+                onCancel={() => {
+                    this.setState({ showDrawer: false });
+                    this.resetUpdateData();
+                }}
+                onClose={() => {
                     this.setState({ showDrawer: false });
                     this.resetUpdateData();
                 }}
             >
-                <div style={{ backgroundColor: '#fff', padding: 10 }}>
-                    <Input
-                        label="昵称"
-                        placeholder="请输入昵称"
-                        value={nickname}
-                        onChange={(value) => {
-                            this.setUpdateData('0.user.nickname', value);
-                        }}
-                    />
-                    <div style={{ height: 15 }} />
-                    <Button
-                        size="large"
-                        theme="primary"
-                        disabled={!oakDirty}
-                        block
-                        onClick={async () => {
-                            await this.execute('update', undefined, '0.user');
-                            this.setState({ showDrawer: false });
-                            this.resetUpdateData();
-                        }}
-                    >
-                        {this.t('common:action.confirm')}
-                    </Button>
-                </div>
-            </Popup>
+                <Input
+                    placeholder="请输入昵称"
+                    value={nickname}
+                    onChange={(value) => {
+                        this.setUpdateData('0.user.nickname', value);
+                    }}
+                />
+            </Drawer>
         </div>
     );
 }

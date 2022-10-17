@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Button, Checkbox, Input, Form, Radio, DatePicker, Row, Col } from 'tdesign-react';
 import dayjs from 'dayjs';
 import Style from './web.module.less';
@@ -9,12 +9,7 @@ export default function render(this: any) {
     const { gender, birth, GenderOptions, IDCardTypeOptions } = this.state;
     return (
         <div
-            style={{
-                height: '100vh',
-                display: 'flex',
-                flexDirection: 'column',
-                padding: 16,
-            }}
+            className={Style.container}
         >
             <Row>
                 <Col xs={12} sm={4}>

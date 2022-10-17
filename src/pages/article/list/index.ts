@@ -60,7 +60,6 @@ export default OakPage({
                         )
                     );
                 return {
-                    index,
                     id: article?.id,
                     iState: article?.iState,
                     title: article?.title,

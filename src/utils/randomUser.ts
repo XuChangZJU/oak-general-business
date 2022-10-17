@@ -34,4 +34,12 @@ export function randomName(prefix?: string, randomLength?: number): string {
     }
     // 将随机生成的名字返回
     return name;
+}1
+
+
+export function getName(name?: string, start = 0, end = 1) {
+    if (name) {
+        return name.substring(start, end);
+    }
+    return randomName('', end - start);
 }

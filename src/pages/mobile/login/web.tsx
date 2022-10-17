@@ -1,25 +1,20 @@
 import React from 'react';
 import {
     isMobile,
-    isPassword,
     isCaptcha,
 } from 'oak-domain/lib/utils/validator';
-import { DesktopIcon, LockOnIcon, MobileIcon, Icon } from 'tdesign-icons-react';
-import { Form, Input, Button, Checkbox, Tabs, Radio } from 'tdesign-react';
-import classNames from 'classnames';
+import { MobileIcon } from 'tdesign-icons-react';
+import { Form, Input, Button, Checkbox } from 'tdesign-react';
 import Style from './web.module.less';
 
-const { TabPanel } = Tabs;
 const { FormItem } = Form;
 
 export default function render(this: any) {
     const { t } = this;
-    const { width } = this.props;
-    const { mobile, captcha, password, counter, tabValue = 1 } = this.state;
+    const { mobile, captcha, password, counter } = this.state;
     const validMobile = isMobile(mobile);
     const validCaptcha = isCaptcha(captcha);
-    const validPassword = isPassword(password);
-    const allowSubmit = validMobile && (validCaptcha || validPassword);
+    const allowSubmit = validMobile && validCaptcha;
 
     const LoginCaptcha = (
         <Form colon={true} labelWidth={0}>
