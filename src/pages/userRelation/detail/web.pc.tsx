@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cell, Image, Tag, Checkbox } from 'tdesign-mobile-react';
+import { Cell, Image, Checkbox } from 'tdesign-mobile-react';
 import { Button } from 'tdesign-react';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';

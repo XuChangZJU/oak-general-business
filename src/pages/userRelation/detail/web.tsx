@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Cell, Image, Tag, Checkbox, Button } from 'tdesign-mobile-react';
+import { Cell, Image, Checkbox, Button } from 'tdesign-mobile-react';
 import Style from './mobile.module.less';
 
 
