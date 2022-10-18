@@ -9,49 +9,73 @@ type Item = {
 };
 
 type GridProps = {
-    // title?: React.ReactNode;
-    // showBack?: boolean;
-    // onBack?: () => void;
-    // backIcon?: React.ReactNode;
-    // delta?: number; //有返回按钮时，返回第几层
-    // extra?: React.ReactNode;
-    // subTitle?: React.ReactNode;
-    // contentMargin?: boolean; // 设置内容是否有边距 默认true 边距为20px
-    // tags?: React.ReactNode;
-    // children?: React.ReactNode;
-    column?: number; //一行的个数
+    column?: 1 | 2 | 3 | 4 | 5 | 6; //一行的个数
     gutter?: number; //间隔大小
-    className?: string;
+    style?: React.CSSProperties; // item容器样式
+    className?: string; // item容器样式
+    imageClassName?: string;
+    textClassName?: string;
     children?: React.ReactNode;
-    data: Array<Item>;
-    onChange?: (index: number) => void;
+    list: Array<Item>;
+    onChange?: (
+        index: number,
+        event: React.MouseEvent<HTMLDivElement, MouseEvent>
+    ) => void;
 };
 
-const prefixCls = 'grid_item';
+const prefixCls = 'grid';
+
+const itemPrefixCls = prefixCls + '_item';
 
 export default memo((props: GridProps) => {
-    const { className, column = 4, gutter = 0, data, onChange } = props;
+    const {
+        style,
+        className,
+        column = 4,
+        gutter = 0,
+        list,
+        onChange,
+        imageClassName,
+        textClassName,
+    } = props;
 
     return (
-        <div className={Style.grid}>
-            {data?.map((ele: Item, index: number) => (
+        <div
+            className={Style[prefixCls]}
+            style={{
+                gap: gutter,
+            }}
+        >
+            {list?.map((ele: Item, index: number) => (
                 <div
                     key={index}
-                    className={classNames(className, Style[prefixCls], {
-                        [Style[`${prefixCls}-column-${column}`]]: column,
+                    className={classNames(className, Style[itemPrefixCls], {
+                        [Style[`${itemPrefixCls}-column-${column}`]]: column,
                     })}
-                    onClick={() => onChange && onChange(index)}
+                    style={style}
+                    onClick={
+                        onChange ? (event) => onChange(index, event) : undefined
+                    }
                 >
                     {typeof ele.image === 'string' ? (
-                        <img src={ele.image} />
+                        <img
+                            className={classNames(Style.image, imageClassName)}
+                            src={ele.image}
+                        />
                     ) : (
                         ele.image
                     )}
-                    {typeof ele.text === 'string' ? (
-                        <div>{ele.text}</div>
-                    ) : (
-                        ele.text
-                    )}
+                    <div className={Style.text}>
+                        <div
+                            className={classNames(Style.title, textClassName)}
+                            style={{
+                                paddingTop: 8,
+                                marginBottom: 4,
+                            }}
+                        >
+                            {ele.text}
+                        </div>
+                    </div>
                 </div>
             ))}
         </div>

@@ -78,6 +78,7 @@ export default memo((props: TypographyProps) => {
             onClick={!disabled ? onClick : undefined}
             className={classNames(
                 className,
+                Style[prefixCls],
                 {
                     [Style[`${prefixCls}-${variant}-${size}`]]: !isHeadingElement,
                     [Style[`${prefixCls}-color-${theme}`]]: !disabled,

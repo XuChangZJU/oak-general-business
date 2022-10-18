@@ -4,12 +4,15 @@ declare type Item = {
     image: React.ReactNode;
 };
 declare type GridProps = {
-    column?: number;
+    column?: 1 | 2 | 3 | 4 | 5 | 6;
     gutter?: number;
+    style?: React.CSSProperties;
     className?: string;
+    imageClassName?: string;
+    textClassName?: string;
     children?: React.ReactNode;
-    data: Array<Item>;
-    onChange?: (index: number) => void;
+    list: Array<Item>;
+    onChange?: (index: number, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 declare const _default: React.MemoExoticComponent<(props: GridProps) => JSX.Element>;
 export default _default;
