@@ -9,7 +9,7 @@ type Item = {
 };
 
 type GridProps = {
-    column?: 1 | 2 | 3 | 4 | 5 | 6; //一行的个数
+    column?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8; //一行的个数
     gutter?: number; //间隔大小
     style?: React.CSSProperties; // item容器样式
     className?: string; // item容器样式
