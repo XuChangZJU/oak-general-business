@@ -1,5 +1,7 @@
 import React from 'react';
 declare type PageHeaderProps = {
+    style?: React.CSSProperties;
+    className?: string;
     title?: React.ReactNode;
     showBack?: boolean;
     onBack?: () => void;
@@ -8,6 +10,8 @@ declare type PageHeaderProps = {
     extra?: React.ReactNode;
     subTitle?: React.ReactNode;
     contentMargin?: boolean;
+    contentStyle?: React.CSSProperties;
+    contentClassName?: string;
     tags?: React.ReactNode;
     children?: React.ReactNode;
 };
