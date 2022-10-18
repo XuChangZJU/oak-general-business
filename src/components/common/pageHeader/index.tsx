@@ -7,6 +7,8 @@ import classNames from 'classnames';
 import Style from './index.module.less';
 
 type PageHeaderProps = {
+    style?: React.CSSProperties;
+    className?: string;
     title?: React.ReactNode;
     showBack?: boolean;
     onBack?: () => void;
@@ -15,12 +17,16 @@ type PageHeaderProps = {
     extra?: React.ReactNode;
     subTitle?: React.ReactNode;
     contentMargin?: boolean; // 设置内容是否有边距 默认true 边距为20px
+    contentStyle?: React.CSSProperties;
+    contentClassName?: string;
     tags?: React.ReactNode;
     children?: React.ReactNode;
 };
 
 export default memo((props: PageHeaderProps) => {
     const {
+        style,
+        className,
         children,
         title,
         subTitle,
@@ -30,14 +36,16 @@ export default memo((props: PageHeaderProps) => {
         backIcon,
         delta,
         contentMargin = true,
+        contentStyle,
+        contentClassName,
         tags,
     } = props;
     const navigate = useNavigate();
 
     return (
-        <div className={Style.pageHeader}>
+        <div style={style} className={classNames(Style.pageHeader, className)}>
             {(title || showBack || subTitle || tags || extra) && (
-                <div className={Style.title}>
+                <div className={Style.header}>
                     <Row>
                         <Col flex="auto">
                             {showBack && (
@@ -60,7 +68,9 @@ export default memo((props: PageHeaderProps) => {
                                     )}
                                 </Button>
                             )}
-                            {title && <span className={Style.h2}>{title}</span>}
+                            {title && (
+                                <span className={Style.title}>{title}</span>
+                            )}
                             {subTitle && (
                                 <span className={Style.subTitle}>
                                     {subTitle}
@@ -74,7 +84,8 @@ export default memo((props: PageHeaderProps) => {
             )}
 
             <div
-                className={classNames(Style.content, {
+                style={contentStyle}
+                className={classNames(Style.content, contentClassName, {
                     [Style.contentMargin]: contentMargin,
                 })}
             >
