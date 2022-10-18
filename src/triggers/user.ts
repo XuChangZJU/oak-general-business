@@ -23,7 +23,7 @@ const triggers: Trigger<EntityDict, 'user', RuntimeContext<EntityDict>>[] = [
                     userData.userState = 'shadow';
                 }
                 if (!userData.nickname) {
-                    userData.nickname = randomName('用户', 8);
+                    userData.nickname = randomName('user_', 8);
                 }
             };
             if (data instanceof Array) {

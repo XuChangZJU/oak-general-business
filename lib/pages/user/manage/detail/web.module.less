@@ -4,6 +4,18 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: 'center';
-  align-items: 'center';
+    background-color: var(--td-bg-color-page);
+}
+
+
+.list {
+  :global {
+    .t-list-item__meta {
+
+      &-title {
+        margin: 0 !important;
+
+      }
+    }
+  }
 }

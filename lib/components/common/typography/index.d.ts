@@ -1,0 +1,22 @@
+import React from 'react';
+declare type HTMLHeadingElement = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+declare type TypographyProps = {
+    theme?: 'default' | 'secondary' | 'primary' | 'danger' | 'warning' | 'success' | 'placeholder' | 'disabled' | 'brand' | 'anti' | 'link';
+    size?: 'small' | 'medium' | 'large';
+    variant?: 'link' | 'mark' | 'body' | 'title' | 'headline' | 'display' | HTMLHeadingElement;
+    children?: React.ReactNode;
+    italic?: boolean;
+    strong?: boolean;
+    disabled?: boolean;
+    underline?: boolean;
+    delete?: boolean;
+    code?: boolean;
+    keyboard?: boolean;
+    mark?: boolean;
+    link?: boolean;
+    onClick?: (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
+    style?: React.CSSProperties;
+    className?: string;
+};
+declare const _default: React.MemoExoticComponent<(props: TypographyProps) => JSX.Element>;
+export default _default;
