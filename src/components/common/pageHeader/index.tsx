@@ -60,7 +60,7 @@ export default memo((props: PageHeaderProps) => {
                                     )}
                                 </Button>
                             )}
-                            {title && <h2 className={Style.h2}>{title}</h2>}
+                            {title && <span className={Style.h2}>{title}</span>}
                             {subTitle && (
                                 <span className={Style.subTitle}>
                                     {subTitle}
