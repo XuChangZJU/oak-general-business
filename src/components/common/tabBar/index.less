@@ -1,0 +1,105 @@
+.oak-tabBar {
+    flex-wrap: nowrap;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: flex;
+    box-sizing: border-box;
+    background-color: #fff;
+
+    height: 48px;
+    position: relative;
+    width: 100%;
+
+    &--fixed {
+        bottom: 0;
+        left: 0;
+        position: fixed;
+    }
+
+    &--bordered {
+        ::before {
+            border-top: 1px solid #e7e7e7;
+            top: 0;
+        }
+
+        ::after {
+            border-bottom: 1px solid #e7e7e7;
+            bottom: 0;
+        }
+
+    }
+
+    &-item {
+        display: flex;
+        flex-direction: column;
+        padding-left: 0px;
+        padding-right: 0px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #0009;
+
+        ::after {
+            border-left: 1px solid #e7e7e7;
+        }
+
+        :first-child::before {
+            border: unset;
+        }
+
+        &-column {
+            &-1 {
+                flex-basis: 100%;
+            }
+
+            &-2 {
+                flex-basis: 50%;
+            }
+
+            &-3 {
+                flex-basis: 33.33%;
+            }
+
+            &-4 {
+                flex-basis: 25%;
+            }
+
+            &-5 {
+                flex-basis: 20%;
+            }
+
+            &-6 {
+                flex-basis: 16.66%;
+            }
+
+            &-7 {
+                flex-basis: 14.28%;
+            }
+
+            &-8 {
+                flex-basis: 12.5%;
+            }
+        }
+
+        &-checked {
+            color: var(--oak-brand-color); 
+        }
+
+        &-image {
+            display: block;
+            height: 24px;
+            width: 100%;
+        }
+
+        &-icon {}
+
+        &-text {
+            font-size: 10px;
+            line-height: 18px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            word-break: break-all;
+        }
+    }
+}

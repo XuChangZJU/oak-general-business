@@ -19,13 +19,11 @@ type GridProps = {
     list: Array<Item>;
     onChange?: (
         index: number,
-        event: React.MouseEvent<HTMLDivElement, MouseEvent>
+        event?: React.MouseEvent<HTMLDivElement, MouseEvent>
     ) => void;
 };
 
 const prefixCls = 'oak';
-
-const itemPrefixCls = prefixCls + '_item';
 
 export default memo((props: GridProps) => {
     const {
