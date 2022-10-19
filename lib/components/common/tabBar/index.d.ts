@@ -14,8 +14,8 @@ declare type TabBarProps = {
     children?: React.ReactNode;
     list: Array<Item>;
     onChange?: (value: string, event?: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-    fixed: boolean;
-    bordered: boolean;
+    fixed?: boolean;
+    bordered?: boolean;
     value?: string;
 };
 declare const _default: React.MemoExoticComponent<(props: TabBarProps) => JSX.Element>;

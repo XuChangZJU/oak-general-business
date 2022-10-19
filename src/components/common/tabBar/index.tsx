@@ -21,8 +21,8 @@ type TabBarProps = {
         value: string,
         event?: React.MouseEvent<HTMLDivElement, MouseEvent>
     ) => void;
-    fixed: boolean;
-    bordered: boolean;
+    fixed?: boolean;
+    bordered?: boolean;
     value?: string;
 };
 
@@ -38,7 +38,7 @@ export default memo((props: TabBarProps) => {
         iconClassName,
         textClassName,
         fixed = true,
-        bordered = true,
+        bordered = false,
         value = '',
     } = props;
 
