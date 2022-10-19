@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Map, APILoader, MapProps, APILoaderConfig } from '@uiw/react-amap';
 import classNames from 'classnames';
-import Style from './index.module.less'
+import './index.less'
 
 export type APILoaderProps = {
     akey: APILoaderConfig['akay'];
@@ -51,6 +51,8 @@ const memo = (props: AMapProps) => {
         uiVersion = '1.1',
         uiCallback,
     } = props;
+    const prefixCls = 'oak';
+
 
     useEffect(() => {
         if (!useAMapUI) {
@@ -71,7 +73,10 @@ const memo = (props: AMapProps) => {
     }, [window.AMap, useAMapUI]);
 
     return (
-        <div style={style} className={classNames(Style.map, className)}>
+        <div
+            style={style}
+            className={classNames(`${prefixCls}-map`, className)}
+        >
             <APILoader akay={akey} version={version}>
                 <Map ref={mapRef} {...mapProps}>
                     {children as MapProps['children']}

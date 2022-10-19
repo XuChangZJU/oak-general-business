@@ -1,6 +1,7 @@
 /// <reference types="@uiw/react-amap-types" />
 import React from 'react';
 import { MapProps, APILoaderConfig } from '@uiw/react-amap';
+import './index.less';
 export declare type APILoaderProps = {
     akey: APILoaderConfig['akay'];
     version?: APILoaderConfig['version'];
