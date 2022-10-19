@@ -1,7 +1,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 
-import Style from './index.module.less';
+import './index.less';
 
 import DefaultEmptyImg from './empty';
 import SimpleEmptyImg from './simple';
@@ -42,24 +42,26 @@ const Empty: EmptyType = (props: EmptyProps) => {
     } else {
         imageNode = image;
     }
+   const prefixCls = 'oak';
+
 
     return (
         <div
             className={classNames(
-                Style['oak-empty'],
+                `${prefixCls}-empty`,
                 {
-                    [Style['oak-empty-normal']]: image === simpleEmptyImg,
+                    [`${prefixCls}-empty-normal`]: image === simpleEmptyImg,
                 },
                 className
             )}
             {...restProps}
         >
-            <div className={Style['oak-empty-image']} style={imageStyle}>
+            <div className={`${prefixCls}-empty-image`} style={imageStyle}>
                 {imageNode}
             </div>
-            {des && <div className={Style['oak-empty-description']}>{des}</div>}
+            {des && <div className={`${prefixCls}-empty-description`}>{des}</div>}
             {children && (
-                <div className={Style['oak-empty-footer']}>{children}</div>
+                <div className={`${prefixCls}-empty-footer`}>{children}</div>
             )}
         </div>
     );

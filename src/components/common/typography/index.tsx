@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { FileCopyIcon } from 'tdesign-icons-react';
 import classNames from 'classnames';
 
-import Style from './index.module.less';
+import './index.less';
 
 type HTMLHeadingElement = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
@@ -64,7 +64,7 @@ export default memo((props: TypographyProps) => {
         style,
         className,
     } = props;
-    const prefixCls = 'oak-typography';
+    const prefixCls = 'oak';
 
     const isHeadingElement = headingElement.includes(variant);
 
@@ -76,23 +76,20 @@ export default memo((props: TypographyProps) => {
         <Component
             style={style}
             onClick={!disabled ? onClick : undefined}
-            className={classNames(
-                className,
-                Style[prefixCls],
-                {
-                    [Style[`${prefixCls}-${variant}-${size}`]]: !isHeadingElement,
-                    [Style[`${prefixCls}-color-${theme}`]]: !disabled,
-                    [Style[`${prefixCls}-italic`]]: italic,
-                    [Style[`${prefixCls}-underline`]]: underline,
-                    [Style[`${prefixCls}-delete`]]: delete2,
-                    [Style[`${prefixCls}-strong`]]: strong,
-                    [Style[`${prefixCls}-keyboard`]]: keyboard,
-                    [Style[`${prefixCls}-code`]]: code,
-                    [Style[`${prefixCls}-mark`]]: mark,
-                    [Style[`${prefixCls}-link`]]: link,
-                    [Style[`${prefixCls}-disabled`]]: disabled,
-                }
-            )}
+            className={classNames(`${prefixCls}-typography`, className, {
+                [`${prefixCls}-typography-${variant}-${size}`]:
+                    !isHeadingElement,
+                [`${prefixCls}-typography-color-${theme}`]: !disabled,
+                [`${prefixCls}-typography-italic`]: italic,
+                [`${prefixCls}-typography-underline`]: underline,
+                [`${prefixCls}-typography-delete`]: delete2,
+                [`${prefixCls}-typography-strong`]: strong,
+                [`${prefixCls}-typography-keyboard`]: keyboard,
+                [`${prefixCls}-typography-code`]: code,
+                [`${prefixCls}-typography-mark`]: mark,
+                [`${prefixCls}-typography-link`]: link,
+                [`${prefixCls}-typography-disabled`]: disabled,
+            })}
         >
             {children}
         </Component>

@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import classNames from 'classnames';
 
-import Style from './index.module.less';
+import './index.less';
 
 type Item = {
     text: React.ReactNode;
@@ -23,7 +23,7 @@ type GridProps = {
     ) => void;
 };
 
-const prefixCls = 'grid';
+const prefixCls = 'oak';
 
 const itemPrefixCls = prefixCls + '_item';
 
@@ -41,7 +41,7 @@ export default memo((props: GridProps) => {
 
     return (
         <div
-            className={Style[prefixCls]}
+            className={`${prefixCls}-grid`}
             style={{
                 gap: gutter,
             }}
@@ -49,8 +49,8 @@ export default memo((props: GridProps) => {
             {list?.map((ele: Item, index: number) => (
                 <div
                     key={index}
-                    className={classNames(className, Style[itemPrefixCls], {
-                        [Style[`${itemPrefixCls}-column-${column}`]]: column,
+                    className={classNames(className, `${prefixCls}-grid-item`, {
+                        [`${prefixCls}-grid-item-column-${column}`]: column,
                     })}
                     style={style}
                     onClick={
@@ -59,15 +59,21 @@ export default memo((props: GridProps) => {
                 >
                     {typeof ele.image === 'string' ? (
                         <img
-                            className={classNames(Style.image, imageClassName)}
+                            className={classNames(
+                                `${prefixCls}-grid-item-image`,
+                                imageClassName
+                            )}
                             src={ele.image}
                         />
                     ) : (
                         ele.image
                     )}
-                    <div className={Style.text}>
+                    <div className={`${prefixCls}-grid-item-text`}>
                         <div
-                            className={classNames(Style.title, textClassName)}
+                            className={classNames(
+                                `${prefixCls}-grid-item-title`,
+                                textClassName
+                            )}
                             style={{
                                 paddingTop: 8,
                                 marginBottom: 4,

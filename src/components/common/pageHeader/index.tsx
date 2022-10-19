@@ -4,7 +4,7 @@ import { Row, Col, Button } from 'tdesign-react';
 import { ArrowLeftIcon } from 'tdesign-icons-react';
 import classNames from 'classnames';
 
-import Style from './index.module.less';
+import './index.less';
 
 type PageHeaderProps = {
     style?: React.CSSProperties;
@@ -40,19 +40,23 @@ export default memo((props: PageHeaderProps) => {
         contentClassName,
         tags,
     } = props;
+    const prefixCls = 'oak';
     const navigate = useNavigate();
 
     return (
-        <div style={style} className={classNames(Style.pageHeader, className)}>
+        <div
+            style={style}
+            className={classNames(`${prefixCls}-pageHeader`, className)}
+        >
             {(title || showBack || subTitle || tags || extra) && (
-                <div className={Style.header}>
+                <div className={`${prefixCls}-pageHeader-header`}>
                     <Row>
                         <Col flex="auto">
                             {showBack && (
                                 <Button
                                     shape="square"
                                     variant="text"
-                                    className={Style.back}
+                                    className={`${prefixCls}-pageHeader-header-back`}
                                     onClick={() => {
                                         if (typeof onBack === 'function') {
                                             onBack();
@@ -63,16 +67,22 @@ export default memo((props: PageHeaderProps) => {
                                 >
                                     {backIcon || (
                                         <ArrowLeftIcon
-                                            className={Style.backIcon}
+                                            className={`${prefixCls}-pageHeader-header-backIcon`}
                                         />
                                     )}
                                 </Button>
                             )}
                             {title && (
-                                <span className={Style.title}>{title}</span>
+                                <span
+                                    className={`${prefixCls}-pageHeader-header-title`}
+                                >
+                                    {title}
+                                </span>
                             )}
                             {subTitle && (
-                                <span className={Style.subTitle}>
+                                <span
+                                    className={`${prefixCls}-pageHeader-header-subTitle`}
+                                >
                                     {subTitle}
                                 </span>
                             )}
@@ -85,9 +95,14 @@ export default memo((props: PageHeaderProps) => {
 
             <div
                 style={contentStyle}
-                className={classNames(Style.content, contentClassName, {
-                    [Style.contentMargin]: contentMargin,
-                })}
+                className={classNames(
+                    `${prefixCls}-pageHeader-content`,
+                    contentClassName,
+                    {
+                        [`${prefixCls}-pageHeader-content-margin`]:
+                            contentMargin,
+                    }
+                )}
             >
                 {children}
             </div>

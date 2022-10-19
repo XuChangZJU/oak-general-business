@@ -1,4 +1,5 @@
 import React from 'react';
+import './index.less';
 declare type PageHeaderProps = {
     style?: React.CSSProperties;
     className?: string;
