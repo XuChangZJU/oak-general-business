@@ -1,8 +1,0 @@
-{
-    "component": true,
-    "usingComponents": {
-        "t-button": "../../../miniprogram_npm/tdesign/button/button",
-        "t-popup": "../../../miniprogram_npm/tdesign/popup/popup",
-        "t-dialog": "../../../miniprogram_npm/tdesign/dialog/dialog"
-    }
-}

@@ -1,6 +1,0 @@
-{
-    "navigationBarTitleText": "手机号",
-    "usingComponents": {
-        "t-button": "../../../miniprogram_npm/tdesign/button/button"
-    }
-}

@@ -1,8 +1,0 @@
-{
-    "navigationBarTitleText": "授予权限",
-    "usingComponents": {
-        "t-button": "../../../miniprogram_npm/tdesign/button/button",
-        "t-radio": "../../../miniprogram_npm/tdesign/radio/radio",
-        "t-radio-group": "../../../miniprogram_npm/tdesign/radio-group/radio-group"
-    }
-}

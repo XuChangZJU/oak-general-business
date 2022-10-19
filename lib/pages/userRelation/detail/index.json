@@ -1,9 +1,0 @@
-{
-    "navigationBarTitleText": "修改权限",
-    "usingComponents": {
-        "t-checkbox": "../../../miniprogram_npm/tdesign/checkbox/checkbox",
-        "t-tag": "../../../miniprogram_npm/tdesign/tag/tag",
-        "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
-        "t-button": "../../../miniprogram_npm/tdesign/button/button"
-    }
-}
