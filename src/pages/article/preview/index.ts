@@ -1,6 +1,6 @@
 
 
-export default OakPage({
+export default OakComponent({
     isList: false,
     formData: async function ({ features }) {
         return {};

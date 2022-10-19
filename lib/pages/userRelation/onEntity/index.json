@@ -1,8 +1,0 @@
-{
-    "navigationBarTitleText": "修改权限",
-    "usingComponents": {
-        "t-divider": "../../../miniprogram_npm/tdesign/divider/divider",
-        "t-button": "../../../miniprogram_npm/tdesign/button/button",
-        "t-switch": "../../../miniprogram_npm/tdesign/switch/switch"
-    }
-}

@@ -8,6 +8,18 @@ import { composeFileUrl } from '../../../utils/extraFile';
 export default OakComponent({
     entity: 'extraFile',
     isList: true,
+    projection: {
+        id: 1,
+        tag1: 1,
+        origin: 1,
+        bucket: 1,
+        objectId: 1,
+        filename: 1,
+        extra1: 1,
+        extension: 1,
+        type: 1,
+        entity: 1,
+    },
     async formData({ data: originalFiles, features }) {
         const application = await features.application.getApplication();
         const number2 = this.props.maxNumber;
@@ -42,7 +54,9 @@ export default OakComponent({
         itemSizePercentage: '',
         newUploadFiles: [],
     },
-    externalClasses: ['l-class', 'l-item-class'],
+    wechatMp: {
+        externalClasses: ['l-class', 'l-item-class'],
+    },
     properties: {
         oakFullpath: String,
         oakParent: String,
@@ -179,7 +193,7 @@ export default OakComponent({
             await Promise.all(
                 uploadFiles.map(async (uploadFile) => {
                     const { name, type: fileType, size, raw } = uploadFile;
-                    this.pushExtraFile(
+                    await this.pushExtraFile(
                         {
                             name,
                             fileType,
@@ -219,58 +233,52 @@ export default OakComponent({
                 size,
                 extension,
                 fileType,
+                id: await generateNewId(),
+                entityId,
             } as DeduceCreateOperationData<EntityDict['extraFile']['Schema']>;
             // autoUpload为true, 选择直接上传七牛，再提交extraFile
             if (autoUpload) {
+                if (callback) {
+                    callback(updateData, 'uploading');
+                }
                 try {
-                    if (callback) {
-                        callback(updateData, 'uploading');
-                    }
                     const { bucket } = await this.features.extraFile.upload(
                         updateData
                     );
-                    try {
-                        Object.assign(updateData, {
-                            bucket,
-                            extra1: null,
-                            id: await generateNewId(),
-                            entityId,
-                        });
-                        await this.addExtraFile(updateData);
-                        if (callback) {
-                            callback(updateData, 'success');
-                        }
-                        const ele: Parameters<typeof this['pushNode']>[1] = {
-                            updateData,
-                        };
-                        this.pushNode(undefined, ele);
-                    } catch (error) {
-                        if (callback) {
-                            callback(updateData, 'failed');
-                        }
-                        //todo 保存extraFile失败 需要remove七牛图片
+                    Object.assign(updateData, {
+                        bucket,
+                        extra1: null,
+                    });
+                    if (callback) {
+                        callback(updateData, 'success');
                     }
-                } catch (err) {
+                } catch (error) {
                     if (callback) {
                         callback(updateData, 'failed');
                     }
-                    //上传七牛失败
-                }
-            } else {
-                const ele: Parameters<typeof this['pushNode']>[1] = {
-                    updateData,
-                    beforeExecute: async (updateData) => {
-                        const { bucket } = await this.features.extraFile.upload(
-                            updateData
-                        );
-                        Object.assign(updateData, {
-                            bucket,
-                            extra1: null,
-                        });
-                    },
-                };
+                    //todo 保存extraFile失败 需要remove七牛图片
 
-                this.pushNode(undefined, ele);
+                    throw error;
+                }
+
+                await this.addOperation({
+                    action: 'create',
+                    data: updateData
+                })
+                await this.execute();
+            } else {
+                await this.addOperation({
+                    action: 'create',
+                    data: updateData,
+                }, async () => {
+                    const { bucket } = await this.features.extraFile.upload(
+                        updateData
+                    );
+                    Object.assign(updateData, {
+                        bucket,
+                        extra1: null,
+                    });
+                })
             }
         },
         async onItemTapped(event: WechatMiniprogram.Touch) {
@@ -298,13 +306,17 @@ export default OakComponent({
             }
         },
         async onDelete(event: WechatMiniprogram.Touch) {
-            const { originalFiles } = this.state;
-            const { value, index } = event.currentTarget.dataset;
-            const { id } = value;
-            const findIndex = originalFiles?.findIndex((ele) => ele?.id === id);
+            const { value } = event.currentTarget.dataset;
+            const { id, bucket } = value;
 
-            if (isMockId(id)) {
-                this.removeNode('', `${findIndex}`);
+            if (!bucket) {
+                await this.addOperation({
+                    action: 'remove',
+                    data: {},
+                    filter: {
+                        id,
+                    }
+                });
             } else {
                 const result = await wx.showModal({
                     title: '确认删除吗',
@@ -312,16 +324,29 @@ export default OakComponent({
                 });
                 const { confirm } = result;
                 if (confirm) {
-                    this.removeNode('', `${findIndex}`);
+                    await this.addOperation({
+                        action: 'remove',
+                        data: {},
+                        filter: {
+                            id,
+                        }
+                    });
+                    await this.execute();
                 }
             }
         },
         async onWebDelete(value: any) {
             const { originalFiles } = this.state;
-            const { id } = value;
+            const { id, bucket } = value;
             const findIndex = originalFiles?.findIndex((ele) => ele?.id === id);
-            if (isMockId(id)) {
-                this.removeNode('', `${findIndex}`);
+            if (!bucket) {
+                await this.addOperation({
+                    action: 'remove',
+                    data: {},
+                    filter: {
+                        id,
+                    }
+                });
             } else {
                 const confirm = Dialog.confirm({
                     header: '确认删除当前文件？',
@@ -330,8 +355,15 @@ export default OakComponent({
                     content: '删除后，文件不可恢复',
                     cancelBtn: '取消',
                     confirmBtn: '确定',
-                    onConfirm: () => {
-                        this.removeNode('', `${findIndex}`);
+                    onConfirm: async () => {
+                        await this.addOperation({
+                            action: 'remove',
+                            data: {},
+                            filter: {
+                                id,
+                            }
+                        });
+                        await this.execute();
                         confirm.hide();
                     },
                     onCancel: () => {
@@ -341,34 +373,6 @@ export default OakComponent({
                         confirm.hide();
                     },
                 });
-            }
-        },
-        async addExtraFile(
-            extraFile: DeduceCreateOperationData<
-                EntityDict['extraFile']['Schema']
-            >
-        ) {
-            try {
-                const result = await this.features.cache.operate('extraFile', {
-                    action: 'create',
-                    data: extraFile,
-                    id: await generateNewId(),
-                });
-                return result;
-            } catch (error) {
-                if (
-                    (<OakException>error).constructor.name ===
-                    OakUnloggedInException.name
-                ) {
-                    this.navigateTo(
-                        {
-                            url: '/login',
-                        },
-                        undefined
-                    );
-                    return;
-                }
-                throw error;
             }
         },
         setNewUploadFiles(file: any, status: string) {
