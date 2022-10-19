@@ -14,11 +14,7 @@ import Style from './web.module.less';
 
 
 export default function render(this: any) {
-<<<<<<< HEAD
-    const { t } = this;
-=======
     const { width } = this.props;
->>>>>>> dev2
     const { pagination, articles = [], oakLoading, searchValue } = this.state;
     const { pageSize, total, currentPage } = pagination || {};
 
