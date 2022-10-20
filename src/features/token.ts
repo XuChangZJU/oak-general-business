@@ -316,11 +316,9 @@ export class Token<
 
     async isRoot(): Promise<boolean> {
         const token = await this.getToken();
-
-        const { player } = token;
-        const { userRole$user } = player!;
+        const userRole$user = token?.player?.userRole$user;
         return (
-            (userRole$user as any).length > 0 &&
+            (userRole$user as any)?.length > 0 &&
             (userRole$user as any).find((ele: any) => ele.role.name === 'root')
         );
     }
