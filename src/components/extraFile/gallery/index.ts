@@ -271,6 +271,10 @@ export default OakComponent({
                     action: 'create',
                     data: updateData,
                 }, async () => {
+                    if (updateData.bucket) {
+                        // 说明本函数已经执行过了 
+                        return;
+                    }
                     const { bucket } = await this.features.extraFile.upload(
                         updateData
                     );

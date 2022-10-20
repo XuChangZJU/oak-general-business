@@ -1,2 +1,3 @@
-declare const _default: any;
+/// <reference types="react" />
+declare const _default: import("react").ComponentType<any>;
 export default _default;

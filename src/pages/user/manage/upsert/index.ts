@@ -26,7 +26,7 @@ const PICKER_KEY = {
     BIRTH: 'birth'
   };
 
-export default OakPage({
+export default OakComponent({
     entity: 'user',
     projection: {
         id: 1,
@@ -95,7 +95,7 @@ export default OakPage({
             this.setUpdateData(dataset!.attr, value);
         },
         async confirm() {
-            await this.execute(this.props.oakId ? 'update' : 'create');
+            await this.execute();
             if (this.props.oakFrom === 'user:manage:list') {
                 this.navigateBack();
             } else if (this.props.oakFrom === 'user:manage:detail') {

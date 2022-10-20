@@ -1,6 +1,6 @@
 <!-- index.wxml -->
 <view class="page-body">
     <view wx:for="{{arealist}}" wx:key="index">
-        <t-cell data-id="{{item.id}}" bindtap="onItemClicked" title="{{item.name}}" arrow="{{depth !== tiem.depth}}"></t-cell>
+        <t-cell data-id="{{item.id}}" bindtap="onWechatMpItemClicked" title="{{item.name}}" arrow="{{depth !== tiem.depth}}"></t-cell>
     </view>
 </view>

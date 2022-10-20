@@ -2,7 +2,7 @@
 
 import { composeFileUrl } from "../../../utils/extraFile";
 
-export default OakPage({
+export default OakComponent({
     entity: 'user',
     projection: {
         id: 1,

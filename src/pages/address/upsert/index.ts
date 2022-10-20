@@ -1,5 +1,6 @@
+import { OakInputIllegalException } from "oak-domain/lib/types";
 
-export default OakPage({
+export default OakComponent({
     entity: 'address',
     projection: {
         id: 1,
@@ -20,18 +21,20 @@ export default OakPage({
         },
     },
     isList: false,
-    formData: async ({ data: address }) => ({
-        name: address?.name!,
-        phone: address?.phone!,
-        // areaName: `${address?.area?.parent.parent.name}${address?.area?.parent.name}${address?.area?.name}`,
-        // provinceName: address?.area?.parent.parent.name,
-        districtName: address?.area?.name!,
-        area: address?.area,
-        areaText:
-            address?.area &&
-            `${address?.area?.parent?.parent?.name}${address?.area?.parent?.name}${address?.area?.name}`,
-        detail: address?.detail,
-    }),
+    async formData({ data: address }) {
+        return {
+            name: address?.name!,
+            phone: address?.phone!,
+            // areaName: `${address?.area?.parent.parent.name}${address?.area?.parent.name}${address?.area?.name}`,
+            // provinceName: address?.area?.parent.parent.name,
+            districtName: address?.area?.name!,
+            area: address?.area,
+            areaText:
+                address?.area &&
+                `${address?.area?.parent?.parent?.name}${address?.area?.parent?.name}${address?.area?.name}`,
+            detail: address?.detail,
+        };
+    },
     methods: {
         setValue(input: any) {
             const { dataset, value } = this.resolveInput(input);
@@ -43,13 +46,13 @@ export default OakPage({
             });
         },
         async confirm() {
-            await this.execute(this.props.oakId ? 'update' : 'create');
+            await this.execute();
             if (this.props.oakFrom === 'address:list') {
                 this.navigateBack();
             }
         },
         reset() {
-            this.resetUpdateData();
+            this.cleanOperation();
         },
     },
 });

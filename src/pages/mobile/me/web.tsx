@@ -52,7 +52,14 @@ export default function render(this: any) {
                     });
                 }}
                 onConfirm={async () => {
-                    this.execute('remove', undefined, `${deleteIdx}`);
+                    await this.addOperation({
+                        action: 'remove',
+                        data: {},
+                        filter: {
+                            id: mobiles[deleteIdx].id,
+                        },
+                    });
+                    await this.execute();
                     this.setState({
                         confirmDeleteModalVisible: false,
                         deleteIdx: undefined,

@@ -2,7 +2,7 @@
 
 import { composeFileUrl } from "../../../../utils/extraFile";
 
-export default OakPage({
+export default OakComponent({
     entity: 'user',
     projection: {
         id: 1,
@@ -165,7 +165,11 @@ export default OakPage({
                 case 'verify':
                 case 'activate':
                 case 'play': {
-                    await this.execute(action);
+                    await this.addOperation({
+                        action,
+                        data: {},
+                    });
+                    await this.execute();
                     break;
                 }
                 default: {

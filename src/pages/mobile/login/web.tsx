@@ -10,7 +10,6 @@ import Style from './web.module.less';
 const { FormItem } = Form;
 
 export default function render(this: any) {
-    const { t } = this;
     const { mobile, captcha, password, counter } = this.state;
     const validMobile = isMobile(mobile);
     const validCaptcha = isCaptcha(captcha);
@@ -26,7 +25,7 @@ export default function render(this: any) {
                     type="tel"
                     maxlength={11}
                     prefixIcon={<MobileIcon />}
-                    placeholder={t('placeholder.Mobile')}
+                    placeholder={this.t('placeholder.Mobile')}
                     size="large"
                     onChange={(value, context) => {
                         this.setState({
@@ -43,7 +42,7 @@ export default function render(this: any) {
                     data-attr="captcha"
                     // type="number"
                     maxlength={4}
-                    placeholder={t('placeholder.Captcha')}
+                    placeholder={this.t('placeholder.Captcha')}
                     size="large"
                     onChange={(value, context) => {
                         this.setState({
@@ -59,7 +58,7 @@ export default function render(this: any) {
                             disabled={!validMobile || counter > 0}
                             onClick={() => this.sendCaptcha()}
                         >
-                            {counter > 0 ? `${counter}秒后可重发` : t('Send')}
+                            {counter > 0 ? `${counter}秒后可重发` : this.t('Send')}
                         </Button>
                     }
                 />
@@ -74,7 +73,7 @@ export default function render(this: any) {
                     disabled={!allowSubmit}
                     onClick={() => this.loginByMobile()}
                 >
-                    {t('Log in')}
+                    {this.t('Log in')}
                 </Button>
             </FormItem>
         </Form>

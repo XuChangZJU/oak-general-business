@@ -1,5 +1,5 @@
 
-export default OakPage({
+export default OakComponent({
     entity: 'mobile',
     isList: true,
     projection: {

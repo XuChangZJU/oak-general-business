@@ -7,8 +7,8 @@ import Style from './web.module.less';
 const { ListItem, ListItemMeta } = List;
 
 export default function render(this: any) {
-    const { avatar, nickname, isLoggedIn, refreshing, mobile, mobileCount, showDrawer, oakDirty } = this.state;
-    const mobileText = mobileCount > 1 ? `${mobileCount}条手机号` : ( mobile || '未设置');
+    const { avatar, nickname, isLoggedIn, refreshing, mobile, mobileCount, showDrawer } = this.state;
+    const mobileText = mobileCount > 1 ? `${mobileCount}条手机号` : (mobile || '未设置');
     return (
         <div className={Style.container}>
             <div className={Style.userInfo}>
@@ -62,29 +62,67 @@ export default function render(this: any) {
                     </ListItem>
                 </div>
             </List>
+            {this.state.isRoot && (
+                <>
+                    <div style={{ flex: 1 }} />
+                    <List
+                        layout="horizontal"
+                        size="medium"
+                        className={Style.list}
+                        split={true}
+                    >
+                        <div onClick={() => this.goUserManage()}>
+                            <ListItem action={<Icon size={18} name="chevron-right" />}>
+                                <ListItemMeta
+                                    image={<Icon size={18} name="user" />}
+                                    title="用户管理"
+                                />
+                            </ListItem>
+                        </div>
+                    </List>
+                </>
+            )}
             <Drawer
                 placement="bottom"
                 visible={showDrawer}
                 header="修改昵称"
-                onConfirm={async () => {
-                    await this.execute('update', undefined, '0.user');
-                    this.setState({ showDrawer: false });
-                    this.resetUpdateData();
-                }}
+                confirmBtn={<Button
+                    disabled={this.state.oakExecuting || !this.state.oakAllowExecuting}
+                    onClick={async () => {
+                        await this.execute();
+                        this.setState({ showDrawer: false });
+                        this.cleanOperation();
+
+                    }}
+                >{this.t('common:action.confirm')}</Button>}
                 onCancel={() => {
                     this.setState({ showDrawer: false });
-                    this.resetUpdateData();
+                    this.cleanOperation();
                 }}
                 onClose={() => {
                     this.setState({ showDrawer: false });
-                    this.resetUpdateData();
+                    this.cleanOperation();
                 }}
             >
                 <Input
                     placeholder="请输入昵称"
                     value={nickname}
-                    onChange={(value) => {
-                        this.setUpdateData('0.user.nickname', value);
+                    onChange={async (value) => {
+                        const { tokenId } = this.state;
+                        await this.addOperation({
+                            action: 'update',
+                            data: {
+                                user: {
+                                    action: 'update',
+                                    data: {
+                                        nickname: value,
+                                    },
+                                },
+                            },
+                            filter: {
+                                id: tokenId,
+                            }
+                        });
                     }}
                 />
             </Drawer>

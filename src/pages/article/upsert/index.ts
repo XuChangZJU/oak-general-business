@@ -107,7 +107,7 @@ export default OakComponent({
         },
         async reset() {
             // 重置
-            this.resetUpdateData();
+            this.cleanOperation();
         },
         preview() {
             const { html, title, author } = this.state;

@@ -1,6 +1,6 @@
 // index.ts
 
-export default OakPage({
+export default OakComponent({
     entity: 'address',
     projection: {
         id: 1,
