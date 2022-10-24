@@ -1,4 +1,4 @@
-export default OakPage({
+export default OakComponent({
     isList: false,
     entity: 'platform',
     projection: {
@@ -12,7 +12,7 @@ export default OakPage({
     },
     methods: {
         async confirm() {
-            await this.execute(this.props.oakId ? 'update' : 'create');
+            await this.execute();
             this.navigateBack();
         }
     },

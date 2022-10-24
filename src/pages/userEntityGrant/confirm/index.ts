@@ -1,5 +1,5 @@
 
-export default OakPage({
+export default OakComponent({
     entity: 'userEntityGrant',
     projection: {
         id: 1,
@@ -12,8 +12,12 @@ export default OakPage({
         };
     },
     methods: {
-        handleConfirm() {
-            this.execute('confirm');
+        async handleConfirm() {
+            await this.addOperation({
+                action: 'confirm',
+                data: {},
+            });
+            return this.execute();
         },
     },
 });

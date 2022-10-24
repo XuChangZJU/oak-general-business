@@ -3,8 +3,6 @@ import { Table, Tag, Button, DialogPlugin, Space, Avatar } from 'tdesign-react';
 import { UserIcon } from 'tdesign-icons-react';
 
 export default function render(this: any) {
-    const { t } = this;
-    const { event } = this.props;
     const { list = [], oakLoading, pagination } = this.state;
     const { pageSize, total, currentPage } = pagination || {};
 

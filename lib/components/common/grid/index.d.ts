@@ -1,4 +1,5 @@
 import React from 'react';
+import './index.less';
 declare type Item = {
     text: React.ReactNode;
     image: React.ReactNode;
@@ -12,7 +13,7 @@ declare type GridProps = {
     textClassName?: string;
     children?: React.ReactNode;
     list: Array<Item>;
-    onChange?: (index: number, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+    onChange?: (index: number, event?: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
 declare const _default: React.MemoExoticComponent<(props: GridProps) => JSX.Element>;
 export default _default;

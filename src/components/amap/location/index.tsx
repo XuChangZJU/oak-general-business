@@ -15,7 +15,7 @@ import { SearchIcon, CheckCircleFilledIcon } from 'tdesign-icons-react';
 import { Geolocation, GeolocationProps } from '@uiw/react-amap';
 import Map from './../map';
 import PositionPicker from './PositionPicker'
-import Style from './index.module.less';
+import './index.less';
 
 const { ListItem, ListItemMeta } = List;
 
@@ -70,6 +70,8 @@ const Location = (props: LocationProps) => {
         useGeolocation = true,
         dialogProps = {},
     } = props;
+    const prefixCls = 'oak';
+
     const searchRef = useRef();
     const [searchValue, setSearchValue] = useState<InputValue>('');
     const [refresh, setRefresh] = useState(true); // 点击poi不触发setPositionPickerResult
@@ -242,205 +244,217 @@ const Location = (props: LocationProps) => {
                 clearData();
             }}
         >
-            <Row>
-                <Col xs={12} sm={7}>
-                    <Map
-                        className={Style.map}
-                        akey={akey}
-                        version={version}
-                        useAMapUI={true}
-                        mapRef={(instance) => {
-                            if (instance && instance.map && !map) {
-                                setMap(instance.map);
-                            }
-                        }}
-                        mapProps={{
-                            onDragStart: () => {
-                                setRefresh(true);
-                                setMode('dragMap');
-                                setSearchValue('');
-                                setShow(false);
-                            },
-                        }}
-                    >
-                        <PositionPicker
-                            loadUI={loadUI}
-                            __map__={map}
-                            onSuccess={(result) => {
-                                setPositionPickerResult(result);
+            <div className={`${prefixCls}-location`}>
+                <Row>
+                    <Col xs={12} sm={7}>
+                        <Map
+                            className={`${prefixCls}-location-map`}
+                            akey={akey}
+                            version={version}
+                            useAMapUI={true}
+                            mapRef={(instance) => {
+                                if (instance && instance.map && !map) {
+                                    setMap(instance.map);
+                                }
                             }}
-                        />
-                        {useGeolocation && (
-                            <Geolocation
-                                maximumAge={100000}
-                                borderRadius="5px"
-                                position="RB"
-                                offset={[10, 10]}
-                                zoomToAccuracy={true}
-                                showCircle={true}
-                                {...geolocationProps}
-                                onComplete={(data) => {}}
-                                onError={(err) => {
-                                    console.error(err);
+                            mapProps={{
+                                onDragStart: () => {
+                                    setRefresh(true);
+                                    setMode('dragMap');
+                                    setSearchValue('');
+                                    setShow(false);
+                                },
+                            }}
+                        >
+                            <PositionPicker
+                                loadUI={loadUI}
+                                __map__={map}
+                                onSuccess={(result) => {
+                                    setPositionPickerResult(result);
                                 }}
                             />
-                        )}
-                    </Map>
-                </Col>
-                <Col xs={12} sm={5}>
-                    <div>
-                        <List
-                            header={
-                                <div className={Style.searchBox}>
-                                    <Input
-                                        ref={searchRef}
-                                        placeholder="搜索地点"
-                                        value={searchValue}
-                                        clearable
-                                        onChange={(value) => {
-                                            setSearchValue(value);
-                                        }}
-                                        onClear={() => {
-                                            setSearchValue('');
-                                        }}
-                                        prefixIcon={<SearchIcon />}
-                                        onFocus={() => {
-                                            setMode('searchPoi');
-                                            setFocus(true);
-                                        }}
-                                        onBlur={() => {
-                                            setFocus(false);
-                                        }}
-                                    />
-                                    {mode === 'searchPoi' && (
-                                        <Button
-                                            style={{ marginLeft: 5 }}
-                                            variant="text"
-                                            theme="primary"
-                                            onClick={() => {
-                                                setMode('dragMap');
-                                                setSearchValue('');
-                                                setShow(false);
-                                                //@ts-ignore
-                                                searchRef?.current?.blur();
-                                            }}
-                                        >
-                                            取消
-                                        </Button>
-                                    )}
-                                </div>
-                            }
-                            className={Style.list}
-                        >
-                            {mode === 'dragMap' &&
-                                pois?.map((poi, index) => {
-                                    return (
-                                        <div
-                                            key={poi.id}
-                                            onClick={() => {
-                                                setRefresh(false);
-                                                setCurrentPoi(poi);
-                                            }}
-                                        >
-                                            <ListItem
-                                                action={
-                                                    currentPoi?.id ===
-                                                    poi.id ? (
-                                                        <CheckCircleFilledIcon
-                                                            className={
-                                                                Style.check
-                                                            }
-                                                            size={24}
-                                                        />
-                                                    ) : (
-                                                        <div
-                                                            style={{
-                                                                width: 24,
-                                                            }}
-                                                        />
-                                                    )
-                                                }
-                                            >
-                                                <ListItemMeta
-                                                    title={poi.name}
-                                                    description={`${
-                                                        poi.distance
-                                                            ? `${poi.distance}m内 | `
-                                                            : ''
-                                                    }${poi.address}`}
-                                                />
-                                            </ListItem>
-                                        </div>
-                                    );
-                                })}
-                            {mode === 'searchPoi' && (
-                                <React.Fragment>
-                                    {searchLoading && (
-                                        <div className={Style.loadingBox}>
-                                            <Loading
-                                                delay={0}
-                                                fullscreen={false}
-                                                indicator
-                                                inheritColor={false}
-                                                loading
-                                                preventScrollThrough
-                                                showOverlay
-                                                size="medium"
-                                            />
-                                        </div>
-                                    )}
-                                    {pois?.length
-                                        ? pois.map((poi, index) => {
-                                              return (
-                                                  <div
-                                                      key={poi.id}
-                                                      onClick={() => {
-                                                          setRefresh(false);
-                                                          setCurrentPoi(poi);
-                                                      }}
-                                                  >
-                                                      <ListItem
-                                                          action={
-                                                              currentPoi?.id ===
-                                                              poi.id ? (
-                                                                  <CheckCircleFilledIcon
-                                                                      className={
-                                                                          Style.check
-                                                                      }
-                                                                      size={24}
-                                                                  />
-                                                              ) : (
-                                                                  <div
-                                                                      style={{
-                                                                          width: 24,
-                                                                      }}
-                                                                  />
-                                                              )
-                                                          }
-                                                      >
-                                                          <ListItemMeta
-                                                              title={poi.name}
-                                                              description={`${
-                                                                  poi.distance
-                                                                      ? `${poi.distance}m内 | `
-                                                                      : ''
-                                                              }${poi.address}`}
-                                                          />
-                                                      </ListItem>
-                                                  </div>
-                                              );
-                                          })
-                                        : show && (
-                                              <div className={Style.noData}>
-                                                  无搜素结果
-                                              </div>
-                                          )}
-                                </React.Fragment>
+                            {useGeolocation && (
+                                <Geolocation
+                                    maximumAge={100000}
+                                    borderRadius="5px"
+                                    position="RB"
+                                    offset={[10, 10]}
+                                    zoomToAccuracy={true}
+                                    showCircle={true}
+                                    {...geolocationProps}
+                                    onComplete={(data) => {}}
+                                    onError={(err) => {
+                                        console.error(err);
+                                    }}
+                                />
                             )}
-                        </List>
-                    </div>
-                </Col>
-            </Row>
+                        </Map>
+                    </Col>
+                    <Col xs={12} sm={5}>
+                        <div>
+                            <List
+                                className={`${prefixCls}-location-list`}
+                                header={
+                                    <div
+                                        className={`${prefixCls}-location-list-header`}
+                                    >
+                                        <Input
+                                            ref={searchRef}
+                                            placeholder="搜索地点"
+                                            value={searchValue}
+                                            clearable
+                                            onChange={(value) => {
+                                                setSearchValue(value);
+                                            }}
+                                            onClear={() => {
+                                                setSearchValue('');
+                                            }}
+                                            prefixIcon={<SearchIcon />}
+                                            onFocus={() => {
+                                                setMode('searchPoi');
+                                                setFocus(true);
+                                            }}
+                                            onBlur={() => {
+                                                setFocus(false);
+                                            }}
+                                        />
+                                        {mode === 'searchPoi' && (
+                                            <Button
+                                                style={{ marginLeft: 5 }}
+                                                variant="text"
+                                                theme="primary"
+                                                onClick={() => {
+                                                    setMode('dragMap');
+                                                    setSearchValue('');
+                                                    setShow(false);
+                                                    //@ts-ignore
+                                                    searchRef?.current?.blur();
+                                                }}
+                                            >
+                                                取消
+                                            </Button>
+                                        )}
+                                    </div>
+                                }
+                            >
+                                {mode === 'dragMap' &&
+                                    pois?.map((poi, index) => {
+                                        return (
+                                            <div
+                                                key={poi.id}
+                                                onClick={() => {
+                                                    setRefresh(false);
+                                                    setCurrentPoi(poi);
+                                                }}
+                                            >
+                                                <ListItem
+                                                    action={
+                                                        currentPoi?.id ===
+                                                        poi.id ? (
+                                                            <CheckCircleFilledIcon
+                                                                className={`${prefixCls}-location-list-checked`}
+                                                                size={24}
+                                                            />
+                                                        ) : (
+                                                            <div
+                                                                style={{
+                                                                    width: 24,
+                                                                }}
+                                                            />
+                                                        )
+                                                    }
+                                                >
+                                                    <ListItemMeta
+                                                        title={poi.name}
+                                                        description={`${
+                                                            poi.distance
+                                                                ? `${poi.distance}m内 | `
+                                                                : ''
+                                                        }${poi.address}`}
+                                                    />
+                                                </ListItem>
+                                            </div>
+                                        );
+                                    })}
+                                {mode === 'searchPoi' && (
+                                    <React.Fragment>
+                                        {searchLoading && (
+                                            <div
+                                                className={`${prefixCls}-location-list-loadingBox`}
+                                            >
+                                                <Loading
+                                                    delay={0}
+                                                    fullscreen={false}
+                                                    indicator
+                                                    inheritColor={false}
+                                                    loading
+                                                    preventScrollThrough
+                                                    showOverlay
+                                                    size="medium"
+                                                />
+                                            </div>
+                                        )}
+                                        {pois?.length
+                                            ? pois.map((poi, index) => {
+                                                  return (
+                                                      <div
+                                                          key={poi.id}
+                                                          onClick={() => {
+                                                              setRefresh(false);
+                                                              setCurrentPoi(
+                                                                  poi
+                                                              );
+                                                          }}
+                                                      >
+                                                          <ListItem
+                                                              action={
+                                                                  currentPoi?.id ===
+                                                                  poi.id ? (
+                                                                      <CheckCircleFilledIcon
+                                                                          className={`${prefixCls}-location-list-checked`}
+                                                                          size={
+                                                                              24
+                                                                          }
+                                                                      />
+                                                                  ) : (
+                                                                      <div
+                                                                          style={{
+                                                                              width: 24,
+                                                                          }}
+                                                                      />
+                                                                  )
+                                                              }
+                                                          >
+                                                              <ListItemMeta
+                                                                  title={
+                                                                      poi.name
+                                                                  }
+                                                                  description={`${
+                                                                      poi.distance
+                                                                          ? `${poi.distance}m内 | `
+                                                                          : ''
+                                                                  }${
+                                                                      poi.address
+                                                                  }`}
+                                                              />
+                                                          </ListItem>
+                                                      </div>
+                                                  );
+                                              })
+                                            : show && (
+                                                  <div
+                                                      className={`${prefixCls}-location-list-noData`}
+                                                  >
+                                                      无搜素结果
+                                                  </div>
+                                              )}
+                                    </React.Fragment>
+                                )}
+                            </List>
+                        </div>
+                    </Col>
+                </Row>
+            </div>
         </Dialog>
     );
 };

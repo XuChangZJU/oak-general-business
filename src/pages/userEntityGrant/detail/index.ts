@@ -1,5 +1,5 @@
 
-export default OakPage({
+export default OakComponent({
     entity: 'userEntityGrant',
     projection: {
         id: 1,
@@ -31,7 +31,6 @@ export default OakPage({
     },
     isList: false,
     formData: async ({ data: userEntityGrant }) => {
-        console.log(userEntityGrant);
         let qrCodeUrl;
         const str = userEntityGrant?.wechatQrCode$entity[0]?.buffer;
         if (str) {

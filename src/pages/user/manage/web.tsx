@@ -7,7 +7,6 @@ import { getName } from '../../../utils/randomUser'
 const { ListItem, ListItemMeta } = List;
 
 export default function render(this: any) {
-    const { t } = this;
     const {
         event
     } = this.props;
@@ -61,7 +60,7 @@ export default function render(this: any) {
                                                 }
                                             >
                                                 {ele.userState
-                                                    ? t(
+                                                    ? this.t(
                                                           `user:v.userState.${ele.userState}`
                                                       )
                                                     : '未知'}

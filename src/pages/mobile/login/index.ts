@@ -1,6 +1,6 @@
 
 const SEND_KEY = 'captcha:sendAt';
-export default OakPage({
+export default OakComponent({
     isList: false,
     projection: {
         id: 1,

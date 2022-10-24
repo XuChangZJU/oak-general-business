@@ -4,6 +4,18 @@ OakComponent(
     {
         entity: 'extraFile',
         isList: false,
+        projection: {
+            id: 1,
+            tag1: 1,
+            origin: 1,
+            bucket: 1,
+            objectId: 1,
+            filename: 1,
+            extra1: 1,
+            extension: 1,
+            type: 1,
+            entity: 1,
+        },
         formData: async ({ data: extraFile, features }) => {
             const application = await features.application.getApplication();
 

@@ -2,6 +2,7 @@
 import React from 'react';
 import { DialogProps } from 'tdesign-react';
 import { GeolocationProps } from '@uiw/react-amap';
+import './index.less';
 export declare type LocationProps = {
     akey: string;
     version?: string;

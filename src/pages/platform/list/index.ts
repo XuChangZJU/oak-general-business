@@ -1,4 +1,4 @@
-export default OakPage({
+export default OakComponent({
     isList: true,
     entity: 'platform',
     projection: {

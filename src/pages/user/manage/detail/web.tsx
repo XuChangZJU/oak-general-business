@@ -7,7 +7,6 @@ const { ListItem, ListItemMeta } = List;
 
 
 export default function render(this: any) {
-    const { t } = this;
     const {
         nickname,
         avatar,
@@ -57,7 +56,7 @@ export default function render(this: any) {
                 <ListItem
                     action={
                         <Tag theme={stateColor[userState]}>
-                            {t(`user:v.userState.${userState}`)}
+                            {this.t(`user:v.userState.${userState}`)}
                         </Tag>
                     }
                 >
@@ -67,7 +66,7 @@ export default function render(this: any) {
                 <ListItem
                     action={
                         <Tag theme={idStateColor[idState]}>
-                            {t(`user:v.idState.${idState}`)}
+                            {this.t(`user:v.idState.${idState}`)}
                         </Tag>
                     }
                 >

@@ -2,8 +2,8 @@
     <block wx:for="{{files}}" wx:key="index">
         <block wx:if="{{item}}">
             <view class="file-list__item  file-list__item--{{size}} l-item-class" style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:'xxx'}}">
-                <item data-index="{{index}}" bind:tap="onItemTapped" mode="{{mode}}" oakValue="{{item}}" oakPath="{{index}}" oakParent="{{oakFullpath}}" />
-                <view wx:if="{{!disableDelete}}" mut-bind:tap="onDelete" class="file-list__remove" data-value="{{item}}" data-index="{{ index }}">
+                <item data-index="{{index}}" bind:tap="onItemTapped" mode="{{mode}}" oakPath="{{oakFullpath}}.{{index}}" />
+                <view wx:if="{{!disableDelete}}" mut-bind:tap="onDelete" class="file-list__remove" data-value="{{item}}">
                     <t-icon name="close" color="#ffffff" size="18" />
                 </view>
             </view>

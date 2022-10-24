@@ -12,7 +12,6 @@ import Style from './web.module.less';
 const { FormItem } = Form;
 
 export default function render(this: any) {
-    const { t } = this;
     const { onlyCaptcha, onlyPassword, width } = this.props;
     const { mobile, captcha, password, counter, tabValue = 1} = this.state;
     const validMobile = isMobile(mobile);
@@ -30,7 +29,7 @@ export default function render(this: any) {
                     data-attr="mobile"
                     maxlength={11}
                     prefixIcon={<MobileIcon />}
-                    placeholder={t('placeholder.Mobile')}
+                    placeholder={this.t('placeholder.Mobile')}
                     size="large"
                     onChange={(value, context) => {
                         this.setState({
@@ -47,7 +46,7 @@ export default function render(this: any) {
                     data-attr="password"
                     prefixIcon={<LockOnIcon />}
                     type="password"
-                    placeholder={t('placeholder.Password')}
+                    placeholder={this.t('placeholder.Password')}
                     size="large"
                     onChange={(value, context) => {
                         this.setState({
@@ -67,7 +66,7 @@ export default function render(this: any) {
                     disabled={!allowSubmit}
                     onClick={() => this.loginByMobile()}
                 >
-                    {t('Log in')}
+                    {this.t('Log in')}
                 </Button>
             </FormItem>
         </Form>
@@ -82,7 +81,7 @@ export default function render(this: any) {
                     type="tel"
                     maxlength={11}
                     prefixIcon={<MobileIcon />}
-                    placeholder={t('placeholder.Mobile')}
+                    placeholder={this.t('placeholder.Mobile')}
                     size="large"
                     onChange={(value, context) => {
                         this.setState({
@@ -98,7 +97,7 @@ export default function render(this: any) {
                     value={captcha}
                     data-attr="captcha"
                     maxlength={4}
-                    placeholder={t('placeholder.Captcha')}
+                    placeholder={this.t('placeholder.Captcha')}
                     size="large"
                     onChange={(value, context) => {
                         this.setState({
@@ -114,7 +113,7 @@ export default function render(this: any) {
                             disabled={!validMobile || counter > 0}
                             onClick={() => this.sendCaptcha()}
                         >
-                            {counter > 0 ? `${counter}秒后可重发` : t('Send')}
+                            {counter > 0 ? `${counter}秒后可重发` : this.t('Send')}
                         </Button>
                     }
                 />
@@ -129,7 +128,7 @@ export default function render(this: any) {
                     disabled={!allowSubmit}
                     onClick={() => this.loginByMobile()}
                 >
-                    {t('Log in')}
+                    {this.t('Log in')}
                 </Button>
             </FormItem>
         </Form>
@@ -193,7 +192,7 @@ export default function render(this: any) {
                                 }
                             )}
                         >
-                            {t('in Password')}
+                            {this.t('in Password')}
                         </Radio.Button>
                         <Radio.Button
                             value={2}
@@ -204,7 +203,7 @@ export default function render(this: any) {
                                 }
                             )}
                         >
-                            {t('in Captcha')}
+                            {this.t('in Captcha')}
                         </Radio.Button>
                         <Radio.Button
                             value={3}
@@ -215,7 +214,7 @@ export default function render(this: any) {
                                 }
                             )}
                         >
-                            {t('in QrCode')}
+                            {this.t('in QrCode')}
                         </Radio.Button>
                     </Radio.Group>
                 </div>

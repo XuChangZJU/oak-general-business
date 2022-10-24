@@ -1,7 +1,7 @@
 import { ROOT_ROLE_ID } from '../../../constants';
 import { composeFileUrl } from '../../../utils/extraFile';
 
-export default OakPage({
+export default OakComponent({
     entity: 'token',
     isList: true,
     projection: {
@@ -54,7 +54,7 @@ export default OakPage({
     },
     filters: [{
         filter: async ({ features }) => {
-            const tokenId = await features.token.getToken();
+            const tokenId = await features.token.getTokenValue();
             if (tokenId) {
                 return {
                     id: tokenId,
@@ -82,6 +82,8 @@ export default OakPage({
             player?.userRole$user &&
             player.userRole$user[0]?.roleId === ROOT_ROLE_ID;
         return {
+            tokenId: token?.id,
+            userId: user?.id,
             avatar,
             nickname,
             mobile,

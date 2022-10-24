@@ -1,4 +1,2 @@
-/// <reference types="react" />
-import React from '../../../utils/react';
-declare const _default: React.ComponentType<any>;
+declare const _default: any;
 export default _default;

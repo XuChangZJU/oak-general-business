@@ -1,7 +1,7 @@
 import { DeduceCreateSingleOperation, OakException, OakCongruentRowExists } from "oak-domain/lib/types";
 import { EntityDict } from '../../../general-app-domain';
 
-export default OakPage({
+export default OakComponent({
     entity: 'userEntityGrant',
 
     projection: {
@@ -42,19 +42,19 @@ export default OakPage({
             this.setUpdateData('relation', value);
         },
         reset() {
-            this.resetUpdateData();
+            this.cleanOperation();
         },
         async confirm() {
             try {
-                const result = await this.execute(
-                    this.props.oakId ? 'update' : 'create',
-                    [OakCongruentRowExists.name]
-                );
+                const [ operation ] = await this.execute();
 
-                const { data } = result as DeduceCreateSingleOperation<
-                    EntityDict['userEntityGrant']['OpSchema']
-                >;
-                const { id } = data;
+                let id = this.props.oakId;
+                if (!id) {
+                    // 说明是create
+                    const { data } = operation as EntityDict['userEntityGrant']['CreateSingle'];
+                    id = data.id;
+                }
+                
 
                 this.navigateTo({
                     url: '/userEntityGrant/detail',

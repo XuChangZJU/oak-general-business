@@ -1,2 +1,2 @@
 /// <reference types="react" />
-export default function render(): JSX.Element;
+export default function render(this: any): JSX.Element;

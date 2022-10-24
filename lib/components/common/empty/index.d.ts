@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './index.less';
 declare type EmptyProps = {
     className?: string;
     style?: React.CSSProperties;
