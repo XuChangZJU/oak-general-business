@@ -4,7 +4,7 @@ declare type Item = {
     image: React.ReactNode;
 };
 declare type GridProps = {
-    column?: 1 | 2 | 3 | 4 | 5 | 6;
+    column?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
     gutter?: number;
     style?: React.CSSProperties;
     className?: string;
