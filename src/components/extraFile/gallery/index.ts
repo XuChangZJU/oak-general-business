@@ -11,6 +11,7 @@ export default OakComponent({
     projection: {
         id: 1,
         tag1: 1,
+        tag2: 1,
         origin: 1,
         bucket: 1,
         objectId: 1,
