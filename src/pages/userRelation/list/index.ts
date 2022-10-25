@@ -2,7 +2,7 @@ import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { composeFileUrl } from '../../../utils/extraFile';
 import React from '../../../utils/react';
 
-export default OakPage({
+export default OakComponent({
     entity: 'user',
     projection: async ({ props }) => {
         const { entity, entityId } = props;
@@ -53,7 +53,7 @@ export default OakPage({
     filters: [
         // 由调用者注入oakFilter
         {
-            filter: async ({ features, props, onLoadOptions }) => {
+            filter: async ({ features, props }) => {
                 const { entityId, entity } = props;
                 const entityStr = firstLetterUpperCase(entity!);
                 return {
@@ -73,14 +73,14 @@ export default OakPage({
         },
     ],
     isList: true,
-    async formData ({ data: users, props, features }) {
+    async formData({ data: users, props, features }) {
         const { entity, entityId } = props;
         const entityStr = firstLetterUpperCase(entity!);
-        const filter = this.state.oakFullpath && await this.getFilterByName('name') as any;
-        const pagination = this.state.oakFullpath && this.getPagination();
+        const filter = await this.getFilterByName('name');
+        const pagination = this.getPagination();
         return {
             users: users?.map((ele: any) => {
-                const { mobile$user, extraFile$entity } = ele || {};
+                const { mobile$user, extraFile$entity } = ele;
                 const mobile = mobile$user && mobile$user[0]?.mobile;
                 const relations = ele[`user${entityStr}$user`]
                     ?.filter((rt: any) => rt[`${entity}Id`] === entityId)
@@ -112,7 +112,6 @@ export default OakPage({
     data: {
         show: false,
         searchValue: '',
-        deleteIndex: '',
         editableRowKeys: [] as string[],
         btnItems: [
             {
@@ -144,18 +143,17 @@ export default OakPage({
             }
         },
         goUpsert() {
-             const { entity, entityId, relations } = this.props;
-             this.navigateTo(
-                 {
-                     url: '/userRelation/upsert',
-                     entity,
-                     entityId,
-                     relations,
-                 },
-                 {
-                     relations,
-                 }
-             );
+            const { entity, entityId, relations } = this.props;
+            this.navigateTo(
+                {
+                    url: '/userRelation/upsert',
+                    entity,
+                    entityId,
+                },
+                {
+                    relations,
+                }
+            );
         },
         goUserEntityGrantWithGrant() {
             const { entity, entityId, relations } = this.props;
@@ -275,7 +273,9 @@ export default OakPage({
                 const { entity, entityId } = this.props;
                 const entityStr = firstLetterUpperCase(entity!);
 
-                const current = (this as any).editMap[(this as any).currentSaveId];
+                const current = (this as any).editMap[
+                    (this as any).currentSaveId
+                ];
                 if (current) {
                     Object.keys(current.editedRow).forEach((ele) => {
                         if (ele === 'relations') {
