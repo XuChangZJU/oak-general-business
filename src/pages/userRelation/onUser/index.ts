@@ -1,7 +1,7 @@
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { composeFileUrl } from '../../../utils/extraFile';
 
-export default OakPage({
+export default OakComponent({
     entity: 'user',
     projection: async ({ props }) => {
         const { entity, relations, entityId } = props;
@@ -62,7 +62,9 @@ export default OakPage({
     formData: async function ({ data: users, props, features }) {
         const { entity } = props;
         const entityStr = firstLetterUpperCase(entity!);
-        const filter = this.state.oakFullpath && await this.getFilterByName('name') as any;
+        const filter =
+            this.state.oakFullpath &&
+            ((await this.getFilterByName('name')) as any);
 
         return {
             users: users?.map((ele: any) => {
