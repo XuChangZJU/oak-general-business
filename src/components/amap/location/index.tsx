@@ -1,23 +1,22 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import {
-    Dialog,
+    Modal,
     Row,
     Col,
-    List,
-    Input,
-    InputValue,
+    ModalProps,
     Button,
-    Loading,
-    DialogProps,
-} from 'tdesign-react'; 
-import { SearchIcon, CheckCircleFilledIcon } from 'tdesign-icons-react';
+    Input,
+    List,
+    Empty,
+    Spin,
+} from 'antd'; 
+import { SearchOutlined, CheckCircleFilled } from '@ant-design/icons';
 import { Geolocation, GeolocationProps } from '@uiw/react-amap';
 import Map from './../map';
 import PositionPicker from './PositionPicker'
 import './index.less';
 
-const { ListItem, ListItemMeta } = List;
 
 export type LocationProps = {
     akey: string;
@@ -32,7 +31,7 @@ export type LocationProps = {
     ) => void;
     geolocationProps?: GeolocationProps;
     useGeolocation?: boolean;
-    dialogProps?: DialogProps;
+    dialogProps?: ModalProps;
 };
 
 export type Poi = {
@@ -72,8 +71,8 @@ const Location = (props: LocationProps) => {
     } = props;
     const prefixCls = 'oak';
 
-    const searchRef = useRef();
-    const [searchValue, setSearchValue] = useState<InputValue>('');
+    const searchRef = useRef<any>();
+    const [searchValue, setSearchValue] = useState<string>('');
     const [refresh, setRefresh] = useState(true); // 点击poi不触发setPositionPickerResult
     const [mode, setMode] = useState<Mode>('dragMap');
 
@@ -224,15 +223,18 @@ const Location = (props: LocationProps) => {
 
 
     return (
-        <Dialog
+        <Modal
             width="80%"
+            okText="确定"
+            cancelText="取消"
+            title="选择位置"
             {...dialogProps}
-            visible={visible}
-            onClose={() => {
+            open={visible}
+            onCancel={() => {
                 onClose && onClose();
                 clearData();
             }}
-            onConfirm={() => {
+            onOk={() => {
                 if (!currentPoi) {
                     return;
                 }
@@ -245,8 +247,8 @@ const Location = (props: LocationProps) => {
             }}
         >
             <div className={`${prefixCls}-location`}>
-                <Row>
-                    <Col xs={12} sm={7}>
+                <Row gutter={[16, 16]}>
+                    <Col xs={24} sm={14}>
                         <Map
                             className={`${prefixCls}-location-map`}
                             akey={akey}
@@ -290,7 +292,7 @@ const Location = (props: LocationProps) => {
                             )}
                         </Map>
                     </Col>
-                    <Col xs={12} sm={5}>
+                    <Col xs={24} sm={10}>
                         <div>
                             <List
                                 className={`${prefixCls}-location-list`}
@@ -302,14 +304,11 @@ const Location = (props: LocationProps) => {
                                             ref={searchRef}
                                             placeholder="搜索地点"
                                             value={searchValue}
-                                            clearable
-                                            onChange={(value) => {
-                                                setSearchValue(value);
+                                            allowClear
+                                            onChange={(e) => {
+                                                setSearchValue(e.target.value);
                                             }}
-                                            onClear={() => {
-                                                setSearchValue('');
-                                            }}
-                                            prefixIcon={<SearchIcon />}
+                                            prefix={<SearchOutlined />}
                                             onFocus={() => {
                                                 setMode('searchPoi');
                                                 setFocus(true);
@@ -321,8 +320,7 @@ const Location = (props: LocationProps) => {
                                         {mode === 'searchPoi' && (
                                             <Button
                                                 style={{ marginLeft: 5 }}
-                                                variant="text"
-                                                theme="primary"
+                                                type="link"
                                                 onClick={() => {
                                                     setMode('dragMap');
                                                     setSearchValue('');
@@ -347,24 +345,23 @@ const Location = (props: LocationProps) => {
                                                     setCurrentPoi(poi);
                                                 }}
                                             >
-                                                <ListItem
-                                                    action={
-                                                        currentPoi?.id ===
-                                                        poi.id ? (
-                                                            <CheckCircleFilledIcon
-                                                                className={`${prefixCls}-location-list-checked`}
-                                                                size={24}
-                                                            />
-                                                        ) : (
-                                                            <div
-                                                                style={{
-                                                                    width: 24,
-                                                                }}
-                                                            />
-                                                        )
-                                                    }
+                                                <List.Item
+                                                    actions={[
+                                                        <div
+                                                            style={{
+                                                                width: 24,
+                                                            }}
+                                                        >
+                                                            {currentPoi?.id ===
+                                                                poi.id && (
+                                                                <CheckCircleFilled
+                                                                    className={`${prefixCls}-location-list-checked`}
+                                                                />
+                                                            )}
+                                                        </div>,
+                                                    ]}
                                                 >
-                                                    <ListItemMeta
+                                                    <List.Item.Meta
                                                         title={poi.name}
                                                         description={`${
                                                             poi.distance
@@ -372,7 +369,7 @@ const Location = (props: LocationProps) => {
                                                                 : ''
                                                         }${poi.address}`}
                                                     />
-                                                </ListItem>
+                                                </List.Item>
                                             </div>
                                         );
                                     })}
@@ -382,15 +379,10 @@ const Location = (props: LocationProps) => {
                                             <div
                                                 className={`${prefixCls}-location-list-loadingBox`}
                                             >
-                                                <Loading
+                                                <Spin
                                                     delay={0}
-                                                    fullscreen={false}
-                                                    indicator
-                                                    inheritColor={false}
-                                                    loading
-                                                    preventScrollThrough
-                                                    showOverlay
-                                                    size="medium"
+                                                    spinning
+                                                    size="default"
                                                 />
                                             </div>
                                         )}
@@ -406,26 +398,23 @@ const Location = (props: LocationProps) => {
                                                               );
                                                           }}
                                                       >
-                                                          <ListItem
-                                                              action={
-                                                                  currentPoi?.id ===
-                                                                  poi.id ? (
-                                                                      <CheckCircleFilledIcon
-                                                                          className={`${prefixCls}-location-list-checked`}
-                                                                          size={
-                                                                              24
-                                                                          }
-                                                                      />
-                                                                  ) : (
-                                                                      <div
-                                                                          style={{
-                                                                              width: 24,
-                                                                          }}
-                                                                      />
-                                                                  )
-                                                              }
+                                                          <List.Item
+                                                              actions={[
+                                                                  <div
+                                                                      style={{
+                                                                          width: 24,
+                                                                      }}
+                                                                  >
+                                                                      {currentPoi?.id ===
+                                                                          poi.id && (
+                                                                          <CheckCircleFilled
+                                                                              className={`${prefixCls}-location-list-checked`}
+                                                                          />
+                                                                      )}
+                                                                  </div>,
+                                                              ]}
                                                           >
-                                                              <ListItemMeta
+                                                              <List.Item.Meta
                                                                   title={
                                                                       poi.name
                                                                   }
@@ -437,16 +426,18 @@ const Location = (props: LocationProps) => {
                                                                       poi.address
                                                                   }`}
                                                               />
-                                                          </ListItem>
+                                                          </List.Item>
                                                       </div>
                                                   );
                                               })
-                                            : show && (
-                                                  <div
-                                                      className={`${prefixCls}-location-list-noData`}
-                                                  >
-                                                      无搜素结果
-                                                  </div>
+                                            : show &&
+                                              !searchLoading && (
+                                                  <Empty
+                                                      description="无搜索结果"
+                                                      image={
+                                                          Empty.PRESENTED_IMAGE_SIMPLE
+                                                      }
+                                                  />
                                               )}
                                     </React.Fragment>
                                 )}
@@ -455,7 +446,7 @@ const Location = (props: LocationProps) => {
                     </Col>
                 </Row>
             </div>
-        </Dialog>
+        </Modal>
     );
 };
 
