@@ -1,7 +1,6 @@
 import React from 'react';
-import { Button, Space, Drawer, DialogPlugin } from 'tdesign-react';
-import { ChevronUpIcon } from 'tdesign-icons-react';
-// import { saveAs } from 'file-saver';
+import { Button, Space, Drawer, Modal, Tooltip } from 'antd';
+import { UpOutlined } from '@ant-design/icons';
 
 export default function render(this: any) {
     const { placement = 'bottom', style = {} } = this.props;
@@ -9,14 +8,14 @@ export default function render(this: any) {
     return (
         <React.Fragment>
             <Button
-                variant="text"
+                type="text"
                 shape="circle"
-                theme="primary"
-                icon={<ChevronUpIcon />}
+                icon={<UpOutlined style={{ fontSize: 16 }} />}
                 style={{
                     position: 'fixed',
                     bottom: 0,
                     right: '45vw',
+                    zIndex: 999,
                     ...style,
                 }}
                 onClick={() => {
@@ -30,110 +29,137 @@ export default function render(this: any) {
                 onClose={() => {
                     this.setVisible(false);
                 }}
-                header="Debug控制台"
+                title="Debug控制台"
                 footer={<></>}
             >
-                <input 
+                <input
                     type="file"
-                    accept='application/json'
+                    accept="application/json"
                     hidden
                     id="upload"
-                    onChange={()=>{
+                    onChange={() => {
                         const that = this;
-                        const file = (document.getElementById('upload') as any).files[0];
+                        const file = (document.getElementById('upload') as any)
+                            .files[0];
                         if (typeof FileReader === undefined) {
                             alert('浏览器版本太老了');
-                        }
-                        else {
+                        } else {
                             const reader = new FileReader();
                             reader.readAsText(file);
-                            reader.onload = function() {
+                            reader.onload = function () {
                                 try {
-                                    const data = JSON.parse(this.result as string);
+                                    const data = JSON.parse(
+                                        this.result as string
+                                    );
                                     that.features.localStorage.resetAll(data);
                                     window.location.reload();
-                                }
-                                catch(err) {
+                                } catch (err) {
                                     console.error(err);
                                 }
-                            }
+                            };
                         }
                     }}
                 />
-                <Space breakLine={true} direction="horizontal" size="medium">
-                    <Button
-                        theme="primary"
-                        shape="circle"
-                        onClick={() => this.printRunningTree()}
-                    >
-                        R
-                    </Button>
-                    <Button
-                        theme="primary"
-                        shape="circle"
-                        onClick={() => this.printDebugStore()}
-                    >
-                        S
-                    </Button>
-                    <Button
-                        theme="primary"
-                        shape="circle"
-                        onClick={() => this.printCachedStore()}
-                    >
-                        C
-                    </Button>
-                    <Button
-                        theme="primary"
-                        shape="circle"
-                        onClick={() => {
-                            const data = this.features.localStorage.loadAll();
-                            const element = document.createElement('a');
-                            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(data)));
-                            element.setAttribute('download', 'data.json');
-                          
-                            element.style.display = 'none';
-                            document.body.appendChild(element);
-                          
-                            element.click();
-                          
-                            document.body.removeChild(element);
-                        }}
-                    >
-                        D
-                    </Button>
+                <Space wrap={true}>
+                    <Tooltip title="页面结构">
+                        <Button
+                            size="large"
+                            type="primary"
+                            shape="circle"
+                            onClick={() => this.printRunningTree()}
+                        >
+                            R
+                        </Button>
+                    </Tooltip>
+                    <Tooltip title="Store数据">
+                        <Button
+                            size="large"
+                            type="primary"
+                            shape="circle"
+                            onClick={() => this.printDebugStore()}
+                        >
+                            S
+                        </Button>
+                    </Tooltip>
 
-                    <Button
-                        theme="primary"
-                        shape="circle"
-                        onClick={() => {
-                            const element = document.getElementById('upload');
-                            element!.click();
-                        }}
-                    >
-                        U
-                    </Button>
-                    <Button
-                        theme="warning"
-                        shape="circle"
-                        onClick={() => {
-                            const confirmDia = DialogPlugin.confirm!({
-                                header: '重置数据',
-                                body: '重置后，原来的数据不可恢复',
-                                confirmBtn: '确定',
-                                cancelBtn: '取消',
-                                onConfirm: ({ e }) => {
-                                    this.resetInitialData();
-                                    confirmDia.hide!();
-                                    window.location.reload();
-                                },
-                                onClose: ({ e, trigger }) => {
-                                    confirmDia.hide!();
-                                },
-                            });
-                        }}
-                    >
-                        Reset
-                    </Button>
+                    <Tooltip title="页面缓存">
+                        <Button
+                            size="large"
+                            type="primary"
+                            shape="circle"
+                            onClick={() => this.printCachedStore()}
+                        >
+                            C
+                        </Button>
+                    </Tooltip>
+                    <Tooltip title="下载Store">
+                        <Button
+                            size="large"
+                            type="primary"
+                            shape="circle"
+                            onClick={() => {
+                                const data =
+                                    this.features.localStorage.loadAll();
+                                const element = document.createElement('a');
+                                element.setAttribute(
+                                    'href',
+                                    'data:text/plain;charset=utf-8,' +
+                                        encodeURIComponent(JSON.stringify(data))
+                                );
+                                element.setAttribute('download', 'data.json');
+
+                                element.style.display = 'none';
+                                document.body.appendChild(element);
+
+                                element.click();
+
+                                document.body.removeChild(element);
+                            }}
+                        >
+                            D
+                        </Button>
+                    </Tooltip>
+
+                    <Tooltip title="上传Store">
+                        <Button
+                            size="large"
+                            type="primary"
+                            shape="circle"
+                            onClick={() => {
+                                const element =
+                                    document.getElementById('upload');
+                                element!.click();
+                            }}
+                        >
+                            U
+                        </Button>
+                    </Tooltip>
+                    <Tooltip title="重置Store">
+                        <Button
+                            size="large"
+                            type="primary"
+                            danger
+                            shape="circle"
+                            onClick={() => {
+                                const modal = Modal.confirm!({
+                                    title: '重置数据',
+                                    content: '重置后，原来的数据不可恢复',
+                                    okText: '确定',
+                                    cancelText: '取消',
+                                    onOk: (e) => {
+                                        this.resetInitialData();
+                                        modal.destroy!();
+                                        window.location.reload();
+                                    },
+                                    onCancel: (e) => {
+                                        modal.destroy!();
+                                    },
+                                });
+                            }}
+                        >
+                            Reset
+                        </Button>
+                    </Tooltip>
                 </Space>
             </Drawer>
         </React.Fragment>
