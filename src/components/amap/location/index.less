@@ -7,6 +7,7 @@
 
     &-list {
         height: 500px;
+        overflow: auto;
 
         &-header {
             display: flex;
@@ -15,7 +16,8 @@
         }
 
         &-checked {
-            color: var(--oak-brand-color);
+            color: var(--oak-primary-color);
+            font-size: 24px;
         }
 
         &-loadingBox {
@@ -24,16 +26,5 @@
             justify-content: center;
             min-height: 100px;
         }
-
-        &-noData {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            min-height: 100px;
-            align-items: center;
-            color: var(--oak-text-color-placeholder);
-            align-self: center;
-        }
-
     }
 }
