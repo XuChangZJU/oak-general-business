@@ -1,3 +1,4 @@
+import assert from 'assert';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { composeFileUrl } from '../../../utils/extraFile';
 import React from '../../../utils/react';
@@ -27,6 +28,9 @@ export default OakComponent({
                     [`${entity}Id`]: 1,
                     relation: 1,
                 },
+                filter: {
+                    [`${entity}Id`]: entityId,
+                }
             },
             extraFile$entity: {
                 $entity: 'extraFile',
@@ -110,18 +114,8 @@ export default OakComponent({
         relations: Array,
     },
     data: {
-        show: false,
         searchValue: '',
-        editableRowKeys: [] as string[],
-        btnItems: [
-            {
-                label: '二维码授权',
-            },
-            {
-                label: '添加授权',
-            },
-        ],
-        visible: false,
+        idRemove: '',
     },
     lifetimes: {
         created() {
@@ -133,15 +127,6 @@ export default OakComponent({
         },
     },
     methods: {
-        onAdd() {
-            if (process.env.OAK_PLATFORM === 'web') {
-                this.goUpsert();
-            } else {
-                this.setState({
-                    visible: true,
-                });
-            }
-        },
         goUpsert() {
             const { entity, entityId, relations } = this.props;
             this.navigateTo(
@@ -155,52 +140,58 @@ export default OakComponent({
                 }
             );
         },
-        goUserEntityGrantWithGrant() {
+        goUpdate(id: string) {
             const { entity, entityId, relations } = this.props;
             this.navigateTo(
                 {
-                    url: '/userEntityGrant/grant',
+                    url: '/userRelation/upsert/byUser',
                     entity,
                     entityId,
+                    oakId: id,
                 },
                 {
                     relations,
                 }
             );
         },
-        onActionSelect(e: any) {
-            const { index, selected } = e.detail;
-            switch (index) {
-                case 0: {
-                    this.goUserEntityGrantWithGrant();
-                }
-                case 1: {
-                    this.goUpsert();
-                }
-            }
-        },
-        onActionCancel() {
+        onDelete(id: string) {
             this.setState({
-                visible: false,
+                idRemove: id,
             });
         },
-        onActionClose() {
-            this.onActionCancel();
-        },
-        bindClicked(e: any) {
-            const { id } = e.currentTarget.dataset;
-            this.goDetail(id);
-        },
-        goDetail(id: string) {
-            const { relations, entity, entityId } = this.props;
-            this.navigateTo({
-                url: '/userRelation/detail',
-                oakId: id,
-                relations,
-                entity,
-                entityId,
+        async confirmDelete() {
+            const { entity, entityId } = this.props;
+            const entityStr = firstLetterUpperCase(entity!);
+            const { idRemove, users } = this.state;
+            const user = users.find(
+                (ele: any) => ele.id === idRemove
+            );
+            const relations = user[`user${entityStr}$user`];
+            await this.execute({
+                action: 'update',
+                data: {
+                    [`user${entityStr}$user`]: [
+                        {
+                            action: 'remove',
+                            data: {},
+                            filter: {
+                                id: {
+                                    $in: relations.map((ele: any) => ele.id),
+                                },
+                            },
+                        }
+                    ],
+                },
+                filter: {
+                    id: idRemove,
+                },
+            });
+            this.setState({
+                idRemove: '',
             });
         },
+
+        // 这三个函数貌似还没用上
         async searchChange(event: any) {
             const { value } = this.resolveInput(event);
             this.addNamedFilter({
@@ -227,103 +218,6 @@ export default OakComponent({
         },
         async searchConfirm() {
             this.refresh();
-        },
-        // web table methods
-        onEdit(e: any) {
-            const { editableRowKeys } = this.state;
-
-            const { id } = e.currentTarget.dataset;
-            if (!editableRowKeys.includes(id)) {
-                this.setState({
-                    editableRowKeys: editableRowKeys.concat(id),
-                });
-            }
-        },
-        updateEditRowKey(id: string) {
-            const { editableRowKeys } = this.state;
-            const index = editableRowKeys.findIndex((t) => t === id);
-            editableRowKeys.splice(index, 1);
-            this.setState({
-                editableRowKeys: [...editableRowKeys],
-            });
-        },
-        onSave(e: any) {
-            const { id } = e.currentTarget.dataset;
-            (this as any).currentSaveId = id;
-            // 触发内部校验，而后在 onRowValidate 中接收异步校验结果
-            (this as any).tableRef.current.validateRowData(id);
-        },
-        onCancel(e: any) {
-            const { id } = e.currentTarget.dataset;
-            this.updateEditRowKey(id);
-            (this as any).tableRef.current.clearValidateData();
-        },
-        onRowValidate(params: any) {
-            if (params.result.length) {
-                const r = params.result[0];
-                this.setMessage({
-                    type: 'error',
-                    content: `${r.col.title} ${r.errorList[0].message}`,
-                });
-                return;
-            }
-            // 如果是 table 的父组件主动触发校验
-            if (params.trigger === 'parent' && !params.result.length) {
-                const { users } = this.state;
-                const { entity, entityId } = this.props;
-                const entityStr = firstLetterUpperCase(entity!);
-
-                const current = (this as any).editMap[
-                    (this as any).currentSaveId
-                ];
-                if (current) {
-                    Object.keys(current.editedRow).forEach((ele) => {
-                        if (ele === 'relations') {
-                            const userRelations =
-                                users[current.rowIndex].relations;
-                            userRelations.forEach((ele2: any) => {
-                                if (!current.editedRow[ele].includes(ele2)) {
-                                    this.toggleNode(
-                                        {
-                                            relation: ele2,
-                                            [`${entity}Id`]: entityId,
-                                        },
-                                        false,
-                                        `${current.rowIndex}.user${entityStr}$user`
-                                    );
-                                }
-                            });
-                            current.editedRow[ele].forEach((ele2: string) => {
-                                if (!userRelations.includes(ele2)) {
-                                    this.toggleNode(
-                                        {
-                                            relation: ele2,
-                                            [`${entity}Id`]: entityId,
-                                        },
-                                        true,
-                                        `${current.rowIndex}.user${entityStr}$user`
-                                    );
-                                }
-                            });
-                            this.execute('grant');
-                        } else {
-                            this.setUpdateData(
-                                `${0}.${ele}`,
-                                current.editedRow[ele]
-                            );
-                            this.execute('update');
-                        }
-                    });
-                }
-                this.updateEditRowKey((this as any).currentSaveId);
-            }
-        },
-        onRowEdit(params: any) {
-            const { row, col, value } = params;
-            (this as any).editMap[row.id] = {
-                ...params,
-                editedRow: { [col.colKey]: value },
-            };
         },
     },
 });

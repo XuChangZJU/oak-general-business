@@ -19,7 +19,7 @@ const checkers: Checker<
             if (data instanceof Array) {
                 data.forEach(
                     ele => {
-                        checkAttributesNotNull(ele, ['type', 'entity', 'entityId', 'relation']);
+                        checkAttributesNotNull('userEntityGrant', ele, ['type', 'entity', 'entityId', 'relation']);
                         if (!ele.hasOwnProperty('number') || ele.type === 'transfer') {
                             Object.assign(ele, {
                                 number: 1,
@@ -27,7 +27,7 @@ const checkers: Checker<
                         }
                         else {
                             if (ele.number <= 0 ) {
-                                throw new OakInputIllegalException(['number', '分享的权限数量必须大于0']);
+                                throw new OakInputIllegalException('userEntityGrant', ['number', '分享的权限数量必须大于0']);
                             }
                         }
                         Object.assign(ele, {
@@ -37,7 +37,7 @@ const checkers: Checker<
                 );
             }
             else {
-                checkAttributesNotNull(data, ['type', 'entity', 'entityId', 'relation']);
+                checkAttributesNotNull('userEntityGrant', data, ['type', 'entity', 'entityId', 'relation']);
                 if (!data.hasOwnProperty('number') || data.type === 'transfer') {
                     Object.assign(data, {
                         number: 1,
@@ -45,7 +45,7 @@ const checkers: Checker<
                 }
                 else {
                     if (data.number <= 0 ) {
-                        throw new OakInputIllegalException(['number', '分享的权限数量必须大于0']);
+                        throw new OakInputIllegalException('userEntityGrant', ['number', '分享的权限数量必须大于0']);
                     }
                 }
                 Object.assign(data, {

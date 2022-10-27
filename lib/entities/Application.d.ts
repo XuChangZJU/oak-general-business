@@ -1,6 +1,7 @@
 import { String, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as System } from './System';
+declare type Passport = 'email' | 'mobile' | 'wechat';
 export declare type AppType = 'web' | 'wechatMp' | 'wechatPublic';
 export declare type WechatMpConfig = {
     type: 'wechatMp';
@@ -10,8 +11,11 @@ export declare type WechatMpConfig = {
 };
 export declare type WebConfig = {
     type: 'web';
-    appId?: string;
-    appSecret?: string;
+    wechat?: {
+        appId: string;
+        appSecret: string;
+    };
+    passport: Passport[];
 };
 declare type WechatPublicTemplateMsgsConfig = Record<string, {
     templateId: string;

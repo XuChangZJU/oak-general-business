@@ -45,7 +45,7 @@ const checkers: Checker<EntityDict, 'user', RuntimeContext<EntityDict>> [] = [
         checker: async({ operation }) => {
             const { data } = operation;
             if (Object.keys(data).filter(ele => !ele.includes('$')).length > 0) {
-                throw new OakInputIllegalException(Object.keys(data), '授权不允许传入其它属性');
+                throw new OakInputIllegalException('user', Object.keys(data), '授权不允许传入其它属性');
             }
             return 0;
         }

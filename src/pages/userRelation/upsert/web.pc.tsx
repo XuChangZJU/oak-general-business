@@ -1,138 +1,103 @@
 import React from 'react';
-import { Form, Input, Checkbox, Button, Space } from 'antd';
+import { Tabs } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
+import ByMobile from './byMobile/index';
+import ByUserEntityGrant from './byUserEntityGrant';
+import assert from 'assert';
 
 export default function render(this: any) {
-    const { relations, entity } = this.props;
-    const { name, mobile, password, relationArr } = this.state;
-    const relationArr2: string[] =
-        typeof relations === 'object'
-            ? relations
-            : relations && JSON.parse(relations);
+    const { entity, entityId, relations } = this.props;
+    const { grantByUserEntityGrant, grantByEmail, grantByMobile, grantMethodCount } = this.state;
+    let SubPart: JSX.Element = (<></>);
+    if (grantMethodCount === 0) {
+        SubPart = (
+            <div className={Style.container}>
+                应用没有定义授权方式，请管理员在控制台中定义
+            </div>
+        );
+    }
+    else if (grantMethodCount === 1) {
+        if (grantByEmail) {
+            SubPart = (
+                <div className={Style.container}>
+                    尚未实现
+                </div>
+            );
+        }
+        else if (grantByMobile) {
+            SubPart = (
+                <ByMobile
+                    entity={entity}
+                    entityId={entityId}
+                    relations={relations}
+                    oakPath="$userRelationUpsert/upsert-byMobile"
+                    oakAutoUnmount={true}
+                />
+            );
+        }
+        else {
+            assert(grantByUserEntityGrant === true);
+            SubPart = (
+                <ByUserEntityGrant
+                    entity={entity}
+                    entityId={entityId}
+                    relations={relations}
+                    oakPath="$userRelationUpsert/upsert-byUserEntityGrant"
+                    oakAutoUnmount={true}
+                />
+            );
+        }
+    }
+    else {
+        const items = [
+            {
+                label: 'Email', key: 'item-1', children: (
+                    <div className={Style.container}>
+                        尚未实现
+                    </div>
+                )
+            },
+            {
+                label: '手机号', key: 'item-2', children: (
+                    <ByMobile
+                        entity={entity}
+                        entityId={entityId}
+                        relations={relations}
+                        oakPath="$userRelationUpsert/upsert-byMobile"
+                        oakAutoUnmount={true}
+                    />
+                )
+            },
+            {
+                label: '二维码', key: 'item-3', children: (
+                    <ByUserEntityGrant
+                        entity={entity}
+                        entityId={entityId}
+                        relations={relations}
+                        oakPath="$userRelationUpsert/upsert-byUserEntityGrant"
+                        oakAutoUnmount={true}
+                    />
+                )
+            },
+        ];
+        const items2: typeof items = [];
+        if (grantByEmail) {
+            items2.push(items[0]);
+        }
+        if (grantByMobile) {
+            items2.push(items[1]);
+        }
+        if (grantByUserEntityGrant) {
+            items2.push(items[2]);
+        }
+        SubPart = (
+            <Tabs items={items2} /> 
+        );
+    }
     return (
         <PageHeader showBack={true} title="添加权限">
-            <div className={Style.container}>
-                <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
-                    <Form.Item
-                        label="姓名"
-                        name="name"
-                        rules={[
-                            {
-                                required: true,
-                                message: '姓名不能为空',
-                            },
-                        ]}
-                    >
-                        <>
-                            <Input
-                                onChange={(e) => {
-                                    this.setUpdateData('name', e.target.value);
-                                }}
-                                value={name}
-                                placeholder="请输入姓名"
-                            />
-                        </>
-                    </Form.Item>
-                    <Form.Item
-                        label="手机号码"
-                        name="mobile"
-                        rules={[
-                            {
-                                required: true,
-                                message: '手机号不能为空',
-                            },
-                            {
-                                min: 11,
-                                message: '请输入11位手机号',
-                            },
-                            {
-                                max: 11,
-                                message: '请输入11位手机号',
-                            },
-                        ]}
-                    >
-                        <>
-                            <Input
-                                maxLength={11}
-                                value={mobile}
-                                onChange={(e) => {
-                                    const strValue = e.target.value;
-                                    this.setUpdateData(
-                                        'mobile$user.0.mobile',
-                                        strValue.replace(/[^\d\-\d]/g, '')
-                                    );
-                                }}
-                                placeholder="请输入手机号码"
-                                type="tel"
-                            />
-                        </>
-                    </Form.Item>
-                    <Form.Item
-                        label="密码"
-                        name="mobile"
-                        rules={[
-                            {
-                                required: true,
-                                message: '密码不能为空',
-                            },
-                        ]}
-                    >
-                        <>
-                            <Input
-                                value={password}
-                                onChange={(e) => {
-                                    this.setUpdateData(
-                                        'password',
-                                        e.target.value
-                                    );
-                                }}
-                                placeholder="不少于八位"
-                            />
-                        </>
-                    </Form.Item>
-                    <Form.Item
-                        label="权限"
-                        rules={[
-                            {
-                                required: true,
-                                message: '请至少选择一个权限',
-                            },
-                        ]}
-                        name="relation"
-                    >
-                        <>
-                            <Checkbox.Group
-                                value={relationArr}
-                                onChange={(value) => {
-                                    this.setRelationValue(value);
-                                }}
-                                options={relationArr2.map((ele) => ({
-                                    value: ele,
-                                    label:
-                                        (this.t &&
-                                            this.t(entity + ':r.' + ele)) ||
-                                        ele,
-                                }))}
-                            ></Checkbox.Group>
-                        </>
-                    </Form.Item>
-                    <Form.Item wrapperCol={{ offset: 4 }}>
-                        <Space>
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                                onClick={() => {
-                                    this.onConfirm();
-                                }}
-                            >
-                                提交
-                            </Button>
-                            <Button htmlType="reset">重置</Button>
-                        </Space>
-                    </Form.Item>
-                </Form>
-            </div>
+            {SubPart}
         </PageHeader>
     );
 }

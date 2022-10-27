@@ -25,6 +25,7 @@ export const applications: Application[] = [
         systemId: DEV_SYSTEM_ID,
         config: {
             type: 'web',
+            passport: ['email', 'mobile', 'wechat'],
         },
         description: 'web应用，指向dev_system',
     },

@@ -8,6 +8,7 @@ import * as System from "../System/Schema";
 import * as Token from "../Token/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
 import * as WechatUser from "../WechatUser/Schema";
+declare type Passport = 'email' | 'mobile' | 'wechat';
 export declare type AppType = 'web' | 'wechatMp' | 'wechatPublic';
 export declare type WechatMpConfig = {
     type: 'wechatMp';
@@ -17,8 +18,11 @@ export declare type WechatMpConfig = {
 };
 export declare type WebConfig = {
     type: 'web';
-    appId?: string;
-    appSecret?: string;
+    wechat?: {
+        appId: string;
+        appSecret: string;
+    };
+    passport: Passport[];
 };
 declare type WechatPublicTemplateMsgsConfig = Record<string, {
     templateId: string;

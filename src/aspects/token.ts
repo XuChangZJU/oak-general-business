@@ -385,13 +385,17 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
     
         // 可能type是web或者wechatPublic
         assert(type !== 'wechatMp' && config.type !== 'wechatMp');
-        let config2;
+        let appId: string, appSecret: string;
         if (type === 'wechatPublic') {
-            config2 = config as WechatPublicConfig;
+            const config2 = config as WechatPublicConfig;
+            appId = config2.appId;
+            appSecret = config2.appSecret;
         } else {
-            config2 = config as WebConfig;
+            const config2 = config as WebConfig;
+            assert(config2.wechat);
+            appId = config2.wechat.appId;
+            appSecret = config2.wechat.appSecret;
         }
-        const { appId, appSecret } = config2;
         const wechatInstance = WechatSDK.getInstance(appId!, appSecret!, type);
     
         const { sessionKey, openId, unionId } = await wechatInstance.code2Session(code);
