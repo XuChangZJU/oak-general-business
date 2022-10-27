@@ -25,7 +25,7 @@ export default function render(this: any) {
 
             <Drawer
                 placement={placement}
-                visible={visible}
+                open={visible}
                 onClose={() => {
                     this.setVisible(false);
                 }}
