@@ -1,139 +1,134 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict } from "../general-app-domain";
-import { WechatMpConfig } from "../general-app-domain/Application/Schema";
+import { Config as SysConfig, QrCodeType } from '../types/Config';
+import { Schema as Application, WechatMpConfig, WechatPublicConfig } from "../general-app-domain/Application/Schema";
 import { CreateOperationData as CreateWechatQrcodeData, WechatQrCodeProps } from '../general-app-domain/WechatQrCode/Schema';
 import { RuntimeContext } from '../context/RuntimeContext';
+import { OakException } from 'oak-domain/lib/types';
 
+/**
+ * 生成二维码优先级如下：
+ * 0）如果在SystemConfig中指定了qrCodeType，则按照qrCodeType去生成
+ * 1）如果有服务号，优先生成关注服务号的带参二维码
+ * 2）如果有小程序，优先生成小程序的二维码（如果小程序中配置了qrCodePrefix），其次生成小程序码
+ * @param options 
+ * @param context 
+ * @returns 
+ */
 export async function createWechatQrCode<ED extends EntityDict, T extends keyof ED, Cxt extends RuntimeContext<ED>>(options: {
     entity: T;
     entityId: string;
-    applicationId: string;
     tag?: string;
     lifetimeLength?: number;
     permanent?: boolean;
     props: WechatQrCodeProps;
 }, context: Cxt) {
-    const { entity, entityId, applicationId, tag, lifetimeLength, permanent, props } = options;
-    const { type: appType, config } = (await context.getApplication())!;
-
-    if (appType === 'wechatMp') {
-        const { qrCodePrefix } = <WechatMpConfig>config;
-        const id = await generateNewId();
-        if (qrCodePrefix) {
-            // 设置了域名跳转，优先使用域名 + id来生成对应的ur
-            const data: CreateWechatQrcodeData = {
-                id,
-                type: 'wechatMpDomainUrl',
-                tag,
-                entity: entity as string,
-                entityId,
-                applicationId,
-                allowShare: true,
-                permanent: true,
-                url: `${qrCodePrefix}/id`,
-                expired: false,
-                props,
-            };
-            await context.rowStore.operate(
-                'wechatQrCode',
-                {
-                    id: await generateNewId(),
-                    action: 'create',
-                    data,
+    const { entity, entityId, tag, lifetimeLength = 300 * 10000, permanent = false, props } = options;
+    const applicationId = await context.getApplicationId();
+    assert(applicationId);
+    const { result: [system] } = await context.rowStore.select('system', {
+        data: {
+            id: 1,
+            config: 1,
+            application$system: {
+                $entity: 'application',
+                data: {
+                    id: 1,
+                    type: 1,
+                    config: 1,
                 },
-                context,
-                {
-                    dontCollect: true,
-                }
-            );
-
-            return data;
-        } else {
-            // 没有域名跳转，使用小程序码
-            // todo这里如果有同组的公众号，应该优先使用公众号的关注链接
-            const data: CreateWechatQrcodeData = {
-                id,
-                type: 'wechatMpWxaCode',
-                tag,
-                entity: entity as string,
-                entityId,
-                applicationId,
-                allowShare: true,
-                permanent: false,
-                expired: false,
-                props,
-            };
-
-            await context.rowStore.operate(
-                'wechatQrCode',
-                {
-                    id: await generateNewId(),
-                    action: 'create',
-                    data,
-                },
-                context,
-                {
-                    dontCollect: true,
-                }
-            );
-            return data;
-        }
-    } else if (appType === 'wechatPublic') {
-        const id = await generateNewId();
-        const data: CreateWechatQrcodeData = {
-            id,
-            type: 'wechatPublic',
-            tag,
-            entity: entity as string,
-            entityId,
-            applicationId,
-            allowShare: true,
-            permanent: false,
-            expired: false,
-            props,
-        };
-
-        await context.rowStore.operate(
-            'wechatQrCode',
-            {
-                id: await generateNewId(),
-                action: 'create',
-                data,
             },
-            context,
-            {
-                dontCollect: true,
-            }
-        );
-        return data;
-    } else {
-        assert(appType === 'web');
-        const id = await generateNewId();
-        const data: CreateWechatQrcodeData = {
-            id,
-            type: 'webForWechatPublic',
-            tag,
-            entity: entity as string,
-            entityId,
-            applicationId,
-            allowShare: true,
-            permanent: false,
-            expired: false,
-            props,
-        };
+        },
+        filter: {
+            id: applicationId,
+        },
+    }, context, {
+        dontCollect: true,
+    });
 
-        await context.rowStore.operate(
-            'wechatQrCode',
-            {
-                id: await generateNewId(),
-                action: 'create',
-                data,
-            },
-            context,
-            {
-                dontCollect: true,
-            }
-        );
-        return data;
+    let appId: string = '', appType: QrCodeType | undefined = undefined;
+    let url: string | undefined = undefined;
+    const { application$system: applications, config: sysConfig } = system as {
+        application$system: Application[];
+        config: SysConfig
+    };
+    const id = await generateNewId();
+    if (sysConfig.App.qrCodeApplicationId) {
+        appId = sysConfig.App.qrCodeApplicationId;
+        appType = sysConfig.App.qrCodeType!;
     }
+    else {
+        const self = applications.find(
+            ele => ele.id === applicationId
+        );
+        // 如果本身是服务号，则优先用自己的
+        if (self!.type === 'wechatPublic' && (self!.config as WechatPublicConfig).isService) {
+            appId = applicationId;
+            appType = 'wechatPublic';
+        }
+        const publicApp = applications.find(
+            ele => ele.type === 'wechatPublic' && (ele.config as WechatPublicConfig).isService
+        );
+        if (publicApp) {
+            appId = publicApp.id;
+            appType = 'wechatPublic';
+        }
+
+        // 如果本身是小程序，则优先用自己的
+        if (self?.type === 'wechatMp') {
+            appId = self.id;
+            if ((self!.config as WechatMpConfig).qrCodePrefix) {
+                appType = 'wechatMpDomainUrl';
+                url = `${(self!.config as WechatMpConfig).qrCodePrefix}/${id}`;
+            }
+            else {
+                appType = 'wechatMpWxaCode';
+            }
+        }
+        const mpApp = applications.find(
+            ele => ele.type === 'wechatMp'
+        );
+        if (mpApp) {
+            appId = mpApp.id;
+            if ((mpApp!.config as WechatMpConfig).qrCodePrefix) {
+                appType = 'wechatMpDomainUrl';
+                url = `${(mpApp!.config as WechatMpConfig).qrCodePrefix}/${id}`;
+            }
+            else {
+                appType = 'wechatMpWxaCode';
+            }
+        }
+    }
+
+    if (!appId || !appType) {
+        throw new Error('无法生成二维码，找不到此system下的服务号或者小程序信息');
+    }
+
+    const data: CreateWechatQrcodeData = {
+        id,
+        type: appType,
+        tag,
+        entity: entity as string,
+        entityId,
+        applicationId: appId,
+        allowShare: true,
+        permanent,
+        url,
+        expired: false,
+        expiresAt: Date.now() + lifetimeLength,
+        props,
+    };
+
+    await context.rowStore.operate(
+        'wechatQrCode',
+        {
+            id: await generateNewId(),
+            action: 'create',
+            data,
+        },
+        context,
+        {
+            dontCollect: true,
+        }
+    );
 }

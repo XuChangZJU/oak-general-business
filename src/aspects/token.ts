@@ -100,7 +100,7 @@ async function tryMakeChangeLoginWay<ED extends EntityDict, Cxt extends RuntimeC
 
 async function setupMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(mobile: string, env: WebEnv | WechatMpEnv, context: Cxt) {
     const { rowStore } = context;
-    const currentToken = await context.getToken();
+    const currentToken = await context.getToken(true);
     const applicationId = await context.getApplicationId();
     const systemId = await context.getSystemId();
 

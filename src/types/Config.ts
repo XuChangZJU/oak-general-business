@@ -57,7 +57,7 @@ export type TencentSmsConfig = {
     }>;
 };
 
-
+export type QrCodeType = 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp' | 'webForWechatPublic';
 
 export type Config = {
     Account?: {
@@ -77,12 +77,13 @@ export type Config = {
             webApiKey: string;
         };
     };
-    UserEntityGrant?: {
-        lifetimeLength: number; // 授权的过期时间（ms）
-    };
     Sms?: {
         ali?: AliSmsConfig[];
         tencent?: TencentSmsConfig[];
+    }
+    App: {
+        qrCodeType?: QrCodeType;
+        qrCodeApplicationId?: string;
     }
 };
 

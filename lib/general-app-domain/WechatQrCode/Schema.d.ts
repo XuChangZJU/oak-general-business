@@ -4,6 +4,7 @@ import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { QrCodeType } from "../../types/Config";
 import * as Application from "../Application/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
 import * as OperEntity from "../OperEntity/Schema";
@@ -16,7 +17,7 @@ export declare type WechatQrCodeProps = {
 export declare type OpSchema = EntityShape & {
     entity: "userEntityGrant" | string;
     entityId: String<64>;
-    type: 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp' | 'webForWechatPublic';
+    type: QrCodeType;
     allowShare: Boolean;
     tag?: String<32> | null;
     expiresAt?: Datetime | null;
@@ -32,7 +33,7 @@ export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
     entity: "userEntityGrant" | string;
     entityId: String<64>;
-    type: 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp' | 'webForWechatPublic';
+    type: QrCodeType;
     allowShare: Boolean;
     tag?: String<32> | null;
     expiresAt?: Datetime | null;
@@ -57,7 +58,7 @@ declare type AttrFilter<E> = {
     $$updateAt$$: Q_DateValue;
     entity: E;
     entityId: Q_StringValue;
-    type: Q_EnumValue<'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp' | 'webForWechatPublic'>;
+    type: Q_EnumValue<QrCodeType>;
     allowShare: Q_BooleanValue;
     tag: Q_StringValue;
     expiresAt: Q_DateValue;

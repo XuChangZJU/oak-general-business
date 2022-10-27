@@ -7,7 +7,9 @@ export const systems: System[] = [
         id: DEV_SYSTEM_ID,
         name: '',
         description: '',
-        config: {},
+        config: {
+            App: {},
+        },
         platformId: DEV_PLATFORM_ID,
         super: true,
     },

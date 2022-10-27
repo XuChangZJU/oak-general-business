@@ -33,6 +33,7 @@ declare type WechatPublicTemplateMsgsConfig = Record<string, {
 }>;
 export declare type WechatPublicConfig = {
     type: 'wechatPublic';
+    isService: boolean;
     appId: string;
     appSecret: string;
     templateMsgs?: WechatPublicTemplateMsgsConfig;
