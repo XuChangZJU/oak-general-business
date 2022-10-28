@@ -1,6 +1,6 @@
 /// <reference types="@uiw/react-amap-types" />
 import React from 'react';
-import { DialogProps } from 'tdesign-react';
+import { ModalProps } from 'antd';
 import { GeolocationProps } from '@uiw/react-amap';
 import './index.less';
 export declare type LocationProps = {
@@ -13,7 +13,7 @@ export declare type LocationProps = {
     onConfirm?: (poi: Poi, result?: AMap.SearchResult | AMapUI.PositionPickerResult) => void;
     geolocationProps?: GeolocationProps;
     useGeolocation?: boolean;
-    dialogProps?: DialogProps;
+    dialogProps?: ModalProps;
 };
 export declare type Poi = {
     id: string;

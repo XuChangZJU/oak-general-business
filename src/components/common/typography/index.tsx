@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-import { FileCopyIcon } from 'tdesign-icons-react';
 import classNames from 'classnames';
 
 import './index.less';

@@ -1,18 +1,26 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { ExcludeUpdateAction } from "oak-domain/lib/actions/action";
 import * as User from "../User/Schema";
 import * as Role from "../Role/Schema";
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     userId: ForeignKey<"user">;
     roleId: ForeignKey<"role">;
     relation: 'owner';
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     userId: ForeignKey<"user">;
     roleId: ForeignKey<"role">;
     relation: 'owner';
@@ -24,7 +32,6 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.UserRoleIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     userId: Q_StringValue | SubQuery.UserIdSubQuery;
     user: User.Filter;
@@ -39,7 +46,6 @@ export declare type Projection = {
     id: 1;
     $$createAt$$?: 1;
     $$updateAt$$?: 1;
-    $$seq$$?: 1;
     userId?: 1;
     user?: User.Projection;
     roleId?: 1;
@@ -52,7 +58,6 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     userId?: string;
     user?: User.ExportProjection;
     roleId?: string;
@@ -72,8 +77,6 @@ export declare type SortAttr = {
     id: 1;
 } | {
     $$createAt$$: 1;
-} | {
-    $$seq$$: 1;
 } | {
     $$updateAt$$: 1;
 } | {

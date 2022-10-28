@@ -1,0 +1,26 @@
+<!-- index.wxml -->
+<view class="container">
+    <view class="search-bar">
+        <t-search style="width: 100%; margin: auto 0rpx" placeholder="输入手机号/姓名" shape="round" value="{{searchValue}}" bind:change="searchChange" bind:submit="searchConfirm" bind:clear="searchCancel" />
+    </view>
+    <block wx:if="{{showList}}">
+        <view class="drawer-view">
+            <rich-text nodes="{{nodeStr}}" bind:tap="itemClick"></rich-text>
+        </view>
+    </block>
+    <view wx:if="{{showList}}" class="overlay" bind:tap="closeList"></view>
+    <view wx:if="{{searchArr.length}}" class="col">
+        <text class="title">搜索历史</text>
+        <view class="row">
+            <block wx:for="{{searchArr}}" wx:key="index" wx:for-item="searchItem">
+                <t-tag bind:tap="tagClick" shape="square" variant="light-outline" class="tag" theme="primary" size="medium" data-value="{{searchItem}}">
+                    {{searchItem}}
+                </t-tag>
+            </block>
+        </view>
+        <view class="delete-btn" bind:tap="clearSearchHistory">
+            <t-icon name="delete" />
+            <text style="margin-left: 4px">清空搜索历史</text>
+        </view>
+    </view>
+</view>

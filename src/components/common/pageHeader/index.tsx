@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Row, Col, Button } from 'tdesign-react';
-import { ArrowLeftIcon } from 'tdesign-icons-react';
+import { Row, Col, Button } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 
 import './index.less';
@@ -50,12 +50,14 @@ export default memo((props: PageHeaderProps) => {
         >
             {(title || showBack || subTitle || tags || extra) && (
                 <div className={`${prefixCls}-pageHeader-header`}>
-                    <Row>
-                        <Col flex="auto">
+                    <Row justify='center'>
+                        <Col
+                            flex="auto"
+                            className={`${prefixCls}-pageHeader-header-col`}
+                        >
                             {showBack && (
                                 <Button
-                                    shape="square"
-                                    variant="text"
+                                    type="text"
                                     className={`${prefixCls}-pageHeader-header-back`}
                                     onClick={() => {
                                         if (typeof onBack === 'function') {
@@ -66,7 +68,7 @@ export default memo((props: PageHeaderProps) => {
                                     }}
                                 >
                                     {backIcon || (
-                                        <ArrowLeftIcon
+                                        <ArrowLeftOutlined
                                             className={`${prefixCls}-pageHeader-header-backIcon`}
                                         />
                                     )}
