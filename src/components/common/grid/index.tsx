@@ -73,8 +73,7 @@ export default memo((props: GridProps) => {
                                 textClassName
                             )}
                             style={{
-                                paddingTop: 8,
-                                marginBottom: 4,
+                                paddingTop: 4,
                             }}
                         >
                             {ele.text}

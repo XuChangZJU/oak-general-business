@@ -10,7 +10,7 @@ export default function render(this: any) {
             <Button
                 type="text"
                 shape="circle"
-                icon={<UpOutlined style={{ fontSize: 16 }} />}
+                icon={<UpOutlined style={{ fontSize: 12 }} />}
                 style={{
                     position: 'fixed',
                     bottom: 0,
