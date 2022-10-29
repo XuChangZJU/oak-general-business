@@ -1,2 +1,2 @@
-import { DialogPlugin } from 'tdesign-react';
-export default DialogPlugin;
+import { Modal } from 'antd';
+export default Modal;

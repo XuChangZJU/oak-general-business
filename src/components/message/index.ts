@@ -11,10 +11,6 @@ export default OakComponent({
             Message[data.type as MessageProps['type']](
                 Object.assign(
                     {},
-                    width === 'xs' && {
-                        //处理mobile
-                        icon: true,
-                    },
                     process.env.OAK_PLATFORM === 'wechatMp' && {
                         // 处理小程序
                         offset: [20, 32],

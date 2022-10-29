@@ -1,6 +1,5 @@
 import assert from 'assert';
 import { DeduceCreateOperationData, OakException, OakUnloggedInException } from 'oak-domain/lib/types';
-import { isMockId } from "oak-frontend-base/lib/utils/mockId";
 import Dialog from '../../../utils/dialog/index';
 import { EntityDict } from '../../../general-app-domain';
 import { composeFileUrl } from '../../../utils/extraFile';
@@ -342,7 +341,6 @@ export default OakComponent({
             }
         },
         async onWebDelete(value: any) {
-            const { originalFiles } = this.state;
             const { id } = value;            
             if (this.props.removeLater) {
                 await this.addOperation({
@@ -354,13 +352,11 @@ export default OakComponent({
                 });
             } else {
                 const confirm = Dialog.confirm({
-                    header: '确认删除当前文件？',
-                    body: '删除后，文件不可恢复',
                     title: '确认删除当前文件？',
                     content: '删除后，文件不可恢复',
-                    cancelBtn: '取消',
-                    confirmBtn: '确定',
-                    onConfirm: async () => {
+                    cancelText: '取消',
+                    okText: '确定',
+                    onOk: async (e: any) => {
                         await this.addOperation({
                             action: 'remove',
                             data: {},
@@ -369,13 +365,10 @@ export default OakComponent({
                             }
                         });
                         await this.execute();
-                        confirm.hide();
+                        confirm.destroy();
                     },
-                    onCancel: () => {
-                        confirm.hide();
-                    },
-                    onClose: () => {
-                        confirm.hide();
+                    onCancel: (e: any) => {
+                        confirm.destroy();
                     },
                 });
             }
