@@ -1,0 +1,6 @@
+<!-- index.wxml -->
+<view class="container">
+    <block wx:for="{{relationArr}}" wx:key="index">
+        <t-cell title="{{item[0]}}" data-relation="{{item[0]}}" data-ids="{{item[1]}}" bind:click="handleClick" note="{{item[1].length + '人'}}" arrow hover></t-cell>
+    </block>
+</view>

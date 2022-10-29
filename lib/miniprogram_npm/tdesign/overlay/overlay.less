@@ -1,0 +1,21 @@
+@import '../common/style/index.less';
+
+@overlay: ~'@{prefix}-overlay';
+
+.@{overlay} {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  transition: opacity 300ms ease;
+}
+
+.t-fade-enter {
+  opacity: 0;
+}
+
+.t-fade-leave-to {
+  opacity: 0;
+}
