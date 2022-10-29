@@ -28,6 +28,7 @@ type WechatPublicTemplateMsgsConfig = Record<string, {
 
 export type WechatPublicConfig = {
     type: 'wechatPublic';
+    isService: boolean;             // 是否服务号
     appId: string;
     appSecret: string;
     templateMsgs?: WechatPublicTemplateMsgsConfig;

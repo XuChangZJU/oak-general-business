@@ -62,6 +62,7 @@ export default OakComponent({
         oakFullpath: String,
         oakParent: String,
         oakPath: String,
+        removeLater: Boolean,
         autoUpload: {
             type: Boolean,
             value: false,
@@ -342,9 +343,8 @@ export default OakComponent({
         },
         async onWebDelete(value: any) {
             const { originalFiles } = this.state;
-            const { id, bucket } = value;
-            const findIndex = originalFiles?.findIndex((ele) => ele?.id === id);
-            if (!bucket) {
+            const { id } = value;            
+            if (this.props.removeLater) {
                 await this.addOperation({
                     action: 'remove',
                     data: {},

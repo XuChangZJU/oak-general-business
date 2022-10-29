@@ -29,9 +29,9 @@ export interface RuntimeContext<ED extends EntityDict> extends UniversalContext<
 
     getApplication(): Promise<SelectRowShape<EntityDict['application']['Schema'], GetApplicationShape> | undefined>;
 
-    getToken(): Promise<SelectRowShape<EntityDict['token']['Schema'], GetTokeShape> | undefined>; 
+    getToken(allowUnloggedIn?: boolean): Promise<SelectRowShape<EntityDict['token']['Schema'], GetTokeShape> | undefined>; 
 
-    getTokenValue(): Promise<string | undefined>;
+    getTokenValue(allowUnloggedIn?: boolean): Promise<string | undefined>;
     
-    isRoot(): Promise<boolean>;
+    isRoot(allowUnloggedIn?: boolean): Promise<boolean>;
 };

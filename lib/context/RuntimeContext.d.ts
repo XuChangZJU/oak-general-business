@@ -22,7 +22,7 @@ export interface RuntimeContext<ED extends EntityDict> extends UniversalContext<
     getApplicationId(): Promise<string | undefined>;
     getSystemId(): Promise<string | undefined>;
     getApplication(): Promise<SelectRowShape<EntityDict['application']['Schema'], GetApplicationShape> | undefined>;
-    getToken(): Promise<SelectRowShape<EntityDict['token']['Schema'], GetTokeShape> | undefined>;
-    getTokenValue(): Promise<string | undefined>;
-    isRoot(): Promise<boolean>;
+    getToken(allowUnloggedIn?: boolean): Promise<SelectRowShape<EntityDict['token']['Schema'], GetTokeShape> | undefined>;
+    getTokenValue(allowUnloggedIn?: boolean): Promise<string | undefined>;
+    isRoot(allowUnloggedIn?: boolean): Promise<boolean>;
 }

@@ -1,15 +1,15 @@
-import { DeduceCreateSingleOperation, OakException, OakCongruentRowExists } from "oak-domain/lib/types";
-import { EntityDict } from '../../../general-app-domain';
+import assert from 'assert';
+import { EntityDict } from '../../../../general-app-domain';
 
 export default OakComponent({
     entity: 'userEntityGrant',
-
     projection: {
         id: 1,
         entity: 1,
         entityId: 1,
         relation: 1,
         type: 1,
+        number: 1,
         remark: 1,
         granterId: 1,
         granteeId: 1,
@@ -24,57 +24,45 @@ export default OakComponent({
         relations: Array,
         type: String,
     },
-    data: {},
+    data: {
+        period: 5,
+    },
     lifetimes: {
         ready() {
-            this.setUpdateData('entity', this.props.entity);
-            this.setUpdateData('entityId', this.props.entityId);
-            // 默认type为授权
-            this.setUpdateData('type', this.props.type || 'grant');
+            const { entity, entityId, type } = this.props;
+            this.setMultiAttrUpdateData({
+                entity,
+                entityId,
+                type: type || 'grant',
+                number: 1,
+            });
         },
     },
     methods: {
-        bindRadioChange(input: any) {
-            const { value } = this.resolveInput(input);
-            this.setRadioValue(value);
-        },
-        setRadioValue(value: any) {
+        setRelation(value: any) {
             this.setUpdateData('relation', value);
         },
-        reset() {
-            this.cleanOperation();
+        setNumber(value: number) {
+            this.setUpdateData('number', value);
+        },
+        onBack() {
+            this.navigateBack();
         },
         async confirm() {
-            try {
-                const [ operation ] = await this.execute();
+            const { period } = this.state;
+            const expiresAt = Date.now() + period * 60 * 1000;
+            const [ operation ] = await this.execute({
+                action: 'create',
+                data: {
+                    expiresAt,
+                },
+            });
 
-                let id = this.props.oakId;
-                if (!id) {
-                    // 说明是create
-                    const { data } = operation as EntityDict['userEntityGrant']['CreateSingle'];
-                    id = data.id;
-                }
-                
-
-                this.navigateTo({
-                    url: '/userEntityGrant/detail',
-                    oakId: id,
-                });
-            } catch (error) {
-                if (
-                    (<OakException>error).constructor.name ===
-                    OakCongruentRowExists.name
-                ) {
-                    // 这里由于编译的问题，用instanceof会不通过检查
-                    const data = (<
-                        OakCongruentRowExists<EntityDict, 'userEntityGrant'>
-                    >error).getData();
-                    this.redirectTo({
-                        url: '/userEntityGrant/detail',
-                        oakId: data.id,
-                    });
-                }
-            }
+            assert(!this.props.oakId);
+            const { data } = operation as EntityDict['userEntityGrant']['CreateSingle'];
+            const id = data.id;
+            
+            this.setId(id);
         },
     },
 });

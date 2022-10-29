@@ -1,5 +1,6 @@
 import { String, Text, Datetime, Boolean } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
+import { QrCodeType } from '../types/Config';
 import { Schema as Application } from './Application';
 export declare type WechatQrCodeProps = {
     pathname: string;
@@ -9,7 +10,7 @@ export declare type WechatQrCodeProps = {
 export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
-    type: 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp' | 'webForWechatPublic';
+    type: QrCodeType;
     allowShare: Boolean;
     tag?: String<32>;
     expiresAt?: Datetime;

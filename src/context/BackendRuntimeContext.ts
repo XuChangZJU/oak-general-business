@@ -4,6 +4,7 @@ import { EntityDict } from '../general-app-domain';
 import { SerializedData } from './FrontendRuntimeContext';
 import assert from 'assert';
 import { OakTokenExpiredException, OakUserDisabledException } from '../types/Exceptions';
+import { OakUnloggedInException } from 'oak-domain/lib/types/Exception';
 import { ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
 import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
 
@@ -124,20 +125,29 @@ export class BackendRuntimeContext<ED extends EntityDict> extends UniversalConte
         return this.application;
     }
 
-    async getTokenValue() {
+    async getTokenValue(allowUnloggedIn?: boolean) {
         if (this.rootMode) {
             return ROOT_TOKEN_ID;
+        }
+        if (!this.token && !allowUnloggedIn) {
+            throw new OakUnloggedInException();
         }
         return this.token?.id;
     }
 
-    async getToken() {
+    async getToken(allowUnloggedIn?: boolean) {
+        if (!this.token && !allowUnloggedIn) {
+            throw new OakUnloggedInException();
+        }
         return this.token;
     }
 
-    async getCurrentUserId() {
+    async getCurrentUserId(allowUnloggedIn?: boolean) {
         if (this.rootMode) {
             return ROOT_USER_ID as string;
+        }
+        if (!this.token && !allowUnloggedIn) {
+            throw new OakUnloggedInException();
         }
         return this.token?.userId as string;
     }
@@ -149,9 +159,12 @@ export class BackendRuntimeContext<ED extends EntityDict> extends UniversalConte
         return JSON.stringify({ a: this.application?.id, t: this.token?.id });
     }
 
-    async isRoot() {
+    async isRoot(allowUnloggedIn?: boolean) {
         if (this.rootMode) {
             return true;
+        }
+        if (!this.token && !allowUnloggedIn) {
+            throw new OakUnloggedInException();
         }
         return !!this.amIRoot;
     }

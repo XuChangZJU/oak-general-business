@@ -5,6 +5,8 @@ export const platforms: Platform[] = [
         id: DEV_PLATFORM_ID,
         name: '测试平台',
         description: '测试平台',
-        config: {},
+        config: {
+            App: {},
+        },
     }
 ]

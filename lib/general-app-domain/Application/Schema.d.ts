@@ -1,14 +1,13 @@
-import { String, Text, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Text, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as System from "../System/Schema";
 import * as Token from "../Token/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
 import * as WechatUser from "../WechatUser/Schema";
-declare type Passport = 'email' | 'mobile' | 'wechat';
 export declare type AppType = 'web' | 'wechatMp' | 'wechatPublic';
 export declare type WechatMpConfig = {
     type: 'wechatMp';
@@ -18,11 +17,8 @@ export declare type WechatMpConfig = {
 };
 export declare type WebConfig = {
     type: 'web';
-    wechat?: {
-        appId: string;
-        appSecret: string;
-    };
-    passport: Passport[];
+    appId?: string;
+    appSecret?: string;
 };
 declare type WechatPublicTemplateMsgsConfig = Record<string, {
     templateId: string;
@@ -37,7 +33,11 @@ export declare type WechatPublicConfig = {
     appSecret: string;
     templateMsgs?: WechatPublicTemplateMsgsConfig;
 };
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     name: String<32>;
     description: Text;
     type: AppType;
@@ -45,7 +45,11 @@ export declare type OpSchema = EntityShape & {
     config: WebConfig | WechatMpConfig | WechatPublicConfig;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     name: String<32>;
     description: Text;
     type: AppType;
@@ -61,7 +65,6 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.ApplicationIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     name: Q_StringValue;
     description: Q_StringValue;
@@ -76,7 +79,6 @@ export declare type Projection = {
     id: 1;
     $$createAt$$?: 1;
     $$updateAt$$?: 1;
-    $$seq$$?: 1;
     name?: 1;
     description?: 1;
     type?: 1;
@@ -99,7 +101,6 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     name?: string;
     description?: string;
     type?: string;
@@ -126,8 +127,6 @@ export declare type SortAttr = {
     id: 1;
 } | {
     $$createAt$$: 1;
-} | {
-    $$seq$$: 1;
 } | {
     $$updateAt$$: 1;
 } | {

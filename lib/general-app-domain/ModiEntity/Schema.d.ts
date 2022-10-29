@@ -1,21 +1,29 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { AppendOnlyAction } from "oak-domain/lib/actions/action";
 import * as Modi from "../Modi/Schema";
 import * as User from "../User/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
 import * as WechatUser from "../WechatUser/Schema";
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     modiId: ForeignKey<"modi">;
     entity: "user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string;
     entityId: String<64>;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     modiId: ForeignKey<"modi">;
     entity: "user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string;
     entityId: String<64>;
@@ -30,7 +38,6 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter<E> = {
     id: Q_StringValue | SubQuery.ModiEntityIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     modiId: Q_StringValue | SubQuery.ModiIdSubQuery;
     modi: Modi.Filter;
@@ -48,7 +55,6 @@ export declare type Projection = {
     id: 1;
     $$createAt$$?: 1;
     $$updateAt$$?: 1;
-    $$seq$$?: 1;
     modiId?: 1;
     modi?: Modi.Projection;
     entity?: 1;
@@ -64,7 +70,6 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     modiId?: string;
     modi?: Modi.ExportProjection;
     entity?: string;
@@ -96,8 +101,6 @@ export declare type SortAttr = {
     id: 1;
 } | {
     $$createAt$$: 1;
-} | {
-    $$seq$$: 1;
 } | {
     $$updateAt$$: 1;
 } | {

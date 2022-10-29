@@ -49,6 +49,7 @@ export declare type TencentSmsConfig = {
         code: string;
     }>;
 };
+export declare type QrCodeType = 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp' | 'webForWechatPublic';
 export declare type Config = {
     Account?: {
         ali?: AliCloudConfig[];
@@ -67,12 +68,13 @@ export declare type Config = {
             webApiKey: string;
         };
     };
-    UserEntityGrant?: {
-        lifetimeLength: number;
-    };
     Sms?: {
         ali?: AliSmsConfig[];
         tencent?: TencentSmsConfig[];
+    };
+    App: {
+        qrCodeType?: QrCodeType;
+        qrCodeApplicationId?: string;
     };
 };
 export declare type Origin = 'ali' | 'tencent' | 'qiniu' | 'amap';

@@ -2,6 +2,7 @@ import { String, Text, Datetime, Boolean } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Index } from 'oak-domain/lib/types/Storage';
+import { QrCodeType } from '../types/Config';
 import { Schema as Application } from './Application';
 
 export type WechatQrCodeProps = {
@@ -13,12 +14,7 @@ export type WechatQrCodeProps = {
 export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
-    type:
-        | 'wechatMpDomainUrl'
-        | 'wechatMpWxaCode'
-        | 'wechatPublic'
-        | 'wechatPublicForMp'
-        | 'webForWechatPublic';
+    type: QrCodeType;
     allowShare: Boolean; // 是否允许通过分享授权
     tag?: String<32>; // 调用者加的tag
     expiresAt?: Datetime; // 过期时间
@@ -67,9 +63,7 @@ const indexes: Index<Schema>[] = [
     },
 ];
 
-const locale: LocaleDef<Schema, '', '', {
-    type: Schema['type'];
-}> = {
+const locale: LocaleDef<Schema, '', '', {}> = {
     zh_CN: {
         attr: {
             entity: '关联对象',
@@ -86,14 +80,5 @@ const locale: LocaleDef<Schema, '', '', {
             application: '应用',
             props: '属性',
         },
-        v: {
-            type: {
-                wechatMpDomainUrl: '小程序域名跳转',
-                wechatMpWxaCode: '小程序码',
-                wechatPublic: '公众号码',
-                wechatPublicForMp: '公众号跳小程序',
-                webForWechatPublic: '网站跳公众号'
-            }
-        }
     },
  };
