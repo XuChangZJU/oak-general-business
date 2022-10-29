@@ -56,7 +56,10 @@ export class BackendRuntimeContext<ED extends EntityDict> extends UniversalConte
                     filter: {
                         id: appId,
                     },
-                }, this, {});
+                }, this, {
+                    dontCollect: true,
+                    blockTrigger: true,
+                });
                 assert(result.length > 0, `构建BackendRuntimeContext对应appId「${appId}」找不到application`);
                 this.application = result[0] as SelectRowShape<ED['application']['Schema'], GetApplicationShape>;
             }
@@ -87,7 +90,10 @@ export class BackendRuntimeContext<ED extends EntityDict> extends UniversalConte
                     filter: {
                         id: tokenValue,
                     },
-                }, this, {});
+                }, this, {
+                    dontCollect: true,
+                    blockTrigger: true,
+                });
                 if (result.length === 0) {
                     console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`);
                     throw new OakTokenExpiredException();
