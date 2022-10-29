@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'tdesign-react';
+import { Button } from 'antd';
 import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
 import Style from './web.module.less';
 
@@ -23,6 +23,7 @@ export default function render(this: any) {
                 </div>
                 {isWeiXin && (
                     <Button
+                        type='primary'
                         onClick={() => {
                             WeixinJSBridge.call('closeWindow');
                         }}

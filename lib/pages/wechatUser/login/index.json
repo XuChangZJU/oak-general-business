@@ -1,6 +1,4 @@
 {
     "navigationBarTitleText": "授权登录",
-    "usingComponents": {
-        "t-button": "../../../miniprogram_npm/tdesign/button/button"
-    }
+    "usingComponents": {}
 }

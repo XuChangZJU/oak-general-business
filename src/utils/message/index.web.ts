@@ -1,3 +1,3 @@
-import { MessagePlugin } from 'tdesign-react';
+import { message } from 'antd';
 
-export default MessagePlugin;
+export default message;

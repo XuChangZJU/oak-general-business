@@ -1,12 +1,12 @@
 import URL from 'url';
 
-export default OakPage({
+export default OakComponent({
     isList: false,
     data: {
         error: '',
     },
     lifetimes: {
-        ready() {
+        attached() {
             if (process.env.OAK_PLATFORM === 'web') {
                 //处理微信授权登录
                 this.login();
