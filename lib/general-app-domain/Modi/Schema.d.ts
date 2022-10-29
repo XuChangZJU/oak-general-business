@@ -1,15 +1,11 @@
-import { String, Datetime, PrimaryKey } from "oak-domain/lib/types/DataType";
+import { String } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
 import * as ModiEntity from "../ModiEntity/Schema";
-export declare type OpSchema = {
-    id: PrimaryKey;
-    $$createAt$$: Datetime;
-    $$updateAt$$: Datetime;
-    $$deleteAt$$?: Datetime | null;
+export declare type OpSchema = EntityShape & {
     targetEntity: String<32>;
     entity: String<32>;
     entityId: String<64>;
@@ -20,11 +16,7 @@ export declare type OpSchema = {
     iState?: IState | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = {
-    id: PrimaryKey;
-    $$createAt$$: Datetime;
-    $$updateAt$$: Datetime;
-    $$deleteAt$$?: Datetime | null;
+export declare type Schema = EntityShape & {
     targetEntity: String<32>;
     entity: String<32>;
     entityId: String<64>;
@@ -40,6 +32,7 @@ export declare type Schema = {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.ModiIdSubQuery;
     $$createAt$$: Q_DateValue;
+    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     targetEntity: Q_StringValue;
     entity: Q_StringValue;
@@ -57,6 +50,7 @@ export declare type Projection = {
     id: 1;
     $$createAt$$?: 1;
     $$updateAt$$?: 1;
+    $$seq$$?: 1;
     targetEntity?: 1;
     entity?: 1;
     entityId?: 1;
@@ -75,6 +69,7 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
+    $$seq$$?: string;
     targetEntity?: string;
     entity?: string;
     entityId?: string;
@@ -94,6 +89,8 @@ export declare type SortAttr = {
     id: 1;
 } | {
     $$createAt$$: 1;
+} | {
+    $$seq$$: 1;
 } | {
     $$updateAt$$: 1;
 } | {

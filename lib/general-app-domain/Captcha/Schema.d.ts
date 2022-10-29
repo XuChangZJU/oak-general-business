@@ -1,14 +1,10 @@
-import { String, Boolean, Text, Datetime, PrimaryKey } from "oak-domain/lib/types/DataType";
+import { String, Boolean, Text, Datetime } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
-export declare type OpSchema = {
-    id: PrimaryKey;
-    $$createAt$$: Datetime;
-    $$updateAt$$: Datetime;
-    $$deleteAt$$?: Datetime | null;
+export declare type OpSchema = EntityShape & {
     mobile: String<11>;
     code: String<4>;
     visitorId: Text;
@@ -19,11 +15,7 @@ export declare type OpSchema = {
     iState?: IState | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = {
-    id: PrimaryKey;
-    $$createAt$$: Datetime;
-    $$updateAt$$: Datetime;
-    $$deleteAt$$?: Datetime | null;
+export declare type Schema = EntityShape & {
     mobile: String<11>;
     code: String<4>;
     visitorId: Text;
@@ -38,6 +30,7 @@ export declare type Schema = {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.CaptchaIdSubQuery;
     $$createAt$$: Q_DateValue;
+    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     mobile: Q_StringValue;
     code: Q_StringValue;
@@ -55,6 +48,7 @@ export declare type Projection = {
     id: 1;
     $$createAt$$?: 1;
     $$updateAt$$?: 1;
+    $$seq$$?: 1;
     mobile?: 1;
     code?: 1;
     visitorId?: 1;
@@ -70,6 +64,7 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
+    $$seq$$?: string;
     mobile?: string;
     code?: string;
     visitorId?: string;
@@ -86,6 +81,8 @@ export declare type SortAttr = {
     id: 1;
 } | {
     $$createAt$$: 1;
+} | {
+    $$seq$$: 1;
 } | {
     $$updateAt$$: 1;
 } | {

@@ -3,7 +3,7 @@ import { GetApplicationShape, GetTokeShape, RuntimeContext } from './RuntimeCont
 import { EntityDict } from '../general-app-domain';
 import { SerializedData } from './FrontendRuntimeContext';
 import assert from 'assert';
-import { OakTokenExpiredException, OakUserDisabledException } from '../types/Exceptions';
+import { OakTokenExpiredException, OakUserDisabledException } from '../types/Exception';
 import { OakUnloggedInException } from 'oak-domain/lib/types/Exception';
 import { ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
 import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';

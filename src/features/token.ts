@@ -131,19 +131,21 @@ export class Token<
     ED extends EntityDict,
     Cxt extends RuntimeContext<ED>,
     AD extends AspectDict<ED, Cxt>
-> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
+> extends Feature {
     private tokenValue?: string;
     private token?: SelectRowShape<ED['token']['Schema'], TokenProjection>;
     private rwLock: RWLock;
     private cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
-    private storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
+    private storage: LocalStorage;
+    private aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
 
     constructor(
         aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
         cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
-        storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>
+        storage: LocalStorage
     ) {
-        super(aspectWrapper);
+        super();
+        this.aspectWrapper = aspectWrapper;
         this.rwLock = new RWLock();
         this.cache = cache;
         this.storage = storage;
@@ -160,7 +162,7 @@ export class Token<
                 /**
                  * 这里不能用cache.refresh，以防action再触发页面重渲染，造成递归acquire X lock
                  */
-                const { result } = await this.getAspectWrapper().exec(
+                const { result } = await this.aspectWrapper.exec(
                     'select',
                     {
                         entity: 'token',
@@ -185,7 +187,7 @@ export class Token<
         const env = await getEnv();
         await this.rwLock.acquire('X');
         try {
-            const { result } = await this.getAspectWrapper().exec(
+            const { result } = await this.aspectWrapper.exec(
                 'loginByMobile',
                 { password, mobile, captcha, env }
             );
@@ -203,7 +205,7 @@ export class Token<
         await this.rwLock.acquire('X');
         try {
             const env = await getEnv();
-            const { result } = await this.getAspectWrapper().exec(
+            const { result } = await this.aspectWrapper.exec(
                 'loginWechat',
                 {
                     code,
@@ -226,7 +228,7 @@ export class Token<
             const { code } = await wx.login();
 
             const env = await getEnv();
-            const { result } = await this.getAspectWrapper().exec(
+            const { result } = await this.aspectWrapper.exec(
                 'loginWechatMp',
                 {
                     code,
@@ -255,7 +257,7 @@ export class Token<
             iv,
         } = info;
 
-        await this.getAspectWrapper().exec('syncUserInfoWechatMp', {
+        await this.aspectWrapper.exec('syncUserInfoWechatMp', {
             nickname,
             avatarUrl,
             encryptedData,
@@ -326,7 +328,7 @@ export class Token<
     @Action
     async sendCaptcha(mobile: string) {
         const env = await getEnv();
-        const { result } = await this.getAspectWrapper().exec('sendCaptcha', {
+        const { result } = await this.aspectWrapper.exec('sendCaptcha', {
             mobile,
             env: env as WebEnv,
         });

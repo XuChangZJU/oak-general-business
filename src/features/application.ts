@@ -35,19 +35,21 @@ const projection: {
     }
 };
 
-export class Application<ED extends EntityDict, Cxt extends RuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
+export class Application<ED extends EntityDict, Cxt extends RuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature {
     private applicationId?: string;
     private application?: SelectRowShape<ED['application']['Schema'], typeof projection>;
     private rwLock: RWLock;
     private cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
-    private storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
+    private storage: LocalStorage;
+    private aspectWrapper: AspectWrapper<ED, Cxt, AD>;
 
     constructor(
         aspectWrapper: AspectWrapper<ED, Cxt, AD>,
         type: AppType,
         cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
-        storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>) {
-        super(aspectWrapper);
+        storage: LocalStorage) {
+        super();
+        this.aspectWrapper = aspectWrapper;
         this.rwLock = new RWLock();
         this.cache = cache;
         this.storage = storage;
@@ -88,7 +90,7 @@ export class Application<ED extends EntityDict, Cxt extends RuntimeContext<ED>, 
 
     private async refresh(type: AppType) {
         await this.rwLock.acquire('X');
-        const { result: applicationId } = await this.getAspectWrapper().exec('getApplication', {
+        const { result: applicationId } = await this.aspectWrapper.exec('getApplication', {
             type,
         });
         this.applicationId = applicationId;

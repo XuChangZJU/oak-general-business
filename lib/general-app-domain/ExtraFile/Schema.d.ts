@@ -1,16 +1,12 @@
-import { String, Int, Text, Datetime, PrimaryKey } from "oak-domain/lib/types/DataType";
+import { String, Int, Text } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as Article from "../Article/Schema";
 import * as User from "../User/Schema";
-export declare type OpSchema = {
-    id: PrimaryKey;
-    $$createAt$$: Datetime;
-    $$updateAt$$: Datetime;
-    $$deleteAt$$?: Datetime | null;
+export declare type OpSchema = EntityShape & {
     origin: 'qiniu' | 'unknown';
     type: 'image' | 'video' | 'audio' | 'file' | 'pdf';
     bucket: String<16>;
@@ -28,11 +24,7 @@ export declare type OpSchema = {
     fileType: String<16>;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = {
-    id: PrimaryKey;
-    $$createAt$$: Datetime;
-    $$updateAt$$: Datetime;
-    $$deleteAt$$?: Datetime | null;
+export declare type Schema = EntityShape & {
     origin: 'qiniu' | 'unknown';
     type: 'image' | 'video' | 'audio' | 'file' | 'pdf';
     bucket: String<16>;
@@ -56,6 +48,7 @@ export declare type Schema = {
 declare type AttrFilter<E> = {
     id: Q_StringValue | SubQuery.ExtraFileIdSubQuery;
     $$createAt$$: Q_DateValue;
+    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     origin: Q_EnumValue<'qiniu' | 'unknown'>;
     type: Q_EnumValue<'image' | 'video' | 'audio' | 'file' | 'pdf'>;
@@ -82,6 +75,7 @@ export declare type Projection = {
     id: 1;
     $$createAt$$?: 1;
     $$updateAt$$?: 1;
+    $$seq$$?: 1;
     origin?: 1;
     type?: 1;
     bucket?: 1;
@@ -106,6 +100,7 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
+    $$seq$$?: string;
     origin?: string;
     type?: string;
     bucket?: string;
@@ -137,6 +132,8 @@ export declare type SortAttr = {
     id: 1;
 } | {
     $$createAt$$: 1;
+} | {
+    $$seq$$: 1;
 } | {
     $$updateAt$$: 1;
 } | {

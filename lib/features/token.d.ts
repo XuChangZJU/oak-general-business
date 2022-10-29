@@ -62,13 +62,14 @@ declare type TokenProjection = {
     };
     playerId: 1;
 };
-export declare class Token<ED extends EntityDict, Cxt extends RuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
+export declare class Token<ED extends EntityDict, Cxt extends RuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature {
     private tokenValue?;
     private token?;
     private rwLock;
     private cache;
     private storage;
-    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>);
+    private aspectWrapper;
+    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage);
     loadTokenInfo(): Promise<void>;
     loginByMobile(mobile: string, password?: string, captcha?: string): Promise<void>;
     loginWechat(code: string): Promise<void>;

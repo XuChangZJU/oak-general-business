@@ -1,8 +1,8 @@
-import { String, Text, Datetime, Image, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Text, Datetime, Image, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, UserState, IdState } from "./Action";
 import { RelationAction } from "oak-domain/lib/actions/action";
 import * as System from "../System/Schema";
@@ -17,11 +17,7 @@ import * as WechatUser from "../WechatUser/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as ExtraFile from "../ExtraFile/Schema";
-export declare type OpSchema = {
-    id: PrimaryKey;
-    $$createAt$$: Datetime;
-    $$updateAt$$: Datetime;
-    $$deleteAt$$?: Datetime | null;
+export declare type OpSchema = EntityShape & {
     name?: String<16> | null;
     nickname?: String<64> | null;
     password?: Text | null;
@@ -37,11 +33,7 @@ export declare type OpSchema = {
     userState?: UserState | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = {
-    id: PrimaryKey;
-    $$createAt$$: Datetime;
-    $$updateAt$$: Datetime;
-    $$deleteAt$$?: Datetime | null;
+export declare type Schema = EntityShape & {
     name?: String<16> | null;
     nickname?: String<64> | null;
     password?: Text | null;
@@ -77,6 +69,7 @@ export declare type Schema = {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.UserIdSubQuery;
     $$createAt$$: Q_DateValue;
+    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     name: Q_StringValue;
     nickname: Q_StringValue;
@@ -101,6 +94,7 @@ export declare type Projection = {
     id: 1;
     $$createAt$$?: 1;
     $$updateAt$$?: 1;
+    $$seq$$?: 1;
     name?: 1;
     nickname?: 1;
     password?: 1;
@@ -165,6 +159,7 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
+    $$seq$$?: string;
     name?: string;
     nickname?: string;
     password?: string;
@@ -234,6 +229,8 @@ export declare type SortAttr = {
     id: 1;
 } | {
     $$createAt$$: 1;
+} | {
+    $$seq$$: 1;
 } | {
     $$updateAt$$: 1;
 } | {

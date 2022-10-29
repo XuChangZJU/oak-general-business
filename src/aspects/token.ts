@@ -10,7 +10,7 @@ import { Operation as ExtraFileOperation } from '../general-app-domain/ExtraFile
 import { isEqual } from 'oak-domain/lib/utils/lodash';
 import { OakUserException, SelectRowShape } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
-import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exceptions';
+import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exception';
 import { encryptPasswordSha1 } from '../utils/password';
 
 async function makeDistinguishException<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(userId: string, context: Cxt) {

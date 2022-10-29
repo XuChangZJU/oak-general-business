@@ -1,27 +1,19 @@
-import { String, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { AbleState } from 'oak-domain/lib/actions/action';
 import { Action, ParticularAction } from "./Action";
 import * as User from "../User/Schema";
 import * as Token from "../Token/Schema";
-export declare type OpSchema = {
-    id: PrimaryKey;
-    $$createAt$$: Datetime;
-    $$updateAt$$: Datetime;
-    $$deleteAt$$?: Datetime | null;
+export declare type OpSchema = EntityShape & {
     mobile: String<16>;
     userId: ForeignKey<"user">;
     ableState?: AbleState | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = {
-    id: PrimaryKey;
-    $$createAt$$: Datetime;
-    $$updateAt$$: Datetime;
-    $$deleteAt$$?: Datetime | null;
+export declare type Schema = EntityShape & {
     mobile: String<16>;
     userId: ForeignKey<"user">;
     ableState?: AbleState | null;
@@ -33,6 +25,7 @@ export declare type Schema = {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.MobileIdSubQuery;
     $$createAt$$: Q_DateValue;
+    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     mobile: Q_StringValue;
     userId: Q_StringValue | SubQuery.UserIdSubQuery;
@@ -46,6 +39,7 @@ export declare type Projection = {
     id: 1;
     $$createAt$$?: 1;
     $$updateAt$$?: 1;
+    $$seq$$?: 1;
     mobile?: 1;
     userId?: 1;
     user?: User.Projection;
@@ -60,6 +54,7 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
+    $$seq$$?: string;
     mobile?: string;
     userId?: string;
     user?: User.ExportProjection;
@@ -78,6 +73,8 @@ export declare type SortAttr = {
     id: 1;
 } | {
     $$createAt$$: 1;
+} | {
+    $$seq$$: 1;
 } | {
     $$updateAt$$: 1;
 } | {

@@ -11,15 +11,17 @@ export class ExtraFile<
     ED extends EntityDict,
     Cxt extends RuntimeContext<ED>,
     AD extends AspectDict<ED, Cxt>
-> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
+> extends Feature {
+    private aspectWrapper: AspectWrapper<ED, Cxt, AD>;
     constructor(
         aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>
     ) {
-        super(aspectWrapper);
+        super();
+        this.aspectWrapper = aspectWrapper;
     }
 
     private async getUploadInfo(origin: Origin, key?: string) {
-        const { result: uploadInfo } = await this.getAspectWrapper().exec(
+        const { result: uploadInfo } = await this.aspectWrapper.exec(
             'getUploadInfo',
             {
                 origin,

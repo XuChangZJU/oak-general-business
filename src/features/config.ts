@@ -11,14 +11,21 @@ export class Config<
     ED extends EntityDict,
     Cxt extends RuntimeContext<ED>,
     AD extends AspectDict<ED, Cxt>
-> extends Feature<ED, Cxt, AD & CommonAspectDict<ED, Cxt>> {
+> extends Feature {
+    private aspectWrapper: AspectWrapper<ED, Cxt, AD>;
+
+    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD>) {
+        super();
+        this.aspectWrapper = aspectWrapper;
+    }
+    
     @Action
     async updateConfig(
         entity: 'platform' | 'system',
         entityId: string,
         config: ConfigDef,
     ) {
-        await this.getAspectWrapper().exec('updateConfig', {
+        await this.aspectWrapper.exec('updateConfig', {
             entity,
             entityId,
             config

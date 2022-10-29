@@ -1,8 +1,8 @@
-import { String, Boolean, Text, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Boolean, Text, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import { Config } from "../../types/Config";
 import * as Platform from "../Platform/Schema";
@@ -10,11 +10,7 @@ import * as Application from "../Application/Schema";
 import * as Domain from "../Domain/Schema";
 import * as Message from "../Message/Schema";
 import * as User from "../User/Schema";
-export declare type OpSchema = {
-    id: PrimaryKey;
-    $$createAt$$: Datetime;
-    $$updateAt$$: Datetime;
-    $$deleteAt$$?: Datetime | null;
+export declare type OpSchema = EntityShape & {
     name: String<32>;
     description: Text;
     config: Config;
@@ -22,11 +18,7 @@ export declare type OpSchema = {
     super?: Boolean | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = {
-    id: PrimaryKey;
-    $$createAt$$: Datetime;
-    $$updateAt$$: Datetime;
-    $$deleteAt$$?: Datetime | null;
+export declare type Schema = EntityShape & {
     name: String<32>;
     description: Text;
     config: Config;
@@ -43,6 +35,7 @@ export declare type Schema = {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.SystemIdSubQuery;
     $$createAt$$: Q_DateValue;
+    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     name: Q_StringValue;
     description: Q_StringValue;
@@ -58,6 +51,7 @@ export declare type Projection = {
     id: 1;
     $$createAt$$?: 1;
     $$updateAt$$?: 1;
+    $$seq$$?: 1;
     name?: 1;
     description?: 1;
     config?: 1;
@@ -83,6 +77,7 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
+    $$seq$$?: string;
     name?: string;
     description?: string;
     config?: string;
@@ -112,6 +107,8 @@ export declare type SortAttr = {
     id: 1;
 } | {
     $$createAt$$: 1;
+} | {
+    $$seq$$: 1;
 } | {
     $$updateAt$$: 1;
 } | {

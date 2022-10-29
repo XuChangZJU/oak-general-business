@@ -3,7 +3,7 @@ import triggers from "./triggers";
 import checkers from './checkers';
 import watchers from './watchers';
 import data from "./data";
-import { routers as exceptionRouters } from './exceptionRouters';
+export * from './exceptionHandlers';
 
 export {
     checkers,
@@ -11,9 +11,8 @@ export {
     watchers,
     data,
     aspectDict,
-    exceptionRouters,
 };
 
-export * from './types/Exceptions';
+export * from './types/Exception';
 export { composeFileUrl, decomposeFileUrl } from './utils/extraFile';
 export * from './data/DEV-CONFIG';
