@@ -22,6 +22,7 @@ import * as Role from "./Role/Schema";
 import * as System from "./System/Schema";
 import * as Token from "./Token/Schema";
 import * as UserEntityGrant from "./UserEntityGrant/Schema";
+import * as UserSystem from "./UserSystem/Schema";
 import * as WechatQrCode from "./WechatQrCode/Schema";
 import * as WechatUser from "./WechatUser/Schema";
 export declare type ModiIdSubQuery = {
@@ -65,6 +66,8 @@ export declare type UserIdSubQuery = {
         entity: "user";
     }) | (UserEntityGrant.UserIdSubQuery & {
         entity: "userEntityGrant";
+    }) | (UserSystem.UserIdSubQuery & {
+        entity: "userSystem";
     }) | (WechatUser.UserIdSubQuery & {
         entity: "wechatUser";
     }) | (User.UserIdSubQuery & {
@@ -174,8 +177,8 @@ export declare type SystemIdSubQuery = {
         entity: "domain";
     }) | (Message.SystemIdSubQuery & {
         entity: "message";
-    }) | (User.SystemIdSubQuery & {
-        entity: "user";
+    }) | (UserSystem.SystemIdSubQuery & {
+        entity: "userSystem";
     }) | (System.SystemIdSubQuery & {
         entity: "system";
     }) | any;
@@ -188,6 +191,11 @@ export declare type TokenIdSubQuery = {
 export declare type UserEntityGrantIdSubQuery = {
     [K in "$in" | "$nin"]?: (UserEntityGrant.UserEntityGrantIdSubQuery & {
         entity: "userEntityGrant";
+    }) | any;
+};
+export declare type UserSystemIdSubQuery = {
+    [K in "$in" | "$nin"]?: (UserSystem.UserSystemIdSubQuery & {
+        entity: "userSystem";
     }) | any;
 };
 export declare type WechatQrCodeIdSubQuery = {

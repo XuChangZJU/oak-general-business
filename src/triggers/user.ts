@@ -30,7 +30,12 @@ const triggers: Trigger<EntityDict, 'user', RuntimeContext<EntityDict>>[] = [
                 data.forEach(
                     ele => {
                         Object.assign(ele, {
-                            systemId,
+                            userSystem$user: [{
+                                action: 'create',
+                                data: {
+                                    systemId,
+                                }
+                            }],
                         })
                         setDefaultState(ele)
                     }
@@ -38,7 +43,12 @@ const triggers: Trigger<EntityDict, 'user', RuntimeContext<EntityDict>>[] = [
             }
             else {
                 Object.assign(data, {
-                    systemId,
+                    userSystem$user: [{
+                        action: 'create',
+                        data: {
+                            systemId,
+                        }
+                    }],
                 })
                 setDefaultState(data);
             }
@@ -53,7 +63,6 @@ const triggers: Trigger<EntityDict, 'user', RuntimeContext<EntityDict>>[] = [
                         id: {
                             $ne: ROOT_USER_ID,
                         },
-                        systemId: systemId,
                     },
                     indexFrom: 0,
                     count: 1,

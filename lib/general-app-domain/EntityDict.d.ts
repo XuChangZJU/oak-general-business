@@ -22,6 +22,7 @@ import { EntityDef as Role } from "./Role/Schema";
 import { EntityDef as System } from "./System/Schema";
 import { EntityDef as Token } from "./Token/Schema";
 import { EntityDef as UserEntityGrant } from "./UserEntityGrant/Schema";
+import { EntityDef as UserSystem } from "./UserSystem/Schema";
 import { EntityDef as WechatQrCode } from "./WechatQrCode/Schema";
 import { EntityDef as WechatUser } from "./WechatUser/Schema";
 export declare type EntityDict = {
@@ -49,6 +50,7 @@ export declare type EntityDict = {
     system: System;
     token: Token;
     userEntityGrant: UserEntityGrant;
+    userSystem: UserSystem;
     wechatQrCode: WechatQrCode;
     wechatUser: WechatUser;
 };

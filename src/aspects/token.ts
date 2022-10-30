@@ -119,14 +119,18 @@ async function setupMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>
                         id: 1,
                     },
                 },
+                userSystem$user: {
+                    $entity: 'userSystem',
+                    data: {
+                        id: 1,
+                        systemId: 1,
+                    },
+                }
             },
         },
         filter: {
             mobile,
             ableState: 'enabled',
-            user: {
-                systemId,
-            }
         }
     }, context, { dontCollect: true });
     if (result2.length > 0) {
@@ -184,7 +188,24 @@ async function setupMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>
                 id: await generateNewId(),
                 data: tokenData,
                 action: 'create',
-            }, context, {});
+            }, context, {
+                 dontCollect: true,
+            });
+
+            // 检查此user和system之间有没有关系，如果没有要补上
+            if ((user as User)?.userSystem$user?.length == 0) {
+                await rowStore.operate('userSystem', {
+                    id: await generateNewId(),
+                    action: 'create',
+                    data: {
+                        id: await generateNewId(),
+                        userId: (user as User).id!,
+                        systemId,
+                    }
+                }, context, {
+                    dontCollect: true,
+                })
+            }
 
             return tokenData.id;
         }
@@ -210,7 +231,14 @@ async function setupMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>
             const userData: EntityDict['user']['CreateSingle']['data'] = {
                 id: await generateNewId(),
                 userState: 'normal',
-                systemId: systemId!,
+                userSystem$user: [{
+                    id: await generateNewId(),
+                    action: 'create',
+                    data: {
+                        id: await generateNewId(),
+                        systemId,
+                    }
+                }]
             };
             await rowStore.operate('user', {
                 id: await generateNewId(),
@@ -330,7 +358,6 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends RuntimeCo
                                 passwordSha1: encryptPasswordSha1(password),
                             }
                         ],
-                        systemId,
                     },
                 }
             }, context, {
@@ -605,7 +632,16 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
         const userData: CreateUser = {
             id: await generateNewId(),
             userState: 'normal',
-            systemId,
+            userSystem$user: [
+                {
+                    id: await generateNewId(),
+                    action: 'create',
+                    data: {
+                        id: await generateNewId(),
+                        systemId,
+                    },
+                }
+            ],
         };
         const wechatUserCreateData: CreateWechatUser = {
             id: await generateNewId(),
@@ -875,8 +911,17 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
         // 到这里都是要同时创建wechatUser和user对象了
         const userData: CreateUser = {
             id: await generateNewId(),
-            userState: 'normal',
-            systemId,
+            userState: 'normal',            
+            userSystem$user: [
+                {
+                    id: await generateNewId(),
+                    action: 'create',
+                    data: {
+                        id: await generateNewId(),
+                        systemId,
+                    },
+                }
+            ],
         };
         const wechatUserCreateData: CreateWechatUser = {
             id: await generateNewId(),
