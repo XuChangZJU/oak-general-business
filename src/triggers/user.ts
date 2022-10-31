@@ -27,25 +27,30 @@ const triggers: Trigger<EntityDict, 'user', RuntimeContext<EntityDict>>[] = [
                 }
             };
             if (data instanceof Array) {
-                data.forEach(
-                    ele => {
-                        Object.assign(ele, {
-                            userSystem$user: [{
-                                action: 'create',
-                                data: {
-                                    systemId,
-                                }
-                            }],
-                        })
-                        setDefaultState(ele)
-                    }
-                );
+                await Promise.all(
+                    data.map(
+                        async ele => {
+                            Object.assign(ele, {
+                                userSystem$user: [{
+                                    id: await generateNewId(),
+                                    action: 'create',
+                                    data: {
+                                        id: await generateNewId(),
+                                        systemId,
+                                    }
+                                }],
+                            })
+                            setDefaultState(ele);
+                        }
+                    ));
             }
             else {
                 Object.assign(data, {
                     userSystem$user: [{
+                        id: await generateNewId(),
                         action: 'create',
                         data: {
+                            id: await generateNewId(),
                             systemId,
                         }
                     }],
@@ -54,7 +59,7 @@ const triggers: Trigger<EntityDict, 'user', RuntimeContext<EntityDict>>[] = [
             }
             if (NO_ANY_USER) {
                 const { rowStore } = context;
-                
+
                 const { result } = await rowStore.select('user', {
                     data: {
                         id: 1,
@@ -102,7 +107,7 @@ const triggers: Trigger<EntityDict, 'user', RuntimeContext<EntityDict>>[] = [
         when: 'after',
         fn: async ({ operation }, context) => {
             const { filter } = operation;
-            assert (filter!.id);
+            assert(filter!.id);
             const { id } = (await context.getToken())!;
             await context.rowStore.operate('token', {
                 id: await generateNewId(),
@@ -124,7 +129,7 @@ const triggers: Trigger<EntityDict, 'user', RuntimeContext<EntityDict>>[] = [
         entity: 'user',
         action: 'select',
         when: 'before',
-        fn: async ({ operation}, context) => {
+        fn: async ({ operation }, context) => {
             const app = await context.getApplication();
             if (app) {
                 const { filter } = operation;

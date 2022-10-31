@@ -231,14 +231,6 @@ async function setupMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>
             const userData: EntityDict['user']['CreateSingle']['data'] = {
                 id: await generateNewId(),
                 userState: 'normal',
-                userSystem$user: [{
-                    id: await generateNewId(),
-                    action: 'create',
-                    data: {
-                        id: await generateNewId(),
-                        systemId,
-                    }
-                }]
             };
             await rowStore.operate('user', {
                 id: await generateNewId(),

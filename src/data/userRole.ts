@@ -10,7 +10,6 @@ export const users: Array<UserCreate> = [
         nickname: 'root',
         name: 'root',
         id: ROOT_USER_ID,
-        systemId: DEV_SYSTEM_ID,
     }
 ];
 
