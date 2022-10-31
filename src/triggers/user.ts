@@ -131,14 +131,34 @@ const triggers: Trigger<EntityDict, 'user', RuntimeContext<EntityDict>>[] = [
                 if (!filter) {
                     Object.assign(operation, {
                         filter: {
-                            systemId: app.systemId,
+                            id: {
+                                $in: {
+                                    entity: 'userSystem',
+                                    data: {
+                                        userId: 1,
+                                    },
+                                    filter: {
+                                        systemId: app.systemId,
+                                    }
+                                }
+                            }
                         },
                     });
                 }
                 else {
                     Object.assign(operation, {
                         filter: addFilterSegment({
-                            systemId: app.systemId,
+                            id: {
+                                $in: {
+                                    entity: 'userSystem',
+                                    data: {
+                                        userId: 1,
+                                    },
+                                    filter: {
+                                        systemId: app.systemId,
+                                    }
+                                }
+                            }
                         }, filter),
                     });
                 }
