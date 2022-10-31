@@ -1,7 +1,7 @@
 import { expandUuidTo36Bytes } from 'oak-domain/lib/utils/uuid'
 
 
-export default OakPage(
+export default OakComponent(
     {
         entity: 'wechatQrCode',
         projection: {
@@ -18,8 +18,8 @@ export default OakPage(
         isList: true,
         filters: [
             {
-                filter: async ({ onLoadOptions }) => {
-                    const scene = decodeURIComponent(onLoadOptions.scene!);
+                filter: async ({ props }) => {
+                    const scene = decodeURIComponent(props.scene!);
                     const uuid = scene && expandUuidTo36Bytes(scene!);
                     return {
                         id: uuid!,

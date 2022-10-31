@@ -1,10 +1,9 @@
 import React from 'react';
-import { Tabs, Button } from 'tdesign-react';
-const { TabPanel } = Tabs;
-import classNames from 'classnames';
-import Styles from './web.module.less';
+import { Tabs, Button, Alert, Affix , Space, Typography } from 'antd';
+import Style from './web.module.less';
 import Account from './account/index';
 import { Config } from '../../../types/Config';
+const { TabPane } = Tabs;
 
 export default function render(this: any) {
     const { entity, name } = this.props;
@@ -12,42 +11,74 @@ export default function render(this: any) {
     const { Account: account } = currentConfig as Config;
     return (
         <>
-            <div className={Styles.padding} />
-            <div className={Styles.ctrl}>
-                <text>您正在更新<text className={Styles.weight}>{entity}</text>对象<text className={Styles.weight}>{name}</text>的配置，请谨慎操作</text>
-                <span>
-                    <Button
-                        disabled={!dirty}
-                        theme="primary"
-                        onClick={() => this.resetConfig()}
+            <Affix offsetTop={0}>
+                <Alert
+                    message={
+                        <div>
+                            <text>
+                                您正在更新
+                                <Typography.Text
+                                    keyboard
+                                    className={Style.weight}
+                                >
+                                    {entity}
+                                </Typography.Text>
+                                对象
+                                <Typography.Text
+                                    keyboard
+                                    className={Style.weight}
+                                >
+                                    {name}
+                                </Typography.Text>
+                                的配置，请谨慎操作
+                            </text>
+                        </div>
+                    }
+                    type="info"
+                    showIcon
+                    action={
+                        <Space>
+                            <Button
+                                disabled={!dirty}
+                                type="primary"
+                                danger
+                                onClick={() => this.resetConfig()}
+                                style={{
+                                    marginRight: 10,
+                                }}
+                            >
+                                重置
+                            </Button>
+                            <Button
+                                disabled={!dirty}
+                                type="primary"
+                                onClick={() => this.updateConfig()}
+                            >
+                                确定
+                            </Button>
+                        </Space>
+                    }
+                />
+            </Affix>
+            <div className={Style.container}>
+                <Tabs tabPosition="left">
+                    <TabPane
+                        key="云平台帐号"
+                        tab="云平台帐号"
                         style={{
-                            marginRight: 10,
+                            marginLeft: 20,
                         }}
                     >
-                        重置
-                    </Button>
-                    <Button
-                        disabled={!dirty}
-                        theme="danger"
-                        onClick={() => this.updateConfig()}
-                    >
-                        确定
-                    </Button>
-                </span>
-            </div>
-            <div
-                className={Styles.container}
-            >
-                <Tabs placement='left'>
-                    <TabPanel label="云平台帐号" style={{
-                        marginLeft: 20,
-                    }}>
                         <Account
                             account={account || {}}
-                            setValue={(path, value) => this.setValue(`Account.${path}`, value)}
-                            removeItem={(path, index) => this.removeItem(`Account.${path}`, index)}
+                            setValue={(path, value) =>
+                                this.setValue(`Account.${path}`, value)
+                            }
+                            removeItem={(path, index) =>
+                                this.removeItem(`Account.${path}`, index)
+                            }
                         />
-                    </TabPanel>
+                    </TabPane>
                 </Tabs>
             </div>
         </>

@@ -1,0 +1,103 @@
+// @import (css) '../common/index.wxss';
+@import '../common/style/index.less';
+
+@backtop: ~"@{prefix}-back-top";
+@back-top-text-font-size: @font-size;
+@back-top-icon-font-size: 32rpx;
+@back-top-default-color: #666;
+
+.@{backtop} {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: height .2s;
+  height: auto;
+
+  &.@{prefix}-is-fixed {
+    position: fixed;
+    right: 32rpx;
+    bottom: 133rpx;
+  }
+
+  &.@{prefix}-is-round,
+  &.@{prefix}-is-round-dark {
+    width: 96rpx;
+    height: 96rpx;
+    border-radius: 50%;
+
+    .@{backtop}__icon {
+      margin: 0;
+      // border: none;
+      border-radius: 0;
+      background-color: transparent;
+    }
+
+    .@{backtop}__text {
+      padding: 0;
+      margin-top: 0;
+    }
+  }
+
+  &.@{prefix}-is-round,
+  &.@{prefix}-is-half-round {
+    background-color: rgb(255, 255, 255);
+    color: #333;
+    border: 1rpx solid;
+    border-color: #ddd;
+
+    .@{backtop}__icon,
+    .@{backtop}__text {
+      color: #333;
+    }
+  }
+
+  &.@{prefix}-is-round-dark,
+  &.@{prefix}-is-half-round-dark {
+    background-color: #000;
+    color: #fff;
+
+    .@{backtop}__icon,
+    .@{backtop}__text {
+      color: #fff;
+    }
+  }
+
+  &.@{prefix}-is-half-round,
+  &.@{prefix}-is-half-round-dark {
+    width: 120rpx;
+    height: 80rpx;
+    border-radius: 120rpx 0 0 120rpx;
+    flex-direction: row;
+    right: 0;
+
+    .@{backtop}__icon {
+      margin: 0;
+      border-radius: 0;
+      background-color: transparent;
+    }
+
+    .@{backtop}__text {
+      padding: 0;
+      margin-left: 8rpx;
+      width: 2em;
+    }
+  }
+
+  &__text {
+    font-size: @back-top-text-font-size;
+    color: @back-top-default-color;
+    line-height: 24rpx;
+  }
+
+  &__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: @back-top-default-color;
+    font-size: @back-top-icon-font-size;
+  }
+}

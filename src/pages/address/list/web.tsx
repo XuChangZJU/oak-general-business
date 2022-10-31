@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Style from './web.module.less';
-import { List, Button } from 'tdesign-react';
-
-const { ListItem, ListItemMeta } = List;
+import { List, Button } from 'antd';
 
 
 export default function render(this: any) {
@@ -11,9 +9,12 @@ export default function render(this: any) {
         return (
             <List>
                 {addresses.map((address: Record<string, any>) => (
-                    <ListItem key={address.id}>
-                        <ListItemMeta title={address.name} description={address.areaText + address.detail} />
-                    </ListItem>
+                    <List.Item key={address.id}>
+                        <List.Item.Meta
+                            title={address.name}
+                            description={address.areaText + address.detail}
+                        />
+                    </List.Item>
                 ))}
             </List>
         );
@@ -25,10 +26,7 @@ export default function render(this: any) {
                 block={false}
                 ghost={false}
                 loading={false}
-                shape="rectangle"
-                size="medium"
-                type="button"
-                variant="base"
+                type="primary"
                 style={{ marginTop: 10 }}
                 onClick={() => this.goNewAddress()}
             >

@@ -2,6 +2,7 @@ import React from 'react';
 import { InputProps } from 'antd';
 interface IProps extends InputProps {
     value?: string;
+    autoSize?: boolean | object;
 }
 declare const Component: {
     (props: IProps): JSX.Element;

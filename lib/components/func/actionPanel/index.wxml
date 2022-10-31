@@ -1,0 +1,13 @@
+<t-popup placement="bottom" visible="{{show}}" bind:visible-change="closeDrawer" close-btn="true">
+    <view class="block block--bottom">
+        <view class="btn-box">
+            <t-grid t-class="five-grid" column="{{5}}">
+                <block wx:for="{{actionss}}" wx:key="index">
+                    <t-grid-item bind:tap="onClick" data-index="{{index}}" text="{{item.label}}" t-class-text="text" t-class-image="image-icon" t-class-content="external-class-content">
+                        <t-icon class="image" name="{{item.icon.name}}" slot="image" />
+                    </t-grid-item>
+                </block>
+            </t-grid>
+        </view>
+    </view>
+</t-popup>

@@ -1,20 +1,19 @@
 import React from 'react';
-import { List, Button, Dialog } from 'tdesign-react';
-import { Icon } from 'tdesign-icons-react';
+import { List, Button, Modal } from 'antd';
+import { MobileOutlined, DeleteOutlined } from '@ant-design/icons';
 import Style from './web.module.less';
 
 
-const { ListItem, ListItemMeta } = List;
 
 export default function render(this: any) {
     const { mobiles, confirmDeleteModalVisible, deleteIdx } = this.state;
     return (
         <div className={Style.container}>
-            <List layout="horizontal" size="medium" className={Style.list} split={true}>
+            <List className={Style.list} split={true}>
                 {mobiles?.map((ele: any, index: number) => (
-                    <ListItem
+                    <List.Item
                         key={index}
-                        action={
+                        extra={
                             <div
                                 onClick={() => {
                                     this.setState({
@@ -23,35 +22,40 @@ export default function render(this: any) {
                                     });
                                 }}
                             >
-                                <Icon size={18} name="delete" />
+                                <DeleteOutlined />
                             </div>
                         }
                     >
-                        <ListItemMeta
-                            image={<Icon size={18} name="mobile" />}
+                        <List.Item.Meta
+                            avatar={<MobileOutlined />}
                             title={ele.mobile}
                         />
-                    </ListItem>
+                    </List.Item>
                 ))}
             </List>
             <div style={{ flex: 1 }} />
-            <Button block size="large" theme="primary" onClick={() => this.goAddMobile()}>
+            <Button
+                block
+                size="large"
+                type="primary"
+                onClick={() => this.goAddMobile()}
+            >
                 添加
             </Button>
-            <Dialog
-                visible={confirmDeleteModalVisible}
-                header="确认删除手机号吗？"
-                confirmBtn="确定"
-                cancelBtn="取消"
-                body="删除后，不可恢复"
-                destroyOnClose
-                onClose={() => {
+            <Modal
+                open={confirmDeleteModalVisible}
+                title="确认删除手机号吗？"
+                okText="确定"
+                cancelText="取消"
+                // content="删除后，不可恢复"
+                destroyOnClose={true}
+                onCancel={() => {
                     this.setState({
                         confirmDeleteModalVisible: false,
                         deleteIdx: undefined,
                     });
                 }}
-                onConfirm={async () => {
+                onOk={async () => {
                     await this.addOperation({
                         action: 'remove',
                         data: {},

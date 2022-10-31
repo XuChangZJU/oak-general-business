@@ -1,54 +1,54 @@
-import React, { Component } from 'react';
-import { Button, Textarea, Input, Form, Radio, DatePicker, Row, Col } from 'tdesign-react';
-import dayjs from 'dayjs';
+import React from 'react';
+import { Button, Input, Form, Row, Col } from 'antd';
 import Style from './web.module.less';
 
-const { FormItem } = Form;
 
 export default function render(this: any) {
     const { name, description } = this.state;
     return (
-        <div
-            style={{
-                height: '100vh',
-                display: 'flex',
-                flexDirection: 'column',
-                padding: 16,
-            }}
-        >
+        <div className={Style.container}>
             <Row>
-                <Col xs={12} sm={4}>
-                    <Form labelWidth="100px" colon={true}>
-                        <FormItem label="名称" requiredMark>
+                <Col xs={24} sm={8}>
+                    <Form
+                        colon={true}
+                        labelCol={{ span: 4 }}
+                        wrapperCol={{ span: 16 }}
+                    >
+                        <Form.Item label="名称" requiredMark name="name" rules={[{
+                            required: true
+                        }]}>
                             <>
                                 <Input
-                                    onChange={(value) => {
-                                        this.setUpdateData('name', value);
+                                    onChange={(e) => {
+                                        this.setUpdateData('name', e.target.value);
                                     }}
                                     value={name}
                                 />
                             </>
-                        </FormItem>
-                        <FormItem label="描述" requiredMark>
+                        </Form.Item>
+                        <Form.Item label="描述" requiredMark name="description">
                             <>
                                 <Input
-                                    onChange={(value) => {
-                                        this.setUpdateData('description', value);
+                                    onChange={(e) => {
+                                        this.setUpdateData(
+                                            'description',
+                                            e.target.value
+                                        );
                                     }}
                                     value={description}
                                 />
                             </>
-                        </FormItem>
-                        <FormItem style={{ marginLeft: 100 }}>
+                        </Form.Item>
+                        <Form.Item wrapperCol={{ offset: 4 }}>
                             <Button
-                                theme="primary"
+                                type="primary"
                                 onClick={() => {
                                     this.confirm();
                                 }}
                             >
                                 确定
                             </Button>
-                        </FormItem>
+                        </Form.Item>
                     </Form>
                 </Col>
             </Row>

@@ -1,22 +1,12 @@
 import React from 'react';
-import {
-    Button,
-    Row,
-    Col,
-    Input,
-    Space,
-    Textarea,
-    Card,
-    Alert,
-} from 'tdesign-react';
-import OakGallery from './../../../components/extraFile/gallery';
+import { Alert, Card, Button, Row, Col, Space, Affix } from 'antd';
 import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
-import {
-    IToolbarConfig,
-} from '@wangeditor/editor';
+import { IToolbarConfig } from '@wangeditor/editor';
 import { DeduceCreateOperationData } from 'oak-domain/lib/types';
 import { EntityDict } from './../../../general-app-domain';
+import OakGallery from './../../../components/extraFile/gallery';
+import Input from './../../../components/common/input';
 
 import Style from './web.module.less';
 
@@ -65,46 +55,54 @@ export default function render(this: any) {
 
     return (
         <div className={Style.container}>
-            <Toolbar
-                editor={editor}
-                defaultConfig={toolbarConfig}
-                mode="default"
-                // style={{ borderBottom: '1px solid #ccc' }}
-            />
-            <Row>
-                <Col flex={2} />
+            <Affix offsetTop={64}>
+                <Toolbar
+                    editor={editor}
+                    defaultConfig={toolbarConfig}
+                    mode="default"
+                />
+            </Affix>
 
-                <Col flex={8}>
+            <Row>
+                <Col flex={4} />
+
+                <Col flex={16}>
                     <div className={Style.content}>
                         <div className={Style.editorContainer}>
                             <div className={Style.titleContainer}>
                                 <Input
-                                    onChange={(value) => {
-                                        this.setUpdateData('title', value);
+                                    onChange={(e) => {
+                                        this.setUpdateData(
+                                            'title',
+                                            e.target.value
+                                        );
                                     }}
                                     value={title}
                                     placeholder={this.t('placeholder.title')}
                                     size="large"
-                                    maxlength={64}
+                                    maxLength={64}
                                     suffix={`${[...(title || '')].length}/64`}
-                                    inputClass={[Style.input, Style.titleInput]}
+                                    className={Style.titleInput}
                                 />
                             </div>
                             <div className={Style.authorContainer}>
                                 <Input
-                                    onChange={(value) => {
-                                        this.setUpdateData('author', value);
+                                    onChange={(e) => {
+                                        this.setUpdateData(
+                                            'author',
+                                            e.target.value
+                                        );
                                     }}
                                     value={author}
                                     placeholder={this.t('placeholder.author')}
-                                    inputClass={[Style.input]}
+                                    className={Style.input}
                                 />
                             </div>
                             {contentTip && (
                                 <Alert
-                                    theme="info"
+                                    type="info"
                                     message={this.t('tips.content')}
-                                    close
+                                    closable
                                     onClose={() => {
                                         this.setState({
                                             contentTip: false,
@@ -252,19 +250,25 @@ export default function render(this: any) {
                             <div className={Style.abstract}>
                                 <Card
                                     title="封面及摘要"
-                                    theme="normal"
                                     bordered={false}
+                                    className={Style.card}
                                 >
                                     <Row>
                                         <Col flex="none">
                                             <OakGallery
                                                 maxNumber={1}
-                                                oakPath={oakFullpath ? `${oakFullpath}.extraFile$entity` : undefined}
-                                                oakFilters={[{
-                                                    tag1: {
-                                                        $in: ['cover'],
+                                                oakPath={
+                                                    oakFullpath
+                                                        ? `${oakFullpath}.extraFile$entity`
+                                                        : undefined
+                                                }
+                                                oakFilters={[
+                                                    {
+                                                        tag1: {
+                                                            $in: ['cover'],
+                                                        },
                                                     },
-                                                }]}
+                                                ]}
                                                 type="image"
                                                 origin="qiniu"
                                                 tag1="cover"
@@ -272,22 +276,22 @@ export default function render(this: any) {
                                             ></OakGallery>
                                         </Col>
                                         <Col flex="auto">
-                                            <Textarea
-                                                autosize={{
+                                            <Input.TextArea
+                                                autoSize={{
                                                     minRows: 4,
                                                 }}
-                                                maxlength={120}
+                                                maxLength={120}
                                                 placeholder={this.t(
                                                     'placeholder.abstract'
                                                 )}
-                                                onChange={(value) => {
+                                                onChange={(e) => {
                                                     this.setUpdateData(
                                                         'abstract',
-                                                        value
+                                                        e.target.value
                                                     );
                                                 }}
                                                 value={abstract || ''}
-                                            ></Textarea>
+                                            ></Input.TextArea>
                                         </Col>
                                     </Row>
                                 </Card>
@@ -302,7 +306,7 @@ export default function render(this: any) {
                                     <Col flex="none">
                                         <Space>
                                             <Button
-                                                theme="success"
+                                                type="primary"
                                                 onClick={() => {
                                                     this.confirm();
                                                 }}
@@ -310,7 +314,6 @@ export default function render(this: any) {
                                                 保存
                                             </Button>
                                             <Button
-                                                variant="outline"
                                                 onClick={() => {
                                                     this.preview();
                                                 }}
@@ -324,7 +327,7 @@ export default function render(this: any) {
                         </div>
                     </div>
                 </Col>
-                <Col flex={2} />
+                <Col flex={4} />
             </Row>
         </div>
     );

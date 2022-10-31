@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Tabs, Row, Col, Card, Divider, Input, InputAdornment, Space, Form } from 'tdesign-react';
+import { Tabs, Row, Col, Card, Divider, Input, Form, Space } from 'antd';
 import Styles from './web.module.less';
 import { AliCloudConfig, AmapCloudConfig, Config, QiniuCloudConfig, TencentCloudConfig } from '../../../../types/Config';
 
-const { FormItem } = Form;
-const { TabPanel } = Tabs;
+const { TabPane } = Tabs;
 
 function TencentAccount(props: {
     accounts: TencentCloudConfig[],
@@ -13,192 +12,139 @@ function TencentAccount(props: {
 }) {
     const { accounts, setValue, removeItem } = props;
     return (
-        <Col align="stretch">
-            <Divider align="left" className={Styles.title}>腾讯云配置</Divider>
+        <Col flex="auto">
+            <Divider orientation="left" className={Styles.title}>
+                腾讯云配置
+            </Divider>
             <Tabs
-                placement={'top'}
-                size={'medium'}
-                disabled={false}
-                theme="normal"
-                addable={accounts.length > 0}
+                tabPosition={'top'}
+                size={'middle'}
+                type="editable-card"
+                hideAdd={!(accounts.length > 0)}
+                onEdit={(targetKey: any, action: 'add' | 'remove') => {
+                    if (action === 'add') {
+                        //add();
+                    } else {
+                        removeItem('', parseInt(targetKey, 10));
+                    }
+                }}
             >
-                {
-                    accounts.length > 0 ? accounts.map(
-                        (ele, idx) => {
-                            console.log(ele);
-                            return (
-                                <TabPanel
-                                    key={idx}
-                                    value={idx}
-                                    label={`帐号${idx + 1}`}
-                                    removable={true}
-                                    onRemove={() => removeItem('', idx)}
+                {accounts.length > 0 ? (
+                    accounts.map((ele, idx) => {
+                        console.log(ele);
+                        return (
+                            <TabPane key={idx} tab={`帐号${idx + 1}`}>
+                                <Form
+                                    colon={false}
+                                    labelAlign="left"
+                                    layout="vertical"
+                                    style={{ marginTop: 10 }}
                                 >
-                                    <Form
-                                        colon={false}
-                                        labelAlign="left"
-                                        labelWidth="100px"
-                                        layout="vertical"
-                                        preventSubmitDefault
-                                        resetType="empty"
-                                        showErrorMessage
-                                        submitWithWarningMessage={false}
-                                        style={{ marginTop: 10 }}
+                                    <Form.Item label="secretId" name="secretId">
+                                        <>
+                                            <Input
+                                                placeholder="请输入secretId"
+                                                type="text"
+                                                value={ele.secretId}
+                                                onChange={(e) =>
+                                                    setValue(
+                                                        `${idx}.secretId`,
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </>
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="secretKey"
+                                        name="secretKey"
                                     >
-                                        <FormItem
-                                            label="secretId"
-                                            name="secretId"
-                                            successBorder={false}
-                                        >
-                                            <>
-                                                <Input
-                                                    align="left"
-                                                    autoWidth={false}
-                                                    autofocus={false}
-                                                    clearable={false}
-                                                    placeholder="请输入secretId"
-                                                    readonly={false}
-                                                    showClearIconOnEmpty={false}
-                                                    size="medium"
-                                                    status="default"
-                                                    type="text"
-                                                    value={ele.secretId}
-                                                    onChange={(value) => setValue(`${idx}.secretId`, value)}
-                                                />
-                                            </>
-                                        </FormItem>
-                                        <FormItem
-                                            label="secretKey"
-                                            name="secretKey"
-                                            successBorder={false}
-                                        >
-                                            <>
-                                                <Input
-                                                    align="left"
-                                                    autoWidth={false}
-                                                    autofocus={false}
-                                                    clearable={false}
-                                                    placeholder="请输入secretKey"
-                                                    readonly={false}
-                                                    showClearIconOnEmpty={false}
-                                                    size="medium"
-                                                    status="default"
-                                                    type="text"
-                                                    value={ele.secretKey}
-                                                    onChange={(value) => setValue(`${idx}.secretKey`, value)}
-                                                />
-                                            </>
-                                        </FormItem>
-                                        <FormItem
-                                            label="region"
-                                            name="region"
-                                            successBorder={false}
-                                        >
-                                            <>
-                                                <Input
-                                                    align="left"
-                                                    autoWidth={false}
-                                                    autofocus={false}
-                                                    clearable={false}
-                                                    placeholder="请输入region"
-                                                    readonly={false}
-                                                    showClearIconOnEmpty={false}
-                                                    size="medium"
-                                                    status="default"
-                                                    type="text"
-                                                    value={ele.region}
-                                                    onChange={(value) => setValue(`${idx}.region`, value)}
-                                                />
-                                            </>
-                                        </FormItem>
-                                    </Form>
-                                </TabPanel>
-                            );
-                        }
-                    ) : (
-                        <TabPanel
-                            key={0}
-                            value={0}
-                            label="新建帐号"
+                                        <>
+                                            <Input
+                                                placeholder="请输入secretKey"
+                                                type="text"
+                                                value={ele.secretKey}
+                                                onChange={(e) =>
+                                                    setValue(
+                                                        `${idx}.secretKey`,
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </>
+                                    </Form.Item>
+                                    <Form.Item label="region" name="region">
+                                        <>
+                                            <Input
+                                                placeholder="请输入region"
+                                                type="text"
+                                                value={ele.region}
+                                                onChange={(e) =>
+                                                    setValue(
+                                                        `${idx}.region`,
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </>
+                                    </Form.Item>
+                                </Form>
+                            </TabPane>
+                        );
+                    })
+                ) : (
+                    <TabPane key={0} tab="新建帐号" closable={false}>
+                        <Form
+                            colon={true}
+                            labelAlign="left"
+                            layout="vertical"
+                            style={{ marginTop: 10 }}
                         >
-
-                            <Form
-                                colon={true}
-                                labelAlign="left"
-                                labelWidth="100px"
-                                layout="vertical"
-                                style={{ marginTop: 10 }}
-                            >
-                                <FormItem
-                                    label="secretId"
-                                    name="secretId"
-                                    successBorder={false}
-                                >
-                                    <>
-                                        <Input
-                                            align="left"
-                                            autoWidth={false}
-                                            autofocus={false}
-                                            clearable={false}
-                                            placeholder="请输入secretId"
-                                            readonly={false}
-                                            showClearIconOnEmpty={false}
-                                            size="medium"
-                                            status="default"
-                                            type="text"
-                                            value=""
-                                            onChange={(value) => setValue(`0.secretId`, value)}
-                                        />
-                                    </>
-                                </FormItem>
-                                <FormItem
-                                    label="secretKey"
-                                    name="secretKey"
-                                    successBorder={false}
-                                >
-                                    <>
-                                        <Input
-                                            align="left"
-                                            autoWidth={false}
-                                            autofocus={false}
-                                            clearable={false}
-                                            placeholder="请输入secretKey"
-                                            readonly={false}
-                                            showClearIconOnEmpty={false}
-                                            size="medium"
-                                            status="default"
-                                            type="text"
-                                            value=""
-                                            onChange={(value) => setValue(`0.secretKey`, value)}
-                                        />
-                                    </>
-                                </FormItem>
-                                <FormItem
-                                    label="region"
-                                    name="region"
-                                    successBorder={false}
-                                >
-                                    <>
-                                        <Input
-                                            align="left"
-                                            autoWidth={false}
-                                            autofocus={false}
-                                            clearable={false}
-                                            placeholder="请输入region"
-                                            readonly={false}
-                                            showClearIconOnEmpty={false}
-                                            size="medium"
-                                            status="default"
-                                            type="text"
-                                            value=""
-                                            onChange={(value) => setValue(`0.region`, value)}
-                                        />
-                                    </>
-                                </FormItem>
-                            </Form>
-                        </TabPanel>
-                    )
-                }
+                            <Form.Item label="secretId" name="secretId">
+                                <>
+                                    <Input
+                                        placeholder="请输入secretId"
+                                        type="text"
+                                        value=""
+                                        onChange={(e) =>
+                                            setValue(
+                                                `0.secretId`,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </>
+                            </Form.Item>
+                            <Form.Item label="secretKey" name="secretKey">
+                                <>
+                                    <Input
+                                        placeholder="请输入secretKey"
+                                        type="text"
+                                        value=""
+                                        onChange={(e) =>
+                                            setValue(
+                                                `0.secretKey`,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </>
+                            </Form.Item>
+                            <Form.Item label="region" name="region">
+                                <>
+                                    <Input
+                                        placeholder="请输入region"
+                                        type="text"
+                                        value=""
+                                        onChange={(e) =>
+                                            setValue(`0.region`, e.target.value)
+                                        }
+                                    />
+                                </>
+                            </Form.Item>
+                        </Form>
+                    </TabPane>
+                )}
             </Tabs>
         </Col>
     );
@@ -211,145 +157,106 @@ function QiniuAccount(props: {
 }) {
     const { accounts, setValue, removeItem } = props;
     return (
-        <Col align="stretch">
-            <Divider align="left" className={Styles.title}>七牛云配置</Divider>
+        <Col flex="auto">
+            <Divider orientation="left" className={Styles.title}>
+                七牛云配置
+            </Divider>
             <Tabs
-                placement={'top'}
-                size={'medium'}
-                disabled={false}
-                theme="normal"
-                addable={accounts.length > 0}
+                tabPosition={'top'}
+                size={'middle'}
+                type="editable-card"
+                hideAdd={!(accounts.length > 0)}
+                onEdit={(targetKey: any, action: 'add' | 'remove') => {
+                    if (action === 'add') {
+                        //add();
+                    } else {
+                        removeItem('', parseInt(targetKey, 10));
+                    }
+                }}
             >
-                {
-                    accounts.length > 0 ? accounts.map(
-                        (ele, idx) => (
-                            <TabPanel
-                                key={idx}
-                                value={idx}
-                                label={`帐号${idx + 1}`}
-                                removable={true}
-                                onRemove={() => removeItem('', idx)}
-                            >
-                                <Form
-                                    colon={false}
-                                    labelAlign="left"
-                                    labelWidth="100px"
-                                    layout="vertical"
-                                    preventSubmitDefault
-                                    resetType="empty"
-                                    showErrorMessage
-                                    submitWithWarningMessage={false}
-                                    style={{ marginTop: 10 }}
-                                >
-                                    <FormItem
-                                        label="accessKey"
-                                        name="accessKey"
-                                        successBorder={false}
-                                    >
-                                        <>
-                                            <Input
-                                                align="left"
-                                                autoWidth={false}
-                                                autofocus={false}
-                                                clearable={false}
-                                                placeholder="请输入accessKey"
-                                                readonly={false}
-                                                showClearIconOnEmpty={false}
-                                                size="medium"
-                                                status="default"
-                                                type="text"
-                                                value={ele.accessKey}
-                                                onChange={(value) => setValue(`${idx}.accessKey`, value)}
-                                            />
-                                        </>
-                                    </FormItem>
-                                    <FormItem
-                                        label="secretKey"
-                                        name="secretKey"
-                                        successBorder={false}
-                                    >
-                                        <>
-                                            <Input
-                                                align="left"
-                                                autoWidth={false}
-                                                autofocus={false}
-                                                clearable={false}
-                                                placeholder="请输入secretKey"
-                                                readonly={false}
-                                                showClearIconOnEmpty={false}
-                                                size="medium"
-                                                status="default"
-                                                type="text"
-                                                value={ele.secretKey}
-                                                onChange={(value) => setValue(`${idx}.secretKey`, value)}
-                                            />
-                                        </>
-                                    </FormItem>
-                                </Form>
-                            </TabPanel>
-                        )
-                    ) : (
-                        <TabPanel
-                            key={0}
-                            value={0}
-                            label="新建帐号"
-                        >
-
+                {accounts.length > 0 ? (
+                    accounts.map((ele, idx) => (
+                        <TabPane key={idx} tab={`帐号${idx + 1}`}>
                             <Form
-                                colon={true}
+                                colon={false}
                                 labelAlign="left"
-                                labelWidth="100px"
                                 layout="vertical"
                                 style={{ marginTop: 10 }}
                             >
-                                <FormItem
-                                    label="accessKey"
-                                    name="accessKey"
-                                    successBorder={false}
-                                >
+                                <Form.Item label="accessKey" name="accessKey">
                                     <>
                                         <Input
-                                            align="left"
-                                            autoWidth={false}
-                                            autofocus={false}
-                                            clearable={false}
                                             placeholder="请输入accessKey"
-                                            readonly={false}
-                                            showClearIconOnEmpty={false}
-                                            size="medium"
-                                            status="default"
                                             type="text"
-                                            value=""
-                                            onChange={(value) => setValue(`0.accessKey`, value)}
+                                            value={ele.accessKey}
+                                            onChange={(e) =>
+                                                setValue(
+                                                    `${idx}.accessKey`,
+                                                    e.target.value
+                                                )
+                                            }
                                         />
                                     </>
-                                </FormItem>
-                                <FormItem
-                                    label="secretKey"
-                                    name="secretKey"
-                                    successBorder={false}
-                                >
+                                </Form.Item>
+                                <Form.Item label="secretKey" name="secretKey">
                                     <>
                                         <Input
-                                            align="left"
-                                            autoWidth={false}
-                                            autofocus={false}
-                                            clearable={false}
                                             placeholder="请输入secretKey"
-                                            readonly={false}
-                                            showClearIconOnEmpty={false}
-                                            size="medium"
-                                            status="default"
                                             type="text"
-                                            value=""
-                                            onChange={(value) => setValue(`0.secretKey`, value)}
+                                            value={ele.secretKey}
+                                            onChange={(e) =>
+                                                setValue(
+                                                    `${idx}.secretKey`,
+                                                    e.target.value
+                                                )
+                                            }
                                         />
                                     </>
-                                </FormItem>
+                                </Form.Item>
                             </Form>
-                        </TabPanel>
-                    )
-                }
+                        </TabPane>
+                    ))
+                ) : (
+                    <TabPane key={0} tab="新建帐号" closable={false}>
+                        <Form
+                            colon={true}
+                            labelAlign="left"
+                            layout="vertical"
+                            style={{ marginTop: 10 }}
+                        >
+                            <Form.Item label="accessKey" name="accessKey">
+                                <>
+                                    <Input
+                                        placeholder="请输入accessKey"
+                                        type="text"
+                                        value=""
+                                        onChange={(e) =>
+                                            setValue(
+                                                `0.accessKey`,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </>
+                            </Form.Item>
+                            <Form.Item label="secretKey" name="secretKey">
+                                <>
+                                    <Input
+                                        placeholder="请输入secretKey"
+                                        type="text"
+                                        value=""
+                                        onChange={(e) =>
+                                            setValue(
+                                                `0.secretKey`,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </>
+                            </Form.Item>
+                        </Form>
+                    </TabPane>
+                )}
             </Tabs>
         </Col>
     );
@@ -362,189 +269,145 @@ function AliAccount(props: {
 }) {
     const { accounts, setValue, removeItem } = props;
     return (
-        <Col align="stretch">
-            <Divider align="left" className={Styles.title}>阿里云配置</Divider>
+        <Col flex="auto">
+            <Divider orientation="left" className={Styles.title}>
+                阿里云配置
+            </Divider>
             <Tabs
-                placement={'top'}
-                size={'medium'}
-                disabled={false}
-                theme="normal"
-                addable={accounts.length > 0}
+                tabPosition={'top'}
+                size={'middle'}
+                type="editable-card"
+                hideAdd={!(accounts.length > 0)}
+                onEdit={(targetKey: any, action: 'add' | 'remove') => {
+                    if (action === 'add') {
+                        //add();
+                    } else {
+                        removeItem('', parseInt(targetKey, 10));
+                    }
+                }}
             >
-                {
-                    accounts.length > 0 ? accounts.map(
-                        (ele, idx) => (
-                            <TabPanel
-                                key={idx}
-                                value={idx}
-                                label={`帐号${idx + 1}`}
-                                removable={true}
-                                onRemove={() => removeItem('', idx)}
-                            >
-                                <Form
-                                    colon={false}
-                                    labelAlign="left"
-                                    labelWidth="100px"
-                                    layout="vertical"
-                                    preventSubmitDefault
-                                    resetType="empty"
-                                    showErrorMessage
-                                    submitWithWarningMessage={false}
-                                    style={{ marginTop: 10 }}
-                                >
-                                    <FormItem
-                                        label="accessKeyId"
-                                        name="accessKeyId"
-                                        successBorder={false}
-                                    >
-                                        <>
-                                            <Input
-                                                align="left"
-                                                autoWidth={false}
-                                                autofocus={false}
-                                                clearable={false}
-                                                placeholder="请输入accessKeyId"
-                                                readonly={false}
-                                                showClearIconOnEmpty={false}
-                                                size="medium"
-                                                status="default"
-                                                type="text"
-                                                value={ele.accessKeyId}
-                                                onChange={(value) => setValue(`${idx}.accessKeyId`, value)}
-                                            />
-                                        </>
-                                    </FormItem>
-                                    <FormItem
-                                        label="accessKeySecret"
-                                        name="accessKeySecret"
-                                        successBorder={false}
-                                    >
-                                        <>
-                                            <Input
-                                                align="left"
-                                                autoWidth={false}
-                                                autofocus={false}
-                                                clearable={false}
-                                                placeholder="请输入accessKeySecret"
-                                                readonly={false}
-                                                showClearIconOnEmpty={false}
-                                                size="medium"
-                                                status="default"
-                                                type="text"
-                                                value={ele.accessKeySecret}
-                                                onChange={(value) => setValue(`${idx}.accessKeySecret`, value)}
-                                            />
-                                        </>
-                                    </FormItem>
-                                    <FormItem
-                                        label="regionId"
-                                        name="regionId"
-                                        successBorder={false}
-                                    >
-                                        <>
-                                            <Input
-                                                align="left"
-                                                autoWidth={false}
-                                                autofocus={false}
-                                                clearable={false}
-                                                placeholder="请输入regionId"
-                                                readonly={false}
-                                                showClearIconOnEmpty={false}
-                                                size="medium"
-                                                status="default"
-                                                type="text"
-                                                value={ele.regionId}
-                                                onChange={(value) => setValue(`${idx}.regionId`, value)}
-                                            />
-                                        </>
-                                    </FormItem>
-                                </Form>
-                            </TabPanel>
-                        )
-                    ) : (
-                        <TabPanel
-                            key={0}
-                            value={0}
-                            label="新建帐号"
-                        >
-
+                {accounts.length > 0 ? (
+                    accounts.map((ele, idx) => (
+                        <TabPane key={idx} tab={`帐号${idx + 1}`}>
                             <Form
-                                colon={true}
+                                colon={false}
                                 labelAlign="left"
-                                labelWidth="100px"
                                 layout="vertical"
                                 style={{ marginTop: 10 }}
                             >
-                                <FormItem
+                                <Form.Item
                                     label="accessKeyId"
                                     name="accessKeyId"
-                                    successBorder={false}
                                 >
                                     <>
                                         <Input
-                                            align="left"
-                                            autoWidth={false}
-                                            autofocus={false}
-                                            clearable={false}
                                             placeholder="请输入accessKeyId"
-                                            readonly={false}
-                                            showClearIconOnEmpty={false}
-                                            size="medium"
-                                            status="default"
                                             type="text"
-                                            value=""
-                                            onChange={(value) => setValue(`0.accessKeyId`, value)}
+                                            value={ele.accessKeyId}
+                                            onChange={(e) =>
+                                                setValue(
+                                                    `${idx}.accessKeyId`,
+                                                    e.target.value
+                                                )
+                                            }
                                         />
                                     </>
-                                </FormItem>
-                                <FormItem
+                                </Form.Item>
+                                <Form.Item
                                     label="accessKeySecret"
                                     name="accessKeySecret"
-                                    successBorder={false}
                                 >
                                     <>
                                         <Input
-                                            align="left"
-                                            autoWidth={false}
-                                            autofocus={false}
-                                            clearable={false}
                                             placeholder="请输入accessKeySecret"
-                                            readonly={false}
-                                            showClearIconOnEmpty={false}
-                                            size="medium"
-                                            status="default"
                                             type="text"
-                                            value=""
-                                            onChange={(value) => setValue(`0.accessKeySecret`, value)}
+                                            value={ele.accessKeySecret}
+                                            onChange={(e) =>
+                                                setValue(
+                                                    `${idx}.accessKeySecret`,
+                                                    e.target.value
+                                                )
+                                            }
                                         />
                                     </>
-                                </FormItem>
-                                <FormItem
-                                    label="regionId"
-                                    name="regionId"
-                                    successBorder={false}
-                                >
+                                </Form.Item>
+                                <Form.Item label="regionId" name="regionId">
                                     <>
                                         <Input
-                                            align="left"
-                                            autoWidth={false}
-                                            autofocus={false}
-                                            clearable={false}
                                             placeholder="请输入regionId"
-                                            readonly={false}
-                                            showClearIconOnEmpty={false}
-                                            size="medium"
-                                            status="default"
                                             type="text"
-                                            value=""
-                                            onChange={(value) => setValue(`0.regionId`, value)}
+                                            value={ele.regionId}
+                                            onChange={(e) =>
+                                                setValue(
+                                                    `${idx}.regionId`,
+                                                    e.target.value
+                                                )
+                                            }
                                         />
                                     </>
-                                </FormItem>
+                                </Form.Item>
                             </Form>
-                        </TabPanel>
-                    )
-                }
+                        </TabPane>
+                    ))
+                ) : (
+                    <TabPane key={0} tab="新建帐号" closable={false}>
+                        <Form
+                            colon={true}
+                            labelAlign="left"
+                            layout="vertical"
+                            style={{ marginTop: 10 }}
+                        >
+                            <Form.Item label="accessKeyId" name="accessKeyId">
+                                <>
+                                    <Input
+                                        placeholder="请输入accessKeyId"
+                                        type="text"
+                                        value=""
+                                        onChange={(e) =>
+                                            setValue(
+                                                `0.accessKeyId`,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </>
+                            </Form.Item>
+                            <Form.Item
+                                label="accessKeySecret"
+                                name="accessKeySecret"
+                            >
+                                <>
+                                    <Input
+                                        placeholder="请输入accessKeySecret"
+                                        type="text"
+                                        value=""
+                                        onChange={(e) =>
+                                            setValue(
+                                                `0.accessKeySecret`,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </>
+                            </Form.Item>
+                            <Form.Item label="regionId" name="regionId">
+                                <>
+                                    <Input
+                                        placeholder="请输入regionId"
+                                        type="text"
+                                        value=""
+                                        onChange={(e) =>
+                                            setValue(
+                                                `0.regionId`,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </>
+                            </Form.Item>
+                        </Form>
+                    </TabPane>
+                )}
             </Tabs>
         </Col>
     );
@@ -558,101 +421,76 @@ function AmapAccount(props: {
 }) {
     const { accounts, setValue, removeItem } = props;
     return (
-        <Col align="stretch">
-            <Divider align="left" className={Styles.title}>高德云配置</Divider>
+        <Col flex="auto">
+            <Divider orientation="left" className={Styles.title}>
+                高德云配置
+            </Divider>
             <Tabs
-                placement={'top'}
-                size={'medium'}
-                disabled={false}
-                theme="normal"
-                addable={accounts.length > 0}
+                tabPosition="top"
+                size="middle"
+                type="editable-card"
+                hideAdd={!(accounts.length > 0)}
+                onEdit={(targetKey: any, action: 'add' | 'remove') => {
+                    if (action === 'add') {
+                        //add();
+                    } else {
+                        removeItem('', parseInt(targetKey, 10));
+                    }
+                }}
             >
-                {
-                    accounts.length > 0 ? accounts.map(
-                        (ele, idx) => (
-                            <TabPanel
-                                key={idx}
-                                value={idx}
-                                label={`帐号${idx + 1}`}
-                                removable={true}
-                                onRemove={() => removeItem('', idx)}
-                            >
-                                <Form
-                                    colon={false}
-                                    labelAlign="left"
-                                    labelWidth="100px"
-                                    layout="vertical"
-                                    preventSubmitDefault
-                                    resetType="empty"
-                                    showErrorMessage
-                                    submitWithWarningMessage={false}
-                                    style={{ marginTop: 10 }}
-                                >
-                                    <FormItem
-                                        label="webApiKey"
-                                        name="webApiKey"
-                                        successBorder={false}
-                                    >
-                                        <>
-                                            <Input
-                                                align="left"
-                                                autoWidth={false}
-                                                autofocus={false}
-                                                clearable={false}
-                                                placeholder="请输入webApiKey"
-                                                readonly={false}
-                                                showClearIconOnEmpty={false}
-                                                size="medium"
-                                                status="default"
-                                                type="text"
-                                                value={ele.webApiKey}
-                                                onChange={(value) => setValue(`${idx}.webApiKey`, value)}
-                                            />
-                                        </>
-                                    </FormItem>
-                                </Form>
-                            </TabPanel>
-                        )
-                    ) : (
-                        <TabPanel
-                            key={0}
-                            value={0}
-                            label="新建帐号"
-                        >
-
+                {accounts.length > 0 ? (
+                    accounts.map((ele, idx) => (
+                        <TabPane key={idx} tab={`帐号${idx + 1}`}>
                             <Form
-                                colon={true}
+                                colon={false}
                                 labelAlign="left"
-                                labelWidth="100px"
                                 layout="vertical"
                                 style={{ marginTop: 10 }}
                             >
-                                <FormItem
-                                    label="webApiKey"
-                                    name="webApiKey"
-                                    successBorder={false}
-                                >
+                                <Form.Item label="webApiKey" name="webApiKey">
                                     <>
                                         <Input
-                                            align="left"
-                                            autoWidth={false}
-                                            autofocus={false}
-                                            clearable={false}
                                             placeholder="请输入webApiKey"
-                                            readonly={false}
-                                            showClearIconOnEmpty={false}
-                                            size="medium"
-                                            status="default"
                                             type="text"
-                                            value=""
-                                            onChange={(value) => setValue(`0.webApiKey`, value)}
+                                            value={ele.webApiKey}
+                                            onChange={(e) =>
+                                                setValue(
+                                                    `${idx}.webApiKey`,
+                                                    e.target.value
+                                                )
+                                            }
                                         />
                                     </>
-                                </FormItem>
+                                </Form.Item>
                             </Form>
-                        </TabPanel>
-                    )
-                }
+                        </TabPane>
+                    ))
+                ) : (
+                    <TabPane key={0} tab="新建帐号" closable={false}>
+                        <Form
+                            colon={true}
+                            labelAlign="left"
+                            layout="vertical"
+                            style={{ marginTop: 10 }}
+                        >
+                            <Form.Item label="webApiKey" name="webApiKey">
+                                <>
+                                    <Input
+                                        placeholder="请输入webApiKey"
+                                        type="text"
+                                        value=""
+                                        onChange={(e) =>
+                                            setValue(
+                                                `0.webApiKey`,
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </>
+                            </Form.Item>
+                        </Form>
+                    </TabPane>
+                )}
             </Tabs>
         </Col>
     );
@@ -666,7 +504,7 @@ export default function Account(props: {
     const { account, setValue, removeItem } = props;
     const { tencent, qiniu, ali, amap } = account;
     return (
-        <Col>
+        <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
             <Row>
                 <Card className={Styles.tips}>
                     每种云厂商均可配置多个帐号，相应的服务所使用的帐号请准确对应
@@ -692,6 +530,6 @@ export default function Account(props: {
                 setValue={(path, value) => setValue(`amap.${path}`, value)}
                 removeItem={(path, index) => removeItem(`amap`, index)}
             />
-        </Col>
+        </Space>
     );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Button,
-} from 'tdesign-react';
+} from 'antd';
 
 import Style from './web.module.less';
 

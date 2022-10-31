@@ -3,29 +3,27 @@ import {
     Table,
     Tag,
     Button,
-    DialogPlugin,
+    Modal,
     Space,
     Row,
     Col,
     Input,
-} from 'tdesign-react';
-import { Icon } from 'tdesign-icons-react';
+} from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import Style from './web.module.less';
 
 
 export default function render(this: any) {
-    const { width } = this.props;
     const { pagination, articles = [], oakLoading, searchValue } = this.state;
     const { pageSize, total, currentPage } = pagination || {};
 
     return (
         <div className={Style.container}>
             <Row>
-                <Col xs={12} sm={8}>
+                <Col flex="auto">
                     <Space>
                         <Button
-                            size="medium"
-                            theme="primary"
+                            type="primary"
                             onClick={() => {
                                 this.goUpsert();
                             }}
@@ -34,20 +32,16 @@ export default function render(this: any) {
                         </Button>
                     </Space>
                 </Col>
-                <Col xs={12} sm={4}>
+                <Col flex="none">
                     <Input
                         placeholder="请输入书名"
                         value={searchValue}
-                        clearable
-                        onChange={(value) => {
-                            this.searchValueChange(value);
+                        allowClear
+                        onChange={(e) => {
+                            this.searchValueChange(e.target.value);
                         }}
-                        onClear={() => {
-                            this.searchCancel();
-                            this.searchConfirm();
-                        }}
-                        suffix={<Icon name="search" />}
-                        onEnter={(value, { e }) => {
+                        suffix={<SearchOutlined />}
+                        onPressEnter={(e) => {
                             this.searchConfirm();
                         }}
                     />
@@ -56,99 +50,98 @@ export default function render(this: any) {
 
             <Table
                 loading={oakLoading}
-                data={articles}
+                dataSource={articles}
                 rowKey="index"
                 columns={[
                     {
                         align: 'center',
-                        colKey: 'serial-number',
+                        dataIndex: 'serial-number',
                         title: '序号',
+                        render(value, record, index) {
+                            return index + 1;
+                        },
                     },
                     {
-                        colKey: 'iState',
+                        dataIndex: 'iState',
                         title: this.t('book:attr.iState'),
-                        cell: ({ row, rowIndex }) => {
+                        render: (value, record, index) => {
                             return (
-                                <Tag theme="primary" size="small">
-                                    {this.t(`book:v.iState.${row.iState}`)}
+                                <Tag color="processing">
+                                    {this.t(`book:v.iState.${value}`)}
                                 </Tag>
                             );
                         },
                     },
                     {
-                        colKey: 'title',
+                        dataIndex: 'title',
                         title: this.t('article:attr.title'),
                     },
                     {
-                        colKey: 'author',
+                        dataIndex: 'author',
                         title: this.t('article:attr.author'),
                     },
                     {
-                        colKey: 'abstract',
+                        dataIndex: 'abstract',
                         title: this.t('article:attr.abstract'),
                     },
                     {
-                        colKey: 'op',
+                        dataIndex: 'op',
                         width: 300,
                         title: '操作',
                         align: 'center',
-                        cell: ({ row }) => {
+                        render: (value, record, index) => {
                             return (
-                                <>
+                                <Space>
                                     <Button
-                                        theme="primary"
-                                        variant="text"
+                                        type="link"
                                         onClick={() => {
-                                            this.goDetailById(row.id);
+                                            this.goDetailById(record.id);
                                         }}
                                     >
                                         详情
                                     </Button>
                                     <Button
-                                        theme="primary"
-                                        variant="text"
+                                        type="link"
                                         onClick={() => {
-                                            this.goUpsertById(row.id);
+                                            this.goUpsertById(record.id);
                                         }}
                                     >
                                         编辑
                                     </Button>
                                     <Button
-                                        theme="primary"
-                                        variant="text"
+                                        type="link"
                                         onClick={() => {
-                                            const confirmDia = DialogPlugin!
-                                                .confirm!({
-                                                header: '确认删除该文章吗？',
-                                                body: '删除后，文章不可恢复',
-                                                confirmBtn: '确定',
-                                                cancelBtn: '取消',
-                                                onConfirm: async ({ e }) => {
-                                                    this.onRemove(row.id);
-                                                    confirmDia!.hide!();
+                                            const modal = Modal!.confirm!({
+                                                title: '确认删除该文章吗？',
+                                                content: '删除后，文章不可恢复',
+                                                okText: '确定',
+                                                cancelText: '取消',
+                                                onOk: async (e) => {
+                                                    this.onRemove(record.id);
+                                                    modal!.destroy!();
                                                 },
-                                                onClose: ({ e, trigger }) => {
-                                                    confirmDia!.hide!();
+                                                onCancel: (e) => {
+                                                    modal!.destroy!();
                                                 },
                                             });
                                         }}
                                     >
                                         删除
                                     </Button>
-                                </>
+                                </Space>
                             );
                         },
                         fixed: 'right',
                     },
                 ]}
                 pagination={{
-                    total: total,
-                    pageSize: pageSize,
+                    total,
+                    pageSize,
                     current: currentPage,
-                    onPageSizeChange: (pageSize: number) => {
+                    onShowSizeChange: (current: number, pageSize: number) => {
                         this.setPageSize(pageSize);
                     },
-                    onCurrentChange: (current) => {
+                    onChange: (current: number) => {
                         this.setCurrentPage(current);
                     },
                 }}

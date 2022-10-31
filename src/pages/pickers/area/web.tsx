@@ -1,22 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { List } from 'antd';
 import Style from './web.module.less';
-import { List, Button } from 'tdesign-react';
-import { ChevronRightIcon } from 'tdesign-icons-react';
 
-const { ListItem } = List;
 
 export default function render(this: any) {
-    const { arealist } = this.state;
-    if (arealist?.length > 0) {
+    const { areas } = this.state;
+    if (areas?.length > 0) {
         return (
             <List>
-                {arealist.map((area: Record<string, any>) => (
-                    <Button block theme="default" variant="text"  onClick={() => this.onItemClicked(area)}>
-                        <ListItem key={area.id}>
-                            {area.name}
-                            <ChevronRightIcon />
-                        </ListItem>
-                    </Button>
+                {areas.map((area: Record<string, any>) => (
+                    <List.Item
+                        key={area.id}
+                        onClick={() => this.onItemClicked(area)}
+                    >
+                        {area.name}
+                    </List.Item>
                 ))}
             </List>
         );

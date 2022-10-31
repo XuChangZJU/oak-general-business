@@ -1,5 +1,9 @@
-import React, { Component } from 'react';
-import { Icon } from 'tdesign-icons-react';
+import React from 'react';
+import {
+    LoadingOutlined,
+    WarningOutlined,
+    CloseCircleOutlined,
+} from '@ant-design/icons';
 import Style from './web.module.less';
 
 export default function render(this: any) {
@@ -9,28 +13,28 @@ export default function render(this: any) {
     if (oakLoading) {
         V = (
             <div className="circle-view">
-                <Icon name="loading" size="40" className="icon" />
+                <LoadingOutlined style={{ fontSize: 40 }} />
                 <div className="text">加载中</div>
             </div>
         );
     } else if (!isExist) {
         V = (
             <div className="circle-view">
-                <Icon name="error" size="40" className="icon" />
+                <CloseCircleOutlined style={{ fontSize: 40 }} />
                 <div className="text">二维码非法</div>
             </div>
         );
     } else if (expired) {
         V = (
             <div className="circle-view">
-                <Icon name="warning" size="40" className="icon" />
+                <WarningOutlined style={{ fontSize: 40 }} />
                 <div className="text">二维码已过期</div>
             </div>
         );
     } else {
         V = (
             <div className="circle-view">
-                <Icon name="loading" size="40" className="icon" />
+                <LoadingOutlined style={{ fontSize: 40 }} />
                 <div className="text">跳转中</div>
             </div>
         );

@@ -3,11 +3,10 @@ import {
     isMobile,
     isCaptcha,
 } from 'oak-domain/lib/utils/validator';
-import { MobileIcon } from 'tdesign-icons-react';
-import { Form, Input, Button, Checkbox } from 'tdesign-react';
+import { MailOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Checkbox } from 'antd';
 import Style from './web.module.less';
 
-const { FormItem } = Form;
 
 export default function render(this: any) {
     const { mobile, captcha, password, counter } = this.state;
@@ -16,66 +15,66 @@ export default function render(this: any) {
     const allowSubmit = validMobile && validCaptcha;
 
     const LoginCaptcha = (
-        <Form colon={true} labelWidth={0}>
-            <FormItem name="mobile">
+        <Form colon={true}>
+            <Form.Item name="mobile">
                 <Input
-                    clearable
+                    allowClear
                     value={mobile}
                     data-attr="mobile"
                     type="tel"
-                    maxlength={11}
-                    prefixIcon={<MobileIcon />}
+                    maxLength={11}
+                    prefix={<MailOutlined />}
                     placeholder={this.t('placeholder.Mobile')}
                     size="large"
-                    onChange={(value, context) => {
+                    onChange={(e) => {
                         this.setState({
-                            mobile: value,
+                            mobile: e.target.value,
                         });
                     }}
                     className={Style['loginbox-input']}
                 />
-            </FormItem>
-            <FormItem name="captcha">
+            </Form.Item>
+            <Form.Item name="captcha">
                 <Input
-                    clearable
+                    allowClear
                     value={captcha}
                     data-attr="captcha"
                     // type="number"
-                    maxlength={4}
+                    maxLength={4}
                     placeholder={this.t('placeholder.Captcha')}
                     size="large"
-                    onChange={(value, context) => {
+                    onChange={(e) => {
                         this.setState({
-                            captcha: value,
+                            captcha: e.target.value,
                         });
                     }}
                     className={Style['loginbox-input']}
                     suffix={
                         <Button
-                            variant="text"
-                            size="small"
-                            theme="primary"
+                            type="link"
                             disabled={!validMobile || counter > 0}
                             onClick={() => this.sendCaptcha()}
                         >
-                            {counter > 0 ? `${counter}秒后可重发` : this.t('Send')}
+                            {counter > 0
+                                ? `${counter}秒后可重发`
+                                : this.t('Send')}
                         </Button>
                     }
                 />
-            </FormItem>
+            </Form.Item>
 
-            <FormItem>
+            <Form.Item>
                 <Button
                     block
                     size="large"
-                    theme="primary"
-                    type="submit"
+                    type="primary"
+                    htmlType="submit"
                     disabled={!allowSubmit}
                     onClick={() => this.loginByMobile()}
                 >
-                    {this.t('Log in')}
+                    {this.t('Login')}
                 </Button>
-            </FormItem>
+            </Form.Item>
         </Form>
     );
 
@@ -95,11 +94,9 @@ export default function render(this: any) {
                 <div className={Style['loginbox-ft']}>
                     <div className={Style['loginbox-ft__btn']}>
                         <div className={Style['loginbox-protocal']}>
-                            <Checkbox
-                                label={
-                                    <div>阅读并同意 服务条款 和 隐私政策</div>
-                                }
-                            />
+                            <Checkbox>
+                                <div>阅读并同意 服务条款 和 隐私政策</div>
+                            </Checkbox>
                         </div>
                     </div>
                 </div>

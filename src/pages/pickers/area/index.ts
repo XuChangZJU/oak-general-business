@@ -1,4 +1,5 @@
 import { OpSchema as Area } from '../../../general-app-domain/Area/Schema';
+
 export default OakComponent({
     entity: 'area',
     projection: {
@@ -17,8 +18,8 @@ export default OakComponent({
         },
     ],
     isList: true,
-    formData: async ({ data: arealist }) => ({
-        arealist,
+    formData: async ({ data: areas }) => ({
+        areas,
     }),
 
     properties: {
@@ -27,7 +28,7 @@ export default OakComponent({
     methods: {
         onWechatMpItemClicked(input: any) {
             const { dataset } = this.resolveInput(input);
-            const item = this.state.arealist!.find(
+            const item = this.state.areas!.find(
                 (ele) => ele?.id === dataset!.id
             );
             this.onItemClicked(item as Area);
@@ -43,7 +44,8 @@ export default OakComponent({
                     },
                 ]);
             } else {
-                this.setForeignKey(id!);
+                // todo 需要修改
+                // this.setForeignKey(id!);
             }
         },
     },

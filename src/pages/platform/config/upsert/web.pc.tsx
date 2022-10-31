@@ -1,20 +1,18 @@
-import React, { useRef } from 'react';
-import { Button } from 'tdesign-react';
+import React from 'react';
 import ConfigUpsert from '../../../../components/config/upsert/index';
-import Styles from './web.module.less';
+import Style from './web.module.less';
 
 export default function render(this: any) {
-    const { t } = this;
     const { namespace, oakId } = this.props;
-    const { config } = this.state;
-    const { name } = this.state;
+    const { config, name } = this.state;
     return (
-        <div>
+        <div className={Style.container}>
             <ConfigUpsert
                 config={config}
                 entity="platform"
                 entityId={oakId}
                 name={name}
+                namespace={namespace}
             />
         </div>
     );
