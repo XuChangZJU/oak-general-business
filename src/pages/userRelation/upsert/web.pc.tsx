@@ -31,7 +31,7 @@ export default function render(this: any) {
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
-                    oakPath="$userRelationUpsert/upsert-byMobile"
+                    oakPath={this.state.oakFullpath ? `${this.state.oakFullpath}.mobile` : undefined}
                     oakAutoUnmount={true}
                 />
             );
@@ -43,7 +43,7 @@ export default function render(this: any) {
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
-                    oakPath="$userRelationUpsert/upsert-byUserEntityGrant"
+                    oakPath={this.state.oakFullpath ? `${this.state.oakFullpath}.userEntityGrant` : undefined}
                     oakAutoUnmount={true}
                 />
             );
