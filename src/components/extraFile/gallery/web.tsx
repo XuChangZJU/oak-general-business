@@ -3,14 +3,16 @@ import { composeFileUrl, bytesToSize } from '../../../utils/extraFile';
 
 import { Space, Upload, UploadFile, Tag, Button, Table, UploadProps } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import classNames from 'classnames';
 import Style from './web.module.less';
 
 
 function extraFileToUploadFile(extraFile: any, systemConfig: any) {
     return Object.assign({}, extraFile, {
         url: composeFileUrl(extraFile, systemConfig),
-        name: extraFile.filename,
         thumbUrl: composeFileUrl(extraFile, systemConfig),
+        name: extraFile.filename,
+        uid: extraFile.uid || extraFile.id, //upload 组件需要uid来维护fileList
     });
 }
 
@@ -69,14 +71,22 @@ export default function render(this: any) {
     };
 
     return (
-        <Space direction="vertical">
+        <Space direction="vertical" className={Style['oak-upload']}>
             <Upload
-                className={className}
+                className={classNames(Style['oak-upload__upload'], className)}
                 style={style}
                 disabled={disabled}
                 directory={directory}
                 showUploadList={showUploadList}
-                beforeUpload={beforeUpload}
+                beforeUpload={async (file) => {
+                    if (typeof beforeUpload === 'function') {
+                        const result = await beforeUpload(file);
+                        if (result) {
+                            return false;
+                        }
+                    }
+                    return false;
+                }}
                 multiple={multiple}
                 maxCount={maxNumber}
                 accept={accept}
@@ -84,9 +94,11 @@ export default function render(this: any) {
                 fileList={
                     theme === 'custom'
                         ? []
-                        : (files || []).map((ele: any) =>
+                        : files?.length
+                        ? files.map((ele: any) =>
                               extraFileToUploadFile(ele, systemConfig)
                           )
+                        : null
                 }
                 onChange={({ file, fileList, event }) => {
                     const arr =
