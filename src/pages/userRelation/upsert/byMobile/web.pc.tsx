@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Checkbox, Button, Space, Card } from 'antd';
+import { Form, Input, Button, Space } from 'antd';
 import Style from './web.module.less';
 import OnUser from '../onUser/index';
 
