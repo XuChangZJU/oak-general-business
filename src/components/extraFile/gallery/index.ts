@@ -308,35 +308,36 @@ export default OakComponent({
             const { value } = event.currentTarget.dataset;
             const { id, bucket } = value;
 
-            if (!bucket) {
-                await this.addOperation({
-                    action: 'remove',
-                    data: {},
-                    filter: {
-                        id,
-                    },
-                });
-            } else {
-                const result = await wx.showModal({
-                    title: '确认删除吗',
-                    content: '删除现有文件',
-                });
-                const { confirm } = result;
-                if (confirm) {
-                    await this.addOperation({
-                        action: 'remove',
-                        data: {},
-                        filter: {
-                            id,
-                        },
-                    });
-                    await this.execute();
-                }
-            }
+             if (this.props.removeLater || (origin !== 'unknown' && !bucket)) {
+                 await this.addOperation({
+                     action: 'remove',
+                     data: {},
+                     filter: {
+                         id,
+                     },
+                 });
+             } else {
+                 const result = await wx.showModal({
+                     title: '确认删除吗',
+                     content: '删除现有文件',
+                 });
+                 const { confirm } = result;
+                 if (confirm) {
+                     await this.addOperation({
+                         action: 'remove',
+                         data: {},
+                         filter: {
+                             id,
+                         },
+                     });
+                     await this.execute();
+                 }
+             }
         },
         async onDeleteByWeb(value: any) {
-            const { id } = value;
-            if (this.props.removeLater) {
+            const { id, bucket } = value;
+            // 如果 removeLater为true 或 origin === 'qiniu' 且 bucket不存在
+            if (this.props.removeLater || (origin !== 'unknown' && !bucket)) {
                 await this.addOperation({
                     action: 'remove',
                     data: {},
