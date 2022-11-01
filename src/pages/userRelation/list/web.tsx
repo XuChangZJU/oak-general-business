@@ -1,12 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 
-import { List, Avatar, Tag, Button, Space } from 'tdesign-react';
+import { List, Avatar, Tag, Button, Space } from 'antd';
 
-import { Icon } from 'tdesign-icons-react';
+import { PlusOutlined } from '@ant-design/icons';
 import Style from './mobile.module.less';
 import { getName } from '../../../utils/randomUser';
 
-const { ListItem, ListItemMeta } = List;
 
 export default function render(this: any) {
     const { t } = this;
@@ -18,13 +17,13 @@ export default function render(this: any) {
                 {users?.map((ele: any, index: number) => {
                     return (
                         <div onClick={(e) => this.goDetail(ele.id)} key={index}>
-                            <ListItem>
-                                <ListItemMeta
-                                    image={
+                            <List.Item>
+                                <List.Item.Meta
+                                    avatar={
                                         ele.avatar ? (
                                             <Avatar
                                                 className={Style.avatar}
-                                                image={ele.avatar}
+                                                src={ele.avatar}
                                             />
                                         ) : (
                                             <Avatar className={Style.avatar}>
@@ -61,10 +60,7 @@ export default function render(this: any) {
                                                     ) => (
                                                         <Tag
                                                             key={index}
-                                                            variant="outline"
-                                                            theme="primary"
-                                                            className=""
-                                                            style={{}}
+                                                            color="processing"
                                                         >
                                                             {t(
                                                                 `${entity}:r.${relation}`
@@ -75,8 +71,8 @@ export default function render(this: any) {
                                             </Space>
                                         </div>
                                     }
-                                ></ListItemMeta>
-                            </ListItem>
+                                ></List.Item.Meta>
+                            </List.Item>
                         </div>
                     );
                 })}
@@ -86,7 +82,7 @@ export default function render(this: any) {
                 <Button
                     size="large"
                     shape="circle"
-                    icon={<Icon name="add" />}
+                    icon={<PlusOutlined />}
                     onClick={() => {
                         this.goUpsert();
                     }}

@@ -1,17 +1,16 @@
 import * as React from 'react';
-import { Table, Tag, Button, DialogPlugin, Space, Avatar } from 'tdesign-react';
-import { UserIcon } from 'tdesign-icons-react';
+import { Table, Button, Space } from 'antd';
+import Style from './web.module.less';
 
 export default function render(this: any) {
     const { list = [], oakLoading, pagination } = this.state;
     const { pageSize, total, currentPage } = pagination || {};
 
     return (
-        <div style={{ padding: 16 }}>
+        <div className={Style.container}>
             <Space>
                 <Button
-                    size="medium"
-                    theme="primary"
+                    type="primary"
                     onClick={() => {
                         this.goNewPlatform();
                     }}
@@ -22,54 +21,55 @@ export default function render(this: any) {
 
             <Table
                 loading={oakLoading}
-                data={list}
+                dataSource={list}
                 rowKey="id"
                 columns={[
                     {
-                        colKey: 'id',
+                        dataIndex: 'id',
                         title: '序号',
+                        render: (value, record, index) => {
+                            return index + 1;
+                        },
                     },
                     {
-                        colKey: 'name',
+                        dataIndex: 'name',
                         title: '名称',
                     },
                     {
-                        colKey: 'description',
+                        dataIndex: 'description',
                         title: '描述',
                         width: 400,
                     },
                     {
-                        colKey: 'config',
+                        dataIndex: 'config',
                         title: '配置',
-                        cell: ({ row }) => {
+                        render: (value, record, index) => {
                             return (
                                 <>
                                     <Button
-                                        theme="primary"
-                                        variant="text"
+                                        type="link"
                                         onClick={() => {
-                                            this.goSetConfig(row.id);
+                                            this.goSetConfig(record.id);
                                         }}
                                     >
                                         配置
                                     </Button>
                                 </>
-                            )
-                        }
+                            );
+                        },
                     },
                     {
-                        colKey: 'op',
+                        dataIndex: 'op',
                         width: 200,
                         title: '操作',
                         align: 'center',
-                        cell: ({ row }) => {
+                        render: (value, record, index) => {
                             return (
                                 <>
                                     <Button
-                                        theme="primary"
-                                        variant="text"
+                                        type="link"
                                         onClick={() => {
-                                            this.goUpdate(row.id);
+                                            this.goUpdate(record.id);
                                         }}
                                     >
                                         更新
@@ -81,11 +81,14 @@ export default function render(this: any) {
                     },
                 ]}
                 pagination={{
-                    total: total,
-                    pageSize: pageSize,
+                    total,
+                    pageSize,
                     current: currentPage,
-                    onPageSizeChange: (pageSize: number) => {
+                    onShowSizeChange: (pageSize: number) => {
                         this.setPageSize(pageSize);
+                    },
+                    onChange: (current: number) => {
+                        this.setCurrentPage(current);
                     },
                 }}
             />

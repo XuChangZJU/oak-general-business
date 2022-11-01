@@ -4,238 +4,239 @@ import {
     isPassword,
     isCaptcha,
 } from 'oak-domain/lib/utils/validator';
-import { LockOnIcon, MobileIcon, Icon } from 'tdesign-icons-react';
-import { Form, Input, Button, Checkbox, Radio } from 'tdesign-react';
+import { Form, Input, Button, Checkbox, Typography, Segmented } from 'antd';
+import {
+    LockOutlined,
+    MobileOutlined,
+    ReloadOutlined,
+} from '@ant-design/icons';
+import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
+
 import classNames from 'classnames';
 import Style from './web.module.less';
-
-const { FormItem } = Form;
+import WeChatLoginQrCode from '../../components/common/weChatLoginQrCode';
 
 export default function render(this: any) {
-    const { onlyCaptcha, onlyPassword, width } = this.props;
-    const { mobile, captcha, password, counter, tabValue = 1} = this.state;
+    const { onlyCaptcha, onlyPassword } = this.props;
+    const {
+        mobile,
+        captcha,
+        password,
+        counter,
+        loginMode,
+        loading,
+        loginAgreed,
+        appId,
+    } = this.state;
     const validMobile = isMobile(mobile);
     const validCaptcha = isCaptcha(captcha);
     const validPassword = isPassword(password);
     const allowSubmit = validMobile && (validCaptcha || validPassword);
 
     const LoginPassword = (
-        <Form colon={true} labelWidth={0}>
-            <FormItem name="mobile">
+        <Form colon={true}>
+            <Form.Item name="mobile">
                 <Input
-                    clearable
+                    allowClear
                     value={mobile}
                     type="tel"
-                    data-attr="mobile"
-                    maxlength={11}
-                    prefixIcon={<MobileIcon />}
-                    placeholder={this.t('placeholder.Mobile')}
                     size="large"
-                    onChange={(value, context) => {
+                    maxLength={11}
+                    prefix={<MobileOutlined />}
+                    placeholder={this.t('placeholder.Mobile')}
+                    onChange={(e) => {
                         this.setState({
-                            mobile: value,
+                            mobile: e.target.value,
                         });
                     }}
                     className={Style['loginbox-input']}
                 />
-            </FormItem>
-            <FormItem name="password">
+            </Form.Item>
+            <Form.Item name="password">
                 <Input
-                    clearable
+                    allowClear
+                    size="large"
                     value={password}
-                    data-attr="password"
-                    prefixIcon={<LockOnIcon />}
+                    prefix={<LockOutlined />}
                     type="password"
                     placeholder={this.t('placeholder.Password')}
-                    size="large"
-                    onChange={(value, context) => {
+                    onChange={(e) => {
                         this.setState({
-                            password: value,
+                            password: e.target.value,
                         });
                     }}
                     className={Style['loginbox-input']}
                 />
-            </FormItem>
+            </Form.Item>
 
-            <FormItem>
-                <Button
-                    block
-                    size="large"
-                    theme="primary"
-                    type="submit"
-                    disabled={!allowSubmit}
-                    onClick={() => this.loginByMobile()}
-                >
-                    {this.t('Log in')}
-                </Button>
-            </FormItem>
+            <Form.Item>
+                <>
+                    <Button
+                        block
+                        size="large"
+                        type="primary"
+                        disabled={!allowSubmit || loading}
+                        loading={loading}
+                        onClick={() => this.loginByMobile()}
+                    >
+                        {this.t('Login')}
+                    </Button>
+                </>
+            </Form.Item>
         </Form>
     );
     const LoginCaptcha = (
-        <Form colon={true} labelWidth={0}>
-            <FormItem name="mobile">
+        <Form colon={true}>
+            <Form.Item name="mobile">
                 <Input
-                    clearable
+                    allowClear
                     value={mobile}
-                    data-attr="mobile"
                     type="tel"
-                    maxlength={11}
-                    prefixIcon={<MobileIcon />}
-                    placeholder={this.t('placeholder.Mobile')}
                     size="large"
-                    onChange={(value, context) => {
+                    maxLength={11}
+                    prefix={<MobileOutlined />}
+                    placeholder={this.t('placeholder.Mobile')}
+                    onChange={(e) => {
                         this.setState({
-                            mobile: value,
+                            mobile: e.target.value,
                         });
                     }}
                     className={Style['loginbox-input']}
                 />
-            </FormItem>
-            <FormItem name="captcha">
+            </Form.Item>
+            <Form.Item name="captcha">
                 <Input
-                    clearable
+                    allowClear
                     value={captcha}
-                    data-attr="captcha"
-                    maxlength={4}
-                    placeholder={this.t('placeholder.Captcha')}
                     size="large"
-                    onChange={(value, context) => {
+                    maxLength={4}
+                    placeholder={this.t('placeholder.Captcha')}
+                    onChange={(e) => {
                         this.setState({
-                            captcha: value,
+                            captcha: e.target.value,
                         });
                     }}
                     className={Style['loginbox-input']}
                     suffix={
                         <Button
-                            variant="text"
                             size="small"
-                            theme="primary"
+                            type="link"
                             disabled={!validMobile || counter > 0}
                             onClick={() => this.sendCaptcha()}
                         >
-                            {counter > 0 ? `${counter}秒后可重发` : this.t('Send')}
+                            {counter > 0
+                                ? `${counter}秒后可重发`
+                                : this.t('Send')}
                         </Button>
                     }
                 />
-            </FormItem>
+            </Form.Item>
 
-            <FormItem>
+            <Form.Item>
                 <Button
                     block
                     size="large"
-                    theme="primary"
-                    type="submit"
-                    disabled={!allowSubmit}
+                    type="primary"
+                    disabled={!allowSubmit || loading}
+                    loading={loading}
                     onClick={() => this.loginByMobile()}
                 >
-                    {this.t('Log in')}
+                    {this.t('Login')}
                 </Button>
-            </FormItem>
+            </Form.Item>
         </Form>
     );
 
     if (onlyCaptcha) {
-          return (
-              <div className={Style['loginbox-main']}>
-                  <div className={Style['loginbox-wrap']}>
-                      <div className={Style['loginbox-bd']}>
-                          <div
-                              className={classNames(
-                                  Style['loginbox-mobile'],
-                                  Style['loginbox-only']
-                              )}
-                          >
-                              {LoginCaptcha}
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          );
+        return (
+            <div className={Style['loginbox-main']}>
+                <div className={Style['loginbox-wrap']}>
+                    <div className={Style['loginbox-bd']}>
+                        <div
+                            className={classNames(
+                                Style['loginbox-mobile'],
+                                Style['loginbox-only']
+                            )}
+                        >
+                            {LoginCaptcha}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
     } else if (onlyPassword) {
-          return (
-              <div className={Style['loginbox-main']}>
-                  <div className={Style['loginbox-wrap']}>
-                      <div className={Style['loginbox-bd']}>
-                          <div
-                              className={classNames(
-                                  Style['loginbox-password'],
-                                  Style['loginbox-only']
-                              )}
-                          >
-                              {LoginPassword}
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          );
+        return (
+            <div className={Style['loginbox-main']}>
+                <div className={Style['loginbox-wrap']}>
+                    <div className={Style['loginbox-bd']}>
+                        <div
+                            className={classNames(
+                                Style['loginbox-password'],
+                                Style['loginbox-only']
+                            )}
+                        >
+                            {LoginPassword}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
     }
+    const scope = isWeiXin ? 'snsapi_userinfo' : 'snsapi_login';
+    const redirectUri = encodeURIComponent(
+        `${window.location.protocol}//${window.location.hostname}${
+            window.location.port || ''
+        }/weChatLogin`
+    );
+
     return (
         <div className={Style['loginbox-main']}>
+            <img
+                src={process.env.PUBLIC_URL + '/images/logo_main_h.png'}
+                className={Style['loginbox-logo']}
+            />
             <div className={Style['loginbox-wrap']}>
                 <div className={Style['loginbox-hd']}>
-                    <Radio.Group
-                        variant="default-filled"
-                        defaultValue={tabValue}
+                    <Segmented
+                        value={loginMode}
+                        block
                         onChange={(value) => {
-                            this.setState({
-                                tabValue: value,
-                            });
+                            this.setMode(value);
                         }}
-                        className={Style['loginbox-hd__tab']}
-                    >
-                        <Radio.Button
-                            value={1}
-                            className={classNames(
-                                Style['loginbox-hd__tabcon'],
-                                {
-                                    current: tabValue === 1,
-                                }
-                            )}
-                        >
-                            {this.t('in Password')}
-                        </Radio.Button>
-                        <Radio.Button
-                            value={2}
-                            className={classNames(
-                                Style['loginbox-hd__tabcon'],
-                                {
-                                    current: tabValue === 2,
-                                }
-                            )}
-                        >
-                            {this.t('in Captcha')}
-                        </Radio.Button>
-                        <Radio.Button
-                            value={3}
-                            className={classNames(
-                                Style['loginbox-hd__tabcon'],
-                                {
-                                    current: tabValue === 3,
-                                }
-                            )}
-                        >
-                            {this.t('in QrCode')}
-                        </Radio.Button>
-                    </Radio.Group>
+                        options={[
+                            {
+                                label: this.t('inPassword'),
+                                value: 1,
+                            },
+                            {
+                                label: this.t('inCaptcha'),
+                                value: 2,
+                            },
+                            {
+                                label: this.t('inQrCode'),
+                                value: 3,
+                            },
+                        ]}
+                    ></Segmented>
                 </div>
                 <div className={Style['loginbox-bd']}>
                     <div
                         className={Style['loginbox-password']}
-                        style={tabValue === 1 ? {} : { display: 'none' }}
+                        style={loginMode === 1 ? {} : { display: 'none' }}
                     >
                         {LoginPassword}
                     </div>
                     <div
                         className={Style['loginbox-mobile']}
-                        style={tabValue === 2 ? {} : { display: 'none' }}
+                        style={loginMode === 2 ? {} : { display: 'none' }}
                     >
                         {LoginCaptcha}
                     </div>
                     <div
                         className={Style['loginbox-qrcode']}
-                        style={tabValue === 3 ? {} : { display: 'none' }}
+                        style={loginMode === 3 ? {} : { display: 'none' }}
                     >
-                        <div className={Style['loginbox-qrcode__sociallogin']}>
+                        {/* <div className={Style['loginbox-qrcode__sociallogin']}>
                             请使用微信扫一扫登录
                             <span
                                 className={Style['loginbox-qrcode__refresh']}
@@ -247,25 +248,54 @@ export default function render(this: any) {
                                 }}
                             >
                                 刷新
-                                <Icon
-                                    name="refresh"
+                                <ReloadOutlined
                                     className={
                                         Style['loginbox-qrcode__refresh-icon']
                                     }
                                 />
                             </span>
+                        </div> */}
+                        <div className={Style['loginbox-qrcode__iframe']}>
+                            {appId && (
+                                <WeChatLoginQrCode
+                                    appId={appId}
+                                    scope={scope}
+                                    redirectUri={redirectUri}
+                                    state={''}
+                                    href="data:text/css;base64,LmltcG93ZXJCb3ggLnFyY29kZSB7d2lkdGg6IDIwMHB4O30KLmltcG93ZXJCb3ggLnRpdGxlIHtkaXNwbGF5OiBub25lO30KLmltcG93ZXJCb3ggLmluZm8ge3dpZHRoOiAyMDBweDt9Ci5zdGF0dXNfaWNvbiB7ZGlzcGxheTogbm9uZX0KLmltcG93ZXJCb3ggLnN0YXR1cyB7dGV4dC1hbGlnbjogY2VudGVyO30gCg=="
+                                />
+                            )}
                         </div>
-                        <div className={Style['loginbox-qrcode__iframe']}></div>
                     </div>
                 </div>
                 <div className={Style['loginbox-ft']}>
                     <div className={Style['loginbox-ft__btn']}>
                         <div className={Style['loginbox-protocal']}>
                             <Checkbox
-                                label={
-                                    <div>阅读并同意 服务条款 和 隐私政策</div>
-                                }
-                            />
+                                checked={loginAgreed}
+                                onChange={(e) => {
+                                    this.setLoginAgreed(e.target.checked);
+                                }}
+                            >
+                                <div>
+                                    阅读并同意
+                                    <Typography.Link
+                                        onClick={() => {
+                                            this.goPage('service');
+                                        }}
+                                    >
+                                        {'《服务条款》'}
+                                    </Typography.Link>
+                                    和
+                                    <Typography.Link
+                                        onClick={() => {
+                                            this.goPage('privacy');
+                                        }}
+                                    >
+                                        {'《隐私政策》'}
+                                    </Typography.Link>
+                                </div>
+                            </Checkbox>
                         </div>
                     </div>
                 </div>

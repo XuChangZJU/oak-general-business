@@ -1,5 +1,7 @@
-
 const SEND_KEY = 'captcha:sendAt';
+const LOGIN_AGREED = 'login:agreed';
+const LOGIN_MODE = 'login:mode';
+
 export default OakComponent({
     isList: false,
     projection: {
@@ -12,38 +14,45 @@ export default OakComponent({
         password: '',
         captcha: '',
         counter: 0,
+        loginAgreed: false,
+        loginMode: 2,
+        loading: false,
     },
     properties: {
         onlyCaptcha: Boolean,
         onlyPassword: Boolean,
         eventLoggedIn: String,
+        backUrl: String, //回调url
     },
     async formData({ features }) {
+        const application = await features.application.getApplication();
+        const appId = application?.config?.wechat?.appId;
+
+        const loginAgreed = features.localStorage.load(LOGIN_AGREED);
+        const loginMode = features.localStorage.load(LOGIN_MODE) || 2;
         const lastSendAt = features.localStorage.load(SEND_KEY);
         const now = Date.now();
         let counter = 0;
         if (typeof lastSendAt === 'number') {
             counter = Math.max(60 - Math.ceil((now - lastSendAt) / 1000), 0);
             if (counter > 0) {
-                (this as any).counterHandler = setTimeout(() => this.reRender(), 1000);
-            }
-            else if ((this as any).counterHandler) {
+                (this as any).counterHandler = setTimeout(
+                    () => this.reRender(),
+                    1000
+                );
+            } else if ((this as any).counterHandler) {
                 clearTimeout((this as any).counterHandler);
                 (this as any).counterHandler = undefined;
             }
         }
         return {
             counter,
+            loginAgreed,
+            loginMode,
+            appId,
         };
     },
     methods: {
-        onInput(e: any) {
-            const { dataset, value } = this.resolveInput(e);
-            const { attr } = dataset;
-            this.setState({
-                [attr]: value,
-            });
-        },
         async sendCaptcha() {
             const { mobile } = this.state;
             try {
@@ -55,8 +64,7 @@ export default OakComponent({
                 });
                 this.save(SEND_KEY, Date.now());
                 this.reRender();
-            }
-            catch (err) {
+            } catch (err) {
                 this.setMessage({
                     type: 'error',
                     content: (err as Error).message,
@@ -64,23 +72,82 @@ export default OakComponent({
             }
         },
         async loginByMobile() {
-            const { eventLoggedIn } = this.props;
-            const { mobile, password, captcha } = this.state;
+            const { eventLoggedIn, backUrl } = this.props;
+            const { mobile, password, captcha, loginAgreed } = this.state;
+            if (!loginAgreed) {
+                this.setMessage({
+                    type: 'info',
+                    content: '请阅读并同意《服务条款》和《隐私政策》',
+                });
+                return;
+            }
             try {
-                await this.features.token.loginByMobile(mobile, password, captcha);
+                this.setState({
+                    loading: true,
+                });
+                await this.features.token.loginByMobile(
+                    mobile,
+                    password,
+                    captcha
+                );
+                this.setState({
+                    loading: false,
+                });
                 if (eventLoggedIn) {
                     this.pub(eventLoggedIn);
+                    return;
                 }
-                else {
-                    this.navigateBack();
+                if (backUrl) {
+                    window.location.replace(backUrl);
+                    return;
                 }
-            }
-            catch (err) {
+                this.navigateBack();
+            } catch (err) {
+                this.setState({
+                    loading: false,
+                });
                 this.setMessage({
                     type: 'error',
                     content: (err as Error).message,
                 });
             }
-        }
+        },
+        setLoginAgreed(checked: boolean) {
+            this.features.localStorage.save(LOGIN_AGREED, checked);
+            this.setState({
+                loginAgreed: checked,
+            });
+        },
+        setMode(value: number) {
+            this.features.localStorage.save(LOGIN_MODE, value);
+            this.setState({
+                loginMode: value,
+            });
+        },
+        goPage(type: 'service' | 'privacy') {
+            const { width } = this.props as any;
+            switch (type) {
+                case 'service':
+                    if (width !== 'xs') {
+                        window.open('');
+                    } else {
+                        this.navigateTo({
+                            url: '',
+                        });
+                    }
+                    break;
+                case 'privacy':
+                    if (width !== 'xs') {
+                        window.open('');
+                    } else {
+                        this.navigateTo({
+                            url: '',
+                        });
+                    }
+                    break;
+                default:
+                    break;
+            }
+        },
     },
 });

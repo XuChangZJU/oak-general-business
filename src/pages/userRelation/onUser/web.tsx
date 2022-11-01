@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { SearchIcon, Icon } from 'tdesign-icons-react';
 
-import { Button, List, Avatar, Switch } from 'tdesign-react';
+import { Button, List, Avatar, Switch } from 'antd';
 import Style from './web.module.less';
 import { getName } from '../../../utils/randomUser';
 
-const { ListItem, ListItemMeta } = List;
 
 export default function render(this: any) {
     const { t } = this;
@@ -20,14 +18,14 @@ export default function render(this: any) {
             <List>
                 {users?.map((ele: any, index: number) => {
                     return (
-                        <ListItem>
-                            <ListItemMeta
+                        <List.Item>
+                            <List.Item.Meta
                                 key={index}
-                                image={
+                                avatar={
                                     ele.avatar ? (
                                         <Avatar
                                             className={Style.avatar}
-                                            image={ele.avatar}
+                                            src={ele.avatar}
                                         />
                                     ) : (
                                         <Avatar className={Style.avatar}>
@@ -64,12 +62,12 @@ export default function render(this: any) {
                                                 ) => (
                                                     <Switch
                                                         key={index2}
-                                                        defaultValue={
+                                                        checked={
                                                             ele.hasRelation[
                                                                 index2
                                                             ]
                                                         }
-                                                        label={[
+                                                        checkedChildren={[
                                                             t(
                                                                 entity +
                                                                     ':r.' +
@@ -95,14 +93,14 @@ export default function render(this: any) {
                                     </div>
                                 }
                             />
-                        </ListItem>
+                        </List.Item>
                     );
                 })}
             </List>
 
             <Button
                 size="large"
-                theme="primary"
+                type="primary"
                 block
                 disabled={!oakDirty}
                 onClick={() => {

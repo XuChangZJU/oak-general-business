@@ -68,9 +68,13 @@ export default OakComponent({
                     (<OakException>error).constructor.name ===
                     OakUnloggedInException.name
                 ) {
-                    this.navigateTo({
-                        url: '/login',
-                    });
+                    this.navigateTo(
+                        {
+                            url: '/login',
+                        },
+                        undefined,
+                        true
+                    );
                     return;
                 }
                 throw error;

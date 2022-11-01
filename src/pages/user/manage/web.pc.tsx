@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Table, Tag, Button, DialogPlugin, Space, Avatar } from 'tdesign-react';
-import { UserIcon } from 'tdesign-icons-react';
+import { Table, Tag, Button, Modal, Space, Avatar } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 
 export default function render(this: any) {
     const { t } = this;
@@ -12,8 +12,7 @@ export default function render(this: any) {
         <div style={{ padding: 16 }}>
             <Space>
                 <Button
-                    size="medium"
-                    theme="primary"
+                    type="primary"
                     onClick={() => {
                         this.goNewUser();
                     }}
@@ -24,89 +23,94 @@ export default function render(this: any) {
 
             <Table
                 loading={oakLoading}
-                data={userArr}
+                dataSource={userArr}
                 rowKey="id"
                 columns={[
                     {
-                        colKey: 'id',
+                        dataIndex: 'id',
                         title: '序号',
-                    },
-                    {
-                        width: 100,
-                        colKey: 'avatar',
-                        title: '头像',
-                        cell: ({ row }) => {
-                            if (!row.avatar) {
-                                return <Avatar icon={<UserIcon />}></Avatar>;
-                            }
-                            return <Avatar image={row.avatar} shape="circle" />;
+                        render: (value, record, index) => {
+                            return index + 1;
                         },
                     },
                     {
-                        colKey: 'nickname',
+                        width: 100,
+                        dataIndex: 'avatar',
+                        title: '头像',
+                        render: (value, record, index) => {
+                            if (!value) {
+                                return (
+                                    <Avatar icon={<UserOutlined />}></Avatar>
+                                );
+                            }
+                            return <Avatar src={value} shape="circle" />;
+                        },
+                    },
+                    {
+                        dataIndex: 'nickname',
                         title: '昵称',
                     },
                     {
-                        colKey: 'name',
+                        dataIndex: 'name',
                         title: '姓名',
                     },
                     {
-                        colKey: 'mobile',
+                        dataIndex: 'mobile',
                         title: '手机号',
                     },
                     {
-                        colKey: 'userState',
+                        dataIndex: 'userState',
                         title: '状态',
-                        cell: ({ row, rowIndex }) => {
+                        render: (value, record, index) => {
                             return (
-                                <Tag theme={stateColor[row.userState]}>
-                                    {t(`user:v.userState.${row.userState}`)}
+                                <Tag color={stateColor[value]}>
+                                    {t(`user:v.userState.${value}`)}
                                 </Tag>
                             );
                         },
                     },
                     {
-                        colKey: 'op',
+                        dataIndex: 'op',
                         width: 200,
                         title: '操作',
                         align: 'center',
-                        cell: ({ row }) => {
+                        render: (value, record, index) => {
                             return (
                                 <>
                                     <Button
-                                        theme="primary"
-                                        variant="text"
+                                        type="link"
                                         onClick={() => {
-                                            this.onCellClicked(row.id, event);
+                                            this.onCellClicked(
+                                                record.id,
+                                                event
+                                            );
                                         }}
                                     >
                                         详情
                                     </Button>
                                     <Button
-                                        theme="primary"
-                                        variant="text"
+                                        type="link"
                                         onClick={() => {
-                                            const confirmDia =
-                                                DialogPlugin.confirm!({
-                                                    header: '确认删除该用户吗？',
-                                                    body: '删除后，用户不可恢复',
-                                                    confirmBtn: '确定',
-                                                    cancelBtn: '取消',
-                                                    onConfirm: async ({
-                                                        e,
-                                                    }) => {
-                                                        await this.execute(
-                                                            'remove'
-                                                        );
-                                                        confirmDia.hide!();
-                                                    },
-                                                    onClose: ({
-                                                        e,
-                                                        trigger,
-                                                    }) => {
-                                                        confirmDia.hide!();
-                                                    },
-                                                });
+                                            const modal = Modal.confirm!({
+                                                title: '确认删除该用户吗？',
+                                                content: '删除后，用户不可恢复',
+                                                okText: '确定',
+                                                cancelText: '取消',
+                                                onOk: async (e) => {
+                                                    await this.addOperation({
+                                                        action: 'remove',
+                                                        data: {},
+                                                        filter: {
+                                                            id: record.id,
+                                                        },
+                                                    });
+                                                    await this.execute();
+                                                    modal.destroy!();
+                                                },
+                                                onCancel: (e) => {
+                                                    modal.destroy!();
+                                                },
+                                            });
                                         }}
                                     >
                                         删除
@@ -121,9 +125,12 @@ export default function render(this: any) {
                     total: total,
                     pageSize: pageSize,
                     current: currentPage,
-                    onPageSizeChange: (pageSize: number) => {
+                    onShowSizeChange: (pageSize: number) => {
                         this.setPageSize(pageSize);
                     },
+                    onChange: (page: number) => {
+                        this.setCurrentPage(page);
+                    }
                 }}
             />
         </div>

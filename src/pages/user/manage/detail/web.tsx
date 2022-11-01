@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { List, Tag, Avatar } from 'tdesign-react';
+import { List, Tag, Avatar } from 'antd';
 
 import Style from './web.module.less';
-const { ListItem, ListItemMeta } = List;
 
 
 export default function render(this: any) {
@@ -35,43 +34,41 @@ export default function render(this: any) {
     return (
         <div>
             <List split={true} className={Style.list}>
-                <ListItem
-                    action={avatar ? <Avatar image={avatar} /> : '未设置'}
-                >
-                    <ListItemMeta title="头像"></ListItemMeta>
-                </ListItem>
+                <List.Item extra={avatar ? <Avatar src={avatar} /> : '未设置'}>
+                    <List.Item.Meta title="头像"></List.Item.Meta>
+                </List.Item>
 
-                <ListItem action={nickname || '未设置'}>
-                    <ListItemMeta title="昵称"></ListItemMeta>
-                </ListItem>
+                <List.Item extra={nickname || '未设置'}>
+                    <List.Item.Meta title="昵称"></List.Item.Meta>
+                </List.Item>
 
-                <ListItem action={name || '未设置'}>
-                    <ListItemMeta title="真实姓名"></ListItemMeta>
-                </ListItem>
+                <List.Item extra={name || '未设置'}>
+                    <List.Item.Meta title="真实姓名"></List.Item.Meta>
+                </List.Item>
 
-                <ListItem action={getMobile()}>
-                    <ListItemMeta title="手机号"></ListItemMeta>
-                </ListItem>
+                <List.Item extra={getMobile()}>
+                    <List.Item.Meta title="手机号"></List.Item.Meta>
+                </List.Item>
 
-                <ListItem
-                    action={
-                        <Tag theme={stateColor[userState]}>
+                <List.Item
+                    extra={
+                        <Tag color={stateColor[userState]}>
                             {this.t(`user:v.userState.${userState}`)}
                         </Tag>
                     }
                 >
-                    <ListItemMeta title="用户状态"></ListItemMeta>
-                </ListItem>
+                    <List.Item.Meta title="用户状态"></List.Item.Meta>
+                </List.Item>
 
-                <ListItem
-                    action={
-                        <Tag theme={idStateColor[idState]}>
+                <List.Item
+                    extra={
+                        <Tag color={idStateColor[idState]}>
                             {this.t(`user:v.idState.${idState}`)}
                         </Tag>
                     }
                 >
-                    <ListItemMeta title="实名验证"></ListItemMeta>
-                </ListItem>
+                    <List.Item.Meta title="实名验证"></List.Item.Meta>
+                </List.Item>
             </List>
         </div>
     );

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Form, Radio, Button } from 'tdesign-react';
+import { Form, Radio, Button } from 'antd';
 import Style from './web.module.less';
-const { FormItem } = Form;
 
 export default function render(this: any) {
     const { relation } = this.state;
@@ -14,13 +13,12 @@ export default function render(this: any) {
         <div className={Style.pageWithPadding}>
             <div className={Style.formContainer}>
                 <Form>
-                    <FormItem
+                    <Form.Item
                         label="权限"
                         rules={[
                             {
                                 required: true,
                                 message: '请选择一个权限',
-                                type: 'error',
                             },
                         ]}
                     >
@@ -32,14 +30,15 @@ export default function render(this: any) {
                             options={relationArr.map((ele: string) => ({
                                 value: ele,
                                 label:
-                                    (this.t && this.t(entity + ':r.' + ele)) || ele,
+                                    (this.t && this.t(entity + ':r.' + ele)) ||
+                                    ele,
                             }))}
                         ></Radio.Group>
-                    </FormItem>
-                    <FormItem style={{ marginLeft: 100 }}>
+                    </Form.Item>
+                    <Form.Item style={{ marginLeft: 100 }}>
                         <Button
-                            type="submit"
-                            theme="primary"
+                            htmlType="submit"
+                            type="primary"
                             style={{ marginRight: 10 }}
                             onClick={() => {
                                 this.confirm();
@@ -48,15 +47,14 @@ export default function render(this: any) {
                             提交
                         </Button>
                         <Button
-                            type="reset"
-                            theme="default"
+                            htmlType="reset"
                             onClick={() => {
                                 this.reset();
                             }}
                         >
                             重置
                         </Button>
-                    </FormItem>
+                    </Form.Item>
                 </Form>
             </div>
         </div>

@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { Button, List, Tag, Avatar } from 'tdesign-react';
-import { Icon } from 'tdesign-icons-react';
+import { Button, List, Tag, Avatar } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import Style from './mobile.module.less';
 import { getName } from '../../../utils/randomUser'
-
-const { ListItem, ListItemMeta } = List;
 
 export default function render(this: any) {
     const {
@@ -16,60 +14,55 @@ export default function render(this: any) {
             <List split={true}>
                 {userArr?.map((ele: any, index: number) => {
                     return (
-                        <div onClick={() => this.onCellClicked(ele.id, event)}>
-                            <ListItem
-                                action={<Icon size={18} name="chevron-right" />}
-                            >
-                                <ListItemMeta
-                                    image={
-                                        ele.avatar ? (
-                                            <Avatar
-                                                className={Style.avatar}
-                                                image={ele.avatar}
-                                            />
-                                        ) : (
-                                            <Avatar className={Style.avatar}>
-                                                <span className={Style.text}>
-                                                    {getName(ele.name)}
-                                                </span>
-                                            </Avatar>
-                                        )
-                                    }
-                                    title={<div>{ele.name || '--'}</div>}
-                                    description={
-                                        <div className={Style.description}>
-                                            <div className={Style.row}>
-                                                <span className={Style.label}>
-                                                    昵称:&nbsp;
-                                                </span>
-                                                <span className={Style.value}>
-                                                    {ele.nickname || '--'}
-                                                </span>
-                                            </div>
-                                            <div className={Style.row}>
-                                                <span className={Style.label}>
-                                                    手机号:&nbsp;
-                                                </span>
-                                                <span className={Style.value}>
-                                                    {ele.mobile || '--'}
-                                                </span>
-                                            </div>
-                                            <Tag
-                                                theme={
-                                                    stateColor[ele.userState]
-                                                }
-                                            >
-                                                {ele.userState
-                                                    ? this.t(
-                                                          `user:v.userState.${ele.userState}`
-                                                      )
-                                                    : '未知'}
-                                            </Tag>
+                        <List.Item
+                            key={index}
+                            onClick={() => this.onCellClicked(ele.id, event)}
+                        >
+                            <List.Item.Meta
+                                avatar={
+                                    ele.avatar ? (
+                                        <Avatar
+                                            className={Style.avatar}
+                                            src={ele.avatar}
+                                        />
+                                    ) : (
+                                        <Avatar className={Style.avatar}>
+                                            <span className={Style.text}>
+                                                {getName(ele.name)}
+                                            </span>
+                                        </Avatar>
+                                    )
+                                }
+                                title={<div>{ele.name || '--'}</div>}
+                                description={
+                                    <div className={Style.description}>
+                                        <div className={Style.row}>
+                                            <span className={Style.label}>
+                                                昵称:&nbsp;
+                                            </span>
+                                            <span className={Style.value}>
+                                                {ele.nickname || '--'}
+                                            </span>
                                         </div>
-                                    }
-                                />
-                            </ListItem>
-                        </div>
+                                        <div className={Style.row}>
+                                            <span className={Style.label}>
+                                                手机号:&nbsp;
+                                            </span>
+                                            <span className={Style.value}>
+                                                {ele.mobile || '--'}
+                                            </span>
+                                        </div>
+                                        <Tag color={stateColor[ele.userState]}>
+                                            {ele.userState
+                                                ? this.t(
+                                                      `user:v.userState.${ele.userState}`
+                                                  )
+                                                : '未知'}
+                                        </Tag>
+                                    </div>
+                                }
+                            />
+                        </List.Item>
                     );
                 })}
             </List>
@@ -81,7 +74,7 @@ export default function render(this: any) {
                     onClick={(event) => {
                         this.goNewUser();
                     }}
-                    icon={<Icon name="add" />}
+                    icon={<PlusOutlined />}
                 ></Button>
             </div>
         </div>

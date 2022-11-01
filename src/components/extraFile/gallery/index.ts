@@ -22,7 +22,6 @@ export default OakComponent({
     },
     async formData({ data: originalFiles, features }) {
         const application = await features.application.getApplication();
-        const number2 = this.props.maxNumber;
         let files = originalFiles as Array<EntityDict['extraFile']['OpSchema']>;
         if (this.props.tag1) {
             files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
@@ -30,22 +29,12 @@ export default OakComponent({
         if (this.props.tag2) {
             files = files?.filter((ele) => ele?.tag2 === this.props.tag2);
         }
-        if (
-            typeof number2 === 'number' &&
-            (number2 === 0 || files?.length >= number2)
-        ) {
-            return {
-                files,
-                disableInsert: true,
-                systemConfig: application?.system?.config,
-                originalFiles,
-            };
-        }
         return {
             files,
-            disableInsert: false,
+            disableInsert:
+                this.props.maxNumber === 0 ||
+                files?.length >= this.props.maxNumber,
             systemConfig: application?.system?.config,
-            originalFiles,
         };
     },
     data: {
@@ -84,6 +73,11 @@ export default OakComponent({
             type: Array,
             value: ['image'],
         },
+        showUploadList: {
+            // web独有 是否展示文件列表, 可设为一个对象
+            type: Boolean,
+            value: true,
+        },
         accept: {
             // web独有 文件上传类型
             type: String,
@@ -91,6 +85,7 @@ export default OakComponent({
         },
         // 图片显示模式
         mode: {
+            //小程序独有
             type: String,
             value: 'aspectFit',
         },
@@ -101,6 +96,7 @@ export default OakComponent({
         },
         // 每行可显示的个数
         size: {
+            // 小程序独有
             type: Number,
             value: 3,
         },
@@ -143,7 +139,7 @@ export default OakComponent({
             const windowWidth = wx.getSystemInfoSync().windowWidth;
             return (750 / windowWidth) * px;
         },
-        async onPick() {
+        async onPickByMp() {
             const { selectCount, mediaType, sourceType } = this.props;
             try {
                 const { errMsg, tempFiles } = await wx.chooseMedia({
@@ -187,19 +183,25 @@ export default OakComponent({
                 }
             }
         },
-        async onWebPick(
+        async onPickByWeb(
             uploadFiles: any[],
             callback?: (file: any, status: string) => void
         ) {
             await Promise.all(
                 uploadFiles.map(async (uploadFile) => {
-                    const { name, type: fileType, size, raw } = uploadFile;
+                    const {
+                        name,
+                        type: fileType,
+                        size,
+                        raw,
+                        originFileObj,
+                    } = uploadFile;
                     await this.pushExtraFile(
                         {
                             name,
                             fileType,
                             size,
-                            extra1: raw,
+                            extra1: originFileObj,
                         },
                         callback
                     );
@@ -264,26 +266,29 @@ export default OakComponent({
 
                 await this.addOperation({
                     action: 'create',
-                    data: updateData
-                })
+                    data: updateData,
+                });
                 await this.execute();
             } else {
-                await this.addOperation({
-                    action: 'create',
-                    data: updateData,
-                }, async () => {
-                    if (updateData.bucket) {
-                        // 说明本函数已经执行过了 
-                        return;
+                await this.addOperation(
+                    {
+                        action: 'create',
+                        data: updateData,
+                    },
+                    async () => {
+                        if (updateData.bucket) {
+                            // 说明本函数已经执行过了
+                            return;
+                        }
+                        const { bucket } = await this.features.extraFile.upload(
+                            updateData
+                        );
+                        Object.assign(updateData, {
+                            bucket,
+                            extra1: null,
+                        });
                     }
-                    const { bucket } = await this.features.extraFile.upload(
-                        updateData
-                    );
-                    Object.assign(updateData, {
-                        bucket,
-                        extra1: null,
-                    });
-                })
+                );
             }
         },
         async onItemTapped(event: WechatMiniprogram.Touch) {
@@ -291,8 +296,10 @@ export default OakComponent({
             const { index } = event.currentTarget.dataset;
             const imageUrl = composeFileUrl(files[index]!, systemConfig);
             const urls = files
-                ?.filter((ele) => !!ele)
-                .map((ele) => composeFileUrl(ele!, systemConfig));
+                ?.filter((ele: EntityDict['extraFile']['Schema']) => !!ele)
+                .map((ele: EntityDict['extraFile']['Schema']) =>
+                    composeFileUrl(ele!, systemConfig)
+                );
 
             const detail = {
                 all: files,
@@ -310,17 +317,17 @@ export default OakComponent({
                 this.triggerEvent('preview', detail);
             }
         },
-        async onDelete(event: WechatMiniprogram.Touch) {
+        async onDeleteByMp(event: WechatMiniprogram.Touch) {
             const { value } = event.currentTarget.dataset;
             const { id, bucket } = value;
 
-            if (!bucket) {
+            if (this.props.removeLater || (origin !== 'unknown' && !bucket)) {
                 await this.addOperation({
                     action: 'remove',
                     data: {},
                     filter: {
                         id,
-                    }
+                    },
                 });
             } else {
                 const result = await wx.showModal({
@@ -334,21 +341,22 @@ export default OakComponent({
                         data: {},
                         filter: {
                             id,
-                        }
+                        },
                     });
                     await this.execute();
                 }
             }
         },
-        async onWebDelete(value: any) {
-            const { id } = value;            
-            if (this.props.removeLater) {
+        async onDeleteByWeb(value: any) {
+            const { id, bucket } = value;
+            // 如果 removeLater为true 或 origin === 'qiniu' 且 bucket不存在
+            if (this.props.removeLater || (origin !== 'unknown' && !bucket)) {
                 await this.addOperation({
                     action: 'remove',
                     data: {},
                     filter: {
                         id,
-                    }
+                    },
                 });
             } else {
                 const confirm = Dialog.confirm({
@@ -362,7 +370,7 @@ export default OakComponent({
                             data: {},
                             filter: {
                                 id,
-                            }
+                            },
                         });
                         await this.execute();
                         confirm.destroy();

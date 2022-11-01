@@ -1,91 +1,114 @@
 import React from 'react';
-import { Button, Input, Textarea, Form, InputAdornment } from 'tdesign-react';
-import { ChevronRightIcon } from 'tdesign-icons-react';
+import { Button, Input, Form } from 'antd';
+import { RightOutlined  } from '@ant-design/icons';
 import Style from './web.module.less';
-const { FormItem } = Form;
 
 export default function render(this: any) {
     const PickArea = (
         <Button
-            variant="text"
-            icon={<ChevronRightIcon />}
+            type="text"
+            icon={<RightOutlined style={{ fontSize: 12 }} />}
             onClick={() => this.callAreaPicker()}
         />
     );
     return (
         <div className={Style.container}>
-            <Form
-                colon={false}
-                labelAlign="top"
-                labelWidth="100px"
-                layout="vertical"
-                preventSubmitDefault
-                resetType="empty"
-                showErrorMessage
-                submitWithWarningMessage={false}
-            >
-                <FormItem
+            <Form colon={false} layout="vertical">
+                <Form.Item
                     label={this.t('address:attr.name')}
                     name="name"
+                    help={
+                        this.state.oakFocused?.attr === 'name'
+                            ? this.state.oakFocused.message
+                            : undefined
+                    }
                 >
                     <Input
                         placeholder="姓名"
-                        onChange={(data) => this.setUpdateData('name', data)}
+                        onChange={(e) => this.setUpdateData('name', e.target.value)}
                         value={this.state.name}
                         data-attr="name"
-                        tips={this.state.oakFocused?.attr === 'name' ? this.state.oakFocused.message : undefined}
-                        status={this.state.oakFocused?.attr === 'name' ? 'error' : undefined}
+                        status={
+                            this.state.oakFocused?.attr === 'name'
+                                ? 'error'
+                                : undefined
+                        }
                     />
-                </FormItem>
-                <FormItem
+                </Form.Item>
+                <Form.Item
                     label={this.t('address:attr.phone')}
                     name="phone"
+                    help={
+                        this.state.oakFocused?.attr === 'phone'
+                            ? this.state.oakFocused.message
+                            : undefined
+                    }
                 >
                     <Input
                         placeholder="手机号"
-                        onChange={(data) => this.setUpdateData('phone', data)}
+                        onChange={(e) => this.setUpdateData('phone', e.target.value)}
                         value={this.state.phone}
                         data-attr="phone"
-                        tips={this.state.oakFocused?.attr === 'phone' ? this.state.oakFocused.message : undefined}
-                        status={this.state.oakFocused?.attr === 'phone' ? 'error' : undefined}
+                        status={
+                            this.state.oakFocused?.attr === 'phone'
+                                ? 'error'
+                                : undefined
+                        }
                     />
-                </FormItem>
-                <FormItem
+                </Form.Item>
+                <Form.Item
                     label={this.t('address:attr.area')}
                     name="areaText"
+                    help={
+                        this.state.oakFocused?.attr === 'areaId'
+                            ? this.state.oakFocused.message
+                            : undefined
+                    }
                 >
-                    <InputAdornment append={PickArea} style={{ width: '100%' }}>
-                        <Input
-                            placeholder="所在地区"
-                            onChange={this.setValue}
-                            value={this.state.areaText}
-                            data-attr="areaText"
-                            disabled={true}
-                            tips={this.state.oakFocused?.attr === 'areaId' ? this.state.oakFocused.message : undefined}
-                            status={this.state.oakFocused?.attr === 'areaId' ? 'error' : undefined}
-                        />
-                    </InputAdornment>
-                </FormItem>
-                <FormItem
+                    <Input
+                        addonBefore={PickArea}
+                        placeholder="所在地区"
+                        onChange={this.setValue}
+                        value={this.state.areaText}
+                        data-attr="areaText"
+                        disabled={true}
+                        status={
+                            this.state.oakFocused?.attr === 'areaId'
+                                ? 'error'
+                                : undefined
+                        }
+                    />
+                </Form.Item>
+                <Form.Item
                     label={this.t('address:attr.detail')}
                     name="detail"
+                    help={
+                        this.state.oakFocused?.attr === 'detail'
+                            ? this.state.oakFocused.message
+                            : undefined
+                    }
                 >
-                    <Textarea
-                        maxlength={100}
-                        onChange={(data) => this.setUpdateData('detail', data)}
+                    <Input.TextArea
+                        maxLength={100}
+                        onChange={(e) =>
+                            this.setUpdateData('detail', e.target.value)
+                        }
                         value={this.state.detail}
                         data-attr="detail"
                         placeholder="详细地址"
-                        tips={this.state.oakFocused?.attr === 'detail' ? this.state.oakFocused.message : undefined}
-                        status={this.state.oakFocused?.attr === 'detail' ? 'error' : undefined}
+                        status={
+                            this.state.oakFocused?.attr === 'detail'
+                                ? 'error'
+                                : undefined
+                        }
                     />
-                </FormItem>
+                </Form.Item>
             </Form>
             <div style={{ flex: 1 }} />
             <Button
                 block
                 disabled={this.state.oakAllowExecuting !== true}
-                theme="primary"
+                type="primary"
                 onClick={() => {
                     this.confirm();
                 }}

@@ -1,0 +1,123 @@
+@import '../common/style/index.less';
+@btn-width: 48rpx;
+@checkbox: ~'@{prefix}-checkbox';
+
+.@{checkbox} {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  font-size: 32rpx;
+  padding: 32rpx 32rpx;
+  position: relative;
+  background: white;
+
+  &--right {
+    flex-direction: row-reverse;
+  }
+  .limit-title-row {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .image-center {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &__icon-left {
+    margin-right: 20rpx;
+    width: 40rpx;
+  }
+
+  &__icon-right {
+    right: 0px;
+    display: contents;
+    .image-center();
+  }
+
+  &__icon-image {
+    width: @btn-width;
+    height: @btn-width;
+    vertical-align: sub;
+  }
+
+  &__icon {
+    line-height: @btn-width;
+  }
+
+  &__btn {
+    font-size: @btn-width;
+    display: block;
+    line-height: 40rpx;
+    color: #dcdcdc;
+    width: @btn-width;
+  }
+
+  &__content {
+    flex: 1;
+    line-height: @btn-width;
+    margin-right: 10px;
+  }
+
+  &__title {
+    .limit-title-row();
+  }
+
+  &__description {
+    color: rgba(0, 0, 0, 0.4);
+    .limit-title-row();
+    font-size: 28rpx;
+    line-height: 44rpx;
+  }
+
+  &__btn.@{prefix}-is-checked {
+    color: #0052d9;
+  }
+
+  &__btn.@{prefix}-is-disabled {
+    cursor: not-allowed;
+    color: #dcdcdc;
+  }
+
+  &__content.@{prefix}-is-disabled {
+    cursor: not-allowed;
+    color: rgba(0, 0, 0, 0.26);
+  }
+
+  &__border {
+    position: absolute;
+    bottom: 0;
+    border-top: 1rpx solid #e7e7e7;
+    width: 100%;
+
+    &--left {
+      left: 80rpx;
+      width: calc(100% - 80rpx);
+    }
+
+    &--right {
+      right: 80rpx;
+      width: calc(100% - 80rpx);
+    }
+  }
+
+  &--tag {
+    font-size: 28rpx;
+    padding-top: 16rpx;
+    padding-bottom: 16rpx;
+    text-align: center;
+    background-color: #f3f3f3;
+    border-radius: 8rpx;
+
+    &.@{prefix}-is-actived {
+      color: #0052d9;
+      background-color: #ecf2fe;
+    }
+
+    .@{checkbox}__content {
+      margin-right: 0;
+    }
+  }
+}

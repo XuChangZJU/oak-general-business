@@ -1,9 +1,8 @@
 import React from 'react';
-import { Button, Checkbox, Input, Form, Radio, DatePicker, Row, Col } from 'tdesign-react';
+import { Button, Checkbox, Input, Form, Radio, DatePicker, Row, Col } from 'antd';
 import dayjs from 'dayjs';
 import Style from './web.module.less';
 
-const { FormItem } = Form;
 
 export default function render(this: any) {
     const { gender, birth, GenderOptions, IDCardTypeOptions } = this.state;
@@ -13,92 +12,95 @@ export default function render(this: any) {
         >
             <Row>
                 <Col xs={12} sm={4}>
-                    <Form labelWidth="100px" colon={true}>
-                        <FormItem label="昵称" requiredMark>
+                    <Form colon={true}>
+                        <Form.Item label="昵称" requiredMark>
                             <>
                                 <Input
-                                    onChange={(value) => {
-                                        this.setUpdateData('nickname', value);
+                                    onChange={(e) => {
+                                        this.setUpdateData('nickname', e.target.value);
                                     }}
                                     value={this.state.nickname}
                                 />
                             </>
-                        </FormItem>
-                        <FormItem label="姓名" requiredMark>
+                        </Form.Item>
+                        <Form.Item label="姓名" requiredMark>
                             <>
                                 <Input
-                                    onChange={(value) => {
-                                        this.setUpdateData('name', value);
+                                    onChange={(e) => {
+                                        this.setUpdateData(
+                                            'name',
+                                            e.target.value
+                                        );
                                     }}
                                     value={this.state.name}
                                 />
                             </>
-                        </FormItem>
-                        <FormItem label="出生日期" requiredMark>
+                        </Form.Item>
+                        <Form.Item label="出生日期" requiredMark>
                             <>
                                 <DatePicker
-                                    allowInput={false}
-                                    clearable={false}
-                                    enableTimePicker={false}
+                                    allowClear={false}
                                     mode="date"
-                                    presetsPlacement="bottom"
                                     value={
-                                        this.state.birth
+                                        (this.state.birth
                                             ? dayjs(this.state.birth).format(
                                                   'YYYY-MM-DD'
                                               )
                                             : ''
-                                    }
+                                    ) as any}
                                     onChange={(value) => {
-                                        const val = dayjs(value).valueOf();
+                                        const val = dayjs(value as any).valueOf();
                                         this.setUpdateData('birth', val);
                                     }}
-                                    valueType="YYYY-MM-DD"
+                                    format="YYYY-MM-DD"
                                 />
                             </>
-                        </FormItem>
+                        </Form.Item>
 
-                        <FormItem label="性别" requiredMark>
+                        <Form.Item label="性别" requiredMark>
                             <>
                                 <Radio.Group
                                     options={GenderOptions}
-                                    onChange={(value) => {
-                                        this.setUpdateData('gender', value);
+                                    onChange={(e) => {
+                                        this.setUpdateData('gender', e.target.value);
                                     }}
                                     value={this.state.gender}
                                 />
                             </>
-                        </FormItem>
-                        <FormItem label="证件类别" requiredMark>
+                        </Form.Item>
+                        <Form.Item label="证件类别" requiredMark>
                             <>
                                 <Radio.Group
                                     options={IDCardTypeOptions}
-                                    onChange={(value) => {
-                                        this.setUpdateData('idCardType', value);
+                                    onChange={(e) => {
+                                        this.setUpdateData('idCardType', e.target.value);
                                     }}
                                     value={this.state.idCardType}
                                 />
                             </>
-                        </FormItem>
-                        <FormItem label="证件号" requiredMark>
+                        </Form.Item>
+                        <Form.Item label="证件号" requiredMark>
                             <>
                                 <Input
-                                    onChange={(value) => {
-                                        this.setUpdateData('idNumber', value);
+                                    onChange={(e) => {
+                                        this.setUpdateData(
+                                            'idNumber',
+                                            e.target.value
+                                        );
                                     }}
                                 />
                             </>
-                        </FormItem>
-                        <FormItem style={{ marginLeft: 100 }}>
+                        </Form.Item>
+                        <Form.Item>
                             <Button
-                                theme="primary"
+                                type="primary"
                                 onClick={(event) => {
                                     this.confirm();
                                 }}
                             >
                                 确定
                             </Button>
-                        </FormItem>
+                        </Form.Item>
                     </Form>
                 </Col>
             </Row>

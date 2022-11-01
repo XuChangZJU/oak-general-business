@@ -3,6 +3,7 @@ import { Input, InputProps } from 'antd';
 
 interface IProps extends InputProps {
     value?: string;
+    autoSize?: boolean | object;
 }
 
 function BaseHOC(key?: string) {
@@ -44,7 +45,8 @@ function BaseHOC(key?: string) {
       }
       let Component = Input;
       if (key) {
-          Component = Input[key! as keyof typeof Input];
+          // @ts-ignore
+          Component = Input[key];
       }
       return (
           <Component

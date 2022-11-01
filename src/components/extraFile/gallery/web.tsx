@@ -1,11 +1,16 @@
 import React from 'react';
-import { Space, Upload, UploadFile, Table, Button, Tag, Loading } from 'tdesign-react';
 import { composeFileUrl, bytesToSize } from '../../../utils/extraFile';
+
+import { Space, Upload, UploadFile, Tag, Button, Table, UploadProps } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
+import Style from './web.module.less';
+
 
 function extraFileToUploadFile(extraFile: any, systemConfig: any) {
     return Object.assign({}, extraFile, {
         url: composeFileUrl(extraFile, systemConfig),
         name: extraFile.filename,
+        thumbUrl: composeFileUrl(extraFile, systemConfig),
     });
 }
 
@@ -13,126 +18,145 @@ interface ExtraFile extends UploadFile {
     id?: string;
 }
 
+type Theme = 'file' | 'image' | 'file-flow' | 'image-flow' | 'custom';
+type ListType = 'text' | 'picture' | 'picture-card';
+
+function getListType(theme: Theme): ListType {
+    const themeMap: Record<Theme, ListType> = {
+        file: 'text',
+        image: 'picture-card',
+        'file-flow': 'text',
+        'image-flow': 'picture',
+        custom: 'text',
+    };
+    return themeMap[theme];
+}
+
 export default function render(this: any) {
     const {
         accept = 'image/*',
         maxNumber = 20,
         multiple = true,
-        useMockProgress = false,
         draggable = false,
-        showUploadProgress = false,
         theme = 'image',
         tips,
-        placeholder,
         beforeUpload,
         disabled,
         style,
         className,
-        sizeLimit,
+        directory = false,
+        onPreview,
+        onDownload,
+        children,
+        showUploadList = true,
     } = this.props;
-    const { files, systemConfig, newUploadFiles } = this.state;
+    const { files, systemConfig, newUploadFiles, disableInsert } = this.state;
+    const listType = getListType(theme);
+
+    const getUploadButton = () => {
+        if (children) {
+            return children;
+        }
+        if (listType === 'picture-card') {
+            return (
+                <div>
+                    <PlusOutlined />
+                    <div style={{ marginTop: 8 }}>请选择图片</div>
+                </div>
+            );
+        }
+        return <Button type="default">选择文件</Button>;
+    };
 
     return (
         <Space direction="vertical">
             <Upload
-                sizeLimit={sizeLimit}
                 className={className}
                 style={style}
                 disabled={disabled}
+                directory={directory}
+                showUploadList={showUploadList}
                 beforeUpload={beforeUpload}
-                placeholder={placeholder}
-                tips={tips}
                 multiple={multiple}
-                autoUpload={false}
-                draggable={draggable}
-                useMockProgress={useMockProgress}
-                max={maxNumber}
+                maxCount={maxNumber}
                 accept={accept}
-                showUploadProgress={showUploadProgress}
-                theme={theme}
-                files={
+                listType={listType}
+                fileList={
                     theme === 'custom'
                         ? []
                         : (files || []).map((ele: any) =>
                               extraFileToUploadFile(ele, systemConfig)
                           )
                 }
-                onChange={(uploadFiles) => {
+                onChange={({ file, fileList, event }) => {
                     const arr =
-                        uploadFiles?.filter((ele: ExtraFile) => !ele.id) || [];
+                        fileList?.filter((ele: ExtraFile) => !ele.id) || [];
                     this.setState({
                         newUploadFiles: arr,
                     });
                     if (theme !== 'custom') {
-                        this.onWebPick(arr);
+                        this.onPickByWeb(arr);
                     }
                 }}
-                onRemove={({ file, index, e }) => {
-                    this.onWebDelete(file, index);
+                onRemove={(file) => {
+                    this.onDeleteByWeb(file);
                 }}
-                onPreview={({ file, e }) => {}}
+                onPreview={onPreview}
+                onDownload={onDownload}
             >
-                {theme === 'custom' && (
-                    <Button variant="outline" theme="default">
-                        选择文件
-                    </Button>
-                )}
+                {disableInsert ? null : getUploadButton()}
             </Upload>
+            {tips && (
+                <small className={Style['oak-upload__tips']}>{tips}</small>
+            )}
             {theme === 'custom' && (
                 <>
                     <Table
-                        data={newUploadFiles || []}
+                        dataSource={newUploadFiles || []}
                         rowKey="id"
                         columns={[
                             {
                                 align: 'center',
-                                colKey: 'tableIndex',
+                                dataIndex: 'tableIndex',
                                 title: '序号',
-                                cell: ({ row, rowIndex }) => rowIndex + 1,
+                                render: (value, record, index) => index + 1,
                                 width: 100,
                             },
                             {
-                                colKey: 'name',
+                                dataIndex: 'name',
                                 title: '文件名',
                             },
                             {
-                                colKey: 'size',
+                                dataIndex: 'size',
                                 title: '文件大小',
-                                cell: ({ row }) => {
-                                    const b = row?.size / 1024;
+                                render: (value, record, index) => {
+                                    const b = value / 1024;
                                     return bytesToSize(b);
                                 },
                             },
                             {
-                                colKey: 'status',
+                                dataIndex: 'status',
                                 title: '状态',
-                                cell: ({ row }) => {
+                                render: (value, record, index) => {
                                     let cpn: any;
-                                    switch (row.status) {
+                                    switch (value) {
                                         case 'success':
                                             cpn = (
-                                                <Tag
-                                                    theme="success"
-                                                    variant="light"
-                                                >
+                                                <Tag color="success">
                                                     success
                                                 </Tag>
                                             );
                                             break;
                                         case 'uploading':
                                             cpn = (
-                                                <Loading
-                                                    loading={true}
-                                                    text="uploading..."
-                                                ></Loading>
+                                                <Tag color="processing">
+                                                    uploading
+                                                </Tag>
                                             );
                                             break;
                                         default:
                                             cpn = (
-                                                <Tag
-                                                    theme="warning"
-                                                    variant="light"
-                                                >
+                                                <Tag color="warning">
                                                     waiting
                                                 </Tag>
                                             );
@@ -142,20 +166,19 @@ export default function render(this: any) {
                                 },
                             },
                             {
-                                colKey: 'op',
+                                dataIndex: 'op',
                                 width: 300,
                                 title: '操作',
                                 align: 'center',
-                                cell: ({ row, rowIndex }) => {
+                                render: (value, record, index) => {
                                     return (
                                         <>
-                                            {!row.id && (
+                                            {!record.id && (
                                                 <Button
-                                                    theme="primary"
-                                                    variant="text"
+                                                    type="link"
                                                     onClick={() => {
                                                         this.customDelete(
-                                                            rowIndex
+                                                            index
                                                         );
                                                     }}
                                                 >
@@ -174,16 +197,18 @@ export default function render(this: any) {
                     >
                         <Space>
                             <Button
-                                theme="default"
+                                danger
+                                type="default"
                                 onClick={() => {
                                     this.setState({
                                         newUploadFiles: [],
                                     });
                                 }}
                             >
-                                全部清空
+                                清空
                             </Button>
                             <Button
+                                type="primary"
                                 onClick={() => {
                                     this.onWebPick(
                                         newUploadFiles,

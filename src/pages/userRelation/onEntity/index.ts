@@ -3,9 +3,8 @@ import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
 export default OakComponent({
     isList: true,
     formData: async function ({ data, props }) {
-        const { nameProperty } = props;
-        const { oakEntity } = this.props;
-        const entityStr = firstLetterUpperCase(oakEntity);
+        const { nameProperty, oakEntity } = props;
+        const entityStr = firstLetterUpperCase(oakEntity!);
 
         const rows = data?.map((ele) => {
             const {
@@ -31,6 +30,7 @@ export default OakComponent({
         nameProperty: String,
         user: Object,
         relations: Array,
+        oakEntity: String,
     },
     methods: {
         onChange(input: any) {
@@ -46,17 +46,22 @@ export default OakComponent({
             };
             const { oakEntity, user } = this.props;
             const entityStr = firstLetterUpperCase(oakEntity!);
-            this.toggleNode(
-                {
-                    relation,
-                    userId: user.id,
-                },
-                checked,
-                `${index}.user${entityStr}$${oakEntity}`
-            );
+            // todo 需要修改为最新写法
+            // this.toggleNode(
+            //     {
+            //         relation,
+            //         userId: user.id,
+            //     },
+            //     checked,
+            //     `${index}.user${entityStr}$${oakEntity}`
+            // );
         },
         async confirm() {
-            await this.execute('create');
+               this.addOperation({
+                   action: 'create',
+                   data: {},
+               });
+               await this.execute();
             await this.navigateBack();
         },
     },

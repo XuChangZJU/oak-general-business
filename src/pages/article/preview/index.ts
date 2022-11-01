@@ -18,8 +18,8 @@ export default OakComponent({
         title: '',
         author: '',
     },
-    methods: {
-        onLoad() {
+    lifetimes: {
+        attached() {
             const data = this.load('article_html') || '{}';
             const data2 = typeof data === 'string' ? JSON.parse(data) : data;
             this.setState({
@@ -28,8 +28,9 @@ export default OakComponent({
                 author: data2?.author,
             });
         },
-        onUnload() {
+        detached() {
             this.save('article_html', '{}');
         },
     },
+    methods: {},
 });

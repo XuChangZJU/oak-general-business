@@ -145,17 +145,26 @@ export default OakComponent({
         onChangeValue(value: boolean, relation: string, index: number) {
             const { entity, entityId } = this.props;
             const entityStr = firstLetterUpperCase(entity!);
-            this.toggleNode(
-                {
-                    relation,
-                    [`${entity}Id`]: entityId,
-                },
-                value,
-                `${index}.user${entityStr}$user`
-            );
+
+            // todo 需要修改为最新写法
+            // this.toggleNode(
+            //     {
+            //         relation,
+            //         [`${entity}Id`]: entityId,
+            //     },
+            //     value,
+            //     `${index}.user${entityStr}$user`
+            // );
         },
-        async confirm() {
-            await this.execute('grant');
+        async confirm(id: string) {
+            this.addOperation({
+                action: 'grant',
+                data: {},
+                filter: {
+                    id: id
+                }
+            });
+            await this.execute();
             await this.navigateBack();
         },
     },

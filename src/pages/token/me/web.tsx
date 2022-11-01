@@ -1,10 +1,9 @@
 import React from 'react';
-import { List, Button, Avatar, Input, Drawer } from 'tdesign-react';
-import { UserCircleIcon, Icon } from 'tdesign-icons-react';
+import { List, Button, Avatar, Input, Drawer } from 'antd';
+import { UserOutlined, MobileOutlined } from '@ant-design/icons';
 
 import Style from './web.module.less';
 
-const { ListItem, ListItemMeta } = List;
 
 export default function render(this: any) {
     const { avatar, nickname, isLoggedIn, refreshing, mobile, mobileCount, showDrawer } = this.state;
@@ -13,17 +12,17 @@ export default function render(this: any) {
         <div className={Style.container}>
             <div className={Style.userInfo}>
                 {avatar ? (
-                    <Avatar className={Style.avatar} image={avatar} />
+                    <Avatar className={Style.avatar} src={avatar} />
                 ) : (
                     <Avatar
                         className={Style.avatar}
-                        icon={<UserCircleIcon className={Style.userIcon} />}
+                        icon={<UserOutlined className={Style.userIcon} />}
                     />
                 )}
                 <span className={Style.nickname}>{nickname || '未设置'}</span>
                 {isLoggedIn ? (
                     <Button
-                        theme="primary"
+                        type="primary"
                         size="small"
                         disabled={refreshing}
                         loading={refreshing}
@@ -46,68 +45,56 @@ export default function render(this: any) {
                     </Button>
                 )}
             </div>
-            <List
-                layout="horizontal"
-                size="medium"
-                className={Style.list}
-                split={true}
-            >
-                <div onClick={() => this.goMyMobile()}>
-                    <ListItem action={<Icon size={18} name="chevron-right" />}>
-                        <ListItemMeta
-                            image={<Icon size={18} name="mobile" />}
-                            title="手机号"
-                            description={mobileText}
-                        />
-                    </ListItem>
-                </div>
+            <List className={Style.list} split={true}>
+                <List.Item onClick={() => this.goMyMobile()}>
+                    <List.Item.Meta
+                        avatar={<MobileOutlined />}
+                        title="手机号"
+                        description={mobileText}
+                    />
+                </List.Item>
             </List>
             {this.state.isRoot && (
                 <>
                     <div style={{ flex: 1 }} />
-                    <List
-                        layout="horizontal"
-                        size="medium"
-                        className={Style.list}
-                        split={true}
-                    >
-                        <div onClick={() => this.goUserManage()}>
-                            <ListItem action={<Icon size={18} name="chevron-right" />}>
-                                <ListItemMeta
-                                    image={<Icon size={18} name="user" />}
-                                    title="用户管理"
-                                />
-                            </ListItem>
-                        </div>
+                    <List className={Style.list} split={true}>
+                        <List.Item onClick={() => this.goUserManage()}>
+                            <List.Item.Meta
+                                avatar={<UserOutlined />}
+                                title="用户管理"
+                            />
+                        </List.Item>
                     </List>
                 </>
             )}
             <Drawer
                 placement="bottom"
-                visible={showDrawer}
-                header="修改昵称"
-                confirmBtn={<Button
-                    disabled={this.state.oakExecuting || !this.state.oakAllowExecuting}
-                    onClick={async () => {
-                        await this.execute();
-                        this.setState({ showDrawer: false });
-                        this.cleanOperation();
-
-                    }}
-                >{this.t('common:action.confirm')}</Button>}
-                onCancel={() => {
-                    this.setState({ showDrawer: false });
-                    this.cleanOperation();
-                }}
+                open={showDrawer}
+                title="修改昵称"
                 onClose={() => {
                     this.setState({ showDrawer: false });
                     this.cleanOperation();
                 }}
+                extra={
+                    <Button
+                        disabled={
+                            this.state.oakExecuting ||
+                            !this.state.oakAllowExecuting
+                        }
+                        onClick={async () => {
+                            await this.execute();
+                            this.setState({ showDrawer: false });
+                            this.cleanOperation();
+                        }}
+                    >
+                        {this.t('common:action.confirm')}
+                    </Button>
+                }
             >
                 <Input
                     placeholder="请输入昵称"
                     value={nickname}
-                    onChange={async (value) => {
+                    onChange={async (e) => {
                         const { tokenId } = this.state;
                         await this.addOperation({
                             action: 'update',
@@ -115,13 +102,13 @@ export default function render(this: any) {
                                 user: {
                                     action: 'update',
                                     data: {
-                                        nickname: value,
+                                        nickname: e.target.value,
                                     },
                                 },
                             },
                             filter: {
                                 id: tokenId,
-                            }
+                            },
                         });
                     }}
                 />
