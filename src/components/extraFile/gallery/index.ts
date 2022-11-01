@@ -31,7 +31,9 @@ export default OakComponent({
         }
         return {
             files,
-            disableInsert: this.props.maxNumber === 0 || files?.length >= this.props.maxNumber,
+            disableInsert:
+                this.props.maxNumber === 0 ||
+                files?.length >= this.props.maxNumber,
             systemConfig: application?.system?.config,
         };
     },
@@ -70,6 +72,11 @@ export default OakComponent({
             //小程序独有 文件上传类型
             type: Array,
             value: ['image'],
+        },
+        showUploadList: {
+            // web独有 是否展示文件列表, 可设为一个对象
+            type: Boolean,
+            value: true,
         },
         accept: {
             // web独有 文件上传类型
@@ -182,7 +189,13 @@ export default OakComponent({
         ) {
             await Promise.all(
                 uploadFiles.map(async (uploadFile) => {
-                    const { name, type: fileType, size, raw, originFileObj } = uploadFile;
+                    const {
+                        name,
+                        type: fileType,
+                        size,
+                        raw,
+                        originFileObj,
+                    } = uploadFile;
                     await this.pushExtraFile(
                         {
                             name,
@@ -308,31 +321,31 @@ export default OakComponent({
             const { value } = event.currentTarget.dataset;
             const { id, bucket } = value;
 
-             if (this.props.removeLater || (origin !== 'unknown' && !bucket)) {
-                 await this.addOperation({
-                     action: 'remove',
-                     data: {},
-                     filter: {
-                         id,
-                     },
-                 });
-             } else {
-                 const result = await wx.showModal({
-                     title: '确认删除吗',
-                     content: '删除现有文件',
-                 });
-                 const { confirm } = result;
-                 if (confirm) {
-                     await this.addOperation({
-                         action: 'remove',
-                         data: {},
-                         filter: {
-                             id,
-                         },
-                     });
-                     await this.execute();
-                 }
-             }
+            if (this.props.removeLater || (origin !== 'unknown' && !bucket)) {
+                await this.addOperation({
+                    action: 'remove',
+                    data: {},
+                    filter: {
+                        id,
+                    },
+                });
+            } else {
+                const result = await wx.showModal({
+                    title: '确认删除吗',
+                    content: '删除现有文件',
+                });
+                const { confirm } = result;
+                if (confirm) {
+                    await this.addOperation({
+                        action: 'remove',
+                        data: {},
+                        filter: {
+                            id,
+                        },
+                    });
+                    await this.execute();
+                }
+            }
         },
         async onDeleteByWeb(value: any) {
             const { id, bucket } = value;

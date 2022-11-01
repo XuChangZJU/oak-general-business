@@ -48,6 +48,7 @@ export default function render(this: any) {
         onPreview,
         onDownload,
         children,
+        showUploadList = true,
     } = this.props;
     const { files, systemConfig, newUploadFiles, disableInsert } = this.state;
     const listType = getListType(theme);
@@ -74,9 +75,8 @@ export default function render(this: any) {
                 style={style}
                 disabled={disabled}
                 directory={directory}
-                beforeUpload={(file, fileList) => {
-                    return false;
-                }}
+                showUploadList={showUploadList}
+                beforeUpload={beforeUpload}
                 multiple={multiple}
                 maxCount={maxNumber}
                 accept={accept}
