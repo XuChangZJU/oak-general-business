@@ -87,16 +87,16 @@ export function makeException(data: {
 
     const { name, message } = data;
     switch (name) {
-        case OakNotEnoughMoneyException.name: {
+        case 'OakNotEnoughMoneyException': {
             return new OakNotEnoughMoneyException(message);
         }
-        case OakDistinguishUserException.name: {
+        case 'OakDistinguishUserException': {
             return new OakDistinguishUserException(data.userId, data.usingPassword, data.usingIdCard, data.usingWechatUser, data.usingEmail, message);
         }
-        case OakUserDisabledException.name: {
+        case 'OakUserDisabledException': {
             return new OakUserDisabledException(message);
         }
-        case OakTokenExpiredException.name: {
+        case 'OakTokenExpiredException': {
             return new OakTokenExpiredException(message);
         }
         default: {
