@@ -1,6 +1,7 @@
 import React from 'react';
-import { Form, Input, Checkbox, Button, Space, Card } from 'antd';
+import { Form, Checkbox } from 'antd';
 import Style from './web.module.less';
+import Input from '../../../../components/common/input';
 
 export default function render(this: any) {
     const { relations, entity, oakId } = this.props;
