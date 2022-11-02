@@ -26,6 +26,7 @@
         "oak-frontend-base": "file:../oak-frontend-base",
         "oak-memory-tree-store": "file:../oak-memory-tree-store",
         "react-router-dom": "^6.4.2",
+        "react-scripts": "^5.0.1",
         "sha1": "^1.1.1",
         "tslib": "^2.4.0",
         "uuid": "^8.3.2"
