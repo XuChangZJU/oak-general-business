@@ -321,7 +321,7 @@ export class Token<
     }
 
     async isRoot(): Promise<boolean> {
-        const token = await this.getToken();
+        const token = await this.getToken(true);
         const userRole$user = token?.player?.userRole$user;
         return (
             (userRole$user as any)?.length > 0 &&
