@@ -23,7 +23,6 @@ type GridProps = {
     ) => void;
 };
 
-const prefixCls = 'oak';
 
 export default memo((props: GridProps) => {
     const {
@@ -36,6 +35,7 @@ export default memo((props: GridProps) => {
         imageClassName,
         textClassName,
     } = props;
+    const prefixCls = 'oak';
 
     return (
         <div
