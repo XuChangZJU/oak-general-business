@@ -77,8 +77,8 @@ export declare class Token<ED extends EntityDict, Cxt extends RuntimeContext<ED>
     syncUserInfoWechatMp(): Promise<void>;
     logout(): Promise<void>;
     getTokenValue(noWait?: true): Promise<string | undefined>;
-    getToken(): Promise<SelectRowShape<ED["token"]["Schema"], TokenProjection>>;
-    getUserId(): Promise<string | undefined>;
+    getToken(allowUnloggedIn?: boolean): Promise<SelectRowShape<ED["token"]["Schema"], TokenProjection> | undefined>;
+    getUserId(allowUnloggedIn?: boolean): Promise<string | undefined>;
     getUserInfo(): Promise<("user" extends infer T ? T extends "user" ? T extends keyof ED["token"]["Schema"] ? TokenProjection[T] extends 1 | undefined ? ED["token"]["Schema"][T] : TokenProjection[T] extends import("oak-domain/lib/types").OtmSubProjection ? never[] | SelectRowShape<Required<ED["token"]["Schema"]>[T][0], TokenProjection[T]["data"]>[] : T extends import("oak-domain/lib/types").OptionalKeys<ED["token"]["Schema"]> ? SelectRowShape<NonNullable<Required<ED["token"]["Schema"]>[T]>, TokenProjection[T]> | null : SelectRowShape<NonNullable<Required<ED["token"]["Schema"]>[T]>, TokenProjection[T]> : never : never : never) | SelectRowShape<ED["user"]["Schema"], ED["user"]["Selection"]["data"]> | undefined>;
     isRoot(): Promise<boolean>;
     sendCaptcha(mobile: string): Promise<string>;

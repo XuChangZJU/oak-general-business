@@ -28,6 +28,11 @@ export declare class Application<ED extends EntityDict, Cxt extends RuntimeConte
             id: 1;
             name: 1;
             config: 1;
+            platformId: 1;
+            platform: {
+                id: 1;
+                config: 1;
+            };
         };
     }>>;
     getApplicationId(noWait?: true): Promise<string>;

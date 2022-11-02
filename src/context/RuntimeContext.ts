@@ -13,6 +13,11 @@ export type GetApplicationShape = {
         id: 1,
         name: 1,
         config: 1,
+        platformId: 1,
+        platform: {
+            id: 1,
+            config: 1,
+        }
     },
 };
 

@@ -1,5 +1,6 @@
 import { Action, Feature } from 'oak-frontend-base/lib/types/Feature';
 import { RWLock } from 'oak-domain/lib/utils/concurrent';
+import { OakUnloggedInException } from 'oak-domain/lib/types/Exception';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
 import { CommonAspectDict } from 'oak-common-aspect';
@@ -283,18 +284,21 @@ export class Token<
         return token;
     }
 
-    async getToken() {
+    async getToken(allowUnloggedIn?: boolean) {
         if (this.token) {
             return this.token;
         }
         if (this.tokenValue) {
             await this.loadTokenInfo();
         }
-        return this.token!;
+        if (allowUnloggedIn || this.token) {
+            return this.token;
+        }
+        throw new OakUnloggedInException();
     }
 
-    async getUserId() {
-        const token = await this.getToken();
+    async getUserId(allowUnloggedIn?: boolean) {
+        const token = await this.getToken(allowUnloggedIn);
         return token?.userId as string | undefined;
     }
 

@@ -42,11 +42,11 @@ export class FrontendRuntimeContext<ED extends EntityDict, Cxt extends RuntimeCo
         return this.token?.getTokenValue();
     }
 
-    async getToken() {
+    async getToken(allowUnloggedIn?: boolean) {
         return this.token?.getToken();
     }
 
-    async getCurrentUserId(): Promise<string | undefined> {
+    async getCurrentUserId(allowUnloggedIn?: boolean): Promise<string | undefined> {
         return this.token?.getUserId();
     }
 

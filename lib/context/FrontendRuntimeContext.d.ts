@@ -26,6 +26,11 @@ export declare class FrontendRuntimeContext<ED extends EntityDict, Cxt extends R
             id: 1;
             name: 1;
             config: 1;
+            platformId: 1;
+            platform: {
+                id: 1;
+                config: 1;
+            };
         };
     }[T] extends 1 | undefined ? ED["application"]["Schema"][T] : {
         id: 1;
@@ -37,6 +42,11 @@ export declare class FrontendRuntimeContext<ED extends EntityDict, Cxt extends R
             id: 1;
             name: 1;
             config: 1;
+            platformId: 1;
+            platform: {
+                id: 1;
+                config: 1;
+            };
         };
     }[T] extends import("oak-domain/lib/types").OtmSubProjection ? never[] | import("oak-domain/lib/types").SelectRowShape<Required<ED["application"]["Schema"]>[T][0], {
         id: 1;
@@ -48,6 +58,11 @@ export declare class FrontendRuntimeContext<ED extends EntityDict, Cxt extends R
             id: 1;
             name: 1;
             config: 1;
+            platformId: 1;
+            platform: {
+                id: 1;
+                config: 1;
+            };
         };
     }[T]["data"]>[] : T extends import("oak-domain/lib/types").OptionalKeys<ED["application"]["Schema"]> ? import("oak-domain/lib/types").SelectRowShape<NonNullable<Required<ED["application"]["Schema"]>[T]>, {
         id: 1;
@@ -59,6 +74,11 @@ export declare class FrontendRuntimeContext<ED extends EntityDict, Cxt extends R
             id: 1;
             name: 1;
             config: 1;
+            platformId: 1;
+            platform: {
+                id: 1;
+                config: 1;
+            };
         };
     }[T]> | null : import("oak-domain/lib/types").SelectRowShape<NonNullable<Required<ED["application"]["Schema"]>[T]>, {
         id: 1;
@@ -70,6 +90,11 @@ export declare class FrontendRuntimeContext<ED extends EntityDict, Cxt extends R
             id: 1;
             name: 1;
             config: 1;
+            platformId: 1;
+            platform: {
+                id: 1;
+                config: 1;
+            };
         };
     }[T]> : never : never : never) | undefined>;
     getApplication(): Promise<import("oak-domain/lib/types").SelectRowShape<ED["application"]["Schema"], {
@@ -82,10 +107,15 @@ export declare class FrontendRuntimeContext<ED extends EntityDict, Cxt extends R
             id: 1;
             name: 1;
             config: 1;
+            platformId: 1;
+            platform: {
+                id: 1;
+                config: 1;
+            };
         };
     }> | undefined>;
     getTokenValue(): Promise<string | undefined>;
-    getToken(): Promise<import("oak-domain/lib/types").SelectRowShape<ED["token"]["Schema"], {
+    getToken(allowUnloggedIn?: boolean): Promise<import("oak-domain/lib/types").SelectRowShape<ED["token"]["Schema"], {
         id: 1;
         userId: 1;
         user: {
@@ -140,7 +170,7 @@ export declare class FrontendRuntimeContext<ED extends EntityDict, Cxt extends R
         };
         playerId: 1;
     }> | undefined>;
-    getCurrentUserId(): Promise<string | undefined>;
+    getCurrentUserId(allowUnloggedIn?: boolean): Promise<string | undefined>;
     toString(): Promise<string>;
     isRoot(): Promise<boolean>;
 }

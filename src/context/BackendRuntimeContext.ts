@@ -51,6 +51,11 @@ export class BackendRuntimeContext<ED extends EntityDict> extends UniversalConte
                             id: 1,
                             name: 1,
                             config: 1,
+                            platformId: 1,
+                            platform: {
+                                id: 1,
+                                config: 1,
+                            },
                         },
                     },
                     filter: {
