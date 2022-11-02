@@ -50,12 +50,12 @@ export default OakComponent({
                     }
                 });
                 if (data.length > 0) {
-                    this.cleanOperation();
-                    this.setId(data[0].id);
+                    await this.cleanOperation();
+                    await this.setId(data[0].id);
                 }
                 else {
-                    this.cleanOperation();
-                    this.unsetId();
+                    await this.cleanOperation();
+                    await this.unsetId();
                     await this.addOperation({
                         action: 'create',
                         data: {

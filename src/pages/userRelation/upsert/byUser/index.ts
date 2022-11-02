@@ -21,8 +21,8 @@ export default OakComponent({
             await this.execute();
             this.navigateBack();
         },
-        onReset() {
-            this.cleanOperation();
+        async onReset() {
+            await this.cleanOperation();
         }
     },
 });
