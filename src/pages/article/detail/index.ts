@@ -9,6 +9,8 @@ export default OakComponent({
         author: 1,
         abstract: 1,
         content: 1,
+        entity: 1,
+        entityId: 1,
     },
     isList: false,
     formData: async function ({ data: article, features }) {
@@ -22,11 +24,11 @@ export default OakComponent({
         };
     },
     observers: {
-        'content': (val) => {
+        content: (val) => {
             const ac = window.document.getElementById('article-content');
             if (ac) {
-                 ac.innerHTML = val;
+                ac.innerHTML = val;
             }
-        }
-    },    
+        },
+    },
 });

@@ -16,10 +16,7 @@ export default function render(this: any) {
     const { pagination, users = [], oakLoading, idRemove } = this.state;
     const { relations, entity, entityId } = this.props;
     const { pageSize, total, currentPage } = pagination || {};
-    const relationArr =
-        typeof relations === 'object'
-            ? relations
-            : relations && JSON.parse(relations);
+
     return (
         <PageHeader title="权限列表">
             <div className={Style.container}>
