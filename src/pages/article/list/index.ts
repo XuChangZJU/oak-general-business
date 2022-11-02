@@ -10,6 +10,8 @@ export default OakComponent({
         author: 1,
         abstract: 1,
         content: 1,
+        entity: 1,
+        entityId: 1,
     },
     isList: true,
     formData: async function ({ data: articles, features }) {
@@ -26,18 +28,34 @@ export default OakComponent({
                     abstract: article?.abstract,
                     author: article?.author,
                     content: article?.content,
+                    entity: article?.entity,
+                    entityId: article?.entityId,
                 };
             }),
             pagination,
             searchValue: (filter?.title as { $includes: string })?.$includes,
         };
     },
-    // filters: [],
+    filters: [
+        // 由调用者注入oakFilter
+        {
+            filter: async ({ features, props }) => {
+                const { entityId, entity } = props;
+                return {
+                    entityId,
+                    entity,
+                };
+            },
+        },
+    ],
     // sorters: [],
     methods: {
         goUpsert() {
+            const { entityId, entity } = this.props;
             this.navigateTo({
                 url: '/article/upsert',
+                entityId,
+                entity,
             });
         },
         goUpsertById(id: string) {
@@ -58,7 +76,7 @@ export default OakComponent({
                 data: {},
                 filter: {
                     id,
-                }
+                },
             });
             await this.execute();
         },

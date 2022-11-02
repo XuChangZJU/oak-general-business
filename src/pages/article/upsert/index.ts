@@ -16,6 +16,8 @@ export default OakComponent({
         author: 1,
         abstract: 1,
         content: 1,
+        entity: 1,
+        entityId: 1,
     },
     isList: false,
     formData: async function ({ data: article, features }) {
@@ -35,7 +37,7 @@ export default OakComponent({
         contentTip: false,
     },
     observers: {
-        'editor,content': function(editor, content) {
+        'editor,content': function (editor, content) {
             if (editor && content) {
                 editor.setHtml(content);
                 this.setHtml(content);
@@ -43,12 +45,21 @@ export default OakComponent({
         },
     },
     lifetimes: {
+        ready() {
+            const { entityId, entity, oakId } = this.props;
+            if (!oakId) {
+                this.setMultiAttrUpdateData({
+                    entityId,
+                    entity,
+                });
+            }
+        },
         detached() {
             const { editor } = this.state;
             if (editor == null) return;
             editor.destroy();
             this.setEditor(null);
-        }
+        },
     },
     methods: {
         async addExtraFile(
@@ -64,19 +75,19 @@ export default OakComponent({
                 });
                 return result;
             } catch (error) {
-                if (
-                    (<OakException>error).constructor.name ===
-                    OakUnloggedInException.name
-                ) {
-                    this.navigateTo(
-                        {
-                            url: '/login',
-                        },
-                        undefined,
-                        true
-                    );
-                    return;
-                }
+                // if (
+                //     (<OakException>error).constructor.name ===
+                //     OakUnloggedInException.name
+                // ) {
+                //     this.navigateTo(
+                //         {
+                //             url: '/login',
+                //         },
+                //         undefined,
+                //         true
+                //     );
+                //     return;
+                // }
                 throw error;
             }
         },
@@ -103,10 +114,6 @@ export default OakComponent({
                 return;
             }
             await this.execute();
-            if (this.props.oakFrom === 'article:list') {
-                this.navigateBack();
-                return;
-            }
             this.navigateBack();
         },
         async reset() {
@@ -123,7 +130,7 @@ export default OakComponent({
                     title,
                 })
             );
-            window.open('/article/preview')
+            window.open('/article/preview');
         },
     },
 });

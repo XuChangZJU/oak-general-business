@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import './index.less';
 interface QrCodeProps {
     id?: string;
