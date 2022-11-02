@@ -69,7 +69,7 @@
     "scripts": {
         "make:domain": "ts-node ./scripts/make.ts",
         "clean": "rimraf lib/*",
-        "copy-files": "copyfiles -u 1 src/**/*.less lib/ & copyfiles -u 1 src/**/*.wxml lib/ & copyfiles -u 1 src/**/*.wxs lib/ & copyfiles -u 1 src/miniprogram_npm/**/*.js lib/ ",
+        "copy-files": "copyfiles -u 1 src/**/*.less lib/ & copyfiles -u 1 src/**/*.svg lib/ & copyfiles -u 1 src/**/*.wxml lib/ & copyfiles -u 1 src/**/*.wxs lib/ & copyfiles -u 1 src/miniprogram_npm/**/*.js lib/ ",
         "build": "tsc && npm run copy-files",
         "gen:areaDebug": "ts-node ./scripts/generateAreaDebug.ts",
         "clean:dir": "ts-node ./scripts/cleanDtsAndJs",
