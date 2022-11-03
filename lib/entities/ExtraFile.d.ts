@@ -7,7 +7,7 @@ export interface Schema extends FileCarrierEntityShape {
     objectId: String<64>;
     tag1: String<16>;
     tag2: String<16>;
-    filename: String<64>;
+    filename: String<256>;
     md5: Text;
     entity: String<32>;
     entityId: String<64>;
