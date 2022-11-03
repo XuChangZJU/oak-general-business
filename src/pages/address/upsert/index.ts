@@ -47,9 +47,7 @@ export default OakComponent({
         },
         async confirm() {
             await this.execute();
-            if (this.props.oakFrom === 'address:list') {
-                this.navigateBack();
-            }
+            this.navigateBack();
         },
         reset() {
             this.cleanOperation();

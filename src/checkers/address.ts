@@ -15,7 +15,7 @@ const checkers: Checker<EntityDict, 'address', RuntimeContext<EntityDict>> [] = 
                 data.forEach(
                     ele => {
                         const a: Exclude<keyof EntityDict['address']['OpSchema'], 'aa'> = 'name';
-                        checkAttributesNotNull('address', ele, ['name', 'detail', 'phone', 'areaId']);
+                        checkAttributesNotNull('address', ele, ['name', 'detail', 'phone'/* , 'areaId' */]);
                         if (!isMobile(ele.phone)) {
                             throw new OakInputIllegalException('address', ['phone'], '手机号非法');
                         }
@@ -23,7 +23,7 @@ const checkers: Checker<EntityDict, 'address', RuntimeContext<EntityDict>> [] = 
                 );
             }
             else {
-                checkAttributesNotNull('address', data, ['name', 'detail', 'phone', 'areaId']);
+                checkAttributesNotNull('address', data, ['name', 'detail', 'phone'/* , 'areaId' */]);
                 if (!isMobile(data.phone)) {
                     throw new OakInputIllegalException('address', ['phone'], '手机号非法');
                 }

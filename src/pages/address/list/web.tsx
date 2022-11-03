@@ -9,7 +9,7 @@ export default function render(this: any) {
         return (
             <List>
                 {addresses.map((address: Record<string, any>) => (
-                    <List.Item key={address.id}>
+                    <List.Item key={address.id} onClick={() => this.gotoUpsert(address.id)}>
                         <List.Item.Meta
                             title={address.name}
                             description={address.areaText + address.detail}

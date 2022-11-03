@@ -3,7 +3,7 @@ import { Button, Input, Form } from 'antd';
 import { RightOutlined  } from '@ant-design/icons';
 import Style from './web.module.less';
 
-export default function render(this: any) {
+export default function Render(this: any) {
     const PickArea = (
         <Button
             type="text"
@@ -11,8 +11,20 @@ export default function render(this: any) {
             onClick={() => this.callAreaPicker()}
         />
     );
+    console.log(this.state.name);
     return (
         <div className={Style.container}>
+        <Input
+            placeholder="姓名2"
+            onChange={(e) => this.setUpdateData('name', e.target.value)}
+            value={this.state.name}
+            data-attr="name"
+            status={
+                this.state.oakFocused?.attr === 'name'
+                    ? 'error'
+                    : undefined
+            }
+        />
             <Form colon={false} layout="vertical">
                 <Form.Item
                     label={this.t('address:attr.name')}
