@@ -16,7 +16,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', tru
     goUserManage: () => Promise<void>;
 }>) {
     const { avatar, isLoggedIn, refreshing, mobile, mobileCount, isRoot, oakExecuting, tokenId } = props.data;
-    const { doLogin, t, goMyMobile, goUserManage, clean, execute, updateItem } = props.method;
+    const { doLogin, t, goMyMobile, goUserManage, clean, execute, updateItem } = props.methods;
     const mobileText = mobileCount && mobileCount > 1 ? `${mobileCount}条手机号` : (mobile || '未设置');
     const [showDrawer, setShowDrawer] = useState(false);
     const [nickname, setNickname] = useState(undefined as string | undefined);

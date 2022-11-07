@@ -15,7 +15,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'address', f
     callAreaPicker: () => void;
     confirm: (data: EntityDict['address']['Update']['data']) => Promise<void>;
 }>) {
-    const { callAreaPicker, t, confirm } = props.method;
+    const { callAreaPicker, t, confirm } = props.methods;
     const { data } = props;
 
     const inputName = useRef<InputRef>(null);

@@ -16,7 +16,7 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
     resetEnv: (data: Record<string, any>) => void;
 }>) {
     const { placement = 'bottom', style = {} } = props.data;
-    const { printCachedStore, printDebugStore, printRunningTree, resetInitialData, downloadEnv, resetEnv } = props.method;
+    const { printCachedStore, printDebugStore, printRunningTree, resetInitialData, downloadEnv, resetEnv } = props.methods;
     const [visible, setVisible] = useState(false);
     return (
         <React.Fragment>

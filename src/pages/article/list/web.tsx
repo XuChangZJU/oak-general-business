@@ -28,7 +28,7 @@ export default function render(props: WebComponentProps<EntityDict, 'article', t
     const { pagination, articles = [], oakLoading, searchValue } = props.data;
     const { pageSize, total, currentPage } = pagination || {};
     const { t, goUpsert, goDetailById, goUpsertById, searchConfirm,
-        searchValueChange, setCurrentPage, setPageSize, onRemove } = props.method;
+        searchValueChange, setCurrentPage, setPageSize, onRemove } = props.methods;
 
     return (
         <div className={Style.container}>

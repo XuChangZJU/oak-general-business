@@ -13,7 +13,7 @@ export default function render(props: WebComponentProps<EntityDict, 'mobile', tr
     goAddMobile: () => Promise<void>;
 }>) {
     const { mobiles } = props.data;
-    const { goAddMobile, removeItem, execute } = props.method;
+    const { goAddMobile, removeItem, execute } = props.methods;
     const [ idToRemove, setIdToRemove ] = useState(undefined as undefined | string);
     return (
         <div className={Style.container}>

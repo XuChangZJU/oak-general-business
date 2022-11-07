@@ -12,7 +12,7 @@ export default function render(props: WebComponentProps<EntityDict, 'area', true
 }>) {
     const {
         data: { areas },
-        method: { onItemClicked, t }
+        methods: { onItemClicked, t }
     } = props;
     if (areas && areas.length > 0) {
         return (

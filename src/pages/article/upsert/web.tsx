@@ -50,7 +50,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
     addExtraFile: (file: EntityDict['extraFile']['CreateSingle']['data']) => Promise<void>;
     uploadFile: (file: EntityDict['extraFile']['CreateSingle']['data']) => Promise<{ bucket: string, url: string}>;
 }>) {
-    const { method, data } = props;
+    const { methods: method, data } = props;
     const { t, setEditor, confirm, preview, addExtraFile, uploadFile } = method;
     const {
         editor,

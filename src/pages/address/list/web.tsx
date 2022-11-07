@@ -11,7 +11,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'address', t
     gotoUpsert: (id: string) => void;
     goNewAddress: () =>void;
 }>) {
-    const { method, data } = props;
+    const { methods: method, data } = props;
     const { addresses } = data;
     if (addresses && addresses.length > 0) {
         return (

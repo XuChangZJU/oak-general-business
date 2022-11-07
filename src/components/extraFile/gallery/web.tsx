@@ -69,7 +69,7 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
     } = props.data;
     const {
         onPickByWeb, onDeleteByWeb,
-    } = props.method;
+    } = props.methods;
 
     const [newUploadFiles, setNewUploadFiles] = useState([] as UploadFile[]);
 
