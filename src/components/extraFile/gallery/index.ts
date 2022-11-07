@@ -47,9 +47,6 @@ export default OakComponent({
         externalClasses: ['l-class', 'l-item-class'],
     },
     properties: {
-        oakFullpath: String,
-        oakParent: String,
-        oakPath: String,
         removeLater: Boolean,
         autoUpload: {
             type: Boolean,

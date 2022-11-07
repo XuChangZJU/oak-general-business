@@ -11,11 +11,24 @@ import {
 } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import Style from './web.module.less';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../general-app-domain';
 
 
-export default function render(this: any) {
-    const { pagination, articles = [], oakLoading, searchValue } = this.state;
+export default function render(props: WebComponentProps<EntityDict, 'article', true, {
+    searchValue: string; articles: EntityDict['article']['Schema'][]; pagination: any;
+}, {
+    goUpsert: () => Promise<void>;
+    goDetailById: (id: string) => Promise<void>;
+    goUpsertById: (id: string) => Promise<void>;
+    searchValueChange: (v: string) => Promise<void>;
+    searchConfirm: () => Promise<void>;
+    onRemove: (id: string) => Promise<void>;
+}>) {
+    const { pagination, articles = [], oakLoading, searchValue } = props.data;
     const { pageSize, total, currentPage } = pagination || {};
+    const { t, goUpsert, goDetailById, goUpsertById, searchConfirm,
+        searchValueChange, setCurrentPage, setPageSize, onRemove } = props.method;
 
     return (
         <div className={Style.container}>
@@ -25,10 +38,10 @@ export default function render(this: any) {
                         <Button
                             type="primary"
                             onClick={() => {
-                                this.goUpsert();
+                                goUpsert();
                             }}
                         >
-                            {this.t('action.add')}
+                            {t('action.add')}
                         </Button>
                     </Space>
                 </Col>
@@ -38,11 +51,11 @@ export default function render(this: any) {
                         value={searchValue}
                         allowClear
                         onChange={(e) => {
-                            this.searchValueChange(e.target.value);
+                            searchValueChange(e.target.value);
                         }}
                         suffix={<SearchOutlined />}
                         onPressEnter={(e) => {
-                            this.searchConfirm();
+                            searchConfirm();
                         }}
                     />
                 </Col>
@@ -63,26 +76,26 @@ export default function render(this: any) {
                     },
                     {
                         dataIndex: 'iState',
-                        title: this.t('book:attr.iState'),
+                        title: t('book:attr.iState'),
                         render: (value, record, index) => {
                             return (
                                 <Tag color="processing">
-                                    {this.t(`book:v.iState.${value}`)}
+                                    {t(`book:v.iState.${value}`)}
                                 </Tag>
                             );
                         },
                     },
                     {
                         dataIndex: 'title',
-                        title: this.t('article:attr.title'),
+                        title: t('article:attr.title'),
                     },
                     {
                         dataIndex: 'author',
-                        title: this.t('article:attr.author'),
+                        title: t('article:attr.author'),
                     },
                     {
                         dataIndex: 'abstract',
-                        title: this.t('article:attr.abstract'),
+                        title: t('article:attr.abstract'),
                     },
                     {
                         dataIndex: 'op',
@@ -95,7 +108,7 @@ export default function render(this: any) {
                                     <Button
                                         type="link"
                                         onClick={() => {
-                                            this.goDetailById(record.id);
+                                            goDetailById(record.id);
                                         }}
                                     >
                                         详情
@@ -103,7 +116,7 @@ export default function render(this: any) {
                                     <Button
                                         type="link"
                                         onClick={() => {
-                                            this.goUpsertById(record.id);
+                                            goUpsertById(record.id);
                                         }}
                                     >
                                         编辑
@@ -117,7 +130,7 @@ export default function render(this: any) {
                                                 okText: '确定',
                                                 cancelText: '取消',
                                                 onOk: async (e) => {
-                                                    this.onRemove(record.id);
+                                                    onRemove(record.id);
                                                     modal!.destroy!();
                                                 },
                                                 onCancel: (e) => {
@@ -139,10 +152,10 @@ export default function render(this: any) {
                     pageSize,
                     current: currentPage,
                     onShowSizeChange: (current: number, pageSize: number) => {
-                        this.setPageSize(pageSize);
+                        setPageSize(pageSize);
                     },
                     onChange: (current: number) => {
-                        this.setCurrentPage(current);
+                        setCurrentPage(current);
                     },
                 }}
             />

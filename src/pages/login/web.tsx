@@ -11,6 +11,8 @@ import {
     ReloadOutlined,
 } from '@ant-design/icons';
 import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../general-app-domain';
 
 import classNames from 'classnames';
 import Style from './web.module.less';

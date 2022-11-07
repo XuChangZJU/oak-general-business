@@ -1,17 +1,27 @@
 import React from 'react';
-import { List } from 'antd';
+import { List } from 'antd-mobile';
 import Style from './web.module.less';
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
 
 
-export default function render(this: any) {
-    const { areas } = this.state;
-    if (areas?.length > 0) {
+export default function render(props: WebComponentProps<EntityDict, 'area', true, {
+    areas?: EntityDict['area']['OpSchema'][];
+}, {
+    onItemClicked: (area: EntityDict['area']['OpSchema']) => Promise<void>;
+}>) {
+    const {
+        data: { areas },
+        method: { onItemClicked, t }
+    } = props;
+    if (areas && areas.length > 0) {
         return (
             <List>
-                {areas.map((area: Record<string, any>) => (
+                {areas.map((area) => (
                     <List.Item
                         key={area.id}
-                        onClick={() => this.onItemClicked(area)}
+                        onClick={() => onItemClicked(area)}
+                        arrow
                     >
                         {area.name}
                     </List.Item>
@@ -21,7 +31,7 @@ export default function render(this: any) {
     }
     return (
         <div className={Style.container}>
-            {this.t('common:noData')}
+            {t('common:noData')}
         </div>
     );
 }

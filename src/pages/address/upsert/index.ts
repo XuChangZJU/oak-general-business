@@ -1,4 +1,4 @@
-import { OakInputIllegalException } from "oak-domain/lib/types";
+import { EntityDict } from '../../../general-app-domain';
 
 export default OakComponent({
     entity: 'address',
@@ -38,19 +38,32 @@ export default OakComponent({
     methods: {
         setValue(input: any) {
             const { dataset, value } = this.resolveInput(input);
-            this.setUpdateData(dataset!.attr, value);
+            const { attr } = dataset!
+            this.update({
+                [attr]: value,
+            });
         },
         callAreaPicker() {
-            this.callPicker('area', {
+            const event = 'address:upsert:selectArea';
+            this.sub(event, async ({ id }: {id: string}) => {
+                await this.update({
+                    areaId: id,
+                });
+                this.navigateBack();
+            });
+            this.navigateTo({
+                url: '/pickers/area',
+            }, {
+                itemSelectedEvent: event,
                 depth: 3,
             });
         },
-        async confirm() {
-            await this.execute();
+        async confirm(data: EntityDict['address']['Update']['data']) {
+            await this.execute(data);
             this.navigateBack();
         },
         reset() {
-            this.cleanOperation();
+            this.clean();
         },
     },
 });

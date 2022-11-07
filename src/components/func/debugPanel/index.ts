@@ -60,10 +60,10 @@ export default OakComponent({
         },
         downloadEnv() {
             const data = this.features.localStorage.loadAll();
-            
+            return data;            
         },
-        uploadEnv() {
-
+        resetEnv(data: Record<string, any>) {
+            this.features.localStorage.resetAll(data);
         }
     },
 });

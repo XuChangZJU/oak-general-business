@@ -40,7 +40,7 @@ export default OakComponent({
         'editor,content': function (editor, content) {
             if (editor && content) {
                 editor.setHtml(content);
-                this.setHtml(content);
+                // this.setHtml(content);
             }
         },
     },
@@ -48,7 +48,7 @@ export default OakComponent({
         ready() {
             const { entityId, entity, oakId } = this.props;
             if (!oakId) {
-                this.setMultiAttrUpdateData({
+                this.update({
                     entityId,
                     entity,
                 });
@@ -91,21 +91,18 @@ export default OakComponent({
                 throw error;
             }
         },
+
+        uploadFile(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
+            return this.features.extraFile.upload(extraFile);
+        },
+
         setEditor(editor: IDomEditor | null) {
             this.setState({
                 editor,
             });
         },
-        async setHtml(html: string) {
-            this.setState({
-                html,
-            });
-            if (html && html !== '<p><br></p>') {
-                await this.setUpdateData('content', html);
-            }
-        },
-        async confirm() {
-            const { content } = this.state;
+        async confirm(data: EntityDict['article']['Update']['data']) {
+            const { content } = data;
             if (!content || content === '<p><br></p>') {
                 this.setState({
                     contentTip: true,
@@ -113,15 +110,15 @@ export default OakComponent({
 
                 return;
             }
-            await this.execute();
+            await this.execute(data);
             this.navigateBack();
         },
         async reset() {
             // 重置
-            this.cleanOperation();
+            this.clean();
         },
-        preview() {
-            const { html, title, author } = this.state;
+        preview(data: EntityDict['article']['Update']['data']) {
+            const { html, title, author } = data;
             this.save(
                 'article_html',
                 JSON.stringify({

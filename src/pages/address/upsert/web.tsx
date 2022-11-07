@@ -1,131 +1,146 @@
-import React from 'react';
-import { Button, Input, Form } from 'antd';
-import { RightOutlined  } from '@ant-design/icons';
+import { useState, useRef } from 'react';
+import { Button, Input, Form, TextArea, List } from 'antd-mobile';
+import { RightOutlined } from '@ant-design/icons';
 import Style from './web.module.less';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../general-app-domain';
+import { OakInputIllegalException } from 'oak-domain/lib/types';
+import assert from 'assert';
+import { InputRef } from 'antd-mobile/es/components/input';
+import { TextAreaRef } from 'antd-mobile/es/components/text-area';
 
-export default function Render(this: any) {
-    const PickArea = (
-        <Button
-            type="text"
-            icon={<RightOutlined style={{ fontSize: 12 }} />}
-            onClick={() => this.callAreaPicker()}
-        />
-    );
-    console.log(this.state.name);
+export default function Render(props: WebComponentProps<EntityDict, 'address', false, {
+    name?: string; phone?: string; districtName?: string; areaText?: string; detail?: string;
+}, {
+    callAreaPicker: () => void;
+    confirm: (data: EntityDict['address']['Update']['data']) => Promise<void>;
+}>) {
+    const { callAreaPicker, t, confirm } = props.method;
+    const { data } = props;
+
+    const inputName = useRef<InputRef>(null);
+    const inputPhone = useRef<InputRef>(null);
+    const inputDetail = useRef<TextAreaRef>(null);
+    const [name, setName] = useState(undefined as undefined | string);
+    const [phone, setPhone] = useState(undefined as undefined | string);
+    const [detail, setDetail] = useState(undefined as undefined | string);
+    const [help, setHelp] = useState({} as Record<string, string>);
+
+    const nameValue = name === undefined ? data.name : name;
+    const phoneValue = phone === undefined ? data.phone : phone;
+    const detailValue = detail === undefined ? data.detail : detail;
+
+    const localDirty = phone && phone !== data.phone || name && name !== data.name || detail && detail !== data.detail;
+
     return (
         <div className={Style.container}>
-        <Input
-            placeholder="姓名2"
-            onChange={(e) => this.setUpdateData('name', e.target.value)}
-            value={this.state.name}
-            data-attr="name"
-            status={
-                this.state.oakFocused?.attr === 'name'
-                    ? 'error'
-                    : undefined
-            }
-        />
-            <Form colon={false} layout="vertical">
+            <Form layout="horizontal">
                 <Form.Item
-                    label={this.t('address:attr.name')}
+                    label={t('address:attr.name')}
                     name="name"
-                    help={
-                        this.state.oakFocused?.attr === 'name'
-                            ? this.state.oakFocused.message
-                            : undefined
-                    }
+                    help={help.name}
                 >
-                    <Input
-                        placeholder="姓名"
-                        onChange={(e) => this.setUpdateData('name', e.target.value)}
-                        value={this.state.name}
-                        data-attr="name"
-                        status={
-                            this.state.oakFocused?.attr === 'name'
-                                ? 'error'
-                                : undefined
-                        }
-                    />
+                    <>
+                        <Input
+                            placeholder="姓名"
+                            onChange={(v) => setName(v)}
+                            value={nameValue}
+                            data-attr="name"
+                            ref={inputName}
+                        />
+                    </>
                 </Form.Item>
                 <Form.Item
-                    label={this.t('address:attr.phone')}
+                    label={t('address:attr.phone')}
                     name="phone"
-                    help={
-                        this.state.oakFocused?.attr === 'phone'
-                            ? this.state.oakFocused.message
-                            : undefined
-                    }
+                    help={help.phone}
                 >
-                    <Input
-                        placeholder="手机号"
-                        onChange={(e) => this.setUpdateData('phone', e.target.value)}
-                        value={this.state.phone}
-                        data-attr="phone"
-                        status={
-                            this.state.oakFocused?.attr === 'phone'
-                                ? 'error'
-                                : undefined
-                        }
-                    />
+                    <>
+                        <Input
+                            placeholder="手机号"
+                            onChange={(v) => setPhone(v)}
+                            value={phoneValue}
+                            data-attr="phone"
+                            ref={inputPhone}
+                        />
+                    </>
                 </Form.Item>
                 <Form.Item
-                    label={this.t('address:attr.area')}
+                    label={t('address:attr.area')}
                     name="areaText"
-                    help={
-                        this.state.oakFocused?.attr === 'areaId'
-                            ? this.state.oakFocused.message
-                            : undefined
-                    }
+                    arrow
+                    onClick={() => callAreaPicker()}
+                /* help={
+                    this.state.oakFocused?.attr === 'areaId'
+                        ? this.state.oakFocused.message
+                        : undefined
+                } */
                 >
-                    <Input
-                        addonBefore={PickArea}
-                        placeholder="所在地区"
-                        onChange={this.setValue}
-                        value={this.state.areaText}
-                        data-attr="areaText"
-                        disabled={true}
-                        status={
-                            this.state.oakFocused?.attr === 'areaId'
-                                ? 'error'
-                                : undefined
-                        }
-                    />
+                    <>
+                        <Input
+                            placeholder="所在地区"
+                            value={data.areaText}
+                            data-attr="areaText"
+                            readOnly
+                        />
+                    </>
                 </Form.Item>
                 <Form.Item
-                    label={this.t('address:attr.detail')}
+                    label={t('address:attr.detail')}
                     name="detail"
-                    help={
-                        this.state.oakFocused?.attr === 'detail'
-                            ? this.state.oakFocused.message
-                            : undefined
-                    }
+                    help={help.detail}
                 >
-                    <Input.TextArea
-                        maxLength={100}
-                        onChange={(e) =>
-                            this.setUpdateData('detail', e.target.value)
-                        }
-                        value={this.state.detail}
-                        data-attr="detail"
-                        placeholder="详细地址"
-                        status={
-                            this.state.oakFocused?.attr === 'detail'
-                                ? 'error'
-                                : undefined
-                        }
-                    />
+                    <>
+                        <TextArea
+                            maxLength={100}
+                            onChange={(v) => setDetail(v)}
+                            value={detailValue}
+                            data-attr="detail"
+                            placeholder="详细地址"
+                            ref={inputDetail}
+                            showCount
+                        />
+                    </>
                 </Form.Item>
             </Form>
             <div style={{ flex: 1 }} />
             <Button
                 block
-                disabled={this.state.oakAllowExecuting !== true}
-                type="primary"
-                onClick={() => {
-                    this.confirm();
+                disabled={!data.oakDirty && !localDirty}
+                color="primary"
+                onClick={async () => {
+                    try {
+                        await confirm({ phone, name, detail })
+                    }
+                    catch (err) {
+                        if (err instanceof OakInputIllegalException) {
+                            const [attr] = err.getAttributes();
+                            switch (attr) {
+                                case 'name': {
+                                    inputName.current?.focus();
+                                    break;
+                                }
+                                case 'phone': {
+                                    inputPhone.current?.focus();
+                                    break;
+                                }
+                                case 'detail': {
+                                    inputDetail.current?.focus();
+                                    break;
+                                }
+                                default: {
+                                    assert(false);
+                                }
+                            }
+                            setHelp({
+                                [attr]: err.message,
+                            });
+                        }
+                        throw err;
+                    }
                 }}
             >
-                {this.t('common:action.confirm')}
+                {t('common:action.confirm')}
             </Button>
         </div>
     );

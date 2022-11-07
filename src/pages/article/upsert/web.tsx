@@ -1,12 +1,13 @@
-import React from 'react';
-import { Alert, Card, Button, Row, Col, Space, Affix } from 'antd';
+import { useState } from 'react';
+import { Alert, Card, Button, Row, Col, Space, Affix, Input } from 'antd';
 import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
 import { IToolbarConfig } from '@wangeditor/editor';
 import { DeduceCreateOperationData } from 'oak-domain/lib/types';
 import { EntityDict } from './../../../general-app-domain';
 import OakGallery from './../../../components/extraFile/gallery';
-import Input from './../../../components/common/input';
+import { WebComponentProps } from 'oak-frontend-base';
+
 
 import Style from './web.module.less';
 
@@ -39,19 +40,32 @@ function customCheckImageFn(
     // 3. 返回 undefined（即没有任何返回），说明检查未通过，编辑器会阻止插入。但不会提示任何信息
 }
 
-export default function render(this: any) {
-    const { features, addExtraFile } = this;
+export default function Render(props: WebComponentProps<EntityDict, 'article', false, {
+    editor: any; title?: string; author?: string; abstract?: string; content?: string; 
+    html?: string; origin?: string;
+}, {
+    setEditor: (editor: any) => void;
+    confirm: (data: EntityDict['article']['Update']['data']) => void;
+    preview: () => void;
+    addExtraFile: (file: EntityDict['extraFile']['CreateSingle']['data']) => Promise<void>;
+    uploadFile: (file: EntityDict['extraFile']['CreateSingle']['data']) => Promise<{ bucket: string, url: string}>;
+}>) {
+    const { method, data } = props;
+    const { t, setEditor, confirm, preview, addExtraFile, uploadFile } = method;
     const {
         editor,
-        title,
-        author,
-        abstract,
-        content,
-        html,
         origin,
-        contentTip,
         oakFullpath,
-    } = this.state;
+    } = data;
+    const [title, setTitle] = useState(undefined as undefined | string);
+    const titleValue = title || data.title;
+    const [author, setAuthor] = useState(undefined as undefined | string);
+    const authorValue = author || data.author;
+    const [contentTip, setContentTip] = useState(false);
+    const [html, setHtml] = useState(undefined as undefined | string);
+    const htmlValue = html || data.html;
+    const [abstract, setAbstract] = useState(undefined as undefined | string);
+    const abstractValue = abstract || data.abstract;
 
     return (
         <div className={Style.container}>
@@ -71,49 +85,35 @@ export default function render(this: any) {
                         <div className={Style.editorContainer}>
                             <div className={Style.titleContainer}>
                                 <Input
-                                    onChange={(e) => {
-                                        this.setUpdateData(
-                                            'title',
-                                            e.target.value
-                                        );
-                                    }}
-                                    value={title}
-                                    placeholder={this.t('placeholder.title')}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    value={titleValue}
+                                    placeholder={t('placeholder.title')}
                                     size="large"
                                     maxLength={64}
-                                    suffix={`${[...(title || '')].length}/64`}
+                                    suffix={`${[...(titleValue || '')].length}/64`}
                                     className={Style.titleInput}
                                 />
                             </div>
                             <div className={Style.authorContainer}>
                                 <Input
-                                    onChange={(e) => {
-                                        this.setUpdateData(
-                                            'author',
-                                            e.target.value
-                                        );
-                                    }}
-                                    value={author}
-                                    placeholder={this.t('placeholder.author')}
+                                    onChange={(e) => setAuthor(e.target.value)}
+                                    value={authorValue}
+                                    placeholder={t('placeholder.author')}
                                     className={Style.input}
                                 />
                             </div>
                             {contentTip && (
                                 <Alert
                                     type="info"
-                                    message={this.t('tips.content')}
+                                    message={t('tips.content')}
                                     closable
-                                    onClose={() => {
-                                        this.setState({
-                                            contentTip: false,
-                                        });
-                                    }}
+                                    onClose={() => setContentTip(false)}
                                 />
                             )}
                             <Editor
                                 defaultConfig={{
                                     // TS 语法
-                                    placeholder: this.t('placeholder.content'),
+                                    placeholder: t('placeholder.content'),
                                     MENU_CONF: {
                                         // fontSize: {
                                         //     fontSizeList: [
@@ -131,7 +131,7 @@ export default function render(this: any) {
                                                 insertFn: InsertFnType
                                             ) {
                                                 // TS 语法
-                                                // file 即选中的文件
+                                                // file 即选oi中的文件
                                                 const { name, size, type } =
                                                     file;
                                                 const extension =
@@ -148,23 +148,18 @@ export default function render(this: any) {
                                                     origin: origin,
                                                     type: 'image',
                                                     tag1: 'source',
-                                                    objectId:
-                                                        await generateNewId(),
+                                                    objectId: await generateNewId(),
                                                     filename,
                                                     size,
                                                     extension,
                                                     bucket: '',
                                                     id: await generateNewId(),
-                                                } as DeduceCreateOperationData<
-                                                    EntityDict['extraFile']['Schema']
-                                                >;
+                                                } as any;
 
                                                 try {
                                                     // 自己实现上传，并得到图片 url alt href
                                                     const { url, bucket } =
-                                                        await features.extraFile.upload(
-                                                            extraFile
-                                                        );
+                                                        await uploadFile(extraFile);
                                                     extraFile.bucket = bucket;
                                                     extraFile.extra1 = null;
                                                     await addExtraFile(
@@ -209,21 +204,14 @@ export default function render(this: any) {
                                                     extension,
                                                     bucket: '',
                                                     id: await generateNewId(),
-                                                } as DeduceCreateOperationData<
-                                                    EntityDict['extraFile']['Schema']
-                                                >;
+                                                } as any;
 
                                                 try {
                                                     // 自己实现上传，并得到图片 url alt href
-                                                    const { url, bucket } =
-                                                        await features.extraFile.upload(
-                                                            extraFile
-                                                        );
+                                                    const { url, bucket } = await uploadFile(extraFile);
                                                     extraFile.bucket = bucket;
                                                     extraFile.extra1 = null;
-                                                    await addExtraFile(
-                                                        extraFile
-                                                    );
+                                                    await addExtraFile(extraFile);
                                                     // 最后插入图片
                                                     insertFn(
                                                         'http://' + url,
@@ -236,10 +224,11 @@ export default function render(this: any) {
                                         },
                                     },
                                 }}
-                                value={html}
-                                onCreated={this.setEditor}
+                                value={htmlValue}
+                                onCreated={setEditor}
                                 onChange={(editor) => {
-                                    this.setHtml(editor.getHtml());
+                                    // setHtml(editor.getHtml());
+                                    setHtml(editor.getHtml());
                                 }}
                                 mode="default"
                                 style={{
@@ -281,16 +270,9 @@ export default function render(this: any) {
                                                     minRows: 4,
                                                 }}
                                                 maxLength={120}
-                                                placeholder={this.t(
-                                                    'placeholder.abstract'
-                                                )}
-                                                onChange={(e) => {
-                                                    this.setUpdateData(
-                                                        'abstract',
-                                                        e.target.value
-                                                    );
-                                                }}
-                                                value={abstract || ''}
+                                                placeholder={t('placeholder.abstract')}
+                                                onChange={(e) => setAbstract(e.target.value)}
+                                                value={abstractValue || ''}
                                             ></Input.TextArea>
                                         </Col>
                                     </Row>
@@ -308,14 +290,19 @@ export default function render(this: any) {
                                             <Button
                                                 type="primary"
                                                 onClick={() => {
-                                                    this.confirm();
+                                                    confirm({
+                                                        title,
+                                                        author,
+                                                        abstract,
+                                                        content: html,
+                                                    });
                                                 }}
                                             >
                                                 保存
                                             </Button>
                                             <Button
                                                 onClick={() => {
-                                                    this.preview();
+                                                    preview();
                                                 }}
                                             >
                                                 预览

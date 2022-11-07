@@ -24,6 +24,7 @@ export default OakComponent({
 
     properties: {
         depth: Number,
+        itemSelectedEvent: String,
     },
     methods: {
         onWechatMpItemClicked(input: any) {
@@ -43,9 +44,13 @@ export default OakComponent({
                         },
                     },
                 ]);
-            } else {
-                // todo 需要修改
-                // this.setForeignKey(id!);
+            } else if (this.props.itemSelectedEvent){
+                this.pub(this.props.itemSelectedEvent, {
+                    id: item.id,
+                });
+            }
+            else {
+                console.log('area selected:', item);
             }
         },
     },

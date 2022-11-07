@@ -1,17 +1,21 @@
 import React from 'react';
 import Style from './web.module.less';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../general-app-domain';
 
 
 
-export default function render(this: any) {
-    const { t, features } = this;
+export default function render(props: WebComponentProps<EntityDict, 'article', false, {
+    editor: any; title?: string; author?: string; abstract?: string; content?: string; 
+    html?: string; origin?: string;
+}, {}>) {
     const {
         editor,
         title,
         author,
         abstract,
         content,
-    } = this.state;
+    } = props.data;
 
     return (
         <div className={Style.container}>
