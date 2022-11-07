@@ -44,7 +44,7 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
     systemConfig: EntityDict['system']['OpSchema']['config']; disableInsert?: boolean;
 
 }, {
-    onPickByWeb: (files: UploadFile[]) => void;
+    onPickByWeb: (files: UploadFile[], callback?: (file: any, status: string) => void) => void;
     onDeleteByWeb: (file: UploadFile) => void;
 }>) {
     const {
@@ -71,6 +71,7 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
         onPickByWeb, onDeleteByWeb,
     } = props.methods;
 
+    // 这里的逻辑可能和原来有点不对
     const [newUploadFiles, setNewUploadFiles] = useState([] as UploadFile[]);
 
     const listType = getListType(theme);
@@ -237,10 +238,10 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
                             <Button
                                 type="primary"
                                 onClick={() => {
-                                    this.onWebPick(
+                                    onPickByWeb(
                                         newUploadFiles,
                                         (file: any, status: string) => {
-                                            this.setNewUploadFiles(
+                                            setNewUploadFiles(
                                                 file,
                                                 status
                                             );

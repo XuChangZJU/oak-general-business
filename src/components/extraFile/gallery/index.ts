@@ -235,7 +235,7 @@ export default OakComponent({
                 fileType,
                 id: await generateNewId(),
                 entityId,
-            } as DeduceCreateOperationData<EntityDict['extraFile']['Schema']>;
+            } as EntityDict['extraFile']['CreateSingle']['data'];
             // autoUpload为true, 选择直接上传七牛，再提交extraFile
             if (autoUpload) {
                 if (callback) {
@@ -261,17 +261,11 @@ export default OakComponent({
                     throw error;
                 }
 
-                await this.addOperation({
-                    action: 'create',
-                    data: updateData,
-                });
+                await this.addItem(updateData);
                 await this.execute();
             } else {
-                await this.addOperation(
-                    {
-                        action: 'create',
-                        data: updateData,
-                    },
+                await this.addItem(
+                    updateData,
                     async () => {
                         if (updateData.bucket) {
                             // 说明本函数已经执行过了
@@ -319,13 +313,7 @@ export default OakComponent({
             const { id, bucket } = value;
 
             if (this.props.removeLater || (origin !== 'unknown' && !bucket)) {
-                await this.addOperation({
-                    action: 'remove',
-                    data: {},
-                    filter: {
-                        id,
-                    },
-                });
+                await this.removeItem(id);
             } else {
                 const result = await wx.showModal({
                     title: '确认删除吗',
@@ -333,13 +321,7 @@ export default OakComponent({
                 });
                 const { confirm } = result;
                 if (confirm) {
-                    await this.addOperation({
-                        action: 'remove',
-                        data: {},
-                        filter: {
-                            id,
-                        },
-                    });
+                    await this.removeItem(id)
                     await this.execute();
                 }
             }
@@ -348,13 +330,7 @@ export default OakComponent({
             const { id, bucket } = value;
             // 如果 removeLater为true 或 origin === 'qiniu' 且 bucket不存在
             if (this.props.removeLater || (origin !== 'unknown' && !bucket)) {
-                await this.addOperation({
-                    action: 'remove',
-                    data: {},
-                    filter: {
-                        id,
-                    },
-                });
+                await this.removeItem(id);
             } else {
                 const confirm = Dialog.confirm({
                     title: '确认删除当前文件？',
@@ -362,13 +338,7 @@ export default OakComponent({
                     cancelText: '取消',
                     okText: '确定',
                     onOk: async (e: any) => {
-                        await this.addOperation({
-                            action: 'remove',
-                            data: {},
-                            filter: {
-                                id,
-                            },
-                        });
+                        await this.removeItem(id);
                         await this.execute();
                         confirm.destroy();
                     },
