@@ -75,6 +75,7 @@ const Location = (props: LocationProps) => {
     const [searchValue, setSearchValue] = useState<string>('');
     const [refresh, setRefresh] = useState(true); // 点击poi不触发setPositionPickerResult
     const [mode, setMode] = useState<Mode>('dragMap');
+    const [city, setCity] = useState<string>('全国');
 
     const [map, setMap] = useState<AMap.Map>();
 
@@ -97,17 +98,34 @@ const Location = (props: LocationProps) => {
         }
     };
 
+    const citySearch = (): Promise<AMap.CitySearchResult> => {
+        return new Promise((resolve, reject) => {
+            window.AMap?.plugin(['AMap.CitySearch' as AMap.ControlType], () => {
+                const citySearchFn = new window.AMap.CitySearch();
+                citySearchFn.getLocalCity(
+                    (status: string, result: AMap.CitySearchResult) => {
+                        if (status === 'complete') {
+                            resolve(result);
+                        } else {
+                            reject(result);
+                        }
+                    }
+                );
+            });
+        });
+    };
+
     const placeSearch = (value: string): Promise<AMap.SearchResult> => {
         // window.AMap存在再搜素
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             window.AMap?.plugin(['AMap.PlaceSearch'], () => {
-                const placeSearch = new window.AMap.PlaceSearch({
+                const placeSearchFn = new window.AMap.PlaceSearch({
                     pageSize: 20,
                     pageIndex: 1,
                     extensions: 'all',
-                    city: '全国', //城市
+                    city: city, //城市
                 });
-                placeSearch.search(value, (status, result) => {
+                placeSearchFn.search(value, (status, result) => {
                     if (status === 'complete') {
                         resolve(result);
                     } else {
@@ -182,7 +200,7 @@ const Location = (props: LocationProps) => {
                     setShow(true);
                     setSearchLoading(false);
                     setPois(pois);
-                    setCurrentPoi(pois[0]);
+                    // setCurrentPoi(pois[0]);
                 },
                 (error) => {
                     setSearchResult(undefined);
@@ -210,6 +228,15 @@ const Location = (props: LocationProps) => {
     useEffect(() => {
         if (visible && map && loadUI) {
             setCenter(map.getCenter());
+            citySearch().then(
+                (result) => {
+                    if (result?.info === 'OK') {
+                        setCity(result.city);
+                    }
+                   
+
+                }
+            );
         }
     }, [visible, map, loadUI]);
 
@@ -230,6 +257,7 @@ const Location = (props: LocationProps) => {
             title="选择位置"
             {...dialogProps}
             open={visible}
+            destroyOnClose={false}
             onCancel={() => {
                 onClose && onClose();
                 clearData();

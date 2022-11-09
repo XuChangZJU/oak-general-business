@@ -6,10 +6,18 @@ declare namespace AMap {
 
         search(
             keyword: string,
-            callback: (status: string, result: SearchResult) => void
+            callBack: (status: string, result: SearchResult) => void
         ): void;
 
         setType(type: string): void;
+    }
+
+    class CitySearch {
+        constructor();
+
+        getLocalCity(
+            callBack: (status: string, result: CitySearchResult) => void
+        ): void;
     }
 
     type PlaceSearchOptions = {
@@ -74,12 +82,12 @@ declare namespace AMap {
         setCity?(city: string): void;
         getLocation?(
             address: String,
-            callback: (status: string, result: GeocodeResult) => void
+            callBack: (status: string, result: GeocodeResult) => void
         ): void;
 
         getAddress?(
             location: LngLat | Array<LngLat>,
-            callback: (status: string, result: ReGeocodeResult) => void
+            callBack: (status: string, result: ReGeocodeResult) => void
         ): void;
     }
 
@@ -129,4 +137,23 @@ declare namespace AMap {
         info: string;
         regeocode: ReGeocode;
     };
+
+    type CitySearchResult = {
+        info: string;
+        adcode: string;
+        city: string;
+        infocode: string;
+        province: string;
+        rectangle: string;
+        status: string;
+        bounds: AMap.Bounds;
+    };
+
+    type ControlType = AMap.ControlType | 'AMap.CitySearch';
+
+    //   function plugin(
+    //       ControlType: Array<ControlType>,
+    //       callBack: () => void
+    //   ): void;
+
 }
