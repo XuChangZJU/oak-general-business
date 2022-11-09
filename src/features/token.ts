@@ -138,7 +138,11 @@ export class Token<
     private rwLock: RWLock;
     private cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
     private storage: LocalStorage;
-    private aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
+    private aspectWrapper: AspectWrapper<
+        ED,
+        Cxt,
+        AD & CommonAspectDict<ED, Cxt>
+    >;
 
     constructor(
         aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
@@ -163,18 +167,15 @@ export class Token<
                 /**
                  * 这里不能用cache.refresh，以防action再触发页面重渲染，造成递归acquire X lock
                  */
-                const { result } = await this.aspectWrapper.exec(
-                    'select',
-                    {
-                        entity: 'token',
-                        selection: {
-                            data: tokenProjection,
-                            filter: {
-                                id: this.tokenValue!,
-                            },
+                const { result } = await this.aspectWrapper.exec('select', {
+                    entity: 'token',
+                    selection: {
+                        data: tokenProjection,
+                        filter: {
+                            id: this.tokenValue!,
                         },
-                    } as any
-                );
+                    },
+                } as any);
                 const { data } = result;
                 this.token = data[0] as any;
             }
@@ -188,10 +189,12 @@ export class Token<
         const env = await getEnv();
         await this.rwLock.acquire('X');
         try {
-            const { result } = await this.aspectWrapper.exec(
-                'loginByMobile',
-                { password, mobile, captcha, env }
-            );
+            const { result } = await this.aspectWrapper.exec('loginByMobile', {
+                password,
+                mobile,
+                captcha,
+                env,
+            });
             this.tokenValue = result;
             this.storage.save('token:token', result);
         } catch (err) {
@@ -206,13 +209,10 @@ export class Token<
         await this.rwLock.acquire('X');
         try {
             const env = await getEnv();
-            const { result } = await this.aspectWrapper.exec(
-                'loginWechat',
-                {
-                    code,
-                    env: env as WebEnv,
-                }
-            );
+            const { result } = await this.aspectWrapper.exec('loginWechat', {
+                code,
+                env: env as WebEnv,
+            });
             this.tokenValue = result;
             this.storage.save('token:token', result);
         } catch (err) {
@@ -229,13 +229,10 @@ export class Token<
             const { code } = await wx.login();
 
             const env = await getEnv();
-            const { result } = await this.aspectWrapper.exec(
-                'loginWechatMp',
-                {
-                    code,
-                    env: env as WechatMpEnv,
-                }
-            );
+            const { result } = await this.aspectWrapper.exec('loginWechatMp', {
+                code,
+                env: env as WechatMpEnv,
+            });
             this.tokenValue = result;
             this.storage.save('token:token', result);
         } catch (err) {
@@ -303,9 +300,9 @@ export class Token<
     }
 
     async getUserInfo() {
-        const token = await this.getToken();
+        const token = await this.getToken(true);
         if (token?.user) {
-            return token.user
+            return token.user;
         }
 
         if (token?.userId) {
