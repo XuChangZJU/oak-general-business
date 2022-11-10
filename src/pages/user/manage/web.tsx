@@ -2,21 +2,27 @@ import * as React from 'react';
 import { Button, List, Tag, Avatar } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Style from './mobile.module.less';
-import { getName } from '../../../utils/randomUser'
+import { getName } from '../../../utils/randomUser';
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
 
-export default function render(this: any) {
-    const {
-        event
-    } = this.props;
-    const { stateColor, userArr } = this.state;
+export default function render(props: WebComponentProps<EntityDict, 'user', true, {
+    userArr: Array<EntityDict['user']['OpSchema'] & { avatar: string; mobile: string }>;
+    stateColor: Record<string, string>;
+}, {
+    onCellClicked: (id: string) => Promise<void>;
+    goNewUser: () => Promise<void>;
+}>) {
+    const { stateColor, userArr } = props.data;
+    const { onCellClicked, t, goNewUser } = props.methods;
     return (
         <div className={Style.container}>
             <List split={true}>
-                {userArr?.map((ele: any, index: number) => {
+                {userArr?.map((ele, index) => {
                     return (
                         <List.Item
                             key={index}
-                            onClick={() => this.onCellClicked(ele.id, event)}
+                            onClick={() => onCellClicked(ele.id)}
                         >
                             <List.Item.Meta
                                 avatar={
@@ -28,7 +34,7 @@ export default function render(this: any) {
                                     ) : (
                                         <Avatar className={Style.avatar}>
                                             <span className={Style.text}>
-                                                {getName(ele.name)}
+                                                {getName(ele.name!)}
                                             </span>
                                         </Avatar>
                                     )
@@ -52,9 +58,9 @@ export default function render(this: any) {
                                                 {ele.mobile || '--'}
                                             </span>
                                         </div>
-                                        <Tag color={stateColor[ele.userState]}>
+                                        <Tag color={stateColor[ele.userState!]}>
                                             {ele.userState
-                                                ? this.t(
+                                                ? t(
                                                       `user:v.userState.${ele.userState}`
                                                   )
                                                 : '未知'}
@@ -71,8 +77,8 @@ export default function render(this: any) {
                 <Button
                     size="large"
                     shape="circle"
-                    onClick={(event) => {
-                        this.goNewUser();
+                    onClick={() => {
+                        goNewUser();
                     }}
                     icon={<PlusOutlined />}
                 ></Button>

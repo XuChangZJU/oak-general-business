@@ -85,7 +85,8 @@ export default OakComponent({
             const { id } = dataset!;
             this.onCellClicked(id, event);
         },
-        async onCellClicked(id: any, event: any) {
+        async onCellClicked(id: any) {
+            const { event } = this.props;
             if (event) {
                 this.pub(
                     event,

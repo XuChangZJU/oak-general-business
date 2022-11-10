@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     isMobile,
     isPassword,
@@ -18,22 +18,47 @@ import classNames from 'classnames';
 import Style from './web.module.less';
 import WeChatLoginQrCode from '../../components/common/weChatLoginQrCode';
 
-export default function render(this: any) {
-    const { onlyCaptcha, onlyPassword } = this.props;
+export default function render(props: WebComponentProps<EntityDict, 'token', false, {
+    counter: number;
+    loginMode?: number;
+    loginAgreed?: boolean;
+    appId: string;
+    onlyCaptcha: boolean;
+    onlyPassword: boolean;
+    loading: boolean;
+}, {
+    sendCaptcha: (mobile: string) => Promise<void>;
+    loginByMobileWeb: (mobile: string, loginAgreed: boolean, password?: string, captcha?: string, loginMode?: number) => Promise<void>;
+    goPage: (destination: string) => Promise<void>;
+}>) {
     const {
-        mobile,
-        captcha,
-        password,
+        onlyCaptcha,
+        onlyPassword,
         counter,
-        loginMode,
         loading,
-        loginAgreed,
         appId,
-    } = this.state;
-    const validMobile = isMobile(mobile);
-    const validCaptcha = isCaptcha(captcha);
-    const validPassword = isPassword(password);
+    } = props.data;
+    const { sendCaptcha, loginByMobileWeb, t, goPage } = props.methods;
+    const [loginAgreed, setLoginAgreed] = useState(false);
+    const [mobile, setMobile] = useState(undefined as undefined | string);
+    const [captcha, setCaptcha] = useState(undefined as undefined | string);
+    const [password, setPassword] = useState(undefined as undefined | string);
+    const [loginMode, setLoginMode] = useState(1);
+
+    useEffect(() => {
+        if (props.data.loginMode && props.data.loginMode !== loginMode) {
+            setLoginMode(props.data.loginMode);
+        }
+        if (props.data.loginAgreed && props.data.loginAgreed !== loginAgreed) {
+            setLoginAgreed(props.data.loginAgreed);
+        }
+    }, [props.data.loginMode, props.data.loginAgreed]);
+
+    const validMobile = mobile && isMobile(mobile);
+    const validCaptcha = captcha && isCaptcha(captcha);
+    const validPassword = password && isPassword(password);
     const allowSubmit = validMobile && (validCaptcha || validPassword);
+
 
     const LoginPassword = (
         <Form colon={true}>
@@ -45,12 +70,8 @@ export default function render(this: any) {
                     size="large"
                     maxLength={11}
                     prefix={<MobileOutlined />}
-                    placeholder={this.t('placeholder.Mobile')}
-                    onChange={(e) => {
-                        this.setState({
-                            mobile: e.target.value,
-                        });
-                    }}
+                    placeholder={t('placeholder.Mobile')}
+                    onChange={(e) => setMobile(e.target.value)}
                     className={Style['loginbox-input']}
                 />
             </Form.Item>
@@ -61,12 +82,8 @@ export default function render(this: any) {
                     value={password}
                     prefix={<LockOutlined />}
                     type="password"
-                    placeholder={this.t('placeholder.Password')}
-                    onChange={(e) => {
-                        this.setState({
-                            password: e.target.value,
-                        });
-                    }}
+                    placeholder={t('placeholder.Password')}
+                    onChange={(e) => setPassword(e.target.value)}
                     className={Style['loginbox-input']}
                 />
             </Form.Item>
@@ -79,9 +96,9 @@ export default function render(this: any) {
                         type="primary"
                         disabled={!allowSubmit || loading}
                         loading={loading}
-                        onClick={() => this.loginByMobile()}
+                        onClick={() => loginByMobileWeb(mobile!, loginAgreed, password, captcha, loginMode)}
                     >
-                        {this.t('Login')}
+                        {t('Login')}
                     </Button>
                 </>
             </Form.Item>
@@ -97,12 +114,8 @@ export default function render(this: any) {
                     size="large"
                     maxLength={11}
                     prefix={<MobileOutlined />}
-                    placeholder={this.t('placeholder.Mobile')}
-                    onChange={(e) => {
-                        this.setState({
-                            mobile: e.target.value,
-                        });
-                    }}
+                    placeholder={t('placeholder.Mobile')}
+                    onChange={(e) => setMobile(e.target.value)}
                     className={Style['loginbox-input']}
                 />
             </Form.Item>
@@ -112,23 +125,19 @@ export default function render(this: any) {
                     value={captcha}
                     size="large"
                     maxLength={4}
-                    placeholder={this.t('placeholder.Captcha')}
-                    onChange={(e) => {
-                        this.setState({
-                            captcha: e.target.value,
-                        });
-                    }}
+                    placeholder={t('placeholder.Captcha')}
+                    onChange={(e) => setCaptcha(e.target.value)}
                     className={Style['loginbox-input']}
                     suffix={
                         <Button
                             size="small"
                             type="link"
                             disabled={!validMobile || counter > 0}
-                            onClick={() => this.sendCaptcha()}
+                            onClick={() => sendCaptcha(mobile!)}
                         >
                             {counter > 0
                                 ? `${counter}秒后可重发`
-                                : this.t('Send')}
+                                : t('Send')}
                         </Button>
                     }
                 />
@@ -141,9 +150,9 @@ export default function render(this: any) {
                     type="primary"
                     disabled={!allowSubmit || loading}
                     loading={loading}
-                    onClick={() => this.loginByMobile()}
+                    onClick={() => loginByMobileWeb(mobile!, loginAgreed, password, captcha, loginMode)}
                 >
-                    {this.t('Login')}
+                    {t('Login')}
                 </Button>
             </Form.Item>
         </Form>
@@ -202,20 +211,18 @@ export default function render(this: any) {
                     <Segmented
                         value={loginMode}
                         block
-                        onChange={(value) => {
-                            this.setMode(value);
-                        }}
+                        onChange={(value) => setLoginMode(value as number)}
                         options={[
                             {
-                                label: this.t('inPassword'),
+                                label: t('inPassword'),
                                 value: 1,
                             },
                             {
-                                label: this.t('inCaptcha'),
+                                label: t('inCaptcha'),
                                 value: 2,
                             },
                             {
-                                label: this.t('inQrCode'),
+                                label: t('inQrCode'),
                                 value: 3,
                             },
                         ]}
@@ -275,15 +282,13 @@ export default function render(this: any) {
                         <div className={Style['loginbox-protocal']}>
                             <Checkbox
                                 checked={loginAgreed}
-                                onChange={(e) => {
-                                    this.setLoginAgreed(e.target.checked);
-                                }}
+                                onChange={(e) => setLoginAgreed(e.target.checked)}
                             >
                                 <div>
                                     阅读并同意
                                     <Typography.Link
                                         onClick={() => {
-                                            this.goPage('service');
+                                            goPage('service');
                                         }}
                                     >
                                         {'《服务条款》'}
@@ -291,7 +296,7 @@ export default function render(this: any) {
                                     和
                                     <Typography.Link
                                         onClick={() => {
-                                            this.goPage('privacy');
+                                            goPage('privacy');
                                         }}
                                     >
                                         {'《隐私政策》'}

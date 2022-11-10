@@ -98,10 +98,6 @@ export default OakComponent({
         showDrawer: false,
     },
     methods: {
-        setValue(input: any) {
-            const { dataset, value } = this.resolveInput(input);
-            this.setUpdateData(dataset!.attr, value);
-        },
         async onRefresh() {
             this.setState({
                 refreshing: true,
@@ -134,7 +130,7 @@ export default OakComponent({
                             this.navigateBack();
                         })
                         this.navigateTo({
-                            url: '/mobile/login',
+                            url: '/login',
                             eventLoggedIn,
                         });
                         break;

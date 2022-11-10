@@ -1,11 +1,40 @@
-import React from 'react';
-import { Button, Checkbox, Input, Form, Radio, DatePicker, Row, Col } from 'antd';
+import React, { useState } from 'react';
+import { Button, Checkbox, Input, Form, Radio, DatePicker, Row, Col, CheckboxOptionType } from 'antd';
 import dayjs from 'dayjs';
 import Style from './web.module.less';
+import { EntityDict } from '../../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
 
 
-export default function render(this: any) {
-    const { gender, birth, GenderOptions, IDCardTypeOptions } = this.state;
+export default function render(props: WebComponentProps<EntityDict, 'user', false, {
+    nickname?: string;
+    name?: string;
+    gender?: string;
+    birth?: string;
+    idCardType?: string;
+    idNumber?: string;
+    GenderOptions: Array<CheckboxOptionType>;
+    IDCardTypeOptions: Array<CheckboxOptionType>;
+}, {
+
+}>) {
+    const { data, methods } = props;
+    const { GenderOptions, IDCardTypeOptions } = data;
+    const [nickname, setNickname] = useState(undefined as undefined | string);
+    const [name, setName] = useState(undefined as undefined | string);
+    const [birth, setBirth] = useState(undefined as undefined | number);
+    const nicknameValue = nickname !== undefined ? nickname : data.nickname;
+    const nameValue = name !== undefined ? name : data.name;
+    const birthValue = birth !== undefined ? birth : data.birth;
+    const [gender, setGender] = useState(undefined as undefined | string);
+    const genderValue = gender !== undefined ? gender : data.gender;
+    const [idCardType, setIdCardType] = useState(undefined as undefined | string);
+    const idCardTypeValue = idCardType !== undefined ? idCardType : data.idCardType;
+
+    const confirmEnabled = nickname && nickname !== data.nickname || 
+    
+    const { execute, t } = methods;
+
     return (
         <div
             className={Style.container}
@@ -16,23 +45,16 @@ export default function render(this: any) {
                         <Form.Item label="昵称" requiredMark>
                             <>
                                 <Input
-                                    onChange={(e) => {
-                                        this.setUpdateData('nickname', e.target.value);
-                                    }}
-                                    value={this.state.nickname}
+                                    onChange={(e) => setNickname(e.target.value)}
+                                    value={nicknameValue}
                                 />
                             </>
                         </Form.Item>
                         <Form.Item label="姓名" requiredMark>
                             <>
                                 <Input
-                                    onChange={(e) => {
-                                        this.setUpdateData(
-                                            'name',
-                                            e.target.value
-                                        );
-                                    }}
-                                    value={this.state.name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    value={nameValue}
                                 />
                             </>
                         </Form.Item>
@@ -42,15 +64,15 @@ export default function render(this: any) {
                                     allowClear={false}
                                     mode="date"
                                     value={
-                                        (this.state.birth
-                                            ? dayjs(this.state.birth).format(
+                                        (birthValue
+                                            ? dayjs(birthValue).format(
                                                   'YYYY-MM-DD'
                                               )
                                             : ''
                                     ) as any}
                                     onChange={(value) => {
                                         const val = dayjs(value as any).valueOf();
-                                        this.setUpdateData('birth', val);
+                                        setBirth(val);
                                     }}
                                     format="YYYY-MM-DD"
                                 />
@@ -61,10 +83,11 @@ export default function render(this: any) {
                             <>
                                 <Radio.Group
                                     options={GenderOptions}
-                                    onChange={(e) => {
-                                        this.setUpdateData('gender', e.target.value);
+                                    onChange={async (e) => {
+                                        const id = await generateNewId();
+                                        setGender(e.target.value);
                                     }}
-                                    value={this.state.gender}
+                                    value={genderValue}
                                 />
                             </>
                         </Form.Item>
@@ -72,10 +95,8 @@ export default function render(this: any) {
                             <>
                                 <Radio.Group
                                     options={IDCardTypeOptions}
-                                    onChange={(e) => {
-                                        this.setUpdateData('idCardType', e.target.value);
-                                    }}
-                                    value={this.state.idCardType}
+                                    onChange={(e) => setIdCardType(e.target.value)}
+                                    value={idCardTypeValue}
                                 />
                             </>
                         </Form.Item>
@@ -94,11 +115,15 @@ export default function render(this: any) {
                         <Form.Item>
                             <Button
                                 type="primary"
-                                onClick={(event) => {
-                                    this.confirm();
-                                }}
+                                onClick={() => execute({
+                                    nickname,
+                                    name,
+                                    gender,
+                                    birth,
+                                    idCardType,                                    
+                                } as EntityDict['user']['Update']['data'])}
                             >
-                                确定
+                                {t('common:action.confirm')}
                             </Button>
                         </Form.Item>
                     </Form>
