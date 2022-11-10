@@ -19,6 +19,9 @@ export declare type QiniuCosConfig = {
     domain: string;
     protocol: string | string[];
 };
+export declare type AmapMapConfig = {
+    webApiKey: string;
+};
 export declare type AliCloudConfig = {
     accessKeyId: string;
     accessKeySecret: string;
@@ -64,9 +67,7 @@ export declare type Config = {
         qiniu?: QiniuLiveConfig;
     };
     Map?: {
-        amap?: {
-            webApiKey: string;
-        };
+        amap?: AmapMapConfig;
     };
     Sms?: {
         ali?: AliSmsConfig[];

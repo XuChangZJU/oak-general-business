@@ -22,6 +22,11 @@ export type QiniuCosConfig = {
     protocol: string | string[];
 }
 
+export type AmapMapConfig = {
+    webApiKey: string;
+};
+
+
 export type AliCloudConfig = {
     accessKeyId: string;
     accessKeySecret: string;
@@ -65,26 +70,24 @@ export type Config = {
         tencent?: TencentCloudConfig[];
         qiniu?: QiniuCloudConfig[];
         amap?: AmapCloudConfig[];
-    },
+    };
     Cos?: {
         qiniu?: QiniuCosConfig;
     };
     Live?: {
         qiniu?: QiniuLiveConfig;
-    },
+    };
     Map?: {
-        amap?: {
-            webApiKey: string;
-        };
+        amap?: AmapMapConfig;
     };
     Sms?: {
         ali?: AliSmsConfig[];
         tencent?: TencentSmsConfig[];
-    }
+    };
     App: {
         qrCodeType?: QrCodeType;
         qrCodeApplicationId?: string;
-    }
+    };
 };
 
 export type Origin = 'ali' | 'tencent' | 'qiniu' | 'amap';

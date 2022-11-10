@@ -6,11 +6,12 @@ import { AliCloudConfig, AmapCloudConfig, Config, QiniuCloudConfig, TencentCloud
 const { TabPane } = Tabs;
 
 function TencentAccount(props: {
-    accounts: TencentCloudConfig[],
-    setValue: (path: string, value: any) => void
-    removeItem: (path: string, index: number) => void
+    accounts: TencentCloudConfig[];
+    setValue: (path: string, value: any) => void;
+    removeItem: (path: string, index: number) => void;
+    addItem: (path: string, index: number) => void;
 }) {
-    const { accounts, setValue, removeItem } = props;
+    const { accounts, setValue, removeItem, addItem } = props;
     return (
         <Col flex="auto">
             <Divider orientation="left" className={Styles.title}>
@@ -23,7 +24,7 @@ function TencentAccount(props: {
                 hideAdd={!(accounts.length > 0)}
                 onEdit={(targetKey: any, action: 'add' | 'remove') => {
                     if (action === 'add') {
-                        //add();
+                        addItem('', accounts.length);
                     } else {
                         removeItem('', parseInt(targetKey, 10));
                     }
@@ -151,11 +152,12 @@ function TencentAccount(props: {
 }
 
 function QiniuAccount(props: {
-    accounts: QiniuCloudConfig[],
-    setValue: (path: string, value: any) => void
-    removeItem: (path: string, index: number) => void
+    accounts: QiniuCloudConfig[];
+    setValue: (path: string, value: any) => void;
+    removeItem: (path: string, index: number) => void;
+    addItem: (path: string, index: number) => void;
 }) {
-    const { accounts, setValue, removeItem } = props;
+    const { accounts, setValue, removeItem, addItem } = props;
     return (
         <Col flex="auto">
             <Divider orientation="left" className={Styles.title}>
@@ -168,7 +170,7 @@ function QiniuAccount(props: {
                 hideAdd={!(accounts.length > 0)}
                 onEdit={(targetKey: any, action: 'add' | 'remove') => {
                     if (action === 'add') {
-                        //add();
+                         addItem('', accounts.length);
                     } else {
                         removeItem('', parseInt(targetKey, 10));
                     }
@@ -263,11 +265,12 @@ function QiniuAccount(props: {
 }
 
 function AliAccount(props: {
-    accounts: AliCloudConfig[],
-    setValue: (path: string, value: any) => void
-    removeItem: (path: string, index: number) => void
+    accounts: AliCloudConfig[];
+    setValue: (path: string, value: any) => void;
+    removeItem: (path: string, index: number) => void;
+    addItem: (path: string, index: number) => void;
 }) {
-    const { accounts, setValue, removeItem } = props;
+    const { accounts, setValue, removeItem, addItem } = props;
     return (
         <Col flex="auto">
             <Divider orientation="left" className={Styles.title}>
@@ -280,7 +283,7 @@ function AliAccount(props: {
                 hideAdd={!(accounts.length > 0)}
                 onEdit={(targetKey: any, action: 'add' | 'remove') => {
                     if (action === 'add') {
-                        //add();
+                        addItem('', accounts.length);
                     } else {
                         removeItem('', parseInt(targetKey, 10));
                     }
@@ -415,11 +418,12 @@ function AliAccount(props: {
 
 
 function AmapAccount(props: {
-    accounts: AmapCloudConfig[],
-    setValue: (path: string, value: any) => void
-    removeItem: (path: string, index: number) => void
+    accounts: AmapCloudConfig[];
+    setValue: (path: string, value: any) => void;
+    removeItem: (path: string, index: number) => void;
+    addItem: (path: string, index: number) => void;
 }) {
-    const { accounts, setValue, removeItem } = props;
+    const { accounts, setValue, removeItem, addItem } = props;
     return (
         <Col flex="auto">
             <Divider orientation="left" className={Styles.title}>
@@ -432,7 +436,7 @@ function AmapAccount(props: {
                 hideAdd={!(accounts.length > 0)}
                 onEdit={(targetKey: any, action: 'add' | 'remove') => {
                     if (action === 'add') {
-                        //add();
+                        addItem('', accounts.length);
                     } else {
                         removeItem('', parseInt(targetKey, 10));
                     }
@@ -514,21 +518,25 @@ export default function Account(props: {
                 accounts={tencent || []}
                 setValue={(path, value) => setValue(`tencent.${path}`, value)}
                 removeItem={(path, index) => removeItem(`tencent`, index)}
+                addItem={(path, index) => setValue(`amap.${index}`, {})}
             />
             <QiniuAccount
                 accounts={qiniu || []}
                 setValue={(path, value) => setValue(`qiniu.${path}`, value)}
                 removeItem={(path, index) => removeItem(`qiniu`, index)}
+                addItem={(path, index) => setValue(`amap.${index}`, {})}
             />
             <AliAccount
                 accounts={ali || []}
                 setValue={(path, value) => setValue(`ali.${path}`, value)}
                 removeItem={(path, index) => removeItem(`ali`, index)}
+                addItem={(path, index) => setValue(`amap.${index}`, {})}
             />
             <AmapAccount
                 accounts={amap || []}
                 setValue={(path, value) => setValue(`amap.${path}`, value)}
                 removeItem={(path, index) => removeItem(`amap`, index)}
+                addItem={(path, index) => setValue(`amap.${index}`, {})}
             />
         </Space>
     );

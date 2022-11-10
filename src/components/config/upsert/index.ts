@@ -21,9 +21,9 @@ export default OakComponent({
                 dirty: false,
                 currentConfig: cloneDeep(config),
             });
-        }
+        },
     },
-    methods: {        
+    methods: {
         setValue(path: string, value: any) {
             const { currentConfig } = this.state;
             const newConfig = cloneDeep(currentConfig);
@@ -56,12 +56,16 @@ export default OakComponent({
         async updateConfig() {
             const { currentConfig } = this.state;
             const { entity, entityId } = this.props;
-            
-            await this.features.config.updateConfig(entity, entityId, currentConfig);
+
+            await this.features.config.updateConfig(
+                entity,
+                entityId,
+                currentConfig
+            );
             this.setMessage({
                 content: '操作成功',
                 type: 'success',
             });
-        }
+        },
     },
 });
