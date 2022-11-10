@@ -21,6 +21,7 @@ type PageHeaderProps = {
     contentClassName?: string;
     tags?: React.ReactNode;
     children?: React.ReactNode;
+    showHeader?: boolean; //默认true 显示头部
 };
 
 export default memo((props: PageHeaderProps) => {
@@ -31,7 +32,7 @@ export default memo((props: PageHeaderProps) => {
         title,
         subTitle,
         extra,
-        showBack,
+        showBack = false,
         onBack,
         backIcon,
         delta,
@@ -39,6 +40,7 @@ export default memo((props: PageHeaderProps) => {
         contentStyle,
         contentClassName,
         tags,
+        showHeader = true,
     } = props;
     const prefixCls = 'oak';
     const navigate = useNavigate();
@@ -48,9 +50,9 @@ export default memo((props: PageHeaderProps) => {
             style={style}
             className={classNames(`${prefixCls}-pageHeader`, className)}
         >
-            {(title || showBack || subTitle || tags || extra) && (
+            {showHeader && (title || showBack || subTitle || tags || extra) && (
                 <div className={`${prefixCls}-pageHeader-header`}>
-                    <Row justify='center'>
+                    <Row justify="center">
                         <Col
                             flex="auto"
                             className={`${prefixCls}-pageHeader-header-col`}

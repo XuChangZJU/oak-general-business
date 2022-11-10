@@ -15,6 +15,7 @@ declare type PageHeaderProps = {
     contentClassName?: string;
     tags?: React.ReactNode;
     children?: React.ReactNode;
+    showHeader?: boolean;
 };
 declare const _default: React.MemoExoticComponent<(props: PageHeaderProps) => JSX.Element>;
 export default _default;

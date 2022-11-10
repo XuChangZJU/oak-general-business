@@ -15,6 +15,12 @@ export default OakComponent({
         };
     },
     methods: {
+        goDetail(id: string) {
+            this.navigateTo({
+                url: '/platform/detail',
+                oakId: id,
+            });
+        },
         goUpdate(id: string) {
             this.navigateTo({
                 url: '/platform/upsert',
@@ -31,6 +37,6 @@ export default OakComponent({
             this.navigateTo({
                 url: '/platform/upsert',
             });
-        }
+        },
     },
 });
