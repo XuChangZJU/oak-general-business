@@ -8,7 +8,7 @@ export default function render(this: any) {
     const { namespace, oakId } = this.props;
     const { config, name } = this.state;
     return (
-        <PageHeader>
+        <PageHeader showBack={true} title="平台配置">
             <div className={Style.container}>
                 <ConfigUpsert
                     config={config}

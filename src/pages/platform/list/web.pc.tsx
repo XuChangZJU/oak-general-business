@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Table, Button, Space } from 'antd';
+import { Table, Button, Space, Typography } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
 
@@ -8,7 +8,7 @@ export default function render(this: any) {
     const { pageSize, total, currentPage } = pagination || {};
 
     return (
-        <PageHeader>
+        <PageHeader title="平台管理">
             <div className={Style.container}>
                 <Space>
                     <Button
@@ -26,21 +26,34 @@ export default function render(this: any) {
                     dataSource={list}
                     rowKey="id"
                     columns={[
-                        {
-                            dataIndex: 'id',
-                            title: '序号',
-                            render: (value, record, index) => {
-                                return index + 1;
-                            },
-                        },
+                        // {
+                        //     dataIndex: 'id',
+                        //     title: '序号',
+                        //     render: (value, record, index) => {
+                        //         return index + 1;
+                        //     },
+                        // },
                         {
                             dataIndex: 'name',
-                            title: '名称',
+                            title: '平台名称',
+                            width: 300,
+                            render: (value, record, index) => {
+                                return (
+                                    <Typography.Link
+                                        onClick={() => {
+                                            this.goDetail(record.id);
+                                        }}
+                                    >
+                                        {value}
+                                    </Typography.Link>
+                                );
+                            },
                         },
                         {
                             dataIndex: 'description',
                             title: '描述',
-                            width: 400,
+                            width: 200,
+                            ellipsis: true,
                         },
                         {
                             dataIndex: 'config',
@@ -75,7 +88,7 @@ export default function render(this: any) {
                                                 this.goDetail(record.id);
                                             }}
                                         >
-                                            详情
+                                            概览
                                         </Button>
                                         <Button
                                             type="link"

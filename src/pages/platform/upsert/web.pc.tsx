@@ -8,7 +8,7 @@ import Style from './web.module.less';
 export default function render(this: any) {
     const { name, description } = this.state;
     return (
-        <PageHeader>
+        <PageHeader showBack={true} title="平台编辑">
             <div className={Style.container}>
                 <Row>
                     <Col xs={24} sm={12}>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs, Card } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
+import SystemList from '../../../pages/system/list';
 
 import Style from './web.module.less';
 
@@ -8,7 +9,7 @@ export default function render(this: any) {
     const { namespace, oakId } = this.props;
     const { config, name } = this.state;
     return (
-        <PageHeader>
+        <PageHeader showBack={true} title="平台概览">
             <div className={Style.container}>
                 <Card title={name} bordered={false}>
                     <Tabs
@@ -21,7 +22,15 @@ export default function render(this: any) {
                             {
                                 label: '系统管理',
                                 key: '系统管理',
-                                children: <div>系统列表</div>,
+                                children: (
+                                    <SystemList
+                                        namespace={namespace}
+                                        platformId={oakId}
+                                        variant="inline"
+                                        oakPath="$platform/detail/-system/list"
+                                        oakAutoUnmount={true}
+                                    />
+                                ),
                             },
                         ]}
                     />
