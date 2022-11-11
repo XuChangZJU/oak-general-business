@@ -13,7 +13,7 @@ export declare type OpSchema = EntityShape & {
     objectId: String<64>;
     tag1: String<16>;
     tag2: String<16>;
-    filename: String<64>;
+    filename: String<256>;
     md5: Text;
     entity: "article" | "user" | string;
     entityId: String<64>;
@@ -31,7 +31,7 @@ export declare type Schema = EntityShape & {
     objectId: String<64>;
     tag1: String<16>;
     tag2: String<16>;
-    filename: String<64>;
+    filename: String<256>;
     md5: Text;
     entity: "article" | "user" | string;
     entityId: String<64>;

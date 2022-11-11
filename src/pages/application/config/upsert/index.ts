@@ -1,13 +1,11 @@
 export default OakComponent({
     isList: false,
-    entity: 'system',
+    entity: 'application',
     projection: {
         id: 1,
         name: 1,
         config: 1,
-        description: 1,
-        super: 1,
-        platformId: 1,
+        type: 1,
     },
     async formData({ data }) {
         return data || {};

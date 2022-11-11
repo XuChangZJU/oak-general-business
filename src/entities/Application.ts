@@ -3,7 +3,7 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as System } from './System';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 
-type Passport = 'email' | 'mobile' | 'wechat';
+export type Passport = 'email' | 'mobile' | 'wechat';
 export type AppType = 'web' | 'wechatMp' | 'wechatPublic';
 export type WechatMpConfig = {
     type: 'wechatMp';
@@ -21,7 +21,7 @@ export type WebConfig = {
     passport: Passport[];
 };
 
-type WechatPublicTemplateMsgsConfig = Record<string, {
+export type WechatPublicTemplateMsgsConfig = Record<string, {
     templateId: string;
     dataDef: [string, string][];    // 前一个代表keyword，后一个代表color
 }>;     // key值代表messageTypeId
