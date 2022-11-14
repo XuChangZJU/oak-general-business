@@ -20,8 +20,8 @@ export interface Schema extends EntityShape {
     expired?: Boolean;
 }
 
-type Action = 'confirm';
-type IState = 'init';
+type Action = 'confirm' | 'disable';
+type IState = 'effective' | 'invalid';
 
 const indexes: Index<Schema>[] = [
     {
@@ -48,10 +48,15 @@ const indexes: Index<Schema>[] = [
     },
 ];
 
-const locale: LocaleDef<Schema, Action, '', {
-    type: Schema['type'];
-    iState: IState;
-}> = {
+const locale: LocaleDef<
+    Schema,
+    Action,
+    '',
+    {
+        type: Schema['type'];
+        iState: IState;
+    }
+> = {
     zh_CN: {
         attr: {
             relation: '关系',
@@ -69,7 +74,8 @@ const locale: LocaleDef<Schema, Action, '', {
             iState: '状态',
         },
         action: {
-            confirm: '确认'
+            confirm: '确认',
+            disable: '禁用',
         },
         v: {
             type: {
@@ -77,8 +83,9 @@ const locale: LocaleDef<Schema, Action, '', {
                 transfer: '转交',
             },
             iState: {
-                init: '初始',
+                effective: '有效',
+                invalid: '失效',
             },
         },
     },
- };
+};

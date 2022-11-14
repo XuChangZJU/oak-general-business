@@ -26,32 +26,55 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
     const { entity, entityId, tag, lifetimeLength = 300 * 10000, permanent = false, props } = options;
     const applicationId = await context.getApplicationId();
     assert(applicationId);
-    const { result: [system] } = await context.rowStore.select('system', {
-        data: {
-            id: 1,
-            config: 1,
-            application$system: {
-                $entity: 'application',
-                data: {
-                    id: 1,
-                    type: 1,
-                    config: 1,
+    const {
+        result: [system],
+    } = await context.rowStore.select(
+        'system',
+        {
+            data: {
+                id: 1,
+                config: 1,
+                application$system: {
+                    $entity: 'application',
+                    data: {
+                        id: 1,
+                        type: 1,
+                        config: 1,
+                        systemId: 1,
+                    },
+                },
+            },
+            filter: {
+                id: {
+                    $in: {
+                        entity: 'application',
+                        data: {
+                            systemId: 1,
+                        },
+                        filter: {
+                            id: applicationId,
+                        },
+                    },
                 },
             },
         },
-        filter: {
-            id: applicationId,
-        },
-    }, context, {
-        dontCollect: true,
-    });
+        context,
+        {
+            dontCollect: true,
+        }
+    );
 
     let appId: string = '', appType: QrCodeType | undefined = undefined;
     let url: string | undefined = undefined;
     const { application$system: applications, config: sysConfig } = system as {
         application$system: Application[];
-        config: SysConfig
+        config: SysConfig;
     };
+    if (!applications || applications?.length === 0) {
+        throw new Error(
+            '无法生成二维码，找不到此system下的应用信息'
+        );
+    }
     const id = await generateNewId();
     if (sysConfig.App.qrCodeApplicationId) {
         appId = sysConfig.App.qrCodeApplicationId;

@@ -13,7 +13,7 @@ export default function render(this: any) {
         <div className={Style.container}>
             <Alert
                 showIcon
-                message="提交权限后，请将二维码发给待分享权限的用户扫描"
+                message="提交后，请将二维码发给待分享权限的用户扫描"
                 type="info"
                 style={{ marginBottom: 16 }}
             />

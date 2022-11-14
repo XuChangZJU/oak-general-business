@@ -10,11 +10,13 @@ import {
     Modal,
 } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
+import UserEntityGrantList from '../../../pages/userEntityGrant/list';
+
 import Style from './web.module.less';
 
 export default function render(this: any) {
     const { pagination, users = [], oakLoading, idRemove } = this.state;
-    const { relations, entity, entityId } = this.props;
+    const { namespace, entity, entityId } = this.props;
     const { pageSize, total, currentPage } = pagination || {};
 
     return (
@@ -23,6 +25,15 @@ export default function render(this: any) {
                 <Space>
                     <Button type="primary" onClick={() => this.goUpsert()}>
                         添加
+                    </Button>
+                    <Button
+                        onClick={() =>
+                            this.setState({
+                                invite: true,
+                            })
+                        }
+                    >
+                        邀请记录
                     </Button>
                 </Space>
 
@@ -93,7 +104,9 @@ export default function render(this: any) {
                                         {record.relations?.map(
                                             (ele: string, index: number) => (
                                                 <Tag key={index}>
-                                                    {this.t(entity + ':r.' + ele)}
+                                                    {this.t(
+                                                        entity + ':r.' + ele
+                                                    )}
                                                 </Tag>
                                             )
                                         )}
@@ -148,13 +161,17 @@ export default function render(this: any) {
                                         >
                                             编辑
                                         </Button>
-                                        { record.relations?.length > 0 && <Button
-                                            danger
-                                            type="link"
-                                            onClick={() => this.onDelete(record.id)}
-                                        >
-                                            删除
-                                        </Button>}
+                                        {record.relations?.length > 0 && (
+                                            <Button
+                                                danger
+                                                type="link"
+                                                onClick={() =>
+                                                    this.onDelete(record.id)
+                                                }
+                                            >
+                                                删除
+                                            </Button>
+                                        )}
                                     </Space>
                                 );
                             },
@@ -178,11 +195,29 @@ export default function render(this: any) {
                 title="请确认"
                 open={!!idRemove}
                 onOk={() => this.confirmDelete()}
-                onCancel={() => this.setState({ idRemove: ''})}
+                onCancel={() => this.setState({ idRemove: '' })}
                 cancelText="取消"
                 okText="确认"
             >
                 <p>确认删除用户的所有权限吗？</p>
+            </Modal>
+
+            <Modal
+                title="邀请记录"
+                open={!!this.state.invite}
+                onCancel={() => this.setState({ invite: false })}
+                // cancelText="关闭"
+                // okText=""
+                width="80%"
+                footer={null}
+            >
+                <UserEntityGrantList
+                    entity={entity}
+                    entityId={entityId}
+                    namespace={namespace}
+                    variant="dialog"
+                    oakPath="$userRelation/list-userEntityGrant/list"
+                />
             </Modal>
         </PageHeader>
     );
