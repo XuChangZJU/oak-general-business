@@ -9,6 +9,28 @@ export default OakComponent({
     async formData({ data }) {
         return data || {};
     },
+    observers: {
+        tab: function (tab) {
+            this.setState({
+                tabValue: tab,
+            });
+        },
+    },
+    lifetimes: {
+        attached() {
+            this.setState({
+                tabValue: this.props.tab,
+            });
+        },
+    },
     methods: {
+        onTabClick(key: 'detail' | 'system_list') {
+            const { oakId } = this.props;
+            this.redirectTo({
+                url: '/platform/detail',
+                oakId,
+                tab: key,
+            });
+        },
     },
 });

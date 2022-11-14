@@ -36,6 +36,7 @@ export default OakComponent({
             this.navigateTo({
                 url: '/system/detail',
                 oakId: id,
+                tab: 'detail',
             });
         },
         goUpdate(id: string) {

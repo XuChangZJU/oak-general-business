@@ -14,10 +14,10 @@ export default function render(this: any) {
                     <Tabs
                         items={[
                             {
-                                label: '系统概览',
-                                key: '系统概览',
+                                label: '应用概览',
+                                key: 'detail',
                                 children: <div>详情</div>,
-                            }
+                            },
                         ]}
                     />
                 </Card>

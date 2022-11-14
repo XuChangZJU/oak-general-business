@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Table, Button, Space, Typography } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
+import dayjs from 'dayjs';
 
 export default function render(this: any) {
     const { list = [], oakLoading, pagination } = this.state;
@@ -54,6 +55,14 @@ export default function render(this: any) {
                             title: '描述',
                             width: 200,
                             ellipsis: true,
+                        },
+                        {
+                            dataIndex: '$$createAt$$',
+                            title: '创建时间',
+                            width: 200,
+                            render: (value, record, index) => {
+                                return dayjs(value).format('YYYY-MM-DD HH:mm');
+                            },
                         },
                         {
                             dataIndex: 'config',

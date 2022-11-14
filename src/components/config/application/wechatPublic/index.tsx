@@ -10,9 +10,11 @@ import {
     Space,
     Switch,
     Modal,
-    message
+    message,
+    Button,
 } from 'antd';
 import Styles from './web.module.less';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {
     AppType,
     WechatPublicConfig,
@@ -31,7 +33,7 @@ export default function WechatPublic(props: {
     const [open, setModal] = useState(false);
     const [messageType, setMessageType] = useState('');
 
-    const { config, setValue, cleanKey } = props;
+    const { config, setValue, cleanKey, removeItem } = props;
     const templateMsgs = config?.templateMsgs || {};
     return (
         <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
@@ -166,11 +168,69 @@ export default function WechatPublic(props: {
                                                       />
                                                   </>
                                               </Form.Item>
-                                              <Form.Item
-                                                  label="dataDef"
-                                                  name="dataDef"
-                                              >
-                                                  <>todo 完善keyword</>
+                                              {templateMsg?.dataDef?.map(
+                                                  (ele, index) => (
+                                                      <Form.Item>
+                                                          <Space
+                                                              key={`templateMsg_dataDef_${index}`}
+                                                              align="baseline"
+                                                          >
+                                                              <Input
+                                                                  placeholder="keyword"
+                                                                  value={
+                                                                      ele?.[0]
+                                                                  }
+                                                                  onChange={(e) => {
+                                                                       setValue(
+                                                                           `templateMsgs.${name}.dataDef.${index}.0`,
+                                                                           e.target.value
+                                                                       );
+                                                                  }}
+                                                              />
+                                                              <Input
+                                                                  placeholder="color"
+                                                                  value={
+                                                                      ele?.[1]
+                                                                  }
+                                                                   onChange={(e) => {
+                                                                       setValue(
+                                                                           `templateMsgs.${name}.dataDef.${index}.1`,
+                                                                           e.target.value
+                                                                       );
+                                                                  }}
+                                                              />
+
+                                                              <MinusCircleOutlined
+                                                                  onClick={() =>
+                                                                      removeItem(
+                                                                          `templateMsgs.${name}.dataDef`,
+                                                                          index
+                                                                      )
+                                                                  }
+                                                              />
+                                                          </Space>
+                                                      </Form.Item>
+                                                  )
+                                              )}
+
+                                              <Form.Item>
+                                                  <Button
+                                                      type="dashed"
+                                                      onClick={() => {
+                                                          const length =
+                                                              templateMsg
+                                                                  ?.dataDef
+                                                                  ?.length || 0; //新增第几项
+                                                          setValue(
+                                                              `templateMsgs.${name}.dataDef.${length}`,
+                                                              []
+                                                          );
+                                                      }}
+                                                      block
+                                                      icon={<PlusOutlined />}
+                                                  >
+                                                      添加 keyword
+                                                  </Button>
                                               </Form.Item>
                                           </Form>
                                       ),

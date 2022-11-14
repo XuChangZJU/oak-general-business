@@ -6,6 +6,7 @@ export default OakComponent({
         name: 1,
         description: 1,
         config: 1,
+        $$createAt$$: 1
     },
     async formData({ data }) {
         const pagination = this.getPagination();
@@ -19,6 +20,7 @@ export default OakComponent({
             this.navigateTo({
                 url: '/platform/detail',
                 oakId: id,
+                tab: 'detail'
             });
         },
         goUpdate(id: string) {

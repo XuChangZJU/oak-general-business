@@ -98,7 +98,7 @@ export default function render(this: any) {
                                             this.goDetail(record.id);
                                         }}
                                     >
-                                        详情
+                                        概览
                                     </Button>
                                     <Button
                                         type="link"
