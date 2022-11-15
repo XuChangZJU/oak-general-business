@@ -1,14 +1,14 @@
 import React from 'react';
-import { Form, Radio, Button, Alert, InputNumber, Space } from 'antd';
+import { Form, Radio, Button, Alert, InputNumber, Space, Modal } from 'antd';
+import UserEntityGrantDetail from '../../../../pages/userEntityGrant/detail';
+
 import Style from './web.module.less';
 
 export default function render(this: any) {
     const { relation, period, type, number } = this.state;
-    const { relations, entity, oakId } = this.props;
+    const { relations, entity, namespace } = this.props;
     
-    if (oakId) {
-        return <div>{oakId}</div>;
-    }
+
     return (
         <div className={Style.container}>
             <Alert
@@ -33,7 +33,7 @@ export default function render(this: any) {
                             const { value } = target;
                             this.setRelation(value);
                         }}
-                        options={relations.map((ele: string) => ({
+                        options={relations?.map((ele: string) => ({
                             value: ele,
                             label:
                                 (this.t && this.t(entity + ':r.' + ele)) || ele,
@@ -104,6 +104,27 @@ export default function render(this: any) {
                     </Space>
                 </Form.Item>
             </Form>
+            <Modal
+                title="二维码"
+                open={!!this.state.userEntityGrantId}
+                destroyOnClose={true}
+                maskClosable={false}
+                footer={null}
+                onCancel={() => {
+                    this.setState({
+                        userEntityGrantId: '',
+                    });
+                    this.setInit();
+                }}
+            >
+                <UserEntityGrantDetail
+                    namespace={namespace}
+                    variant="dialog"
+                    oakId={this.state.userEntityGrantId}
+                    oakAutoUnmount={true}
+                    oakPath="$userRelation/upsert/byUserEntityGrant-userEntityGrant/detail"
+                ></UserEntityGrantDetail>
+            </Modal>
         </div>
     );
 }

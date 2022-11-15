@@ -168,11 +168,11 @@ export default function render(this: any) {
 
 function Container(props: {
     children: React.ReactNode;
-    variant?: 'inline' | 'alone';
+    variant?: 'inline' | 'alone' | 'dialog';
     showBack?: boolean;
 }) {
-    const { children, variant, showBack } = props;
-    if (variant === 'inline') {
+    const { children, variant = 'alone', showBack } = props;
+    if (['inline', 'dialog'].includes(variant)) {
         return <>{children}</>;
     }
     return (

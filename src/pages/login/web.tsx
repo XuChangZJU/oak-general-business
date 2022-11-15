@@ -198,6 +198,8 @@ export default function render(this: any) {
             <div className={Style['loginbox-wrap']}>
                 <div className={Style['loginbox-hd']}>
                     <Segmented
+                        onResize={() => {}}
+                        onResizeCapture={() => {}}
                         value={loginMode}
                         block
                         onChange={(value) => {

@@ -10,6 +10,8 @@ export default OakComponent({
         remark: 1,
         granterId: 1,
         granteeId: 1,
+        expired: 1,
+        expiresAt: 1,
         wechatQrCode$entity: {
             $entity: 'wechatQrCode',
             data: {
@@ -20,10 +22,12 @@ export default OakComponent({
                 ticket: 1,
                 url: 1,
                 buffer: 1,
+                expired: 1,
+                expiresAt: 1,
+                applicationId: 1,
             },
             filter: {
                 entity: 'userEntityGrant',
-                expired: false,
             },
             indexFrom: 0,
             count: 1,
@@ -31,21 +35,37 @@ export default OakComponent({
     },
     isList: false,
     formData: async ({ data: userEntityGrant }) => {
-        let qrCodeUrl;
-        const str = userEntityGrant?.wechatQrCode$entity[0]?.buffer;
-        if (str) {
-            const buf = new ArrayBuffer(str.length * 2);
-            const buf2 = new Uint16Array(buf);
-            for (let i = 0; i < str.length; i++) {
-                buf2[i] = str.charCodeAt(i);
+        let qrCodeUrl = userEntityGrant?.wechatQrCode$entity[0]?.url;
+        const buffer = userEntityGrant?.wechatQrCode$entity[0]?.buffer;
+        if (buffer) {
+            const newBuffer = new ArrayBuffer(buffer.length * 2);
+            const newBufferToUint16 = new Uint16Array(newBuffer);
+            for (let i = 0; i < buffer.length; i++) {
+                newBufferToUint16[i] = buffer.charCodeAt(i);
             }
-            qrCodeUrl =
-                'data:image/jpeg;base64,' + wx.arrayBufferToBase64(buf2);
+
+            if (process.env.OAK_PLATFORM === 'wechatMp') {
+                const base64Str = wx.arrayBufferToBase64(newBufferToUint16);
+                qrCodeUrl = 'data:image/png;base64,' + base64Str;
+            } else {
+                let binary = '';
+                const bytes = new Uint8Array(newBufferToUint16);
+                const len = bytes.byteLength;
+                for (let i = 0; i < len; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                const base64Str = window.btoa(binary);
+
+                qrCodeUrl = 'data:image/png;base64,' + base64Str;
+            }
         }
+        console.log(userEntityGrant);
         return {
             relation: userEntityGrant?.relation,
             entity: userEntityGrant?.entity,
-            url: qrCodeUrl || userEntityGrant?.wechatQrCode$entity[0]?.url,
+            url: qrCodeUrl,
+            expired: userEntityGrant?.expired,
+            expiresAt: userEntityGrant?.expiresAt,
         };
     },
 });

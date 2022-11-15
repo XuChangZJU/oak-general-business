@@ -5,6 +5,12 @@ import { Schema as Application, WechatMpConfig, WechatPublicConfig } from "../ge
 import { CreateOperationData as CreateWechatQrcodeData, WechatQrCodeProps } from '../general-app-domain/WechatQrCode/Schema';
 import { RuntimeContext } from '../context/RuntimeContext';
 import { OakException } from 'oak-domain/lib/types';
+import {
+    WechatSDK,
+    WechatMpInstance,
+    WechatPublicInstance,
+} from 'oak-external-sdk';
+import { shrinkUuidTo32Bytes } from 'oak-domain/lib/utils/uuid';
 
 /**
  * 生成二维码优先级如下：
@@ -141,6 +147,74 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
         expiresAt: Date.now() + lifetimeLength,
         props,
     };
+
+    // 直接创建
+    const { type } = data;
+
+    const application = applications.find(
+        (ele) => ele.id === data.applicationId
+    );
+
+    assert(application);
+
+    const { type: applicationType, config } = application;
+
+    switch (type) {
+        case 'wechatMpWxaCode': {
+            assert(
+                applicationType === 'wechatMp' && config!.type === 'wechatMp'
+            );
+            const config2 = config as WechatMpConfig;
+            const { appId, appSecret } = config2;
+            // 小程序码去实时获取（暂时不考虑缓存）
+            const wechatInstance = WechatSDK.getInstance(
+                appId,
+                appSecret,
+                'wechatMp'
+            ) as WechatMpInstance;
+            const buffer = await wechatInstance.getMpUnlimitWxaCode({
+                scene: shrinkUuidTo32Bytes(id),
+                page: 'pages/index/index', // todo，这里用其它的页面微信服务器拒绝，因为没发布。应该是 pages/wechatQrCode/scan/index
+            });
+            // 把arrayBuffer转成字符串返回
+            const str = String.fromCharCode(...new Uint8Array(buffer));
+            Object.assign(data, {
+                buffer: str,
+            });
+
+            break;
+        }
+        case 'wechatPublic': {
+            assert(
+                applicationType === 'wechatPublic' &&
+                    config!.type === 'wechatPublic'
+            );
+            const config2 = config as WechatPublicConfig;
+            const { appId, appSecret } = config2;
+            const wechatInstance = WechatSDK.getInstance(
+                appId,
+                appSecret,
+                'wechatPublic'
+            ) as WechatPublicInstance;
+
+            const result = await wechatInstance.getQrCode({
+                sceneStr: shrinkUuidTo32Bytes(id),
+                isPermanent: false,
+                expireSeconds: 2592000,
+            });
+            Object.assign(data, {
+                ticket: result?.ticket,
+                url: result?.url,
+            });
+            break;
+        }
+        case 'wechatMpDomainUrl': {
+            break;
+        }
+        default: {
+            assert(false, `未实现的${type}`);
+        }
+    }
 
     await context.rowStore.operate(
         'wechatQrCode',

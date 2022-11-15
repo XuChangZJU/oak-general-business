@@ -32,6 +32,7 @@ export default function render(this: any) {
                                         systemId={oakId}
                                         variant="inline"
                                         oakPath="$system/detail-application/list"
+                                        oakAutoUnmount={true}
                                     />
                                 ),
                             },

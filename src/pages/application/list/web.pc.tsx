@@ -108,6 +108,14 @@ export default function render(this: any) {
                                     >
                                         更新
                                     </Button>
+                                    <Button
+                                        type="link"
+                                        onClick={() => {
+                                            this.removeApplication(record.id);
+                                        }}
+                                    >
+                                        删除
+                                    </Button>
                                 </>
                             );
                         },

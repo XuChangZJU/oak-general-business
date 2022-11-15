@@ -61,10 +61,19 @@ export default OakComponent({
             // this.setState({
             //     open: true,
             // });
-             this.navigateTo({
-                 url: '/application/upsert',
-                 systemId,
-             });
+            this.navigateTo({
+                url: '/application/upsert',
+                systemId,
+            });
+        },
+        removeApplication(id: string) {
+            this.execute({
+                action: 'remove',
+                data: {},
+                filter: {
+                    id
+                }
+            })
         },
     },
 });
