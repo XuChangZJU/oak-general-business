@@ -3,7 +3,7 @@ import './index.less';
 declare type IQrCodeProps = {
     filename?: string;
     expiresAt?: number;
-    tip?: React.ReactNode;
+    tips?: React.ReactNode;
     onDownload?: (qrCodeImage: string, filename?: string) => void;
     onRefresh?: () => void;
     width?: number;

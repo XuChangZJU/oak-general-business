@@ -3,13 +3,14 @@ import { Button, Space } from 'antd';
 import { DownloadOutlined, ReloadOutlined } from '@ant-design/icons';
 import qr from 'qr-image';
 import dayjs from 'dayjs';
+import Download from '../download';
 
 import './index.less';
 
 type IQrCodeProps = {
     filename?: string;
     expiresAt?: number;
-    tip?: React.ReactNode;
+    tips?: React.ReactNode;
     onDownload?: (qrCodeImage: string, filename?: string) => void;
     onRefresh?: () => void;
     width?: number;
@@ -20,9 +21,9 @@ type IQrCodeProps = {
 
 function QrCode(props: IQrCodeProps) {
     const {
-        filename,
+        filename = 'qrCode.png',
         expiresAt,
-        tip,
+        tips,
         onDownload,
         onRefresh,
         width = 280,
@@ -74,7 +75,7 @@ function QrCode(props: IQrCodeProps) {
 
             if (diff2 > 0) {
                 V = (
-                    <span className={`${prefixCls}-qrCodeBox-caption`}>
+                    <span className={`${prefixCls}-qrCodeBox_caption`}>
                         该二维码1天内(
                         <span>
                             {expiresAtStr}
@@ -84,7 +85,7 @@ function QrCode(props: IQrCodeProps) {
                 );
             } else {
                 V = (
-                    <span className={`${prefixCls}-qrCodeBox-caption`}>
+                    <span className={`${prefixCls}-qrCodeBox_caption`}>
                         该二维码已失效，请刷新
                     </span>
                 );
@@ -111,19 +112,27 @@ function QrCode(props: IQrCodeProps) {
                 )}
             </div>
             {V}
-            {tip}
+            {tips}
             {
-                <Space className={`${prefixCls}-qrCodeBox-actions`}>
-                    {onDownload && (
+                <Space className={`${prefixCls}-qrCodeBox_actions`}>
+                    {
                         <Button
                             type="text"
                             onClick={() => {
-                                onDownload(qrCodeImage, filename);
+                                if (typeof onDownload === 'function') {
+                                    onDownload(qrCodeImage, filename);
+                                    return;
+                                }
+                                const arraybuffer =
+                                    Download.base64ToArrayBuffer(qrCodeImage);
+                                Download.onDownload(arraybuffer, filename);
                             }}
                         >
-                            <DownloadOutlined />
+                            <DownloadOutlined
+                                className={`${prefixCls}-qrCodeBox_actions_downloadIcon`}
+                            />
                         </Button>
-                    )}
+                    }
                     {onRefresh && (
                         <Button
                             type="text"
@@ -131,7 +140,9 @@ function QrCode(props: IQrCodeProps) {
                                 onRefresh();
                             }}
                         >
-                            <ReloadOutlined />
+                            <ReloadOutlined
+                                className={`${prefixCls}-qrCodeBox_actions_refreshIcon`}
+                            />
                         </Button>
                     )}
                 </Space>
