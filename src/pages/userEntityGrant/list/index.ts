@@ -31,6 +31,17 @@ export default OakComponent({
             },
         },
     ],
+    sorters: [
+        {
+            sorter: {
+                $attr: {
+                    $$createAt$$: 1,
+                },
+                $direction: 'desc',
+            },
+            "#name": 'default'
+        },
+    ],
     async formData({ data }) {
         const pagination = this.getPagination();
         return {
@@ -41,7 +52,5 @@ export default OakComponent({
     data: {
         open: false,
     },
-    methods: {
-
-    },
+    methods: {},
 });

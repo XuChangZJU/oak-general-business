@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Table, Button, Space, Typography, Modal } from 'antd';
 import dayjs from 'dayjs';
 import PageHeader from '../../../components/common/pageHeader';
+import CellButton from '../../../components/userEntityGrant/cellButton';
 
 import Style from './web.module.less';
 
@@ -74,8 +75,16 @@ export default function render(this: any) {
                         title: '状态',
                         render: (value, record, index) => {
                             return (
-                                <Typography.Text type={record.expired ? 'danger' : "success"}>
+                                <Typography.Text
+                                    type={record.expired ? 'danger' : 'success'}
+                                >
                                     {record.expired ? '失效' : '有效'}
+                                    {!record.expired && (
+                                        <Typography.Text>
+                                            &nbsp;
+                                            {dayjs(record.expireAt).format('YYYY-MM-DD HH:mm')}
+                                        </Typography.Text>
+                                    )}
                                 </Typography.Text>
                             );
                         },
@@ -87,16 +96,7 @@ export default function render(this: any) {
                         align: 'center',
                         render: (value, record, index) => {
                             return (
-                                <>
-                                    <Button type="link" onClick={() => {
-                                        this.setMessage({
-                                            type:  'warning',
-                                            content: '尚未实现'
-                                        })
-                                    }}>
-                                        禁用
-                                    </Button>
-                                </>
+                                <CellButton oakId={record.id} oakPath={`${this.state.oakFullpath}.${record.id}`} />
                             );
                         },
                         fixed: 'right',
