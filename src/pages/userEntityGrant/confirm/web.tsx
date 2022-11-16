@@ -28,16 +28,16 @@ export default function render(this: any) {
         let str = `${granter?.name || granter?.nickname}`;
         const relationStr = relation ? this.t(`${entity}:r.${relation}`) : '';
         if (type === 'grant') {
-            str = str.concat('授予您【').concat(relationStr).concat('】身份');
+            str = str.concat('授予您【').concat(relationStr).concat('】权限');
             return str;
         }
-        str = str.concat('转让您【').concat(relationStr).concat('】身份');
+        str = str.concat('转让您【').concat(relationStr).concat('】权限');
         return str;
     };
 
     const getDescTip = () => {
         if (isExists || isOwner) {
-            return '您已接受';
+            return '您已领取';
         }
         if (expired) {
             return '已过期，请联系相关人员重新分享';
@@ -45,9 +45,9 @@ export default function render(this: any) {
         
         // number设置1个的时候 
         if (number === 1 && confirmed > 0 && (!isOwner || !isExists)) {
-            return '被其他人已接受';
+            return '被他人已领取';
         }
-        return '请您接受';
+        return '请您领取';
     }
 
 
@@ -64,7 +64,7 @@ export default function render(this: any) {
                 <div className={Style.description}>{getDescTip()}</div>
             </div>
             <Space direction="vertical">
-                {(!oakLoading && !expired && !isExists && !isOwner) && (
+                {!oakLoading && !expired && !isExists && !isOwner && (
                     <Button
                         block
                         type="primary"
@@ -73,7 +73,7 @@ export default function render(this: any) {
                         }}
                         disabled={oakExecuting}
                     >
-                        接受
+                        领取
                     </Button>
                 )}
 

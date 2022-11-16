@@ -110,7 +110,9 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
         fn: async ({ operation }, context, params) => {
             const { data, filter } = operation;
             const { userId } = (await context.getToken())!;
-            const { result } = await context.rowStore.select(
+            const {
+                result: [userEntityGrant],
+            } = await context.rowStore.select(
                 'userEntityGrant',
                 {
                     data: {
@@ -118,8 +120,8 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                         entity: 1,
                         entityId: 1,
                         relation: 1,
-                        number: 1,
-                        confirmed: 1,
+                        granterId: 1,
+                        type: 1,
                     },
                     filter: {
                         id: filter!.id,
@@ -132,16 +134,9 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                     dontCollect: true,
                 }
             );
-            const { entity, entityId, relation, number, confirmed } = result[0];
-            if (number === 1 && confirmed! > 0) {
-
-                Object.assign(data, {
-                    confirmed: confirmed! + 1,
-                });
-            }
+            const { entity, entityId, relation, granterId, type } = userEntityGrant;
             const entityStr = firstLetterUpperCase(entity!);
             const userRelation = `user${entityStr}` as keyof EntityDict;
-            //如果是relation是transfer，需要处理授权者名下entity关系转让给接收者
             const { result: result2 } = await context.rowStore.select(
                 userRelation,
                 {
@@ -171,7 +166,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                         e: userRelation,
                         d: result2 as any,
                     },
-                    '已领用该权限'
+                    '已领取该权限'
                 );
             } else {
                 await context.rowStore.operate(
@@ -189,6 +184,46 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                     context,
                     params
                 );
+                // todo type是转让的话 需要回收授权者的关系
+                if (type === 'transfer') {
+                    const { result: result3 } = await context.rowStore.select(
+                        userRelation,
+                        {
+                            data: {
+                                id: 1,
+                                userId: 1,
+                                relation: 1,
+                                [`${entity}Id`]: 1,
+                            },
+                            filter: {
+                                userId: granterId!,
+                                relation,
+                                [`${entity}Id`]: entityId,
+                            },
+                            indexFrom: 0,
+                            count: 1,
+                        },
+                        context,
+                        {
+                            dontCollect: true,
+                        }
+                    );
+                    assert(result3[0]);
+                    await context.rowStore.operate(
+                        userRelation,
+                        {
+                            id: await generateNewId(),
+                            action: 'remove',
+                            data: {},
+                            filter: {
+                                id: result3[0].id,
+                            },
+                        },
+                        context,
+                        params
+                    );
+                }
+             
                 return 1;
             }
         }
