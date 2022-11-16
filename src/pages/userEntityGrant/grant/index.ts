@@ -24,37 +24,53 @@ export default OakComponent({
         relations: Array,
         type: String,
     },
-    data: {},
+    data: {
+        period: 5,
+    },
     lifetimes: {
         ready() {
-            this.setUpdateData('entity', this.props.entity);
-            this.setUpdateData('entityId', this.props.entityId);
-            // 默认type为授权
-            this.setUpdateData('type', this.props.type || 'grant');
+            this.setInit();
         },
     },
     methods: {
-        bindRadioChange(input: any) {
-            const { value } = this.resolveInput(input);
-            this.setRadioValue(value);
+        setInit() {
+            const { entity, entityId, type } = this.props;
+            this.setMultiAttrUpdateData({
+                entity,
+                entityId,
+                type: type || 'grant',
+                number: 1,
+            });
         },
-        setRadioValue(value: any) {
+        setRelation(value: any) {
             this.setUpdateData('relation', value);
         },
+        setNumber(value: number) {
+            this.setUpdateData('number', value);
+        },
+        onBack() {
+            this.navigateBack();
+        },
         reset() {
+            this.setState({
+                period: 5,
+            });
             this.cleanOperation();
         },
         async confirm() {
             try {
-                const [ operation ] = await this.execute();
+                const { period } = this.state;
+                const expiresAt = Date.now() + period * 60 * 1000;
+                const [operation] = await this.execute({
+                    action: 'create',
+                    data: {
+                        expiresAt,
+                    },
+                });
 
-                let id = this.props.oakId;
-                if (!id) {
-                    // 说明是create
-                    const { data } = operation as EntityDict['userEntityGrant']['CreateSingle'];
-                    id = data.id;
-                }
-                
+                const { data } =
+                    operation as EntityDict['userEntityGrant']['CreateSingle'];
+                const id = data.id;
 
                 this.navigateTo({
                     url: '/userEntityGrant/detail',
