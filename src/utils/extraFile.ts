@@ -18,7 +18,7 @@ export function composeFileUrl(
     const { type, bucket, filename, origin, extra1, objectId, extension, entity } =
         extraFile;
     if (extra1) {
-        // 有extra1就用extra1 可能File对象
+        // 有extra1就用extra1 可能File对象 可能外部链接
         if (typeof extra1 === 'string') {
             return extra1;
         }

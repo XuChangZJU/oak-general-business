@@ -3,7 +3,12 @@ import { RuntimeContext } from '../context/RuntimeContext';
 import { CreateOperationData as CreateUserEntityGrantData } from '../general-app-domain/UserEntityGrant/Schema';
 import { EntityDict } from '../general-app-domain/EntityDict';
 
-import { OakCongruentRowExists, OakException, OakRowInconsistencyException } from 'oak-domain/lib/types';
+import {
+    OakCongruentRowExists,
+    OakException,
+    OakRowInconsistencyException,
+    OakExternalException
+} from 'oak-domain/lib/types';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { DefaultConfig } from '../constants';
 import { createWechatQrCode } from '../aspects/wechatQrCode';
@@ -51,8 +56,54 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
             return 0;
         }
     } as CreateTrigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict>>,
+        {
+        name: '当userEntityGrant准备确认时，附上被授权者id',
+        entity: 'userEntityGrant',
+        action: 'confirm',
+        when: 'before',
+        fn: async ({ operation }, context, params) => {
+            const { data, filter } = operation;
+            const { userId } = (await context.getToken())!;
+            const { result } = await context.rowStore.select(
+                'userEntityGrant',
+                {
+                    data: {
+                        id: 1,
+                        entity: 1,
+                        entityId: 1,
+                        relation: 1,
+                        number: 1,
+                        confirmed: 1,
+                    },
+                    filter: {
+                        id: filter!.id,
+                    },
+                    indexFrom: 0,
+                    count: 1,
+                },
+                context,
+                {
+                    dontCollect: true,
+                }
+            );
+            const { number, confirmed } = result[0];
+            if (confirmed! >= number!) {
+                throw new OakExternalException(`超出分享上限人数${number}人`);
+            }
+            Object.assign(data, {
+                confirmed: confirmed! + 1,
+            });
+            if (number === 1) {
+                // 单次分享 附上接收者id
+                Object.assign(data, {
+                    granteeId: userId,
+                });
+            }
+            return 0
+        }
+    } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict>>,
     {
-        name: '当userEntityGrant被确认时，附上被授权者id',
+        name: '当userEntityGrant被确认时，生成user和entity关系',
         entity: 'userEntityGrant',
         action: 'confirm',
         when: 'after',
@@ -67,6 +118,8 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                         entity: 1,
                         entityId: 1,
                         relation: 1,
+                        number: 1,
+                        confirmed: 1,
                     },
                     filter: {
                         id: filter!.id,
@@ -79,7 +132,13 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                     dontCollect: true,
                 }
             );
-            const { entity, entityId, relation } = result[0];
+            const { entity, entityId, relation, number, confirmed } = result[0];
+            if (number === 1 && confirmed! > 0) {
+
+                Object.assign(data, {
+                    confirmed: confirmed! + 1,
+                });
+            }
             const entityStr = firstLetterUpperCase(entity!);
             const userRelation = `user${entityStr}` as keyof EntityDict;
             //如果是relation是transfer，需要处理授权者名下entity关系转让给接收者
@@ -121,6 +180,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                         id: await generateNewId(),
                         action: 'create',
                         data: {
+                            id: await generateNewId(),
                             userId,
                             [`${entity}Id`]: entityId,
                             relation,
