@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Style from './web.module.less';
+import Style from './mobile.module.less';
 
 export default function render() {
     return (

@@ -59,7 +59,6 @@ export default OakComponent({
                 qrCodeUrl = 'data:image/png;base64,' + base64Str;
             }
         }
-        console.log(userEntityGrant);
         return {
             relation: userEntityGrant?.relation,
             entity: userEntityGrant?.entity,

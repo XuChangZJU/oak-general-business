@@ -2,9 +2,10 @@ import React from 'react';
 import {
     LoadingOutlined,
     WarningOutlined,
-    CloseCircleOutlined,
 } from '@ant-design/icons';
 import Style from './web.module.less';
+import Success from '../../../components/common/result/success';
+import Fail from '../../../components/common/result/fail';
 
 export default function render(this: any) {
     const { oakLoading, isExist, expired } = this.state;
@@ -12,33 +13,36 @@ export default function render(this: any) {
     let V;
     if (oakLoading) {
         V = (
-            <div className="circle-view">
-                <LoadingOutlined style={{ fontSize: 40 }} />
-                <div className="text">加载中</div>
-            </div>
+            <Success
+                icon={<LoadingOutlined className={Style.brand_icon} />}
+                title="加载中"
+                description="正在获取数据，请稍后"
+            />
         );
     } else if (!isExist) {
         V = (
-            <div className="circle-view">
-                <CloseCircleOutlined style={{ fontSize: 40 }} />
-                <div className="text">二维码非法</div>
-            </div>
+            <Fail
+                title="二维码非法"
+                description="抱歉，该二维码不存在，请检查是否扫错二维码"
+            />
         );
     } else if (expired) {
         V = (
-            <div className="circle-view">
-                <WarningOutlined style={{ fontSize: 40 }} />
-                <div className="text">二维码已过期</div>
-            </div>
+            <Fail
+                icon={<WarningOutlined className={Style.icon} />}
+                title="二维码已过期"
+                description="抱歉，该码已过期，请联系相关人员重新分享"
+            />
         );
     } else {
         V = (
-            <div className="circle-view">
-                <LoadingOutlined style={{ fontSize: 40 }} />
-                <div className="text">跳转中</div>
-            </div>
+            <Success
+                icon={<LoadingOutlined className={Style.brand_icon} />}
+                title="跳转中"
+                description="正在跳转...，请稍后"
+            />
         );
     }
 
-    return <div className="page-body">{V}</div>;
+    return <div className={Style.container}>{V}</div>;
 }

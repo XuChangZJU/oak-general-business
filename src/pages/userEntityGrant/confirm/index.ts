@@ -4,6 +4,11 @@ export default OakComponent({
     projection: {
         id: 1,
         relation: 1,
+        granterId: 1,
+        granter: {
+            id: 1,
+            name: 1,
+        },
     },
     isList: false,
     formData: async ({ data: userEntityGrant }) => {
