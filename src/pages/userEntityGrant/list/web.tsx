@@ -43,6 +43,13 @@ export default function render(this: any) {
                         },
                     },
                     {
+                        dataIndex: 'number',
+                        title: '邀请成员数',
+                        render: (value, record, index) => {
+                            return `${value || 0}人`;
+                        },
+                    },
+                    {
                         dataIndex: 'confirmed',
                         title: '加入成员数',
                         render: (value, record, index) => {
@@ -82,7 +89,9 @@ export default function render(this: any) {
                                     {!record.expired && (
                                         <Typography.Text>
                                             &nbsp;
-                                            {dayjs(record.expireAt).format('YYYY-MM-DD HH:mm')}
+                                            {dayjs(record.expireAt).format(
+                                                'YYYY-MM-DD HH:mm'
+                                            )}
                                         </Typography.Text>
                                     )}
                                 </Typography.Text>
@@ -96,7 +105,10 @@ export default function render(this: any) {
                         align: 'center',
                         render: (value, record, index) => {
                             return (
-                                <CellButton oakId={record.id} oakPath={`${this.state.oakFullpath}.${record.id}`} />
+                                <CellButton
+                                    oakId={record.id}
+                                    oakPath={`${this.state.oakFullpath}.${record.id}`}
+                                />
                             );
                         },
                         fixed: 'right',

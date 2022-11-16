@@ -8,6 +8,7 @@ interface QrCodeProps {
     state: string;
     style?: string;
     href?: string;
+    dev?: boolean;
 }
 declare function QrCode(props: QrCodeProps): JSX.Element;
 export default QrCode;

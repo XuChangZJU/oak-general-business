@@ -15,8 +15,9 @@ export default OakComponent({
     },
     methods: {
         async login() {
-            const { t, features } = this;
-            const token = await features.token.getToken();
+            const { features } = this;
+            const token = await features.token.getToken(true);
+            // 解析url
             let url = decodeURIComponent(window.location.href);
             if (this.strCharPosition(url, '?') > 1) {
                 const startStr = url.substring(0, url.lastIndexOf('?'));
@@ -28,18 +29,21 @@ export default OakComponent({
             }
             const parsedUrl = URL.parse(url, true);
             //console.warn('parsedUrl: '+ JSON.stringify(parsedUrl))
-            const { query } = parsedUrl || {};
-            const { code, state } = query || {};
-            if (!code || !state) {
+            const query = parsedUrl?.query;
+            const code = query?.code;
+            const state = query?.state;
+            if (!code) {
                 this.setState({
-                    error: '缺少参数',
+                    error: '缺少code参数',
                 });
                 return;
             }
-            //console.warn('state: '+ JSON.stringify(state))
-            const parsedPathUrl = URL.parse(decodeURIComponent(state as string), true);
-            //console.warn('parsedPathUrl: '+ JSON.stringify(parsedPathUrl))
-            const { query: query2, pathname } = parsedPathUrl || {};
+            //解析state里面的数据
+            //console.warn('state', state)
+            const parsedState = URL.parse(decodeURIComponent(state as string), true);
+            //console.warn('parsedPathUrl'+ parsedPathUrl)
+            const stateQuery = parsedState?.query;
+            const pathname = parsedState?.pathname;
 
             if (
                 process.env.NODE_ENV === 'production' &&
@@ -48,7 +52,7 @@ export default OakComponent({
                 //token有效 不调用登录
                 console.log('token有效');
                 // 如果 query2 存在isGoBack为true 返回上一页
-                if (query2 && query2.isGoBack) {
+                if (stateQuery?.isGoBack) {
                     this.navigateBack({
                         delta: -2,
                     });
@@ -58,7 +62,7 @@ export default OakComponent({
                     {
                         url: pathname!,
                     },
-                    query2
+                    stateQuery
                 );
             } else {
                 console.log('token不存在或失效');
@@ -66,7 +70,7 @@ export default OakComponent({
                     // web微信扫码跟公众号授权
                     await features.token.loginWechat(code as string);
                     // 如果 query2 存在isGoBack为true 返回上一页
-                    if (query2 && query2.isGoBack) {
+                    if (stateQuery?.isGoBack) {
                         this.navigateBack({
                             delta: -2,
                         });
@@ -76,7 +80,7 @@ export default OakComponent({
                         {
                             url: pathname!,
                         },
-                        query2
+                        stateQuery
                     );
                 } catch (err) {
                     console.warn(err);
