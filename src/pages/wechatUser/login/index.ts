@@ -4,6 +4,7 @@ export default OakComponent({
     isList: false,
     data: {
         error: '',
+        loading: false
     },
     lifetimes: {
         attached() {
@@ -15,6 +16,9 @@ export default OakComponent({
     },
     methods: {
         async login() {
+            this.setState({
+                loading: true
+            })
             const { features } = this;
             const token = await features.token.getToken(true);
             // 解析url
@@ -35,6 +39,7 @@ export default OakComponent({
             if (!code) {
                 this.setState({
                     error: '缺少code参数',
+                    loading: false,
                 });
                 return;
             }
@@ -51,7 +56,20 @@ export default OakComponent({
             ) {
                 //token有效 不调用登录
                 console.log('token有效');
-                // 如果 query2 存在isGoBack为true 返回上一页
+                this.setState({
+                    loading: false,
+                });
+                if (!state) {
+                    this.redirectTo({
+                        url: '/',
+                    });
+                    return;
+                }
+                if (stateQuery?.backUrl) {
+                    window.location.replace(stateQuery?.backUrl as string);
+                    return;
+                }
+                // 如果 stateQuery 存在isGoBack为 返回上一页
                 if (stateQuery?.isGoBack) {
                     this.navigateBack({
                         delta: -2,
@@ -69,7 +87,21 @@ export default OakComponent({
                 try {
                     // web微信扫码跟公众号授权
                     await features.token.loginWechat(code as string);
-                    // 如果 query2 存在isGoBack为true 返回上一页
+                    // 如果 stateQuery 存在isGoBack为true 返回上一页
+                    this.setState({
+                        loading: false,
+                    });
+                    if (!state) {
+                        this.redirectTo({
+                            url: '/',
+                        });
+                        return;
+                    }
+                    if (stateQuery?.backUrl) {
+                        window.location.replace(stateQuery?.backUrl as string);
+                        return;
+                    }
+                    // 如果 stateQuery 存在isGoBack为 返回上一页
                     if (stateQuery?.isGoBack) {
                         this.navigateBack({
                             delta: -2,
@@ -86,6 +118,7 @@ export default OakComponent({
                     console.warn(err);
                     this.setState({
                         error: '微信登录失败',
+                        loading: false,
                     });
                     throw err;
                 }
