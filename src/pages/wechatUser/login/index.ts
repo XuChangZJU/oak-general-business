@@ -46,7 +46,7 @@ export default OakComponent({
             //解析state里面的数据
             //console.warn('state', state)
             const parsedState = URL.parse(decodeURIComponent(state as string), true);
-            //console.warn('parsedPathUrl'+ parsedPathUrl)
+            //console.warn('parsedState'+ parsedState)
             const stateQuery = parsedState?.query;
             const pathname = parsedState?.pathname;
 
@@ -66,7 +66,11 @@ export default OakComponent({
                     return;
                 }
                 if (stateQuery?.backUrl) {
-                    window.location.replace(stateQuery?.backUrl as string);
+                    // todo 现在不存在跨域名登录 不需要使用window.location.replace
+                    // window.location.replace(stateQuery?.backUrl as string);
+                    this.redirectTo({
+                        url: stateQuery?.backUrl as string,
+                    });
                     return;
                 }
                 // 如果 stateQuery 存在isGoBack为 返回上一页
@@ -98,7 +102,11 @@ export default OakComponent({
                         return;
                     }
                     if (stateQuery?.backUrl) {
-                        window.location.replace(stateQuery?.backUrl as string);
+                        // todo 现在不存在跨域名登录 不需要使用window.location.replace
+                        // window.location.replace(stateQuery?.backUrl as string);
+                        this.redirectTo({
+                            url: stateQuery?.backUrl as string,
+                        });
                         return;
                     }
                     // 如果 stateQuery 存在isGoBack为 返回上一页

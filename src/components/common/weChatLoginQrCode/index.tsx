@@ -84,7 +84,6 @@ function QrCode(props: QrCodeProps) {
 
     let V;
     if (dev) {
-        console.log(redirectUri);
         V = (
             <div className={`${prefixCls2}_dev`}>
                 <div className={`${prefixCls2}_dev_header`}>
