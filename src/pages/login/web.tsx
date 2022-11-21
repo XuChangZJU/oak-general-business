@@ -198,8 +198,6 @@ export default function render(this: any) {
             <div className={Style['loginbox-wrap']}>
                 <div className={Style['loginbox-hd']}>
                     <Segmented
-                        onResize={() => {}}
-                        onResizeCapture={() => {}}
                         value={loginMode}
                         block
                         onChange={(value) => {
@@ -238,25 +236,6 @@ export default function render(this: any) {
                         className={Style['loginbox-qrcode']}
                         style={loginMode === 3 ? {} : { display: 'none' }}
                     >
-                        {/* <div className={Style['loginbox-qrcode__sociallogin']}>
-                            请使用微信扫一扫登录
-                            <span
-                                className={Style['loginbox-qrcode__refresh']}
-                                onClick={() => {
-                                    this.setMessage({
-                                        type: 'success',
-                                        content: '刷新二维码',
-                                    });
-                                }}
-                            >
-                                刷新
-                                <ReloadOutlined
-                                    className={
-                                        Style['loginbox-qrcode__refresh-icon']
-                                    }
-                                />
-                            </span>
-                        </div> */}
                         <div className={Style['loginbox-qrcode__iframe']}>
                             {appId && (
                                 <WeChatLoginQrCode

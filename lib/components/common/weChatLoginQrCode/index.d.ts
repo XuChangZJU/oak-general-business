@@ -3,7 +3,7 @@ import './index.less';
 interface QrCodeProps {
     id?: string;
     appId: string;
-    scope: string;
+    scope: 'snsapi_userinfo' | 'snsapi_login';
     redirectUri: string;
     state: string;
     style?: string;

@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import './index.less';
-import { random } from 'oak-domain/lib/utils/string';
+import { random, template } from 'oak-domain/lib/utils/string';
 
-interface QrCodeProps {
+interface GrantProps {
     id?: string;
     appId: string;
     scope: 'snsapi_userinfo' | 'snsapi_login';
     redirectUri: string;
     state: string;
-    style?: string;
-    href?: string;
+    style?: React.CSSProperties;
+    className?: string;
     dev?: boolean;
 }
 
-function QrCode(props: QrCodeProps) {
+const WeChatLoginUrl = template`https://open.weixin.qq.com/connect/oauth2/authorize?redirect_uri=${0}&appid=${1}&response_type=code&scope=${2}&state=${3}&#wechat_redirect`;
+
+function Grant(props: GrantProps) {
     const {
-        id = 'login_qr_container',
+        id = 'login_grant_container',
         appId,
         scope,
         redirectUri,
         state,
-        style = '',
-        href = '',
+        style = {},
+        className,
         dev = process.env.NODE_ENV === 'development', // 默认本地为true 发布时为false
     } = props;
     const [code, setCode] = useState('');
@@ -33,54 +35,11 @@ function QrCode(props: QrCodeProps) {
                 setCode(random(6));
                 return;
             }
-            loadScript(
-                `${window.location.protocol}//res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js`,
-                () => {
-                    // @ts-ignore
-                    new WxLogin({
-                        id,
-                        appid: appId,
-                        scope,
-                        redirect_uri: redirectUri,
-                        state,
-                        style,
-                        href,
-                    });
-                }
-            );
         }
     }, [appId]);
 
-    function loadScript(url: string, callback: () => void) {
-        const script = document.createElement('script');
-        // @ts-ignore
-        if (script.readyState) {
-            // IE
-            // @ts-ignore
-            script.onreadystatechange = function () {
-                if (
-                    // @ts-ignore
-                    script.readyState === 'loaded' ||
-                    // @ts-ignore
-                    script.readyState === 'complete'
-                ) {
-                    // @ts-ignore
-                    script.onreadystatechange = null;
-                    callback();
-                }
-            };
-        } else {
-            // 其他浏览器
-            script.onload = function () {
-                callback();
-            };
-        }
-        script.type = 'text/javascript';
-        script.src = url;
-        document.getElementsByTagName('head')[0].appendChild(script);
-    }
     const prefixCls = 'oak';
-    const prefixCls2 = `${prefixCls}-loginQrCode`;
+    const prefixCls2 = `${prefixCls}-loginGrant`;
 
     let V;
     if (dev) {
@@ -108,10 +67,10 @@ function QrCode(props: QrCodeProps) {
                 </div>
                 <div className={`${prefixCls2}_dev_bottom`}>
                     <span className={`${prefixCls2}_dev_bottom_title`}>
-                        模拟微信扫一扫
+                        模拟微信授权登录
                     </span>
                     <span className={`${prefixCls2}_dev_bottom_desc`}>
-                        1、由于本地开发环境限制，模拟微信扫码后动作
+                        1、由于本地开发环境限制，模拟微信授权后动作
                     </span>
                     <span className={`${prefixCls2}_dev_bottom_desc`}>
                         2、CODE可修改
@@ -119,6 +78,42 @@ function QrCode(props: QrCodeProps) {
                 </div>
             </div>
         );
+    }
+    else {
+         V = (
+             <div className={`${prefixCls2}_prod`}>
+                 <div className={`${prefixCls2}_prod_header`}>
+                     <input
+                         maxLength={6}
+                         value={code}
+                         className={`${prefixCls2}_prod_header_input`}
+                         onChange={(e) => {
+                             setCode(e.target.value);
+                         }}
+                     ></input>
+                     <button
+                         className={`${prefixCls2}_prod_header_btn`}
+                         onClick={() => {
+                             const url = WeChatLoginUrl(
+                                 redirectUri,
+                                 appId,
+                                 scope,
+                                 state
+                             );
+
+                             window.location.href = url;
+                         }}
+                     >
+                         登录
+                     </button>
+                 </div>
+                 <div className={`${prefixCls2}_prod_bottom`}>
+                     <span className={`${prefixCls2}_prod_bottom_title`}>
+                         微信授权登录
+                     </span>
+                 </div>
+             </div>
+         );
     }
 
     return (
@@ -128,4 +123,4 @@ function QrCode(props: QrCodeProps) {
     );
 }
 
-export default QrCode;
+export default Grant;
