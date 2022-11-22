@@ -50,7 +50,7 @@ export async function getApplication<
         {}
     );
 
-    //微信公众号下 没有
+    //微信小程序环境下 没有就报错
     if (type === 'wechatMp') {
         assert(
             application,
@@ -94,10 +94,7 @@ export async function getApplication<
                 return application2.id as string;
             }
         } else {
-            assert(
-                application,
-                'web环境下 application必须存在web相关配置'
-            );
+            assert(application, 'web环境下 application必须存在web相关配置');
         }
     }
 
