@@ -36,7 +36,7 @@ export default OakComponent({
     methods: {
         setInit() {
             const { entity, entityId, type } = this.props;
-            this.setMultiAttrUpdateData({
+            this.update({
                 entity,
                 entityId,
                 type: type || 'grant',
@@ -44,10 +44,14 @@ export default OakComponent({
             });
         },
         setRelation(value: any) {
-            this.setUpdateData('relation', value);
+            this.update({
+                relation: value,
+            });
         },
         setNumber(value: number) {
-            this.setUpdateData('number', value);
+            this.update({
+                number: value,
+            });
         },
         onBack() {
             this.navigateBack();
@@ -55,17 +59,13 @@ export default OakComponent({
         async confirm() {
             const { period } = this.state;
             const expiresAt = Date.now() + period * 60 * 1000;
-            const [operation] = await this.execute({
-                action: 'create',
-                data: {
-                    expiresAt,
-                },
+            this.update({
+                expiresAt,
             });
 
             assert(!this.props.oakId);
-            const { data } =
-                operation as EntityDict['userEntityGrant']['CreateSingle'];
-            const id = data.id;
+            const id = this.getId();
+            await this.execute();
             // todo 在页面显示二维码 先弹窗方式吧
             this.setState({
                 userEntityGrantId: id,

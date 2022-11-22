@@ -11,7 +11,7 @@ export default OakComponent({
     },
     filters: [
         {
-            filter: async ({ props }) => {
+            filter: ({ props }) => {
                 if (props.platformId) {
                     return {
                         platformId: props.platformId,
@@ -21,7 +21,7 @@ export default OakComponent({
             },
         },
     ],
-    async formData({ data }) {
+    formData({ data }) {
         const pagination = this.getPagination();
         return {
             list: data,

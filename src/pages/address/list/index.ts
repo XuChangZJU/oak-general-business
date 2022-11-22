@@ -21,8 +21,9 @@ export default OakComponent({
         },
     },
     isList: true,
-    formData: async ({ data }) => ({
+    formData: ({ data }) => ({
         addresses: data.map((address) => ({
+            id: address?.id,
             name: address?.name!,
             phone: address?.phone!,
             districtName: address?.area?.name!,
@@ -38,5 +39,11 @@ export default OakComponent({
                 url: '/address/upsert',
             });
         },
+        gotoUpsert(oakId: string) {
+            this.navigateTo({
+                url: '/address/upsert',
+                oakId,
+            });
+        }
     },
 });

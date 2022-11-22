@@ -38,7 +38,7 @@ export default OakComponent({
         },
     },
     isList: true,
-    formData: async function({ data: users, features }) {
+    formData: function({ data: users, features }) {
         const pagination = this.getPagination();
         const userArr = users.map((user) => {
             const {
@@ -85,7 +85,8 @@ export default OakComponent({
             const { id } = dataset!;
             this.onCellClicked(id, event);
         },
-        async onCellClicked(id: any, event: any) {
+        async onCellClicked(id: any) {
+            const { event } = this.props;
             if (event) {
                 this.pub(
                     event,

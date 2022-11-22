@@ -1,25 +1,20 @@
 import {
-    Checker,
-    CreateChecker,
-    UpdateChecker,
-    OakInputIllegalException,
-    OakUserUnpermittedException,
+    Checker, OakInputIllegalException,
 } from 'oak-domain/lib/types';
 import { EntityDict } from '../general-app-domain';
-import { RuntimeContext } from '../context/RuntimeContext';
 import { checkAttributesNotNull } from 'oak-domain/lib/utils/validator';
+import { RuntimeCxt } from '../types/RuntimeCxt';
 
 const checkers: Checker<
     EntityDict,
     'userEntityGrant',
-    RuntimeContext<EntityDict>
+    RuntimeCxt
 >[] = [
     {
         type: 'data',
         action: 'create',
         entity: 'userEntityGrant',
-        checker: async ({ operation }, context) => {
-            const { data } = operation;
+        checker: (data) => {
             if (data instanceof Array) {
                 data.forEach((ele) => {
                     checkAttributesNotNull('userEntityGrant', ele, [
@@ -52,62 +47,24 @@ const checkers: Checker<
                 ]);
                 if (data.type === 'grant') {
                     checkAttributesNotNull('userEntityGrant', data, ['number']);
-                    if (data.number <= 0) {
-                        throw new OakInputIllegalException('userEntityGrant', [
-                            'number',
-                            '分享的权限数量必须大于0',
-                        ]);
+                    if (data.number! <= 0 ) {
+                        throw new OakInputIllegalException('userEntityGrant', ['number', '分享的权限数量必须大于0']);
                     }
                 }
                 Object.assign(data, {
                     confirmed: 0,
                 });
             }
-            return 0;
         },
-    } as CreateChecker<
-        EntityDict,
-        'userEntityGrant',
-        RuntimeContext<EntityDict>
-    >,
+    },
     {
         type: 'row',
         entity: 'userEntityGrant',
         action: ['disable'],
-        checker: async (event, context, params) => {
-            const {
-                operation: { filter },
-            } = event;
-            const { rowStore } = context;
-            const {
-                result: [userEntityGrant],
-            } = await rowStore.select(
-                'userEntityGrant',
-                {
-                    data: {
-                        id: 1,
-                        expired: 1,
-                    },
-                    filter: {
-                        id: filter?.id!,
-                    },
-                    indexFrom: 0,
-                    count: 1,
-                },
-                context,
-                params
-            );
-            if (!userEntityGrant?.expired) {
-                return 1;
-            } else {
-                throw new OakUserUnpermittedException();
-            }
+        filter: {
+            expired: false,
         },
-    } as UpdateChecker<
-        EntityDict,
-        'userEntityGrant',
-        RuntimeContext<EntityDict>
-    >,
+    }
 ];
 
 export default checkers;

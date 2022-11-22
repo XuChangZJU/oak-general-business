@@ -24,8 +24,8 @@ export default OakComponent({
         eventLoggedIn: String,
         backUrl: String, //回调url
     },
-    async formData({ features }) {
-        const application = await features.application.getApplication();
+    formData({ features }) {
+        const application = features.application.getApplication();
         const appId = application?.config?.wechat?.appId;
 
         const loginAgreed = features.localStorage.load(LOGIN_AGREED);
@@ -53,8 +53,7 @@ export default OakComponent({
         };
     },
     methods: {
-        async sendCaptcha() {
-            const { mobile } = this.state;
+        async sendCaptcha(mobile: string) {
             try {
                 const result = await this.features.token.sendCaptcha(mobile);
                 // 显示返回消息
@@ -71,9 +70,8 @@ export default OakComponent({
                 });
             }
         },
-        async loginByMobile() {
+        async loginByMobile(mobile: string, loginAgreed: boolean, password?: string, captcha?: string) {
             const { eventLoggedIn, backUrl } = this.props;
-            const { mobile, password, captcha, loginAgreed } = this.state;
             if (!loginAgreed) {
                 this.setMessage({
                     type: 'info',
@@ -112,13 +110,22 @@ export default OakComponent({
                 });
             }
         },
+        async loginByMobileWeb(mobile: string, loginAgreed: boolean, password?: string, captcha?: string, loginMode?: number) {
+            await this.loginByMobile(mobile, loginAgreed, password, captcha);
+            if (loginAgreed !== this.state.loginAgreed) {
+                this.setLoginAgreed(loginAgreed);
+            }
+            if (loginMode && loginMode !== this.state.loginMode) {
+                this.setLoginMode(loginMode);
+            }
+        },
         setLoginAgreed(checked: boolean) {
             this.features.localStorage.save(LOGIN_AGREED, checked);
             this.setState({
                 loginAgreed: checked,
             });
         },
-        setMode(value: number) {
+        setLoginMode(value: number) {
             this.features.localStorage.save(LOGIN_MODE, value);
             this.setState({
                 loginMode: value,

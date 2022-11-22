@@ -53,8 +53,8 @@ export default OakComponent({
         },
     },
     filters: [{
-        filter: async ({ features }) => {
-            const tokenId = await features.token.getTokenValue();
+        filter: ({ features }) => {
+            const tokenId = features.token.getTokenValue();
             if (tokenId) {
                 return {
                     id: tokenId,
@@ -65,7 +65,7 @@ export default OakComponent({
             };
         },
     }],
-    formData: async ({ data: [token] }) => {
+    formData: ({ data: [token] }) => {
         const user = token?.user;
         const player = token?.player;
         const avatarFile =
@@ -98,10 +98,6 @@ export default OakComponent({
         showDrawer: false,
     },
     methods: {
-        setValue(input: any) {
-            const { dataset, value } = this.resolveInput(input);
-            this.setUpdateData(dataset!.attr, value);
-        },
         async onRefresh() {
             this.setState({
                 refreshing: true,
@@ -120,7 +116,7 @@ export default OakComponent({
                 refreshing: true,
             });
             try {
-                switch(process.env.OAK_PLATFORM) {
+                switch (process.env.OAK_PLATFORM) {
                     case 'wechatMp': {
                         await this.features.token.loginWechatMp();
                         this.setState({
@@ -134,7 +130,7 @@ export default OakComponent({
                             this.navigateBack();
                         })
                         this.navigateTo({
-                            url: '/mobile/login',
+                            url: '/login',
                             eventLoggedIn,
                         });
                         break;
@@ -150,18 +146,8 @@ export default OakComponent({
             });
         },
         goUserManage() {
-            const event = `user:manage:itemclicked:${Date.now()}`;
-            const onItemClicked = async ({ id }: { id: string }) => {
-                this.navigateTo({
-                    url: '/user/manage/detail',
-                    oakId: id,
-                });
-            }
-            this.sub(event, onItemClicked);
-
             this.navigateTo({
                 url: '/user/manage',
-                event,
             });
         },
     },

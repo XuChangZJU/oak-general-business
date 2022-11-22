@@ -36,15 +36,15 @@ export default OakComponent(
             }
         ],
         isList: true,
-        formData: async function ({ data: users, features }) {
+        formData: function ({ data: users, features }) {
             const { searchValue, go } = this.state;
             go && this.goPage(users);
-            const isRoot = await features.token.isRoot();
+            const isRoot = features.token.isRoot();
             let nodeStr = '';
             const userIds: Array<string> = [];
             if (users.length) {
                 for (let i = 0; i < users.length; i++) {
-                    userIds.push(users[i]!.id);
+                    userIds.push(users[i]!.id!);
                     const { mobile$user, name } = users[i] || {};
                     let itemStr: String = name || '';
                     const mobile = mobile$user && mobile$user[0]?.mobile;

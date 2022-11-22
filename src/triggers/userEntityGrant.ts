@@ -1,20 +1,16 @@
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { Trigger, CreateTrigger, UpdateTrigger } from 'oak-domain/lib/types/Trigger';
-import { RuntimeContext } from '../context/RuntimeContext';
 import { CreateOperationData as CreateUserEntityGrantData } from '../general-app-domain/UserEntityGrant/Schema';
 import { EntityDict } from '../general-app-domain/EntityDict';
 
-import {
-    OakCongruentRowExists,
-    OakException,
-    OakRowInconsistencyException,
-    OakExternalException
-} from 'oak-domain/lib/types';
+import { OakRowInconsistencyException, OakExternalException } from 'oak-domain/lib/types';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { DefaultConfig } from '../constants';
 import { createWechatQrCode } from '../aspects/wechatQrCode';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
+import { RuntimeCxt } from '../types/RuntimeCxt';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
-const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict>>[] = [
+const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
     {
         name: '当创建userEntityGrant时，查询是否有未过期可重用的对象',
         entity: 'userEntityGrant',
@@ -23,7 +19,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
         fn: async ({ operation }, context, params) => {
             const { data, filter } = operation;
             const fn = async (userEntityGrantData: CreateUserEntityGrantData) => {
-                const { userId } = (await context.getToken())!;
+                const { userId } = context.getToken()!;
                 assert(userId);
                 const { id } = userEntityGrantData;
 
@@ -43,9 +39,9 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                             },
                         },
                     },
-                    context
+                    context as BackendRuntimeContext<EntityDict>
                 );
-                
+
             }
             if (data instanceof Array) {
                 assert('授权不存在一对多的情况')
@@ -55,8 +51,8 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
             }
             return 0;
         }
-    } as CreateTrigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict>>,
-        {
+    } as CreateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
+    {
         name: '当userEntityGrant准备确认时，附上被授权者id',
         entity: 'userEntityGrant',
         action: 'confirm',
@@ -64,7 +60,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
         fn: async ({ operation }, context, params) => {
             const { data, filter } = operation;
             const { userId } = (await context.getToken())!;
-            const { result } = await context.rowStore.select(
+            const result = await context.select(
                 'userEntityGrant',
                 {
                     data: {
@@ -81,7 +77,6 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                     indexFrom: 0,
                     count: 1,
                 },
-                context,
                 {
                     dontCollect: true,
                 }
@@ -101,7 +96,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
             }
             return 0
         }
-    } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict>>,
+    } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
     {
         name: '当userEntityGrant被确认时，生成user和entity关系',
         entity: 'userEntityGrant',
@@ -109,10 +104,8 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
         when: 'after',
         fn: async ({ operation }, context, params) => {
             const { data, filter } = operation;
-            const { userId } = (await context.getToken())!;
-            const {
-                result: [userEntityGrant],
-            } = await context.rowStore.select(
+            const { userId } = context.getToken()!;
+            const [userEntityGrant] = await context.select(
                 'userEntityGrant',
                 {
                     data: {
@@ -129,7 +122,6 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                     indexFrom: 0,
                     count: 1,
                 },
-                context,
                 {
                     dontCollect: true,
                 }
@@ -137,7 +129,8 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
             const { entity, entityId, relation, granterId, type } = userEntityGrant;
             const entityStr = firstLetterUpperCase(entity!);
             const userRelation = `user${entityStr}` as keyof EntityDict;
-            const { result: result2 } = await context.rowStore.select(
+            //如果是relation是transfer，需要处理授权者名下entity关系转让给接收者
+            const result2 = await context.select(
                 userRelation,
                 {
                     data: {
@@ -154,7 +147,6 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                     indexFrom: 0,
                     count: 1,
                 },
-                context,                
                 {
                     dontCollect: true,
                 }
@@ -169,24 +161,23 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                     '已领取该权限'
                 );
             } else {
-                await context.rowStore.operate(
+                await context.operate(
                     userRelation,
                     {
-                        id: await generateNewId(),
+                        id: generateNewId(),
                         action: 'create',
                         data: {
-                            id: await generateNewId(),
+                            id: generateNewId(),
                             userId,
                             [`${entity}Id`]: entityId,
                             relation,
                         } as any,
                     },
-                    context,
                     params
                 );
                 // todo type是转让的话 需要回收授权者的关系
                 if (type === 'transfer') {
-                    const { result: result3 } = await context.rowStore.select(
+                    const result3 = await context.select(
                         userRelation,
                         {
                             data: {
@@ -203,30 +194,28 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict
                             indexFrom: 0,
                             count: 1,
                         },
-                        context,
                         {
                             dontCollect: true,
                         }
                     );
                     assert(result3[0]);
-                    await context.rowStore.operate(
+                    await context.operate(
                         userRelation,
                         {
-                            id: await generateNewId(),
+                            id: generateNewId(),
                             action: 'remove',
                             data: {},
                             filter: {
                                 id: result3[0].id,
                             },
                         },
-                        context,
                         params
                     );
                 }
-             
+
                 return 1;
             }
         }
-    } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict>>
+    } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>
 ];
 export default triggers;

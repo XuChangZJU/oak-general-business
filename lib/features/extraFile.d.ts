@@ -1,12 +1,14 @@
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
-import { AspectWrapper, DeduceCreateOperationData } from 'oak-domain/lib/types';
+import { DeduceCreateOperationData } from 'oak-domain/lib/types';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { AspectDict } from '../aspects/AspectDict';
 import { EntityDict } from '../general-app-domain';
-import { RuntimeContext } from '../context/RuntimeContext';
-export declare class ExtraFile<ED extends EntityDict, Cxt extends RuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature {
-    private aspectWrapper;
-    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>);
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
+import { Cache } from 'oak-frontend-base/lib/features/cache';
+export declare class ExtraFile<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>> extends Feature {
+    private cache;
+    constructor(cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>);
     private getUploadInfo;
     upload(extraFile: DeduceCreateOperationData<EntityDict['extraFile']['OpSchema']>): Promise<{
         url: string;

@@ -1,9 +1,10 @@
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
+import { EntityDict } from '../../../general-app-domain';
 import { composeFileUrl } from '../../../utils/extraFile';
 
 export default OakComponent({
     entity: 'user',
-    projection: async ({ props }) => {
+    projection: ({ props }) => {
         const { entity, relations, entityId } = props;
         const entityStr = firstLetterUpperCase(entity!);
         return {
@@ -53,45 +54,46 @@ export default OakComponent({
                 indexFrom: 0,
                 count: 1,
             },
-        };
+        } as EntityDict['user']['Selection']['data'];
     },
     filters: [
         // 由调用者注入oakFilter
     ],
     isList: true,
-    formData: async function ({ data: users, props, features }) {
+    formData: function ({ data: users, props, features }) {
         const { entity } = props;
         const entityStr = firstLetterUpperCase(entity!);
-        const filter =
-            this.state.oakFullpath &&
-            ((await this.getFilterByName('name')) as any);
+        if (this.state.oakFullpath) {
+            const filter = this.getFilterByName('name');
 
-        return {
-            users: users?.map((ele: any) => {
-                const { mobile$user, extraFile$entity } = ele || {};
-                const userEntity = ele![`user${entityStr}$user`];
-                const mobile = mobile$user && mobile$user[0]?.mobile;
-                const avatar =
-                    extraFile$entity &&
-                    extraFile$entity[0] &&
-                    composeFileUrl(extraFile$entity[0]);
-                const relations = userEntity?.map((ele: any) => ele.relation);
-                const hasRelation: boolean[] = props.relations!.map((ele2) =>
-                    relations.includes(ele2)
-                );
-                const user2 = Object.assign({}, ele, {
-                    mobile,
-                    avatar,
-                    relations,
-                    hasRelation,
-                });
-                return user2;
-            }),
-            searchValue:
-                filter?.$or &&
-                (filter.$or as [{ name: { $includes: string } }])[0]?.name
-                    .$includes,
-        };
+            return {
+                users: users?.map((ele: any) => {
+                    const { mobile$user, extraFile$entity } = ele || {};
+                    const userEntity = ele![`user${entityStr}$user`];
+                    const mobile = mobile$user && mobile$user[0]?.mobile;
+                    const avatar =
+                        extraFile$entity &&
+                        extraFile$entity[0] &&
+                        composeFileUrl(extraFile$entity[0]);
+                    const relations = userEntity?.map((ele: any) => ele.relation);
+                    const hasRelation: boolean[] = props.relations!.map((ele2: string) =>
+                        relations.includes(ele2)
+                    );
+                    const user2 = Object.assign({}, ele, {
+                        mobile,
+                        avatar,
+                        relations,
+                        hasRelation,
+                    });
+                    return user2;
+                }),
+                searchValue:
+                    filter?.$or &&
+                    (filter.$or as [{ name: { $includes: string } }])[0]?.name
+                        .$includes,
+            };
+        }
+        return {};
     },
     properties: {
         entity: String,

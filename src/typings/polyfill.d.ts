@@ -1,16 +1,17 @@
 import { MakeOakComponent } from 'oak-frontend-base/lib/types/Page';
 import { EntityDict } from '../general-app-domain';
 import { GeneralRuntimeContext } from '../src/RuntimeContext';
-import { aspectDict } from '../src/aspects';
+import { AspectDict } from '../src/aspects/AspectDict';
 import { initialize } from '../src/features';
+import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
 declare global {
-    const generateNewId: (options?: { timestamp?: boolean }) => Promise<string>;
-
     const OakComponent: MakeOakComponent<
         EntityDict,
-        RuntimeContext,
-        typeof aspectDict,
+        BackendRuntimeContext<EntityDict>,
+        FrontendRuntimeContext<EntityDict, BackendRuntimeContext<EntityDict>, AspectDict<EntityDict, BackendRuntimeContext<EntityDict>>>,
+        AspectDict<EntityDict, BackendRuntimeContext<EntityDict>>,
         ReturnType<typeof initialize>['features']
     >;
 }

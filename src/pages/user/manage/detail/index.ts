@@ -9,7 +9,9 @@ export default OakComponent({
         nickname: 1,
         name: 1,
         userState: 1,
+        birth: 1,
         idState: 1,
+        gender: 1,
         extraFile$entity: {
             $entity: 'extraFile',
             data: {
@@ -40,17 +42,20 @@ export default OakComponent({
     },
     isList: false,
     
-    formData: async ({ data: user }) => {
+    formData: ({ data: user }) => {
         const {
             id,
             nickname,
             idState,
             userState,
             name,
+            gender,
             mobile$user,
+            birth,
             extraFile$entity,
         } = user || {};
         const mobile = mobile$user && mobile$user[0]?.mobile;
+        const mobileCount = mobile$user ? mobile$user.length : 0;
         const avatar =
             extraFile$entity &&
             extraFile$entity[0] &&
@@ -60,9 +65,12 @@ export default OakComponent({
             nickname,
             name,
             mobile,
+            gender,
             avatar,
+            birth: birth ? (new Date(birth)).toLocaleDateString() : '',
             userState,
             idState,
+            mobileCount,
         };
     },
     actions: [
@@ -79,7 +87,7 @@ export default OakComponent({
         stateColor: {
             shadow: 'primary',
             normal: 'success',
-            disabled: ''
+            disabled: 'danger',
         },
         idStateColor: {
             verifying: 'primary',
@@ -139,18 +147,7 @@ export default OakComponent({
         },
     },
     methods: {
-        openDrawer() {
-            this.setState({
-                show: true,
-            });
-        },
-        closeDrawer() {
-            this.setState({
-                show: false,
-            });
-        },
-        async onActionClick({ detail }: WechatMiniprogram.CustomEvent) {
-            const { action } = detail;
+        async onActionClick(action: string) {
             switch (action) {
                 case 'update': {
                     this.navigateTo({
@@ -165,11 +162,7 @@ export default OakComponent({
                 case 'verify':
                 case 'activate':
                 case 'play': {
-                    await this.addOperation({
-                        action,
-                        data: {},
-                    });
-                    await this.execute();
+                    await this.execute(action);
                     break;
                 }
                 default: {

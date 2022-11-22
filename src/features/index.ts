@@ -3,23 +3,28 @@ import { Token } from './token';
 import { ExtraFile } from './extraFile';
 import { Application } from './application';
 import { Config } from './config';
-import { RuntimeContext } from '../context/RuntimeContext';
 import { BasicFeatures } from 'oak-frontend-base/lib/features';
 import { AspectDict } from '../aspects/AspectDict';
 import { AspectWrapper } from 'oak-domain/lib/types';
 import { AppType } from '../general-app-domain/Application/Schema';
 import { EntityDict } from '../general-app-domain';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 
-export function initialize<ED extends EntityDict, Cxt extends RuntimeContext<ED>, AD extends AspectDict<ED, Cxt>>(
-    aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
-    basicFeatures: BasicFeatures<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
+export function initialize<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>,
+    FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>,
+    AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>
+>(
+    basicFeatures: BasicFeatures<ED, Cxt, FrontCxt, AD>,
     type: AppType
-): GeneralFeatures<ED, Cxt, AD> {
-    const application = new Application<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(
-        aspectWrapper, type, basicFeatures.cache, basicFeatures.localStorage);
-    const token = new Token<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(aspectWrapper, basicFeatures.cache, basicFeatures.localStorage);
-    const extraFile = new ExtraFile<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>(aspectWrapper);
-    const config = new Config<ED, Cxt, AD>(aspectWrapper);
+): GeneralFeatures<ED, Cxt, FrontCxt, AD> {
+    const application = new Application<ED, Cxt, FrontCxt, AD>(
+        type, basicFeatures.cache, basicFeatures.localStorage);
+    const token = new Token<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, basicFeatures.localStorage);
+    const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
+    const config = new Config<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
     return {
         token,
         extraFile,
@@ -28,9 +33,14 @@ export function initialize<ED extends EntityDict, Cxt extends RuntimeContext<ED>
     };
 }
 
-export type GeneralFeatures<ED extends EntityDict, Cxt extends RuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> = {
-    token: Token<ED, Cxt, AD>;
-    extraFile: ExtraFile<ED, Cxt, AD>;
-    application: Application<ED, Cxt, AD>;
-    config: Config<ED, Cxt, AD>;
-};
+export type GeneralFeatures<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>,
+    FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>,
+    AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>
+    > = {
+        token: Token<ED, Cxt, FrontCxt, AD>;
+        extraFile: ExtraFile<ED, Cxt, FrontCxt, AD>;
+        application: Application<ED, Cxt, FrontCxt, AD>;
+        config: Config<ED, Cxt, FrontCxt, AD>;
+    };

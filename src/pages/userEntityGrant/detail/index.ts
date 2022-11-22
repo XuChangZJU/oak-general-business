@@ -34,9 +34,9 @@ export default OakComponent({
         },
     },
     isList: false,
-    formData: async ({ data: userEntityGrant }) => {
-        let qrCodeUrl = userEntityGrant?.wechatQrCode$entity[0]?.url;
-        const buffer = userEntityGrant?.wechatQrCode$entity[0]?.buffer;
+    formData: ({ data: userEntityGrant }) => {
+        let qrCodeUrl = userEntityGrant?.wechatQrCode$entity![0]?.url;
+        const buffer = userEntityGrant?.wechatQrCode$entity![0]?.buffer;
         if (buffer) {
             const newBuffer = new ArrayBuffer(buffer.length * 2);
             const newBufferToUint16 = new Uint16Array(newBuffer);

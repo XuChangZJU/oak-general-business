@@ -39,7 +39,7 @@ export default OakComponent({
         idNumber: 1,
     },
     isList: false,
-    formData: async ({ data: user }) => {
+    formData: ({ data: user }) => {
         const { birth, gender, idCardType } = user || {};
         const birthText = birth && new Date(birth).toLocaleDateString();
         const GenderDict = {
@@ -82,17 +82,17 @@ export default OakComponent({
             const { dataset, value } = this.resolveInput(input);
             const { key } = dataset;
             if (['sex', 'idCard'].includes(key)) {
-                this.setUpdateData(dataset!.attr, value[0]);
+                this.update({[dataset!.attr]: value[0]});
                 return;
             }
             if (key === 'birth') {
-                this.setUpdateData(dataset!.attr, value);
+                this.update({[dataset!.attr]: value});
                 this.setState({
                     birthVisible: false,
                 });
                 return;
             }
-            this.setUpdateData(dataset!.attr, value);
+            this.update({[dataset!.attr]: value[0]});
         },
         async confirm() {
             await this.execute();

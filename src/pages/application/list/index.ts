@@ -11,7 +11,7 @@ export default OakComponent({
     },
     filters: [
         {
-            filter: async ({ props }) => {
+            filter: ({ props }) => {
                 if (props.systemId) {
                     return {
                         systemId: props.systemId,
@@ -21,7 +21,7 @@ export default OakComponent({
             },
         },
     ],
-    async formData({ data }) {
+    formData({ data }) {
         const pagination = this.getPagination();
         return {
             list: data,
@@ -67,13 +67,7 @@ export default OakComponent({
             });
         },
         removeApplication(id: string) {
-            this.execute({
-                action: 'remove',
-                data: {},
-                filter: {
-                    id
-                }
-            })
+            this.removeItem(id);
         },
     },
 });

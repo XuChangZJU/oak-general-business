@@ -18,7 +18,6 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {
     AppType,
     WechatPublicConfig,
-    WechatPublicTemplateMsgsConfig,
 } from '../../../../general-app-domain/Application/Schema';
 
 

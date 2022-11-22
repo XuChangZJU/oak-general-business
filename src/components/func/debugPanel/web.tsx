@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Space, Drawer, Modal, Tooltip } from 'antd';
 import { UpOutlined } from '@ant-design/icons';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../general-app-domain';
 
-export default function render(this: any) {
-    const { placement = 'bottom', style = {} } = this.props;
-    const { visible } = this.state;
+export default function render(props: WebComponentProps<EntityDict, 'address', true, {
+    placement: 'top' | 'bottom' | 'left' | 'right',
+    style: Record<string, any>;
+}, {
+    printDebugStore: () => void;
+    printCachedStore: () =>void;
+    printRunningTree: () => void;
+    resetInitialData: () => void;
+    downloadEnv: () => void;
+    resetEnv: (data: Record<string, any>) => void;
+}>) {
+    const { placement = 'bottom', style = {} } = props.data;
+    const { printCachedStore, printDebugStore, printRunningTree, resetInitialData, downloadEnv, resetEnv } = props.methods;
+    const [visible, setVisible] = useState(false);
     return (
         <React.Fragment>
             <Button
@@ -19,15 +32,14 @@ export default function render(this: any) {
                     ...style,
                 }}
                 onClick={() => {
-                    this.setVisible(true);
+                    setVisible(true);
                 }}
             />
-
             <Drawer
                 placement={placement}
                 open={visible}
                 onClose={() => {
-                    this.setVisible(false);
+                    setVisible(false);
                 }}
                 title="Debug控制台"
                 footer={<></>}
@@ -38,7 +50,6 @@ export default function render(this: any) {
                     hidden
                     id="upload"
                     onChange={() => {
-                        const that = this;
                         const file = (document.getElementById('upload') as any)
                             .files[0];
                         if (typeof FileReader === undefined) {
@@ -51,7 +62,7 @@ export default function render(this: any) {
                                     const data = JSON.parse(
                                         this.result as string
                                     );
-                                    that.features.localStorage.resetAll(data);
+                                    resetEnv(data);
                                     window.location.reload();
                                 } catch (err) {
                                     console.error(err);
@@ -66,7 +77,7 @@ export default function render(this: any) {
                             size="large"
                             type="primary"
                             shape="circle"
-                            onClick={() => this.printRunningTree()}
+                            onClick={() => printRunningTree()}
                         >
                             R
                         </Button>
@@ -76,7 +87,7 @@ export default function render(this: any) {
                             size="large"
                             type="primary"
                             shape="circle"
-                            onClick={() => this.printDebugStore()}
+                            onClick={() => printDebugStore()}
                         >
                             S
                         </Button>
@@ -87,7 +98,7 @@ export default function render(this: any) {
                             size="large"
                             type="primary"
                             shape="circle"
-                            onClick={() => this.printCachedStore()}
+                            onClick={() => printCachedStore()}
                         >
                             C
                         </Button>
@@ -98,8 +109,7 @@ export default function render(this: any) {
                             type="primary"
                             shape="circle"
                             onClick={() => {
-                                const data =
-                                    this.features.localStorage.loadAll();
+                                const data = downloadEnv();
                                 const element = document.createElement('a');
                                 element.setAttribute(
                                     'href',
@@ -147,7 +157,7 @@ export default function render(this: any) {
                                     okText: '确定',
                                     cancelText: '取消',
                                     onOk: (e) => {
-                                        this.resetInitialData();
+                                        resetInitialData();
                                         modal.destroy!();
                                         window.location.reload();
                                     },

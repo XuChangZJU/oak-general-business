@@ -1,16 +1,14 @@
-import { checkFilterContains } from 'oak-domain/lib/store/actionDef';
-import { Checker, CreateChecker } from 'oak-domain/lib/types';
+import { Checker } from 'oak-domain/lib/types';
 import { EntityDict } from '../general-app-domain';
-import { RuntimeContext } from '../context/RuntimeContext';
 import { checkAttributesNotNull } from 'oak-domain/lib/utils/validator';
+import { RuntimeCxt } from '../types/RuntimeCxt';
 
-const checkers: Checker<EntityDict, 'system', RuntimeContext<EntityDict>>[] = [
+const checkers: Checker<EntityDict, 'system', RuntimeCxt>[] = [
     {
         type: 'data',
         action: 'create',
         entity: 'system',
-        checker: async ({ operation }, context) => {
-            const { action, data } = operation;
+        checker: (data) => {
             if (data instanceof Array) {
                 data.forEach((ele) => {
                     checkAttributesNotNull('system', ele, ['name', 'platformId']);
@@ -20,7 +18,7 @@ const checkers: Checker<EntityDict, 'system', RuntimeContext<EntityDict>>[] = [
             }
             return 0;
         },
-    } as CreateChecker<EntityDict, 'system', RuntimeContext<EntityDict>>,
+    },
 ];
 
 export default checkers;

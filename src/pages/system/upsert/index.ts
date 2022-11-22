@@ -8,7 +8,7 @@ export default OakComponent({
         description: 1,
         super: 1,
     },
-    async formData({ data }) {
+    formData({ data }) {
         return data || {};
     },
     lifetimes: {
@@ -17,7 +17,7 @@ export default OakComponent({
 
             if (!oakId) {
                 if (platformId) {
-                    this.setUpdateData('platformId', platformId);
+                    this.update({ platformId });
                 }
             }
         },

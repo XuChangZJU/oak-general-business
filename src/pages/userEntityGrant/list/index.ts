@@ -23,7 +23,7 @@ export default OakComponent({
     },
     filters: [
         {
-            filter: async ({ props }) => {
+            filter: ({ props }) => {
                 return {
                     entity: props.entity,
                     entityId: props.entityId,
@@ -42,7 +42,7 @@ export default OakComponent({
             "#name": 'default'
         },
     ],
-    async formData({ data }) {
+    formData({ data }) {
         const pagination = this.getPagination();
         return {
             list: data,

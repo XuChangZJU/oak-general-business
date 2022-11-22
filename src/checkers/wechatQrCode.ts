@@ -1,24 +1,22 @@
-import { checkFilterContains } from 'oak-domain/lib/store/actionDef';
 import {
-    Checker, CreateChecker,
+    Checker,
 } from 'oak-domain/lib/types';
 import { EntityDict } from '../general-app-domain';
 import { RuntimeContext } from '../context/RuntimeContext';
+import { RuntimeCxt } from '../types/RuntimeCxt';
 
 const checkers: Checker<
     EntityDict,
     'wechatQrCode',
-    RuntimeContext<EntityDict>
+    RuntimeCxt
 >[] = [
     {
         type: 'data',
         action: 'create',
         entity: 'wechatQrCode',
-        checker: async ({ operation }, context) => {
-            return 0;
+        checker: (data) => {
         },
-    } as CreateChecker<EntityDict, 'wechatQrCode', RuntimeContext<EntityDict>
->,
+    }
 ];
 
 export default checkers;

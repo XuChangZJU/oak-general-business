@@ -1,7 +1,6 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { OakDataException } from 'oak-domain/lib/types/Exception';
 import { AmapSDK, QiniuSDK } from 'oak-external-sdk';
-import { RuntimeContext } from '../context/RuntimeContext';
 import { EntityDict } from '../general-app-domain';
 import {
     AliCloudConfig,
@@ -12,17 +11,15 @@ import {
     Service,
     TencentCloudConfig,
 } from '../types/Config';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
 export async function getConfig<
     ED extends EntityDict,
-    Cxt extends RuntimeContext<ED>
+    Cxt extends BackendRuntimeContext<ED>
 >(context: Cxt, service: Service, origin: Origin) {
-    const { rowStore } = context;
-    const systemId = await context.getSystemId();
+    const systemId = context.getSystemId();
     assert(systemId);
-    const {
-        result: [system],
-    } = await rowStore.select(
+    const [system] = await context.select(
         'system',
         {
             data: {
@@ -37,7 +34,6 @@ export async function getConfig<
                 id: systemId!,
             },
         },
-        context,
         {
             dontCollect: true,
         }

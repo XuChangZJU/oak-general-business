@@ -1,6 +1,6 @@
 {
     "name": "oak-general-business",
-    "version": "1.0.16",
+    "version": "2.0.1",
     "description": "oak框架中公共业务逻辑的实现",
     "author": {
         "name": "XuChang"
@@ -82,5 +82,5 @@
         "test": "ts-node ./test/test.ts",
         "prepare": "rimraf node_modules/react & rimraf node_modules/react-dom & rimraf node_modules/react-router"
     },
-    "main": "lib/index"
+    "main": "src/index"
 }

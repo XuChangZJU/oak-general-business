@@ -2,8 +2,8 @@ import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
 
 export default OakComponent({
     isList: true,
-    formData: async function ({ data, props }) {
-        const { nameProperty, oakEntity } = props;
+    formData({ data }) {
+        const { nameProperty, oakEntity } = this.props;
         const entityStr = firstLetterUpperCase(oakEntity!);
 
         const rows = data?.map((ele) => {
@@ -13,7 +13,7 @@ export default OakComponent({
                 [`user${entityStr}$${oakEntity}`]: userEntity,
             } = ele as any;
             const relations = userEntity?.map((ele: any) => ele.relation);
-            const hasRelation: boolean[] = props.relations!.map((ele2) =>
+            const hasRelation: boolean[] = this.props.relations!.map((ele2: string) =>
                 relations.includes(ele2)
             );
             return {
@@ -57,11 +57,7 @@ export default OakComponent({
             // );
         },
         async confirm() {
-               this.addOperation({
-                   action: 'create',
-                   data: {},
-               });
-               await this.execute();
+            await this.execute();
             await this.navigateBack();
         },
     },

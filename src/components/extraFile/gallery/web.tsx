@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { composeFileUrl, bytesToSize } from '../../../utils/extraFile';
 
 import { Space, Upload, UploadFile, Tag, Button, Table, UploadProps } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import Style from './web.module.less';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../general-app-domain';
 
 
 function extraFileToUploadFile(extraFile: any, systemConfig: any) {
@@ -34,7 +36,17 @@ function getListType(theme: Theme): ListType {
     return themeMap[theme];
 }
 
-export default function render(this: any) {
+export default function render(props: WebComponentProps<EntityDict, 'extraFile', true, {
+    accept?: string; maxNumber?: number; multiple?: boolean; draggable?: boolean; theme?: Theme;
+    tips?: string; beforeUpload?: (file: File) => Promise<boolean>; disabled?: boolean; style?: Record<string, string>;
+    className?: string; directory?: boolean; onPreview?: (file: UploadFile<any>) => void; onDownload?: (file: UploadFile<any>) => void;
+    showUploadList?: boolean; children?: JSX.Element; files?: EntityDict['extraFile']['OpSchema'][];
+    systemConfig: EntityDict['system']['OpSchema']['config']; disableInsert?: boolean;
+
+}, {
+    onPickByWeb: (files: UploadFile[], callback?: (file: any, status: string) => void) => void;
+    onDeleteByWeb: (file: UploadFile) => void;
+}>) {
     const {
         accept = 'image/*',
         maxNumber = 20,
@@ -51,8 +63,17 @@ export default function render(this: any) {
         onDownload,
         children,
         showUploadList = true,
-    } = this.props;
-    const { files, systemConfig, newUploadFiles, disableInsert } = this.state;
+        files,
+        systemConfig,
+        disableInsert
+    } = props.data;
+    const {
+        onPickByWeb, onDeleteByWeb,
+    } = props.methods;
+
+    // 这里的逻辑可能和原来有点不对
+    const [newUploadFiles, setNewUploadFiles] = useState([] as UploadFile[]);
+
     const listType = getListType(theme);
 
     const getUploadButton = () => {
@@ -95,23 +116,21 @@ export default function render(this: any) {
                     theme === 'custom'
                         ? []
                         : files?.length
-                        ? files.map((ele: any) =>
-                              extraFileToUploadFile(ele, systemConfig)
-                          )
-                        : null
+                            ? files.map((ele: any) =>
+                                extraFileToUploadFile(ele, systemConfig)
+                            )
+                            : undefined
                 }
                 onChange={({ file, fileList, event }) => {
                     const arr =
                         fileList?.filter((ele: ExtraFile) => !ele.id) || [];
-                    this.setState({
-                        newUploadFiles: arr,
-                    });
+                    setNewUploadFiles(arr);
                     if (theme !== 'custom') {
-                        this.onPickByWeb(arr);
+                        onPickByWeb(arr);
                     }
                 }}
                 onRemove={(file) => {
-                    this.onDeleteByWeb(file);
+                    onDeleteByWeb(file);
                 }}
                 onPreview={onPreview}
                 onDownload={onDownload}
@@ -184,19 +203,20 @@ export default function render(this: any) {
                                 align: 'center',
                                 render: (value, record, index) => {
                                     return (
-                                        <>
-                                            {!record.id && (
+                                        <>                                        
+                                            {/* 这里看不懂，待定  by Xc 2022 11 07
+                                             {!record.id && (
                                                 <Button
                                                     type="link"
                                                     onClick={() => {
-                                                        this.customDelete(
+                                                        customDelete(
                                                             index
                                                         );
                                                     }}
                                                 >
                                                     删除
                                                 </Button>
-                                            )}
+                                            )} */}
                                         </>
                                     );
                                 },
@@ -211,21 +231,17 @@ export default function render(this: any) {
                             <Button
                                 danger
                                 type="default"
-                                onClick={() => {
-                                    this.setState({
-                                        newUploadFiles: [],
-                                    });
-                                }}
+                                onClick={() => setNewUploadFiles([])}
                             >
                                 清空
                             </Button>
                             <Button
                                 type="primary"
                                 onClick={() => {
-                                    this.onWebPick(
+                                    onPickByWeb(
                                         newUploadFiles,
                                         (file: any, status: string) => {
-                                            this.setNewUploadFiles(
+                                            setNewUploadFiles(
                                                 file,
                                                 status
                                             );

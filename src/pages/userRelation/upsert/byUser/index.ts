@@ -5,15 +5,9 @@ import { isMobile } from 'oak-domain/lib/utils/validator';
 export default OakComponent({
     isList: false,
     async formData() {
-        let legal = false;
-        try {
-            legal = await this.tryExecute();
-        }
-        catch(err) {
-            legal = false;
-        }
+        let legal = this.tryExecute();
         return {
-            legal,
+            legal: !!legal,
         };
     },
     methods: {
@@ -21,8 +15,8 @@ export default OakComponent({
             await this.execute();
             this.navigateBack();
         },
-        async onReset() {
-            await this.cleanOperation();
+        onReset() {
+            this.clean();
         }
     },
 });

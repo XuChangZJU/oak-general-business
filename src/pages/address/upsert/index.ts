@@ -1,5 +1,3 @@
-import { OakInputIllegalException } from "oak-domain/lib/types";
-
 export default OakComponent({
     entity: 'address',
     projection: {
@@ -21,7 +19,7 @@ export default OakComponent({
         },
     },
     isList: false,
-    async formData({ data: address }) {
+    formData({ data: address }) {
         return {
             name: address?.name!,
             phone: address?.phone!,
@@ -38,21 +36,32 @@ export default OakComponent({
     methods: {
         setValue(input: any) {
             const { dataset, value } = this.resolveInput(input);
-            this.setUpdateData(dataset!.attr, value);
+            const { attr } = dataset!
+            this.update({
+                [attr]: value,
+            });
         },
         callAreaPicker() {
-            this.callPicker('area', {
+            const event = 'address:upsert:selectArea';
+            this.sub(event, ({ id }: {id: string}) => {
+                this.update({
+                    areaId: id,
+                });
+                this.navigateBack();
+            });
+            this.navigateTo({
+                url: '/pickers/area',
+            }, {
+                itemSelectedEvent: event,
                 depth: 3,
             });
         },
         async confirm() {
             await this.execute();
-            if (this.props.oakFrom === 'address:list') {
-                this.navigateBack();
-            }
+            this.navigateBack();
         },
         reset() {
-            this.cleanOperation();
+            this.clean();
         },
     },
 });

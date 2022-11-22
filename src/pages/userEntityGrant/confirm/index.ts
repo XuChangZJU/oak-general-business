@@ -72,14 +72,7 @@ export default OakComponent({
         },
 
         async handleConfirm() {
-            const { oakId } = this.props;
-            await this.execute({
-                action: 'confirm',
-                data: {},
-                filter: {
-                    id: oakId,
-                },
-            });
+            this.execute('confirm');
         },
     },
 });

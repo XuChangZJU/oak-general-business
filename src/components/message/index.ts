@@ -23,4 +23,13 @@ export default OakComponent({
         }
         return {};
     },
+    lifetimes: {
+        attached() {
+            this.subscribed!.push(
+                this.features.message.subscribe(
+                    () => this.reRender()
+                )
+            );
+        }
+    }
 });

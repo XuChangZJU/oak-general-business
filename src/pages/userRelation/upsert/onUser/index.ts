@@ -1,11 +1,12 @@
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import assert from 'assert';
 import { OakInputIllegalException } from 'oak-domain/lib/types';
 import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
-import { EntityDict as BaseEntityDict } from '../../../../general-app-domain';
+import { EntityDict as BaseEntityDict, EntityDict } from '../../../../general-app-domain';
 
 export default OakComponent({
     entity: 'user',
-    projection: async ({ props }) => {
+    projection: ({ props }) => {
         const { entity, entityId } = props;
         const entityStr = firstLetterUpperCase(entity!);
         return {
@@ -25,14 +26,14 @@ export default OakComponent({
                     [`${entity}Id`]: entityId,
                 }
             },
-        };
+        } as EntityDict['user']['Selection']['data'];
     },
     isList: false,
-    async formData({ data: user, props }) {
+    formData({ data: user, props }) {
         const { entity, entityId } = props;
         const entityStr = firstLetterUpperCase(entity!);
         const { name, nickname, password } = user || {};
-        const userRelations = user && user[`user${entityStr}$user`] as Array<{
+        const userRelations = user && (user as any)[`user${entityStr}$user`] as Array<{
             id: string;
             userId: string;
             relation: string;
@@ -53,39 +54,19 @@ export default OakComponent({
         async ready() {
             const { entity, entityId } = this.props;
             const entityStr = firstLetterUpperCase(entity!);
-            if (!this.props.oakId) {
-                await this.addOperation({
-                    action: 'create',
-                    data: {
-                        id: await generateNewId(),
-                        password: '12345678',       // todo 改成system config里的默认密码
-                    },
-                }, async () => {
-                    const operations = await this.getOperations();
-                    const [ operation ] = operations as BaseEntityDict['user']['CreateSingle'][];
-                    if (!operation.data.name) {
-                        throw new OakInputIllegalException('user', ['name'], '用户姓名不能为空');
-                    }
-                    if ((operation.data as any)[`user${entityStr}$user`]?.length > 0) {
-                        return;
-                    }
-                    throw new OakInputIllegalException('user', [`user${entityStr}$user`], '需要至少选择一个权限');
-                });
-            }
-            else {
-                await this.addOperation({
-                    action: 'update',
-                    data: {}
-                }, async () => {
-                    const operations = await this.getOperations();
-                    const [ operation ] = operations as BaseEntityDict['user']['CreateSingle'][];
-
-                    if ((operation.data as any)[`user${entityStr}$user`]?.length > 0) {
-                        return;
-                    }
-                    throw new OakInputIllegalException('user', [`user${entityStr}$user`], '需要至少选择一个权限');
-                });
-            }
+            this.update({
+                password: '12345678',
+            }, undefined, async () => {
+                const operations = this.getOperations();
+                const [ {operation} ] = operations! as { operation: BaseEntityDict['user']['CreateSingle']}[];
+                if (!operation.data.name) {
+                    throw new OakInputIllegalException('user', ['name'], '用户姓名不能为空');
+                }
+                if ((operation.data as any)[`user${entityStr}$user`]?.length > 0) {
+                    return;
+                }
+                throw new OakInputIllegalException('user', [`user${entityStr}$user`], '需要至少选择一个权限');
+            });
         },
     },
     methods: {
@@ -100,17 +81,15 @@ export default OakComponent({
                     (ele: any) => !value.includes(ele.relation)
                 );
                 assert(userRelations!.length === value.length + 1);
-                this.addOperation({
-                    action: oakId ? 'update' : 'create',
-                    data: {
-                        [`user${entityStr}$user`]: [{
-                            action: 'remove',
-                            data: {},
-                            filter: {
-                                id: toBeRemoved!.id,
-                            },
-                        }],
-                    } ,
+                // todo 这里应该改成component
+                this.update({
+                    [`user${entityStr}$user`]: [{
+                        action: 'remove',
+                        data: {},
+                        filter: {
+                            id: toBeRemoved!.id,
+                        },
+                    }],
                 });
             }
             else {
@@ -121,18 +100,15 @@ export default OakComponent({
                         (userRelation: any) => userRelation.relation === ele
                     )
                 );
-                this.addOperation({
-                    action: oakId ? 'update' : 'create',
-                    data: {
-                        [`user${entityStr}$user`]: [{
-                            action: 'create',
-                            data: {
-                                id: await generateNewId(),
-                                [`${entity}Id`]: entityId,
-                                relation: toBeInserted,
-                            },
-                        }],
-                    },
+                this.update({
+                    [`user${entityStr}$user`]: [{
+                        action: 'create',
+                        data: {
+                            id: generateNewId(),
+                            [`${entity}Id`]: entityId,
+                            relation: toBeInserted,
+                        },
+                    }],
                 });
             }
         },

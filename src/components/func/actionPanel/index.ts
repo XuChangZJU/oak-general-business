@@ -1,47 +1,42 @@
-Component({
+export default OakComponent({
+    isList: false,
     properties: {
         actions: Array,
         actionDescriptions: Object,
         show: {
             type: Boolean,
             value: false,
-        }
-    },
-
-    methods: {
-        onClick(touch: WechatMiniprogram.Touch) {
-            const { index } = touch.currentTarget.dataset;
-            const { actions } = this.data;
-
-            const action = actions[index];
-            this.triggerEvent('click', { action });
         },
-        closeDrawer() {
-            this.triggerEvent('close');
-        }
+        onActionClick: Function,
+    },
+    methods: {
+        onClick(action: string) {
+            this.props.onActionClick(action);
+        },
     },
 
     observers: {
-        actions: function (actions) {
-            const { actionDescriptions } = this.data;
+        actions(actions) {
+            const { actionDescriptions } = this.props;
 
             const actionss = actions.map(
-                (action: string) => actionDescriptions[action]
+                (action: string) => Object.assign({}, actionDescriptions[action], { action })
             );
 
-            this.setData({ actionss });
+            this.setState({ actionss });
         },
     },
 
     lifetimes: {
         ready() {
-            const { actions, actionDescriptions } = this.data;
+            const { actions, actionDescriptions } = this.props;
 
-            const actionss = actions.map(
-                action => actionDescriptions[action]
-            );
-
-            this.setData({ actionss });
+            if (actions) {
+                const actionss = actions.map(
+                    (action: string) => Object.assign({}, actionDescriptions[action], { action })
+                );
+                this.setState({ actionss });
+            }
         }
     }
 });

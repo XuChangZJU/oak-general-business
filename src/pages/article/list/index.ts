@@ -14,9 +14,9 @@ export default OakComponent({
         entityId: 1,
     },
     isList: true,
-    formData: async function ({ data: articles, features }) {
-        const application = await features.application.getApplication();
-        const filter = await this.getFilterByName('title');
+    formData: function ({ data: articles, features }) {
+        const application = features.application.getApplication();
+        const filter = this.getFilterByName('title');
         const pagination = this.getPagination();
 
         return {
@@ -39,7 +39,7 @@ export default OakComponent({
     filters: [
         // 由调用者注入oakFilter
         {
-            filter: async ({ features, props }) => {
+            filter: ({ features, props }) => {
                 const { entityId, entity } = props;
                 return {
                     entityId,

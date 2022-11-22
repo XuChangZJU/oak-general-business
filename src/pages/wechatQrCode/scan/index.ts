@@ -18,7 +18,7 @@ export default OakComponent(
         isList: true,
         filters: [
             {
-                filter: async ({ props }) => {
+                filter: ({ props }) => {
                     const scene = decodeURIComponent(props.scene!);
                     const uuid = scene && expandUuidTo36Bytes(scene!);
                     return {
@@ -27,7 +27,7 @@ export default OakComponent(
                 },
             },
         ],
-        formData: async function({ data: wechatQrCodes }) {
+        formData: function({ data: wechatQrCodes }) {
             const wechatQrCode = wechatQrCodes[0];
             if (!wechatQrCode) {
                 return {
@@ -35,7 +35,7 @@ export default OakComponent(
                 };
             }
             if (!wechatQrCode.expired) {
-                const { props, pathname } = wechatQrCode.props;
+                const { props, pathname } = wechatQrCode!.props!;
                 let url =
                     pathname.substring(0, 1) === '/'
                         ? pathname

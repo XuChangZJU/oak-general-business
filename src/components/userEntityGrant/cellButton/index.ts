@@ -1,7 +1,7 @@
 export default OakComponent({
     entity: 'userEntityGrant',
     isList: false,
-    async formData({ data }) {
+    formData({ data }) {
         return {};
     },
     actions: ['disable'],
@@ -10,15 +10,9 @@ export default OakComponent({
             const { oakId: id } = this.props;
             switch (action) {
                 case 'disable': {
-                    await this.addOperation({
-                        action: 'disable',
-                        data: {
-                            expired: true,
-                        },
-                        filter: {
-                            id,
-                        },
-                    });
+                    this.update({
+                        expired: true,
+                    }, 'disable');
                     this.execute();
                     break;
                 }

@@ -1,11 +1,12 @@
 import assert from 'assert';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
+import { EntityDict } from '../../../general-app-domain';
 import { composeFileUrl } from '../../../utils/extraFile';
 import React from '../../../utils/react';
 
 export default OakComponent({
     entity: 'user',
-    projection: async ({ props }) => {
+    projection: ({ props }) => {
         const { entity, entityId } = props;
         const entityStr = firstLetterUpperCase(entity!);
         return {
@@ -52,12 +53,12 @@ export default OakComponent({
                 indexFrom: 0,
                 count: 1,
             },
-        };
+        } as EntityDict['user']['Selection']['data'];
     },
     filters: [
         // 由调用者注入oakFilter
         {
-            filter: async ({ features, props }) => {
+            filter: ({ features, props }) => {
                 const { entityId, entity } = props;
                 const entityStr = firstLetterUpperCase(entity!);
                 return {
@@ -77,10 +78,10 @@ export default OakComponent({
         },
     ],
     isList: true,
-    async formData({ data: users, props, features }) {
+    formData({ data: users, props, features }) {
         const { entity, entityId } = props;
         const entityStr = firstLetterUpperCase(entity!);
-        const filter = await this.getFilterByName('name');
+        const filter = this.getFilterByName('name');
         const pagination = this.getPagination();
         return {
             users: users?.map((ele: any) => {
@@ -167,25 +168,20 @@ export default OakComponent({
                 (ele: any) => ele.id === idRemove
             );
             const relations = user[`user${entityStr}$user`];
-            await this.execute({
-                action: 'update',
-                data: {
-                    [`user${entityStr}$user`]: [
-                        {
-                            action: 'remove',
-                            data: {},
-                            filter: {
-                                id: {
-                                    $in: relations.map((ele: any) => ele.id),
-                                },
+            this.updateItem({
+                [`user${entityStr}$user`]: [
+                    {
+                        action: 'remove',
+                        data: {},
+                        filter: {
+                            id: {
+                                $in: relations.map((ele: any) => ele.id),
                             },
-                        }
-                    ],
-                },
-                filter: {
-                    id: idRemove,
-                },
-            });
+                        },
+                    }
+                ]
+            }, idRemove);
+            await this.execute();
             this.setState({
                 idRemove: '',
             });

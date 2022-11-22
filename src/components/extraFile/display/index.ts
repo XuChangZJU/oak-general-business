@@ -1,4 +1,5 @@
 import { isMockId } from 'oak-frontend-base/lib/utils/mockId';
+import { EntityDict } from '../../../general-app-domain';
 import { composeFileUrl } from '../../../utils/extraFile';
 OakComponent(
     {
@@ -21,7 +22,7 @@ OakComponent(
 
             const isTmp = extraFile?.id && isMockId(extraFile.id);
             return {
-                src: extraFile && composeFileUrl(extraFile, application?.system?.config),
+                src: extraFile && composeFileUrl(extraFile as EntityDict['extraFile']['OpSchema'], application?.system?.config),
                 isTmp,
             };
         },

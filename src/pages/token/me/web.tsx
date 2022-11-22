@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { List, Button, Avatar, Input, Drawer } from 'antd';
 import { UserOutlined, MobileOutlined } from '@ant-design/icons';
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
 
 import Style from './web.module.less';
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 
 
-export default function render(this: any) {
-    const { avatar, nickname, isLoggedIn, refreshing, mobile, mobileCount, showDrawer } = this.state;
-    const mobileText = mobileCount > 1 ? `${mobileCount}条手机号` : (mobile || '未设置');
+export default function Render(props: WebComponentProps<EntityDict, 'token', true, {
+    avatar?: string; nickname?: string; isLoggedIn?: boolean; mobile?: string;
+    mobileCount?: number; refreshing?: boolean; isRoot: boolean; tokenId?: string;
+}, {
+    doLogin: () => Promise<void>;
+    goMyMobile: () => Promise<void>;
+    goUserManage: () => Promise<void>;
+}>) {
+    const { avatar, isLoggedIn, refreshing, mobile, mobileCount, isRoot, oakExecuting, tokenId, nickname, oakDirty } = props.data;
+    const { doLogin, t, goMyMobile, goUserManage, clean, execute, updateItem } = props.methods;
+    const mobileText = mobileCount && mobileCount > 1 ? `${mobileCount}条手机号` : (mobile || '未设置');
+    const [showDrawer, setShowDrawer] = useState(false);
     return (
         <div className={Style.container}>
             <div className={Style.userInfo}>
@@ -26,27 +38,23 @@ export default function render(this: any) {
                         size="small"
                         disabled={refreshing}
                         loading={refreshing}
-                        onClick={() =>
-                            this.setState({
-                                showDrawer: true,
-                            })
-                        }
+                        onClick={() => setShowDrawer(true)}
                     >
-                        {this.t('common:action.update')}
+                        {t('common:action.update')}
                     </Button>
                 ) : (
                     <Button
                         size="small"
                         disabled={refreshing}
                         loading={refreshing}
-                        onClick={() => this.doLogin()}
+                        onClick={() => doLogin()}
                     >
-                        {this.t('login')}
+                        {t('login')}
                     </Button>
                 )}
             </div>
             <List className={Style.list} split={true}>
-                <List.Item onClick={() => this.goMyMobile()}>
+                <List.Item onClick={() => goMyMobile()}>
                     <List.Item.Meta
                         avatar={<MobileOutlined />}
                         title="手机号"
@@ -54,11 +62,11 @@ export default function render(this: any) {
                     />
                 </List.Item>
             </List>
-            {this.state.isRoot && (
+            {isRoot && (
                 <>
                     <div style={{ flex: 1 }} />
                     <List className={Style.list} split={true}>
-                        <List.Item onClick={() => this.goUserManage()}>
+                        <List.Item onClick={() => goUserManage()}>
                             <List.Item.Meta
                                 avatar={<UserOutlined />}
                                 title="用户管理"
@@ -72,45 +80,31 @@ export default function render(this: any) {
                 open={showDrawer}
                 title="修改昵称"
                 onClose={() => {
-                    this.setState({ showDrawer: false });
-                    this.cleanOperation();
+                    clean(undefined);
+                    setShowDrawer(false);
                 }}
                 extra={
                     <Button
-                        disabled={
-                            this.state.oakExecuting ||
-                            !this.state.oakAllowExecuting
-                        }
+                        disabled={oakExecuting || !oakDirty}
                         onClick={async () => {
-                            await this.execute();
-                            this.setState({ showDrawer: false });
-                            this.cleanOperation();
+                            await execute();
+                            setShowDrawer(false);
                         }}
                     >
-                        {this.t('common:action.confirm')}
+                        {t('common:action.confirm')}
                     </Button>
                 }
             >
                 <Input
                     placeholder="请输入昵称"
                     value={nickname}
-                    onChange={async (e) => {
-                        const { tokenId } = this.state;
-                        await this.addOperation({
-                            action: 'update',
-                            data: {
-                                user: {
-                                    action: 'update',
-                                    data: {
-                                        nickname: e.target.value,
-                                    },
-                                },
-                            },
-                            filter: {
-                                id: tokenId,
-                            },
-                        });
-                    }}
+                    onChange={(e) => updateItem({ user: {
+                        id: generateNewId(),
+                        action: 'update',
+                        data: {
+                            nickname: e.target.value
+                        }
+                    }}, tokenId! )}
                 />
             </Drawer>
         </div>

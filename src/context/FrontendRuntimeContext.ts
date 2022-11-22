@@ -1,5 +1,4 @@
 
-import { RowStore } from 'oak-domain/lib/types';
 import { EntityDict } from '../general-app-domain';
 
 import { RuntimeContext } from './RuntimeContext';
@@ -7,54 +6,60 @@ import { Application } from '../features/application';
 import { Token } from '../features/token';
 import { AspectDict as GeneralAspectDict } from '../aspects/AspectDict';
 import { CommonAspectDict } from 'oak-common-aspect';
-import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
+import { SyncContext, SyncRowStore } from 'oak-domain/lib/store/SyncRowStore';
+import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
+import { BackendRuntimeContext } from './BackendRuntimeContext';
 
-type AspectDict<ED extends EntityDict, Cxt extends RuntimeContext<ED>> = GeneralAspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>;
+type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>;
 // 上下文被serialize后的数据内容
 export type SerializedData = {
     a?: string;
     t?: string;
 }
 
-export class FrontendRuntimeContext<ED extends EntityDict, Cxt extends RuntimeContext<ED>, AD extends AspectDict<ED, Cxt>>  extends UniversalContext<ED> implements RuntimeContext<ED> {
-    private application?: Application<ED, Cxt, AD>;
-    private token?: Token<ED, Cxt, AD>;
-    constructor(store: RowStore<ED, Cxt>, application?: Application<ED, Cxt, AD>, token?: Token<ED, Cxt, AD>) {
+export class FrontendRuntimeContext<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>,
+    AD extends AspectDict<ED, Cxt>
+    > extends SyncContext<ED> implements RuntimeContext {
+    private application?: Application<ED, Cxt, this, AD>;
+    private token?: Token<ED, Cxt, this, AD>;
+    constructor(store: SyncRowStore<ED, FrontendRuntimeContext<ED, Cxt, AD>>, application?: Application<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>, token?: Token<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>) {
         super(store);
         this.application = application;
         this.token = token;
     }
 
-    async getApplicationId() {
+    getApplicationId() {
         return this.application?.getApplicationId();
     }
 
-    async getSystemId() {
-        const app = await this.application?.getApplication();
+    getSystemId() {
+        const app = this.application?.getApplication();
         return app?.systemId;
     }
 
-    async getApplication() {
+    getApplication() {
         return this.application?.getApplication();
     }
 
-    async getTokenValue() {
+    getTokenValue() {
         return this.token?.getTokenValue();
     }
 
-    async getToken(allowUnloggedIn?: boolean) {
-        return this.token?.getToken();
+    getToken(allowUnloggedIn?: boolean) {
+        return this.token?.getToken(allowUnloggedIn);
     }
 
-    async getCurrentUserId(allowUnloggedIn?: boolean): Promise<string | undefined> {
-        return this.token?.getUserId();
+    getCurrentUserId(allowUnloggedIn?: boolean): string | undefined {
+        return this.token?.getUserId(allowUnloggedIn);
     }
 
-    async toString(): Promise<string> {
+    toString(): string{
         const data = {
         };
-        const a = await this.application?.getApplicationId(true);
-        const t = await this.token?.getTokenValue(true);
+        const a = this.application?.getApplicationId();
+        const t = this.token?.getTokenValue();
         if (t) {
             Object.assign(data, {
                 t,
@@ -68,7 +73,7 @@ export class FrontendRuntimeContext<ED extends EntityDict, Cxt extends RuntimeCo
         return JSON.stringify(data);
     }
 
-    async isRoot() {
+    isRoot() {
         return this.token?.isRoot() || false;
     }
 };

@@ -1,3 +1,4 @@
+import assert from 'assert';
 import { EntityDict } from '../general-app-domain';
 import { AppType } from '../general-app-domain/Application/Schema';
 import {
@@ -5,18 +6,11 @@ import {
     DEV_WECHATMP_APPLICATION_ID,
     DEV_WECHATPUPLIC_APPLICATION_ID,
 } from '../data/DEV-CONFIG';
-import { RuntimeContext } from '../context/RuntimeContext';
-import { assert } from 'oak-domain/lib/utils/assert';
+import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 
-export async function getApplication<
-    ED extends EntityDict,
-    Cxt extends RuntimeContext<ED>
->(
-    params: {
-        type: AppType;
-    },
-    context: Cxt
-) {
+export async function getApplication<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+    type: AppType;
+}, context: Cxt) {
     const { type } = params;
     const APP_ID = {
         web: DEV_WEB_APPLICATION_ID,
@@ -25,12 +19,14 @@ export async function getApplication<
     };
     const appId = APP_ID[type];
 
-    const {
-        result: [application],
-    } = await context.rowStore.select(
-        'application',
-        {
-            data: {
+    const [application] = await context.select('application', {
+        data: {
+            id: 1,
+            name: 1,
+            config: 1,
+            type: 1,
+            systemId: 1,
+            system: {
                 id: 1,
                 name: 1,
                 config: 1,
@@ -46,7 +42,7 @@ export async function getApplication<
                 id: appId,
             },
         },
-        context,
+    },
         {}
     );
 
@@ -61,9 +57,7 @@ export async function getApplication<
         if (type === 'wechatPublic') {
             // 如果微信公众号环境下 application不存在公众号配置，但又在公众号访问，这时可以使用web的application
             if (!application) {
-                const {
-                    result: [application2],
-                } = await context.rowStore.select(
+                const [application2] = await context.select(
                     'application',
                     {
                         data: {
@@ -82,7 +76,6 @@ export async function getApplication<
                             id: APP_ID.web,
                         },
                     },
-                    context,
                     {}
                 );
 

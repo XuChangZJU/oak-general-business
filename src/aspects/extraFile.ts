@@ -1,13 +1,13 @@
-import { RuntimeContext } from '../context/RuntimeContext';
 import { EntityDict } from '../general-app-domain';
 import { Origin, QiniuCosConfig } from '../types/Config';
 import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
 import { getConfig } from '../utils/getContextConfig';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { QiniuCloudInstance } from 'oak-external-sdk';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
 
-export async function getUploadInfo<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(
+export async function getUploadInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(
     params: { origin: Origin; bucket?: string; key?: string },
     context: Cxt): Promise<QiniuUploadInfo> {
     const { origin, key, bucket } = params;

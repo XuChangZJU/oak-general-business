@@ -2,7 +2,7 @@ import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 
 export default OakComponent({
     entity: 'user',
-    projection: async ({ props }) => {
+    projection: ({ props }) => {
         const { entity } = props;
         const entityStr = firstLetterUpperCase(entity!);
         return {
@@ -25,7 +25,7 @@ export default OakComponent({
         // 由调用者注入oakFilter
     ],
     isList: true,
-    formData: async function ({ data: users, props, features }) {
+    formData: function ({ data: users, props, features }) {
         const { entity, relations } = props;
         const entityStr = firstLetterUpperCase(entity!);
         const relationMap = new Map();

@@ -1,3 +1,4 @@
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor';
 import {
     DeduceCreateOperationData,
@@ -20,7 +21,7 @@ export default OakComponent({
         entityId: 1,
     },
     isList: false,
-    formData: async function ({ data: article, features }) {
+    formData: function ({ data: article, features }) {
         return {
             id: article?.id,
             iState: article?.iState,
@@ -40,7 +41,7 @@ export default OakComponent({
         'editor,content': function (editor, content) {
             if (editor && content) {
                 editor.setHtml(content);
-                this.setHtml(content);
+                // this.setHtml(content);
             }
         },
     },
@@ -48,7 +49,7 @@ export default OakComponent({
         ready() {
             const { entityId, entity, oakId } = this.props;
             if (!oakId) {
-                this.setMultiAttrUpdateData({
+                this.update({
                     entityId,
                     entity,
                 });
@@ -71,7 +72,7 @@ export default OakComponent({
                 const result = await this.features.cache.operate('extraFile', {
                     action: 'create',
                     data: extraFile,
-                    id: await generateNewId(),
+                    id: generateNewId(),
                 });
                 return result;
             } catch (error) {
@@ -91,37 +92,35 @@ export default OakComponent({
                 throw error;
             }
         },
+
+        uploadFile(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
+            return this.features.extraFile.upload(extraFile);
+        },
+
         setEditor(editor: IDomEditor | null) {
             this.setState({
                 editor,
             });
         },
-        async setHtml(html: string) {
+        clearContentTip() {
             this.setState({
-                html,
+                contentTip: false,
             });
-            if (html && html !== '<p><br></p>') {
-                await this.setUpdateData('content', html);
-            }
         },
         async confirm() {
-            const { content } = this.state;
-            if (!content || content === '<p><br></p>') {
-                this.setState({
-                    contentTip: true,
-                });
-
-                return;
-            }
             await this.execute();
             this.navigateBack();
         },
         async reset() {
             // 重置
-            this.cleanOperation();
+            this.clean();
         },
-        preview() {
-            const { html, title, author } = this.state;
+        setHtml(content: string) {
+            this.update({ content });
+            this.setState({ html: content });
+        },
+        preview(data: EntityDict['article']['Update']['data']) {
+            const { html, title, author } = data;
             this.save(
                 'article_html',
                 JSON.stringify({

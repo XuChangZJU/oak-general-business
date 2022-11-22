@@ -11,16 +11,10 @@ export default OakComponent({
         userId: 1,
     },
     isList: false,
-    async formData({ data: mobile }) {
-        let legal = false;
-        try {
-            legal = await this.tryExecute();
-        }
-        catch(err) {
-            legal = false;
-        }
+    formData({ data: mobile }) {
+        let legal = this.tryExecute();
         return {
-            legal,
+            legal: !!legal,
             userId: mobile?.userId,
         };
     },
@@ -50,12 +44,13 @@ export default OakComponent({
                     }
                 });
                 if (data.length > 0) {
-                    await this.cleanOperation();
-                    await this.setId(data[0].id);
+                    this.clean();
+                    this.setId(data[0].id);
                 }
                 else {
-                    await this.cleanOperation();
-                    await this.unsetId();
+                    this.clean();
+                    this.unsetId();
+                    // todo
                     await this.addOperation({
                         action: 'create',
                         data: {
@@ -65,7 +60,7 @@ export default OakComponent({
                 }
             }
             else {
-                this.cleanOperation();
+                this.clean();
                 this.unsetId();
             }
             this.setState({
@@ -82,7 +77,7 @@ export default OakComponent({
             this.unsetId();
         },
         onReset() {
-            this.cleanOperation();
+            this.clean();
             this.setState({
                 mobileValue: '',
                 mobileValueReady: false,

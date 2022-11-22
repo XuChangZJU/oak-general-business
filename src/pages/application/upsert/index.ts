@@ -15,7 +15,7 @@ export default OakComponent({
         type: 1,
         systemId: 1,
     },
-    async formData({ data }) {
+    formData({ data }) {
         return data || {};
     },
     data: {
@@ -37,7 +37,9 @@ export default OakComponent({
 
             if (!oakId) {
                 if (systemId) {
-                    this.setUpdateData('systemId', systemId);
+                    this.update({
+                        systemId,
+                    });
                 }
             }
         },
