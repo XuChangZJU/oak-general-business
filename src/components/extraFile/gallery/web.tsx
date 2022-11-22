@@ -8,19 +8,27 @@ import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 
+interface NewUploadFile extends UploadFile {
+    id?: string;
+}
 
-function extraFileToUploadFile(extraFile: any, systemConfig: any) {
-    return Object.assign({}, extraFile, {
+function extraFileToUploadFile(
+    extraFile: EntityDict['extraFile']['Schema'],
+    systemConfig: EntityDict['system']['OpSchema']['config']
+): NewUploadFile {
+    return {
+        id: extraFile.id,
         url: composeFileUrl(extraFile, systemConfig),
         thumbUrl: composeFileUrl(extraFile, systemConfig),
         name: extraFile.filename,
-        uid: extraFile.uid || extraFile.id, //upload 组件需要uid来维护fileList
-    });
+        fileName: extraFile.filename,
+        size: extraFile.size!,
+        type: extraFile.fileType,
+        uid: extraFile.id, //upload 组件需要uid来维护fileList
+    };
 }
 
-interface ExtraFile extends UploadFile {
-    id?: string;
-}
+
 
 type Theme = 'file' | 'image' | 'file-flow' | 'image-flow' | 'custom';
 type ListType = 'text' | 'picture' | 'picture-card';
@@ -36,17 +44,40 @@ function getListType(theme: Theme): ListType {
     return themeMap[theme];
 }
 
-export default function render(props: WebComponentProps<EntityDict, 'extraFile', true, {
-    accept?: string; maxNumber?: number; multiple?: boolean; draggable?: boolean; theme?: Theme;
-    tips?: string; beforeUpload?: (file: File) => Promise<boolean>; disabled?: boolean; style?: Record<string, string>;
-    className?: string; directory?: boolean; onPreview?: (file: UploadFile<any>) => void; onDownload?: (file: UploadFile<any>) => void;
-    showUploadList?: boolean; children?: JSX.Element; files?: EntityDict['extraFile']['OpSchema'][];
-    systemConfig: EntityDict['system']['OpSchema']['config']; disableInsert?: boolean;
-
-}, {
-    onPickByWeb: (files: UploadFile[], callback?: (file: any, status: string) => void) => void;
-    onDeleteByWeb: (file: UploadFile) => void;
-}>) {
+export default function render(
+    props: WebComponentProps<
+        EntityDict,
+        'extraFile',
+        true,
+        {
+            accept?: string;
+            maxNumber?: number;
+            multiple?: boolean;
+            draggable?: boolean;
+            theme?: Theme;
+            tips?: string;
+            beforeUpload?: (file: File) => Promise<boolean>;
+            disabled?: boolean;
+            style?: Record<string, string>;
+            className?: string;
+            directory?: boolean;
+            onPreview?: (file: UploadFile<any>) => void;
+            onDownload?: (file: UploadFile<any>) => void;
+            showUploadList?: boolean;
+            children?: JSX.Element;
+            files?: EntityDict['extraFile']['OpSchema'][];
+            systemConfig: EntityDict['system']['OpSchema']['config'];
+            disableInsert?: boolean;
+        },
+        {
+            onPickByWeb: (
+                files: UploadFile[],
+                callback?: (file: any, status: string) => void
+            ) => void;
+            onDeleteByWeb: (file: UploadFile) => void;
+        }
+    >
+) {
     const {
         accept = 'image/*',
         maxNumber = 20,
@@ -65,16 +96,37 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
         showUploadList = true,
         files,
         systemConfig,
-        disableInsert
+        disableInsert,
     } = props.data;
-    const {
-        onPickByWeb, onDeleteByWeb,
-    } = props.methods;
+    const { onPickByWeb, onDeleteByWeb } = props.methods;
 
     // 这里的逻辑可能和原来有点不对
-    const [newUploadFiles, setNewUploadFiles] = useState([] as UploadFile[]);
+    const [newUploadFiles, setNewUploadFiles] = useState([] as NewUploadFile[]);
 
     const listType = getListType(theme);
+
+    const setNewUploadFilesByStatus = (
+        file: EntityDict['extraFile']['Schema'],
+        status: string
+    ) => {
+        const { filename, size, id } = file;
+        const file2 = newUploadFiles.find(
+            (ele: NewUploadFile) => (ele.fileName === filename && ele.size === size)
+        );
+        if (file2) {
+            Object.assign(file2, {
+                status,
+                id,
+            });
+        }
+
+        setNewUploadFiles(newUploadFiles);
+    };
+    const customDelete = (index: number) => {
+        const arr = [...newUploadFiles];
+        arr.splice(index, 1);
+        setNewUploadFiles(arr);
+    };
 
     const getUploadButton = () => {
         if (children) {
@@ -116,17 +168,17 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
                     theme === 'custom'
                         ? []
                         : files?.length
-                            ? files.map((ele: any) =>
-                                extraFileToUploadFile(ele, systemConfig)
-                            )
-                            : undefined
+                        ? files.map((ele: any) =>
+                              extraFileToUploadFile(ele, systemConfig)
+                          )
+                        : undefined
                 }
                 onChange={({ file, fileList, event }) => {
-                    const arr =
-                        fileList?.filter((ele: ExtraFile) => !ele.id) || [];
-                    setNewUploadFiles(arr);
+                    const arr = fileList?.filter((ele: NewUploadFile) => !ele.id) || [];
                     if (theme !== 'custom') {
                         onPickByWeb(arr);
+                    } else {
+                        setNewUploadFiles(arr);
                     }
                 }}
                 onRemove={(file) => {
@@ -202,21 +254,19 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
                                 title: '操作',
                                 align: 'center',
                                 render: (value, record, index) => {
+                                    // 只处理state的文件 这时候可以直接删除
                                     return (
-                                        <>                                        
-                                            {/* 这里看不懂，待定  by Xc 2022 11 07
-                                             {!record.id && (
+                                        <>
+                                            {!record.id && (
                                                 <Button
                                                     type="link"
                                                     onClick={() => {
-                                                        customDelete(
-                                                            index
-                                                        );
+                                                        customDelete(index);
                                                     }}
                                                 >
                                                     删除
                                                 </Button>
-                                            )} */}
+                                            )}
                                         </>
                                     );
                                 },
@@ -241,7 +291,7 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
                                     onPickByWeb(
                                         newUploadFiles,
                                         (file: any, status: string) => {
-                                            setNewUploadFiles(
+                                            setNewUploadFilesByStatus(
                                                 file,
                                                 status
                                             );
