@@ -1,3 +1,4 @@
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import assert from 'assert';
 import { OakInputIllegalException } from 'oak-domain/lib/types';
 import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
@@ -57,7 +58,7 @@ export default OakComponent({
                 await this.addOperation({
                     action: 'create',
                     data: {
-                        id: await generateNewId(),
+                        id: generateNewId(),
                         password: '12345678',       // todo 改成system config里的默认密码
                     },
                 }, async () => {
@@ -127,7 +128,7 @@ export default OakComponent({
                         [`user${entityStr}$user`]: [{
                             action: 'create',
                             data: {
-                                id: await generateNewId(),
+                                id: generateNewId(),
                                 [`${entity}Id`]: entityId,
                                 relation: toBeInserted,
                             },

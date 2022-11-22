@@ -38,7 +38,7 @@ export default OakComponent({
         },
     },
     isList: true,
-    formData: async function({ data: users, features }) {
+    formData: function({ data: users, features }) {
         const pagination = this.getPagination();
         const userArr = users.map((user) => {
             const {

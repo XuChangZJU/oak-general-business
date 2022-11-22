@@ -24,8 +24,8 @@ export default OakComponent({
         eventLoggedIn: String,
         backUrl: String, //回调url
     },
-    async formData({ features }) {
-        const application = await features.application.getApplication();
+    formData({ features }) {
+        const application = features.application.getApplication();
         const appId = application?.config?.wechat?.appId;
 
         const loginAgreed = features.localStorage.load(LOGIN_AGREED);

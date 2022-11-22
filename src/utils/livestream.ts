@@ -1,10 +1,10 @@
-import { RuntimeContext } from '../context/RuntimeContext';
 import { EntityDict } from '../general-app-domain';
 import { Schema as Livestream } from '../general-app-domain/Livestream/Schema';
 import { Origin, QiniuLiveConfig } from '../types/Config';
 import { getConfig } from './getContextConfig';
 import { QiniuCloudInstance } from 'oak-external-sdk';
 import { assert } from 'oak-domain/lib/utils/assert';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
 /**
  * 创建直播流并生成推拉流地址
@@ -13,7 +13,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
  * @param context context
  * @returns Livestream 对象
  */
-export async function getLivestream<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(
+export async function getLivestream<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(
     params: {
         origin: Origin;
         streamTitle: string,
@@ -48,7 +48,7 @@ export async function getLivestream<ED extends EntityDict, Cxt extends RuntimeCo
  * @param context context
  * @returns livestream对象
  */
-export async function getStreamObj<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(
+export async function getStreamObj<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(
     params: {
         origin: Origin;
         streamTitle: string;
@@ -76,7 +76,7 @@ export async function getStreamObj<ED extends EntityDict, Cxt extends RuntimeCon
 }
 
 // 生成直播回放
-export async function getPlayBackUrl<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(
+export async function getPlayBackUrl<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(
     params: {
         origin: Origin;
         streamTitle: string;

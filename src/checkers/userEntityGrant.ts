@@ -1,21 +1,20 @@
 import {
-    Checker, CreateChecker, OakInputIllegalException,
+    Checker, OakInputIllegalException,
 } from 'oak-domain/lib/types';
 import { EntityDict } from '../general-app-domain';
-import { RuntimeContext } from '../context/RuntimeContext';
 import { checkAttributesNotNull } from 'oak-domain/lib/utils/validator';
+import { RuntimeCxt } from './RuntimeCxt';
 
 const checkers: Checker<
     EntityDict,
     'userEntityGrant',
-    RuntimeContext<EntityDict>
+    RuntimeCxt
 >[] = [
     {
         type: 'data',
         action: 'create',
         entity: 'userEntityGrant',
-        checker: async ({ operation }, context) => {            
-            const { data } = operation;
+        checker: (data) => {
             if (data instanceof Array) {
                 data.forEach(
                     ele => {
@@ -36,7 +35,7 @@ const checkers: Checker<
                 checkAttributesNotNull('userEntityGrant', data, ['type', 'entity', 'entityId', 'relation']);
                 if (data.type === 'grant') {
                     checkAttributesNotNull('userEntityGrant', data, ['number']);
-                    if (data.number <= 0 ) {
+                    if (data.number! <= 0 ) {
                         throw new OakInputIllegalException('userEntityGrant', ['number', '分享的权限数量必须大于0']);
                     }
                 }
@@ -44,10 +43,8 @@ const checkers: Checker<
                     confirmed: 0,
                 });
             }
-            return 0;
         },
-    } as CreateChecker<EntityDict, 'userEntityGrant', RuntimeContext<EntityDict>
->,
+    }
 ];
 
 export default checkers;

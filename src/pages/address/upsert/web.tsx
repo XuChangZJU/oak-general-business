@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react';
 import { Button, Input, Form, TextArea, List } from 'antd-mobile';
-import { RightOutlined } from '@ant-design/icons';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
@@ -13,24 +12,15 @@ export default function Render(props: WebComponentProps<EntityDict, 'address', f
     name?: string; phone?: string; districtName?: string; areaText?: string; detail?: string;
 }, {
     callAreaPicker: () => void;
-    confirm: (data: EntityDict['address']['Update']['data']) => Promise<void>;
+    confirm: () => Promise<void>;
 }>) {
-    const { callAreaPicker, t, confirm } = props.methods;
+    const { callAreaPicker, t, confirm, update } = props.methods;
     const { data } = props;
 
     const inputName = useRef<InputRef>(null);
     const inputPhone = useRef<InputRef>(null);
     const inputDetail = useRef<TextAreaRef>(null);
-    const [name, setName] = useState(undefined as undefined | string);
-    const [phone, setPhone] = useState(undefined as undefined | string);
-    const [detail, setDetail] = useState(undefined as undefined | string);
     const [help, setHelp] = useState({} as Record<string, string>);
-
-    const nameValue = name === undefined ? data.name : name;
-    const phoneValue = phone === undefined ? data.phone : phone;
-    const detailValue = detail === undefined ? data.detail : detail;
-
-    const localDirty = phone && phone !== data.phone || name && name !== data.name || detail && detail !== data.detail;
 
     return (
         <div className={Style.container}>
@@ -43,8 +33,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'address', f
                     <>
                         <Input
                             placeholder="姓名"
-                            onChange={(v) => setName(v)}
-                            value={nameValue}
+                            onChange={(v) => update({ name: v })}
+                            value={data.name}
                             data-attr="name"
                             ref={inputName}
                         />
@@ -58,8 +48,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'address', f
                     <>
                         <Input
                             placeholder="手机号"
-                            onChange={(v) => setPhone(v)}
-                            value={phoneValue}
+                            onChange={(v) => update({ phone: v })}
+                            value={data.phone}
                             data-attr="phone"
                             ref={inputPhone}
                         />
@@ -93,8 +83,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'address', f
                     <>
                         <TextArea
                             maxLength={100}
-                            onChange={(v) => setDetail(v)}
-                            value={detailValue}
+                            onChange={(v) => update({ detail: v })}
+                            value={data.detail || undefined}
                             data-attr="detail"
                             placeholder="详细地址"
                             ref={inputDetail}
@@ -106,11 +96,12 @@ export default function Render(props: WebComponentProps<EntityDict, 'address', f
             <div style={{ flex: 1 }} />
             <Button
                 block
-                disabled={!data.oakDirty && !localDirty}
+                disabled={!data.oakDirty || data.oakExecuting}
+                loading={data.oakExecuting}
                 color="primary"
                 onClick={async () => {
                     try {
-                        await confirm({ phone, name, detail })
+                        await confirm()
                     }
                     catch (err) {
                         if (err instanceof OakInputIllegalException) {

@@ -5,10 +5,10 @@ import { WechatSDK, WechatMpInstance } from 'oak-external-sdk';
 
 import { WechatMpConfig } from '../general-app-domain/Application/Schema';
 import { EntityDict } from '../general-app-domain/EntityDict';
-import { RuntimeContext } from '../context/RuntimeContext';
+import { RuntimeCxt } from '../checkers/RuntimeCxt';
 
-const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeContext<EntityDict>>[] = [
-    {
+const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeCxt>[] = [
+    /* {
         name: '选择wechatQrCode时，动态生成需要的数据',
         entity: 'wechatQrCode',
         action: 'select',
@@ -38,7 +38,7 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeContext<EntityDict>>[
                         ) as WechatMpInstance;
                         const buffer = await wechatInstance.getMpUnlimitWxaCode(
                             {
-                                scene: shrinkUuidTo32Bytes(id),
+                                scene: shrinkUuidTo32Bytes(id!),
                                 page: 'pages/index/index', // todo，这里用其它的页面微信服务器拒绝，因为没发布。应该是 pages/wechatQrCode/scan/index
                             }
                         );
@@ -58,6 +58,6 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeContext<EntityDict>>[
             }
             return count;
         }
-    } as SelectTriggerAfter<EntityDict, 'wechatQrCode', RuntimeContext<EntityDict>>,
+    } as SelectTriggerAfter<EntityDict, 'wechatQrCode', RuntimeCxt>, */
 ];
 export default triggers;

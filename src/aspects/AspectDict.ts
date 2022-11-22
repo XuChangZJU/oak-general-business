@@ -2,14 +2,15 @@ import { WebEnv, WechatMpEnv } from "../general-app-domain/Token/Schema";
 import { AppType } from '../general-app-domain/Application/Schema';
 import { EntityDict } from "../general-app-domain";
 import { QiniuUploadInfo } from "oak-frontend-base/lib/types/Upload";
-import { RuntimeContext } from '../context/RuntimeContext';
-import { Schema as Livestream } from '../general-app-domain/Livestream/Schema';
 import { Config, Origin } from "../types/Config";
+import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
+import { CommonAspectDict } from "oak-common-aspect";
+import { FrontendRuntimeContext } from "../context/FrontendRuntimeContext";
 
 
 type GeneralAspectDict<
     ED extends EntityDict,
-    Cxt extends RuntimeContext<ED>
+    Cxt extends BackendRuntimeContext<ED>
     > = {
         loginByMobile: (
             params: {
@@ -80,4 +81,4 @@ type GeneralAspectDict<
         ) => Promise<void>;
     };
 
-export type AspectDict<ED extends EntityDict, Cxt extends RuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
+export type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;

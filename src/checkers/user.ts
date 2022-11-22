@@ -1,55 +1,69 @@
-import { checkFilterContains } from 'oak-domain/lib/store/actionDef';
-import { OakInputIllegalException, Checker, OakUserUnpermittedException, OakRowInconsistencyException, RemoveChecker, UpdateChecker } from "oak-domain/lib/types";
+import { OakInputIllegalException, Checker, OakUserUnpermittedException } from "oak-domain/lib/types";
+import { ROOT_ROLE_ID } from "../constants";
 import { EntityDict } from '../general-app-domain';
-import { RuntimeContext } from '../context/RuntimeContext';
+import { RuntimeCxt } from "./RuntimeCxt";
 
-const checkers: Checker<EntityDict, 'user', RuntimeContext<EntityDict>> [] = [
+const checkers: Checker<EntityDict, 'user', RuntimeCxt> [] = [
     {
-        type: 'data',
+        type: 'row',
         action: 'remove',
         entity: 'user',
-        checker: async ({ operation }, context) => {
-            const { filter } = operation;
-            await checkFilterContains('user', context.rowStore.getSchema(), {
-                idState: 'shadow',
-            }, context, filter);
-            return 0;
-        },
-    } as RemoveChecker<EntityDict, 'user', RuntimeContext<EntityDict>>,
+        filter: {
+            userState: 'shadow',
+        }
+    },
     {
-        type: 'user',
-        action: 'play',
+        type: 'relation',
+        action: ['play', 'remove', 'disable', 'enable'],
         entity: 'user',
-        checker: async () => {
-            // 只有root才能play
+        relationFilter: (userId) => {
+            // 只有root才能进行操作
             throw new OakUserUnpermittedException();
         },
-    } as UpdateChecker<EntityDict, 'user', RuntimeContext<EntityDict>> ,    
+        errMsg: '越权操作',
+    },    
     {
         type: 'data',
         action: 'play',
         entity: 'user',
-        checker: async ({ operation }, context) => {
-            const token = await context.getToken();
+        checker: (data) => {
+            // 不记得什么意思了
+            /* const token = context.getToken();
             const { userId } = token!;
             if (userId === operation.filter!.id) {
                 throw new OakRowInconsistencyException();
-            }
-            return 0;
+            } */
         },
-    } as UpdateChecker<EntityDict, 'user', RuntimeContext<EntityDict>> ,
+    },
     {
         type: 'data',
         action: 'grant',
         entity: 'user',
-        checker: async({ operation }) => {
-            const { data } = operation;
+        checker: (data) => {
             if (Object.keys(data).filter(ele => !ele.includes('$')).length > 0) {
                 throw new OakInputIllegalException('user', Object.keys(data), '授权不允许传入其它属性');
             }
-            return 0;
         }
-    } as UpdateChecker<EntityDict, 'user', RuntimeContext<EntityDict>> 
+    }, 
+    {
+        type: 'row',
+        action: 'disable',
+        entity: 'user',
+        filter: {
+            id: {
+                $nin: {
+                    entity: 'userRole',
+                    data: {
+                        userId: 1,
+                    },
+                    filter: {
+                        roleId: ROOT_ROLE_ID,
+                    },
+                },
+            }
+        },
+        errMsg: '不能禁用root用户',
+    }
 ];
 
 export default checkers;

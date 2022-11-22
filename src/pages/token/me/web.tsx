@@ -5,6 +5,7 @@ import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 
 import Style from './web.module.less';
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 
 
 export default function Render(props: WebComponentProps<EntityDict, 'token', true, {
@@ -15,12 +16,10 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', tru
     goMyMobile: () => Promise<void>;
     goUserManage: () => Promise<void>;
 }>) {
-    const { avatar, isLoggedIn, refreshing, mobile, mobileCount, isRoot, oakExecuting, tokenId } = props.data;
+    const { avatar, isLoggedIn, refreshing, mobile, mobileCount, isRoot, oakExecuting, tokenId, nickname, oakDirty } = props.data;
     const { doLogin, t, goMyMobile, goUserManage, clean, execute, updateItem } = props.methods;
     const mobileText = mobileCount && mobileCount > 1 ? `${mobileCount}条手机号` : (mobile || '未设置');
     const [showDrawer, setShowDrawer] = useState(false);
-    const [nickname, setNickname] = useState(undefined as string | undefined);
-    const nicknameValue = nickname || props.data.nickname;
     return (
         <div className={Style.container}>
             <div className={Style.userInfo}>
@@ -32,7 +31,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', tru
                         icon={<UserOutlined className={Style.userIcon} />}
                     />
                 )}
-                <span className={Style.nickname}>{nicknameValue || '未设置'}</span>
+                <span className={Style.nickname}>{nickname || '未设置'}</span>
                 {isLoggedIn ? (
                     <Button
                         type="primary"
@@ -81,14 +80,13 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', tru
                 open={showDrawer}
                 title="修改昵称"
                 onClose={() => {
-                    setNickname(undefined);
+                    clean(undefined);
                     setShowDrawer(false);
                 }}
                 extra={
                     <Button
-                        disabled={oakExecuting || !nickname || nickname === props.data.nickname}
+                        disabled={oakExecuting || !oakDirty}
                         onClick={async () => {
-                            await updateItem({ user: { action: 'update', data: { nickname } } }, tokenId!);
                             await execute();
                             setShowDrawer(false);
                         }}
@@ -99,8 +97,14 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', tru
             >
                 <Input
                     placeholder="请输入昵称"
-                    value={nicknameValue}
-                    onChange={(e) => setNickname(e.target.value)}
+                    value={nickname}
+                    onChange={(e) => updateItem({ user: {
+                        id: generateNewId(),
+                        action: 'update',
+                        data: {
+                            nickname: e.target.value
+                        }
+                    }}, tokenId! )}
                 />
             </Drawer>
         </div>

@@ -1,6 +1,6 @@
 import { EntityDict } from "../general-app-domain";
 import { WechatQrCodeProps } from '../general-app-domain/WechatQrCode/Schema';
-import { RuntimeContext } from '../context/RuntimeContext';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 /**
  * 生成二维码优先级如下：
  * 0）如果在SystemConfig中指定了qrCodeType，则按照qrCodeType去生成
@@ -10,7 +10,7 @@ import { RuntimeContext } from '../context/RuntimeContext';
  * @param context
  * @returns
  */
-export declare function createWechatQrCode<ED extends EntityDict, T extends keyof ED, Cxt extends RuntimeContext<ED>>(options: {
+export declare function createWechatQrCode<ED extends EntityDict, T extends keyof ED, Cxt extends BackendRuntimeContext<ED>>(options: {
     entity: T;
     entityId: string;
     tag?: string;

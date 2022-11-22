@@ -1,5 +1,3 @@
-import { EntityDict } from '../../../general-app-domain';
-
 export default OakComponent({
     entity: 'address',
     projection: {
@@ -21,7 +19,7 @@ export default OakComponent({
         },
     },
     isList: false,
-    async formData({ data: address }) {
+    formData({ data: address }) {
         return {
             name: address?.name!,
             phone: address?.phone!,
@@ -45,8 +43,8 @@ export default OakComponent({
         },
         callAreaPicker() {
             const event = 'address:upsert:selectArea';
-            this.sub(event, async ({ id }: {id: string}) => {
-                await this.update({
+            this.sub(event, ({ id }: {id: string}) => {
+                this.update({
                     areaId: id,
                 });
                 this.navigateBack();
@@ -58,8 +56,8 @@ export default OakComponent({
                 depth: 3,
             });
         },
-        async confirm(data: EntityDict['address']['Update']['data']) {
-            await this.execute(data);
+        async confirm() {
+            await this.execute();
             this.navigateBack();
         },
         reset() {

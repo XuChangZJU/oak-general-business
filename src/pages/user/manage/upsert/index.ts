@@ -39,7 +39,7 @@ export default OakComponent({
         idNumber: 1,
     },
     isList: false,
-    formData: async ({ data: user }) => {
+    formData: ({ data: user }) => {
         const { birth, gender, idCardType } = user || {};
         const birthText = birth && new Date(birth).toLocaleDateString();
         const GenderDict = {

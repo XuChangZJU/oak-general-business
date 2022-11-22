@@ -1,34 +1,36 @@
-import { Action, Feature } from 'oak-frontend-base/lib/types/Feature';
-import { AspectWrapper, DeduceCreateOperationData } from 'oak-domain/lib/types';
-import { Upload } from 'oak-frontend-base/lib/utils/upload';
-import { CommonAspectDict } from 'oak-common-aspect';
+import { Feature } from 'oak-frontend-base/lib/types/Feature';
+import { AspectWrapper } from 'oak-domain/lib/types';
 import { AspectDict } from '../aspects/AspectDict';
 import { EntityDict } from '../general-app-domain';
-import { RuntimeContext } from '../context/RuntimeContext';
+import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Config as ConfigDef } from '../types/Config';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { CommonAspectDict } from 'oak-common-aspect';
+import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 
 export class Config<
     ED extends EntityDict,
-    Cxt extends RuntimeContext<ED>,
-    AD extends AspectDict<ED, Cxt>
-> extends Feature {
-    private aspectWrapper: AspectWrapper<ED, Cxt, AD>;
+    Cxt extends BackendRuntimeContext<ED>,
+    FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>,
+    AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>
+    > extends Feature {
+    private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
 
-    constructor(aspectWrapper: AspectWrapper<ED, Cxt, AD>) {
+    constructor(cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>) {
         super();
-        this.aspectWrapper = aspectWrapper;
+        this.cache = cache;
     }
-    
-    @Action
+
     async updateConfig(
         entity: 'platform' | 'system',
         entityId: string,
         config: ConfigDef,
     ) {
-        await this.aspectWrapper.exec('updateConfig', {
+        await this.cache.exec('updateConfig', {
             entity,
             entityId,
             config
         });
+        this.publish();
     }
 }

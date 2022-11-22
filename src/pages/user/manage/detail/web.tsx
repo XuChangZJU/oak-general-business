@@ -1,11 +1,32 @@
 import React from 'react';
 
-import { List, Tag, Avatar } from 'antd';
+import { List, Tag, Avatar } from 'antd-mobile';
 
 import Style from './web.module.less';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../../general-app-domain';
+import ActionPanel from '../../../../components/func/actionPanel/index';
 
 
-export default function render(this: any) {
+export default function render(props: WebComponentProps<EntityDict, 'user', false, {
+    nickname?: string,
+    avatar?: string;
+    name?: string;
+    mobile?: string;
+    userState?: string;
+    birth?: string;
+    idState?: string;
+    gender?: string;
+    stateColor: Record<string, string>;
+    idStateColor: Record<string, string>;
+    mobileCount: number;
+    actionDescriptions: Record<string, {
+        icon: { name: string; };
+        label: string;
+    }>;
+}, {
+    onActionClick: (action: string) => Promise<void>;
+}>) {
     const {
         nickname,
         avatar,
@@ -13,10 +34,15 @@ export default function render(this: any) {
         mobile,
         userState,
         idState,
+        gender,
         stateColor,
         idStateColor,
         mobileCount,
-    } = this.state;
+        oakLegalActions,
+        actionDescriptions,
+        birth,
+    } = props.data;
+    const { t, onActionClick } = props.methods;
 
 
     const getMobile = () => {
@@ -27,49 +53,63 @@ export default function render(this: any) {
             return mobile;
         }
         else {
-            return '未设置';
+            return t('unset');
         }
     }
 
     return (
-        <div>
-            <List split={true} className={Style.list}>
-                <List.Item extra={avatar ? <Avatar src={avatar} /> : '未设置'}>
-                    <List.Item.Meta title="头像"></List.Item.Meta>
+        <div className={Style.container}>
+            <List className={Style.list}>
+                <List.Item extra={avatar ? <Avatar src={avatar} /> : t('unset')}>
+                    {t('user:attr.avatar')}
                 </List.Item>
 
-                <List.Item extra={nickname || '未设置'}>
-                    <List.Item.Meta title="昵称"></List.Item.Meta>
+                <List.Item extra={nickname || t('unset')}>
+                    {t('user:attr.nickname')}
                 </List.Item>
 
-                <List.Item extra={name || '未设置'}>
-                    <List.Item.Meta title="真实姓名"></List.Item.Meta>
+                <List.Item extra={name || t('unset')}>
+                    {t('user:attr.name')}
+                </List.Item>
+
+                <List.Item extra={gender ? t(`user:v.gender.${gender}`) : t('unset')}>
+                    {t('user:attr.gender')}
+                </List.Item>
+
+                <List.Item extra={birth || t('unset')}>
+                    {t('user:attr.birth')}
                 </List.Item>
 
                 <List.Item extra={getMobile()}>
-                    <List.Item.Meta title="手机号"></List.Item.Meta>
+                    {t('mobile')}
                 </List.Item>
 
                 <List.Item
                     extra={
-                        <Tag color={stateColor[userState]}>
-                            {this.t(`user:v.userState.${userState}`)}
+                        <Tag color={stateColor[userState!]}>
+                            {t(`user:v.userState.${userState}`)}
                         </Tag>
                     }
                 >
-                    <List.Item.Meta title="用户状态"></List.Item.Meta>
+                    {t('user:attr.userState')}
                 </List.Item>
 
                 <List.Item
                     extra={
-                        <Tag color={idStateColor[idState]}>
-                            {this.t(`user:v.idState.${idState}`)}
+                        <Tag color={idStateColor[idState!]}>
+                            {t(`user:v.idState.${idState}`)}
                         </Tag>
                     }
                 >
-                    <List.Item.Meta title="实名验证"></List.Item.Meta>
+                    {t('user:attr.idState')}
                 </List.Item>
             </List>
+            <div style={{ flex: 1 }} />
+            <ActionPanel
+                actions={oakLegalActions}
+                actionDescriptions={actionDescriptions}
+                onActionClick={(action: string) => onActionClick(action)}
+            />
         </div>
     );
 }

@@ -1,3 +1,4 @@
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import assert from 'assert';
 import { DeduceCreateOperationData, OakException, OakUnloggedInException } from 'oak-domain/lib/types';
 import Dialog from '../../../utils/dialog/index';
@@ -227,13 +228,13 @@ export default OakComponent({
                 type: type || 'file',
                 tag1,
                 tag2,
-                objectId: await generateNewId(),
+                objectId: generateNewId(),
                 entity,
                 filename,
                 size,
                 extension,
                 fileType,
-                id: await generateNewId(),
+                id: generateNewId(),
                 entityId,
             } as EntityDict['extraFile']['CreateSingle']['data'];
             // autoUpload为true, 选择直接上传七牛，再提交extraFile

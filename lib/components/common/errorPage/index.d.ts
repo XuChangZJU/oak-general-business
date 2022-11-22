@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import './index.less';
 declare enum ECode {
     forbidden = 403,

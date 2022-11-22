@@ -1,3 +1,4 @@
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor';
 import {
     DeduceCreateOperationData,
@@ -20,7 +21,7 @@ export default OakComponent({
         entityId: 1,
     },
     isList: false,
-    formData: async function ({ data: article, features }) {
+    formData: function ({ data: article, features }) {
         return {
             id: article?.id,
             iState: article?.iState,
@@ -71,7 +72,7 @@ export default OakComponent({
                 const result = await this.features.cache.operate('extraFile', {
                     action: 'create',
                     data: extraFile,
-                    id: await generateNewId(),
+                    id: generateNewId(),
                 });
                 return result;
             } catch (error) {
@@ -101,21 +102,22 @@ export default OakComponent({
                 editor,
             });
         },
-        async confirm(data: EntityDict['article']['Update']['data']) {
-            const { content } = data;
-            if (!content || content === '<p><br></p>') {
-                this.setState({
-                    contentTip: true,
-                });
-
-                return;
-            }
-            await this.execute(data);
+        clearContentTip() {
+            this.setState({
+                contentTip: false,
+            });
+        },
+        async confirm() {
+            await this.execute();
             this.navigateBack();
         },
         async reset() {
             // 重置
             this.clean();
+        },
+        setHtml(content: string) {
+            this.update({ content });
+            this.setState({ html: content });
         },
         preview(data: EntityDict['article']['Update']['data']) {
             const { html, title, author } = data;

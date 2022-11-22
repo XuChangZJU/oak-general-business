@@ -5,9 +5,9 @@ import {
     DEV_WECHATMP_APPLICATION_ID,
     DEV_WECHATPUPLIC_APPLICATION_ID,
 } from '../data/DEV-CONFIG';
-import { RuntimeContext } from '../context/RuntimeContext';
+import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 
-export async function getApplication<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(params: {
+export async function getApplication<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     type: AppType;
 }, context: Cxt) {
     const { type } = params;
@@ -21,7 +21,7 @@ export async function getApplication<ED extends EntityDict, Cxt extends RuntimeC
     console.log('url is', url);
 
     // TODO
-    const { result: [application]} = await context.rowStore.select('application', {
+    const [application] = await context.select('application', {
         data: {
             id: 1,
             name: 1,
@@ -37,7 +37,7 @@ export async function getApplication<ED extends EntityDict, Cxt extends RuntimeC
         filter: {
             id: appId
         }
-    }, context, {});
+    }, {});
 
     return application.id as string;
 }

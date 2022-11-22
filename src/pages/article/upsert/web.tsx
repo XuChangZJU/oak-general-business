@@ -1,9 +1,9 @@
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { useState } from 'react';
 import { Alert, Card, Button, Row, Col, Space, Affix, Input } from 'antd';
 import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
 import { IToolbarConfig } from '@wangeditor/editor';
-import { DeduceCreateOperationData } from 'oak-domain/lib/types';
 import { EntityDict } from './../../../general-app-domain';
 import OakGallery from './../../../components/extraFile/gallery';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -42,30 +42,23 @@ function customCheckImageFn(
 
 export default function Render(props: WebComponentProps<EntityDict, 'article', false, {
     editor: any; title?: string; author?: string; abstract?: string; content?: string; 
-    html?: string; origin?: string;
+    html?: string; origin?: string; contentTip: boolean,
 }, {
+    setHtml: (content: string) => void;
     setEditor: (editor: any) => void;
-    confirm: (data: EntityDict['article']['Update']['data']) => void;
+    confirm: () => void;
     preview: () => void;
     addExtraFile: (file: EntityDict['extraFile']['CreateSingle']['data']) => Promise<void>;
     uploadFile: (file: EntityDict['extraFile']['CreateSingle']['data']) => Promise<{ bucket: string, url: string}>;
+    clearContentTip: () => void;
 }>) {
     const { methods: method, data } = props;
-    const { t, setEditor, confirm, preview, addExtraFile, uploadFile } = method;
+    const { t, setEditor, confirm, preview, addExtraFile, uploadFile, update, setHtml } = method;
     const {
         editor,
         origin,
         oakFullpath,
     } = data;
-    const [title, setTitle] = useState(undefined as undefined | string);
-    const titleValue = title || data.title;
-    const [author, setAuthor] = useState(undefined as undefined | string);
-    const authorValue = author || data.author;
-    const [contentTip, setContentTip] = useState(false);
-    const [html, setHtml] = useState(undefined as undefined | string);
-    const htmlValue = html || data.html;
-    const [abstract, setAbstract] = useState(undefined as undefined | string);
-    const abstractValue = abstract || data.abstract;
 
     return (
         <div className={Style.container}>
@@ -85,29 +78,29 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
                         <div className={Style.editorContainer}>
                             <div className={Style.titleContainer}>
                                 <Input
-                                    onChange={(e) => setTitle(e.target.value)}
-                                    value={titleValue}
+                                    onChange={(e) => update({ title: e.target.value })}
+                                    value={data.title}
                                     placeholder={t('placeholder.title')}
                                     size="large"
                                     maxLength={64}
-                                    suffix={`${[...(titleValue || '')].length}/64`}
+                                    suffix={`${[...(data.title || '')].length}/64`}
                                     className={Style.titleInput}
                                 />
                             </div>
                             <div className={Style.authorContainer}>
                                 <Input
-                                    onChange={(e) => setAuthor(e.target.value)}
-                                    value={authorValue}
+                                    onChange={(e) => update({ author: e.target.value })}
+                                    value={data.author}
                                     placeholder={t('placeholder.author')}
                                     className={Style.input}
                                 />
                             </div>
-                            {contentTip && (
+                            {data.contentTip && (
                                 <Alert
                                     type="info"
                                     message={t('tips.content')}
                                     closable
-                                    onClose={() => setContentTip(false)}
+                                    onClose={() => method.clearContentTip()}
                                 />
                             )}
                             <Editor
@@ -148,12 +141,12 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
                                                     origin: origin,
                                                     type: 'image',
                                                     tag1: 'source',
-                                                    objectId: await generateNewId(),
+                                                    objectId: generateNewId(),
                                                     filename,
                                                     size,
                                                     extension,
                                                     bucket: '',
-                                                    id: await generateNewId(),
+                                                    id: generateNewId(),
                                                 } as any;
 
                                                 try {
@@ -197,13 +190,12 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
                                                     origin: origin,
                                                     type: 'video',
                                                     tag1: 'source',
-                                                    objectId:
-                                                        await generateNewId(),
+                                                    objectId: generateNewId(),
                                                     filename,
                                                     size,
                                                     extension,
                                                     bucket: '',
-                                                    id: await generateNewId(),
+                                                    id: generateNewId(),
                                                 } as any;
 
                                                 try {
@@ -224,10 +216,9 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
                                         },
                                     },
                                 }}
-                                value={htmlValue}
+                                value={data.content}
                                 onCreated={setEditor}
                                 onChange={(editor) => {
-                                    // setHtml(editor.getHtml());
                                     setHtml(editor.getHtml());
                                 }}
                                 mode="default"
@@ -271,8 +262,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
                                                 }}
                                                 maxLength={120}
                                                 placeholder={t('placeholder.abstract')}
-                                                onChange={(e) => setAbstract(e.target.value)}
-                                                value={abstractValue || ''}
+                                                onChange={(e) => update({ abstract: e.target.value })}
+                                                value={data.abstract || ''}
                                             ></Input.TextArea>
                                         </Col>
                                     </Row>
@@ -290,12 +281,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
                                             <Button
                                                 type="primary"
                                                 onClick={() => {
-                                                    confirm({
-                                                        title,
-                                                        author,
-                                                        abstract,
-                                                        content: html,
-                                                    });
+                                                    confirm();
                                                 }}
                                             >
                                                 保存

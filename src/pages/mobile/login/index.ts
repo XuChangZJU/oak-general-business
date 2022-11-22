@@ -18,7 +18,7 @@ export default OakComponent({
         onlyPassword: Boolean,
         eventLoggedIn: String,
     },
-    async formData({ features }) {
+    formData({ features }) {
         const lastSendAt = features.localStorage.load(SEND_KEY);
         const now = Date.now();
         let counter = 0;

@@ -1,33 +1,16 @@
 import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
-import { AspectWrapper, SelectRowShape } from 'oak-domain/lib/types';
-import { RWLock } from 'oak-domain/lib/utils/concurrent';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { assert } from 'oak-domain/lib/utils/assert';
 
 import { EntityDict } from '../general-app-domain';
 import { AppType } from '../general-app-domain/Application/Schema';
 import { AspectDict } from '../aspects/AspectDict';
-import { RuntimeContext } from '../context/RuntimeContext';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 
-const projection: {
-    id: 1,
-    name: 1,
-    config: 1,
-    type: 1,
-    systemId: 1,
-    system: {
-        id: 1,
-        name: 1,
-        config: 1,
-        platformId: 1,
-        platform: {
-            id: 1,
-            config: 1,
-        },
-    }
-} = {
+const projection: EntityDict['application']['Selection']['data'] = {
     id: 1,
     name: 1,
     config: 1,
@@ -45,50 +28,43 @@ const projection: {
     }
 };
 
-export class Application<ED extends EntityDict, Cxt extends RuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Feature {
+export class Application<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>,
+    FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>,
+    AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>
+    > extends Feature {
+    private type: AppType;
     private applicationId?: string;
-    private application?: SelectRowShape<ED['application']['Schema'], typeof projection>;
-    private rwLock: RWLock;
-    private cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
+    private application?: Partial<EntityDict['application']['Schema']>;
+    private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
     private storage: LocalStorage;
-    private aspectWrapper: AspectWrapper<ED, Cxt, AD>;
 
     constructor(
-        aspectWrapper: AspectWrapper<ED, Cxt, AD>,
         type: AppType,
-        cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
+        cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>,
         storage: LocalStorage) {
         super();
-        this.aspectWrapper = aspectWrapper;
-        this.rwLock = new RWLock();
         this.cache = cache;
         this.storage = storage;
         const applicationId = storage.load('application:applicationId');
-        if (applicationId) {
-            this.applicationId = applicationId;
-        }
-        else {
-            this.refresh(type);
-        }
+        this.applicationId = applicationId;
+        this.type = type;
     }
 
     private async loadApplicationInfo() {
-        await this.rwLock.acquire('X');
-        if (!this.application) {
-            const { data } = await this.cache.refresh('application', {
-                data: projection,
-                filter: {
-                    id: this.applicationId!,
-                }
-            });
-            assert(data.length === 1, `applicationId${this.applicationId}没有取到有效数据`);
-            this.application = data[0] as any;
-        }
-        this.rwLock.release();
+        const { data } = await this.cache.refresh('application', {
+            data: projection,
+            filter: {
+                id: this.applicationId!,
+            }
+        });
+        assert(data.length === 1, `applicationId${this.applicationId}没有取到有效数据`);
+        this.application = data[0];
     }
 
-    private async getApplicationFromCache() {
-        const data = await this.cache.get('application', {
+    private getApplicationFromCache() {
+        const data = this.cache.get('application', {
             data: projection,
             filter: {
                 id: this.applicationId,
@@ -99,34 +75,29 @@ export class Application<ED extends EntityDict, Cxt extends RuntimeContext<ED>, 
     }
 
     private async refresh(type: AppType) {
-        await this.rwLock.acquire('X');
-        const { result: applicationId } = await this.aspectWrapper.exec('getApplication', {
+        const applicationId = await this.cache.exec('getApplication', {
             type,
         });
         this.applicationId = applicationId;
         this.storage.save('application:applicationId', applicationId);
         this.getApplicationFromCache();
-        this.rwLock.release();
+        this.publish();
     }
 
-    async getApplication() {
-        if (this.application) {
-            return this.application!;
+    async initialize() {
+        if (this.applicationId) {
+            await this.loadApplicationInfo();
         }
-        await this.loadApplicationInfo();
+        else {
+            await this.refresh(this.type);
+        }
+    }
+
+    getApplication() {
         return this.application!;
     }
 
-    async getApplicationId(noWait?: true) {
-        if (noWait) {
-            return this.applicationId!;
-        }
-        if (this.applicationId) {
-            return this.applicationId;
-        }
-        await this.rwLock.acquire('S');
-        const result = this.applicationId;
-        this.rwLock.release();
-        return result!;
+    getApplicationId() {
+        return this.applicationId;
     }
 }

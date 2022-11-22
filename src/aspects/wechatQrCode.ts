@@ -1,10 +1,10 @@
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict } from "../general-app-domain";
 import { Config as SysConfig, QrCodeType } from '../types/Config';
 import { Schema as Application, WechatMpConfig, WechatPublicConfig } from "../general-app-domain/Application/Schema";
 import { CreateOperationData as CreateWechatQrcodeData, WechatQrCodeProps } from '../general-app-domain/WechatQrCode/Schema';
-import { RuntimeContext } from '../context/RuntimeContext';
-import { OakException } from 'oak-domain/lib/types';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
 /**
  * 生成二维码优先级如下：
@@ -15,7 +15,7 @@ import { OakException } from 'oak-domain/lib/types';
  * @param context 
  * @returns 
  */
-export async function createWechatQrCode<ED extends EntityDict, T extends keyof ED, Cxt extends RuntimeContext<ED>>(options: {
+export async function createWechatQrCode<ED extends EntityDict, T extends keyof ED, Cxt extends BackendRuntimeContext<ED>>(options: {
     entity: T;
     entityId: string;
     tag?: string;
@@ -24,9 +24,9 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
     props: WechatQrCodeProps;
 }, context: Cxt) {
     const { entity, entityId, tag, lifetimeLength = 300 * 10000, permanent = false, props } = options;
-    const applicationId = await context.getApplicationId();
+    const applicationId = context.getApplicationId();
     assert(applicationId);
-    const { result: [system] } = await context.rowStore.select('system', {
+    const [system] = await context.select('system', {
         data: {
             id: 1,
             config: 1,
@@ -42,7 +42,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
         filter: {
             id: applicationId,
         },
-    }, context, {
+    }, {
         dontCollect: true,
     });
 
@@ -52,7 +52,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
         application$system: Application[];
         config: SysConfig
     };
-    const id = await generateNewId();
+    const id = generateNewId();
     if (sysConfig.App.qrCodeApplicationId) {
         appId = sysConfig.App.qrCodeApplicationId;
         appType = sysConfig.App.qrCodeType!;
@@ -119,14 +119,13 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
         props,
     };
 
-    await context.rowStore.operate(
+    await context.operate(
         'wechatQrCode',
         {
-            id: await generateNewId(),
+            id: generateNewId(),
             action: 'create',
             data,
         },
-        context,
         {
             dontCollect: true,
         }

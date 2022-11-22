@@ -21,7 +21,7 @@ export default OakComponent({
         },
     },
     isList: true,
-    formData: async ({ data }) => ({
+    formData: ({ data }) => ({
         addresses: data.map((address) => ({
             id: address?.id,
             name: address?.name!,

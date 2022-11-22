@@ -1,5 +1,4 @@
-import { Action, Feature } from 'oak-frontend-base/lib/types/Feature';
-import { RWLock } from 'oak-domain/lib/utils/concurrent';
+import { Feature } from 'oak-frontend-base/lib/types/Feature';
 import { OakUnloggedInException } from 'oak-domain/lib/types/Exception';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
@@ -8,46 +7,12 @@ import { WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
 import { EntityDict } from '../general-app-domain';
 import { getEnv } from '../utils/env';
 import { AspectDict } from '../aspects/AspectDict';
-import { RuntimeContext } from '../context/RuntimeContext';
-import { AspectWrapper, SelectRowShape } from 'oak-domain/lib/types';
+import { AspectWrapper } from 'oak-domain/lib/types';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { ROOT_ROLE_ID } from '../constants';
 
-type UserProjection = {
-    id: 1;
-    nickname: 1;
-    name: 1;
-    userState: 1;
-    extraFile$entity: {
-        $entity: 'extraFile';
-        data: {
-            id: 1;
-            tag1: 1;
-            origin: 1;
-            bucket: 1;
-            objectId: 1;
-            filename: 1;
-            extra1: 1;
-            type: 1;
-            entity: 1;
-            extension: 1;
-        };
-        filter: {
-            tag1: 'avatar';
-        };
-        indexFrom: 0;
-        count: 1;
-    };
-    mobile$user: {
-        $entity: 'mobile';
-        data: {
-            id: 1;
-            mobile: 1;
-            userId: 1;
-        };
-    };
-};
-
-const userProjection: UserProjection = {
+const userProjection: EntityDict['user']['Selection']['data'] = {
     id: 1,
     nickname: 1,
     name: 1,
@@ -81,31 +46,7 @@ const userProjection: UserProjection = {
         },
     },
 };
-
-type TokenProjection = {
-    id: 1;
-    userId: 1;
-    user: UserProjection;
-    ableState: 1;
-    player: {
-        id: 1;
-        userRole$user: {
-            $entity: 'userRole';
-            data: {
-                id: 1;
-                userId: 1;
-                roleId: 1;
-                role: {
-                    id: 1;
-                    name: 1;
-                };
-            };
-        };
-    };
-    playerId: 1;
-};
-
-const tokenProjection: TokenProjection = {
+const tokenProjection: EntityDict['token']['Selection']['data'] = {
     id: 1,
     userId: 1,
     user: userProjection,
@@ -118,10 +59,6 @@ const tokenProjection: TokenProjection = {
                 id: 1,
                 userId: 1,
                 roleId: 1,
-                role: {
-                    id: 1,
-                    name: 1,
-                },
             },
         },
     },
@@ -130,122 +67,79 @@ const tokenProjection: TokenProjection = {
 
 export class Token<
     ED extends EntityDict,
-    Cxt extends RuntimeContext<ED>,
-    AD extends AspectDict<ED, Cxt>
+    Cxt extends BackendRuntimeContext<ED>,
+    FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>,
+    AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>
 > extends Feature {
     private tokenValue?: string;
-    private token?: SelectRowShape<ED['token']['Schema'], TokenProjection>;
-    private rwLock: RWLock;
-    private cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
+    private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
     private storage: LocalStorage;
-    private aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>;
 
     constructor(
-        aspectWrapper: AspectWrapper<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
-        cache: Cache<ED, Cxt, AD & CommonAspectDict<ED, Cxt>>,
+        cache: Cache<ED, Cxt, FrontCxt, AD>,
         storage: LocalStorage
     ) {
         super();
-        this.aspectWrapper = aspectWrapper;
-        this.rwLock = new RWLock();
         this.cache = cache;
         this.storage = storage;
         const tokenValue = storage.load('token:token');
         if (tokenValue) {
             this.tokenValue = tokenValue;
+            this.loadTokenInfo();
         }
     }
 
     async loadTokenInfo() {
-        await this.rwLock.acquire('X');
-        try {
-            if (!this.token) {
-                /**
-                 * 这里不能用cache.refresh，以防action再触发页面重渲染，造成递归acquire X lock
-                 */
-                const { result } = await this.aspectWrapper.exec(
-                    'select',
-                    {
-                        entity: 'token',
-                        selection: {
-                            data: tokenProjection,
-                            filter: {
-                                id: this.tokenValue!,
-                            },
-                        },
-                    } as any
-                );
-                const { data } = result;
-                this.token = data[0] as any;
-            }
-        } finally {
-            this.rwLock.release();
-        }
+        await this.cache.refresh('token', {
+            data: tokenProjection,
+            filter: {
+                id: this.tokenValue!,
+            },
+        });
+        this.publish();
     }
 
-    @Action
     async loginByMobile(mobile: string, password?: string, captcha?: string) {
         const env = await getEnv();
-        await this.rwLock.acquire('X');
-        try {
-            const { result } = await this.aspectWrapper.exec(
-                'loginByMobile',
-                { password, mobile, captcha, env }
-            );
-            this.tokenValue = result;
-            this.storage.save('token:token', result);
-        } catch (err) {
-            throw err;
-        } finally {
-            this.rwLock.release();
-        }
+        const result = await this.cache.exec(
+            'loginByMobile',
+            { password, mobile, captcha, env }
+        );
+        this.tokenValue = result;
+        this.storage.save('token:token', result);
+        this.publish();
     }
 
-    @Action
-    async loginWechat(code: string) {
-        await this.rwLock.acquire('X');
-        try {
-            const env = await getEnv();
-            const { result } = await this.aspectWrapper.exec(
-                'loginWechat',
-                {
-                    code,
-                    env: env as WebEnv,
-                }
-            );
-            this.tokenValue = result;
-            this.storage.save('token:token', result);
-        } catch (err) {
-            throw err;
-        } finally {
-            this.rwLock.release();
-        }
+    async loginWechat(code: string) {        
+        const env = await getEnv();
+        const result = await this.cache.exec(
+            'loginWechat',
+            {
+                code,
+                env: env as WebEnv,
+            }
+        );
+        this.tokenValue = result;
+        this.storage.save('token:token', result);
+        this.publish();
     }
 
-    @Action
     async loginWechatMp() {
-        await this.rwLock.acquire('X');
-        try {
-            const { code } = await wx.login();
+        const { code } = await wx.login();
 
-            const env = await getEnv();
-            const { result } = await this.aspectWrapper.exec(
-                'loginWechatMp',
-                {
-                    code,
-                    env: env as WechatMpEnv,
-                }
-            );
-            this.tokenValue = result;
-            this.storage.save('token:token', result);
-        } catch (err) {
-            throw err;
-        } finally {
-            this.rwLock.release();
-        }
+        const env = await getEnv();
+        const result = await this.cache.exec(
+            'loginWechatMp',
+            {
+                code,
+                env: env as WechatMpEnv,
+            }
+        );
+        this.tokenValue = result;
+        this.storage.save('token:token', result);
+        this.publish();
     }
 
-    @Action
     async syncUserInfoWechatMp() {
         const info = await wx.getUserProfile({
             desc: '同步微信昵称和头像信息',
@@ -258,81 +152,76 @@ export class Token<
             iv,
         } = info;
 
-        await this.aspectWrapper.exec('syncUserInfoWechatMp', {
+        await this.cache.exec('syncUserInfoWechatMp', {
             nickname,
             avatarUrl,
             encryptedData,
             signature,
             iv,
         });
+        this.publish();
     }
 
-    @Action
     async logout() {
         this.tokenValue = undefined;
-        this.token = undefined;
         this.storage.remove('token:token');
+        this.publish();
     }
 
-    async getTokenValue(noWait?: true) {
-        if (noWait) {
-            return this.tokenValue;
-        }
-        await this.rwLock.acquire('S');
-        const token = this.tokenValue;
-        this.rwLock.release();
-        return token;
+    getTokenValue() {
+        return this.tokenValue;
     }
 
-    async getToken(allowUnloggedIn?: boolean) {
-        if (this.token) {
-            return this.token;
-        }
+    getToken(allowUnloggedIn?: boolean) {
         if (this.tokenValue) {
-            await this.loadTokenInfo();
+            return this.cache.get('token', {
+                data: tokenProjection,
+                filter: {
+                    id: this.tokenValue!,
+                }
+            })[0];
         }
-        if (allowUnloggedIn || this.token) {
-            return this.token;
+        if (allowUnloggedIn) {
+            return undefined;
         }
         throw new OakUnloggedInException();
     }
 
-    async getUserId(allowUnloggedIn?: boolean) {
-        const token = await this.getToken(allowUnloggedIn);
-        return token?.userId as string | undefined;
-    }
-
-    async getUserInfo() {
-        const token = await this.getToken();
-        if (token?.user) {
-            return token.user
-        }
-
-        if (token?.userId) {
-            const data = await this.cache.get('user', {
-                data: userProjection,
-                filter: {
-                    id: token.userId,
+    getUserId(allowUnloggedIn?: boolean) {
+        if (this.tokenValue) {
+            const [token] = this.cache.get('token', {
+                data: {
+                    id: 1,
+                    userId: 1,
                 },
+                filter: {
+                    id: this.tokenValue,
+                }
             });
-            return data[0];
+            return token.id!;
         }
-        return;
+        if (allowUnloggedIn) {
+            return undefined;
+        }
+        throw new OakUnloggedInException();
     }
 
-    async isRoot(): Promise<boolean> {
-        const token = await this.getToken(true);
+    getUserInfo() {
+        const token = this.getToken();
+        if (token?.user) {
+            return token.user;
+        }
+    }
+
+    isRoot(): boolean {
+        const token = this.getToken(true);
         const userRole$user = token?.player?.userRole$user;
-        return (
-            (userRole$user as any)?.length > 0 &&
-            (userRole$user as any).find((ele: any) => ele.role.name === 'root')
-        );
+        return !!(userRole$user && userRole$user?.length > 0 && userRole$user.find((ele) => ele.roleId === ROOT_ROLE_ID));
     }
 
-    @Action
     async sendCaptcha(mobile: string) {
         const env = await getEnv();
-        const { result } = await this.aspectWrapper.exec('sendCaptcha', {
+        const result = await this.cache.exec('sendCaptcha', {
             mobile,
             env: env as WebEnv,
         });

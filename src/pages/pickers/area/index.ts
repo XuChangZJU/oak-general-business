@@ -18,7 +18,7 @@ export default OakComponent({
         },
     ],
     isList: true,
-    formData: async ({ data: areas }) => ({
+    formData: ({ data: areas }) => ({
         areas,
     }),
 

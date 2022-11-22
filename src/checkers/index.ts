@@ -4,8 +4,6 @@ import userCheckers from './user';
 import userEntityGrantCheckers from './userEntityGrant';
 import wechatQrCodeCheckers from './wechatQrCode';
 
-import { processCheckers } from '../utils/check';
-
 const checkers = [
     ...addressCheckers,
     ...tokenCheckers,
@@ -14,6 +12,5 @@ const checkers = [
     ...wechatQrCodeCheckers,
 ];
 
-processCheckers(checkers as any);
 
 export default checkers;

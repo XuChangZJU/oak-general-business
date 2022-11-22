@@ -1,8 +1,8 @@
-import { Checker, OakUserUnpermittedException } from "oak-domain/lib/types";
+import { Checker } from "oak-domain/lib/types";
 import { EntityDict } from '../general-app-domain';
-import { RuntimeContext } from '../context/RuntimeContext';
+import { RuntimeCxt } from "./RuntimeCxt";
 
-const checkers: Checker<EntityDict, 'token', RuntimeContext<EntityDict>> [] = [
+const checkers: Checker<EntityDict, 'token', RuntimeCxt> [] = [
 ];
 
 export default checkers;

@@ -1,5 +1,5 @@
 import { Checker } from "oak-domain/lib/types";
 import { EntityDict } from '../general-app-domain';
-import { RuntimeContext } from '../context/RuntimeContext';
-declare const checkers: Checker<EntityDict, 'token', RuntimeContext<EntityDict>>[];
+import { RuntimeCxt } from "./RuntimeCxt";
+declare const checkers: Checker<EntityDict, 'token', RuntimeCxt>[];
 export default checkers;

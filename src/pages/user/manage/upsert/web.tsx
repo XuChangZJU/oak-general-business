@@ -1,134 +1,125 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, Input, Form, Radio, DatePicker, Row, Col, CheckboxOptionType } from 'antd';
+import { Button, Checkbox, Input, Form, Radio, DatePicker, Space } from 'antd-mobile';
 import dayjs from 'dayjs';
 import Style from './web.module.less';
 import { EntityDict } from '../../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 
 
-export default function render(props: WebComponentProps<EntityDict, 'user', false, {
+export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
     nickname?: string;
     name?: string;
     gender?: string;
     birth?: string;
     idCardType?: string;
     idNumber?: string;
-    GenderOptions: Array<CheckboxOptionType>;
-    IDCardTypeOptions: Array<CheckboxOptionType>;
+    GenderOptions: Array<{ value: 'male' | 'female', label: string }>;
+    IDCardTypeOptions: Array<{ value: string; label: string }>;
 }, {
 
 }>) {
     const { data, methods } = props;
     const { GenderOptions, IDCardTypeOptions } = data;
-    const [nickname, setNickname] = useState(undefined as undefined | string);
-    const [name, setName] = useState(undefined as undefined | string);
-    const [birth, setBirth] = useState(undefined as undefined | number);
-    const nicknameValue = nickname !== undefined ? nickname : data.nickname;
-    const nameValue = name !== undefined ? name : data.name;
-    const birthValue = birth !== undefined ? birth : data.birth;
-    const [gender, setGender] = useState(undefined as undefined | string);
-    const genderValue = gender !== undefined ? gender : data.gender;
-    const [idCardType, setIdCardType] = useState(undefined as undefined | string);
-    const idCardTypeValue = idCardType !== undefined ? idCardType : data.idCardType;
 
-    const confirmEnabled = nickname && nickname !== data.nickname || 
-    
-    const { execute, t } = methods;
+    const { execute, t, update, setDisablePulldownRefresh } = methods;
+    const [birthPickerVisible, setBirthPickerVisible] = useState(false);
 
     return (
         <div
             className={Style.container}
         >
-            <Row>
-                <Col xs={12} sm={4}>
-                    <Form colon={true}>
-                        <Form.Item label="昵称" requiredMark>
-                            <>
-                                <Input
-                                    onChange={(e) => setNickname(e.target.value)}
-                                    value={nicknameValue}
-                                />
-                            </>
-                        </Form.Item>
-                        <Form.Item label="姓名" requiredMark>
-                            <>
-                                <Input
-                                    onChange={(e) => setName(e.target.value)}
-                                    value={nameValue}
-                                />
-                            </>
-                        </Form.Item>
-                        <Form.Item label="出生日期" requiredMark>
-                            <>
-                                <DatePicker
-                                    allowClear={false}
-                                    mode="date"
-                                    value={
-                                        (birthValue
-                                            ? dayjs(birthValue).format(
-                                                  'YYYY-MM-DD'
-                                              )
-                                            : ''
-                                    ) as any}
-                                    onChange={(value) => {
-                                        const val = dayjs(value as any).valueOf();
-                                        setBirth(val);
-                                    }}
-                                    format="YYYY-MM-DD"
-                                />
-                            </>
-                        </Form.Item>
+            <Form
+                layout="horizontal"
+            >
+                <Form.Item label={t('user:attr.nickname')}>
+                    <Input
+                        onChange={(val) => update({ nickname: val })}
+                        value={data.nickname || ''}
+                    />
+                </Form.Item>
+                <Form.Item label={t('user:attr.name')}>
+                    <Input
+                        onChange={(val) => update({ name: val })}
+                        value={data.name || ''}
+                    />
+                </Form.Item>
+                <Form.Item
+                    label={t('user:attr.birth')}
+                    onClick={() => {
+                        setBirthPickerVisible(true);
+                        setDisablePulldownRefresh(true);
+                    }}
+                >
+                    <Input
+                        value={data.birth
+                            ? dayjs(data.birth).format(
+                                'YYYY-MM-DD'
+                            )
+                            : ''}
+                        readOnly
+                    />
+                </Form.Item>
 
-                        <Form.Item label="性别" requiredMark>
-                            <>
-                                <Radio.Group
-                                    options={GenderOptions}
-                                    onChange={async (e) => {
-                                        const id = await generateNewId();
-                                        setGender(e.target.value);
-                                    }}
-                                    value={genderValue}
-                                />
-                            </>
-                        </Form.Item>
-                        <Form.Item label="证件类别" requiredMark>
-                            <>
-                                <Radio.Group
-                                    options={IDCardTypeOptions}
-                                    onChange={(e) => setIdCardType(e.target.value)}
-                                    value={idCardTypeValue}
-                                />
-                            </>
-                        </Form.Item>
-                        <Form.Item label="证件号" requiredMark>
-                            <>
-                                <Input
-                                    onChange={(e) => {
-                                        this.setUpdateData(
-                                            'idNumber',
-                                            e.target.value
-                                        );
-                                    }}
-                                />
-                            </>
-                        </Form.Item>
-                        <Form.Item>
-                            <Button
-                                type="primary"
-                                onClick={() => execute({
-                                    nickname,
-                                    name,
-                                    gender,
-                                    birth,
-                                    idCardType,                                    
-                                } as EntityDict['user']['Update']['data'])}
-                            >
-                                {t('common:action.confirm')}
-                            </Button>
-                        </Form.Item>
-                    </Form>
-                </Col>
-            </Row>
+                <Form.Item label={t('user:attr.gender')}>
+                    <Radio.Group
+                        onChange={(e) => {
+                            update({ gender: e as EntityDict['user']['OpSchema']['gender'] });
+                        }}
+                        value={data.gender}
+                    >
+                        <Space direction="horizontal">
+                            {
+                                GenderOptions.map(
+                                    (ele, idx) => <Radio value={ele.value} key={idx} className={Style.radio}>{ele.label}</Radio>
+                                )
+                            }
+                        </Space>
+                    </Radio.Group>
+                </Form.Item>
+                <Form.Item label={t('user:attr.idCardType')}>
+                    <Radio.Group
+                        onChange={(e) => {
+                            update({ idCardType: e as EntityDict['user']['OpSchema']['idCardType'] })
+                        }}
+                        value={data.idCardType}
+                    >
+                        <Space direction="vertical" >
+                            {
+                                IDCardTypeOptions.map(
+                                    (ele, idx) => <Radio value={ele.value} key={idx} className={Style.radio}>{ele.label}</Radio>
+                                )
+                            }
+                        </Space>
+                    </Radio.Group>
+                </Form.Item>
+                <Form.Item label={t('user:attr.idNumber')}>
+                    <Input
+                        onChange={(val) => update({ idNumber: val })}
+                        value={data.idNumber || ''}
+                    />
+                </Form.Item>
+            </Form>
+            <DatePicker
+                visible={birthPickerVisible}
+                max={new Date()}
+                min={new Date('1900-01-01')}
+                onConfirm={(value) => {
+                    const val = value.valueOf();
+                    update({ birth: val });
+                }}
+                onClose={() => {
+                    setBirthPickerVisible(false);
+                    setDisablePulldownRefresh(false);
+                }}
+            />
+            <div style={{ flex: 1 }} />
+            <Button
+                block
+                color="primary"
+                onClick={() => execute()}
+            >
+                {t('common:action.confirm')}
+            </Button>
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import { EntityDict } from '../general-app-domain';
 import { Watcher } from 'oak-domain/lib/types';
-import { RuntimeContext } from '../context/RuntimeContext';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
-export default [] as Watcher<EntityDict, keyof EntityDict, RuntimeContext<EntityDict>>[];
+export default [] as Watcher<EntityDict, keyof EntityDict, BackendRuntimeContext<EntityDict>>[];

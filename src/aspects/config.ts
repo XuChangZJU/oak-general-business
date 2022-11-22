@@ -1,16 +1,16 @@
-import { RuntimeContext } from '../context/RuntimeContext';
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { EntityDict } from '../general-app-domain';
 import { Config } from '../types/Config';
 
-export async function updateConfig<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(params: {
+export async function updateConfig<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     entity: 'platform' | 'system',
     entityId: string,
     config: Config,
 }, context: Cxt) {
-    const { rowStore } = context;
     const { entity, entityId, config } = params;
-    await rowStore.operate(entity, {
-        id: await generateNewId(),
+    await context.operate(entity, {
+        id: generateNewId(),
         action: 'update',
         data: {
             config,
@@ -18,5 +18,5 @@ export async function updateConfig<ED extends EntityDict, Cxt extends RuntimeCon
         filter: {
             id: entityId,
         }
-    }, context, {});
+    }, {});
 }

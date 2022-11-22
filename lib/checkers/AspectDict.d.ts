@@ -1,0 +1,10 @@
+import { CommonAspectDict } from "oak-common-aspect";
+import { AspectDict as GeneralAspectDict } from "../aspects/AspectDict";
+import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
+import { FrontendRuntimeContext } from "../context/FrontendRuntimeContext";
+import { EntityDict } from "../general-app-domain";
+declare type BRC = BackendRuntimeContext<EntityDict>;
+declare type FrcAspectDict = GeneralAspectDict<EntityDict, BRC> & CommonAspectDict<EntityDict, BRC>;
+declare type FRC = FrontendRuntimeContext<EntityDict, BRC, FrcAspectDict>;
+export declare type CheckerCxt = FRC | BRC;
+export {};

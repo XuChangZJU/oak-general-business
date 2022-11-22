@@ -1,7 +1,7 @@
-import { RuntimeContext } from '../context/RuntimeContext';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { EntityDict } from '../general-app-domain';
 import { Config } from '../types/Config';
-export declare function updateConfig<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(params: {
+export declare function updateConfig<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     entity: 'platform' | 'system';
     entityId: string;
     config: Config;

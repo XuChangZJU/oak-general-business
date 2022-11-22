@@ -1,121 +1,109 @@
-import { SelectRowShape } from 'oak-domain/lib/types';
-import { GetApplicationShape, GetTokeShape, RuntimeContext } from './RuntimeContext';
+import { RuntimeContext } from './RuntimeContext';
 import { EntityDict } from '../general-app-domain';
 import { SerializedData } from './FrontendRuntimeContext';
 import assert from 'assert';
 import { OakTokenExpiredException, OakUserDisabledException } from '../types/Exception';
 import { OakUnloggedInException } from 'oak-domain/lib/types/Exception';
 import { ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
-import { UniversalContext } from 'oak-domain/lib/store/UniversalContext';
-
-export type GetTokeShape2 = {
-    id: 1,
-    userId: 1,
-    playerId: 1,
-    ableState: 1,
-    player: {
-        id: 1,
-        userState: 1,
-        userRole$user: {
-            $entity: 'userRole',
-            data: {
-                id: 1,
-                userId: 1,
-                roleId: 1,
-            },
-        },
-    },
-};
+import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
 
 /**
  * general数据结构要求的后台上下文
  */
-export class BackendRuntimeContext<ED extends EntityDict> extends UniversalContext<ED> implements RuntimeContext<ED> {
-    private application?: SelectRowShape<ED['application']['Schema'], GetApplicationShape>;
-    private token?: SelectRowShape<ED['token']['Schema'], GetTokeShape>;
+export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<ED> implements RuntimeContext {
+    private application?: Partial<ED['application']['Schema']>;
+    private token?: Partial<ED['token']['Schema']>;
     private amIRoot?: boolean;
     private rootMode?: boolean;
 
     protected async initialize(data?: SerializedData) {
         if (data) {
-            const { a: appId, t: tokenValue } = data;
-            if (appId) {
-                const { result } = await this.rowStore.select('application', {
-                    data: {
-                        id: 1,
-                        name: 1,
-                        config: 1,
-                        type: 1,
-                        systemId: 1,
-                        system: {
+            await this.begin();
+            try {
+                const { a: appId, t: tokenValue } = data;
+                if (appId) {
+                    const result = await this.select('application', {
+                        data: {
                             id: 1,
                             name: 1,
                             config: 1,
-                            platformId: 1,
-                            platform: {
+                            type: 1,
+                            systemId: 1,
+                            system: {
                                 id: 1,
+                                name: 1,
                                 config: 1,
-                            },
-                        },
-                    },
-                    filter: {
-                        id: appId,
-                    },
-                }, this, {
-                    dontCollect: true,
-                    blockTrigger: true,
-                });
-                assert(result.length > 0, `构建BackendRuntimeContext对应appId「${appId}」找不到application`);
-                this.application = result[0] as SelectRowShape<ED['application']['Schema'], GetApplicationShape>;
-            }
-            if (tokenValue) {
-                const { result } = await this.rowStore.select('token', {
-                    data: {
-                        id: 1,
-                        userId: 1,
-                        playerId: 1,
-                        ableState: 1,
-                        player: {
-                            id: 1,
-                            userState: 1,
-                            userRole$user: {
-                                $entity: 'userRole',
-                                data: {
+                                platformId: 1,
+                                platform: {
                                     id: 1,
-                                    userId: 1,
-                                    roleId: 1,
-                                    role: {
-                                        id: 1,
-                                        name: 1,
-                                    }
+                                    config: 1,
                                 },
                             },
                         },
-                    },
-                    filter: {
-                        id: tokenValue,
-                    },
-                }, this, {
-                    dontCollect: true,
-                    blockTrigger: true,
-                });
-                if (result.length === 0) {
-                    console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`);
-                    throw new OakTokenExpiredException();
+                        filter: {
+                            id: appId,
+                        },
+                    }, {
+                        dontCollect: true,
+                        blockTrigger: true,
+                    });
+                    assert(result.length > 0, `构建BackendRuntimeContext对应appId「${appId}」找不到application`);
+                    this.application = result[0];
                 }
-                const token = result[0] as SelectRowShape<ED['token']['Schema'], GetTokeShape2>;
-                if (token.ableState === 'disabled') {
-                    throw new OakTokenExpiredException();
+                if (tokenValue) {
+                    const result = await this.select('token', {
+                        data: {
+                            id: 1,
+                            userId: 1,
+                            playerId: 1,
+                            ableState: 1,
+                            user: {
+                                id: 1,
+                                userState: 1,
+                                userRole$user: {
+                                    $entity: 'userRole',
+                                    data: {
+                                        id: 1,
+                                        userId: 1,
+                                        roleId: 1,
+                                        role: {
+                                            id: 1,
+                                            name: 1,
+                                        }
+                                    },
+                                },
+                            },
+                        },
+                        filter: {
+                            id: tokenValue,
+                        },
+                    }, {
+                        dontCollect: true,
+                        blockTrigger: true,
+                    });
+                    if (result.length === 0) {
+                        console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`);
+                        throw new OakTokenExpiredException();
+                    }
+                    const token = result[0];
+                    if (token.ableState === 'disabled') {
+                        throw new OakTokenExpiredException();
+                    }
+                    const { user } = token;
+                    const { userState, userRole$user } = user!;
+                    /* if (['disabled', 'merged'].includes(userState as string)) {
+                        throw new OakUserDisabledException();
+                    } */
+                    this.amIRoot = (userRole$user as any).length > 0 && (userRole$user as any).find(
+                        (ele: any) => ele.role.name === 'root'
+                    );
+                    this.token = token;
                 }
-                const { player } = token;
-                const { userState, userRole$user} = player!;
-                if (['disabled', 'merged'].includes(userState as string)) {
-                    throw new OakUserDisabledException();
-                }
-                this.amIRoot = (userRole$user as any).length > 0 && (userRole$user as any).find(
-                    (ele: any) => ele.role.name === 'root'
-                );
-                this.token = token;
+                await this.commit();
+            }
+            catch(err) {
+                await this.rollback();
+                throw err;
             }
         }
         else {
@@ -124,19 +112,19 @@ export class BackendRuntimeContext<ED extends EntityDict> extends UniversalConte
         }
     }
 
-    async getApplicationId() {
+    getApplicationId() {
         return this.application?.id;
     }
 
-    async getSystemId() {
+    getSystemId() {
         return this.application?.systemId;
     }
 
-    async getApplication() {
+    getApplication() {
         return this.application;
     }
 
-    async getTokenValue(allowUnloggedIn?: boolean) {
+    getTokenValue(allowUnloggedIn?: boolean) {
         if (this.rootMode) {
             return ROOT_TOKEN_ID;
         }
@@ -146,36 +134,37 @@ export class BackendRuntimeContext<ED extends EntityDict> extends UniversalConte
         return this.token?.id;
     }
 
-    async getToken(allowUnloggedIn?: boolean) {
+    getToken(allowUnloggedIn?: boolean) {
         if (!this.token && !allowUnloggedIn) {
             throw new OakUnloggedInException();
+        }
+        if (this.token) {
+            const { userState } = this.token.user!;
+            if (['disabled', 'merged'].includes(userState as string)) {
+                throw new OakUserDisabledException();
+            }
         }
         return this.token;
     }
 
-    async getCurrentUserId(allowUnloggedIn?: boolean) {
+    getCurrentUserId(allowUnloggedIn?: boolean) {
         if (this.rootMode) {
             return ROOT_USER_ID as string;
         }
-        if (!this.token && !allowUnloggedIn) {
-            throw new OakUnloggedInException();
-        }
-        return this.token?.userId as string;
+        const token = this.getToken(allowUnloggedIn);
+        return token?.userId as string;
     }
 
-    async toString() {
+    toString() {
         if (this.rootMode) {
             return JSON.stringify({ rootMode: true });
         }
         return JSON.stringify({ a: this.application?.id, t: this.token?.id });
     }
 
-    async isRoot(allowUnloggedIn?: boolean) {
+    isRoot() {
         if (this.rootMode) {
             return true;
-        }
-        if (!this.token && !allowUnloggedIn) {
-            throw new OakUnloggedInException();
         }
         return !!this.amIRoot;
     }

@@ -1,4 +1,4 @@
-import { RuntimeContext } from '../context/RuntimeContext';
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../general-app-domain';
 import { WechatSDK } from 'oak-external-sdk';
 import { assert } from 'oak-domain/lib/utils/assert';
@@ -8,15 +8,14 @@ import { CreateOperationData as CreateWechatUser } from '../general-app-domain/W
 import { CreateOperationData as CreateUser, Schema as User } from '../general-app-domain/User/Schema';
 import { Operation as ExtraFileOperation } from '../general-app-domain/ExtraFile/Schema';
 import { isEqual } from 'oak-domain/lib/utils/lodash';
-import { OakUserException, SelectRowShape } from 'oak-domain/lib/types';
+import { OakUserException } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
 import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exception';
 import { encryptPasswordSha1 } from '../utils/password';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
-async function makeDistinguishException<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(userId: string, context: Cxt) {
-    const { rowStore } = context;
-
-    const { result: [user] } = await rowStore.select('user', {
+async function makeDistinguishException<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(userId: string, context: Cxt) {
+    const [user] = await context.select('user', {
         data: {
             id: 1,
             password: 1,
@@ -39,19 +38,18 @@ async function makeDistinguishException<ED extends EntityDict, Cxt extends Runti
         filter: {
             id: userId,
         }
-    }, context, {
+    }, {
         dontCollect: true,
     });
     assert(user);
-    const { password, passwordOrigin, idState, wechatUser$user, email$user } = user;
+    const { password, passwordSha1, idState, wechatUser$user, email$user } = user;
 
-    return new OakDistinguishUserException(userId, !!(password || passwordOrigin),
+    return new OakDistinguishUserException(userId, !!(password || passwordSha1),
         idState === 'verified', (<any[]>wechatUser$user).length > 0, (<any[]>email$user).length > 0);
 }
 
-async function tryMakeChangeLoginWay<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(userId: string, context: Cxt) {
-    const { rowStore } = context;
-    const { result: [user] } = await rowStore.select('user', {
+async function tryMakeChangeLoginWay<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(userId: string, context: Cxt) {
+    const [user] = await context.select('user', {
         data: {
             id: 1,
             idState: 1,
@@ -72,39 +70,22 @@ async function tryMakeChangeLoginWay<ED extends EntityDict, Cxt extends RuntimeC
         filter: {
             id: userId,
         }
-    }, context, {
+    }, {
         dontCollect: true,
     });
     assert(user);
-    const { idState, wechatUser$user, email$user } = user as SelectRowShape<EntityDict['user']['Schema'], {
-        id: 1,
-        idState: 1,
-        wechatUser$user: {
-            $entity: 'wechatUser',
-            data: {
-                id: 1,
-            },
-        },
-        email$user: {
-            $entity: 'email',
-            data: {
-                id: 1,
-                email: 1,
-            }
-        }
-    }>;
-    if (idState === 'verified' || wechatUser$user.length > 0 || email$user.length > 0) {
-        return new OakChangeLoginWayException(userId, idState === 'verified', wechatUser$user.length > 0, email$user.length > 0)
+    const { idState, wechatUser$user, email$user } = user;
+    if (idState === 'verified' || wechatUser$user && wechatUser$user.length > 0 || email$user && email$user.length > 0) {
+        return new OakChangeLoginWayException(userId, idState === 'verified', !!(wechatUser$user && wechatUser$user.length > 0), !!(email$user && email$user.length > 0))
     }
 }
 
-async function setupMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(mobile: string, env: WebEnv | WechatMpEnv, context: Cxt) {
-    const { rowStore } = context;
-    const currentToken = await context.getToken(true);
-    const applicationId = await context.getApplicationId();
-    const systemId = await context.getSystemId();
+async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(mobile: string, env: WebEnv | WechatMpEnv, context: Cxt) {
+    const currentToken =  context.getToken(true);
+    const applicationId = context.getApplicationId();
+    const systemId = context.getSystemId();
 
-    const { result: result2 } = await rowStore.select('mobile', {
+    const result2 = await context.select('mobile', {
         data: {
             id: 1,
             mobile: 1,
@@ -132,14 +113,14 @@ async function setupMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>
             mobile,
             ableState: 'enabled',
         }
-    }, context, { dontCollect: true });
+    }, { dontCollect: true });
     if (result2.length > 0) {
         // 此手机号已经存在
         assert(result2.length === 1);
         const [ mobileRow ] = result2;
         if (currentToken) {
             if (currentToken.userId === mobileRow.userId) {
-                return currentToken.id;
+                return currentToken.id!;
             }
             else  {
                 // 此时可能要合并用户，抛出OakDistinguishUser异常，用户根据自身情况选择合并
@@ -150,7 +131,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>
         else {
             // 此时以该手机号登录 todo根据环境来判断，用户也有可能是新获得此手机号，未来再进一步处理
             const tokenData: EntityDict['token']['CreateSingle']['data'] = {
-                id: await generateNewId(),
+                id: generateNewId(),
                 applicationId: applicationId!,
                 playerId: mobileRow.userId as string,
                 env,
@@ -158,10 +139,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>
                 entityId: mobileRow.id as string,                
             };
             const { user } = mobileRow;
-            const { userState } = user as SelectRowShape<EntityDict['user']['Schema'], {
-                id: 1,
-                userState: 1,
-            }>;
+            const { userState } = user!;
             switch (userState) {
                 case 'disabled': {
                     throw new OakUserDisabledException();
@@ -170,7 +148,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>
                     Object.assign(tokenData, {
                         userId: mobileRow.userId,
                         user: {
-                            id: await generateNewId(),
+                            id: generateNewId(),
                             action: 'activate',
                         }
                     });
@@ -184,25 +162,25 @@ async function setupMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>
                 }
             }
 
-            await rowStore.operate('token', {
-                id: await generateNewId(),
+            await context.operate('token', {
+                id: generateNewId(),
                 data: tokenData,
                 action: 'create',
-            }, context, {
+            }, {
                  dontCollect: true,
             });
 
             // 检查此user和system之间有没有关系，如果没有要补上
             if ((user as User)?.userSystem$user?.length == 0) {
-                await rowStore.operate('userSystem', {
-                    id: await generateNewId(),
+                await context.operate('userSystem', {
+                    id: generateNewId(),
                     action: 'create',
                     data: {
-                        id: await generateNewId(),
+                        id: generateNewId(),
                         userId: (user as User).id!,
                         systemId,
                     }
-                }, context, {
+                }, {
                     dontCollect: true,
                 })
             }
@@ -215,56 +193,56 @@ async function setupMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>
         if (currentToken) {
             // 创建手机号并与之关联即可
             const mobileData: EntityDict['mobile']['CreateSingle']['data'] = {
-                id: await generateNewId(),
+                id: generateNewId(),
                 mobile,
                 userId: currentToken.userId!,
             };
-            await rowStore.operate('mobile', {
-                id: await generateNewId(),
+            await context.operate('mobile', {
+                id: generateNewId(),
                 action: 'create',
                 data: mobileData
-            }, context, {});
-            return currentToken.id;
+            }, {});
+            return currentToken.id!;
         }
         else {
             // 创建token, mobile, user
             const userData: EntityDict['user']['CreateSingle']['data'] = {
-                id: await generateNewId(),
+                id: generateNewId(),
                 userState: 'normal',
             };
-            await rowStore.operate('user', {
-                id: await generateNewId(),
+            await context.operate('user', {
+                id: generateNewId(),
                 action: 'create',
                 data: userData,
-            }, context, {});
+            }, {});
             const tokenData: EntityDict['token']['CreateSingle']['data'] = {
-                id: await generateNewId(),
+                id: generateNewId(),
                 userId: userData.id,
                 playerId: userData.id,
                 env,
                 mobile: {
-                    id: await generateNewId(),
+                    id: generateNewId(),
                     action: 'create',
                     data: {
-                        id: await generateNewId(),
+                        id: generateNewId(),
                         mobile,    
                         userId: userData.id,                    
                     }
                 }
             };
-            await rowStore.operate('token', {
-                id: await generateNewId(),
+            await context.operate('token', {
+                id: generateNewId(),
                 action: 'create',
                 data: tokenData,
-            }, context, {});
+            }, {});
 
             return tokenData.id;
         }
     }
 }
 
-async function loadTokenInfo<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(tokenId: string, context: Cxt ) {
-    await context.rowStore.select('token', {
+async function loadTokenInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(tokenId: string, context: Cxt ) {
+    await context.select('token', {
         data: {
             id: 1,
             userId: 1,
@@ -289,18 +267,17 @@ async function loadTokenInfo<ED extends EntityDict, Cxt extends RuntimeContext<E
         filter: {
             id: tokenId,
         },
-    }, context, {});
+    }, {});
 }
 
-export async function loginByMobile<ED extends EntityDict, Cxt extends RuntimeContext<ED>>(
+export async function loginByMobile<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(
     params: { captcha?: string, password?: string, mobile: string, env: WebEnv | WechatMpEnv },
     context: Cxt): Promise<string> {
     const loginLogic = async () => {
         const { mobile, captcha, password, env } = params;
-        const { rowStore } = context;
-        const systemId = await context.getSystemId();
+        const systemId = context.getSystemId();
         if (captcha) {
-            const { result } = await rowStore.select('captcha', {
+            const result = await context.select('captcha', {
                 data: {
                     id: 1,
                     expired: 1,
@@ -317,7 +294,7 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends RuntimeCo
                 }],
                 indexFrom: 0,
                 count: 1,
-            }, context, { dontCollect: true });
+            }, { dontCollect: true });
             if (result.length > 0) {
                 const [captchaRow] = result;
                 if (captchaRow.expired) {
@@ -333,7 +310,7 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends RuntimeCo
         }
         else {
             assert(password);
-            const { result } = await rowStore.select('mobile', {
+            const result = await context.select('mobile', {
                 data: {
                     id: 1,
                     userId: 1,
@@ -352,7 +329,7 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends RuntimeCo
                         ],
                     },
                 }
-            }, context, {
+            }, {
                 dontCollect: true,
             });
             switch (result.length) {
@@ -361,11 +338,7 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends RuntimeCo
                 }
                 case 1: {
                     const [mobileRow] = result;
-                    const { ableState, userId } = mobileRow as SelectRowShape<EntityDict['mobile']['Schema'], {
-                        id: 1,
-                        userId: 1,
-                        ableState: 1,
-                    }>;
+                    const { ableState, userId } = mobileRow;
                     if (ableState === 'disabled') {
                         // 虽然密码和手机号匹配，但手机号已经禁用了，在可能的情况下提醒用户使用其它方法登录
                         const exception = await tryMakeChangeLoginWay<ED, Cxt>(userId as string, context);
@@ -393,17 +366,16 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends RuntimeCo
  * @param param0 
  * @param context 
  */
-export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeContext<ED>>({ code, env }: {
+export async function loginWechat<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ code, env }: {
     code: string;
     env: WebEnv;
 }, context: Cxt): Promise<string> {
     const loginLogic = async () => {
-        const { rowStore } = context;
-            const application = await context.getApplication();
+        const application = context.getApplication();
         const { type, config, systemId } = application!;
     
         // 可能type是web或者wechatPublic
-        assert(type !== 'wechatMp' && config.type !== 'wechatMp');
+        assert(type !== 'wechatMp' && config!.type !== 'wechatMp');
         let appId: string, appSecret: string;
         if (type === 'wechatPublic') {
             const config2 = config as WechatPublicConfig;
@@ -415,11 +387,11 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
             appId = config2.wechat.appId;
             appSecret = config2.wechat.appSecret;
         }
-        const wechatInstance = WechatSDK.getInstance(appId!, appSecret!, type);
+        const wechatInstance = WechatSDK.getInstance(appId!, appSecret!, type!);
     
         const { sessionKey, openId, unionId } = await wechatInstance.code2Session(code);
     
-        const { result: [wechatUser] } = await rowStore.select('wechatUser', {
+        const [wechatUser] = await context.select('wechatUser', {
             data: {
                 id: 1,
                 userId: 1,
@@ -442,17 +414,13 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
                 applicationId: application!.id,
                 openId,
             }
-        }, context, {
+        }, {
             dontCollect: true,
         });
     
-        const id = await generateNewId();
+        const id = generateNewId();
         if (wechatUser) {
-            const wechatUser2 = wechatUser as SelectRowShape<EntityDict['wechatUser']['Schema'], {
-                id: 1,
-                userId: 1,
-                unionId: 1,
-            }>;
+            const wechatUser2 = wechatUser!;
     
             const wechatUserUpdateData = {
                 sessionKey,
@@ -464,7 +432,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
             }
             if (wechatUser2.userId) {
                 // 若用户没有更换任何环境，则重用原来的token，避免token表增长过快
-                const { result: [token] } = await rowStore.select('token', {
+                const [token] = await context.select('token', {
                     data: {
                         id: 1,
                         applicationId: 1,
@@ -478,16 +446,16 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
                         entity: 'wechatUser',
                         entityId: wechatUser2.id,
                     },
-                }, context, {
+                }, {
                     blockTrigger: true,
                 });
                 if (token && isEqual(token.env, env)) {
-                    await rowStore.operate('token', {
-                        id: await generateNewId(),
+                    await context.operate('token', {
+                        id: generateNewId(),
                         action: 'update',
                         data: {
                             wechatUser: {
-                                id: await generateNewId(),
+                                id: generateNewId(),
                                 action: 'update',
                                 data: wechatUserUpdateData,
                             }
@@ -495,14 +463,14 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
                         filter: {
                             id: token.id as string,
                         },
-                    }, context, {
+                    },{
                         dontCollect: true,
                     });
-                    return token.id as string;
+                    return token.id!;
                 }
     
-                await rowStore.operate('token', {
-                    id: await generateNewId(),
+                await context.operate('token', {
+                    id: generateNewId(),
                     action: 'disable',
                     data: {
                     },
@@ -512,7 +480,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
                         userId: wechatUser2.userId,
                         playerId: wechatUser2.userId,
                     },
-                }, context, {
+                }, {
                     dontCollect: true,
                 });
             }
@@ -520,18 +488,18 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
                 // 创建user
                 Object.assign(wechatUserUpdateData, {
                     user: {
-                        id: await generateNewId(),
+                        id: generateNewId(),
                         action: 'create',
                         data: {
-                            id: await generateNewId(),
+                            id: generateNewId(),
                             userState: 'normal',
                         } as CreateUser,
                     },
                 });
             }
     
-            await rowStore.operate('token', {
-                id: await generateNewId(),
+            await context.operate('token', {
+                id: generateNewId(),
                 action: 'create',
                 data: {
                     id,
@@ -541,19 +509,19 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
                     entity: 'wechatUser',
                     entityId: wechatUser2.id as string,
                     wechatUser: {
-                        id: await generateNewId(),
+                        id: generateNewId(),
                         action: 'update',
                         data: wechatUserUpdateData,
                     },
                     env
                 } as CreateToken
-            }, context, {});
+            }, {});
             return id;
     
         }
         else if (unionId) {
             // 如果有unionId，查找同一个system下有没有相同的unionId
-            const { result: [wechatUser3] } = await rowStore.select('wechatUser', {
+            const [wechatUser3] = await context.select('wechatUser', {
                 data: {
                     id: 1,
                     userId: 1,
@@ -565,17 +533,13 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
                     },
                     unionId,
                 }
-            }, context, {
+            }, {
                 dontCollect: true,
             });
-            const wechatUser2 = wechatUser3 as SelectRowShape<EntityDict['wechatUser']['Schema'], {
-                id: 1,
-                userId: 1,
-                unionId: 1,
-            }>;
+            const wechatUser2 = wechatUser3;
             if (wechatUser2 && wechatUser2.userId) {
-                await rowStore.operate('token', {
-                    id: await generateNewId(),
+                await context.operate('token', {
+                    id: generateNewId(),
                     action: 'disable',
                     data: {
                     },
@@ -585,21 +549,21 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
                         userId: wechatUser2.userId,
                         playerId: wechatUser2.userId,
                     },
-                }, context, {
+                }, {
                     dontCollect: true,
                 });
     
                 const wechatUserCreateData: CreateWechatUser = {
-                    id: await generateNewId(),
+                    id: generateNewId(),
                     sessionKey,
                     unionId,
                     origin: 'mp',
                     openId,
-                    applicationId: application!.id,
+                    applicationId: application!.id!,
                     userId: wechatUser2.userId,
                 };
-                await rowStore.operate('token', {
-                    id: await generateNewId(),
+                await context.operate('token', {
+                    id: generateNewId(),
                     action: 'create',
                     data: {
                         id,
@@ -607,13 +571,13 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
                         playerId: wechatUser2.userId,
                         applicationId: application!.id,
                         wechatUser: {
-                            id: await generateNewId(),
+                            id: generateNewId(),
                             action: 'create',
                             data: wechatUserCreateData,
                         },
                         env,
                     }
-                }, context, {
+                }, {
                     dontCollect: true,
                 });
                 return id;
@@ -622,34 +586,34 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
     
         // 到这里都是要同时创建wechatUser和user对象了
         const userData: CreateUser = {
-            id: await generateNewId(),
+            id: generateNewId(),
             userState: 'normal',
             userSystem$user: [
                 {
-                    id: await generateNewId(),
+                    id: generateNewId(),
                     action: 'create',
                     data: {
-                        id: await generateNewId(),
+                        id: generateNewId(),
                         systemId,
                     },
                 }
             ],
         };
         const wechatUserCreateData: CreateWechatUser = {
-            id: await generateNewId(),
+            id: generateNewId(),
             sessionKey,
             unionId,
             origin: type === 'wechatPublic' ? 'public' : 'web',
             openId,
-            applicationId: application!.id,
+            applicationId: application!.id!,
             user: {
-                id: await generateNewId(),
+                id: generateNewId(),
                 action: 'create',
                 data: userData,
             }
         };
-        await rowStore.operate('token', {
-            id: await generateNewId(),
+        await context.operate('token', {
+            id: generateNewId(),
             action: 'create',
             data: {
                 id,
@@ -657,13 +621,13 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
                 playerId: userData.id,
                 applicationId: application!.id,
                 wechatUser: {
-                    id: await generateNewId(),
+                    id: generateNewId(),
                     action: 'create',
                     data: wechatUserCreateData,
                 },
                 env,
             }
-        }, context, {
+        }, {
             dontCollect: true,
         });
     
@@ -682,24 +646,22 @@ export async function loginWechat<ED extends EntityDict, Cxt extends RuntimeCont
  * @param context 
  * @returns 
  */
-export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeContext<ED>>({ code, env }: {
+export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ code, env }: {
     code: string;
     env: WechatMpEnv;
 }, context: Cxt): Promise<string> {
     const loginLogic = async() => {
-
-        const { rowStore } = context;
-        const application = await context.getApplication();
+        const application = context.getApplication();
         const { type, config, systemId } = application!;
     
-        assert(type === 'wechatMp' || config.type === 'wechatMp');
+        assert(type === 'wechatMp' || config!.type === 'wechatMp');
         const config2 = config as WechatMpConfig;
         const { appId, appSecret } = config2;
         const wechatInstance = WechatSDK.getInstance(appId, appSecret, 'wechatMp');
     
         const { sessionKey, openId, unionId } = await wechatInstance.code2Session(code);
     
-        const { result: [wechatUser] } = await rowStore.select('wechatUser', {
+        const [wechatUser] = await context.select('wechatUser', {
             data: {
                 id: 1,
                 userId: 1,
@@ -722,17 +684,13 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
                 applicationId: application!.id,
                 openId,
             }
-        }, context, {
+        }, {
             dontCollect: true,
         });
     
-        const id = await generateNewId();
+        const id = generateNewId();
         if (wechatUser) {
-            const wechatUser2 = wechatUser as SelectRowShape<EntityDict['wechatUser']['Schema'], {
-                id: 1,
-                userId: 1,
-                unionId: 1,
-            }>;
+            const wechatUser2 = wechatUser;
     
             const wechatUserUpdateData = {
                 sessionKey,
@@ -744,7 +702,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
             }
             if (wechatUser2.userId) {
                 // 若用户没有更换任何环境，则重用原来的token，避免token表增长过快
-                const { result: [token] } = await rowStore.select('token', {
+                const [token] = await context.select('token', {
                     data: {
                         id: 1,
                         applicationId: 1,
@@ -758,14 +716,14 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
                         entity: 'wechatUser',
                         entityId: wechatUser2.id,
                     },
-                }, context, { dummy: 1, blockTrigger: true, dontCollect: true });
+                }, { dummy: 1, blockTrigger: true, dontCollect: true });
                 if (token && isEqual(token.env, env)) {
-                    await rowStore.operate('token', {
-                        id: await generateNewId(),
+                    await context.operate('token', {
+                        id: generateNewId(),
                         action: 'update',
                         data: {
                             wechatUser: {
-                                id: await generateNewId(),
+                                id: generateNewId(),
                                 action: 'update',
                                 data: wechatUserUpdateData,
                             }
@@ -773,14 +731,14 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
                         filter: {
                             id: token.id as string,
                         },
-                    }, context, {
+                    }, {
                         dontCollect: true,
                     });
-                    return token.id as string;
+                    return token.id!;
                 }
     
-                await rowStore.operate('token', {
-                    id: await generateNewId(),
+                await context.operate('token', {
+                    id: generateNewId(),
                     action: 'disable',
                     data: {
                     },
@@ -790,7 +748,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
                         userId: wechatUser2.userId,
                         playerId: wechatUser2.userId,
                     },
-                }, context, {
+                }, {
                     dontCollect: true,
                 });
             }
@@ -798,18 +756,18 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
                 // 创建user
                 Object.assign(wechatUserUpdateData, {
                     user: {
-                        id: await generateNewId(),
+                        id: generateNewId(),
                         action: 'create',
                         data: {
-                            id: await generateNewId(),
+                            id: generateNewId(),
                             userState: 'normal',
                         } as CreateUser,
                     },
                 });
             }
     
-            await rowStore.operate('token', {
-                id: await generateNewId(),
+            await context.operate('token', {
+                id: generateNewId(),
                 action: 'create',
                 data: {
                     id,
@@ -819,13 +777,13 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
                     entity: 'wechatUser',
                     entityId: wechatUser2.id as string,
                     wechatUser: {
-                        id: await generateNewId(),
+                        id: generateNewId(),
                         action: 'update',
                         data: wechatUserUpdateData,
                     },
                     env
-                } as CreateToken
-            }, context, {
+                }
+            }, {
                 dontCollect: true,
             });
             return id;
@@ -833,7 +791,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
         }
         else if (unionId) {
             // 如果有unionId，查找同一个system下有没有相同的unionId
-            const { result: [wechatUser3] } = await rowStore.select('wechatUser', {
+            const [wechatUser3] = await context.select('wechatUser', {
                 data: {
                     id: 1,
                     userId: 1,
@@ -845,17 +803,13 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
                     },
                     unionId,
                 }
-            }, context, {
+            }, {
                 dontCollect: true,
             });
-            const wechatUser2 = wechatUser3 as SelectRowShape<EntityDict['wechatUser']['Schema'], {
-                id: 1,
-                userId: 1,
-                unionId: 1,
-            }>;
+            const wechatUser2 = wechatUser3;
             if (wechatUser2 && wechatUser2.userId) {
-                await rowStore.operate('token', {
-                    id: await generateNewId(),
+                await context.operate('token', {
+                    id: generateNewId(),
                     action: 'disable',
                     data: {
                     },
@@ -865,21 +819,21 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
                         userId: wechatUser2.userId,
                         playerId: wechatUser2.userId,
                     },
-                }, context, {
+                }, {
                     dontCollect: true,
                 });
     
                 const wechatUserCreateData: CreateWechatUser = {
-                    id: await generateNewId(),
+                    id: generateNewId(),
                     sessionKey,
                     unionId,
                     origin: 'mp',
                     openId,
-                    applicationId: application!.id,
+                    applicationId: application!.id!,
                     userId: wechatUser2.userId,
                 };
-                await rowStore.operate('token', {
-                    id: await generateNewId(),
+                await context.operate('token', {
+                    id: generateNewId(),
                     action: 'create',
                     data: {
                         id,
@@ -887,13 +841,13 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
                         playerId: wechatUser2.userId,
                         applicationId: application!.id,
                         wechatUser: {
-                            id: await generateNewId(),
+                            id: generateNewId(),
                             action: 'create',
                             data: wechatUserCreateData,
                         },
                         env,
                     }
-                }, context, {
+                }, {
                     dontCollect: true,
                 });
                 return id;
@@ -902,34 +856,34 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
     
         // 到这里都是要同时创建wechatUser和user对象了
         const userData: CreateUser = {
-            id: await generateNewId(),
+            id: generateNewId(),
             userState: 'normal',            
             userSystem$user: [
                 {
-                    id: await generateNewId(),
+                    id: generateNewId(),
                     action: 'create',
                     data: {
-                        id: await generateNewId(),
+                        id: generateNewId(),
                         systemId,
                     },
                 }
             ],
         };
         const wechatUserCreateData: CreateWechatUser = {
-            id: await generateNewId(),
+            id: generateNewId(),
             sessionKey,
             unionId,
             origin: 'mp',
             openId,
-            applicationId: application!.id,
+            applicationId: application!.id!,
             user: {
-                id: await generateNewId(),
+                id: generateNewId(),
                 action: 'create',
                 data: userData,
             }
         };
-        await rowStore.operate('token', {
-            id: await generateNewId(),
+        await context.operate('token', {
+            id: generateNewId(),
             action: 'create',
             data: {
                 id,
@@ -937,13 +891,13 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
                 playerId: userData.id,
                 applicationId: application!.id,
                 wechatUser: {
-                    id: await generateNewId(),
+                    id: generateNewId(),
                     action: 'create',
                     data: wechatUserCreateData,
                 },
                 env,
             }
-        }, context, {
+        }, {
             dontCollect: true,
         });
     
@@ -960,13 +914,12 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends RuntimeCo
  * @param param0 
  * @param context 
  */
-export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends RuntimeContext<ED>>({
+export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({
     nickname, avatarUrl, encryptedData, iv, signature
 }: { nickname: string, avatarUrl: string, encryptedData: string, iv: string, signature: string }, context: Cxt) {
-    const { rowStore } = context;
     const { userId } = (await context.getToken())!;
     const application = await context.getApplication();
-    const { result: [{ sessionKey, user }] } = await rowStore.select('wechatUser', {
+    const [{ sessionKey, user }] = await context.select('wechatUser', {
         data: {
             id: 1,
             sessionKey: 1,
@@ -996,7 +949,7 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ru
             userId: userId!,
             applicationId: application!.id,
         }
-    }, context, {
+    }, {
         dontCollect: true,
     });
 
@@ -1022,10 +975,10 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ru
         // 需要更新新的avatar extra file
         const extraFileOperations: ExtraFileOperation['data'][] = [
             {
-                id: await generateNewId(),
+                id: generateNewId(),
                 action: 'create',
                 data: Object.assign({
-                    id: await generateNewId(),
+                    id: generateNewId(),
                     tag1: 'avatar',
                     entity: 'user',
                     entityId: userId,
@@ -1049,14 +1002,14 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ru
     }
 
     if (Object.keys(updateData).length > 0) {
-        await rowStore.operate('user', {
-            id: await generateNewId(),
+        await context.operate('user', {
+            id: generateNewId(),
             action: 'update',
             data: updateData,
             filter: {
                 id: userId!,
             }
-        }, context, {
+        }, {
             dontCollect: true,
         });
     }
@@ -1065,7 +1018,7 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ru
 }
 
 
-export async function sendCaptcha<ED extends EntityDict, Cxt extends RuntimeContext<ED>>({ mobile, env }: {
+export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ mobile, env }: {
     mobile: string;
     env: WechatMpConfig | WebEnv
 }, context: Cxt): Promise<string> {
@@ -1073,30 +1026,28 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends RuntimeCont
 
     assert(type === 'web');
     let { visitorId } = env;
-
-    const { rowStore } = context;
     const now = Date.now();
     if (process.env.NODE_ENV !== 'development') {
         const [count1, count2] = await Promise.all(
             [
-                rowStore.count('captcha', {
+                context.count('captcha', {
                     filter: {
                         visitorId,
                         $$createAt$$: {
                             $gt: now - 3600 * 1000,
                         },
                     },
-                }, context, {
+                }, {
                     dontCollect: true,
                 }),
-                rowStore.count('captcha', {
+                context.count('captcha', {
                     filter: {
                         mobile,
                         $$createAt$$: {
                             $gt: now - 3600 * 1000,
                         },
                     }
-                }, context, {
+                }, {
                     dontCollect: true,
                 })
             ]
@@ -1105,7 +1056,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends RuntimeCont
             throw new OakUserException('您已发送很多次短信，请休息会再发吧');
         }
     }
-    const { result: [captcha] } = await rowStore.select('captcha', {
+    const [captcha] = await context.select('captcha', {
         data: {
             id: 1,
             code: 1,
@@ -1118,7 +1069,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends RuntimeCont
             },
             expired: false,
         }
-    }, context, {
+    }, {
         dontCollect: true,
     });
     if (captcha) {
@@ -1146,10 +1097,9 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends RuntimeCont
             }
         }
 
-        const id = await generateNewId();
-        console.log('captcha created', id);
-        await rowStore.operate('captcha', {
-            id: await generateNewId(),
+        const id = generateNewId();
+        await context.operate('captcha', {
+            id: generateNewId(),
             action: 'create',
             data: {
                 id,
@@ -1160,7 +1110,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends RuntimeCont
                 expired: false,
                 expiresAt: now + 660 * 1000,
             }
-        }, context, {
+        }, {
             dontCollect: true,
         });
 

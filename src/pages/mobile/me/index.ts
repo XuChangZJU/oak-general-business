@@ -8,8 +8,8 @@ export default OakComponent({
         userId: 1,
     },
     filters: [{
-        filter: async ({ features }) => {           
-            const token = await features.token.getToken();
+        filter: ({ features }) => {           
+            const token = features.token.getToken();
             return {
                 user: {
                     id: {
@@ -28,7 +28,7 @@ export default OakComponent({
             };
         },
     }],
-    formData: async ({ data: mobiles }) => ({
+    formData: ({ data: mobiles }) => ({
         mobiles,
     }),
     data: {
@@ -57,7 +57,7 @@ export default OakComponent({
                 this.navigateBack();
             })
             this.navigateTo({
-                url: '/mobile/login',
+                url: '/login',
                 onlyCaptcha: true,    
                 eventLoggedIn,
             });
