@@ -139,7 +139,8 @@ export default function render(this: any) {
                 width="60%"
                 onOk={async () => {
                     // todo
-                    await this.execute(
+                    this.createItem();
+                    /* await this.execute(
                         {
                             action: 'create',
                             data: {
@@ -147,7 +148,7 @@ export default function render(this: any) {
                             },
                         },
                         // '$system/list-system/upsert'
-                    );
+                    ); */
                     this.setState({
                         open: false,
                     });
