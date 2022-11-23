@@ -170,9 +170,7 @@ export default OakComponent({
                 }
             }
             if (action === 'play') {
-                this.navigateBack({
-                    delta: 2,
-                });
+                this.navigateBack(2);
             }
         },
     },

@@ -75,9 +75,7 @@ export default OakComponent({
                 }
                 // 如果 stateQuery 存在isGoBack为 返回上一页
                 if (stateQuery?.isGoBack) {
-                    this.navigateBack({
-                        delta: -2,
-                    });
+                    this.navigateBack(2);
                     return;
                 }
                 this.redirectTo(
@@ -111,9 +109,7 @@ export default OakComponent({
                     }
                     // 如果 stateQuery 存在isGoBack为 返回上一页
                     if (stateQuery?.isGoBack) {
-                        this.navigateBack({
-                            delta: -2,
-                        });
+                        this.navigateBack(2);
                         return;
                     }
                     this.redirectTo(
