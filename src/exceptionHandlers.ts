@@ -14,10 +14,14 @@ export const handlerDict: ExceptionHandlerDict<
     GeneralFeatures<EntityDict, BRC, FRC, FrcAspectDict>> = {
     [OakUnloggedInException.name]: async (features) => {
         await features.token.logout();
-        features.navigator.navigateTo('/mobile/login');
+        features.navigator.navigateTo({
+            url: '/mobile/login',
+        });
     },
     [OakTokenExpiredException.name]: async (features) => {
         await features.token.logout();
-        features.navigator.navigateTo('/mobile/login');
+        features.navigator.navigateTo({
+            url: '/mobile/login',
+        });
     }
 }

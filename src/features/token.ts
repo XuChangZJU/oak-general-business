@@ -188,26 +188,14 @@ export class Token<
     }
 
     getUserId(allowUnloggedIn?: boolean) {
-        if (this.tokenValue) {
-            const [token] = this.cache.get('token', {
-                data: {
-                    id: 1,
-                    userId: 1,
-                },
-                filter: {
-                    id: this.tokenValue,
-                }
-            });
-            return token.id!;
+        const token = this.getToken(allowUnloggedIn);
+        if (token?.userId) {
+            return token.userId!;
         }
-        if (allowUnloggedIn) {
-            return undefined;
-        }
-        throw new OakUnloggedInException();
     }
 
-    getUserInfo() {
-        const token = this.getToken();
+    getUserInfo(allowUnloggedIn?: boolean) {
+        const token = this.getToken(allowUnloggedIn);
         if (token?.user) {
             return token.user;
         }
