@@ -1,6 +1,5 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import assert from 'assert';
-import { DeduceCreateOperationData, OakException, OakUnloggedInException } from 'oak-domain/lib/types';
 import Dialog from '../../../utils/dialog/index';
 import { EntityDict } from '../../../general-app-domain';
 import { composeFileUrl } from '../../../utils/extraFile';
@@ -21,8 +20,8 @@ export default OakComponent({
         type: 1,
         entity: 1,
     },
-    async formData({ data: originalFiles, features }) {
-        const application = await features.application.getApplication();
+    formData({ data: originalFiles, features }) {
+        const application = features.application.getApplication();
         let files = originalFiles as Array<EntityDict['extraFile']['OpSchema']>;
         if (this.props.tag1) {
             files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
@@ -42,7 +41,6 @@ export default OakComponent({
         selected: -1,
         // 根据 size 不同，计算的图片显示大小不同
         itemSizePercentage: '',
-        newUploadFiles: [],
     },
     wechatMp: {
         externalClasses: ['l-class', 'l-item-class'],
@@ -262,10 +260,10 @@ export default OakComponent({
                     throw error;
                 }
 
-                await this.addItem(updateData);
+                this.addItem(updateData);
                 await this.execute();
             } else {
-                await this.addItem(
+                this.addItem(
                     updateData,
                     async () => {
                         if (updateData.bucket) {
@@ -322,7 +320,7 @@ export default OakComponent({
                 });
                 const { confirm } = result;
                 if (confirm) {
-                    await this.removeItem(id)
+                    this.removeItem(id)
                     await this.execute();
                 }
             }
@@ -331,7 +329,7 @@ export default OakComponent({
             const { id, bucket } = value;
             // 如果 removeLater为true 或 origin === 'qiniu' 且 bucket不存在
             if (this.props.removeLater || (origin !== 'unknown' && !bucket)) {
-                await this.removeItem(id);
+                this.removeItem(id);
             } else {
                 const confirm = Dialog.confirm({
                     title: '确认删除当前文件？',
@@ -339,7 +337,7 @@ export default OakComponent({
                     cancelText: '取消',
                     okText: '确定',
                     onOk: async (e: any) => {
-                        await this.removeItem(id);
+                        this.removeItem(id);
                         await this.execute();
                         confirm.destroy();
                     },
@@ -348,28 +346,6 @@ export default OakComponent({
                     },
                 });
             }
-        },
-        setNewUploadFiles(file: any, status: string) {
-            const { filename, size, id } = file;
-            const { newUploadFiles } = this.state;
-            const file2 = newUploadFiles.find(
-                (ele: any) => (ele.filename = filename && ele.size === size)
-            ) as any;
-            Object.assign(file2, {
-                status,
-                id,
-            });
-            this.setState({
-                newUploadFiles,
-            });
-        },
-        async customDelete(index: number) {
-            const { newUploadFiles } = this.state;
-            const arr = [...newUploadFiles];
-            arr.splice(index, 1);
-            this.setState({
-                newUploadFiles: arr,
-            });
         },
     },
 

@@ -19,14 +19,10 @@ export async function getApplication<ED extends EntityDict, Cxt extends BackendR
     };
     const appId = APP_ID[type];
 
-    const [application] = await context.select('application', {
-        data: {
-            id: 1,
-            name: 1,
-            config: 1,
-            type: 1,
-            systemId: 1,
-            system: {
+    const [application] = await context.select(
+        'application',
+        {
+            data: {
                 id: 1,
                 name: 1,
                 config: 1,
@@ -42,7 +38,6 @@ export async function getApplication<ED extends EntityDict, Cxt extends BackendR
                 id: appId,
             },
         },
-    },
         {}
     );
 

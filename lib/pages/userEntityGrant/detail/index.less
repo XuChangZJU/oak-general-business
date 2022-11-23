@@ -1,0 +1,74 @@
+/**  index.wxss  **/
+@import "../../../config/styles/mp/index.less";
+@import "../../../config/styles/mp/mixins.less";
+
+.page-body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  flex-direction: column;
+  background-color: @primary-color;
+  box-sizing: border-box;
+  .safe-area-inset-bottom();
+}
+.qrcode_view {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  margin: 0 @spacer-1;
+  padding: @spacer-1;
+  border-radius: 8px;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);
+}
+.icon-view {
+  position: absolute;
+  right: 0;
+      width: 50rpx;
+      height: 50rpx;
+      display: flex;
+    align-items: center;
+    justify-content: center;
+      background: @bg-color-fade;
+      border-radius: 50%;
+}
+.icon-view2 {
+      width: 100rpx;
+      height: 100rpx;
+      display: flex;
+    align-items: center;
+    justify-content: center;
+      border-radius: 50%;
+}
+.image {
+  width: 400rpx;
+  height: 400rpx;
+  margin: @spacer-1 0rpx;
+  background-color: @bg-color-fade;
+}
+.row {
+  position: relative;
+  margin-bottom: @spacer-1;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+.text {
+  color: @text-level-3-color;
+  font-size: 36rpx;
+}
+.tip {
+  color: @primary-color;
+  font-size: 30rpx;
+}
+.relation {
+  font-size: 60rpx;
+  font-weight: bolder;
+}

@@ -75,10 +75,7 @@ export class Token<
     private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
     private storage: LocalStorage;
 
-    constructor(
-        cache: Cache<ED, Cxt, FrontCxt, AD>,
-        storage: LocalStorage
-    ) {
+    constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage) {
         super();
         this.cache = cache;
         this.storage = storage;
@@ -101,24 +98,23 @@ export class Token<
 
     async loginByMobile(mobile: string, password?: string, captcha?: string) {
         const env = await getEnv();
-        const result = await this.cache.exec(
-            'loginByMobile',
-            { password, mobile, captcha, env }
-        );
+        const result = await this.cache.exec('loginByMobile', {
+            password,
+            mobile,
+            captcha,
+            env,
+        });
         this.tokenValue = result;
         this.storage.save('token:token', result);
         this.publish();
     }
 
-    async loginWechat(code: string) {        
+    async loginWechat(code: string) {
         const env = await getEnv();
-        const result = await this.cache.exec(
-            'loginWechat',
-            {
-                code,
-                env: env as WebEnv,
-            }
-        );
+        const result = await this.cache.exec('loginWechat', {
+            code,
+            env: env as WebEnv,
+        });
         this.tokenValue = result;
         this.storage.save('token:token', result);
         this.publish();
@@ -128,13 +124,10 @@ export class Token<
         const { code } = await wx.login();
 
         const env = await getEnv();
-        const result = await this.cache.exec(
-            'loginWechatMp',
-            {
-                code,
-                env: env as WechatMpEnv,
-            }
-        );
+        const result = await this.cache.exec('loginWechatMp', {
+            code,
+            env: env as WechatMpEnv,
+        });
         this.tokenValue = result;
         this.storage.save('token:token', result);
         this.publish();
@@ -178,7 +171,7 @@ export class Token<
                 data: tokenProjection,
                 filter: {
                     id: this.tokenValue!,
-                }
+                },
             })[0];
         }
         if (allowUnloggedIn) {
@@ -194,8 +187,9 @@ export class Token<
         }
     }
 
-    getUserInfo(allowUnloggedIn?: boolean) {
-        const token = this.getToken(allowUnloggedIn);
+    // getUserInfo 不要求登录
+    getUserInfo() {
+        const token = this.getToken(true);
         if (token?.user) {
             return token.user;
         }
@@ -204,7 +198,11 @@ export class Token<
     isRoot(): boolean {
         const token = this.getToken(true);
         const userRole$user = token?.player?.userRole$user;
-        return !!(userRole$user && userRole$user?.length > 0 && userRole$user.find((ele) => ele.roleId === ROOT_ROLE_ID));
+        return !!(
+            userRole$user &&
+            userRole$user?.length > 0 &&
+            userRole$user.find((ele) => ele.roleId === ROOT_ROLE_ID)
+        );
     }
 
     async sendCaptcha(mobile: string) {

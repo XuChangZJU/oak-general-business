@@ -19,7 +19,7 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     logout(): Promise<void>;
     getTokenValue(): string | undefined;
     getToken(allowUnloggedIn?: boolean): Partial<ED["token"]["Schema"]> | undefined;
-    getUserId(allowUnloggedIn?: boolean): NonNullable<ED["token"]["Schema"]["id"]> | undefined;
+    getUserId(allowUnloggedIn?: boolean): NonNullable<ED["token"]["Schema"]["userId"]> | undefined;
     getUserInfo(): ED["token"]["Schema"]["user"] | undefined;
     isRoot(): boolean;
     sendCaptcha(mobile: string): Promise<string>;

@@ -1,0 +1,68 @@
+// @import (css) '../common/index.wxss';
+@import '../common/style/index.less';
+
+.@{prefix}-skeleton {
+  display: flex;
+  box-sizing: border-box;
+  margin: 32rpx;
+
+  &__avatar {
+    flex-shrink: 0;
+    background-color: rgba(238, 238, 238, 1);
+    height: 96rpx;
+    width: 96rpx;
+    border-radius: 100%;
+    margin-right: 24rpx;
+  }
+
+  &__item {
+    background-color: rgba(238, 238, 238, 1);
+    border-radius: 4rpx;
+  }
+
+  &__row {
+    display: flex;
+
+    &:not(:first-child) {
+      margin-top: 24rpx;
+    }
+  }
+}
+
+.@{prefix}-skeleton--animate-flashed {
+  animation: t-flashed 0.6s infinite alternate;
+}
+
+@keyframes t-flashed {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.@{prefix}-skeleton--animate-gradient {
+  .t-skeleton__item {
+    background: linear-gradient(
+      to right,
+      rgba(238, 238, 238, 1) 10%,
+      rgba(238, 238, 238, 0.4) 20%,
+      rgba(238, 238, 238, 1) 30%
+    );
+    background-size: 400% 50%;
+    width: 100%;
+    animation: t-gradient 1s ease-in-out infinite;
+  }
+}
+
+@keyframes t-gradient {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}

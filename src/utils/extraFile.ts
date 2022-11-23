@@ -13,7 +13,8 @@ export function composeFileUrl(
         | 'extension'
         | 'entity'
     >,
-    config?: Config
+    config?: Config,
+    style?: string, //图片样式后缀 比如 七牛云支持url带裁剪后缀
 ) {
     const { type, bucket, filename, origin, extra1, objectId, extension, entity } =
         extraFile;

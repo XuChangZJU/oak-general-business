@@ -96,7 +96,11 @@ export default OakComponent({
                     return;
                 }
                 if (backUrl) {
-                    window.location.replace(backUrl);
+                    // todo 现在不存在跨域名登录 不需要使用window.location.replace
+                    //  window.location.replace(backUrl);
+                    this.redirectTo({
+                        url: backUrl,
+                    });
                     return;
                 }
                 this.navigateBack();
