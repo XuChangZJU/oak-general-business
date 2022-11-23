@@ -54,21 +54,21 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: 1;
-    $$createAt$$?: 1;
-    $$updateAt$$?: 1;
-    $$seq$$?: 1;
-    title?: 1;
-    streamTitle?: 1;
-    liveonly?: 1;
-    hub?: 1;
-    streamKey?: 1;
-    entity?: 1;
-    entityId?: 1;
-    rtmpPushUrl?: 1;
-    rtmpPlayUrl?: 1;
-    pcPushUrl?: 1;
-    expireAt?: 1;
+    id: number;
+    $$createAt$$?: number;
+    $$updateAt$$?: number;
+    $$seq$$?: number;
+    title?: number;
+    streamTitle?: number;
+    liveonly?: number;
+    hub?: number;
+    streamKey?: number;
+    entity?: number;
+    entityId?: number;
+    rtmpPushUrl?: number;
+    rtmpPlayUrl?: number;
+    pcPushUrl?: number;
+    expireAt?: number;
 } & Partial<ExprOp<OpAttr | string>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
@@ -90,38 +90,38 @@ export declare type ExportProjection = {
     expireAt?: string;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type LivestreamIdProjection = OneOf<{
-    id: 1;
+    id: number;
 }>;
 export declare type SortAttr = {
-    id: 1;
+    id: number;
 } | {
-    $$createAt$$: 1;
+    $$createAt$$: number;
 } | {
-    $$seq$$: 1;
+    $$seq$$: number;
 } | {
-    $$updateAt$$: 1;
+    $$updateAt$$: number;
 } | {
-    title: 1;
+    title: number;
 } | {
-    streamTitle: 1;
+    streamTitle: number;
 } | {
-    liveonly: 1;
+    liveonly: number;
 } | {
-    hub: 1;
+    hub: number;
 } | {
-    streamKey: 1;
+    streamKey: number;
 } | {
-    entity: 1;
+    entity: number;
 } | {
-    entityId: 1;
+    entityId: number;
 } | {
-    rtmpPushUrl: 1;
+    rtmpPushUrl: number;
 } | {
-    rtmpPlayUrl: 1;
+    rtmpPlayUrl: number;
 } | {
-    pcPushUrl: 1;
+    pcPushUrl: number;
 } | {
-    expireAt: 1;
+    expireAt: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

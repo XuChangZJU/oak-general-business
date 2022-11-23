@@ -76,24 +76,24 @@ export declare type Filter<E = Q_EnumValue<"userEntityGrant" | string>> = MakeFi
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: 1;
-    $$createAt$$?: 1;
-    $$updateAt$$?: 1;
-    $$seq$$?: 1;
-    entity?: 1;
-    entityId?: 1;
-    type?: 1;
-    allowShare?: 1;
-    tag?: 1;
-    expiresAt?: 1;
-    expired?: 1;
-    ticket?: 1;
-    url?: 1;
-    permanent?: 1;
-    buffer?: 1;
-    applicationId?: 1;
+    id: number;
+    $$createAt$$?: number;
+    $$updateAt$$?: number;
+    $$seq$$?: number;
+    entity?: number;
+    entityId?: number;
+    type?: number;
+    allowShare?: number;
+    tag?: number;
+    expiresAt?: number;
+    expired?: number;
+    ticket?: number;
+    url?: number;
+    permanent?: number;
+    buffer?: number;
+    applicationId?: number;
     application?: Application.Projection;
-    props?: 1;
+    props?: number;
     userEntityGrant?: UserEntityGrant.Projection;
     operEntity$entity?: OperEntity.Selection & {
         $entity: "operEntity";
@@ -132,50 +132,50 @@ export declare type ExportProjection = {
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type WechatQrCodeIdProjection = OneOf<{
-    id: 1;
+    id: number;
 }>;
 declare type ApplicationIdProjection = OneOf<{
-    applicationId: 1;
+    applicationId: number;
 }>;
 declare type UserEntityGrantIdProjection = OneOf<{
-    entityId: 1;
+    entityId: number;
 }>;
 export declare type SortAttr = {
-    id: 1;
+    id: number;
 } | {
-    $$createAt$$: 1;
+    $$createAt$$: number;
 } | {
-    $$seq$$: 1;
+    $$seq$$: number;
 } | {
-    $$updateAt$$: 1;
+    $$updateAt$$: number;
 } | {
-    entity: 1;
+    entity: number;
 } | {
-    entityId: 1;
+    entityId: number;
 } | {
-    type: 1;
+    type: number;
 } | {
-    allowShare: 1;
+    allowShare: number;
 } | {
-    tag: 1;
+    tag: number;
 } | {
-    expiresAt: 1;
+    expiresAt: number;
 } | {
-    expired: 1;
+    expired: number;
 } | {
-    ticket: 1;
+    ticket: number;
 } | {
-    url: 1;
+    url: number;
 } | {
-    permanent: 1;
+    permanent: number;
 } | {
-    buffer: 1;
+    buffer: number;
 } | {
-    applicationId: 1;
+    applicationId: number;
 } | {
     application: Application.SortAttr;
 } | {
-    props: 1;
+    props: number;
 } | {
     userEntityGrant: UserEntityGrant.SortAttr;
 } | {

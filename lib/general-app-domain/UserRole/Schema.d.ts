@@ -36,15 +36,15 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: 1;
-    $$createAt$$?: 1;
-    $$updateAt$$?: 1;
-    $$seq$$?: 1;
-    userId?: 1;
+    id: number;
+    $$createAt$$?: number;
+    $$updateAt$$?: number;
+    $$seq$$?: number;
+    userId?: number;
     user?: User.Projection;
-    roleId?: 1;
+    roleId?: number;
     role?: Role.Projection;
-    relation?: 1;
+    relation?: number;
 } & Partial<ExprOp<OpAttr | string>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
@@ -60,32 +60,32 @@ export declare type ExportProjection = {
     relation?: string;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type UserRoleIdProjection = OneOf<{
-    id: 1;
+    id: number;
 }>;
 declare type UserIdProjection = OneOf<{
-    userId: 1;
+    userId: number;
 }>;
 declare type RoleIdProjection = OneOf<{
-    roleId: 1;
+    roleId: number;
 }>;
 export declare type SortAttr = {
-    id: 1;
+    id: number;
 } | {
-    $$createAt$$: 1;
+    $$createAt$$: number;
 } | {
-    $$seq$$: 1;
+    $$seq$$: number;
 } | {
-    $$updateAt$$: 1;
+    $$updateAt$$: number;
 } | {
-    userId: 1;
+    userId: number;
 } | {
     user: User.SortAttr;
 } | {
-    roleId: 1;
+    roleId: number;
 } | {
     role: Role.SortAttr;
 } | {
-    relation: 1;
+    relation: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

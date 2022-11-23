@@ -43,17 +43,17 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: 1;
-    $$createAt$$?: 1;
-    $$updateAt$$?: 1;
-    $$seq$$?: 1;
-    name?: 1;
-    level?: 1;
-    depth?: 1;
-    parentId?: 1;
+    id: number;
+    $$createAt$$?: number;
+    $$updateAt$$?: number;
+    $$seq$$?: number;
+    name?: number;
+    level?: number;
+    depth?: number;
+    parentId?: number;
     parent?: Projection;
-    code?: 1;
-    center?: 1;
+    code?: number;
+    center?: number;
     address$area?: Address.Selection & {
         $entity: "address";
     };
@@ -83,31 +83,31 @@ export declare type ExportProjection = {
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type AreaIdProjection = OneOf<{
-    id: 1;
-    parentId: 1;
+    id: number;
+    parentId: number;
 }>;
 export declare type SortAttr = {
-    id: 1;
+    id: number;
 } | {
-    $$createAt$$: 1;
+    $$createAt$$: number;
 } | {
-    $$seq$$: 1;
+    $$seq$$: number;
 } | {
-    $$updateAt$$: 1;
+    $$updateAt$$: number;
 } | {
-    name: 1;
+    name: number;
 } | {
-    level: 1;
+    level: number;
 } | {
-    depth: 1;
+    depth: number;
 } | {
-    parentId: 1;
+    parentId: number;
 } | {
     parent: SortAttr;
 } | {
-    code: 1;
+    code: number;
 } | {
-    center: 1;
+    center: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

@@ -45,18 +45,18 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: 1;
-    $$createAt$$?: 1;
-    $$updateAt$$?: 1;
-    $$seq$$?: 1;
-    mobile?: 1;
-    code?: 1;
-    visitorId?: 1;
-    reason?: 1;
-    env?: 1;
-    expired?: 1;
-    expiresAt?: 1;
-    iState?: 1;
+    id: number;
+    $$createAt$$?: number;
+    $$updateAt$$?: number;
+    $$seq$$?: number;
+    mobile?: number;
+    code?: number;
+    visitorId?: number;
+    reason?: number;
+    env?: number;
+    expired?: number;
+    expiresAt?: number;
+    iState?: number;
 } & Partial<ExprOp<OpAttr | string>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
@@ -75,30 +75,30 @@ export declare type ExportProjection = {
     iState?: string;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type CaptchaIdProjection = OneOf<{
-    id: 1;
+    id: number;
 }>;
 export declare type SortAttr = {
-    id: 1;
+    id: number;
 } | {
-    $$createAt$$: 1;
+    $$createAt$$: number;
 } | {
-    $$seq$$: 1;
+    $$seq$$: number;
 } | {
-    $$updateAt$$: 1;
+    $$updateAt$$: number;
 } | {
-    mobile: 1;
+    mobile: number;
 } | {
-    code: 1;
+    code: number;
 } | {
-    visitorId: 1;
+    visitorId: number;
 } | {
-    reason: 1;
+    reason: number;
 } | {
-    expired: 1;
+    expired: number;
 } | {
-    expiresAt: 1;
+    expiresAt: number;
 } | {
-    iState: 1;
+    iState: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

@@ -72,25 +72,25 @@ export declare type Filter<E = Q_EnumValue<"article" | "user" | string>> = MakeF
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: 1;
-    $$createAt$$?: 1;
-    $$updateAt$$?: 1;
-    $$seq$$?: 1;
-    origin?: 1;
-    type?: 1;
-    bucket?: 1;
-    objectId?: 1;
-    tag1?: 1;
-    tag2?: 1;
-    filename?: 1;
-    md5?: 1;
-    entity?: 1;
-    entityId?: 1;
-    extra1?: 1;
-    extension?: 1;
-    size?: 1;
-    sort?: 1;
-    fileType?: 1;
+    id: number;
+    $$createAt$$?: number;
+    $$updateAt$$?: number;
+    $$seq$$?: number;
+    origin?: number;
+    type?: number;
+    bucket?: number;
+    objectId?: number;
+    tag1?: number;
+    tag2?: number;
+    filename?: number;
+    md5?: number;
+    entity?: number;
+    entityId?: number;
+    extra1?: number;
+    extension?: number;
+    size?: number;
+    sort?: number;
+    fileType?: number;
     article?: Article.Projection;
     user?: User.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
@@ -120,52 +120,52 @@ export declare type ExportProjection = {
     user?: User.ExportProjection;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type ExtraFileIdProjection = OneOf<{
-    id: 1;
+    id: number;
 }>;
 declare type ArticleIdProjection = OneOf<{
-    entityId: 1;
+    entityId: number;
 }>;
 declare type UserIdProjection = OneOf<{
-    entityId: 1;
+    entityId: number;
 }>;
 export declare type SortAttr = {
-    id: 1;
+    id: number;
 } | {
-    $$createAt$$: 1;
+    $$createAt$$: number;
 } | {
-    $$seq$$: 1;
+    $$seq$$: number;
 } | {
-    $$updateAt$$: 1;
+    $$updateAt$$: number;
 } | {
-    origin: 1;
+    origin: number;
 } | {
-    type: 1;
+    type: number;
 } | {
-    bucket: 1;
+    bucket: number;
 } | {
-    objectId: 1;
+    objectId: number;
 } | {
-    tag1: 1;
+    tag1: number;
 } | {
-    tag2: 1;
+    tag2: number;
 } | {
-    filename: 1;
+    filename: number;
 } | {
-    md5: 1;
+    md5: number;
 } | {
-    entity: 1;
+    entity: number;
 } | {
-    entityId: 1;
+    entityId: number;
 } | {
-    extra1: 1;
+    extra1: number;
 } | {
-    extension: 1;
+    extension: number;
 } | {
-    size: 1;
+    size: number;
 } | {
-    sort: 1;
+    sort: number;
 } | {
-    fileType: 1;
+    fileType: number;
 } | {
     article: Article.SortAttr;
 } | {

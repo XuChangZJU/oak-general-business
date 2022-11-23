@@ -97,20 +97,20 @@ export declare type Filter<E = Q_EnumValue<"email" | "mobile" | "wechatUser" | s
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: 1;
-    $$createAt$$?: 1;
-    $$updateAt$$?: 1;
-    $$seq$$?: 1;
-    applicationId?: 1;
+    id: number;
+    $$createAt$$?: number;
+    $$updateAt$$?: number;
+    $$seq$$?: number;
+    applicationId?: number;
     application?: Application.Projection;
-    entity?: 1;
-    entityId?: 1;
-    userId?: 1;
+    entity?: number;
+    entityId?: number;
+    userId?: number;
     user?: User.Projection;
-    playerId?: 1;
+    playerId?: number;
     player?: User.Projection;
-    env?: 1;
-    ableState?: 1;
+    env?: number;
+    ableState?: number;
     email?: Email.Projection;
     mobile?: Mobile.Projection;
     wechatUser?: WechatUser.Projection;
@@ -137,52 +137,52 @@ export declare type ExportProjection = {
     wechatUser?: WechatUser.ExportProjection;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type TokenIdProjection = OneOf<{
-    id: 1;
+    id: number;
 }>;
 declare type ApplicationIdProjection = OneOf<{
-    applicationId: 1;
+    applicationId: number;
 }>;
 declare type UserIdProjection = OneOf<{
-    userId: 1;
-    playerId: 1;
+    userId: number;
+    playerId: number;
 }>;
 declare type EmailIdProjection = OneOf<{
-    entityId: 1;
+    entityId: number;
 }>;
 declare type MobileIdProjection = OneOf<{
-    entityId: 1;
+    entityId: number;
 }>;
 declare type WechatUserIdProjection = OneOf<{
-    entityId: 1;
+    entityId: number;
 }>;
 export declare type SortAttr = {
-    id: 1;
+    id: number;
 } | {
-    $$createAt$$: 1;
+    $$createAt$$: number;
 } | {
-    $$seq$$: 1;
+    $$seq$$: number;
 } | {
-    $$updateAt$$: 1;
+    $$updateAt$$: number;
 } | {
-    applicationId: 1;
+    applicationId: number;
 } | {
     application: Application.SortAttr;
 } | {
-    entity: 1;
+    entity: number;
 } | {
-    entityId: 1;
+    entityId: number;
 } | {
-    userId: 1;
+    userId: number;
 } | {
     user: User.SortAttr;
 } | {
-    playerId: 1;
+    playerId: number;
 } | {
     player: User.SortAttr;
 } | {
-    env: 1;
+    env: number;
 } | {
-    ableState: 1;
+    ableState: number;
 } | {
     email: Email.SortAttr;
 } | {

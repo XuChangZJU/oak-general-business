@@ -42,17 +42,17 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: 1;
-    $$createAt$$?: 1;
-    $$updateAt$$?: 1;
-    $$seq$$?: 1;
-    channel?: 1;
-    data?: 1;
-    messageId?: 1;
+    id: number;
+    $$createAt$$?: number;
+    $$updateAt$$?: number;
+    $$seq$$?: number;
+    channel?: number;
+    data?: number;
+    messageId?: number;
     message?: Message.Projection;
-    data1?: 1;
-    data2?: 1;
-    iState?: 1;
+    data1?: number;
+    data2?: number;
+    iState?: number;
 } & Partial<ExprOp<OpAttr | string>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
@@ -70,27 +70,27 @@ export declare type ExportProjection = {
     iState?: string;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type MessageSentIdProjection = OneOf<{
-    id: 1;
+    id: number;
 }>;
 declare type MessageIdProjection = OneOf<{
-    messageId: 1;
+    messageId: number;
 }>;
 export declare type SortAttr = {
-    id: 1;
+    id: number;
 } | {
-    $$createAt$$: 1;
+    $$createAt$$: number;
 } | {
-    $$seq$$: 1;
+    $$seq$$: number;
 } | {
-    $$updateAt$$: 1;
+    $$updateAt$$: number;
 } | {
-    channel: 1;
+    channel: number;
 } | {
-    messageId: 1;
+    messageId: number;
 } | {
     message: Message.SortAttr;
 } | {
-    iState: 1;
+    iState: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

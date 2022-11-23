@@ -37,13 +37,13 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: 1;
-    $$createAt$$?: 1;
-    $$updateAt$$?: 1;
-    $$seq$$?: 1;
-    userId?: 1;
+    id: number;
+    $$createAt$$?: number;
+    $$updateAt$$?: number;
+    $$seq$$?: number;
+    userId?: number;
     user?: User.Projection;
-    systemId?: 1;
+    systemId?: number;
     system?: System.Projection;
     operEntity$entity?: OperEntity.Selection & {
         $entity: "operEntity";
@@ -71,28 +71,28 @@ export declare type ExportProjection = {
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type UserSystemIdProjection = OneOf<{
-    id: 1;
+    id: number;
 }>;
 declare type UserIdProjection = OneOf<{
-    userId: 1;
+    userId: number;
 }>;
 declare type SystemIdProjection = OneOf<{
-    systemId: 1;
+    systemId: number;
 }>;
 export declare type SortAttr = {
-    id: 1;
+    id: number;
 } | {
-    $$createAt$$: 1;
+    $$createAt$$: number;
 } | {
-    $$seq$$: 1;
+    $$seq$$: number;
 } | {
-    $$updateAt$$: 1;
+    $$updateAt$$: number;
 } | {
-    userId: 1;
+    userId: number;
 } | {
     user: User.SortAttr;
 } | {
-    systemId: 1;
+    systemId: number;
 } | {
     system: System.SortAttr;
 } | {

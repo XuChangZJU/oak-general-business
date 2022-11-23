@@ -65,23 +65,23 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: 1;
-    $$createAt$$?: 1;
-    $$updateAt$$?: 1;
-    $$seq$$?: 1;
-    entity?: 1;
-    entityId?: 1;
-    relation?: 1;
-    type?: 1;
-    number?: 1;
-    confirmed?: 1;
-    remark?: 1;
-    granterId?: 1;
+    id: number;
+    $$createAt$$?: number;
+    $$updateAt$$?: number;
+    $$seq$$?: number;
+    entity?: number;
+    entityId?: number;
+    relation?: number;
+    type?: number;
+    number?: number;
+    confirmed?: number;
+    remark?: number;
+    granterId?: number;
     granter?: User.Projection;
-    granteeId?: 1;
+    granteeId?: number;
     grantee?: User.Projection;
-    expiresAt?: 1;
-    expired?: 1;
+    expiresAt?: number;
+    expired?: number;
     operEntity$entity?: OperEntity.Selection & {
         $entity: "operEntity";
     };
@@ -123,46 +123,46 @@ export declare type ExportProjection = {
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type UserEntityGrantIdProjection = OneOf<{
-    id: 1;
+    id: number;
 }>;
 declare type UserIdProjection = OneOf<{
-    granterId: 1;
-    granteeId: 1;
+    granterId: number;
+    granteeId: number;
 }>;
 export declare type SortAttr = {
-    id: 1;
+    id: number;
 } | {
-    $$createAt$$: 1;
+    $$createAt$$: number;
 } | {
-    $$seq$$: 1;
+    $$seq$$: number;
 } | {
-    $$updateAt$$: 1;
+    $$updateAt$$: number;
 } | {
-    entity: 1;
+    entity: number;
 } | {
-    entityId: 1;
+    entityId: number;
 } | {
-    relation: 1;
+    relation: number;
 } | {
-    type: 1;
+    type: number;
 } | {
-    number: 1;
+    number: number;
 } | {
-    confirmed: 1;
+    confirmed: number;
 } | {
-    remark: 1;
+    remark: number;
 } | {
-    granterId: 1;
+    granterId: number;
 } | {
     granter: User.SortAttr;
 } | {
-    granteeId: 1;
+    granteeId: number;
 } | {
     grantee: User.SortAttr;
 } | {
-    expiresAt: 1;
+    expiresAt: number;
 } | {
-    expired: 1;
+    expired: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

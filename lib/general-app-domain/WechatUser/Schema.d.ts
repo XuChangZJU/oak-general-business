@@ -69,24 +69,24 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: 1;
-    $$createAt$$?: 1;
-    $$updateAt$$?: 1;
-    $$seq$$?: 1;
-    origin?: 1;
-    openId?: 1;
-    unionId?: 1;
-    accessToken?: 1;
-    sessionKey?: 1;
-    subscribed?: 1;
-    subscribedAt?: 1;
-    unsubscribedAt?: 1;
-    userId?: 1;
+    id: number;
+    $$createAt$$?: number;
+    $$updateAt$$?: number;
+    $$seq$$?: number;
+    origin?: number;
+    openId?: number;
+    unionId?: number;
+    accessToken?: number;
+    sessionKey?: number;
+    subscribed?: number;
+    subscribedAt?: number;
+    unsubscribedAt?: number;
+    userId?: number;
     user?: User.Projection;
-    applicationId?: 1;
+    applicationId?: number;
     application?: Application.Projection;
-    nickname?: 1;
-    avatar?: 1;
+    nickname?: number;
+    avatar?: number;
     operEntity$entity?: OperEntity.Selection & {
         $entity: "operEntity";
     };
@@ -129,50 +129,50 @@ export declare type ExportProjection = {
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type WechatUserIdProjection = OneOf<{
-    id: 1;
+    id: number;
 }>;
 declare type UserIdProjection = OneOf<{
-    userId: 1;
+    userId: number;
 }>;
 declare type ApplicationIdProjection = OneOf<{
-    applicationId: 1;
+    applicationId: number;
 }>;
 export declare type SortAttr = {
-    id: 1;
+    id: number;
 } | {
-    $$createAt$$: 1;
+    $$createAt$$: number;
 } | {
-    $$seq$$: 1;
+    $$seq$$: number;
 } | {
-    $$updateAt$$: 1;
+    $$updateAt$$: number;
 } | {
-    origin: 1;
+    origin: number;
 } | {
-    openId: 1;
+    openId: number;
 } | {
-    unionId: 1;
+    unionId: number;
 } | {
-    accessToken: 1;
+    accessToken: number;
 } | {
-    sessionKey: 1;
+    sessionKey: number;
 } | {
-    subscribed: 1;
+    subscribed: number;
 } | {
-    subscribedAt: 1;
+    subscribedAt: number;
 } | {
-    unsubscribedAt: 1;
+    unsubscribedAt: number;
 } | {
-    userId: 1;
+    userId: number;
 } | {
     user: User.SortAttr;
 } | {
-    applicationId: 1;
+    applicationId: number;
 } | {
     application: Application.SortAttr;
 } | {
-    nickname: 1;
+    nickname: number;
 } | {
-    avatar: 1;
+    avatar: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

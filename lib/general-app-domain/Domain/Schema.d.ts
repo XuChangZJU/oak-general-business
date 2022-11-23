@@ -39,15 +39,15 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: 1;
-    $$createAt$$?: 1;
-    $$updateAt$$?: 1;
-    $$seq$$?: 1;
-    url?: 1;
-    apiPath?: 1;
-    protocol?: 1;
-    port?: 1;
-    systemId?: 1;
+    id: number;
+    $$createAt$$?: number;
+    $$updateAt$$?: number;
+    $$seq$$?: number;
+    url?: number;
+    apiPath?: number;
+    protocol?: number;
+    port?: number;
+    systemId?: number;
     system?: System.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
 export declare type ExportProjection = {
@@ -65,29 +65,29 @@ export declare type ExportProjection = {
     system?: System.ExportProjection;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type DomainIdProjection = OneOf<{
-    id: 1;
+    id: number;
 }>;
 declare type SystemIdProjection = OneOf<{
-    systemId: 1;
+    systemId: number;
 }>;
 export declare type SortAttr = {
-    id: 1;
+    id: number;
 } | {
-    $$createAt$$: 1;
+    $$createAt$$: number;
 } | {
-    $$seq$$: 1;
+    $$seq$$: number;
 } | {
-    $$updateAt$$: 1;
+    $$updateAt$$: number;
 } | {
-    url: 1;
+    url: number;
 } | {
-    apiPath: 1;
+    apiPath: number;
 } | {
-    protocol: 1;
+    protocol: number;
 } | {
-    port: 1;
+    port: number;
 } | {
-    systemId: 1;
+    systemId: number;
 } | {
     system: System.SortAttr;
 } | {

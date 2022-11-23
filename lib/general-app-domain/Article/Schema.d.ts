@@ -44,17 +44,17 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: 1;
-    $$createAt$$?: 1;
-    $$updateAt$$?: 1;
-    $$seq$$?: 1;
-    entity?: 1;
-    entityId?: 1;
-    title?: 1;
-    author?: 1;
-    abstract?: 1;
-    content?: 1;
-    iState?: 1;
+    id: number;
+    $$createAt$$?: number;
+    $$updateAt$$?: number;
+    $$seq$$?: number;
+    entity?: number;
+    entityId?: number;
+    title?: number;
+    author?: number;
+    abstract?: number;
+    content?: number;
+    iState?: number;
     extraFile$entity?: ExtraFile.Selection & {
         $entity: "extraFile";
     };
@@ -78,30 +78,30 @@ export declare type ExportProjection = {
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type ArticleIdProjection = OneOf<{
-    id: 1;
+    id: number;
 }>;
 export declare type SortAttr = {
-    id: 1;
+    id: number;
 } | {
-    $$createAt$$: 1;
+    $$createAt$$: number;
 } | {
-    $$seq$$: 1;
+    $$seq$$: number;
 } | {
-    $$updateAt$$: 1;
+    $$updateAt$$: number;
 } | {
-    entity: 1;
+    entity: number;
 } | {
-    entityId: 1;
+    entityId: number;
 } | {
-    title: 1;
+    title: number;
 } | {
-    author: 1;
+    author: number;
 } | {
-    abstract: 1;
+    abstract: number;
 } | {
-    content: 1;
+    content: number;
 } | {
-    iState: 1;
+    iState: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

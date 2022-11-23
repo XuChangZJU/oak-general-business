@@ -48,16 +48,16 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: 1;
-    $$createAt$$?: 1;
-    $$updateAt$$?: 1;
-    $$seq$$?: 1;
-    name?: 1;
-    description?: 1;
-    config?: 1;
-    platformId?: 1;
+    id: number;
+    $$createAt$$?: number;
+    $$updateAt$$?: number;
+    $$seq$$?: number;
+    name?: number;
+    description?: number;
+    config?: number;
+    platformId?: number;
     platform?: Platform.Projection;
-    super?: 1;
+    super?: number;
     application$system?: Application.Selection & {
         $entity: "application";
     };
@@ -98,31 +98,31 @@ export declare type ExportProjection = {
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type SystemIdProjection = OneOf<{
-    id: 1;
+    id: number;
 }>;
 declare type PlatformIdProjection = OneOf<{
-    platformId: 1;
+    platformId: number;
 }>;
 export declare type SortAttr = {
-    id: 1;
+    id: number;
 } | {
-    $$createAt$$: 1;
+    $$createAt$$: number;
 } | {
-    $$seq$$: 1;
+    $$seq$$: number;
 } | {
-    $$updateAt$$: 1;
+    $$updateAt$$: number;
 } | {
-    name: 1;
+    name: number;
 } | {
-    description: 1;
+    description: number;
 } | {
-    config: 1;
+    config: number;
 } | {
-    platformId: 1;
+    platformId: number;
 } | {
     platform: Platform.SortAttr;
 } | {
-    super: 1;
+    super: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
