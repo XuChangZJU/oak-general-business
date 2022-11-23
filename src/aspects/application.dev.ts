@@ -32,13 +32,6 @@ export async function getApplication<ED extends EntityDict, Cxt extends BackendR
                     id: 1,
                     name: 1,
                     config: 1,
-                    type: 1,
-                    systemId: 1,
-                    system: {
-                        id: 1,
-                        name: 1,
-                        config: 1,
-                    },
                 },
             },
             filter: {
