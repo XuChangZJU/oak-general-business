@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Radio, Button, Alert, InputNumber, Space, Modal } from 'antd';
 import UserEntityGrantDetail from '../../../../pages/userEntityGrant/detail';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../../general-app-domain';
 
 import Style from './web.module.less';
 
-export default function render(this: any) {
-    const { relation, period, type, number } = this.state;
-    const { relations, entity, namespace } = this.props;
+export default function render(props: WebComponentProps<EntityDict, 'userEntityGrant', false, {
+    relations: string[];
+    userEntityGrant: EntityDict['userEntityGrant']['OpSchema'];
+    userEntityGrantId: string;
+}, {
+    confirm: (period: number) => Promise<void>;
+    onBack: () => void;
+    setInit: () => void;
+}>) {
+    const { relations, userEntityGrant, userEntityGrantId } = props.data;
+    const { relation, type, number, entity } = userEntityGrant || {};
+    const { update, t, onBack, confirm, setInit } = props.methods;
     
+    const [period, setPeriod] = useState(undefined as number | undefined);
 
     return (
         <div className={Style.container}>
@@ -23,7 +35,6 @@ export default function render(this: any) {
                     rules={[
                         {
                             required: true,
-                            message: '请选择一个权限',
                         },
                     ]}
                 >
@@ -31,12 +42,12 @@ export default function render(this: any) {
                         value={relation}
                         onChange={({ target }) => {
                             const { value } = target;
-                            this.setRelation(value);
+                            update({ relation: value });
                         }}
                         options={relations?.map((ele: string) => ({
                             value: ele,
                             label:
-                                (this.t && this.t(entity + ':r.' + ele)) || ele,
+                                (t(entity + ':r.' + ele)) || ele,
                         }))}
                     />
                 </Form.Item>
@@ -54,7 +65,7 @@ export default function render(this: any) {
                             value={number}
                             onChange={({ target }) => {
                                 const { value } = target;
-                                this.setNumber(value);
+                                update({ number: value });
                             }}
                             options={[
                                 { value: 1, label: '单次' },
@@ -76,11 +87,7 @@ export default function render(this: any) {
                         min={1}
                         max={15}
                         value={period}
-                        onChange={(value) => {
-                            this.setState({
-                                period: value,
-                            });
-                        }}
+                        onChange={(value) => setPeriod(value!)}
                         addonAfter="分钟"
                     />
                 </Form.Item>
@@ -88,16 +95,12 @@ export default function render(this: any) {
                     <Space>
                         <Button
                             type="primary"
-                            onClick={() => {
-                                this.confirm();
-                            }}
+                            onClick={() => confirm(period!)}
                         >
                             提交
                         </Button>
                         <Button
-                            onClick={() => {
-                                this.onBack();
-                            }}
+                            onClick={() => onBack()}
                         >
                             返回
                         </Button>
@@ -106,21 +109,17 @@ export default function render(this: any) {
             </Form>
             <Modal
                 title="二维码"
-                open={!!this.state.userEntityGrantId}
+                open={!!userEntityGrantId}
                 destroyOnClose={true}
                 maskClosable={false}
                 footer={null}
                 onCancel={() => {
-                    this.setState({
-                        userEntityGrantId: '',
-                    });
-                    this.setInit();
+                    setInit();
                 }}
             >
                 <UserEntityGrantDetail
-                    namespace={namespace}
                     variant="dialog"
-                    oakId={this.state.userEntityGrantId}
+                    oakId={userEntityGrantId}
                     oakAutoUnmount={true}
                     oakPath="$userRelation/upsert/byUserEntityGrant-userEntityGrant/detail"
                 ></UserEntityGrantDetail>

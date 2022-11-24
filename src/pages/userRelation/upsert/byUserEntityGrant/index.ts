@@ -15,8 +15,8 @@ export default OakComponent({
         granteeId: 1,
     },
     isList: false,
-    formData: async ({ data: userEntityGrant }) => ({
-        ...userEntityGrant,
+    formData: ({ data: userEntityGrant }) => ({
+        userEntityGrant,
     }),
     properties: {
         entity: String,
