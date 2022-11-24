@@ -4,6 +4,7 @@
     "ptrRelease": "正在刷新...",
     "ptrFinish": "刷新完成",
     "noData": "暂无数据",
+    "areYouSure": "请确认",
     "action": {
         "create": "创建",
         "update": "更新",
@@ -12,7 +13,7 @@
         "confirm": "确定",
         "cancel": "取消",
         "grant": "授权",
-        "revoke": "回权",
+        "revoke": "回收",
         "tip": "提示"
     }
 }

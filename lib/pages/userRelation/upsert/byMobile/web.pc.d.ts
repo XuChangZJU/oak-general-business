@@ -1,2 +1,14 @@
-/// <reference types="react" />
-export default function render(this: any): JSX.Element;
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../../general-app-domain';
+export default function Render(props: WebComponentProps<EntityDict, 'mobile', false, {
+    entity: string;
+    entityId: string;
+    relations: string[];
+    mobileValue: string;
+    mobileValueReady: boolean;
+    userId: string;
+}, {
+    onMobileChange: (value: string) => Promise<void>;
+    onConfirm: () => Promise<void>;
+    onReset: () => void;
+}>): JSX.Element;

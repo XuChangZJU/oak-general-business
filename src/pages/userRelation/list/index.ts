@@ -1,5 +1,6 @@
 import assert from 'assert';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../../../general-app-domain';
 import { composeFileUrl } from '../../../utils/extraFile';
 import React from '../../../utils/react';
@@ -116,7 +117,6 @@ export default OakComponent({
     },
     data: {
         searchValue: '',
-        idRemove: '',
     },
     lifetimes: {
         created() {
@@ -155,15 +155,10 @@ export default OakComponent({
                 }
             );
         },
-        onDelete(id: string) {
-            this.setState({
-                idRemove: id,
-            });
-        },
-        async confirmDelete() {
+        async confirmDelete(idRemove: string) {
             const { entity, entityId } = this.props;
             const entityStr = firstLetterUpperCase(entity!);
-            const { idRemove, users } = this.state;
+            const { users } = this.state;
             const user = users.find(
                 (ele: any) => ele.id === idRemove
             );
@@ -171,6 +166,7 @@ export default OakComponent({
             this.updateItem({
                 [`user${entityStr}$user`]: [
                     {
+                        id: generateNewId(),
                         action: 'remove',
                         data: {},
                         filter: {
@@ -182,9 +178,6 @@ export default OakComponent({
                 ]
             }, idRemove);
             await this.execute();
-            this.setState({
-                idRemove: '',
-            });
         },
 
         // 这三个函数貌似还没用上

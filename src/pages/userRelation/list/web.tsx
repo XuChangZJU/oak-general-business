@@ -5,18 +5,33 @@ import { List, Avatar, Tag, Button, Space } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Style from './mobile.module.less';
 import { getName } from '../../../utils/randomUser';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../general-app-domain';
 
 
-export default function render(this: any) {
-    const { t } = this;
-    const { entity } = this.props;
-    const { users } = this.state;
+export default function Render(props: WebComponentProps<EntityDict, 'user', true, {
+    users: any[];
+    searchValue?: string;
+    pagination: {
+        pageSize: number;
+        total: number;
+        currentPage: number;
+    },
+    entity: string;
+    entityId: string;
+}, {
+    goUpsert: () => void;
+    goDetail: (id: string) => void;
+    confirmDelete: (id: string) => Promise<void>;
+}>) {
+    const { t, goUpsert, goDetail } = props.methods;
+    const { entity, users } = props.data;
     return (
         <div className={Style.container}>
             <List>
                 {users?.map((ele: any, index: number) => {
                     return (
-                        <div onClick={(e) => this.goDetail(ele.id)} key={index}>
+                        <div onClick={(e) => goDetail(ele.id)} key={index}>
                             <List.Item>
                                 <List.Item.Meta
                                     avatar={
@@ -84,7 +99,7 @@ export default function render(this: any) {
                     shape="circle"
                     icon={<PlusOutlined />}
                     onClick={() => {
-                        this.goUpsert();
+                        goUpsert();
                     }}
                 />
             </div>

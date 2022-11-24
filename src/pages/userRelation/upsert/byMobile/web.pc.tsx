@@ -2,10 +2,24 @@ import React from 'react';
 import { Form, Input, Button, Space } from 'antd';
 import Style from './web.module.less';
 import OnUser from '../onUser/index';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../../general-app-domain';
 
-export default function render(this: any) {
-    const { relations, entity, entityId } = this.props;
-    const { mobileValue, mobileValueReady, legal } = this.state;
+export default function Render(props: WebComponentProps<EntityDict, 'mobile', false, {
+    entity: string;
+    entityId: string;
+    relations: string[];
+    mobileValue: string;
+    mobileValueReady: boolean;
+    userId: string;
+}, {
+    onMobileChange: (value: string) => Promise<void>;
+    onConfirm: () => Promise<void>;
+    onReset: () => void;
+}>) {
+    const { mobileValue, mobileValueReady, relations, entity, entityId, userId,
+        oakFullpath, oakExecutable } = props.data;
+    const { onConfirm, onMobileChange, onReset } = props.methods;
     return (
         <div className={Style.container}>
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
@@ -33,7 +47,7 @@ export default function render(this: any) {
                             value={mobileValue}
                             onChange={(e) => {
                                 const strValue = e.target.value;
-                                this.onMobileChange(strValue);
+                                onMobileChange(strValue);
                             }}
                             placeholder="请输入手机号码"
                             type="tel"
@@ -44,15 +58,13 @@ export default function render(this: any) {
             {mobileValueReady && (
                 <OnUser
                     oakAutoUnmount={true}
-                    oakPath={
-                        this.state.oakFullpath
-                            ? `${this.state.oakFullpath}.user`
+                    oakPath={oakFullpath ? `${oakFullpath}.user`
                             : undefined
                     }
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
-                    oakId={this.state.userId}
+                    oakId={userId}
                 />
             )}
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
@@ -61,13 +73,13 @@ export default function render(this: any) {
                         <Button
                             type="primary"
                             onClick={() => {
-                                this.onConfirm();
+                                onConfirm();
                             }}
-                            disabled={!legal}
+                            disabled={!oakExecutable}
                         >
                             提交
                         </Button>
-                        <Button htmlType="reset" onClick={() => this.onReset()}>
+                        <Button htmlType="reset" onClick={() => onReset()}>
                             重置
                         </Button>
                     </Space>

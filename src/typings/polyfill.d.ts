@@ -2,7 +2,7 @@ import { MakeOakComponent } from 'oak-frontend-base/lib/types/Page';
 import { EntityDict } from '../general-app-domain';
 import { GeneralRuntimeContext } from '../src/RuntimeContext';
 import { AspectDict } from '../src/aspects/AspectDict';
-import { initialize } from '../src/features';
+import { GeneralFeatures } from '../src/features';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
@@ -12,7 +12,7 @@ declare global {
         BackendRuntimeContext<EntityDict>,
         FrontendRuntimeContext<EntityDict, BackendRuntimeContext<EntityDict>, AspectDict<EntityDict, BackendRuntimeContext<EntityDict>>>,
         AspectDict<EntityDict, BackendRuntimeContext<EntityDict>>,
-        ReturnType<typeof initialize>['features']
+        GeneralFeatures<EntityDict, BackendRuntimeContext<AspectDict>, FrontendRuntimeContext<EntityDict, BackendRuntimeContext<EntityDict>, AspectDict<EntityDict, BackendRuntimeContext<EntityDict>>>, AspectDict<EntityDict, BackendRuntimeContext<EntityDict>>>
     >;
 }
 export {};

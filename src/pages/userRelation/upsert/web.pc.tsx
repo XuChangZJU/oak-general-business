@@ -5,10 +5,20 @@ import Style from './web.module.less';
 import ByMobile from './byMobile/index';
 import ByUserEntityGrant from './byUserEntityGrant';
 import assert from 'assert';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../general-app-domain';
 
-export default function render(this: any) {
-    const { entity, entityId, relations } = this.props;
-    const { grantByUserEntityGrant, grantByEmail, grantByMobile, grantMethodCount } = this.state;
+export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
+    grantByUserEntityGrant: boolean;
+    grantByEmail: boolean;
+    grantByMobile: boolean;
+    grantMethodCount: number;
+    entity: string;
+    entityId: string;
+    relations: string[];
+}, {}>) {
+    const { entity, entityId, relations, grantByUserEntityGrant,
+        grantByEmail, grantByMobile, grantMethodCount, oakFullpath } = props.data;
     let SubPart: JSX.Element = (<></>);
     if (grantMethodCount === 0) {
         SubPart = (
@@ -31,7 +41,7 @@ export default function render(this: any) {
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
-                    oakPath={this.state.oakFullpath ? `${this.state.oakFullpath}.mobile` : undefined}
+                    oakPath={oakFullpath ? `${oakFullpath}.mobile` : undefined}
                     oakAutoUnmount={true}
                 />
             );
@@ -43,7 +53,7 @@ export default function render(this: any) {
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
-                    oakPath={this.state.oakFullpath ? `${this.state.oakFullpath}.userEntityGrant` : undefined}
+                    oakPath={oakFullpath ? `${oakFullpath}.userEntityGrant` : undefined}
                     oakAutoUnmount={true}
                 />
             );
@@ -64,7 +74,7 @@ export default function render(this: any) {
                         entity={entity}
                         entityId={entityId}
                         relations={relations}
-                        oakPath="$userRelationUpsert/upsert-byMobile"
+                        oakPath={oakFullpath ? `${oakFullpath}.mobile` : undefined}
                         oakAutoUnmount={true}
                     />
                 )
@@ -75,7 +85,7 @@ export default function render(this: any) {
                         entity={entity}
                         entityId={entityId}
                         relations={relations}
-                        oakPath="$userRelationUpsert/upsert-byUserEntityGrant"
+                        oakPath={oakFullpath ? `${oakFullpath}.userEntityGrant` : undefined}
                         oakAutoUnmount={true}
                     />
                 )

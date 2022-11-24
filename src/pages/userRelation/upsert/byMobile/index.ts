@@ -12,9 +12,7 @@ export default OakComponent({
     },
     isList: false,
     formData({ data: mobile }) {
-        let legal = this.tryExecute();
         return {
-            legal: !!legal,
             userId: mobile?.userId,
         };
     },
@@ -51,12 +49,9 @@ export default OakComponent({
                     this.clean();
                     this.unsetId();
                     // todo
-                    await this.addOperation({
-                        action: 'create',
-                        data: {
-                            mobile: value,
-                        }
-                    })
+                    this.update({
+                        mobile: value,
+                    });
                 }
             }
             else {

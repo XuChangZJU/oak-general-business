@@ -3,40 +3,45 @@ import { Form, Button, Space } from 'antd';
 import Style from './web.module.less';
 import OnUser from '../onUser/index';
 import PageHeader from '../../../../components/common/pageHeader';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../../general-app-domain';
 
 
-export default function render(this: any) {
-    const { relations, entity, entityId } = this.props;
+export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
+    relations: string[];
+    entity: string;
+    entityId: string;
+    oakId: string;
+    legal: boolean;
+}, {
+    onConfirm: () => Promise<void>;
+}>) {
+    const { relations, entity, entityId, oakFullpath, oakId, legal } = props.data;
+    const { onConfirm, clean } = props.methods;
     return (
         <PageHeader showBack={true} title="编辑权限">
             <div className={Style.container}>
                 <OnUser
                     oakAutoUnmount={true}
-                    oakPath={
-                        this.state.oakFullpath
-                            ? `${this.state.oakFullpath}.user`
-                            : undefined
-                    }
+                    oakPath={oakFullpath ? `${oakFullpath}.user` : undefined}
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
-                    oakId={this.props.oakId}
+                    oakId={oakId}
                 />
                 <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
                     <Form.Item wrapperCol={{ offset: 4 }}>
                         <Space>
                             <Button
-                                disabled={!this.state.legal}
+                                disabled={!legal}
                                 type="primary"
-                                onClick={() => {
-                                    this.onConfirm();
-                                }}
+                                onClick={() => onConfirm()}
                             >
                                 提交
                             </Button>
                             <Button
                                 htmlType="reset"
-                                onClick={() => this.onReset()}
+                                onClick={() => clean()}
                             >
                                 重置
                             </Button>

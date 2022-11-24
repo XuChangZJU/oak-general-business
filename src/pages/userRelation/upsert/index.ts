@@ -14,8 +14,8 @@ export default OakComponent({
         relations: Array,
     },
     lifetimes: {
-        async ready() {
-            const application = await this.features.application.getApplication();
+        ready() {
+            const application = this.features.application.getApplication();
             const { type, config } = application;
             let grantByUserEntityGrant = false, grantByMobile = false, grantByEmail = false;
             if (type.startsWith('wechat')) {

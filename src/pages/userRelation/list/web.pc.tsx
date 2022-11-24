@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Table,
     Input,
@@ -13,25 +13,40 @@ import PageHeader from '../../../components/common/pageHeader';
 import UserEntityGrantList from '../../../pages/userEntityGrant/list';
 
 import Style from './web.module.less';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../general-app-domain';
 
-export default function render(this: any) {
-    const { pagination, users = [], oakLoading, idRemove } = this.state;
-    const { namespace, entity, entityId } = this.props;
+export default function Render(props: WebComponentProps<EntityDict, 'user', true, {
+    users: any[];
+    searchValue?: string;
+    pagination: {
+        pageSize: number;
+        total: number;
+        currentPage: number;
+    },
+    entity: string;
+    entityId: string;
+}, {
+    goUpsert: () => void;
+    goUpdate: (id: string) => void;
+    confirmDelete: (id: string) => Promise<void>;
+}>) {
+    const { pagination, users = [], entity, entityId, oakLoading } = props.data;
     const { pageSize, total, currentPage } = pagination || {};
+    const { goUpsert, t, setCurrentPage, setPageSize, confirmDelete, goUpdate } = props.methods;
+
+    const [idRemove, setIdRemove] = useState(undefined as string | undefined);
+    const [inviteVisible, setInviteVisible] = useState(false);
 
     return (
         <PageHeader title="权限列表">
             <div className={Style.container}>
                 <Space>
-                    <Button type="primary" onClick={() => this.goUpsert()}>
+                    <Button type="primary" onClick={() => goUpsert()}>
                         添加
                     </Button>
                     <Button
-                        onClick={() =>
-                            this.setState({
-                                invite: true,
-                            })
-                        }
+                        onClick={() => setInviteVisible(true)}
                     >
                         邀请记录
                     </Button>
@@ -39,7 +54,7 @@ export default function render(this: any) {
 
                 <Table
                     loading={oakLoading}
-                    ref={this.tableRef}
+                    // ref={this.tableRef}
                     rowKey="id"
                     columns={[
                         {
@@ -104,7 +119,7 @@ export default function render(this: any) {
                                         {record.relations?.map(
                                             (ele: string, index: number) => (
                                                 <Tag key={index}>
-                                                    {this.t(
+                                                    {t(
                                                         entity + ':r.' + ele
                                                     )}
                                                 </Tag>
@@ -113,39 +128,6 @@ export default function render(this: any) {
                                     </Space>
                                 );
                             },
-
-                            //   edit: {
-                            //       component: Select,
-                            //       // props, 透传全部属性到 Select 组件
-                            //       // props 为函数时，参数有：col, row, rowIndex, colIndex, editedRow。一般用于实现编辑组件之间的联动
-                            //       props: () => {
-                            //           return {
-                            //               multiple: true,
-                            //               minCollapsedNum: 1,
-                            //               autoWidth: true,
-                            //               options:
-                            //                   relationArr &&
-                            //                   relationArr.map(
-                            //                       (
-                            //                           ele: any,
-                            //                           index: number
-                            //                       ) => ({
-                            //                           value: ele,
-                            //                           label: this.t(
-                            //                               entity + ':r.' + ele
-                            //                           ),
-                            //                       })
-                            //                   ),
-                            //           };
-                            //       },
-                            //       showEditIcon: false,
-                            //       rules: [
-                            //           {
-                            //               required: true,
-                            //               message: '请至少选择一个权限',
-                            //           },
-                            //       ],
-                            //   },
                         },
                         {
                             title: '操作',
@@ -156,22 +138,22 @@ export default function render(this: any) {
                                         <Button
                                             type="link"
                                             onClick={(e) =>
-                                                this.goUpdate(record.id)
+                                                goUpdate(record.id)
                                             }
                                         >
-                                            编辑
+                                            {record.relations?.length > 0 ? t('common:action.update') : t('common:action.grant')}
                                         </Button>
-                                        {record.relations?.length > 0 && (
-                                            <Button
-                                                danger
-                                                type="link"
-                                                onClick={() =>
-                                                    this.onDelete(record.id)
-                                                }
-                                            >
-                                                删除
-                                            </Button>
-                                        )}
+                                        {
+                                            record.relations?.length > 0 && (
+                                                <Button
+                                                    danger
+                                                    type="link"
+                                                    onClick={() => setIdRemove(record.id)}
+                                                >
+                                                    {t('common:action.revoke')}
+                                                </Button>
+                                            )
+                                        }
                                     </Space>
                                 );
                             },
@@ -183,38 +165,38 @@ export default function render(this: any) {
                         pageSize,
                         current: currentPage,
                         onShowSizeChange: (current: number, size: number) => {
-                            this.setPageSize(current);
+                            setPageSize(current);
                         },
                         onChange: (page: number, pageSize: number) => {
-                            this.setCurrentPage(page);
+                            setCurrentPage(page);
                         },
                     }}
                 />
             </div>
             <Modal
-                title="请确认"
+                title={t('common:areYouSure')}
                 open={!!idRemove}
-                onOk={() => this.confirmDelete()}
-                onCancel={() => this.setState({ idRemove: '' })}
-                cancelText="取消"
-                okText="确认"
+                onOk={async () => {
+                    await confirmDelete(idRemove!);
+                    setIdRemove(undefined);
+                }}
+                onCancel={() => setIdRemove(undefined)}
+                cancelText={t('common:action.cancel')}
+                okText={t('common:action.confirm')}
             >
-                <p>确认删除用户的所有权限吗？</p>
+                <p>{t('confirmRevokeAll')}</p>
             </Modal>
 
             <Modal
                 title="邀请记录"
-                open={!!this.state.invite}
-                onCancel={() => this.setState({ invite: false })}
-                // cancelText="关闭"
-                // okText=""
+                open={inviteVisible}
+                onCancel={() => setInviteVisible(false)}
                 width="80%"
                 footer={null}
             >
                 <UserEntityGrantList
                     entity={entity}
                     entityId={entityId}
-                    namespace={namespace}
                     variant="dialog"
                     oakPath="$userRelation/list-userEntityGrant/list"
                 />

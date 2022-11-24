@@ -1,2 +1,11 @@
-/// <reference types="react" />
-export default function render(this: any): JSX.Element;
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../general-app-domain';
+export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
+    grantByUserEntityGrant: boolean;
+    grantByEmail: boolean;
+    grantByMobile: boolean;
+    grantMethodCount: number;
+    entity: string;
+    entityId: string;
+    relations: string[];
+}, {}>): JSX.Element;

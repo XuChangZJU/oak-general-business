@@ -1,104 +1,112 @@
 import React from 'react';
-import { Form, Checkbox } from 'antd';
+import { Form, Checkbox, Input } from 'antd';
 import Style from './web.module.less';
-import Input from '../../../../components/common/input';
+import UserRelation from './userRelation';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../../general-app-domain';
+import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 
-export default function render(this: any) {
-    const { relations, entity, oakId } = this.props;
-    const { name, nickname, password, userRelations } = this.state;
+export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
+    name: string;
+    nickname: string;
+    password: string;
+    mobileValue: string;
+    mobileValueReady: boolean;
+    oakId: string;
+    relations: string[];
+    entity: string;
+    entityId: string;
+}, {
+    onMobileChange: (value: string) => Promise<void>;
+    onConfirm: () => Promise<void>;
+    onReset: () => void;
+}>) {
+    const { oakId, name, nickname, password, relations, oakFullpath, entity, entityId } = props.data;
+    const { t, update } = props.methods;
     return (
         <div className={Style.container}>
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
-                <Form.Item style={{ marginBottom: 0 }} label={<div className={Style.tip}>{oakId ? '现有用户' : '新建用户'}</div>} colon={false} />
+                <Form.Item style={{ marginBottom: 0 }} label={<div className={Style.tip}>{oakId ? t('existedUser') : t('newUser')}</div>} colon={false} />
                 <Form.Item
-                    label="姓名"
+                    label={t('user:attr.name')}
                     name="name"
                     rules={[
                         {
                             required: true,
-                            message: '姓名不能为空',
                         },
                     ]}
                 >
                     <>
                         <Input
                             disabled={!!oakId}
-                            onChange={async (e) => {
+                            onChange={(e) => {
                                 const strValue = e.target.value;
-                                this.addOperation({
-                                    action: 'create',
-                                    data: {
-                                        name: strValue,
-                                    },
+                                update({
+                                    name: strValue,
                                 });
                             }}
                             value={name}
-                            placeholder="请输入姓名"
+                            placeholder={t('placeholder.name')}
                         />
                     </>
                 </Form.Item>
                 {
                     !!oakId ? <Form.Item
-                    label="昵称"
-                    name="nickname"
-                >
-                    <>
-                        <Input
-                            disabled={true}
-                            value={nickname}
-                        />
-                    </>
-                </Form.Item> : <Form.Item
-                        label="密码"
-                        name="mobile"
+                        label={t('user:attr.nickname')}
+                        name="nickname"
                         rules={[
                             {
                                 required: true,
-                                message: '密码不能为空',
+                            },
+                        ]}
+                    >
+                        <>
+                            <Input
+                                disabled={true}
+                                value={nickname}
+                            />
+                        </>
+                    </Form.Item> : <Form.Item
+                        label={t('user:attr.password')}
+                        name="password"
+                        rules={[
+                            {
+                                required: true,
                             },
                         ]}
                     >
                         <>
                             <Input
                                 value={password}
-                                onChange={async (e) => {
+                                onChange={(e) => {
                                     const strValue = e.target.value;
-                                    this.addOperation({
-                                        action: 'create',
-                                        data: {
-                                            password: strValue,
-                                        },
+                                    update({
+                                        password: strValue,
                                     });
                                 }}
-                                placeholder="不少于八位"
+                                placeholder={t('placeholder.password')}
                             />
                         </>
                     </Form.Item>
                 }
                 <Form.Item
-                    label="权限"
+                    label={t('auth')}
                     rules={[
                         {
                             required: true,
-                            message: '请至少选择一个权限',
                         },
                     ]}
                     name="relation"
                 >
-                    <>
-                        <Checkbox.Group
-                            value={(userRelations || []).map((ele: any) => ele.relation)}
-                            onChange={(value) => {
-                                this.onRelationChange(value);
-                            }}
-                            options={relations.map((ele: string) => ({
-                                value: ele,
-                                label:
-                                    (this.t && this.t(`${entity}:r.${ele}`)) ||
-                                    ele,
-                            }))}
-                        ></Checkbox.Group>
-                    </>
+                    <UserRelation
+                        oakAutoUnmount={true}
+                        oakPath={oakFullpath ? `${oakFullpath}.user${firstLetterUpperCase(entity)}$user`
+                            : undefined
+                        }
+                        entity={entity}
+                        entityId={entityId}
+                        relations={relations}
+                    />
                 </Form.Item>
             </Form>
         </div>

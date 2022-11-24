@@ -4,19 +4,21 @@ import { isMobile } from 'oak-domain/lib/utils/validator';
 
 export default OakComponent({
     isList: false,
-    async formData() {
+    formData() {
         let legal = this.tryExecute();
         return {
             legal: !!legal,
         };
     },
+    properties: {
+        entity: String,
+        entityId: String,
+        relations: Array,
+    },
     methods: {
         async onConfirm() {
             await this.execute();
             this.navigateBack();
-        },
-        onReset() {
-            this.clean();
         }
     },
 });
