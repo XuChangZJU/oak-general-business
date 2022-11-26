@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WechatPublicConfig } from '../../../../general-app-domain/Application/Schema';
 export default function WechatPublic(props: {
     config: WechatPublicConfig;

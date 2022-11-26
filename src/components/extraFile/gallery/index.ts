@@ -19,7 +19,6 @@ export default OakComponent({
         extension: 1,
         type: 1,
         entity: 1,
-        $$deleteAt$$: 1,
     },
     formData({ data: originalFiles, features }) {
         const application = features.application.getApplication();
