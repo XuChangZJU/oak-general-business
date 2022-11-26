@@ -19,10 +19,13 @@ export default OakComponent({
         extension: 1,
         type: 1,
         entity: 1,
+        $$deleteAt$$: 1,
     },
     formData({ data: originalFiles, features }) {
         const application = features.application.getApplication();
-        let files = originalFiles as Array<EntityDict['extraFile']['OpSchema']>;
+        let files = (
+            originalFiles as Array<EntityDict['extraFile']['OpSchema']>
+        )?.filter((ele) => !ele.$$deleteAt$$);
         if (this.props.tag1) {
             files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
         }
@@ -263,22 +266,19 @@ export default OakComponent({
                 this.addItem(updateData);
                 await this.execute();
             } else {
-                this.addItem(
-                    updateData,
-                    async () => {
-                        if (updateData.bucket) {
-                            // 说明本函数已经执行过了
-                            return;
-                        }
-                        const { bucket } = await this.features.extraFile.upload(
-                            updateData
-                        );
-                        Object.assign(updateData, {
-                            bucket,
-                            extra1: null,
-                        });
+                this.addItem(updateData, async () => {
+                    if (updateData.bucket) {
+                        // 说明本函数已经执行过了
+                        return;
                     }
-                );
+                    const { bucket } = await this.features.extraFile.upload(
+                        updateData
+                    );
+                    Object.assign(updateData, {
+                        bucket,
+                        extra1: null,
+                    });
+                });
             }
         },
         async onItemTapped(event: WechatMiniprogram.Touch) {
@@ -320,7 +320,7 @@ export default OakComponent({
                 });
                 const { confirm } = result;
                 if (confirm) {
-                    this.removeItem(id)
+                    this.removeItem(id);
                     await this.execute();
                 }
             }

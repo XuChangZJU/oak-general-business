@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { composeFileUrl, bytesToSize } from '../../../utils/extraFile';
 
 import { Space, Upload, UploadFile, Tag, Button, Table, UploadProps } from 'antd';
@@ -25,6 +25,7 @@ function extraFileToUploadFile(
         size: extraFile.size!,
         type: extraFile.fileType,
         uid: extraFile.id, //upload 组件需要uid来维护fileList
+        // status: 'done',
     };
 }
 
@@ -100,9 +101,22 @@ export default function render(
     } = props.data;
     const { onPickByWeb, onDeleteByWeb } = props.methods;
 
+    const [newFiles, setNewFiles] = useState<
+        EntityDict['extraFile']['OpSchema'][]
+    >([]);
+
     const [newUploadFiles, setNewUploadFiles] = useState([] as NewUploadFile[]);
 
     const listType = getListType(theme);
+
+
+    useEffect(() => {
+        if (files && files.length > 0) {
+            setNewFiles(files);
+        } else {
+            setNewFiles([]);
+        }
+    }, [files]);
 
     const setNewUploadFilesByStatus = (
         file: EntityDict['extraFile']['Schema'],
@@ -166,14 +180,13 @@ export default function render(
                 fileList={
                     theme === 'custom'
                         ? []
-                        : files?.length
-                        ? files.map((ele) =>
+                        : newFiles?.map((ele) =>
                               extraFileToUploadFile(ele, systemConfig)
                           )
-                        : undefined
                 }
                 onChange={({ file, fileList, event }) => {
-                    const arr = fileList?.filter((ele: NewUploadFile) => !ele.id) || [];
+                    const arr =
+                        fileList?.filter((ele: NewUploadFile) => !ele.id) || [];
                     if (theme !== 'custom') {
                         onPickByWeb(arr);
                     } else {
