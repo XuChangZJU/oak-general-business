@@ -13,20 +13,9 @@ export default OakComponent({
                     this.update({
                         expired: true,
                     }, 'disable');
-                    this.execute();
+                    await this.execute();
                     break;
                 }
-                // case 'remove': {
-                //     await this.addOperation({
-                //         action: 'remove',
-                //         data: {},
-                //         filter: {
-                //             id,
-                //         },
-                //     });
-                //     this.execute();
-                //     break;
-                // }
                 default: {
                     break;
                 }

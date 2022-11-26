@@ -1,7 +1,6 @@
 import React from 'react';
-import { Button, Form, Row, Col } from 'antd';
+import { Button, Form, Row, Col, Input } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
-import Input from '../../../components/common/input';
 import Style from './web.module.less';
 
 

@@ -3,14 +3,38 @@ import { Table, Button, Space, Typography, Modal } from 'antd';
 import dayjs from 'dayjs';
 import PageHeader from '../../../components/common/pageHeader';
 import CellButton from '../../../components/userEntityGrant/cellButton';
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
 
 import Style from './web.module.less';
 
-export default function render(this: any) {
-    const { variant, namespace, platformId, showBack } = this.props;
+export default function render(
+    props: WebComponentProps<
+        EntityDict,
+        'userEntityGrant',
+        true,
+        {
+            searchValue: string;
+            list: EntityDict['userEntityGrant']['Schema'][];
+            pagination: any;
+            showBack: boolean;
+            variant?: 'inline' | 'alone' | 'dialog';
+        },
+        {}
+    >
+) {
+    const {
+        pagination,
+        list = [],
+        oakLoading,
+        showBack,
+        variant,
+        oakFullpath,
+    } = props.data;
 
-    const { list = [], oakLoading, pagination } = this.state;
     const { pageSize, total, currentPage } = pagination || {};
+
+     const { t, setPageSize, setCurrentPage } = props.methods;
 
     return (
         <Container showBack={showBack} variant={variant}>
@@ -60,14 +84,14 @@ export default function render(this: any) {
                         dataIndex: 'type',
                         title: '授权类型',
                         render: (value, record, index) => {
-                            return this.t(`userEntityGrant:v.type.${value}`);
+                            return t(`userEntityGrant:v.type.${value}`);
                         },
                     },
                     {
                         dataIndex: 'relation',
                         title: '权限',
                         render: (value, record, index) => {
-                            return this.t(`${record.entity}:r.${value}`);
+                            return t(`${record.entity}:r.${value}`);
                         },
                     },
                     {
@@ -89,7 +113,7 @@ export default function render(this: any) {
                                     {!record.expired && (
                                         <Typography.Text>
                                             &nbsp;
-                                            {dayjs(record.expireAt).format(
+                                            {dayjs(record.expiresAt).format(
                                                 'YYYY-MM-DD HH:mm'
                                             )}
                                         </Typography.Text>
@@ -107,7 +131,7 @@ export default function render(this: any) {
                             return (
                                 <CellButton
                                     oakId={record.id}
-                                    oakPath={`${this.state.oakFullpath}.${record.id}`}
+                                    oakPath={`${oakFullpath}.${record.id}`}
                                 />
                             );
                         },
@@ -119,10 +143,10 @@ export default function render(this: any) {
                     pageSize,
                     current: currentPage,
                     onShowSizeChange: (pageSize: number) => {
-                        this.setPageSize(pageSize);
+                        setPageSize(pageSize);
                     },
                     onChange: (current: number) => {
-                        this.setCurrentPage(current);
+                        setCurrentPage(current);
                     },
                 }}
             />

@@ -3,8 +3,7 @@ import Message from '../../utils/message';
 
 export default OakComponent({
     isList: false,
-    async formData({ props }) {
-        const { width } = props;
+    formData({ props }) {
         const data = this.consumeMessage() as MessageProps;
         if (data) {
             const self = this;

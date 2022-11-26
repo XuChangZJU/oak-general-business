@@ -100,7 +100,6 @@ export default function render(
     } = props.data;
     const { onPickByWeb, onDeleteByWeb } = props.methods;
 
-    // 这里的逻辑可能和原来有点不对
     const [newUploadFiles, setNewUploadFiles] = useState([] as NewUploadFile[]);
 
     const listType = getListType(theme);
@@ -168,7 +167,7 @@ export default function render(
                     theme === 'custom'
                         ? []
                         : files?.length
-                        ? files.map((ele: any) =>
+                        ? files.map((ele) =>
                               extraFileToUploadFile(ele, systemConfig)
                           )
                         : undefined
