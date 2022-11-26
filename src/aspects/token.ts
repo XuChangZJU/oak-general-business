@@ -150,6 +150,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
                         user: {
                             id: generateNewId(),
                             action: 'activate',
+                            data: {},
                         }
                     });
                     break;
