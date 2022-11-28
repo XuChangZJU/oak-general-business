@@ -80,7 +80,8 @@ export default function render(
     >
 ) {
     const { entity, name, type, currentConfig, dirty } = props.data;
-    const { resetConfig, updateConfig, setValue, removeItem } = props.methods;
+    const { resetConfig, updateConfig, setValue, removeItem, cleanKey } =
+        props.methods;
 
     return (
         <>

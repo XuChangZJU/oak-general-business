@@ -80,7 +80,7 @@
         "gen:areaDebug": "ts-node ./scripts/generateAreaDebug.ts",
         "clean:dir": "ts-node ./scripts/cleanDtsAndJs",
         "test": "ts-node ./test/test.ts",
-        "prepare": "rimraf node_modules/react & rimraf node_modules/react-dom & rimraf node_modules/react-router & rimraf node_modules/antd"
+        "prepare": "rimraf node_modules/react & rimraf node_modules/react-dom & rimraf node_modules/react-router"
     },
     "main": "lib/index"
 }

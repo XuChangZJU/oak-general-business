@@ -15,7 +15,7 @@ export default function Render(
         {
             name: string;
             description: string;
-            super: string;
+            super: boolean;
             variant: 'inline' | 'alone' | 'dialog';
             showBack: boolean;
         },
