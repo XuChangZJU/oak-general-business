@@ -6,7 +6,7 @@ export default OakComponent({
         name: 1,
         config: 1,
     },
-    async formData({ data }) {
+    formData({ data }) {
         return data || {};
     },
     observers: {

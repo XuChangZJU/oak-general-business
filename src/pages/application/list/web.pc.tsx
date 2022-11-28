@@ -1,15 +1,53 @@
 import * as React from 'react';
 import { Table, Button, Space, Typography, Modal } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
-// import ApplicationUpsert from '../../../pages/application/upsert';
 
 import Style from './web.module.less';
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
 
-export default function render(this: any) {
-    const { variant, namespace, systemId } = this.props;
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'application',
+        true,
+        {
+            searchValue: string;
+            list: EntityDict['application']['Schema'][];
+            pagination: any;
+            showBack: boolean;
+            variant?: 'inline' | 'alone' | 'dialog';
+        },
+        {
+            goDetail: (id: string) => void;
+            goCreate: () => void;
+            goSetConfig: (id: string) => void;
+            goUpdate: (id: string) => void;
+            removeApplication: (id: string) => void;
+        }
+    >
+) {
+    const {
+        pagination,
+        list = [],
+        oakLoading,
+        showBack,
+        variant,
+        oakFullpath,
+    } = props.data;
 
-    const { list = [], oakLoading, pagination } = this.state;
     const { pageSize, total, currentPage } = pagination || {};
+
+    const {
+        t,
+        setPageSize,
+        setCurrentPage,
+        goCreate,
+        goDetail,
+        goSetConfig,
+        goUpdate,
+        removeApplication,
+    } = props.methods;
 
     return (
         <Container variant={variant}>
@@ -17,7 +55,7 @@ export default function render(this: any) {
                 <Button
                     type="primary"
                     onClick={() => {
-                        this.goCreate();
+                        goCreate();
                     }}
                 >
                     添加应用
@@ -44,7 +82,7 @@ export default function render(this: any) {
                             return (
                                 <Typography.Link
                                     onClick={() => {
-                                        this.goDetail(record.id);
+                                        goDetail(record.id);
                                     }}
                                 >
                                     {value}
@@ -62,7 +100,7 @@ export default function render(this: any) {
                         dataIndex: 'type',
                         title: '应用类型',
                         render: (value, record, index) => {
-                            return this.t(`application:v.type.${value}`);
+                            return t(`application:v.type.${value}`);
                         },
                     },
                     {
@@ -75,7 +113,7 @@ export default function render(this: any) {
                                     <Button
                                         type="link"
                                         onClick={() => {
-                                            this.goSetConfig(record.id);
+                                            goSetConfig(record.id);
                                         }}
                                     >
                                         配置
@@ -95,7 +133,7 @@ export default function render(this: any) {
                                     <Button
                                         type="link"
                                         onClick={() => {
-                                            this.goDetail(record.id);
+                                            goDetail(record.id);
                                         }}
                                     >
                                         详情
@@ -103,7 +141,7 @@ export default function render(this: any) {
                                     <Button
                                         type="link"
                                         onClick={() => {
-                                            this.goUpdate(record.id);
+                                            goUpdate(record.id);
                                         }}
                                     >
                                         更新
@@ -111,7 +149,7 @@ export default function render(this: any) {
                                     <Button
                                         type="link"
                                         onClick={() => {
-                                            this.removeApplication(record.id);
+                                            removeApplication(record.id);
                                         }}
                                     >
                                         删除
@@ -127,59 +165,24 @@ export default function render(this: any) {
                     pageSize,
                     current: currentPage,
                     onShowSizeChange: (pageSize: number) => {
-                        this.setPageSize(pageSize);
+                        setPageSize(pageSize);
                     },
                     onChange: (current: number) => {
-                        this.setCurrentPage(current);
+                        setCurrentPage(current);
                     },
                 }}
             />
-
-            {/* <Modal
-                title="创建系统"
-                destroyOnClose={true}
-                open={this.state.open}
-                onCancel={() => {
-                    this.setState({
-                        open: false,
-                    });
-                }}
-                width="60%"
-                onOk={async () => {
-                    await this.execute(
-                        {
-                            action: 'create',
-                            data: {
-                                id: await generateNewId(),
-                            },
-                        },
-                        '$application/list-application/upsert'
-                    );
-                    this.setState({
-                        open: false,
-                    });
-                }}
-                okText="确定"
-                cancelText="取消"
-            >
-                <ApplicationUpsert
-                    platformId={platformId}
-                    namespace={namespace}
-                    variant="dialog"
-                    oakPath="$application/list-application/upsert"
-                />
-            </Modal> */}
         </Container>
     );
 }
 
 function Container(props: {
     children: React.ReactNode;
-    variant?: 'inline' | 'alone';
+    variant?: 'inline' | 'alone' | 'dialog';
     showBack?: boolean;
 }) {
-    const { children, variant, showBack } = props;
-    if (variant === 'inline') {
+    const { children, variant = 'alone', showBack } = props;
+    if (['inline', 'dialog'].includes(variant)) {
         return <>{children}</>;
     }
     return (

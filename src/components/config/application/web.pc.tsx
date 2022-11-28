@@ -12,6 +12,9 @@ import {
     WechatMpConfig,
 } from '../../../general-app-domain/Application/Schema';
 
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
+
 type Config = WebConfig | WechatPublicConfig | WechatMpConfig;
 
 function AppView(props: {
@@ -55,9 +58,29 @@ function AppView(props: {
     return null;
 }
 
-export default function render(this: any) {
-    const { entity, name, type } = this.props;
-    const { currentConfig, dirty } = this.state;
+export default function render(
+    props: WebComponentProps<
+        EntityDict,
+        'user',
+        false,
+        {
+            entity: string;
+            name: string;
+            currentConfig: Config;
+            dirty: boolean;
+            type: AppType;
+        },
+        {
+            resetConfig: () => void;
+            updateConfig: () => void;
+            setValue: (path: string, value: string) => void;
+            removeItem: (path: string, index: number) => void;
+            cleanKey: (path: string, key: string) => void;
+        }
+    >
+) {
+    const { entity, name, type, currentConfig, dirty } = props.data;
+    const { resetConfig, updateConfig, setValue, removeItem } = props.methods;
 
     return (
         <>
@@ -92,7 +115,7 @@ export default function render(this: any) {
                                 disabled={!dirty}
                                 type="primary"
                                 danger
-                                onClick={() => this.resetConfig()}
+                                onClick={() => resetConfig()}
                                 style={{
                                     marginRight: 10,
                                 }}
@@ -102,7 +125,7 @@ export default function render(this: any) {
                             <Button
                                 disabled={!dirty}
                                 type="primary"
-                                onClick={() => this.updateConfig()}
+                                onClick={() => updateConfig()}
                             >
                                 确定
                             </Button>
@@ -122,13 +145,13 @@ export default function render(this: any) {
                                     type={type}
                                     config={currentConfig || {}}
                                     setValue={(path, value) =>
-                                        this.setValue(path, value)
+                                        setValue(path, value)
                                     }
                                     removeItem={(path, index) =>
-                                        this.removeItem(path, index)
+                                        removeItem(path, index)
                                     }
                                     cleanKey={(path, key) =>
-                                        this.cleanKey(path, key)
+                                        cleanKey(path, key)
                                     }
                                 />
                             ),

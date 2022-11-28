@@ -5,9 +5,30 @@ import SystemList from '../../../pages/system/list';
 
 import Style from './web.module.less';
 
-export default function render(this: any) {
-    const { namespace, oakId } = this.props;
-    const { config, name, tabValue } = this.state;
+import { EntityDict } from '../../../general-app-domain';
+import { Config } from '../../../types/Config';
+import { WebComponentProps } from 'oak-frontend-base';
+
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'platform',
+        false,
+        {
+            name: string;
+            description: string;
+            oakId: string;
+            config: Config;
+            tabValue: 'detail' | 'system_list';
+        },
+        {
+            onTabClick: (key: string) => void;
+        }
+    >
+) {
+    const { oakId, config, name, tabValue } = props.data;
+    const { t, navigateBack, onTabClick } = props.methods;
+
     return (
         <PageHeader showBack={true} title="平台概览">
             <div className={Style.container}>
@@ -15,7 +36,7 @@ export default function render(this: any) {
                     <Tabs
                         activeKey={tabValue}
                         onTabClick={(key) => {
-                            this.onTabClick(key);
+                            onTabClick(key);
                         }}
                         items={[
                             {
@@ -28,7 +49,6 @@ export default function render(this: any) {
                                 key: 'system_list',
                                 children: (
                                     <SystemList
-                                        namespace={namespace}
                                         platformId={oakId}
                                         variant="inline"
                                         oakPath="$platform/detail/-system/list"

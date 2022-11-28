@@ -7,7 +7,7 @@ export default OakComponent({
         config: 1,
         description: 1,
     },
-    async formData({ data }) {
+    formData({ data }) {
         return data || {};
     },
     methods: {

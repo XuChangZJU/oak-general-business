@@ -1,11 +1,28 @@
 import React from 'react';
-import { Button, Form, Row, Col, Input } from 'antd';
+import { Button, Form, Row, Col, Input, Space } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
 
 
-export default function render(this: any) {
-    const { name, description } = this.state;
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
+
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'platform',
+        false,
+        {
+            name: string;
+            description: string;
+        },
+        {
+            confirm: () => void;
+        }
+    >
+) {
+    const { name, description } = props.data;
+    const { t, update, navigateBack, confirm } = props.methods;
     return (
         <PageHeader showBack={true} title="平台编辑">
             <div className={Style.container}>
@@ -29,10 +46,9 @@ export default function render(this: any) {
                                 <>
                                     <Input
                                         onChange={(e) => {
-                                            this.setUpdateData(
-                                                'name',
-                                                e.target.value
-                                            );
+                                            update({
+                                                name: e.target.value,
+                                            });
                                         }}
                                         value={name}
                                     />
@@ -46,24 +62,32 @@ export default function render(this: any) {
                                 <>
                                     <Input.TextArea
                                         onChange={(e) => {
-                                            this.setUpdateData(
-                                                'description',
-                                                e.target.value
-                                            );
+                                            update({
+                                                description: e.target.value,
+                                            });
                                         }}
                                         value={description}
                                     />
                                 </>
                             </Form.Item>
                             <Form.Item wrapperCol={{ offset: 4 }}>
-                                <Button
-                                    type="primary"
-                                    onClick={() => {
-                                        this.confirm();
-                                    }}
-                                >
-                                    确定
-                                </Button>
+                                <Space>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => {
+                                            confirm();
+                                        }}
+                                    >
+                                        确定
+                                    </Button>
+                                    <Button
+                                        onClick={() => {
+                                            navigateBack();
+                                        }}
+                                    >
+                                        返回
+                                    </Button>
+                                </Space>
                             </Form.Item>
                         </Form>
                     </Col>

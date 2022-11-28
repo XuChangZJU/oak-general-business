@@ -8,15 +8,31 @@ import Live from './live/index';
 
 import { Config } from '../../../types/Config';
 
-export default function render(this: any) {
-    const { entity, name } = this.props;
-    const { currentConfig, dirty } = this.state;
-    const {
-        Account: account,
-        Cos: cos,
-        Map: map,
-        Live: live,
-    } = currentConfig as Config;
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
+
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'user',
+        false,
+        {
+            entity: string;
+            name: string;
+            currentConfig: Config;
+            dirty: boolean;
+        },
+        {
+            resetConfig: () => void;
+            updateConfig: () => void;
+            setValue: (path: string, value: string) => void;
+            removeItem: (path: string, index: number) => void;
+        }
+    >
+) {
+    const { entity, name, currentConfig, dirty } = props.data;
+    const { resetConfig, updateConfig, setValue, removeItem } = props.methods;
+    const { Account: account, Cos: cos, Map: map, Live: live } = currentConfig;
     return (
         <>
             <Affix offsetTop={64}>
@@ -50,7 +66,7 @@ export default function render(this: any) {
                                 disabled={!dirty}
                                 type="primary"
                                 danger
-                                onClick={() => this.resetConfig()}
+                                onClick={() => resetConfig()}
                                 style={{
                                     marginRight: 10,
                                 }}
@@ -60,7 +76,7 @@ export default function render(this: any) {
                             <Button
                                 disabled={!dirty}
                                 type="primary"
-                                onClick={() => this.updateConfig()}
+                                onClick={() => updateConfig()}
                             >
                                 确定
                             </Button>
@@ -79,10 +95,10 @@ export default function render(this: any) {
                                 <Account
                                     account={account || {}}
                                     setValue={(path, value) =>
-                                        this.setValue(`Account.${path}`, value)
+                                        setValue(`Account.${path}`, value)
                                     }
                                     removeItem={(path, index) =>
-                                        this.removeItem(
+                                        removeItem(
                                             `Account.${path}`,
                                             index
                                         )
@@ -97,7 +113,7 @@ export default function render(this: any) {
                                 <Cos
                                     cos={cos || {}}
                                     setValue={(path, value) =>
-                                        this.setValue(`Cos.${path}`, value)
+                                        setValue(`Cos.${path}`, value)
                                     }
                                 />
                             ),
@@ -109,7 +125,7 @@ export default function render(this: any) {
                                 <Live
                                     live={live || {}}
                                     setValue={(path, value) =>
-                                        this.setValue(`Map.${path}`, value)
+                                        setValue(`Map.${path}`, value)
                                     }
                                 />
                             ),
@@ -121,7 +137,7 @@ export default function render(this: any) {
                                 <Map
                                     map={map || {}}
                                     setValue={(path, value) =>
-                                        this.setValue(`Map.${path}`, value)
+                                        setValue(`Map.${path}`, value)
                                     }
                                 />
                             ),

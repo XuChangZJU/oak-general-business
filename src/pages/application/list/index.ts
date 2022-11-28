@@ -68,6 +68,7 @@ export default OakComponent({
         },
         removeApplication(id: string) {
             this.removeItem(id);
+            this.execute()
         },
     },
 });

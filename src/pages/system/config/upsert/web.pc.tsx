@@ -4,9 +4,27 @@ import PageHeader from '../../../../components/common/pageHeader';
 
 import Style from './web.module.less';
 
-export default function render(this: any) {
-    const { namespace, oakId } = this.props;
-    const { config, name } = this.state;
+import { EntityDict } from '../../../../general-app-domain';
+import { Config } from '../../../../types/Config';
+
+import { WebComponentProps } from 'oak-frontend-base';
+
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'system',
+        false,
+        {
+            name: string;
+            description: string;
+            oakId: string;
+            config: Config;
+        },
+        {}
+    >
+) {
+    const { oakId, config, name } = props.data;
+
     return (
         <PageHeader showBack={true} title="系统配置">
             <div className={Style.container}>
@@ -15,7 +33,6 @@ export default function render(this: any) {
                     entity="system"
                     entityId={oakId}
                     name={name}
-                    namespace={namespace}
                 />
             </div>
         </PageHeader>

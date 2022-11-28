@@ -1,12 +1,37 @@
 import React from 'react';
-import { Button, Form, Row, Col, Switch, Input } from 'antd';
+import { Button, Form, Row, Col, Switch, Input, Space } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
 
 
-export default function render(this: any) {
-    const { variant, showBack = true } = this.props;
-    const { name, description, super: super2 } = this.state;
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
+
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'system',
+        false,
+        {
+            name: string;
+            description: string;
+            super: string;
+            variant: 'inline' | 'alone' | 'dialog';
+            showBack: boolean;
+        },
+        {
+            confirm: () => void;
+        }
+    >
+) {
+    const {
+        name,
+        description,
+        super: super2,
+        variant,
+        showBack = true,
+    } = props.data;
+    const { t, update, navigateBack, confirm } = props.methods;
     return (
         <Container variant={variant} showBack={showBack}>
             <Row>
@@ -29,10 +54,9 @@ export default function render(this: any) {
                             <>
                                 <Input
                                     onChange={(e) => {
-                                        this.setUpdateData(
-                                            'name',
-                                            e.target.value
-                                        );
+                                        update({
+                                            name: e.target.value,
+                                        });
                                     }}
                                     value={name}
                                 />
@@ -42,10 +66,9 @@ export default function render(this: any) {
                             <>
                                 <Input.TextArea
                                     onChange={(e) => {
-                                        this.setUpdateData(
-                                            'description',
-                                            e.target.value
-                                        );
+                                        update({
+                                            description: e.target.value,
+                                        });
                                     }}
                                     value={description}
                                 />
@@ -62,7 +85,9 @@ export default function render(this: any) {
                                     unCheckedChildren="否"
                                     checked={super2}
                                     onChange={(checked) => {
-                                        this.setUpdateData('super', checked);
+                                        update({
+                                            super: checked,
+                                        });
                                     }}
                                 />
                             </>
@@ -70,14 +95,23 @@ export default function render(this: any) {
 
                         <Action variant={variant}>
                             <Form.Item wrapperCol={{ offset: 6 }}>
-                                <Button
-                                    type="primary"
-                                    onClick={() => {
-                                        this.confirm();
-                                    }}
-                                >
-                                    确定
-                                </Button>
+                                <Space>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => {
+                                            confirm();
+                                        }}
+                                    >
+                                        确定
+                                    </Button>
+                                    <Button
+                                        onClick={() => {
+                                            navigateBack();
+                                        }}
+                                    >
+                                        返回
+                                    </Button>
+                                </Space>
                             </Form.Item>
                         </Action>
                     </Form>

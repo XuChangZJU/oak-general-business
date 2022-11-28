@@ -6,9 +6,9 @@ export default OakComponent({
         name: 1,
         description: 1,
         config: 1,
-        $$createAt$$: 1
+        $$createAt$$: 1,
     },
-    async formData({ data }) {
+    formData({ data }) {
         const pagination = this.getPagination();
         return {
             list: data,
@@ -20,7 +20,7 @@ export default OakComponent({
             this.navigateTo({
                 url: '/platform/detail',
                 oakId: id,
-                tab: 'detail'
+                tab: 'detail',
             });
         },
         goUpdate(id: string) {
@@ -35,7 +35,7 @@ export default OakComponent({
                 oakId: id,
             });
         },
-        goNewPlatform() {
+        goCreate() {
             this.navigateTo({
                 url: '/platform/upsert',
             });

@@ -53,15 +53,9 @@ export default OakComponent({
         },
         goCreate() {
             const { width, platformId } = this.props;
-            if (width === 'xs') {
-                this.navigateTo({
-                    url: '/system/upsert',
-                    platformId,
-                });
-                return;
-            }
-            this.setState({
-                open: true,
+            this.navigateTo({
+                url: '/system/upsert',
+                platformId,
             });
         },
     },

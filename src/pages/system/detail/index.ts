@@ -9,7 +9,7 @@ export default OakComponent({
         super: 1,
         platformId: 1,
     },
-    async formData({ data }) {
+    formData({ data }) {
         return data || {};
     },
     observers: {

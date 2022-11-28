@@ -1,15 +1,52 @@
 import * as React from 'react';
 import { Table, Button, Space, Typography, Modal } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
-import SystemUpsert from '../../../pages/system/upsert';
 
 import Style from './web.module.less';
 
-export default function render(this: any) {
-    const { variant, namespace, platformId, showBack } = this.props;
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
 
-    const { list = [], oakLoading, pagination } = this.state;
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'system',
+        true,
+        {
+            searchValue: string;
+            list: EntityDict['system']['Schema'][];
+            pagination: any;
+            showBack: boolean;
+            variant?: 'inline' | 'alone' | 'dialog';
+        },
+        {
+            goDetail: (id: string) => void;
+            goCreate: () => void;
+            goSetConfig: (id: string) => void;
+            goUpdate: (id: string) => void;
+        }
+    >
+) {
+    const {
+        pagination,
+        list = [],
+        oakLoading,
+        showBack,
+        variant,
+        oakFullpath,
+    } = props.data;
+
     const { pageSize, total, currentPage } = pagination || {};
+
+    const {
+        t,
+        setPageSize,
+        setCurrentPage,
+        goCreate,
+        goDetail,
+        goSetConfig,
+        goUpdate,
+    } = props.methods;
 
     return (
         <Container showBack={showBack} variant={variant}>
@@ -17,7 +54,7 @@ export default function render(this: any) {
                 <Button
                     type="primary"
                     onClick={() => {
-                        this.goCreate();
+                        goCreate();
                     }}
                 >
                     添加系统
@@ -44,7 +81,7 @@ export default function render(this: any) {
                             return (
                                 <Typography.Link
                                     onClick={() => {
-                                        this.goDetail(record.id);
+                                        goDetail(record.id);
                                     }}
                                 >
                                     {value}
@@ -75,7 +112,7 @@ export default function render(this: any) {
                                     <Button
                                         type="link"
                                         onClick={() => {
-                                            this.goSetConfig(record.id);
+                                            goSetConfig(record.id);
                                         }}
                                     >
                                         配置
@@ -95,7 +132,7 @@ export default function render(this: any) {
                                     <Button
                                         type="link"
                                         onClick={() => {
-                                            this.goDetail(record.id);
+                                            goDetail(record.id);
                                         }}
                                     >
                                         概览
@@ -103,7 +140,7 @@ export default function render(this: any) {
                                     <Button
                                         type="link"
                                         onClick={() => {
-                                            this.goUpdate(record.id);
+                                            goUpdate(record.id);
                                         }}
                                     >
                                         更新
@@ -119,51 +156,13 @@ export default function render(this: any) {
                     pageSize,
                     current: currentPage,
                     onShowSizeChange: (pageSize: number) => {
-                        this.setPageSize(pageSize);
+                        setPageSize(pageSize);
                     },
                     onChange: (current: number) => {
-                        this.setCurrentPage(current);
+                        setCurrentPage(current);
                     },
                 }}
             />
-
-            <Modal
-                title="创建系统"
-                destroyOnClose={true}
-                open={this.state.open}
-                onCancel={() => {
-                    this.setState({
-                        open: false,
-                    });
-                }}
-                width="60%"
-                onOk={async () => {
-                    // todo
-                    this.createItem();
-                    /* await this.execute(
-                        {
-                            action: 'create',
-                            data: {
-                                id: await generateNewId(),
-                            },
-                        },
-                        // '$system/list-system/upsert'
-                    ); */
-                    this.setState({
-                        open: false,
-                    });
-                }}
-                okText="确定"
-                cancelText="取消"
-            >
-                <SystemUpsert
-                    platformId={platformId}
-                    namespace={namespace}
-                    variant="dialog"
-                    oakPath={this.state.oakFullpath}
-                    // oakPath="$system/list-system/upsert"
-                />
-            </Modal>
         </Container>
     );
 }

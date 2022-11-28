@@ -4,9 +4,49 @@ import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
 import dayjs from 'dayjs';
 
-export default function render(this: any) {
-    const { list = [], oakLoading, pagination } = this.state;
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
+
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'platform',
+        true,
+        {
+            searchValue: string;
+            list: EntityDict['platform']['Schema'][];
+            pagination: any;
+            showBack: boolean;
+            variant?: 'inline' | 'alone' | 'dialog';
+        },
+        {
+            goDetail: (id: string) => void;
+            goCreate: () => void;
+            goSetConfig: (id: string) => void;
+            goUpdate: (id: string) => void;
+        }
+    >
+) {
+    const {
+        pagination,
+        list = [],
+        oakLoading,
+        showBack,
+        variant,
+        oakFullpath,
+    } = props.data;
+
     const { pageSize, total, currentPage } = pagination || {};
+
+    const {
+        t,
+        setPageSize,
+        setCurrentPage,
+        goCreate,
+        goDetail,
+        goSetConfig,
+        goUpdate,
+    } = props.methods;
 
     return (
         <PageHeader title="平台管理">
@@ -15,7 +55,7 @@ export default function render(this: any) {
                     <Button
                         type="primary"
                         onClick={() => {
-                            this.goNewPlatform();
+                            goCreate();
                         }}
                     >
                         添加平台
@@ -42,7 +82,7 @@ export default function render(this: any) {
                                 return (
                                     <Typography.Link
                                         onClick={() => {
-                                            this.goDetail(record.id);
+                                            goDetail(record.id);
                                         }}
                                     >
                                         {value}
@@ -74,7 +114,7 @@ export default function render(this: any) {
                                         <Button
                                             type="link"
                                             onClick={() => {
-                                                this.goSetConfig(record.id);
+                                                goSetConfig(record.id);
                                             }}
                                         >
                                             配置
@@ -94,7 +134,7 @@ export default function render(this: any) {
                                         <Button
                                             type="link"
                                             onClick={() => {
-                                                this.goDetail(record.id);
+                                                goDetail(record.id);
                                             }}
                                         >
                                             概览
@@ -102,7 +142,7 @@ export default function render(this: any) {
                                         <Button
                                             type="link"
                                             onClick={() => {
-                                                this.goUpdate(record.id);
+                                                goUpdate(record.id);
                                             }}
                                         >
                                             更新
@@ -118,10 +158,10 @@ export default function render(this: any) {
                         pageSize,
                         current: currentPage,
                         onShowSizeChange: (pageSize: number) => {
-                            this.setPageSize(pageSize);
+                            setPageSize(pageSize);
                         },
                         onChange: (current: number) => {
-                            this.setCurrentPage(current);
+                            setCurrentPage(current);
                         },
                     }}
                 />

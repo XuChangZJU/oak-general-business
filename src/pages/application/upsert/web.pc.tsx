@@ -3,10 +3,44 @@ import { Button, Form, Row, Col, Select, Space, Input } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
 
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
 
-export default function render(this: any) {
-    const { variant, showBack = true, oakId, systemId } = this.props;
-    const { name, description, type, typeArr } = this.state;
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'application',
+        false,
+        {
+            name: string;
+            description: string;
+            super: string;
+            variant: 'inline' | 'alone' | 'dialog';
+            showBack: boolean;
+            type: EntityDict['application']['Schema']['type'];
+            typeArr: Array<{
+                label: string;
+                value: EntityDict['application']['Schema']['type'];
+            }>;
+            systemId: string;
+            oakId: string;
+        },
+        {
+            confirm: () => void;
+        }
+    >
+) {
+    const {
+        name,
+        description,
+        type,
+        typeArr,
+        variant,
+        showBack = true,
+        systemId,
+        oakId,
+    } = props.data;
+    const { t, update, navigateBack, confirm } = props.methods;
     return (
         <Container variant={variant} showBack={showBack}>
             <Row>
@@ -29,10 +63,9 @@ export default function render(this: any) {
                             <>
                                 <Input
                                     onChange={(e) => {
-                                        this.setUpdateData(
-                                            'name',
-                                            e.target.value
-                                        );
+                                        update({
+                                            name: e.target.value,
+                                        });
                                     }}
                                     value={name}
                                 />
@@ -42,10 +75,9 @@ export default function render(this: any) {
                             <>
                                 <Input.TextArea
                                     onChange={(e) => {
-                                        this.setUpdateData(
-                                            'description',
-                                            e.target.value
-                                        );
+                                        update({
+                                            description: e.target.value,
+                                        });
                                     }}
                                     value={description}
                                 />
@@ -68,14 +100,16 @@ export default function render(this: any) {
                                     disabled={!!oakId}
                                     options={typeArr.map(
                                         (ele: { value: string }) => ({
-                                            label: this.t(
+                                            label: t(
                                                 `application:v.type.${ele.value}`
                                             ),
                                             value: ele.value,
                                         })
                                     )}
                                     onChange={(value) => {
-                                        this.setUpdateData('type', value);
+                                        update({
+                                            type: value,
+                                        });
                                     }}
                                 />
                             </>
@@ -87,14 +121,14 @@ export default function render(this: any) {
                                     <Button
                                         type="primary"
                                         onClick={() => {
-                                            this.confirm();
+                                            confirm();
                                         }}
                                     >
                                         确定
                                     </Button>
                                     <Button
                                         onClick={() => {
-                                            this.navigateBack();
+                                            navigateBack();
                                         }}
                                     >
                                         返回
