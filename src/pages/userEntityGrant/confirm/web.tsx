@@ -5,8 +5,37 @@ import { UserAddOutlined, UserSwitchOutlined } from '@ant-design/icons';
  
 import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
 
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../general-app-domain';
 
-export default function render(this: any) {
+export default function render(
+    props: WebComponentProps<
+        EntityDict,
+        'userEntityGrant',
+        true,
+        {
+            oakLoading: boolean;
+            oakExecuting: boolean;
+            type: 'grant';
+            expired: boolean;
+            relation: boolean;
+            expiresAt: boolean;
+            granter?: {
+                name: string;
+                nickname: string;
+            };
+            entity: string;
+            isExists: boolean; //当前用户关系是否存在
+            granteeId: string;
+            number: number;
+            confirmed: number;
+            userId: string;
+        },
+        {
+            handleConfirm: () => void;
+        }
+    >
+) {
     const {
         oakLoading,
         oakExecuting,
@@ -21,12 +50,13 @@ export default function render(this: any) {
         number,
         confirmed,
         userId,
-    } = this.state;
+    } = props.data;
+    const { t, handleConfirm } = props.methods;
     const isOwner = !!(granteeId && userId === granteeId);
 
     const getRelationTip = () => {
         let str = `${granter?.name || granter?.nickname}`;
-        const relationStr = relation ? this.t(`${entity}:r.${relation}`) : '';
+        const relationStr = relation ? t(`${entity}:r.${relation}`) : '';
         if (type === 'grant') {
             str = str.concat('授予您【').concat(relationStr).concat('】权限');
             return str;
@@ -42,14 +72,13 @@ export default function render(this: any) {
         if (expired) {
             return '已过期，请联系相关人员重新分享';
         }
-        
-        // number设置1个的时候 
+
+        // number设置1个的时候
         if (number === 1 && confirmed > 0 && (!isOwner || !isExists)) {
             return '被他人已领取';
         }
         return '请您领取';
-    }
-
+    };
 
     return (
         <div className={Style.container}>
@@ -69,7 +98,7 @@ export default function render(this: any) {
                         block
                         type="primary"
                         onClick={() => {
-                            this.handleConfirm();
+                            handleConfirm();
                         }}
                         disabled={oakExecuting}
                     >

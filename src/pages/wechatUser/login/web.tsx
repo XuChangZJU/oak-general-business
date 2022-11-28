@@ -7,8 +7,22 @@ import Success from '../../../components/common/result/success';
 
 import Style from './web.module.less';
 
-export default function render(this: any) {
-    const { error, loading } = this.state;
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
+
+export default function render(
+    props: WebComponentProps<
+        EntityDict,
+        'token',
+        false,
+        {
+            error: string;
+            loading: boolean;
+        },
+        {}
+    >
+) {
+    const { error, loading } = props.data;
 
     let V;
     if (loading) {
@@ -19,8 +33,7 @@ export default function render(this: any) {
                 description="正在登录..，请稍后"
             />
         );
-    }
-    else if (error) {
+    } else if (error) {
         V = (
             <Fail
                 title={error}
@@ -38,7 +51,6 @@ export default function render(this: any) {
                 )}
             </Fail>
         );
-
     }
 
     return <div className={Style.container}>{V}</div>;

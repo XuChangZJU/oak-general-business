@@ -7,8 +7,23 @@ import Style from './web.module.less';
 import Success from '../../../components/common/result/success';
 import Fail from '../../../components/common/result/fail';
 
-export default function render(this: any) {
-    const { oakLoading, isExist, expired } = this.state;
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
+
+export default function render(
+    props: WebComponentProps<
+        EntityDict,
+        'token',
+        false,
+        {
+            oakLoading: boolean;
+            isExist: boolean;
+            expired: boolean;
+        },
+        {}
+    >
+) {
+    const { oakLoading, isExist, expired } = props.data;
 
     let V;
     if (oakLoading) {

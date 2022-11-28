@@ -15,8 +15,8 @@ export default OakComponent({
         granteeId: 1,
     },
     isList: false,
-    formData: async ({ data: userEntityGrant }) => ({
-        ...userEntityGrant,
+    formData: ({ data: userEntityGrant }) => ({
+        ...userEntityGrant || {},
     }),
     properties: {
         entity: String,
@@ -50,6 +50,11 @@ export default OakComponent({
         setNumber(value: number) {
             this.update({
                 number: value,
+            });
+        },
+        setPeriod(value: number) {
+            this.update({
+                period: value,
             });
         },
         onBack() {

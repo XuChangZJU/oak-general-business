@@ -2,9 +2,36 @@ import React from 'react';
 import { Form, Radio, Button, Space, InputNumber } from 'antd';
 import Style from './web.module.less';
 
-export default function render(this: any) {
-    const { relation, type, number, period } = this.state;
-    const { relations, entity, entityId } = this.props;
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
+
+export default function render(
+    props: WebComponentProps<
+        EntityDict,
+        'token',
+        false,
+        {
+            relation: string;
+            type: 'grant';
+            number: number;
+            period: number;
+            relations: string[];
+            entity: string;
+            entityId: string;
+        },
+        {
+            confirm: () => void;
+            reset: () => void;
+            setRelation: (value: string) => void;
+            setNumber: (value: string) => void;
+            setPeriod: (value: number | null) => void;
+        }
+    >
+) {
+    const { relation, type, number, period, relations, entity, entityId } =
+        props.data;
+    const { t, confirm, reset, setRelation, setNumber, setPeriod } =
+        props.methods;
 
     return (
         <div className={Style.pageWithPadding}>
@@ -21,14 +48,12 @@ export default function render(this: any) {
                     >
                         <Radio.Group
                             value={relation}
-                            onChange={(value) => {
-                                this.setRelation(value);
+                            onChange={(e) => {
+                                setRelation(e.target.value);
                             }}
                             options={relations?.map((ele: string) => ({
                                 value: ele,
-                                label:
-                                    (this.t && this.t(entity + ':r.' + ele)) ||
-                                    ele,
+                                label: t(entity + ':r.' + ele),
                             }))}
                         ></Radio.Group>
                     </Form.Item>
@@ -46,7 +71,7 @@ export default function render(this: any) {
                                 value={number}
                                 onChange={({ target }) => {
                                     const { value } = target;
-                                    this.setNumber(value);
+                                    setNumber(value);
                                 }}
                                 options={[
                                     { value: 1, label: '单次' },
@@ -69,9 +94,7 @@ export default function render(this: any) {
                             max={15}
                             value={period}
                             onChange={(value) => {
-                                this.setState({
-                                    period: value,
-                                });
+                                setPeriod(value);
                             }}
                             addonAfter="分钟"
                         />
@@ -82,7 +105,7 @@ export default function render(this: any) {
                                 htmlType="submit"
                                 type="primary"
                                 onClick={() => {
-                                    this.confirm();
+                                    confirm();
                                 }}
                             >
                                 提交
@@ -90,7 +113,7 @@ export default function render(this: any) {
                             <Button
                                 htmlType="reset"
                                 onClick={() => {
-                                    this.reset();
+                                    reset();
                                 }}
                             >
                                 重置
