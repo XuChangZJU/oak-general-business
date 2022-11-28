@@ -5,8 +5,8 @@ import { DEV_PLATFORM_ID, DEV_SYSTEM_ID } from './DEV-CONFIG';
 export const systems: System[] = [
     {
         id: DEV_SYSTEM_ID,
-        name: '',
-        description: '',
+        name: '测试系统',
+        description: '测试系统',
         config: {
             App: {},
         },
