@@ -1,10 +1,8 @@
 import React from 'react';
 import { Button, Form, Row, Col, Switch, Input, Space } from 'antd';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
-import { set, get } from 'oak-domain/lib/utils/lodash';
 
 
 import { EntityDict } from '../../../general-app-domain';
@@ -21,7 +19,6 @@ export default function Render(
             super: boolean;
             variant: 'inline' | 'alone' | 'dialog';
             showBack: boolean;
-            domain: string[];
         },
         {
             confirm: () => void;
@@ -32,25 +29,11 @@ export default function Render(
         name,
         description,
         super: super2,
-        domain = [],
 
         variant,
         showBack = true,
     } = props.data;
     const { t, update, navigateBack, confirm } = props.methods;
-
-    const setDomainItem = (path: string, value: string) => {
-        update({
-            domain: set(domain || [], path, value),
-        });
-    };
-
-    const removeDomainItem = (index: number) => {
-        domain.splice(index, 1);
-        update({
-            domain: [...domain],
-        });
-    };
 
     return (
         <Container variant={variant} showBack={showBack}>
@@ -111,52 +94,6 @@ export default function Render(
                                     }}
                                 />
                             </>
-                        </Form.Item>
-
-                        {domain?.map((ele, index) => (
-                            <Form.Item
-                                label={`域名${index + 1}`}
-                                requiredMark
-                                name={`domain${index + 1}`}
-                                rules={[
-                                    {
-                                        required: true,
-                                    },
-                                ]}
-                            >
-                                <Space.Compact block key={`domain_${index}`}>
-                                    <Input
-                                        placeholder="填写域名，例如: www.abc.com"
-                                        value={ele}
-                                        onChange={(e) => {
-                                            setDomainItem(
-                                                `${index}`,
-                                                e.target.value
-                                            );
-                                        }}
-                                    />
-                                    <MinusCircleOutlined
-                                        onClick={() => {
-                                            removeDomainItem(index)
-                                        }}
-                                        style={{ marginLeft: 5 }}
-                                    />
-                                </Space.Compact>
-                            </Form.Item>
-                        ))}
-
-                        <Form.Item wrapperCol={{ offset: 6 }}>
-                            <Button
-                                type="dashed"
-                                onClick={() => {
-                                    const length = domain?.length || 0; //新增第几项
-                                    setDomainItem(`${length}`, '');
-                                }}
-                                block
-                                icon={<PlusOutlined />}
-                            >
-                                添加域名
-                            </Button>
                         </Form.Item>
 
                         <Action variant={variant}>

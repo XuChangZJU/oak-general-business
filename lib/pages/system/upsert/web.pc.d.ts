@@ -7,7 +7,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'system', fa
     super: boolean;
     variant: 'inline' | 'alone' | 'dialog';
     showBack: boolean;
-    domain: string[];
 }, {
     confirm: () => void;
 }>): JSX.Element;

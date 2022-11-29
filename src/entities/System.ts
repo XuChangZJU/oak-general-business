@@ -4,15 +4,12 @@ import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Schema as Platform } from './Platform';
 import { Config } from '../types/Config';
 
-export type DomainType = string[];
-
 export interface Schema extends EntityShape {
     name: String<32>;
     description: Text;
     config: Config;
     platform: Platform;
     super?: Boolean; // super表示是这个platform本身的系统，可以操作application/system这些数据，也可以访问超出本system的其它数据。
-    domain: DomainType;
 };
 
 
@@ -24,7 +21,6 @@ const locale: LocaleDef<Schema, '', '', {}> = {
             config: '设置',
             platform: '平台',
             super: '超级系统',
-            domain: '访问域名',
         },
     },
 };

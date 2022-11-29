@@ -103,13 +103,13 @@ export default function Render(
                         },
                     },
                     {
-                        dataIndex: 'domain',
+                        dataIndex: 'domain$system',
                         title: '访问域名',
                         render: (value, record, index) => {
                             return value
-                                ? value?.map((ele: string) => (
+                                ? value.map((ele: { url: string }) => (
                                       <Space>
-                                          <Tag>{ele}</Tag>
+                                          <Tag>{ele.url}</Tag>
                                       </Space>
                                   ))
                                 : '';

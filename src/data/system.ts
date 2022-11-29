@@ -12,6 +12,5 @@ export const systems: System[] = [
         },
         platformId: DEV_PLATFORM_ID,
         super: true,
-        domain: ['localhost'],
     },
 ];
