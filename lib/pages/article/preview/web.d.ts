@@ -1,7 +1,7 @@
 /// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
-export default function render(props: WebComponentProps<EntityDict, 'article', false, {
+export default function Render(props: WebComponentProps<EntityDict, 'article', false, {
     editor: any;
     title?: string;
     author?: string;

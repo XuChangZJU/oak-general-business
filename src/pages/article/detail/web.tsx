@@ -5,17 +5,27 @@ import {
 
 import Style from './web.module.less';
 
+import { EntityDict } from './../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
 
-
-export default function render(this: any) {
-    const { t, features } = this;
-    const {
-        editor,
-        title,
-        author,
-        abstract,
-        content,
-    } = this.state;
+export default function render(
+    props: WebComponentProps<
+        EntityDict,
+        'article',
+        false,
+        {
+            title?: string;
+            author?: string;
+            abstract?: string;
+            content?: string;
+            html?: string;
+        },
+        {}
+    >
+) {
+    const { methods, data } = props;
+    const { t } = methods;
+    const { title, author, abstract, content } = data;
 
     return (
         <div className={Style.container}>

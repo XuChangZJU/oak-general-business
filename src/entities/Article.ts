@@ -13,11 +13,12 @@ import { Schema as ExtraFile } from './ExtraFile';
 export interface Schema extends EntityShape {
     entity?: String<32>;
     entityId?: String<64>;
-    title: String<32>; //标题
+    title: String<128>; //标题
     author: String<32>; //作者
     abstract?: Text; //摘要
     content?: Text; //正文
     files: Array<ExtraFile>; //封面图
+    sign: String<32>; //唯一标志
 }
 
 type IAction = 'online' | 'offline' | 'disabled';
@@ -52,6 +53,7 @@ const locale: LocaleDef<
             iState: '状态',
             entity: '关联对象',
             entityId: '关联对象id',
+            sign: '唯一标志',
         },
         action: {
             online: '上架',

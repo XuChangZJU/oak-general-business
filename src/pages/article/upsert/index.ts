@@ -119,8 +119,8 @@ export default OakComponent({
             this.update({ content });
             this.setState({ html: content });
         },
-        preview(data: EntityDict['article']['Update']['data']) {
-            const { html, title, author } = data;
+        preview() {
+            const { html, title, author } = this.state;
             this.save(
                 'article_html',
                 JSON.stringify({

@@ -4,9 +4,10 @@ import { Schema as ExtraFile } from './ExtraFile';
 export interface Schema extends EntityShape {
     entity?: String<32>;
     entityId?: String<64>;
-    title: String<32>;
+    title: String<128>;
     author: String<32>;
     abstract?: Text;
     content?: Text;
     files: Array<ExtraFile>;
+    sign: String<32>;
 }

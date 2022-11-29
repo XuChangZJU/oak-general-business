@@ -4,8 +4,8 @@ import { Alert, Card, Button, Row, Col, Space, Affix, Input } from 'antd';
 import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
 import { IToolbarConfig } from '@wangeditor/editor';
-import { EntityDict } from './../../../general-app-domain';
 import OakGallery from './../../../components/extraFile/gallery';
+import { EntityDict } from './../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 
 
@@ -40,25 +40,48 @@ function customCheckImageFn(
     // 3. 返回 undefined（即没有任何返回），说明检查未通过，编辑器会阻止插入。但不会提示任何信息
 }
 
-export default function Render(props: WebComponentProps<EntityDict, 'article', false, {
-    editor: any; title?: string; author?: string; abstract?: string; content?: string; 
-    html?: string; origin?: string; contentTip: boolean,
-}, {
-    setHtml: (content: string) => void;
-    setEditor: (editor: any) => void;
-    confirm: () => void;
-    preview: () => void;
-    addExtraFile: (file: EntityDict['extraFile']['CreateSingle']['data']) => Promise<void>;
-    uploadFile: (file: EntityDict['extraFile']['CreateSingle']['data']) => Promise<{ bucket: string, url: string}>;
-    clearContentTip: () => void;
-}>) {
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'article',
+        false,
+        {
+            editor: any;
+            title?: string;
+            author?: string;
+            abstract?: string;
+            content?: string;
+            html?: string;
+            origin?: string;
+            contentTip: boolean;
+        },
+        {
+            setHtml: (content: string) => void;
+            setEditor: (editor: any) => void;
+            confirm: () => void;
+            preview: () => void;
+            addExtraFile: (
+                file: EntityDict['extraFile']['CreateSingle']['data']
+            ) => Promise<void>;
+            uploadFile: (
+                file: EntityDict['extraFile']['CreateSingle']['data']
+            ) => Promise<{ bucket: string; url: string }>;
+            clearContentTip: () => void;
+        }
+    >
+) {
     const { methods: method, data } = props;
-    const { t, setEditor, confirm, preview, addExtraFile, uploadFile, update, setHtml } = method;
     const {
-        editor,
-        origin,
-        oakFullpath,
-    } = data;
+        t,
+        setEditor,
+        confirm,
+        preview,
+        addExtraFile,
+        uploadFile,
+        update,
+        setHtml,
+    } = method;
+    const { editor, origin, oakFullpath } = data;
 
     return (
         <div className={Style.container}>
@@ -78,21 +101,28 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
                         <div className={Style.editorContainer}>
                             <div className={Style.titleContainer}>
                                 <Input
-                                    onChange={(e) => update({ title: e.target.value })}
+                                    onChange={(e) =>
+                                        update({ title: e.target.value })
+                                    }
                                     value={data.title}
                                     placeholder={t('placeholder.title')}
                                     size="large"
                                     maxLength={64}
-                                    suffix={`${[...(data.title || '')].length}/64`}
+                                    suffix={`${
+                                        [...(data.title || '')].length
+                                    }/64`}
                                     className={Style.titleInput}
                                 />
                             </div>
                             <div className={Style.authorContainer}>
                                 <Input
-                                    onChange={(e) => update({ author: e.target.value })}
+                                    onChange={(e) =>
+                                        update({ author: e.target.value })
+                                    }
                                     value={data.author}
                                     placeholder={t('placeholder.author')}
                                     className={Style.input}
+                                    maxLength={16}
                                 />
                             </div>
                             {data.contentTip && (
@@ -152,7 +182,9 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
                                                 try {
                                                     // 自己实现上传，并得到图片 url alt href
                                                     const { url, bucket } =
-                                                        await uploadFile(extraFile);
+                                                        await uploadFile(
+                                                            extraFile
+                                                        );
                                                     extraFile.bucket = bucket;
                                                     extraFile.extra1 = null;
                                                     await addExtraFile(
@@ -200,10 +232,15 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
 
                                                 try {
                                                     // 自己实现上传，并得到图片 url alt href
-                                                    const { url, bucket } = await uploadFile(extraFile);
+                                                    const { url, bucket } =
+                                                        await uploadFile(
+                                                            extraFile
+                                                        );
                                                     extraFile.bucket = bucket;
                                                     extraFile.extra1 = null;
-                                                    await addExtraFile(extraFile);
+                                                    await addExtraFile(
+                                                        extraFile
+                                                    );
                                                     // 最后插入图片
                                                     insertFn(
                                                         'http://' + url,
@@ -261,8 +298,15 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
                                                     minRows: 4,
                                                 }}
                                                 maxLength={120}
-                                                placeholder={t('placeholder.abstract')}
-                                                onChange={(e) => update({ abstract: e.target.value })}
+                                                placeholder={t(
+                                                    'placeholder.abstract'
+                                                )}
+                                                onChange={(e) =>
+                                                    update({
+                                                        abstract:
+                                                            e.target.value,
+                                                    })
+                                                }
                                                 value={data.abstract || ''}
                                             ></Input.TextArea>
                                         </Col>
