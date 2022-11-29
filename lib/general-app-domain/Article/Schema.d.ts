@@ -8,20 +8,22 @@ import * as ExtraFile from "../ExtraFile/Schema";
 export declare type OpSchema = EntityShape & {
     entity?: String<32> | null;
     entityId?: String<64> | null;
-    title: String<32>;
+    title: String<128>;
     author: String<32>;
     abstract?: Text | null;
     content?: Text | null;
+    sign: String<32>;
     iState?: IState | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
     entity?: String<32> | null;
     entityId?: String<64> | null;
-    title: String<32>;
+    title: String<128>;
     author: String<32>;
     abstract?: Text | null;
     content?: Text | null;
+    sign: String<32>;
     iState?: IState | null;
     extraFile$entity?: Array<ExtraFile.Schema>;
 } & {
@@ -38,6 +40,7 @@ declare type AttrFilter = {
     author: Q_StringValue;
     abstract: Q_StringValue;
     content: Q_StringValue;
+    sign: Q_StringValue;
     iState: Q_EnumValue<IState>;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
@@ -54,6 +57,7 @@ export declare type Projection = {
     author?: number;
     abstract?: number;
     content?: number;
+    sign?: number;
     iState?: number;
     extraFile$entity?: ExtraFile.Selection & {
         $entity: "extraFile";
@@ -72,6 +76,7 @@ export declare type ExportProjection = {
     author?: string;
     abstract?: string;
     content?: string;
+    sign?: string;
     iState?: string;
     extraFile$entity?: ExtraFile.Exportation & {
         $entity: "extraFile";
@@ -100,6 +105,8 @@ export declare type SortAttr = {
     abstract: number;
 } | {
     content: number;
+} | {
+    sign: number;
 } | {
     iState: number;
 } | {

@@ -37,6 +37,7 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntime
     }) => Promise<string>;
     getApplication: (params: {
         type: AppType;
+        domain: string;
     }, context: Cxt) => Promise<string>;
     updateConfig: (params: {
         entity: 'platform' | 'system';

@@ -7,6 +7,7 @@ export default OakComponent({
         config: 1,
         description: 1,
         super: 1,
+        domain: 1
     },
     formData({ data }) {
         return data || {};
@@ -24,6 +25,15 @@ export default OakComponent({
     },
     methods: {
         async confirm() {
+            const { domain } = this.state;
+            if (!domain) {
+                this.setMessage({
+                    type: 'warning',
+                    content: '访问域名必须设置'
+                })
+                return;
+
+            };
             await this.execute();
             this.navigateBack();
         }

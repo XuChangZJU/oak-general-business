@@ -33,8 +33,9 @@ export class Application<
     Cxt extends BackendRuntimeContext<ED>,
     FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>,
     AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>
-    > extends Feature {
+> extends Feature {
     private type: AppType;
+    private domain: string; //域名
     private applicationId?: string;
     private application?: Partial<EntityDict['application']['Schema']>;
     private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
@@ -42,14 +43,17 @@ export class Application<
 
     constructor(
         type: AppType,
+        domain: string,
         cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>,
-        storage: LocalStorage) {
+        storage: LocalStorage
+    ) {
         super();
         this.cache = cache;
         this.storage = storage;
         const applicationId = storage.load('application:applicationId');
         this.applicationId = applicationId;
         this.type = type;
+        this.domain = domain;
     }
 
     private async loadApplicationInfo() {
@@ -57,9 +61,12 @@ export class Application<
             data: projection,
             filter: {
                 id: this.applicationId!,
-            }
+            },
         });
-        assert(data.length === 1, `applicationId${this.applicationId}没有取到有效数据`);
+        assert(
+            data.length === 1,
+            `applicationId${this.applicationId}没有取到有效数据`
+        );
         this.application = data[0];
     }
 
@@ -68,15 +75,19 @@ export class Application<
             data: projection,
             filter: {
                 id: this.applicationId,
-            }
+            },
         } as any);
-        assert(data.length === 1, `applicationId${this.applicationId}没有取到有效数据`);
+        assert(
+            data.length === 1,
+            `applicationId${this.applicationId}没有取到有效数据`
+        );
         this.application = data[0];
     }
 
-    private async refresh(type: AppType) {
+    private async refresh(type: AppType, domain: string) {
         const applicationId = await this.cache.exec('getApplication', {
             type,
+            domain,
         });
         this.applicationId = applicationId;
         this.storage.save('application:applicationId', applicationId);
@@ -87,9 +98,8 @@ export class Application<
     async initialize() {
         if (this.applicationId) {
             await this.loadApplicationInfo();
-        }
-        else {
-            await this.refresh(this.type);
+        } else {
+            await this.refresh(this.type, this.domain);
         }
     }
 

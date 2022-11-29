@@ -26,7 +26,7 @@ export default OakComponent({
     methods: {
         setValue(path: string, value: any) {
             const { currentConfig } = this.state;
-            const newConfig = cloneDeep(currentConfig);
+            const newConfig = cloneDeep(currentConfig || {});
             set(newConfig, path, value);
             this.setState({
                 currentConfig: newConfig,
@@ -38,7 +38,7 @@ export default OakComponent({
             const { currentConfig } = this.state;
             const array = get(currentConfig, path);
             (array as any[]).splice(index, 1);
-            const newConfig = cloneDeep(currentConfig);
+            const newConfig = cloneDeep(currentConfig || {});
             this.setState({
                 currentConfig: newConfig,
                 dirty: true,

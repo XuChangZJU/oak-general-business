@@ -9,12 +9,23 @@ const checkers: Checker<EntityDict, 'system', RuntimeCxt>[] = [
         action: 'create',
         entity: 'system',
         checker: (data) => {
+            const setData = (
+                data: EntityDict['system']['CreateSingle']['data']
+            ) => {
+                if (!data.config) {
+                    Object.assign(data, {
+                        config: {},
+                    });
+                }
+            };
             if (data instanceof Array) {
                 data.forEach((ele) => {
                     checkAttributesNotNull('system', ele, ['name', 'platformId']);
+                    setData(ele);
                 });
             } else {
                 checkAttributesNotNull('system', data, ['name', 'platformId']);
+                setData(data as EntityDict['system']['CreateSingle']['data']);
             }
             return 0;
         },

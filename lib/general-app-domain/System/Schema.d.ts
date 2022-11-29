@@ -10,12 +10,14 @@ import * as Application from "../Application/Schema";
 import * as Domain from "../Domain/Schema";
 import * as Message from "../Message/Schema";
 import * as UserSystem from "../UserSystem/Schema";
+export declare type DomainType = string[];
 export declare type OpSchema = EntityShape & {
     name: String<32>;
     description: Text;
     config: Config;
     platformId: ForeignKey<"platform">;
     super?: Boolean | null;
+    domain: DomainType;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
@@ -24,6 +26,7 @@ export declare type Schema = EntityShape & {
     config: Config;
     platformId: ForeignKey<"platform">;
     super?: Boolean | null;
+    domain: DomainType;
     platform: Platform.Schema;
     application$system?: Array<Application.Schema>;
     domain$system?: Array<Domain.Schema>;
@@ -43,6 +46,7 @@ declare type AttrFilter = {
     platformId: Q_StringValue | SubQuery.PlatformIdSubQuery;
     platform: Platform.Filter;
     super: Q_BooleanValue;
+    domain: Q_EnumValue<DomainType>;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -58,6 +62,7 @@ export declare type Projection = {
     platformId?: number;
     platform?: Platform.Projection;
     super?: number;
+    domain?: number;
     application$system?: Application.Selection & {
         $entity: "application";
     };
@@ -84,6 +89,7 @@ export declare type ExportProjection = {
     platformId?: string;
     platform?: Platform.ExportProjection;
     super?: string;
+    domain?: string;
     application$system?: Application.Exportation & {
         $entity: "application";
     };
@@ -123,6 +129,8 @@ export declare type SortAttr = {
     platform: Platform.SortAttr;
 } | {
     super: number;
+} | {
+    domain: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

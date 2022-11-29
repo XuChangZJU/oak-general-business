@@ -7,9 +7,16 @@ import {
 } from '../data/DEV-CONFIG';
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 
-export async function getApplication<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
-    type: AppType;
-}, context: Cxt) {
+export async function getApplication<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(
+    params: {
+        type: AppType;
+        domain: string;
+    },
+    context: Cxt
+) {
     const { type } = params;
     const APP_ID = {
         web: DEV_WEB_APPLICATION_ID,
@@ -21,23 +28,27 @@ export async function getApplication<ED extends EntityDict, Cxt extends BackendR
     console.log('url is', url);
 
     // TODO
-    const [application] = await context.select('application', {
-        data: {
-            id: 1,
-            name: 1,
-            config: 1,
-            type: 1,
-            systemId: 1,
-            system: {
+    const [application] = await context.select(
+        'application',
+        {
+            data: {
                 id: 1,
                 name: 1,
                 config: 1,
-            }
+                type: 1,
+                systemId: 1,
+                system: {
+                    id: 1,
+                    name: 1,
+                    config: 1,
+                },
+            },
+            filter: {
+                id: appId,
+            },
         },
-        filter: {
-            id: appId
-        }
-    }, {});
+        {}
+    );
 
     return application.id as string;
 }

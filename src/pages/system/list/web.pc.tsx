@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Table, Button, Space, Typography, Modal } from 'antd';
+import { Table, Button, Space, Typography, Modal, Tag } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 
 import Style from './web.module.less';
@@ -100,6 +100,19 @@ export default function Render(
                         title: '是否为超级系统',
                         render: (value, record, index) => {
                             return value ? '是' : '否';
+                        },
+                    },
+                    {
+                        dataIndex: 'domain',
+                        title: '访问域名',
+                        render: (value, record, index) => {
+                            return value
+                                ? value?.map((ele: string) => (
+                                      <Space>
+                                          <Tag>{ele}</Tag>
+                                      </Space>
+                                  ))
+                                : '';
                         },
                     },
                     {

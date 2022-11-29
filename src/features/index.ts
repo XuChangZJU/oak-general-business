@@ -18,11 +18,19 @@ export function initialize<
     AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>
 >(
     basicFeatures: BasicFeatures<ED, Cxt, FrontCxt, AD>,
-    type: AppType
+    type: AppType,
+    domain: string,
 ): GeneralFeatures<ED, Cxt, FrontCxt, AD> {
     const application = new Application<ED, Cxt, FrontCxt, AD>(
-        type, basicFeatures.cache, basicFeatures.localStorage);
-    const token = new Token<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, basicFeatures.localStorage);
+        type,
+        domain,
+        basicFeatures.cache,
+        basicFeatures.localStorage
+    );
+    const token = new Token<ED, Cxt, FrontCxt, AD>(
+        basicFeatures.cache,
+        basicFeatures.localStorage
+    );
     const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
     const config = new Config<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
     return {

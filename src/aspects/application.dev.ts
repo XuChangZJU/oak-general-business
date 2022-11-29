@@ -8,10 +8,18 @@ import {
 } from '../data/DEV-CONFIG';
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 
-export async function getApplication<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
-    type: AppType;
-}, context: Cxt) {
-    const { type } = params;
+export async function getApplication<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(
+    params: {
+        type: AppType;
+        domain: string; //域名
+    },
+    context: Cxt
+) {
+    // 本地调试需要 传入domain 根据domain查找system
+    const { type, domain } = params;
     const APP_ID = {
         web: DEV_WEB_APPLICATION_ID,
         wechatMp: DEV_WECHATMP_APPLICATION_ID,

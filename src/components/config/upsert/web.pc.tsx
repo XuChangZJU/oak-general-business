@@ -32,7 +32,7 @@ export default function Render(
 ) {
     const { entity, name, currentConfig, dirty } = props.data;
     const { resetConfig, updateConfig, setValue, removeItem } = props.methods;
-    const { Account: account, Cos: cos, Map: map, Live: live } = currentConfig;
+    const { Account: account, Cos: cos, Map: map, Live: live } = currentConfig || {};
     return (
         <>
             <Affix offsetTop={64}>
