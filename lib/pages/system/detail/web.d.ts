@@ -7,7 +7,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'platform', 
     description: string;
     oakId: string;
     config: Config;
-    tabValue: 'detail' | 'application_list';
+    tabValue: 'detail' | 'application_list' | 'domain_list';
 }, {
     onTabClick: (key: string) => void;
 }>): JSX.Element;

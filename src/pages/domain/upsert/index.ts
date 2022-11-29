@@ -1,31 +1,35 @@
 export default OakComponent({
     isList: false,
-    entity: 'system',
+    entity: 'domain',
     projection: {
         id: 1,
-        name: 1,
-        config: 1,
-        description: 1,
-        super: 1,
+        systemId: 1,
+        url: 1,
+        apiPath: 1,
+        port: 1,
+        protocol: 1,
     },
     formData({ data }) {
         return data || {};
     },
     lifetimes: {
         ready() {
-            const { platformId, oakId } = this.props;
+            const { systemId, oakId } = this.props;
 
             if (!oakId) {
-                if (platformId) {
-                    this.update({ platformId });
+                if (systemId) {
+                    this.update({ systemId });
                 }
             }
+              if (systemId) {
+                  this.update({ systemId });
+              }
         },
     },
     methods: {
         async confirm() {
             await this.execute();
             this.navigateBack();
-        }
+        },
     },
 });

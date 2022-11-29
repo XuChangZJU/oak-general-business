@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs, Card } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import ApplicationList from '../../../pages/application/list';
+import DomainList from '../../../pages/domain/list';
 
 import Style from './web.module.less';
 
@@ -19,7 +20,7 @@ export default function Render(
             description: string;
             oakId: string;
             config: Config;
-            tabValue: 'detail' | 'application_list';
+            tabValue: 'detail' | 'application_list' | 'domain_list';
         },
         {
             onTabClick: (key: string) => void;
@@ -51,6 +52,18 @@ export default function Render(
                                         systemId={oakId}
                                         variant="inline"
                                         oakPath="$system/detail-application/list"
+                                        oakAutoUnmount={true}
+                                    />
+                                ),
+                            },
+                            {
+                                label: '域名管理',
+                                key: 'domain_list',
+                                children: (
+                                    <DomainList
+                                        systemId={oakId}
+                                        variant="inline"
+                                        oakPath="$system/detail-domain/list"
                                         oakAutoUnmount={true}
                                     />
                                 ),
