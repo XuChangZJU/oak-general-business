@@ -40,7 +40,7 @@ export default function Render(
                         }}
                         items={[
                             {
-                                label: '系统概览',
+                                label: '域名概览',
                                 key: 'detail',
                                 children: <div>详情</div>,
                             },
