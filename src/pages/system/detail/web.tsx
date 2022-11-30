@@ -47,14 +47,41 @@ export default function Render(
                             {
                                 label: '系统概览',
                                 key: 'detail',
-                                children: <Descriptions column={1} bordered>
-                                <Descriptions.Item label="id">{oakId}</Descriptions.Item>
-                                <Descriptions.Item label={t('system:attr.name')}>{name}</Descriptions.Item>
-                                <Descriptions.Item label={t('system:attr.description')}>{description}</Descriptions.Item>
-                                <Descriptions.Item label={t('system:attr.super')}>{isSuper ? '是' : '否'}</Descriptions.Item>
-                                <Descriptions.Item label={t('system:attr.folder')}>{folder}</Descriptions.Item>
-                                <Descriptions.Item label={t('system:attr.platform') + t('platform:attr.name')}>{platform?.name}</Descriptions.Item>
-                            </Descriptions>,
+                                children: (
+                                    <Descriptions column={1} bordered>
+                                        <Descriptions.Item label="id">
+                                            {oakId}
+                                        </Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={t('system:attr.name')}
+                                        >
+                                            {name}
+                                        </Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={t('system:attr.description')}
+                                        >
+                                            {description}
+                                        </Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={t('system:attr.super')}
+                                        >
+                                            {isSuper ? '是' : '否'}
+                                        </Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={t('system:attr.folder')}
+                                        >
+                                            {folder}
+                                        </Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={
+                                                t('system:attr.platform') +
+                                                t('platform:attr.name')
+                                            }
+                                        >
+                                            {platform?.name}
+                                        </Descriptions.Item>
+                                    </Descriptions>
+                                ),
                             },
                             {
                                 label: '应用管理',

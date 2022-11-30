@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Card } from 'antd';
+import { Tabs, Card, Descriptions } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
 
@@ -18,7 +18,7 @@ type Config = WebConfig | WechatPublicConfig | WechatMpConfig;
 export default function Render(
     props: WebComponentProps<
         EntityDict,
-        'platform',
+        'application',
         false,
         {
             name: string;
@@ -26,15 +26,19 @@ export default function Render(
             oakId: string;
             config: Config;
             tabValue: 'detail';
+            type: EntityDict['application']['Schema']['type'];
+            style: EntityDict['application']['Schema']['style'];
+            system: EntityDict['system']['Schema'];
         },
         {
             onTabClick: (key: string) => void;
         }
     >
 ) {
-    const { oakId, config, name, tabValue } = props.data;
+    const { oakId, tabValue, config, name, description, type, system } =
+        props.data;
     const { t, navigateBack, onTabClick } = props.methods;
-    
+
     return (
         <PageHeader showBack={true} title="应用概览">
             <div className={Style.container}>
@@ -44,7 +48,39 @@ export default function Render(
                             {
                                 label: '应用概览',
                                 key: 'detail',
-                                children: <div>详情</div>,
+                                children: (
+                                    <Descriptions column={1} bordered>
+                                        <Descriptions.Item label="id">
+                                            {oakId}
+                                        </Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={t('application:attr.name')}
+                                        >
+                                            {name}
+                                        </Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={t(
+                                                'application:attr.description'
+                                            )}
+                                        >
+                                            {description}
+                                        </Descriptions.Item>
+
+                                        <Descriptions.Item
+                                            label={t('application:attr.type')}
+                                        >
+                                            {t(`application:v.type.${type}`)}
+                                        </Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={
+                                                t('application:attr.system') +
+                                                t('system:attr.name')
+                                            }
+                                        >
+                                            {system?.name}
+                                        </Descriptions.Item>
+                                    </Descriptions>
+                                ),
                             },
                         ]}
                     />

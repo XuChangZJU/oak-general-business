@@ -99,7 +99,7 @@ export class Application<
         this.publish();
     }
 
-    async initialize(appId?: string) {
+    async initialize(appId?: string | null) {
         if (process.env.NODE_ENV === 'development'  && appId) {
             // development环境下允许注入一个线上的appId
             this.applicationId = appId;

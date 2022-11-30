@@ -8,6 +8,10 @@ export default OakComponent({
         description: 1,
         type: 1,
         systemId: 1,
+        system: {
+            id: 1,
+            name: 1,
+        },
     },
     formData({ data }) {
         return data || {};
