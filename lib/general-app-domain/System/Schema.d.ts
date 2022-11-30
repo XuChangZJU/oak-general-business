@@ -5,6 +5,7 @@ import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import { Config } from "../../types/Config";
+import { Style } from "../../types/Style";
 import * as Platform from "../Platform/Schema";
 import * as Application from "../Application/Schema";
 import * as Domain from "../Domain/Schema";
@@ -15,7 +16,9 @@ export declare type OpSchema = EntityShape & {
     description: Text;
     config: Config;
     platformId: ForeignKey<"platform">;
+    folder: String<16>;
     super?: Boolean | null;
+    style?: Style | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
@@ -23,7 +26,9 @@ export declare type Schema = EntityShape & {
     description: Text;
     config: Config;
     platformId: ForeignKey<"platform">;
+    folder: String<16>;
     super?: Boolean | null;
+    style?: Style | null;
     platform: Platform.Schema;
     application$system?: Array<Application.Schema>;
     domain$system?: Array<Domain.Schema>;
@@ -42,7 +47,9 @@ declare type AttrFilter = {
     config: Q_EnumValue<Config>;
     platformId: Q_StringValue | SubQuery.PlatformIdSubQuery;
     platform: Platform.Filter;
+    folder: Q_StringValue;
     super: Q_BooleanValue;
+    style: Q_EnumValue<Style>;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -57,7 +64,9 @@ export declare type Projection = {
     config?: number;
     platformId?: number;
     platform?: Platform.Projection;
+    folder?: number;
     super?: number;
+    style?: number;
     application$system?: Application.Selection & {
         $entity: "application";
     };
@@ -83,7 +92,9 @@ export declare type ExportProjection = {
     config?: string;
     platformId?: string;
     platform?: Platform.ExportProjection;
+    folder?: string;
     super?: string;
+    style?: string;
     application$system?: Application.Exportation & {
         $entity: "application";
     };
@@ -122,7 +133,11 @@ export declare type SortAttr = {
 } | {
     platform: Platform.SortAttr;
 } | {
+    folder: number;
+} | {
     super: number;
+} | {
+    style: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

@@ -56,7 +56,7 @@ export class Application<
         this.domain = domain;
     }
 
-    private async loadApplicationInfo() {
+    private async refresh() {
         const { data } = await this.cache.refresh('application', {
             data: projection,
             filter: {
@@ -84,7 +84,7 @@ export class Application<
         this.application = data[0];
     }
 
-    private async refresh(type: AppType, domain: string) {
+    private async loadApplicationInfo(type: AppType, domain: string) {
         const applicationId = await this.cache.exec('getApplication', {
             type,
             domain,
@@ -95,11 +95,15 @@ export class Application<
         this.publish();
     }
 
-    async initialize() {
+    async initialize(appId?: string) {
+        if (process.env.NODE_ENV === 'development'  && appId) {
+            // development环境下允许注入一个线上的appId
+            this.applicationId = appId;
+        }
         if (this.applicationId) {
-            await this.loadApplicationInfo();
+            await this.refresh();
         } else {
-            await this.refresh(this.type, this.domain);
+            await this.loadApplicationInfo(this.type, this.domain);
         }
     }
 

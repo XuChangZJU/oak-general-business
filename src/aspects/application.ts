@@ -1,9 +1,60 @@
-import { getApplication as getApplicationDev } from './application.dev';
-import { getApplication as getApplicationProd } from './application.prod';
+import { EntityDict } from "../general-app-domain";
+import { AppType } from "../general-app-domain/Application/Schema";
+import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 
-const getApplication = process.env.NODE_ENV === 'development' ? getApplicationDev : getApplicationProd
+export async function getApplication<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(
+    params: {
+        type: AppType;
+        domain: string;
+    },
+    context: Cxt
+) {
+    const { type, domain } = params;
+    const url = context.getHeader('host');
+    console.log('url is', url);
 
-export {
-    getApplication,
-};
+    const [application] = await context.select(
+        'application',
+        {
+            data: {
+                id: 1,
+                name: 1,
+                config: 1,
+                type: 1,
+                systemId: 1,
+                system: {
+                    id: 1,
+                    name: 1,
+                    config: 1,
+                    platformId: 1,
+                    platform: {
+                        id: 1,
+                        config: 1,
+                    },
+                },
+            },
+            filter: {
+                type,
+                system: {
+                    id: {
+                        $in: {
+                            entity: 'domain',
+                            data: {
+                                systemId: 1,
+                            },
+                            filter: {
+                                url: domain,
+                            }
+                        }
+                    }
+                },
+            },
+        },
+        {}
+    );
 
+    return application.id as string;
+}

@@ -1,5 +1,6 @@
 import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCaptcha } from './token';
 import { getUploadInfo } from './extraFile';
+import { getApplication } from './application';
 import { updateConfig } from './config';
 export declare const aspectDict: {
     loginByMobile: typeof loginByMobile;
@@ -8,6 +9,6 @@ export declare const aspectDict: {
     syncUserInfoWechatMp: typeof syncUserInfoWechatMp;
     getUploadInfo: typeof getUploadInfo;
     sendCaptcha: typeof sendCaptcha;
-    getApplication: typeof import("./application.dev").getApplication | typeof import("./application.prod").getApplication;
+    getApplication: typeof getApplication;
     updateConfig: typeof updateConfig;
 };

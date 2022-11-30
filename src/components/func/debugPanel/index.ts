@@ -16,7 +16,7 @@ export default OakComponent({
             console.log(this.features.runningTree.getRoot());
         },
         resetInitialData() {
-            this.features.cache.resetInitialData();
+            this.features.localStorage.clear();
             this.features.token.logout();
         },
         setVisible(visible: boolean) {

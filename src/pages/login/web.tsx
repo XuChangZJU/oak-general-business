@@ -1,3 +1,5 @@
+// @ts-nocheck
+// Segmented这个对象在antd里的声明是错误的
 import React, { useEffect, useState } from 'react';
 import {
     isMobile,

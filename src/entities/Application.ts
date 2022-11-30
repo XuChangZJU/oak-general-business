@@ -2,6 +2,7 @@ import { String, Int, Datetime, Image, Boolean, Text } from 'oak-domain/lib/type
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as System } from './System';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
+import { Style } from '../types/Style';
 
 export type Passport = 'email' | 'mobile' | 'wechat';
 export type AppType = 'web' | 'wechatMp' | 'wechatPublic';
@@ -40,6 +41,7 @@ export interface Schema extends EntityShape {
     type: AppType;
     system: System;
     config: WebConfig | WechatMpConfig | WechatPublicConfig;
+    style?: Style;
 };
 
 const locale: LocaleDef<Schema, '', '', {
@@ -52,6 +54,7 @@ const locale: LocaleDef<Schema, '', '', {
             system: '系统',
             name: '名称',
             config: '设置',
+            style: '样式',
         },
         v: {
             type: {

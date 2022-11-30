@@ -15,10 +15,10 @@ export declare class Application<ED extends EntityDict, Cxt extends BackendRunti
     private cache;
     private storage;
     constructor(type: AppType, domain: string, cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage);
-    private loadApplicationInfo;
-    private getApplicationFromCache;
     private refresh;
-    initialize(): Promise<void>;
+    private getApplicationFromCache;
+    private loadApplicationInfo;
+    initialize(appId?: string): Promise<void>;
     getApplication(): Partial<import("../general-app-domain/Application/Schema").Schema>;
     getApplicationId(): string | undefined;
 }

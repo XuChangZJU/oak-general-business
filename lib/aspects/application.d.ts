@@ -1,4 +1,7 @@
-import { getApplication as getApplicationDev } from './application.dev';
-import { getApplication as getApplicationProd } from './application.prod';
-declare const getApplication: typeof getApplicationDev | typeof getApplicationProd;
-export { getApplication, };
+import { EntityDict } from "../general-app-domain";
+import { AppType } from "../general-app-domain/Application/Schema";
+import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
+export declare function getApplication<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+    type: AppType;
+    domain: string;
+}, context: Cxt): Promise<string>;

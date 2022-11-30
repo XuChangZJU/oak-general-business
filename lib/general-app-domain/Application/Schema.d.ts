@@ -4,6 +4,7 @@ import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { Style } from "../../types/Style";
 import * as System from "../System/Schema";
 import * as Token from "../Token/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
@@ -44,6 +45,7 @@ export declare type OpSchema = EntityShape & {
     type: AppType;
     systemId: ForeignKey<"system">;
     config: WebConfig | WechatMpConfig | WechatPublicConfig;
+    style?: Style | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
@@ -52,6 +54,7 @@ export declare type Schema = EntityShape & {
     type: AppType;
     systemId: ForeignKey<"system">;
     config: WebConfig | WechatMpConfig | WechatPublicConfig;
+    style?: Style | null;
     system: System.Schema;
     token$application?: Array<Token.Schema>;
     wechatQrCode$application?: Array<WechatQrCode.Schema>;
@@ -69,6 +72,7 @@ declare type AttrFilter = {
     type: Q_EnumValue<AppType>;
     systemId: Q_StringValue | SubQuery.SystemIdSubQuery;
     system: System.Filter;
+    style: Q_EnumValue<Style>;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -84,6 +88,7 @@ export declare type Projection = {
     systemId?: number;
     system?: System.Projection;
     config?: number;
+    style?: number;
     token$application?: Token.Selection & {
         $entity: "token";
     };
@@ -107,6 +112,7 @@ export declare type ExportProjection = {
     systemId?: string;
     system?: System.ExportProjection;
     config?: string;
+    style?: string;
     token$application?: Token.Exportation & {
         $entity: "token";
     };
@@ -141,6 +147,8 @@ export declare type SortAttr = {
     systemId: number;
 } | {
     system: System.SortAttr;
+} | {
+    style: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

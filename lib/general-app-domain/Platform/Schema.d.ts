@@ -5,17 +5,20 @@ import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import { Config } from "../../types/Config";
+import { Style } from "../../types/Style";
 import * as System from "../System/Schema";
 export declare type OpSchema = EntityShape & {
     name: String<32>;
     description: Text;
     config: Config;
+    style?: Style | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
     name: String<32>;
     description: Text;
     config: Config;
+    style?: Style | null;
     system$platform?: Array<System.Schema>;
 } & {
     [A in ExpressionKey]?: any;
@@ -28,6 +31,7 @@ declare type AttrFilter = {
     name: Q_StringValue;
     description: Q_StringValue;
     config: Q_EnumValue<Config>;
+    style: Q_EnumValue<Style>;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -40,6 +44,7 @@ export declare type Projection = {
     name?: number;
     description?: number;
     config?: number;
+    style?: number;
     system$platform?: System.Selection & {
         $entity: "system";
     };
@@ -54,6 +59,7 @@ export declare type ExportProjection = {
     name?: string;
     description?: string;
     config?: string;
+    style?: string;
     system$platform?: System.Exportation & {
         $entity: "system";
     };
@@ -75,6 +81,8 @@ export declare type SortAttr = {
     description: number;
 } | {
     config: number;
+} | {
+    style: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
