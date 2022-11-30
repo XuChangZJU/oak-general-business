@@ -29,7 +29,7 @@ const projection: EntityDict['application']['Selection']['data'] = {
             config: 1,
             style: 1,
         },
-    }
+    },
 };
 
 export class Application<

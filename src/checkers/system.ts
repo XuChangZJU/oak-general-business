@@ -17,6 +17,11 @@ const checkers: Checker<EntityDict, 'system', RuntimeCxt>[] = [
                         config: {},
                     });
                 }
+                if (!data.super) {
+                     Object.assign(data, {
+                         super: false,
+                     });
+                }
             };
             if (data instanceof Array) {
                 data.forEach((ele) => {

@@ -38,7 +38,7 @@ export async function getApplication<
                         config: 1,
                         style: 1,
                     },
-                }
+                },
             },
             filter: {
                 type,
@@ -51,9 +51,9 @@ export async function getApplication<
                             },
                             filter: {
                                 url: domain,
-                            }
-                        }
-                    }
+                            },
+                        },
+                    },
                 },
             },
         },
