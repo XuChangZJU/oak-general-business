@@ -16,14 +16,18 @@ const projection: EntityDict['application']['Selection']['data'] = {
     config: 1,
     type: 1,
     systemId: 1,
+    style: 1,
     system: {
         id: 1,
         name: 1,
         config: 1,
         platformId: 1,
+        style: 1,
+        folder: 1,
         platform: {
             id: 1,
             config: 1,
+            style: 1,
         },
     }
 };
