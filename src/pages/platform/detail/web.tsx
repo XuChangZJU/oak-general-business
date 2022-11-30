@@ -1,7 +1,7 @@
 import React from 'react';
-import { Tabs, Card } from 'antd';
+import { Tabs, Card, Descriptions } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
-import SystemList from '../../../pages/system/list';
+import SystemList from '../../system/list';
 
 import Style from './web.module.less';
 
@@ -26,7 +26,7 @@ export default function Render(
         }
     >
 ) {
-    const { oakId, config, name, tabValue } = props.data;
+    const { oakId, config, name, tabValue, description } = props.data;
     const { t, navigateBack, onTabClick } = props.methods;
 
     return (
@@ -40,9 +40,13 @@ export default function Render(
                         }}
                         items={[
                             {
-                                label: '平台概览',
+                                label: '平台信息',
                                 key: 'detail',
-                                children: <div>详情</div>,
+                                children: <Descriptions column={1} bordered>
+                                    <Descriptions.Item label="id">{oakId}</Descriptions.Item>
+                                    <Descriptions.Item label={t('platform:attr.name')}>{name}</Descriptions.Item>
+                                    <Descriptions.Item label={t('platform:attr.description')}>{description}</Descriptions.Item>
+                                </Descriptions>,
                             },
                             {
                                 label: '系统管理',

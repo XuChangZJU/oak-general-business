@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Row, Col, Switch, Input, Space } from 'antd';
+import { Button, Form, Row, Col, Switch, Input, Space, Tooltip } from 'antd';
 
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
@@ -16,6 +16,7 @@ export default function Render(
         {
             name: string;
             description: string;
+            folder: string;
             super: boolean;
             variant: 'inline' | 'alone' | 'dialog';
             showBack: boolean;
@@ -28,6 +29,7 @@ export default function Render(
     const {
         name,
         description,
+        folder,
         super: super2,
 
         variant,
@@ -65,6 +67,26 @@ export default function Render(
                                 />
                             </>
                         </Form.Item>
+                        <Form.Item
+                            label="目录"
+                            requiredMark
+                            name="folder"
+                            tooltip="目录属性应和开发目录下的对应目录名匹配，请谨慎修改"
+                            rules={[{
+                                required: true,
+                            }]}
+                        >
+                            <>
+                                <Input
+                                    onChange={(e) => {
+                                        update({
+                                            folder: e.target.value,
+                                        });
+                                    }}
+                                    value={folder}
+                                />
+                            </>
+                        </Form.Item>
                         <Form.Item label="描述" requiredMark name="description">
                             <>
                                 <Input.TextArea
@@ -80,6 +102,7 @@ export default function Render(
                         <Form.Item
                             label="是否为超级系统"
                             requiredMark
+                            tooltip="超级用户属性可能影响程序的运行逻辑，请谨慎修改"
                             name="super"
                         >
                             <>

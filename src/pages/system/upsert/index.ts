@@ -6,6 +6,7 @@ export default OakComponent({
         name: 1,
         config: 1,
         description: 1,
+        folder: 1,
         super: 1,
     },
     formData({ data }) {

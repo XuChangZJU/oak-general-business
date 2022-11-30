@@ -7,7 +7,12 @@ export default OakComponent({
         config: 1,
         description: 1,
         super: 1,
+        folder: 1,
         platformId: 1,
+        platform: {
+            id: 1,
+            name: 1,
+        },
         domain$system: {
             $entity: 'domain',
             data: {

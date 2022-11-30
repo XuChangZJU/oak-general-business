@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Card } from 'antd';
+import { Tabs, Card, Descriptions } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import ApplicationList from '../../../pages/application/list';
 import DomainList from '../../../pages/domain/list';
@@ -19,18 +19,23 @@ export default function Render(
             name: string;
             description: string;
             oakId: string;
+            folder: string;
             config: Config;
             tabValue: 'detail' | 'application_list' | 'domain_list';
+            super: boolean;
+            platform: {
+                name: string;
+            }
         },
         {
             onTabClick: (key: string) => void;
         }
     >
 ) {
-    const { oakId, config, name, tabValue } = props.data;
+    const { oakId, folder, name, tabValue, description, 'super': isSuper, platform } = props.data;
     const { t, navigateBack, onTabClick } = props.methods;
     return (
-        <PageHeader showBack={true} title="系统概览">
+        <PageHeader showBack={true} title="系统信息">
             <div className={Style.container}>
                 <Card title={name} bordered={false}>
                     <Tabs
@@ -42,7 +47,14 @@ export default function Render(
                             {
                                 label: '系统概览',
                                 key: 'detail',
-                                children: <div>详情</div>,
+                                children: <Descriptions column={1} bordered>
+                                <Descriptions.Item label="id">{oakId}</Descriptions.Item>
+                                <Descriptions.Item label={t('system:attr.name')}>{name}</Descriptions.Item>
+                                <Descriptions.Item label={t('system:attr.description')}>{description}</Descriptions.Item>
+                                <Descriptions.Item label={t('system:attr.super')}>{isSuper ? '是' : '否'}</Descriptions.Item>
+                                <Descriptions.Item label={t('system:attr.folder')}>{folder}</Descriptions.Item>
+                                <Descriptions.Item label={t('system:attr.platform') + t('platform:attr.name')}>{platform?.name}</Descriptions.Item>
+                            </Descriptions>,
                             },
                             {
                                 label: '应用管理',

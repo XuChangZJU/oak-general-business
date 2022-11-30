@@ -137,7 +137,7 @@ export default function Render(
                                                 goDetail(record.id);
                                             }}
                                         >
-                                            概览
+                                            详情
                                         </Button>
                                         <Button
                                             type="link"
