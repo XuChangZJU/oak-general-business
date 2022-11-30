@@ -3,6 +3,7 @@ import { Button, Form, Row, Col, Switch, Input, Space, Tooltip } from 'antd';
 
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
+import { set, get } from 'oak-domain/lib/utils/lodash';
 
 
 import { EntityDict } from '../../../general-app-domain';
@@ -20,6 +21,7 @@ export default function Render(
             super: boolean;
             variant: 'inline' | 'alone' | 'dialog';
             showBack: boolean;
+            style: EntityDict['system']['Schema']['style'];
         },
         {
             confirm: () => void;
@@ -31,11 +33,18 @@ export default function Render(
         description,
         folder,
         super: super2,
+        style,
 
         variant,
         showBack = true,
     } = props.data;
     const { t, update, navigateBack, confirm } = props.methods;
+
+    const setStyle = (path: string, value: string) => {
+        update({
+            style: set(style || {}, path, value),
+        });
+    };
 
     return (
         <Container variant={variant} showBack={showBack}>
@@ -72,9 +81,11 @@ export default function Render(
                             requiredMark
                             name="folder"
                             tooltip="目录属性应和开发目录下的对应目录名匹配，请谨慎修改"
-                            rules={[{
-                                required: true,
-                            }]}
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
                         >
                             <>
                                 <Input
@@ -115,6 +126,33 @@ export default function Render(
                                             super: checked,
                                         });
                                     }}
+                                />
+                            </>
+                        </Form.Item>
+
+                        <Form.Item
+                            label="主题色"
+                            requiredMark
+                            name="folder"
+                            tooltip="设置系统主题颜色"
+                            rules={[
+                                {
+                                    required: true,
+                                },
+                            ]}
+                        >
+                            <>
+                                <Input
+                                    onChange={(e) => {
+                                        setStyle(
+                                            'color.primary',
+                                            e.target.value
+                                        );
+                                    }}
+                                    value={get(
+                                        style || {},
+                                        'color.primary'
+                                    )}
                                 />
                             </>
                         </Form.Item>

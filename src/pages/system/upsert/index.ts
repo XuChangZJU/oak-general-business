@@ -8,6 +8,7 @@ export default OakComponent({
         description: 1,
         folder: 1,
         super: 1,
+        style: 1,
     },
     formData({ data }) {
         return data || {};
