@@ -27,8 +27,10 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
                 style={{
                     position: 'fixed',
                     bottom: 0,
-                    right: '45vw',
+                    right: 'calc(100% / 2 - 16px)',
                     zIndex: 999,
+                    width: 32,
+                    height: 32,
                     ...style,
                 }}
                 onClick={() => {
@@ -36,6 +38,7 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
                 }}
             />
             <Drawer
+                getContainer={false}
                 placement={placement}
                 open={visible}
                 onClose={() => {
@@ -43,6 +46,12 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
                 }}
                 title="Debug控制台"
                 footer={<></>}
+                rootStyle={{
+                    width: '100vw',
+                }}
+                bodyStyle={{
+                    width: '100vw',
+                }}
             >
                 <input
                     type="file"
