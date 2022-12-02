@@ -15,18 +15,18 @@ export function composeFileUrl(
     >,
     config?: Config,
     style?: string, //图片样式后缀 比如 七牛云支持url带裁剪后缀
-) {
+): string {
     const { type, bucket, filename, origin, extra1, objectId, extension, entity } =
-        extraFile;
+        extraFile || {};
     if (extra1) {
         // 有extra1就用extra1 可能File对象 可能外部链接
         if (typeof extra1 === 'string') {
             return extra1;
         }
-        if ((extra1 as any) instanceof File) {
-            return getFileURL(extra1);
+        if ((extra1 as File) instanceof File) {
+            return getFileURL(extra1) || '';
         }
-        return extra1;
+        return extra1 || '';
     }
     if (config && config.Cos) {
         const { domain, protocol } =

@@ -31,7 +31,7 @@ export function initialize<
         basicFeatures.cache,
         basicFeatures.localStorage
     );
-    const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
+    const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application);
     const config = new Config<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
     return {
         token,
