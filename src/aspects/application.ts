@@ -34,6 +34,7 @@ export async function getApplication<
                     platformId: 1,
                     style: 1,
                     folder: 1,
+                    super: 1,
                     platform: {
                         id: 1,
                         config: 1,

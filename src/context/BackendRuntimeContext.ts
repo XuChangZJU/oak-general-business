@@ -22,35 +22,40 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
             try {
                 const { a: appId, t: tokenValue } = data;
                 if (appId) {
-                    const result = await this.select('application', {
-                        data: {
-                            id: 1,
-                            name: 1,
-                            config: 1,
-                            type: 1,
-                            systemId: 1,
-                            style: 1,
-                            system: {
+                    const result = await this.select(
+                        'application',
+                        {
+                            data: {
                                 id: 1,
                                 name: 1,
                                 config: 1,
-                                platformId: 1,
+                                type: 1,
+                                systemId: 1,
                                 style: 1,
-                                folder: 1,
-                                platform: {
+                                system: {
                                     id: 1,
+                                    name: 1,
                                     config: 1,
+                                    platformId: 1,
                                     style: 1,
+                                    folder: 1,
+                                    super: 1,
+                                    platform: {
+                                        id: 1,
+                                        config: 1,
+                                        style: 1,
+                                    },
                                 },
                             },
+                            filter: {
+                                id: appId,
+                            },
                         },
-                        filter: {
-                            id: appId,
-                        },
-                    }, {
-                        dontCollect: true,
-                        blockTrigger: true,
-                    });
+                        {
+                            dontCollect: true,
+                            blockTrigger: true,
+                        }
+                    );
                     assert(result.length > 0, `构建BackendRuntimeContext对应appId「${appId}」找不到application`);
                     this.application = result[0];
                 }
