@@ -19,4 +19,5 @@ export declare class BackendRuntimeContext<ED extends EntityDict> extends AsyncC
     getCurrentUserId(allowUnloggedIn?: boolean): string;
     toString(): string;
     isRoot(): boolean;
+    sendMessage(data: ED['message']['CreateSingle']['data']): Promise<import("oak-domain/lib/types").OperationResult<ED>>;
 }

@@ -177,4 +177,13 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         }
         return !!this.amIRoot;
     }
+
+    sendMessage(data: ED['message']['CreateSingle']['data']) {
+        return this.operate('message', {
+            action: 'create',
+            data,
+        }, {
+            dontCollect: true,
+        });
+    }
 }
