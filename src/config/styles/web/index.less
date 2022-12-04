@@ -1,275 +1,44 @@
-
-.narrow-scrollbar::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  background: transparent;
-}
-.narrow-scrollbar::-webkit-scrollbar-thumb {
-  border-radius: var(--oak-radius-medium);
-  border: 2px solid transparent;
-  background-clip: content-box;
-  background-color: var(--oak-scrollbar-color);
-}
-.t-fake-arrow path {
-  -webkit-transition: d 0.2s;
-  transition: d 0.2s;
-  stroke: currentcolor;
-}
-.t-fake-arrow--active path {
-  d: path("M3.75 10.2002L7.99274 5.7998L12.2361 10.0425");
-}
-
 :root,
 :root[theme-mode="light"] {
-  --oak-brand-color-1: #ecf2fe;
-  --oak-brand-color-2: #d4e3fc;
-  --oak-brand-color-3: #bbd3fb;
-  --oak-brand-color-4: #96bbf8;
-  --oak-brand-color-5: #699ef5;
-  --oak-brand-color-6: #4787f0;
-  --oak-brand-color-7: #266fe8;
-  --oak-brand-color-8: #0052d9;
-  --oak-brand-color-9: #0034b5;
-  --oak-brand-color-10: #001f97;
-  --oak-warning-color-1: #fef3e6;
-  --oak-warning-color-2: #f9e0c7;
-  --oak-warning-color-3: #f7c797;
-  --oak-warning-color-4: #f2995f;
-  --oak-warning-color-5: #ed7b2f;
-  --oak-warning-color-6: #d35a21;
-  --oak-warning-color-7: #ba431b;
-  --oak-warning-color-8: #9e3610;
-  --oak-warning-color-9: #842b0b;
-  --oak-warning-color-10: #5a1907;
-  --oak-error-color-1: #fdecee;
-  --oak-error-color-2: #f9d7d9;
-  --oak-error-color-3: #f8b9be;
-  --oak-error-color-4: #f78d94;
-  --oak-error-color-5: #f36d78;
-  --oak-error-color-6: #e34d59;
-  --oak-error-color-7: #c9353f;
-  --oak-error-color-8: #b11f26;
-  --oak-error-color-9: #951114;
-  --oak-error-color-10: #680506;
-  --oak-success-color-1: #e8f8f2;
-  --oak-success-color-2: #bcebdc;
-  --oak-success-color-3: #85dbbe;
-  --oak-success-color-4: #48c79c;
-  --oak-success-color-5: #00a870;
-  --oak-success-color-6: #078d5c;
-  --oak-success-color-7: #067945;
-  --oak-success-color-8: #056334;
-  --oak-success-color-9: #044f2a;
-  --oak-success-color-10: #033017;
-  --oak-gray-color-1: #f3f3f3;
-  --oak-gray-color-2: #eee;
-  --oak-gray-color-3: #e7e7e7;
-  --oak-gray-color-4: #dcdcdc;
-  --oak-gray-color-5: #c5c5c5;
-  --oak-gray-color-6: #a6a6a6;
-  --oak-gray-color-7: #8b8b8b;
-  --oak-gray-color-8: #777;
-  --oak-gray-color-9: #5e5e5e;
-  --oak-gray-color-10: #4b4b4b;
-  --oak-gray-color-11: #383838;
-  --oak-gray-color-12: #2c2c2c;
-  --oak-gray-color-13: #242424;
-  --oak-gray-color-14: #181818;
-  --oak-font-white-1: #ffffff;
-  --oak-font-white-2: rgba(255, 255, 255, 0.55);
-  --oak-font-white-3: rgba(255, 255, 255, 0.35);
-  --oak-font-white-4: rgba(255, 255, 255, 0.22);
-  --oak-font-gray-1: rgba(0, 0, 0, 0.9);
-  --oak-font-gray-2: rgba(0, 0, 0, 0.6);
-  --oak-font-gray-3: rgba(0, 0, 0, 0.4);
-  --oak-font-gray-4: rgba(0, 0, 0, 0.26);
-  --oak-brand-color: var(--oak-brand-color-8);
-  --oak-warning-color: var(--oak-warning-color-5);
-  --oak-error-color: var(--oak-error-color-6);
-  --oak-success-color: var(--oak-success-color-5);
-  --oak-brand-color-hover: var(--oak-brand-color-7);
-  --oak-brand-color-focus: var(--oak-brand-color-2);
-  --oak-brand-color-active: var(--oak-brand-color-9);
-  --oak-brand-color-disabled: var(--oak-brand-color-3);
-  --oak-brand-color-light: var(--oak-brand-color-1);
-  --oak-warning-color-hover: var(--oak-warning-color-4);
-  --oak-warning-color-focus: var(--oak-warning-color-2);
-  --oak-warning-color-active: var(--oak-warning-color-6);
-  --oak-warning-color-disabled: var(--oak-warning-color-3);
-  --oak-warning-color-light: var(--oak-warning-color-1);
-  --oak-error-color-hover: var(--oak-error-color-5);
-  --oak-error-color-focus: var(--oak-error-color-2);
-  --oak-error-color-active: var(--oak-error-color-7);
-  --oak-error-color-disabled: var(--oak-error-color-3);
-  --oak-error-color-light: var(--oak-error-color-1);
-  --oak-success-color-hover: var(--oak-success-color-4);
-  --oak-success-color-focus: var(--oak-success-color-2);
-  --oak-success-color-active: var(--oak-success-color-6);
-  --oak-success-color-disabled: var(--oak-success-color-3);
-  --oak-success-color-light: var(--oak-success-color-1);
-  --oak-mask-active: rgba(0, 0, 0, 0.6);
-  --oak-mask-disabled: rgba(255, 255, 255, 0.6);
-  --oak-bg-color-page: var(--oak-gray-color-2);
-  --oak-bg-color-container: #fff;
-  --oak-bg-color-container-hover: var(--oak-gray-color-1);
-  --oak-bg-color-container-active: var(--oak-gray-color-3);
-  --oak-bg-color-container-select: #fff;
-  --oak-bg-color-secondarycontainer: var(--oak-gray-color-1);
-  --oak-bg-color-secondarycontainer-hover: var(--oak-gray-color-2);
-  --oak-bg-color-secondarycontainer-active: var(--oak-gray-color-4);
-  --oak-bg-color-component: var(--oak-gray-color-3);
-  --oak-bg-color-component-hover: var(--oak-gray-color-4);
-  --oak-bg-color-component-active: var(--oak-gray-color-6);
-  --oak-bg-color-component-disabled: var(--oak-gray-color-2);
-  --oak-bg-color-specialcomponent: #fff;
-  --oak-text-color-primary: var(--oak-font-gray-1);
-  --oak-text-color-secondary: var(--oak-font-gray-2);
-  --oak-text-color-placeholder: var(--oak-font-gray-3);
-  --oak-text-color-disabled: var(--oak-font-gray-4);
-  --oak-text-color-anti: #fff;
-  --oak-text-color-brand: var(--oak-brand-color-8);
-  --oak-text-color-link: var(--oak-brand-color-8);
-  --oak-border-level-1-color: var(--oak-gray-color-3);
-  --oak-component-stroke: var(--oak-gray-color-3);
-  --oak-border-level-2-color: var(--oak-gray-color-4);
-  --oak-component-border: var(--oak-gray-color-4);
-  --oak-shadow-1: 0 1px 10px rgba(0, 0, 0, 0.05), 0 4px 5px rgba(0, 0, 0, 8%), 0 2px 4px -1px rgba(0, 0, 0, 12%);
-  --oak-shadow-2: 0 3px 14px 2px rgba(0, 0, 0, 0.05), 0 8px 10px 1px rgba(0, 0, 0, 6%), 0 5px 5px -3px rgba(0, 0, 0, 10%);
-  --oak-shadow-3: 0 6px 30px 5px rgba(0, 0, 0, 0.05), 0 16px 24px 2px rgba(0, 0, 0, 4%), 0 8px 10px -5px rgba(0, 0, 0, 8%);
-  --oak-shadow-inset-top: inset 0 0.5px 0 #dcdcdc;
-  --oak-shadow-inset-right: inset 0.5px 0 0 #dcdcdc;
-  --oak-shadow-inset-bottom: inset 0 -0.5px 0 #dcdcdc;
-  --oak-shadow-inset-left: inset -0.5px 0 0 #dcdcdc;
-  --oak-table-shadow-color: rgba(0, 0, 0, 0.08);
-  --oak-scrollbar-color: rgba(0, 0, 0, 0.1);
-  --oak-scrollbar-hover-color: rgba(0, 0, 0, 0.3);
-  --oak-scroll-track-color: #fff;
+
+  --oak-color-primary: '#0052d9';
+  --oak-color-error: '#e34d59';
+  --oak-color-warning: '#ed7b2f';
+  --oak-color-success: '#00a870';
+  --oak-color-info: '#d4e3fc';
+ 
+
+  --oak-bg-color-page: '#eee';
+  --oak-bg-color-container: '#ffffff';
+  --oak-bg-color-component: '#e7e7e7';
+
+
+  --oak-text-color-primary: rgba(0, 0, 0, 0.9);
+  --oak-text-color-secondary: rgba(0, 0, 0, 0.6);
+  --oak-text-color-placeholder: rgba(0, 0, 0, 0.4);
+  --oak-text-color-disabled: rgba(0, 0, 0, 0.26);
+
+  --oak-border-color: '#e7e7e7';
 }
 
+// 黑暗主题色
 :root[theme-mode="dark"] {
-  --oak-brand-color-1: #1b2f51;
-  --oak-brand-color-2: #173463;
-  --oak-brand-color-3: #143975;
-  --oak-brand-color-4: #103d88;
-  --oak-brand-color-5: #0d429a;
-  --oak-brand-color-6: #054bbe;
-  --oak-brand-color-7: #2667d4;
-  --oak-brand-color-8: #4582e6;
-  --oak-brand-color-9: #699ef5;
-  --oak-brand-color-10: #96bbf8;
-  --oak-warning-color-1: #4f2a1d;
-  --oak-warning-color-2: #582f21;
-  --oak-warning-color-3: #733c23;
-  --oak-warning-color-4: #a75d2b;
-  --oak-warning-color-5: #cf6e2d;
-  --oak-warning-color-6: #dc7633;
-  --oak-warning-color-7: #e8935c;
-  --oak-warning-color-8: #ecbf91;
-  --oak-warning-color-9: #eed7bf;
-  --oak-warning-color-10: #f3e9dc;
-  --oak-error-color-1: #472324;
-  --oak-error-color-2: #5e2a2d;
-  --oak-error-color-3: #703439;
-  --oak-error-color-4: #83383e;
-  --oak-error-color-5: #a03f46;
-  --oak-error-color-6: #c64751;
-  --oak-error-color-7: #de6670;
-  --oak-error-color-8: #ec888e;
-  --oak-error-color-9: #edb1b6;
-  --oak-error-color-10: #eeced0;
-  --oak-success-color-1: #193a2a;
-  --oak-success-color-2: #1a4230;
-  --oak-success-color-3: #17533d;
-  --oak-success-color-4: #0d7a55;
-  --oak-success-color-5: #059465;
-  --oak-success-color-6: #43af8a;
-  --oak-success-color-7: #46bf96;
-  --oak-success-color-8: #80d2b6;
-  --oak-success-color-9: #b4e1d3;
-  --oak-success-color-10: #deede8;
-  --oak-gray-color-1: #f3f3f3;
-  --oak-gray-color-2: #eee;
-  --oak-gray-color-3: #e7e7e7;
-  --oak-gray-color-4: #dcdcdc;
-  --oak-gray-color-5: #c5c5c5;
-  --oak-gray-color-6: #a6a6a6;
-  --oak-gray-color-7: #8b8b8b;
-  --oak-gray-color-8: #777;
-  --oak-gray-color-9: #5e5e5e;
-  --oak-gray-color-10: #4b4b4b;
-  --oak-gray-color-11: #383838;
-  --oak-gray-color-12: #2c2c2c;
-  --oak-gray-color-13: #242424;
-  --oak-gray-color-14: #181818;
-  --oak-font-white-1: rgba(255, 255, 255, 0.9);
-  --oak-font-white-2: rgba(255, 255, 255, 0.55);
-  --oak-font-white-3: rgba(255, 255, 255, 0.35);
-  --oak-font-white-4: rgba(255, 255, 255, 0.22);
-  --oak-font-gray-1: rgba(0, 0, 0, 0.9);
-  --oak-font-gray-2: rgba(0, 0, 0, 0.6);
-  --oak-font-gray-3: rgba(0, 0, 0, 0.4);
-  --oak-font-gray-4: rgba(0, 0, 0, 0.26);
-  --oak-brand-color: var(--oak-brand-color-8);
-  --oak-warning-color: var(--oak-warning-color-5);
-  --oak-error-color: var(--oak-error-color-6);
-  --oak-success-color: var(--oak-success-color-5);
-  --oak-brand-color-hover: var(--oak-brand-color-7);
-  --oak-brand-color-focus: var(--oak-brand-color-2);
-  --oak-brand-color-active: var(--oak-brand-color-9);
-  --oak-brand-color-disabled: var(--oak-brand-color-3);
-  --oak-brand-color-light: var(--oak-brand-color-1);
-  --oak-warning-color-hover: var(--oak-warning-color-4);
-  --oak-warning-color-focus: var(--oak-warning-color-2);
-  --oak-warning-color-active: var(--oak-warning-color-6);
-  --oak-warning-color-disabled: var(--oak-warning-color-3);
-  --oak-warning-color-light: var(--oak-warning-color-1);
-  --oak-error-color-hover: var(--oak-error-color-5);
-  --oak-error-color-focus: var(--oak-error-color-2);
-  --oak-error-color-active: var(--oak-error-color-7);
-  --oak-error-color-disabled: var(--oak-error-color-3);
-  --oak-error-color-light: var(--oak-error-color-1);
-  --oak-success-color-hover: var(--oak-success-color-4);
-  --oak-success-color-focus: var(--oak-success-color-2);
-  --oak-success-color-active: var(--oak-success-color-6);
-  --oak-success-color-disabled: var(--oak-success-color-3);
-  --oak-success-color-light: var(--oak-success-color-1);
-  --oak-mask-active: rgba(0, 0, 0, 0.4);
-  --oak-mask-disabled: rgba(0, 0, 0, 0.6);
-  --oak-bg-color-page: var(--oak-gray-color-14);
-  --oak-bg-color-container: var(--oak-gray-color-13);
-  --oak-bg-color-container-hover: var(--oak-gray-color-12);
-  --oak-bg-color-container-active: var(--oak-gray-color-10);
-  --oak-bg-color-container-select: var(--oak-gray-color-9);
-  --oak-bg-color-secondarycontainer: var(--oak-gray-color-12);
-  --oak-bg-color-secondarycontainer-hover: var(--oak-gray-color-11);
-  --oak-bg-color-secondarycontainer-active: var(--oak-gray-color-9);
-  --oak-bg-color-component: var(--oak-gray-color-11);
-  --oak-bg-color-component-hover: var(--oak-gray-color-10);
-  --oak-bg-color-component-active: var(--oak-gray-color-9);
-  --oak-bg-color-component-disabled: var(--oak-gray-color-12);
-  --oak-bg-color-specialcomponent: transparent;
-  --oak-text-color-primary: var(--oak-font-white-1);
-  --oak-text-color-secondary: var(--oak-font-white-2);
-  --oak-text-color-placeholder: var(--oak-font-white-3);
-  --oak-text-color-disabled: var(--oak-font-white-4);
-  --oak-text-color-anti: #fff;
-  --oak-text-color-brand: var(--oak-brand-color-8);
-  --oak-text-color-link: var(--oak-brand-color-8);
-  --oak-border-level-1-color: var(--oak-gray-color-11);
-  --oak-component-stroke: var(--oak-gray-color-11);
-  --oak-border-level-2-color: var(--oak-gray-color-9);
-  --oak-component-border: var(--oak-gray-color-9);
-  --oak-shadow-1: 0 4px 6px rgba(0, 0, 0, 0.06), 0 1px 10px rgba(0, 0, 0, 8%), 0 2px 4px rgba(0, 0, 0, 12%);
-  --oak-shadow-2: 0 8px 10px rgba(0, 0, 0, 0.12), 0 3px 14px rgba(0, 0, 0, 10%), 0 5px 5px rgba(0, 0, 0, 16%);
-  --oak-shadow-3: 0 16px 24px rgba(0, 0, 0, 0.14), 0 6px 30px rgba(0, 0, 0, 12%), 0 8px 10px rgba(0, 0, 0, 20%);
-  --oak-shadow-inset-top: inset 0 0.5px 0 #5e5e5e;
-  --oak-shadow-inset-right: inset 0.5px 0 0 #5e5e5e;
-  --oak-shadow-inset-bottom: inset 0 -0.5px 0 #5e5e5e;
-  --oak-shadow-inset-left: inset -0.5px 0 0 #5e5e5e;
-  --oak-table-shadow-color: rgba(0, 0, 0, 0.55);
-  --oak-scrollbar-color: rgba(255, 255, 255, 0.1);
-  --oak-scrollbar-hover-color: rgba(255, 255, 255, 0.3);
-  --oak-scroll-track-color: #333;
+  --oak-color-primary: '#4582e6';
+  --oak-color-error: '#c64751';
+  --oak-color-warning: '#cf6e2d';
+  --oak-color-success: '#059465';
+  --oak-color-info: '#173463';
+
+  --oak-bg-color-page: '#181818';
+  --oak-bg-color-container: '#242424';
+  --oak-bg-color-component: '#383838';
+
+  --oak-text-color-primary: #ffffff;
+  --oak-text-color-secondary: rgba(255, 255, 255, 0.55);
+  --oak-text-color-placeholder: rgba(255, 255, 255, 0.35);
+  --oak-text-color-disabled: rgba(255, 255, 255, 0.22);
+
+  --oak-border-color: '#383838';
 }
 
 :root {
@@ -285,68 +54,37 @@
 :root {
   --oak-font-family: PingFang SC, Microsoft YaHei, Arial Regular;
   --oak-font-family-medium: PingFang SC, Microsoft YaHei, Arial Medium;
-  --oak-font-size-link-small: 12px;
-  --oak-font-size-link-medium: 14px;
-  --oak-font-size-link-large: 16px;
-  --oak-font-size-mark-small: 12px;
-  --oak-font-size-mark-medium: 14px;
-  --oak-font-size-body-small: 12px;
-  --oak-font-size-body-medium: 14px;
-  --oak-font-size-body-large: 16px;
-  --oak-font-size-title-small: 14px;
-  --oak-font-size-title-medium: 16px;
-  --oak-font-size-title-large: 20px;
-  --oak-font-size-headline-small: 24px;
-  --oak-font-size-headline-medium: 28px;
-  --oak-font-size-headline-large: 36px;
-  --oak-font-size-display-medium: 48px;
-  --oak-font-size-display-large: 64px;
-  --oak-line-height-link-small: 20px;
-  --oak-line-height-link-medium: 22px;
-  --oak-line-height-link-large: 24px;
-  --oak-line-height-mark-small: 20px;
-  --oak-line-height-mark-medium: 22px;
-  --oak-line-height-body-small: 20px;
-  --oak-line-height-body-medium: 22px;
-  --oak-line-height-body-large: 24px;
-  --oak-line-height-title-small: 22px;
-  --oak-line-height-title-medium: 24px;
-  --oak-line-height-title-large: 28px;
-  --oak-line-height-headline-small: 32px;
-  --oak-line-height-headline-medium: 36px;
-  --oak-line-height-headline-large: 44px;
-  --oak-line-height-display-medium: 56px;
-  --oak-line-height-display-large: 72px;
-  --oak-font-link-small: var(--oak-font-size-link-small) /
-    var(--oak-line-height-link-small) var(--oak-font-family);
-  --oak-font-link-medium: var(--oak-font-size-link-medium) /
-    var(--oak-line-height-link-medium) var(--oak-font-family);
-  --oak-font-link-large: var(--oak-font-size-link-large) /
-    var(--oak-line-height-link-large) var(--oak-font-family);
-  --oak-font-mark-small: 600 var(--oak-font-size-mark-small) /
-    var(--oak-line-height-mark-small) var(--oak-font-family);
-  --oak-font-mark-medium: 600 var(--oak-font-size-mark-medium) /
-    var(--oak-line-height-mark-medium) var(--oak-font-family);
-  --oak-font-body-small: var(--oak-font-size-body-small) /
-    var(--oak-line-height-body-small) var(--oak-font-family);
-  --oak-font-body-medium: var(--oak-font-size-body-medium) /
-    var(--oak-line-height-body-medium) var(--oak-font-family);
-  --oak-font-body-large: var(--oak-font-size-body-large) /
-    var(--oak-line-height-body-large) var(--oak-font-family);
-  --oak-font-title-small: 600 var(--oak-font-size-title-small) /
-    var(--oak-line-height-title-small) var(--oak-font-family);
-  --oak-font-title-medium: 600 var(--oak-font-size-title-medium) /
-    var(--oak-line-height-title-medium) var(--oak-font-family);
-  --oak-font-title-large: 600 var(--oak-font-size-title-large) /
-    var(--oak-line-height-title-large) var(--oak-font-family);
-  --oak-font-headline-small: 600 var(--oak-font-size-headline-small) /
-    var(--oak-line-height-headline-small) var(--oak-font-family);
-  --oak-font-headline-medium: 600 var(--oak-font-size-headline-medium) /
-    var(--oak-line-height-headline-medium) var(--oak-font-family);
-  --oak-font-headline-large: 600 var(--oak-font-size-headline-large) /
-    var(--oak-line-height-headline-large) var(--oak-font-family);
-  --oak-font-display-medium: 600 var(--oak-font-size-display-medium) /
-    var(--oak-line-height-display-medium) var(--oak-font-family);
-  --oak-font-display-large: 600 var(--oak-font-size-display-large) /
-    var(--oak-line-height-display-large) var(--oak-font-family);
+  // --oak-font-size-link-small: 12px;
+  // --oak-font-size-link-medium: 14px;
+  // --oak-font-size-link-large: 16px;
+  // --oak-font-size-mark-small: 12px;
+  // --oak-font-size-mark-medium: 14px;
+  // --oak-font-size-body-small: 12px;
+  // --oak-font-size-body-medium: 14px;
+  // --oak-font-size-body-large: 16px;
+  // --oak-font-size-title-small: 14px;
+  // --oak-font-size-title-medium: 16px;
+  // --oak-font-size-title-large: 20px;
+  // --oak-font-size-headline-small: 24px;
+  // --oak-font-size-headline-medium: 28px;
+  // --oak-font-size-headline-large: 36px;
+  // --oak-font-size-display-medium: 48px;
+  // --oak-font-size-display-large: 64px;
+  // --oak-line-height-link-small: 20px;
+  // --oak-line-height-link-medium: 22px;
+  // --oak-line-height-link-large: 24px;
+  // --oak-line-height-mark-small: 20px;
+  // --oak-line-height-mark-medium: 22px;
+  // --oak-line-height-body-small: 20px;
+  // --oak-line-height-body-medium: 22px;
+  // --oak-line-height-body-large: 24px;
+  // --oak-line-height-title-small: 22px;
+  // --oak-line-height-title-medium: 24px;
+  // --oak-line-height-title-large: 28px;
+  // --oak-line-height-headline-small: 32px;
+  // --oak-line-height-headline-medium: 36px;
+  // --oak-line-height-headline-large: 44px;
+  // --oak-line-height-display-medium: 56px;
+  // --oak-line-height-display-large: 72px;
+
 }
