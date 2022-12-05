@@ -1,10 +1,9 @@
 {
     "navigationBarTitleText": "个人信息",
     "usingComponents": {
-        "component-menu": "@project/components/token/menu/index",
-        "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
-        "t-cell": "../../../miniprogram_npm/tdesign/cell/cell",
-        "t-button": "../../../miniprogram_npm/tdesign/button/button",
-        "t-avatar": "../../../miniprogram_npm/tdesign/avatar/avatar"
+        "oak-icon": "../../../miniprogram_npm/oak-icon/index",
+        "wux-cell": "../../../miniprogram_npm/wuxui/cell/index",
+        "wux-button": "../../../miniprogram_npm/wuxui/button/index",
+        "wux-avatar": "../../../miniprogram_npm/wuxui/avatar/index"
     }
 }
