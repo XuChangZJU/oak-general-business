@@ -1,12 +1,14 @@
-<t-button bind:tap="handlePopup" t-class="btn-popup" variant="text" theme="primary" icon="chevron-up" shape="circle"></t-button>
-<t-popup visible="{{visible}}" bind:visible-change="onVisibleChange" placement="bottom" close-btn="true">
+<view bind:tap="handlePopup" class="btn-popup">
+    <oak-icon type="fas" name="chevron-up" />
+</view>
+<wux-popup visible="{{visible}}" bind:close="onClose" position="bottom" closable="true">
     <view class="block block--bottom">
         <view class="btn-box">
-            <t-button bind:tap="printRunningTree" t-class="btn-item" theme="primary" size="small" shape="circle">R</t-button>
-            <t-button bind:tap="printDebugStore" t-class="btn-item" theme="primary" size="small" shape="circle">S</t-button>
-            <t-button bind:tap="printCachedStore" t-class="btn-item" theme="primary" size="small" shape="circle">C</t-button>
-            <t-button bind:tap="showDialog" t-class="btn-item" theme="danger" size="small" shape="circle">Reset</t-button>
+            <wux-button bind:click="printRunningTree" wux-class="btn-item" type="royal" size="small" shape="circle">R</wux-button>
+            <wux-button bind:click="printDebugStore" wux-class="btn-item" type="royal" size="small" shape="circle">S</wux-button>
+            <wux-button bind:click="printCachedStore" wux-class="btn-item" type="royal" size="small" shape="circle">C</wux-button>
+            <wux-button bind:click="showDialog" wux-class="btn-item" type="assertive" size="small" shape="circle">Reset</wux-button>
         </view>
     </view>
-</t-popup>
-<t-dialog visible="{{dialogVisible}}" title="重置数据" content="重置后，原来的数据不可恢复"  cancel-btn="取消" confirm-btn="确定" bind:cancel="closeDialog" bind:confirm="handleReset" />
+</wux-popup>
+<wux-dialog visible="{{dialogVisible}}" title="重置数据" content="重置后，原来的数据不可恢复"  cancel-btn="取消" confirm-btn="确定" bind:cancel="closeDialog" bind:confirm="handleReset" />

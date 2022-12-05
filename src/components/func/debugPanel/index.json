@@ -1,8 +1,9 @@
 {
     "component": true,
     "usingComponents": {
-        "t-button": "../../../miniprogram_npm/tdesign/button/button",
-        "t-popup": "../../../miniprogram_npm/tdesign/popup/popup",
-        "t-dialog": "../../../miniprogram_npm/tdesign/dialog/dialog"
+        "oak-icon": "../../../miniprogram_npm/oak-icon/index",
+        "wux-button": "../../../miniprogram_npm/wuxui/button/index",
+        "wux-popup": "../../../miniprogram_npm/wuxui/popup/index",
+        "wux-dialog": "../../../miniprogram_npm/wuxui/dialog/index"
     }
 }

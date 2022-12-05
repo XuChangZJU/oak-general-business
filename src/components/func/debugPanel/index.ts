@@ -30,6 +30,9 @@ export default OakComponent({
         onVisibleChange(e: any) {
             this.setVisible(e.detail.visible);
         },
+        onClose() {
+            this.setVisible(false);
+        },
         //小程序重置
         handleReset() {
             this.resetInitialData();
