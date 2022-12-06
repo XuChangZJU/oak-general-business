@@ -39,7 +39,7 @@ export default OakComponent({
             const { entity, entityId } = this.props;
             const { userRelations } = this.state;
             if (checked) {
-                const userRelation = userRelations!.find(
+                const userRelation = userRelations?.find(
                     (ele: { relation: string, id: string, $$deleteAt$$: number }) => ele.relation === relation
                 );
                 if (userRelation) {
