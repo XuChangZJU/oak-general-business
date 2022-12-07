@@ -5,6 +5,8 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Index, ActionDef } from 'oak-domain/lib/types';
 
+type MessageType = 'adminNotification';
+
 export interface Schema extends EntityShape {
     user: User;
     system: System;
