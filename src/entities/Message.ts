@@ -31,11 +31,16 @@ const IActionDef: ActionDef<IAction, IState> = {
     is: 'sending',
 };
 
-const locale: LocaleDef<Schema, Action, '', {
-    iState: IState;
-    weight: Schema['weight'],
-    type: Schema['type'],
-}> = {
+const locale: LocaleDef<
+    Schema,
+    Action,
+    '',
+    {
+        iState: IState;
+        weight: Schema['weight'];
+        type: Schema['type'];
+    }
+> = {
     zh_CN: {
         attr: {
             desc: '描述',
@@ -46,7 +51,7 @@ const locale: LocaleDef<Schema, Action, '', {
             iState: '状态',
             props: '属性',
             params: '渠道定制参数',
-            data: '透传数据'
+            data: '透传数据',
         },
         action: {
             succeed: '成功',
@@ -65,8 +70,9 @@ const locale: LocaleDef<Schema, Action, '', {
                 data: '数据',
             },
             type: {
-                adminNotification: '管理员通知'
-            }
-        }
+                adminNotification: '系统通知',
+                conversationMessage: '客服消息',
+            },
+        },
     },
 };

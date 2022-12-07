@@ -2,68 +2,65 @@ import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { Trigger, CreateTrigger, UpdateTrigger } from 'oak-domain/lib/types/Trigger';
 import { EntityDict } from '../general-app-domain/EntityDict';
 import { CreateOperationData as CreateMessageData } from '../general-app-domain/Message/Schema';
-import { OakRowInconsistencyException, OakExternalException } from 'oak-domain/lib/types';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { RuntimeCxt } from '../types/RuntimeCxt';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { Schema as MessageSentSchema } from '../entities/MessageSent';
-import { OperateOption } from 'oak-domain/lib/types';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import message from '../components/message';
 
 export const MessageDisperse = {
-    [1]: {
-        conversationMessage: {
-            public: (message: CreateMessageData) => {
-                return message;
-            }
-        },
-        adminNotification: {
-            public: (message: CreateMessageData) => {
-                return message;
-            }
-        },
-    },
-    [10]: {
-        conversationMessage: {
-            public: (message: CreateMessageData) => {
-                return message;
-            }
-        },
-        adminNotification: {
-            public: (message: CreateMessageData) => {
-                return message;
-            }
-        },
-    }
+    // [1]: {
+    //     conversationMessage: {
+    //         public: (message: CreateMessageData) => {
+    //             return message;
+    //         }
+    //     },
+    //     adminNotification: {
+    //         public: (message: CreateMessageData) => {
+    //             return message;
+    //         }
+    //     },
+    // },
+    // [10]: {
+    //     conversationMessage: {
+    //         public: (message: CreateMessageData) => {
+    //             return message;
+    //         }
+    //     },
+    //     adminNotification: {
+    //         public: (message: CreateMessageData) => {
+    //             return message;
+    //         }
+    //     },
+    // }
 }
 
 async function tryAddMessageSent(message: CreateMessageData, channel: MessageSentSchema['channel'], context: BackendRuntimeContext<EntityDict>) {
-    const { systemId, type } = message;
-    const disperse = MessageDisperse && MessageDisperse[systemId] && MessageDisperse[systemId][type] && MessageDisperse[systemId][type][channel];
-    if (!disperse) {
-        return 0;
-    }
+    // const { systemId, type } = message;
+    // const disperse = MessageDisperse && MessageDisperse[systemId] && MessageDisperse[systemId][type] && MessageDisperse[systemId][type][channel];
+    // if (!disperse) {
+    //     return 0;
+    // }
 
-    // 有配置也未必一定能发，比如说用户没有注册手机号，则无法发gsm
-    const data = disperse(message);
-    if (!data) {
-        return 0;
-    }
+    // // 有配置也未必一定能发，比如说用户没有注册手机号，则无法发gsm
+    // const data = disperse(message);
+    // if (!data) {
+    //     return 0;
+    // }
 
-    const messageSent = {
-        messageId: message.id,
-        iState: 'sending',
-        channel,
-    };
-    await context.operate('messageSent', {
-        id: await generateNewIdAsync(),
-        action: 'create',
-        data: {
-            id: await generateNewId(),
-            ...messageSent,
-        } as EntityDict['messageSent']['OpSchema'],
-    }, {});
+    // const messageSent = {
+    //     messageId: message.id,
+    //     iState: 'sending',
+    //     channel,
+    // };
+    // await context.operate('messageSent', {
+    //     id: await generateNewIdAsync(),
+    //     action: 'create',
+    //     data: {
+    //         id: await generateNewId(),
+    //         ...messageSent,
+    //     } as EntityDict['messageSent']['OpSchema'],
+    // }, {});
     return 1;
 }
 
