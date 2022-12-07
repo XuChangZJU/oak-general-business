@@ -10,8 +10,9 @@ type MessageType = 'adminNotification';
 export interface Schema extends EntityShape {
     user: User;
     system: System;
-    type: 'adminNotification';
+    type: 'adminNotification' | 'conversationMessage';
     weight: 'high' | 'medium' | 'low' | 'data';
+    desc: Text;
     props: Object;
     data: Object;
     params: Object;
@@ -37,6 +38,7 @@ const locale: LocaleDef<Schema, Action, '', {
 }> = {
     zh_CN: {
         attr: {
+            desc: '描述',
             user: '关联用户',
             system: '系统',
             type: '消息类型',
