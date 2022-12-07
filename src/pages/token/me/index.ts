@@ -81,6 +81,8 @@ export default OakComponent({
         const isRoot =
             player?.userRole$user &&
             player.userRole$user[0]?.roleId === ROOT_ROLE_ID;
+            
+        const mobileText = mobileCount && mobileCount > 1 ? `${mobileCount}条手机号` : (mobile || '未设置');
         return {
             tokenId: token?.id,
             userId: user?.id,
@@ -88,6 +90,7 @@ export default OakComponent({
             nickname,
             mobile,
             mobileCount,
+            mobileText,
             isLoggedIn,
             isPlayingAnother,
             isRoot,

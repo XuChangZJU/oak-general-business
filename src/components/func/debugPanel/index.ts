@@ -6,7 +6,8 @@ export default OakComponent({
         dialogVisible: false,
     },
     methods: {
-        printDebugStore() {
+        printDebugStore(e: any) {
+            console.log(e);
             console.log(this.features.cache.getFullData());
         },
         printCachedStore() {
@@ -31,7 +32,9 @@ export default OakComponent({
             this.setVisible(e.detail.visible);
         },
         onClose() {
-            this.setVisible(false);
+            if (this.state.visible) {
+                this.setVisible(false);
+            }
         },
         //小程序重置
         handleReset() {

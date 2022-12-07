@@ -3,6 +3,7 @@
 </view>
 <wux-popup visible="{{visible}}" bind:close="onClose" position="bottom" closable="true">
     <view class="block block--bottom">
+        
         <view class="btn-box">
             <wux-button bind:click="printRunningTree" wux-class="btn-item" type="royal" size="small" shape="circle">R</wux-button>
             <wux-button bind:click="printDebugStore" wux-class="btn-item" type="royal" size="small" shape="circle">S</wux-button>

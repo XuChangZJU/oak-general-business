@@ -1,2 +1,1 @@
-
-<wux-notification id="wux-notification" />
+<l-message content="{{content}}"/>
