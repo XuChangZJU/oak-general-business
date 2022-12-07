@@ -1,5 +1,9 @@
 export type Color = {
     primary: string;
+    success?: string;
+    error?: string;
+    warning?: string;
+    info?: string;
 };
 
 

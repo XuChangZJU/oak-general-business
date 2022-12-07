@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { composeFileUrl, bytesToSize } from '../../../utils/extraFile';
 
-import { Space, Upload, UploadFile, Tag, Button, Table, UploadProps } from 'antd';
+import {
+    Space,
+    Upload,
+    UploadFile,
+    Tag,
+    Button,
+    Table,
+    UploadProps,
+} from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
+import { file2Obj } from 'antd/es/upload/utils'
+import { RcFile } from 'antd/es/upload/interface';
 
 interface NewUploadFile extends UploadFile {
     id?: string;
@@ -82,7 +92,7 @@ export default function render(
     const {
         accept = 'image/*',
         maxNumber = 20,
-        multiple = true,
+        multiple = maxNumber !== 1,
         draggable = false,
         theme = 'image',
         tips,
@@ -155,7 +165,6 @@ export default function render(
         }
         return <Button type="default">选择文件</Button>;
     };
-
     return (
         <Space direction="vertical" className={Style['oak-upload']}>
             <Upload
@@ -185,12 +194,20 @@ export default function render(
                           )
                 }
                 onChange={({ file, fileList, event }) => {
-                    const arr =
-                        fileList?.filter((ele: NewUploadFile) => !ele.id) || [];
-                    if (theme !== 'custom') {
-                        onPickByWeb(arr);
-                    } else {
-                        setNewUploadFiles(arr);
+                    // const arr =
+                    //     fileList?.filter((ele: NewUploadFile) => !ele.id) || [];
+                    // if (theme !== 'custom') {
+                    //     onPickByWeb(arr);
+                    // } else {
+                    //     setNewUploadFiles(arr);
+                    // }
+                    // id不存在就是file对象
+                    if (!(file as NewUploadFile).id) {
+                        if (theme !== 'custom') {
+                            onPickByWeb([file2Obj(file as RcFile)]);
+                        } else {
+                            setNewUploadFiles([file2Obj(file as RcFile)]);
+                        }
                     }
                 }}
                 onRemove={(file) => {

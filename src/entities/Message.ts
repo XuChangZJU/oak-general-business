@@ -5,11 +5,14 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Index, ActionDef } from 'oak-domain/lib/types';
 
+type MessageType = 'adminNotification';
+
 export interface Schema extends EntityShape {
     user: User;
     system: System;
-    type: 'adminNotification';
+    type: 'adminNotification' | 'conversationMessage';
     weight: 'high' | 'medium' | 'low' | 'data';
+    desc: Text;
     props: Object;
     data: Object;
     params: Object;
@@ -28,13 +31,19 @@ const IActionDef: ActionDef<IAction, IState> = {
     is: 'sending',
 };
 
-const locale: LocaleDef<Schema, Action, '', {
-    iState: IState;
-    weight: Schema['weight'],
-    type: Schema['type'],
-}> = {
+const locale: LocaleDef<
+    Schema,
+    Action,
+    '',
+    {
+        iState: IState;
+        weight: Schema['weight'];
+        type: Schema['type'];
+    }
+> = {
     zh_CN: {
         attr: {
+            desc: '描述',
             user: '关联用户',
             system: '系统',
             type: '消息类型',
@@ -42,7 +51,7 @@ const locale: LocaleDef<Schema, Action, '', {
             iState: '状态',
             props: '属性',
             params: '渠道定制参数',
-            data: '透传数据'
+            data: '透传数据',
         },
         action: {
             succeed: '成功',
@@ -61,8 +70,9 @@ const locale: LocaleDef<Schema, Action, '', {
                 data: '数据',
             },
             type: {
-                adminNotification: '管理员通知'
-            }
-        }
+                adminNotification: '系统通知',
+                conversationMessage: '客服消息',
+            },
+        },
     },
 };
