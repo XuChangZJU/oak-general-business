@@ -1,5 +1,4 @@
 import { ROOT_ROLE_ID } from '../../../constants';
-import { composeFileUrl } from '../../../utils/extraFile';
 
 export default OakComponent({
     entity: 'token',
@@ -65,12 +64,12 @@ export default OakComponent({
             };
         },
     }],
-    formData: ({ data: [token] }) => {
+    formData: ({ data: [token], features }) => {
         const user = token?.user;
         const player = token?.player;
         const avatarFile =
             user && user.extraFile$entity && user.extraFile$entity[0];
-        const avatar = avatarFile && composeFileUrl(avatarFile);
+        const avatar = features.extraFile.getUrl(avatarFile);
         const nickname = user && user.nickname;
         const mobileData = user && user.mobile$user && user.mobile$user[0];
         const { mobile } = mobileData || {};
