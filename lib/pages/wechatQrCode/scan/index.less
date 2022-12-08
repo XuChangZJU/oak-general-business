@@ -1,0 +1,36 @@
+/**  index.wxss  **/
+@import "../../../config/styles/mp/index.less";
+@import "../../../config/styles/mp/mixins.less";
+
+.page-body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  flex-direction: column;
+  background-color: @bg-color-block;
+  box-sizing: border-box;
+  .safe-area-inset-bottom();
+}
+
+.text {
+  font-size: @font-size-base;
+  color: @text-level-3-color;
+}
+
+.icon {
+  color: @primary-color;
+}
+
+.circle-view {
+  padding: @spacer;
+  width: 200rpx;
+  height: 200rpx;
+  border: 1px dashed @primary-color;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
