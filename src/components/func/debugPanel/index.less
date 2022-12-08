@@ -1,11 +1,19 @@
 
 .btn-popup {
   position: fixed !important;
-  bottom: 40rpx;
+  // bottom: 40rpx;
   // bottom: constant(safe-area-inset-bottom) !important;
   // /* 兼容 iOS < 11.2 */
   // bottom: env(safe-area-inset-bottom) !important;
-  right: 45%;
+  // right: 45%;
+
+  position: 'fixed';
+  bottom: 20rpx;
+  right: calc(100% / 2 - 16px);
+  z-index: 999;
+  width: 32px;
+  height: 32px;
+  text-align: center;
 }
 
 .block {

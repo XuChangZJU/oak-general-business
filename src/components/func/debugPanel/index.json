@@ -1,7 +1,7 @@
 {
     "component": true,
     "usingComponents": {
-        "oak-icon": "../../../miniprogram_npm/oak-icon/index",
+        "oak-icon": "../../icon/index",
         "l-button": "../../../miniprogram_npm/lin-ui/button/index",
         "l-arc-popup": "../../../miniprogram_npm/lin-ui/arc-popup/index",
         "l-dialog": "../../../miniprogram_npm/lin-ui/dialog/index",

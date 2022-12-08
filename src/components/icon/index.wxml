@@ -1,0 +1,7 @@
+<block wx:if="{{type==='far' || type==='fas'}}">
+    <!-- <text class="{{clazz}}"></text> -->
+    <text class="fa {{type}} fa-{{name}} fa-{{size || '1x'}} {{color || 'primary'}}"></text>
+</block>
+<block wx:else>
+    <text>不支持的icon类型{{type}}</text>
+</block>

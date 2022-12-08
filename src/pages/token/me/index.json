@@ -1,7 +1,7 @@
 {
     "navigationBarTitleText": "个人信息",
     "usingComponents": {
-        "oak-icon": "../../../miniprogram_npm/oak-icon/index",
+        "oak-icon": "../../../components/icon/index",
         "l-list": "../../../miniprogram_npm/lin-ui/list/index",
         "l-button": "../../../miniprogram_npm/lin-ui/button/index",
         "l-avatar": "../../../miniprogram_npm/lin-ui/avatar/index"
