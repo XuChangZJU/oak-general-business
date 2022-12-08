@@ -9,5 +9,5 @@
         <view style="flex:1; display:flex; align-items:center;justify-content:center">尚未授权手机号</view>
     </block>
     <view style="display: flex; flex: 1"></view>
-    <t-button theme="primary" style="margin: 16rpx" block size="large" open-type="getPhoneNumber" bindgetphonenumber="onRefreshMobile" content="授权手机号" />
+    <l-button type="default" style="margin: 16rpx" block size="large" open-type="getPhoneNumber" bindgetphonenumber="onRefreshMobile" content="授权手机号" />
 </view>

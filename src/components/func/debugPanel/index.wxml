@@ -1,5 +1,5 @@
 <view bind:tap="handlePopup" class="btn-popup">
-    <oak-icon type="fas" name="user" ></oak-icon>
+    <oak-icon type="fas" name="chevron-up" ></oak-icon>
 </view>
 <l-arc-popup show="{{visible}}" bind:linclose="onClose">
     <view class="block block--bottom">

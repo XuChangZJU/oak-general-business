@@ -1,13 +1,18 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <block wx:if="{{mobiles && mobiles.length > 0}}">
-        <view wx:for="{{mobiles}}" wx:key="index" class="card">
-            <text>{{item.mobile}}</text>
+    <view class="container">
+        <view class="list" wx:if="{{mobiles && mobiles.length > 0}}">
+            <l-list title="{{item.mobile}}" />
         </view>
-    </block>
-    <block wx:else>
-        <view style="flex:1; display:flex; align-items:center;justify-content:center">尚未授权手机号</view>
-    </block>
-    <view style="display: flex; flex: 1"></view>
-    <t-button theme="primary" style="margin: 16rpx" block size="large" open-type="getPhoneNumber" bindgetphonenumber="onRefreshMobile" content="授权手机号" />
+        <block wx:else>
+            <l-card type="primary" plaintext="{{true}}">
+                <view class="card">
+                    您尚未授权手机号
+                </view>
+            </l-card>
+        </block>
+    </view>
+    <l-button type="default" block size="long" open-type="getPhoneNumber" bindgetphonenumber="onRefreshMobile">
+        授权手机号
+    </l-button>
 </view>
