@@ -3,6 +3,7 @@ import { Button, Space, Drawer, Modal, Tooltip } from 'antd';
 import { UpOutlined } from '@ant-design/icons';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
+// import OakIcon from '../../icon'
 
 export default function render(props: WebComponentProps<EntityDict, 'address', true, {
     placement: 'top' | 'bottom' | 'left' | 'right',
@@ -24,6 +25,7 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
                 type="text"
                 shape="circle"
                 icon={<UpOutlined style={{ fontSize: 12 }} />}
+                // icon={<OakIcon type="fas" name="chevron-up" />}
                 style={{
                     position: 'fixed',
                     bottom: 0,

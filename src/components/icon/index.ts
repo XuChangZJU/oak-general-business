@@ -1,34 +1,27 @@
-Component({    
+
+export default OakComponent({
+    isList: false,
     properties: {
         type: {
             type: String,
-            value: '',
+            value: 'fas',
         },
         size: {
-            type: [String, Number],
+            type: Number,
+            optionalTypes: [Number, String],
             value: 0,
         },
         color: {
             type: String,
-            value: '',
+            value: 'primary',
         },
         name: {
             type: String,
             value: '',
-        }
+        },
+        larger: {
+            type: String,
+            value: '1x',
+        },
     },
-    methods: {
-        // updated() {
-        //     const { type } = this.data;
-        //     if (['fas', 'far'].includes(type)) {
-        //         const { size, name, color } = this.data;
-        //         this.setData({
-        //             clazz: `${type} fa-${size || '1x'} fa-${name} ${color || 'primary'}`,
-        //         });
-        //     }
-        // },
-    },
-    // attached() {
-    //     this.updated()
-    // },
-})
+});
