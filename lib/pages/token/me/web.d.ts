@@ -10,6 +10,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', tru
     refreshing?: boolean;
     isRoot: boolean;
     tokenId?: string;
+    mobileText: string;
 }, {
     doLogin: () => Promise<void>;
     goMyMobile: () => Promise<void>;

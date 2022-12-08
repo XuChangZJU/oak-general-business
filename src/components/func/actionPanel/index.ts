@@ -1,5 +1,4 @@
-export default OakComponent({
-    isList: false,
+export default Component({
     properties: {
         actions: Array,
         actionDescriptions: Object,
@@ -7,35 +6,34 @@ export default OakComponent({
             type: Boolean,
             value: false,
         },
-        onActionClick: Function,
     },
     methods: {
         onClick(action: string) {
-            this.props.onActionClick(action);
+            this.onActionClick(action);
         },
     },
 
     observers: {
         actions(actions) {
-            const { actionDescriptions } = this.props;
+            const { actionDescriptions } = this.data;
 
             const actionss = actions.map(
                 (action: string) => Object.assign({}, actionDescriptions[action], { action })
             );
 
-            this.setState({ actionss });
+            this.setData({ actionss });
         },
     },
 
     lifetimes: {
         ready() {
-            const { actions, actionDescriptions } = this.props;
+            const { actions, actionDescriptions } = this.data;
 
             if (actions) {
                 const actionss = actions.map(
                     (action: string) => Object.assign({}, actionDescriptions[action], { action })
                 );
-                this.setState({ actionss });
+                this.setData({ actionss });
             }
         }
     }

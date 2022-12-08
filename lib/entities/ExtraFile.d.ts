@@ -15,5 +15,5 @@ export interface Schema extends FileCarrierEntityShape {
     extension: String<16>;
     size?: Int<4>;
     sort?: Int<4>;
-    fileType: String<16>;
+    fileType: String<128>;
 }

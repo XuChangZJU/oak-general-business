@@ -56,6 +56,7 @@ export default OakComponent({
         } = user || {};
         const mobile = mobile$user && mobile$user[0]?.mobile;
         const mobileCount = mobile$user ? mobile$user.length : 0;
+        const mobileText = mobileCount && mobileCount > 1 ? `${mobileCount}条手机号` : (mobile || '未设置');
         const avatar =
             extraFile$entity &&
             extraFile$entity[0] &&
@@ -71,6 +72,7 @@ export default OakComponent({
             userState,
             idState,
             mobileCount,
+            mobileText,
         };
     },
     actions: [

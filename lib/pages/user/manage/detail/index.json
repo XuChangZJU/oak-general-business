@@ -2,9 +2,10 @@
     "navigationBarTitleText": "用户详情",
     "usingComponents": {
         "actionPanel": "../../../../components/func/actionPanel/index",
-        "t-button": "../../../../miniprogram_npm/tdesign/button/button",
-        "t-cell": "../../../../miniprogram_npm/tdesign/cell/cell",
-        "t-icon": "../../../../miniprogram_npm/tdesign/icon/icon",
-        "t-tag": "../../../../miniprogram_npm/tdesign/tag/tag"
+        "l-button": "../../../../miniprogram_npm/lin-ui/button/index",
+        "l-avatar": "../../../../miniprogram_npm/lin-ui/avatar/index",
+        "l-list": "../../../../miniprogram_npm/lin-ui/list/index",
+        "l-icon": "../../../../miniprogram_npm/lin-ui/icon/index",
+        "l-tag": "../../../../miniprogram_npm/lin-ui/tag/index"
     }
 }

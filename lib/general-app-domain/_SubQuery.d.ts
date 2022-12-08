@@ -14,6 +14,7 @@ import * as ExtraFile from "./ExtraFile/Schema";
 import * as Livestream from "./Livestream/Schema";
 import * as Message from "./Message/Schema";
 import * as MessageSent from "./MessageSent/Schema";
+import * as MessageType from "./MessageType/Schema";
 import * as Mobile from "./Mobile/Schema";
 import * as Platform from "./Platform/Schema";
 import * as UserRole from "./UserRole/Schema";
@@ -138,6 +139,11 @@ export declare type MessageIdSubQuery = {
 export declare type MessageSentIdSubQuery = {
     [K in "$in" | "$nin"]?: (MessageSent.MessageSentIdSubQuery & {
         entity: "messageSent";
+    }) | any;
+};
+export declare type MessageTypeIdSubQuery = {
+    [K in "$in" | "$nin"]?: (MessageType.MessageTypeIdSubQuery & {
+        entity: "messageType";
     }) | any;
 };
 export declare type MobileIdSubQuery = {

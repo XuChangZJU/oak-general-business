@@ -13,6 +13,7 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
     stateColor: Record<string, string>;
     idStateColor: Record<string, string>;
     mobileCount: number;
+    mobileText: string;
     actionDescriptions: Record<string, {
         icon: {
             name: string;
