@@ -8,10 +8,10 @@
             <l-avatar icon="user" size="140" icon-size="80" text="{{nickname || '未设置'}}" placement="bottom"/>
         </block>
         <block wx:if="{{isLoggedIn && !isPlayingAnother}}">
-            <l-button type="default" size="mini" disabled="{{refreshing}}"  plain="true" bind:lintap="onRefresh">更新</l-button>
+            <l-button type="default" size="mini" disabled="{{refreshing}}"  plain="true" bind:lintap="onRefresh">{{t('common:action.update')}}</l-button>
         </block>
         <block wx:elif="{{!isLoggedIn}}">
-            <l-button type="default" size="mini" disabled="{{refreshing}}" bind:lintap="doLogin">登录</l-button>
+            <l-button type="default" size="mini" disabled="{{refreshing}}" bind:lintap="doLogin">{{t('login')}}</l-button>
         </block>
     </view>
     <view class="cell">
