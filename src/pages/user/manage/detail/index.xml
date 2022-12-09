@@ -1,0 +1,21 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <view class="userInfo">
+        <block wx:if="{{avatar}}">
+            <l-avatar src="{{avatar}}" />
+        </block>
+        <block wx:else>
+            <l-avatar icon="user" size="120" icon-size="86" />
+        </block>
+    </view>
+    <view class="col"> 
+        <l-list title="昵称" right-desc="{{nickname || '未设置'}}"/>
+        <l-list title="姓名" right-desc="{{name || '未设置'}}"/>
+        <l-list title="手机号" right-desc="{{mobileText}}"/>
+        <l-list title="用户状态" tag-context="{{userState}}"/>
+        <l-list title="用户状态" tag-context="{{idState}}"/>
+    </view>
+    <view style="flex:1" />
+    <l-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="openDrawer" content="更多" />
+</view>
+<actionPanel show="{{show}}" bind:close="closeDrawer" actions="{{oakLegalActions}}" actionDescriptions="{{actionDescriptions}}" bind:click="onActionClick" />

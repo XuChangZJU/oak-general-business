@@ -1,9 +1,10 @@
 {
     "component": true,
     "usingComponents": {
-        "oak-icon": "../../../miniprogram_npm/oak-icon/index",
-        "wux-button": "../../../miniprogram_npm/wuxui/button/index",
-        "wux-popup": "../../../miniprogram_npm/wuxui/popup/index",
-        "wux-dialog": "../../../miniprogram_npm/wuxui/dialog/index"
+        "oak-icon": "../../icon/index",
+        "l-button": "../../../miniprogram_npm/lin-ui/button/index",
+        "l-arc-popup": "../../../miniprogram_npm/lin-ui/arc-popup/index",
+        "l-dialog": "../../../miniprogram_npm/lin-ui/dialog/index",
+        "l-icon": "../../../miniprogram_npm/lin-ui/icon/index"
     }
 }

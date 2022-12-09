@@ -1,5 +1,4 @@
 import { ROOT_ROLE_ID } from '../../../constants';
-import { composeFileUrl } from '../../../utils/extraFile';
 
 export default OakComponent({
     entity: 'token',
@@ -65,12 +64,12 @@ export default OakComponent({
             };
         },
     }],
-    formData: ({ data: [token] }) => {
+    formData: ({ data: [token], features }) => {
         const user = token?.user;
         const player = token?.player;
         const avatarFile =
             user && user.extraFile$entity && user.extraFile$entity[0];
-        const avatar = avatarFile && composeFileUrl(avatarFile);
+        const avatar = features.extraFile.getUrl(avatarFile);
         const nickname = user && user.nickname;
         const mobileData = user && user.mobile$user && user.mobile$user[0];
         const { mobile } = mobileData || {};
@@ -81,6 +80,8 @@ export default OakComponent({
         const isRoot =
             player?.userRole$user &&
             player.userRole$user[0]?.roleId === ROOT_ROLE_ID;
+            
+        const mobileText = mobileCount && mobileCount > 1 ? `${mobileCount}条手机号` : (mobile || '未设置');
         return {
             tokenId: token?.id,
             userId: user?.id,
@@ -88,6 +89,7 @@ export default OakComponent({
             nickname,
             mobile,
             mobileCount,
+            mobileText,
             isLoggedIn,
             isPlayingAnother,
             isRoot,

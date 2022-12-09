@@ -7,11 +7,11 @@ export default OakComponent({
             type: Boolean,
             value: false,
         },
-        onActionClick: Function,
     },
     methods: {
         onClick(action: string) {
-            this.props.onActionClick(action);
+            const { onActionClick } = this.props;
+            onActionClick(action);
         },
     },
 

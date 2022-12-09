@@ -1,3 +1,4 @@
+import assert from "assert";
 
 export default OakComponent({
     entity: 'mobile',
@@ -42,7 +43,18 @@ export default OakComponent({
                 refreshing: true,
             });
             try {
-                console.log(e.detail.code);
+                const { code, errMsg } = e.detail;
+                if (errMsg) {
+                    console.error(errMsg);
+                    this.setMessage({
+                        title: '获取手机号失败',
+                        type: 'warning',
+                    });
+                }
+                else {
+                    assert(code);
+                    console.log(code);
+                }
             } catch (err) {
                 console.error(err);
             }

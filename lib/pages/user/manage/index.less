@@ -7,7 +7,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  background-color: @bg-color-fade;
+  background-color: @oak-bg-color-page;
   box-sizing: border-box;
   .safe-area-inset-bottom();
 }
@@ -19,16 +19,17 @@
 }
 
 .user-info {
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-left: 22rpx;
+  margin-left: 38rpx;
   flex: 1;
 }
 
 .cell {
   display: flex;
   align-items: center;
-  padding: @spacer;
+  padding: 26rpx;
   border-bottom: 1px solid #e0e0e0;
   background-color: #fff;
 }
@@ -36,41 +37,40 @@
 .row {
   display: flex;
   align-items: center;
-  margin-bottom: @font-size-base;
+  min-width: 300rpx;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+
+  .primary {
+    background-color: @oak-color-primary;
+  }
+
+  .success {
+    background-color: @oak-color-success;
+  }
+
+  .danger {
+    background-color: @oak-color-error;
+  }
 }
 
-.avatar {
-  height: 140rpx;
-  width: 140rpx;
-  border-radius: 50%;
-}
-.img-view {
+.row2 {
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 140rpx;
-  width: 140rpx;
-  border-radius: 50%;
-  background-color: @bg-color-fade;
+  font-size: small;
+  .label {
+    min-width: 140rpx;
+    color: @oak-text-color-secondary;
+  }
+  .value {
+    color: @oak-text-color-primary;
+    margin-left: 30rpx;
+  }
 }
 
-.nickname {
-  margin-right: @spacer;
-  font-size: @font-size-base;
-}
-
-.name {
-  font-size: @font-size-base;
-  color:@text-level-3-color;
-  margin-bottom: 4rpx;
-}
-
-.mobile {
-  font-size: @font-size-base;
-  color: @text-level-3-color;
-}
-.btn-view {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.add {
+  position: fixed;
+  bottom: 20rpx;
+  right: 20rpx;
+  z-index: 10;
 }

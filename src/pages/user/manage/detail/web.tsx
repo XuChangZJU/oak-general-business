@@ -5,7 +5,7 @@ import { List, Tag, Avatar } from 'antd-mobile';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../general-app-domain';
-import ActionPanel from '../../../../components/func/actionPanel/index';
+import ActionPanel from '../../../../components/func/actionPanel';
 
 
 export default function render(props: WebComponentProps<EntityDict, 'user', false, {
@@ -20,6 +20,7 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
     stateColor: Record<string, string>;
     idStateColor: Record<string, string>;
     mobileCount: number;
+    mobileText: string;
     actionDescriptions: Record<string, {
         icon: { name: string; };
         label: string;
@@ -31,31 +32,17 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
         nickname,
         avatar,
         name,
-        mobile,
         userState,
         idState,
         gender,
         stateColor,
         idStateColor,
-        mobileCount,
+        mobileText,
         oakLegalActions,
         actionDescriptions,
         birth,
     } = props.data;
     const { t, onActionClick } = props.methods;
-
-
-    const getMobile = () => {
-        if (mobileCount > 1) {
-            return `${mobileCount}条手机号`;
-        }
-        else if (mobileCount === 1) {
-            return mobile;
-        }
-        else {
-            return t('unset');
-        }
-    }
 
     return (
         <div className={Style.container}>
@@ -80,7 +67,7 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
                     {t('user:attr.birth')}
                 </List.Item>
 
-                <List.Item extra={getMobile()}>
+                <List.Item extra={mobileText}>
                     {t('mobile')}
                 </List.Item>
 

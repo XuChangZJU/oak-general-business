@@ -1,6 +1,6 @@
 {
     "component": true,
     "usingComponents": {
-        "t-message": "../../miniprogram_npm/wuxui/notification/index"
+        "l-message": "../../miniprogram_npm/lin-ui/message/index"
     }
 }

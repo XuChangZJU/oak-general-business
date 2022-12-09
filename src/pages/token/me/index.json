@@ -1,9 +1,9 @@
 {
     "navigationBarTitleText": "个人信息",
     "usingComponents": {
-        "oak-icon": "../../../miniprogram_npm/oak-icon/index",
-        "wux-cell": "../../../miniprogram_npm/wuxui/cell/index",
-        "wux-button": "../../../miniprogram_npm/wuxui/button/index",
-        "wux-avatar": "../../../miniprogram_npm/wuxui/avatar/index"
+        "oak-icon": "../../../components/icon/index",
+        "l-list": "../../../miniprogram_npm/lin-ui/list/index",
+        "l-button": "../../../miniprogram_npm/lin-ui/button/index",
+        "l-avatar": "../../../miniprogram_npm/lin-ui/avatar/index"
     }
 }

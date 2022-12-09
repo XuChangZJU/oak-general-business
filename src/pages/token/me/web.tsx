@@ -11,14 +11,14 @@ import { generateNewId } from 'oak-domain/lib/utils/uuid';
 export default function Render(props: WebComponentProps<EntityDict, 'token', true, {
     avatar?: string; nickname?: string; isLoggedIn?: boolean; mobile?: string;
     mobileCount?: number; refreshing?: boolean; isRoot: boolean; tokenId?: string;
+    mobileText: string;
 }, {
     doLogin: () => Promise<void>;
     goMyMobile: () => Promise<void>;
     goUserManage: () => Promise<void>;
 }>) {
-    const { avatar, isLoggedIn, refreshing, mobile, mobileCount, isRoot, oakExecuting, tokenId, nickname, oakDirty } = props.data;
+    const { avatar, isLoggedIn, refreshing, mobileText, isRoot, oakExecuting, tokenId, nickname, oakDirty } = props.data;
     const { doLogin, t, goMyMobile, goUserManage, clean, execute, updateItem } = props.methods;
-    const mobileText = mobileCount && mobileCount > 1 ? `${mobileCount}条手机号` : (mobile || '未设置');
     const [showDrawer, setShowDrawer] = useState(false);
     return (
         <div className={Style.container}>

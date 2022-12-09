@@ -1,0 +1,12 @@
+<view class="block block--bottom">
+    <view class="btn-box">
+        <l-grid row-num="{{5}}">
+            <block wx:for="{{actionss}}" wx:key="index">
+                <l-grid-item bind:lintap="onClick" data-index="{{index}}" key="{{index}}" slot="{{index}}">
+                    <l-icon class="image" name="{{item.icon.name}}" slot="image" />
+                    <text>{{item.text}}</text>
+                </l-grid-item>
+            </block>
+        </l-grid>
+    </view>
+</view>
