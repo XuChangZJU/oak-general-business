@@ -124,54 +124,6 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
             return 1;
         }
     } as UpdateTrigger<EntityDict, 'user', RuntimeCxt>,
-    {
-        name: '查询用户时，默认加上systemId',
-        entity: 'user',
-        action: 'select',
-        when: 'before',
-        fn: async ({ operation }, context) => {
-            const app = await context.getApplication();
-            if (app) {
-                const { filter } = operation;
-                if (!filter) {
-                    Object.assign(operation, {
-                        filter: {
-                            id: {
-                                $in: {
-                                    entity: 'userSystem',
-                                    data: {
-                                        userId: 1,
-                                    },
-                                    filter: {
-                                        systemId: app.systemId,
-                                    }
-                                }
-                            }
-                        },
-                    });
-                }
-                else {
-                    Object.assign(operation, {
-                        filter: addFilterSegment({
-                            id: {
-                                $in: {
-                                    entity: 'userSystem',
-                                    data: {
-                                        userId: 1,
-                                    },
-                                    filter: {
-                                        systemId: app.systemId,
-                                    }
-                                }
-                            }
-                        }, filter),
-                    });
-                }
-                return 1;
-            }
-            return 0;
-        }
-    } as SelectTriggerBefore<EntityDict, 'user', RuntimeCxt>
 ];
 
 export default triggers;

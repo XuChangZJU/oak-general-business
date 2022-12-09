@@ -16,7 +16,7 @@ const checkers: Checker<EntityDict, 'user', RuntimeCxt> [] = [
         type: 'relation',
         action: ['play', 'remove', 'disable', 'enable'],
         entity: 'user',
-        relationFilter: (userId) => {
+        relationFilter: () => {
             // 只有root才能进行操作
             throw new OakUserUnpermittedException();
         },
@@ -63,6 +63,29 @@ const checkers: Checker<EntityDict, 'user', RuntimeCxt> [] = [
             }
         },
         errMsg: '不能禁用root用户',
+    },
+    {
+        type: 'row',
+        action: 'select',
+        entity: 'user',
+        filter: (operation, context) => {
+            const systemId = context.getSystemId();
+            if (systemId) {
+                return {
+                    id: {
+                        $in: {
+                            entity: 'userSystem',
+                            data: {
+                                userId: 1,
+                            },
+                            filter: {
+                                systemId,
+                            },
+                        },
+                    },
+                };
+            }
+        },
     }
 ];
 
