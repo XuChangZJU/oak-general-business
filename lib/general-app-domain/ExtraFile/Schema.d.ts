@@ -21,7 +21,7 @@ export declare type OpSchema = EntityShape & {
     extension: String<16>;
     size?: Int<4> | null;
     sort?: Int<4> | null;
-    fileType: String<128>;
+    fileType: String<16>;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
@@ -39,7 +39,7 @@ export declare type Schema = EntityShape & {
     extension: String<16>;
     size?: Int<4> | null;
     sort?: Int<4> | null;
-    fileType: String<128>;
+    fileType: String<16>;
     article?: Article.Schema;
     user?: User.Schema;
 } & {

@@ -4,6 +4,7 @@ import checkers from './checkers';
 import watchers from './watchers';
 import data from "./data";
 export * from './exceptionHandlers';
+import { registerMessagePropsConverter } from './triggers/message';
 
 export {
     checkers,
@@ -11,6 +12,7 @@ export {
     watchers,
     data,
     aspectDict,
+    registerMessagePropsConverter,
 };
 
 export * from './types/Exception';

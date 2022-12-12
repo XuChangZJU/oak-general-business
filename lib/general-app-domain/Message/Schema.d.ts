@@ -1,4 +1,4 @@
-import { String, Text, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
@@ -10,9 +10,8 @@ import * as MessageSent from "../MessageSent/Schema";
 export declare type OpSchema = EntityShape & {
     userId: ForeignKey<"user">;
     systemId: ForeignKey<"system">;
-    type: 'adminNotification' | 'conversationMessage';
+    type: 'adminNotification';
     weight: 'high' | 'medium' | 'low' | 'data';
-    desc: Text;
     props: Object;
     data: Object;
     params: Object;
@@ -22,9 +21,8 @@ export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
     userId: ForeignKey<"user">;
     systemId: ForeignKey<"system">;
-    type: 'adminNotification' | 'conversationMessage';
+    type: 'adminNotification';
     weight: 'high' | 'medium' | 'low' | 'data';
-    desc: Text;
     props: Object;
     data: Object;
     params: Object;
@@ -44,9 +42,8 @@ declare type AttrFilter = {
     user: User.Filter;
     systemId: Q_StringValue | SubQuery.SystemIdSubQuery;
     system: System.Filter;
-    type: Q_EnumValue<'adminNotification' | 'conversationMessage'>;
+    type: Q_EnumValue<'adminNotification'>;
     weight: Q_EnumValue<'high' | 'medium' | 'low' | 'data'>;
-    desc: Q_StringValue;
     props: Object;
     data: Object;
     params: Object;
@@ -66,7 +63,6 @@ export declare type Projection = {
     system?: System.Projection;
     type?: number;
     weight?: number;
-    desc?: number;
     props?: number;
     data?: number;
     params?: number;
@@ -88,7 +84,6 @@ export declare type ExportProjection = {
     system?: System.ExportProjection;
     type?: string;
     weight?: string;
-    desc?: string;
     props?: string;
     data?: string;
     params?: string;
@@ -126,8 +121,6 @@ export declare type SortAttr = {
     type: number;
 } | {
     weight: number;
-} | {
-    desc: number;
 } | {
     iState: number;
 } | {

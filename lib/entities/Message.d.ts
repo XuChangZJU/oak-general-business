@@ -1,14 +1,21 @@
-import { Text } from 'oak-domain/lib/types/DataType';
+import { String, Text } from 'oak-domain/lib/types/DataType';
 import { Schema as User } from './User';
 import { Schema as System } from './System';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
+declare type MesageParams = {
+    pathname: string;
+    props: Record<string, any>;
+    state: Record<string, any>;
+};
 export interface Schema extends EntityShape {
     user: User;
     system: System;
-    type: 'adminNotification' | 'conversationMessage';
+    type: String<16>;
     weight: 'high' | 'medium' | 'low' | 'data';
-    desc: Text;
+    title: String<32>;
+    content: Text;
     props: Object;
     data: Object;
-    params: Object;
+    params?: MesageParams;
 }
+export {};

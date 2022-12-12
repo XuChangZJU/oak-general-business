@@ -16,6 +16,5 @@
         <l-list title="用户状态" tag-context="{{idState}}"/>
     </view>
     <view style="flex:1" />
-    <l-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="openDrawer" content="更多" />
+    <actionPanel actions="{{oakLegalActions}}" actionDescriptions="{{actionDescriptions}}" bind:click="onActionClick" />
 </view>
-<actionPanel show="{{show}}" bind:close="closeDrawer" actions="{{oakLegalActions}}" actionDescriptions="{{actionDescriptions}}" bind:click="onActionClick" />

@@ -7,33 +7,20 @@ import { RuntimeCxt } from '../types/RuntimeCxt';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { Schema as MessageSentSchema } from '../entities/MessageSent';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
+import { MessagePropsToSms, MessagePropsToWechat } from '../types/Message';
 
-export const MessageDisperse = {
-    // [1]: {
-    //     conversationMessage: {
-    //         public: (message: CreateMessageData) => {
-    //             return message;
-    //         }
-    //     },
-    //     adminNotification: {
-    //         public: (message: CreateMessageData) => {
-    //             return message;
-    //         }
-    //     },
-    // },
-    // [10]: {
-    //     conversationMessage: {
-    //         public: (message: CreateMessageData) => {
-    //             return message;
-    //         }
-    //     },
-    //     adminNotification: {
-    //         public: (message: CreateMessageData) => {
-    //             return message;
-    //         }
-    //     },
-    // }
+let SmsCoverter: MessagePropsToSms | undefined;
+let WechatConverter: MessagePropsToWechat | undefined;
+
+export function registerMessagePropsConverter(converter: {
+    sms?: MessagePropsToSms;
+    wechat?: MessagePropsToWechat
+}) {
+    const { sms, wechat } = converter;
+    SmsCoverter = sms;
+    WechatConverter = wechat;
 }
+
 
 async function tryAddMessageSent(message: CreateMessageData, channel: MessageSentSchema['channel'], context: BackendRuntimeContext<EntityDict>) {
     // const { systemId, type } = message;

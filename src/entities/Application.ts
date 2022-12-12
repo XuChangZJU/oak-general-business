@@ -22,10 +22,7 @@ export type WebConfig = {
     passport: Passport[];
 };
 
-export type WechatPublicTemplateMsgsConfig = Record<string, {
-    templateId: string;
-    dataDef: [string, string][];    // 前一个代表keyword，后一个代表color
-}>;     // key值代表messageTypeId
+export type WechatPublicTemplateMsgsConfig = Record<string, string>;     // key值代表messageTypeId，value的值代表对应的templateId，data的转换改成message上的函数注入
 
 export type WechatPublicConfig = {
     type: 'wechatPublic';
