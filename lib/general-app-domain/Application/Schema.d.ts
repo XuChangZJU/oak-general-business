@@ -25,13 +25,7 @@ export declare type WebConfig = {
     };
     passport: Passport[];
 };
-export declare type WechatPublicTemplateMsgsConfig = Record<string, {
-    templateId: string;
-    dataDef: [
-        string,
-        string
-    ][];
-}>;
+export declare type WechatPublicTemplateMsgsConfig = Record<string, string>;
 export declare type WechatPublicConfig = {
     type: 'wechatPublic';
     isService: boolean;
