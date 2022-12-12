@@ -49,7 +49,7 @@ export type AliSmsConfig = {
     templates: Record<string, {
         signName?: string;
         code: string;       // templateCode
-        params: string[];   // templateParams中的key值(和message props中的参数位置对应)
+        // templateParams改成function注入
     }>;
 };
 
@@ -59,6 +59,7 @@ export type TencentSmsConfig = {
     templates: Record<string, {
         signName?: string;
         code: string;
+        // templateParams改成function注入
     }>;
 };
 

@@ -41,7 +41,6 @@ export declare type AliSmsConfig = {
     templates: Record<string, {
         signName?: string;
         code: string;
-        params: string[];
     }>;
 };
 export declare type TencentSmsConfig = {
