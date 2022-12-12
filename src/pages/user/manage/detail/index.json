@@ -2,6 +2,7 @@
     "navigationBarTitleText": "用户详情",
     "usingComponents": {
         "actionPanel": "../../../../components/func/actionPanel/index",
+        "oak-icon": "../../../../components/icon/index",
         "l-button": "../../../../miniprogram_npm/lin-ui/button/index",
         "l-avatar": "../../../../miniprogram_npm/lin-ui/avatar/index",
         "l-list": "../../../../miniprogram_npm/lin-ui/list/index",

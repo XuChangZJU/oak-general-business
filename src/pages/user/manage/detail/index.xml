@@ -9,11 +9,36 @@
         </block>
     </view>
     <view class="col"> 
-        <l-list title="昵称" right-desc="{{nickname || '未设置'}}"/>
-        <l-list title="姓名" right-desc="{{name || '未设置'}}"/>
-        <l-list title="手机号" right-desc="{{mobileText}}"/>
-        <l-list title="用户状态" tag-context="{{userState}}"/>
-        <l-list title="用户状态" tag-context="{{idState}}"/>
+        <l-list right-desc="{{nickname || '未设置'}}" is-link="{{false}}">            
+            <view slot="left-section">
+                <oak-icon name="user" />
+                昵称
+            </view>
+        </l-list>
+        <l-list right-desc="{{name || '未设置'}}" is-link="{{false}}">          
+            <view slot="left-section">
+                <oak-icon name="signature" />
+                姓名
+            </view>
+        </l-list>
+        <l-list right-desc="{{mobileText}}" is-link="{{false}}">      
+            <view slot="left-section">
+                <oak-icon name="mobile" />
+                手机号
+            </view>
+        </l-list>
+        <l-list tag-position="right" tag-content="{{userState}}" tag-plain="{{true}}" is-link="{{false}}">   
+            <view slot="left-section">
+                <oak-icon name="artstation" />
+                用户状态
+            </view>
+        </l-list>
+        <l-list tag-position="right" tag-content="{{idState}}" tag-plain="{{true}}" is-link="{{false}}">   
+            <view slot="left-section">
+                <oak-icon name="chess-bishop" />
+                认证状态
+            </view>
+        </l-list>
     </view>
     <view style="flex:1" />
     <actionPanel actions="{{oakLegalActions}}" actionDescriptions="{{actionDescriptions}}" bind:click="onActionClick" />
