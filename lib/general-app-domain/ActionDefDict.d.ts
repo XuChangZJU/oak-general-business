@@ -13,6 +13,7 @@ export declare const ActionDefDict: {
     };
     message: {
         iState: import("oak-domain/lib/types").ActionDef<import("./Message/Action").IAction, import("./Message/Action").IState>;
+        visitState: import("oak-domain/lib/types").ActionDef<"visit", import("./Message/Action").VisitState>;
     };
     messageSent: {
         iState: import("oak-domain/lib/types").ActionDef<import("./MessageSent/Action").IAction, import("./MessageSent/Action").IState>;

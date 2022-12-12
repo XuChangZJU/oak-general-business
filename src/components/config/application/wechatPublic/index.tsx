@@ -136,7 +136,7 @@ export default function WechatPublic(props: {
                     items={
                         Object.keys(templateMsgs).length > 0
                             ? Object.keys(templateMsgs).map((name, idx) => {
-                                  const templateMsg = templateMsgs[name];
+                                  const templateId = templateMsgs[name];
                                   return {
                                       key: `${name}`,
                                       label: `${name}`,
@@ -155,81 +155,15 @@ export default function WechatPublic(props: {
                                                       <Input
                                                           placeholder="请输入templateId"
                                                           type="text"
-                                                          value={
-                                                              templateMsg?.templateId
-                                                          }
+                                                          value={templateId}
                                                           onChange={(e) =>
                                                               setValue(
-                                                                  `templateMsgs.${name}.templateId`,
+                                                                  `templateMsgs.${name}`,
                                                                   e.target.value
                                                               )
                                                           }
                                                       />
                                                   </>
-                                              </Form.Item>
-                                              {templateMsg?.dataDef?.map(
-                                                  (ele, index) => (
-                                                      <Form.Item>
-                                                          <Space
-                                                              key={`templateMsg_dataDef_${index}`}
-                                                              align="baseline"
-                                                          >
-                                                              <Input
-                                                                  placeholder="keyword"
-                                                                  value={
-                                                                      ele?.[0]
-                                                                  }
-                                                                  onChange={(e) => {
-                                                                       setValue(
-                                                                           `templateMsgs.${name}.dataDef.${index}.0`,
-                                                                           e.target.value
-                                                                       );
-                                                                  }}
-                                                              />
-                                                              <Input
-                                                                  placeholder="color"
-                                                                  value={
-                                                                      ele?.[1]
-                                                                  }
-                                                                   onChange={(e) => {
-                                                                       setValue(
-                                                                           `templateMsgs.${name}.dataDef.${index}.1`,
-                                                                           e.target.value
-                                                                       );
-                                                                  }}
-                                                              />
-
-                                                              <MinusCircleOutlined
-                                                                  onClick={() =>
-                                                                      removeItem(
-                                                                          `templateMsgs.${name}.dataDef`,
-                                                                          index
-                                                                      )
-                                                                  }
-                                                              />
-                                                          </Space>
-                                                      </Form.Item>
-                                                  )
-                                              )}
-
-                                              <Form.Item>
-                                                  <Button
-                                                      type="dashed"
-                                                      onClick={() => {
-                                                          const length =
-                                                              templateMsg
-                                                                  ?.dataDef
-                                                                  ?.length || 0; //新增第几项
-                                                          setValue(
-                                                              `templateMsgs.${name}.dataDef.${length}`,
-                                                              []
-                                                          );
-                                                      }}
-                                                      block
-                                                      icon={<PlusOutlined />}
-                                                  >
-                                                      添加 keyword
-                                                  </Button>
                                               </Form.Item>
                                           </Form>
                                       ),
@@ -257,7 +191,7 @@ export default function WechatPublic(props: {
                             });
                             return;
                         }
-                        setValue(`templateMsgs.${messageType}`, {});
+                        setValue(`templateMsgs.${messageType}`, '');
                         setModal(false);
                         setMessageType('');
                     }}

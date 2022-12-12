@@ -1,32 +1,43 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Text, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
-import { Action, ParticularAction, IState } from "./Action";
+import { Action, ParticularAction, IState, VisitState } from "./Action";
 import * as User from "../User/Schema";
 import * as System from "../System/Schema";
 import * as MessageSent from "../MessageSent/Schema";
+declare type MesageParams = {
+    pathname: string;
+    props: Record<string, any>;
+    state: Record<string, any>;
+};
 export declare type OpSchema = EntityShape & {
     userId: ForeignKey<"user">;
     systemId: ForeignKey<"system">;
-    type: 'adminNotification';
+    type: String<16>;
     weight: 'high' | 'medium' | 'low' | 'data';
+    title: String<32>;
+    content: Text;
     props: Object;
     data: Object;
-    params: Object;
+    params?: MesageParams | null;
     iState?: IState | null;
+    visitState?: VisitState | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
     userId: ForeignKey<"user">;
     systemId: ForeignKey<"system">;
-    type: 'adminNotification';
+    type: String<16>;
     weight: 'high' | 'medium' | 'low' | 'data';
+    title: String<32>;
+    content: Text;
     props: Object;
     data: Object;
-    params: Object;
+    params?: MesageParams | null;
     iState?: IState | null;
+    visitState?: VisitState | null;
     user: User.Schema;
     system: System.Schema;
     messageSent$message?: Array<MessageSent.Schema>;
@@ -42,12 +53,15 @@ declare type AttrFilter = {
     user: User.Filter;
     systemId: Q_StringValue | SubQuery.SystemIdSubQuery;
     system: System.Filter;
-    type: Q_EnumValue<'adminNotification'>;
+    type: Q_StringValue;
     weight: Q_EnumValue<'high' | 'medium' | 'low' | 'data'>;
+    title: Q_StringValue;
+    content: Q_StringValue;
     props: Object;
     data: Object;
-    params: Object;
+    params: Q_EnumValue<MesageParams>;
     iState: Q_EnumValue<IState>;
+    visitState: Q_EnumValue<VisitState>;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -63,10 +77,13 @@ export declare type Projection = {
     system?: System.Projection;
     type?: number;
     weight?: number;
+    title?: number;
+    content?: number;
     props?: number;
     data?: number;
     params?: number;
     iState?: number;
+    visitState?: number;
     messageSent$message?: MessageSent.Selection & {
         $entity: "messageSent";
     };
@@ -84,10 +101,13 @@ export declare type ExportProjection = {
     system?: System.ExportProjection;
     type?: string;
     weight?: string;
+    title?: string;
+    content?: string;
     props?: string;
     data?: string;
     params?: string;
     iState?: string;
+    visitState?: string;
     messageSent$message?: MessageSent.Exportation & {
         $entity: "messageSent";
     };
@@ -122,7 +142,15 @@ export declare type SortAttr = {
 } | {
     weight: number;
 } | {
+    title: number;
+} | {
+    content: number;
+} | {
+    params: number;
+} | {
     iState: number;
+} | {
+    visitState: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
