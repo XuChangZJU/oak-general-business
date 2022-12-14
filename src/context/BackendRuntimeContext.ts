@@ -14,6 +14,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
     private application?: Partial<ED['application']['Schema']>;
     private token?: Partial<ED['token']['Schema']>;
     private amIRoot?: boolean;
+    private amIReallyRoot?: boolean;
     private rootMode?: boolean;
 
     protected async initialize(data?: SerializedData) {
@@ -65,6 +66,22 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
                             id: 1,
                             userId: 1,
                             playerId: 1,
+                            player: {
+                                id: 1,
+                                userState: 1,
+                                userRole$user: {
+                                    $entity: 'userRole',
+                                    data: {
+                                        id: 1,
+                                        userId: 1,
+                                        roleId: 1,
+                                        role: {
+                                            id: 1,
+                                            name: 1,
+                                        }
+                                    },
+                                },
+                            },
                             ableState: 1,
                             user: {
                                 id: 1,
@@ -98,12 +115,13 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
                     if (token.ableState === 'disabled') {
                         throw new OakTokenExpiredException();
                     }
-                    const { user } = token;
-                    const { userState, userRole$user } = user!;
-                    /* if (['disabled', 'merged'].includes(userState as string)) {
-                        throw new OakUserDisabledException();
-                    } */
+                    const { user, player } = token;
+                    const { userRole$user } = user!;
                     this.amIRoot = (userRole$user as any).length > 0 && (userRole$user as any).find(
+                        (ele: any) => ele.role.name === 'root'
+                    );
+                    const { userRole$user: userRole$player} = player!;
+                    this.amIReallyRoot = (userRole$player as any).length > 0 && (userRole$player as any).find(
                         (ele: any) => ele.role.name === 'root'
                     );
                     this.token = token;
@@ -178,6 +196,10 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         return !!this.amIRoot;
     }
 
+    isReallyRoot(): boolean {
+        return !!this.amIReallyRoot;
+    }
+
     sendMessage(data: ED['message']['CreateSingle']['data']) {
         return this.operate('message', {
             action: 'create',
@@ -185,5 +207,23 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         }, {
             dontCollect: true,
         });
+    }
+    
+    allowUserUpdate(): boolean {
+        const userInfo = this.token?.user;
+        if (userInfo) {
+            const { userState } = userInfo;
+            if (userState === 'disabled') {
+                throw new OakUserDisabledException('您的帐号已经被禁用，请联系客服');
+            }
+            else if (['shadow', 'merged'].includes(userState!)) {
+                throw new OakTokenExpiredException('您的登录状态有异常，请重新登录 ');
+            }
+            else {
+                assert(userState === 'normal');
+            }
+            return true;
+        }
+        throw new OakUnloggedInException('您尚未登录');
     }
 }

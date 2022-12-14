@@ -100,31 +100,34 @@ export default OakComponent({
         actionDescriptions: {
             accept: {
                 icon: {
-                    name: 'pan_tool',
+                    name: 'circle-check',
+                    type: 'far',
                 },
                 label: '通过',
             },
             activate: {
                 icon: {
-                    name: 'check',
+                    name: 'chart-line',
                 },
                 label: '激活',
             },
             disable: {
                 icon: {
-                    name: 'flash_off',
+                    name: 'bell-slash',
+                    type: 'far',
                 },
                 label: '禁用',
             },
             enable: {
                 icon: {
-                    name: 'flash_on',
+                    name: 'bell',
+                    type: 'far',
                 },
                 label: '启用',
             },
             remove: {
                 icon: {
-                    name: 'clear',
+                    name: 'trash',
                 },
                 label: '删除',
             },
@@ -136,19 +139,19 @@ export default OakComponent({
             },
             verify: {
                 icon: {
-                    name: 'how_to_reg',
+                    name: 'certificate',
                 },
                 label: '验证',
             },
             play: {
                 icon: {
-                    name: 'play_circle',
+                    name: 'person-praying',
                 },
                 label: '切换',
             },
         },
     },
-    methods: {
+    methods: {  
         async onActionClick(action: string) {
             switch (action) {
                 case 'update': {
@@ -175,5 +178,9 @@ export default OakComponent({
                 this.navigateBack(2);
             }
         },
+        onActionClickMp(e: WechatMiniprogram.TouchEvent) {
+            const { action } = e.detail;
+            return this.onActionClick(action);
+        }
     },
 });

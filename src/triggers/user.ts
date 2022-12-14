@@ -9,6 +9,7 @@ import { ROOT_ROLE_ID, ROOT_USER_ID } from '../constants';
 import { addFilterSegment } from 'oak-domain/lib/store/filter';
 import { randomName } from '../utils/randomUser';
 import { RuntimeCxt } from '../types/RuntimeCxt';
+import { OakRowInconsistencyException } from 'oak-domain/lib/types';
 
 let NO_ANY_USER = true;
 const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
@@ -105,10 +106,14 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
         entity: 'user',
         action: 'play',
         when: 'after',
-        fn: async ({ operation }, context) => {
+        fn: async ({ operation }, context, option) => {
             const { filter } = operation;
             assert(filter!.id);
-            const { id } = context.getToken()!;
+            const token = context.getToken()!;
+            const { id, userId } = token;
+            if (userId === filter!.id) {
+                throw new OakRowInconsistencyException(undefined, '您已经是当前用户');
+            }
             await context.operate('token', {
                 id: generateNewId(),
                 action: 'update',
@@ -118,9 +123,7 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
                 filter: {
                     id,
                 }
-            }, {
-                dontCollect: true,
-            });
+            }, option);
             return 1;
         }
     } as UpdateTrigger<EntityDict, 'user', RuntimeCxt>,

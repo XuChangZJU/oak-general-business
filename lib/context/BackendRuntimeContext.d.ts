@@ -9,6 +9,7 @@ export declare class BackendRuntimeContext<ED extends EntityDict> extends AsyncC
     private application?;
     private token?;
     private amIRoot?;
+    private amIReallyRoot?;
     private rootMode?;
     protected initialize(data?: SerializedData): Promise<void>;
     getApplicationId(): ED["application"]["Schema"]["id"] | undefined;
@@ -19,5 +20,7 @@ export declare class BackendRuntimeContext<ED extends EntityDict> extends AsyncC
     getCurrentUserId(allowUnloggedIn?: boolean): string;
     toString(): string;
     isRoot(): boolean;
+    isReallyRoot(): boolean;
     sendMessage(data: ED['message']['CreateSingle']['data']): Promise<import("oak-domain/lib/types").OperationResult<ED>>;
+    allowUserUpdate(): boolean;
 }

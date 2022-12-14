@@ -6,4 +6,5 @@ export interface RuntimeContext {
     getToken(allowUnloggedIn?: boolean): Partial<EntityDict['token']['Schema']> | undefined;
     getTokenValue(allowUnloggedIn?: boolean): string | undefined;
     isRoot(): boolean;
+    isReallyRoot(): boolean;
 }

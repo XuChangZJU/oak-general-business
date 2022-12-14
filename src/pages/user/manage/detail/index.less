@@ -32,6 +32,40 @@
   padding: 0rpx 10rpx;
   border-bottom: 1px solid #e0e0e0;
   background-color: #fff;
+
+  .left {
+    display: flex;
+    flex-direction: row;
+  }
+  .icon {
+    width: 16rpx;
+    margin-left: 6rpx;
+    margin-right: 26rpx;
+    text-align: center;
+  }
+  .label {
+    color: @oak-text-color-primary;
+  }
+  .value {
+    color: @oak-text-color-secondary;
+    margin-right: 16rpx;
+
+    .primary {
+      background-color: @oak-color-primary;
+    }
+  
+    .success {
+      background-color: @oak-color-success;
+    }
+  
+    .danger {
+      background-color: @oak-color-error;
+    }
+
+    .warning {
+      background-color: @oak-color-warning;
+    }
+  }
 }
 
 

@@ -22,5 +22,10 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     getUserId(allowUnloggedIn?: boolean): NonNullable<ED["token"]["Schema"]["userId"]> | undefined;
     getUserInfo(): ED["token"]["Schema"]["user"] | undefined;
     isRoot(): boolean;
+    /**
+     * 这个是指token的player到底是不是root
+     * @returns
+     */
+    isReallyRoot(): boolean;
     sendCaptcha(mobile: string): Promise<string>;
 }

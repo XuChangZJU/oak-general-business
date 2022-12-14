@@ -45,6 +45,14 @@ const userProjection: EntityDict['user']['Selection']['data'] = {
             userId: 1,
         },
     },
+    userRole$user: {
+        $entity: 'userRole',
+        data: {
+            id: 1,
+            userId: 1,
+            roleId: 1,
+        },
+    },
 };
 const tokenProjection: EntityDict['token']['Selection']['data'] = {
     id: 1,
@@ -196,6 +204,20 @@ export class Token<
     }
 
     isRoot(): boolean {
+        const token = this.getToken(true);
+        const userRole$user = token?.user?.userRole$user;
+        return !!(
+            userRole$user &&
+            userRole$user?.length > 0 &&
+            userRole$user.find((ele) => ele.roleId === ROOT_ROLE_ID)
+        );
+    }
+
+    /**
+     * 这个是指token的player到底是不是root
+     * @returns 
+     */
+    isReallyRoot(): boolean {
         const token = this.getToken(true);
         const userRole$user = token?.player?.userRole$user;
         return !!(

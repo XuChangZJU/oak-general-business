@@ -7,7 +7,6 @@ export default OakComponent({
     },
     methods: {
         printDebugStore(e: any) {
-            console.log(e);
             console.log(this.features.cache.getFullData());
         },
         printCachedStore() {

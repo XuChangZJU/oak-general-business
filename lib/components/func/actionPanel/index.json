@@ -1,6 +1,7 @@
 {
     "component": true,
     "usingComponents": {
+        "oak-icon": "../../icon/index",
         "l-button": "../../../miniprogram_npm/lin-ui/button/index",
         "l-icon": "../../../miniprogram_npm/lin-ui/icon/index",
         "l-grid": "../../../miniprogram_npm/lin-ui/grid/index",

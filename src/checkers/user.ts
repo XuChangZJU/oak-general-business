@@ -14,26 +14,26 @@ const checkers: Checker<EntityDict, 'user', RuntimeCxt> [] = [
     },
     {
         type: 'relation',
-        action: ['play', 'remove', 'disable', 'enable'],
+        action: ['remove', 'disable', 'enable'],
         entity: 'user',
         relationFilter: () => {
             // 只有root才能进行操作
             throw new OakUserUnpermittedException();
         },
         errMsg: '越权操作',
-    },    
+    },
     {
-        type: 'data',
-        action: 'play',
+        type: 'relation',
+        action: ['play'],
         entity: 'user',
-        checker: (data) => {
-            // 不记得什么意思了
-            /* const token = context.getToken();
-            const { userId } = token!;
-            if (userId === operation.filter!.id) {
-                throw new OakRowInconsistencyException();
-            } */
+        relationFilter: (operation, context) => {
+            if (!context.isReallyRoot()) {
+                // 只有root才能进行操作
+                throw new OakUserUnpermittedException();
+            }
+            return undefined;
         },
+        errMsg: '越权操作'
     },
     {
         type: 'data',

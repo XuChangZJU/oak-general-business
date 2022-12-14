@@ -23,5 +23,7 @@ export declare class FrontendRuntimeContext<ED extends EntityDict, Cxt extends B
     getCurrentUserId(allowUnloggedIn?: boolean): string | undefined;
     toString(): string;
     isRoot(): boolean;
+    isReallyRoot(): boolean;
+    allowUserUpdate(): boolean;
 }
 export {};

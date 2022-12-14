@@ -3,15 +3,13 @@ export default OakComponent({
     properties: {
         actions: Array,
         actionDescriptions: Object,
-        show: {
-            type: Boolean,
-            value: false,
-        },
+        iconSize: String,
     },
     methods: {
-        onClick(action: string) {
-            const { onActionClick } = this.props;
-            onActionClick(action);
+        onClickMp(e: WechatMiniprogram.TouchEvent) {
+            const { index } = e.detail;
+            const action = this.props.actions[index];
+            this.triggerEvent('action', { action });
         },
     },
 

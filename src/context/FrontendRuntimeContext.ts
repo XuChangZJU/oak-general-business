@@ -9,6 +9,9 @@ import { CommonAspectDict } from 'oak-common-aspect';
 import { SyncContext, SyncRowStore } from 'oak-domain/lib/store/SyncRowStore';
 import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
 import { BackendRuntimeContext } from './BackendRuntimeContext';
+import { OakTokenExpiredException, OakUserDisabledException } from '../types/Exception';
+import { assert } from 'console';
+import { OakUnloggedInException } from 'oak-domain/lib/types';
 
 type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>;
 // 上下文被serialize后的数据内容
@@ -75,5 +78,27 @@ export class FrontendRuntimeContext<
 
     isRoot() {
         return this.token?.isRoot() || false;
+    }
+
+    isReallyRoot(): boolean {
+        return this.token?.isReallyRoot() || false;
+    }
+
+    allowUserUpdate(): boolean {
+        const userInfo = this.token?.getUserInfo();
+        if (userInfo) {
+            const { userState } = userInfo;
+            if (userState === 'disabled') {
+                throw new OakUserDisabledException('您的帐号已经被禁用，请联系客服');
+            }
+            else if (['shadow', 'merged'].includes(userState!)) {
+                throw new OakTokenExpiredException('您的登录状态有异常，请重新登录 ');
+            }
+            else {
+                assert(userState === 'normal');
+            }
+            return true;
+        }
+        throw new OakUnloggedInException('您尚未登录');
     }
 };

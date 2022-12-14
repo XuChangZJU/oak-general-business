@@ -13,4 +13,6 @@ export interface RuntimeContext {
     getTokenValue(allowUnloggedIn?: boolean): string | undefined;
     
     isRoot(): boolean;
+
+    isReallyRoot(): boolean;
 };
