@@ -134,7 +134,7 @@ export default function render(
     ) => {
         const { filename, size, id } = file;
         const file2 = newUploadFiles.find(
-            (ele: NewUploadFile) => (ele.fileName === filename && ele.size === size)
+            (ele: NewUploadFile) => (ele.fileName?.includes(filename) && ele.size === size)
         );
         if (file2) {
             Object.assign(file2, {
