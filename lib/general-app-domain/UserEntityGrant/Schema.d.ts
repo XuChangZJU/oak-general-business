@@ -1,14 +1,18 @@
-import { String, Int, Boolean, Text, Datetime, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Int, Boolean, Text, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction } from "./Action";
 import * as User from "../User/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     entity: String<32>;
     entityId: String<64>;
     relation: String<32>;
@@ -22,7 +26,11 @@ export declare type OpSchema = EntityShape & {
     expired?: Boolean | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     entity: String<32>;
     entityId: String<64>;
     relation: String<32>;
@@ -45,7 +53,6 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.UserEntityGrantIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     entity: Q_StringValue;
     entityId: Q_StringValue;
@@ -65,23 +72,22 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    entity?: number;
-    entityId?: number;
-    relation?: number;
-    type?: number;
-    number?: number;
-    confirmed?: number;
-    remark?: number;
-    granterId?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    entity?: 1;
+    entityId?: 1;
+    relation?: 1;
+    type?: 1;
+    number?: 1;
+    confirmed?: 1;
+    remark?: 1;
+    granterId?: 1;
     granter?: User.Projection;
-    granteeId?: number;
+    granteeId?: 1;
     grantee?: User.Projection;
-    expiresAt?: number;
-    expired?: number;
+    expiresAt?: 1;
+    expired?: 1;
     operEntity$entity?: OperEntity.Selection & {
         $entity: "operEntity";
     };
@@ -98,7 +104,6 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     entity?: string;
     entityId?: string;
     relation?: string;
@@ -123,46 +128,44 @@ export declare type ExportProjection = {
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type UserEntityGrantIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 declare type UserIdProjection = OneOf<{
-    granterId: number;
-    granteeId: number;
+    granterId: 1;
+    granteeId: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
+    entity: 1;
 } | {
-    entity: number;
+    entityId: 1;
 } | {
-    entityId: number;
+    relation: 1;
 } | {
-    relation: number;
+    type: 1;
 } | {
-    type: number;
+    number: 1;
 } | {
-    number: number;
+    confirmed: 1;
 } | {
-    confirmed: number;
+    remark: 1;
 } | {
-    remark: number;
-} | {
-    granterId: number;
+    granterId: 1;
 } | {
     granter: User.SortAttr;
 } | {
-    granteeId: number;
+    granteeId: 1;
 } | {
     grantee: User.SortAttr;
 } | {
-    expiresAt: number;
+    expiresAt: 1;
 } | {
-    expired: number;
+    expired: 1;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

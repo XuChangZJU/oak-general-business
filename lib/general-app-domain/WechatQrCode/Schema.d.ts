@@ -1,10 +1,9 @@
-import { String, Boolean, Text, Datetime, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Boolean, Text, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
-import { QrCodeType } from "../../types/Config";
 import * as Application from "../Application/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
 import * as OperEntity from "../OperEntity/Schema";
@@ -14,10 +13,14 @@ export declare type WechatQrCodeProps = {
     props?: Record<string, any>;
     state?: Record<string, any>;
 };
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     entity: "userEntityGrant" | string;
     entityId: String<64>;
-    type: QrCodeType;
+    type: 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp' | 'webForWechatPublic';
     allowShare: Boolean;
     tag?: String<32> | null;
     expiresAt?: Datetime | null;
@@ -30,10 +33,14 @@ export declare type OpSchema = EntityShape & {
     props: WechatQrCodeProps;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     entity: "userEntityGrant" | string;
     entityId: String<64>;
-    type: QrCodeType;
+    type: 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp' | 'webForWechatPublic';
     allowShare: Boolean;
     tag?: String<32> | null;
     expiresAt?: Datetime | null;
@@ -54,11 +61,10 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter<E> = {
     id: Q_StringValue | SubQuery.WechatQrCodeIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     entity: E;
     entityId: Q_StringValue;
-    type: Q_EnumValue<QrCodeType>;
+    type: Q_EnumValue<'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp' | 'webForWechatPublic'>;
     allowShare: Q_BooleanValue;
     tag: Q_StringValue;
     expiresAt: Q_DateValue;
@@ -76,24 +82,23 @@ export declare type Filter<E = Q_EnumValue<"userEntityGrant" | string>> = MakeFi
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    entity?: number;
-    entityId?: number;
-    type?: number;
-    allowShare?: number;
-    tag?: number;
-    expiresAt?: number;
-    expired?: number;
-    ticket?: number;
-    url?: number;
-    permanent?: number;
-    buffer?: number;
-    applicationId?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    entity?: 1;
+    entityId?: 1;
+    type?: 1;
+    allowShare?: 1;
+    tag?: 1;
+    expiresAt?: 1;
+    expired?: 1;
+    ticket?: 1;
+    url?: 1;
+    permanent?: 1;
+    buffer?: 1;
+    applicationId?: 1;
     application?: Application.Projection;
-    props?: number;
+    props?: 1;
     userEntityGrant?: UserEntityGrant.Projection;
     operEntity$entity?: OperEntity.Selection & {
         $entity: "operEntity";
@@ -108,7 +113,6 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     entity?: string;
     entityId?: string;
     type?: string;
@@ -132,50 +136,48 @@ export declare type ExportProjection = {
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type WechatQrCodeIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 declare type ApplicationIdProjection = OneOf<{
-    applicationId: number;
+    applicationId: 1;
 }>;
 declare type UserEntityGrantIdProjection = OneOf<{
-    entityId: number;
+    entityId: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
+    entity: 1;
 } | {
-    entity: number;
+    entityId: 1;
 } | {
-    entityId: number;
+    type: 1;
 } | {
-    type: number;
+    allowShare: 1;
 } | {
-    allowShare: number;
+    tag: 1;
 } | {
-    tag: number;
+    expiresAt: 1;
 } | {
-    expiresAt: number;
+    expired: 1;
 } | {
-    expired: number;
+    ticket: 1;
 } | {
-    ticket: number;
+    url: 1;
 } | {
-    url: number;
+    permanent: 1;
 } | {
-    permanent: number;
+    buffer: 1;
 } | {
-    buffer: number;
-} | {
-    applicationId: number;
+    applicationId: 1;
 } | {
     application: Application.SortAttr;
 } | {
-    props: number;
+    props: 1;
 } | {
     userEntityGrant: UserEntityGrant.SortAttr;
 } | {

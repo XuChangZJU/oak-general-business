@@ -1,43 +1,40 @@
-import { String, Text, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
-import { Action, ParticularAction, IState, VisitState } from "./Action";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { Action, ParticularAction, IState } from "./Action";
 import * as User from "../User/Schema";
 import * as System from "../System/Schema";
 import * as MessageSent from "../MessageSent/Schema";
-declare type MesageParams = {
-    pathname: string;
-    props: Record<string, any>;
-    state: Record<string, any>;
-};
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     userId: ForeignKey<"user">;
     systemId: ForeignKey<"system">;
-    type: String<16>;
+    type: 'adminNotification';
     weight: 'high' | 'medium' | 'low' | 'data';
-    title: String<32>;
-    content: Text;
     props: Object;
     data: Object;
-    params?: MesageParams | null;
+    params: Object;
     iState?: IState | null;
-    visitState?: VisitState | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     userId: ForeignKey<"user">;
     systemId: ForeignKey<"system">;
-    type: String<16>;
+    type: 'adminNotification';
     weight: 'high' | 'medium' | 'low' | 'data';
-    title: String<32>;
-    content: Text;
     props: Object;
     data: Object;
-    params?: MesageParams | null;
+    params: Object;
     iState?: IState | null;
-    visitState?: VisitState | null;
     user: User.Schema;
     system: System.Schema;
     messageSent$message?: Array<MessageSent.Schema>;
@@ -47,43 +44,35 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.MessageIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     userId: Q_StringValue | SubQuery.UserIdSubQuery;
     user: User.Filter;
     systemId: Q_StringValue | SubQuery.SystemIdSubQuery;
     system: System.Filter;
-    type: Q_StringValue;
+    type: Q_EnumValue<'adminNotification'>;
     weight: Q_EnumValue<'high' | 'medium' | 'low' | 'data'>;
-    title: Q_StringValue;
-    content: Q_StringValue;
     props: Object;
     data: Object;
-    params: Q_EnumValue<MesageParams>;
+    params: Object;
     iState: Q_EnumValue<IState>;
-    visitState: Q_EnumValue<VisitState>;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    userId?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    userId?: 1;
     user?: User.Projection;
-    systemId?: number;
+    systemId?: 1;
     system?: System.Projection;
-    type?: number;
-    weight?: number;
-    title?: number;
-    content?: number;
-    props?: number;
-    data?: number;
-    params?: number;
-    iState?: number;
-    visitState?: number;
+    type?: 1;
+    weight?: 1;
+    props?: 1;
+    data?: 1;
+    params?: 1;
+    iState?: 1;
     messageSent$message?: MessageSent.Selection & {
         $entity: "messageSent";
     };
@@ -94,63 +83,49 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     userId?: string;
     user?: User.ExportProjection;
     systemId?: string;
     system?: System.ExportProjection;
     type?: string;
     weight?: string;
-    title?: string;
-    content?: string;
     props?: string;
     data?: string;
     params?: string;
     iState?: string;
-    visitState?: string;
     messageSent$message?: MessageSent.Exportation & {
         $entity: "messageSent";
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type MessageIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 declare type UserIdProjection = OneOf<{
-    userId: number;
+    userId: 1;
 }>;
 declare type SystemIdProjection = OneOf<{
-    systemId: number;
+    systemId: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
-} | {
-    userId: number;
+    userId: 1;
 } | {
     user: User.SortAttr;
 } | {
-    systemId: number;
+    systemId: 1;
 } | {
     system: System.SortAttr;
 } | {
-    type: number;
+    type: 1;
 } | {
-    weight: number;
+    weight: 1;
 } | {
-    title: number;
-} | {
-    content: number;
-} | {
-    params: number;
-} | {
-    iState: number;
-} | {
-    visitState: number;
+    iState: 1;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

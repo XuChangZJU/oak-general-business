@@ -1,29 +1,35 @@
-import { String, Text } from "oak-domain/lib/types/DataType";
+import { String, Text, Datetime, PrimaryKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
 import * as ExtraFile from "../ExtraFile/Schema";
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     entity?: String<32> | null;
     entityId?: String<64> | null;
-    title: String<128>;
+    title: String<32>;
     author: String<32>;
     abstract?: Text | null;
     content?: Text | null;
-    sign: String<32>;
     iState?: IState | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     entity?: String<32> | null;
     entityId?: String<64> | null;
-    title: String<128>;
+    title: String<32>;
     author: String<32>;
     abstract?: Text | null;
     content?: Text | null;
-    sign: String<32>;
     iState?: IState | null;
     extraFile$entity?: Array<ExtraFile.Schema>;
 } & {
@@ -32,7 +38,6 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.ArticleIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     entity: Q_StringValue;
     entityId: Q_StringValue;
@@ -40,25 +45,22 @@ declare type AttrFilter = {
     author: Q_StringValue;
     abstract: Q_StringValue;
     content: Q_StringValue;
-    sign: Q_StringValue;
     iState: Q_EnumValue<IState>;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    entity?: number;
-    entityId?: number;
-    title?: number;
-    author?: number;
-    abstract?: number;
-    content?: number;
-    sign?: number;
-    iState?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    entity?: 1;
+    entityId?: 1;
+    title?: 1;
+    author?: 1;
+    abstract?: 1;
+    content?: 1;
+    iState?: 1;
     extraFile$entity?: ExtraFile.Selection & {
         $entity: "extraFile";
     };
@@ -69,46 +71,40 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     entity?: string;
     entityId?: string;
     title?: string;
     author?: string;
     abstract?: string;
     content?: string;
-    sign?: string;
     iState?: string;
     extraFile$entity?: ExtraFile.Exportation & {
         $entity: "extraFile";
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type ArticleIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
+    entity: 1;
 } | {
-    entity: number;
+    entityId: 1;
 } | {
-    entityId: number;
+    title: 1;
 } | {
-    title: number;
+    author: 1;
 } | {
-    author: number;
+    abstract: 1;
 } | {
-    abstract: number;
+    content: 1;
 } | {
-    content: number;
-} | {
-    sign: number;
-} | {
-    iState: number;
+    iState: 1;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

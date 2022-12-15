@@ -14,6 +14,7 @@ import { EntityDef as ExtraFile } from "./ExtraFile/Schema";
 import { EntityDef as Livestream } from "./Livestream/Schema";
 import { EntityDef as Message } from "./Message/Schema";
 import { EntityDef as MessageSent } from "./MessageSent/Schema";
+import { EntityDef as MessageType } from "./MessageType/Schema";
 import { EntityDef as Mobile } from "./Mobile/Schema";
 import { EntityDef as Platform } from "./Platform/Schema";
 import { EntityDef as UserRole } from "./UserRole/Schema";
@@ -21,7 +22,6 @@ import { EntityDef as Role } from "./Role/Schema";
 import { EntityDef as System } from "./System/Schema";
 import { EntityDef as Token } from "./Token/Schema";
 import { EntityDef as UserEntityGrant } from "./UserEntityGrant/Schema";
-import { EntityDef as UserSystem } from "./UserSystem/Schema";
 import { EntityDef as WechatQrCode } from "./WechatQrCode/Schema";
 import { EntityDef as WechatUser } from "./WechatUser/Schema";
 export declare type EntityDict = {
@@ -41,6 +41,7 @@ export declare type EntityDict = {
     livestream: Livestream;
     message: Message;
     messageSent: MessageSent;
+    messageType: MessageType;
     mobile: Mobile;
     platform: Platform;
     userRole: UserRole;
@@ -48,7 +49,6 @@ export declare type EntityDict = {
     system: System;
     token: Token;
     userEntityGrant: UserEntityGrant;
-    userSystem: UserSystem;
     wechatQrCode: WechatQrCode;
     wechatUser: WechatUser;
 };

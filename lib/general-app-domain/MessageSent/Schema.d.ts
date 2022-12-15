@@ -1,11 +1,15 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
 import * as Message from "../Message/Schema";
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     channel: 'public' | 'jPush' | 'jim' | 'mp' | 'gsm';
     data: Object;
     messageId: ForeignKey<"message">;
@@ -14,7 +18,11 @@ export declare type OpSchema = EntityShape & {
     iState?: IState | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     channel: 'public' | 'jPush' | 'jim' | 'mp' | 'gsm';
     data: Object;
     messageId: ForeignKey<"message">;
@@ -28,7 +36,6 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.MessageSentIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     channel: Q_EnumValue<'public' | 'jPush' | 'jim' | 'mp' | 'gsm'>;
     data: Object;
@@ -42,17 +49,16 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    channel?: number;
-    data?: number;
-    messageId?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    channel?: 1;
+    data?: 1;
+    messageId?: 1;
     message?: Message.Projection;
-    data1?: number;
-    data2?: number;
-    iState?: number;
+    data1?: 1;
+    data2?: 1;
+    iState?: 1;
 } & Partial<ExprOp<OpAttr | string>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
@@ -60,7 +66,6 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     channel?: string;
     data?: string;
     messageId?: string;
@@ -70,27 +75,25 @@ export declare type ExportProjection = {
     iState?: string;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type MessageSentIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 declare type MessageIdProjection = OneOf<{
-    messageId: number;
+    messageId: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
+    channel: 1;
 } | {
-    channel: number;
-} | {
-    messageId: number;
+    messageId: 1;
 } | {
     message: Message.SortAttr;
 } | {
-    iState: number;
+    iState: 1;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

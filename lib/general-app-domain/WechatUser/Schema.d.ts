@@ -1,15 +1,19 @@
-import { String, Boolean, Datetime, Image, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Boolean, Datetime, Image, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as User from "../User/Schema";
 import * as Application from "../Application/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as Token from "../Token/Schema";
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     origin: 'mp' | 'public' | 'web';
     openId?: String<32> | null;
     unionId?: String<32> | null;
@@ -24,7 +28,11 @@ export declare type OpSchema = EntityShape & {
     avatar?: Image | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     origin: 'mp' | 'public' | 'web';
     openId?: String<32> | null;
     unionId?: String<32> | null;
@@ -48,7 +56,6 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.WechatUserIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     origin: Q_EnumValue<'mp' | 'public' | 'web'>;
     openId: Q_StringValue;
@@ -69,24 +76,23 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    origin?: number;
-    openId?: number;
-    unionId?: number;
-    accessToken?: number;
-    sessionKey?: number;
-    subscribed?: number;
-    subscribedAt?: number;
-    unsubscribedAt?: number;
-    userId?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    origin?: 1;
+    openId?: 1;
+    unionId?: 1;
+    accessToken?: 1;
+    sessionKey?: 1;
+    subscribed?: 1;
+    subscribedAt?: 1;
+    unsubscribedAt?: 1;
+    userId?: 1;
     user?: User.Projection;
-    applicationId?: number;
+    applicationId?: 1;
     application?: Application.Projection;
-    nickname?: number;
-    avatar?: number;
+    nickname?: 1;
+    avatar?: 1;
     operEntity$entity?: OperEntity.Selection & {
         $entity: "operEntity";
     };
@@ -103,7 +109,6 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     origin?: string;
     openId?: string;
     unionId?: string;
@@ -129,50 +134,48 @@ export declare type ExportProjection = {
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type WechatUserIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 declare type UserIdProjection = OneOf<{
-    userId: number;
+    userId: 1;
 }>;
 declare type ApplicationIdProjection = OneOf<{
-    applicationId: number;
+    applicationId: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
+    origin: 1;
 } | {
-    origin: number;
+    openId: 1;
 } | {
-    openId: number;
+    unionId: 1;
 } | {
-    unionId: number;
+    accessToken: 1;
 } | {
-    accessToken: number;
+    sessionKey: 1;
 } | {
-    sessionKey: number;
+    subscribed: 1;
 } | {
-    subscribed: number;
+    subscribedAt: 1;
 } | {
-    subscribedAt: number;
+    unsubscribedAt: 1;
 } | {
-    unsubscribedAt: number;
-} | {
-    userId: number;
+    userId: 1;
 } | {
     user: User.SortAttr;
 } | {
-    applicationId: number;
+    applicationId: 1;
 } | {
     application: Application.SortAttr;
 } | {
-    nickname: number;
+    nickname: 1;
 } | {
-    avatar: number;
+    avatar: 1;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

@@ -1,10 +1,14 @@
-import { String, Boolean, Text, Datetime } from "oak-domain/lib/types/DataType";
+import { String, Boolean, Text, Datetime, PrimaryKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     mobile: String<11>;
     code: String<4>;
     visitorId: Text;
@@ -15,7 +19,11 @@ export declare type OpSchema = EntityShape & {
     iState?: IState | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     mobile: String<11>;
     code: String<4>;
     visitorId: Text;
@@ -30,7 +38,6 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.CaptchaIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     mobile: Q_StringValue;
     code: Q_StringValue;
@@ -45,18 +52,17 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    mobile?: number;
-    code?: number;
-    visitorId?: number;
-    reason?: number;
-    env?: number;
-    expired?: number;
-    expiresAt?: number;
-    iState?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    mobile?: 1;
+    code?: 1;
+    visitorId?: 1;
+    reason?: 1;
+    env?: 1;
+    expired?: 1;
+    expiresAt?: 1;
+    iState?: 1;
 } & Partial<ExprOp<OpAttr | string>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
@@ -64,7 +70,6 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     mobile?: string;
     code?: string;
     visitorId?: string;
@@ -75,30 +80,28 @@ export declare type ExportProjection = {
     iState?: string;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type CaptchaIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
+    mobile: 1;
 } | {
-    mobile: number;
+    code: 1;
 } | {
-    code: number;
+    visitorId: 1;
 } | {
-    visitorId: number;
+    reason: 1;
 } | {
-    reason: number;
+    expired: 1;
 } | {
-    expired: number;
+    expiresAt: 1;
 } | {
-    expiresAt: number;
-} | {
-    iState: number;
+    iState: 1;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

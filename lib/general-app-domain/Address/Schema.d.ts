@@ -1,11 +1,15 @@
-import { String, Boolean, Text, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Boolean, Text, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as Area from "../Area/Schema";
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     detail: String<32>;
     areaId: ForeignKey<"area">;
     phone: String<12>;
@@ -14,7 +18,11 @@ export declare type OpSchema = EntityShape & {
     remark: Text;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     detail: String<32>;
     areaId: ForeignKey<"area">;
     phone: String<12>;
@@ -28,7 +36,6 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.AddressIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     detail: Q_StringValue;
     areaId: Q_StringValue | SubQuery.AreaIdSubQuery;
@@ -42,17 +49,16 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    detail?: number;
-    areaId?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    detail?: 1;
+    areaId?: 1;
     area?: Area.Projection;
-    phone?: number;
-    name?: number;
-    default?: number;
-    remark?: number;
+    phone?: 1;
+    name?: 1;
+    default?: 1;
+    remark?: 1;
 } & Partial<ExprOp<OpAttr | string>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
@@ -60,7 +66,6 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     detail?: string;
     areaId?: string;
     area?: Area.ExportProjection;
@@ -70,33 +75,31 @@ export declare type ExportProjection = {
     remark?: string;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type AddressIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 declare type AreaIdProjection = OneOf<{
-    areaId: number;
+    areaId: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
+    detail: 1;
 } | {
-    detail: number;
-} | {
-    areaId: number;
+    areaId: 1;
 } | {
     area: Area.SortAttr;
 } | {
-    phone: number;
+    phone: 1;
 } | {
-    name: number;
+    name: 1;
 } | {
-    default: number;
+    default: 1;
 } | {
-    remark: number;
+    remark: 1;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

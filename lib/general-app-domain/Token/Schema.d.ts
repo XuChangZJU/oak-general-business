@@ -1,8 +1,8 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { AbleState } from 'oak-domain/lib/actions/action';
 import { Action, ParticularAction } from "./Action";
 import * as Application from "../Application/Schema";
@@ -47,7 +47,11 @@ export declare type ServerEnv = {
     type: 'server';
 };
 export declare type Environment = WechatMpEnv | WebEnv | ServerEnv;
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     applicationId?: ForeignKey<"application"> | null;
     entity: "email" | "mobile" | "wechatUser" | string;
     entityId: String<64>;
@@ -57,7 +61,11 @@ export declare type OpSchema = EntityShape & {
     ableState?: AbleState | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     applicationId?: ForeignKey<"application"> | null;
     entity: "email" | "mobile" | "wechatUser" | string;
     entityId: String<64>;
@@ -77,7 +85,6 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter<E> = {
     id: Q_StringValue | SubQuery.TokenIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     applicationId: Q_StringValue | SubQuery.ApplicationIdSubQuery;
     application: Application.Filter;
@@ -97,20 +104,19 @@ export declare type Filter<E = Q_EnumValue<"email" | "mobile" | "wechatUser" | s
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    applicationId?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    applicationId?: 1;
     application?: Application.Projection;
-    entity?: number;
-    entityId?: number;
-    userId?: number;
+    entity?: 1;
+    entityId?: 1;
+    userId?: 1;
     user?: User.Projection;
-    playerId?: number;
+    playerId?: 1;
     player?: User.Projection;
-    env?: number;
-    ableState?: number;
+    env?: 1;
+    ableState?: 1;
     email?: Email.Projection;
     mobile?: Mobile.Projection;
     wechatUser?: WechatUser.Projection;
@@ -121,7 +127,6 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     applicationId?: string;
     application?: Application.ExportProjection;
     entity?: string;
@@ -137,52 +142,50 @@ export declare type ExportProjection = {
     wechatUser?: WechatUser.ExportProjection;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type TokenIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 declare type ApplicationIdProjection = OneOf<{
-    applicationId: number;
+    applicationId: 1;
 }>;
 declare type UserIdProjection = OneOf<{
-    userId: number;
-    playerId: number;
+    userId: 1;
+    playerId: 1;
 }>;
 declare type EmailIdProjection = OneOf<{
-    entityId: number;
+    entityId: 1;
 }>;
 declare type MobileIdProjection = OneOf<{
-    entityId: number;
+    entityId: 1;
 }>;
 declare type WechatUserIdProjection = OneOf<{
-    entityId: number;
+    entityId: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
-} | {
-    applicationId: number;
+    applicationId: 1;
 } | {
     application: Application.SortAttr;
 } | {
-    entity: number;
+    entity: 1;
 } | {
-    entityId: number;
+    entityId: 1;
 } | {
-    userId: number;
+    userId: 1;
 } | {
     user: User.SortAttr;
 } | {
-    playerId: number;
+    playerId: 1;
 } | {
     player: User.SortAttr;
 } | {
-    env: number;
+    env: 1;
 } | {
-    ableState: number;
+    ableState: 1;
 } | {
     email: Email.SortAttr;
 } | {

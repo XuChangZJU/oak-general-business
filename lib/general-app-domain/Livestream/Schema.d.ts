@@ -1,10 +1,14 @@
-import { String, Datetime } from "oak-domain/lib/types/DataType";
+import { String, Datetime, PrimaryKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     title: String<32>;
     streamTitle: String<32>;
     liveonly: 'online' | 'offline';
@@ -18,7 +22,11 @@ export declare type OpSchema = EntityShape & {
     expireAt: Datetime;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     title: String<32>;
     streamTitle: String<32>;
     liveonly: 'online' | 'offline';
@@ -36,7 +44,6 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.LivestreamIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     title: Q_StringValue;
     streamTitle: Q_StringValue;
@@ -54,21 +61,20 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    title?: number;
-    streamTitle?: number;
-    liveonly?: number;
-    hub?: number;
-    streamKey?: number;
-    entity?: number;
-    entityId?: number;
-    rtmpPushUrl?: number;
-    rtmpPlayUrl?: number;
-    pcPushUrl?: number;
-    expireAt?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    title?: 1;
+    streamTitle?: 1;
+    liveonly?: 1;
+    hub?: 1;
+    streamKey?: 1;
+    entity?: 1;
+    entityId?: 1;
+    rtmpPushUrl?: 1;
+    rtmpPlayUrl?: 1;
+    pcPushUrl?: 1;
+    expireAt?: 1;
 } & Partial<ExprOp<OpAttr | string>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
@@ -76,7 +82,6 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     title?: string;
     streamTitle?: string;
     liveonly?: string;
@@ -90,38 +95,36 @@ export declare type ExportProjection = {
     expireAt?: string;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type LivestreamIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
+    title: 1;
 } | {
-    title: number;
+    streamTitle: 1;
 } | {
-    streamTitle: number;
+    liveonly: 1;
 } | {
-    liveonly: number;
+    hub: 1;
 } | {
-    hub: number;
+    streamKey: 1;
 } | {
-    streamKey: number;
+    entity: 1;
 } | {
-    entity: number;
+    entityId: 1;
 } | {
-    entityId: number;
+    rtmpPushUrl: 1;
 } | {
-    rtmpPushUrl: number;
+    rtmpPlayUrl: 1;
 } | {
-    rtmpPlayUrl: number;
+    pcPushUrl: 1;
 } | {
-    pcPushUrl: number;
-} | {
-    expireAt: number;
+    expireAt: 1;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

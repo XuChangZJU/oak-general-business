@@ -1,11 +1,15 @@
-import { String } from "oak-domain/lib/types/DataType";
+import { String, Datetime, PrimaryKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
 import * as ModiEntity from "../ModiEntity/Schema";
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     targetEntity: String<32>;
     entity: String<32>;
     entityId: String<64>;
@@ -16,7 +20,11 @@ export declare type OpSchema = EntityShape & {
     iState?: IState | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     targetEntity: String<32>;
     entity: String<32>;
     entityId: String<64>;
@@ -32,7 +40,6 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.ModiIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     targetEntity: Q_StringValue;
     entity: Q_StringValue;
@@ -47,18 +54,17 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    targetEntity?: number;
-    entity?: number;
-    entityId?: number;
-    action?: number;
-    data?: number;
-    filter?: number;
-    extra?: number;
-    iState?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    targetEntity?: 1;
+    entity?: 1;
+    entityId?: 1;
+    action?: 1;
+    data?: 1;
+    filter?: 1;
+    extra?: 1;
+    iState?: 1;
     modiEntity$modi?: ModiEntity.Selection & {
         $entity: "modiEntity";
     };
@@ -69,7 +75,6 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     targetEntity?: string;
     entity?: string;
     entityId?: string;
@@ -83,26 +88,24 @@ export declare type ExportProjection = {
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type ModiIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
+    targetEntity: 1;
 } | {
-    targetEntity: number;
+    entity: 1;
 } | {
-    entity: number;
+    entityId: 1;
 } | {
-    entityId: number;
+    action: 1;
 } | {
-    action: number;
-} | {
-    iState: number;
+    iState: 1;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

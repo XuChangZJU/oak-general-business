@@ -1,29 +1,35 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { AppendOnlyAction } from "oak-domain/lib/actions/action";
 import * as Oper from "../Oper/Schema";
 import * as User from "../User/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
-import * as UserSystem from "../UserSystem/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
 import * as WechatUser from "../WechatUser/Schema";
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     operId: ForeignKey<"oper">;
-    entity: "user" | "userEntityGrant" | "userSystem" | "wechatQrCode" | "wechatUser" | string;
+    entity: "user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string;
     entityId: String<64>;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     operId: ForeignKey<"oper">;
-    entity: "user" | "userEntityGrant" | "userSystem" | "wechatQrCode" | "wechatUser" | string;
+    entity: "user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string;
     entityId: String<64>;
     oper: Oper.Schema;
     user?: User.Schema;
     userEntityGrant?: UserEntityGrant.Schema;
-    userSystem?: UserSystem.Schema;
     wechatQrCode?: WechatQrCode.Schema;
     wechatUser?: WechatUser.Schema;
 } & {
@@ -32,7 +38,6 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter<E> = {
     id: Q_StringValue | SubQuery.OperEntityIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     operId: Q_StringValue | SubQuery.OperIdSubQuery;
     oper: Oper.Filter;
@@ -40,25 +45,22 @@ declare type AttrFilter<E> = {
     entityId: Q_StringValue;
     user: User.Filter;
     userEntityGrant: UserEntityGrant.Filter;
-    userSystem: UserSystem.Filter;
     wechatQrCode: WechatQrCode.Filter;
     wechatUser: WechatUser.Filter;
 };
-export declare type Filter<E = Q_EnumValue<"user" | "userEntityGrant" | "userSystem" | "wechatQrCode" | "wechatUser" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
+export declare type Filter<E = Q_EnumValue<"user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    operId?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    operId?: 1;
     oper?: Oper.Projection;
-    entity?: number;
-    entityId?: number;
+    entity?: 1;
+    entityId?: 1;
     user?: User.Projection;
     userEntityGrant?: UserEntityGrant.Projection;
-    userSystem?: UserSystem.Projection;
     wechatQrCode?: WechatQrCode.Projection;
     wechatUser?: WechatUser.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
@@ -68,60 +70,51 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     operId?: string;
     oper?: Oper.ExportProjection;
     entity?: string;
     entityId?: string;
     user?: User.ExportProjection;
     userEntityGrant?: UserEntityGrant.ExportProjection;
-    userSystem?: UserSystem.ExportProjection;
     wechatQrCode?: WechatQrCode.ExportProjection;
     wechatUser?: WechatUser.ExportProjection;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type OperEntityIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 declare type OperIdProjection = OneOf<{
-    operId: number;
+    operId: 1;
 }>;
 declare type UserIdProjection = OneOf<{
-    entityId: number;
+    entityId: 1;
 }>;
 declare type UserEntityGrantIdProjection = OneOf<{
-    entityId: number;
-}>;
-declare type UserSystemIdProjection = OneOf<{
-    entityId: number;
+    entityId: 1;
 }>;
 declare type WechatQrCodeIdProjection = OneOf<{
-    entityId: number;
+    entityId: 1;
 }>;
 declare type WechatUserIdProjection = OneOf<{
-    entityId: number;
+    entityId: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
-} | {
-    operId: number;
+    operId: 1;
 } | {
     oper: Oper.SortAttr;
 } | {
-    entity: number;
+    entity: 1;
 } | {
-    entityId: number;
+    entityId: 1;
 } | {
     user: User.SortAttr;
 } | {
     userEntityGrant: UserEntityGrant.SortAttr;
-} | {
-    userSystem: UserSystem.SortAttr;
 } | {
     wechatQrCode: WechatQrCode.SortAttr;
 } | {
@@ -163,17 +156,6 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     userEntityGrant: UserEntityGrant.UpdateOperation;
 } | {
     entity: "userEntityGrant";
-    entityId: String<64>;
-} | {
-    entity?: never;
-    entityId?: never;
-    userSystem: UserSystem.CreateSingleOperation;
-} | {
-    entity: "userSystem";
-    entityId: String<64>;
-    userSystem: UserSystem.UpdateOperation;
-} | {
-    entity: "userSystem";
     entityId: String<64>;
 } | {
     entity?: never;
@@ -220,10 +202,6 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     entityId?: never;
     entity?: never;
 } | {
-    userSystem?: UserSystem.CreateSingleOperation | UserSystem.UpdateOperation | UserSystem.RemoveOperation;
-    entityId?: never;
-    entity?: never;
-} | {
     wechatQrCode?: WechatQrCode.CreateSingleOperation | WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation;
     entityId?: never;
     entity?: never;
@@ -232,7 +210,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("user" | "userEntityGrant" | "userSystem" | "wechatQrCode" | "wechatUser" | string) | null;
+    entity?: ("user" | "userEntityGrant" | "wechatQrCode" | "wechatUser" | string) | null;
     entityId?: String<64> | null;
 }) & {
     [k: string]: any;
@@ -242,8 +220,6 @@ export declare type RemoveOperationData = {} & ({
     user?: User.UpdateOperation | User.RemoveOperation;
 } | {
     userEntityGrant?: UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation;
-} | {
-    userSystem?: UserSystem.UpdateOperation | UserSystem.RemoveOperation;
 } | {
     wechatQrCode?: WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation;
 } | {
@@ -256,11 +232,10 @@ export declare type Operation = CreateOperation | UpdateOperation | RemoveOperat
 export declare type OperIdSubQuery = Selection<OperIdProjection>;
 export declare type UserIdSubQuery = Selection<UserIdProjection>;
 export declare type UserEntityGrantIdSubQuery = Selection<UserEntityGrantIdProjection>;
-export declare type UserSystemIdSubQuery = Selection<UserSystemIdProjection>;
 export declare type WechatQrCodeIdSubQuery = Selection<WechatQrCodeIdProjection>;
 export declare type WechatUserIdSubQuery = Selection<WechatUserIdProjection>;
 export declare type OperEntityIdSubQuery = Selection<OperEntityIdProjection>;
-export declare type NativeAttr = OpAttr | `oper.${Oper.NativeAttr}` | `entity.${User.NativeAttr}` | `entity.${UserEntityGrant.NativeAttr}` | `entity.${UserSystem.NativeAttr}` | `entity.${WechatQrCode.NativeAttr}` | `entity.${WechatUser.NativeAttr}`;
+export declare type NativeAttr = OpAttr | `oper.${Oper.NativeAttr}` | `entity.${User.NativeAttr}` | `entity.${UserEntityGrant.NativeAttr}` | `entity.${WechatQrCode.NativeAttr}` | `entity.${WechatUser.NativeAttr}`;
 export declare type FullAttr = NativeAttr;
 export declare type EntityDef = {
     Schema: Schema;

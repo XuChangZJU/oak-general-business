@@ -1,15 +1,13 @@
-import { String, Text, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Text, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
-import { Style } from "../../types/Style";
 import * as System from "../System/Schema";
 import * as Token from "../Token/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
 import * as WechatUser from "../WechatUser/Schema";
-export declare type Passport = 'email' | 'mobile' | 'wechat';
 export declare type AppType = 'web' | 'wechatMp' | 'wechatPublic';
 export declare type WechatMpConfig = {
     type: 'wechatMp';
@@ -19,36 +17,44 @@ export declare type WechatMpConfig = {
 };
 export declare type WebConfig = {
     type: 'web';
-    wechat?: {
-        appId: string;
-        appSecret: string;
-    };
-    passport: Passport[];
+    appId?: string;
+    appSecret?: string;
 };
-export declare type WechatPublicTemplateMsgsConfig = Record<string, string>;
+declare type WechatPublicTemplateMsgsConfig = Record<string, {
+    templateId: string;
+    dataDef: [
+        string,
+        string
+    ][];
+}>;
 export declare type WechatPublicConfig = {
     type: 'wechatPublic';
-    isService: boolean;
     appId: string;
     appSecret: string;
     templateMsgs?: WechatPublicTemplateMsgsConfig;
 };
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     name: String<32>;
     description: Text;
     type: AppType;
     systemId: ForeignKey<"system">;
     config: WebConfig | WechatMpConfig | WechatPublicConfig;
-    style?: Style | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     name: String<32>;
     description: Text;
     type: AppType;
     systemId: ForeignKey<"system">;
     config: WebConfig | WechatMpConfig | WechatPublicConfig;
-    style?: Style | null;
     system: System.Schema;
     token$application?: Array<Token.Schema>;
     wechatQrCode$application?: Array<WechatQrCode.Schema>;
@@ -59,30 +65,26 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.ApplicationIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     name: Q_StringValue;
     description: Q_StringValue;
     type: Q_EnumValue<AppType>;
     systemId: Q_StringValue | SubQuery.SystemIdSubQuery;
     system: System.Filter;
-    style: Q_EnumValue<Style>;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    name?: number;
-    description?: number;
-    type?: number;
-    systemId?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    name?: 1;
+    description?: 1;
+    type?: 1;
+    systemId?: 1;
     system?: System.Projection;
-    config?: number;
-    style?: number;
+    config?: 1;
     token$application?: Token.Selection & {
         $entity: "token";
     };
@@ -99,14 +101,12 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     name?: string;
     description?: string;
     type?: string;
     systemId?: string;
     system?: System.ExportProjection;
     config?: string;
-    style?: string;
     token$application?: Token.Exportation & {
         $entity: "token";
     };
@@ -118,31 +118,27 @@ export declare type ExportProjection = {
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type ApplicationIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 declare type SystemIdProjection = OneOf<{
-    systemId: number;
+    systemId: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
+    name: 1;
 } | {
-    name: number;
+    description: 1;
 } | {
-    description: number;
+    type: 1;
 } | {
-    type: number;
-} | {
-    systemId: number;
+    systemId: 1;
 } | {
     system: System.SortAttr;
-} | {
-    style: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

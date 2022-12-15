@@ -1,24 +1,29 @@
-import { String, Text } from "oak-domain/lib/types/DataType";
+import { String, Text, Datetime, PrimaryKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import { Config } from "../../types/Config";
-import { Style } from "../../types/Style";
 import * as System from "../System/Schema";
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     name: String<32>;
     description: Text;
     config: Config;
-    style?: Style | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     name: String<32>;
     description: Text;
     config: Config;
-    style?: Style | null;
     system$platform?: Array<System.Schema>;
 } & {
     [A in ExpressionKey]?: any;
@@ -26,25 +31,21 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.PlatformIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     name: Q_StringValue;
     description: Q_StringValue;
     config: Q_EnumValue<Config>;
-    style: Q_EnumValue<Style>;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    name?: number;
-    description?: number;
-    config?: number;
-    style?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    name?: 1;
+    description?: 1;
+    config?: 1;
     system$platform?: System.Selection & {
         $entity: "system";
     };
@@ -55,34 +56,28 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     name?: string;
     description?: string;
     config?: string;
-    style?: string;
     system$platform?: System.Exportation & {
         $entity: "system";
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type PlatformIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
+    name: 1;
 } | {
-    name: number;
+    description: 1;
 } | {
-    description: number;
-} | {
-    config: number;
-} | {
-    style: number;
+    config: 1;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

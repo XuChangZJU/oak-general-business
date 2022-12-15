@@ -1,12 +1,16 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Datetime, PrimaryKey, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { AppendOnlyAction } from "oak-domain/lib/actions/action";
 import * as User from "../User/Schema";
 import * as OperEntity from "../OperEntity/Schema";
-export declare type OpSchema = EntityShape & {
+export declare type OpSchema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     action: String<16>;
     data: Object;
     filter?: Object | null;
@@ -14,7 +18,11 @@ export declare type OpSchema = EntityShape & {
     operatorId?: ForeignKey<"user"> | null;
 };
 export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export declare type Schema = {
+    id: PrimaryKey;
+    $$createAt$$: Datetime;
+    $$updateAt$$: Datetime;
+    $$deleteAt$$?: Datetime | null;
     action: String<16>;
     data: Object;
     filter?: Object | null;
@@ -28,7 +36,6 @@ export declare type Schema = EntityShape & {
 declare type AttrFilter = {
     id: Q_StringValue | SubQuery.OperIdSubQuery;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     action: Q_StringValue;
     data: Object;
@@ -41,15 +48,14 @@ export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
-    $$createAt$$?: number;
-    $$updateAt$$?: number;
-    $$seq$$?: number;
-    action?: number;
-    data?: number;
-    filter?: number;
-    extra?: number;
-    operatorId?: number;
+    id: 1;
+    $$createAt$$?: 1;
+    $$updateAt$$?: 1;
+    action?: 1;
+    data?: 1;
+    filter?: 1;
+    extra?: 1;
+    operatorId?: 1;
     operator?: User.Projection;
     operEntity$oper?: OperEntity.Selection & {
         $entity: "operEntity";
@@ -61,7 +67,6 @@ export declare type ExportProjection = {
     id?: string;
     $$createAt$$?: string;
     $$updateAt$$?: string;
-    $$seq$$?: string;
     action?: string;
     data?: string;
     filter?: string;
@@ -73,23 +78,21 @@ export declare type ExportProjection = {
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type OperIdProjection = OneOf<{
-    id: number;
+    id: 1;
 }>;
 declare type UserIdProjection = OneOf<{
-    operatorId: number;
+    operatorId: 1;
 }>;
 export declare type SortAttr = {
-    id: number;
+    id: 1;
 } | {
-    $$createAt$$: number;
+    $$createAt$$: 1;
 } | {
-    $$seq$$: number;
+    $$updateAt$$: 1;
 } | {
-    $$updateAt$$: number;
+    action: 1;
 } | {
-    action: number;
-} | {
-    operatorId: number;
+    operatorId: 1;
 } | {
     operator: User.SortAttr;
 } | {
