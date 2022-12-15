@@ -3,7 +3,6 @@ export declare type QiniuCloudConfig = {
     secretKey: string;
 };
 export declare type QiniuLiveConfig = {
-    accessKey: string;
     liveHost: string;
     publishDomain: string;
     playDomain: string;

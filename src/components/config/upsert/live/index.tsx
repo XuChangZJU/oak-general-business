@@ -38,21 +38,6 @@ function Qiniu(props: {
                                 layout="vertical"
                                 style={{ marginTop: 10 }}
                             >
-                                <Form.Item label="accessKey" name="accessKey">
-                                    <>
-                                        <Input
-                                            placeholder="请输入accessKey"
-                                            type="text"
-                                            value={live?.accessKey}
-                                            onChange={(e) =>
-                                                setValue(
-                                                    `accessKey`,
-                                                    e.target.value
-                                                )
-                                            }
-                                        />
-                                    </>
-                                </Form.Item>
                                 <Form.Item label="hub" name="hub">
                                     <>
                                         <Input

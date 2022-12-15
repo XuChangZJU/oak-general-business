@@ -4,7 +4,6 @@ export type QiniuCloudConfig = {
 };
 
 export type QiniuLiveConfig = {
-    accessKey: string;
     liveHost: string; // 七牛直播云接口域名
     publishDomain: string; // 推流域名
     playDomain: string; // 拉流域名
