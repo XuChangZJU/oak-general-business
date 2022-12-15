@@ -134,7 +134,7 @@ export default function render(
     ) => {
         const { filename, size, id } = file;
         const file2 = newUploadFiles.find(
-            (ele: NewUploadFile) => (ele.fileName?.includes(filename) && ele.size === size)
+            (ele: NewUploadFile) => (ele.name?.includes(filename) && ele.size === size)
         );
         if (file2) {
             Object.assign(file2, {
@@ -166,7 +166,7 @@ export default function render(
         return <Button type="default">选择文件</Button>;
     };
     return (
-        <Space direction="vertical" className={Style['oak-upload']}>
+        <Space direction="vertical" className={Style['oak-upload']} style={{width: '100%'}}>
             <Upload
                 className={classNames(Style['oak-upload__upload'], className)}
                 style={style}
