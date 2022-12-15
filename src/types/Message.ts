@@ -1,6 +1,7 @@
 export type MessagePropsToSms = (type: string, props: Record<string, any>) => {
     signName?: string;      // 可能的签名
     params?: Record<string, string>;        // 模板参数,需要替换的参数名和 value 的键值对
+    paramsArray?: Array<string>;            // 数组形式的模板参数，按序传入服务商接口
 } | undefined;
 
 type WechatKeywordNum = 'keyword1' | 'keyword2' | 'keyword3'| 'keyword4'| 'keyword5'| 'keyword6'| 'keyword7';

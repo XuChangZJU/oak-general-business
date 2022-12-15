@@ -15,7 +15,6 @@ export type QiniuLiveConfig = {
 }
 
 export type QiniuCosConfig = {
-    accessKey: string;
     uploadHost: string; // 七牛上传域名
     bucket: string;
     domain: string; // 域名

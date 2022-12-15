@@ -13,7 +13,6 @@ export declare type QiniuLiveConfig = {
     playKey: string;
 };
 export declare type QiniuCosConfig = {
-    accessKey: string;
     uploadHost: string;
     bucket: string;
     domain: string;
