@@ -1,4 +1,4 @@
-
+import assert from 'assert';
 import { EntityDict } from '../general-app-domain';
 
 import { RuntimeContext } from './RuntimeContext';
@@ -10,7 +10,6 @@ import { SyncContext, SyncRowStore } from 'oak-domain/lib/store/SyncRowStore';
 import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
 import { BackendRuntimeContext } from './BackendRuntimeContext';
 import { OakTokenExpiredException, OakUserDisabledException } from '../types/Exception';
-import { assert } from 'console';
 import { OakUnloggedInException } from 'oak-domain/lib/types';
 
 type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>;
