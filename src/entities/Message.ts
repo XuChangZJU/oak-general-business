@@ -19,7 +19,7 @@ export interface Schema extends EntityShape {
     title: String<32>;
     content: Text;
     props: Object; // 消息的结构化数据（用于向各个渠道推送时的格式化）
-    data: Object; // 透传到前台的数据（OpRecords）
+    data?: Object; // 透传到前台的数据（OpRecords）
     params?: MessageParams; // 通知前端需要到达的路由
 };
 

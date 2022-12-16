@@ -15,7 +15,7 @@ export interface Schema extends EntityShape {
     title: String<32>;
     content: Text;
     props: Object;
-    data: Object;
+    data?: Object;
     params?: MessageParams;
 }
 export {};

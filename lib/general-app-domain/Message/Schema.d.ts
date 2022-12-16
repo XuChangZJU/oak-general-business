@@ -7,10 +7,10 @@ import { Action, ParticularAction, IState, VisitState } from "./Action";
 import * as User from "../User/Schema";
 import * as System from "../System/Schema";
 import * as MessageSent from "../MessageSent/Schema";
-declare type MesageParams = {
+declare type MessageParams = {
     pathname: string;
-    props: Record<string, any>;
-    state: Record<string, any>;
+    props?: Record<string, any>;
+    state?: Record<string, any>;
 };
 export declare type OpSchema = EntityShape & {
     userId: ForeignKey<"user">;
@@ -20,8 +20,8 @@ export declare type OpSchema = EntityShape & {
     title: String<32>;
     content: Text;
     props: Object;
-    data: Object;
-    params?: MesageParams | null;
+    data?: Object | null;
+    params?: MessageParams | null;
     iState?: IState | null;
     visitState?: VisitState | null;
 };
@@ -34,8 +34,8 @@ export declare type Schema = EntityShape & {
     title: String<32>;
     content: Text;
     props: Object;
-    data: Object;
-    params?: MesageParams | null;
+    data?: Object | null;
+    params?: MessageParams | null;
     iState?: IState | null;
     visitState?: VisitState | null;
     user: User.Schema;
@@ -59,7 +59,7 @@ declare type AttrFilter = {
     content: Q_StringValue;
     props: Object;
     data: Object;
-    params: Q_EnumValue<MesageParams>;
+    params: Q_EnumValue<MessageParams>;
     iState: Q_EnumValue<IState>;
     visitState: Q_EnumValue<VisitState>;
 };
