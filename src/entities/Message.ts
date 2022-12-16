@@ -5,11 +5,10 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Index, ActionDef } from 'oak-domain/lib/types';
 
-type MessageType = 'adminNotification';
-type MesageParams = {
+type MessageParams = {
     pathname: string;
-    props: Record<string, any>;
-    state: Record<string, any>;
+    props?: Record<string, any>;
+    state?: Record<string, any>;
 };
 
 export interface Schema extends EntityShape {
@@ -19,9 +18,9 @@ export interface Schema extends EntityShape {
     weight: 'high' | 'medium' | 'low' | 'data';
     title: String<32>;
     content: Text;
-    props: Object;              // 消息的结构化数据（用于向各个渠道推送时的格式化）
-    data: Object;               // 透传到前台的数据（OpRecords）
-    params?: MesageParams;     // 通知前端需要到达的路由
+    props: Object; // 消息的结构化数据（用于向各个渠道推送时的格式化）
+    data: Object; // 透传到前台的数据（OpRecords）
+    params?: MessageParams; // 通知前端需要到达的路由
 };
 
 type IAction = 'succeed' | 'fail';
@@ -55,7 +54,6 @@ const locale: LocaleDef<
         visitState: VisitState,
         iState: IState;
         weight: Schema['weight'];
-        type: Schema['type'];
     }
 > = {
     zh_CN: {
@@ -92,10 +90,6 @@ const locale: LocaleDef<
                 medium: '中',
                 low: '低',
                 data: '数据',
-            },
-            type: {
-                adminNotification: '系统通知',
-                conversationMessage: '客服消息',
             },
         },
     },
