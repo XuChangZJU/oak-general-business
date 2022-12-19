@@ -1,0 +1,24 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <view class="userInfo">
+        <block wx:if="{{avatar}}">
+            <l-avatar src="{{avatar}}" text="{{nickname || '未设置'}}"  placement="bottom"/>
+        </block>
+        <block wx:else>
+            <l-avatar icon="user" size="140" icon-size="80" text="{{nickname || '未设置'}}" placement="bottom"/>
+        </block>
+        <block wx:if="{{isLoggedIn && !isPlayingAnother}}">
+            <l-button type="default" size="mini" disabled="{{refreshing}}"  plain="true" bind:lintap="onRefresh">{{t('common:action.update')}}</l-button>
+        </block>
+        <block wx:elif="{{!isLoggedIn}}">
+            <l-button type="default" size="mini" disabled="{{refreshing}}" bind:lintap="doLogin">{{t('login')}}</l-button>
+        </block>
+    </view>
+    <view class="cell">
+        <l-list title="手机号" icon="phone" right-desc="{{mobileText}}" bind:lintap="goMyMobile" >
+        </l-list>
+        <block wx:if="{{isRoot}}">
+            <l-list title="用户管理" icon="user" hover bind:lintap="goUserManage" />
+        </block>
+    </view>
+</view>

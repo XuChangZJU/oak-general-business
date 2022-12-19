@@ -1,0 +1,18 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <view class="container">
+        <view class="list" wx:if="{{mobiles && mobiles.length > 0}}">
+            <l-list title="{{item.mobile}}" />
+        </view>
+        <block wx:else>
+            <l-card type="primary" plaintext="{{true}}">
+                <view class="card">
+                    您尚未授权手机号
+                </view>
+            </l-card>
+        </block>
+    </view>
+    <l-button type="default" block size="long" open-type="getPhoneNumber" bindgetphonenumber="onRefreshMobile">
+        授权手机号
+    </l-button>
+</view>

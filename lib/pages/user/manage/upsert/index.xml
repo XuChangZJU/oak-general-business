@@ -1,0 +1,27 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <view class="col">
+        <l-input placeholder="请输入昵称" label="昵称" value="{{nickname}}" confirm-type="next" bind:lininput="setValueMp" l-label-class="label" data-attr="nickname" />
+        <l-input placeholder="请输入姓名" label="姓名" value="{{name}}" confirm-type="next" bind:lininput="setValueMp" l-label-class="label" data-attr="name" /> 
+        <picker range="{{GenderOptions}}" range-key="label" value="{{genderOptionIndex}}" bind:change="onGenderChange">
+            <l-input label="性别" value="{{genderText || '选择证件类别'}}" disabled="{{true}}" l-label-class="label" >
+                <l-icon slot="right" name="right" size="20" />
+            </l-input>
+        </picker>
+        <picker mode="date" end="{{birthEnd}}" value="{{birthDayValue}}" bind:change="onBirthChange">
+            <l-input label="出生日期" value="{{birthText || '选择日期'}}" disabled="{{true}}" l-label-class="label">
+                <l-icon slot="right" name="right" size="20" />
+            </l-input>
+        </picker>
+        <picker range="{{IDCardTypeOptions}}" range-key="label" value="{{idCardTypeOptionIndex}}" bind:change="onIdCardTypeChange">
+            <l-input label="证件类别" value="{{idCardTypeText || '选择证件类别'}}" disabled="{{true}}" l-label-class="label" >
+                <l-icon slot="right" name="right" size="20" />
+            </l-input>
+        </picker>
+        <l-input placeholder="请输入证件号" label="证件号" value="{{idNumber}}" confirm-type="next" bind:lininput="setValueMp" l-label-class="label" data-attr="idNumber" />
+    </view>
+    <view style="flex: 1" />
+    <l-button type="default" disabled="{{oakExecuting || !oakDirty}}" loading="{{oakExecuting}}" size="long" bind:lintap="confirmMp">
+        {{t('common:action.confirm')}}
+    </l-button>
+</view>
