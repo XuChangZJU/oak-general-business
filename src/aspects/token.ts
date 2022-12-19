@@ -243,32 +243,74 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
 }
 
 async function loadTokenInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(tokenId: string, context: Cxt ) {
-    await context.select('token', {
-        data: {
-            id: 1,
-            userId: 1,
-            ableState: 1,
-            user: {
+    await context.select(
+        'token',
+        {
+            data: {
                 id: 1,
-                name: 1,
-                nickname: 1,
-            },
-            player: {
-                id: 1,
-                userRole$user: {
-                    $entity: 'userRole',
-                    data: {
-                        id: 1,
-                        userId: 1,
-                        roleId: 1,
+                userId: 1,
+                ableState: 1,
+                user: {
+                    id: 1,
+                    nickname: 1,
+                    name: 1,
+                    userState: 1,
+                    extraFile$entity: {
+                        $entity: 'extraFile',
+                        data: {
+                            id: 1,
+                            tag1: 1,
+                            origin: 1,
+                            bucket: 1,
+                            objectId: 1,
+                            filename: 1,
+                            extra1: 1,
+                            type: 1,
+                            entity: 1,
+                            entityId: 1,
+                            extension: 1,
+                        },
+                        filter: {
+                            tag1: 'avatar',
+                        },
+                        indexFrom: 0,
+                        count: 1,
+                    },
+                    mobile$user: {
+                        $entity: 'mobile',
+                        data: {
+                            id: 1,
+                            mobile: 1,
+                            userId: 1,
+                        },
+                    },
+                    userRole$user: {
+                        $entity: 'userRole',
+                        data: {
+                            id: 1,
+                            userId: 1,
+                            roleId: 1,
+                        },
+                    },
+                },
+                player: {
+                    id: 1,
+                    userRole$user: {
+                        $entity: 'userRole',
+                        data: {
+                            id: 1,
+                            userId: 1,
+                            roleId: 1,
+                        },
                     },
                 },
             },
+            filter: {
+                id: tokenId,
+            },
         },
-        filter: {
-            id: tokenId,
-        },
-    }, {});
+        {}
+    );
 }
 
 export async function loginByMobile<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(

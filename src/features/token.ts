@@ -29,6 +29,7 @@ const userProjection: EntityDict['user']['Selection']['data'] = {
             extra1: 1,
             type: 1,
             entity: 1,
+            entityId: 1,
             extension: 1,
         },
         filter: {
