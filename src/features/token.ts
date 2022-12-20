@@ -17,6 +17,8 @@ const userProjection: EntityDict['user']['Selection']['data'] = {
     nickname: 1,
     name: 1,
     userState: 1,
+    idState: 1,
+    gender: 1,
     extraFile$entity: {
         $entity: 'extraFile',
         data: {
