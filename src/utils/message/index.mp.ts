@@ -5,7 +5,7 @@ const MessageType = {
     error: 'error',
 };
 
-function getInstance(context: any, selector = '#t-message') {
+function getInstance(context: any, selector = '#oak-message') {
     const instance = context.selectComponent(selector);
     if (!instance) {
         return Promise.reject(
