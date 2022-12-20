@@ -17,6 +17,7 @@ export interface Schema extends EntityShape {
     author: String<32>; //作者
     abstract?: Text; //摘要
     content?: Text; //正文
+    url?: Text; // 外部连接
     files: Array<ExtraFile>; //封面图
     sign: String<32>; //唯一标志
 }
@@ -51,6 +52,7 @@ const locale: LocaleDef<
             content: '正文',
             files: '封面图',
             iState: '状态',
+            url: '外部链接',
             entity: '关联对象',
             entityId: '关联对象id',
             sign: '唯一标志',

@@ -5,7 +5,7 @@ import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Index, ActionDef } from 'oak-domain/lib/types';
 
 export interface Schema extends EntityShape {
-    channel: 'public' | 'jPush' | 'jim' | 'mp' | 'gsm',
+    channel: 'wechat' | 'jPush' | 'jim' | 'mp' | 'sms',
     data: Object,
     message: Message,
     data1: Object,
@@ -49,11 +49,11 @@ const locale: LocaleDef<Schema, Action, '', {
                 failure: '发送失败',
             },
             channel: {
-                public: '公众号',
+                wechat: '公众号',
                 jPush: '极光推送',
                 jim: '极光消息',
                 mp: '小程序',
-                gsm: '短信',
+                sms: '短信',
             }
         }
     },
