@@ -3,6 +3,7 @@ import { Button, Space, Drawer, Modal, Tooltip } from 'antd';
 import { UpOutlined } from '@ant-design/icons';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
+import Style from './web.module.less';
 // import OakIcon from '../../icon'
 
 export default function render(props: WebComponentProps<EntityDict, 'address', true, {
@@ -48,12 +49,7 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
                 }}
                 title="Debug控制台"
                 footer={<></>}
-                rootStyle={{
-                    width: '100vw',
-                }}
-                bodyStyle={{
-                    width: '100vw',
-                }}
+                className={Style.drawer}
             >
                 <input
                     type="file"

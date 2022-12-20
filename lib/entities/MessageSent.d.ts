@@ -1,7 +1,7 @@
 import { Schema as Message } from './Message';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 export interface Schema extends EntityShape {
-    channel: 'public' | 'jPush' | 'jim' | 'mp' | 'gsm';
+    channel: 'wechat' | 'jPush' | 'jim' | 'mp' | 'sms';
     data: Object;
     message: Message;
     data1: Object;
