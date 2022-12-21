@@ -2,6 +2,7 @@ import {
     String,
     Boolean,
     Text,
+    Int,
 } from 'oak-domain/lib/types/DataType';
 import { ActionDef } from 'oak-domain/lib/types/Action';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
@@ -20,6 +21,7 @@ export interface Schema extends EntityShape {
     name: String<32>;
     description: Text;
     config: WechatPublicConfig;
+    offset: Int<4>;
 };
 
 
@@ -60,6 +62,7 @@ const locale: LocaleDef<
             entityId: '对象Id',
             description: '描述',
             config: '配置',
+            offset: '已同步素材位置',
         },
     },
 };
