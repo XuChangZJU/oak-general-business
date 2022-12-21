@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Card, Descriptions } from 'antd';
+import { Tabs, Card, Descriptions, Typography } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
 
@@ -51,7 +51,9 @@ export default function Render(
                                 children: (
                                     <Descriptions column={1} bordered>
                                         <Descriptions.Item label="id">
-                                            {oakId}
+                                            <Typography.Paragraph copyable>
+                                                {oakId}
+                                            </Typography.Paragraph>
                                         </Descriptions.Item>
                                         <Descriptions.Item
                                             label={t('application:attr.name')}

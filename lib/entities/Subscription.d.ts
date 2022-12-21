@@ -1,4 +1,4 @@
-import { String, Text } from 'oak-domain/lib/types/DataType';
+import { String, Text, Int } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 export declare type WechatPublicConfig = {
     type: 'wechatPublic';
@@ -11,4 +11,5 @@ export interface Schema extends EntityShape {
     name: String<32>;
     description: Text;
     config: WechatPublicConfig;
+    offset: Int<4>;
 }

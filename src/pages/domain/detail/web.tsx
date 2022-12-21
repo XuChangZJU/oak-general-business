@@ -1,7 +1,6 @@
 import React from 'react';
-import { Tabs, Card } from 'antd';
+import { Tabs, Card, Descriptions, Typography } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
-import ApplicationList from '../../../pages/application/list';
 
 import Style from './web.module.less';
 
@@ -21,13 +20,15 @@ export default function Render(
             port: string;
             protocol: EntityDict['domain']['Schema']['protocol'];
             tabValue: 'detail';
+            system: EntityDict['system']['Schema'];
         },
         {
             onTabClick: (key: string) => void;
         }
     >
 ) {
-    const { oakId, url, tabValue } = props.data;
+    const { oakId, url, tabValue, system, apiPath, protocol, port } =
+        props.data;
     const { t, navigateBack, onTabClick } = props.methods;
     return (
         <PageHeader showBack={true} title="域名概览">
@@ -42,7 +43,43 @@ export default function Render(
                             {
                                 label: '域名概览',
                                 key: 'detail',
-                                children: <div>详情</div>,
+                                children: (
+                                    <Descriptions column={1} bordered>
+                                        <Descriptions.Item label="id">
+                                            <Typography.Paragraph copyable>
+                                                {oakId}
+                                            </Typography.Paragraph>
+                                        </Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={t('domain:attr.url')}
+                                        >
+                                            {url}
+                                        </Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={t('domain:attr.apiPath')}
+                                        >
+                                            {apiPath}
+                                        </Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={t('domain:attr.port')}
+                                        >
+                                            {port}
+                                        </Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={t('domain:attr.protocol')}
+                                        >
+                                            {protocol}
+                                        </Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={
+                                                t('domain:attr.system') +
+                                                t('system:attr.name')
+                                            }
+                                        >
+                                            {system?.name}
+                                        </Descriptions.Item>
+                                    </Descriptions>
+                                ),
                             },
                         ]}
                     />

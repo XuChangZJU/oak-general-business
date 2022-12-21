@@ -13,6 +13,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
     }>;
     systemId: string;
     oakId: string;
+    style: EntityDict['system']['Schema']['style'];
 }, {
     confirm: () => void;
 }>): JSX.Element;

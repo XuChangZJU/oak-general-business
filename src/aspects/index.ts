@@ -7,8 +7,7 @@ import {
 } from './token';
 import { getUploadInfo } from './extraFile';
 import { getApplication } from './application';
-import { updateConfig } from './config';
-// import  commonAspectDict from 'oak-common-aspect';
+import { updateConfig, updateApplicationConfig } from './config';
 
 export const aspectDict = {
     loginByMobile,
@@ -19,6 +18,5 @@ export const aspectDict = {
     sendCaptcha,
     getApplication,
     updateConfig,
+    updateApplicationConfig,
 };
-
-// export type AspectDict<ED extends EntityDict & BaseEntityDict> = TokenAD<ED> & CrudAD<ED>;

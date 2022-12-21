@@ -108,7 +108,7 @@ export default function Render(
                         render: (value, record, index) => {
                             return value
                                 ? value.map((ele: { url: string }) => (
-                                      <Space>
+                                      <Space direction="vertical">
                                           <Tag>{ele.url}</Tag>
                                       </Space>
                                   ))

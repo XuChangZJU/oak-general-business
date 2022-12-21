@@ -10,4 +10,5 @@ export declare class Config<ED extends EntityDict, Cxt extends BackendRuntimeCon
     private cache;
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>);
     updateConfig(entity: 'platform' | 'system', entityId: string, config: ConfigDef): Promise<void>;
+    updateApplicationConfig(entity: 'application', entityId: string, config: EntityDict['application']['Schema']['config']): Promise<void>;
 }

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button, Form, Row, Col, Input, Space } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
+import ComponentStyle from '../../../components/config/style';
+
 import Style from './web.module.less';
 
 
@@ -15,13 +17,14 @@ export default function Render(
         {
             name: string;
             description: string;
+            style: EntityDict['system']['Schema']['style'];
         },
         {
             confirm: () => void;
         }
     >
 ) {
-    const { name, description } = props.data;
+    const { name, description, style } = props.data;
     const { t, update, navigateBack, confirm } = props.methods;
     return (
         <PageHeader showBack={true} title="平台编辑">
@@ -70,6 +73,23 @@ export default function Render(
                                     />
                                 </>
                             </Form.Item>
+                            <Form.Item
+                                label="样式"
+                                requiredMark
+                                name="style"
+                            >
+                                <>
+                                    <ComponentStyle
+                                        onChange={(value) => {
+                                            update({
+                                                style: value,
+                                            });
+                                        }}
+                                        value={style}
+                                    />
+                                </>
+                            </Form.Item>
+
                             <Form.Item wrapperCol={{ offset: 4 }}>
                                 <Space>
                                     <Button

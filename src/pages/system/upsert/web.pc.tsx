@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Form, Row, Col, Switch, Input, Space, Tooltip } from 'antd';
 
 import PageHeader from '../../../components/common/pageHeader';
+import ComponentStyle from '../../../components/config/style';
 import Style from './web.module.less';
 import { set, get } from 'oak-domain/lib/utils/lodash';
 
@@ -39,12 +40,6 @@ export default function Render(
         showBack = true,
     } = props.data;
     const { t, update, navigateBack, confirm } = props.methods;
-
-    const setStyle = (path: string, value: string) => {
-        update({
-            style: set(style || {}, path, value),
-        });
-    };
 
     return (
         <Container variant={variant} showBack={showBack}>
@@ -130,29 +125,15 @@ export default function Render(
                             </>
                         </Form.Item>
 
-                        <Form.Item
-                            label="主题色"
-                            requiredMark
-                            name="folder"
-                            tooltip="设置系统主题颜色"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
+                        <Form.Item label="样式" requiredMark name="style">
                             <>
-                                <Input
-                                    onChange={(e) => {
-                                        setStyle(
-                                            'color.primary',
-                                            e.target.value
-                                        );
+                                <ComponentStyle
+                                    onChange={(value) => {
+                                        update({
+                                            style: value,
+                                        });
                                     }}
-                                    value={get(
-                                        style || {},
-                                        'color.primary'
-                                    )}
+                                    value={style}
                                 />
                             </>
                         </Form.Item>

@@ -8,6 +8,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'domain', fa
     port: string;
     protocol: EntityDict['domain']['Schema']['protocol'];
     tabValue: 'detail';
+    system: EntityDict['system']['Schema'];
 }, {
     onTabClick: (key: string) => void;
 }>): JSX.Element;

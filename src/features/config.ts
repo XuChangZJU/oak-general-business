@@ -13,10 +13,12 @@ export class Config<
     Cxt extends BackendRuntimeContext<ED>,
     FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>,
     AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>
-    > extends Feature {
+> extends Feature {
     private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
 
-    constructor(cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>) {
+    constructor(
+        cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>
+    ) {
         super();
         this.cache = cache;
     }
@@ -24,12 +26,25 @@ export class Config<
     async updateConfig(
         entity: 'platform' | 'system',
         entityId: string,
-        config: ConfigDef,
+        config: ConfigDef
     ) {
         await this.cache.exec('updateConfig', {
             entity,
             entityId,
-            config
+            config,
+        });
+        this.publish();
+    }
+
+    async updateApplicationConfig(
+        entity: 'application',
+        entityId: string,
+        config: EntityDict['application']['Schema']['config']
+    ) {
+        await this.cache.exec('updateApplicationConfig', {
+            entity,
+            entityId,
+            config,
         });
         this.publish();
     }
