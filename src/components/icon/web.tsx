@@ -29,7 +29,6 @@ export default function Render(
         {}
     >
 ) {
-    console.log(121212)
     const { data } = props;
 
     const { name, type, color = 'primary', size, className, larger = '1x' } = data;
