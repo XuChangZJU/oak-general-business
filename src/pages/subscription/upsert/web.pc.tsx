@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Form, Row, Col, Select, Space, Input } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
-import ComponentStyle from '../../../components/config/style';
 import Style from './web.module.less';
 
 import { EntityDict } from '../../../general-app-domain';
@@ -10,21 +9,16 @@ import { WebComponentProps } from 'oak-frontend-base';
 export default function Render(
     props: WebComponentProps<
         EntityDict,
-        'application',
+        'subscription',
         false,
         {
             name: string;
             description: string;
             variant: 'inline' | 'alone' | 'dialog';
             showBack: boolean;
-            type: EntityDict['application']['Schema']['type'];
-            typeArr: Array<{
-                label: string;
-                value: EntityDict['application']['Schema']['type'];
-            }>;
-            systemId: string;
+            entity: string;
+            entityId: string;
             oakId: string;
-            style: EntityDict['system']['Schema']['style'];
         },
         {
             confirm: () => void;
@@ -34,13 +28,11 @@ export default function Render(
     const {
         name,
         description,
-        type,
-        typeArr,
         variant,
         showBack = true,
-        systemId,
+        entityId,
+        entity,
         oakId,
-        style,
     } = props.data;
     const { t, update, navigateBack, confirm } = props.methods;
     return (
@@ -82,50 +74,6 @@ export default function Render(
                                         });
                                     }}
                                     value={description}
-                                />
-                            </>
-                        </Form.Item>
-                        <Form.Item
-                            label="应用类型"
-                            requiredMark
-                            name="type"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <>
-                                <Select
-                                    value={type}
-                                    style={{ width: 120 }}
-                                    disabled={!!oakId}
-                                    options={typeArr.map(
-                                        (ele: { value: string }) => ({
-                                            label: t(
-                                                `application:v.type.${ele.value}`
-                                            ),
-                                            value: ele.value,
-                                        })
-                                    )}
-                                    onChange={(value) => {
-                                        update({
-                                            type: value,
-                                        });
-                                    }}
-                                />
-                            </>
-                        </Form.Item>
-
-                        <Form.Item label="样式" requiredMark name="style">
-                            <>
-                                <ComponentStyle
-                                    onChange={(value) => {
-                                        update({
-                                            style: value,
-                                        });
-                                    }}
-                                    value={style}
                                 />
                             </>
                         </Form.Item>
@@ -181,7 +129,7 @@ function Container(props: {
         return <>{children}</>;
     }
     return (
-        <PageHeader showBack={showBack} title="应用编辑">
+        <PageHeader showBack={showBack} title="订阅号编辑">
             <div className={Style.container}>{children}</div>
         </PageHeader>
     );

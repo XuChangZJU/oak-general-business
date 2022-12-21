@@ -3,7 +3,6 @@ import { WebComponentProps } from 'oak-frontend-base';
 export default function Render(props: WebComponentProps<EntityDict, 'application', false, {
     name: string;
     description: string;
-    super: string;
     variant: 'inline' | 'alone' | 'dialog';
     showBack: boolean;
     type: EntityDict['application']['Schema']['type'];

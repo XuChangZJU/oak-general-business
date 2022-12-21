@@ -8,6 +8,7 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
     currentConfig: Config;
     dirty: boolean;
     type: AppType;
+    isService?: boolean;
 }, {
     resetConfig: () => void;
     updateConfig: () => void;
