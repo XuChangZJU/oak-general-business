@@ -69,7 +69,7 @@ async function tryAddMessageSent(message: CreateMessageData, channel: string, co
             data: dispersedData,
             channel,
         },
-    }, {});
+    } as EntityDict['messageSent']['CreateSingle'], {});
     return 1;
 }
 

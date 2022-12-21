@@ -8,6 +8,7 @@ export interface Schema extends EntityShape {
     author: String<32>;
     abstract?: Text;
     content?: Text;
+    url?: Text;
     files: Array<ExtraFile>;
     sign: String<32>;
 }

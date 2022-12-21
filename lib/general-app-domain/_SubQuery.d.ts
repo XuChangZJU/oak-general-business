@@ -18,6 +18,7 @@ import * as Mobile from "./Mobile/Schema";
 import * as Platform from "./Platform/Schema";
 import * as UserRole from "./UserRole/Schema";
 import * as Role from "./Role/Schema";
+import * as Subscription from "./Subscription/Schema";
 import * as System from "./System/Schema";
 import * as Token from "./Token/Schema";
 import * as UserEntityGrant from "./UserEntityGrant/Schema";
@@ -162,6 +163,11 @@ export declare type RoleIdSubQuery = {
         entity: "userRole";
     }) | (Role.RoleIdSubQuery & {
         entity: "role";
+    }) | any;
+};
+export declare type SubscriptionIdSubQuery = {
+    [K in "$in" | "$nin"]?: (Subscription.SubscriptionIdSubQuery & {
+        entity: "subscription";
     }) | any;
 };
 export declare type SystemIdSubQuery = {
