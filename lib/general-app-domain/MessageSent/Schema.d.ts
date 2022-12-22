@@ -6,7 +6,7 @@ import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction a
 import { Action, ParticularAction, IState } from "./Action";
 import * as Message from "../Message/Schema";
 export declare type OpSchema = EntityShape & {
-    channel: 'public' | 'jPush' | 'jim' | 'mp' | 'gsm';
+    channel: 'wechat' | 'jPush' | 'jim' | 'mp' | 'sms';
     data: Object;
     messageId: ForeignKey<"message">;
     data1: Object;
@@ -15,7 +15,7 @@ export declare type OpSchema = EntityShape & {
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
-    channel: 'public' | 'jPush' | 'jim' | 'mp' | 'gsm';
+    channel: 'wechat' | 'jPush' | 'jim' | 'mp' | 'sms';
     data: Object;
     messageId: ForeignKey<"message">;
     data1: Object;
@@ -30,7 +30,7 @@ declare type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    channel: Q_EnumValue<'public' | 'jPush' | 'jim' | 'mp' | 'gsm'>;
+    channel: Q_EnumValue<'wechat' | 'jPush' | 'jim' | 'mp' | 'sms'>;
     data: Object;
     messageId: Q_StringValue | SubQuery.MessageIdSubQuery;
     message: Message.Filter;

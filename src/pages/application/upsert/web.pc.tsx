@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Form, Row, Col, Select, Space, Input } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
+import ComponentStyle from '../../../components/config/style';
 import Style from './web.module.less';
 
 import { EntityDict } from '../../../general-app-domain';
@@ -14,7 +15,6 @@ export default function Render(
         {
             name: string;
             description: string;
-            super: string;
             variant: 'inline' | 'alone' | 'dialog';
             showBack: boolean;
             type: EntityDict['application']['Schema']['type'];
@@ -24,6 +24,7 @@ export default function Render(
             }>;
             systemId: string;
             oakId: string;
+            style: EntityDict['system']['Schema']['style'];
         },
         {
             confirm: () => void;
@@ -39,6 +40,7 @@ export default function Render(
         showBack = true,
         systemId,
         oakId,
+        style,
     } = props.data;
     const { t, update, navigateBack, confirm } = props.methods;
     return (
@@ -111,6 +113,19 @@ export default function Render(
                                             type: value,
                                         });
                                     }}
+                                />
+                            </>
+                        </Form.Item>
+
+                        <Form.Item label="样式" requiredMark name="style">
+                            <>
+                                <ComponentStyle
+                                    onChange={(value) => {
+                                        update({
+                                            style: value,
+                                        });
+                                    }}
+                                    value={style}
                                 />
                             </>
                         </Form.Item>

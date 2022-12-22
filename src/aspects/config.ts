@@ -20,3 +20,32 @@ export async function updateConfig<ED extends EntityDict, Cxt extends BackendRun
         }
     }, {});
 }
+
+
+export async function updateApplicationConfig<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(
+    params: {
+        entity: 'application';
+        entityId: string;
+        config: EntityDict['application']['Schema']['config'];
+    },
+    context: Cxt
+) {
+    const { entity, entityId, config } = params;
+    await context.operate(
+        entity,
+        {
+            id: generateNewId(),
+            action: 'update',
+            data: {
+                config,
+            },
+            filter: {
+                id: entityId,
+            },
+        },
+        {}
+    );
+}

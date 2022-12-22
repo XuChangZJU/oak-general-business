@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { AppType, WebConfig, WechatPublicConfig, WechatMpConfig } from '../../../general-app-domain/Application/Schema';
 import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -9,6 +8,7 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
     currentConfig: Config;
     dirty: boolean;
     type: AppType;
+    isService?: boolean;
 }, {
     resetConfig: () => void;
     updateConfig: () => void;

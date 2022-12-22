@@ -1,6 +1,6 @@
-/// <reference types="react" />
 import { WechatPublicConfig } from '../../../../general-app-domain/Application/Schema';
 export default function WechatPublic(props: {
+    isService?: boolean;
     config: WechatPublicConfig;
     setValue: (path: string, value: any) => void;
     removeItem: (path: string, index: number) => void;

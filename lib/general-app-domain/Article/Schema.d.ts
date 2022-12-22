@@ -12,6 +12,7 @@ export declare type OpSchema = EntityShape & {
     author: String<32>;
     abstract?: Text | null;
     content?: Text | null;
+    url?: Text | null;
     sign: String<32>;
     iState?: IState | null;
 };
@@ -23,6 +24,7 @@ export declare type Schema = EntityShape & {
     author: String<32>;
     abstract?: Text | null;
     content?: Text | null;
+    url?: Text | null;
     sign: String<32>;
     iState?: IState | null;
     extraFile$entity?: Array<ExtraFile.Schema>;
@@ -40,6 +42,7 @@ declare type AttrFilter = {
     author: Q_StringValue;
     abstract: Q_StringValue;
     content: Q_StringValue;
+    url: Q_StringValue;
     sign: Q_StringValue;
     iState: Q_EnumValue<IState>;
 };
@@ -57,6 +60,7 @@ export declare type Projection = {
     author?: number;
     abstract?: number;
     content?: number;
+    url?: number;
     sign?: number;
     iState?: number;
     extraFile$entity?: ExtraFile.Selection & {
@@ -76,6 +80,7 @@ export declare type ExportProjection = {
     author?: string;
     abstract?: string;
     content?: string;
+    url?: string;
     sign?: string;
     iState?: string;
     extraFile$entity?: ExtraFile.Exportation & {
@@ -105,6 +110,8 @@ export declare type SortAttr = {
     abstract: number;
 } | {
     content: number;
+} | {
+    url: number;
 } | {
     sign: number;
 } | {

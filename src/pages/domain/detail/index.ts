@@ -4,6 +4,10 @@ export default OakComponent({
     projection: {
         id: 1,
         systemId: 1,
+        system: {
+            id: 1,
+            name: 1,
+        },
         url: 1,
         apiPath: 1,
         port: 1,

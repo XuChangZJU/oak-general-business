@@ -14,7 +14,7 @@
             <slot />
         </view>
         <view class="file-list__image--add">
-            <t-icon name="add" size="80" />
+            <l-icon name="add" size="80" />
         </view>
     </view>
 </view>

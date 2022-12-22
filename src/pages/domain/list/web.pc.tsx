@@ -75,6 +75,17 @@ export default function Render(
                     {
                         dataIndex: 'url',
                         title: '域名',
+                        render: (value, record, index) => {
+                            return (
+                                <Typography.Link
+                                    onClick={() => {
+                                        goDetail(record.id);
+                                    }}
+                                >
+                                    {value}
+                                </Typography.Link>
+                            );
+                        },
                     },
                     {
                         dataIndex: 'apiPath',

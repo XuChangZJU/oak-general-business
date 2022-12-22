@@ -6,3 +6,8 @@ export declare function updateConfig<ED extends EntityDict, Cxt extends BackendR
     entityId: string;
     config: Config;
 }, context: Cxt): Promise<void>;
+export declare function updateApplicationConfig<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+    entity: 'application';
+    entityId: string;
+    config: EntityDict['application']['Schema']['config'];
+}, context: Cxt): Promise<void>;

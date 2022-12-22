@@ -18,13 +18,14 @@ import { WebComponentProps } from 'oak-frontend-base';
 type Config = WebConfig | WechatPublicConfig | WechatMpConfig;
 
 function AppView(props: {
+    isService?: boolean;
     type: AppType;
     config: Config;
     setValue: (path: string, value: string) => void;
     removeItem: (path: string, index: number) => void;
     cleanKey: (path: string, key: string) => void;
 }) {
-    const { type, config, setValue, removeItem, cleanKey } = props;
+    const { type, config, setValue, removeItem, cleanKey, isService } = props;
     if (type === 'web') {
         return (
             <Web
@@ -48,6 +49,7 @@ function AppView(props: {
     if (type === 'wechatPublic') {
         return (
             <WechatPublic
+                isService={isService}
                 config={(config as WechatPublicConfig) || {}}
                 setValue={(path, value) => setValue(path, value)}
                 removeItem={(path, index) => removeItem(path, index)}
@@ -69,6 +71,7 @@ export default function render(
             currentConfig: Config;
             dirty: boolean;
             type: AppType;
+            isService?: boolean; //只对type为wechatPublic有效 默认配置服务号
         },
         {
             resetConfig: () => void;
@@ -79,7 +82,14 @@ export default function render(
         }
     >
 ) {
-    const { entity, name, type, currentConfig, dirty } = props.data;
+    const {
+        entity,
+        name,
+        type,
+        currentConfig,
+        dirty,
+        isService = true,
+    } = props.data;
     const { resetConfig, updateConfig, setValue, removeItem, cleanKey } =
         props.methods;
 
@@ -143,6 +153,7 @@ export default function render(
                             label: '参数设置',
                             children: (
                                 <AppView
+                                    isService={isService}
                                     type={type}
                                     config={currentConfig || {}}
                                     setValue={(path, value) =>

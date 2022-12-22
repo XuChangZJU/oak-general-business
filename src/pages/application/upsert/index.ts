@@ -14,6 +14,7 @@ export default OakComponent({
         description: 1,
         type: 1,
         systemId: 1,
+        style: 1,
     },
     formData({ data }) {
         return data || {};
@@ -24,10 +25,10 @@ export default OakComponent({
                 value: 'web',
             },
             {
-                value: "wechatMp",
+                value: 'wechatMp',
             },
             {
-                value: "wechatPublic",
+                value: 'wechatPublic',
             },
         ] as typeOption[],
     },

@@ -44,6 +44,11 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntime
         entityId: string;
         config: Config;
     }, context: Cxt) => Promise<void>;
+    updateApplicationConfig: (params: {
+        entity: 'application';
+        entityId: string;
+        config: EntityDict['application']['Schema']['config'];
+    }, context: Cxt) => Promise<void>;
 };
 export declare type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
 export {};

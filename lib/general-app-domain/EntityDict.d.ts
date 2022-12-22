@@ -18,6 +18,7 @@ import { EntityDef as Mobile } from "./Mobile/Schema";
 import { EntityDef as Platform } from "./Platform/Schema";
 import { EntityDef as UserRole } from "./UserRole/Schema";
 import { EntityDef as Role } from "./Role/Schema";
+import { EntityDef as Subscription } from "./Subscription/Schema";
 import { EntityDef as System } from "./System/Schema";
 import { EntityDef as Token } from "./Token/Schema";
 import { EntityDef as UserEntityGrant } from "./UserEntityGrant/Schema";
@@ -45,6 +46,7 @@ export declare type EntityDict = {
     platform: Platform;
     userRole: UserRole;
     role: Role;
+    subscription: Subscription;
     system: System;
     token: Token;
     userEntityGrant: UserEntityGrant;
