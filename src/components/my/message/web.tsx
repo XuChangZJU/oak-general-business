@@ -1,5 +1,6 @@
 import React from 'react';
 import { Badge } from 'antd-mobile';
+import classNames from 'classnames';
 import { BellOutlined } from '@ant-design/icons';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
@@ -13,6 +14,9 @@ export default function Render(
         false,
         {
             count?: number;
+            onClick?: (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
+            className?: string;
+            style?: React.CSSProperties;
         },
         {
             goMessageList: () => void;
@@ -20,19 +24,22 @@ export default function Render(
     >
 ) {
     const { data, methods } = props;
-    const { count } = data;
+    const { count, className, onClick, style } = data;
     const { goMessageList } = methods;
 
     return (
-        <>
-            <Badge content={count || ''}>
-                <BellOutlined
-                    className={Style.icon}
-                    onClick={() => {
-                        goMessageList();
-                    }}
-                />
-            </Badge>
-        </>
+        <Badge content={count || ''}>
+            <BellOutlined
+                className={classNames(Style.icon, className)}
+                style={style}
+                onClick={(e) => {
+                    if (typeof onClick === 'function') {
+                        onClick(e);
+                        return;
+                    }
+                    goMessageList();
+                }}
+            />
+        </Badge>
     );
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Badge } from 'antd';
+import classNames from 'classnames';
 import { BellOutlined } from '@ant-design/icons';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
@@ -14,6 +15,11 @@ export default function Render(
         false,
         {
             count?: number;
+            onClick: (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
+            className?: string;
+            style?: React.CSSProperties;
+            buttonStyle?: React.CSSProperties;
+            buttonClassName?: string;
         },
         {
             goMessageList: () => void;
@@ -21,18 +27,29 @@ export default function Render(
     >
 ) {
     const { data } = props;
-    const { count } = data;
+    const { count, className, onClick, style, buttonStyle, buttonClassName } =
+        data;
     const [open, setOpen] = useState(false);
 
     return (
         <>
             <Badge count={count}>
                 <Button
-                    className={Style.btn}
+                    className={classNames(Style.btn, buttonClassName)}
+                    style={buttonStyle}
                     type="text"
                     shape="circle"
-                    icon={<BellOutlined />}
-                    onClick={() => {
+                    icon={
+                        <BellOutlined
+                            className={classNames(Style.icon, className)}
+                            style={style}
+                        />
+                    }
+                    onClick={(e) => {
+                        if (typeof onClick === 'function') {
+                            onClick(e);
+                            return;
+                        }
                         setOpen(true);
                     }}
                 />
