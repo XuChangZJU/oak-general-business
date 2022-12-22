@@ -11,11 +11,11 @@ import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
  * general数据结构要求的后台上下文
  */
 export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<ED> implements RuntimeContext {
-    private application?: Partial<ED['application']['Schema']>;
-    private token?: Partial<ED['token']['Schema']>;
-    private amIRoot?: boolean;
-    private amIReallyRoot?: boolean;
-    private rootMode?: boolean;
+    protected application?: Partial<ED['application']['Schema']>;
+    protected token?: Partial<ED['token']['Schema']>;
+    protected amIRoot?: boolean;
+    protected amIReallyRoot?: boolean;
+    protected rootMode?: boolean;
 
     protected async initialize(data?: SerializedData) {
         if (data) {

@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'token', false, {
@@ -9,7 +10,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', fal
     name?: string;
     idState?: string;
     userState?: string;
-    hideLogout?: boolean;
+    showLogout?: boolean;
 }, {
     logout: () => void;
     updateAttribute: (attr: string, value: any) => Promise<void>;
