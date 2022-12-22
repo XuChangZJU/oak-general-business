@@ -1,0 +1,13 @@
+import { EntityDict } from '../../../general-app-domain';
+import { WebComponentProps } from 'oak-frontend-base';
+export default function Render(props: WebComponentProps<EntityDict, 'message', false, {
+    title: string;
+    content: string;
+    id: string;
+    $$createAt$$: number;
+    type: string;
+    visitState: EntityDict['message']['Schema']['visitState'];
+    params: EntityDict['message']['Schema']['params'];
+}, {
+    goPage: () => void;
+}>): JSX.Element;
