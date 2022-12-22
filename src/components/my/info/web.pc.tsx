@@ -24,13 +24,13 @@ const IdStateColor = {
     verified: SuccessColor,
 }
 export default function Render(props: WebComponentProps<EntityDict, 'token', false, {
-    nameText?: string; mobileText?: string; userId?: string; gender: string;
+    nameText?: string; mobileText?: string; userId?: string; gender: string; showLogout?: string;
     nickname?: string; name?: string; idState?: string; userState?: string;
 }, {
     logout: () => void;
     updateAttribute: (attr: string, value: any) => Promise<void>;
 }>) {
-    const { nameText, mobileText, userId, nickname, name, idState, userState, gender } = props.data;
+    const { nameText, mobileText, userId, nickname, name, idState, userState, gender, showLogout } = props.data;
     const { t, logout, navigateTo, updateAttribute } = props.methods;
 
     const [updateAttr, setUpdateAttr] = useState(undefined as string | undefined);
@@ -69,12 +69,14 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', fal
             <div className={Styles.header}>
                 <MyAvatar size={66} iconColor="white" />
                 <div className={Styles.name}>{nameText || t('unset')}</div>
-                <Button
-                    size='small'
-                    onClick={() => logout()}
-                >
-                    {t('logout')}
-                </Button>
+                {
+                    showLogout && <Button
+                        size='small'
+                        onClick={() => logout()}
+                    >
+                        {t('logout')}
+                    </Button>
+                }
             </div>
             <div className={Styles.body}>
                 <List

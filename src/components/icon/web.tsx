@@ -24,7 +24,13 @@ export default function Render(
                 | '7x'
                 | '8x'
                 | '9x'
-                | '10x';
+                | '10x'
+                | 'xs'
+                | '2xs'
+                | 'sm'
+                | 'lg'
+                | 'xl'
+                | '2xl';
         },
         {}
     >

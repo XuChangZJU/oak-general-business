@@ -27,12 +27,12 @@ const IdStateColor = {
 export default function Render(props: WebComponentProps<EntityDict, 'token', false, {
     nameText?: string; mobileText?: string; userId?: string; gender: string;
     nickname?: string; name?: string; idState?: string; userState?: string;
-    hideLogout?: boolean;
+    showLogout?: boolean;
 }, {
     logout: () => void;
     updateAttribute: (attr: string, value: any) => Promise<void>;
 }>) {
-    const { nameText, mobileText, userId, nickname, name, idState, userState, gender, hideLogout } = props.data;
+    const { nameText, mobileText, userId, nickname, name, idState, userState, gender, showLogout } = props.data;
     const { t, logout, navigateTo, updateAttribute } = props.methods;
 
     const [updateAttr, setUpdateAttr] = useState(undefined as string | undefined);
@@ -107,7 +107,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', fal
                 </List>
             </div>
             {
-                !hideLogout && <>
+                showLogout && <>
                     <div style={{ flex: 1 }} />
                     <Button
                         block
