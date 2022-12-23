@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { Config } from '../../../types/Config';
 import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
