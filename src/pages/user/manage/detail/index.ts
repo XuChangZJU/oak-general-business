@@ -41,7 +41,7 @@ export default OakComponent({
         },
     },
     isList: false,
-    
+
     formData: ({ data: user }) => {
         const {
             id,
@@ -56,7 +56,10 @@ export default OakComponent({
         } = user || {};
         const mobile = mobile$user && mobile$user[0]?.mobile;
         const mobileCount = mobile$user ? mobile$user.length : 0;
-        const mobileText = mobileCount && mobileCount > 1 ? `${mobileCount}条手机号` : (mobile || '未设置');
+        const mobileText =
+            mobileCount && mobileCount > 1
+                ? `${mobileCount}条手机号`
+                : mobile || '未设置';
         const avatar =
             extraFile$entity &&
             extraFile$entity[0] &&
@@ -68,7 +71,7 @@ export default OakComponent({
             mobile,
             gender,
             avatar,
-            birth: birth ? (new Date(birth)).toLocaleDateString() : '',
+            birth: birth ? new Date(birth).toLocaleDateString() : '',
             userState,
             idState,
             mobileCount,
@@ -94,34 +97,31 @@ export default OakComponent({
         idStateColor: {
             verifying: 'primary',
             verified: 'success',
-            unverified: 'warning'
+            unverified: 'warning',
         },
         show: false,
         actionDescriptions: {
             accept: {
                 icon: {
-                    name: 'circle-check',
-                    type: 'far',
+                    name: 'success',
                 },
                 label: '通过',
             },
             activate: {
                 icon: {
-                    name: 'chart-line',
+                    name: 'playon',
                 },
                 label: '激活',
             },
             disable: {
                 icon: {
-                    name: 'bell-slash',
-                    type: 'far',
+                    name: 'shielding',
                 },
                 label: '禁用',
             },
             enable: {
                 icon: {
-                    name: 'bell',
-                    type: 'far',
+                    name: 'barrage',
                 },
                 label: '启用',
             },
@@ -133,25 +133,25 @@ export default OakComponent({
             },
             update: {
                 icon: {
-                    name: 'edit',
+                    name: 'editor',
                 },
                 label: '更新',
             },
             verify: {
                 icon: {
-                    name: 'certificate',
+                    name: 'businesscard',
                 },
                 label: '验证',
             },
             play: {
                 icon: {
-                    name: 'person-praying',
+                    name: 'refresh',
                 },
                 label: '切换',
             },
         },
     },
-    methods: {  
+    methods: {
         async onActionClick(action: string) {
             switch (action) {
                 case 'update': {
@@ -181,6 +181,6 @@ export default OakComponent({
         onActionClickMp(e: WechatMiniprogram.TouchEvent) {
             const { action } = e.detail;
             return this.onActionClick(action);
-        }
+        },
     },
 });

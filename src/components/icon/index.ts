@@ -1,27 +1,25 @@
 
 export default OakComponent({
     isList: false,
+    wechatMp: {
+        externalClasses: ['oak-class'],
+    },
     properties: {
-        type: {
-            type: String,
-            value: 'fas',
-        },
-        size: {
-            type: Number,
-            optionalTypes: [Number, String],
-            value: 0,
-        },
-        color: {
-            type: String,
-            value: 'primary',
-        },
         name: {
             type: String,
             value: '',
         },
-        larger: {
+        custom: {
             type: String,
-            value: '1x',
+            value: '',
+        },
+        size: {
+            type: Number,
+            value: 14,
+        },
+        color: {
+            type: String,
+            value: '',
         },
     },
 });

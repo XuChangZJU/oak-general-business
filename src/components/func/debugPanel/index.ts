@@ -27,13 +27,8 @@ export default OakComponent({
         handlePopup() {
             this.setVisible(true);
         },
-        onVisibleChange(e: any) {
-            this.setVisible(e.detail.visible);
-        },
-        onClose() {
-            if (this.state.visible) {
-                this.setVisible(false);
-            }
+        handlePopupClose() {
+            this.setVisible(false);
         },
         //小程序重置
         handleReset() {
@@ -65,10 +60,10 @@ export default OakComponent({
         },
         downloadEnv() {
             const data = this.features.localStorage.loadAll();
-            return data;            
+            return data;
         },
         resetEnv(data: Record<string, any>) {
             this.features.localStorage.resetAll(data);
-        }
+        },
     },
 });
