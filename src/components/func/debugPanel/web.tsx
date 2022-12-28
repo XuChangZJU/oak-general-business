@@ -175,6 +175,19 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
                             Reset
                         </Button>
                     </Tooltip>
+
+                    <Tooltip title="查看OakIcon">
+                        <Button
+                            size="large"
+                            type="primary"
+                            shape="circle"
+                            onClick={() => {
+                                window.open('/icon')
+                            }}
+                        >
+                            Icon
+                        </Button>
+                    </Tooltip>
                 </Space>
             </Drawer>
         </React.Fragment>

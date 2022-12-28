@@ -1,2 +1,2 @@
 <!-- index.wxml -->
-<image src="{{src}}" mode="{{mode}}" class="image l-class"/>
+<image src="{{url}}" mode="{{mode}}" class="image oak-class"/>
