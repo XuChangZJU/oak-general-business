@@ -1,5 +1,4 @@
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
-import { AspectWrapper } from 'oak-domain/lib/types';
 import { AspectDict } from '../aspects/AspectDict';
 import { EntityDict } from '../general-app-domain';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
