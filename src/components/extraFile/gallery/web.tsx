@@ -8,7 +8,6 @@ import {
     Tag,
     Button,
     Table,
-    UploadProps,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
@@ -30,8 +29,8 @@ function extraFileToUploadFile(
         id: extraFile.id,
         url: composeFileUrl(extraFile, systemConfig),
         thumbUrl: composeFileUrl(extraFile, systemConfig),
-        name: extraFile.filename,
-        fileName: extraFile.filename,
+        name: extraFile.filename + (extraFile.extension || ''),
+        fileName: extraFile.filename + (extraFile.extension || ''),
         size: extraFile.size!,
         type: extraFile.fileType,
         uid: extraFile.id, //upload 组件需要uid来维护fileList

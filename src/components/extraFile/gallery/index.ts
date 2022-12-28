@@ -2,7 +2,6 @@ import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import assert from 'assert';
 import Dialog from '../../../utils/dialog/index';
 import { EntityDict } from '../../../general-app-domain';
-import { composeFileUrl } from '../../../utils/extraFile';
 
 export default OakComponent({
     entity: 'extraFile',
@@ -19,6 +18,7 @@ export default OakComponent({
         extension: 1,
         type: 1,
         entity: 1,
+        entityId: 1
     },
     formData({ data: originalFiles, features }) {
         const application = features.application.getApplication();
@@ -45,7 +45,7 @@ export default OakComponent({
         itemSizePercentage: '',
     },
     wechatMp: {
-        externalClasses: ['l-class', 'l-item-class'],
+        externalClasses: ['oak-class', 'oak-item-class'],
     },
     properties: {
         removeLater: Boolean,
@@ -283,11 +283,11 @@ export default OakComponent({
         async onItemTapped(event: WechatMiniprogram.Touch) {
             const { files, systemConfig } = this.state;
             const { index } = event.currentTarget.dataset;
-            const imageUrl = composeFileUrl(files[index]!, systemConfig);
+            const imageUrl = this.features.extraFile.getUrl(files[index]!);
             const urls = files
                 ?.filter((ele: EntityDict['extraFile']['Schema']) => !!ele)
                 .map((ele: EntityDict['extraFile']['Schema']) =>
-                    composeFileUrl(ele!, systemConfig)
+                    this.features.extraFile.getUrl(ele!)
                 );
 
             const detail = {
@@ -308,10 +308,10 @@ export default OakComponent({
         },
         async onDeleteByMp(event: WechatMiniprogram.Touch) {
             const { value } = event.currentTarget.dataset;
-            const { id, bucket } = value;
+            const { id, bucket, origin } = value;
 
             if (this.props.removeLater || (origin !== 'unknown' && !bucket)) {
-                await this.removeItem(id);
+                this.removeItem(id);
             } else {
                 const result = await wx.showModal({
                     title: '确认删除吗',
@@ -325,7 +325,7 @@ export default OakComponent({
             }
         },
         async onDeleteByWeb(value: any) {
-            const { id, bucket } = value;
+            const { id, bucket, origin } = value;
             // 如果 removeLater为true 或 origin === 'qiniu' 且 bucket不存在
             if (this.props.removeLater || (origin !== 'unknown' && !bucket)) {
                 this.removeItem(id);

@@ -1,9 +1,7 @@
 {
   "component": true,
   "usingComponents": {
-      "l-icon": "../../../miniprogram_npm/lin-ui/icon/index"
-  },
-  "componentGenerics": {
-    "item": true
+      "l-icon": "../../../miniprogram_npm/lin-ui/icon/index",
+      "OakDisplay": "../display/index"
   }
 }
