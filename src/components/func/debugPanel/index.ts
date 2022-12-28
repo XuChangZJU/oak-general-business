@@ -28,7 +28,7 @@ export default OakComponent({
             this.setVisible(true);
         },
         handlePopupClose() {
-            this.setVisible(false);
+            // this.setVisible(false);
         },
         //小程序重置
         handleReset() {

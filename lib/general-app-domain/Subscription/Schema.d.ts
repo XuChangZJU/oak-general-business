@@ -1,5 +1,5 @@
-import { String, Text } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { String, Int, Text } from "oak-domain/lib/types/DataType";
+import { Q_DateValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
@@ -15,6 +15,7 @@ export declare type OpSchema = EntityShape & {
     name: String<32>;
     description: Text;
     config: WechatPublicConfig;
+    offset: Int<4>;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
@@ -23,6 +24,7 @@ export declare type Schema = EntityShape & {
     name: String<32>;
     description: Text;
     config: WechatPublicConfig;
+    offset: Int<4>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -36,6 +38,7 @@ declare type AttrFilter = {
     name: Q_StringValue;
     description: Q_StringValue;
     config: Q_EnumValue<WechatPublicConfig>;
+    offset: Q_NumberValue;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -50,6 +53,7 @@ export declare type Projection = {
     name?: number;
     description?: number;
     config?: number;
+    offset?: number;
 } & Partial<ExprOp<OpAttr | string>>;
 export declare type ExportProjection = {
     "#id"?: NodeId;
@@ -63,6 +67,7 @@ export declare type ExportProjection = {
     name?: string;
     description?: string;
     config?: string;
+    offset?: string;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type SubscriptionIdProjection = OneOf<{
     id: number;
@@ -85,6 +90,8 @@ export declare type SortAttr = {
     description: number;
 } | {
     config: number;
+} | {
+    offset: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
