@@ -279,13 +279,13 @@ export default OakComponent({
             }
         },
         async onItemTapped(event: WechatMiniprogram.Touch) {
-            const { files, systemConfig } = this.state;
+            const { files } = this.state;
             const { index } = event.currentTarget.dataset;
-            const imageUrl = this.getUrl(files[index]);
+            const imageUrl = this.features.extraFile.getUrl(files[index]);
             const urls = files
                 ?.filter((ele: EntityDict['extraFile']['Schema']) => !!ele)
                 .map((ele: EntityDict['extraFile']['Schema']) =>
-                    this.getUrl(ele)
+                    this.features.extraFile.getUrl(ele)
                 );
 
             const detail = {
