@@ -2,7 +2,6 @@ import assert from 'assert';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../../../general-app-domain';
-import { composeFileUrl } from '../../../utils/extraFile';
 import React from '../../../utils/react';
 
 export default OakComponent({
@@ -91,10 +90,9 @@ export default OakComponent({
                 const relations = ele[`user${entityStr}$user`]
                     ?.filter((rt: any) => rt[`${entity}Id`] === entityId)
                     .map((rt2: any) => rt2.relation);
-                const avatar =
-                    extraFile$entity &&
-                    extraFile$entity[0] &&
-                    composeFileUrl(extraFile$entity[0]);
+                const avatar = features.extraFile.getUrl(
+                    extraFile$entity && extraFile$entity[0]
+                );
                 const user2 = Object.assign({}, ele, {
                     mobile,
                     avatar,

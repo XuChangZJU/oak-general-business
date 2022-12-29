@@ -1,5 +1,3 @@
-import { OpSchema as ExtraFile } from '../../../general-app-domain/ExtraFile/Schema';
-import { composeFileUrl } from '../../../utils/extraFile';
 
 export default OakComponent({
     entity: 'article',
@@ -15,7 +13,6 @@ export default OakComponent({
     },
     isList: true,
     formData: function ({ data: articles, features }) {
-        const application = features.application.getApplication();
         const filter = this.getFilterByName('title');
         const pagination = this.getPagination();
 

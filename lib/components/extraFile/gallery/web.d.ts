@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { UploadFile } from 'antd';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
@@ -20,7 +19,6 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
     showUploadList?: boolean;
     children?: JSX.Element;
     files?: EntityDict['extraFile']['OpSchema'][];
-    systemConfig: EntityDict['system']['OpSchema']['config'];
     disableInsert?: boolean;
 }, {
     onPickByWeb: (files: UploadFile[], callback?: (file: any, status: string) => void) => void;

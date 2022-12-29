@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { composeFileUrl, bytesToSize } from '../../../utils/extraFile';
 
 import {
     Space,
@@ -10,32 +9,16 @@ import {
     Table,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { file2Obj } from 'antd/es/upload/utils'
+import { RcFile } from 'antd/es/upload/interface';
 import classNames from 'classnames';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
-import { file2Obj } from 'antd/es/upload/utils'
-import { RcFile } from 'antd/es/upload/interface';
+import useFeatures from '../../../hooks/useFeatures';
 
 interface NewUploadFile extends UploadFile {
     id?: string;
-}
-
-function extraFileToUploadFile(
-    extraFile: EntityDict['extraFile']['Schema'],
-    systemConfig: EntityDict['system']['OpSchema']['config']
-): NewUploadFile {
-    return {
-        id: extraFile.id,
-        url: composeFileUrl(extraFile, systemConfig),
-        thumbUrl: composeFileUrl(extraFile, systemConfig),
-        name: extraFile.filename + (extraFile.extension || ''),
-        fileName: extraFile.filename + (extraFile.extension || ''),
-        size: extraFile.size!,
-        type: extraFile.fileType,
-        uid: extraFile.id, //upload 组件需要uid来维护fileList
-        // status: 'done',
-    };
 }
 
 
@@ -76,7 +59,6 @@ export default function render(
             showUploadList?: boolean;
             children?: JSX.Element;
             files?: EntityDict['extraFile']['OpSchema'][];
-            systemConfig: EntityDict['system']['OpSchema']['config'];
             disableInsert?: boolean;
         },
         {
@@ -105,10 +87,10 @@ export default function render(
         children,
         showUploadList = true,
         files,
-        systemConfig,
         disableInsert,
     } = props.data;
     const { onPickByWeb, onDeleteByWeb } = props.methods;
+    const features = useFeatures();
 
     const [newFiles, setNewFiles] = useState<
         EntityDict['extraFile']['OpSchema'][]
@@ -118,7 +100,6 @@ export default function render(
 
     const listType = getListType(theme);
 
-
     useEffect(() => {
         if (files && files.length > 0) {
             setNewFiles(files);
@@ -127,13 +108,31 @@ export default function render(
         }
     }, [files]);
 
+
+    const extraFileToUploadFile = (
+        extraFile: EntityDict['extraFile']['OpSchema'],
+    ): NewUploadFile => {
+        return {
+            id: extraFile.id,
+            url: features.extraFile.getUrl(extraFile),
+            thumbUrl: features.extraFile.getUrl(extraFile),
+            name: extraFile.filename + (extraFile.extension || ''),
+            fileName: extraFile.filename + (extraFile.extension || ''),
+            size: extraFile.size!,
+            type: extraFile.fileType,
+            uid: extraFile.id, //upload 组件需要uid来维护fileList
+            // status: 'done',
+        };
+    }
+
     const setNewUploadFilesByStatus = (
         file: EntityDict['extraFile']['Schema'],
         status: string
     ) => {
         const { filename, size, id } = file;
         const file2 = newUploadFiles.find(
-            (ele: NewUploadFile) => (ele.name?.includes(filename) && ele.size === size)
+            (ele: NewUploadFile) =>
+                ele.name?.includes(filename) && ele.size === size
         );
         if (file2) {
             Object.assign(file2, {
@@ -144,6 +143,7 @@ export default function render(
 
         setNewUploadFiles(newUploadFiles);
     };
+
     const customDelete = (index: number) => {
         const arr = [...newUploadFiles];
         arr.splice(index, 1);
@@ -165,7 +165,11 @@ export default function render(
         return <Button type="default">选择文件</Button>;
     };
     return (
-        <Space direction="vertical" className={Style['oak-upload']} style={{width: '100%'}}>
+        <Space
+            direction="vertical"
+            className={Style['oak-upload']}
+            style={{ width: '100%' }}
+        >
             <Upload
                 className={classNames(Style['oak-upload__upload'], className)}
                 style={style}
@@ -189,17 +193,10 @@ export default function render(
                     theme === 'custom'
                         ? []
                         : newFiles?.map((ele) =>
-                              extraFileToUploadFile(ele, systemConfig)
+                              extraFileToUploadFile(ele)
                           )
                 }
                 onChange={({ file, fileList, event }) => {
-                    // const arr =
-                    //     fileList?.filter((ele: NewUploadFile) => !ele.id) || [];
-                    // if (theme !== 'custom') {
-                    //     onPickByWeb(arr);
-                    // } else {
-                    //     setNewUploadFiles(arr);
-                    // }
                     // id不存在就是file对象
                     if (!(file as NewUploadFile).id) {
                         if (theme !== 'custom') {
@@ -241,8 +238,9 @@ export default function render(
                                 dataIndex: 'size',
                                 title: '文件大小',
                                 render: (value, record, index) => {
-                                    const b = value / 1024;
-                                    return bytesToSize(b);
+                                    return features.extraFile.formatBytes(
+                                        value as number
+                                    );
                                 },
                             },
                             {

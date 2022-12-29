@@ -2,22 +2,20 @@ import { OpSchema as ExtraFile } from '../general-app-domain/ExtraFile/Schema';
 import { Config } from '../types/Config';
 
 export function composeFileUrl(
-    extraFile: Pick<
-        ExtraFile,
-        | 'type'
-        | 'bucket'
-        | 'filename'
-        | 'origin'
-        | 'extra1'
-        | 'objectId'
-        | 'extension'
-        | 'entity'
-    >,
+    extraFile: ExtraFile,
     config?: Config,
-    style?: string, //图片样式后缀 比如 七牛云支持url带裁剪后缀
+    style?: string //图片样式后缀 比如 七牛云支持url带裁剪后缀
 ): string {
-    const { type, bucket, filename, origin, extra1, objectId, extension, entity } =
-        extraFile || {};
+    const {
+        type,
+        bucket,
+        filename,
+        origin,
+        extra1,
+        objectId,
+        extension,
+        entity,
+    } = extraFile || {};
     if (extra1) {
         // 有extra1就用extra1 可能File对象 可能外部链接
         if (typeof extra1 === 'string') {
@@ -31,7 +29,7 @@ export function composeFileUrl(
     if (config && config.Cos) {
         const { domain, protocol } =
             config.Cos[origin as keyof typeof config.Cos]!;
-        let protocol2 = protocol;    
+        let protocol2 = protocol;
         if (protocol instanceof Array) {
             // protocol存在https 说明域名有证书
             const index = (protocol as ['http', 'https']).includes('https')
@@ -73,18 +71,32 @@ export function getFileURL(file: File) {
     return getUrl;
 }
 
-export function bytesToSize(sizes: any) {
-    let mYsize = sizes;
-    if (mYsize === 0) return 0 + 'B';
-    if (mYsize < 0.1) { // 小于0.1KB转换为B
-        mYsize = parseFloat((mYsize * 1024).toFixed(2)) + 'B'
-    } else if (mYsize > (0.1 * 1024)) { // 大于0.1MB转换为MB
-        mYsize = parseFloat((mYsize / 1024).toFixed(2)) + 'MB'
-    } else if (mYsize > (0.1 * 1024 * 1024)) {// 大于0.1GB转换为GB
-        mYsize = parseFloat((mYsize / 1024 / 1024).toFixed(2)) + 'GB'
+export function bytesToSize(size: number) {
+    let data = '';
+    if (size < 0.1 * 1024) {
+        //小于0.1KB，则转化成B
+        data = size.toFixed(2) + 'B';
+    } else if (size < 0.1 * 1024 * 1024) {
+        // 小于0.1MB，则转化成KB
+        data = (size / 1024).toFixed(2) + 'KB';
+    } else if (size < 0.1 * 1024 * 1024 * 1024) {
+        // 小于0.1GB，则转化成MB
+        data = (size / (1024 * 1024)).toFixed(2) + 'MB';
     } else {
-        mYsize = (mYsize).toFixed(2) + 'KB'
+        // 其他转化成GB
+        data = (size / (1024 * 1024 * 1024)).toFixed(2) + 'GB';
     }
 
-    return mYsize;
+    // 转成字符串
+    let sizeStr = data + '',
+        // 获取小数点处的索引
+        index = sizeStr.indexOf('.'),
+        // 获取小数点后两位的值
+        dou = sizeStr.substring(index + 1, 2);
+
+    // 判断后两位是否为00，如果是则删除00
+    if (dou == '00')
+        return sizeStr.substring(0, index) + sizeStr.substring(index + 3, 2);
+
+    return sizeStr;
 }
