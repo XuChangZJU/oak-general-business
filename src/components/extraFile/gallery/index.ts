@@ -344,15 +344,6 @@ export default OakComponent({
                 });
             }
         },
-        getUrl(
-            extraFile?: EntityDict['extraFile']['OpSchema'] | null,
-            style?: string
-        ) {
-            return this.features.extraFile.getUrl(extraFile, style);
-        },
-        formatBytes(size: number) {
-            return this.features.extraFile.formatBytes(size);
-        },
     },
 
     observers: {

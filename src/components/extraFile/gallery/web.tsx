@@ -9,12 +9,13 @@ import {
     Table,
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { file2Obj } from 'antd/es/upload/utils'
+import { RcFile } from 'antd/es/upload/interface';
 import classNames from 'classnames';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
-import { file2Obj } from 'antd/es/upload/utils'
-import { RcFile } from 'antd/es/upload/interface';
+import useFeatures from '../../../hooks/useFeatures';
 
 interface NewUploadFile extends UploadFile {
     id?: string;
@@ -66,11 +67,6 @@ export default function render(
                 callback?: (file: any, status: string) => void
             ) => void;
             onDeleteByWeb: (file: UploadFile) => void;
-            formatBytes: (size: number) => string;
-            getUrl: (
-                extraFile?: EntityDict['extraFile']['OpSchema'] | null,
-                style?: string
-            ) => string;
         }
     >
 ) {
@@ -93,7 +89,8 @@ export default function render(
         files,
         disableInsert,
     } = props.data;
-    const { onPickByWeb, onDeleteByWeb, formatBytes, getUrl } = props.methods;
+    const { onPickByWeb, onDeleteByWeb } = props.methods;
+    const features = useFeatures();
 
     const [newFiles, setNewFiles] = useState<
         EntityDict['extraFile']['OpSchema'][]
@@ -117,8 +114,8 @@ export default function render(
     ): NewUploadFile => {
         return {
             id: extraFile.id,
-            url: getUrl(extraFile),
-            thumbUrl: getUrl(extraFile),
+            url: features.extraFile.getUrl(extraFile),
+            thumbUrl: features.extraFile.getUrl(extraFile),
             name: extraFile.filename + (extraFile.extension || ''),
             fileName: extraFile.filename + (extraFile.extension || ''),
             size: extraFile.size!,
@@ -241,7 +238,9 @@ export default function render(
                                 dataIndex: 'size',
                                 title: '文件大小',
                                 render: (value, record, index) => {
-                                    return formatBytes(value as number);
+                                    return features.extraFile.formatBytes(
+                                        value as number
+                                    );
                                 },
                             },
                             {

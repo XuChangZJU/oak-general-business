@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-import { GeneralFeatures } from '../features';
-import { useFeatures } from 'oak-frontend-base/lib/platforms/web/features';
-import { EntityDict } from '../general-app-domain';
-import { BRC, FrcAspectDict, FRC} from '../types/RuntimeCxt';
 import { OpSchema as ExtraFile } from '../general-app-domain/ExtraFile/Schema';
+import useFeatures from './useFeatures';
 
 export default function useMyInfo() {
-    const features = useFeatures<GeneralFeatures<EntityDict, BRC, FRC, FrcAspectDict>>();
+    const features = useFeatures();
 
     const getMyInfo = () => {
         const userInfo = features.token.getUserInfo();
