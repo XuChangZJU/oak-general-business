@@ -19,10 +19,11 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
     showUploadList?: boolean;
     children?: JSX.Element;
     files?: EntityDict['extraFile']['OpSchema'][];
-    systemConfig: EntityDict['system']['OpSchema']['config'];
     disableInsert?: boolean;
 }, {
     onPickByWeb: (files: UploadFile[], callback?: (file: any, status: string) => void) => void;
     onDeleteByWeb: (file: UploadFile) => void;
+    formatBytes: (size: number) => string;
+    getUrl: (extraFile?: EntityDict['extraFile']['OpSchema'] | null, style?: string) => string;
 }>): JSX.Element;
 export {};

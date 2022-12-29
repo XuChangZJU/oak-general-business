@@ -18,10 +18,9 @@ export default OakComponent({
         extension: 1,
         type: 1,
         entity: 1,
-        entityId: 1
+        entityId: 1,
     },
     formData({ data: originalFiles, features }) {
-        const application = features.application.getApplication();
         let files = (
             originalFiles as Array<EntityDict['extraFile']['OpSchema']>
         )?.filter((ele) => !ele.$$deleteAt$$);
@@ -36,7 +35,6 @@ export default OakComponent({
             disableInsert:
                 this.props.maxNumber === 0 ||
                 files?.length >= this.props.maxNumber,
-            systemConfig: application?.system?.config,
         };
     },
     data: {
@@ -283,11 +281,11 @@ export default OakComponent({
         async onItemTapped(event: WechatMiniprogram.Touch) {
             const { files, systemConfig } = this.state;
             const { index } = event.currentTarget.dataset;
-            const imageUrl = this.features.extraFile.getUrl(files[index]!);
+            const imageUrl = this.getUrl(files[index]);
             const urls = files
                 ?.filter((ele: EntityDict['extraFile']['Schema']) => !!ele)
                 .map((ele: EntityDict['extraFile']['Schema']) =>
-                    this.features.extraFile.getUrl(ele!)
+                    this.getUrl(ele)
                 );
 
             const detail = {
@@ -345,6 +343,15 @@ export default OakComponent({
                     },
                 });
             }
+        },
+        getUrl(
+            extraFile?: EntityDict['extraFile']['OpSchema'] | null,
+            style?: string
+        ) {
+            return this.features.extraFile.getUrl(extraFile, style);
+        },
+        formatBytes(size: number) {
+            return this.features.extraFile.formatBytes(size);
         },
     },
 

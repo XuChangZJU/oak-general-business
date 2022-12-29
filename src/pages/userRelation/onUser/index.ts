@@ -1,6 +1,5 @@
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { EntityDict } from '../../../general-app-domain';
-import { composeFileUrl } from '../../../utils/extraFile';
 
 export default OakComponent({
     entity: 'user',
@@ -71,10 +70,9 @@ export default OakComponent({
                     const { mobile$user, extraFile$entity } = ele || {};
                     const userEntity = ele![`user${entityStr}$user`];
                     const mobile = mobile$user && mobile$user[0]?.mobile;
-                    const avatar =
-                        extraFile$entity &&
-                        extraFile$entity[0] &&
-                        composeFileUrl(extraFile$entity[0]);
+                    const avatar = features.extraFile.getUrl(
+                        extraFile$entity && extraFile$entity[0]
+                    );
                     const relations = userEntity?.map((ele: any) => ele.relation);
                     const hasRelation: boolean[] = props.relations!.map((ele2: string) =>
                         relations.includes(ele2)

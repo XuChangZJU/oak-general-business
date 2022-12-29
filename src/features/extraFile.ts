@@ -9,7 +9,7 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Application } from './application'
-import { composeFileUrl } from '../utils/extraFile'
+import { composeFileUrl, bytesToSize } from '../utils/extraFile'
 
 export class ExtraFile<
     ED extends EntityDict,
@@ -59,14 +59,23 @@ export class ExtraFile<
         }
     }
 
-    getUrl(extraFile?: EntityDict['extraFile']['Schema'], style?: string) {
+    getUrl(
+        extraFile?: EntityDict['extraFile']['OpSchema'] | null,
+        style?: string
+    ) {
         if (!extraFile) {
             return '';
         }
         const application = this.application.getApplication();
-        const config = application?.system?.config || application?.system?.platform?.config;
+        const config =
+            application?.system?.config ||
+            application?.system?.platform?.config;
 
         const url = composeFileUrl(extraFile, config, style);
         return url;
+    }
+
+    formatBytes(size: number) {
+        return bytesToSize(size);
     }
 }

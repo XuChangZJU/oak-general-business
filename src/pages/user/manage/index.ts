@@ -1,6 +1,5 @@
 // index.ts
 
-import { composeFileUrl } from "../../../utils/extraFile";
 
 export default OakComponent({
     entity: 'user',
@@ -50,10 +49,7 @@ export default OakComponent({
                 extraFile$entity,
             } = user || {};
             const mobile = mobile$user && mobile$user[0]?.mobile;
-            const avatar =
-                extraFile$entity &&
-                extraFile$entity[0] &&
-                composeFileUrl(extraFile$entity[0]);
+            const avatar = features.extraFile.getUrl(extraFile$entity && extraFile$entity[0]);
             return {
                 id,
                 nickname,
