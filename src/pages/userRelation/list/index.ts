@@ -82,7 +82,7 @@ export default OakComponent({
     formData({ data: users, props, features }) {
         const { entity, entityId } = props;
         const entityStr = firstLetterUpperCase(entity!);
-        const filter = this.getFilterByName('name');
+        const filter = this.getFilterByName('fulltext');
         const pagination = this.getPagination();
         return {
             users: users?.map((ele: any) => {
@@ -102,10 +102,7 @@ export default OakComponent({
                 });
                 return user2;
             }),
-            searchValue:
-                filter?.$or &&
-                (filter.$or as [{ name: { $includes: string } }])[0]?.name
-                    .$includes,
+            searchValue: filter?.$text && filter.$text.$search,
             pagination,
         };
     },
@@ -180,32 +177,23 @@ export default OakComponent({
             await this.execute();
         },
 
-        // 这三个函数貌似还没用上
-        async searchChange(event: any) {
-            const { value } = this.resolveInput(event);
+        async searchChangeMp(event: WechatMiniprogram.Input) {
+           const { value } = event.detail;
             this.addNamedFilter({
                 filter: {
-                    id: {
-                        $in: {
-                            entity: 'mobile',
-                            data: {
-                                userId: 1,
-                            },
-                            filter: {
-                                mobile: {
-                                    $includes: value,
-                                },
-                            },
-                        },
+                    $text: {
+                        $search: value,
                     },
                 },
-                '#name': 'mobile',
+                '#name': 'fulltext',
             });
         },
-        async searchCancel() {
-            this.removeNamedFilterByName('mobile');
+
+        async searchCancelMp() {
+            this.removeNamedFilterByName('fulltext', true);
         },
-        async searchConfirm() {
+
+        async searchConfirmMp() {
             this.refresh();
         },
     },

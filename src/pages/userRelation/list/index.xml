@@ -1,24 +1,32 @@
 <!-- index.wxml -->
 <view class="page-body">
     <view class="search-bar">
-        <t-search placeholder="搜索" value="{{searchValue || ''}}" action="搜索" bind:lincancel="searchConfirm" bind:clear="searchCancel" bind:change="searchChange" bind:submit="searchConfirm" bind:action-click="searchConfirm" />
+        <l-input 
+            placeholder="搜索"
+            hide-label="{{true}}"
+            value="{{searchValue || ''}}"
+            clear="{{true}}"
+            bind:linconfirm="searchConfirmMp"
+            bind:linclear="searchCancelMp"
+            bind:lininput="searchChangeMp"
+        />
     </view>
-    <block wx:for="{{users}}" wx:key="index">
-        <t-cell data-id="{{item.id}}" bind:tap="bindClicked" title="{{item.nickname}}">
-            <t-image slot="left-icon" t-class="avatar" src="{{item.avatar}}" mode="aspectFit" shape="circle"></t-image>
-            <view slot="description" class="description">
-                  <text class="name">姓名: {{item.name  || '未设置'}}</text>
-                  <text class="mobile">手机: {{item.mobile  || '未设置'}}</text>
-                  <view class="relation">
-                      <block wx:if="{{item.relations.length}}" wx:for="{{item.relations}}" wx:for-item="item2" wx:for-index="index2" wx:key="index2">
-                          <t-tag variant="outline" theme="primary" >
-                              {{t(entity + ':r.' +  item2)}}
-                          </t-tag>
-                      </block>
-                  </view>
-            </view>
-        </t-cell>
+    <block wx:if="{{users && users.length > 0}}">
+        <block wx:for="{{users}}" wx:key="index">
+            <l-card type="avatar" image="{{item.avatar}}" title="{{item.name || item.nickname || '未设置'}}" description="{{item.mobile}}">
+                <view class="relation">
+                    <block wx:if="{{item.relations.length}}" wx:for="{{item.relations}}" wx:for-item="item2" wx:for-index="index2" wx:key="index2">
+                        <l-tag plain="{{true}}" >
+                            {{t(entity + ':r.' +  item2)}}
+                        </l-tag>
+                    </block>
+                </view>
+            </l-card>
+        </block>
     </block>
-    <t-fab style="right: 0; bottom: 32px" icon="add" bind:click="onAdd" />
+    <block wx:else>
+        <view class="info">
+            没有相关人员
+        </view>
+    </block>
 </view>
-<t-action-sheet id="t-action-sheet" items="{{btnItems}}" visible="{{visible}}" bind:selected="onActionSelect" bind:cancel="onActionCancel" bind:close="onActionClose" />

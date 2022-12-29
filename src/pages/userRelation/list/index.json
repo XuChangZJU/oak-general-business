@@ -1,15 +1,10 @@
 {
   "navigationBarTitleText": "人员列表",
   "usingComponents": {
-      "t-button": "../../../miniprogram_npm/tdesign/button/button",
-      "t-dialog": "../../../miniprogram_npm/tdesign/dialog/dialog",
-      "t-divider": "../../../miniprogram_npm/tdesign/divider/divider",
-      "t-tag": "../../../miniprogram_npm/tdesign/tag/tag",
-      "t-fab": "../../../miniprogram_npm/tdesign/fab/fab",
-      "t-search": "../../../miniprogram_npm/tdesign/search/search",
-      "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
-      "t-cell": "../../../miniprogram_npm/tdesign/cell/cell",
-      "t-image": "../../../miniprogram_npm/tdesign/image/image",
-      "t-action-sheet": "../../../miniprogram_npm/tdesign/action-sheet/action-sheet"
+      "l-input": "../../../miniprogram_npm/lin-ui/input/index",
+      "l-icon": "../../../miniprogram_npm/lin-ui/icon/index",
+      "l-card": "../../../miniprogram_npm/lin-ui/card/index",
+      "l-button": "../../../miniprogram_npm/lin-ui/button/index",
+      "l-tag": "../../../miniprogram_npm/lin-ui/tag/index"
   }
 }
