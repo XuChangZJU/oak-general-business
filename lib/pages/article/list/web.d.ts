@@ -4,6 +4,8 @@ export default function render(props: WebComponentProps<EntityDict, 'article', t
     searchValue: string;
     articles: EntityDict['article']['Schema'][];
     pagination: any;
+    title?: string;
+    showBack?: boolean;
 }, {
     goUpsert: () => Promise<void>;
     goDetailById: (id: string) => Promise<void>;
