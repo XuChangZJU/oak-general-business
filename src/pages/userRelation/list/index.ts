@@ -126,6 +126,7 @@ export default OakComponent({
                 mode: 'byQrCode',
             }
         ],
+        idRemoveMp: '',
     },
     lifetimes: {
         created() {
@@ -235,6 +236,39 @@ export default OakComponent({
             this.setState({
                 showActionSheet: true,
             });
+        },
+
+        onItemTapMp(e: WechatMiniprogram.TouchEvent) {
+            const { entity, entityId, relations } = this.props;
+            const { id } = e.currentTarget.dataset;
+            this.navigateTo({
+                url: '/userRelation/upsert/onUser',
+                oakId: id,
+                entity,
+                entityId,
+                relations,
+            });
+        },
+
+        onDeleteMp(e: WechatMiniprogram.TouchEvent) {
+            const { id } = e.currentTarget.dataset;
+            this.setState({
+                idRemoveMp: id,
+            });
+        },
+
+        cancelDeleteMp() {
+            this.setState({
+                idRemoveMp: '',
+            })
+        },
+
+        async confirmDeleteMp() {
+            const { idRemoveMp } = this.state;
+            await this.confirmDelete(idRemoveMp);
+            this.setState({
+                idRemoveMp: '',
+            })
         }
     },
 });

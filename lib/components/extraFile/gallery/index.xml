@@ -2,7 +2,7 @@
     <block wx:for="{{files}}" wx:key="index">
         <block wx:if="{{item}}">
             <view class="file-list__item  file-list__item--{{size}} oak-item-class" style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:'xxx'}}">
-                <OakDisplay data-index="{{index}}" bind:tap="onItemTapped" mode="{{mode}}" oakId="{{item.id}}"  oakAutoUnmount="{{true}}" oakPath="{{oakFullpath}}.{{item.id}}" />
+                <OakDisplay data-index="{{index}}" bind:tap="onItemTapped" mode="{{mode}}" oakId="{{item.id}}" oakAutoUnmount="{{true}}" oakPath="{{oakFullpath}}.{{item.id}}" />
                 <view wx:if="{{!disableDelete}}" mut-bind:tap="onDeleteByMp" class="file-list__remove" data-value="{{item}}">
                     <l-icon name="close" color="#ffffff" size="18" />
                 </view>

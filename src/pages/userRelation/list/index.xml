@@ -20,20 +20,33 @@
     </view>
     <block wx:if="{{users && users.length > 0}}">
         <block wx:for="{{users}}" wx:key="index">
-            <l-card type="avatar" image="{{item.avatar}}" title="{{item.name || item.nickname || '未设置'}}" description="{{item.mobile}}">
-                <view class="relation">
-                    <block wx:if="{{item.relations.length}}" wx:for="{{item.relations}}" wx:for-item="item2" wx:for-index="index2" wx:key="index2">
-                        <l-tag>
-                            {{t(entity + ':r.' +  item2)}}
-                        </l-tag>
-                    </block>
-                </view>
-                <l-icon
-                    name="delete"
-                    color="red"
-                    size="30"
+            <l-card 
+                type="avatar"
+                image="{{item.avatar}}" 
+                title="{{item.name || item.nickname || '未设置'}}" 
+                description="{{item.mobile}}"
+            >
+                <l-list bind:lintap="onItemTapMp" data-id="{{item.id}}">
+                    <view class="relation" slot="left-section">
+                        <block wx:if="{{item.relations.length}}" wx:for="{{item.relations}}" wx:for-item="item2" wx:for-index="index2" wx:key="index2">
+                            <l-tag l-class="tag" plain="{{true}}">
+                                {{t(entity + ':r.' +  item2)}}
+                            </l-tag>
+                        </block>
+                    </view>
+                </l-list>
+                <l-button 
+                    special="{{true}}"
+                    bind:lintap="onDeleteMp"
+                    data-id="{{item.id}}"                    
                     slot="more"
-                />
+                >
+                    <l-icon
+                        name="delete"
+                        color="red"
+                        size="30"
+                    />
+                </l-button>
             </l-card>
         </block>
     </block>
@@ -44,4 +57,13 @@
     </block>    
     <l-action-sheet open-api="{{false}}" show-cancel item-list="{{itemList}}" show="{{showActionSheet}}"   
         bind:linitemtap="chooseActionMp" bind:lincancel="cancelActionMp"/>
+    <l-dialog 
+        show="{{!!idRemoveMp}}"
+        type="confirm"     
+        title="确认"
+        content="确认删除权限吗"
+        bind:lincancel="cancelDeleteMp"
+        bind:lintap="cancelDeleteMp"
+        bind:linconfirm="confirmDeleteMp"
+    />
 </view>

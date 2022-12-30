@@ -19,6 +19,7 @@ export default OakComponent({
     properties: {
         entity: String,
         entityId: String,
+        relations: Array,
     },
     isList: true,
     filters: [{
@@ -29,9 +30,24 @@ export default OakComponent({
             };
         }
     }],
-    formData({ data }) {
+    formData({ data: userRelations }) {
+        const { relations } = this.props;
+        const relations2: Array<{
+            isChecked: boolean; relation: string;
+        }> = relations.map(
+            (relation: string) => {
+                const isChecked = !!(userRelations?.find(
+                    (ele: any) => ele.relation === relation && !ele.$$deleteAt$$
+                ));
+                return {
+                    isChecked,
+                    relation,
+                };
+            }
+        );
         return {
-            userRelations: data,
+            relations2,
+            userRelations,
         };
     },
     methods: {
@@ -60,6 +76,10 @@ export default OakComponent({
                 assert(userRelation);
                 this.removeItem(userRelation.id);
             }
+        },
+        onRelationChangeMp(e: WechatMiniprogram.TouchEvent) {
+            const { key: relation, checked } = e.detail;
+            this.onRelationChange(relation, checked);
         },
         isChecked(relation: string) {
             const { userRelations } = this.state;

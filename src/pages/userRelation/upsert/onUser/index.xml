@@ -1,27 +1,18 @@
-   <!-- index.wxml -->
-    <view class="page-body">
-        <view class="col">
-            <t-input placeholder="请输入" label="slot" size="medium"  confirm-type="next" oak:value="name" bind:change="setValue">
-                <text slot="label">
-                    <text style="color: #e34d59">*</text>姓名
-                </text>
-            </t-input>
-            <t-input placeholder="请输入" label="slot" size="medium"  confirm-type="next" value="{{mobile}}" bind:change="onMobileChange">
-                <text slot="label">
-                    <text style="color: #e34d59">*</text>手机号
-                </text>
-            </t-input>
-            <t-input placeholder="请输入" label="slot" size="medium" confirm-type="next" oak:value="password" bind:change="setValue">
-                <text slot="label">
-                    <text style="color: #e34d59">*</text>密码
-                </text>
-            </t-input>
-            <t-checkbox-group bind:change="onCheckBoxChange">
-                <block wx:for="{{relations}}">
-                    <t-checkbox value="{{item}}" label="{{t(entity + ':r.' + item)}}" />
-                </block>
-            </t-checkbox-group>
+<l-card type="avatar" image="{{avatar}}" title="{{name || nickname || '未设置'}}" description="{{mobile}}">
+   <view class="list-item">
+        <view class="label">权限：</view>
+        <view class="relation-box">
+            <user-relations
+                oakPath="{{(oakFullpath && userRelationRelativePath) ? oakFullpath + '.' + userRelationRelativePath : undefined }}"
+                oakAutoUnmount="{{true}}"
+                entity="{{entity}}"
+                entityId="{{entityId}}"
+                relations="{{relations}}"
+            />
         </view>
-        <view style="flex: 1" />
-        <t-button  style="margin: 16rpx" theme="primary" bind:tap="onConfirm" block>确定</t-button>
     </view>
+</l-card>
+<view style="flex: 1" />
+<l-button size="long" bind:lintap="onConfirm">
+    确定
+</l-button>

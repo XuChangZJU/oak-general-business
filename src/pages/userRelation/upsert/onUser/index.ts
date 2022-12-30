@@ -9,11 +9,33 @@ export default OakComponent({
         name: 1,
         password: 1,
         nickname: 1,
+        extraFile$entity: {
+            $entity: 'extraFile',
+            data: {
+                id: 1,
+                tag1: 1,
+                origin: 1,
+                bucket: 1,
+                objectId: 1,
+                filename: 1,
+                extra1: 1,
+                type: 1,
+                entity: 1,
+                extension: 1,
+            },
+            filter: {
+                tag1: 'avatar',
+            },
+        }
     },
     isList: false,
     formData({ data: user }) {
-        const { name, nickname, password } = user || {};
+        const { name, nickname, password, extraFile$entity } = user || {};
+        const avatar = this.features.extraFile.getUrl(
+            extraFile$entity && extraFile$entity[0]
+        );
         return {
+            avatar,
             password,
             name,
             nickname,
@@ -24,6 +46,10 @@ export default OakComponent({
         entity: String,
         entityId: String,
         relations: Array,
+        mobile: String,
+    },
+    data: {
+        userRelationRelativePath: '',
     },
     lifetimes: {
         async ready() {
@@ -44,11 +70,15 @@ export default OakComponent({
                     throw new OakInputIllegalException('user', [`user${entityStr}$user`], this.t('placeholder.relation'));
                 });
             }
+            this.setState({
+                userRelationRelativePath: `user${firstLetterUpperCase(entity)}$user`,
+            });
         },
     },
     methods: {
         async onConfirm() {
             await this.execute();
+            this.navigateBack();
         },
     },
 });

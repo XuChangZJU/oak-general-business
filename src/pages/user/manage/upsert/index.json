@@ -4,6 +4,7 @@
         "l-button": "../../../../miniprogram_npm/lin-ui/button/index",
         "l-list": "../../../../miniprogram_npm/lin-ui/list/index",
         "l-input": "../../../../miniprogram_npm/lin-ui/input/index",
-        "l-icon": "../../../../miniprogram_npm/lin-ui/icon/index"
+        "l-icon": "../../../../miniprogram_npm/lin-ui/icon/index",
+        "mobile-manage-list": "../../../../components/mobile/manageList/index"
     }
 }

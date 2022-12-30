@@ -4,8 +4,10 @@ import userCheckers from './user';
 import userEntityGrantCheckers from './userEntityGrant';
 import wechatQrCodeCheckers from './wechatQrCode';
 import applicationCheckers from './application';
+import mobileChecker from './mobile';
 
 const checkers = [
+    ...mobileChecker,
     ...addressCheckers,
     ...tokenCheckers,
     ...userCheckers,

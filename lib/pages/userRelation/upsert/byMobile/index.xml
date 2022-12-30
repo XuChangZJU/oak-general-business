@@ -1,0 +1,37 @@
+<view class="page-body">
+    <l-notice-bar
+        front-icon-name="notification"
+        show="{{true}}"
+    >
+        必须在系统中登记了手机号的用户才可通过这里搜索
+    </l-notice-bar>
+    <view class="search-bar">
+        <l-input
+            type="digit"
+            maxlength="11"
+            placeholder="输入完整手机号搜索"
+            hide-label="{{true}}"
+            value="{{mobileValue || ''}}"
+            clear="{{true}}"
+            bind:linclear="searchCancelMp"
+            bind:lininput="searchChangeMp"
+        />
+    </view>
+    <block wx:if="{{mobileValueReady}}">
+        <block wx:if="{{userId}}">
+            <relation-on-user
+                class="r-o-u"
+                oakId="{{userId}}"
+                mobile="{{mobileValue}}"
+                oakPath="{{oakFullpath ? oakFullpath + '.user' : undefined}}"
+                oakAutoUnmount="{{true}}"
+                entity="{{entity}}"
+                entityId="{{entityId}}"
+                relations="{{relations}}"
+            />
+        </block>
+        <block wx:else>
+            <l-status-show show="{{true}}" type="error" describe="查无此用户"></l-status-show>
+        </block>
+    </block>
+</view>

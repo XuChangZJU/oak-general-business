@@ -1,11 +1,12 @@
 {
     "navigationBarTitleText": "添加权限",
     "usingComponents": {
-        "t-checkbox": "../../../miniprogram_npm/tdesign/checkbox/checkbox",
-        "t-checkbox-group": "../../../miniprogram_npm/tdesign/checkbox-group/checkbox-group",
-        "t-input": "../../../miniprogram_npm/tdesign/input/input",
-        "t-tag": "../../../miniprogram_npm/tdesign/tag/tag",
-        "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
-        "t-button": "../../../miniprogram_npm/tdesign/button/button"
+        "l-input": "../../../../miniprogram_npm/lin-ui/input/index",
+        "l-icon": "../../../../miniprogram_npm/lin-ui/icon/index",
+        "l-card": "../../../../miniprogram_npm/lin-ui/card/index",
+        "l-button": "../../../../miniprogram_npm/lin-ui/button/index",
+        "l-tag": "../../../../miniprogram_npm/lin-ui/tag/index",
+        "l-list": "../../../../miniprogram_npm/lin-ui/list/index",
+        "user-relations": "./userRelation/index"
     }
 }
