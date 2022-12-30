@@ -21,9 +21,6 @@ export default OakComponent({
             const { systemId } = application;
             if (userId) {
                 const result = await this.features.cache.count('message', {
-                    data: {
-                        id: 1,
-                    },
                     filter: {
                         userId,
                         systemId,

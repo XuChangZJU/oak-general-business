@@ -1,0 +1,20 @@
+<view class="page-body">
+    <l-notice-bar
+        front-icon-name="notification"
+        show="{{true}}"
+    >
+        必须在系统中登记了手机号的用户才可通过这里搜索
+    </l-notice-bar>
+    <view class="search-bar">
+        <l-input
+            type="digit"
+            maxlength="11"
+            placeholder="输入完整手机号搜索"
+            hide-label="{{true}}"
+            value="{{mobileValue || ''}}"
+            clear="{{true}}"
+            bind:linclear="searchCancelMp"
+            bind:lininput="searchChangeMp"
+        />
+    </view>
+</view>

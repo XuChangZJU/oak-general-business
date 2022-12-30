@@ -59,7 +59,7 @@ export default OakComponent({
         // 由调用者注入oakFilter
         {
             filter: ({ features, props }) => {
-                const { entityId, entity } = props;
+                const { entityId, entity, relations } = props;
                 const entityStr = firstLetterUpperCase(entity!);
                 return {
                     id: {
@@ -70,6 +70,9 @@ export default OakComponent({
                             },
                             filter: {
                                 [`${entity}Id`]: entityId,
+                                relation: {
+                                    $in: relations,
+                                },
                             },
                         },
                     },
@@ -112,6 +115,17 @@ export default OakComponent({
     },
     data: {
         searchValue: '',
+        showActionSheet: false,
+        itemList: [
+            {
+                name: '从现有人员中选择（通过手机号）',
+                mode: 'byMobile',
+            },
+            {
+                name: '通过分享二维码',
+                mode: 'byQrCode',
+            }
+        ],
     },
     lifetimes: {
         created() {
@@ -175,8 +189,8 @@ export default OakComponent({
             await this.execute();
         },
 
-        async searchChangeMp(event: WechatMiniprogram.Input) {
-           const { value } = event.detail;
+        searchChangeMp(event: WechatMiniprogram.Input) {
+            const { value } = event.detail;
             this.addNamedFilter({
                 filter: {
                     $text: {
@@ -187,12 +201,40 @@ export default OakComponent({
             });
         },
 
-        async searchCancelMp() {
+        searchCancelMp() {
             this.removeNamedFilterByName('fulltext', true);
         },
 
-        async searchConfirmMp() {
+        searchConfirmMp() {
             this.refresh();
         },
+
+        chooseActionMp(e: WechatMiniprogram.TouchEvent) {
+            const { entity, entityId, relations } = this.props;
+            const { item: { mode }} = e.detail;
+            if (mode === 'byMobile') {
+                this.navigateTo({
+                    url: '/userRelation/upsert/byMobile',
+                    entity,
+                    entityId,
+                    relations,
+                });
+            }
+            else {
+                console.log(mode, '还未实现');
+            }
+        },
+
+        cancelActionMp(e: any) {
+            this.setState({
+                showActionSheet: false,
+            });
+        },
+
+        showActionSheetMp() {
+            this.setState({
+                showActionSheet: true,
+            });
+        }
     },
 });

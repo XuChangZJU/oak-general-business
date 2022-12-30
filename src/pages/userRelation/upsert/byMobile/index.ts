@@ -78,6 +78,14 @@ export default OakComponent({
                 mobileValueReady: false,
             });
             this.unsetId();
+        },
+
+        searchChangeMp(e: WechatMiniprogram.Input) {
+            const { value } = e.detail;
+            this.onMobileChange(value);
+        },
+        searchCancelMp() {
+            this.onReset();
         }
     },
 });

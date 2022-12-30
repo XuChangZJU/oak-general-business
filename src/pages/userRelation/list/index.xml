@@ -1,26 +1,39 @@
 <!-- index.wxml -->
 <view class="page-body">
     <view class="search-bar">
-        <l-input 
-            placeholder="搜索"
-            hide-label="{{true}}"
-            value="{{searchValue || ''}}"
-            clear="{{true}}"
-            bind:linconfirm="searchConfirmMp"
-            bind:linclear="searchCancelMp"
-            bind:lininput="searchChangeMp"
-        />
+        <view class="search-input">
+            <l-input
+                placeholder="输入人员信息搜索"
+                hide-label="{{true}}"
+                value="{{searchValue || ''}}"
+                clear="{{true}}"
+                bind:linconfirm="searchConfirmMp"
+                bind:linclear="searchCancelMp"
+                bind:lininput="searchChangeMp"
+            />
+        </view>
+        <l-button
+            bind:lintap="showActionSheetMp"
+        >
+            新增
+        </l-button>
     </view>
     <block wx:if="{{users && users.length > 0}}">
         <block wx:for="{{users}}" wx:key="index">
             <l-card type="avatar" image="{{item.avatar}}" title="{{item.name || item.nickname || '未设置'}}" description="{{item.mobile}}">
                 <view class="relation">
                     <block wx:if="{{item.relations.length}}" wx:for="{{item.relations}}" wx:for-item="item2" wx:for-index="index2" wx:key="index2">
-                        <l-tag plain="{{true}}" >
+                        <l-tag>
                             {{t(entity + ':r.' +  item2)}}
                         </l-tag>
                     </block>
                 </view>
+                <l-icon
+                    name="delete"
+                    color="red"
+                    size="30"
+                    slot="more"
+                />
             </l-card>
         </block>
     </block>
@@ -28,5 +41,7 @@
         <view class="info">
             没有相关人员
         </view>
-    </block>
+    </block>    
+    <l-action-sheet open-api="{{false}}" show-cancel item-list="{{itemList}}" show="{{showActionSheet}}"   
+        bind:linitemtap="chooseActionMp" bind:lincancel="cancelActionMp"/>
 </view>
