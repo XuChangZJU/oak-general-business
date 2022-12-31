@@ -1,11 +1,29 @@
 <!-- index.wxml -->
 <view class="page-body">
     <view class="content">
-        <text class="text">获取权限</text>
-        <view class="circle-view">
-            <t-icon name="user-circle" size="20px"/>
-            <text class="relation">{{relation || '无数据'}}</text>
-        </view>
+        <text class="text">认领权限</text>
+        <block wx:if="{{!!expired}}">
+            <view class="circle-view">
+                <l-icon name="close" size="80"/>
+            </view>
+            <text class="relation">该授权已经过期</text>
+        </block>
+        <block wx:elif="{{number <= confirmed}}">
+            <view class="circle-view">
+                <l-icon name="close" size="80"/>
+            </view>
+            <text class="relation">该授权已经认领结束</text>
+        </block>
+        <block wx:else>
+            <view class="circle-view">
+                <l-icon name="user" size="80"/>
+            </view>    
+            <text class="relation">{{t(entity + ':r.' + relation) || '无数据'}}</text>    
+        </block>
     </view>
-    <t-button theme="primary" style="margin: 16rpx" block size="large" bind:tap="handleConfirm" content="确定" />
+    <block wx:if="{{!expired && number > confirmed}}">
+        <l-button type="default" style="margin: 16rpx" size="large" bind:lintap="handleConfirm">
+            确定
+        </l-button>
+    </block>
 </view>

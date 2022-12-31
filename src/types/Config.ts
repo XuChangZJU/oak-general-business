@@ -86,8 +86,10 @@ export type Config = {
         tencent?: TencentSmsConfig[];
     };
     App: {
-        qrCodeType?: QrCodeType;
-        qrCodeApplicationId?: string;
+        qrCodeType?: QrCodeType;            // 生成二维码时，优先生成的类型
+        qrCodeApplicationId?: string;       // 生成二维码时，优先使用的appId
+        qrCodePublicForMpId?: string;       // 如果qrCodeType是wechatPublicForMp，在此指明关联的小程序appId
+        mpShareImageUrl?: string;           // 小程序分享时的imageUrl（使用网络图片，5：4）
     };
 };
 

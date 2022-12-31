@@ -59,11 +59,18 @@ const checkers: Checker<
     },
     {
         type: 'row',
+        action: 'confirm',
         entity: 'userEntityGrant',
-        action: ['disable'],
         filter: {
-            expired: false,
+            $expr: {
+                $gt: [{
+                    "#attr": 'number',
+                }, {
+                    "#attr": 'confirmed',
+                }]
+            }
         },
+        errMsg: '该授权已经被认领完毕',
     }
 ];
 

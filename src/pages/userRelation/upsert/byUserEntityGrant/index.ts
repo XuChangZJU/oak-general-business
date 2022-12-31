@@ -34,6 +34,17 @@ export default OakComponent({
         },
     },
     methods: {
+        onShareAppMessage(e: any) {
+            const app = this.features.application.getApplication();
+            const { config, system: { config: systemConfig } } = app;
+            const { userEntityGrantId } = this.state;
+            const imageUrl = config && config.App?.mpShareImageUrl || systemConfig && systemConfig?.App?.mpShareImageUrl || '';
+            return {
+                title: '',
+                path: `/pages/userEntityGrant/confirm/index?oakId=${userEntityGrantId}`,
+                imageUrl,
+            }
+        },
         setInit() {
             const { entity, entityId, type } = this.props;
             this.update({
@@ -42,16 +53,37 @@ export default OakComponent({
                 type: type || 'grant',
                 number: 1,
             });
+            this.setState({
+                userEntityGrantId: '',
+            });
+            if (process.env.OAK_PLATFORM === 'wechatMp') {
+                wx.hideShareMenu();
+            }
         },
         setRelation(value: any) {
             this.update({
                 relation: value,
             });
         },
+        setRelationMp(e: any) {
+            const { currentKey } = e.detail;
+            this.setRelation(currentKey);
+        },
         setNumber(value: number) {
             this.update({
                 number: value,
             });
+        },
+        setNumberMp(e: any) {
+            const { currentKey } = e.detail;
+            this.setNumber(parseInt(currentKey, 10));
+        },
+        setPeriod(p: number) {
+            this.setState({ period: p });
+        },
+        setPeriodMp(e: any) {
+            const { count } = e.detail;
+            this.setPeriod(count);
         },
         onBack() {
             this.navigateBack();
@@ -66,10 +98,14 @@ export default OakComponent({
             assert(!this.props.oakId);
             const id = this.getId();
             await this.execute();
-            // todo 在页面显示二维码 先弹窗方式吧
+            // set了这个值就在页面显示二维码
             this.setState({
                 userEntityGrantId: id,
             });
+            // 小程序显示可分享菜单
+            if (process.env.OAK_PLATFORM === 'wechatMp') {
+                wx.showShareMenu({});
+            }
         },
     },
 });

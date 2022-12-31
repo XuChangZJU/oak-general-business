@@ -1,10 +1,102 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <t-radio-group bind:change="bindRadioChange">
-       <block wx:for="{{relations}}" wx:key="index">
-           <t-radio value="{{item}}" label="{{t(entity + ':r.' + item)}}" />
-       </block>
-   </t-radio-group>
-    <view style="flex: 1" />
-    <t-button style="margin: 16rpx" theme="primary" block size="large" bind:tap="confirm" content="{{t('common:action.confirm')}}" />
+    <block wx:if="{{!!userEntityGrantId}}">    
+        <l-notice-bar
+            front-icon-name="notification"
+            show="{{true}}"
+        >
+            请通过分享或者截屏二维码方式分享权限
+        </l-notice-bar>
+        <view class="ueg-container">
+            <userEntityGrant-detail            
+                oakId="{{userEntityGrantId}}"
+                oakAutoUnmount="{{true}}"
+                oakPath="$userRelation/upsert/byUserEntityGrant-userEntityGrant/detail"
+            />
+            <view
+                class="share"
+            >
+                <l-button
+                    size="medium"
+                    type="success"
+                    open-type="share"
+                >
+                    分享
+                </l-button>
+            </view
+        </view>
+    </block>
+    <block wx:else>
+        <view class="list-item">
+            <view class="label">权限：</view>
+            <view class="value">
+                <l-radio-group
+                    placement="row"
+                    l-class="radio-container"
+                    bind:linchange="setRelationMp"
+                    current="{{relation}}"
+                >
+                    <l-radio
+                        wx:for-items="{{relations}}"
+                        wx:key="index"
+                        key="{{item}}"
+                        l-class="radio"
+                        size="48rpx"
+                    >                    
+                        {{t(entity + ':r.' +  item)}}
+                    </l-radio>
+                </l-radio-group>
+            </view>
+        </view>
+        <view class="list-item">
+            <view class="label">人次：</view>
+            <view class="value">
+                <l-radio-group
+                    placement="row"
+                    l-class="radio-container"
+                    bind:linchange="setNumberMp"
+                    current="{{number}}"
+                >
+                    <l-radio
+                        wx:key="1"
+                        key="1"
+                        size="48rpx"
+                        l-class="radio"
+                    >                    
+                        单人次
+                    </l-radio>
+                    <l-radio
+                        wx:key="10000"
+                        key="10000"
+                        size="48rpx"
+                    >                    
+                        不限人次
+                    </l-radio>
+                </l-radio-group>
+            </view>
+        </view>        
+        <view class="list-item">
+            <view class="label">有效期：</view>
+            <view class="value-period">
+                <l-counter 
+                    count="{{period}}" 
+                    max="120" 
+                    min="5" 
+                    round-float="{{true}}"
+                    bind:linchange="setPeriodMp"
+                />
+                <view style="margin-left: 30rpx">
+                    分钟
+                </view>
+            </view>
+        </view>
+        <view style="flex: 1" />
+        <l-button 
+            size="long" 
+            type="default"
+            bind:lintap="confirm"
+        >
+            确定
+        </l-button>
+    </block>
 </view>

@@ -222,7 +222,12 @@ export default OakComponent({
                 });
             }
             else {
-                console.log(mode, '还未实现');
+                this.navigateTo({
+                    url: '/userRelation/upsert/byUserEntityGrant',
+                    entity,
+                    entityId,
+                    relations,
+                });
             }
         },
 

@@ -92,16 +92,8 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
             appId = applicationId;
             appType = 'wechatPublic';
         }
-        const publicApp = applications.find(
-            ele => ele.type === 'wechatPublic' && (ele.config as WechatPublicConfig).isService
-        );
-        if (publicApp) {
-            appId = publicApp.id;
-            appType = 'wechatPublic';
-        }
-
-        // 如果本身是小程序，则优先用自己的
-        if (self?.type === 'wechatMp') {
+        else if (self?.type === 'wechatMp') {
+            // 如果本身是小程序，则次优先用小程序的地址码，再次优先用二维码
             appId = self.id;
             if ((self!.config as WechatMpConfig).qrCodePrefix) {
                 appType = 'wechatMpDomainUrl';
@@ -111,17 +103,30 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                 appType = 'wechatMpWxaCode';
             }
         }
-        const mpApp = applications.find(
-            ele => ele.type === 'wechatMp'
-        );
-        if (mpApp) {
-            appId = mpApp.id;
-            if ((mpApp!.config as WechatMpConfig).qrCodePrefix) {
-                appType = 'wechatMpDomainUrl';
-                url = `${(mpApp!.config as WechatMpConfig).qrCodePrefix}/${id}`;
+        else {
+            // 查找有没有服务号或者小程序的相关配置，如果有则使用之
+            const publicApp = applications.find(
+                ele => ele.type === 'wechatPublic' && (ele.config as WechatPublicConfig).isService
+            );
+            if (publicApp) {
+                appId = publicApp.id;
+                appType = 'wechatPublic';
             }
-            else {
-                appType = 'wechatMpWxaCode';
+            else {    
+                const mpApp = applications.find(
+                    ele => ele.type === 'wechatMp'
+                );
+                if (mpApp) {
+                    appId = mpApp.id;
+                    if ((mpApp!.config as WechatMpConfig).qrCodePrefix) {
+                        appType = 'wechatMpDomainUrl';
+                        url = `${(mpApp!.config as WechatMpConfig).qrCodePrefix}/${id}`;
+                    }
+                    else {
+                        appType = 'wechatMpWxaCode';
+                    }
+                }
+
             }
         }
     }
@@ -156,6 +161,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
 
     const { type: applicationType, config } = application;
 
+    console.log(process.env.OAK_PLATFORM, process.env.NODE_ENV);
     switch (type) {
         case 'wechatMpWxaCode': {
             assert(
@@ -163,21 +169,28 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
             );
             const config2 = config as WechatMpConfig;
             const { appId, appSecret } = config2;
-            // 小程序码去实时获取（暂时不考虑缓存）
-            const wechatInstance = WechatSDK.getInstance(
-                appId,
-                appSecret,
-                'wechatMp'
-            ) as WechatMpInstance;
-            const buffer = await wechatInstance.getMpUnlimitWxaCode({
-                scene: shrinkUuidTo32Bytes(id),
-                page: 'pages/index/index', // todo，这里用其它的页面微信服务器拒绝，因为没发布。应该是 pages/wechatQrCode/scan/index
-            });
-            // 把arrayBuffer转成字符串返回
-            const str = String.fromCharCode(...new Uint8Array(buffer));
-            Object.assign(data, {
-                buffer: str,
-            });
+            if (process.env.OAK_PLATFORM === 'web') {
+                Object.assign(data, {
+                    buffer: 'develop环境下无法真实获取二维码数据',
+                });
+            }
+            else {
+                // 小程序码去实时获取（暂时不考虑缓存）
+                const wechatInstance = WechatSDK.getInstance(
+                    appId,
+                    appSecret,
+                    'wechatMp'
+                ) as WechatMpInstance;
+                const buffer = await wechatInstance.getMpUnlimitWxaCode({
+                    scene: shrinkUuidTo32Bytes(id),
+                    page: 'pages/index/index', // todo，这里用其它的页面微信服务器拒绝，因为没发布。应该是 pages/wechatQrCode/scan/index
+                });
+                // 把arrayBuffer转成字符串返回
+                const str = String.fromCharCode(...new Uint8Array(buffer));
+                Object.assign(data, {
+                    buffer: str,
+                });
+            }
 
             break;
         }
@@ -186,23 +199,31 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                 applicationType === 'wechatPublic' &&
                     config!.type === 'wechatPublic'
             );
-            const config2 = config as WechatPublicConfig;
-            const { appId, appSecret } = config2;
-            const wechatInstance = WechatSDK.getInstance(
-                appId,
-                appSecret,
-                'wechatPublic'
-            ) as WechatPublicInstance;
-
-            const result = await wechatInstance.getQrCode({
-                sceneStr: shrinkUuidTo32Bytes(id),
-                isPermanent: false,
-                expireSeconds: 2592000,
-            });
-            Object.assign(data, {
-                ticket: result?.ticket,
-                url: result?.url,
-            });
+            if (process.env.OAK_PLATFORM === 'web') {
+                Object.assign(data, {
+                    ticket: 'develop环境下无法真实获取二维码数据',
+                    url: 'https://www.test.com',
+                });
+            }
+            else {
+                const config2 = config as WechatPublicConfig;
+                const { appId, appSecret } = config2;
+                const wechatInstance = WechatSDK.getInstance(
+                    appId,
+                    appSecret,
+                    'wechatPublic'
+                ) as WechatPublicInstance;
+    
+                const result = await wechatInstance.getQrCode({
+                    sceneStr: shrinkUuidTo32Bytes(id),
+                    isPermanent: false,
+                    expireSeconds: 2592000,
+                });
+                Object.assign(data, {
+                    ticket: result?.ticket,
+                    url: result?.url,
+                });
+            }
             break;
         }
         case 'wechatMpDomainUrl': {

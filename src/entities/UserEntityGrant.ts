@@ -20,8 +20,7 @@ export interface Schema extends EntityShape {
     expired?: Boolean;
 }
 
-type Action = 'confirm' | 'disable';
-type IState = 'effective' | 'invalid';
+type Action = 'confirm';
 
 const indexes: Index<Schema>[] = [
     {
@@ -54,7 +53,6 @@ const locale: LocaleDef<
     '',
     {
         type: Schema['type'];
-        iState: IState;
     }
 > = {
     zh_CN: {
@@ -71,20 +69,14 @@ const locale: LocaleDef<
             files: '微信码',
             expired: '是否过期',
             expiresAt: '过期时间',
-            iState: '状态',
         },
         action: {
             confirm: '确认',
-            disable: '禁用',
         },
         v: {
             type: {
                 grant: '授予',
                 transfer: '转交',
-            },
-            iState: {
-                effective: '有效',
-                invalid: '失效',
             },
         },
     },

@@ -21,8 +21,8 @@ export default OakComponent({
         confirmed: 1,
     },
     isList: false,
-    formData: async ({ data: userEntityGrant, features }) => {
-        const userId = await features.token.getUserId(true);
+    formData({ data: userEntityGrant, features }) {
+        const userId = features.token.getUserId(true);
         return {
             relation: userEntityGrant?.relation,
             type: userEntityGrant?.type,
@@ -37,42 +37,9 @@ export default OakComponent({
             userId,
         };
     },
-    observers: {
-        relation: function (relation) {
-            if (relation) {
-                this.getUserRelations();
-            }
-        },
-    },
     methods: {
-        async getUserRelations() {
-            const { entity, entityId, relation } = this.state;
-            const entityStr = firstLetterUpperCase(entity!);
-            const userId = await this.features.token.getUserId();
-
-            const { data } = await this.features.cache.refresh(
-                `user${entityStr}`,
-                {
-                    data: {
-                        id: 1,
-                        userId: 1,
-                        relation: 1,
-                        [`${entity}Id`]: 1,
-                    },
-                    filter: {
-                        userId: userId,
-                        [`${entity}Id`]: entityId,
-                        relation,
-                    },
-                }
-            );
-            this.setState({
-                isExists: data.length > 0,
-            });
-        },
-
-        async handleConfirm() {
-            this.execute('confirm');
+        handleConfirm() {
+            return this.execute('confirm');
         },
     },
 });
