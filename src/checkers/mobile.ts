@@ -24,9 +24,15 @@ const checkers: Checker<EntityDict, 'mobile', RuntimeCxt> [] = [
         entity: 'mobile',
         checker: (data) => {
             assert(!(data instanceof Array));
-            checkAttributesNotNull('mobile', data, ['mobile']);
-            if (!isMobile(data.mobile!)) {
-                throw new OakInputIllegalException('mobile', ['mobile'], '手机号非法');
+            if (data.hasOwnProperty('mobile')) {
+                checkAttributesNotNull('mobile', data, ['mobile']);
+                if (!isMobile(data.mobile!)) {
+                    throw new OakInputIllegalException(
+                        'mobile',
+                        ['mobile'],
+                        '手机号非法'
+                    );
+                }
             }
         },
     }
