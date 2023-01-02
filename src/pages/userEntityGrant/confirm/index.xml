@@ -1,29 +1,44 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <view class="content">
-        <text class="text">认领权限</text>
-        <block wx:if="{{!!expired}}">
-            <view class="circle-view">
-                <l-icon name="close" size="80"/>
-            </view>
-            <text class="relation">该授权已经过期</text>
+    <block wx:if="{{!hasConfirmed}}">
+        <view class="content">
+            <text class="text">认领权限</text>
+            <block wx:if="{{!!expired}}">
+                <view class="circle-view">
+                    <l-icon name="close" size="80"/>
+                </view>
+                <text class="relation">该授权已经过期</text>
+            </block>
+            <block wx:elif="{{number <= confirmed}}">
+                <view class="circle-view">
+                    <l-icon name="close" size="80"/>
+                </view>
+                <text class="relation">该授权已经认领结束</text>
+            </block>
+            <block wx:else>
+                <view class="circle-view">
+                    <l-icon name="user" size="80"/>
+                </view>    
+                <text class="relation">{{t(entity + ':r.' + relation) || '无数据'}}</text>    
+            </block>
+        </view>
+        <block wx:if="{{!expired && number > confirmed}}">
+            <l-button type="default" style="margin: 16rpx" size="large" bind:lintap="handleConfirm">
+                确定
+            </l-button>
         </block>
-        <block wx:elif="{{number <= confirmed}}">
-            <view class="circle-view">
-                <l-icon name="close" size="80"/>
-            </view>
-            <text class="relation">该授权已经认领结束</text>
-        </block>
-        <block wx:else>
-            <view class="circle-view">
-                <l-icon name="user" size="80"/>
-            </view>    
-            <text class="relation">{{t(entity + ':r.' + relation) || '无数据'}}</text>    
-        </block>
-    </view>
-    <block wx:if="{{!expired && number > confirmed}}">
-        <l-button type="default" style="margin: 16rpx" size="large" bind:lintap="handleConfirm">
-            确定
-        </l-button>
+    </block>
+    <block wx:else>
+        <view class="content">
+            <l-icon name="success" size="64" />
+            <l-button 
+                l-class="redirect-btn"
+                type="success"
+                bind:lintap="redirectMp"
+                disabled="{{!redirectTo}}"
+            >
+                认领成功{{redirectTo ? '(' + redirectCounter + ')' : '' }}
+            </l-button>
+        </view>
     </block>
 </view>

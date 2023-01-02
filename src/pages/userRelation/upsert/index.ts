@@ -12,6 +12,7 @@ export default OakComponent({
         entity: String,
         entityId: String,
         relations: Array,
+        redirectToAfterConfirm: Object,
     },
     lifetimes: {
         ready() {

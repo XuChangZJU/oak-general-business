@@ -15,4 +15,5 @@ export interface Schema extends EntityShape {
     files: Array<WechatQrCode>;
     expiresAt?: Datetime;
     expired?: Boolean;
+    redirectTo?: Object;
 }

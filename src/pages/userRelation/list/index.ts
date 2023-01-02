@@ -112,6 +112,7 @@ export default OakComponent({
         entityId: String,
         userIds: Array,
         relations: Array,
+        redirectToAfterConfirm: Object,
     },
     data: {
         searchValue: '',
@@ -139,12 +140,13 @@ export default OakComponent({
     },
     methods: {
         goUpsert() {
-            const { entity, entityId, relations } = this.props;
+            const { entity, entityId, relations, redirectToAfterConfirm } = this.props;
             this.navigateTo(
                 {
                     url: '/userRelation/upsert',
                     entity,
                     entityId,
+                    redirectToAfterConfirm,
                 },
                 {
                     relations,
@@ -211,7 +213,7 @@ export default OakComponent({
         },
 
         chooseActionMp(e: WechatMiniprogram.TouchEvent) {
-            const { entity, entityId, relations } = this.props;
+            const { entity, entityId, relations, redirectToAfterConfirm } = this.props;
             const { item: { mode }} = e.detail;
             if (mode === 'byMobile') {
                 this.navigateTo({
@@ -227,6 +229,7 @@ export default OakComponent({
                     entity,
                     entityId,
                     relations,
+                    redirectToAfterConfirm,
                 });
             }
         },

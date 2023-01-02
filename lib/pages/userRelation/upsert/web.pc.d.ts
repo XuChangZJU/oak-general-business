@@ -6,6 +6,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     grantByEmail: boolean;
     grantByMobile: boolean;
     grantMethodCount: number;
+    redirectToAfterConfirm: string;
     entity: string;
     entityId: string;
     relations: string[];

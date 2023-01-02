@@ -18,6 +18,7 @@ export interface Schema extends EntityShape {
     files: Array<WechatQrCode>;
     expiresAt?: Datetime;
     expired?: Boolean;
+    redirectTo?: Object;
 }
 
 type Action = 'confirm';
@@ -69,6 +70,7 @@ const locale: LocaleDef<
             files: '微信码',
             expired: '是否过期',
             expiresAt: '过期时间',
+            redirectTo: '重定向页面',
         },
         action: {
             confirm: '确认',

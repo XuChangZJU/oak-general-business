@@ -23,6 +23,7 @@ export default OakComponent({
         entityId: String,
         relations: Array,
         type: String,
+        redirectToAfterConfirm: Object,
     },
     data: {
         period: 5,
@@ -39,6 +40,7 @@ export default OakComponent({
             const { config, system: { config: systemConfig } } = app;
             const { userEntityGrantId } = this.state;
             const imageUrl = config && config.App?.mpShareImageUrl || systemConfig && systemConfig?.App?.mpShareImageUrl || '';
+            const { redirectToAfterConfirm } = this.props;
             return {
                 title: '',
                 path: `/pages/userEntityGrant/confirm/index?oakId=${userEntityGrantId}`,
@@ -46,12 +48,13 @@ export default OakComponent({
             }
         },
         setInit() {
-            const { entity, entityId, type } = this.props;
+            const { entity, entityId, type, redirectToAfterConfirm } = this.props;
             this.update({
                 entity,
                 entityId,
                 type: type || 'grant',
                 number: 1,
+                redirectTo: redirectToAfterConfirm,
             });
             this.setState({
                 userEntityGrantId: '',

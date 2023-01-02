@@ -1,5 +1,3 @@
-import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
-
 export default OakComponent({
     entity: 'userEntityGrant',
     projection: {
@@ -19,6 +17,7 @@ export default OakComponent({
         granteeId: 1,
         number: 1,
         confirmed: 1,
+        redirectTo: 1,
     },
     isList: false,
     formData({ data: userEntityGrant, features }) {
@@ -35,11 +34,50 @@ export default OakComponent({
             number: userEntityGrant?.number,
             confirmed: userEntityGrant?.confirmed,
             userId,
+            redirectTo: userEntityGrant?.redirectTo,
         };
     },
+    data: {
+        redirectCounter: 0,
+        hasConfirmed: false,
+    },
+    observers: {
+        redirectCounter(value) {
+            if (value > 0) {
+                setTimeout(() => {
+                    this.setState({
+                        redirectCounter: value - 1,
+                    });
+                }, 1000);
+            }
+            else {
+                this.redirectMp();
+            }
+        }
+    },
     methods: {
-        handleConfirm() {
-            return this.execute('confirm');
+        async handleConfirm() {
+            await this.execute('confirm');
+            const { redirectTo } = this.state;
+            if (redirectTo) {
+                this.setState({
+                    redirectCounter: 5,
+                    hasConfirmed: true,
+                });
+            }
+            else {
+                this.setState({
+                    hasConfirmed: true,
+                });
+            }
         },
+        redirectMp() {
+            const { redirectTo } = this.props;
+            const { url, props = {}} = redirectTo;
+            this.redirectTo({
+                url,
+                ...props,
+            });
+        }
     },
 });

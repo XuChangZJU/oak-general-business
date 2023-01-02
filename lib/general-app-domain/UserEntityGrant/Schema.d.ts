@@ -20,6 +20,7 @@ export declare type OpSchema = EntityShape & {
     granteeId?: ForeignKey<"user"> | null;
     expiresAt?: Datetime | null;
     expired?: Boolean | null;
+    redirectTo?: Text | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
@@ -34,6 +35,7 @@ export declare type Schema = EntityShape & {
     granteeId?: ForeignKey<"user"> | null;
     expiresAt?: Datetime | null;
     expired?: Boolean | null;
+    redirectTo?: Text | null;
     granter: User.Schema;
     grantee?: User.Schema | null;
     operEntity$entity?: Array<OperEntity.Schema>;
@@ -60,6 +62,7 @@ declare type AttrFilter = {
     grantee: User.Filter;
     expiresAt: Q_DateValue;
     expired: Q_BooleanValue;
+    redirectTo: Q_StringValue;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -82,6 +85,7 @@ export declare type Projection = {
     grantee?: User.Projection;
     expiresAt?: number;
     expired?: number;
+    redirectTo?: number;
     operEntity$entity?: OperEntity.Selection & {
         $entity: "operEntity";
     };
@@ -112,6 +116,7 @@ export declare type ExportProjection = {
     grantee?: User.ExportProjection;
     expiresAt?: string;
     expired?: string;
+    redirectTo?: string;
     operEntity$entity?: OperEntity.Exportation & {
         $entity: "operEntity";
     };
@@ -163,6 +168,8 @@ export declare type SortAttr = {
     expiresAt: number;
 } | {
     expired: number;
+} | {
+    redirectTo: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

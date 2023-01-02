@@ -13,12 +13,14 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     grantByEmail: boolean;
     grantByMobile: boolean;
     grantMethodCount: number;
+    redirectToAfterConfirm: string;
     entity: string;
     entityId: string;
     relations: string[];
 }, {}>) {
     const { entity, entityId, relations, grantByUserEntityGrant,
-        grantByEmail, grantByMobile, grantMethodCount, oakFullpath } = props.data;
+        grantByEmail, grantByMobile, grantMethodCount, oakFullpath,
+        redirectToAfterConfirm } = props.data;
     let SubPart: JSX.Element = (<></>);
     if (grantMethodCount === 0) {
         SubPart = (
@@ -55,6 +57,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                     relations={relations}
                     oakPath={oakFullpath ? `${oakFullpath}.userEntityGrant` : undefined}
                     oakAutoUnmount={true}
+                    redirectToAfterConfirm={redirectToAfterConfirm}
                 />
             );
         }
