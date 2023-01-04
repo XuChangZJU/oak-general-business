@@ -2,7 +2,7 @@ import { String, Int, Boolean, Text, Datetime, ForeignKey } from "oak-domain/lib
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction } from "./Action";
 import * as User from "../User/Schema";
 import * as OperEntity from "../OperEntity/Schema";
@@ -20,7 +20,7 @@ export declare type OpSchema = EntityShape & {
     granteeId?: ForeignKey<"user"> | null;
     expiresAt?: Datetime | null;
     expired?: Boolean | null;
-    redirectTo?: Text | null;
+    redirectTo?: Object | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
@@ -35,7 +35,7 @@ export declare type Schema = EntityShape & {
     granteeId?: ForeignKey<"user"> | null;
     expiresAt?: Datetime | null;
     expired?: Boolean | null;
-    redirectTo?: Text | null;
+    redirectTo?: Object | null;
     granter: User.Schema;
     grantee?: User.Schema | null;
     operEntity$entity?: Array<OperEntity.Schema>;
@@ -62,13 +62,13 @@ declare type AttrFilter = {
     grantee: User.Filter;
     expiresAt: Q_DateValue;
     expired: Q_BooleanValue;
-    redirectTo: Q_StringValue;
+    redirectTo: Object;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
-    id: number;
+    id?: number;
     $$createAt$$?: number;
     $$updateAt$$?: number;
     $$seq$$?: number;
@@ -169,8 +169,6 @@ export declare type SortAttr = {
 } | {
     expired: number;
 } | {
-    redirectTo: number;
-} | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
 export declare type SortNode = {
@@ -180,6 +178,7 @@ export declare type SortNode = {
 export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
+export declare type Aggregation = Omit<DeduceAggregation<Schema, Projection, Filter, Sorter>, "id">;
 export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "granterId" | "granteeId">> & (({
     granterId?: never;
@@ -256,6 +255,7 @@ export declare type EntityDef = {
     OpSchema: OpSchema;
     Action: OakMakeAction<Action> | string;
     Selection: Selection;
+    Aggregation: Aggregation;
     Operation: Operation;
     Create: CreateOperation;
     Update: UpdateOperation;
