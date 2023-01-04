@@ -59,6 +59,8 @@ export default function Render(
                 onClose={() => {
                     setOpen(false);
                 }}
+                oakAutoUnmount={true}
+                oakPath="$my/message-/message/drawerList"
             />
         </>
     );
