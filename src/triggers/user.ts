@@ -101,32 +101,6 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
             return 0;
         }
     } as CreateTrigger<EntityDict, 'user', RuntimeCxt>,
-    {
-        name: '当扮演某个用户时，切换当前用户的token中的userId',
-        entity: 'user',
-        action: 'play',
-        when: 'after',
-        fn: async ({ operation }, context, option) => {
-            const { filter } = operation;
-            assert(filter!.id);
-            const token = context.getToken()!;
-            const { id, userId } = token;
-            if (userId === filter!.id) {
-                throw new OakRowInconsistencyException(undefined, '您已经是当前用户');
-            }
-            await context.operate('token', {
-                id: generateNewId(),
-                action: 'update',
-                data: {
-                    userId: filter!.id as string,
-                },
-                filter: {
-                    id,
-                }
-            }, option);
-            return 1;
-        }
-    } as UpdateTrigger<EntityDict, 'user', RuntimeCxt>,
 ];
 
 export default triggers;

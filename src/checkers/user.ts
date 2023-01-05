@@ -23,19 +23,6 @@ const checkers: Checker<EntityDict, 'user', RuntimeCxt> [] = [
         errMsg: '越权操作',
     },
     {
-        type: 'relation',
-        action: ['play'],
-        entity: 'user',
-        relationFilter: (operation, context) => {
-            if (!context.isReallyRoot()) {
-                // 只有root才能进行操作
-                throw new OakUserUnpermittedException();
-            }
-            return undefined;
-        },
-        errMsg: '越权操作'
-    },
-    {
         type: 'data',
         action: 'grant',
         entity: 'user',

@@ -43,9 +43,7 @@ const UserActionDef: ActionDef<UserAction, UserState> = {
     },
 };
 
-type MoreAction = 'play';
-
-type Action = UserAction | IdAction | MoreAction;
+type Action = UserAction | IdAction;
 
 const indexes: Index<Schema>[] = [
     {
@@ -98,7 +96,6 @@ const locale: LocaleDef<Schema, Action, '', {
         },
         action: {
             activate: '激活',
-            play: '扮演',
             accept: '同意',
             verify: '验证',
             reject: '拒绝',

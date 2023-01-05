@@ -37,5 +37,5 @@
         </l-list>
     </view>
     <view style="flex:1" />
-    <actionPanel actions="{{oakLegalActions}}" actionDescriptions="{{actionDescriptions}}" bind:action="onActionClickMp" />
+    <actionPanel actions="{{executableActions}}" actionDescriptions="{{actionDescriptions}}" bind:action="onActionClickMp" />
 </view>

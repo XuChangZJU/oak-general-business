@@ -1,4 +1,4 @@
-import { generateNewId } from 'oak-domain/lib/utils/uuid';
+import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../general-app-domain';
 import { WechatSDK } from 'oak-external-sdk';
 import { assert } from 'oak-domain/lib/utils/assert';
@@ -8,7 +8,7 @@ import { CreateOperationData as CreateWechatUser } from '../general-app-domain/W
 import { CreateOperationData as CreateUser, Schema as User } from '../general-app-domain/User/Schema';
 import { Operation as ExtraFileOperation } from '../general-app-domain/ExtraFile/Schema';
 import { isEqual } from 'oak-domain/lib/utils/lodash';
-import { OakUserException } from 'oak-domain/lib/types';
+import { OakRowInconsistencyException, OakUserException, OakUserUnpermittedException } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
 import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exception';
 import { encryptPasswordSha1 } from '../utils/password';
@@ -131,7 +131,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
         else {
             // 此时以该手机号登录 todo根据环境来判断，用户也有可能是新获得此手机号，未来再进一步处理
             const tokenData: EntityDict['token']['CreateSingle']['data'] = {
-                id: generateNewId(),
+                id: await generateNewIdAsync(),
                 applicationId: applicationId!,
                 playerId: mobileRow.userId as string,
                 env,
@@ -148,7 +148,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
                     Object.assign(tokenData, {
                         userId: mobileRow.userId,
                         user: {
-                            id: generateNewId(),
+                            id: await generateNewIdAsync(),
                             action: 'activate',
                             data: {},
                         }
@@ -164,7 +164,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
             }
 
             await context.operate('token', {
-                id: generateNewId(),
+                id: await generateNewIdAsync(),
                 data: tokenData,
                 action: 'create',
             }, {
@@ -174,10 +174,10 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
             // 检查此user和system之间有没有关系，如果没有要补上
             if ((user as User)?.userSystem$user?.length == 0) {
                 await context.operate('userSystem', {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     action: 'create',
                     data: {
-                        id: generateNewId(),
+                        id: await generateNewIdAsync(),
                         userId: (user as User).id!,
                         systemId,
                     }
@@ -194,12 +194,12 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
         if (currentToken) {
             // 创建手机号并与之关联即可
             const mobileData: EntityDict['mobile']['CreateSingle']['data'] = {
-                id: generateNewId(),
+                id: await generateNewIdAsync(),
                 mobile,
                 userId: currentToken.userId!,
             };
             await context.operate('mobile', {
-                id: generateNewId(),
+                id: await generateNewIdAsync(),
                 action: 'create',
                 data: mobileData
             }, {});
@@ -208,31 +208,31 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
         else {
             // 创建token, mobile, user
             const userData: EntityDict['user']['CreateSingle']['data'] = {
-                id: generateNewId(),
+                id: await generateNewIdAsync(),
                 userState: 'normal',
             };
             await context.operate('user', {
-                id: generateNewId(),
+                id: await generateNewIdAsync(),
                 action: 'create',
                 data: userData,
             }, {});
             const tokenData: EntityDict['token']['CreateSingle']['data'] = {
-                id: generateNewId(),
+                id: await generateNewIdAsync(),
                 userId: userData.id,
                 playerId: userData.id,
                 env,
                 mobile: {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     action: 'create',
                     data: {
-                        id: generateNewId(),
+                        id: await generateNewIdAsync(),
                         mobile,    
                         userId: userData.id,                    
                     }
                 }
             };
             await context.operate('token', {
-                id: generateNewId(),
+                id: await generateNewIdAsync(),
                 action: 'create',
                 data: tokenData,
             }, {});
@@ -461,7 +461,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
             dontCollect: true,
         });
     
-        const id = generateNewId();
+        const id = await generateNewIdAsync();
         if (wechatUser) {
             const wechatUser2 = wechatUser!;
     
@@ -494,11 +494,11 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
                 });
                 if (token && isEqual(token.env, env)) {
                     await context.operate('token', {
-                        id: generateNewId(),
+                        id: await generateNewIdAsync(),
                         action: 'update',
                         data: {
                             wechatUser: {
-                                id: generateNewId(),
+                                id: await generateNewIdAsync(),
                                 action: 'update',
                                 data: wechatUserUpdateData,
                             }
@@ -513,7 +513,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
                 }
     
                 await context.operate('token', {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     action: 'disable',
                     data: {
                     },
@@ -531,10 +531,10 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
                 // 创建user
                 Object.assign(wechatUserUpdateData, {
                     user: {
-                        id: generateNewId(),
+                        id: await generateNewIdAsync(),
                         action: 'create',
                         data: {
-                            id: generateNewId(),
+                            id: await generateNewIdAsync(),
                             userState: 'normal',
                         } as CreateUser,
                     },
@@ -542,7 +542,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
             }
     
             await context.operate('token', {
-                id: generateNewId(),
+                id: await generateNewIdAsync(),
                 action: 'create',
                 data: {
                     id,
@@ -552,7 +552,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
                     entity: 'wechatUser',
                     entityId: wechatUser2.id as string,
                     wechatUser: {
-                        id: generateNewId(),
+                        id: await generateNewIdAsync(),
                         action: 'update',
                         data: wechatUserUpdateData,
                     },
@@ -582,7 +582,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
             const wechatUser2 = wechatUser3;
             if (wechatUser2 && wechatUser2.userId) {
                 await context.operate('token', {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     action: 'disable',
                     data: {
                     },
@@ -597,7 +597,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
                 });
     
                 const wechatUserCreateData: CreateWechatUser = {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     sessionKey,
                     unionId,
                     origin: 'mp',
@@ -606,7 +606,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
                     userId: wechatUser2.userId,
                 };
                 await context.operate('token', {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     action: 'create',
                     data: {
                         id,
@@ -614,7 +614,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
                         playerId: wechatUser2.userId,
                         applicationId: application!.id,
                         wechatUser: {
-                            id: generateNewId(),
+                            id: await generateNewIdAsync(),
                             action: 'create',
                             data: wechatUserCreateData,
                         },
@@ -629,34 +629,34 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
     
         // 到这里都是要同时创建wechatUser和user对象了
         const userData: CreateUser = {
-            id: generateNewId(),
+            id: await generateNewIdAsync(),
             userState: 'normal',
             userSystem$user: [
                 {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     action: 'create',
                     data: {
-                        id: generateNewId(),
+                        id: await generateNewIdAsync(),
                         systemId,
                     },
                 }
             ],
         };
         const wechatUserCreateData: CreateWechatUser = {
-            id: generateNewId(),
+            id: await generateNewIdAsync(),
             sessionKey,
             unionId,
             origin: type === 'wechatPublic' ? 'public' : 'web',
             openId,
             applicationId: application!.id!,
             user: {
-                id: generateNewId(),
+                id: await generateNewIdAsync(),
                 action: 'create',
                 data: userData,
             }
         };
         await context.operate('token', {
-            id: generateNewId(),
+            id: await generateNewIdAsync(),
             action: 'create',
             data: {
                 id,
@@ -664,7 +664,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
                 playerId: userData.id,
                 applicationId: application!.id,
                 wechatUser: {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     action: 'create',
                     data: wechatUserCreateData,
                 },
@@ -731,7 +731,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRu
             dontCollect: true,
         });
     
-        const id = generateNewId();
+        const id = await generateNewIdAsync();
         if (wechatUser) {
             const wechatUser2 = wechatUser;
     
@@ -762,11 +762,11 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRu
                 }, { dummy: 1, blockTrigger: true, dontCollect: true });
                 if (token && isEqual(token.env, env)) {
                     await context.operate('token', {
-                        id: generateNewId(),
+                        id: await generateNewIdAsync(),
                         action: 'update',
                         data: {
                             wechatUser: {
-                                id: generateNewId(),
+                                id: await generateNewIdAsync(),
                                 action: 'update',
                                 data: wechatUserUpdateData,
                             }
@@ -781,7 +781,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRu
                 }
     
                 await context.operate('token', {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     action: 'disable',
                     data: {
                     },
@@ -799,10 +799,10 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRu
                 // 创建user
                 Object.assign(wechatUserUpdateData, {
                     user: {
-                        id: generateNewId(),
+                        id: await generateNewIdAsync(),
                         action: 'create',
                         data: {
-                            id: generateNewId(),
+                            id: await generateNewIdAsync(),
                             userState: 'normal',
                         } as CreateUser,
                     },
@@ -810,7 +810,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRu
             }
     
             await context.operate('token', {
-                id: generateNewId(),
+                id: await generateNewIdAsync(),
                 action: 'create',
                 data: {
                     id,
@@ -821,7 +821,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRu
                     ableState: 'enabled',
                     entityId: wechatUser2.id as string,
                     wechatUser: {
-                        id: generateNewId(),
+                        id: await generateNewIdAsync(),
                         action: 'update',
                         data: wechatUserUpdateData,
                     },
@@ -853,7 +853,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRu
             const wechatUser2 = wechatUser3;
             if (wechatUser2 && wechatUser2.userId) {
                 await context.operate('token', {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     action: 'disable',
                     data: {
                     },
@@ -868,7 +868,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRu
                 });
     
                 const wechatUserCreateData: CreateWechatUser = {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     sessionKey,
                     unionId,
                     origin: 'mp',
@@ -877,7 +877,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRu
                     userId: wechatUser2.userId,
                 };
                 await context.operate('token', {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     action: 'create',
                     data: {
                         id,
@@ -885,7 +885,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRu
                         playerId: wechatUser2.userId,
                         applicationId: application!.id,
                         wechatUser: {
-                            id: generateNewId(),
+                            id: await generateNewIdAsync(),
                             action: 'create',
                             data: wechatUserCreateData,
                         },
@@ -900,34 +900,34 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRu
     
         // 到这里都是要同时创建wechatUser和user对象了
         const userData: CreateUser = {
-            id: generateNewId(),
+            id: await generateNewIdAsync(),
             userState: 'normal',            
             userSystem$user: [
                 {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     action: 'create',
                     data: {
-                        id: generateNewId(),
+                        id: await generateNewIdAsync(),
                         systemId,
                     },
                 }
             ],
         };
         const wechatUserCreateData: CreateWechatUser = {
-            id: generateNewId(),
+            id: await generateNewIdAsync(),
             sessionKey,
             unionId,
             origin: 'mp',
             openId,
             applicationId: application!.id!,
             user: {
-                id: generateNewId(),
+                id: await generateNewIdAsync(),
                 action: 'create',
                 data: userData,
             }
         };
         await context.operate('token', {
-            id: generateNewId(),
+            id: await generateNewIdAsync(),
             action: 'create',
             data: {
                 id,
@@ -935,7 +935,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRu
                 playerId: userData.id,
                 applicationId: application!.id,
                 wechatUser: {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     action: 'create',
                     data: wechatUserCreateData,
                 },
@@ -1019,10 +1019,10 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ba
         // 需要更新新的avatar extra file
         const extraFileOperations: ExtraFileOperation['data'][] = [
             {
-                id: generateNewId(),
+                id: await generateNewIdAsync(),
                 action: 'create',
                 data: Object.assign({
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     tag1: 'avatar',
                     entity: 'user',
                     entityId: userId,
@@ -1047,7 +1047,7 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ba
 
     if (Object.keys(updateData).length > 0) {
         await context.operate('user', {
-            id: generateNewId(),
+            id: await generateNewIdAsync(),
             action: 'update',
             data: updateData,
             filter: {
@@ -1141,9 +1141,9 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
             }
         }
 
-        const id = generateNewId();
+        const id = await generateNewIdAsync();
         await context.operate('captcha', {
-            id: generateNewId(),
+            id: await generateNewIdAsync(),
             action: 'create',
             data: {
                 id,
@@ -1165,4 +1165,28 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
             return '验证码已创建';
         }
     }
+}
+
+
+export async function switchTo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ userId }: { userId: string}, context: Cxt) {
+    const reallyRoot = context.isReallyRoot();
+    if (!reallyRoot) {
+        throw new OakUserUnpermittedException();
+    }
+    const currentUserId = context.getCurrentUserId();
+    if (currentUserId === userId) {
+        throw new OakRowInconsistencyException(undefined, '您已经是当前用户');
+    }
+
+    const token = context.getToken()!;
+    await context.operate('token', {
+        id: await generateNewIdAsync(),
+        action: 'update',
+        data: {
+            userId,
+        },
+        filter: {
+            id: token.id,
+        }
+    }, {});
 }

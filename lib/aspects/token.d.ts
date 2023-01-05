@@ -43,3 +43,6 @@ export declare function sendCaptcha<ED extends EntityDict, Cxt extends BackendRu
     mobile: string;
     env: WechatMpConfig | WebEnv;
 }, context: Cxt): Promise<string>;
+export declare function switchTo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ userId }: {
+    userId: string;
+}, context: Cxt): Promise<void>;

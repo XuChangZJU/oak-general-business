@@ -49,6 +49,9 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntime
         entityId: string;
         config: EntityDict['application']['Schema']['config'];
     }, context: Cxt) => Promise<void>;
+    switchTo: (params: {
+        userId: string;
+    }, context: Cxt) => Promise<void>;
 };
 export declare type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
 export {};

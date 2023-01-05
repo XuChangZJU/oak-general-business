@@ -25,6 +25,7 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
         icon: { name: string; };
         label: string;
     }>;
+    executableActions: string[];
 }, {
     onActionClick: (action: string) => Promise<void>;
 }>) {
@@ -38,7 +39,7 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
         stateColor,
         idStateColor,
         mobileText,
-        oakLegalActions,
+        executableActions,
         actionDescriptions,
         birth,
     } = props.data;
@@ -93,7 +94,7 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
             </List>
             <div style={{ flex: 1 }} />
             <ActionPanel
-                actions={oakLegalActions}
+                actions={executableActions}
                 actionDescriptions={actionDescriptions}
                 onActionClick={(action: string) => onActionClick(action)}
             />

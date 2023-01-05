@@ -41,7 +41,7 @@ export default OakComponent({
     },
     isList: false,
 
-    formData: ({ data: user, features }) => {
+    formData: ({ data: user, features, legalActions }) => {
         const {
             id,
             nickname,
@@ -60,6 +60,9 @@ export default OakComponent({
                 ? `${mobileCount}条手机号`
                 : mobile || '未设置';
         const avatar = features.extraFile.getUrl(extraFile$entity && extraFile$entity[0]);
+        const reallyRoot = features.token.isReallyRoot();
+        const currentUserId = features.token.getUserId();
+        const executableActions = (reallyRoot && currentUserId !== id) ? legalActions.concat('play') : legalActions;
         return {
             id,
             nickname,
@@ -72,6 +75,7 @@ export default OakComponent({
             idState,
             mobileCount,
             mobileText,
+            executableActions,
         };
     },
     actions: [
@@ -82,7 +86,6 @@ export default OakComponent({
         'remove',
         'update',
         'verify',
-        'play',
     ],
     data: {
         stateColor: {
@@ -161,9 +164,13 @@ export default OakComponent({
                 case 'disable':
                 case 'accept':
                 case 'verify':
-                case 'activate':
-                case 'play': {
+                case 'activate':{
                     await this.execute(action);
+                    break;
+                }
+                case 'play': {
+                    const { id } = this.state;
+                    await this.features.token.switchTo(id);
                     break;
                 }
                 default: {

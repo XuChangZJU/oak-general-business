@@ -1,5 +1,5 @@
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
-import { OakUnloggedInException } from 'oak-domain/lib/types/Exception';
+import { OakRowInconsistencyException, OakUnloggedInException, OakUserUnpermittedException } from 'oak-domain/lib/types/Exception';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
 import { CommonAspectDict } from 'oak-common-aspect';
@@ -237,5 +237,19 @@ export class Token<
             env: env as WebEnv,
         });
         return result as string;
+    }
+
+    async switchTo(userId: string) {
+        if (!this.isReallyRoot()) {            
+            throw new OakUserUnpermittedException();
+        }
+        const currentUserId = this.getUserId();
+        if (currentUserId === userId) {            
+            throw new OakRowInconsistencyException(undefined, '您已经是当前用户');
+        }
+        await this.cache.exec('switchTo', {
+            userId,
+        });
+        this.publish();
     }
 }

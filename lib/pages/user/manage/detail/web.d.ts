@@ -20,6 +20,7 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
         };
         label: string;
     }>;
+    executableActions: string[];
 }, {
     onActionClick: (action: string) => Promise<void>;
 }>): JSX.Element;

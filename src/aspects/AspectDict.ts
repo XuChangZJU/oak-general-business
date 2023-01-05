@@ -89,6 +89,12 @@ type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<void>;
+    switchTo: (
+        params: {
+            userId: string;
+        },
+        context: Cxt
+    ) => Promise<void>;
 };
 
 export type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
