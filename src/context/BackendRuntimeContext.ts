@@ -210,6 +210,9 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
     }
     
     allowUserUpdate(): boolean {
+        if (this.isReallyRoot()) {
+            return true;
+        }
         const userInfo = this.token?.user;
         if (userInfo) {
             const { userState } = userInfo;

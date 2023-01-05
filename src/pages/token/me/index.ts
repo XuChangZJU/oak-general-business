@@ -64,7 +64,8 @@ export default OakComponent({
             };
         },
     }],
-    formData: ({ data: [token], features }) => {
+    formData: ({ data, features }) => {
+        const [token] = data || [];
         const user = token?.user;
         const player = token?.player;
         const avatarFile =
