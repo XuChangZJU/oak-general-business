@@ -60,6 +60,12 @@ export class OakChangeLoginWayException extends OakUserException {
     }
 }
 
+export class OakMobileUnsetException extends OakUserException {
+    constructor(message?: string) {
+        super(message || '您需要先登记手机号');
+    }
+}
+
 
 export class OakUserDisabledException extends OakUserException {
     constructor(message?: string) {
@@ -98,6 +104,9 @@ export function makeException(data: {
         }
         case 'OakTokenExpiredException': {
             return new OakTokenExpiredException(message);
+        }
+        case 'OakMobileUnsetException': {
+            return new OakMobileUnsetException(message);
         }
         default: {
             return;

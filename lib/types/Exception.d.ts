@@ -19,6 +19,9 @@ export declare class OakChangeLoginWayException extends OakUserException {
     constructor(userId: string, usingIdCard: boolean, usingWechatUser: boolean, usingEmail: boolean, message?: string);
     toString(): string;
 }
+export declare class OakMobileUnsetException extends OakUserException {
+    constructor(message?: string);
+}
 export declare class OakUserDisabledException extends OakUserException {
     constructor(message?: string);
 }
