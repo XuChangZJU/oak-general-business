@@ -58,22 +58,6 @@ export declare type Projection = {
     expiresAt?: number;
     iState?: number;
 } & Partial<ExprOp<OpAttr | string>>;
-export declare type ExportProjection = {
-    "#id"?: NodeId;
-    [k: string]: any;
-    id?: string;
-    $$createAt$$?: string;
-    $$updateAt$$?: string;
-    $$seq$$?: string;
-    mobile?: string;
-    code?: string;
-    visitorId?: string;
-    reason?: string;
-    env?: string;
-    expired?: string;
-    expiresAt?: string;
-    iState?: string;
-} & Partial<ExprOp<OpAttr | string>>;
 declare type CaptchaIdProjection = OneOf<{
     id: number;
 }>;
@@ -110,7 +94,6 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Aggregation = Omit<DeduceAggregation<Schema, Projection, Filter, Sorter>, "id">;
-export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<OpSchema>;
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;

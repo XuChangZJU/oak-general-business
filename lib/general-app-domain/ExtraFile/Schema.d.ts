@@ -94,31 +94,6 @@ export declare type Projection = {
     article?: Article.Projection;
     user?: User.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
-export declare type ExportProjection = {
-    "#id"?: NodeId;
-    [k: string]: any;
-    id?: string;
-    $$createAt$$?: string;
-    $$updateAt$$?: string;
-    $$seq$$?: string;
-    origin?: string;
-    type?: string;
-    bucket?: string;
-    objectId?: string;
-    tag1?: string;
-    tag2?: string;
-    filename?: string;
-    md5?: string;
-    entity?: string;
-    entityId?: string;
-    extra1?: string;
-    extension?: string;
-    size?: string;
-    sort?: string;
-    fileType?: string;
-    article?: Article.ExportProjection;
-    user?: User.ExportProjection;
-} & Partial<ExprOp<OpAttr | string>>;
 declare type ExtraFileIdProjection = OneOf<{
     id: number;
 }>;
@@ -181,7 +156,6 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Aggregation = Omit<DeduceAggregation<Schema, Projection, Filter, Sorter>, "id">;
-export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
     entity?: never;
     entityId?: never;
