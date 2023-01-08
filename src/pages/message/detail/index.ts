@@ -45,7 +45,8 @@ export default OakComponent({
                     url: pathname,
                     ...props,
                 },
-                state
+                state,
+                true
             );
         },
     },
