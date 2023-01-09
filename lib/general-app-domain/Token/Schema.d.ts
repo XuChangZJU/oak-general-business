@@ -115,6 +115,27 @@ export declare type Projection = {
     mobile?: Mobile.Projection;
     wechatUser?: WechatUser.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
+export declare type ExportProjection = {
+    "#id"?: NodeId;
+    [k: string]: any;
+    id?: string;
+    $$createAt$$?: string;
+    $$updateAt$$?: string;
+    $$seq$$?: string;
+    applicationId?: string;
+    application?: Application.ExportProjection;
+    entity?: string;
+    entityId?: string;
+    userId?: string;
+    user?: User.ExportProjection;
+    playerId?: string;
+    player?: User.ExportProjection;
+    env?: string;
+    ableState?: string;
+    email?: Email.ExportProjection;
+    mobile?: Mobile.ExportProjection;
+    wechatUser?: WechatUser.ExportProjection;
+} & Partial<ExprOp<OpAttr | string>>;
 declare type TokenIdProjection = OneOf<{
     id: number;
 }>;
@@ -179,6 +200,7 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Aggregation = Omit<DeduceAggregation<Schema, Projection, Filter, Sorter>, "id">;
+export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "applicationId" | "userId" | "playerId">> & (({
     applicationId?: never;
     application?: Application.CreateSingleOperation;

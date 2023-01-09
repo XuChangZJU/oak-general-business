@@ -2,7 +2,7 @@ import { String, ForeignKey, Geo } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { ReadOnlyAction } from "oak-domain/lib/actions/action";
 import * as Address from "../Address/Schema";
 export declare type OpSchema = EntityShape & {
@@ -23,9 +23,7 @@ export declare type Schema = EntityShape & {
     center: Geo;
     parent?: Schema | null;
     address$area?: Array<Address.Schema>;
-    address$area$$aggr?: AggregationResult<Address.Schema>;
     area$parent?: Array<Schema>;
-    area$parent$$aggr?: AggregationResult<Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -59,13 +57,28 @@ export declare type Projection = {
     address$area?: Address.Selection & {
         $entity: "address";
     };
-    address$area$$aggr?: Address.Aggregation & {
-        $entity: "address";
-    };
     area$parent?: Selection & {
         $entity: "area";
     };
-    area$parent$$aggr?: Aggregation & {
+} & Partial<ExprOp<OpAttr | string>>;
+export declare type ExportProjection = {
+    "#id"?: NodeId;
+    [k: string]: any;
+    id?: string;
+    $$createAt$$?: string;
+    $$updateAt$$?: string;
+    $$seq$$?: string;
+    name?: string;
+    level?: string;
+    depth?: string;
+    parentId?: string;
+    parent?: ExportProjection;
+    code?: string;
+    center?: string;
+    address$area?: Address.Exportation & {
+        $entity: "address";
+    };
+    area$parent?: Exportation & {
         $entity: "area";
     };
 } & Partial<ExprOp<OpAttr | string>>;
@@ -106,6 +119,7 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Aggregation = Omit<DeduceAggregation<Schema, Projection, Filter, Sorter>, "id">;
+export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "parentId">> & ({
     parentId?: String<64>;
 }) & {

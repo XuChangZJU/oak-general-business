@@ -2,7 +2,7 @@ import { String, Text } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
 import * as ExtraFile from "../ExtraFile/Schema";
 export declare type OpSchema = EntityShape & {
@@ -28,7 +28,6 @@ export declare type Schema = EntityShape & {
     sign: String<32>;
     iState?: IState | null;
     extraFile$entity?: Array<ExtraFile.Schema>;
-    extraFile$entity$$aggr?: AggregationResult<ExtraFile.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -67,7 +66,24 @@ export declare type Projection = {
     extraFile$entity?: ExtraFile.Selection & {
         $entity: "extraFile";
     };
-    extraFile$entity$$aggr?: ExtraFile.Aggregation & {
+} & Partial<ExprOp<OpAttr | string>>;
+export declare type ExportProjection = {
+    "#id"?: NodeId;
+    [k: string]: any;
+    id?: string;
+    $$createAt$$?: string;
+    $$updateAt$$?: string;
+    $$seq$$?: string;
+    entity?: string;
+    entityId?: string;
+    title?: string;
+    author?: string;
+    abstract?: string;
+    content?: string;
+    url?: string;
+    sign?: string;
+    iState?: string;
+    extraFile$entity?: ExtraFile.Exportation & {
         $entity: "extraFile";
     };
 } & Partial<ExprOp<OpAttr | string>>;
@@ -111,6 +127,7 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Aggregation = Omit<DeduceAggregation<Schema, Projection, Filter, Sorter>, "id">;
+export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
     entity?: string;
     entityId?: string;

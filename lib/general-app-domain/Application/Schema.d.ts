@@ -2,7 +2,7 @@ import { String, Text, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import { Style } from "../../types/Style";
 import * as System from "../System/Schema";
@@ -51,11 +51,8 @@ export declare type Schema = EntityShape & {
     style?: Style | null;
     system: System.Schema;
     token$application?: Array<Token.Schema>;
-    token$application$$aggr?: AggregationResult<Token.Schema>;
     wechatQrCode$application?: Array<WechatQrCode.Schema>;
-    wechatQrCode$application$$aggr?: AggregationResult<WechatQrCode.Schema>;
     wechatUser$application?: Array<WechatUser.Schema>;
-    wechatUser$application$$aggr?: AggregationResult<WechatUser.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -89,19 +86,34 @@ export declare type Projection = {
     token$application?: Token.Selection & {
         $entity: "token";
     };
-    token$application$$aggr?: Token.Aggregation & {
-        $entity: "token";
-    };
     wechatQrCode$application?: WechatQrCode.Selection & {
-        $entity: "wechatQrCode";
-    };
-    wechatQrCode$application$$aggr?: WechatQrCode.Aggregation & {
         $entity: "wechatQrCode";
     };
     wechatUser$application?: WechatUser.Selection & {
         $entity: "wechatUser";
     };
-    wechatUser$application$$aggr?: WechatUser.Aggregation & {
+} & Partial<ExprOp<OpAttr | string>>;
+export declare type ExportProjection = {
+    "#id"?: NodeId;
+    [k: string]: any;
+    id?: string;
+    $$createAt$$?: string;
+    $$updateAt$$?: string;
+    $$seq$$?: string;
+    name?: string;
+    description?: string;
+    type?: string;
+    systemId?: string;
+    system?: System.ExportProjection;
+    config?: string;
+    style?: string;
+    token$application?: Token.Exportation & {
+        $entity: "token";
+    };
+    wechatQrCode$application?: WechatQrCode.Exportation & {
+        $entity: "wechatQrCode";
+    };
+    wechatUser$application?: WechatUser.Exportation & {
         $entity: "wechatUser";
     };
 } & Partial<ExprOp<OpAttr | string>>;
@@ -142,6 +154,7 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Aggregation = Omit<DeduceAggregation<Schema, Projection, Filter, Sorter>, "id">;
+export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "systemId">> & (({
     systemId?: never;
     system: System.CreateSingleOperation;

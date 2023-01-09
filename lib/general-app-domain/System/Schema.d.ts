@@ -2,7 +2,7 @@ import { String, Boolean, Text, ForeignKey } from "oak-domain/lib/types/DataType
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import { Config } from "../../types/Config";
 import { Style } from "../../types/Style";
@@ -31,13 +31,9 @@ export declare type Schema = EntityShape & {
     style?: Style | null;
     platform: Platform.Schema;
     application$system?: Array<Application.Schema>;
-    application$system$$aggr?: AggregationResult<Application.Schema>;
     domain$system?: Array<Domain.Schema>;
-    domain$system$$aggr?: AggregationResult<Domain.Schema>;
     message$system?: Array<Message.Schema>;
-    message$system$$aggr?: AggregationResult<Message.Schema>;
     userSystem$system?: Array<UserSystem.Schema>;
-    userSystem$system$$aggr?: AggregationResult<UserSystem.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -74,25 +70,41 @@ export declare type Projection = {
     application$system?: Application.Selection & {
         $entity: "application";
     };
-    application$system$$aggr?: Application.Aggregation & {
-        $entity: "application";
-    };
     domain$system?: Domain.Selection & {
-        $entity: "domain";
-    };
-    domain$system$$aggr?: Domain.Aggregation & {
         $entity: "domain";
     };
     message$system?: Message.Selection & {
         $entity: "message";
     };
-    message$system$$aggr?: Message.Aggregation & {
-        $entity: "message";
-    };
     userSystem$system?: UserSystem.Selection & {
         $entity: "userSystem";
     };
-    userSystem$system$$aggr?: UserSystem.Aggregation & {
+} & Partial<ExprOp<OpAttr | string>>;
+export declare type ExportProjection = {
+    "#id"?: NodeId;
+    [k: string]: any;
+    id?: string;
+    $$createAt$$?: string;
+    $$updateAt$$?: string;
+    $$seq$$?: string;
+    name?: string;
+    description?: string;
+    config?: string;
+    platformId?: string;
+    platform?: Platform.ExportProjection;
+    folder?: string;
+    super?: string;
+    style?: string;
+    application$system?: Application.Exportation & {
+        $entity: "application";
+    };
+    domain$system?: Domain.Exportation & {
+        $entity: "domain";
+    };
+    message$system?: Message.Exportation & {
+        $entity: "message";
+    };
+    userSystem$system?: UserSystem.Exportation & {
         $entity: "userSystem";
     };
 } & Partial<ExprOp<OpAttr | string>>;
@@ -137,6 +149,7 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Aggregation = Omit<DeduceAggregation<Schema, Projection, Filter, Sorter>, "id">;
+export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "platformId">> & (({
     platformId?: never;
     platform: Platform.CreateSingleOperation;
