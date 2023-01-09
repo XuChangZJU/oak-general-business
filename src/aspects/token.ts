@@ -13,6 +13,7 @@ import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
 import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exception';
 import { encryptPasswordSha1 } from '../utils/password';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { tokenProjection } from '../types/Token';
 
 async function makeDistinguishException<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(userId: string, context: Cxt) {
     const [user] = await context.select('user', {
@@ -246,65 +247,7 @@ async function loadTokenInfo<ED extends EntityDict, Cxt extends BackendRuntimeCo
     await context.select(
         'token',
         {
-            data: {
-                id: 1,
-                userId: 1,
-                ableState: 1,
-                user: {
-                    id: 1,
-                    nickname: 1,
-                    name: 1,
-                    userState: 1,
-                    extraFile$entity: {
-                        $entity: 'extraFile',
-                        data: {
-                            id: 1,
-                            tag1: 1,
-                            origin: 1,
-                            bucket: 1,
-                            objectId: 1,
-                            filename: 1,
-                            extra1: 1,
-                            type: 1,
-                            entity: 1,
-                            entityId: 1,
-                            extension: 1,
-                        },
-                        filter: {
-                            tag1: 'avatar',
-                        },
-                        indexFrom: 0,
-                        count: 1,
-                    },
-                    mobile$user: {
-                        $entity: 'mobile',
-                        data: {
-                            id: 1,
-                            mobile: 1,
-                            userId: 1,
-                        },
-                    },
-                    userRole$user: {
-                        $entity: 'userRole',
-                        data: {
-                            id: 1,
-                            userId: 1,
-                            roleId: 1,
-                        },
-                    },
-                },
-                player: {
-                    id: 1,
-                    userRole$user: {
-                        $entity: 'userRole',
-                        data: {
-                            id: 1,
-                            userId: 1,
-                            roleId: 1,
-                        },
-                    },
-                },
-            },
+            data: tokenProjection,
             filter: {
                 id: tokenId,
             },

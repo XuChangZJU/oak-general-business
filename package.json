@@ -47,7 +47,6 @@
         "@types/cross-spawn": "^6.0.2",
         "@types/fs-extra": "^9.0.13",
         "@types/lodash": "^4.14.168",
-        "@types/luxon": "^2.0.9",
         "@types/mocha": "^8.2.0",
         "@types/node": "^14.18.12",
         "@types/qr-image": "^3.2.5",
