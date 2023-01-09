@@ -34,15 +34,12 @@ export default OakComponent({
         idNumber: 1,
     },
     isList: false,
-    formData: ({ data: user }) => {
+    formData({ data: user }) {
+        const isRoot = this.features.token.isRoot();
         const { birth, gender, idCardType } = user || {};
         const birthDate = birth && new Date(birth);
         const birthText = birthDate && birthDate.toLocaleDateString();
         const birthDayValue = birthDate && `${birthDate.getFullYear()}-${birthDate.getMonth() + 1}-${birthDate.getDate()}`;
-        const GenderDict = {
-            male: '男',
-            female: '女',
-        };
         const genderOption = gender && GenderOptions.find(
             ele => ele.value === gender
         );
@@ -57,6 +54,7 @@ export default OakComponent({
             idCardType && IDCardTypeOptions.find((ele) => ele.value === gender);
         const now = new Date();
         return Object.assign({}, user, {
+            isRoot,
             birthText,
             birthDayValue,
             genderText,

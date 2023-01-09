@@ -66,6 +66,11 @@ export class OakMobileUnsetException extends OakUserException {
     }
 }
 
+export class OakUserInfoUncompletedException extends OakUserException {
+    constructor(message?: string) {
+        super(message || '您需要先填写完整的用户信息');
+    }
+}
 
 export class OakUserDisabledException extends OakUserException {
     constructor(message?: string) {
@@ -107,6 +112,9 @@ export function makeException(data: {
         }
         case 'OakMobileUnsetException': {
             return new OakMobileUnsetException(message);
+        }
+        case 'OakUserInfoUncompletedException': {
+            return new OakUserInfoUncompletedException(message);
         }
         default: {
             return;

@@ -22,6 +22,9 @@ export declare class OakChangeLoginWayException extends OakUserException {
 export declare class OakMobileUnsetException extends OakUserException {
     constructor(message?: string);
 }
+export declare class OakUserInfoUncompletedException extends OakUserException {
+    constructor(message?: string);
+}
 export declare class OakUserDisabledException extends OakUserException {
     constructor(message?: string);
 }

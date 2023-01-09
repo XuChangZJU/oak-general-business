@@ -2,7 +2,7 @@ import { String, Text, Datetime, Image, ForeignKey } from "oak-domain/lib/types/
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, UserState, IdState } from "./Action";
 import { RelationAction } from "oak-domain/lib/actions/action";
 import * as Oper from "../Oper/Schema";
@@ -47,20 +47,35 @@ export declare type Schema = EntityShape & {
     userState?: UserState | null;
     ref?: Schema | null;
     oper$operator?: Array<Oper.Schema>;
+    oper$operator$$aggr?: AggregationResult<Oper.Schema>;
     email$user?: Array<Email.Schema>;
+    email$user$$aggr?: AggregationResult<Email.Schema>;
     message$user?: Array<Message.Schema>;
+    message$user$$aggr?: AggregationResult<Message.Schema>;
     mobile$user?: Array<Mobile.Schema>;
+    mobile$user$$aggr?: AggregationResult<Mobile.Schema>;
     userRole$user?: Array<UserRole.Schema>;
+    userRole$user$$aggr?: AggregationResult<UserRole.Schema>;
     token$user?: Array<Token.Schema>;
+    token$user$$aggr?: AggregationResult<Token.Schema>;
     token$player?: Array<Token.Schema>;
+    token$player$$aggr?: AggregationResult<Token.Schema>;
     user$ref?: Array<Schema>;
+    user$ref$$aggr?: AggregationResult<Schema>;
     userEntityGrant$granter?: Array<UserEntityGrant.Schema>;
+    userEntityGrant$granter$$aggr?: AggregationResult<UserEntityGrant.Schema>;
     userEntityGrant$grantee?: Array<UserEntityGrant.Schema>;
+    userEntityGrant$grantee$$aggr?: AggregationResult<UserEntityGrant.Schema>;
     userSystem$user?: Array<UserSystem.Schema>;
+    userSystem$user$$aggr?: AggregationResult<UserSystem.Schema>;
     wechatUser$user?: Array<WechatUser.Schema>;
+    wechatUser$user$$aggr?: AggregationResult<WechatUser.Schema>;
     operEntity$entity?: Array<OperEntity.Schema>;
+    operEntity$entity$$aggr?: AggregationResult<OperEntity.Schema>;
     modiEntity$entity?: Array<ModiEntity.Schema>;
+    modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;
     extraFile$entity?: Array<ExtraFile.Schema>;
+    extraFile$entity$$aggr?: AggregationResult<ExtraFile.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -107,112 +122,91 @@ export declare type Projection = {
     oper$operator?: Oper.Selection & {
         $entity: "oper";
     };
+    oper$operator$$aggr?: Oper.Aggregation & {
+        $entity: "oper";
+    };
     email$user?: Email.Selection & {
+        $entity: "email";
+    };
+    email$user$$aggr?: Email.Aggregation & {
         $entity: "email";
     };
     message$user?: Message.Selection & {
         $entity: "message";
     };
+    message$user$$aggr?: Message.Aggregation & {
+        $entity: "message";
+    };
     mobile$user?: Mobile.Selection & {
+        $entity: "mobile";
+    };
+    mobile$user$$aggr?: Mobile.Aggregation & {
         $entity: "mobile";
     };
     userRole$user?: UserRole.Selection & {
         $entity: "userRole";
     };
+    userRole$user$$aggr?: UserRole.Aggregation & {
+        $entity: "userRole";
+    };
     token$user?: Token.Selection & {
+        $entity: "token";
+    };
+    token$user$$aggr?: Token.Aggregation & {
         $entity: "token";
     };
     token$player?: Token.Selection & {
         $entity: "token";
     };
+    token$player$$aggr?: Token.Aggregation & {
+        $entity: "token";
+    };
     user$ref?: Selection & {
+        $entity: "user";
+    };
+    user$ref$$aggr?: Aggregation & {
         $entity: "user";
     };
     userEntityGrant$granter?: UserEntityGrant.Selection & {
         $entity: "userEntityGrant";
     };
+    userEntityGrant$granter$$aggr?: UserEntityGrant.Aggregation & {
+        $entity: "userEntityGrant";
+    };
     userEntityGrant$grantee?: UserEntityGrant.Selection & {
+        $entity: "userEntityGrant";
+    };
+    userEntityGrant$grantee$$aggr?: UserEntityGrant.Aggregation & {
         $entity: "userEntityGrant";
     };
     userSystem$user?: UserSystem.Selection & {
         $entity: "userSystem";
     };
+    userSystem$user$$aggr?: UserSystem.Aggregation & {
+        $entity: "userSystem";
+    };
     wechatUser$user?: WechatUser.Selection & {
+        $entity: "wechatUser";
+    };
+    wechatUser$user$$aggr?: WechatUser.Aggregation & {
         $entity: "wechatUser";
     };
     operEntity$entity?: OperEntity.Selection & {
         $entity: "operEntity";
     };
+    operEntity$entity$$aggr?: OperEntity.Aggregation & {
+        $entity: "operEntity";
+    };
     modiEntity$entity?: ModiEntity.Selection & {
+        $entity: "modiEntity";
+    };
+    modiEntity$entity$$aggr?: ModiEntity.Aggregation & {
         $entity: "modiEntity";
     };
     extraFile$entity?: ExtraFile.Selection & {
         $entity: "extraFile";
     };
-} & Partial<ExprOp<OpAttr | string>>;
-export declare type ExportProjection = {
-    "#id"?: NodeId;
-    [k: string]: any;
-    id?: string;
-    $$createAt$$?: string;
-    $$updateAt$$?: string;
-    $$seq$$?: string;
-    name?: string;
-    nickname?: string;
-    password?: string;
-    passwordSha1?: string;
-    birth?: string;
-    gender?: string;
-    avatar?: string;
-    idCardType?: string;
-    idNumber?: string;
-    refId?: string;
-    ref?: ExportProjection;
-    idState?: string;
-    userState?: string;
-    oper$operator?: Oper.Exportation & {
-        $entity: "oper";
-    };
-    email$user?: Email.Exportation & {
-        $entity: "email";
-    };
-    message$user?: Message.Exportation & {
-        $entity: "message";
-    };
-    mobile$user?: Mobile.Exportation & {
-        $entity: "mobile";
-    };
-    userRole$user?: UserRole.Exportation & {
-        $entity: "userRole";
-    };
-    token$user?: Token.Exportation & {
-        $entity: "token";
-    };
-    token$player?: Token.Exportation & {
-        $entity: "token";
-    };
-    user$ref?: Exportation & {
-        $entity: "user";
-    };
-    userEntityGrant$granter?: UserEntityGrant.Exportation & {
-        $entity: "userEntityGrant";
-    };
-    userEntityGrant$grantee?: UserEntityGrant.Exportation & {
-        $entity: "userEntityGrant";
-    };
-    userSystem$user?: UserSystem.Exportation & {
-        $entity: "userSystem";
-    };
-    wechatUser$user?: WechatUser.Exportation & {
-        $entity: "wechatUser";
-    };
-    operEntity$entity?: OperEntity.Exportation & {
-        $entity: "operEntity";
-    };
-    modiEntity$entity?: ModiEntity.Exportation & {
-        $entity: "modiEntity";
-    };
-    extraFile$entity?: ExtraFile.Exportation & {
+    extraFile$entity$$aggr?: ExtraFile.Aggregation & {
         $entity: "extraFile";
     };
 } & Partial<ExprOp<OpAttr | string>>;
@@ -265,7 +259,6 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Aggregation = Omit<DeduceAggregation<Schema, Projection, Filter, Sorter>, "id">;
-export declare type Exportation = OakOperation<"export", ExportProjection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "refId">> & (({
     refId?: never;
     ref?: CreateSingleOperation;

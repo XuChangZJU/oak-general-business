@@ -73,6 +73,18 @@ const checkers: Checker<EntityDict, 'user', RuntimeCxt> [] = [
                 };
             }
         },
+    },
+    {
+        entity: 'user',
+        action: 'update',
+        type: 'relation',
+        relationFilter: (opration, context) => {
+            const userId = context.getCurrentUserId();
+            return {
+                id: userId,
+            };
+        },
+        errMsg: '您不能更新他人信息',
     }
 ];
 
