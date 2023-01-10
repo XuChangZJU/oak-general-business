@@ -1,0 +1,68 @@
+
+
+import { EntityDict } from '../general-app-domain';
+
+export const userProjection: EntityDict['user']['Selection']['data'] = {
+    id: 1,
+    nickname: 1,
+    name: 1,
+    userState: 1,
+    idState: 1,
+    gender: 1,
+    birth: 1,
+    extraFile$entity: {
+        $entity: 'extraFile',
+        data: {
+            id: 1,
+            tag1: 1,
+            origin: 1,
+            bucket: 1,
+            objectId: 1,
+            filename: 1,
+            extra1: 1,
+            type: 1,
+            entity: 1,
+            entityId: 1,
+            extension: 1,
+        },
+        filter: {
+            tag1: 'avatar',
+        },
+        indexFrom: 0,
+        count: 1,
+    },
+    mobile$user: {
+        $entity: 'mobile',
+        data: {
+            id: 1,
+            mobile: 1,
+            userId: 1,
+        },
+    },
+    userRole$user: {
+        $entity: 'userRole',
+        data: {
+            id: 1,
+            userId: 1,
+            roleId: 1,
+        },
+    },
+};
+export const tokenProjection: EntityDict['token']['Selection']['data'] = {
+    id: 1,
+    userId: 1,
+    user: userProjection,
+    ableState: 1,
+    playerId: 1,
+    player: {
+        id: 1,
+        userRole$user: {
+            $entity: 'userRole',
+            data: {
+                id: 1,
+                userId: 1,
+                roleId: 1,
+            },
+        },
+    },
+};
