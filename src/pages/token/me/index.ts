@@ -51,19 +51,21 @@ export default OakComponent({
             },
         },
     },
-    filters: [{
-        filter: ({ features }) => {
-            const tokenId = features.token.getTokenValue();
-            if (tokenId) {
+    filters: [
+        {
+            filter: ({ features }) => {
+                const tokenId = features.token.getTokenValue();
+                if (tokenId) {
+                    return {
+                        id: tokenId,
+                    };
+                }
                 return {
-                    id: tokenId,
+                    id: 'none',
                 };
-            }
-            return {
-                id: 'none',
-            };
+            },
         },
-    }],
+    ],
     formData: ({ data, features }) => {
         const [token] = data || [];
         const user = token?.user;
@@ -81,8 +83,11 @@ export default OakComponent({
         const isRoot =
             player?.userRole$user &&
             player.userRole$user[0]?.roleId === ROOT_ROLE_ID;
-            
-        const mobileText = mobileCount && mobileCount > 1 ? `${mobileCount}条手机号` : (mobile || '未设置');
+
+        const mobileText =
+            mobileCount && mobileCount > 1
+                ? `${mobileCount}条手机号`
+                : mobile || '未绑定';
         return {
             tokenId: token?.id,
             userId: user?.id,
@@ -131,7 +136,7 @@ export default OakComponent({
                         const eventLoggedIn = `token:me:login:${Date.now()}`;
                         this.sub(eventLoggedIn, () => {
                             this.navigateBack();
-                        })
+                        });
                         this.navigateTo({
                             url: '/login',
                             eventLoggedIn,
@@ -151,6 +156,12 @@ export default OakComponent({
         goUserManage() {
             this.navigateTo({
                 url: '/user/manage',
+            });
+        },
+        goSetting() {
+            this.navigateTo({
+                url: '/user/info',
+                oakId: this.state.userId,
             });
         },
     },

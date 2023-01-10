@@ -59,10 +59,15 @@ export default OakComponent({
             mobileCount && mobileCount > 1
                 ? `${mobileCount}条手机号`
                 : mobile || '未设置';
-        const avatar = features.extraFile.getUrl(extraFile$entity && extraFile$entity[0]);
+        const avatar = features.extraFile.getUrl(
+            extraFile$entity && extraFile$entity[0]
+        );
         const reallyRoot = features.token.isReallyRoot();
         const currentUserId = features.token.getUserId();
-        const executableActions = (reallyRoot && currentUserId !== id) ? legalActions.concat('play') : legalActions;
+        const executableActions =
+            reallyRoot && currentUserId !== id
+                ? legalActions.concat('play')
+                : legalActions;
         return {
             id,
             nickname,
@@ -149,6 +154,10 @@ export default OakComponent({
                 label: '切换',
             },
         },
+        genderOptions: {
+            male: '男',
+            female: '女',
+        },
     },
     methods: {
         async onActionClick(action: string) {
@@ -164,7 +173,7 @@ export default OakComponent({
                 case 'disable':
                 case 'accept':
                 case 'verify':
-                case 'activate':{
+                case 'activate': {
                     await this.execute(action);
                     break;
                 }

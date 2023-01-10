@@ -20,7 +20,7 @@
                 special="true"
                 bind:lintap="onAddMp"
             >
-                <l-icon name="add" size="30" />
+                <l-icon name="add" size="40" />
             </l-button>
         </view>
     </view>

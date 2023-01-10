@@ -1,0 +1,16 @@
+{
+    "navigationBarTitleText": "个人信息",
+    "oakDisablePulldownRefresh": true,
+    "usingComponents": {
+        "l-button": "../../../miniprogram_npm/lin-ui/button/index",
+        "l-avatar": "../../../miniprogram_npm/lin-ui/avatar/index",
+        "l-list": "../../../miniprogram_npm/lin-ui/list/index",
+        "l-icon": "../../../miniprogram_npm/lin-ui/icon/index",
+        "l-tag": "../../../miniprogram_npm/lin-ui/tag/index",
+        "l-popup": "../../../miniprogram_npm/lin-ui/popup/index",
+        "l-input": "../../../miniprogram_npm/lin-ui/input/index",
+        "l-radio-group": "../../../miniprogram_npm/lin-ui/radio-group/index",
+        "l-radio": "../../../miniprogram_npm/lin-ui/radio/index",
+        "l-form-item": "@oak-general-business/miniprogram_npm/lin-ui/form-item/index"
+    }
+}

@@ -1,0 +1,7 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <view class="cell">
+        <l-list title="我的信息" icon="phone" bind:lintap="goMyInfo" >
+        </l-list>
+    </view>
+</view>

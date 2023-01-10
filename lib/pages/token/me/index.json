@@ -1,5 +1,5 @@
 {
-    "navigationBarTitleText": "个人信息",
+    "navigationBarTitleText": "个人中心",
     "usingComponents": {
         "oak-icon": "../../../components/icon/index",
         "l-list": "../../../miniprogram_npm/lin-ui/list/index",

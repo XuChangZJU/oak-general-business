@@ -8,10 +8,10 @@
             <l-avatar icon="user" size="140" icon-size="80" text="{{nickname || '未设置'}}" placement="bottom"/>
         </block>
         <block wx:if="{{isLoggedIn && !isPlayingAnother}}">
-            <l-button type="default" size="mini" disabled="{{refreshing}}"  plain="true" bind:lintap="onRefresh">{{t('common:action.update')}}</l-button>
+            <l-button shape="semicircle" type="default" size="mini" disabled="{{refreshing}}"  plain="true" bind:lintap="onRefresh">{{t('syncWeChat')}}</l-button>
         </block>
         <block wx:elif="{{!isLoggedIn}}">
-            <l-button type="default" size="mini" disabled="{{refreshing}}" bind:lintap="doLogin">{{t('login')}}</l-button>
+            <l-button shape="semicircle" type="default" size="mini" disabled="{{refreshing}}" bind:lintap="doLogin">{{t('login')}}</l-button>
         </block>
     </view>
     <view class="cell">
@@ -20,5 +20,7 @@
         <block wx:if="{{isRoot}}">
             <l-list title="用户管理" icon="user" hover bind:lintap="goUserManage" />
         </block>
+        <l-list title="设置" icon="setting" bind:lintap="goSetting" >
+        </l-list>
     </view>
 </view>

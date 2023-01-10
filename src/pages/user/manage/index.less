@@ -21,9 +21,8 @@
 .user-info {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  margin-left: 38rpx;
   flex: 1;
+  margin-left: 36rpx;
 }
 
 .cell {
@@ -59,18 +58,20 @@
   align-items: center;
   font-size: small;
   .label {
-    min-width: 140rpx;
+    min-width: 100rpx;
     color: @oak-text-color-primary;
   }
   .value {
     color: @oak-text-color-secondary;
-    margin-left: 30rpx;
   }
 }
 
 .add {
   position: fixed;
-  bottom: 20rpx;
   right: 20rpx;
   z-index: 10;
+  bottom: constant(safe-area-inset-bottom) !important;
+  /* 兼容 iOS < 11.2 */
+  bottom: env(safe-area-inset-bottom) !important;
+  /* 兼容 iOS >= 11.2 */
 }
