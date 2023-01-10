@@ -160,8 +160,7 @@ export default OakComponent({
         },
         goSetting() {
             this.navigateTo({
-                url: '/user/info',
-                oakId: this.state.userId,
+                url: '/setting',
             });
         },
     },

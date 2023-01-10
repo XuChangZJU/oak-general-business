@@ -27,7 +27,8 @@ export default OakComponent({
         goMyInfo() {
             this.navigateTo(
                 {
-                    url: '/user',
+                    url: '/user/info',
+                    oakId: this.state.userId,
                 },
                 undefined,
                 true
