@@ -1,4 +1,4 @@
-import { Configuration, EntityShape } from 'oak-domain/lib/types/Entity';
+import { Configuration, EntityShape, RelationHierarchy } from 'oak-domain/lib/types/Entity';
 import { String } from 'oak-domain/lib/types/DataType';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 
@@ -12,6 +12,10 @@ const config: Configuration = {
 };
 
 export type Relation = 'owner';
+
+const relationHierarchy: RelationHierarchy<Relation> = {
+   owner: [],
+};
 
 const locale: LocaleDef<Schema, '', Relation, {}> = {
    zh_CN: {
