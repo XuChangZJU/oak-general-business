@@ -1,20 +1,16 @@
-import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import { CreateTrigger, CreateTriggerInTxn, SelectTriggerBefore, Trigger, UpdateTrigger } from 'oak-domain/lib/types/Trigger';
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
+import { CreateTrigger, Trigger } from 'oak-domain/lib/types/Trigger';
 import { EntityDict } from '../general-app-domain/EntityDict';
-import { RuntimeContext } from '../context/RuntimeContext';
 import { CreateOperationData as CreateUserRoleData } from '../general-app-domain/UserRole/Schema';
 import { CreateOperationData as CreateUserData } from '../general-app-domain/User/Schema';
-import { assert } from 'oak-domain/lib/utils/assert';
 import { ROOT_ROLE_ID, ROOT_USER_ID } from '../constants';
-import { addFilterSegment } from 'oak-domain/lib/store/filter';
 import { randomName } from '../utils/randomUser';
 import { RuntimeCxt } from '../types/RuntimeCxt';
-import { OakRowInconsistencyException } from 'oak-domain/lib/types';
 
 let NO_ANY_USER = true;
 const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
     {
-        name: '用户的初始状态默认为shadow，设置与本system的连接',
+        name: '系统生成的第一个用户默认注册为root，用户的初始状态默认为shadow',
         entity: 'user',
         action: 'create',
         when: 'before',
@@ -35,43 +31,31 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
                         async ele => {
                             Object.assign(ele, {
                                 userSystem$user: [{
-                                    id: await generateNewIdAsync(),
+                                    id: generateNewId(),
                                     action: 'create',
                                     data: {
-                                        id: await generateNewIdAsync(),
+                                        id: generateNewId(),
                                         systemId,
                                     }
                                 }],
                             })
                             setDefaultState(ele);
                         }
-                    )
-                );
-                return data.length;
+                    ));
             }
             else {
                 Object.assign(data, {
                     userSystem$user: [{
-                        id: await generateNewIdAsync(),
+                        id: generateNewId(),
                         action: 'create',
                         data: {
-                            id: await generateNewIdAsync(),
+                            id: generateNewId(),
                             systemId,
                         }
                     }],
                 })
                 setDefaultState(data);
-                return 1;
             }
-        }
-    } as CreateTrigger<EntityDict, 'user', RuntimeCxt>,
-    {
-        name: '系统生成的第一个用户默认注册为root',
-        entity: 'user',
-        action: 'create',
-        when: 'before',
-        fn: async ({ operation }, context) => {
-            const { data } = operation;            
             if (NO_ANY_USER) {
                 const result = await context.select('user', {
                     data: {
@@ -89,20 +73,20 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
                 });
                 if (result.length === 0) {
                     const userData = data instanceof Array ? data[0] : data;
-                    const { id } = userData;
-
-                    // 这里必须要blockTrigger，不然relationHierarchy的默认检查会永远过不去
-                    await context.operate('userRole', {
-                        id: await generateNewIdAsync(),
-                        action: 'create',
-                        data: {
-                            id: await generateNewIdAsync(),
-                            userId: id,
-                            roleId: ROOT_ROLE_ID,
-                            relation: 'owner',
-                        }
-                    }, {
-                        blockTrigger: true,
+                    const userRoleData: CreateUserRoleData = {
+                        id: generateNewId(),
+                        userId: userData.id,
+                        roleId: ROOT_ROLE_ID,
+                        relation: 'owner',
+                    };
+                    Object.assign(userData, {
+                        userRole$user: [
+                            {
+                                id: generateNewId(),
+                                action: 'create',
+                                data: userRoleData,
+                            }
+                        ]
                     });
                     return 1;
                 }
@@ -112,7 +96,7 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
             }
             return 0;
         }
-    } as CreateTrigger<EntityDict, 'user', RuntimeCxt>
+    } as CreateTrigger<EntityDict, 'user', RuntimeCxt>,
 ];
 
 export default triggers;
