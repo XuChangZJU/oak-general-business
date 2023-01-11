@@ -12,6 +12,15 @@
   .safe-area-inset-bottom();
 }
 
+.list-box {
+  padding-left: 25rpx;
+  padding-right: 25rpx;
+}
+
+.avatar {
+  margin: 10rpx 0;
+}
+
 .col {
   display: flex;
   flex-direction: column;
@@ -23,15 +32,27 @@
 }
 
 .list-item {
+  position: relative;
+  font-size: 28rpx;
+  color: #333;
+  min-height: 88rpx;
   display: flex;
   flex-direction: row;
   align-items: center;
-  
+  padding-right: 25rpx;
+  box-sizing: border-box;
+
   .label {
-    width: 180rpx;
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 88rpx;
     padding-left: 25rpx;
     padding-right: 15rpx;
+    box-sizing: border-box;
   }
+
   .mobile-box {
     flex: 1;
   }

@@ -28,6 +28,7 @@
                 entity="{{entity}}"
                 entityId="{{entityId}}"
                 relations="{{relations}}"
+                isComponent="{{true}}"
             />
         </block>
         <block wx:else>

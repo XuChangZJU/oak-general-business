@@ -23,8 +23,8 @@
             <l-card 
                 type="avatar"
                 image="{{item.avatar}}" 
-                title="{{item.name || item.nickname || '未设置'}}" 
-                description="{{item.mobile}}"
+                title="{{item.name || item.nickname}}" 
+                describe="{{item.mobile}}"
             >
                 <l-list bind:lintap="onItemTapMp" data-id="{{item.id}}">
                     <view class="relation" slot="left-section">

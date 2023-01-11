@@ -1,5 +1,5 @@
 {
-    "navigationBarTitleText": "手机号",
+    "navigationBarTitleText": "绑定手机号",
     "usingComponents": {
         "l-button": "../../../miniprogram_npm/lin-ui/button/index",
         "l-card": "../../../miniprogram_npm/lin-ui/card/index",
