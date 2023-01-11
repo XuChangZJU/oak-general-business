@@ -11,6 +11,7 @@
         "l-input": "../../../miniprogram_npm/lin-ui/input/index",
         "l-radio-group": "../../../miniprogram_npm/lin-ui/radio-group/index",
         "l-radio": "../../../miniprogram_npm/lin-ui/radio/index",
-        "l-form-item": "@oak-general-business/miniprogram_npm/lin-ui/form-item/index"
+        "l-form-item": "../../../miniprogram_npm/lin-ui/form-item/index",
+        "oak-extraFile-avatar": "../../../components/extraFile/avatar/index"
     }
 }

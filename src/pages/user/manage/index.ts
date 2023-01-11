@@ -20,6 +20,7 @@ export default OakComponent({
                 extra1: 1,
                 type: 1,
                 entity: 1,
+                entityId: 1,
                 extension: 1,
             },
             filter: {
@@ -36,8 +37,18 @@ export default OakComponent({
             },
         },
     },
+    sorters: [
+        {
+            sorter: {
+                $attr: {
+                    $$createAt$$: 1,
+                },
+                $direction: 'desc',
+            },
+        },
+    ],
     isList: true,
-    formData: function({ data: users, features }) {
+    formData: function ({ data: users, features }) {
         const pagination = this.getPagination();
         const userArr = users.map((user) => {
             const {
@@ -49,7 +60,9 @@ export default OakComponent({
                 extraFile$entity,
             } = user || {};
             const mobile = mobile$user && mobile$user[0]?.mobile;
-            const avatar = features.extraFile.getUrl(extraFile$entity && extraFile$entity[0]);
+            const avatar = features.extraFile.getUrl(
+                extraFile$entity && extraFile$entity[0]
+            );
             return {
                 id,
                 nickname,

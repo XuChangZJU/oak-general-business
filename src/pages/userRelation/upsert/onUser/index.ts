@@ -26,7 +26,7 @@ export default OakComponent({
             filter: {
                 tag1: 'avatar',
             },
-        }
+        },
     },
     isList: false,
     formData({ data: user }) {
@@ -47,6 +47,10 @@ export default OakComponent({
         entityId: String,
         relations: Array,
         mobile: String,
+        isComponent: {
+            type: Boolean,
+            value: false
+        },
     },
     data: {
         userRelationRelativePath: '',
@@ -56,22 +60,41 @@ export default OakComponent({
             const { entity, oakId } = this.props;
             if (!oakId) {
                 const entityStr = firstLetterUpperCase(entity!);
-                this.update({
-                    password: '12345678',
-                }, undefined, async () => {
-                    const operations = this.getOperations();
-                    const [ {operation} ] = operations! as { operation: BaseEntityDict['user']['CreateSingle']}[];
-                    if (!operation.data.name) {
-                        throw new OakInputIllegalException('user', ['name'], this.t('placeholder.name'));
+                this.update(
+                    {
+                        password: '12345678',
+                    },
+                    undefined,
+                    async () => {
+                        const operations = this.getOperations();
+                        const [{ operation }] = operations! as {
+                            operation: BaseEntityDict['user']['CreateSingle'];
+                        }[];
+                        if (!operation.data.name) {
+                            throw new OakInputIllegalException(
+                                'user',
+                                ['name'],
+                                this.t('placeholder.name')
+                            );
+                        }
+                        if (
+                            (operation.data as any)[`user${entityStr}$user`]
+                                ?.length > 0
+                        ) {
+                            return;
+                        }
+                        throw new OakInputIllegalException(
+                            'user',
+                            [`user${entityStr}$user`],
+                            this.t('placeholder.relation')
+                        );
                     }
-                    if ((operation.data as any)[`user${entityStr}$user`]?.length > 0) {
-                        return;
-                    }
-                    throw new OakInputIllegalException('user', [`user${entityStr}$user`], this.t('placeholder.relation'));
-                });
+                );
             }
             this.setState({
-                userRelationRelativePath: `user${firstLetterUpperCase(entity)}$user`,
+                userRelationRelativePath: `user${firstLetterUpperCase(
+                    entity
+                )}$user`,
             });
         },
     },

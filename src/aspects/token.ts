@@ -904,8 +904,9 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRu
 export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({
     nickname, avatarUrl, encryptedData, iv, signature
 }: { nickname: string, avatarUrl: string, encryptedData: string, iv: string, signature: string }, context: Cxt) {
-    const { userId } = (await context.getToken())!;
-    const application = await context.getApplication();
+    const { userId } = context.getToken()!;
+    const application = context.getApplication();
+    const config = application?.system?.config || application?.system?.platform?.config;
     const [{ sessionKey, user }] = await context.select('wechatUser', {
         data: {
             id: 1,
@@ -925,6 +926,8 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ba
                         objectId: 1,
                         filename: 1,
                         extra1: 1,
+                        entity: 1,
+                        entityId: 1,
                     },
                     filter: {
                         tag1: 'avatar',
@@ -958,30 +961,36 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ba
             nickname,
         });
     }
-    if (extraFile$entity?.length === 0 || composeFileUrl(extraFile$entity![0]) !== avatarUrl) {
+    if (
+        extraFile$entity?.length === 0 ||
+        composeFileUrl(extraFile$entity![0], config) !== avatarUrl
+    ) {
         // 需要更新新的avatar extra file
         const extraFileOperations: ExtraFileOperation['data'][] = [
             {
                 id: await generateNewIdAsync(),
                 action: 'create',
-                data: Object.assign({
-                    id: await generateNewIdAsync(),
-                    tag1: 'avatar',
-                    entity: 'user',
-                    entityId: userId,
-                }, decomposeFileUrl(avatarUrl))
-            }
+                data: Object.assign(
+                    {
+                        id: await generateNewIdAsync(),
+                        tag1: 'avatar',
+                        entity: 'user',
+                        entityId: userId,
+                        objectId: await generateNewIdAsync(),
+                    },
+                    decomposeFileUrl(avatarUrl)
+                ),
+            },
         ];
         if (extraFile$entity!.length > 0) {
-            extraFileOperations.push(
-                {
-                    action: 'remove',
-                    data: {},
-                    filter: {
-                        id: extraFile$entity![0].id,
-                    }
-                }
-            );
+            extraFileOperations.push({
+                id: await generateNewIdAsync(),
+                action: 'remove',
+                data: {},
+                filter: {
+                    id: extraFile$entity![0].id,
+                },
+            });
         }
         Object.assign(updateData, {
             extraFile$entity: extraFileOperations,
