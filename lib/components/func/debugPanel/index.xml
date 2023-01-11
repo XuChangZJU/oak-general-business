@@ -1,7 +1,7 @@
 <view bind:tap="handlePopup" class="btn-popup">
     <oak-icon name="packup" ></oak-icon>
 </view>
-<l-arc-popup show="{{visible}}">
+<l-arc-popup show="{{visible}}" l-class="arc-popup">
     <view class="block block--bottom">
         <view class="btn-box">
             <l-button type="default" l-class="btn-item" l-label-class="btn-item-label" size="mini" shape="semicircle" bind:lintap="printRunningTree">

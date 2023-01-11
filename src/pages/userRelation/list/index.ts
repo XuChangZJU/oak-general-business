@@ -1,8 +1,6 @@
-import assert from 'assert';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../../../general-app-domain';
-import React from '../../../utils/react';
 
 export default OakComponent({
     entity: 'user',
@@ -45,6 +43,7 @@ export default OakComponent({
                     extra1: 1,
                     type: 1,
                     entity: 1,
+                    entityId: 1,
                     extension: 1,
                 },
                 filter: {
@@ -129,15 +128,7 @@ export default OakComponent({
         ],
         idRemoveMp: '',
     },
-    lifetimes: {
-        created() {
-            if (process.env.OAK_PLATFORM === 'web') {
-                (this as any).tableRef = React.createRef();
-                (this as any).editMap = {};
-                (this as any).currentSaveId = '';
-            }
-        },
-    },
+    lifetimes: {},
     methods: {
         goUpsert() {
             const { entity, entityId, relations, redirectToAfterConfirm } = this.props;

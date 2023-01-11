@@ -4,6 +4,10 @@ export default OakComponent({
         actions: Array,
         actionDescriptions: Object,
         iconSize: String,
+        rowNum: {
+            type: Number,
+            value: 4,
+        },
     },
     methods: {
         onClickMp(e: WechatMiniprogram.TouchEvent) {
@@ -17,8 +21,8 @@ export default OakComponent({
         actions(actions) {
             const { actionDescriptions } = this.props;
 
-            const actionss = actions.map(
-                (action: string) => Object.assign({}, actionDescriptions[action], { action })
+            const actionss = actions.map((action: string) =>
+                Object.assign({}, actionDescriptions[action], { action })
             );
 
             this.setState({ actionss });
@@ -30,11 +34,11 @@ export default OakComponent({
             const { actions, actionDescriptions } = this.props;
 
             if (actions) {
-                const actionss = actions.map(
-                    (action: string) => Object.assign({}, actionDescriptions[action], { action })
+                const actionss = actions.map((action: string) =>
+                    Object.assign({}, actionDescriptions[action], { action })
                 );
                 this.setState({ actionss });
             }
-        }
-    }
+        },
+    },
 });

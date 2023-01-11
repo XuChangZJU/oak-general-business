@@ -11,6 +11,10 @@ export default OakComponent({
             id: 1,
             nickname: 1,
             name: 1,
+            birth: 1,
+            gender: 1,
+            idState: 1,
+            userState: 1,
             extraFile$entity: {
                 $entity: 'extraFile',
                 data: {
@@ -23,6 +27,7 @@ export default OakComponent({
                     extra1: 1,
                     type: 1,
                     entity: 1,
+                    entityId: 1,
                     extension: 1,
                 },
                 filter: {
@@ -70,8 +75,7 @@ export default OakComponent({
         const [token] = data || [];
         const user = token?.user;
         const player = token?.player;
-        const avatarFile =
-            user && user.extraFile$entity && user.extraFile$entity[0];
+        const avatarFile = user?.extraFile$entity && user?.extraFile$entity[0];
         const avatar = features.extraFile.getUrl(avatarFile);
         const nickname = user && user.nickname;
         const mobileData = user && user.mobile$user && user.mobile$user[0];
@@ -137,10 +141,14 @@ export default OakComponent({
                         this.sub(eventLoggedIn, () => {
                             this.navigateBack();
                         });
-                        this.navigateTo({
-                            url: '/login',
-                            eventLoggedIn,
-                        });
+                        this.navigateTo(
+                            {
+                                url: '/login',
+                                eventLoggedIn,
+                            },
+                            undefined,
+                            true
+                        );
                         break;
                     }
                 }
@@ -161,6 +169,15 @@ export default OakComponent({
         goSetting() {
             this.navigateTo({
                 url: '/setting',
+            });
+        },
+        goMyInfo() {
+            if (!this.state.isLoggedIn) {
+                return
+            }
+            this.navigateTo({
+                url: '/user/info',
+                oakId: this.state.userId,
             });
         },
     },

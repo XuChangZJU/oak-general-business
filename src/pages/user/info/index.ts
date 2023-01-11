@@ -12,6 +12,8 @@ export default OakComponent({
         nickname: 1,
         birth: 1,
         gender: 1,
+        idState: 1,
+        userState: 1,
         mobile$user: {
             $entity: 'mobile',
             data: {
@@ -35,6 +37,11 @@ export default OakComponent({
                 entity: 1,
                 entityId: 1,
             },
+            filter: {
+                tag1: 'avatar',
+            },
+            indexFrom: 0,
+            count: 1,
         },
     },
     isList: false,
@@ -101,7 +108,6 @@ export default OakComponent({
                 throw new OakUserUnpermittedException();
             }
             this.setState({ birthEnd: dayjs().format('YYYY-MM-DD') });
-
         },
     },
     methods: {

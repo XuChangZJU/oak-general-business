@@ -2,16 +2,16 @@
 <view class="page-body">
     <view class="userInfo">
         <block wx:if="{{avatar}}">
-            <l-avatar src="{{avatar}}" text="{{nickname || '未设置'}}"  placement="bottom"/>
+            <l-avatar src="{{avatar}}" text="{{nickname || '未设置'}}"  placement="bottom" bind:lintap="goMyInfo"/>
         </block>
         <block wx:else>
-            <l-avatar icon="user" size="140" icon-size="80" text="{{nickname || '未设置'}}" placement="bottom"/>
+            <l-avatar icon="user" size="140" icon-size="80" text="{{nickname || '未设置'}}" placement="bottom" bind:lintap="goMyInfo"/>
         </block>
-        <block wx:if="{{isLoggedIn && !isPlayingAnother}}">
+        <block wx:if="{{isLoggedIn && !isPlayingAnother && !oakLoading}}">
             <l-button shape="semicircle" type="default" size="mini" disabled="{{refreshing}}"  plain="true" bind:lintap="onRefresh">{{t('syncWeChat')}}</l-button>
         </block>
         <block wx:elif="{{!isLoggedIn}}">
-            <l-button shape="semicircle" type="default" size="mini" disabled="{{refreshing}}" bind:lintap="doLogin">{{t('login')}}</l-button>
+            <l-button shape="semicircle" type="default" size="mini" disabled="{{refreshing || oakLoading}}" bind:lintap="doLogin">{{t('login')}}</l-button>
         </block>
     </view>
     <view class="cell">

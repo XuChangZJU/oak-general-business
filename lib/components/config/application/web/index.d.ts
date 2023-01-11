@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WebConfig } from '../../../../general-app-domain/Application/Schema';
 export default function Web(props: {
     config: WebConfig;
