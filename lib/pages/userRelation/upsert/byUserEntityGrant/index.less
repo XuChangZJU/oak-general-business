@@ -18,7 +18,7 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: space-around;
-  
+
   .share {
     align-self: center;
   }
@@ -27,18 +27,29 @@
 .list-item {
   display: flex;
   background-color: @oak-bg-color-container;
+  position: relative;
+  font-size: 28rpx;
+  color: #333;
+  min-height: 88rpx;
+  display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 2rpx;
-  padding-top: 18rpx;
-  padding-bottom: 18rpx;
-  
+  padding-right: 25rpx;
+  box-sizing: border-box;
+  border-bottom: 1px solid #eeeeee;
+
   .label {
-    width: 120rpx;
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 88rpx;
     padding-left: 25rpx;
     padding-right: 15rpx;
-    color: @oak-color-info;
+    box-sizing: border-box;
+    color: @oak-color-primary;
   }
+
   .value {
     flex: 1;
 
@@ -46,15 +57,17 @@
       flex-wrap: wrap;
 
       .radio {
-       margin-right: 12rpx; 
+        margin-right: 12rpx;
       }
     }
   }
+
   .value-period {
     display: flex;
     flex-direction: row;
     align-items: center;
   }
+
   .confirm-btn {
     align-self: flex-end;
   }
