@@ -1,4 +1,3 @@
-
 export default OakComponent({
     entity: 'message',
     isList: true,
@@ -23,7 +22,11 @@ export default OakComponent({
                 const userId = features.token.getUserId(true);
                 const application = features.application.getApplication();
                 const { systemId } = application;
-
+                if (!userId) {
+                    return {
+                        id: 'illegal',
+                    };
+                }
                 return {
                     userId,
                     // systemId,

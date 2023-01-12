@@ -23,7 +23,7 @@ export default OakComponent({
                 grantByUserEntityGrant = true;
             } else {
                 assert(type === 'web');
-                const { passport } = config;
+                const passport = config.passport || [];
                 grantByEmail = passport.includes('email');
                 grantByMobile = passport.includes('mobile');
                 grantByUserEntityGrant = passport.includes('wechat');
