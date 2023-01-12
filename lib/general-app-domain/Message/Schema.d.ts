@@ -15,7 +15,7 @@ declare type MessageParams = {
 export declare type OpSchema = EntityShape & {
     userId: ForeignKey<"user">;
     systemId: ForeignKey<"system">;
-    type: String<16>;
+    type: String<64>;
     weight: 'high' | 'medium' | 'low' | 'data';
     title: String<32>;
     content: Text;
@@ -29,7 +29,7 @@ export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
     userId: ForeignKey<"user">;
     systemId: ForeignKey<"system">;
-    type: String<16>;
+    type: String<64>;
     weight: 'high' | 'medium' | 'low' | 'data';
     title: String<32>;
     content: Text;

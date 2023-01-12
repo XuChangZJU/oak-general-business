@@ -14,7 +14,7 @@ type MessageParams = {
 export interface Schema extends EntityShape {
     user: User;
     system: System;
-    type: String<16>;
+    type: String<64>;
     weight: 'high' | 'medium' | 'low' | 'data';
     title: String<32>;
     content: Text;
