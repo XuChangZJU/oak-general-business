@@ -29,7 +29,7 @@ export default OakComponent({
                 },
                 filter: {
                     [`${entity}Id`]: entityId,
-                }
+                },
             },
             extraFile$entity: {
                 $entity: 'extraFile',
@@ -124,14 +124,22 @@ export default OakComponent({
             {
                 name: '通过分享二维码',
                 mode: 'byQrCode',
-            }
+            },
         ],
         idRemoveMp: '',
+    },
+    observers: {
+        'entity,entityId': function (entity, entityId) {
+            if (this.state.oakFullpath && entity && entityId) {
+                this.refresh();
+            }
+        },
     },
     lifetimes: {},
     methods: {
         goUpsert() {
-            const { entity, entityId, relations, redirectToAfterConfirm } = this.props;
+            const { entity, entityId, relations, redirectToAfterConfirm } =
+                this.props;
             this.navigateTo(
                 {
                     url: '/userRelation/upsert',
@@ -162,24 +170,25 @@ export default OakComponent({
             const { entity, entityId } = this.props;
             const entityStr = firstLetterUpperCase(entity!);
             const { users } = this.state;
-            const user = users.find(
-                (ele: any) => ele.id === idRemove
-            );
+            const user = users.find((ele: any) => ele.id === idRemove);
             const relations = user[`user${entityStr}$user`];
-            this.updateItem({
-                [`user${entityStr}$user`]: [
-                    {
-                        id: generateNewId(),
-                        action: 'remove',
-                        data: {},
-                        filter: {
-                            id: {
-                                $in: relations.map((ele: any) => ele.id),
+            this.updateItem(
+                {
+                    [`user${entityStr}$user`]: [
+                        {
+                            id: generateNewId(),
+                            action: 'remove',
+                            data: {},
+                            filter: {
+                                id: {
+                                    $in: relations.map((ele: any) => ele.id),
+                                },
                             },
                         },
-                    }
-                ]
-            }, idRemove);
+                    ],
+                },
+                idRemove
+            );
             await this.execute();
         },
 
@@ -204,8 +213,11 @@ export default OakComponent({
         },
 
         chooseActionMp(e: WechatMiniprogram.TouchEvent) {
-            const { entity, entityId, relations, redirectToAfterConfirm } = this.props;
-            const { item: { mode }} = e.detail;
+            const { entity, entityId, relations, redirectToAfterConfirm } =
+                this.props;
+            const {
+                item: { mode },
+            } = e.detail;
             if (mode === 'byMobile') {
                 this.navigateTo({
                     url: '/userRelation/upsert/byMobile',
@@ -213,8 +225,7 @@ export default OakComponent({
                     entityId,
                     relations,
                 });
-            }
-            else {
+            } else {
                 this.navigateTo({
                     url: '/userRelation/upsert/byUserEntityGrant',
                     entity,
@@ -259,7 +270,7 @@ export default OakComponent({
         cancelDeleteMp() {
             this.setState({
                 idRemoveMp: '',
-            })
+            });
         },
 
         async confirmDeleteMp() {
@@ -267,7 +278,7 @@ export default OakComponent({
             await this.confirmDelete(idRemoveMp);
             this.setState({
                 idRemoveMp: '',
-            })
-        }
+            });
+        },
     },
 });
