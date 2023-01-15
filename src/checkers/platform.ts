@@ -27,7 +27,7 @@ const checkers: Checker<EntityDict, 'platform', RuntimeCxt>[] = [
                 checkAttributesNotNull('platform', data, ['name']);
                 setData(data as EntityDict['platform']['CreateSingle']['data']);
             }
-            return 0;
+            return;
         },
     },
 ];

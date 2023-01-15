@@ -1,3 +1,4 @@
+import { OakUserUnpermittedException } from 'oak-domain/lib/types';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../../../general-app-domain';
@@ -172,24 +173,35 @@ export default OakComponent({
             const { users } = this.state;
             const user = users.find((ele: any) => ele.id === idRemove);
             const relations = user[`user${entityStr}$user`];
-            this.updateItem(
-                {
-                    [`user${entityStr}$user`]: [
-                        {
-                            id: generateNewId(),
-                            action: 'remove',
-                            data: {},
-                            filter: {
-                                id: {
-                                    $in: relations.map((ele: any) => ele.id),
+            try {
+                this.updateItem(
+                    {
+                        [`user${entityStr}$user`]: [
+                            {
+                                id: generateNewId(),
+                                action: 'remove',
+                                data: {},
+                                filter: {
+                                    id: {
+                                        $in: relations.map((ele: any) => ele.id),
+                                    },
                                 },
                             },
-                        },
-                    ],
-                },
-                idRemove
-            );
-            await this.execute();
+                        ],
+                    },
+                    idRemove
+                );
+                await this.execute();
+            }            
+            catch (err) {
+                if (err instanceof OakUserUnpermittedException) {
+                    this.setMessage({
+                        type: 'error',
+                        content: err.message,
+                    });
+                    return;
+                }
+            }
         },
 
         searchChangeMp(event: WechatMiniprogram.Input) {
@@ -275,7 +287,21 @@ export default OakComponent({
 
         async confirmDeleteMp() {
             const { idRemoveMp } = this.state;
-            await this.confirmDelete(idRemoveMp);
+            try {
+                await this.confirmDelete(idRemoveMp);
+            }
+            catch (err) {
+                this.setState({
+                    idRemoveMp: '',
+                });
+                if (err instanceof OakUserUnpermittedException) {
+                    this.setMessage({
+                        type: 'error',
+                        content: err.message,
+                    });
+                    return;
+                }
+            }
             this.setState({
                 idRemoveMp: '',
             });

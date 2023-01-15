@@ -43,7 +43,7 @@ const checkers: Checker<EntityDict, 'address', RuntimeCxt> [] = [
             if (data.hasOwnProperty('phone') && !isMobile(data.phone!)) {
                 throw new OakInputIllegalException('address', ['phone'], '手机号非法');
             }
-            return 0;
+            return;
         },
     }
 ];

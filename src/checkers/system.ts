@@ -32,7 +32,7 @@ const checkers: Checker<EntityDict, 'system', RuntimeCxt>[] = [
                 checkAttributesNotNull('system', data, ['name', 'platformId']);
                 setData(data as EntityDict['system']['CreateSingle']['data']);
             }
-            return 0;
+            return;
         },
     },
 ];

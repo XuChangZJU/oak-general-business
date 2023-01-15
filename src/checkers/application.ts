@@ -37,7 +37,7 @@ const checkers: Checker<EntityDict, 'application', RuntimeCxt>[] = [
                 ]);
                  setData(data as EntityDict['application']['CreateSingle']['data']);
             }
-            return 0;
+            return;
         },
     },
 ];
