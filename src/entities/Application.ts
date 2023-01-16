@@ -18,6 +18,7 @@ export type WebConfig = {
     wechat?: {
         appId: string;
         appSecret: string; //网站 微信扫码登录
+        domain?: string
     };
     passport: Passport[];
 };

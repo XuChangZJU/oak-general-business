@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './index.less';
 import { random } from 'oak-domain/lib/utils/string';
+import classNames from 'classnames';
+import './index.less';
 
 interface QrCodeProps {
     id?: string;
@@ -11,6 +12,10 @@ interface QrCodeProps {
     style?: string;
     href?: string;
     dev?: boolean;
+    disabled?: boolean;
+    disableText?: string;
+    rootStyle?: React.CSSProperties;
+    rootClassName?: string;
 }
 
 function QrCode(props: QrCodeProps) {
@@ -23,11 +28,18 @@ function QrCode(props: QrCodeProps) {
         style = '',
         href = '',
         dev = process.env.NODE_ENV === 'development', // 默认本地为true 发布时为false
+        disabled = false,
+        disableText,
+        rootStyle,
+        rootClassName,
     } = props;
     const [code, setCode] = useState('');
 
     useEffect(() => {
         if (appId) {
+            if (disabled) {
+                return;
+            }
             // 由于本地不能微信扫码测试 所以只能模拟 输入code使用weChatLogin
             if (dev) {
                 setCode(random(6));
@@ -49,7 +61,7 @@ function QrCode(props: QrCodeProps) {
                 }
             );
         }
-    }, [appId]);
+    }, [appId, disabled]);
 
     function loadScript(url: string, callback: () => void) {
         const script = document.createElement('script');
@@ -83,6 +95,25 @@ function QrCode(props: QrCodeProps) {
     const prefixCls2 = `${prefixCls}-loginQrCode`;
 
     let V;
+    let DisableV;
+    if (disabled) {
+        DisableV = (
+            <div
+                className={classNames(prefixCls2, rootClassName)}
+                style={rootStyle}
+            >
+                <div className={`${prefixCls2}_disable`}>
+                    <div className={`${prefixCls2}_disable_border`}>
+                        {disableText || '禁用微信二维码'}
+                    </div>
+                </div>
+                <div className={`${prefixCls2}_disable_info`}>
+                    <span>微信扫一扫</span>
+                </div>
+            </div>
+        );
+    }
+    
     if (dev) {
         V = (
             <div className={`${prefixCls2}_dev`}>
@@ -122,9 +153,16 @@ function QrCode(props: QrCodeProps) {
     }
 
     return (
-        <div className={prefixCls2} id={id}>
-            {V}
-        </div>
+        <>
+            {DisableV}
+            <div
+                className={classNames(prefixCls2, rootClassName)}
+                id={id}
+                style={disabled ? { display: 'none' } : rootStyle}
+            >
+                {V}
+            </div>
+        </>
     );
 }
 

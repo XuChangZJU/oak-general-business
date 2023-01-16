@@ -22,6 +22,7 @@ export declare type WebConfig = {
     wechat?: {
         appId: string;
         appSecret: string;
+        domain?: string;
     };
     passport: Passport[];
 };

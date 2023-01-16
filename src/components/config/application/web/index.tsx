@@ -88,6 +88,25 @@ export default function Web(props: {
                                             />
                                         </>
                                     </Form.Item>
+                                    <Form.Item
+                                        label="授权回调域"
+                                        name="domain"
+                                        tooltip="授权回调域可选填，未填写的话，使用网页访问的域名当作授权回调域"
+                                    >
+                                        <>
+                                            <Input
+                                                placeholder="请输入授权回调域"
+                                                type="text"
+                                                value={config?.wechat?.domain}
+                                                onChange={(e) =>
+                                                    setValue(
+                                                        `wechat.domain`,
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </>
+                                    </Form.Item>
                                 </Form>
                             ),
                         },

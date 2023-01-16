@@ -1,3 +1,4 @@
+import React from 'react';
 import './index.less';
 interface QrCodeProps {
     id?: string;
@@ -8,6 +9,10 @@ interface QrCodeProps {
     style?: string;
     href?: string;
     dev?: boolean;
+    disabled?: boolean;
+    disableText?: string;
+    rootStyle?: React.CSSProperties;
+    rootClassName?: string;
 }
 declare function QrCode(props: QrCodeProps): JSX.Element;
 export default QrCode;
