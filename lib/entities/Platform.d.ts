@@ -7,4 +7,6 @@ export interface Schema extends EntityShape {
     description: Text;
     config: Config;
     style?: Style;
+    entity?: String<32>;
+    entityId?: String<64>;
 }

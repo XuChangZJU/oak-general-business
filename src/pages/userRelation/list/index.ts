@@ -189,7 +189,8 @@ export default OakComponent({
                             },
                         ],
                     },
-                    idRemove
+                    idRemove,
+                    'revoke'
                 );
                 await this.execute();
             }            

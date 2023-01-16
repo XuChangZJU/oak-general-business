@@ -6,11 +6,12 @@ import { CreateOperationData as CreateUserData } from '../general-app-domain/Use
 import { ROOT_ROLE_ID, ROOT_USER_ID } from '../constants';
 import { randomName } from '../utils/randomUser';
 import { RuntimeCxt } from '../types/RuntimeCxt';
+import assert from 'assert';
 
 let NO_ANY_USER = true;
 const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
     {
-        name: '系统生成的第一个用户默认注册为root，用户的初始状态默认为shadow',
+        name: '用户的初始状态默认为shadow',
         entity: 'user',
         action: 'create',
         when: 'before',
@@ -56,6 +57,17 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
                 })
                 setDefaultState(data);
             }
+            return 1;
+        }
+    } as CreateTrigger<EntityDict, 'user', RuntimeCxt>,
+    {
+        name: '系统生成的第一个用户默认注册为root，用户的初始状态默认为shadow',
+        entity: 'user',
+        action: 'create',
+        when: 'before',
+        fn: async ({ operation }, context) => {
+            const { data } = operation;
+            assert(!(data instanceof Array));
             if (NO_ANY_USER) {
                 const result = await context.select('user', {
                     data: {
@@ -72,21 +84,18 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
                     dontCollect: true,
                 });
                 if (result.length === 0) {
-                    const userData = data instanceof Array ? data[0] : data;
-                    const userRoleData: CreateUserRoleData = {
+                    await context.operate('userRole', {
                         id: generateNewId(),
-                        userId: userData.id,
-                        roleId: ROOT_ROLE_ID,
-                        relation: 'owner',
-                    };
-                    Object.assign(userData, {
-                        userRole$user: [
-                            {
-                                id: generateNewId(),
-                                action: 'create',
-                                data: userRoleData,
-                            }
-                        ]
+                        action: 'create',
+                        data: {
+                            id: generateNewId(),
+                            userId: data.id,
+                            roleId: ROOT_ROLE_ID,
+                            relation: 'owner',
+                        },
+                    }, {
+                        blockTrigger: true,
+                        dontCollect: true,
                     });
                     return 1;
                 }

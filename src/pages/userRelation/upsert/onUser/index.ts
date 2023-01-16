@@ -96,6 +96,7 @@ export default OakComponent({
                     entity
                 )}$user`,
             });
+            this.update({}, 'grant');
         },
     },
     methods: {

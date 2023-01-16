@@ -11,4 +11,6 @@ export interface Schema extends EntityShape {
     folder: String<16>;
     super?: Boolean;
     style?: Style;
+    entity?: String<32>;
+    entityId?: String<64>;
 }

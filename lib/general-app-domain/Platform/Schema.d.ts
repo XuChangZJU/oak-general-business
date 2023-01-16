@@ -12,6 +12,8 @@ export declare type OpSchema = EntityShape & {
     description: Text;
     config: Config;
     style?: Style | null;
+    entity?: String<32> | null;
+    entityId?: String<64> | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
@@ -19,6 +21,8 @@ export declare type Schema = EntityShape & {
     description: Text;
     config: Config;
     style?: Style | null;
+    entity?: String<32> | null;
+    entityId?: String<64> | null;
     system$platform?: Array<System.Schema>;
     system$platform$$aggr?: AggregationResult<System.Schema>;
 } & {
@@ -33,6 +37,8 @@ declare type AttrFilter = {
     description: Q_StringValue;
     config: Q_EnumValue<Config>;
     style: Q_EnumValue<Style>;
+    entity: Q_StringValue;
+    entityId: Q_StringValue;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -46,6 +52,8 @@ export declare type Projection = {
     description?: number;
     config?: number;
     style?: number;
+    entity?: number;
+    entityId?: number;
     system$platform?: System.Selection & {
         $entity: "system";
     };
@@ -73,6 +81,10 @@ export declare type SortAttr = {
 } | {
     style: number;
 } | {
+    entity: number;
+} | {
+    entityId: number;
+} | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
 export declare type SortNode = {
@@ -83,7 +95,11 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Aggregation = Omit<DeduceAggregation<Schema, Projection, Filter, Sorter>, "id">;
-export declare type CreateOperationData = FormCreateData<OpSchema> & {
+export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
+    entity?: string;
+    entityId?: string;
+    [K: string]: any;
+}) & {
     system$platform?: OakOperation<System.UpdateOperation["action"], Omit<System.UpdateOperationData, "platform" | "platformId">, System.Filter> | OakOperation<"create", Omit<System.CreateOperationData, "platform" | "platformId">[]> | Array<OakOperation<"create", Omit<System.CreateOperationData, "platform" | "platformId">> | OakOperation<System.UpdateOperation["action"], Omit<System.UpdateOperationData, "platform" | "platformId">, System.Filter>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;

@@ -78,7 +78,7 @@ const checkers: Checker<EntityDict, 'user', RuntimeCxt> [] = [
         entity: 'user',
         action: 'update',
         type: 'relation',
-        relationFilter: (opration, context) => {
+        relationFilter: (operation, context) => {
             const userId = context.getCurrentUserId();
             return {
                 id: userId,

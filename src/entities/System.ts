@@ -13,6 +13,8 @@ export interface Schema extends EntityShape {
     folder: String<16>;
     super?: Boolean; // super表示是这个platform本身的系统，可以操作application/system这些数据，也可以访问超出本system的其它数据。
     style?: Style;
+    entity?: String<32>;     // System是抽象对象，应用上级与之一对一的对象可以使用双向指针，以方便编程
+    entityId?: String<64>;
 };
 
 
@@ -26,6 +28,8 @@ const locale: LocaleDef<Schema, '', '', {}> = {
             super: '超级系统',
             folder: '代码目录名',
             style: '样式',
+            entity: '关联对象',
+            entityId: '关联对象id',
         },
     },
 };
