@@ -13,7 +13,7 @@ interface QrCodeProps {
     href?: string;
     dev?: boolean;
     disabled?: boolean;
-    disableText?: string;
+    disableText?: React.ReactNode;
     rootStyle?: React.CSSProperties;
     rootClassName?: string;
 }
@@ -113,7 +113,7 @@ function QrCode(props: QrCodeProps) {
             </div>
         );
     }
-    
+
     if (dev) {
         V = (
             <div className={`${prefixCls2}_dev`}>

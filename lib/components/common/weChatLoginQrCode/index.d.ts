@@ -10,7 +10,7 @@ interface QrCodeProps {
     href?: string;
     dev?: boolean;
     disabled?: boolean;
-    disableText?: string;
+    disableText?: React.ReactNode;
     rootStyle?: React.CSSProperties;
     rootClassName?: string;
 }
