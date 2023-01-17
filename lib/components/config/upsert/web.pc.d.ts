@@ -11,4 +11,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     updateConfig: () => void;
     setValue: (path: string, value: string) => void;
     removeItem: (path: string, index: number) => void;
+    cleanKey: (path: string, key: string) => void;
 }>): JSX.Element;

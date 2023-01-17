@@ -1,4 +1,4 @@
-import { cloneDeep, set, get } from 'oak-domain/lib/utils/lodash';
+import { cloneDeep, set, get, omit } from 'oak-domain/lib/utils/lodash';
 import { Config } from '../../../types/Config';
 
 export default OakComponent({
@@ -28,6 +28,18 @@ export default OakComponent({
             const { currentConfig } = this.state;
             const newConfig = cloneDeep(currentConfig || {});
             set(newConfig, path, value);
+            this.setState({
+                currentConfig: newConfig,
+                dirty: true,
+            });
+        },
+
+        cleanKey(path: string, key: string) {
+            const { currentConfig } = this.state;
+            const obj = get(currentConfig, path);
+            const obj2 = omit(obj, [key]);
+            set(currentConfig, path, obj2);
+            const newConfig = cloneDeep(currentConfig);
             this.setState({
                 currentConfig: newConfig,
                 dirty: true,

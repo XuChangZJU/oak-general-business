@@ -9,6 +9,7 @@ import {
     Form,
     Space,
     Select,
+    Switch,
 } from 'antd';
 import Styles from './web.module.less';
 import {
@@ -102,6 +103,25 @@ export default function Web(props: {
                                                     setValue(
                                                         `wechat.domain`,
                                                         e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </>
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="是否开启"
+                                        name="enable"
+                                        tooltip="网页微信扫码登录是否开启，如果不开启，登录页不会出现微信扫码入口"
+                                    >
+                                        <>
+                                            <Switch
+                                                checkedChildren="是"
+                                                unCheckedChildren="否"
+                                                checked={config?.wechat?.enable}
+                                                onChange={(checked) =>
+                                                    setValue(
+                                                        `wechat.enable`,
+                                                        checked
                                                     )
                                                 }
                                             />

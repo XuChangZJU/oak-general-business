@@ -5,6 +5,7 @@ import Account from './account/index';
 import Cos from './cos/index';
 import Map from './map/index';
 import Live from './live/index';
+import Sms from './sms/index';
 
 import { Config } from '../../../types/Config';
 
@@ -27,12 +28,20 @@ export default function Render(
             updateConfig: () => void;
             setValue: (path: string, value: string) => void;
             removeItem: (path: string, index: number) => void;
+            cleanKey: (path: string, key: string) => void;
         }
     >
 ) {
     const { entity, name, currentConfig, dirty } = props.data;
-    const { resetConfig, updateConfig, setValue, removeItem } = props.methods;
-    const { Account: account, Cos: cos, Map: map, Live: live } = currentConfig || {};
+    const { resetConfig, updateConfig, setValue, removeItem, cleanKey } =
+        props.methods;
+    const {
+        Account: account,
+        Cos: cos,
+        Map: map,
+        Live: live,
+        Sms: sms,
+    } = currentConfig || {};
     return (
         <>
             <Affix offsetTop={64}>
@@ -98,10 +107,7 @@ export default function Render(
                                         setValue(`Account.${path}`, value)
                                     }
                                     removeItem={(path, index) =>
-                                        removeItem(
-                                            `Account.${path}`,
-                                            index
-                                        )
+                                        removeItem(`Account.${path}`, index)
                                     }
                                 />
                             ),
@@ -138,6 +144,24 @@ export default function Render(
                                     map={map || {}}
                                     setValue={(path, value) =>
                                         setValue(`Map.${path}`, value)
+                                    }
+                                />
+                            ),
+                        },
+                        {
+                            key: '短信设置',
+                            label: '短信设置',
+                            children: (
+                                <Sms
+                                    sms={sms || {}}
+                                    setValue={(path, value) =>
+                                        setValue(`Sms.${path}`, value)
+                                    }
+                                    removeItem={(path, index) =>
+                                        removeItem(`Sms.${path}`, index)
+                                    }
+                                    cleanKey={(path, key) =>
+                                        cleanKey(`Sms.${path}`, key)
                                     }
                                 />
                             ),

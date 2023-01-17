@@ -75,7 +75,7 @@ export default OakComponent({
             if (!loginAgreed) {
                 this.setMessage({
                     type: 'info',
-                    content: '请阅读并同意《服务条款》和《隐私政策》',
+                    content: '请阅读并同意服务条款和隐私政策',
                 });
                 return;
             }

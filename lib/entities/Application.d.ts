@@ -16,6 +16,7 @@ export declare type WebConfig = {
         appId: string;
         appSecret: string;
         domain?: string;
+        enable?: boolean;
     };
     passport: Passport[];
 };
