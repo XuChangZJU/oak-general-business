@@ -5,7 +5,6 @@ import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../general-app-domain';
 
 import Style from './web.module.less';
-import display from '../../../../components/extraFile/display';
 
 export default function render(props: WebComponentProps<EntityDict, 'userEntityGrant', false, {
     relations: string[];
@@ -31,19 +30,19 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
                 style={{ marginBottom: 16 }}
             />
             <UserEntityGrantDetail
+                showBack={false}
                 oakId={userEntityGrantId}
                 oakAutoUnmount={true}
                 oakPath="$userRelation/upsert/byUserEntityGrant-userEntityGrant/detail"
             ></UserEntityGrantDetail>
-            <div style={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'flex-end',
-            }}>
-                <Button
-                    type="primary"
-                    onClick={() => setInit()}
-                >
+            <div
+                style={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                }}
+            >
+                <Button type="primary" onClick={() => setInit()}>
                     重新生成
                 </Button>
             </div>
@@ -66,8 +65,7 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
                     }}
                     options={relations?.map((ele: string) => ({
                         value: ele,
-                        label:
-                            (t(entity + ':r.' + ele)) || ele,
+                        label: t(entity + ':r.' + ele) || ele,
                     }))}
                 />
             </Form.Item>
@@ -113,21 +111,14 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 4 }}>
                 <Space>
-                    <Button
-                        type="primary"
-                        onClick={() => confirm()}
-                    >
+                    <Button type="primary" onClick={() => confirm()}>
                         提交
                     </Button>
-                    <Button
-                        onClick={() => onBack()}
-                    >
-                        返回
-                    </Button>
+                    <Button onClick={() => onBack()}>返回</Button>
                 </Space>
             </Form.Item>
         </Form>
-    )
+    );
     return (
         <div className={Style.container}>
             {P}
