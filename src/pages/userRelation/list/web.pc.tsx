@@ -10,7 +10,7 @@ import {
     Modal,
 } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
-import UserEntityGrantList from '../../../pages/userEntityGrant/list';
+// import UserEntityGrantList from '../../../pages/userEntityGrant/list';
 
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -45,16 +45,15 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', true
                     <Button type="primary" onClick={() => goUpsert()}>
                         添加
                     </Button>
-                    <Button
+                    {/* <Button
                         onClick={() => setInviteVisible(true)}
                     >
                         邀请记录
-                    </Button>
+                    </Button> */}
                 </Space>
 
                 <Table
                     loading={oakLoading}
-                    // ref={this.tableRef}
                     rowKey="id"
                     columns={[
                         {
@@ -77,34 +76,10 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', true
                         {
                             dataIndex: 'name',
                             title: '姓名',
-                            //   edit: {
-                            //       component: Input,
-                            //       props: {
-                            //           clearable: true,
-                            //           autofocus: true,
-                            //           autoWidth: true,
-                            //       },
-                            //       rules: [
-                            //           { required: true, message: '不能为空' },
-                            //       ],
-                            //       showEditIcon: false,
-                            //   },
                         },
                         {
                             dataIndex: 'nickname',
                             title: '昵称',
-                            //   edit: {
-                            //       component: Input,
-                            //       props: {
-                            //           clearable: true,
-                            //           autofocus: true,
-                            //           autoWidth: true,
-                            //       },
-                            //       rules: [
-                            //           { required: true, message: '不能为空' },
-                            //       ],
-                            //       showEditIcon: false,
-                            //   },
                         },
                         {
                             dataIndex: 'mobile',
@@ -187,7 +162,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', true
                 <p>{t('confirmRevokeAll')}</p>
             </Modal>
 
-            <Modal
+            {/* <Modal
                 title="邀请记录"
                 open={inviteVisible}
                 onCancel={() => setInviteVisible(false)}
@@ -200,7 +175,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', true
                     variant="dialog"
                     oakPath="$userRelation/list-userEntityGrant/list"
                 />
-            </Modal>
+            </Modal> */}
         </PageHeader>
     );
 }

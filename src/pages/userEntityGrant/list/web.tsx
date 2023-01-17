@@ -122,21 +122,21 @@ export default function render(
                             );
                         },
                     },
-                    {
-                        dataIndex: 'op',
-                        width: 200,
-                        title: '操作',
-                        align: 'center',
-                        render: (value, record, index) => {
-                            return (
-                                <CellButton
-                                    oakId={record.id}
-                                    oakPath={`${oakFullpath}.${record.id}`}
-                                />
-                            );
-                        },
-                        fixed: 'right',
-                    },
+                    // {
+                    //     dataIndex: 'op',
+                    //     width: 200,
+                    //     title: '操作',
+                    //     align: 'center',
+                    //     render: (value, record, index) => {
+                    //         return (
+                    //             <CellButton
+                    //                 oakId={record.id}
+                    //                 oakPath={`${oakFullpath}.${record.id}`}
+                    //             />
+                    //         );
+                    //     },
+                    //     fixed: 'right',
+                    // },
                 ]}
                 pagination={{
                     total,
