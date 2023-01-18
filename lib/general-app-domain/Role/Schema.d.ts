@@ -93,5 +93,6 @@ export declare type EntityDef = {
     Remove: RemoveOperation;
     CreateSingle: CreateSingleOperation;
     CreateMulti: CreateMultipleOperation;
+    Relation: Relation;
 };
 export {};
