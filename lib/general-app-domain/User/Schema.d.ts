@@ -324,8 +324,6 @@ export declare type RemoveOperationData = {} & (({
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type UserIdSubQuery = Selection<UserIdProjection>;
-export declare type NativeAttr = OpAttr | `ref.${OpAttr}` | `ref.ref.${OpAttr}` | `ref.ref.ref.${OpAttr}`;
-export declare type FullAttr = NativeAttr | `opers$${number}.${Oper.NativeAttr}` | `emails$${number}.${Email.NativeAttr}` | `messages$${number}.${Message.NativeAttr}` | `mobiles$${number}.${Mobile.NativeAttr}` | `userRoles$${number}.${UserRole.NativeAttr}` | `tokens$user$${number}.${Token.NativeAttr}` | `tokens$player$${number}.${Token.NativeAttr}` | `users$${number}.${NativeAttr}` | `userEntityGrants$granter$${number}.${UserEntityGrant.NativeAttr}` | `userEntityGrants$grantee$${number}.${UserEntityGrant.NativeAttr}` | `userSystems$${number}.${UserSystem.NativeAttr}` | `wechatUsers$${number}.${WechatUser.NativeAttr}` | `operEntitys$${number}.${OperEntity.NativeAttr}` | `modiEntitys$${number}.${ModiEntity.NativeAttr}` | `extraFiles$${number}.${ExtraFile.NativeAttr}`;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

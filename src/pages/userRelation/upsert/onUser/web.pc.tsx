@@ -82,7 +82,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                                     const strValue = e.target.value;
                                     update({
                                         password: strValue,
-                                    });
+                                    }, 'grant');
                                 }}
                                 placeholder={t('placeholder.password')}
                             />

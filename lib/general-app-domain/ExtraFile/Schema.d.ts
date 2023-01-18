@@ -213,8 +213,6 @@ export declare type Operation = CreateOperation | UpdateOperation | RemoveOperat
 export declare type ArticleIdSubQuery = Selection<ArticleIdProjection>;
 export declare type UserIdSubQuery = Selection<UserIdProjection>;
 export declare type ExtraFileIdSubQuery = Selection<ExtraFileIdProjection>;
-export declare type NativeAttr = OpAttr | `entity.${Article.NativeAttr}` | `entity.${User.NativeAttr}`;
-export declare type FullAttr = NativeAttr;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

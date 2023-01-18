@@ -122,8 +122,6 @@ export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type SystemIdSubQuery = Selection<SystemIdProjection>;
 export declare type DomainIdSubQuery = Selection<DomainIdProjection>;
-export declare type NativeAttr = OpAttr | `system.${System.NativeAttr}`;
-export declare type FullAttr = NativeAttr;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

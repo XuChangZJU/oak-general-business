@@ -91,12 +91,14 @@ export default OakComponent({
                     }
                 );
             }
+            else {
+                this.update({}, 'grant');
+            }
             this.setState({
                 userRelationRelativePath: `user${firstLetterUpperCase(
                     entity
                 )}$user`,
             });
-            this.update({}, 'grant');
         },
     },
     methods: {

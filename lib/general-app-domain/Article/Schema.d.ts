@@ -130,8 +130,6 @@ export declare type RemoveOperationData = {};
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type ArticleIdSubQuery = Selection<ArticleIdProjection>;
-export declare type NativeAttr = OpAttr;
-export declare type FullAttr = NativeAttr | `extraFiles$${number}.${ExtraFile.NativeAttr}`;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

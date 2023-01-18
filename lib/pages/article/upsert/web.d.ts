@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import '@wangeditor/editor/dist/css/style.css';
 import { EntityDict } from './../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';

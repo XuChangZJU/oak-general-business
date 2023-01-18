@@ -106,8 +106,6 @@ export declare type RemoveOperationData = {};
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type CaptchaIdSubQuery = Selection<CaptchaIdProjection>;
-export declare type NativeAttr = OpAttr;
-export declare type FullAttr = NativeAttr;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

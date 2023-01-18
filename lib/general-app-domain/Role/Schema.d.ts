@@ -79,8 +79,6 @@ export declare type RemoveOperationData = {};
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type RoleIdSubQuery = Selection<RoleIdProjection>;
-export declare type NativeAttr = OpAttr;
-export declare type FullAttr = NativeAttr | `userRoles$${number}.${UserRole.NativeAttr}`;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
@@ -93,5 +91,6 @@ export declare type EntityDef = {
     Remove: RemoveOperation;
     CreateSingle: CreateSingleOperation;
     CreateMulti: CreateMultipleOperation;
+    Relation: Relation;
 };
 export {};
