@@ -13,9 +13,6 @@ const config: Configuration = {
 
 export type Relation = 'owner';
 
-const relationHierarchy: RelationHierarchy<Relation> = {
-};
-
 const locale: LocaleDef<Schema, '', Relation, {}> = {
    zh_CN: {
        attr: {
