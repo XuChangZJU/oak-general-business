@@ -26,11 +26,16 @@ export declare type AliCloudConfig = {
     accessKeyId: string;
     accessKeySecret: string;
     regionId: string;
+    apiVersion: string;
+    endpoint: string;
+    smsEndpoint: string;
 };
 export declare type TencentCloudConfig = {
     secretId: string;
     secretKey: string;
     region: string;
+    endpoint: string;
+    smsEndpoint: string;
 };
 export declare type AmapCloudConfig = {
     webApiKey: string;
@@ -45,6 +50,7 @@ export declare type AliSmsConfig = {
 };
 export declare type TencentSmsConfig = {
     secretId: string;
+    smsSdkAppId: string;
     defaultSignName: string;
     templates: Record<string, {
         signName?: string;

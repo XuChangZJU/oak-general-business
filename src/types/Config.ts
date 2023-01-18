@@ -31,12 +31,17 @@ export type AliCloudConfig = {
     accessKeyId: string;
     accessKeySecret: string;
     regionId: string;
+    apiVersion: string;
+    endpoint: string;
+    smsEndpoint: string;
 };
 
 export type TencentCloudConfig = {
     secretId: string;
     secretKey: string;
     region: string;
+    endpoint: string;
+    smsEndpoint: string;
 };
 
 export type AmapCloudConfig = {
@@ -55,12 +60,16 @@ export type AliSmsConfig = {
 
 export type TencentSmsConfig = {
     secretId: string;
+    smsSdkAppId: string;
     defaultSignName: string;
-    templates: Record<string, {
-        signName?: string;
-        code: string;
-        // templateParams改成function注入
-    }>;
+    templates: Record<
+        string,
+        {
+            signName?: string;
+            code: string;
+            // templateParams改成function注入
+        }
+    >;
 };
 
 export type QrCodeType = 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp' | 'webForWechatPublic';

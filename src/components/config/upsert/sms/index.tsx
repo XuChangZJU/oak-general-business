@@ -324,6 +324,24 @@ function Tencent(props: {
                                           </>
                                       </Form.Item>
                                       <Form.Item
+                                          label="smsSdkAppId"
+                                          name="smsSdkAppId"
+                                      >
+                                          <>
+                                              <Input
+                                                  placeholder="请输入smsSdkAppId"
+                                                  type="text"
+                                                  value={ele.smsSdkAppId}
+                                                  onChange={(e) =>
+                                                      setValue(
+                                                          `${idx}.smsSdkAppId`,
+                                                          e.target.value
+                                                      )
+                                                  }
+                                              />
+                                          </>
+                                      </Form.Item>
+                                      <Form.Item
                                           label="defaultSignName"
                                           name="defaultSignName"
                                       >
@@ -526,19 +544,19 @@ export default function Sms(props: {
                     每种均可配置一个，相应的服务所使用的帐号请准确对应
                 </Card>
             </Row>
-            <Ali
-                sms={ali || []}
-                setValue={(path, value) => setValue(`ali.${path}`, value)}
-                removeItem={(path, index) => removeItem(`ali`, index)}
-                addItem={(path, index) => setValue(`ali.${index}`, {})}
-                cleanKey={(path, key) => cleanKey(`ali.${path}`, key)}
-            />
             <Tencent
                 sms={tencent || []}
                 setValue={(path, value) => setValue(`tencent.${path}`, value)}
                 removeItem={(path, index) => removeItem(`tencent`, index)}
                 addItem={(path, index) => setValue(`tencent.${index}`, {})}
                 cleanKey={(path, key) => cleanKey(`tencent.${path}`, key)}
+            />
+            <Ali
+                sms={ali || []}
+                setValue={(path, value) => setValue(`ali.${path}`, value)}
+                removeItem={(path, index) => removeItem(`ali`, index)}
+                addItem={(path, index) => setValue(`ali.${index}`, {})}
+                cleanKey={(path, key) => cleanKey(`ali.${path}`, key)}
             />
         </Space>
     );

@@ -97,6 +97,44 @@ function TencentAccount(props: {
                                               />
                                           </>
                                       </Form.Item>
+                                      <Form.Item
+                                          label="endpoint"
+                                          name="endpoint"
+                                          tooltip="访问的域名，如：tencentcloudapi.com"
+                                      >
+                                          <>
+                                              <Input
+                                                  placeholder="请输入endpoint"
+                                                  type="text"
+                                                  value={ele.endpoint}
+                                                  onChange={(e) =>
+                                                      setValue(
+                                                          `${idx}.endpoint`,
+                                                          e.target.value
+                                                      )
+                                                  }
+                                              />
+                                          </>
+                                      </Form.Item>
+                                      <Form.Item
+                                          label="短信endpoint"
+                                          name="smsEndpoint"
+                                          tooltip="访问的域名，如：sms.tencentcloudapi.com"
+                                      >
+                                          <>
+                                              <Input
+                                                  placeholder="请输入endpoint"
+                                                  type="text"
+                                                  value={ele.smsEndpoint}
+                                                  onChange={(e) =>
+                                                      setValue(
+                                                          `${idx}.smsEndpoint`,
+                                                          e.target.value
+                                                      )
+                                                  }
+                                              />
+                                          </>
+                                      </Form.Item>
                                   </Form>
                               ),
                           }))
@@ -150,6 +188,7 @@ function TencentAccount(props: {
                                           <Form.Item
                                               label="region"
                                               name="region"
+                                              tooltip="地域, 华北地区(北京): ap-beijing、 华南地区(广州): ap-guangzhou、华东地区(南京): ap-nanjing"
                                           >
                                               <>
                                                   <Input
@@ -159,6 +198,25 @@ function TencentAccount(props: {
                                                       onChange={(e) =>
                                                           setValue(
                                                               `0.region`,
+                                                              e.target.value
+                                                          )
+                                                      }
+                                                  />
+                                              </>
+                                          </Form.Item>
+                                          <Form.Item
+                                              label="短信endpoint"
+                                              name="smsEndpoint"
+                                              tooltip="访问的域名，如：sms.tencentcloudapi.com"
+                                          >
+                                              <>
+                                                  <Input
+                                                      placeholder="请输入endpoint"
+                                                      type="text"
+                                                      value=""
+                                                      onChange={(e) =>
+                                                          setValue(
+                                                              `0.smsEndpoint`,
                                                               e.target.value
                                                           )
                                                       }
@@ -397,6 +455,62 @@ function AliAccount(props: {
                                               />
                                           </>
                                       </Form.Item>
+                                      <Form.Item
+                                          label="endpoint"
+                                          name="endpoint"
+                                          tooltip="访问的域名，如：dysmsapi.aliyuncs.com"
+                                      >
+                                          <>
+                                              <Input
+                                                  placeholder="请输入endpoint"
+                                                  type="text"
+                                                  value={ele.endpoint}
+                                                  onChange={(e) =>
+                                                      setValue(
+                                                          `${idx}.endpoint`,
+                                                          e.target.value
+                                                      )
+                                                  }
+                                              />
+                                          </>
+                                      </Form.Item>
+                                      <Form.Item
+                                          label="apiVersion"
+                                          name="apiVersion"
+                                      >
+                                          <>
+                                              <Input
+                                                  placeholder="请输入apiVersion"
+                                                  type="text"
+                                                  value={ele.apiVersion}
+                                                  onChange={(e) =>
+                                                      setValue(
+                                                          `${idx}.apiVersion`,
+                                                          e.target.value
+                                                      )
+                                                  }
+                                              />
+                                          </>
+                                      </Form.Item>
+                                      <Form.Item
+                                          label="短信endpoint"
+                                          name="smsEndpoint"
+                                          tooltip="访问的域名，如：dysmsapi.aliyuncs.com"
+                                      >
+                                          <>
+                                              <Input
+                                                  placeholder="请输入endpoint"
+                                                  type="text"
+                                                  value={ele.smsEndpoint}
+                                                  onChange={(e) =>
+                                                      setValue(
+                                                          `${idx}.smsEndpoint`,
+                                                          e.target.value
+                                                      )
+                                                  }
+                                              />
+                                          </>
+                                      </Form.Item>
                                   </Form>
                               ),
                           }))
@@ -459,6 +573,62 @@ function AliAccount(props: {
                                                       onChange={(e) =>
                                                           setValue(
                                                               `0.regionId`,
+                                                              e.target.value
+                                                          )
+                                                      }
+                                                  />
+                                              </>
+                                          </Form.Item>
+                                          <Form.Item
+                                              label="endpoint"
+                                              name="endpoint"
+                                              tooltip="访问的域名，如：dysmsapi.aliyuncs.com"
+                                          >
+                                              <>
+                                                  <Input
+                                                      placeholder="请输入endpoint"
+                                                      type="text"
+                                                      value=""
+                                                      onChange={(e) =>
+                                                          setValue(
+                                                              `0.endpoint`,
+                                                              e.target.value
+                                                          )
+                                                      }
+                                                  />
+                                              </>
+                                          </Form.Item>
+                                          <Form.Item
+                                              label="apiVersion"
+                                              name="apiVersion"
+                                          >
+                                              <>
+                                                  <Input
+                                                      placeholder="请输入apiVersion"
+                                                      type="text"
+                                                      value=""
+                                                      onChange={(e) =>
+                                                          setValue(
+                                                              `0.apiVersion`,
+                                                              e.target.value
+                                                          )
+                                                      }
+                                                  />
+                                              </>
+                                          </Form.Item>
+                                          <Form.Item
+                                              label="短信endpoint"
+                                              name="smsEndpoint"
+                                              tooltip="访问的域名，如：dysmsapi.aliyuncs.com"
+                                          >
+                                              <>
+                                                  <Input
+                                                      placeholder="请输入endpoint"
+                                                      type="text"
+                                                      value=""
+                                                      onChange={(e) =>
+                                                          setValue(
+                                                              `0.smsEndpoint`,
                                                               e.target.value
                                                           )
                                                       }
