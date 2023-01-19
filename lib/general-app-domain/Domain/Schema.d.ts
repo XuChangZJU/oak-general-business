@@ -86,7 +86,7 @@ export declare type SortNode = {
 export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
-export declare type Aggregation = Omit<DeduceAggregation<Projection, Filter, Sorter>, "id">;
+export declare type Aggregation = Omit<DeduceAggregation<Schema, Projection, Filter, Sorter>, "id">;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "systemId">> & (({
     systemId?: never;
     system: System.CreateSingleOperation;
@@ -119,9 +119,11 @@ export declare type RemoveOperationData = {} & (({
     system?: System.UpdateOperation | System.RemoveOperation;
 }));
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
-export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation;
+export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type SystemIdSubQuery = Selection<SystemIdProjection>;
 export declare type DomainIdSubQuery = Selection<DomainIdProjection>;
+export declare type NativeAttr = OpAttr | `system.${System.NativeAttr}`;
+export declare type FullAttr = NativeAttr;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
