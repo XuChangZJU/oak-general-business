@@ -258,7 +258,7 @@ export declare type SortNode = {
 export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
-export declare type Aggregation = Omit<DeduceAggregation<Projection, Filter, Sorter>, "id">;
+export declare type Aggregation = Omit<DeduceAggregation<Schema, Projection, Filter, Sorter>, "id">;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "refId">> & (({
     refId?: never;
     ref?: CreateSingleOperation;
@@ -322,8 +322,10 @@ export declare type RemoveOperationData = {} & (({
     ref?: UpdateOperation | RemoveOperation;
 }));
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
-export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation;
+export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type UserIdSubQuery = Selection<UserIdProjection>;
+export declare type NativeAttr = OpAttr | `ref.${OpAttr}` | `ref.ref.${OpAttr}` | `ref.ref.ref.${OpAttr}`;
+export declare type FullAttr = NativeAttr | `opers$${number}.${Oper.NativeAttr}` | `emails$${number}.${Email.NativeAttr}` | `messages$${number}.${Message.NativeAttr}` | `mobiles$${number}.${Mobile.NativeAttr}` | `userRoles$${number}.${UserRole.NativeAttr}` | `tokens$user$${number}.${Token.NativeAttr}` | `tokens$player$${number}.${Token.NativeAttr}` | `users$${number}.${NativeAttr}` | `userEntityGrants$granter$${number}.${UserEntityGrant.NativeAttr}` | `userEntityGrants$grantee$${number}.${UserEntityGrant.NativeAttr}` | `userSystems$${number}.${UserSystem.NativeAttr}` | `wechatUsers$${number}.${WechatUser.NativeAttr}` | `operEntitys$${number}.${OperEntity.NativeAttr}` | `modiEntitys$${number}.${ModiEntity.NativeAttr}` | `extraFiles$${number}.${ExtraFile.NativeAttr}`;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
