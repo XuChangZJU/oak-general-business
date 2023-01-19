@@ -2,8 +2,8 @@ import { Endpoint } from 'oak-domain/lib/types/Endpoint';
 import { EntityDict } from '../general-app-domain';
 import { BRC } from '../types/RuntimeCxt';
 
-const endpoints: Array<Endpoint<EntityDict, BRC>> = [
-    {
+const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
+    wechatApi: {
         name: '微信公众号回调接口',
         method: 'post',
         params: ['appId'],
@@ -12,6 +12,6 @@ const endpoints: Array<Endpoint<EntityDict, BRC>> = [
             throw new Error('not implemented yet');
         },
     }
-];
+};
 
 export default endpoints;
