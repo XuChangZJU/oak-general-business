@@ -5,7 +5,9 @@ import { EntityDict } from '../../general-app-domain';
 import { DefaultOptionType } from 'antd/es/select';
 const { confirm } = Modal;
 type Item = {
-    name: string;
+    label?: string;
+    action?: string;
+    unRelation: boolean;
     type?: 'a' | 'button';
     index?: number;
     alerted?: boolean;
@@ -21,18 +23,23 @@ type Item = {
 
 const commonAction = ['create', 'update', 'remove', 'confirm', 'cancel', 'grant', 'revoke'];
 function ItemComponent(props: Item & { entity: string; t: (value: string) => string; onClick: () => void }) {
-    const { type, entity, name, buttonProps, custom, t, onClick } = props;
-    let label: string;
-    if (commonAction.includes(name)) {
-        label = t(`common:action.${name}`);
+    const { type, entity, label, action, buttonProps, custom, t, onClick } = props;
+    let text: string | undefined;
+    if (action) {
+        if (commonAction.includes(action)) {
+            text = t(`common:action.${action}`);
+        }
+        else {
+            text = t(`${entity}:action.${action}`);
+        }
     }
     else {
-        label = t(`${entity}:action.${name}`);
+        text = label;
     }
     if (type === 'button') {
         return (
             <Button {...buttonProps} onClick={onClick}>
-                {label}
+                {text}
             </Button>
         )
     }
@@ -45,7 +52,7 @@ function ItemComponent(props: Item & { entity: string; t: (value: string) => str
     }
     return (
         <a onClick={onClick}>
-            {label}
+            {text}
         </a>
     )
 }
@@ -71,13 +78,13 @@ export default function Render(
     return (
         <Space {...spaceProps}>
             {items && items.map((ele, index: number) => {
-                if (oakLegalActions?.includes(ele.name as EntityDict[keyof EntityDict]['Action'])) {
+                if (ele.unRelation || oakLegalActions?.includes(ele.action as EntityDict[keyof EntityDict]['Action'])) {
                     let onClick = () => {
                         if (ele.onClick) {
                             ele.onClick();
                             return;
                         }
-                        methods.execute(ele.name as EntityDict[keyof EntityDict]['Action'])
+                        methods.execute(ele.action as EntityDict[keyof EntityDict]['Action'])
                     };
                     if (ele.alerted) {
                         onClick = () => {
@@ -91,7 +98,7 @@ export default function Render(
                                         ele.onClick();
                                         return;
                                     }
-                                    methods.execute(ele.name as EntityDict[keyof EntityDict]['Action'])
+                                    methods.execute(ele.action as EntityDict[keyof EntityDict]['Action'])
                                     if (ele.callBack) {
                                         ele.callBack(index);
                                     }

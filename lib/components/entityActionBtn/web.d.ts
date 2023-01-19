@@ -2,7 +2,9 @@ import { ButtonProps, SpaceProps } from 'antd';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../general-app-domain';
 declare type Item = {
-    name: string;
+    label?: string;
+    action?: string;
+    unRelation: boolean;
     type?: 'a' | 'button';
     index?: number;
     alerted?: boolean;
