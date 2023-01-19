@@ -178,7 +178,7 @@ export declare type SortNode = {
 export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
-export declare type Aggregation = Omit<DeduceAggregation<Schema, Projection, Filter, Sorter>, "id">;
+export declare type Aggregation = Omit<DeduceAggregation<Projection, Filter, Sorter>, "id">;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "applicationId" | "userId" | "playerId">> & (({
     applicationId?: never;
     application?: Application.CreateSingleOperation;
@@ -315,15 +315,13 @@ export declare type RemoveOperationData = {} & (({
     [k: string]: any;
 });
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
-export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
+export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export declare type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
 export declare type UserIdSubQuery = Selection<UserIdProjection>;
 export declare type EmailIdSubQuery = Selection<EmailIdProjection>;
 export declare type MobileIdSubQuery = Selection<MobileIdProjection>;
 export declare type WechatUserIdSubQuery = Selection<WechatUserIdProjection>;
 export declare type TokenIdSubQuery = Selection<TokenIdProjection>;
-export declare type NativeAttr = OpAttr | `application.${Application.NativeAttr}` | `user.${User.NativeAttr}` | `player.${User.NativeAttr}` | `entity.${Email.NativeAttr}` | `entity.${Mobile.NativeAttr}` | `entity.${WechatUser.NativeAttr}`;
-export declare type FullAttr = NativeAttr;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

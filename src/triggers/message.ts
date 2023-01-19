@@ -51,7 +51,7 @@ async function tryAddMessageSent(message: CreateMessageData, channel: string, co
     let dispersedData;
     switch (channel) {
         case 'weChat': {
-            dispersedData = WechatConverter(type, props, appId);
+            dispersedData = WechatConverter(type!, props!, appId);
             break;
         }
         default: {

@@ -27,7 +27,7 @@ const checkers: Checker<
                         checkAttributesNotNull('userEntityGrant', ele, [
                             'number',
                         ]);
-                        if (ele.number <= 0) {
+                        if (ele.number! <= 0) {
                             throw new OakInputIllegalException(
                                 'userEntityGrant',
                                 ['number', '分享的权限数量必须大于0']
