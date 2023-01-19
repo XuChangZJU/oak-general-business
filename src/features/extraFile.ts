@@ -1,5 +1,4 @@
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
-import { AspectWrapper, DeduceCreateOperationData } from 'oak-domain/lib/types';
 import { Upload } from 'oak-frontend-base/lib/utils/upload';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { AspectDict } from '../aspects/AspectDict';
@@ -10,6 +9,7 @@ import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Application } from './application'
 import { composeFileUrl, bytesToSize } from '../utils/extraFile'
+import assert from 'assert';
 
 export class ExtraFile<
     ED extends EntityDict,
@@ -37,14 +37,13 @@ export class ExtraFile<
     }
 
     async upload(
-        extraFile: DeduceCreateOperationData<
-            EntityDict['extraFile']['OpSchema']
-        >
+        extraFile: EntityDict['extraFile']['CreateSingle']['data']
     ) {
         const { origin, extra1, filename, objectId, extension, entity } =
             extraFile;
         // 构造文件上传所需的key
         const key = `${entity ? entity + '/' : ''}${objectId}.${extension}`;
+        assert( origin !== 'unknown');
         const uploadInfo = await this.getUploadInfo(origin, key);
 
         if (process.env.OAK_PLATFORM === 'wechatMp') {

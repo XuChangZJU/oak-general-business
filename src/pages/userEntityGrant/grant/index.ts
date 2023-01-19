@@ -1,4 +1,4 @@
-import { DeduceCreateSingleOperation, OakException, OakCongruentRowExists } from "oak-domain/lib/types";
+import { OakException, OakCongruentRowExists } from "oak-domain/lib/types";
 import { EntityDict } from '../../../general-app-domain';
 
 export default OakComponent({

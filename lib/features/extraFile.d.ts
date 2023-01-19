@@ -1,5 +1,4 @@
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
-import { DeduceCreateOperationData } from 'oak-domain/lib/types';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { AspectDict } from '../aspects/AspectDict';
 import { EntityDict } from '../general-app-domain';
@@ -12,7 +11,7 @@ export declare class ExtraFile<ED extends EntityDict, Cxt extends BackendRuntime
     private application;
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>, application: Application<ED, Cxt, FrontCxt, AD>);
     private getUploadInfo;
-    upload(extraFile: DeduceCreateOperationData<EntityDict['extraFile']['OpSchema']>): Promise<{
+    upload(extraFile: EntityDict['extraFile']['CreateSingle']['data']): Promise<{
         url: string;
         bucket: string;
     }>;

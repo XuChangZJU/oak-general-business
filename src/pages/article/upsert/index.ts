@@ -1,7 +1,6 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor';
 import {
-    DeduceCreateOperationData,
     OakException,
     OakCongruentRowExists,
     OakUnloggedInException,
@@ -64,9 +63,7 @@ export default OakComponent({
     },
     methods: {
         async addExtraFile(
-            extraFile: DeduceCreateOperationData<
-                EntityDict['extraFile']['Schema']
-            >
+            extraFile: EntityDict['extraFile']['CreateSingle']['data']
         ) {
             try {
                 const result = await this.features.cache.operate('extraFile', {
