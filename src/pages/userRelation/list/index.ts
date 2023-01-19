@@ -1,4 +1,5 @@
 import { OakUserUnpermittedException } from 'oak-domain/lib/types';
+import { difference } from 'oak-domain/lib/utils/lodash';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../../../general-app-domain';
@@ -135,8 +136,18 @@ export default OakComponent({
                 this.refresh();
             }
         },
+        'relations'(value) {
+            const { relations } = this.props;
+            if (this.state.oakFullpath && (value.length !== relations.length || difference(value, relations).length > 0)) {
+                this.refresh();
+            }
+        }
     },
-    lifetimes: {},
+    lifetimes: {
+        ready() {
+            console.log('ready', this.props.relations);
+        }
+    },
     methods: {
         goUpsert() {
             const { entity, entityId, relations, redirectToAfterConfirm } =

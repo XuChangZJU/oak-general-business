@@ -235,8 +235,6 @@ export declare type Operation = CreateOperation | UpdateOperation | RemoveOperat
 export declare type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
 export declare type UserEntityGrantIdSubQuery = Selection<UserEntityGrantIdProjection>;
 export declare type WechatQrCodeIdSubQuery = Selection<WechatQrCodeIdProjection>;
-export declare type NativeAttr = OpAttr | `application.${Application.NativeAttr}` | `entity.${UserEntityGrant.NativeAttr}`;
-export declare type FullAttr = NativeAttr | `operEntitys$${number}.${OperEntity.NativeAttr}` | `modiEntitys$${number}.${ModiEntity.NativeAttr}`;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

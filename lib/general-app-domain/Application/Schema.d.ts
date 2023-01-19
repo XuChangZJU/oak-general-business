@@ -186,8 +186,6 @@ export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type SystemIdSubQuery = Selection<SystemIdProjection>;
 export declare type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
-export declare type NativeAttr = OpAttr | `system.${System.NativeAttr}`;
-export declare type FullAttr = NativeAttr | `tokens$${number}.${Token.NativeAttr}` | `wechatQrCodes$${number}.${WechatQrCode.NativeAttr}` | `wechatUsers$${number}.${WechatUser.NativeAttr}`;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

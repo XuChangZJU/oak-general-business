@@ -111,8 +111,6 @@ export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type AreaIdSubQuery = Selection<AreaIdProjection>;
 export declare type AddressIdSubQuery = Selection<AddressIdProjection>;
-export declare type NativeAttr = OpAttr | `area.${Area.NativeAttr}`;
-export declare type FullAttr = NativeAttr;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

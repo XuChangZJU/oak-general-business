@@ -114,8 +114,6 @@ export declare type RemoveOperationData = {};
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type PlatformIdSubQuery = Selection<PlatformIdProjection>;
-export declare type NativeAttr = OpAttr;
-export declare type FullAttr = NativeAttr | `systems$${number}.${System.NativeAttr}`;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

@@ -197,8 +197,6 @@ export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation | SelectOperation;
 export declare type PlatformIdSubQuery = Selection<PlatformIdProjection>;
 export declare type SystemIdSubQuery = Selection<SystemIdProjection>;
-export declare type NativeAttr = OpAttr | `platform.${Platform.NativeAttr}`;
-export declare type FullAttr = NativeAttr | `applications$${number}.${Application.NativeAttr}` | `domains$${number}.${Domain.NativeAttr}` | `messages$${number}.${Message.NativeAttr}` | `userSystems$${number}.${UserSystem.NativeAttr}`;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

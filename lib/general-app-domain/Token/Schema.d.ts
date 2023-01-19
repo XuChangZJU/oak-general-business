@@ -322,8 +322,6 @@ export declare type EmailIdSubQuery = Selection<EmailIdProjection>;
 export declare type MobileIdSubQuery = Selection<MobileIdProjection>;
 export declare type WechatUserIdSubQuery = Selection<WechatUserIdProjection>;
 export declare type TokenIdSubQuery = Selection<TokenIdProjection>;
-export declare type NativeAttr = OpAttr | `application.${Application.NativeAttr}` | `user.${User.NativeAttr}` | `player.${User.NativeAttr}` | `entity.${Email.NativeAttr}` | `entity.${Mobile.NativeAttr}` | `entity.${WechatUser.NativeAttr}`;
-export declare type FullAttr = NativeAttr;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
