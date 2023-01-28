@@ -27,6 +27,12 @@ export declare type WechatPublicConfig = {
     appId: string;
     appSecret: string;
     templateMsgs?: WechatPublicTemplateMsgsConfig;
+    server?: {
+        url?: string;
+        token: string;
+        encodingAESKey: string;
+        mode: 'clear' | 'compatible' | 'safe';
+    };
 };
 export interface Schema extends EntityShape {
     name: String<32>;
