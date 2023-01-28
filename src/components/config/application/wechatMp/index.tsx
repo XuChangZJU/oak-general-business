@@ -37,77 +37,49 @@ export default function WechatMp(props: {
                 <Divider orientation="left" className={Styles.title}>
                     微信小程序-基础
                 </Divider>
-                <Tabs
-                    tabPosition={'top'}
-                    size={'middle'}
-                    type="card"
-                    items={[
-                        {
-                            key: '0',
-                            label: '配置项',
-                            children: (
-                                <Form
-                                    colon={true}
-                                    labelAlign="left"
-                                    layout="vertical"
-                                    style={{ marginTop: 10 }}
-                                >
-                                    <Form.Item label="appId" name="appId">
-                                        <>
-                                            <Input
-                                                placeholder="请输入appId"
-                                                type="text"
-                                                value={config?.appId}
-                                                onChange={(e) =>
-                                                    setValue(
-                                                        `appId`,
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </>
-                                    </Form.Item>
-                                    <Form.Item
-                                        label="appSecret"
-                                        name="appSecret"
-                                    >
-                                        <>
-                                            <Input
-                                                placeholder="请输入appSecret"
-                                                type="text"
-                                                value={config?.appSecret}
-                                                onChange={(e) =>
-                                                    setValue(
-                                                        `appSecret`,
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </>
-                                    </Form.Item>
-                                    <Form.Item
-                                        label="qrCodePrefix"
-                                        name="qrCodePrefix"
-                                    >
-                                        <>
-                                            <Input
-                                                placeholder="请输入qrCodePrefix"
-                                                type="text"
-                                                value={config?.qrCodePrefix}
-                                                onChange={(e) =>
-                                                    setValue(
-                                                        `qrCodePrefix`,
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </>
-                                    </Form.Item>
-                                </Form>
-                            ),
-                        },
-                    ]}
-                ></Tabs>
+                <Form
+                    colon={true}
+                    labelAlign="left"
+                    layout="vertical"
+                    style={{ marginTop: 10 }}
+                >
+                    <Form.Item label="appId" name="appId">
+                        <>
+                            <Input
+                                placeholder="请输入appId"
+                                type="text"
+                                value={config?.appId}
+                                onChange={(e) =>
+                                    setValue(`appId`, e.target.value)
+                                }
+                            />
+                        </>
+                    </Form.Item>
+                    <Form.Item label="appSecret" name="appSecret">
+                        <>
+                            <Input
+                                placeholder="请输入appSecret"
+                                type="text"
+                                value={config?.appSecret}
+                                onChange={(e) =>
+                                    setValue(`appSecret`, e.target.value)
+                                }
+                            />
+                        </>
+                    </Form.Item>
+                    <Form.Item label="qrCodePrefix" name="qrCodePrefix">
+                        <>
+                            <Input
+                                placeholder="请输入qrCodePrefix"
+                                type="text"
+                                value={config?.qrCodePrefix}
+                                onChange={(e) =>
+                                    setValue(`qrCodePrefix`, e.target.value)
+                                }
+                            />
+                        </>
+                    </Form.Item>
+                </Form>
             </Col>
         </Space>
     );

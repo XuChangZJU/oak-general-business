@@ -12,6 +12,7 @@ import {
     Modal,
     message,
     Button,
+    Select,
 } from 'antd';
 import Styles from './web.module.less';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -46,80 +47,134 @@ export default function WechatPublic(props: {
                 <Divider orientation="left" className={Styles.title}>
                     微信公众号-基础
                 </Divider>
-                <Tabs
-                    tabPosition={'top'}
-                    size={'middle'}
-                    type="card"
-                    items={[
-                        {
-                            key: '0',
-                            label: '配置项',
-                            children: (
-                                <Form
-                                    colon={true}
-                                    labelAlign="left"
-                                    layout="vertical"
-                                    style={{ marginTop: 10 }}
-                                >
-                                    <Form.Item label="appId" name="appId">
-                                        <>
-                                            <Input
-                                                placeholder="请输入appId"
-                                                type="text"
-                                                value={config?.appId}
-                                                onChange={(e) =>
-                                                    setValue(
-                                                        `appId`,
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </>
-                                    </Form.Item>
-                                    <Form.Item
-                                        label="appSecret"
-                                        name="appSecret"
-                                    >
-                                        <>
-                                            <Input
-                                                placeholder="请输入appSecret"
-                                                type="text"
-                                                value={config?.appSecret}
-                                                onChange={(e) =>
-                                                    setValue(
-                                                        `appSecret`,
-                                                        e.target.value
-                                                    )
-                                                }
-                                            />
-                                        </>
-                                    </Form.Item>
-                                    {isService && (
-                                        <Form.Item
-                                            label="是否为服务号"
-                                            name="isService"
-                                        >
-                                            <>
-                                                <Switch
-                                                    checkedChildren="是"
-                                                    unCheckedChildren="否"
-                                                    checked={config?.isService}
-                                                    onChange={(checked) =>
-                                                        setValue(
-                                                            `isService`,
-                                                            checked
-                                                        )
-                                                    }
-                                                />
-                                            </>
-                                        </Form.Item>
-                                    )}
-                                </Form>
-                            ),
-                        },
-                    ]}
-                ></Tabs>
+                <Form
+                    colon={true}
+                    labelAlign="left"
+                    layout="vertical"
+                    style={{ marginTop: 10 }}
+                >
+                    <Form.Item label="appId" name="appId">
+                        <>
+                            <Input
+                                placeholder="请输入appId"
+                                type="text"
+                                value={config?.appId}
+                                onChange={(e) =>
+                                    setValue(`appId`, e.target.value)
+                                }
+                            />
+                        </>
+                    </Form.Item>
+                    <Form.Item label="appSecret" name="appSecret">
+                        <>
+                            <Input
+                                placeholder="请输入appSecret"
+                                type="text"
+                                value={config?.appSecret}
+                                onChange={(e) =>
+                                    setValue(`appSecret`, e.target.value)
+                                }
+                            />
+                        </>
+                    </Form.Item>
+                    {isService && (
+                        <Form.Item label="是否为服务号" name="isService">
+                            <>
+                                <Switch
+                                    checkedChildren="是"
+                                    unCheckedChildren="否"
+                                    checked={config?.isService}
+                                    onChange={(checked) =>
+                                        setValue(`isService`, checked)
+                                    }
+                                />
+                            </>
+                        </Form.Item>
+                    )}
+                </Form>
             </Col>
+            {isService && (
+                <Col flex="auto">
+                    <Divider orientation="left" className={Styles.title}>
+                        微信公众号-服务器配置
+                    </Divider>
+                    <Form
+                        colon={true}
+                        labelAlign="left"
+                        layout="vertical"
+                        style={{ marginTop: 10 }}
+                    >
+                        <Form.Item label="服务器地址(URL)" name="url">
+                            <>
+                                <Input
+                                    placeholder="请输入服务器地址(URL)，选填"
+                                    type="text"
+                                    value={config?.server?.url}
+                                    onChange={(e) =>
+                                        setValue(`server.url`, e.target.value)
+                                    }
+                                />
+                            </>
+                        </Form.Item>
+                        <Form.Item label="令牌(Token)" name="token">
+                            <>
+                                <Input
+                                    placeholder="请输入令牌(Token)"
+                                    type="text"
+                                    value={config?.server?.token}
+                                    onChange={(e) =>
+                                        setValue(`server.token`, e.target.value)
+                                    }
+                                />
+                            </>
+                        </Form.Item>
+                        <Form.Item
+                            label="消息加解密密钥(EncodingAESKey)"
+                            name="encodingAESKey"
+                            tooltip="消息加解密密钥将用于消息体加解密过程。具体功能请参见微信文档"
+                        >
+                            <>
+                                <Input
+                                    placeholder="请输入消息加解密密钥(EncodingAESKey)"
+                                    type="text"
+                                    value={config?.server?.encodingAESKey}
+                                    onChange={(e) =>
+                                        setValue(
+                                            `server.encodingAESKey`,
+                                            e.target.value
+                                        )
+                                    }
+                                />
+                            </>
+                        </Form.Item>
+                        <Form.Item label="消息加解密方式" name="mode">
+                            <>
+                                <Select
+                                    placeholder="请选择消息加解密方式"
+                                    value={config?.server?.mode}
+                                    onChange={(value) =>
+                                        setValue(`server.mode`, value)
+                                    }
+                                    options={[
+                                        {
+                                            value: 'clear',
+                                            label: '明文模式',
+                                        },
+                                        {
+                                            value: 'compatible',
+                                            label: '兼容模式',
+                                        },
+                                        {
+                                            value: 'safe',
+                                            label: '安全模式',
+                                        },
+                                    ]}
+                                />
+                            </>
+                        </Form.Item>
+                    </Form>
+                </Col>
+            )}
             {isService && (
                 <Col flex="auto">
                     <Divider orientation="left" className={Styles.title}>

@@ -28,10 +28,16 @@ export type WechatPublicTemplateMsgsConfig = Record<string, string>;     // key�
 
 export type WechatPublicConfig = {
     type: 'wechatPublic';
-    isService: boolean;             // 是否服务号
+    isService: boolean; // 是否服务号
     appId: string;
     appSecret: string;
     templateMsgs?: WechatPublicTemplateMsgsConfig;
+    server?: {
+        url?: string; //服务器地址(URL)
+        token: string; //令牌(Token)
+        encodingAESKey: string; //消息加解密密钥(EncodingAESKey)
+        mode: 'clear' | 'compatible' | 'safe'; //消息加解密方式 明文模式 兼容模式 安全模式
+    };
 };
 
 export interface Schema extends EntityShape {
