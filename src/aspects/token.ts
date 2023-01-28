@@ -14,6 +14,7 @@ import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisable
 import { encryptPasswordSha1 } from '../utils/password';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { tokenProjection } from '../types/Token';
+import { sendSms } from '../utils/sms';
 
 async function makeDistinguishException<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(userId: string, context: Cxt) {
     const [user] = await context.select('user', {
@@ -1023,6 +1024,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
     assert(type === 'web');
     let { visitorId } = env;
     const now = Date.now();
+    const duration = 1; // 多少分钟内有效
     if (process.env.NODE_ENV !== 'development') {
         const [count1, count2] = await Promise.all(
             [
@@ -1069,8 +1071,8 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
         dontCollect: true,
     });
     if (captcha) {
+        const code = captcha.code!;
         if (process.env.NODE_ENV === 'development') {
-            const { code } = captcha;
             return `验证码[${code}]已创建`;
         }
         else if (captcha.$$createAt$$! as number - now < 60000) {
@@ -1078,7 +1080,34 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
         }
         else {
             // todo 再次发送
-            return '验证码已发送';
+            const result = await sendSms<ED, Cxt>(
+                {
+                    origin: 'tencent',
+                    templateName: '登录',
+                    mobile,
+                    templateParamSet: {
+                        code,
+                        duration: duration.toString(),
+                    },
+                    templateParamSetFn: (origin, templateParamSet) => {
+                        if (!templateParamSet) {
+                            return templateParamSet;
+                        }
+                        if (origin === 'tencent') {
+                            return [
+                                templateParamSet.code,
+                                templateParamSet.duration,
+                            ];
+                        }
+                        return undefined;
+                    },
+                },
+                context
+            );
+            if (result === true) {
+                return '验证码已发送';
+            }
+            return '验证码发送失败';
         }
     }
     else {
@@ -1114,7 +1143,35 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
             return `验证码[${code}]已创建`;
         }
         else {
-            return '验证码已创建';
+            //发送短信
+            const result = await sendSms<ED, Cxt>(
+                {
+                    origin: 'tencent',
+                    templateName: '登录',
+                    mobile,
+                    templateParamSet: {
+                        code,
+                        duration: duration.toString(),
+                    },
+                    templateParamSetFn: (origin, templateParamSet) => {
+                        if (!templateParamSet) {
+                            return templateParamSet;
+                        }
+                        if (origin === 'tencent') {
+                            return [
+                                templateParamSet.code,
+                                templateParamSet.duration,
+                            ];
+                        }
+                        return undefined;
+                    },
+                },
+                context
+            );
+            if (result === true) {
+                return '验证码已发送';
+            }
+            return '验证码发送失败';
         }
     }
 }
