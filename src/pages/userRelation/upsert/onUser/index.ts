@@ -1,6 +1,6 @@
 import { OakInputIllegalException } from 'oak-domain/lib/types';
 import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
-import { EntityDict as BaseEntityDict, EntityDict } from '../../../../general-app-domain';
+import { EntityDict as BaseEntityDict } from '../../../../general-app-domain';
 
 export default OakComponent({
     entity: 'user',
@@ -92,7 +92,7 @@ export default OakComponent({
                 );
             }
             else {
-                this.update({}, 'grant');
+                this.update({});
             }
             this.setState({
                 userRelationRelativePath: `user${firstLetterUpperCase(

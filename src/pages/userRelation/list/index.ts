@@ -145,7 +145,7 @@ export default OakComponent({
     },
     lifetimes: {
         ready() {
-            console.log('ready', this.props.relations);
+            //console.log('ready', this.props.relations);
         }
     },
     methods: {

@@ -1,5 +1,3 @@
-import assert from 'assert';
-import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
 import { isMobile } from 'oak-domain/lib/utils/validator';
 
 export default OakComponent({
