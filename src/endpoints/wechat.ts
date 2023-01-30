@@ -137,7 +137,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
             if (!wechatUser.subscribed) {
                 Object.assign(data, {
                     subscribed: true,
-                    subscribeAt: now,
+                    subscribedAt: now,
                 });
             }
 
@@ -152,7 +152,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
 
         Object.assign(data, {
             subscribed: true,
-            subscribeAt: now,
+            subscribedAt: now,
             applicationId,
             openId,
         });
