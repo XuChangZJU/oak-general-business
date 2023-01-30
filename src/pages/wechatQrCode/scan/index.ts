@@ -16,6 +16,9 @@ export default OakComponent(
             props: 1,
         },
         isList: true,
+        properties: {
+            scene: String,
+        },
         filters: [
             {
                 filter: ({ props }) => {

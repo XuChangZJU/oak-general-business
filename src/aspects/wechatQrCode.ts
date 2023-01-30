@@ -29,7 +29,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
     permanent?: boolean;
     props: WechatQrCodeProps;
 }, context: Cxt) {
-    const { entity, entityId, tag, lifetimeLength = 300 * 10000, permanent = false, props } = options;
+    const { entity, entityId, tag, lifetimeLength = 2592000 * 1000, permanent = false, props } = options;
     const applicationId = context.getApplicationId();
     assert(applicationId);
     const [system] = await context.select(
@@ -134,6 +134,10 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
     if (!appId || !appType) {
         throw new Error('无法生成二维码，找不到此system下的服务号或者小程序信息');
     }
+    if (lifetimeLength > 2592000 * 1000 && !permanent) {
+        // 二维码的过期应当由上层对象来自主控制以保持一致性
+        throw new Error('二维码过期时间太长，不能长于30天');
+    }
 
     const data: CreateWechatQrcodeData = {
         id,
@@ -161,7 +165,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
 
     const { type: applicationType, config } = application;
 
-    console.log(process.env.OAK_PLATFORM, process.env.NODE_ENV);
+    // console.log(process.env.OAK_PLATFORM, process.env.NODE_ENV);
     switch (type) {
         case 'wechatMpWxaCode': {
             assert(

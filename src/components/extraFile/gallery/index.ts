@@ -45,6 +45,22 @@ export default OakComponent({
     wechatMp: {
         externalClasses: ['oak-class', 'oak-item-class'],
     },
+    filters: [
+        {
+            filter({ props }) {
+                const { tag1, tag2 } = props;
+                const filter1 = {};
+                if (tag1) {
+                    Object.assign(filter1, { tag1 });
+                }
+                if (tag2) {
+                    Object.assign(filter1, { tag2 });
+                }
+                return filter1;
+            }
+        }
+
+    ],
     properties: {
         removeLater: Boolean,
         autoUpload: {

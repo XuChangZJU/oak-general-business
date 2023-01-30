@@ -15,7 +15,7 @@ export interface Schema extends EntityShape {
     remark?: Text;
     granter: User;
     grantee?: User;
-    files: Array<WechatQrCode>;
+    codes: Array<WechatQrCode>;
     expiresAt?: Datetime;
     expired?: Boolean;
     redirectTo?: Object;
@@ -67,7 +67,7 @@ const locale: LocaleDef<
             remark: '备注',
             grantee: '领取人',
             granter: '授权人',
-            files: '微信码',
+            codes: '微信码',
             expired: '是否过期',
             expiresAt: '过期时间',
             redirectTo: '重定向页面',

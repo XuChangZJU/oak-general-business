@@ -27,6 +27,11 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                     granterId: userId,
                     expired: false,
                 });
+                if (!userEntityGrantData.expiresAt) {
+                    Object.assign(userEntityGrantData, {
+                        expiresAt: Date.now() + 300 * 1000,
+                    });
+                }
                 // 为之创建微信体系下的一个weChatQrCode
                 await createWechatQrCode(
                     {
@@ -38,6 +43,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                                 oakId: id,
                             },
                         },
+                        lifetimeLength: (<number>userEntityGrantData.expiresAt)! - Date.now() + 300 * 1000, // wechatQrCode的过期由trigger负责，可以放长一些
                     },
                     context as BackendRuntimeContext<EntityDict>
                 );
@@ -215,6 +221,42 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
 
                 return 1;
             }
+        }
+    } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
+    {
+        name: '当userEntityGrant过期时，使其相关的wechatQrCode也过期',
+        entity: 'userEntityGrant',
+        action: 'update',
+        check: (operation) => {
+            const { data } = operation;
+            return !!(data.expired);
+        },
+        when: 'after',
+        fn: async ({ operation }, context, params) => {
+            const { filter } = operation;
+            const wechatQrCodes = await context.select('wechatQrCode', {
+                data: {
+                    id: 1,
+                    expired: 1,
+                },
+                filter: {
+                    userEntityGrant: filter,
+                    expired: false,
+                },
+            }, { dontCollect: true });
+            const ids = wechatQrCodes.map(ele => ele.id);
+            await context.operate('wechatQrCode', {
+                action: 'update',
+                data: {
+                    expired: true,
+                },
+                filter: {
+                    id: {
+                        $in: ids,
+                    },
+                },
+            }, { dontCollect: true });
+            return ids.length;
         }
     } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>
 ];

@@ -12,7 +12,7 @@ export interface Schema extends EntityShape {
     remark?: Text;
     granter: User;
     grantee?: User;
-    files: Array<WechatQrCode>;
+    codes: Array<WechatQrCode>;
     expiresAt?: Datetime;
     expired?: Boolean;
     redirectTo?: Object;

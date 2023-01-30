@@ -3,7 +3,7 @@ import { ActionDef } from 'oak-domain/lib/types/Action';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Index } from 'oak-domain/lib/types/Storage';
 import { Schema as ExtraFile } from './ExtraFile';
-import { Schema as System } from './System';
+import { Schema as WechatQrCode } from './WechatQrCode';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 
 export interface Schema extends EntityShape {
@@ -18,6 +18,7 @@ export interface Schema extends EntityShape {
     idNumber?: String<32>;
     ref?: Schema;
     files: Array<ExtraFile>;
+    codes: Array<WechatQrCode>;
 };
 
 type IdAction = 'verify' | 'accept' | 'reject';
@@ -93,6 +94,7 @@ const locale: LocaleDef<Schema, Action, '', {
             files: '相关文件',
             userState: '用户状态',
             idState: '身份验证状态',
+            codes: '微信分享二维码',
         },
         action: {
             activate: '激活',

@@ -85,51 +85,59 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         this.token = token;
     }
 
+    async setApplication(appId: string) {
+        const result = await this.select(
+            'application',
+            {
+                data: {
+                    id: 1,
+                    name: 1,
+                    config: 1,
+                    type: 1,
+                    systemId: 1,
+                    style: 1,
+                    system: {
+                        id: 1,
+                        name: 1,
+                        config: 1,
+                        platformId: 1,
+                        style: 1,
+                        folder: 1,
+                        super: 1,
+                        platform: {
+                            id: 1,
+                            config: 1,
+                            style: 1,
+                        },
+                    },
+                },
+                filter: {
+                    id: appId,
+                },
+            },
+            {
+                dontCollect: true,
+                blockTrigger: true,
+            }
+        );
+        assert(result.length > 0, `构建BackendRuntimeContext对应appId「${appId}」找不到application`);
+        this.application = result[0];
+    }
+
     protected async initialize(data?: SerializedData) {
         if (data) {
             await this.begin();
             try {
                 const { a: appId, t: tokenValue } = data;
+                const promises: Promise<void>[] = [];
                 if (appId) {
-                    const result = await this.select(
-                        'application',
-                        {
-                            data: {
-                                id: 1,
-                                name: 1,
-                                config: 1,
-                                type: 1,
-                                systemId: 1,
-                                style: 1,
-                                system: {
-                                    id: 1,
-                                    name: 1,
-                                    config: 1,
-                                    platformId: 1,
-                                    style: 1,
-                                    folder: 1,
-                                    super: 1,
-                                    platform: {
-                                        id: 1,
-                                        config: 1,
-                                        style: 1,
-                                    },
-                                },
-                            },
-                            filter: {
-                                id: appId,
-                            },
-                        },
-                        {
-                            dontCollect: true,
-                            blockTrigger: true,
-                        }
-                    );
-                    assert(result.length > 0, `构建BackendRuntimeContext对应appId「${appId}」找不到application`);
-                    this.application = result[0];
+                    promises.push(this.setApplication(appId));
                 }
                 if (tokenValue) {
-                    await this.setTokenValue(tokenValue);
+                    promises.push(this.setTokenValue(tokenValue));
+                }
+                if (promises.length > 0) {
+                    await Promise.all(promises);
                 }
                 await this.commit();
             }
