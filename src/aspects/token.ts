@@ -218,26 +218,32 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
                 action: 'create',
                 data: userData,
             }, {});
+
+            // 这里要先创建token，再set context中的tokenValue，不然create mobile会被auth限制。by Xc
+            const mobileData: EntityDict['mobile']['CreateSingle']['data'] = {
+                id: await generateNewIdAsync(),
+                mobile,    
+                userId: userData.id,          
+            };
             const tokenData: EntityDict['token']['CreateSingle']['data'] = {
                 id: await generateNewIdAsync(),
                 userId: userData.id,
                 playerId: userData.id,
                 env,
-                mobile: {
-                    id: await generateNewIdAsync(),
-                    action: 'create',
-                    data: {
-                        id: await generateNewIdAsync(),
-                        mobile,    
-                        userId: userData.id,                    
-                    }
-                }
+                entity: 'mobile',
+                entityId: mobileData.id,
             };
             await context.operate('token', {
                 id: await generateNewIdAsync(),
                 action: 'create',
                 data: tokenData,
-            }, {});
+            }, { dontCollect: true });
+            await context.setTokenValue(tokenData.id);
+            await context.operate('mobile', {
+                id: await generateNewIdAsync(),
+                action: 'create',
+                data: mobileData,
+            }, { dontCollect: true });
 
             return tokenData.id;
         }

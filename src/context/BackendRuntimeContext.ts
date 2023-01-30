@@ -17,6 +17,74 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
     protected amIReallyRoot?: boolean;
     protected rootMode?: boolean;
 
+
+    async setTokenValue(tokenValue: string) {
+        const result = await this.select('token', {
+            data: {
+                id: 1,
+                userId: 1,
+                playerId: 1,
+                player: {
+                    id: 1,
+                    userState: 1,
+                    userRole$user: {
+                        $entity: 'userRole',
+                        data: {
+                            id: 1,
+                            userId: 1,
+                            roleId: 1,
+                            role: {
+                                id: 1,
+                                name: 1,
+                            }
+                        },
+                    },
+                },
+                ableState: 1,
+                user: {
+                    id: 1,
+                    userState: 1,
+                    userRole$user: {
+                        $entity: 'userRole',
+                        data: {
+                            id: 1,
+                            userId: 1,
+                            roleId: 1,
+                            role: {
+                                id: 1,
+                                name: 1,
+                            }
+                        },
+                    },
+                },
+            },
+            filter: {
+                id: tokenValue,
+            },
+        }, {
+            dontCollect: true,
+            blockTrigger: true,
+        });
+        if (result.length === 0) {
+            console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`);
+            throw new OakTokenExpiredException();
+        }
+        const token = result[0];
+        if (token.ableState === 'disabled') {
+            throw new OakTokenExpiredException();
+        }
+        const { user, player } = token;
+        const { userRole$user } = user!;
+        this.amIRoot = (userRole$user as any).length > 0 && (userRole$user as any).find(
+            (ele: any) => ele.role.name === 'root'
+        );
+        const { userRole$user: userRole$player} = player!;
+        this.amIReallyRoot = (userRole$player as any).length > 0 && (userRole$player as any).find(
+            (ele: any) => ele.role.name === 'root'
+        );
+        this.token = token;
+    }
+
     protected async initialize(data?: SerializedData) {
         if (data) {
             await this.begin();
@@ -61,70 +129,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
                     this.application = result[0];
                 }
                 if (tokenValue) {
-                    const result = await this.select('token', {
-                        data: {
-                            id: 1,
-                            userId: 1,
-                            playerId: 1,
-                            player: {
-                                id: 1,
-                                userState: 1,
-                                userRole$user: {
-                                    $entity: 'userRole',
-                                    data: {
-                                        id: 1,
-                                        userId: 1,
-                                        roleId: 1,
-                                        role: {
-                                            id: 1,
-                                            name: 1,
-                                        }
-                                    },
-                                },
-                            },
-                            ableState: 1,
-                            user: {
-                                id: 1,
-                                userState: 1,
-                                userRole$user: {
-                                    $entity: 'userRole',
-                                    data: {
-                                        id: 1,
-                                        userId: 1,
-                                        roleId: 1,
-                                        role: {
-                                            id: 1,
-                                            name: 1,
-                                        }
-                                    },
-                                },
-                            },
-                        },
-                        filter: {
-                            id: tokenValue,
-                        },
-                    }, {
-                        dontCollect: true,
-                        blockTrigger: true,
-                    });
-                    if (result.length === 0) {
-                        console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`);
-                        throw new OakTokenExpiredException();
-                    }
-                    const token = result[0];
-                    if (token.ableState === 'disabled') {
-                        throw new OakTokenExpiredException();
-                    }
-                    const { user, player } = token;
-                    const { userRole$user } = user!;
-                    this.amIRoot = (userRole$user as any).length > 0 && (userRole$user as any).find(
-                        (ele: any) => ele.role.name === 'root'
-                    );
-                    const { userRole$user: userRole$player} = player!;
-                    this.amIReallyRoot = (userRole$player as any).length > 0 && (userRole$player as any).find(
-                        (ele: any) => ele.role.name === 'root'
-                    );
-                    this.token = token;
+                    await this.setTokenValue(tokenValue);
                 }
                 await this.commit();
             }
