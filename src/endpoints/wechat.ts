@@ -76,12 +76,15 @@ async function setUserUnsubscribed(openId: string, context: BRC) {
             await context.operate(
                 'wechatUser',
                 {
+                    id: await generateNewIdAsync(),
                     action: 'update',
                     data: {
                         subscribed: false,
                         unsubscribeAt: Date.now(),
                     },
-                    id: weChatUser.id,
+                    filter: {
+                        id: weChatUser.id,
+                    },
                 },
                 { dontCollect: true, dontCreateOper: true },
             );
@@ -90,8 +93,10 @@ async function setUserUnsubscribed(openId: string, context: BRC) {
         await context.operate(
             'wechatUser',
             {
+                id: await generateNewIdAsync(),
                 action: 'create',
                 data: {
+                    id: await generateNewIdAsync(),
                     subscribed: false,
                     applicationId: context.getApplicationId(),
                     openId,
@@ -142,6 +147,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
             }
 
             return await context.operate('wechatUser', {
+                id: await generateNewIdAsync(),
                 action: 'update',
                 data,
                 filter: {
@@ -173,6 +179,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
          }
          );*/
         return await context.operate('wechatUser', {
+            id: await generateNewIdAsync(),
             action: 'create',
             data,
         }, { dontCollect: true });
