@@ -395,7 +395,7 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
                 throw new Error('applicationId参数不存在');
             }
             await context.setApplication(appId);
-            const data = X2Js.xml2js(body);
+            const { xml: data } = X2Js.xml2js(body);
             const { content, contentType } = onWeChatPublicEvent(data as any, context);
             return content;
         },
