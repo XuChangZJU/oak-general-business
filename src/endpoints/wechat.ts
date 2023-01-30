@@ -126,7 +126,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
 
     const now = Date.now();
     const data = {
-        activeAt: now,
+        // activeAt: now,
     };
 
     const doUpdate = async () => {
@@ -223,6 +223,13 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                         {
                             data: {
                                 id: 1,
+                                granter: {
+                                    id: 1,
+                                    name: 1,
+                                    nickname: 1,
+                                },
+                                expired: 1,
+                                entity: 1,
                             },
                             filter: {
                                 id: entityId,

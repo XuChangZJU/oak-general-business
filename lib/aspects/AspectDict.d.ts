@@ -5,6 +5,10 @@ import { QiniuUploadInfo } from "oak-frontend-base/lib/types/Upload";
 import { Config, Origin } from "../types/Config";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = {
+    mergeUser: (params: {
+        from: string;
+        to: string;
+    }, context: Cxt) => Promise<void>;
     loginByMobile: (params: {
         captcha?: string;
         password?: string;
