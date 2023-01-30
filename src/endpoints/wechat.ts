@@ -261,6 +261,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                     );
                     const { id, granter, expired, entity: entity2 } = userEntityGrant!;
 
+                    const name = granter?.name || granter?.nickname || '某用户';
                     const [domain] = await context.select('domain', {
                         data: {
                             id: 1,
