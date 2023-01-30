@@ -1,8 +1,7 @@
 import assert from 'assert';
-import { URL } from 'node:url';
-import Path from 'node:path';
+import { URL } from 'url';
 import sha1 from 'sha1';
-import parser from 'xml2json';
+import x2js from 'x2js';
 import { Endpoint } from 'oak-domain/lib/types/Endpoint';
 import {
     WechatSDK,
@@ -21,6 +20,8 @@ type VerifyQuery = {
     nonce: string,
     timestamp: string,
 }
+
+const X2Js = new x2js();
 
 function assertFromWeChat(query: VerifyQuery, config: WechatPublicConfig) {
     const { signature, nonce, timestamp } = query;
@@ -394,7 +395,7 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
                 throw new Error('applicationId参数不存在');
             }
             await context.setApplication(appId);
-            const data = parser.toJson(body, { object: true });
+            const data = X2Js.xml2js(body);
             const { content, contentType } = onWeChatPublicEvent(data as any, context);
             return content;
         },
@@ -402,8 +403,8 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
         name: '微信公众号验证接口',
         method: 'get',
         params: ['appId'],
-        fn: async (context, params, body, req, headers) => {
-            const { searchParams } = new URL(Path.join('http://', req.headers.host!, req.url!));
+        fn: async (context, params, body, req, headers) => {            
+            const { searchParams } = new URL(`http://${req.headers.host!}${req.url}`);
             const { appId } = params;
             if (!appId) {
                 throw new Error('applicationId参数不存在');
