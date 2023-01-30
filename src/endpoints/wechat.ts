@@ -190,13 +190,14 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
         // sceneStr是id压缩后的字符串
         const wcqId = expandUuidTo36Bytes(sceneStr);
 
-        const [weChatQrCode] = await context.select(
+        const [wechatQrCode] = await context.select(
             'wechatQrCode',
             {
                 data: {
                     id: 1,
                     entity: 1,
                     entityId: 1,
+                    expired: 1,
                 },
                 filter: {
                     id: wcqId,
@@ -206,8 +207,29 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
             },
             { dontCollect: true },
         );
-        if (weChatQrCode) {
-            const { entity, entityId } = weChatQrCode;
+        if (wechatQrCode) {
+            const application = context.getApplication();
+            const { type, config } = application!;
+            assert(type === 'wechatPublic');
+            const { appId, appSecret } = config as WechatPublicConfig;
+
+            const wechatInstance = WechatSDK.getInstance(
+                appId,
+                appSecret,
+                'wechatPublic'
+            ) as WechatPublicInstance;
+
+            const { expired } = wechatQrCode;
+            if (expired) {
+                // 若二维码已经过期，则直接告知用户已经过期
+                wechatInstance.sendServeMessage({
+                    openId,
+                    type: 'text',
+                    content: '此二维码已经过期，请重新获取',
+                });
+                return;
+            }
+            const { entity, entityId } = wechatQrCode;
             switch (entity) {
                 case 'user': {
                     // 裂变获得的用户
@@ -267,18 +289,6 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                     });
 
                     assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
-                    const name = granter!.name || granter!.nickname;
-                    const application = context.getApplication();
-                    const { type, config } = application!;
-                    assert(type === 'wechatPublic');
-                    const { appId, appSecret } = config as WechatPublicConfig;
-
-                    const wechatInstance = WechatSDK.getInstance(
-                        appId,
-                        appSecret,
-                        'wechatPublic'
-                    ) as WechatPublicInstance;
-
                     wechatInstance.sendServeMessage({
                         openId,
                         type: 'news',
