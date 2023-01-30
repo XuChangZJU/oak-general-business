@@ -157,7 +157,7 @@ function Ali(props: {
                                                                                         e
                                                                                     ) =>
                                                                                         setValue(
-                                                                                            `${idx}.templateMsgs.${name}.signName`,
+                                                                                            `${idx}.templates.${name}.signName`,
                                                                                             e
                                                                                                 .target
                                                                                                 .value
@@ -181,7 +181,7 @@ function Ali(props: {
                                                                                         e
                                                                                     ) =>
                                                                                         setValue(
-                                                                                            `${idx}.templateMsgs.${name}.code`,
+                                                                                            `${idx}.templates.${name}.code`,
                                                                                             e
                                                                                                 .target
                                                                                                 .value
@@ -422,7 +422,7 @@ function Tencent(props: {
                                                                                         e
                                                                                     ) =>
                                                                                         setValue(
-                                                                                            `${idx}.templateMsgs.${name}.signName`,
+                                                                                            `${idx}.templates.${name}.signName`,
                                                                                             e
                                                                                                 .target
                                                                                                 .value
@@ -446,7 +446,7 @@ function Tencent(props: {
                                                                                         e
                                                                                     ) =>
                                                                                         setValue(
-                                                                                            `${idx}.templateMsgs.${name}.code`,
+                                                                                            `${idx}.templates.${name}.code`,
                                                                                             e
                                                                                                 .target
                                                                                                 .value
