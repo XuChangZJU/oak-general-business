@@ -12,7 +12,7 @@ import { EntityDict } from '../general-app-domain';
 import { BRC } from '../types/RuntimeCxt';
 import { WechatPublicConfig } from '../entities/Application';
 import { WechatPublicEventData } from 'oak-external-sdk';
-import { expandUuidTo36Bytes } from 'oak-domain/lib/utils/uuid';
+import { expandUuidTo36Bytes, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { composeDomainUrl } from '../utils/domain';
 
 type VerifyQuery = {
@@ -151,6 +151,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
         }
 
         Object.assign(data, {
+            id: await generateNewIdAsync(),
             subscribed: true,
             subscribedAt: now,
             applicationId,
