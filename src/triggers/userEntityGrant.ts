@@ -1,4 +1,4 @@
-import { generateNewId } from 'oak-domain/lib/utils/uuid';
+import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { Trigger, CreateTrigger, UpdateTrigger } from 'oak-domain/lib/types/Trigger';
 import { CreateOperationData as CreateUserEntityGrantData } from '../general-app-domain/UserEntityGrant/Schema';
 import { EntityDict } from '../general-app-domain/EntityDict';
@@ -246,6 +246,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
             }, { dontCollect: true });
             const ids = wechatQrCodes.map(ele => ele.id);
             await context.operate('wechatQrCode', {
+                id: await generateNewIdAsync(),
                 action: 'update',
                 data: {
                     expired: true,
