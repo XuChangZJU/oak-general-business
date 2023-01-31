@@ -1,4 +1,5 @@
 import { OakUserUnpermittedException } from "oak-domain/lib/types";
+import { generateNewIdAsync } from "oak-domain/lib/utils/uuid";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { EntityDict } from "../general-app-domain";
 
@@ -47,6 +48,7 @@ export async function mergeUser<ED extends EntityDict, Cxt extends BackendRuntim
     }
 
     await context.operate('user', {
+        id: await generateNewIdAsync(),
         action: 'merge',
         data: {
             refId: to,

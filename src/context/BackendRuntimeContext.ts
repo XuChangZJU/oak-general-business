@@ -6,6 +6,7 @@ import { OakTokenExpiredException, OakUserDisabledException } from '../types/Exc
 import { OakUnloggedInException } from 'oak-domain/lib/types/Exception';
 import { ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
 import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
+import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 
 /**
  * general数据结构要求的后台上下文
@@ -213,8 +214,9 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         return !!this.amIReallyRoot;
     }
 
-    sendMessage(data: ED['message']['CreateSingle']['data']) {
+    async sendMessage(data: ED['message']['CreateSingle']['data']) {
         return this.operate('message', {
+            id: await generateNewIdAsync(),
             action: 'create',
             data,
         }, {

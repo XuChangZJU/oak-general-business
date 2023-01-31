@@ -43,7 +43,6 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                                 oakId: id,
                             },
                         },
-                        lifetimeLength: (<number>userEntityGrantData.expiresAt)! - Date.now() + 300 * 1000, // wechatQrCode的过期由trigger负责，可以放长一些
                     },
                     context as BackendRuntimeContext<EntityDict>
                 );
@@ -231,33 +230,17 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
             const { data } = operation;
             return !!(data.expired);
         },
-        when: 'after',
-        fn: async ({ operation }, context, params) => {
-            const { filter } = operation;
-            const wechatQrCodes = await context.select('wechatQrCode', {
-                data: {
-                    id: 1,
-                    expired: 1,
-                },
-                filter: {
-                    userEntityGrant: filter,
-                    expired: false,
-                },
-            }, { dontCollect: true });
-            const ids = wechatQrCodes.map(ele => ele.id);
-            await context.operate('wechatQrCode', {
+        when: 'before',
+        fn: async ({ operation }, context) => {
+            const { data } = operation;
+            data.wechatQrCode$entity = {
                 id: await generateNewIdAsync(),
                 action: 'update',
                 data: {
                     expired: true,
-                },
-                filter: {
-                    id: {
-                        $in: ids,
-                    },
-                },
-            }, { dontCollect: true });
-            return ids.length;
+                }
+            };
+            return 1;
         }
     } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>
 ];

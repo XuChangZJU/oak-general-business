@@ -14,7 +14,6 @@ export declare function createWechatQrCode<ED extends EntityDict, T extends keyo
     entity: T;
     entityId: string;
     tag?: string;
-    lifetimeLength?: number;
     permanent?: boolean;
     props: WechatQrCodeProps;
 }, context: Cxt): Promise<void>;
