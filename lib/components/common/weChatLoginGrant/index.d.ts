@@ -9,6 +9,10 @@ interface GrantProps {
     style?: React.CSSProperties;
     className?: string;
     dev?: boolean;
+    disabled?: boolean;
+    disableText?: string;
+    rootStyle?: React.CSSProperties;
+    rootClassName?: string;
 }
 declare function Grant(props: GrantProps): JSX.Element;
 export default Grant;

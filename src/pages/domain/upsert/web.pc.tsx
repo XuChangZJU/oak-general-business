@@ -86,7 +86,6 @@ export default function Render(
                         <Form.Item label="端口" requiredMark name="port">
                             <>
                                 <Input
-                                    type='number'
                                     onChange={(e) => {
                                         const v = e.target.value;
                                         update({
