@@ -10,32 +10,7 @@ import { AspectDict } from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 
-const projection: EntityDict['application']['Selection']['data'] = {
-    id: 1,
-    name: 1,
-    config: 1,
-    type: 1,
-    systemId: 1,
-    style: 1,
-    system: {
-        id: 1,
-        name: 1,
-        config: 1,
-        platformId: 1,
-        style: 1,
-        folder: 1,
-        super: 1,
-        entity: 1,
-        entityId: 1,
-        platform: {
-            id: 1,
-            config: 1,
-            style: 1,
-            entity: 1,
-            entityId: 1,
-        },
-    },
-};
+import { applicationProjection } from '../types/projection';
 
 export class Application<
     ED extends EntityDict,
@@ -67,7 +42,7 @@ export class Application<
 
     private async refresh() {
         const { data } = await this.cache.refresh('application', {
-            data: projection,
+            data: applicationProjection,
             filter: {
                 id: this.applicationId!,
             },
@@ -84,7 +59,7 @@ export class Application<
 
     private getApplicationFromCache() {
         const data = this.cache.get('application', {
-            data: projection,
+            data: applicationProjection,
             filter: {
                 id: this.applicationId,
             },

@@ -2,6 +2,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict } from "../general-app-domain";
 import { AppType } from "../general-app-domain/Application/Schema";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
+import { applicationProjection } from '../types/projection';
 
 export async function getApplication<
     ED extends EntityDict,
@@ -20,28 +21,7 @@ export async function getApplication<
     const [application] = await context.select(
         'application',
         {
-            data: {
-                id: 1,
-                name: 1,
-                config: 1,
-                type: 1,
-                systemId: 1,
-                style: 1,
-                system: {
-                    id: 1,
-                    name: 1,
-                    config: 1,
-                    platformId: 1,
-                    style: 1,
-                    folder: 1,
-                    super: 1,
-                    platform: {
-                        id: 1,
-                        config: 1,
-                        style: 1,
-                    },
-                },
-            },
+            data: applicationProjection,
             filter: {
                 type,
                 system: {

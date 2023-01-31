@@ -13,7 +13,7 @@ import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
 import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exception';
 import { encryptPasswordSha1 } from '../utils/password';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
-import { tokenProjection } from '../types/Token';
+import { tokenProjection } from '../types/projection';
 import { sendSms } from '../utils/sms';
 
 async function makeDistinguishException<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(userId: string, context: Cxt) {

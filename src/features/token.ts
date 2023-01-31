@@ -10,7 +10,7 @@ import { AspectDict } from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { ROOT_ROLE_ID } from '../constants';
-import { tokenProjection } from '../types/Token';
+import { tokenProjection } from '../types/projection';
 
 export class Token<
     ED extends EntityDict,
