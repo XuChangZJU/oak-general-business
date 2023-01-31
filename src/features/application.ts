@@ -99,8 +99,12 @@ export class Application<
             domain,
         });
         this.applicationId = applicationId;
-        this.storage.save('application:applicationId', applicationId);
         this.getApplicationFromCache();
+
+        // 如果取得的type和当前环境不同，则不缓存id(未来可能有type相同的appliction上线)
+        if (this.application?.type === type) {
+            this.storage.save('application:applicationId', applicationId);
+        }
         this.publish();
     }
 

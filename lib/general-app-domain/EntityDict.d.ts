@@ -23,6 +23,8 @@ import { EntityDef as System } from "./System/Schema";
 import { EntityDef as Token } from "./Token/Schema";
 import { EntityDef as UserEntityGrant } from "./UserEntityGrant/Schema";
 import { EntityDef as UserSystem } from "./UserSystem/Schema";
+import { EntityDef as UserWechatPublicTag } from "./UserWechatPublicTag/Schema";
+import { EntityDef as WechatPublicTag } from "./WechatPublicTag/Schema";
 import { EntityDef as WechatQrCode } from "./WechatQrCode/Schema";
 import { EntityDef as WechatUser } from "./WechatUser/Schema";
 export declare type EntityDict = {
@@ -51,6 +53,8 @@ export declare type EntityDict = {
     token: Token;
     userEntityGrant: UserEntityGrant;
     userSystem: UserSystem;
+    userWechatPublicTag: UserWechatPublicTag;
+    wechatPublicTag: WechatPublicTag;
     wechatQrCode: WechatQrCode;
     wechatUser: WechatUser;
 };

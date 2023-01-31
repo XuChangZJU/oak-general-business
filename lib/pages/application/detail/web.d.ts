@@ -13,5 +13,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
     system: EntityDict['system']['Schema'];
 }, {
     onTabClick: (key: string) => void;
+    goWechatPublicTagList: () => void;
 }>): JSX.Element;
 export {};

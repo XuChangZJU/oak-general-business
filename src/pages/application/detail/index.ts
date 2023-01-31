@@ -17,5 +17,12 @@ export default OakComponent({
         return data || {};
     },
     methods: {
+        goWechatPublicTagList() {
+            const { oakId } = this.props;
+            this.navigateTo({
+                url: '/wechatPublic/tag/list',
+                applicationId: oakId,
+            })
+        }
     },
 });

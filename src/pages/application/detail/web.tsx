@@ -1,5 +1,5 @@
-import React from 'react';
-import { Tabs, Card, Descriptions, Typography } from 'antd';
+import React, { ReactNode } from 'react';
+import { Tabs, Card, Descriptions, Typography, Button } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
 
@@ -32,17 +32,29 @@ export default function Render(
         },
         {
             onTabClick: (key: string) => void;
+            goWechatPublicTagList: () => void;
         }
     >
 ) {
     const { oakId, tabValue, config, name, description, type, system } =
         props.data;
-    const { t, navigateBack, onTabClick } = props.methods;
+    const { t, navigateBack, onTabClick, goWechatPublicTagList } = props.methods;
+
+    const Actions: ReactNode[] = [];
+    if (type === 'wechatPublic') {
+        Actions.push(
+            <Button
+                onClick={() => goWechatPublicTagList()}
+            >
+                公众号Tag管理
+            </Button>
+        );
+    }
 
     return (
         <PageHeader showBack={true} title="应用概览">
             <div className={Style.container}>
-                <Card title={name} bordered={false}>
+                <Card title={name} bordered={false} actions={Actions}>
                     <Tabs
                         items={[
                             {

@@ -23,3 +23,5 @@ export * from './data/DEV-CONFIG';
 export * from './context/BackendRuntimeContext';
 export * from './context/FrontendRuntimeContext';
 export * from './context/RuntimeContext';
+
+export { registerWechatPublicTags } from './config/constants';

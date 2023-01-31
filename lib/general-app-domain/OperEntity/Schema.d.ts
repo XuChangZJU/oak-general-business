@@ -8,22 +8,26 @@ import * as Oper from "../Oper/Schema";
 import * as User from "../User/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
 import * as UserSystem from "../UserSystem/Schema";
+import * as UserWechatPublicTag from "../UserWechatPublicTag/Schema";
+import * as WechatPublicTag from "../WechatPublicTag/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
 import * as WechatUser from "../WechatUser/Schema";
 export declare type OpSchema = EntityShape & {
     operId: ForeignKey<"oper">;
-    entity: "user" | "userEntityGrant" | "userSystem" | "wechatQrCode" | "wechatUser" | string;
+    entity: "user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string;
     entityId: String<64>;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
     operId: ForeignKey<"oper">;
-    entity: "user" | "userEntityGrant" | "userSystem" | "wechatQrCode" | "wechatUser" | string;
+    entity: "user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string;
     entityId: String<64>;
     oper: Oper.Schema;
     user?: User.Schema;
     userEntityGrant?: UserEntityGrant.Schema;
     userSystem?: UserSystem.Schema;
+    userWechatPublicTag?: UserWechatPublicTag.Schema;
+    wechatPublicTag?: WechatPublicTag.Schema;
     wechatQrCode?: WechatQrCode.Schema;
     wechatUser?: WechatUser.Schema;
 } & {
@@ -41,10 +45,12 @@ declare type AttrFilter<E> = {
     user: User.Filter;
     userEntityGrant: UserEntityGrant.Filter;
     userSystem: UserSystem.Filter;
+    userWechatPublicTag: UserWechatPublicTag.Filter;
+    wechatPublicTag: WechatPublicTag.Filter;
     wechatQrCode: WechatQrCode.Filter;
     wechatUser: WechatUser.Filter;
 };
-export declare type Filter<E = Q_EnumValue<"user" | "userEntityGrant" | "userSystem" | "wechatQrCode" | "wechatUser" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
+export declare type Filter<E = Q_EnumValue<"user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -59,6 +65,8 @@ export declare type Projection = {
     user?: User.Projection;
     userEntityGrant?: UserEntityGrant.Projection;
     userSystem?: UserSystem.Projection;
+    userWechatPublicTag?: UserWechatPublicTag.Projection;
+    wechatPublicTag?: WechatPublicTag.Projection;
     wechatQrCode?: WechatQrCode.Projection;
     wechatUser?: WechatUser.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
@@ -75,6 +83,12 @@ declare type UserEntityGrantIdProjection = OneOf<{
     entityId: number;
 }>;
 declare type UserSystemIdProjection = OneOf<{
+    entityId: number;
+}>;
+declare type UserWechatPublicTagIdProjection = OneOf<{
+    entityId: number;
+}>;
+declare type WechatPublicTagIdProjection = OneOf<{
     entityId: number;
 }>;
 declare type WechatQrCodeIdProjection = OneOf<{
@@ -105,6 +119,10 @@ export declare type SortAttr = {
     userEntityGrant: UserEntityGrant.SortAttr;
 } | {
     userSystem: UserSystem.SortAttr;
+} | {
+    userWechatPublicTag: UserWechatPublicTag.SortAttr;
+} | {
+    wechatPublicTag: WechatPublicTag.SortAttr;
 } | {
     wechatQrCode: WechatQrCode.SortAttr;
 } | {
@@ -161,6 +179,28 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 } | {
     entity?: never;
     entityId?: never;
+    userWechatPublicTag: UserWechatPublicTag.CreateSingleOperation;
+} | {
+    entity: "userWechatPublicTag";
+    entityId: String<64>;
+    userWechatPublicTag: UserWechatPublicTag.UpdateOperation;
+} | {
+    entity: "userWechatPublicTag";
+    entityId: String<64>;
+} | {
+    entity?: never;
+    entityId?: never;
+    wechatPublicTag: WechatPublicTag.CreateSingleOperation;
+} | {
+    entity: "wechatPublicTag";
+    entityId: String<64>;
+    wechatPublicTag: WechatPublicTag.UpdateOperation;
+} | {
+    entity: "wechatPublicTag";
+    entityId: String<64>;
+} | {
+    entity?: never;
+    entityId?: never;
     wechatQrCode: WechatQrCode.CreateSingleOperation;
 } | {
     entity: "wechatQrCode";
@@ -207,6 +247,14 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     entityId?: never;
     entity?: never;
 } | {
+    userWechatPublicTag?: UserWechatPublicTag.CreateSingleOperation | UserWechatPublicTag.UpdateOperation | UserWechatPublicTag.RemoveOperation;
+    entityId?: never;
+    entity?: never;
+} | {
+    wechatPublicTag?: WechatPublicTag.CreateSingleOperation | WechatPublicTag.UpdateOperation | WechatPublicTag.RemoveOperation;
+    entityId?: never;
+    entity?: never;
+} | {
     wechatQrCode?: WechatQrCode.CreateSingleOperation | WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation;
     entityId?: never;
     entity?: never;
@@ -215,7 +263,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("user" | "userEntityGrant" | "userSystem" | "wechatQrCode" | "wechatUser" | string) | null;
+    entity?: ("user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string) | null;
     entityId?: String<64> | null;
 }) & {
     [k: string]: any;
@@ -227,6 +275,10 @@ export declare type RemoveOperationData = {} & ({
     userEntityGrant?: UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation;
 } | {
     userSystem?: UserSystem.UpdateOperation | UserSystem.RemoveOperation;
+} | {
+    userWechatPublicTag?: UserWechatPublicTag.UpdateOperation | UserWechatPublicTag.RemoveOperation;
+} | {
+    wechatPublicTag?: WechatPublicTag.UpdateOperation | WechatPublicTag.RemoveOperation;
 } | {
     wechatQrCode?: WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation;
 } | {
@@ -240,6 +292,8 @@ export declare type OperIdSubQuery = Selection<OperIdProjection>;
 export declare type UserIdSubQuery = Selection<UserIdProjection>;
 export declare type UserEntityGrantIdSubQuery = Selection<UserEntityGrantIdProjection>;
 export declare type UserSystemIdSubQuery = Selection<UserSystemIdProjection>;
+export declare type UserWechatPublicTagIdSubQuery = Selection<UserWechatPublicTagIdProjection>;
+export declare type WechatPublicTagIdSubQuery = Selection<WechatPublicTagIdProjection>;
 export declare type WechatQrCodeIdSubQuery = Selection<WechatQrCodeIdProjection>;
 export declare type WechatUserIdSubQuery = Selection<WechatUserIdProjection>;
 export declare type OperEntityIdSubQuery = Selection<OperEntityIdProjection>;
