@@ -6,7 +6,7 @@ import Style from './web.module.less';
 
 import { EntityDict } from '../../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
-import { WechatPublicTags } from '../../../../config/constants';
+import { getWechatPublicTags } from '../../../../config/constants';
 
 export default function Render(
     props: WebComponentProps<
@@ -30,9 +30,10 @@ export default function Render(
     } = props.data;
     const { t, update, navigateBack, confirm } = props.methods;
 
+    const WechatPublicTags = getWechatPublicTags();
     const TagOptions = Object.keys(WechatPublicTags).map(
         ele => ({
-            label: ele,
+            label: WechatPublicTags[ele],
             value: WechatPublicTags[ele],
         })
     );

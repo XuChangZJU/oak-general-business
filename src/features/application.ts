@@ -77,6 +77,9 @@ export class Application<
             `applicationId${this.applicationId}没有取到有效数据`
         );
         this.application = data[0];
+        if (this.application.type !== this.type) {
+            this.storage.remove('application:applicationId');
+        }
     }
 
     private getApplicationFromCache() {
