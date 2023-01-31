@@ -35,4 +35,4 @@ export declare function makeException(data: {
     name: string;
     message?: string;
     [A: string]: any;
-}): any;
+}): import("oak-domain/lib/types").OakException | import("oak-domain/lib/types").OakExternalException | undefined;

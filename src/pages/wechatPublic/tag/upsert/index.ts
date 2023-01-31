@@ -32,8 +32,9 @@ export default OakComponent({
         }
     },
     methods: {
-        confirm() {
-            this.execute();
+        async confirm() {
+            await this.execute();
+            this.navigateBack();
         }
     }
 })

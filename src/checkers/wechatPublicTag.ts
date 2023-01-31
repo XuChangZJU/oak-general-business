@@ -15,4 +15,6 @@ const checkers: Checker<EntityDict, 'wechatPublicTag', RuntimeCxt>[] = [
             checkAttributesScope('wechatPublicTag', data, ['applicationId', 'id', 'text']);
         },
     },
-]
+];
+
+export default checkers;
