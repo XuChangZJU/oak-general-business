@@ -49,7 +49,7 @@ export class Application<
         });
         assert(
             data.length === 1,
-            `applicationId${this.applicationId}没有取到有效数据`
+            `refresh:applicationId${this.applicationId}没有取到有效数据`
         );
         this.application = data[0];
         if (this.application.type !== this.type) {
@@ -66,7 +66,7 @@ export class Application<
         } as any);
         assert(
             data.length === 1,
-            `applicationId${this.applicationId}没有取到有效数据`
+            `cache:applicationId${this.applicationId}没有取到有效数据`
         );
         this.application = data[0];
     }
