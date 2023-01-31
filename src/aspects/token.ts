@@ -423,6 +423,8 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
                     unionId,
                 });
             }
+
+            let userId = wechatUser2.userId;
             if (wechatUser2.userId) {
                 // 若用户没有更换任何环境，则重用原来的token，避免token表增长过快
                 const [token] = await context.select('token', {
@@ -479,16 +481,18 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
             }
             else {
                 // 创建user
-                Object.assign(wechatUserUpdateData, {
-                    user: {
+                const userData2: EntityDict['user']['CreateSingle'] = {
+                    id: await generateNewIdAsync(),
+                    action: 'create',
+                    data: {
                         id: await generateNewIdAsync(),
-                        action: 'create',
-                        data: {
-                            id: await generateNewIdAsync(),
-                            userState: 'normal',
-                        } as CreateUser,
-                    },
+                        userState: 'normal',
+                    } as CreateUser,
+                };
+                Object.assign(wechatUserUpdateData, {
+                    user: userData2,
                 });
+                userId = userData2.data.id;
             }
     
             await context.operate('token', {
@@ -496,8 +500,8 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
                 action: 'create',
                 data: {
                     id,
-                    userId: wechatUser2.userId as string,
-                    playerId: wechatUser2.userId as string,
+                    userId,
+                    playerId: userId,
                     applicationId: application!.id,
                     entity: 'wechatUser',
                     entityId: wechatUser2.id as string,

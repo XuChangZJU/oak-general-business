@@ -110,7 +110,7 @@ async function setUserUnsubscribed(openId: string, context: BRC) {
 
 
 async function setUserSubscribed(openId: string, eventKey: string, context: BRC) {
-    const applicationId = context.getApplicationId();
+    const { id: applicationId, type: applicationType } = context.getApplication()!;
     const list = await context.select(
         'wechatUser',
         {
@@ -160,6 +160,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
             id: await generateNewIdAsync(),
             subscribed: true,
             subscribedAt: now,
+            origin: applicationType === 'wechatPublic' ? 'public' : 'web',
             applicationId,
             openId,
         });
