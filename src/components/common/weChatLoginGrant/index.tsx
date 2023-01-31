@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './index.less';
 import { random, template } from 'oak-domain/lib/utils/string';
+import classNames from 'classnames';
+import './index.less';
 
 interface GrantProps {
     id?: string;
@@ -11,6 +12,10 @@ interface GrantProps {
     style?: React.CSSProperties;
     className?: string;
     dev?: boolean;
+    disabled?: boolean;
+    disableText?: string;
+    rootStyle?: React.CSSProperties;
+    rootClassName?: string;
 }
 
 const WeChatLoginUrl = template`https://open.weixin.qq.com/connect/oauth2/authorize?redirect_uri=${0}&appid=${1}&response_type=code&scope=${2}&state=${3}&#wechat_redirect`;
@@ -25,6 +30,10 @@ function Grant(props: GrantProps) {
         style = {},
         className,
         dev = process.env.NODE_ENV === 'development', // 默认本地为true 发布时为false
+        disabled = false,
+        disableText,
+        rootStyle,
+        rootClassName,
     } = props;
     const [code, setCode] = useState('');
 
@@ -83,14 +92,6 @@ function Grant(props: GrantProps) {
          V = (
              <div className={`${prefixCls2}_prod`}>
                  <div className={`${prefixCls2}_prod_header`}>
-                     <input
-                         maxLength={6}
-                         value={code}
-                         className={`${prefixCls2}_prod_header_input`}
-                         onChange={(e) => {
-                             setCode(e.target.value);
-                         }}
-                     ></input>
                      <button
                          className={`${prefixCls2}_prod_header_btn`}
                          onClick={() => {
