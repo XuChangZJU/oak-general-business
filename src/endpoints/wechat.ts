@@ -295,6 +295,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                     assert(domain, `处理userEntityGrant时，找不到对应的domain，applicationId是「${applicationId}」`);
                     const url = composeDomainUrl(domain as EntityDict['domain']['Schema'], 'wechatQrCode/scan', {
                         scene: sceneStr,
+                        time: `${Date.now()}`,
                     });
 
                     assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
@@ -429,7 +430,7 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
         name: '微信公众号验证接口',
         method: 'get',
         params: ['appId'],
-        fn: async (context, params, body, req, headers) => {            
+        fn: async (context, params, body, req, headers) => {
             const { searchParams } = new URL(`http://${req.headers.host!}${req.url}`);
             const { appId } = params;
             if (!appId) {
