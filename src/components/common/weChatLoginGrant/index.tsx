@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { message } from 'antd';
 import { random, template } from 'oak-domain/lib/utils/string';
 import classNames from 'classnames';
 import './index.less';
@@ -36,6 +37,7 @@ function Grant(props: GrantProps) {
         rootClassName,
     } = props;
     const [code, setCode] = useState('');
+    const [messageApi, contextHolder] = message.useMessage();
 
     useEffect(() => {
         if (appId) {
@@ -66,12 +68,16 @@ function Grant(props: GrantProps) {
                     <button
                         className={`${prefixCls2}_dev_header_btn`}
                         onClick={() => {
+                            if (disabled) {
+                                messageApi.info(disableText || '禁用');
+                                return;
+                            }
                             window.location.href =
                                 decodeURIComponent(redirectUri) +
                                 `?code=${code}&state=${state}`;
                         }}
                     >
-                        登录
+                        微信登录
                     </button>
                 </div>
                 <div className={`${prefixCls2}_dev_bottom`}>
@@ -95,6 +101,10 @@ function Grant(props: GrantProps) {
                      <button
                          className={`${prefixCls2}_prod_header_btn`}
                          onClick={() => {
+                             if (disabled) {
+                                messageApi.info(disableText || '禁用');
+                                return
+                             }
                              const url = WeChatLoginUrl(
                                  redirectUri,
                                  appId,
@@ -105,7 +115,7 @@ function Grant(props: GrantProps) {
                              window.location.href = url;
                          }}
                      >
-                         登录
+                        微信登录
                      </button>
                  </div>
                  <div className={`${prefixCls2}_prod_bottom`}>
@@ -118,9 +128,12 @@ function Grant(props: GrantProps) {
     }
 
     return (
-        <div className={prefixCls2} id={id}>
-            {V}
-        </div>
+        <>
+            {contextHolder}
+            <div className={prefixCls2} id={id}>
+                {V}
+            </div>
+        </>
     );
 }
 
