@@ -127,7 +127,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
             else  {
                 // 此时可能要合并用户，抛出OakDistinguishUser异常，用户根据自身情况选择合并
                 const { userId } = mobileRow;
-                throw await makeDistinguishException<ED, Cxt>(userId as string, context, '该手机号已被一个有效用户占用，');
+                throw await makeDistinguishException<ED, Cxt>(userId as string, context, '该手机号已被一个有效用户占用，请联系管理员处理');
             }
         }
         else {
