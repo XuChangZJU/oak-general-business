@@ -65,7 +65,7 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
                     }}
                     options={relations?.map((ele: string) => ({
                         value: ele,
-                        label: t(entity + ':r.' + ele) || ele,
+                        label: entity ? t(entity + ':r.' + ele) : ele,
                     }))}
                 />
             </Form.Item>

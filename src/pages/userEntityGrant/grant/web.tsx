@@ -53,7 +53,7 @@ export default function render(
                             }}
                             options={relations?.map((ele: string) => ({
                                 value: ele,
-                                label: t(entity + ':r.' + ele),
+                                label: entity ? t(entity + ':r.' + ele) : ele,
                             }))}
                         ></Radio.Group>
                     </Form.Item>
