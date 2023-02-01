@@ -12,7 +12,7 @@ export interface Schema extends EntityShape {
     system: System;
     type: String<64>;
     weight: 'high' | 'medium' | 'low' | 'data';
-    title: String<32>;
+    title: String<256>;
     content: Text;
     props: Object;
     data?: Object;
