@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { List, Button, Modal } from 'antd';
+import { List, Button, Modal, Dialog } from 'antd-mobile';
 import { MobileOutlined, DeleteOutlined } from '@ant-design/icons';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -8,31 +8,38 @@ import { EntityDict } from '../../../general-app-domain';
 
 
 export default function render(props: WebComponentProps<EntityDict, 'mobile', true, {
-    mobiles?: EntityDict['mobile']['OpSchema'][],
+    mobiles?: EntityDict['mobile']['OpSchema'][];
+    allowRemove: boolean;
 }, {
     goAddMobile: () => Promise<void>;
 }>) {
-    const { mobiles } = props.data;
+    const { mobiles, allowRemove } = props.data;
     const { goAddMobile, removeItem, execute } = props.methods;
-    const [ idToRemove, setIdToRemove ] = useState(undefined as undefined | string);
     return (
         <div className={Style.container}>
-            <List className={Style.list} split={true}>
+            <List className={Style.list}>
                 {mobiles?.map((ele, index) => (
                     <List.Item
                         key={index}
+                        prefix={<MobileOutlined />}
                         extra={
-                            <div
-                                onClick={() => setIdToRemove(ele.id)}
+                            allowRemove && <div
+                                onClick={
+                                    async () => {
+                                        const result = await Dialog.confirm({
+                                            content: '确认删除吗？删除后无法用此号码登录',
+                                        })
+                                        if (result) {
+                                            removeItem(ele.id);
+                                            await execute();
+                                        }
+                                    }}
                             >
                                 <DeleteOutlined />
                             </div>
                         }
                     >
-                        <List.Item.Meta
-                            avatar={<MobileOutlined />}
-                            title={ele.mobile}
-                        />
+                        {ele.mobile}
                     </List.Item>
                 ))}
             </List>
@@ -40,25 +47,11 @@ export default function render(props: WebComponentProps<EntityDict, 'mobile', tr
             <Button
                 block
                 size="large"
-                type="primary"
+                color="primary"
                 onClick={() => goAddMobile()}
             >
                 添加
             </Button>
-            <Modal
-                open={!!idToRemove}
-                title="确认删除手机号吗？"
-                okText="确定"
-                cancelText="取消"
-                // content="删除后，不可恢复"
-                destroyOnClose={true}
-                onCancel={() => useState(undefined)}
-                onOk={async () => {
-                    await removeItem(idToRemove!);
-                    await execute();
-                    setIdToRemove(undefined);
-                }}
-            />
         </div>
     );
 }

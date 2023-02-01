@@ -52,30 +52,35 @@ export default function render(
 
     return (
         <div className={Style.container}>
-            <List className={Style.list}>
-                <List.Item
-                    extra={<Avatar src={avatarUrl} className={Style.avatar} />}
-                    onClick={() => {
-                        setAvatar();
-                    }}
+            <div className={Style.avatar_container}>
+                <Avatar
+                    src={avatarUrl}
+                    className={Style.avatar}
+                />
+                <Button
+                    size='mini'
+                    color='primary'
+                    onClick={setAvatar}
                 >
-                    头像
-                </List.Item>
+                    更新
+                </Button>
+            </div>
+            <List className={Style.list}>
                 <List.Item
                     extra={nickname ? nickname : '未设置'}
                     onClick={() => {
                         setVisible(true, 'nickname');
                     }}
                 >
-                    昵称
+                    {t('user:attr.nickname')}
                 </List.Item>
                 <List.Item
-                    extra={gender ? gender : '未设置'}
+                    extra={gender ? t(`user:v.gender.${gender}`) : '未设置'}
                     onClick={() => {
                         setVisible(true, 'gender');
                     }}
                 >
-                    性别
+                    {t('user:attr.gender')}
                 </List.Item>
                 <List.Item
                     extra={birth ? dayjs(birth).format('YYYY-MM-DD') : '未设置'}
@@ -83,7 +88,7 @@ export default function render(
                         setVisible(true, 'birth');
                     }}
                 >
-                    出生年月
+                    {t('user:attr.birth')}
                 </List.Item>
                 <List.Item
                     extra={mobile ? mobile : '未设置'}
@@ -91,7 +96,7 @@ export default function render(
                         setMobile();
                     }}
                 >
-                    手机号码
+                    手机号
                 </List.Item>
             </List>
 

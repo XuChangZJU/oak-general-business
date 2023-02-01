@@ -13,12 +13,13 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', tru
     mobileCount?: number; refreshing?: boolean; isRoot: boolean; tokenId?: string;
     mobileText: string;
 }, {
+    goMyInfo: () => Promise<void>;
     doLogin: () => Promise<void>;
     goMyMobile: () => Promise<void>;
     goUserManage: () => Promise<void>;
 }>) {
     const { avatar, isLoggedIn, refreshing, mobileText, isRoot, oakExecuting, tokenId, nickname, oakDirty } = props.data;
-    const { doLogin, t, goMyMobile, goUserManage, clean, execute, updateItem } = props.methods;
+    const { doLogin, t, goMyMobile, goUserManage, clean, execute, updateItem, goMyInfo } = props.methods;
     const [showDrawer, setShowDrawer] = useState(false);
     return (
         <div className={Style.container}>
@@ -38,7 +39,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', tru
                         size="small"
                         disabled={refreshing}
                         loading={refreshing}
-                        onClick={() => setShowDrawer(true)}
+                        onClick={() => goMyInfo()}
                     >
                         {t('common:action.update')}
                     </Button>

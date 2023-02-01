@@ -11,6 +11,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', tru
     tokenId?: string;
     mobileText: string;
 }, {
+    goMyInfo: () => Promise<void>;
     doLogin: () => Promise<void>;
     goMyMobile: () => Promise<void>;
     goUserManage: () => Promise<void>;

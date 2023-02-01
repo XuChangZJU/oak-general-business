@@ -119,7 +119,7 @@ export class Token<
                 filter: {
                     id: this.tokenValue!,
                 },
-            })[0];
+            }, allowUnloggedIn)[0];
         }
         if (allowUnloggedIn) {
             return undefined;

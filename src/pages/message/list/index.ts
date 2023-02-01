@@ -21,14 +21,21 @@ export default OakComponent({
         {
             filter: ({ features, props }) => {
                 const userId = features.token.getUserId(true);
-                const application = features.application.getApplication();
-                const { systemId } = application;
+                /* const application = features.application.getApplication();
+                const { systemId } = application; */
 
-                return {
-                    userId,
-                    // systemId,
-                    // visitState: 'unvisited',
-                };
+                if (userId) {
+                    return {
+                        userId,
+                        // systemId,
+                        // visitState: 'unvisited',
+                    };
+                }
+                else {
+                    return {
+                        $$createAt$$: 123,
+                    };
+                }
             },
         },
     ],
@@ -50,6 +57,15 @@ export default OakComponent({
             messages,
             pagination,
         };
+    },
+    lifetimes: {
+        attached() {
+            this.subscribed.push(
+                this.features.token.subscribe(
+                    () => this.reRender()
+                )
+            );
+        }
     },
     methods: {
         goDetailById(id: string) {

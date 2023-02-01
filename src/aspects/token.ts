@@ -16,12 +16,12 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { tokenProjection } from '../types/projection';
 import { sendSms } from '../utils/sms';
 
-async function makeDistinguishException<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(userId: string, context: Cxt) {
+async function makeDistinguishException<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(userId: string, context: Cxt, message?: string) {
     const [user] = await context.select('user', {
         data: {
             id: 1,
             password: 1,
-            passwordOrigin: 1,
+            passwordSha1: 1,
             idState: 1,
             wechatUser$user: {
                 $entity: 'wechatUser',
@@ -47,7 +47,7 @@ async function makeDistinguishException<ED extends EntityDict, Cxt extends Backe
     const { password, passwordSha1, idState, wechatUser$user, email$user } = user;
 
     return new OakDistinguishUserException(userId, !!(password || passwordSha1),
-        idState === 'verified', (<any[]>wechatUser$user).length > 0, (<any[]>email$user).length > 0);
+        idState === 'verified', (<any[]>wechatUser$user).length > 0, (<any[]>email$user).length > 0, message);
 }
 
 async function tryMakeChangeLoginWay<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(userId: string, context: Cxt) {
@@ -127,7 +127,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
             else  {
                 // 此时可能要合并用户，抛出OakDistinguishUser异常，用户根据自身情况选择合并
                 const { userId } = mobileRow;
-                throw await makeDistinguishException<ED, Cxt>(userId as string, context);
+                throw await makeDistinguishException<ED, Cxt>(userId as string, context, '该手机号已被一个有效用户占用，');
             }
         }
         else {

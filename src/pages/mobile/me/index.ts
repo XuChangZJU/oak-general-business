@@ -29,9 +29,12 @@ export default OakComponent({
             };
         },
     }],
-    formData: ({ data: mobiles }) => ({
-        mobiles,
-    }),
+    formData: ({ data: mobiles }) => {
+        return {
+            mobiles,
+            allowRemove: mobiles.length > 1,
+        };
+    },
     data: {
         confirmDeleteModalVisible: false,
         refreshing: false,
