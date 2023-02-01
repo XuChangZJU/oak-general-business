@@ -11,8 +11,8 @@ export function composeDomainUrl(domain: Domain, url?: string, props?: Record<st
         if (props) {
             const k = Object.keys(props);
             if (k.length > 0) {
-                Url += Url.includes('?') ? '&' : '?';
                 for (const k2 of k) {
+                    Url += Url.includes('?') ? '&' : '?';
                     Url += `${k2}=${encodeURI(props[k2])}`;
                 }
             }
