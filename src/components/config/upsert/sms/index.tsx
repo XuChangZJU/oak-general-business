@@ -11,6 +11,7 @@ import {
     Select,
     Modal,
     message,
+    Switch,
 } from 'antd';
 import { get } from 'oak-domain/lib/utils/lodash';
 import Styles from './web.module.less';
@@ -536,7 +537,7 @@ export default function Sms(props: {
     cleanKey: (path: string, key: string) => void;
 }) {
     const { sms, setValue, removeItem, cleanKey } = props;
-    const { ali, tencent } = sms;
+    const { ali, tencent, mockSend } = sms;
     return (
         <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
             <Row>
@@ -544,6 +545,29 @@ export default function Sms(props: {
                     每种均可配置一个，相应的服务所使用的帐号请准确对应
                 </Card>
             </Row>
+            <Col flex="auto">
+                <Divider orientation="left" className={Styles.title}>
+                    短信配置
+                </Divider>
+                <Form>
+                    <Form.Item
+                        label="模拟发送"
+                        name="mockSend"
+                        tooltip="开启模拟发送短信，发短信不会调用api"
+                    >
+                        <>
+                            <Switch
+                                checkedChildren="是"
+                                unCheckedChildren="否"
+                                checked={mockSend}
+                                onChange={(checked) =>
+                                    setValue(`mockSend`, checked)
+                                }
+                            />
+                        </>
+                    </Form.Item>
+                </Form>
+            </Col>
             <Tencent
                 sms={tencent || []}
                 setValue={(path, value) => setValue(`tencent.${path}`, value)}

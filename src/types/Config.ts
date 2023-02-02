@@ -91,6 +91,7 @@ export type Config = {
         amap?: AmapMapConfig;
     };
     Sms?: {
+        mockSend?: Boolean;
         ali?: AliSmsConfig[];
         tencent?: TencentSmsConfig[];
     };
