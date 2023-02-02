@@ -51,29 +51,30 @@ const checkers: Checker<EntityDict, 'user', RuntimeCxt> [] = [
         },
         errMsg: '不能禁用root用户',
     },
-    {
-        type: 'row',
-        action: 'select',
-        entity: 'user',
-        filter: (operation, context) => {
-            const systemId = context.getSystemId();
-            if (systemId) {
-                return {
-                    id: {
-                        $in: {
-                            entity: 'userSystem',
-                            data: {
-                                userId: 1,
-                            },
-                            filter: {
-                                systemId,
-                            },
-                        },
-                    },
-                };
-            }
-        },
-    },
+    // {
+    //     type: 'row',
+    //     action: 'select',
+    //     entity: 'user',
+    //     filter: (operation, context) => {
+    //         const systemId = context.getSystemId();
+    //         // todo 查询用户 先不加systemId
+    //         if (systemId) {
+    //             return {
+    //                 id: {
+    //                     $in: {
+    //                         entity: 'userSystem',
+    //                         data: {
+    //                             userId: 1,
+    //                         },
+    //                         filter: {
+    //                             systemId,
+    //                         },
+    //                     },
+    //                 },
+    //             };
+    //         }
+    //     },
+    // },
     {
         entity: 'user',
         action: 'update',
