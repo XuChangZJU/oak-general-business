@@ -21,8 +21,8 @@ export default OakComponent(
         },
         filters: [
             {
-                filter: ({ props }) => {
-                    const scene = decodeURIComponent(props.scene!);
+                filter() {
+                    const scene = decodeURIComponent(this.props.scene!);
                     const uuid = scene && expandUuidTo36Bytes(scene!);
                     return {
                         id: uuid!,

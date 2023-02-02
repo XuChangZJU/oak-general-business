@@ -2,8 +2,8 @@ import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 
 export default OakComponent({
     entity: 'user',
-    projection: ({ props }) => {
-        const { entity } = props;
+    projection() {
+        const { entity } = this.props;
         const entityStr = firstLetterUpperCase(entity!);
         return {
             id: 1,
@@ -16,7 +16,7 @@ export default OakComponent({
                     relation: 1,
                 },
                 filter: {
-                    [`${entity}Id`]: props.entityId!,
+                    [`${entity}Id`]: this.props.entityId!,
                 },
             },
         };

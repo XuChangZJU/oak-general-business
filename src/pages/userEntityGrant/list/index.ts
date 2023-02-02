@@ -23,10 +23,10 @@ export default OakComponent({
     },
     filters: [
         {
-            filter: ({ props }) => {
+            filter() {
                 return {
-                    entity: props.entity,
-                    entityId: props.entityId,
+                    entity: this.props.entity,
+                    entityId: this.props.entityId,
                 };
             },
         },

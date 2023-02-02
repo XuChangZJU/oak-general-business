@@ -47,8 +47,8 @@ export default OakComponent({
     },
     filters: [
         {
-            filter({ props }) {
-                const { tag1, tag2 } = props;
+            filter() {
+                const { tag1, tag2 } = this.props;
                 const filter1 = {};
                 if (tag1) {
                     Object.assign(filter1, { tag1 });

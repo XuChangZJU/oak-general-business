@@ -9,8 +9,8 @@ export default OakComponent({
         userId: 1,
     },
     filters: [{
-        filter: ({ features }) => {           
-            const token = features.token.getToken();
+        filter() {           
+            const token = this.features.token.getToken();
             return {
                 user: {
                     id: {

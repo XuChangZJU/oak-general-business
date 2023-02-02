@@ -23,7 +23,6 @@ export default OakComponent({
             type: String,
             value: 'user',
         },
-        onClick: Function,
     },
     formData({ features }) {
         const userInfo = features.token.getUserInfo();

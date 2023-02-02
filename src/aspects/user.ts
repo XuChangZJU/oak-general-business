@@ -9,7 +9,7 @@ export async function mergeUser<ED extends EntityDict, Cxt extends BackendRuntim
     }
     const { from, to } = params;
     const schema = context.getSchema();
-    for (const entity in schema) {
+    /* for (const entity in schema) {
         if (['oper', 'modi', 'operEntity', 'modiEntity', 'userEntityGrant', 'wechatQrCode'].includes(entity)) {
             continue;
         }
@@ -45,7 +45,7 @@ export async function mergeUser<ED extends EntityDict, Cxt extends BackendRuntim
                 } as any, { dontCollect: true, dontCreateOper: true, dontCreateModi: true });
             }
         }
-    }
+    } */
 
     await context.operate('user', {
         id: await generateNewIdAsync(),

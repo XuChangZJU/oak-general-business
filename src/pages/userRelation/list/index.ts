@@ -6,8 +6,8 @@ import { EntityDict } from '../../../general-app-domain';
 
 export default OakComponent({
     entity: 'user',
-    projection: ({ props }) => {
-        const { entity, entityId } = props;
+    projection() {
+        const { entity, entityId } = this.props;
         const entityStr = firstLetterUpperCase(entity!);
         return {
             id: 1,
@@ -57,24 +57,28 @@ export default OakComponent({
         } as EntityDict['user']['Selection']['data'];
     },
     filters: [
-        // 由调用者注入oakFilter
         {
-            filter: ({ features, props }) => {
-                const { entityId, entity, relations } = props;
-                const entityStr = firstLetterUpperCase(entity!);
+            filter() {
+                const { entityId, entity, relations } = this.props;
+                const relationEntity = `user${firstLetterUpperCase(entity!)}`;
+                const filter = {
+                    [`${entity}Id`]: entityId,
+                };
+                if (relations) {
+                    Object.assign(filter, {
+                        relation: {
+                            $in: relations,
+                        },
+                    });
+                }
                 return {
                     id: {
                         $in: {
-                            entity: `user${entityStr}`,
+                            entity: relationEntity,
                             data: {
                                 userId: 1,
                             },
-                            filter: {
-                                [`${entity}Id`]: entityId,
-                                relation: {
-                                    $in: relations,
-                                },
-                            },
+                            filter,
                         },
                     },
                 };

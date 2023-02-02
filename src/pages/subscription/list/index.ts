@@ -11,10 +11,10 @@ export default OakComponent({
     },
     filters: [
         {
-            filter: ({ props }) => {
+            filter() {
                 return {
-                    entityId: props.entityId,
-                    entity: props.entity,
+                    entityId: this.props.entityId,
+                    entity: this.props.entity,
                 };
             },
         },

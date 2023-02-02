@@ -38,7 +38,7 @@ export default OakComponent({
             this.update({
                 entity,
                 entityId,
-                type: type || 'grant',
+                type: type as 'grant' || 'grant',
                 number: 1,
             });
         },

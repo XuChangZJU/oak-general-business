@@ -19,8 +19,8 @@ export default OakComponent({
     },
     filters: [
         {
-            filter: ({ features, props }) => {
-                const userId = features.token.getUserId(true);
+            filter() {
+                const userId = this.features.token.getUserId(true);
                 /* const application = features.application.getApplication();
                 const { systemId } = application; */
 

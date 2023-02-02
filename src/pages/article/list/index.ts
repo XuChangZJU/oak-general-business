@@ -36,8 +36,8 @@ export default OakComponent({
     filters: [
         // 由调用者注入oakFilter
         {
-            filter: ({ features, props }) => {
-                const { entityId, entity } = props;
+            filter() {
+                const { entityId, entity } = this.props;
                 return {
                     entityId,
                     entity,

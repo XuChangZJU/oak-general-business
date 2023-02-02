@@ -11,10 +11,10 @@ export default OakComponent({
     },
     filters: [
         {
-            filter: ({ props }) => {
-                if (props.systemId) {
+            filter() {
+                if (this.props.systemId) {
                     return {
-                        systemId: props.systemId,
+                        systemId: this.props.systemId,
                     };
                 }
                 return {};

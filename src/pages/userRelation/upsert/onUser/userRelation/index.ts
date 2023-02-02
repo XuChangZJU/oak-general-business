@@ -23,8 +23,8 @@ export default OakComponent({
     },
     isList: true,
     filters: [{
-        filter: ({ props }) => {
-            const { entity, entityId } = props;
+        filter() {
+            const { entity, entityId } = this.props;
             return {
                 [`${entity}Id`]: entityId,
             };

@@ -19,10 +19,10 @@ export default OakComponent({
     },
     filters: [
         {
-            filter: ({ props }) => {
-                if (props.platformId) {
+            filter() {
+                if (this.props.platformId) {
                     return {
-                        platformId: props.platformId,
+                        platformId: this.props.platformId,
                     };
                 }
                 return {};

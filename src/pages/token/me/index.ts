@@ -58,8 +58,8 @@ export default OakComponent({
     },
     filters: [
         {
-            filter: ({ features }) => {
-                const tokenId = features.token.getTokenValue();
+            filter() {
+                const tokenId = this.features.token.getTokenValue();
                 if (tokenId) {
                     return {
                         id: tokenId,
