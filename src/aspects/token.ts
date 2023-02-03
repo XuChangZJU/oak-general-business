@@ -1033,33 +1033,42 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
 
     assert(type === 'web');
     let { visitorId } = env;
+    const application = context.getApplication();
+    const { system } = application!;
+    const mockSend = system?.config?.Sms?.mockSend;
     const now = Date.now();
     const duration = 1; // 多少分钟内有效
-    if (process.env.NODE_ENV !== 'development') {
-        const [count1, count2] = await Promise.all(
-            [
-                context.count('captcha', {
+    if (process.env.NODE_ENV !== 'development' && !mockSend) {
+        const [count1, count2] = await Promise.all([
+            context.count(
+                'captcha',
+                {
                     filter: {
                         visitorId,
                         $$createAt$$: {
                             $gt: now - 3600 * 1000,
                         },
                     },
-                }, {
+                },
+                {
                     dontCollect: true,
-                }),
-                context.count('captcha', {
+                }
+            ),
+            context.count(
+                'captcha',
+                {
                     filter: {
                         mobile,
                         $$createAt$$: {
                             $gt: now - 3600 * 1000,
                         },
-                    }
-                }, {
+                    },
+                },
+                {
                     dontCollect: true,
-                })
-            ]
-        );
+                }
+            ),
+        ]);
         if (count1 > 5 || count2 > 5) {
             throw new OakUserException('您已发送很多次短信，请休息会再发吧');
         }
@@ -1082,7 +1091,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
     });
     if (captcha) {
         const code = captcha.code!;
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV === 'development' || mockSend) {
             return `验证码[${code}]已创建`;
         }
         else if (captcha.$$createAt$$! as number - now < 60000) {
@@ -1122,7 +1131,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
     }
     else {
         let code: string;
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV === 'development' || mockSend) {
             code = mobile.substring(7);
         }
         else {
