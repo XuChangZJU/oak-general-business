@@ -90,7 +90,7 @@ const locale: LocaleDef<Schema, Action, '', {
             avatar: '头像',
             idCardType: '证件类型',
             idNumber: '证件号码',
-            ref: '介绍人',
+            ref: '指向用户',
             files: '相关文件',
             userState: '用户状态',
             idState: '身份验证状态',

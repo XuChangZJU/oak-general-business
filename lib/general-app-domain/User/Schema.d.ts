@@ -50,6 +50,8 @@ export declare type Schema = EntityShape & {
     ref?: Schema | null;
     oper$operator?: Array<Oper.Schema>;
     oper$operator$$aggr?: AggregationResult<Oper.Schema>;
+    user$ref?: Array<Schema>;
+    user$ref$$aggr?: AggregationResult<Schema>;
     email$user?: Array<Email.Schema>;
     email$user$$aggr?: AggregationResult<Email.Schema>;
     message$user?: Array<Message.Schema>;
@@ -62,8 +64,6 @@ export declare type Schema = EntityShape & {
     token$user$$aggr?: AggregationResult<Token.Schema>;
     token$player?: Array<Token.Schema>;
     token$player$$aggr?: AggregationResult<Token.Schema>;
-    user$ref?: Array<Schema>;
-    user$ref$$aggr?: AggregationResult<Schema>;
     userEntityGrant$granter?: Array<UserEntityGrant.Schema>;
     userEntityGrant$granter$$aggr?: AggregationResult<UserEntityGrant.Schema>;
     userEntityGrant$grantee?: Array<UserEntityGrant.Schema>;
@@ -131,6 +131,12 @@ export declare type Projection = {
     oper$operator$$aggr?: Oper.Aggregation & {
         $entity: "oper";
     };
+    user$ref?: Selection & {
+        $entity: "user";
+    };
+    user$ref$$aggr?: Aggregation & {
+        $entity: "user";
+    };
     email$user?: Email.Selection & {
         $entity: "email";
     };
@@ -166,12 +172,6 @@ export declare type Projection = {
     };
     token$player$$aggr?: Token.Aggregation & {
         $entity: "token";
-    };
-    user$ref?: Selection & {
-        $entity: "user";
-    };
-    user$ref$$aggr?: Aggregation & {
-        $entity: "user";
     };
     userEntityGrant$granter?: UserEntityGrant.Selection & {
         $entity: "userEntityGrant";
@@ -287,13 +287,13 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "refId">
     refId?: String<64>;
 })) & {
     oper$operator?: OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">[]> | Array<OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">>>;
+    user$ref?: OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "ref" | "refId">, Filter> | OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">[]> | Array<OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">> | OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "ref" | "refId">, Filter>>;
     email$user?: OakOperation<Email.UpdateOperation["action"], Omit<Email.UpdateOperationData, "user" | "userId">, Email.Filter> | OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">> | OakOperation<Email.UpdateOperation["action"], Omit<Email.UpdateOperationData, "user" | "userId">, Email.Filter>>;
     message$user?: OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "user" | "userId">, Message.Filter> | OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">> | OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "user" | "userId">, Message.Filter>>;
     mobile$user?: OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Mobile.Filter> | OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">> | OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Mobile.Filter>>;
     userRole$user?: OakOperation<"create", Omit<UserRole.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserRole.CreateOperationData, "user" | "userId">>>;
     token$user?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "user" | "userId">, Token.Filter> | OakOperation<"create", Omit<Token.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "user" | "userId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "user" | "userId">, Token.Filter>>;
     token$player?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "player" | "playerId">, Token.Filter> | OakOperation<"create", Omit<Token.CreateOperationData, "player" | "playerId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "player" | "playerId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "player" | "playerId">, Token.Filter>>;
-    user$ref?: OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "ref" | "refId">, Filter> | OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">[]> | Array<OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">> | OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "ref" | "refId">, Filter>>;
     userEntityGrant$granter?: OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "granter" | "granterId">, UserEntityGrant.Filter> | OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "granter" | "granterId">[]> | Array<OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "granter" | "granterId">> | OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "granter" | "granterId">, UserEntityGrant.Filter>>;
     userEntityGrant$grantee?: OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "grantee" | "granteeId">, UserEntityGrant.Filter> | OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "grantee" | "granteeId">[]> | Array<OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "grantee" | "granteeId">> | OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "grantee" | "granteeId">, UserEntityGrant.Filter>>;
     userSystem$user?: OakOperation<UserSystem.UpdateOperation["action"], Omit<UserSystem.UpdateOperationData, "user" | "userId">, UserSystem.Filter> | OakOperation<"create", Omit<UserSystem.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserSystem.CreateOperationData, "user" | "userId">> | OakOperation<UserSystem.UpdateOperation["action"], Omit<UserSystem.UpdateOperationData, "user" | "userId">, UserSystem.Filter>>;
@@ -322,13 +322,13 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "refId">
 })) & {
     [k: string]: any;
     oper$operator?: OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">[]> | Array<OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">>>;
+    user$ref?: UpdateOperation | RemoveOperation | OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">[]> | Array<OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">> | UpdateOperation | RemoveOperation>;
     email$user?: Email.UpdateOperation | Email.RemoveOperation | OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">> | Email.UpdateOperation | Email.RemoveOperation>;
     message$user?: Message.UpdateOperation | Message.RemoveOperation | OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">> | Message.UpdateOperation | Message.RemoveOperation>;
     mobile$user?: Mobile.UpdateOperation | Mobile.RemoveOperation | OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">> | Mobile.UpdateOperation | Mobile.RemoveOperation>;
     userRole$user?: UserRole.RemoveOperation | OakOperation<"create", Omit<UserRole.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserRole.CreateOperationData, "user" | "userId">> | UserRole.RemoveOperation>;
     token$user?: Token.UpdateOperation | Token.RemoveOperation | OakOperation<"create", Omit<Token.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "user" | "userId">> | Token.UpdateOperation | Token.RemoveOperation>;
     token$player?: Token.UpdateOperation | Token.RemoveOperation | OakOperation<"create", Omit<Token.CreateOperationData, "player" | "playerId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "player" | "playerId">> | Token.UpdateOperation | Token.RemoveOperation>;
-    user$ref?: UpdateOperation | RemoveOperation | OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">[]> | Array<OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">> | UpdateOperation | RemoveOperation>;
     userEntityGrant$granter?: UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation | OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "granter" | "granterId">[]> | Array<OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "granter" | "granterId">> | UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation>;
     userEntityGrant$grantee?: UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation | OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "grantee" | "granteeId">[]> | Array<OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "grantee" | "granteeId">> | UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation>;
     userSystem$user?: UserSystem.UpdateOperation | UserSystem.RemoveOperation | OakOperation<"create", Omit<UserSystem.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserSystem.CreateOperationData, "user" | "userId">> | UserSystem.UpdateOperation | UserSystem.RemoveOperation>;
