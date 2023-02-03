@@ -1158,10 +1158,9 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
             dontCollect: true,
         });
 
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV === 'development' || mockSend) {
             return `验证码[${code}]已创建`;
-        }
-        else {
+        } else {
             //发送短信
             const result = await sendSms<ED, Cxt>(
                 {
