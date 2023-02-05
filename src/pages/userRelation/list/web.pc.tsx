@@ -16,30 +16,53 @@ import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 
-export default function Render(props: WebComponentProps<EntityDict, 'user', true, {
-    users: any[];
-    searchValue?: string;
-    pagination: {
-        pageSize: number;
-        total: number;
-        currentPage: number;
-    },
-    entity: string;
-    entityId: string;
-}, {
-    goUpsert: () => void;
-    goUpdate: (id: string) => void;
-    confirmDelete: (id: string) => Promise<void>;
-}>) {
-    const { pagination, users = [], entity, entityId, oakLoading } = props.data;
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'user',
+        true,
+        {
+            users: any[];
+            searchValue?: string;
+            pagination: {
+                pageSize: number;
+                total: number;
+                currentPage: number;
+            };
+            entity: string;
+            entityId: string;
+            showBack: boolean;
+        },
+        {
+            goUpsert: () => void;
+            goUpdate: (id: string) => void;
+            confirmDelete: (id: string) => Promise<void>;
+        }
+    >
+) {
+    const {
+        pagination,
+        users = [],
+        entity,
+        entityId,
+        oakLoading,
+        showBack = false,
+    } = props.data;
     const { pageSize, total, currentPage } = pagination || {};
-    const { goUpsert, t, setCurrentPage, setPageSize, confirmDelete, goUpdate } = props.methods;
+    const {
+        goUpsert,
+        t,
+        setCurrentPage,
+        setPageSize,
+        confirmDelete,
+        goUpdate,
+    } = props.methods;
 
     const [idRemove, setIdRemove] = useState(undefined as string | undefined);
     const [inviteVisible, setInviteVisible] = useState(false);
 
     return (
-        <PageHeader title="权限列表">
+        <PageHeader title="权限列表" showBack={showBack}>
             <div className={Style.container}>
                 <Space>
                     <Button type="primary" onClick={() => goUpsert()}>
@@ -94,9 +117,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', true
                                         {record.relations?.map(
                                             (ele: string, index: number) => (
                                                 <Tag key={index}>
-                                                    {t(
-                                                        entity + ':r.' + ele
-                                                    )}
+                                                    {t(entity + ':r.' + ele)}
                                                 </Tag>
                                             )
                                         )}
@@ -112,23 +133,23 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', true
                                     <Space>
                                         <Button
                                             type="link"
-                                            onClick={(e) =>
-                                                goUpdate(record.id)
-                                            }
+                                            onClick={(e) => goUpdate(record.id)}
                                         >
-                                            {record.relations?.length > 0 ? t('common:action.update') : t('common:action.grant')}
+                                            {record.relations?.length > 0
+                                                ? t('common:action.update')
+                                                : t('common:action.grant')}
                                         </Button>
-                                        {
-                                            record.relations?.length > 0 && (
-                                                <Button
-                                                    danger
-                                                    type="link"
-                                                    onClick={() => setIdRemove(record.id)}
-                                                >
-                                                    {t('common:action.revoke')}
-                                                </Button>
-                                            )
-                                        }
+                                        {record.relations?.length > 0 && (
+                                            <Button
+                                                danger
+                                                type="link"
+                                                onClick={() =>
+                                                    setIdRemove(record.id)
+                                                }
+                                            >
+                                                {t('common:action.revoke')}
+                                            </Button>
+                                        )}
                                     </Space>
                                 );
                             },

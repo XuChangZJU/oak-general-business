@@ -140,17 +140,21 @@ export default OakComponent({
                 this.refresh();
             }
         },
-        'relations'(value) {
+        relations: function (value) {
             const { relations } = this.props;
-            if (this.state.oakFullpath && (value.length !== relations.length || difference(value, relations).length > 0)) {
+            if (
+                this.state.oakFullpath &&
+                (value.length !== relations.length ||
+                    difference(value, relations).length > 0)
+            ) {
                 this.refresh();
             }
-        }
+        },
     },
     lifetimes: {
         ready() {
             //console.log('ready', this.props.relations);
-        }
+        },
     },
     methods: {
         goUpsert() {
@@ -198,7 +202,9 @@ export default OakComponent({
                                 data: {},
                                 filter: {
                                     id: {
-                                        $in: relations.map((ele: any) => ele.id),
+                                        $in: relations.map(
+                                            (ele: any) => ele.id
+                                        ),
                                     },
                                 },
                             },
@@ -208,8 +214,7 @@ export default OakComponent({
                     'revoke'
                 );
                 await this.execute();
-            }            
-            catch (err) {
+            } catch (err) {
                 if (err instanceof OakUserUnpermittedException) {
                     this.setMessage({
                         type: 'error',
@@ -305,8 +310,7 @@ export default OakComponent({
             const { idRemoveMp } = this.state;
             try {
                 await this.confirmDelete(idRemoveMp);
-            }
-            catch (err) {
+            } catch (err) {
                 this.setState({
                     idRemoveMp: '',
                 });
