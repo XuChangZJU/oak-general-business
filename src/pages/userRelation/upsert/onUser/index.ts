@@ -42,7 +42,6 @@ export default OakComponent({
         };
     },
     properties: {
-        oakId: String,
         entity: String,
         entityId: String,
         relations: Array,
@@ -57,42 +56,14 @@ export default OakComponent({
     },
     lifetimes: {
         async ready() {
-            const { entity, oakId } = this.props;
-            if (!oakId) {
-                const entityStr = firstLetterUpperCase(entity!);
+            const { entity } = this.props;
+            const isCreation = this.isCreation();
+            if (isCreation) {
                 this.update(
                     {
                         password: '12345678',
                     },
-                    undefined,
-                    async () => {
-                        const operations = this.getOperations();
-                        const [{ operation }] = operations! as {
-                            operation: BaseEntityDict['user']['CreateSingle'];
-                        }[];
-                        if (!operation.data.name) {
-                            throw new OakInputIllegalException(
-                                'user',
-                                ['name'],
-                                this.t('placeholder.name')
-                            );
-                        }
-                        if (
-                            (operation.data as any)[`user${entityStr}$user`]
-                                ?.length > 0
-                        ) {
-                            return;
-                        }
-                        throw new OakInputIllegalException(
-                            'user',
-                            [`user${entityStr}$user`],
-                            this.t('placeholder.relation')
-                        );
-                    }
                 );
-            }
-            else {
-                this.update({});
             }
             this.setState({
                 userRelationRelativePath: `user${firstLetterUpperCase(

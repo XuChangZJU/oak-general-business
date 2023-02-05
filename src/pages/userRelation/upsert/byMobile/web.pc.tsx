@@ -64,7 +64,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
-                    oakId={userId}
                 />
             )}
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>

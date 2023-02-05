@@ -21,12 +21,13 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     onConfirm: () => Promise<void>;
     onReset: () => void;
 }>) {
-    const { oakId, name, nickname, password, relations, oakFullpath, entity, entityId } = props.data;
-    const { t, update } = props.methods;
+    const { name, nickname, password, relations, oakFullpath, entity, entityId } = props.data;
+    const { t, update, isCreation } = props.methods;
+    const isNew = oakFullpath && isCreation();
     return (
         <div className={Style.container}>
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
-                <Form.Item style={{ marginBottom: 0 }} label={<div className={Style.tip}>{oakId ? t('existedUser') : t('newUser')}</div>} colon={false} />
+                <Form.Item style={{ marginBottom: 0 }} label={<div className={Style.tip}>{!isNew ? t('existedUser') : t('newUser')}</div>} colon={false} />
                 <Form.Item
                     label={t('user:attr.name')}
                     name="name"
@@ -38,7 +39,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                 >
                     <>
                         <Input
-                            disabled={!!oakId}
+                            disabled={!isNew}
                             onChange={(e) => {
                                 const strValue = e.target.value;
                                 update({
@@ -51,7 +52,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                     </>
                 </Form.Item>
                 {
-                    !!oakId ? <Form.Item
+                    !isNew ? <Form.Item
                         label={t('user:attr.nickname')}
                         name="nickname"
                         rules={[
