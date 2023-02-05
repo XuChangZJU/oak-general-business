@@ -10,6 +10,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', true
     };
     entity: string;
     entityId: string;
+    showBack: boolean;
 }, {
     goUpsert: () => void;
     goUpdate: (id: string) => void;
