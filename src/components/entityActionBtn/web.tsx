@@ -7,7 +7,7 @@ const { confirm } = Modal;
 type Item = {
     label?: string;
     action?: string;
-    unRelation: boolean;
+    auth: boolean;
     type?: 'a' | 'button';
     index?: number;
     alerted?: boolean;
@@ -78,7 +78,8 @@ export default function Render(
     return (
         <Space {...spaceProps}>
             {items && items.map((ele, index: number) => {
-                if (ele.unRelation || oakLegalActions?.includes(ele.action as EntityDict[keyof EntityDict]['Action'])) {
+                const { auth = true} = ele;
+                if (auth || oakLegalActions?.includes(ele.action as EntityDict[keyof EntityDict]['Action'])) {
                     let onClick = () => {
                         if (ele.onClick) {
                             ele.onClick();

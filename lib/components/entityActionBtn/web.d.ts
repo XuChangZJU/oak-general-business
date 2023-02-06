@@ -4,7 +4,7 @@ import { EntityDict } from '../../general-app-domain';
 declare type Item = {
     label?: string;
     action?: string;
-    unRelation: boolean;
+    auth: boolean;
     type?: 'a' | 'button';
     index?: number;
     alerted?: boolean;
