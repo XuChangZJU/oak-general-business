@@ -79,13 +79,21 @@ export default function Render(
         <Space {...spaceProps}>
             {items && items.map((ele, index: number) => {
                 const { auth = true} = ele;
-                if (auth || oakLegalActions?.includes(ele.action as EntityDict[keyof EntityDict]['Action'])) {
+                if (
+                    !auth ||
+                    (auth &&
+                        oakLegalActions?.includes(
+                            ele.action as EntityDict[keyof EntityDict]['Action']
+                        ))
+                ) {
                     let onClick = () => {
                         if (ele.onClick) {
                             ele.onClick();
                             return;
                         }
-                        methods.execute(ele.action as EntityDict[keyof EntityDict]['Action'])
+                        methods.execute(
+                            ele.action as EntityDict[keyof EntityDict]['Action']
+                        );
                     };
                     if (ele.alerted) {
                         onClick = () => {
@@ -99,17 +107,24 @@ export default function Render(
                                         ele.onClick();
                                         return;
                                     }
-                                    methods.execute(ele.action as EntityDict[keyof EntityDict]['Action'])
+                                    methods.execute(
+                                        ele.action as EntityDict[keyof EntityDict]['Action']
+                                    );
                                     if (ele.callBack) {
                                         ele.callBack(index);
                                     }
-                                }
-                            })
-                        }
+                                },
+                            });
+                        };
                     }
                     return (
-                        <ItemComponent {...ele} entity={entity} t={t} onClick={onClick} />
-                    )
+                        <ItemComponent
+                            {...ele}
+                            entity={entity}
+                            t={t}
+                            onClick={onClick}
+                        />
+                    );
                 }
             })}
         </Space>
