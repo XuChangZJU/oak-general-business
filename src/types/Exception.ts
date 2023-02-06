@@ -1,13 +1,15 @@
 import { OakUserException, makeException as makeException2 } from "oak-domain/lib/types";
+import { EntityDict } from '../general-app-domain';
+import { EntityDict as BaseEntityDict, SelectOpResult } from 'oak-domain/lib/types/Entity';
 
 
-export class OakNotEnoughMoneyException extends OakUserException {
+export class OakNotEnoughMoneyException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string) {
         super(message || '您的余额不足');
     }
 };
 
-export class OakDistinguishUserException extends OakUserException {
+export class OakDistinguishUserException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     userId: string;
     usingPassword: boolean;
     usingIdCard: boolean;
@@ -35,7 +37,7 @@ export class OakDistinguishUserException extends OakUserException {
     }
 };
 
-export class OakChangeLoginWayException extends OakUserException {
+export class OakChangeLoginWayException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     userId: string;
     usingIdCard: boolean;
     usingWechatUser: boolean;
@@ -60,61 +62,74 @@ export class OakChangeLoginWayException extends OakUserException {
     }
 }
 
-export class OakMobileUnsetException extends OakUserException {
+export class OakMobileUnsetException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string) {
         super(message || '您需要先登记手机号');
     }
 }
 
-export class OakUserInfoUncompletedException extends OakUserException {
+export class OakUserInfoUncompletedException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string) {
         super(message || '您需要先填写完整的用户信息');
     }
 }
 
-export class OakUserDisabledException extends OakUserException {
+export class OakUserDisabledException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string) {
         super(message || '您的帐户已被禁用，请联系系统管理员');
     }
 }
 
 
-export class OakTokenExpiredException extends OakUserException {
+export class OakTokenExpiredException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string) {
         super(message || '当前登录状态已经过期');
     }
 }
 
 
-export function makeException(data: {
+export function makeException<ED extends EntityDict & BaseEntityDict>(data: {
     name: string;
     message?: string;
+    opRecords: SelectOpResult<ED>;
     [A: string]: any;
 }) {
-    const exception = makeException2(data);
+    const exception = makeException2<ED>(data);
     if (exception) {
         return exception;
     }
 
-    const { name, message } = data;
+    const { name, message, opRecords } = data;
     switch (name) {
         case 'OakNotEnoughMoneyException': {
-            return new OakNotEnoughMoneyException(message);
+            const e = new OakNotEnoughMoneyException(message);
+            e.setOpRecords(opRecords);
+            return e;
         }
         case 'OakDistinguishUserException': {
-            return new OakDistinguishUserException(data.userId, data.usingPassword, data.usingIdCard, data.usingWechatUser, data.usingEmail, message);
+            const e = new OakDistinguishUserException(data.userId, data.usingPassword, data.usingIdCard, data.usingWechatUser, data.usingEmail, message);
+            e.setOpRecords(opRecords);
+            return e;
         }
         case 'OakUserDisabledException': {
-            return new OakUserDisabledException(message);
+            const e = new OakUserDisabledException(message);
+            e.setOpRecords(opRecords);
+            return e;
         }
         case 'OakTokenExpiredException': {
-            return new OakTokenExpiredException(message);
+            const e = new OakTokenExpiredException(message);
+            e.setOpRecords(opRecords);
+            return e;
         }
         case 'OakMobileUnsetException': {
-            return new OakMobileUnsetException(message);
+            const e = new OakMobileUnsetException(message);
+            e.setOpRecords(opRecords);
+            return e;
         }
         case 'OakUserInfoUncompletedException': {
-            return new OakUserInfoUncompletedException(message);
+            const e = new OakUserInfoUncompletedException(message);
+            e.setOpRecords(opRecords);
+            return e;
         }
         default: {
             return;

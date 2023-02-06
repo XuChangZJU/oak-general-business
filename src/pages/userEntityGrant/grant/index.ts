@@ -82,7 +82,7 @@ export default OakComponent({
                 });
             } catch (error) {
                 if (
-                    (<OakException>error).constructor.name ===
+                    (<OakException<EntityDict>>error).constructor.name ===
                     OakCongruentRowExists.name
                 ) {
                     // 这里由于编译的问题，用instanceof会不通过检查

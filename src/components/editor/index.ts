@@ -82,7 +82,7 @@ export default OakComponent({
                 return result;
             } catch (error) {
                 if (
-                    (error as OakException).constructor.name ===
+                    (error as OakException<EntityDict>).constructor.name ===
                     OakUnloggedInException.name
                 ) {
                     this.navigateTo({
