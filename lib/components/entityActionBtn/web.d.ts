@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { ButtonProps, SpaceProps } from 'antd';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../general-app-domain';

@@ -1,8 +1,10 @@
 import { OakUserException } from "oak-domain/lib/types";
-export declare class OakNotEnoughMoneyException extends OakUserException {
+import { EntityDict } from '../general-app-domain';
+import { EntityDict as BaseEntityDict, SelectOpResult } from 'oak-domain/lib/types/Entity';
+export declare class OakNotEnoughMoneyException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string);
 }
-export declare class OakDistinguishUserException extends OakUserException {
+export declare class OakDistinguishUserException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     userId: string;
     usingPassword: boolean;
     usingIdCard: boolean;
@@ -11,7 +13,7 @@ export declare class OakDistinguishUserException extends OakUserException {
     constructor(userId: string, usingPassword: boolean, usingIdCard: boolean, usingWechatUser: boolean, usingEmail: boolean, message?: string);
     toString(): string;
 }
-export declare class OakChangeLoginWayException extends OakUserException {
+export declare class OakChangeLoginWayException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     userId: string;
     usingIdCard: boolean;
     usingWechatUser: boolean;
@@ -19,20 +21,21 @@ export declare class OakChangeLoginWayException extends OakUserException {
     constructor(userId: string, usingIdCard: boolean, usingWechatUser: boolean, usingEmail: boolean, message?: string);
     toString(): string;
 }
-export declare class OakMobileUnsetException extends OakUserException {
+export declare class OakMobileUnsetException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string);
 }
-export declare class OakUserInfoUncompletedException extends OakUserException {
+export declare class OakUserInfoUncompletedException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string);
 }
-export declare class OakUserDisabledException extends OakUserException {
+export declare class OakUserDisabledException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string);
 }
-export declare class OakTokenExpiredException extends OakUserException {
+export declare class OakTokenExpiredException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string);
 }
-export declare function makeException(data: {
+export declare function makeException<ED extends EntityDict & BaseEntityDict>(data: {
     name: string;
     message?: string;
+    opRecords: SelectOpResult<ED>;
     [A: string]: any;
-}): import("oak-domain/lib/types").OakException | import("oak-domain/lib/types").OakExternalException | undefined;
+}): import("oak-domain/lib/types").OakException<BaseEntityDict> | undefined;
