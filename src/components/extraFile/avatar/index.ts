@@ -91,20 +91,14 @@ export default OakComponent({
                 }
             }
         },
-        async onPickByWeb(uploadFiles: any[]) {
+        async onPickByWeb(files: File[]) {
             await Promise.all(
-                uploadFiles.map(async (uploadFile) => {
-                    const {
-                        name,
-                        type: fileType,
-                        size,
-                        originFileObj,
-                    } = uploadFile;
+                files.map(async (file) => {
                     await this.pushExtraFile({
-                        name,
-                        fileType,
-                        size,
-                        extra1: originFileObj,
+                        name: file.name,
+                        fileType: file.type,
+                        size: file.size,
+                        extra1: file,
                     });
                 })
             );
