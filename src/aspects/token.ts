@@ -15,6 +15,7 @@ import { encryptPasswordSha1 } from '../utils/password';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { tokenProjection } from '../types/projection';
 import { sendSms } from '../utils/sms';
+import { mergeUser } from './user';
 
 async function makeDistinguishException<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(userId: string, context: Cxt, message?: string) {
     const [user] = await context.select('user', {
@@ -126,8 +127,22 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
             }
             else  {
                 // 此时可能要合并用户，抛出OakDistinguishUser异常，用户根据自身情况选择合并
-                const { userId } = mobileRow;
-                throw await makeDistinguishException<ED, Cxt>(userId as string, context, '该手机号已被一个有效用户占用，请联系管理员处理');
+                const { userId, user } = mobileRow;
+                const { userState } = user!;
+                switch (userState) {
+                    case 'disabled': {
+                        throw new OakUserDisabledException();
+                    }
+                    case 'shadow': {
+                        // 直接合并
+                        await mergeUser<ED, Cxt>({ from: userId!, to: currentToken.userId! }, context, true);
+                        return currentToken.id!;
+                    }
+                    default: {
+                        assert(userState === 'normal');    
+                        throw await makeDistinguishException<ED, Cxt>(userId as string, context, '该手机号已被一个有效用户占用，请联系管理员处理');
+                    }
+                }
             }
         }
         else {
