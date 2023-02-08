@@ -32,7 +32,7 @@ type DataProps = {
     genderOptions: Array<{ label: string; value: string }>;
     attrs: Record<string, string>;
     id: string;
-    refreshing: string;
+    refreshing: boolean;
     isSupportSyncWeChat: boolean;
     appId: string;
 };

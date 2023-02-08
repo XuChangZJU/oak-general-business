@@ -13,7 +13,6 @@ export interface Schema extends EntityShape {
     passwordSha1?: Text;
     birth?: Datetime;
     gender?: 'male' | 'female';
-    avatar?: Image;
     idCardType?: 'ID-Card' | 'passport' | 'Mainland-passport';
     idNumber?: String<32>;
     ref?: Schema;
@@ -98,7 +97,6 @@ const locale: LocaleDef<Schema, Action, '', {
             password: '密码',
             passwordSha1: 'sha1加密密码',
             gender: '性别',
-            avatar: '头像',
             idCardType: '证件类型',
             idNumber: '证件号码',
             ref: '指向用户',

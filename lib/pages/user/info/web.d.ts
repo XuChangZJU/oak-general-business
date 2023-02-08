@@ -14,13 +14,18 @@ declare type DataProps = {
         value: string;
     }>;
     attrs: Record<string, string>;
+    id: string;
+    refreshing: boolean;
+    isSupportSyncWeChat: boolean;
+    appId: string;
 };
 declare type MethodsProps = {
-    setMobile: () => void;
+    goAddMobile: () => void;
     setAvatar: () => void;
     setVisible: (visible: boolean, attr: string) => void;
     setCustomData: (attr: string, value: string | number) => void;
     onConfirm: (attr: string) => Promise<void>;
+    refreshWechatPublicUserInfo: () => void;
 };
 export default function render(props: WebComponentProps<EntityDict, 'user', false, DataProps, MethodsProps>): JSX.Element;
 export {};

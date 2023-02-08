@@ -1,4 +1,4 @@
-import { String, Text, Datetime, Image, ForeignKey } from "oak-domain/lib/types/DataType";
+import { String, Text, Datetime, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
@@ -26,7 +26,6 @@ export declare type OpSchema = EntityShape & {
     passwordSha1?: Text | null;
     birth?: Datetime | null;
     gender?: ('male' | 'female') | null;
-    avatar?: Image | null;
     idCardType?: ('ID-Card' | 'passport' | 'Mainland-passport') | null;
     idNumber?: String<32> | null;
     refId?: ForeignKey<"user"> | null;
@@ -41,7 +40,6 @@ export declare type Schema = EntityShape & {
     passwordSha1?: Text | null;
     birth?: Datetime | null;
     gender?: ('male' | 'female') | null;
-    avatar?: Image | null;
     idCardType?: ('ID-Card' | 'passport' | 'Mainland-passport') | null;
     idNumber?: String<32> | null;
     refId?: ForeignKey<"user"> | null;
@@ -96,7 +94,6 @@ declare type AttrFilter = {
     passwordSha1: Q_StringValue;
     birth: Q_DateValue;
     gender: Q_EnumValue<'male' | 'female'>;
-    avatar: Q_StringValue;
     idCardType: Q_EnumValue<'ID-Card' | 'passport' | 'Mainland-passport'>;
     idNumber: Q_StringValue;
     refId: Q_StringValue | SubQuery.UserIdSubQuery;
@@ -118,7 +115,6 @@ export declare type Projection = {
     passwordSha1?: number;
     birth?: number;
     gender?: number;
-    avatar?: number;
     idCardType?: number;
     idNumber?: number;
     refId?: number;
@@ -252,8 +248,6 @@ export declare type SortAttr = {
     birth: number;
 } | {
     gender: number;
-} | {
-    avatar: number;
 } | {
     idCardType: number;
 } | {

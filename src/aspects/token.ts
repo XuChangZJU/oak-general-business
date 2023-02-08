@@ -8,9 +8,9 @@ import { CreateOperationData as CreateWechatUser } from '../general-app-domain/W
 import { CreateOperationData as CreateUser, Schema as User } from '../general-app-domain/User/Schema';
 import { Operation as ExtraFileOperation } from '../general-app-domain/ExtraFile/Schema';
 import { isEqual } from 'oak-domain/lib/utils/lodash';
-import { OakRowInconsistencyException, OakUserException, OakUserUnpermittedException } from 'oak-domain/lib/types';
+import { OakRowInconsistencyException, OakUnloggedInException, OakUserException, OakUserUnpermittedException } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
-import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException, OakWechatPublicNeedReloginException } from '../types/Exception';
+import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exception';
 import { encryptPasswordSha1 } from '../utils/password';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { tokenProjection } from '../types/projection';
@@ -369,6 +369,70 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends BackendRu
     return tokenId;
 }
 
+async function setUserInfoFromWechat<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(user: Partial<ED['user']['Schema']>, userInfo: {
+    nickname?: string; avatar?: string; gender?: 'male' | 'female';
+}, context: Cxt) {
+    const application = context.getApplication();
+    const config = application?.system?.config || application?.system?.platform?.config;
+    const { nickname, gender, avatar } = userInfo;
+    const { nickname: originalNickname, gender: originalGender, extraFile$entity } = user;
+    const updateData = {};
+    if (nickname && nickname !== originalNickname) {
+        Object.assign(updateData, {
+            nickname,
+        });
+    }
+    if (gender && gender !== originalGender) {
+        Object.assign(updateData, {
+            gender,
+        });
+    }
+    if (avatar && (extraFile$entity?.length === 0 ||
+        composeFileUrl(extraFile$entity![0], config) !== avatar)) {
+        // 需要更新新的avatar extra file
+        const extraFileOperations: ExtraFileOperation['data'][] = [
+            {
+                id: await generateNewIdAsync(),
+                action: 'create',
+                data: Object.assign(
+                    {
+                        id: await generateNewIdAsync(),
+                        tag1: 'avatar',
+                        entity: 'user',
+                        entityId: user.id,
+                        objectId: await generateNewIdAsync(),
+                    },
+                    decomposeFileUrl(avatar)
+                ),
+            },
+        ];
+        if (extraFile$entity!.length > 0) {
+            extraFileOperations.push({
+                id: await generateNewIdAsync(),
+                action: 'remove',
+                data: {},
+                filter: {
+                    id: extraFile$entity![0].id,
+                },
+            });
+        }
+        Object.assign(updateData, {
+            extraFile$entity: extraFileOperations,
+        });
+    }
+
+    if (Object.keys(updateData).length > 0) {
+        await context.operate('user', {
+            id: await generateNewIdAsync(),
+            action: 'update',
+            data: updateData,
+            filter: {
+                id: user.id!,
+            }
+        }, {});
+    }
+}
+
 async function tryRefreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(wechatUserId: string, context: Cxt) {
     const [wechatUser] = await context.select('wechatUser', {
         data: {
@@ -378,19 +442,70 @@ async function tryRefreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends
             atExpiredAt: 1,
             rtExpiredAt: 1,
             scope: 1,
+            openId: 1,
+            user: {
+                id: 1,
+                nickname: 1,
+                gender: 1,
+                extraFile$entity: {
+                    $entity: 'extraFile',
+                    data: {
+                        id: 1,
+                        tag1: 1,
+                        origin: 1,
+                        bucket: 1,
+                        objectId: 1,
+                        filename: 1,
+                        extra1: 1,
+                        entity: 1,
+                        entityId: 1,
+                    },
+                    filter: {
+                        tag1: 'avatar',
+                    },
+                },
+            },
         },
         filter: {
             id: wechatUserId,
         }
     }, { dontCollect: true });
 
-    const { accessToken, refreshToken, atExpiredAt, rtExpiredAt, scope } = wechatUser;
+    const application = context.getApplication();
+    const { type, config } = application!;
+
+    assert(type === 'wechatPublic' && config!.type === 'wechatPublic');
+    let appId: string, appSecret: string;
+    const config2 = config as WechatPublicConfig;
+    appId = config2.appId;
+    appSecret = config2.appSecret;
+
+    const wechatInstance = WechatSDK.getInstance(appId!, appSecret!, type!) as WechatPublicInstance;
+
+    let { accessToken, refreshToken, atExpiredAt, rtExpiredAt, scope, openId, user } = wechatUser;
     const now = Date.now();
     assert(scope!.toLowerCase().includes('userinfo'));
     if (rtExpiredAt! < now) {
-        // refreshToken过期，直接返回失败
-        throw new OakWechatPublicNeedReloginException();
+        // refreshToken过期，直接返回未登录异常，使用户去重新登录
+        throw new OakUnloggedInException();
     }
+    if (atExpiredAt! < now) {
+        // 刷新accessToken
+        const { accessToken: at2, atExpiredAt: ate2, scope: s2 } = await wechatInstance.refreshUserAccessToken(refreshToken!);
+        await context.operate('wechatUser', {
+            id: await generateNewIdAsync(),
+            action: 'update',
+            data: {
+                accessToken: at2,
+                atExpiredAt: ate2,
+                scope: s2,
+            }
+        }, { dontCollect: true, dontCreateModi: true, dontCreateOper: true })
+        accessToken = at2;
+    }
+
+    const { nickname, gender, avatar } = await wechatInstance.getUserInfo(accessToken!, openId!);
+    await setUserInfoFromWechat<ED, Cxt>(user!, {nickname, gender: gender as 'male', avatar}, context);
 }
 
 export async function refreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({}, context: Cxt) {
@@ -1000,6 +1115,7 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ba
             user: {
                 id: 1,
                 nickname: 1,
+                gender: 1,
                 extraFile$entity: {
                     $entity: 'extraFile',
                     data: {
@@ -1038,63 +1154,7 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ba
     // const result = wechatInstance.decryptData(sessionKey as string, encryptedData, iv, signature);
     // 实测发现解密出来的和userInfo完全一致……
     // console.log(result);
-    const { nickname: originNickname, extraFile$entity } = user as User;
-    const updateData = {};
-    if (nickname !== originNickname) {
-        Object.assign(updateData, {
-            nickname,
-        });
-    }
-    if (
-        extraFile$entity?.length === 0 ||
-        composeFileUrl(extraFile$entity![0], config) !== avatarUrl
-    ) {
-        // 需要更新新的avatar extra file
-        const extraFileOperations: ExtraFileOperation['data'][] = [
-            {
-                id: await generateNewIdAsync(),
-                action: 'create',
-                data: Object.assign(
-                    {
-                        id: await generateNewIdAsync(),
-                        tag1: 'avatar',
-                        entity: 'user',
-                        entityId: userId,
-                        objectId: await generateNewIdAsync(),
-                    },
-                    decomposeFileUrl(avatarUrl)
-                ),
-            },
-        ];
-        if (extraFile$entity!.length > 0) {
-            extraFileOperations.push({
-                id: await generateNewIdAsync(),
-                action: 'remove',
-                data: {},
-                filter: {
-                    id: extraFile$entity![0].id,
-                },
-            });
-        }
-        Object.assign(updateData, {
-            extraFile$entity: extraFileOperations,
-        });
-    }
-
-    if (Object.keys(updateData).length > 0) {
-        await context.operate('user', {
-            id: await generateNewIdAsync(),
-            action: 'update',
-            data: updateData,
-            filter: {
-                id: userId!,
-            }
-        }, {
-            dontCollect: true,
-        });
-    }
-
-    // todo update nickname/avatar in wechatUser
+    await setUserInfoFromWechat<ED, Cxt>(user!, { nickname, avatar: avatarUrl }, context);
 }
 
 

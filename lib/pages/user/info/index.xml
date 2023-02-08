@@ -17,7 +17,7 @@
         <l-list title="生日" data-attr="birth" bind:lintap="setVisibleMp">
             <view slot="right-section" class="value">{{birthText || '未设置'}}</view>
         </l-list>
-        <l-list title="手机号" bind:lintap="setMobile">
+        <l-list title="手机号" bind:lintap="goAddMobile">
             <view slot="right-section" class="value">{{mobile || '未绑定'}}</view>
         </l-list>
         <!-- <l-list tag-position="right" is-link="{{false}}" title="用户状态">   

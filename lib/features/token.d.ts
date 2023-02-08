@@ -29,4 +29,5 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     isReallyRoot(): boolean;
     sendCaptcha(mobile: string): Promise<string>;
     switchTo(userId: string): Promise<void>;
+    refreshWechatPublicUserInfo(): Promise<void>;
 }

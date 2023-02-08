@@ -30,9 +30,6 @@ export declare class OakUserInfoUncompletedException<ED extends EntityDict & Bas
 export declare class OakUserDisabledException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string);
 }
-export declare class OakWechatPublicNeedReloginException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
-    constructor(message?: string);
-}
 export declare class OakTokenExpiredException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string);
 }

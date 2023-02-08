@@ -11,7 +11,6 @@ export default function render(props: WebComponentProps<EntityDict, 'token', fal
     backUrl?: string;
     mobile: string;
     captcha: string;
-    password: string;
 }, {
     setCaptcha: (mobile: string) => void;
     setMobile: (mobile: string) => void;

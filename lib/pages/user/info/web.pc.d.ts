@@ -15,11 +15,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
         value: string;
     }>;
 }, {
-    setMobile: () => void;
-    setAvatar: () => void;
-    setVisible: (visible: boolean, attr: string) => void;
-    setCustomData: (attr: string, value: string | number) => void;
-    onConfirm: (attr: string) => Promise<void>;
-    updateData: (attr: string, value: string | number) => void;
     updateMyInfo: () => void;
+    goAddMobile: () => void;
 }>): JSX.Element;
