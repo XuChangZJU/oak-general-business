@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Avatar,
     Space,
@@ -8,12 +8,15 @@ import {
     DatePicker,
     Form,
     Typography,
+    Modal,
 } from 'antd';
 import dayjs from 'dayjs';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 import PageHeader from '../../../components/common/pageHeader';
 import OakAvatar from '../../../components/extraFile/avatar';
+import MobileLogin from '../../../pages/mobile/login';
+
 import Style from './web.module.less';
 
 
@@ -55,6 +58,7 @@ export default function Render(
         oakFullpath,
         oakDirty,
     } = data;
+    const [open, setOpen] = useState(false);
 
     return (
         <PageHeader title="个人信息" showBack={showBack}>
@@ -176,7 +180,11 @@ export default function Render(
                                 <Button
                                     size="small"
                                     onClick={() => {
-                                        goAddMobile();
+                                        if (mobile) {
+                                            goAddMobile();
+                                            return;
+                                        }
+                                        setOpen(true);
                                     }}
                                 >
                                     {mobile ? t('manage') : t('bind')}
@@ -204,6 +212,23 @@ export default function Render(
                     </Form.Item>
                 </Form>
             </div>
+            <Modal
+                title="绑定手机号"
+                open={open}
+                destroyOnClose={true}
+                footer={null}
+                onCancel={() => {
+                    setOpen(false);
+                }}
+            >
+                <MobileLogin
+                    callback={() => {
+                        setOpen(false);
+                    }}
+                    oakPath="$user/info-mobile/login"
+                    oakAutoUnmount={true}
+                />
+            </Modal>
         </PageHeader>
     );
 }

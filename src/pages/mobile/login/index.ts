@@ -17,6 +17,7 @@ export default OakComponent({
         onlyCaptcha: Boolean,
         onlyPassword: Boolean,
         eventLoggedIn: String,
+        callback: Function,
     },
     formData({ features }) {
         const lastSendAt = features.localStorage.load(SEND_KEY);
@@ -68,7 +69,7 @@ export default OakComponent({
             }
         },
         async loginByMobile() {
-            const { eventLoggedIn } = this.props;
+            const { eventLoggedIn, callback } = this.props;
             const { mobile, password, captcha } = this.state;
             try {
                 await this.features.token.loginByMobile(
@@ -76,7 +77,9 @@ export default OakComponent({
                     password,
                     captcha
                 );
-                if (eventLoggedIn) {
+                if (typeof callback === 'function') {
+                    callback();
+                } else if (eventLoggedIn) {
                     this.pub(eventLoggedIn);
                 } else {
                     this.navigateBack();
