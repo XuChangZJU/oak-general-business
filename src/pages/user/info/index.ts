@@ -1,6 +1,10 @@
 import {
     OakUserUnpermittedException,
 } from 'oak-domain/lib/types';
+import {
+    AppType,
+    WechatPublicConfig,
+} from '../../../general-app-domain/Application/Schema';
 import dayjs from 'dayjs';
 type Attr = 'nickname' | 'gender' | 'birth';
 
@@ -46,6 +50,8 @@ export default OakComponent({
     },
     isList: false,
     formData({ data: user, features }) {
+        const application = features.application.getApplication();
+
         const avatar = user?.extraFile$entity && user?.extraFile$entity[0];
         const avatarUrl = features.extraFile.getUrl(avatar);
         const { mobile } = (user?.mobile$user && user?.mobile$user[0]) || {};
@@ -53,6 +59,17 @@ export default OakComponent({
         const genderOption =
             user?.gender &&
             this.state.genderOptions.find((ele) => ele.value === user?.gender);
+
+        const appType = application?.type as AppType;
+        const config = application?.config;
+        let appId;
+        let isSupportSyncWeChat = false; //是否支持微信公众号授权登录
+        if (appType === 'wechatPublic') {
+            const config2 = config as WechatPublicConfig;
+            const isService = config2?.isService; //是否服务号 服务号才能授权登录
+            appId = config2?.appId;
+            isSupportSyncWeChat = !!(isService && appId);
+        }
 
         return {
             id: user?.id,
@@ -68,6 +85,8 @@ export default OakComponent({
             mobile,
             userState: user?.userState,
             idState: user?.idState,
+
+            isSupportSyncWeChat,
         };
     },
     data: {
@@ -99,6 +118,7 @@ export default OakComponent({
             birth: '出生日期',
         },
         birthEnd: '',
+        refreshing: false,
     },
     lifetimes: {
         async ready() {
@@ -111,11 +131,21 @@ export default OakComponent({
         },
     },
     methods: {
-        setAvatar() {
-            this.setMessage({
-                type: 'warning',
-                content: '功能开发中',
+        async refreshWechatPublicUserInfo() {
+            this.setState({
+                refreshing: true,
             });
+            try {
+                await this.features.token.refreshWechatPublicUserInfo();
+                this.setState({
+                    refreshing: false,
+                });
+            } catch (err) {
+                this.setState({
+                    refreshing: false,
+                });
+                throw err;
+            }
         },
         goAddMobile() {
             this.navigateTo(

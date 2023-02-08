@@ -32,6 +32,9 @@ type DataProps = {
     genderOptions: Array<{ label: string; value: string }>;
     attrs: Record<string, string>;
     id: string;
+    refreshing: string;
+    isSupportSyncWeChat: boolean;
+    appId: string;
 };
 
 type MethodsProps = {
@@ -40,13 +43,21 @@ type MethodsProps = {
     setVisible: (visible: boolean, attr: string) => void;
     setCustomData: (attr: string, value: string | number) => void;
     onConfirm: (attr: string) => Promise<void>;
+    refreshWechatPublicUserInfo: () => void;
 };
 
 export default function render(
     props: WebComponentProps<EntityDict, 'user', false, DataProps, MethodsProps>
 ) {
     const { data, methods } = props;
-    const { t, clean, setAvatar, setVisible, goAddMobile } = methods;
+    const {
+        t,
+        clean,
+        setAvatar,
+        setVisible,
+        goAddMobile,
+        refreshWechatPublicUserInfo,
+    } = methods;
     const {
         oakFullpath,
         visible,
@@ -58,10 +69,29 @@ export default function render(
         avatarUrl,
         attr,
         id,
+        isSupportSyncWeChat,
+        refreshing,
     } = data;
 
     return (
         <div className={Style.container}>
+            {isSupportSyncWeChat && (
+                <div className={Style.syncWeChat}>
+                    <Button
+                        disabled={refreshing}
+                        color="primary"
+                        fill="outline"
+                        shape="rounded"
+                        size="small"
+                        onClick={() => {
+                            refreshWechatPublicUserInfo();
+                        }}
+                    >
+                        {t('syncWeChat')}
+                    </Button>
+                </div>
+            )}
+
             <List className={Style.list}>
                 <List.Item
                     extra={

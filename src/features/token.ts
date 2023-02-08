@@ -114,12 +114,16 @@ export class Token<
 
     getToken(allowUnloggedIn?: boolean) {
         if (this.tokenValue) {
-            return this.cache.get('token', {
-                data: tokenProjection,
-                filter: {
-                    id: this.tokenValue!,
+            return this.cache.get(
+                'token',
+                {
+                    data: tokenProjection,
+                    filter: {
+                        id: this.tokenValue!,
+                    },
                 },
-            }, allowUnloggedIn)[0];
+                allowUnloggedIn
+            )[0];
         }
         if (allowUnloggedIn) {
             return undefined;
@@ -154,7 +158,7 @@ export class Token<
 
     /**
      * 这个是指token的player到底是不是root
-     * @returns 
+     * @returns
      */
     isReallyRoot(): boolean {
         const token = this.getToken(true);
@@ -176,16 +180,24 @@ export class Token<
     }
 
     async switchTo(userId: string) {
-        if (!this.isReallyRoot()) {            
+        if (!this.isReallyRoot()) {
             throw new OakUserUnpermittedException();
         }
         const currentUserId = this.getUserId();
-        if (currentUserId === userId) {            
-            throw new OakRowInconsistencyException(undefined, '您已经是当前用户');
+        if (currentUserId === userId) {
+            throw new OakRowInconsistencyException(
+                undefined,
+                '您已经是当前用户'
+            );
         }
         await this.cache.exec('switchTo', {
             userId,
         });
         this.publish();
+    }
+
+    async refreshWechatPublicUserInfo() {
+       await this.cache.exec('refreshWechatPublicUserInfo', {});
+       this.publish();
     }
 }
