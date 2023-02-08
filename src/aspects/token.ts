@@ -474,7 +474,7 @@ async function tryRefreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends
     const application = context.getApplication();
     const { type, config } = application!;
 
-    assert(type === 'wechatPublic' && config!.type === 'wechatPublic');
+    assert(type !== 'wechatMp' && config!.type !== 'wechatMp');
     let appId: string, appSecret: string;
     const config2 = config as WechatPublicConfig;
     appId = config2.appId;
