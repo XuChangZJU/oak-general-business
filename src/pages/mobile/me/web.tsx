@@ -23,35 +23,45 @@ export default function render(
     const { goAddMobile, removeItem, execute } = props.methods;
     return (
         <div className={Style.container}>
-            <List className={Style.list}>
-                {mobiles?.map((ele, index) => (
-                    <List.Item
-                        key={index}
-                        prefix={<MobileOutlined />}
-                        extra={
-                            allowRemove && (
-                                <div
-                                    onClick={async () => {
-                                        const result = await Dialog.confirm({
-                                            content:
-                                                '确认删除吗？删除后无法用此号码登录',
-                                        });
-                                        if (result) {
-                                            removeItem(ele.id);
-                                            await execute();
-                                        }
-                                    }}
-                                >
-                                    <DeleteOutlined />
-                                </div>
-                            )
-                        }
-                    >
-                        {ele.mobile}
-                    </List.Item>
-                ))}
-            </List>
-            <div style={{ flex: 1 }} />
+            {mobiles?.length > 0 ? (
+                <>
+                    <List className={Style.list}>
+                        {mobiles?.map((ele, index) => (
+                            <List.Item
+                                key={index}
+                                prefix={<MobileOutlined />}
+                                extra={
+                                    allowRemove && (
+                                        <div
+                                            onClick={async () => {
+                                                const result =
+                                                    await Dialog.confirm({
+                                                        content:
+                                                            '确认删除吗？删除后无法用此号码登录',
+                                                    });
+                                                if (result) {
+                                                    removeItem(ele.id);
+                                                    await execute();
+                                                }
+                                            }}
+                                        >
+                                            <DeleteOutlined />
+                                        </div>
+                                    )
+                                }
+                            >
+                                {ele.mobile}
+                            </List.Item>
+                        ))}
+                    </List>
+                    <div style={{ flex: 1 }} />
+                </>
+            ) : (
+                <div className={Style.noData}>
+                    <span>尚未绑定手机号</span>
+                </div>
+            )}
+
             <Button
                 block
                 size="large"
