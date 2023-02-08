@@ -45,14 +45,13 @@ export default OakComponent({
             });
             try {
                 const { code, errMsg } = e.detail;
-                if (errMsg) {
+                if (errMsg !== 'getPhoneNumber:ok') {
                     console.error(errMsg);
                     this.setMessage({
                         title: '获取手机号失败',
                         type: 'warning',
                     });
-                }
-                else {
+                } else {
                     assert(code);
                     console.log(code);
                 }
@@ -70,7 +69,7 @@ export default OakComponent({
                 this.navigateBack();
             })
             this.navigateTo({
-                url: '/login',
+                url: '/mobile/login',
                 onlyCaptcha: true,    
                 eventLoggedIn,
             });
