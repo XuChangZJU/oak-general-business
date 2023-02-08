@@ -8,25 +8,27 @@ export default OakComponent({
         mobile: 1,
         userId: 1,
     },
-    filters: [{
-        filter() {           
-            const token = this.features.token.getToken();
-            return {
-                userId: {
-                    $in: {
-                        entity: 'token',
-                        data: {
-                            userId: 1,
-                        },
-                        filter: {
-                            id: token?.id,
-                            ableState: 'enabled',
+    filters: [
+        {
+            filter() {
+                const token = this.features.token.getToken();
+                return {
+                    userId: {
+                        $in: {
+                            entity: 'token',
+                            data: {
+                                userId: 1,
+                            },
+                            filter: {
+                                id: token?.id,
+                                ableState: 'enabled',
+                            },
                         },
                     },
-                },
-            };
+                };
+            },
         },
-    }],
+    ],
     formData: ({ data: mobiles }) => {
         return {
             mobiles,
@@ -38,6 +40,9 @@ export default OakComponent({
         refreshing: false,
         deleteIdx: undefined,
     },
+    properties: {
+        showBack: Boolean,
+    },
     methods: {
         async onRefreshMobile(e: any) {
             this.setState({
@@ -45,14 +50,13 @@ export default OakComponent({
             });
             try {
                 const { code, errMsg } = e.detail;
-                if (errMsg) {
+                if (errMsg !== 'getPhoneNumber:ok') {
                     console.error(errMsg);
                     this.setMessage({
                         title: '获取手机号失败',
                         type: 'warning',
                     });
-                }
-                else {
+                } else {
                     assert(code);
                     console.log(code);
                 }
@@ -68,12 +72,11 @@ export default OakComponent({
             const eventLoggedIn = `mobile:me:login:${Date.now()}`;
             this.sub(eventLoggedIn, () => {
                 this.navigateBack();
-            })
+            });
             this.navigateTo({
-                url: '/login',
-                onlyCaptcha: true,    
+                url: '/mobile/login',
                 eventLoggedIn,
             });
-        }
+        },
     },
 });

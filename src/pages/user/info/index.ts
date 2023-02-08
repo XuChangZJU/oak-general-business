@@ -117,10 +117,15 @@ export default OakComponent({
                 content: '功能开发中',
             });
         },
-        setMobile() {
-            this.navigateTo({
-                url: '/mobile/me',
-            });
+        goAddMobile() {
+            this.navigateTo(
+                {
+                    url: '/mobile/me',
+                },
+                {
+                    showBack: true,
+                }
+            );
         },
         setVisibleMp(e: WechatMiniprogram.Touch) {
             const {

@@ -8,7 +8,8 @@ import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 import { MobileOutlined } from '@ant-design/icons';
 import { Form, Input, Button } from 'antd';
-import Style from './mobile.module.less';
+import Style from './web.module.less';
+
 
 export default function render(
     props: WebComponentProps<
@@ -26,7 +27,6 @@ export default function render(
             backUrl?: string;
             mobile: string;
             captcha: string;
-            password: string;
         },
         {
             setCaptcha: (mobile: string) => void;
@@ -36,7 +36,7 @@ export default function render(
         }
     >
 ) {
-    const { mobile, captcha, password, counter } = props.data;
+    const { mobile, captcha, counter } = props.data;
     const { t, setMobile, setCaptcha, sendCaptcha, loginByMobile } =
         props.methods;
     const validMobile = isMobile(mobile);

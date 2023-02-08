@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Avatar,
     Space,
@@ -7,11 +7,16 @@ import {
     Radio,
     DatePicker,
     Form,
+    Typography,
+    Modal,
 } from 'antd';
 import dayjs from 'dayjs';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 import PageHeader from '../../../components/common/pageHeader';
+import OakAvatar from '../../../components/extraFile/avatar';
+import MobileLogin from '../../../pages/mobile/login';
+
 import Style from './web.module.less';
 
 
@@ -33,28 +38,13 @@ export default function Render(
             genderOptions: Array<{ label: string; value: string }>;
         },
         {
-            setMobile: () => void;
-            setAvatar: () => void;
-            setVisible: (visible: boolean, attr: string) => void;
-            setCustomData: (attr: string, value: string | number) => void;
-            onConfirm: (attr: string) => Promise<void>;
-            updateData: (attr: string, value: string | number) => void;
             updateMyInfo: () => void;
+            goAddMobile: () => void;
         }
     >
 ) {
     const { data, methods } = props;
-    const {
-        t,
-        clean,
-        setAvatar,
-        setVisible,
-        setMobile,
-        setCustomData,
-        onConfirm,
-        updateData,
-        updateMyInfo,
-    } = methods;
+    const { t, updateMyInfo, goAddMobile } = methods;
     const {
         nickname,
         name,
@@ -65,15 +55,31 @@ export default function Render(
         showBack,
         oakExecuting,
         genderOptions,
+        oakFullpath,
+        oakDirty,
     } = data;
+    const [open, setOpen] = useState(false);
 
     return (
-        <PageHeader title="个人信息" showBack={showBack}>
+        <PageHeader title="修改个人信息" showBack={showBack}>
             <div className={Style.container}>
                 <Form
                     labelCol={{ xs: { span: 4 }, md: { span: 6 } }}
                     wrapperCol={{ xs: { span: 16 }, md: { span: 12 } }}
                 >
+                    <Form.Item label={t('avatar')} name="extraFile$entity">
+                        <>
+                            <OakAvatar
+                                oakAutoUnmount={true}
+                                oakPath={
+                                    oakFullpath
+                                        ? oakFullpath + '.extraFile$entity'
+                                        : undefined
+                                }
+                                entity="user"
+                            />
+                        </>
+                    </Form.Item>
                     <Form.Item
                         label={t('user:attr.name')}
                         name="name"
@@ -167,6 +173,25 @@ export default function Render(
                             />
                         </>
                     </Form.Item>
+                    <Form.Item label={t('mobile')}>
+                        <>
+                            <Space>
+                                <Typography>{mobile}</Typography>
+                                <Button
+                                    size="small"
+                                    onClick={() => {
+                                        if (mobile) {
+                                            goAddMobile();
+                                            return;
+                                        }
+                                        setOpen(true);
+                                    }}
+                                >
+                                    {mobile ? t('manage') : t('bind')}
+                                </Button>
+                            </Space>
+                        </>
+                    </Form.Item>
                     <Form.Item
                         wrapperCol={{
                             xs: { offset: 4 },
@@ -175,7 +200,7 @@ export default function Render(
                     >
                         <Space>
                             <Button
-                                disabled={oakExecuting}
+                                disabled={oakExecuting || !oakDirty}
                                 type="primary"
                                 onClick={() => {
                                     updateMyInfo();
@@ -187,6 +212,23 @@ export default function Render(
                     </Form.Item>
                 </Form>
             </div>
+            <Modal
+                title="绑定手机号"
+                open={open}
+                destroyOnClose={true}
+                footer={null}
+                onCancel={() => {
+                    setOpen(false);
+                }}
+            >
+                <MobileLogin
+                    callback={() => {
+                        setOpen(false);
+                    }}
+                    oakPath="$user/info-mobile/login"
+                    oakAutoUnmount={true}
+                />
+            </Modal>
         </PageHeader>
     );
 }
