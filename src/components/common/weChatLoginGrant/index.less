@@ -1,8 +1,6 @@
 .oak-loginGrant {
     &_dev {
-        height: 280px;
-        border: 1px dashed var(--oak-color-primary);
-        padding: 10px;
+        height: 180px;
 
         &_header {
             display: flex;
@@ -42,31 +40,7 @@
                 box-shadow: 0 2px #00000004;
                 cursor: pointer;
                 transition: .3s;
-
-
             }
-
-            &_btn:hover {
-                color: var(--oak-color-primary);
-                border-color: currentColor;
-            }
-
-            &_btn::after {
-                /*其他样式*/
-                opacity: 0;
-                box-shadow: 0 0 0 6px var(--oak-color-primary);
-                transition: .3s;
-            }
-
-            /*点击*/
-            &_btn:active::after {
-                box-shadow: none;
-                opacity: 0.4;
-                transition: 0s;
-                /*取消过渡*/
-            }
-
-
         }
 
 
@@ -93,9 +67,7 @@
     }
 
     &_prod {
-        height: 280px;
-        border: 1px dashed var(--oak-color-primary);
-        padding: 10px;
+        height: 180px;
 
         display: flex;
             flex-direction: column;

@@ -14,9 +14,8 @@ import type { DatePickerRef } from 'antd-mobile/es/components/date-picker';
 import dayjs from 'dayjs';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
-import OakGallery from '../../../components/extraFile/gallery';
+import OakAvatar from '../../../components/extraFile/avatar';
 import Style from './mobile.module.less';
-
 
 
 //todo 头像跟绑定手机号 未实现
@@ -32,10 +31,11 @@ type DataProps = {
     attr: string;
     genderOptions: Array<{ label: string; value: string }>;
     attrs: Record<string, string>;
+    id: string;
 };
 
 type MethodsProps = {
-    setMobile: () => void;
+    goAddMobile: () => void;
     setAvatar: () => void;
     setVisible: (visible: boolean, attr: string) => void;
     setCustomData: (attr: string, value: string | number) => void;
@@ -46,26 +46,39 @@ export default function render(
     props: WebComponentProps<EntityDict, 'user', false, DataProps, MethodsProps>
 ) {
     const { data, methods } = props;
-    const { t, clean, setAvatar, setVisible, setMobile } = methods;
-    const { visible, nickname, name, birth, gender, mobile, avatarUrl, attr } =
-        data;
+    const { t, clean, setAvatar, setVisible, goAddMobile } = methods;
+    const {
+        oakFullpath,
+        visible,
+        nickname,
+        name,
+        birth,
+        gender,
+        mobile,
+        avatarUrl,
+        attr,
+        id,
+    } = data;
 
     return (
         <div className={Style.container}>
-            <div className={Style.avatar_container}>
-                <Avatar
-                    src={avatarUrl}
-                    className={Style.avatar}
-                />
-                <Button
-                    size='mini'
-                    color='primary'
-                    onClick={setAvatar}
-                >
-                    更新
-                </Button>
-            </div>
             <List className={Style.list}>
+                <List.Item
+                    extra={
+                        <OakAvatar
+                            oakAutoUnmount={true}
+                            oakPath={
+                                oakFullpath
+                                    ? oakFullpath + '.extraFile$entity'
+                                    : undefined
+                            }
+                            entity="user"
+                            entityId={id}
+                        />
+                    }
+                >
+                    头像
+                </List.Item>
                 <List.Item
                     extra={nickname ? nickname : '未设置'}
                     onClick={() => {
@@ -93,10 +106,10 @@ export default function render(
                 <List.Item
                     extra={mobile ? mobile : '未设置'}
                     onClick={() => {
-                        setMobile();
+                        goAddMobile();
                     }}
                 >
-                    手机号
+                    {t('mobile')}
                 </List.Item>
             </List>
 

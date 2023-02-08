@@ -7,11 +7,13 @@ import {
     Radio,
     DatePicker,
     Form,
+    Typography,
 } from 'antd';
 import dayjs from 'dayjs';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 import PageHeader from '../../../components/common/pageHeader';
+import OakAvatar from '../../../components/extraFile/avatar';
 import Style from './web.module.less';
 
 
@@ -33,28 +35,13 @@ export default function Render(
             genderOptions: Array<{ label: string; value: string }>;
         },
         {
-            setMobile: () => void;
-            setAvatar: () => void;
-            setVisible: (visible: boolean, attr: string) => void;
-            setCustomData: (attr: string, value: string | number) => void;
-            onConfirm: (attr: string) => Promise<void>;
-            updateData: (attr: string, value: string | number) => void;
             updateMyInfo: () => void;
+            goAddMobile: () => void;
         }
     >
 ) {
     const { data, methods } = props;
-    const {
-        t,
-        clean,
-        setAvatar,
-        setVisible,
-        setMobile,
-        setCustomData,
-        onConfirm,
-        updateData,
-        updateMyInfo,
-    } = methods;
+    const { t, updateMyInfo, goAddMobile } = methods;
     const {
         nickname,
         name,
@@ -65,6 +52,8 @@ export default function Render(
         showBack,
         oakExecuting,
         genderOptions,
+        oakFullpath,
+        oakDirty,
     } = data;
 
     return (
@@ -74,6 +63,19 @@ export default function Render(
                     labelCol={{ xs: { span: 4 }, md: { span: 6 } }}
                     wrapperCol={{ xs: { span: 16 }, md: { span: 12 } }}
                 >
+                    <Form.Item label={t('avatar')} name="extraFile$entity">
+                        <>
+                            <OakAvatar
+                                oakAutoUnmount={true}
+                                oakPath={
+                                    oakFullpath
+                                        ? oakFullpath + '.extraFile$entity'
+                                        : undefined
+                                }
+                                entity="user"
+                            />
+                        </>
+                    </Form.Item>
                     <Form.Item
                         label={t('user:attr.name')}
                         name="name"
@@ -167,6 +169,21 @@ export default function Render(
                             />
                         </>
                     </Form.Item>
+                    <Form.Item label={t('mobile')}>
+                        <>
+                            <Space>
+                                <Typography>{mobile}</Typography>
+                                <Button
+                                    size="small"
+                                    onClick={() => {
+                                        goAddMobile();
+                                    }}
+                                >
+                                    {mobile ? t('manage') : t('bind')}
+                                </Button>
+                            </Space>
+                        </>
+                    </Form.Item>
                     <Form.Item
                         wrapperCol={{
                             xs: { offset: 4 },
@@ -175,7 +192,7 @@ export default function Render(
                     >
                         <Space>
                             <Button
-                                disabled={oakExecuting}
+                                disabled={oakExecuting || !oakDirty}
                                 type="primary"
                                 onClick={() => {
                                     updateMyInfo();

@@ -25,9 +25,11 @@ export default OakComponent({
         if (typeof lastSendAt === 'number') {
             counter = Math.max(60 - Math.ceil((now - lastSendAt) / 1000), 0);
             if (counter > 0) {
-                (this as any).counterHandler = setTimeout(() => this.reRender(), 1000);
-            }
-            else if ((this as any).counterHandler) {
+                (this as any).counterHandler = setTimeout(
+                    () => this.reRender(),
+                    1000
+                );
+            } else if ((this as any).counterHandler) {
                 clearTimeout((this as any).counterHandler);
                 (this as any).counterHandler = undefined;
             }
@@ -37,11 +39,14 @@ export default OakComponent({
         };
     },
     methods: {
-        onInput(e: any) {
-            const { dataset, value } = this.resolveInput(e);
-            const { attr } = dataset;
+        setMobile(value: string) {
             this.setState({
-                [attr]: value,
+                mobile: value,
+            });
+        },
+        setCaptcha(value: string) {
+            this.setState({
+                captcha: value,
             });
         },
         async sendCaptcha() {
@@ -55,8 +60,7 @@ export default OakComponent({
                 });
                 this.save(SEND_KEY, Date.now());
                 this.reRender();
-            }
-            catch (err) {
+            } catch (err) {
                 this.setMessage({
                     type: 'error',
                     content: (err as Error).message,
@@ -67,20 +71,22 @@ export default OakComponent({
             const { eventLoggedIn } = this.props;
             const { mobile, password, captcha } = this.state;
             try {
-                await this.features.token.loginByMobile(mobile, password, captcha);
+                await this.features.token.loginByMobile(
+                    mobile,
+                    password,
+                    captcha
+                );
                 if (eventLoggedIn) {
                     this.pub(eventLoggedIn);
-                }
-                else {
+                } else {
                     this.navigateBack();
                 }
-            }
-            catch (err) {
+            } catch (err) {
                 this.setMessage({
                     type: 'error',
                     content: (err as Error).message,
                 });
             }
-        }
+        },
     },
 });

@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import { List, Button, Modal, Dialog } from 'antd-mobile';
 import { MobileOutlined, DeleteOutlined } from '@ant-design/icons';
-import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
+import Style from './mobile.module.less';
 
-
-
-export default function render(props: WebComponentProps<EntityDict, 'mobile', true, {
-    mobiles?: EntityDict['mobile']['OpSchema'][];
-    allowRemove: boolean;
-}, {
-    goAddMobile: () => Promise<void>;
-}>) {
+export default function render(
+    props: WebComponentProps<
+        EntityDict,
+        'mobile',
+        true,
+        {
+            mobiles?: EntityDict['mobile']['OpSchema'][];
+            allowRemove: boolean;
+        },
+        {
+            goAddMobile: () => void;
+        }
+    >
+) {
     const { mobiles, allowRemove } = props.data;
     const { goAddMobile, removeItem, execute } = props.methods;
     return (
@@ -23,20 +29,22 @@ export default function render(props: WebComponentProps<EntityDict, 'mobile', tr
                         key={index}
                         prefix={<MobileOutlined />}
                         extra={
-                            allowRemove && <div
-                                onClick={
-                                    async () => {
+                            allowRemove && (
+                                <div
+                                    onClick={async () => {
                                         const result = await Dialog.confirm({
-                                            content: '确认删除吗？删除后无法用此号码登录',
-                                        })
+                                            content:
+                                                '确认删除吗？删除后无法用此号码登录',
+                                        });
                                         if (result) {
                                             removeItem(ele.id);
                                             await execute();
                                         }
                                     }}
-                            >
-                                <DeleteOutlined />
-                            </div>
+                                >
+                                    <DeleteOutlined />
+                                </div>
+                            )
                         }
                     >
                         {ele.mobile}
@@ -50,7 +58,7 @@ export default function render(props: WebComponentProps<EntityDict, 'mobile', tr
                 color="primary"
                 onClick={() => goAddMobile()}
             >
-                添加
+                绑定
             </Button>
         </div>
     );

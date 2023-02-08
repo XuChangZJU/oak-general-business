@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { message } from 'antd';
+import { message, Button } from 'antd';
 import { random, template } from 'oak-domain/lib/utils/string';
 import classNames from 'classnames';
 import './index.less';
@@ -65,11 +65,14 @@ function Grant(props: GrantProps) {
                             setCode(e.target.value);
                         }}
                     ></input>
-                    <button
-                        className={`${prefixCls2}_dev_header_btn`}
+                    <Button
+                        type="primary"
+                        shape="round"
+                        size="large"
+                        // block
                         onClick={() => {
                             if (disabled) {
-                                messageApi.info(disableText || '禁用');
+                                messageApi.info(disableText || 'disabled');
                                 return;
                             }
                             window.location.href =
@@ -77,13 +80,10 @@ function Grant(props: GrantProps) {
                                 `?code=${code}&state=${state}`;
                         }}
                     >
-                        微信登录
-                    </button>
+                        微信授权一键登录
+                    </Button>
                 </div>
                 <div className={`${prefixCls2}_dev_bottom`}>
-                    <span className={`${prefixCls2}_dev_bottom_title`}>
-                        模拟微信授权登录
-                    </span>
                     <span className={`${prefixCls2}_dev_bottom_desc`}>
                         1、由于本地开发环境限制，模拟微信授权后动作
                     </span>
@@ -98,12 +98,15 @@ function Grant(props: GrantProps) {
          V = (
              <div className={`${prefixCls2}_prod`}>
                  <div className={`${prefixCls2}_prod_header`}>
-                     <button
-                         className={`${prefixCls2}_prod_header_btn`}
+                     <Button
+                         type="primary"
+                         shape="round"
+                         size="large"
+                        //  block
                          onClick={() => {
                              if (disabled) {
-                                messageApi.info(disableText || '禁用');
-                                return
+                                 messageApi.info(disableText || 'disabled');
+                                 return;
                              }
                              const url = WeChatLoginUrl(
                                  redirectUri,
@@ -115,13 +118,8 @@ function Grant(props: GrantProps) {
                              window.location.href = url;
                          }}
                      >
-                        微信登录
-                     </button>
-                 </div>
-                 <div className={`${prefixCls2}_prod_bottom`}>
-                     <span className={`${prefixCls2}_prod_bottom_title`}>
-                         微信授权登录
-                     </span>
+                         微信授权一键登录
+                     </Button>
                  </div>
              </div>
          );

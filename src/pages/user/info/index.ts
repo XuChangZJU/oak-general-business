@@ -117,7 +117,7 @@ export default OakComponent({
                 content: '功能开发中',
             });
         },
-        setMobile() {
+        goAddMobile() {
             this.navigateTo({
                 url: '/mobile/me',
             });
