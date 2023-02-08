@@ -61,7 +61,7 @@ export default function Render(
     const [open, setOpen] = useState(false);
 
     return (
-        <PageHeader title="个人信息" showBack={showBack}>
+        <PageHeader title="修改个人信息" showBack={showBack}>
             <div className={Style.container}>
                 <Form
                     labelCol={{ xs: { span: 4 }, md: { span: 6 } }}

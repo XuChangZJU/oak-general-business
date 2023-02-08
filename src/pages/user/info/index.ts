@@ -118,9 +118,14 @@ export default OakComponent({
             });
         },
         goAddMobile() {
-            this.navigateTo({
-                url: '/mobile/me',
-            });
+            this.navigateTo(
+                {
+                    url: '/mobile/me',
+                },
+                {
+                    showBack: true,
+                }
+            );
         },
         setVisibleMp(e: WechatMiniprogram.Touch) {
             const {
