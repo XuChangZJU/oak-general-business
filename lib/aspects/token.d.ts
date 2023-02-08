@@ -8,6 +8,7 @@ export declare function loginByMobile<ED extends EntityDict, Cxt extends Backend
     mobile: string;
     env: WebEnv | WechatMpEnv;
 }, context: Cxt): Promise<string>;
+export declare function refreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({}: {}, context: Cxt): Promise<void>;
 /**
  * 公众号授权登录
  * @param param0

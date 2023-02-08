@@ -65,6 +65,8 @@ export const tokenProjection: EntityDict['token']['Selection']['data'] = {
             },
         },
     },
+    entity: 1,
+    entityId: 1,
 };
 
 export const applicationProjection: EntityDict['application']['Selection']['data'] = {

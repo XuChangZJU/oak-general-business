@@ -80,6 +80,12 @@ export class OakUserDisabledException<ED extends EntityDict & BaseEntityDict> ex
     }
 }
 
+export class OakWechatPublicNeedReloginException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
+    constructor(message?: string) {
+        super(message || '您的授权过期，需要重新登录');
+    }
+}
+
 
 export class OakTokenExpiredException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string) {
@@ -128,6 +134,11 @@ export function makeException<ED extends EntityDict & BaseEntityDict>(data: {
         }
         case 'OakUserInfoUncompletedException': {
             const e = new OakUserInfoUncompletedException(message);
+            e.setOpRecords(opRecords);
+            return e;
+        }
+        case 'OakWechatPublicNeedReloginException': {
+            const e = new OakWechatPublicNeedReloginException(message);
             e.setOpRecords(opRecords);
             return e;
         }

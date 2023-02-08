@@ -5,6 +5,7 @@ import {
     syncUserInfoWechatMp,
     sendCaptcha,
     switchTo,
+    refreshWechatPublicUserInfo,
 } from './token';
 import { getUploadInfo } from './extraFile';
 import { getApplication } from './application';
@@ -14,6 +15,7 @@ import { mergeUser } from './user';
 export const aspectDict = {
     mergeUser,
     switchTo,
+    refreshWechatPublicUserInfo,
     loginByMobile,
     loginWechat,
     loginWechatMp,

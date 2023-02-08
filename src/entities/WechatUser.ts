@@ -9,8 +9,12 @@ export interface Schema extends EntityShape {
     origin: 'mp' | 'public' | 'web';
     openId?: String<32>;
     unionId?: String<32>;
-    accessToken?: String<32>;
     sessionKey?: String<64>;
+    accessToken?: String<64>;
+    refreshToken?: String<64>;
+    scope?: String<64>;
+    atExpiredAt?: Datetime;
+    rtExpiredAt?: Datetime;
     subscribed?: Boolean;
     subscribedAt?: Datetime;
     unsubscribedAt?: Datetime;
@@ -29,8 +33,12 @@ const locale: LocaleDef<Schema, '', '', {
             origin: '源',
             openId: 'openId',
             unionId: 'unionId',
-            accessToken: 'accessToken',
             sessionKey: 'sessionKey',
+            accessToken: 'accessToken',
+            refreshToken: 'refreshToken',
+            atExpiredAt: 'accessToken过期时间',
+            rtExpiredAt: 'refreshToken过期时间',
+            scope: 'accessToken域',
             subscribed: '是否订阅',
             subscribedAt: '订阅时间',
             unsubscribedAt: '取关时间',

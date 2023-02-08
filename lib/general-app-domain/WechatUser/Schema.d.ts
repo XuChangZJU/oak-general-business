@@ -13,8 +13,12 @@ export declare type OpSchema = EntityShape & {
     origin: 'mp' | 'public' | 'web';
     openId?: String<32> | null;
     unionId?: String<32> | null;
-    accessToken?: String<32> | null;
     sessionKey?: String<64> | null;
+    accessToken?: String<64> | null;
+    refreshToken?: String<64> | null;
+    scope?: String<64> | null;
+    atExpiredAt?: Datetime | null;
+    rtExpiredAt?: Datetime | null;
     subscribed?: Boolean | null;
     subscribedAt?: Datetime | null;
     unsubscribedAt?: Datetime | null;
@@ -28,8 +32,12 @@ export declare type Schema = EntityShape & {
     origin: 'mp' | 'public' | 'web';
     openId?: String<32> | null;
     unionId?: String<32> | null;
-    accessToken?: String<32> | null;
     sessionKey?: String<64> | null;
+    accessToken?: String<64> | null;
+    refreshToken?: String<64> | null;
+    scope?: String<64> | null;
+    atExpiredAt?: Datetime | null;
+    rtExpiredAt?: Datetime | null;
     subscribed?: Boolean | null;
     subscribedAt?: Datetime | null;
     unsubscribedAt?: Datetime | null;
@@ -56,8 +64,12 @@ declare type AttrFilter = {
     origin: Q_EnumValue<'mp' | 'public' | 'web'>;
     openId: Q_StringValue;
     unionId: Q_StringValue;
-    accessToken: Q_StringValue;
     sessionKey: Q_StringValue;
+    accessToken: Q_StringValue;
+    refreshToken: Q_StringValue;
+    scope: Q_StringValue;
+    atExpiredAt: Q_DateValue;
+    rtExpiredAt: Q_DateValue;
     subscribed: Q_BooleanValue;
     subscribedAt: Q_DateValue;
     unsubscribedAt: Q_DateValue;
@@ -79,8 +91,12 @@ export declare type Projection = {
     origin?: number;
     openId?: number;
     unionId?: number;
-    accessToken?: number;
     sessionKey?: number;
+    accessToken?: number;
+    refreshToken?: number;
+    scope?: number;
+    atExpiredAt?: number;
+    rtExpiredAt?: number;
     subscribed?: number;
     subscribedAt?: number;
     unsubscribedAt?: number;
@@ -133,9 +149,17 @@ export declare type SortAttr = {
 } | {
     unionId: number;
 } | {
+    sessionKey: number;
+} | {
     accessToken: number;
 } | {
-    sessionKey: number;
+    refreshToken: number;
+} | {
+    scope: number;
+} | {
+    atExpiredAt: number;
+} | {
+    rtExpiredAt: number;
 } | {
     subscribed: number;
 } | {

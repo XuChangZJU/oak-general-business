@@ -1,6 +1,6 @@
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../general-app-domain';
-import { WechatSDK } from 'oak-external-sdk';
+import { WechatMpInstance, WechatPublicInstance, WechatSDK } from 'oak-external-sdk';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { WechatMpConfig, WechatPublicConfig, WebConfig } from '../general-app-domain/Application/Schema';
 import { CreateOperationData as CreateToken, WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
@@ -10,7 +10,7 @@ import { Operation as ExtraFileOperation } from '../general-app-domain/ExtraFile
 import { isEqual } from 'oak-domain/lib/utils/lodash';
 import { OakRowInconsistencyException, OakUserException, OakUserUnpermittedException } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
-import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exception';
+import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException, OakWechatPublicNeedReloginException } from '../types/Exception';
 import { encryptPasswordSha1 } from '../utils/password';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { tokenProjection } from '../types/projection';
@@ -266,7 +266,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
 }
 
 async function loadTokenInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(tokenId: string, context: Cxt ) {
-    await context.select(
+    return await context.select(
         'token',
         {
             data: tokenProjection,
@@ -369,6 +369,47 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends BackendRu
     return tokenId;
 }
 
+async function tryRefreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(wechatUserId: string, context: Cxt) {
+    const [wechatUser] = await context.select('wechatUser', {
+        data: {
+            id: 1,
+            accessToken: 1,
+            refreshToken: 1,
+            atExpiredAt: 1,
+            rtExpiredAt: 1,
+            scope: 1,
+        },
+        filter: {
+            id: wechatUserId,
+        }
+    }, { dontCollect: true });
+
+    const { accessToken, refreshToken, atExpiredAt, rtExpiredAt, scope } = wechatUser;
+    const now = Date.now();
+    assert(scope!.toLowerCase().includes('userinfo'));
+    if (rtExpiredAt! < now) {
+        // refreshToken过期，直接返回失败
+        throw new OakWechatPublicNeedReloginException();
+    }
+}
+
+export async function refreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({}, context: Cxt) {
+    const tokenValue = context.getTokenValue();
+    const [token] = await context.select('token', {
+        data: {
+            id: 1,
+            entity: 1,
+            entityId: 1,
+        },
+        filter: {
+            id: tokenValue,
+        },
+    }, { dontCollect: true });
+    assert(token.entity === 'wechatUser');
+    assert(token.entityId);
+    return await tryRefreshWechatPublicUserInfo<ED, Cxt>(token.entityId, context);
+}
+
 /**
  * 公众号授权登录
  * @param param0 
@@ -395,9 +436,12 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
             appId = config2.wechat.appId;
             appSecret = config2.wechat.appSecret;
         }
-        const wechatInstance = WechatSDK.getInstance(appId!, appSecret!, type!);
+        const wechatInstance = WechatSDK.getInstance(appId!, appSecret!, type!) as WechatPublicInstance;
     
-        const { sessionKey, openId, unionId } = await wechatInstance.code2Session(code);
+        const { accessToken, refreshToken, atExpiredAt, rtExpiredAt, scope, isSnapshotUser, openId, unionId } = await wechatInstance.code2Session(code);
+        if (isSnapshotUser) {
+            throw new OakUserException('请使用完整服务后再进行登录操作');
+        }
     
         const [wechatUser] = await context.select('wechatUser', {
             data: {
@@ -431,7 +475,11 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
             const wechatUser2 = wechatUser!;
     
             const wechatUserUpdateData = {
-                sessionKey,
+                accessToken,
+                refreshToken,
+                atExpiredAt,
+                rtExpiredAt,
+                scope,
             };
             if (unionId !== wechatUser.unionId as any) {
                 Object.assign(wechatUserUpdateData, {
@@ -567,7 +615,11 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
     
                 const wechatUserCreateData: CreateWechatUser = {
                     id: await generateNewIdAsync(),
-                    sessionKey,
+                    accessToken,
+                    refreshToken,
+                    atExpiredAt,
+                    rtExpiredAt,
+                    scope,
                     unionId,
                     origin: 'mp',
                     openId,
@@ -613,7 +665,11 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
         };
         const wechatUserCreateData: CreateWechatUser = {
             id: await generateNewIdAsync(),
-            sessionKey,
+            accessToken,
+            refreshToken,
+            atExpiredAt,
+            rtExpiredAt,
+            scope,
             unionId,
             origin: type === 'wechatPublic' ? 'public' : 'web',
             openId,
@@ -647,7 +703,9 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
     };
 
     const tokenId = await loginLogic();
-    await loadTokenInfo<ED, Cxt>(tokenId, context);
+    const [tokenInfo] = await loadTokenInfo<ED, Cxt>(tokenId, context);
+    assert(tokenInfo.entity === 'wechatUser');
+    tryRefreshWechatPublicUserInfo<ED, Cxt>(tokenInfo.entityId!, context);
 
     return tokenId;
 }
@@ -669,7 +727,7 @@ export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRu
         assert(type === 'wechatMp' || config!.type === 'wechatMp');
         const config2 = config as WechatMpConfig;
         const { appId, appSecret } = config2;
-        const wechatInstance = WechatSDK.getInstance(appId, appSecret, 'wechatMp');
+        const wechatInstance = WechatSDK.getInstance(appId, appSecret, 'wechatMp') as WechatMpInstance;
     
         const { sessionKey, openId, unionId } = await wechatInstance.code2Session(code);
     

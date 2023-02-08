@@ -7,8 +7,12 @@ export interface Schema extends EntityShape {
     origin: 'mp' | 'public' | 'web';
     openId?: String<32>;
     unionId?: String<32>;
-    accessToken?: String<32>;
     sessionKey?: String<64>;
+    accessToken?: String<64>;
+    refreshToken?: String<64>;
+    scope?: String<64>;
+    atExpiredAt?: Datetime;
+    rtExpiredAt?: Datetime;
     subscribed?: Boolean;
     subscribedAt?: Datetime;
     unsubscribedAt?: Datetime;

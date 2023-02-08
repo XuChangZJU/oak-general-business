@@ -70,7 +70,18 @@ const indexes: Index<Schema>[] = [
             type: 'fulltext',
             parser: 'ngram',
         }
-    }
+    },
+    {
+        name: 'index_userState_refId',
+        attributes: [
+            {
+                name: 'userState',
+            },
+            {
+                name: 'ref',
+            }
+        ]
+    },
 ];
 
 const locale: LocaleDef<Schema, Action, '', {

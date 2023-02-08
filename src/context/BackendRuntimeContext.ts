@@ -230,7 +230,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         }
         const userInfo = this.token?.user;
         if (userInfo) {
-            const { userState } = userInfo;
+            const { userState } = userInfo!;
             if (userState === 'disabled') {
                 throw new OakUserDisabledException('您的帐号已经被禁用，请联系客服');
             }
