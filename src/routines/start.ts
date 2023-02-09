@@ -105,7 +105,7 @@ function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof E
                         rewriteFilter(schema, e, f);
                     }
                 }
-                else {
+                else if (typeof filter[attr] === 'object') {
                     //  还要处理子查询
                     const { $in, $nin } = filter[attr];
                     if ($in && !($in instanceof Array)) {
