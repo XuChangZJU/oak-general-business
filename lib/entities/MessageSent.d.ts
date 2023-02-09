@@ -1,9 +1,12 @@
-import { Schema as Message } from './Message';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
+import { Channel } from '../types/Message';
+import { Schema as Application } from './Application';
+import { Schema as MessageSystem } from './MessageSystem';
 export interface Schema extends EntityShape {
-    channel: 'wechat' | 'jPush' | 'jim' | 'mp' | 'sms';
+    channel: Channel;
+    application?: Application;
     data: Object;
-    message: Message;
+    messageSystem: MessageSystem;
     data1: Object;
     data2: Object;
 }

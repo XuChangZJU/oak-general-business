@@ -15,6 +15,7 @@ import * as ExtraFile from "./ExtraFile/Schema";
 import * as Livestream from "./Livestream/Schema";
 import * as Message from "./Message/Schema";
 import * as MessageSent from "./MessageSent/Schema";
+import * as MessageSystem from "./MessageSystem/Schema";
 import * as Mobile from "./Mobile/Schema";
 import * as Platform from "./Platform/Schema";
 import * as UserRole from "./UserRole/Schema";
@@ -89,7 +90,9 @@ export declare type AddressIdSubQuery = {
     }) | any;
 };
 export declare type ApplicationIdSubQuery = {
-    [K in "$in" | "$nin"]?: (Token.ApplicationIdSubQuery & {
+    [K in "$in" | "$nin"]?: (MessageSent.ApplicationIdSubQuery & {
+        entity: "messageSent";
+    }) | (Token.ApplicationIdSubQuery & {
         entity: "token";
     }) | (WechatPublicTag.ApplicationIdSubQuery & {
         entity: "wechatPublicTag";
@@ -141,8 +144,8 @@ export declare type LivestreamIdSubQuery = {
     }) | any;
 };
 export declare type MessageIdSubQuery = {
-    [K in "$in" | "$nin"]?: (MessageSent.MessageIdSubQuery & {
-        entity: "messageSent";
+    [K in "$in" | "$nin"]?: (MessageSystem.MessageIdSubQuery & {
+        entity: "messageSystem";
     }) | (Message.MessageIdSubQuery & {
         entity: "message";
     }) | any;
@@ -150,6 +153,13 @@ export declare type MessageIdSubQuery = {
 export declare type MessageSentIdSubQuery = {
     [K in "$in" | "$nin"]?: (MessageSent.MessageSentIdSubQuery & {
         entity: "messageSent";
+    }) | any;
+};
+export declare type MessageSystemIdSubQuery = {
+    [K in "$in" | "$nin"]?: (MessageSent.MessageSystemIdSubQuery & {
+        entity: "messageSent";
+    }) | (MessageSystem.MessageSystemIdSubQuery & {
+        entity: "messageSystem";
     }) | any;
 };
 export declare type MobileIdSubQuery = {
@@ -186,8 +196,8 @@ export declare type SystemIdSubQuery = {
         entity: "application";
     }) | (Domain.SystemIdSubQuery & {
         entity: "domain";
-    }) | (Message.SystemIdSubQuery & {
-        entity: "message";
+    }) | (MessageSystem.SystemIdSubQuery & {
+        entity: "messageSystem";
     }) | (UserSystem.SystemIdSubQuery & {
         entity: "userSystem";
     }) | (System.SystemIdSubQuery & {

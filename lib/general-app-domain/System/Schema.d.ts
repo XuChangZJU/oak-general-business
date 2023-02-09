@@ -9,7 +9,7 @@ import { Style } from "../../types/Style";
 import * as Platform from "../Platform/Schema";
 import * as Application from "../Application/Schema";
 import * as Domain from "../Domain/Schema";
-import * as Message from "../Message/Schema";
+import * as MessageSystem from "../MessageSystem/Schema";
 import * as UserSystem from "../UserSystem/Schema";
 export declare type OpSchema = EntityShape & {
     name: String<32>;
@@ -38,8 +38,8 @@ export declare type Schema = EntityShape & {
     application$system$$aggr?: AggregationResult<Application.Schema>;
     domain$system?: Array<Domain.Schema>;
     domain$system$$aggr?: AggregationResult<Domain.Schema>;
-    message$system?: Array<Message.Schema>;
-    message$system$$aggr?: AggregationResult<Message.Schema>;
+    messageSystem$system?: Array<MessageSystem.Schema>;
+    messageSystem$system$$aggr?: AggregationResult<MessageSystem.Schema>;
     userSystem$system?: Array<UserSystem.Schema>;
     userSystem$system$$aggr?: AggregationResult<UserSystem.Schema>;
 } & {
@@ -91,11 +91,11 @@ export declare type Projection = {
     domain$system$$aggr?: Domain.Aggregation & {
         $entity: "domain";
     };
-    message$system?: Message.Selection & {
-        $entity: "message";
+    messageSystem$system?: MessageSystem.Selection & {
+        $entity: "messageSystem";
     };
-    message$system$$aggr?: Message.Aggregation & {
-        $entity: "message";
+    messageSystem$system$$aggr?: MessageSystem.Aggregation & {
+        $entity: "messageSystem";
     };
     userSystem$system?: UserSystem.Selection & {
         $entity: "userSystem";
@@ -164,7 +164,7 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 }) & {
     application$system?: OakOperation<Application.UpdateOperation["action"], Omit<Application.UpdateOperationData, "system" | "systemId">, Application.Filter> | OakOperation<"create", Omit<Application.CreateOperationData, "system" | "systemId">[]> | Array<OakOperation<"create", Omit<Application.CreateOperationData, "system" | "systemId">> | OakOperation<Application.UpdateOperation["action"], Omit<Application.UpdateOperationData, "system" | "systemId">, Application.Filter>>;
     domain$system?: OakOperation<Domain.UpdateOperation["action"], Omit<Domain.UpdateOperationData, "system" | "systemId">, Domain.Filter> | OakOperation<"create", Omit<Domain.CreateOperationData, "system" | "systemId">[]> | Array<OakOperation<"create", Omit<Domain.CreateOperationData, "system" | "systemId">> | OakOperation<Domain.UpdateOperation["action"], Omit<Domain.UpdateOperationData, "system" | "systemId">, Domain.Filter>>;
-    message$system?: OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "system" | "systemId">, Message.Filter> | OakOperation<"create", Omit<Message.CreateOperationData, "system" | "systemId">[]> | Array<OakOperation<"create", Omit<Message.CreateOperationData, "system" | "systemId">> | OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "system" | "systemId">, Message.Filter>>;
+    messageSystem$system?: OakOperation<MessageSystem.UpdateOperation["action"], Omit<MessageSystem.UpdateOperationData, "system" | "systemId">, MessageSystem.Filter> | OakOperation<"create", Omit<MessageSystem.CreateOperationData, "system" | "systemId">[]> | Array<OakOperation<"create", Omit<MessageSystem.CreateOperationData, "system" | "systemId">> | OakOperation<MessageSystem.UpdateOperation["action"], Omit<MessageSystem.UpdateOperationData, "system" | "systemId">, MessageSystem.Filter>>;
     userSystem$system?: OakOperation<UserSystem.UpdateOperation["action"], Omit<UserSystem.UpdateOperationData, "system" | "systemId">, UserSystem.Filter> | OakOperation<"create", Omit<UserSystem.CreateOperationData, "system" | "systemId">[]> | Array<OakOperation<"create", Omit<UserSystem.CreateOperationData, "system" | "systemId">> | OakOperation<UserSystem.UpdateOperation["action"], Omit<UserSystem.UpdateOperationData, "system" | "systemId">, UserSystem.Filter>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
@@ -186,7 +186,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "platfor
     [k: string]: any;
     application$system?: Application.UpdateOperation | Application.RemoveOperation | OakOperation<"create", Omit<Application.CreateOperationData, "system" | "systemId">[]> | Array<OakOperation<"create", Omit<Application.CreateOperationData, "system" | "systemId">> | Application.UpdateOperation | Application.RemoveOperation>;
     domain$system?: Domain.UpdateOperation | Domain.RemoveOperation | OakOperation<"create", Omit<Domain.CreateOperationData, "system" | "systemId">[]> | Array<OakOperation<"create", Omit<Domain.CreateOperationData, "system" | "systemId">> | Domain.UpdateOperation | Domain.RemoveOperation>;
-    message$system?: Message.UpdateOperation | Message.RemoveOperation | OakOperation<"create", Omit<Message.CreateOperationData, "system" | "systemId">[]> | Array<OakOperation<"create", Omit<Message.CreateOperationData, "system" | "systemId">> | Message.UpdateOperation | Message.RemoveOperation>;
+    messageSystem$system?: MessageSystem.UpdateOperation | MessageSystem.RemoveOperation | OakOperation<"create", Omit<MessageSystem.CreateOperationData, "system" | "systemId">[]> | Array<OakOperation<"create", Omit<MessageSystem.CreateOperationData, "system" | "systemId">> | MessageSystem.UpdateOperation | MessageSystem.RemoveOperation>;
     userSystem$system?: UserSystem.UpdateOperation | UserSystem.RemoveOperation | OakOperation<"create", Omit<UserSystem.CreateOperationData, "system" | "systemId">[]> | Array<OakOperation<"create", Omit<UserSystem.CreateOperationData, "system" | "systemId">> | UserSystem.UpdateOperation | UserSystem.RemoveOperation>;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;

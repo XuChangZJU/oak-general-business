@@ -4,6 +4,7 @@ import { Schema as System } from './System';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Index, ActionDef } from 'oak-domain/lib/types';
+import { Channel, Weight } from '../types/Message';
 
 type MessageParams = {
     pathname: string;
@@ -11,11 +12,18 @@ type MessageParams = {
     state?: Record<string, any>;
 };
 
+type MessageRestriction = {
+    systemIds?: string[];        // 允许发送的system
+    channels?: Array<Channel>;        // 允许推送的渠道
+}
+
 export interface Schema extends EntityShape {
+    entity: String<32>;
+    entityId: String<64>;
     user: User;
-    system: System;
     type: String<64>;
-    weight: 'high' | 'medium' | 'low' | 'data';
+    weight: Weight;
+    restriction?: MessageRestriction;
     title: String<256>;
     content: Text;
     props: Object; // 消息的结构化数据（用于向各个渠道推送时的格式化）
@@ -36,7 +44,6 @@ const IActionDef: ActionDef<IAction, IState> = {
         succeed: ['sending', 'success'],
         fail: ['sending', 'failure'],
     },
-    is: 'sending',
 };
 
 const VisitActionDef: ActionDef<VisitAction, VisitState> = {
@@ -58,10 +65,12 @@ const locale: LocaleDef<
 > = {
     zh_CN: {
         attr: {
+            entity: '关联对象',
+            entityId: '关联对象ID',
+            restriction: '限制',
             title: '标题',
             content: '内容',
             user: '关联用户',
-            system: '系统',
             type: '消息类型',
             weight: '优先级',
             iState: '发送状态',
@@ -89,7 +98,6 @@ const locale: LocaleDef<
                 high: '高',
                 medium: '中',
                 low: '低',
-                data: '数据',
             },
         },
     },

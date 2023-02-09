@@ -1,17 +1,23 @@
 import { String, Text } from 'oak-domain/lib/types/DataType';
 import { Schema as User } from './User';
-import { Schema as System } from './System';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
+import { Channel, Weight } from '../types/Message';
 declare type MessageParams = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
 };
+declare type MessageRestriction = {
+    systemIds?: string[];
+    channels?: Array<Channel>;
+};
 export interface Schema extends EntityShape {
+    entity: String<32>;
+    entityId: String<64>;
     user: User;
-    system: System;
     type: String<64>;
-    weight: 'high' | 'medium' | 'low' | 'data';
+    weight: Weight;
+    restriction?: MessageRestriction;
     title: String<256>;
     content: Text;
     props: Object;

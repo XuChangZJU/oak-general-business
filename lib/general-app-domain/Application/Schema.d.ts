@@ -6,6 +6,7 @@ import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOper
 import { GenericAction } from "oak-domain/lib/actions/action";
 import { Style } from "../../types/Style";
 import * as System from "../System/Schema";
+import * as MessageSent from "../MessageSent/Schema";
 import * as Token from "../Token/Schema";
 import * as WechatPublicTag from "../WechatPublicTag/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
@@ -59,6 +60,8 @@ export declare type Schema = EntityShape & {
     config: WebConfig | WechatMpConfig | WechatPublicConfig;
     style?: Style | null;
     system: System.Schema;
+    messageSent$application?: Array<MessageSent.Schema>;
+    messageSent$application$$aggr?: AggregationResult<MessageSent.Schema>;
     token$application?: Array<Token.Schema>;
     token$application$$aggr?: AggregationResult<Token.Schema>;
     wechatPublicTag$application?: Array<WechatPublicTag.Schema>;
@@ -97,6 +100,12 @@ export declare type Projection = {
     system?: System.Projection;
     config?: number;
     style?: number;
+    messageSent$application?: MessageSent.Selection & {
+        $entity: "messageSent";
+    };
+    messageSent$application$$aggr?: MessageSent.Aggregation & {
+        $entity: "messageSent";
+    };
     token$application?: Token.Selection & {
         $entity: "token";
     };
@@ -168,6 +177,7 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "systemI
 } | {
     systemId: String<64>;
 })) & {
+    messageSent$application?: OakOperation<MessageSent.UpdateOperation["action"], Omit<MessageSent.UpdateOperationData, "application" | "applicationId">, MessageSent.Filter> | OakOperation<"create", Omit<MessageSent.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<MessageSent.CreateOperationData, "application" | "applicationId">> | OakOperation<MessageSent.UpdateOperation["action"], Omit<MessageSent.UpdateOperationData, "application" | "applicationId">, MessageSent.Filter>>;
     token$application?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "application" | "applicationId">, Token.Filter> | OakOperation<"create", Omit<Token.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "application" | "applicationId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "application" | "applicationId">, Token.Filter>>;
     wechatPublicTag$application?: OakOperation<WechatPublicTag.UpdateOperation["action"], Omit<WechatPublicTag.UpdateOperationData, "application" | "applicationId">, WechatPublicTag.Filter> | OakOperation<"create", Omit<WechatPublicTag.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatPublicTag.CreateOperationData, "application" | "applicationId">> | OakOperation<WechatPublicTag.UpdateOperation["action"], Omit<WechatPublicTag.UpdateOperationData, "application" | "applicationId">, WechatPublicTag.Filter>>;
     wechatQrCode$application?: OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "application" | "applicationId">, WechatQrCode.Filter> | OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">> | OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "application" | "applicationId">, WechatQrCode.Filter>>;
@@ -190,6 +200,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "systemI
     systemId?: String<64> | null;
 })) & {
     [k: string]: any;
+    messageSent$application?: MessageSent.UpdateOperation | MessageSent.RemoveOperation | OakOperation<"create", Omit<MessageSent.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<MessageSent.CreateOperationData, "application" | "applicationId">> | MessageSent.UpdateOperation | MessageSent.RemoveOperation>;
     token$application?: Token.UpdateOperation | Token.RemoveOperation | OakOperation<"create", Omit<Token.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "application" | "applicationId">> | Token.UpdateOperation | Token.RemoveOperation>;
     wechatPublicTag$application?: WechatPublicTag.UpdateOperation | WechatPublicTag.RemoveOperation | OakOperation<"create", Omit<WechatPublicTag.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatPublicTag.CreateOperationData, "application" | "applicationId">> | WechatPublicTag.UpdateOperation | WechatPublicTag.RemoveOperation>;
     wechatQrCode$application?: WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation | OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">> | WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation>;

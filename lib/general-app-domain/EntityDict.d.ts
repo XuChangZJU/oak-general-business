@@ -15,6 +15,7 @@ import { EntityDef as ExtraFile } from "./ExtraFile/Schema";
 import { EntityDef as Livestream } from "./Livestream/Schema";
 import { EntityDef as Message } from "./Message/Schema";
 import { EntityDef as MessageSent } from "./MessageSent/Schema";
+import { EntityDef as MessageSystem } from "./MessageSystem/Schema";
 import { EntityDef as Mobile } from "./Mobile/Schema";
 import { EntityDef as Platform } from "./Platform/Schema";
 import { EntityDef as UserRole } from "./UserRole/Schema";
@@ -45,6 +46,7 @@ export declare type EntityDict = {
     livestream: Livestream;
     message: Message;
     messageSent: MessageSent;
+    messageSystem: MessageSystem;
     mobile: Mobile;
     platform: Platform;
     userRole: UserRole;
