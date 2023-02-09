@@ -1,4 +1,3 @@
-import assert from "assert";
 
 export default OakComponent({
     entity: 'mobile',
@@ -57,8 +56,7 @@ export default OakComponent({
                         type: 'warning',
                     });
                 } else {
-                    assert(code);
-                    console.log(code);
+                    await this.features.token.getWechatMpUserPhoneNumber(code);
                 }
             } catch (err) {
                 console.error(err);

@@ -6,6 +6,7 @@ import {
     sendCaptcha,
     switchTo,
     refreshWechatPublicUserInfo,
+    getWechatMpUserPhoneNumber,
 } from './token';
 import { getUploadInfo } from './extraFile';
 import { getApplication } from './application';
@@ -25,4 +26,5 @@ export const aspectDict = {
     getApplication,
     updateConfig,
     updateApplicationConfig,
+    getWechatMpUserPhoneNumber,
 };

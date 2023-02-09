@@ -9,9 +9,9 @@ export default OakComponent({
     },
     data: {
         mobile: '',
-        password: '',
         captcha: '',
         counter: 0,
+        refreshing: false,
     },
     properties: {
         onlyCaptcha: Boolean,
@@ -90,6 +90,28 @@ export default OakComponent({
                     content: (err as Error).message,
                 });
             }
+        },
+        async onRefreshMobile(e: any) {
+            this.setState({
+                refreshing: true,
+            });
+            try {
+                const { code, errMsg } = e.detail;
+                if (errMsg !== 'getPhoneNumber:ok') {
+                    console.error(errMsg);
+                    this.setMessage({
+                        title: '获取手机号失败',
+                        type: 'warning',
+                    });
+                } else {
+                    await this.features.token.getWechatMpUserPhoneNumber(code);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+            this.setState({
+                refreshing: false,
+            });
         },
     },
 });
