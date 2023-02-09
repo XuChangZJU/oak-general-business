@@ -23,14 +23,13 @@ interface NewUploadFile extends UploadFile {
 
 
 
-type Theme = 'file' | 'image' | 'file-flow' | 'image-flow' | 'custom';
+type Theme = 'file' | 'image' | 'image-flow' | 'custom';
 type ListType = 'text' | 'picture' | 'picture-card';
 
 function getListType(theme: Theme): ListType {
     const themeMap: Record<Theme, ListType> = {
         file: 'text',
         image: 'picture-card',
-        'file-flow': 'text',
         'image-flow': 'picture',
         custom: 'text',
     };
@@ -112,12 +111,15 @@ export default function render(
     const extraFileToUploadFile = (
         extraFile: EntityDict['extraFile']['OpSchema'],
     ): NewUploadFile => {
+        const filename =
+            extraFile.filename +
+            (extraFile.extension ? `.${extraFile.extension}` : '');
         return {
             id: extraFile.id,
             url: features.extraFile.getUrl(extraFile),
             thumbUrl: features.extraFile.getUrl(extraFile),
-            name: extraFile.filename + (extraFile.extension || ''),
-            fileName: extraFile.filename + (extraFile.extension || ''),
+            name: filename,
+            fileName: filename,
             size: extraFile.size!,
             type: extraFile.fileType,
             uid: extraFile.id, //upload 组件需要uid来维护fileList

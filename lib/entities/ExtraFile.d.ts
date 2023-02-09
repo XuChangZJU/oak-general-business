@@ -2,7 +2,7 @@ import { String, Int, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 export interface Schema extends EntityShape {
     origin: 'qiniu' | 'unknown';
-    type: 'image' | 'video' | 'audio' | 'file' | 'pdf';
+    type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
     objectId: String<64>;
     tag1: String<16>;

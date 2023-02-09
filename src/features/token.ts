@@ -201,8 +201,12 @@ export class Token<
         this.publish();
     }
 
-    async getWechatMpUserPhoneNumber() {
-        await this.cache.exec('getWechatMpUserPhoneNumber', {});
+    async getWechatMpUserPhoneNumber(code: string) {
+        const env = await getEnv();
+        await this.cache.exec('getWechatMpUserPhoneNumber', {
+            code,
+            env: env as WechatMpEnv,
+        });
         this.publish();
     }
 }

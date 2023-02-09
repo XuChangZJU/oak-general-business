@@ -47,6 +47,7 @@ export declare function sendCaptcha<ED extends EntityDict, Cxt extends BackendRu
 export declare function switchTo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ userId }: {
     userId: string;
 }, context: Cxt): Promise<void>;
-export declare function getWechatMpUserPhoneNumber<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ code }: {
+export declare function getWechatMpUserPhoneNumber<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ code, env }: {
     code: string;
+    env: WechatMpEnv;
 }, context: Cxt): Promise<string>;

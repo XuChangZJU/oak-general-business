@@ -1118,7 +1118,7 @@ export async function switchTo<ED extends EntityDict, Cxt extends BackendRuntime
 export async function getWechatMpUserPhoneNumber<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
->({ code }: { code: string }, context: Cxt) {
+>({ code, env }: { code: string; env: WechatMpEnv }, context: Cxt) {
     const application = context.getApplication();
     const { type, config, systemId } = application!;
     assert(type === 'wechatMp' && config!.type === 'wechatMp');
@@ -1130,10 +1130,7 @@ export async function getWechatMpUserPhoneNumber<
         'wechatMp'
     ) as WechatMpInstance;
     const result = await wechatInstance.getUserPhoneNumber(code);
-    //获取 没区号的手机号码
-    const purePhoneNumber = result?.purePhoneNumber;
-    //todo 需要干什么
-
-    return '授权成功'
-
+    //获取 绑定的手机号码
+    const phoneNumber = result?.phoneNumber;
+    return await setupMobile<ED, Cxt>(phoneNumber, env, context);
 }

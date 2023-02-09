@@ -1,18 +1,32 @@
 <!-- index.wxml -->
 <view class="page-body">
+    <block wx:if="{{mobiles && mobiles.length > 0}}">
     <view class="container">
-        <view class="list" wx:if="{{mobiles && mobiles.length > 0}}">
-            <l-list title="{{item.mobile}}" />
-        </view>
-        <block wx:else>
-            <l-card type="primary" plaintext="{{true}}">
-                <view class="card">
-                    您尚未授权手机号
+
+        <view class="list" wx:for="{{mobiles}}">
+            <l-list icon="mobile" title="{{item.mobile}}" is-link="{{false}}" >
+            <view slot="right-section">
+                <view wx:if="{{allowRemove}}" bind:tap="onRemoveModalOpen"  data-id="{{item.id}}">
+                   <l-icon name="delete" size="24" />
                 </view>
-            </l-card>
-        </block>
+            </view>
+            </l-list>
+        </view>
+        </view>
+    </block>
+    <block wx:else>
+    <view class="container container2">
+        <l-card type="primary" plaintext="{{true}}">
+            <view class="card">
+                    您尚未授权手机号
+            </view>
+        </l-card>
     </view>
-    <l-button type="default" block size="long" open-type="getPhoneNumber" bindgetphonenumber="onRefreshMobile">
+</block>
+
+<l-button type="default" block size="long" open-type="getPhoneNumber" bindgetphonenumber="onRefreshMobile">
         授权手机号
-    </l-button>
+</l-button>
 </view>
+
+<l-dialog show="{{confirmDeleteModalVisible}}" type="confirm" title="提示" content="确认删除吗？删除后无法用此号码登录" bind:linconfirm="onRemoveConfirm" bind:lincancel="onRemoveModalClose"  />

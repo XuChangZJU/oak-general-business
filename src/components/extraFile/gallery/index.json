@@ -2,6 +2,7 @@
   "component": true,
   "usingComponents": {
       "l-icon": "../../../miniprogram_npm/lin-ui/icon/index",
+      "l-button": "../../../miniprogram_npm/lin-ui/button/index",
       "oak-display": "../display/index"
   }
 }

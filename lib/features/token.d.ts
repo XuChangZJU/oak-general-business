@@ -30,5 +30,5 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     sendCaptcha(mobile: string): Promise<string>;
     switchTo(userId: string): Promise<void>;
     refreshWechatPublicUserInfo(): Promise<void>;
-    getWechatMpUserPhoneNumber(): Promise<void>;
+    getWechatMpUserPhoneNumber(code: string): Promise<void>;
 }

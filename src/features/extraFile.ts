@@ -36,9 +36,7 @@ export class ExtraFile<
         return uploadInfo;
     }
 
-    async upload(
-        extraFile: EntityDict['extraFile']['CreateSingle']['data']
-    ) {
+    async upload(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
         const { origin, extra1, filename, objectId, extension, entity } =
             extraFile;
         // 构造文件上传所需的key
@@ -72,6 +70,14 @@ export class ExtraFile<
 
         const url = composeFileUrl(extraFile, config, style);
         return url;
+    }
+
+    getFileName(extraFile: EntityDict['extraFile']['OpSchema']) {
+        const name =
+            extraFile.filename +
+            (extraFile.extension ? `.${extraFile.extension}` : '');
+
+        return name;
     }
 
     formatBytes(size: number) {

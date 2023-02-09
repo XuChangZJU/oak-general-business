@@ -6,6 +6,7 @@ export default OakComponent({
         id: 1,
         mobile: 1,
         userId: 1,
+        ableState: 1,
     },
     filters: [
         {
@@ -74,6 +75,31 @@ export default OakComponent({
             this.navigateTo({
                 url: '/mobile/login',
                 eventLoggedIn,
+            });
+        },
+
+        async onRemoveConfirm() {
+            const { mobileId } = this.state;
+            this.removeItem(mobileId);
+            await this.execute();
+            this.setState({
+                confirmDeleteModalVisible: false,
+                mobileId: '',
+            });
+        },
+
+        onRemoveModalOpen(e: WechatMiniprogram.Touch) {
+            const mobileId = e.currentTarget.dataset.id;
+            console.log(mobileId);
+            this.setState({
+                confirmDeleteModalVisible: true,
+                mobileId,
+            });
+        },
+        onRemoveModalClose() {
+            this.setState({
+                confirmDeleteModalVisible: false,
+                mobileId: '',
             });
         },
     },

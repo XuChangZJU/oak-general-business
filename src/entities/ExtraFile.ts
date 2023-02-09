@@ -4,7 +4,7 @@ import { LocaleDef } from 'oak-domain/lib/types/Locale';
 
 export interface Schema extends EntityShape {
     origin: 'qiniu' | 'unknown';
-    type: 'image' | 'video' | 'audio' | 'file' | 'pdf';
+    type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
     objectId: String<64>;
     tag1: String<16>;
@@ -57,7 +57,6 @@ const locale: LocaleDef<
                 video: '视频',
                 audio: '音频',
                 file: '文件',
-                pdf: 'pdf',
             },
         },
     },

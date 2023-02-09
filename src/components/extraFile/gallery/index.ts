@@ -19,6 +19,7 @@ export default OakComponent({
         type: 1,
         entity: 1,
         entityId: 1,
+        fileType: 1,
     },
     formData({ data: originalFiles, features }) {
         let files = (
@@ -38,7 +39,6 @@ export default OakComponent({
         };
     },
     data: {
-        selected: -1,
         // 根据 size 不同，计算的图片显示大小不同
         itemSizePercentage: '',
     },
@@ -57,9 +57,8 @@ export default OakComponent({
                     Object.assign(filter1, { tag2 });
                 }
                 return filter1;
-            }
-        }
-
+            },
+        },
     ],
     properties: {
         removeLater: Boolean,
@@ -70,6 +69,15 @@ export default OakComponent({
         maxNumber: {
             type: Number,
             value: 20,
+        },
+        extension: {
+            //小程序独有 chooseMessageFile 根据文件拓展名过滤，仅 type==file 时有效。每一项都不能是空字符串。默认不过滤。
+            type: Array,
+        },
+        fileType: {
+            //小程序独有 chooseMessageFile 文件type
+            type: String,
+            value: 'all',
         },
         selectCount: {
             //小程序独有 文件一次选择几个
@@ -85,6 +93,18 @@ export default OakComponent({
             type: Array,
             value: ['image'],
         },
+        // 图片显示模式
+        mode: {
+            //小程序独有
+            type: String,
+            value: 'aspectFit',
+        },
+        // 每行可显示的个数
+        size: {
+            // 小程序独有
+            type: Number,
+            value: 3,
+        },
         showUploadList: {
             // web独有 是否展示文件列表, 可设为一个对象
             type: Boolean,
@@ -95,22 +115,10 @@ export default OakComponent({
             type: String,
             value: 'image/*',
         },
-        // 图片显示模式
-        mode: {
-            //小程序独有
-            type: String,
-            value: 'aspectFit',
-        },
         // 图片是否可预览
         preview: {
             type: Boolean,
             value: true,
-        },
-        // 每行可显示的个数
-        size: {
-            // 小程序独有
-            type: Number,
-            value: 3,
         },
         // 图片是否可删除
         disableDelete: {
@@ -123,6 +131,10 @@ export default OakComponent({
         tag2: String,
         entity: String,
         entityId: String,
+        theme: {
+            type: String,
+            value: 'image',
+        },
     },
 
     methods: {
@@ -151,7 +163,7 @@ export default OakComponent({
             const windowWidth = wx.getSystemInfoSync().windowWidth;
             return (750 / windowWidth) * px;
         },
-        async onPickByMp() {
+        async chooseMediaByMp() {
             const { selectCount, mediaType, sourceType } = this.props;
             try {
                 const { errMsg, tempFiles } = await wx.chooseMedia({
@@ -176,7 +188,7 @@ export default OakComponent({
                             const filePath = tempFilePath || thumbTempFilePath;
                             const fileFullName =
                                 filePath.match(/[^/]+(?!.*\/)/g)![0];
-                            this.pushExtraFile({
+                            await this.pushExtraFile({
                                 name: fileFullName,
                                 fileType,
                                 size,
@@ -195,23 +207,64 @@ export default OakComponent({
                 }
             }
         },
+        async chooseFileByMp() {
+            const { selectCount, extension, fileType } = this.props;
+            try {
+                const { errMsg, tempFiles } = await wx.chooseMessageFile({
+                    count: selectCount,
+                    type: 'all',
+                    ...(fileType === 'file' ? { extension } : {}),
+                });
+                if (errMsg !== 'chooseMessageFile:ok') {
+                    this.triggerEvent('error', {
+                        level: 'warning',
+                        msg: errMsg,
+                    });
+                } else {
+                    await Promise.all(
+                        tempFiles.map(async (tempExtraFile) => {
+                            const { path, type, size, name } = tempExtraFile;
+                            // const fileType = name.substring(
+                            //     name.lastIndexOf('.') + 1
+                            // );
+                            await this.pushExtraFile({
+                                name,
+                                fileType: type,
+                                size,
+                                extra1: path,
+                            });
+                        })
+                    );
+                }
+            } catch (err: any) {
+                console.error(err);
+                if (err.errMsg !== 'chooseMessageFile:fail cancel') {
+                    this.triggerEvent('error', {
+                        level: 'error',
+                        msg: err.errMsg,
+                    });
+                }
+            }
+        },
+        onPickByMp() {
+            const { theme } = this.props;
+            if (['image', 'image-flow'].includes(theme)) {
+                this.chooseMediaByMp();
+            } else {
+                this.chooseFileByMp();
+            }
+        },
         async onPickByWeb(
             uploadFiles: any[],
             callback?: (file: any, status: string) => void
         ) {
             await Promise.all(
                 uploadFiles.map(async (uploadFile) => {
-                    const {
-                        name,
-                        type: fileType,
-                        size,
-                        raw,
-                        originFileObj,
-                    } = uploadFile;
+                    const { name, type, size, originFileObj } = uploadFile;
                     await this.pushExtraFile(
                         {
                             name,
-                            fileType,
+                            fileType: type,
                             size,
                             extra1: originFileObj,
                         },
@@ -359,6 +412,76 @@ export default OakComponent({
                     },
                 });
             }
+        },
+        async onDownloadByMp(event: WechatMiniprogram.Touch) {
+            const { value } = event.currentTarget.dataset;
+            const fileUrl = this.features.extraFile.getUrl(value);
+            const name = this.features.extraFile.getFileName(value);
+            wx.showLoading({
+                title: '下载请求中，请耐心等待..',
+            });
+            wx.downloadFile({
+                url: fileUrl,
+                success: function (res) {
+                    const filePath = res.tempFilePath || res.filePath;
+                    wx.hideLoading();
+                    const fs = wx.getFileSystemManager();
+                    const writeFilePath = `${wx.env.USER_DATA_PATH}/${name}`;
+                    const res2 = fs.saveFileSync(filePath, writeFilePath);
+                },
+                fail: function (res) {
+                    console.log(res);
+                },
+                complete: function (res) {},
+            });
+        },
+        async onOpenByMp(event: WechatMiniprogram.Touch) {
+            const { value } = event.currentTarget.dataset;
+            const fileUrl = this.features.extraFile.getUrl(value);
+            let extension = value.extension.toLowerCase();
+            let extensions = [
+                'doc',
+                'docx',
+                'xls',
+                'xlsx',
+                'ppt',
+                'pptx',
+                'pdf',
+            ]; //openDocument fileType目前只支持范围
+            if (!extensions.includes(extension)) {
+                this.setMessage({
+                    type: 'error',
+                    content: `目前仅支持打开${extensions.join(',')}类型的文件`,
+                });
+                return;
+            }
+
+            wx.showLoading({
+                title: '下载请求中，请耐心等待..',
+            });
+            wx.downloadFile({
+                url: fileUrl,
+                success: function (res) {
+                    const filePath = res.tempFilePath || res.filePath;
+                    wx.hideLoading();
+                    wx.openDocument({
+                        //打开文件
+                        filePath: filePath,
+                        fileType: extension,
+                        showMenu: true, // 是否显示右上角菜单按钮 默认为false(看自身需求，可要可不要。后期涉及到右上角分享功能)
+                        success: function () {
+                            console.log(`打开文件成功`);
+                        },
+                        fail: function (err) {
+                            console.log(err);
+                        },
+                    });
+                },
+                fail: function (res) {
+                    console.log(res);
+                },
+                complete: function (res) {},
+            });
         },
     },
 

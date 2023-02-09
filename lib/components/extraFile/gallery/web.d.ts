@@ -1,7 +1,7 @@
 import { UploadFile } from 'antd';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
-declare type Theme = 'file' | 'image' | 'file-flow' | 'image-flow' | 'custom';
+declare type Theme = 'file' | 'image' | 'image-flow' | 'custom';
 export default function render(props: WebComponentProps<EntityDict, 'extraFile', true, {
     accept?: string;
     maxNumber?: number;
