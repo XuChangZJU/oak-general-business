@@ -1351,3 +1351,26 @@ export async function switchTo<ED extends EntityDict, Cxt extends BackendRuntime
         }
     }, {});
 }
+
+export async function getWechatMpUserPhoneNumber<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>({ code }: { code: string }, context: Cxt) {
+    const application = context.getApplication();
+    const { type, config, systemId } = application!;
+    assert(type === 'wechatMp' && config!.type === 'wechatMp');
+    const config2 = config as WechatMpConfig;
+    const { appId, appSecret } = config2;
+    const wechatInstance = WechatSDK.getInstance(
+        appId,
+        appSecret,
+        'wechatMp'
+    ) as WechatMpInstance;
+    const result = await wechatInstance.getUserPhoneNumber(code);
+    //获取 没区号的手机号码
+    const purePhoneNumber = result?.purePhoneNumber;
+    //todo 需要干什么
+
+    return '授权成功'
+
+}

@@ -197,7 +197,12 @@ export class Token<
     }
 
     async refreshWechatPublicUserInfo() {
-       await this.cache.exec('refreshWechatPublicUserInfo', {});
-       this.publish();
+        await this.cache.exec('refreshWechatPublicUserInfo', {});
+        this.publish();
+    }
+
+    async getWechatMpUserPhoneNumber() {
+        await this.cache.exec('getWechatMpUserPhoneNumber', {});
+        this.publish();
     }
 }
