@@ -23,7 +23,7 @@ export default function render(
     const { goAddMobile, removeItem, execute } = props.methods;
     return (
         <div className={Style.container}>
-            {mobiles?.length > 0 ? (
+            {mobiles && mobiles.length > 0 ? (
                 <>
                     <List className={Style.list}>
                         {mobiles?.map((ele, index) => (

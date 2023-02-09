@@ -52,7 +52,7 @@ export class Application<
             `refresh:applicationId${this.applicationId}没有取到有效数据`
         );
         this.application = data[0];
-        if (this.application.type !== this.type) {
+        if (this.application!.type !== this.type) {
             this.storage.remove('application:applicationId');
         }
     }
@@ -72,7 +72,7 @@ export class Application<
     }
 
     private async loadApplicationInfo(type: AppType, domain: string) {
-        const applicationId = await this.cache.exec('getApplication', {
+        const { result: applicationId } = await this.cache.exec('getApplication', {
             type,
             domain,
         });

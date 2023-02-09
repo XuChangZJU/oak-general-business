@@ -820,7 +820,8 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
     const tokenId = await loginLogic();
     const [tokenInfo] = await loadTokenInfo<ED, Cxt>(tokenId, context);
     assert(tokenInfo.entity === 'wechatUser');
-    // await tryRefreshWechatPublicUserInfo<ED, Cxt>(tokenInfo.entityId!, context);
+    await context.setTokenValue(tokenId);
+    await tryRefreshWechatPublicUserInfo<ED, Cxt>(tokenInfo.entityId!, context);
 
     return tokenId;
 }

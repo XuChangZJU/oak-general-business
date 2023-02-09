@@ -45,7 +45,7 @@ export class Token<
 
     async loginByMobile(mobile: string, password?: string, captcha?: string) {
         const env = await getEnv();
-        const result = await this.cache.exec('loginByMobile', {
+        const { result } = await this.cache.exec('loginByMobile', {
             password,
             mobile,
             captcha,
@@ -58,7 +58,7 @@ export class Token<
 
     async loginWechat(code: string) {
         const env = await getEnv();
-        const result = await this.cache.exec('loginWechat', {
+        const { result } = await this.cache.exec('loginWechat', {
             code,
             env: env as WebEnv,
         });
@@ -71,7 +71,7 @@ export class Token<
         const { code } = await wx.login();
 
         const env = await getEnv();
-        const result = await this.cache.exec('loginWechatMp', {
+        const { result } = await this.cache.exec('loginWechatMp', {
             code,
             env: env as WechatMpEnv,
         });
@@ -172,7 +172,7 @@ export class Token<
 
     async sendCaptcha(mobile: string) {
         const env = await getEnv();
-        const result = await this.cache.exec('sendCaptcha', {
+        const { result } = await this.cache.exec('sendCaptcha', {
             mobile,
             env: env as WebEnv,
         });

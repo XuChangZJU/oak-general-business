@@ -84,6 +84,7 @@ export declare type Config = {
         qrCodeApplicationId?: string;
         qrCodePublicForMpId?: string;
         mpShareImageUrl?: string;
+        mergeUserDirectly?: boolean;
     };
 };
 export declare type Origin = 'ali' | 'tencent' | 'qiniu' | 'amap';

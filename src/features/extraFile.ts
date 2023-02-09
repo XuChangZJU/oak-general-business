@@ -44,7 +44,7 @@ export class ExtraFile<
         // 构造文件上传所需的key
         const key = `${entity ? entity + '/' : ''}${objectId}.${extension}`;
         assert(origin && origin !== 'unknown');
-        const uploadInfo = await this.getUploadInfo(origin, key);
+        const { result: uploadInfo } = await this.getUploadInfo(origin, key);
 
         if (process.env.OAK_PLATFORM === 'wechatMp') {
             // 微信小程序使用wx.uploadFile, 封装upload，上传源为origin
