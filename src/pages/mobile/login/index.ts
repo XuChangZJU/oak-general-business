@@ -12,6 +12,7 @@ export default OakComponent({
         captcha: '',
         counter: 0,
         refreshing: false,
+        password: '',
     },
     properties: {
         onlyCaptcha: Boolean,

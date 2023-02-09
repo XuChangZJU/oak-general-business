@@ -10,6 +10,9 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntime
         to: string;
     }, context: Cxt) => Promise<void>;
     refreshWechatPublicUserInfo: (params: {}, context: Cxt) => Promise<void>;
+    getWechatMpUserPhoneNumber: (params: {
+        code: string;
+    }, context: Cxt) => Promise<string>;
     loginByMobile: (params: {
         captcha?: string;
         password?: string;

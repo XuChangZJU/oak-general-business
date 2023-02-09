@@ -11,8 +11,7 @@ import { WechatSDK } from 'oak-external-sdk';
 async function sendMessage(messageSentData: CreateMessageSentData, context: BackendRuntimeContext<EntityDict>) {
     const { data, channel, messageId } = messageSentData;
     const [message] = await context.select(
-        'message',
-        
+        'message',        
         {
             data: {
                 id: 1,

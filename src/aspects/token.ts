@@ -84,7 +84,7 @@ async function tryMakeChangeLoginWay<ED extends EntityDict, Cxt extends BackendR
 }
 
 async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(mobile: string, env: WebEnv | WechatMpEnv, context: Cxt) {
-    const currentToken =  context.getToken(true);
+    const currentToken = context.getToken(true);
     const applicationId = context.getApplicationId();
     const systemId = context.getSystemId();
 
@@ -120,12 +120,12 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
     if (result2.length > 0) {
         // 此手机号已经存在
         assert(result2.length === 1);
-        const [ mobileRow ] = result2;
+        const [mobileRow] = result2;
         if (currentToken) {
             if (currentToken.userId === mobileRow.userId) {
                 return currentToken.id!;
             }
-            else  {
+            else {
                 // 此时可能要合并用户，抛出OakDistinguishUser异常，用户根据自身情况选择合并
                 const { userId, user } = mobileRow;
                 const { userState } = user!;
@@ -139,7 +139,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
                         return currentToken.id!;
                     }
                     default: {
-                        assert(userState === 'normal');    
+                        assert(userState === 'normal');
                         throw await makeDistinguishException<ED, Cxt>(userId as string, context, '该手机号已被一个有效用户占用，请联系管理员处理');
                     }
                 }
@@ -153,7 +153,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
                 playerId: mobileRow.userId as string,
                 env,
                 entity: 'mobile',
-                entityId: mobileRow.id as string,                
+                entityId: mobileRow.id as string,
             };
             const { user } = mobileRow;
             const { userState } = user!;
@@ -185,7 +185,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
                 data: tokenData,
                 action: 'create',
             }, {
-                 dontCollect: true,
+                dontCollect: true,
             });
 
             // 检查此user和system之间有没有关系，如果没有要补上
@@ -237,8 +237,8 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
             // 这里要先创建token，再set context中的tokenValue，不然create mobile会被auth限制。by Xc
             const mobileData: EntityDict['mobile']['CreateSingle']['data'] = {
                 id: await generateNewIdAsync(),
-                mobile,    
-                userId: userData.id,          
+                mobile,
+                userId: userData.id,
             };
             const tokenData: EntityDict['token']['CreateSingle']['data'] = {
                 id: await generateNewIdAsync(),
@@ -265,7 +265,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
     }
 }
 
-async function loadTokenInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(tokenId: string, context: Cxt ) {
+async function loadTokenInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(tokenId: string, context: Cxt) {
     return await context.select(
         'token',
         {
@@ -308,7 +308,7 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends BackendRu
                 if (captchaRow.expired) {
                     throw new OakUserException('验证码已经过期');
                 }
-    
+
                 // 到这里说明验证码已经通过
                 return await setupMobile<ED, Cxt>(mobile, env, context);
             }
@@ -325,7 +325,7 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends BackendRu
                     ableState: 1,
                 },
                 filter: {
-                    mobile: mobile,                
+                    mobile: mobile,
                     user: {
                         $or: [
                             {
@@ -365,7 +365,7 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends BackendRu
 
     const tokenId = await loginLogic();
     await loadTokenInfo<ED, Cxt>(tokenId, context);
-    
+
     return tokenId;
 }
 
@@ -505,10 +505,10 @@ async function tryRefreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends
     }
 
     const { nickname, gender, avatar } = await wechatInstance.getUserInfo(accessToken!, openId!);
-    await setUserInfoFromWechat<ED, Cxt>(user!, {nickname, gender: gender as 'male', avatar}, context);
+    await setUserInfoFromWechat<ED, Cxt>(user!, { nickname, gender: gender as 'male', avatar }, context);
 }
 
-export async function refreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({}, context: Cxt) {
+export async function refreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ }, context: Cxt) {
     const tokenValue = context.getTokenValue();
     const [token] = await context.select('token', {
         data: {
@@ -525,229 +525,228 @@ export async function refreshWechatPublicUserInfo<ED extends EntityDict, Cxt ext
     return await tryRefreshWechatPublicUserInfo<ED, Cxt>(token.entityId, context);
 }
 
-/**
- * 公众号授权登录
- * @param param0 
- * @param context 
- */
-export async function loginWechat<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ code, env }: {
-    code: string;
-    env: WebEnv;
-}, context: Cxt): Promise<string> {
-    const loginLogic = async () => {
-        const application = context.getApplication();
-        const { type, config, systemId } = application!;
-    
-        // 可能type是web或者wechatPublic
-        assert(type !== 'wechatMp' && config!.type !== 'wechatMp');
-        let appId: string, appSecret: string;
-        if (type === 'wechatPublic') {
-            const config2 = config as WechatPublicConfig;
-            appId = config2.appId;
-            appSecret = config2.appSecret;
-        } else {
-            const config2 = config as WebConfig;
-            assert(config2.wechat);
-            appId = config2.wechat.appId;
-            appSecret = config2.wechat.appSecret;
+async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(code: string, env: WebEnv | WechatMpEnv, context: Cxt): Promise<string> {
+    const application = context.getApplication();
+    const { type, config, systemId } = application!;
+
+    let appId: string, appSecret: string;
+    if (type === 'wechatPublic') {
+        const config2 = config as WechatPublicConfig;
+        appId = config2.appId;
+        appSecret = config2.appSecret;
+    } else if (type === 'wechatMp') {
+        const config2 = config as WechatMpConfig;
+        appId = config2.appId;
+        appSecret = config2.appSecret;
+    } 
+    else {
+        assert(type === 'web');
+        const config2 = config as WebConfig;
+        assert(config2.wechat);
+        appId = config2.wechat.appId;
+        appSecret = config2.wechat.appSecret;
+    }
+    const wechatInstance = WechatSDK.getInstance(appId!, appSecret!, type!) as WechatPublicInstance;
+
+    const { isSnapshotUser, openId, unionId, ...wechatUserData } = await wechatInstance.code2Session(code);
+    if (isSnapshotUser) {
+        throw new OakUserException('请使用完整服务后再进行登录操作');
+    }
+
+    const [wechatUser] = await context.select('wechatUser', {
+        data: {
+            id: 1,
+            userId: 1,
+            unionId: 1,
+            user: {
+                id: 1,
+                name: 1,
+                nickname: 1,
+                userRole$user: {
+                    $entity: 'userRole',
+                    data: {
+                        id: 1,
+                        userId: 1,
+                        roleId: 1,
+                    },
+                }
+            }
+        },
+        filter: {
+            applicationId: application!.id,
+            openId,
         }
-        const wechatInstance = WechatSDK.getInstance(appId!, appSecret!, type!) as WechatPublicInstance;
-    
-        const { accessToken, refreshToken, atExpiredAt, rtExpiredAt, scope, isSnapshotUser, openId, unionId } = await wechatInstance.code2Session(code);
-        if (isSnapshotUser) {
-            throw new OakUserException('请使用完整服务后再进行登录操作');
+    }, {
+        dontCollect: true,
+    });
+
+    const OriginMap = {
+        'web': 'web',
+        'wechatPublic': 'public',
+        'wechatMp': 'mp',
+    };
+    const id = await generateNewIdAsync();
+    const newUserId = await generateNewIdAsync();
+    if (wechatUser) {
+        const wechatUser2 = wechatUser!;
+
+        const wechatUserUpdateData = wechatUserData;
+        if (unionId !== wechatUser.unionId as any) {
+            Object.assign(wechatUserUpdateData, {
+                unionId,
+            });
         }
-    
-        const [wechatUser] = await context.select('wechatUser', {
+
+        let userId = wechatUser2.userId;
+        if (wechatUser2.userId) {
+            // 若用户没有更换任何环境，则重用原来的token，避免token表增长过快
+            const [token] = await context.select('token', {
+                data: {
+                    id: 1,
+                    applicationId: 1,
+                    env: 1,
+                },
+                filter: {
+                    applicationId: application!.id,
+                    ableState: 'enabled',
+                    userId: wechatUser2.userId,
+                    playerId: wechatUser2.userId,
+                    entity: 'wechatUser',
+                    entityId: wechatUser2.id,
+                },
+            }, {
+                blockTrigger: true,
+            });
+            if (token && isEqual(token.env, env)) {
+                await context.operate('token', {
+                    id: await generateNewIdAsync(),
+                    action: 'update',
+                    data: {
+                        wechatUser: {
+                            id: await generateNewIdAsync(),
+                            action: 'update',
+                            data: wechatUserUpdateData,
+                        }
+                    },
+                    filter: {
+                        id: token.id as string,
+                    },
+                }, {
+                    dontCollect: true,
+                });
+                return token.id!;
+            }
+
+            await context.operate('token', {
+                id: await generateNewIdAsync(),
+                action: 'disable',
+                data: {
+                },
+                filter: {
+                    applicationId: application!.id,
+                    ableState: 'enabled',
+                    userId: wechatUser2.userId,
+                    playerId: wechatUser2.userId,
+                },
+            }, {
+                dontCollect: true,
+            });
+        }
+        else {
+            // 创建user
+            const userData2: EntityDict['user']['CreateSingle'] = {
+                id: await generateNewIdAsync(),
+                action: 'create',
+                data: {
+                    id: await generateNewIdAsync(),
+                    userState: 'normal',
+                    userSystem$user: {
+                        id: await generateNewIdAsync(),
+                        action: 'create',
+                        data: {
+                            id: await generateNewIdAsync(),
+                            systemId: context.getSystemId(),
+                        }
+                    }
+                } as CreateUser,
+            };
+            Object.assign(wechatUserUpdateData, {
+                user: userData2,
+            });
+            userId = userData2.data.id;
+        }
+
+        await context.operate('token', {
+            id: await generateNewIdAsync(),
+            action: 'create',
+            data: {
+                id,
+                userId,
+                playerId: userId,
+                applicationId: application!.id,
+                entity: 'wechatUser',
+                entityId: wechatUser2.id as string,
+                wechatUser: {
+                    id: await generateNewIdAsync(),
+                    action: 'update',
+                    data: wechatUserUpdateData,
+                },
+                env
+            } as CreateToken
+        }, {});
+        return id;
+
+    }
+    else if (unionId) {
+        // 如果有unionId，查找同一个system下有没有相同的unionId
+        const [wechatUser3] = await context.select('wechatUser', {
             data: {
                 id: 1,
                 userId: 1,
                 unionId: 1,
-                user: {
-                    id: 1,
-                    name: 1,
-                    nickname: 1,
-                    userRole$user: {
-                        $entity: 'userRole',
-                        data: {
-                            id: 1,
-                            userId: 1,
-                            roleId: 1,
-                        },
-                    }
-                }
             },
             filter: {
-                applicationId: application!.id,
-                openId,
+                application: {
+                    systemId: application!.systemId,
+                },
+                unionId,
             }
         }, {
             dontCollect: true,
         });
-    
-        const id = await generateNewIdAsync();
-        if (wechatUser) {
-            const wechatUser2 = wechatUser!;
-    
-            const wechatUserUpdateData = {
-                accessToken,
-                refreshToken,
-                atExpiredAt,
-                rtExpiredAt,
-                scope,
-            };
-            if (unionId !== wechatUser.unionId as any) {
-                Object.assign(wechatUserUpdateData, {
-                    unionId,
-                });
-            }
+        if (wechatUser3) {
+            if (wechatUser3.userId) {
+                /* await context.operate('token', {
+                    id: await generateNewIdAsync(),
+                    action: 'disable',
+                    data: {
+                    },
+                    filter: {
+                        applicationId: application!.id,
+                        ableState: 'enabled',
+                        userId: wechatUser3.userId,
+                        playerId: wechatUser3.userId,
+                    },
+                }, {
+                    dontCollect: true,
+                }); */
 
-            let userId = wechatUser2.userId;
-            if (wechatUser2.userId) {
-                // 若用户没有更换任何环境，则重用原来的token，避免token表增长过快
-                const [token] = await context.select('token', {
-                    data: {
-                        id: 1,
-                        applicationId: 1,
-                        env: 1,
-                    },
-                    filter: {
-                        applicationId: application!.id,
-                        ableState: 'enabled',
-                        userId: wechatUser2.userId,
-                        playerId: wechatUser2.userId,
-                        entity: 'wechatUser',
-                        entityId: wechatUser2.id,
-                    },
-                }, {
-                    blockTrigger: true,
-                });
-                if (token && isEqual(token.env, env)) {
-                    await context.operate('token', {
-                        id: await generateNewIdAsync(),
-                        action: 'update',
-                        data: {
-                            wechatUser: {
-                                id: await generateNewIdAsync(),
-                                action: 'update',
-                                data: wechatUserUpdateData,
-                            }
-                        },
-                        filter: {
-                            id: token.id as string,
-                        },
-                    },{
-                        dontCollect: true,
-                    });
-                    return token.id!;
-                }
-    
-                await context.operate('token', {
-                    id: await generateNewIdAsync(),
-                    action: 'disable',
-                    data: {
-                    },
-                    filter: {
-                        applicationId: application!.id,
-                        ableState: 'enabled',
-                        userId: wechatUser2.userId,
-                        playerId: wechatUser2.userId,
-                    },
-                }, {
-                    dontCollect: true,
-                });
-            }
-            else {
-                // 创建user
-                const userData2: EntityDict['user']['CreateSingle'] = {
-                    id: await generateNewIdAsync(),
-                    action: 'create',
-                    data: {
-                        id: await generateNewIdAsync(),
-                        userState: 'normal',
-                    } as CreateUser,
-                };
-                Object.assign(wechatUserUpdateData, {
-                    user: userData2,
-                });
-                userId = userData2.data.id;
-            }
-    
-            await context.operate('token', {
-                id: await generateNewIdAsync(),
-                action: 'create',
-                data: {
-                    id,
-                    userId,
-                    playerId: userId,
-                    applicationId: application!.id,
-                    entity: 'wechatUser',
-                    entityId: wechatUser2.id as string,
-                    wechatUser: {
-                        id: await generateNewIdAsync(),
-                        action: 'update',
-                        data: wechatUserUpdateData,
-                    },
-                    env
-                } as CreateToken
-            }, {});
-            return id;
-    
-        }
-        else if (unionId) {
-            // 如果有unionId，查找同一个system下有没有相同的unionId
-            const [wechatUser3] = await context.select('wechatUser', {
-                data: {
-                    id: 1,
-                    userId: 1,
-                    unionId: 1,
-                },
-                filter: {
-                    application: {
-                        systemId: application!.systemId,
-                    },
-                    unionId,
-                }
-            }, {
-                dontCollect: true,
-            });
-            const wechatUser2 = wechatUser3;
-            if (wechatUser2 && wechatUser2.userId) {
-                await context.operate('token', {
-                    id: await generateNewIdAsync(),
-                    action: 'disable',
-                    data: {
-                    },
-                    filter: {
-                        applicationId: application!.id,
-                        ableState: 'enabled',
-                        userId: wechatUser2.userId,
-                        playerId: wechatUser2.userId,
-                    },
-                }, {
-                    dontCollect: true,
-                });
-    
                 const wechatUserCreateData: CreateWechatUser = {
                     id: await generateNewIdAsync(),
-                    accessToken,
-                    refreshToken,
-                    atExpiredAt,
-                    rtExpiredAt,
-                    scope,
                     unionId,
-                    origin: 'mp',
+                    origin: OriginMap[type] as 'mp',
                     openId,
                     applicationId: application!.id!,
-                    userId: wechatUser2.userId,
+                    userId: wechatUser3.userId,
+                    ...wechatUserData,
                 };
                 await context.operate('token', {
                     id: await generateNewIdAsync(),
                     action: 'create',
                     data: {
                         id,
-                        userId: wechatUser2.userId,
-                        playerId: wechatUser2.userId,
+                        userId: wechatUser3.userId,
+                        playerId: wechatUser3.userId,
                         applicationId: application!.id,
                         wechatUser: {
                             id: await generateNewIdAsync(),
@@ -761,63 +760,81 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
                 });
                 return id;
             }
+            // 这里顺便帮其它wechatUser数据也补上相应的userId
+            await context.operate('wechatUser', {
+                id: await generateNewIdAsync(),
+                action: 'update',
+                data: {
+                    userId: newUserId,
+                },
+                filter: {
+                    id: wechatUser3.id,
+                },
+            }, { dontCollect: true });
         }
-    
-        // 到这里都是要同时创建wechatUser和user对象了
-        const userData: CreateUser = {
-            id: await generateNewIdAsync(),
-            userState: 'normal',
-            userSystem$user: [
-                {
-                    id: await generateNewIdAsync(),
-                    action: 'create',
-                    data: {
-                        id: await generateNewIdAsync(),
-                        systemId,
-                    },
-                }
-            ],
-        };
-        const wechatUserCreateData: CreateWechatUser = {
-            id: await generateNewIdAsync(),
-            accessToken,
-            refreshToken,
-            atExpiredAt,
-            rtExpiredAt,
-            scope,
-            unionId,
-            origin: type === 'wechatPublic' ? 'public' : 'web',
-            openId,
-            applicationId: application!.id!,
-            user: {
+    }
+
+    // 到这里都是要同时创建wechatUser和user对象了
+    const userData: CreateUser = {
+        id: newUserId,
+        userState: 'normal',
+        userSystem$user: [
+            {
                 id: await generateNewIdAsync(),
                 action: 'create',
-                data: userData,
+                data: {
+                    id: await generateNewIdAsync(),
+                    systemId,
+                },
             }
-        };
-        await context.operate('token', {
+        ],
+    };
+    const wechatUserCreateData: CreateWechatUser = {
+        id: await generateNewIdAsync(),
+        unionId,
+        origin: OriginMap[type] as 'mp',
+        openId,
+        applicationId: application!.id!,
+        user: {
             id: await generateNewIdAsync(),
             action: 'create',
-            data: {
-                id,
-                userId: userData.id,
-                playerId: userData.id,
-                applicationId: application!.id,
-                wechatUser: {
-                    id: await generateNewIdAsync(),
-                    action: 'create',
-                    data: wechatUserCreateData,
-                },
-                env,
-            }
-        }, {
-            dontCollect: true,
-        });
-    
-        return id;
+            data: userData,
+        },
+        ...wechatUserData,
     };
+    await context.operate('token', {
+        id: await generateNewIdAsync(),
+        action: 'create',
+        data: {
+            id,
+            userId: newUserId,
+            playerId: newUserId,
+            applicationId: application!.id,
+            wechatUser: {
+                id: await generateNewIdAsync(),
+                action: 'create',
+                data: wechatUserCreateData,
+            },
+            env,
+        }
+    }, {
+        dontCollect: true,
+    });
 
-    const tokenId = await loginLogic();
+    return id;
+}
+
+/**
+ * 公众号授权登录
+ * @param param0 
+ * @param context 
+ */
+export async function loginWechat<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ code, env }: {
+    code: string;
+    env: WebEnv;
+}, context: Cxt): Promise<string> {
+    
+    const tokenId = await loginFromWechatEnv<ED, Cxt>(code, env, context);
     const [tokenInfo] = await loadTokenInfo<ED, Cxt>(tokenId, context);
     assert(tokenInfo.entity === 'wechatUser');
     await context.setTokenValue(tokenId);
@@ -835,264 +852,10 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
 export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ code, env }: {
     code: string;
     env: WechatMpEnv;
-}, context: Cxt): Promise<string> {
-    const loginLogic = async() => {
-        const application = context.getApplication();
-        const { type, config, systemId } = application!;
-    
-        assert(type === 'wechatMp' || config!.type === 'wechatMp');
-        const config2 = config as WechatMpConfig;
-        const { appId, appSecret } = config2;
-        const wechatInstance = WechatSDK.getInstance(appId, appSecret, 'wechatMp') as WechatMpInstance;
-    
-        const { sessionKey, openId, unionId } = await wechatInstance.code2Session(code);
-    
-        const [wechatUser] = await context.select('wechatUser', {
-            data: {
-                id: 1,
-                userId: 1,
-                unionId: 1,
-                user: {
-                    id: 1,
-                    name: 1,
-                    nickname: 1,
-                    userRole$user: {
-                        $entity: 'userRole',
-                        data: {
-                            id: 1,
-                            userId: 1,
-                            roleId: 1,
-                        },
-                    }
-                }
-            },
-            filter: {
-                applicationId: application!.id,
-                openId,
-            }
-        }, {
-            dontCollect: true,
-        });
-    
-        const id = await generateNewIdAsync();
-        if (wechatUser) {
-            const wechatUser2 = wechatUser;
-    
-            const wechatUserUpdateData = {
-                sessionKey,
-            };
-            if (unionId !== wechatUser.unionId as any) {
-                Object.assign(wechatUserUpdateData, {
-                    unionId,
-                });
-            }
-            if (wechatUser2.userId) {
-                // 若用户没有更换任何环境，则重用原来的token，避免token表增长过快
-                const [token] = await context.select('token', {
-                    data: {
-                        id: 1,
-                        applicationId: 1,
-                        env: 1,
-                    },
-                    filter: {
-                        applicationId: application!.id,
-                        ableState: 'enabled',
-                        userId: wechatUser2.userId,
-                        playerId: wechatUser2.userId,
-                        entity: 'wechatUser',
-                        entityId: wechatUser2.id,
-                    },
-                }, { dummy: 1, blockTrigger: true, dontCollect: true });
-                if (token && isEqual(token.env, env)) {
-                    await context.operate('token', {
-                        id: await generateNewIdAsync(),
-                        action: 'update',
-                        data: {
-                            wechatUser: {
-                                id: await generateNewIdAsync(),
-                                action: 'update',
-                                data: wechatUserUpdateData,
-                            }
-                        },
-                        filter: {
-                            id: token.id as string,
-                        },
-                    }, {
-                        dontCollect: true,
-                    });
-                    return token.id!;
-                }
-    
-                await context.operate('token', {
-                    id: await generateNewIdAsync(),
-                    action: 'disable',
-                    data: {
-                    },
-                    filter: {
-                        applicationId: application!.id,
-                        ableState: 'enabled',
-                        userId: wechatUser2.userId,
-                        playerId: wechatUser2.userId,
-                    },
-                }, {
-                    dontCollect: true,
-                });
-            }
-            else {
-                // 创建user
-                Object.assign(wechatUserUpdateData, {
-                    user: {
-                        id: await generateNewIdAsync(),
-                        action: 'create',
-                        data: {
-                            id: await generateNewIdAsync(),
-                            userState: 'normal',
-                        } as CreateUser,
-                    },
-                });
-            }
-    
-            await context.operate('token', {
-                id: await generateNewIdAsync(),
-                action: 'create',
-                data: {
-                    id,
-                    userId: wechatUser2.userId as string,
-                    playerId: wechatUser2.userId as string,
-                    applicationId: application!.id,
-                    entity: 'wechatUser',
-                    ableState: 'enabled',
-                    entityId: wechatUser2.id as string,
-                    wechatUser: {
-                        id: await generateNewIdAsync(),
-                        action: 'update',
-                        data: wechatUserUpdateData,
-                    },
-                    env
-                }
-            }, {
-                dontCollect: true,
-            });
-            return id;
-    
-        }
-        else if (unionId) {
-            // 如果有unionId，查找同一个system下有没有相同的unionId
-            const [wechatUser3] = await context.select('wechatUser', {
-                data: {
-                    id: 1,
-                    userId: 1,
-                    unionId: 1,
-                },
-                filter: {
-                    application: {
-                        systemId: application!.systemId,
-                    },
-                    unionId,
-                }
-            }, {
-                dontCollect: true,
-            });
-            const wechatUser2 = wechatUser3;
-            if (wechatUser2 && wechatUser2.userId) {
-                await context.operate('token', {
-                    id: await generateNewIdAsync(),
-                    action: 'disable',
-                    data: {
-                    },
-                    filter: {
-                        applicationId: application!.id,
-                        ableState: 'enabled',
-                        userId: wechatUser2.userId,
-                        playerId: wechatUser2.userId,
-                    },
-                }, {
-                    dontCollect: true,
-                });
-    
-                const wechatUserCreateData: CreateWechatUser = {
-                    id: await generateNewIdAsync(),
-                    sessionKey,
-                    unionId,
-                    origin: 'mp',
-                    openId,
-                    applicationId: application!.id!,
-                    userId: wechatUser2.userId,
-                };
-                await context.operate('token', {
-                    id: await generateNewIdAsync(),
-                    action: 'create',
-                    data: {
-                        id,
-                        userId: wechatUser2.userId,
-                        playerId: wechatUser2.userId,
-                        applicationId: application!.id,
-                        wechatUser: {
-                            id: await generateNewIdAsync(),
-                            action: 'create',
-                            data: wechatUserCreateData,
-                        },
-                        env,
-                    }
-                }, {
-                    dontCollect: true,
-                });
-                return id;
-            }
-        }
-    
-        // 到这里都是要同时创建wechatUser和user对象了
-        const userData: CreateUser = {
-            id: await generateNewIdAsync(),
-            userState: 'normal',            
-            userSystem$user: [
-                {
-                    id: await generateNewIdAsync(),
-                    action: 'create',
-                    data: {
-                        id: await generateNewIdAsync(),
-                        systemId,
-                    },
-                }
-            ],
-        };
-        const wechatUserCreateData: CreateWechatUser = {
-            id: await generateNewIdAsync(),
-            sessionKey,
-            unionId,
-            origin: 'mp',
-            openId,
-            applicationId: application!.id!,
-            user: {
-                id: await generateNewIdAsync(),
-                action: 'create',
-                data: userData,
-            }
-        };
-        await context.operate('token', {
-            id: await generateNewIdAsync(),
-            action: 'create',
-            data: {
-                id,
-                userId: userData.id,
-                playerId: userData.id,
-                applicationId: application!.id,
-                wechatUser: {
-                    id: await generateNewIdAsync(),
-                    action: 'create',
-                    data: wechatUserCreateData,
-                },
-                env,
-            }
-        }, {
-            dontCollect: true,
-        });
-    
-        return id;
-    };
-    const tokenId = await loginLogic();
+}, context: Cxt): Promise<string> {   
+    const tokenId = await loginFromWechatEnv<ED, Cxt>(code, env, context);
     await loadTokenInfo<ED, Cxt>(tokenId, context);
-    
+
     return tokenId;
 }
 
@@ -1112,7 +875,7 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ba
             id: 1,
             sessionKey: 1,
             nickname: 1,
-            avatar:1,
+            avatar: 1,
             user: {
                 id: 1,
                 nickname: 1,
@@ -1329,7 +1092,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
 }
 
 
-export async function switchTo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ userId }: { userId: string}, context: Cxt) {
+export async function switchTo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ userId }: { userId: string }, context: Cxt) {
     const reallyRoot = context.isReallyRoot();
     if (!reallyRoot) {
         throw new OakUserUnpermittedException();
