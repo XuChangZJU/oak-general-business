@@ -125,6 +125,16 @@ export default OakComponent({
             type: Boolean,
             value: false,
         },
+        // 上传按钮隐藏
+        disableAdd: {
+            type: Boolean,
+            value: false,
+        },
+        // 下按按钮隐藏
+        disableDownload: {
+            type: Boolean,
+            value: false,
+        },
         type: String,
         origin: String,
         tag1: String,
@@ -224,9 +234,6 @@ export default OakComponent({
                     await Promise.all(
                         tempFiles.map(async (tempExtraFile) => {
                             const { path, type, size, name } = tempExtraFile;
-                            // const fileType = name.substring(
-                            //     name.lastIndexOf('.') + 1
-                            // );
                             await this.pushExtraFile({
                                 name,
                                 fileType: type,

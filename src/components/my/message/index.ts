@@ -17,19 +17,16 @@ export default OakComponent({
         },
         async getMessageCount() {
             const userId = this.features.token.getUserId(true);
-            const application = this.features.application.getApplication();
-            const { systemId } = application;
             if (userId) {
                 const result = await this.features.cache.count('message', {
                     filter: {
                         userId,
-                        systemId,
                         visitState: 'unvisited',
                     },
                 });
-               this.setState({
-                   count: result,
-               });
+                this.setState({
+                    count: result,
+                });
             }
         },
     },

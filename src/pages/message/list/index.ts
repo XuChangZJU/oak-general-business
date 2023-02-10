@@ -21,19 +21,15 @@ export default OakComponent({
         {
             filter() {
                 const userId = this.features.token.getUserId(true);
-                /* const application = features.application.getApplication();
-                const { systemId } = application; */
 
                 if (userId) {
                     return {
                         userId,
-                        // systemId,
-                        // visitState: 'unvisited',
                     };
                 }
                 else {
                     return {
-                        $$createAt$$: 123,
+                        id: 'illegal',
                     };
                 }
             },

@@ -21,6 +21,10 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
     children?: JSX.Element;
     files?: EntityDict['extraFile']['OpSchema'][];
     disableInsert?: boolean;
+    disableAdd?: boolean;
+    disableDownload?: boolean;
+    disableDelete?: boolean;
+    preview?: boolean;
 }, {
     onPickByWeb: (files: UploadFile[], callback?: (file: any, status: string) => void) => void;
     onDeleteByWeb: (file: UploadFile) => void;
