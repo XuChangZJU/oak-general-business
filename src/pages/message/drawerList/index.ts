@@ -20,8 +20,6 @@ export default OakComponent({
         {
             filter() {
                 const userId = this.features.token.getUserId(true);
-                const application = this.features.application.getApplication();
-                const { systemId } = application;
                 if (!userId) {
                     return {
                         id: 'illegal',
@@ -29,8 +27,6 @@ export default OakComponent({
                 }
                 return {
                     userId,
-                    // systemId,
-                    // visitState: 'unvisited',
                 };
             },
         },

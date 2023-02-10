@@ -10,7 +10,7 @@
                 </view>
             </block>
         </block>
-        <view class="file-list__item file-list__item--add  file-list__item--{{size}} oak-item-class" style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:''}}" wx:if="{{!disableInsert}}" bind:tap="onPickByMp">
+        <view class="file-list__item file-list__item--add  file-list__item--{{size}} oak-item-class" style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:''}}" wx:if="{{!disableInsert && !disableAdd}}" bind:tap="onPickByMp">
             <view class="file-list__item-slot-wrapper">
                 <slot />
             </view>
@@ -22,7 +22,7 @@
 </block>
 <block wx:else >
 <view class="file-list-flow__container oak-class">
-    <view class="file-list-flow__item--add oak-item-add-class" wx:if="{{!disableInsert}}">
+    <view class="file-list-flow__item--add oak-item-add-class" wx:if="{{!disableInsert && !disableAdd}}">
         <l-button bind:lintap="onPickByMp" plain="{{true}}" type="default">选择文件</l-button>
     </view>
     <block wx:for="{{files}}" wx:key="index">
@@ -32,7 +32,7 @@
                    {{ item.filename }}{{ item.extension ? '.' + item.extension : '' }}
                </view>
                <view class="file-list-flow__item--btns">
-               <view wx:if="{{!disableDelete}}" mut-bind:tap="onDownloadByMp" class="file-list-flow__download" data-value="{{item}}">
+               <view wx:if="{{!disableDownload}}" mut-bind:tap="onDownloadByMp" class="file-list-flow__download" data-value="{{item}}">
                     <l-icon name="download" size="24" />
                 </view>
                 <view wx:if="{{!disableDelete}}" mut-bind:tap="onDeleteByMp" class="file-list-flow__remove" data-value="{{item}}">

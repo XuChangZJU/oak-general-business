@@ -59,6 +59,10 @@ export default function render(
             children?: JSX.Element;
             files?: EntityDict['extraFile']['OpSchema'][];
             disableInsert?: boolean;
+            disableAdd?: boolean;
+            disableDownload?: boolean;
+            disableDelete?: boolean;
+            preview?: boolean;
         },
         {
             onPickByWeb: (
@@ -86,7 +90,11 @@ export default function render(
         children,
         showUploadList = true,
         files,
-        disableInsert,
+        disableInsert = false,
+        disableAdd = false,
+        disableDownload = false,
+        disableDelete = false,
+        preview = true,
     } = props.data;
     const { onPickByWeb, onDeleteByWeb } = props.methods;
     const features = useFeatures();
@@ -107,25 +115,21 @@ export default function render(
         }
     }, [files]);
 
-
     const extraFileToUploadFile = (
-        extraFile: EntityDict['extraFile']['OpSchema'],
+        extraFile: EntityDict['extraFile']['OpSchema']
     ): NewUploadFile => {
-        const filename =
-            extraFile.filename +
-            (extraFile.extension ? `.${extraFile.extension}` : '');
         return {
             id: extraFile.id,
             url: features.extraFile.getUrl(extraFile),
             thumbUrl: features.extraFile.getUrl(extraFile),
-            name: filename,
-            fileName: filename,
+            name: features.extraFile.getFileName(extraFile),
+            fileName: features.extraFile.getFileName(extraFile),
             size: extraFile.size!,
             type: extraFile.fileType,
             uid: extraFile.id, //upload 组件需要uid来维护fileList
             // status: 'done',
         };
-    }
+    };
 
     const setNewUploadFilesByStatus = (
         file: EntityDict['extraFile']['Schema'],
@@ -177,7 +181,15 @@ export default function render(
                 style={style}
                 disabled={disabled}
                 directory={directory}
-                showUploadList={showUploadList}
+                showUploadList={
+                    showUploadList
+                        ? {
+                              showPreviewIcon: preview,
+                              showRemoveIcon: !disableDelete,
+                              showDownloadIcon: !disableDownload,
+                          }
+                        : false
+                }
                 beforeUpload={async (file) => {
                     if (typeof beforeUpload === 'function') {
                         const result = await beforeUpload(file);
@@ -194,9 +206,7 @@ export default function render(
                 fileList={
                     theme === 'custom'
                         ? []
-                        : newFiles?.map((ele) =>
-                              extraFileToUploadFile(ele)
-                          )
+                        : newFiles?.map((ele) => extraFileToUploadFile(ele))
                 }
                 onChange={({ file, fileList, event }) => {
                     // id不存在就是file对象
@@ -214,7 +224,7 @@ export default function render(
                 onPreview={onPreview}
                 onDownload={onDownload}
             >
-                {disableInsert ? null : getUploadButton()}
+                {!disableInsert && !disableAdd ? getUploadButton() : null}
             </Upload>
             {tips && (
                 <small className={Style['oak-upload__tips']}>{tips}</small>
