@@ -8,7 +8,7 @@ import * as Article from "../Article/Schema";
 import * as User from "../User/Schema";
 export declare type OpSchema = EntityShape & {
     origin: 'qiniu' | 'unknown';
-    type: 'image' | 'video' | 'audio' | 'file' | 'pdf';
+    type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
     objectId: String<64>;
     tag1: String<16>;
@@ -26,7 +26,7 @@ export declare type OpSchema = EntityShape & {
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
     origin: 'qiniu' | 'unknown';
-    type: 'image' | 'video' | 'audio' | 'file' | 'pdf';
+    type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
     objectId: String<64>;
     tag1: String<16>;
@@ -51,7 +51,7 @@ declare type AttrFilter<E> = {
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     origin: Q_EnumValue<'qiniu' | 'unknown'>;
-    type: Q_EnumValue<'image' | 'video' | 'audio' | 'file' | 'pdf'>;
+    type: Q_EnumValue<'image' | 'video' | 'audio' | 'file'>;
     bucket: Q_StringValue;
     objectId: Q_StringValue;
     tag1: Q_StringValue;

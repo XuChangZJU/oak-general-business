@@ -108,3 +108,45 @@ each(range(2, 10), {
 .file-list__item-slot-wrapper:empty+.file-list__image--add {
   visibility: visible;
 }
+
+
+.file-list-flow__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.file-list-flow__item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10rpx 10rpx 10rpx 0;
+}
+.file-list-flow__item--name {
+  display: flex;
+  flex-direction: row;
+  fleX: 1;
+  font-size: 28rpx;
+}
+
+.file-list-flow__item--btns {
+  display: flex;
+  flex-direction: row;
+}
+
+.file-list-flow__download {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-list-flow__remove {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

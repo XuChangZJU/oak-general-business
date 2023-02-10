@@ -420,7 +420,9 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
         fn: async (context, params, headers, req, body) => {
             const { appId } = params;
             if (!appId) {
-                throw new Error('applicationId参数不存在');
+                console.error('applicationId参数不存在');
+                console.log(JSON.stringify(body));
+                return '';
             }
             await context.setApplication(appId);
             const { xml: data } = X2Js.xml2js(body);
@@ -435,7 +437,9 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
             const { searchParams } = new URL(`http://${req.headers.host!}${req.url}`);
             const { appId } = params;
             if (!appId) {
-                throw new Error('applicationId参数不存在');
+                console.error('applicationId参数不存在');
+                const echostr = searchParams.get('echostr')!;
+                return echostr;
             }
             const [application] = await context.select(
                 'application',

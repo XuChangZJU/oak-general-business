@@ -1,13 +1,30 @@
 <!-- index.wxml -->
 <view class="page-body">
     <block wx:if="{{mobiles && mobiles.length > 0}}">
-        <view wx:for="{{mobiles}}" wx:key="index" class="card">
-            <text>{{item.mobile}}</text>
+        <view class="container">
+
+            <view class="list" wx:for="{{mobiles}}">
+                <l-list icon="mobile" title="{{item.mobile}}" is-link="{{false}}">
+                    <view slot="right-section">
+                        <view bind:tap="onRemoveModalOpen" data-id="{{item.id}}">
+                            <l-icon name="delete" size="24" />
+                        </view>
+                    </view>
+                </l-list>
+            </view>
         </view>
     </block>
     <block wx:else>
-        <view style="flex:1; display:flex; align-items:center;justify-content:center">尚未授权手机号</view>
-    </block>
-    <view style="display: flex; flex: 1"></view>
-    <l-button type="default" style="margin: 16rpx" block size="large" open-type="getPhoneNumber" bindgetphonenumber="onRefreshMobile" content="授权手机号" />
+<view class="container container2">
+        <l-card type="primary" plaintext="{{true}}">
+            <view class="card">
+                    您尚未授权手机号
+            </view>
+        </l-card>
+    </view>
+</block>
+<l-button type="default" block size="long" open-type="getPhoneNumber" bindgetphonenumber="onRefreshMobile">
+        授权手机号
+</l-button>
 </view>
+<l-dialog show="{{confirmDeleteModalVisible}}" type="confirm" title="提示" content="确认删除吗？删除后无法用此号码登录" bind:linconfirm="onRemoveConfirm" bind:lincancel="onRemoveModalClose" />
