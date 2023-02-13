@@ -30,5 +30,7 @@
                 </view>
             </block>
         </view>
+
+        <l-dialog id="my-action-tab-dialog" bind:linconfirm="linconfirm" bind:lincancel="lincancel" />
+
     </block>
-    <l-dialog id="my-dialog" bind:linconfirm="linconfirm" bind:lincancel="lincancel" />

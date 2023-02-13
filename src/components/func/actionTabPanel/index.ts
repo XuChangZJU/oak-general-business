@@ -7,7 +7,9 @@ export default OakComponent({
     },
     isList: false,
     actions() {
-        const { actions } = this.props;
+        const { items } = this.props;
+        const actions =
+            items?.filter((ele) => !!ele.action).map((ele) => ele.action) || [];
         return actions;
     },
     data: {
@@ -65,9 +67,10 @@ export default OakComponent({
     },
     methods: {
         async linconfirm() {
-            const { selectItem } = this.state;
+            const { selectItem, oakId } = this.state;
             const detail = {
                 item: selectItem,
+                oakId,
             };
             if (selectItem.click) {
                 this.triggerEvent('click', detail);
@@ -85,24 +88,32 @@ export default OakComponent({
                 selectItem: '',
             });
         },
+        getActionName(action: string) {
+            const { entity } = this.props;
+            const { commonAction } = this.state;
+            let text: string = '';
+
+            if (action) {
+                if (commonAction.includes(action)) {
+                    text = this.t(`common:action.${action}`);
+                } else {
+                    text = this.t(`${entity}:action.${action}`);
+                }
+            }
+            return text;
+        },
         async handleClick(e: WechatMiniprogram.Touch) {
-            const { commonAction, entity } = this.state;
+            const { oakId } = this.state;
             const { item } = e.currentTarget.dataset;
-            const that = this;
             if (item.alerted) {
-                const dialog = (this as any).selectComponent('#my-dialog');
+                const dialog = (this as any).selectComponent(
+                    '#my-action-tab-dialog'
+                );
 
                 let alertContent = '';
                 if (item.action) {
-                    alertContent = '确认';
-                    if (commonAction.includes(item.action)) {
-                        alertContent += this.t(`common:action.${item.action}`);
-                    } else {
-                        alertContent += this.t(
-                            `${entity}:action.${item.action}`
-                        );
-                    }
-                    alertContent += '该数据';
+                    const text = this.getActionName(item.action);
+                    alertContent = `确认${text}该数据`;
                 }
 
                 dialog.linShow({
@@ -119,6 +130,7 @@ export default OakComponent({
             }
             const detail = {
                 item,
+                oakId,
             };
             if (item.click) {
                 this.triggerEvent('click', detail);
@@ -137,22 +149,15 @@ export default OakComponent({
             });
         },
         getItemsMp() {
-            const {
-                oakLegalActions,
-                items,
-                rows,
-                column,
-                entity,
-                commonAction,
-            } = this.state;
+            const { oakLegalActions, items, rows, column } = this.state;
             const items2 = items
                 .filter((ele: any) => {
-                    const { auth = true, filter } = ele;
+                    const { action, filter } = ele;
                     const authResult =
-                        !auth ||
-                        (auth &&
+                        !action ||
+                        (action &&
                             oakLegalActions?.includes(
-                                ele.action as EntityDict[keyof EntityDict]['Action']
+                                action as EntityDict[keyof EntityDict]['Action']
                             ));
                     const filterResult =
                         ele.hasOwnProperty('filter') && filter
@@ -166,13 +171,7 @@ export default OakComponent({
                     if (label) {
                         text = label;
                     } else {
-                        if (action) {
-                            if (commonAction.includes(action)) {
-                                text = this.t(`common:action.${action}`);
-                            } else {
-                                text = this.t(`${entity}:action.${action}`);
-                            }
-                        }
+                        text = this.getActionName(action);
                     }
                     return Object.assign(ele, {
                         text: text,

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Space,
     Button,
     Modal,
     ButtonProps,
-    SpaceProps,
     Typography,
 } from 'antd';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -33,8 +31,8 @@ type Item = {
     confirmText?: string;
     cancelText?: string;
     render?: React.ReactNode;
-    beforeAction?: () => void;
-    afterAction?: () => void;
+    beforeAction?: (item: Item) => void;
+    afterAction?: (item: Item) => void;
     onClick?: (item: Item) => void | Promise<void>;
     buttonProps?: Omit<ButtonProps, 'onClick'>;
     filter?: () => boolean;
@@ -59,6 +57,7 @@ function ItemComponent(
         entity: string;
         t: (value: string) => string;
         onClick: () => void | Promise<void>;
+        text: string;
     }
 ) {
     const {
@@ -73,19 +72,8 @@ function ItemComponent(
         iconRender,
         iconProps,
         mode,
+        text,
     } = props;
-    let text: string | undefined;
-    if (label) {
-        text = label;
-    } else {
-        if (action) {
-            if (commonAction.includes(action)) {
-                text = t(`common:action.${action}`);
-            } else {
-                text = t(`${entity}:action.${action}`);
-            }
-        }
-    }
 
     if (render) {
         return <div onClick={onClick}>{render}</div>;
@@ -153,11 +141,13 @@ export default function Render(
             mode?: IMode; // type为 card，图标就会包裹一层
             id?: string; //scrollview 元素id
         },
-        {}
+        {
+            getActionName: (action?: string) => string;
+        }
     >
 ) {
     const { methods, data } = props;
-    const { t } = methods;
+    const { t, getActionName } = methods;
     const {
         items,
         oakLegalActions,
@@ -185,12 +175,12 @@ export default function Render(
 
     const getItems = () => {
         const items2 = items.filter((ele) => {
-            const { auth = true, filter } = ele;
+            const { action, filter } = ele;
             const authResult =
-                !auth ||
-                (auth &&
+                !action ||
+                (action &&
                     oakLegalActions?.includes(
-                        ele.action as EntityDict[keyof EntityDict]['Action']
+                        action as EntityDict[keyof EntityDict]['Action']
                     ));
             const filterResult =
                 ele.hasOwnProperty('filter') && filter ? filter() : true;
@@ -248,6 +238,13 @@ export default function Render(
                                                 index2 + 1 <= tabNum * count
                                         )
                                         .map((ele, index2: number) => {
+                                            const { label, action } = ele;
+                                            let text: string | undefined;
+                                            if (label) {
+                                                text = label;
+                                            } else {
+                                                text = getActionName(action);
+                                            }
                                             let onClick = async () => {
                                                 if (ele.onClick) {
                                                     ele.onClick(ele);
@@ -264,25 +261,12 @@ export default function Render(
                                                 onClick = async () => {
                                                     let alertContent = '';
                                                     if (ele.action) {
-                                                        alertContent = '确认';
-                                                        if (
-                                                            commonAction.includes(
-                                                                ele.action
-                                                            )
-                                                        ) {
-                                                            alertContent += t(
-                                                                `common:action.${ele.action}`
-                                                            );
-                                                        } else {
-                                                            alertContent += t(
-                                                                `${entity}:action.${ele.action}`
-                                                            );
-                                                        }
-                                                        alertContent +=
-                                                            '该数据';
+                                                        alertContent = `确认${text}该数据`;
                                                     }
                                                     confirm({
-                                                        title: ele.alertTitle || '温馨提示',
+                                                        title:
+                                                            ele.alertTitle ||
+                                                            '温馨提示',
                                                         content:
                                                             ele.alertContent ||
                                                             alertContent,
@@ -325,16 +309,22 @@ export default function Render(
                                                         }
                                                     )}
                                                     style={{
-                                                        height: `calc(100% / ${newItems.length > column ? rows : 1})`,
+                                                        height: `calc(100% / ${
+                                                            newItems.length >
+                                                            column
+                                                                ? rows
+                                                                : 1
+                                                        })`,
                                                         width: `calc(100% / ${column})`,
                                                     }}
                                                 >
                                                     <ItemComponent
                                                         {...ele}
+                                                        onClick={onClick}
                                                         mode={mode}
                                                         entity={entity}
                                                         t={t}
-                                                        onClick={onClick}
+                                                        text={text}
                                                     />
                                                 </div>
                                             );
