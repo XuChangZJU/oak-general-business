@@ -1,4 +1,4 @@
-import { MakeOakComponent } from 'oak-frontend-base/lib/types/Page';
+import { MakeOakComponent } from '../types/Page';
 import { EntityDict } from '../general-app-domain';
 import { GeneralRuntimeContext } from '../src/RuntimeContext';
 import { AspectDict } from '../src/aspects/AspectDict';

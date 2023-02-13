@@ -11,6 +11,7 @@ import { GeneralFeatures } from '../features';
 import { AspectDict as GeneralAspectDict } from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
+import { MessageProps } from 'oak-frontend-base';
 
 export type OakComponentOption<
     ED extends EntityDict & BaseEntityDict,
@@ -24,7 +25,9 @@ export type OakComponentOption<
     TData extends Record<string, any>,
     TProperty extends PropertyOption,
     TMethod extends Record<string, Function>,
-> = BaseOakComponentOption<ED, T, Cxt, FrontCxt, AD & GAD<ED, Cxt>, FD & GFD<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>, FormedData, IsList, TData, TProperty, TMethod> & Partial<{
+> = BaseOakComponentOption<ED, T, Cxt, FrontCxt, AD & GAD<ED, Cxt>, FD & GFD<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>, FormedData, IsList, TData, TProperty, TMethod & {
+    executeMpAfterSubscribeMessage: (messageTypes: string[], haveToAccept?: boolean, action?: ED[T]['Action'], messageProps?: boolean | MessageProps) => Promise<void>;
+}> & Partial<{
     wechatMp: {
         relatedMessageTypes?: string[];
     }
