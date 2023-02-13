@@ -172,7 +172,7 @@ export default OakComponent({
 
             let newItems = items2;
             let moreItems = [];
-            if (items2.length > column) {
+            if (column && items2.length > column) {
                 newItems = [...items2].splice(0, column);
                 moreItems = [...items2].splice(column, items2.length);
             }
