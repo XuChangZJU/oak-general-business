@@ -39,11 +39,11 @@ export default function Render(
     );
 
      let class_name = 'oak-icon ' + 'oak-icon-' + name;
-     if (className) {
-         class_name += ' ' + className;
-     }
      if (isColor || color === '') {
          class_name += ' ' + 'oak-icon__' + (color || 'primary');
+     }
+     if (className) {
+         class_name += ' ' + className;
      }
      return (
          <span

@@ -9,14 +9,7 @@ export default OakComponent({
             type: String,
             value: '',
         },
-        custom: {
-            type: String,
-            value: '',
-        },
-        size: {
-            type: Number,
-            value: 14,
-        },
+        size: Number,
         color: {
             type: String,
             value: '',
