@@ -197,7 +197,6 @@ export default OakComponent({
                 .in(this as any)
                 .select('#' + id)
                 .boundingClientRect((res) => {
-                    console.log(res);
                     popover.onDisplay(res);
                 })
                 .exec();
