@@ -14,9 +14,11 @@ import * as Email from "./Email/Schema";
 import * as ExtraFile from "./ExtraFile/Schema";
 import * as Livestream from "./Livestream/Schema";
 import * as Message from "./Message/Schema";
-import * as MessageSent from "./MessageSent/Schema";
 import * as MessageSystem from "./MessageSystem/Schema";
+import * as MessageType from "./MessageType/Schema";
+import * as MessageTypeTemplateId from "./MessageTypeTemplateId/Schema";
 import * as Mobile from "./Mobile/Schema";
+import * as Notification from "./Notification/Schema";
 import * as Platform from "./Platform/Schema";
 import * as UserRole from "./UserRole/Schema";
 import * as Role from "./Role/Schema";
@@ -90,8 +92,10 @@ export declare type AddressIdSubQuery = {
     }) | any;
 };
 export declare type ApplicationIdSubQuery = {
-    [K in "$in" | "$nin"]?: (MessageSent.ApplicationIdSubQuery & {
-        entity: "messageSent";
+    [K in "$in" | "$nin"]?: (MessageTypeTemplateId.ApplicationIdSubQuery & {
+        entity: "messageTypeTemplateId";
+    }) | (Notification.ApplicationIdSubQuery & {
+        entity: "notification";
     }) | (Token.ApplicationIdSubQuery & {
         entity: "token";
     }) | (WechatPublicTag.ApplicationIdSubQuery & {
@@ -150,21 +154,31 @@ export declare type MessageIdSubQuery = {
         entity: "message";
     }) | any;
 };
-export declare type MessageSentIdSubQuery = {
-    [K in "$in" | "$nin"]?: (MessageSent.MessageSentIdSubQuery & {
-        entity: "messageSent";
-    }) | any;
-};
 export declare type MessageSystemIdSubQuery = {
-    [K in "$in" | "$nin"]?: (MessageSent.MessageSystemIdSubQuery & {
-        entity: "messageSent";
+    [K in "$in" | "$nin"]?: (Notification.MessageSystemIdSubQuery & {
+        entity: "notification";
     }) | (MessageSystem.MessageSystemIdSubQuery & {
         entity: "messageSystem";
+    }) | any;
+};
+export declare type MessageTypeIdSubQuery = {
+    [K in "$in" | "$nin"]?: (MessageType.MessageTypeIdSubQuery & {
+        entity: "messageType";
+    }) | any;
+};
+export declare type MessageTypeTemplateIdIdSubQuery = {
+    [K in "$in" | "$nin"]?: (MessageTypeTemplateId.MessageTypeTemplateIdIdSubQuery & {
+        entity: "messageTypeTemplateId";
     }) | any;
 };
 export declare type MobileIdSubQuery = {
     [K in "$in" | "$nin"]?: (Mobile.MobileIdSubQuery & {
         entity: "mobile";
+    }) | any;
+};
+export declare type NotificationIdSubQuery = {
+    [K in "$in" | "$nin"]?: (Notification.NotificationIdSubQuery & {
+        entity: "notification";
     }) | any;
 };
 export declare type PlatformIdSubQuery = {

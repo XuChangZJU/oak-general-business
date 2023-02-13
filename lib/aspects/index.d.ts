@@ -3,7 +3,7 @@ import { getUploadInfo } from './extraFile';
 import { getApplication } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { mergeUser } from './user';
-export declare const aspectDict: {
+declare const aspectDict: {
     mergeUser: typeof mergeUser;
     switchTo: typeof switchTo;
     refreshWechatPublicUserInfo: typeof refreshWechatPublicUserInfo;
@@ -18,3 +18,4 @@ export declare const aspectDict: {
     updateApplicationConfig: typeof updateApplicationConfig;
     getWechatMpUserPhoneNumber: typeof getWechatMpUserPhoneNumber;
 };
+export default aspectDict;

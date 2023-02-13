@@ -1,4 +1,4 @@
-import { OakUserException } from "oak-domain/lib/types";
+import { OakUserException, OakException } from "oak-domain/lib/types";
 import { EntityDict } from '../general-app-domain';
 import { EntityDict as BaseEntityDict, SelectOpResult } from 'oak-domain/lib/types/Entity';
 export declare class OakNotEnoughMoneyException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
@@ -33,9 +33,13 @@ export declare class OakUserDisabledException<ED extends EntityDict & BaseEntity
 export declare class OakTokenExpiredException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string);
 }
+export declare class OakMpHaveToSubscribeMessage extends Error {
+    rejectedMessageType: string[];
+    constructor(rejectedMessageType: string[], message?: string);
+}
 export declare function makeException<ED extends EntityDict & BaseEntityDict>(data: {
     name: string;
     message?: string;
     opRecords: SelectOpResult<ED>;
     [A: string]: any;
-}): import("oak-domain/lib/types").OakException<BaseEntityDict> | undefined;
+}): OakException<BaseEntityDict> | undefined;

@@ -20,7 +20,6 @@ export interface Schema extends EntityShape {
     restriction?: MessageRestriction;
     title: String<256>;
     content: Text;
-    props: Object;
     data?: Object;
     params?: MessageParams;
 }

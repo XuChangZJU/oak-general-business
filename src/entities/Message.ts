@@ -26,7 +26,6 @@ export interface Schema extends EntityShape {
     restriction?: MessageRestriction;
     title: String<256>;
     content: Text;
-    props: Object; // 消息的结构化数据（用于向各个渠道推送时的格式化）
     data?: Object; // 透传到前台的数据（OpRecords）
     params?: MessageParams; // 通知前端需要到达的路由
 };
@@ -75,7 +74,6 @@ const locale: LocaleDef<
             weight: '优先级',
             iState: '发送状态',
             visitState: '访问状态',
-            props: '属性',
             params: '渠道定制参数',
             data: '透传数据',
         },

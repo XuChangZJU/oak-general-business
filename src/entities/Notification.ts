@@ -1,3 +1,6 @@
+import {
+    String,
+} from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Index, ActionDef } from 'oak-domain/lib/types';
@@ -12,6 +15,7 @@ export interface Schema extends EntityShape {
     messageSystem: MessageSystem,
     data1: Object,
     data2: Object,
+    templateId?: String<128>;
 };
 
 type IAction = 'succeed' | 'fail';
@@ -40,6 +44,7 @@ const locale: LocaleDef<Schema, Action, '', {
             data2: '数据2',
             iState: '状态',
             application: '关联应用',
+            templateId: '模板id'
         },
         action: {
             succeed: '成功',

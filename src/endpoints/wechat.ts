@@ -419,7 +419,7 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
         params: ['appId'],
         fn: async (context, params, headers, req, body) => {
             const { appId } = params;
-            if (!appId) {
+            if (!appId || appId === '20230210') {
                 console.error('applicationId参数不存在');
                 console.log(JSON.stringify(body));
                 return '';
@@ -436,7 +436,8 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
         fn: async (context, params, body, req, headers) => {
             const { searchParams } = new URL(`http://${req.headers.host!}${req.url}`);
             const { appId } = params;
-            if (!appId) {
+            
+            if (!appId || appId === '20230210') {
                 console.error('applicationId参数不存在');
                 const echostr = searchParams.get('echostr')!;
                 return echostr;

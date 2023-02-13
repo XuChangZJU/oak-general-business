@@ -2,8 +2,9 @@ import { OakUserUnpermittedException } from "oak-domain/lib/types";
 import { generateNewIdAsync } from "oak-domain/lib/utils/uuid";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { EntityDict } from "../general-app-domain";
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 
-export async function mergeUser<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: { from: string, to: string }, context: Cxt, innerLogic?: boolean) {
+export async function mergeUser<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(params: { from: string, to: string }, context: Cxt, innerLogic?: boolean) {
     if (!innerLogic && !context.isRoot()) {
         throw new OakUserUnpermittedException('不允许执行mergeUser操作');
     }

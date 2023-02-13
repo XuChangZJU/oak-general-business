@@ -6,7 +6,7 @@ import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOper
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as Message from "../Message/Schema";
 import * as System from "../System/Schema";
-import * as MessageSent from "../MessageSent/Schema";
+import * as Notification from "../Notification/Schema";
 export declare type OpSchema = EntityShape & {
     messageId: ForeignKey<"message">;
     systemId: ForeignKey<"system">;
@@ -17,8 +17,8 @@ export declare type Schema = EntityShape & {
     systemId: ForeignKey<"system">;
     message: Message.Schema;
     system: System.Schema;
-    messageSent$messageSystem?: Array<MessageSent.Schema>;
-    messageSent$messageSystem$$aggr?: AggregationResult<MessageSent.Schema>;
+    notification$messageSystem?: Array<Notification.Schema>;
+    notification$messageSystem$$aggr?: AggregationResult<Notification.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -44,11 +44,11 @@ export declare type Projection = {
     message?: Message.Projection;
     systemId?: number;
     system?: System.Projection;
-    messageSent$messageSystem?: MessageSent.Selection & {
-        $entity: "messageSent";
+    notification$messageSystem?: Notification.Selection & {
+        $entity: "notification";
     };
-    messageSent$messageSystem$$aggr?: MessageSent.Aggregation & {
-        $entity: "messageSent";
+    notification$messageSystem$$aggr?: Notification.Aggregation & {
+        $entity: "notification";
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type MessageSystemIdProjection = OneOf<{
@@ -104,7 +104,7 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "message
 } | {
     systemId: String<64>;
 })) & {
-    messageSent$messageSystem?: OakOperation<MessageSent.UpdateOperation["action"], Omit<MessageSent.UpdateOperationData, "messageSystem" | "messageSystemId">, MessageSent.Filter> | OakOperation<"create", Omit<MessageSent.CreateOperationData, "messageSystem" | "messageSystemId">[]> | Array<OakOperation<"create", Omit<MessageSent.CreateOperationData, "messageSystem" | "messageSystemId">> | OakOperation<MessageSent.UpdateOperation["action"], Omit<MessageSent.UpdateOperationData, "messageSystem" | "messageSystemId">, MessageSent.Filter>>;
+    notification$messageSystem?: OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Notification.Filter> | OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">[]> | Array<OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">> | OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Notification.Filter>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -135,7 +135,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "message
     systemId?: String<64> | null;
 })) & {
     [k: string]: any;
-    messageSent$messageSystem?: MessageSent.UpdateOperation | MessageSent.RemoveOperation | OakOperation<"create", Omit<MessageSent.CreateOperationData, "messageSystem" | "messageSystemId">[]> | Array<OakOperation<"create", Omit<MessageSent.CreateOperationData, "messageSystem" | "messageSystemId">> | MessageSent.UpdateOperation | MessageSent.RemoveOperation>;
+    notification$messageSystem?: Notification.UpdateOperation | Notification.RemoveOperation | OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">[]> | Array<OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">> | Notification.UpdateOperation | Notification.RemoveOperation>;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({

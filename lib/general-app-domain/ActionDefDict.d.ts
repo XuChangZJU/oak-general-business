@@ -15,11 +15,11 @@ export declare const ActionDefDict: {
         iState: import("oak-domain/lib/types").ActionDef<string, string>;
         visitState: import("oak-domain/lib/types").ActionDef<string, string>;
     };
-    messageSent: {
-        iState: import("oak-domain/lib/types").ActionDef<string, string>;
-    };
     mobile: {
         ableState: import("oak-domain/lib/types").ActionDef<import("oak-domain/lib/actions/action").AbleAction, import("oak-domain/lib/actions/action").AbleState>;
+    };
+    notification: {
+        iState: import("oak-domain/lib/types").ActionDef<string, string>;
     };
     token: {
         ableState: import("oak-domain/lib/types").ActionDef<import("oak-domain/lib/actions/action").AbleAction, import("oak-domain/lib/actions/action").AbleState>;

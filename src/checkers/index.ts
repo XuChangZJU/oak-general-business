@@ -6,6 +6,8 @@ import wechatQrCodeCheckers from './wechatQrCode';
 import applicationCheckers from './application';
 import mobileChecker from './mobile';
 import wechatPublicTagChecker from './wechatPublicTag';
+import messageChecker from './message';
+import messageTypeTemplateId from './messageTypeTemplateId';
 
 const checkers = [
     ...mobileChecker,
@@ -16,6 +18,8 @@ const checkers = [
     ...wechatQrCodeCheckers,
     ...applicationCheckers,
     ...wechatPublicTagChecker,
+    ...messageChecker,
+    ...messageTypeTemplateId,
 ];
 
 

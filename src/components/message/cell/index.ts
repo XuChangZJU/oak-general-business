@@ -14,7 +14,6 @@ export default OakComponent({
             name: 1,
         },
         params: 1,
-        props: 1,
     },
     formData: function ({ data: message, features, props }) {
         return message || {};

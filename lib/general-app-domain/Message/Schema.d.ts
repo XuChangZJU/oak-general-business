@@ -25,7 +25,6 @@ export declare type OpSchema = EntityShape & {
     restriction?: MessageRestriction | null;
     title: String<256>;
     content: Text;
-    props: Object;
     data?: Object | null;
     params?: MessageParams | null;
     iState?: IState | null;
@@ -41,7 +40,6 @@ export declare type Schema = EntityShape & {
     restriction?: MessageRestriction | null;
     title: String<256>;
     content: Text;
-    props: Object;
     data?: Object | null;
     params?: MessageParams | null;
     iState?: IState | null;
@@ -66,7 +64,6 @@ declare type AttrFilter = {
     restriction: Q_EnumValue<MessageRestriction>;
     title: Q_StringValue;
     content: Q_StringValue;
-    props: Object;
     data: Object;
     params: Q_EnumValue<MessageParams>;
     iState: Q_EnumValue<IState>;
@@ -89,7 +86,6 @@ export declare type Projection = {
     restriction?: number;
     title?: number;
     content?: number;
-    props?: number;
     data?: number;
     params?: number;
     iState?: number;

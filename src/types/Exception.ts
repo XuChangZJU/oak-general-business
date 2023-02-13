@@ -1,4 +1,4 @@
-import { OakUserException, makeException as makeException2 } from "oak-domain/lib/types";
+import { OakUserException, makeException as makeException2, OakException } from "oak-domain/lib/types";
 import { EntityDict } from '../general-app-domain';
 import { EntityDict as BaseEntityDict, SelectOpResult } from 'oak-domain/lib/types/Entity';
 
@@ -84,6 +84,14 @@ export class OakUserDisabledException<ED extends EntityDict & BaseEntityDict> ex
 export class OakTokenExpiredException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string) {
         super(message || '当前登录状态已经过期');
+    }
+}
+
+export class OakMpHaveToSubscribeMessage extends Error {
+    rejectedMessageType: string[];
+    constructor(rejectedMessageType: string[], message?: string) {
+        super(message || '您需要订阅消息，以获得更好的用户体验');
+        this.rejectedMessageType = rejectedMessageType;
     }
 }
 
