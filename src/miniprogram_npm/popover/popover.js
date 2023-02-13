@@ -28,7 +28,7 @@ Component({
     },
 
     methods: {
-        onDisplay: function (e, scrollTop) {
+        onDisplay: function (e) {
             let self = this;
 
             if (self.last && self.last === e.id) {

@@ -254,7 +254,7 @@ export default function Render(
                                                     ele.action as EntityDict[keyof EntityDict]['Action']
                                                 );
                                                 if (ele.afterAction) {
-                                                    ele.afterAction();
+                                                    ele.afterAction(ele);
                                                 }
                                             };
                                             if (ele.alerted) {
@@ -289,7 +289,7 @@ export default function Render(
                                                             if (
                                                                 ele.afterAction
                                                             ) {
-                                                                ele.afterAction();
+                                                                ele.afterAction(ele);
                                                             }
                                                         },
                                                     });
