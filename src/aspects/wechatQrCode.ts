@@ -177,8 +177,8 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                 // 小程序码去实时获取（暂时不考虑缓存）
                 const wechatInstance = WechatSDK.getInstance(
                     appId,
-                    appSecret,
-                    'wechatMp'
+                    'wechatMp',
+                    appSecret
                 ) as WechatMpInstance;
                 const buffer = await wechatInstance.getMpUnlimitWxaCode({
                     scene: shrinkUuidTo32Bytes(id),
@@ -209,8 +209,8 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                 const { appId, appSecret } = config2;
                 const wechatInstance = WechatSDK.getInstance(
                     appId,
-                    appSecret,
-                    'wechatPublic'
+                    'wechatPublic',
+                    appSecret
                 ) as WechatPublicInstance;
     
                 const result = await wechatInstance.getQrCode({

@@ -119,7 +119,7 @@ export function createComponent<
     }>({
         methods: {
             async executeMpAfterSubscribeMessage(messageTypes: string[], haveToAccept?: boolean, action?: ED[T]['Action'], messageProps?: boolean | MessageProps) {
-                executeMpAfterSubscribeMessage.call(this as any, messageTypes, haveToAccept, action, messageProps);
+                await executeMpAfterSubscribeMessage.call(this as any, messageTypes, haveToAccept, action, messageProps);
             },
             ...(methods as TMethod),
         },

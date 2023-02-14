@@ -224,8 +224,8 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
 
             const wechatInstance = WechatSDK.getInstance(
                 appId,
-                appSecret,
-                'wechatPublic'
+                'wechatPublic',
+                appSecret
             ) as WechatPublicInstance;
 
             const { expired } = wechatQrCode;

@@ -480,7 +480,7 @@ async function tryRefreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends
     appId = config2.appId;
     appSecret = config2.appSecret;
 
-    const wechatInstance = WechatSDK.getInstance(appId!, appSecret!, type!) as WechatPublicInstance;
+    const wechatInstance = WechatSDK.getInstance(appId!, type!, appSecret!) as WechatPublicInstance;
 
     let { accessToken, refreshToken, atExpiredAt, rtExpiredAt, scope, openId, user } = wechatUser;
     const now = Date.now();
@@ -546,7 +546,7 @@ async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRunt
         appId = config2.wechat.appId;
         appSecret = config2.wechat.appSecret;
     }
-    const wechatInstance = WechatSDK.getInstance(appId!, appSecret!, type!) as WechatPublicInstance;
+    const wechatInstance = WechatSDK.getInstance(appId!, type!, appSecret!) as WechatPublicInstance;
 
     const { isSnapshotUser, openId, unionId, ...wechatUserData } = await wechatInstance.code2Session(code);
     if (isSnapshotUser) {
@@ -914,7 +914,7 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ba
     // assert(type === 'wechatMp' || config.type === 'wechatMp');
     // const config2 = config as WechatMpConfig;
     // const { appId, appSecret } = config2;
-    // const wechatInstance = WechatSDK.getInstance(appId, appSecret, 'wechatMp');
+    // const wechatInstance = WechatSDK.getInstance(appId, 'wechatMp', appSecret);
     // const result = wechatInstance.decryptData(sessionKey as string, encryptedData, iv, signature);
     // 实测发现解密出来的和userInfo完全一致……
     // console.log(result);
@@ -1126,8 +1126,8 @@ export async function getWechatMpUserPhoneNumber<
     const { appId, appSecret } = config2;
     const wechatInstance = WechatSDK.getInstance(
         appId,
-        appSecret,
-        'wechatMp'
+        'wechatMp',
+        appSecret
     ) as WechatMpInstance;
     const result = await wechatInstance.getUserPhoneNumber(code);
     //获取 绑定的手机号码

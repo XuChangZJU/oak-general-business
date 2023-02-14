@@ -33,8 +33,8 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeCxt>[] = [
                         // 小程序码去实时获取（暂时不考虑缓存）
                         const wechatInstance = WechatSDK.getInstance(
                             appId,
-                            appSecret,
-                            'wechatMp'
+                            'wechatMp',
+                            appSecret
                         ) as WechatMpInstance;
                         const buffer = await wechatInstance.getMpUnlimitWxaCode(
                             {
