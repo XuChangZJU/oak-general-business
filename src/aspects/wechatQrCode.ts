@@ -223,9 +223,13 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                     'wechatMp',
                     appSecret
                 ) as WechatMpInstance;
+                const url =
+                    process.env.NODE_ENV === 'development'
+                        ? 'pages/index/index'
+                        : 'pages/wechatQrCode/scan/index';
                 const buffer = await wechatInstance.getMpUnlimitWxaCode({
                     scene: shrinkUuidTo32Bytes(id),
-                    page: 'pages/index/index', // todo，这里用其它的页面微信服务器拒绝，因为没发布。应该是 pages/wechatQrCode/scan/index
+                    page: url, // todo，这里用其它的页面微信服务器拒绝，因为没发布。应该是 pages/wechatQrCode/scan/index
                 });
                 // 把arrayBuffer转成字符串返回
                 const str = String.fromCharCode(...new Uint8Array(buffer));
