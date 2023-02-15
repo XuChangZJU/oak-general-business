@@ -80,25 +80,29 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
     }
     const id = generateNewId();
     if (qrCodeType) {
-        const self = applications.find(
-            ele => ele.id === applicationId
-        );
+        const self = applications.find((ele) => ele.id === applicationId);
         switch (qrCodeType) {
             case 'wechatPublic': {
-                if (!(self!.type === 'wechatPublic' && (self!.config as WechatPublicConfig).isService)) {
-                    throw new Error(
-                        '无法生成公众号二维码，服务号未正确配置'
-                    );
+                if (
+                    !(
+                        self!.type === 'wechatPublic' &&
+                        (self!.config as WechatPublicConfig).isService
+                    )
+                ) {
+                    throw new Error('无法生成公众号二维码，服务号未正确配置');
                 }
                 appId = applicationId;
                 appType = 'wechatPublic';
                 break;
             }
             case 'wechatMpDomainUrl': {
-                if (!(self!.type === 'wechatMp' && (self!.config as WechatMpConfig).qrCodePrefix)) {
-                    throw new Error(
-                        '无法生成小程序地址码，未配置跳转前缀'
-                    );
+                if (
+                    !(
+                        self!.type === 'wechatMp' &&
+                        (self!.config as WechatMpConfig).qrCodePrefix
+                    )
+                ) {
+                    throw new Error('无法生成小程序地址码，未配置跳转前缀');
                 }
                 url = `${(self!.config as WechatMpConfig).qrCodePrefix}/${id}`;
                 appType = 'wechatMpDomainUrl';
@@ -106,68 +110,64 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
             }
             case 'wechatMpWxaCode': {
                 if (self!.type !== 'wechatMp') {
-                    throw new Error(
-                        '无法生成小程序地址码，未配置跳转前缀'
-                    );
+                    throw new Error('无法生成小程序地址码，未配置跳转前缀');
                 }
                 appType = 'wechatMpWxaCode';
                 break;
             }
             default: {
-                throw new Error(
-                    '当前类型二维码暂不支持'
-                );
+                throw new Error('当前类型二维码暂不支持');
             }
         }
     } else {
         if (sysConfig.App.qrCodeApplicationId) {
             appId = sysConfig.App.qrCodeApplicationId;
             appType = sysConfig.App.qrCodeType!;
-        }
-        else {
-            const self = applications.find(
-                ele => ele.id === applicationId
-            );
+        } else {
+            const self = applications.find((ele) => ele.id === applicationId);
             // 如果本身是服务号，则优先用自己的
-            if (self!.type === 'wechatPublic' && (self!.config as WechatPublicConfig).isService) {
+            if (
+                self!.type === 'wechatPublic' &&
+                (self!.config as WechatPublicConfig).isService
+            ) {
                 appId = applicationId;
                 appType = 'wechatPublic';
-            }
-            else if (self?.type === 'wechatMp') {
+            } else if (self?.type === 'wechatMp') {
                 // 如果本身是小程序，则次优先用小程序的地址码，再次优先用二维码
                 appId = self.id;
                 if ((self!.config as WechatMpConfig).qrCodePrefix) {
                     appType = 'wechatMpDomainUrl';
-                    url = `${(self!.config as WechatMpConfig).qrCodePrefix}/${id}`;
-                }
-                else {
+                    url = `${
+                        (self!.config as WechatMpConfig).qrCodePrefix
+                    }/${id}`;
+                } else {
                     appType = 'wechatMpWxaCode';
                 }
-            }
-            else {
+            } else {
                 // 查找有没有服务号或者小程序的相关配置，如果有则使用之
                 const publicApp = applications.find(
-                    ele => ele.type === 'wechatPublic' && (ele.config as WechatPublicConfig).isService
+                    (ele) =>
+                        ele.type === 'wechatPublic' &&
+                        (ele.config as WechatPublicConfig).isService
                 );
                 if (publicApp) {
                     appId = publicApp.id;
                     appType = 'wechatPublic';
-                }
-                else {
+                } else {
                     const mpApp = applications.find(
-                        ele => ele.type === 'wechatMp'
+                        (ele) => ele.type === 'wechatMp'
                     );
                     if (mpApp) {
                         appId = mpApp.id;
                         if ((mpApp!.config as WechatMpConfig).qrCodePrefix) {
                             appType = 'wechatMpDomainUrl';
-                            url = `${(mpApp!.config as WechatMpConfig).qrCodePrefix}/${id}`;
-                        }
-                        else {
+                            url = `${
+                                (mpApp!.config as WechatMpConfig).qrCodePrefix
+                            }/${id}`;
+                        } else {
                             appType = 'wechatMpWxaCode';
                         }
                     }
-
                 }
             }
         }

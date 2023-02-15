@@ -7,6 +7,7 @@ export default OakComponent({
         entityId: 1,
         relation: 1,
         type: 1,
+        qrCodeType: 1,
         remark: 1,
         granterId: 1,
         granteeId: 1,

@@ -6,8 +6,7 @@ declare type IQrCodeProps = {
     tips?: React.ReactNode;
     onDownload?: (qrCodeImage: string, filename?: string) => void;
     onRefresh?: () => void;
-    width?: number;
-    height?: number;
+    size?: number;
     url: string;
 };
 declare function QrCode(props: IQrCodeProps): JSX.Element;

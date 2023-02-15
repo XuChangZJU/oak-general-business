@@ -1,5 +1,6 @@
 import assert from 'assert';
 import { EntityDict } from '../../../../general-app-domain';
+import { QrCodeType } from '../../../../types/Config';
 
 export default OakComponent({
     entity: 'userEntityGrant',
@@ -13,6 +14,7 @@ export default OakComponent({
         remark: 1,
         granterId: 1,
         granteeId: 1,
+        qrCodeType: 1,
     },
     isList: false,
     formData: ({ data: userEntityGrant }) => ({
@@ -24,6 +26,7 @@ export default OakComponent({
         relations: Array,
         type: String,
         redirectToAfterConfirm: Object,
+        qrCodeType: String,
     },
     data: {
         period: 5,
@@ -37,24 +40,37 @@ export default OakComponent({
     methods: {
         onShareAppMessage(e: any) {
             const app = this.features.application.getApplication();
-            const { config, system: { config: systemConfig } } = app;
+            const {
+                config,
+                system: { config: systemConfig },
+            } = app;
             const { userEntityGrantId } = this.state;
-            const imageUrl = config && config.App?.mpShareImageUrl || systemConfig && systemConfig?.App?.mpShareImageUrl || '';
+            const imageUrl =
+                (config && config.App?.mpShareImageUrl) ||
+                (systemConfig && systemConfig?.App?.mpShareImageUrl) ||
+                '';
             const { redirectToAfterConfirm } = this.props;
             return {
                 title: '',
                 path: `/pages/userEntityGrant/confirm/index?oakId=${userEntityGrantId}`,
                 imageUrl,
-            }
+            };
         },
         setInit() {
-            const { entity, entityId, type, redirectToAfterConfirm } = this.props;
+            const {
+                entity,
+                entityId,
+                type,
+                redirectToAfterConfirm,
+                qrCodeType,
+            } = this.props;
             this.update({
                 entity,
                 entityId,
-                type: type as 'grant' || 'grant',
+                type: (type as 'grant') || 'grant',
                 number: 1,
                 redirectTo: redirectToAfterConfirm,
+                qrCodeType: qrCodeType as QrCodeType,
             });
             this.setState({
                 userEntityGrantId: '',

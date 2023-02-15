@@ -13,12 +13,15 @@ export default OakComponent({
         entityId: String,
         relations: Array,
         redirectToAfterConfirm: Object,
+        qrCodeType: String,
     },
     lifetimes: {
         ready() {
             const application = this.features.application.getApplication();
             const { type, config } = application;
-            let grantByUserEntityGrant = false, grantByMobile = false, grantByEmail = false;
+            let grantByUserEntityGrant = false,
+                grantByMobile = false,
+                grantByEmail = false;
             if (type.startsWith('wechat')) {
                 grantByUserEntityGrant = true;
             } else {
@@ -30,13 +33,13 @@ export default OakComponent({
             }
             let grantMethodCount = 0;
             if (grantByEmail) {
-                grantMethodCount ++;
+                grantMethodCount++;
             }
             if (grantByMobile) {
-                grantMethodCount ++;
+                grantMethodCount++;
             }
             if (grantByUserEntityGrant) {
-                grantMethodCount ++;
+                grantMethodCount++;
             }
             this.setState({
                 grantMethodCount,
@@ -44,6 +47,6 @@ export default OakComponent({
                 grantByEmail,
                 grantByMobile,
             });
-        }
-    }
+        },
+    },
 });

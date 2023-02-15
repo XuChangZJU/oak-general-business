@@ -118,6 +118,7 @@ export default OakComponent({
         userIds: Array,
         relations: Array,
         redirectToAfterConfirm: Object,
+        qrCodeType: String,
     },
     data: {
         searchValue: '',
@@ -158,14 +159,20 @@ export default OakComponent({
     },
     methods: {
         goUpsert() {
-            const { entity, entityId, relations, redirectToAfterConfirm } =
-                this.props;
+            const {
+                entity,
+                entityId,
+                relations,
+                redirectToAfterConfirm,
+                qrCodeType,
+            } = this.props;
             this.navigateTo(
                 {
                     url: '/userRelation/upsert',
                     entity,
                     entityId,
                     redirectToAfterConfirm,
+                    qrCodeType,
                 },
                 {
                     relations,
@@ -246,8 +253,13 @@ export default OakComponent({
         },
 
         chooseActionMp(e: WechatMiniprogram.TouchEvent) {
-            const { entity, entityId, relations, redirectToAfterConfirm } =
-                this.props;
+            const {
+                entity,
+                entityId,
+                relations,
+                redirectToAfterConfirm,
+                qrCodeType,
+            } = this.props;
             const {
                 item: { mode },
             } = e.detail;
@@ -265,6 +277,7 @@ export default OakComponent({
                     entityId,
                     relations,
                     redirectToAfterConfirm,
+                    qrCodeType,
                 });
             }
         },
