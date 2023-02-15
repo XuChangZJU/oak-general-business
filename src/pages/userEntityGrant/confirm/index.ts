@@ -14,6 +14,7 @@ export default OakComponent({
         entity: 1,
         entityId: 1,
         type: 1,
+        qrCodeType: 1,
         granteeId: 1,
         number: 1,
         confirmed: 1,
@@ -49,11 +50,10 @@ export default OakComponent({
                         redirectCounter: value - 1,
                     });
                 }, 1000);
-            }
-            else {
+            } else {
                 this.redirectMp();
             }
-        }
+        },
     },
     methods: {
         async handleConfirm() {
@@ -64,8 +64,7 @@ export default OakComponent({
                     redirectCounter: 5,
                     hasConfirmed: true,
                 });
-            }
-            else {
+            } else {
                 this.setState({
                     hasConfirmed: true,
                 });
@@ -73,11 +72,11 @@ export default OakComponent({
         },
         redirectMp() {
             const { redirectTo } = this.props;
-            const { url, props = {}} = redirectTo;
+            const { url, props = {} } = redirectTo;
             this.redirectTo({
                 url,
                 ...props,
             });
-        }
+        },
     },
 });

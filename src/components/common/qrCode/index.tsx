@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Space } from 'antd';
+import { Button, Space, QRCode } from 'antd';
 import { DownloadOutlined, ReloadOutlined } from '@ant-design/icons';
-import qr from 'qr-image';
 import dayjs from 'dayjs';
-import Download from '../download';
 
 import './index.less';
 
@@ -13,11 +11,14 @@ type IQrCodeProps = {
     tips?: React.ReactNode;
     onDownload?: (qrCodeImage: string, filename?: string) => void;
     onRefresh?: () => void;
-    width?: number;
-    height?: number;
+    size?: number;
     url: string;
 };
 
+
+function isBase64(url: string) {
+    return /data:image\/[\w|\W]+(;base64,)$/.test(url);
+}
 
 function QrCode(props: IQrCodeProps) {
     const {
@@ -26,29 +27,10 @@ function QrCode(props: IQrCodeProps) {
         tips,
         onDownload,
         onRefresh,
-        width = 280,
-        height = 280,
+        size = 280,
         url,
     } = props;
     const prefixCls = 'oak';
-
-    const [qrCodeImage, setQrCodeImage] = useState('');
-
-    const qrImage = (url: string) => {
-        const image = qr.imageSync(url, { type: 'png' });
-        const imageToBase64 = Buffer.from(image).toString('base64');
-        setQrCodeImage(`data:image/png;base64,${imageToBase64}`);
-    };
-
-    useEffect(() => {
-        if (url) {
-            if (/data:image\/[\w|\W]+(;base64,)$/.test(url)) {
-                setQrCodeImage(url);
-            } else {
-                qrImage(url);
-            }
-        }
-    }, [url]);
 
     let V;
     if (expiresAt) {
@@ -89,20 +71,18 @@ function QrCode(props: IQrCodeProps) {
 
 
     return (
-        <div className={`${prefixCls}-qrCodeBox`}>
+        <div id="oakQrCode" className={`${prefixCls}-qrCodeBox`}>
             <div
+                className={`${prefixCls}-qrCodeBox_imgBox`}
                 style={{
-                    width: width,
-                    height: height,
+                    width: size,
+                    height: size,
                 }}
             >
-                {!!qrCodeImage && (
-                    <img
-                        src={qrCodeImage}
-                        alt="qrCode"
-                        width={width}
-                        height={height}
-                    />
+                {isBase64(url) ? (
+                    <img src={url} alt="qrCode" width={size} height={size} />
+                ) : (
+                   url ? <QRCode value={url} size={size} /> : null
                 )}
             </div>
             {V}
@@ -114,12 +94,23 @@ function QrCode(props: IQrCodeProps) {
                             type="text"
                             onClick={() => {
                                 if (typeof onDownload === 'function') {
-                                    onDownload(qrCodeImage, filename);
+                                    onDownload(url, filename);
                                     return;
                                 }
-                                const arraybuffer =
-                                    Download.base64ToArrayBuffer(qrCodeImage);
-                                Download.onDownload(arraybuffer, filename);
+                                const canvas = document
+                                    .getElementById('oakQrCode')
+                                    ?.querySelector<HTMLCanvasElement>(
+                                        'canvas'
+                                    );
+                                if (canvas) {
+                                    const url = canvas.toDataURL();
+                                    const a = document.createElement('a');
+                                    a.download = filename;
+                                    a.href = url;
+                                    document.body.appendChild(a);
+                                    a.click();
+                                    document.body.removeChild(a);
+                                }
                             }}
                         >
                             <DownloadOutlined

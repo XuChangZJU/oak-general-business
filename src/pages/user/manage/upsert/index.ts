@@ -29,7 +29,6 @@ export default OakComponent({
         nickname: 1,
         birth: 1,
         gender: 1,
-        avatar: 1,
         idCardType: 1,
         idNumber: 1,
         extraFile$entity: {
@@ -61,8 +60,7 @@ export default OakComponent({
         const birthText = birthDate && birthDate.toLocaleDateString();
         const birthDayValue =
             birthDate &&
-            `${birthDate.getFullYear()}-${
-                birthDate.getMonth() + 1
+            `${birthDate.getFullYear()}-${birthDate.getMonth() + 1
             }-${birthDate.getDate()}`;
         const genderOption =
             gender && GenderOptions.find((ele) => ele.value === gender);
@@ -86,9 +84,8 @@ export default OakComponent({
             idCardTypeText,
             idCardTypeOptionIndex,
             oldestBirthday: `${now.getFullYear() - 120}-01-01`,
-            today: `${now.getFullYear()}-${
-                now.getMonth() + 1
-            }-${now.getDate()}`,
+            today: `${now.getFullYear()}-${now.getMonth() + 1
+                }-${now.getDate()}`,
             genderOptionIndex,
             idCardTypeIndex,
         });
@@ -102,9 +99,8 @@ export default OakComponent({
     lifetimes: {
         ready() {
             const today = new Date();
-            const birthEnd = `${today.getFullYear()}-${
-                today.getMonth() + 1
-            }-${today.getDate()}`;
+            const birthEnd = `${today.getFullYear()}-${today.getMonth() + 1
+                }-${today.getDate()}`;
             this.setState({ birthEnd });
         },
     },

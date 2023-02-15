@@ -4,15 +4,41 @@ import Style from './mobile.module.less';
 import ByMobile from './byMobile/index';
 import ByUserEntityGrant from './byUserEntityGrant';
 import assert from 'assert';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../general-app-domain';
+import { QrCodeType } from '../../../types/Config';
 
-export default function render(this: any) {
-    const { entity, entityId, relations } = this.props;
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'user',
+        false,
+        {
+            grantByUserEntityGrant: boolean;
+            grantByEmail: boolean;
+            grantByMobile: boolean;
+            grantMethodCount: number;
+            redirectToAfterConfirm: string;
+            entity: string;
+            entityId: string;
+            relations: string[];
+            qrCodeType?: QrCodeType;
+        },
+        {}
+    >
+) {
     const {
+        entity,
+        entityId,
+        relations,
         grantByUserEntityGrant,
         grantByEmail,
         grantByMobile,
         grantMethodCount,
-    } = this.state;
+        oakFullpath,
+        redirectToAfterConfirm,
+        qrCodeType,
+    } = props.data;
     let SubPart: JSX.Element = <></>;
     if (grantMethodCount === 0) {
         SubPart = (
@@ -29,11 +55,7 @@ export default function render(this: any) {
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
-                    oakPath={
-                        this.state.oakFullpath
-                            ? `${this.state.oakFullpath}.mobile`
-                            : undefined
-                    }
+                    oakPath={oakFullpath ? `${oakFullpath}.mobile` : undefined}
                     oakAutoUnmount={true}
                 />
             );
@@ -41,15 +63,17 @@ export default function render(this: any) {
             assert(grantByUserEntityGrant === true);
             SubPart = (
                 <ByUserEntityGrant
+                    qrCodeType={qrCodeType}
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
                     oakPath={
-                        this.state.oakFullpath
-                            ? `${this.state.oakFullpath}.userEntityGrant`
+                        oakFullpath
+                            ? `${oakFullpath}.userEntityGrant`
                             : undefined
                     }
                     oakAutoUnmount={true}
+                    redirectToAfterConfirm={redirectToAfterConfirm}
                 />
             );
         }
@@ -68,7 +92,9 @@ export default function render(this: any) {
                         entity={entity}
                         entityId={entityId}
                         relations={relations}
-                        oakPath="$userRelationUpsert/upsert-byMobile"
+                        oakPath={
+                            oakFullpath ? `${oakFullpath}.mobile` : undefined
+                        }
                         oakAutoUnmount={true}
                     />
                 ),
@@ -81,7 +107,12 @@ export default function render(this: any) {
                         entity={entity}
                         entityId={entityId}
                         relations={relations}
-                        oakPath="$userRelationUpsert/upsert-byUserEntityGrant"
+                        qrCodeType={qrCodeType}
+                        oakPath={
+                            oakFullpath
+                                ? `${oakFullpath}.userEntityGrant`
+                                : undefined
+                        }
                         oakAutoUnmount={true}
                     />
                 ),

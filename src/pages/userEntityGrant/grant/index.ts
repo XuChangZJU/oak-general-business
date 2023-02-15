@@ -10,13 +10,14 @@ export default OakComponent({
         entityId: 1,
         relation: 1,
         type: 1,
+        qrCodeType: 1,
         remark: 1,
         granterId: 1,
         granteeId: 1,
     },
     isList: false,
     formData: ({ data: userEntityGrant }) => ({
-        ...userEntityGrant || {},
+        ...(userEntityGrant || {}),
     }),
     properties: {
         entity: String,
@@ -38,7 +39,7 @@ export default OakComponent({
             this.update({
                 entity,
                 entityId,
-                type: type as 'grant' || 'grant',
+                type: (type as 'grant') || 'grant',
                 number: 1,
             });
         },

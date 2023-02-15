@@ -26,7 +26,7 @@ type Item = {
     confirmText?: string;
     cancelText?: string;
     render?: React.ReactNode;
-    beforeAction?: (item: Item) => void;
+    beforeAction?: (item: Item) => boolean | Promise<boolean>;
     afterAction?: (item: Item) => void;
     onClick?: (item: Item) => void | Promise<void>;
     buttonProps?: Omit<ButtonProps, 'onClick'>;
@@ -105,14 +105,24 @@ export default function Render(
                 } else {
                     text = getActionName(action);
                 }
-                let onClick = () => {
+                let onClick = async () => {
                     if (ele.onClick) {
                         ele.onClick(ele);
                         return;
                     }
-                    methods.execute(
+                    if (ele.beforeAction) {
+                        const r = await ele.beforeAction(ele);
+                        if (!r) {
+                            return;
+                        }
+                    }
+                    await methods.execute(
                         action as EntityDict[keyof EntityDict]['Action']
                     );
+
+                    if (ele.afterAction) {
+                        ele.afterAction(ele);
+                    }
                 };
                 if (ele.alerted) {
                     onClick = async () => {
@@ -126,12 +136,18 @@ export default function Render(
                             content: ele.alertContent || content,
                             okText: ele.confirmText || '确定',
                             cancelText: ele.cancelText || '取消',
-                            onOk: () => {
+                            onOk: async () => {
                                 if (ele.onClick) {
                                     ele.onClick(ele);
                                     return;
                                 }
-                                methods.execute(
+                                if (ele.beforeAction) {
+                                    const r = await ele.beforeAction(ele);
+                                    if (!r) {
+                                        return;
+                                    }
+                                }
+                                await methods.execute(
                                     ele.action as EntityDict[keyof EntityDict]['Action']
                                 );
                                 if (ele.afterAction) {
@@ -183,10 +199,10 @@ export default function Render(
                     <Dropdown
                         menu={{
                             items: moreItems.map((ele: any, index) => ({
-                                label: ele.text,
+                                label: ele.text as string,
                                 key: index,
                             })),
-                            onClick: (e) => {
+                            onClick: (e: any) => {
                                 const item = moreItems[e.key] as any;
                                 item.onClick2();
                             },
@@ -210,7 +226,7 @@ export default function Render(
                             label: ele.text,
                             key: index,
                         })),
-                        onClick: (e) => {
+                        onClick: (e: any) => {
                             const item = moreItems[e.key] as any;
                             item.onClick2();
                         },
