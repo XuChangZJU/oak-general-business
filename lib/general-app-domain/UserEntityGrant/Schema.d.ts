@@ -4,7 +4,6 @@ import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction } from "./Action";
-import { QrCodeType } from "../../types/Config";
 import * as User from "../User/Schema";
 import * as Role from "../Role/Schema";
 import * as OperEntity from "../OperEntity/Schema";
@@ -20,7 +19,6 @@ export declare type OpSchema = EntityShape & {
     remark?: Text | null;
     granterId: ForeignKey<"user">;
     granteeId?: ForeignKey<"user"> | null;
-    qrCodeType: QrCodeType;
     expiresAt?: Datetime | null;
     expired?: Boolean | null;
     redirectTo?: Object | null;
@@ -36,7 +34,6 @@ export declare type Schema = EntityShape & {
     remark?: Text | null;
     granterId: ForeignKey<"user">;
     granteeId?: ForeignKey<"user"> | null;
-    qrCodeType: QrCodeType;
     expiresAt?: Datetime | null;
     expired?: Boolean | null;
     redirectTo?: Object | null;
@@ -68,7 +65,6 @@ declare type AttrFilter<E> = {
     granter: User.Filter;
     granteeId: Q_StringValue | SubQuery.UserIdSubQuery;
     grantee: User.Filter;
-    qrCodeType: Q_EnumValue<QrCodeType>;
     expiresAt: Q_DateValue;
     expired: Q_BooleanValue;
     redirectTo: Object;
@@ -93,7 +89,6 @@ export declare type Projection = {
     granter?: User.Projection;
     granteeId?: number;
     grantee?: User.Projection;
-    qrCodeType?: number;
     expiresAt?: number;
     expired?: number;
     redirectTo?: number;
@@ -157,8 +152,6 @@ export declare type SortAttr = {
     granteeId: number;
 } | {
     grantee: User.SortAttr;
-} | {
-    qrCodeType: number;
 } | {
     expiresAt: number;
 } | {

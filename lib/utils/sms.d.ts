@@ -4,6 +4,5 @@ export declare function sendSms<ED extends EntityDict, Cxt extends BackendRuntim
     origin: 'ali' | 'tencent';
     templateName: string;
     mobile: string;
-    templateParamSet?: Record<string, string>;
-    templateParamSetFn?: (origin: 'ali' | 'tencent', templateParamSet?: Record<string, string>) => string[] | Record<string, string> | undefined;
+    templateParamSet?: Record<string, string> | string[];
 }, context: Cxt): Promise<boolean>;

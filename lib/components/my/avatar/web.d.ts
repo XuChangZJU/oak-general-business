@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 import { AvatarSize } from 'antd/es/avatar/SizeContext';

@@ -25,7 +25,7 @@ const InitialChannalByWeightMatrix: Record<Weight, Channel[]> = {
     low: ['wechatMp', 'wechatPublic'],
 };
 
-async function tryCreateSmsNotification(message: EntityDict['message']['Schema'], context: BackendRuntimeContext<EntityDict>) {
+export async function tryMakeSmsNotification(message: EntityDict['message']['Schema'], context: BackendRuntimeContext<EntityDict>) {
     const { userId, type, entity, entityId } = message;
     const [mobile] = await context.select('mobile', {
         data: {
@@ -249,7 +249,7 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                     )
                 );
                 if (channels.includes('sms')) {
-                    const smsNotification = await tryCreateSmsNotification(message as EntityDict['message']['Schema'], context);
+                    const smsNotification = await tryMakeSmsNotification(message as EntityDict['message']['Schema'], context);
                     if (smsNotification) {
                         notificationDatas.push(smsNotification);
                     }
