@@ -2,31 +2,26 @@ import { String, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
-import { Channel } from "../../types/Message";
-import * as Application from "../Application/Schema";
-import * as MessageSystem from "../MessageSystem/Schema";
+import * as Message from "../Message/Schema";
 export declare type OpSchema = EntityShape & {
-    channel: Channel;
-    applicationId?: ForeignKey<"application"> | null;
+    channel: 'wechat' | 'jPush' | 'jim' | 'mp' | 'sms';
     data: Object;
-    messageSystemId: ForeignKey<"messageSystem">;
+    messageId: ForeignKey<"message">;
     data1: Object;
     data2: Object;
     iState?: IState | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
-    channel: Channel;
-    applicationId?: ForeignKey<"application"> | null;
+    channel: 'wechat' | 'jPush' | 'jim' | 'mp' | 'sms';
     data: Object;
-    messageSystemId: ForeignKey<"messageSystem">;
+    messageId: ForeignKey<"message">;
     data1: Object;
     data2: Object;
     iState?: IState | null;
-    application?: Application.Schema | null;
-    messageSystem: MessageSystem.Schema;
+    message: Message.Schema;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -35,12 +30,10 @@ declare type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    channel: Q_EnumValue<Channel>;
-    applicationId: Q_StringValue | SubQuery.ApplicationIdSubQuery;
-    application: Application.Filter;
+    channel: Q_EnumValue<'wechat' | 'jPush' | 'jim' | 'mp' | 'sms'>;
     data: Object;
-    messageSystemId: Q_StringValue | SubQuery.MessageSystemIdSubQuery;
-    messageSystem: MessageSystem.Filter;
+    messageId: Q_StringValue | SubQuery.MessageIdSubQuery;
+    message: Message.Filter;
     data1: Object;
     data2: Object;
     iState: Q_EnumValue<IState>;
@@ -54,11 +47,9 @@ export declare type Projection = {
     $$updateAt$$?: number;
     $$seq$$?: number;
     channel?: number;
-    applicationId?: number;
-    application?: Application.Projection;
     data?: number;
-    messageSystemId?: number;
-    messageSystem?: MessageSystem.Projection;
+    messageId?: number;
+    message?: Message.Projection;
     data1?: number;
     data2?: number;
     iState?: number;
@@ -66,11 +57,8 @@ export declare type Projection = {
 declare type MessageSentIdProjection = OneOf<{
     id: number;
 }>;
-declare type ApplicationIdProjection = OneOf<{
-    applicationId: number;
-}>;
-declare type MessageSystemIdProjection = OneOf<{
-    messageSystemId: number;
+declare type MessageIdProjection = OneOf<{
+    messageId: number;
 }>;
 export declare type SortAttr = {
     id: number;
@@ -83,13 +71,9 @@ export declare type SortAttr = {
 } | {
     channel: number;
 } | {
-    applicationId: number;
+    messageId: number;
 } | {
-    application: Application.SortAttr;
-} | {
-    messageSystemId: number;
-} | {
-    messageSystem: MessageSystem.SortAttr;
+    message: Message.SortAttr;
 } | {
     iState: number;
 } | {
@@ -100,66 +84,43 @@ export declare type SortNode = {
     $direction?: "asc" | "desc";
 };
 export declare type Sorter = SortNode[];
-export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
+export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
-export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "applicationId" | "messageSystemId">> & (({
-    applicationId?: never;
-    application?: Application.CreateSingleOperation;
+export declare type Aggregation = Omit<DeduceAggregation<Projection, Filter, Sorter>, "id">;
+export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "messageId">> & (({
+    messageId?: never;
+    message: Message.CreateSingleOperation;
 } | {
-    applicationId: String<64>;
-    application?: Application.UpdateOperation;
+    messageId: String<64>;
+    message?: Message.UpdateOperation;
 } | {
-    applicationId?: String<64>;
-}) & ({
-    messageSystemId?: never;
-    messageSystem: MessageSystem.CreateSingleOperation;
-} | {
-    messageSystemId: String<64>;
-    messageSystem?: MessageSystem.UpdateOperation;
-} | {
-    messageSystemId: String<64>;
+    messageId: String<64>;
 }));
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "applicationId" | "messageSystemId">> & (({
-    application: Application.CreateSingleOperation;
-    applicationId?: never;
+export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "messageId">> & (({
+    message: Message.CreateSingleOperation;
+    messageId?: never;
 } | {
-    application: Application.UpdateOperation;
-    applicationId?: never;
+    message: Message.UpdateOperation;
+    messageId?: never;
 } | {
-    application: Application.RemoveOperation;
-    applicationId?: never;
+    message: Message.RemoveOperation;
+    messageId?: never;
 } | {
-    application?: never;
-    applicationId?: String<64> | null;
-}) & ({
-    messageSystem: MessageSystem.CreateSingleOperation;
-    messageSystemId?: never;
-} | {
-    messageSystem: MessageSystem.UpdateOperation;
-    messageSystemId?: never;
-} | {
-    messageSystem: MessageSystem.RemoveOperation;
-    messageSystemId?: never;
-} | {
-    messageSystem?: never;
-    messageSystemId?: String<64> | null;
+    message?: never;
+    messageId?: String<64> | null;
 })) & {
     [k: string]: any;
 };
 export declare type UpdateOperation = OakOperation<"update" | ParticularAction | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
-    application?: Application.UpdateOperation | Application.RemoveOperation;
-}) & ({
-    messageSystem?: MessageSystem.UpdateOperation | MessageSystem.RemoveOperation;
+    message?: Message.UpdateOperation | Message.RemoveOperation;
 }));
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation;
-export declare type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
-export declare type MessageSystemIdSubQuery = Selection<MessageSystemIdProjection>;
+export declare type MessageIdSubQuery = Selection<MessageIdProjection>;
 export declare type MessageSentIdSubQuery = Selection<MessageSentIdProjection>;
 export declare type EntityDef = {
     Schema: Schema;

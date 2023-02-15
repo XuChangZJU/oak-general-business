@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { Config } from '../../../../types/Config';
 export default function Account(props: {
     account: Required<Config>['Account'];

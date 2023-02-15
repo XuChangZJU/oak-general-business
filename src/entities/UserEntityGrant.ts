@@ -4,6 +4,7 @@ import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Index } from 'oak-domain/lib/types/Storage';
 import { Schema as User } from './User';
 import { Schema as WechatQrCode } from './WechatQrCode';
+import { QrCodeType } from '../types/Config';
 
 export interface Schema extends EntityShape {
     entity: String<32>;
@@ -16,6 +17,7 @@ export interface Schema extends EntityShape {
     granter: User;
     grantee?: User;
     codes: Array<WechatQrCode>;
+    qrCodeType: QrCodeType;
     expiresAt?: Datetime;
     expired?: Boolean;
     redirectTo?: Object;
@@ -71,6 +73,7 @@ const locale: LocaleDef<
             expired: '是否过期',
             expiresAt: '过期时间',
             redirectTo: '重定向页面',
+            qrCodeType: '二维码类型',
         },
         action: {
             confirm: '确认',

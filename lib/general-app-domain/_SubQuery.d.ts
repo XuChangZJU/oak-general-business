@@ -3,7 +3,6 @@ import * as ModiEntity from "./ModiEntity/Schema";
 import * as Oper from "./Oper/Schema";
 import * as OperEntity from "./OperEntity/Schema";
 import * as User from "./User/Schema";
-import * as UserEntityGrant from "./UserEntityGrant/Schema";
 import * as Address from "./Address/Schema";
 import * as Application from "./Application/Schema";
 import * as Area from "./Area/Schema";
@@ -14,20 +13,16 @@ import * as Email from "./Email/Schema";
 import * as ExtraFile from "./ExtraFile/Schema";
 import * as Livestream from "./Livestream/Schema";
 import * as Message from "./Message/Schema";
-import * as MessageSystem from "./MessageSystem/Schema";
-import * as MessageType from "./MessageType/Schema";
-import * as MessageTypeTemplateId from "./MessageTypeTemplateId/Schema";
+import * as MessageSent from "./MessageSent/Schema";
 import * as Mobile from "./Mobile/Schema";
-import * as Notification from "./Notification/Schema";
 import * as Platform from "./Platform/Schema";
 import * as UserRole from "./UserRole/Schema";
 import * as Role from "./Role/Schema";
 import * as Subscription from "./Subscription/Schema";
 import * as System from "./System/Schema";
 import * as Token from "./Token/Schema";
+import * as UserEntityGrant from "./UserEntityGrant/Schema";
 import * as UserSystem from "./UserSystem/Schema";
-import * as UserWechatPublicTag from "./UserWechatPublicTag/Schema";
-import * as WechatPublicTag from "./WechatPublicTag/Schema";
 import * as WechatQrCode from "./WechatQrCode/Schema";
 import * as WechatUser from "./WechatUser/Schema";
 export declare type ModiIdSubQuery = {
@@ -57,8 +52,6 @@ export declare type OperEntityIdSubQuery = {
 export declare type UserIdSubQuery = {
     [K in "$in" | "$nin"]?: (Oper.UserIdSubQuery & {
         entity: "oper";
-    }) | (User.UserIdSubQuery & {
-        entity: "user";
     }) | (Email.UserIdSubQuery & {
         entity: "email";
     }) | (Message.UserIdSubQuery & {
@@ -69,21 +62,16 @@ export declare type UserIdSubQuery = {
         entity: "userRole";
     }) | (Token.UserIdSubQuery & {
         entity: "token";
+    }) | (User.UserIdSubQuery & {
+        entity: "user";
     }) | (UserEntityGrant.UserIdSubQuery & {
         entity: "userEntityGrant";
     }) | (UserSystem.UserIdSubQuery & {
         entity: "userSystem";
-    }) | (UserWechatPublicTag.UserIdSubQuery & {
-        entity: "userWechatPublicTag";
     }) | (WechatUser.UserIdSubQuery & {
         entity: "wechatUser";
     }) | (User.UserIdSubQuery & {
         entity: "user";
-    }) | any;
-};
-export declare type UserEntityGrantIdSubQuery = {
-    [K in "$in" | "$nin"]?: (UserEntityGrant.UserEntityGrantIdSubQuery & {
-        entity: "userEntityGrant";
     }) | any;
 };
 export declare type AddressIdSubQuery = {
@@ -92,14 +80,8 @@ export declare type AddressIdSubQuery = {
     }) | any;
 };
 export declare type ApplicationIdSubQuery = {
-    [K in "$in" | "$nin"]?: (MessageTypeTemplateId.ApplicationIdSubQuery & {
-        entity: "messageTypeTemplateId";
-    }) | (Notification.ApplicationIdSubQuery & {
-        entity: "notification";
-    }) | (Token.ApplicationIdSubQuery & {
+    [K in "$in" | "$nin"]?: (Token.ApplicationIdSubQuery & {
         entity: "token";
-    }) | (WechatPublicTag.ApplicationIdSubQuery & {
-        entity: "wechatPublicTag";
     }) | (WechatQrCode.ApplicationIdSubQuery & {
         entity: "wechatQrCode";
     }) | (WechatUser.ApplicationIdSubQuery & {
@@ -148,37 +130,20 @@ export declare type LivestreamIdSubQuery = {
     }) | any;
 };
 export declare type MessageIdSubQuery = {
-    [K in "$in" | "$nin"]?: (MessageSystem.MessageIdSubQuery & {
-        entity: "messageSystem";
+    [K in "$in" | "$nin"]?: (MessageSent.MessageIdSubQuery & {
+        entity: "messageSent";
     }) | (Message.MessageIdSubQuery & {
         entity: "message";
     }) | any;
 };
-export declare type MessageSystemIdSubQuery = {
-    [K in "$in" | "$nin"]?: (Notification.MessageSystemIdSubQuery & {
-        entity: "notification";
-    }) | (MessageSystem.MessageSystemIdSubQuery & {
-        entity: "messageSystem";
-    }) | any;
-};
-export declare type MessageTypeIdSubQuery = {
-    [K in "$in" | "$nin"]?: (MessageType.MessageTypeIdSubQuery & {
-        entity: "messageType";
-    }) | any;
-};
-export declare type MessageTypeTemplateIdIdSubQuery = {
-    [K in "$in" | "$nin"]?: (MessageTypeTemplateId.MessageTypeTemplateIdIdSubQuery & {
-        entity: "messageTypeTemplateId";
+export declare type MessageSentIdSubQuery = {
+    [K in "$in" | "$nin"]?: (MessageSent.MessageSentIdSubQuery & {
+        entity: "messageSent";
     }) | any;
 };
 export declare type MobileIdSubQuery = {
     [K in "$in" | "$nin"]?: (Mobile.MobileIdSubQuery & {
         entity: "mobile";
-    }) | any;
-};
-export declare type NotificationIdSubQuery = {
-    [K in "$in" | "$nin"]?: (Notification.NotificationIdSubQuery & {
-        entity: "notification";
     }) | any;
 };
 export declare type PlatformIdSubQuery = {
@@ -210,8 +175,8 @@ export declare type SystemIdSubQuery = {
         entity: "application";
     }) | (Domain.SystemIdSubQuery & {
         entity: "domain";
-    }) | (MessageSystem.SystemIdSubQuery & {
-        entity: "messageSystem";
+    }) | (Message.SystemIdSubQuery & {
+        entity: "message";
     }) | (UserSystem.SystemIdSubQuery & {
         entity: "userSystem";
     }) | (System.SystemIdSubQuery & {
@@ -223,21 +188,14 @@ export declare type TokenIdSubQuery = {
         entity: "token";
     }) | any;
 };
+export declare type UserEntityGrantIdSubQuery = {
+    [K in "$in" | "$nin"]?: (UserEntityGrant.UserEntityGrantIdSubQuery & {
+        entity: "userEntityGrant";
+    }) | any;
+};
 export declare type UserSystemIdSubQuery = {
     [K in "$in" | "$nin"]?: (UserSystem.UserSystemIdSubQuery & {
         entity: "userSystem";
-    }) | any;
-};
-export declare type UserWechatPublicTagIdSubQuery = {
-    [K in "$in" | "$nin"]?: (UserWechatPublicTag.UserWechatPublicTagIdSubQuery & {
-        entity: "userWechatPublicTag";
-    }) | any;
-};
-export declare type WechatPublicTagIdSubQuery = {
-    [K in "$in" | "$nin"]?: (UserWechatPublicTag.WechatPublicTagIdSubQuery & {
-        entity: "userWechatPublicTag";
-    }) | (WechatPublicTag.WechatPublicTagIdSubQuery & {
-        entity: "wechatPublicTag";
     }) | any;
 };
 export declare type WechatQrCodeIdSubQuery = {

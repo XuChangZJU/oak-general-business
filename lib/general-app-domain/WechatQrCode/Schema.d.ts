@@ -2,11 +2,10 @@ import { String, Boolean, Text, Datetime, ForeignKey } from "oak-domain/lib/type
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import { QrCodeType } from "../../types/Config";
 import * as Application from "../Application/Schema";
-import * as User from "../User/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
@@ -16,7 +15,7 @@ export declare type WechatQrCodeProps = {
     state?: Record<string, any>;
 };
 export declare type OpSchema = EntityShape & {
-    entity: "user" | "userEntityGrant" | string;
+    entity: "userEntityGrant" | string;
     entityId: String<64>;
     type: QrCodeType;
     allowShare: Boolean;
@@ -32,7 +31,7 @@ export declare type OpSchema = EntityShape & {
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
-    entity: "user" | "userEntityGrant" | string;
+    entity: "userEntityGrant" | string;
     entityId: String<64>;
     type: QrCodeType;
     allowShare: Boolean;
@@ -46,7 +45,6 @@ export declare type Schema = EntityShape & {
     applicationId: ForeignKey<"application">;
     props: WechatQrCodeProps;
     application: Application.Schema;
-    user?: User.Schema;
     userEntityGrant?: UserEntityGrant.Schema;
     operEntity$entity?: Array<OperEntity.Schema>;
     operEntity$entity$$aggr?: AggregationResult<OperEntity.Schema>;
@@ -74,10 +72,9 @@ declare type AttrFilter<E> = {
     applicationId: Q_StringValue | SubQuery.ApplicationIdSubQuery;
     application: Application.Filter;
     props: Q_EnumValue<WechatQrCodeProps>;
-    user: User.Filter;
     userEntityGrant: UserEntityGrant.Filter;
 };
-export declare type Filter<E = Q_EnumValue<"user" | "userEntityGrant" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
+export declare type Filter<E = Q_EnumValue<"userEntityGrant" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -99,7 +96,6 @@ export declare type Projection = {
     applicationId?: number;
     application?: Application.Projection;
     props?: number;
-    user?: User.Projection;
     userEntityGrant?: UserEntityGrant.Projection;
     operEntity$entity?: OperEntity.Selection & {
         $entity: "operEntity";
@@ -119,9 +115,6 @@ declare type WechatQrCodeIdProjection = OneOf<{
 }>;
 declare type ApplicationIdProjection = OneOf<{
     applicationId: number;
-}>;
-declare type UserIdProjection = OneOf<{
-    entityId: number;
 }>;
 declare type UserEntityGrantIdProjection = OneOf<{
     entityId: number;
@@ -163,8 +156,6 @@ export declare type SortAttr = {
 } | {
     props: number;
 } | {
-    user: User.SortAttr;
-} | {
     userEntityGrant: UserEntityGrant.SortAttr;
 } | {
     [k: string]: any;
@@ -174,9 +165,9 @@ export declare type SortNode = {
     $direction?: "asc" | "desc";
 };
 export declare type Sorter = SortNode[];
-export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
+export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
-export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
+export declare type Aggregation = Omit<DeduceAggregation<Projection, Filter, Sorter>, "id">;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "applicationId">> & (({
     applicationId?: never;
     application: Application.CreateSingleOperation;
@@ -186,17 +177,6 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 } | {
     applicationId: String<64>;
 })) & ({
-    entity?: never;
-    entityId?: never;
-    user: User.CreateSingleOperation;
-} | {
-    entity: "user";
-    entityId: String<64>;
-    user: User.UpdateOperation;
-} | {
-    entity: "user";
-    entityId: String<64>;
-} | {
     entity?: never;
     entityId?: never;
     userEntityGrant: UserEntityGrant.CreateSingleOperation;
@@ -231,27 +211,21 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     application?: never;
     applicationId?: String<64> | null;
 })) & ({
-    user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
-    entityId?: never;
-    entity?: never;
-} | {
     userEntityGrant?: UserEntityGrant.CreateSingleOperation | UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation;
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("user" | "userEntityGrant" | string) | null;
+    entity?: ("userEntityGrant" | string) | null;
     entityId?: String<64> | null;
 }) & {
     [k: string]: any;
-    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
-    modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
+    operEntitys$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
+    modiEntitys$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
     application?: Application.UpdateOperation | Application.RemoveOperation;
 })) & ({
-    user?: User.UpdateOperation | User.RemoveOperation;
-} | {
     userEntityGrant?: UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation;
 } | {
     [k: string]: any;
@@ -259,7 +233,6 @@ export declare type RemoveOperationData = {} & (({
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export declare type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
-export declare type UserIdSubQuery = Selection<UserIdProjection>;
 export declare type UserEntityGrantIdSubQuery = Selection<UserEntityGrantIdProjection>;
 export declare type WechatQrCodeIdSubQuery = Selection<WechatQrCodeIdProjection>;
 export declare type EntityDef = {

@@ -1,4 +1,5 @@
 import { EntityDict } from "../general-app-domain";
+import { QrCodeType } from '../types/Config';
 import { WechatQrCodeProps } from '../general-app-domain/WechatQrCode/Schema';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 /**
@@ -15,5 +16,6 @@ export declare function createWechatQrCode<ED extends EntityDict, T extends keyo
     entityId: string;
     tag?: string;
     permanent?: boolean;
+    type?: QrCodeType;
     props: WechatQrCodeProps;
 }, context: Cxt): Promise<void>;
