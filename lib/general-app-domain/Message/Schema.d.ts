@@ -2,24 +2,29 @@ import { String, Text, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState, VisitState } from "./Action";
+import { Channel, Weight } from "../../types/Message";
 import * as User from "../User/Schema";
-import * as System from "../System/Schema";
-import * as MessageSent from "../MessageSent/Schema";
+import * as MessageSystem from "../MessageSystem/Schema";
 declare type MessageParams = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
 };
+declare type MessageRestriction = {
+    systemIds?: string[];
+    channels?: Array<Channel>;
+};
 export declare type OpSchema = EntityShape & {
+    entity: String<32>;
+    entityId: String<64>;
     userId: ForeignKey<"user">;
-    systemId: ForeignKey<"system">;
     type: String<64>;
-    weight: 'high' | 'medium' | 'low' | 'data';
-    title: String<32>;
+    weight: Weight;
+    restriction?: MessageRestriction | null;
+    title: String<256>;
     content: Text;
-    props: Object;
     data?: Object | null;
     params?: MessageParams | null;
     iState?: IState | null;
@@ -27,21 +32,21 @@ export declare type OpSchema = EntityShape & {
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
+    entity: String<32>;
+    entityId: String<64>;
     userId: ForeignKey<"user">;
-    systemId: ForeignKey<"system">;
     type: String<64>;
-    weight: 'high' | 'medium' | 'low' | 'data';
-    title: String<32>;
+    weight: Weight;
+    restriction?: MessageRestriction | null;
+    title: String<256>;
     content: Text;
-    props: Object;
     data?: Object | null;
     params?: MessageParams | null;
     iState?: IState | null;
     visitState?: VisitState | null;
     user: User.Schema;
-    system: System.Schema;
-    messageSent$message?: Array<MessageSent.Schema>;
-    messageSent$message$$aggr?: AggregationResult<MessageSent.Schema>;
+    messageSystem$message?: Array<MessageSystem.Schema>;
+    messageSystem$message$$aggr?: AggregationResult<MessageSystem.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -50,15 +55,15 @@ declare type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
+    entity: Q_StringValue;
+    entityId: Q_StringValue;
     userId: Q_StringValue | SubQuery.UserIdSubQuery;
     user: User.Filter;
-    systemId: Q_StringValue | SubQuery.SystemIdSubQuery;
-    system: System.Filter;
     type: Q_StringValue;
-    weight: Q_EnumValue<'high' | 'medium' | 'low' | 'data'>;
+    weight: Q_EnumValue<Weight>;
+    restriction: Q_EnumValue<MessageRestriction>;
     title: Q_StringValue;
     content: Q_StringValue;
-    props: Object;
     data: Object;
     params: Q_EnumValue<MessageParams>;
     iState: Q_EnumValue<IState>;
@@ -72,24 +77,24 @@ export declare type Projection = {
     $$createAt$$?: number;
     $$updateAt$$?: number;
     $$seq$$?: number;
+    entity?: number;
+    entityId?: number;
     userId?: number;
     user?: User.Projection;
-    systemId?: number;
-    system?: System.Projection;
     type?: number;
     weight?: number;
+    restriction?: number;
     title?: number;
     content?: number;
-    props?: number;
     data?: number;
     params?: number;
     iState?: number;
     visitState?: number;
-    messageSent$message?: MessageSent.Selection & {
-        $entity: "messageSent";
+    messageSystem$message?: MessageSystem.Selection & {
+        $entity: "messageSystem";
     };
-    messageSent$message$$aggr?: MessageSent.Aggregation & {
-        $entity: "messageSent";
+    messageSystem$message$$aggr?: MessageSystem.Aggregation & {
+        $entity: "messageSystem";
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type MessageIdProjection = OneOf<{
@@ -97,9 +102,6 @@ declare type MessageIdProjection = OneOf<{
 }>;
 declare type UserIdProjection = OneOf<{
     userId: number;
-}>;
-declare type SystemIdProjection = OneOf<{
-    systemId: number;
 }>;
 export declare type SortAttr = {
     id: number;
@@ -110,17 +112,19 @@ export declare type SortAttr = {
 } | {
     $$updateAt$$: number;
 } | {
+    entity: number;
+} | {
+    entityId: number;
+} | {
     userId: number;
 } | {
     user: User.SortAttr;
 } | {
-    systemId: number;
-} | {
-    system: System.SortAttr;
-} | {
     type: number;
 } | {
     weight: number;
+} | {
+    restriction: number;
 } | {
     title: number;
 } | {
@@ -139,10 +143,10 @@ export declare type SortNode = {
     $direction?: "asc" | "desc";
 };
 export declare type Sorter = SortNode[];
-export declare type SelectOperation<P extends Object = Projection> = Omit<OakOperation<"select", P, Filter, Sorter>, "id">;
+export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
-export declare type Aggregation = Omit<DeduceAggregation<Projection, Filter, Sorter>, "id">;
-export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "userId" | "systemId">> & (({
+export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
+export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "userId">> & (({
     userId?: never;
     user: User.CreateSingleOperation;
 } | {
@@ -150,21 +154,17 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "userId"
     user?: User.UpdateOperation;
 } | {
     userId: String<64>;
-}) & ({
-    systemId?: never;
-    system: System.CreateSingleOperation;
-} | {
-    systemId: String<64>;
-    system?: System.UpdateOperation;
-} | {
-    systemId: String<64>;
-})) & {
-    messageSent$message?: OakOperation<MessageSent.UpdateOperation["action"], Omit<MessageSent.UpdateOperationData, "message" | "messageId">, MessageSent.Filter> | OakOperation<"create", Omit<MessageSent.CreateOperationData, "message" | "messageId">[]> | Array<OakOperation<"create", Omit<MessageSent.CreateOperationData, "message" | "messageId">> | OakOperation<MessageSent.UpdateOperation["action"], Omit<MessageSent.UpdateOperationData, "message" | "messageId">, MessageSent.Filter>>;
+})) & ({
+    entity?: string;
+    entityId?: string;
+    [K: string]: any;
+}) & {
+    messageSystem$message?: OakOperation<MessageSystem.UpdateOperation["action"], Omit<MessageSystem.UpdateOperationData, "message" | "messageId">, MessageSystem.Filter> | OakOperation<"create", Omit<MessageSystem.CreateOperationData, "message" | "messageId">[]> | Array<OakOperation<"create", Omit<MessageSystem.CreateOperationData, "message" | "messageId">> | OakOperation<MessageSystem.UpdateOperation["action"], Omit<MessageSystem.UpdateOperationData, "message" | "messageId">, MessageSystem.Filter>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId" | "systemId">> & (({
+export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId">> & (({
     user: User.CreateSingleOperation;
     userId?: never;
 } | {
@@ -176,32 +176,17 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId"
 } | {
     user?: never;
     userId?: String<64> | null;
-}) & ({
-    system: System.CreateSingleOperation;
-    systemId?: never;
-} | {
-    system: System.UpdateOperation;
-    systemId?: never;
-} | {
-    system: System.RemoveOperation;
-    systemId?: never;
-} | {
-    system?: never;
-    systemId?: String<64> | null;
 })) & {
     [k: string]: any;
-    messageSents$message?: MessageSent.UpdateOperation | MessageSent.RemoveOperation | OakOperation<"create", Omit<MessageSent.CreateOperationData, "message" | "messageId">[]> | Array<OakOperation<"create", Omit<MessageSent.CreateOperationData, "message" | "messageId">> | MessageSent.UpdateOperation | MessageSent.RemoveOperation>;
+    messageSystem$message?: MessageSystem.UpdateOperation | MessageSystem.RemoveOperation | OakOperation<"create", Omit<MessageSystem.CreateOperationData, "message" | "messageId">[]> | Array<OakOperation<"create", Omit<MessageSystem.CreateOperationData, "message" | "messageId">> | MessageSystem.UpdateOperation | MessageSystem.RemoveOperation>;
 };
 export declare type UpdateOperation = OakOperation<"update" | ParticularAction | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
     user?: User.UpdateOperation | User.RemoveOperation;
-}) & ({
-    system?: System.UpdateOperation | System.RemoveOperation;
 }));
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export declare type UserIdSubQuery = Selection<UserIdProjection>;
-export declare type SystemIdSubQuery = Selection<SystemIdProjection>;
 export declare type MessageIdSubQuery = Selection<MessageIdProjection>;
 export declare type EntityDef = {
     Schema: Schema;

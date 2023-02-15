@@ -3,7 +3,7 @@ import { EntityDict } from '../../../general-app-domain';
 export default OakComponent({
     entity() {
         const { entity } = this.props;
-        return entity;
+        return entity as keyof EntityDict;
     },
     isList: false,
     actions() {
@@ -143,7 +143,7 @@ export default OakComponent({
                 this.triggerEvent('afterAction', detail);
             }
         },
-        scroll(e) {
+        scroll(e: WechatMiniprogram.Touch) {
             this.setData({
                 slideLeft: e.detail.scrollLeft * this.state.slideRatio,
             });

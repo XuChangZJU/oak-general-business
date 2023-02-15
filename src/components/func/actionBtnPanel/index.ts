@@ -3,7 +3,7 @@ import { EntityDict } from '../../../general-app-domain';
 export default OakComponent({
     entity() {
         const { entity } = this.props;
-        return entity;
+        return entity as keyof EntityDict;
     },
     isList: false,
     actions() {
@@ -182,7 +182,7 @@ export default OakComponent({
                 moreItems,
             });
         },
-        handleMoreClick(e) {
+        handleMoreClick(e: WechatMiniprogram.Touch) {
             // 获取按钮元素的坐标信息
             var id = e.currentTarget.id;
             // let scrollTop = 0;

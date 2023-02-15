@@ -31,7 +31,7 @@ type Item = {
     confirmText?: string;
     cancelText?: string;
     render?: React.ReactNode;
-    beforeAction?: (item: Item) => void;
+    beforeAction?: (item: Item) => boolean | Promise<boolean>;
     afterAction?: (item: Item) => void;
     onClick?: (item: Item) => void | Promise<void>;
     buttonProps?: Omit<ButtonProps, 'onClick'>;
@@ -250,6 +250,15 @@ export default function Render(
                                                     ele.onClick(ele);
                                                     return;
                                                 }
+                                                if (ele.beforeAction) {
+                                                    const r =
+                                                        await ele.beforeAction(
+                                                            ele
+                                                        );
+                                                    if (!r) {
+                                                        return;
+                                                    }
+                                                }
                                                 await methods.execute(
                                                     ele.action as EntityDict[keyof EntityDict]['Action']
                                                 );
@@ -282,6 +291,17 @@ export default function Render(
                                                                     ele
                                                                 );
                                                                 return;
+                                                            }
+                                                            if (
+                                                                ele.beforeAction
+                                                            ) {
+                                                                const r =
+                                                                    await ele.beforeAction(
+                                                                        ele
+                                                                    );
+                                                                if (!r) {
+                                                                    return;
+                                                                }
                                                             }
                                                             await methods.execute(
                                                                 ele.action as EntityDict[keyof EntityDict]['Action']

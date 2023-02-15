@@ -21,7 +21,7 @@ declare type Item = {
     confirmText?: string;
     cancelText?: string;
     render?: React.ReactNode;
-    beforeAction?: (item: Item) => void;
+    beforeAction?: (item: Item) => boolean | Promise<boolean>;
     afterAction?: (item: Item) => void;
     onClick?: (item: Item) => void | Promise<void>;
     buttonProps?: Omit<ButtonProps, 'onClick'>;
