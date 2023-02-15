@@ -20,7 +20,7 @@ export default function Render(
             $$createAt$$: number;
             type: string;
             visitState: EntityDict['message']['Schema']['visitState'];
-            params: EntityDict['message']['Schema']['params'];
+            router: EntityDict['message']['Schema']['router'];
         },
         {
             goPage: () => void;
@@ -28,9 +28,9 @@ export default function Render(
     >
 ) {
     const { data, methods } = props;
-    const { title, content, params } = data;
+    const { title, content, router } = data;
     const { t, goPage } = methods;
-    const pathname = params?.pathname;
+    const pathname = router?.pathname;
 
     return (
         <div className={Style.container}>

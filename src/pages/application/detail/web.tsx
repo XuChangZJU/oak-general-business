@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Tabs, Card, Descriptions, Typography, Button } from 'antd';
+import { Tabs, Card, Descriptions, Typography, Button, TabsProps } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
 
@@ -12,6 +12,7 @@ import {
 
 import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
+import MessageTypeTemplateIdList from '../../../components/messageTypeTemplateId/list';
 
 type Config = WebConfig | WechatPublicConfig | WechatMpConfig;
 
@@ -50,53 +51,61 @@ export default function Render(
             </Button>
         );
     }
+    const items: TabsProps['items'] = [        
+        {
+            label: '应用概览',
+            key: 'detail',
+            children: (
+                <Descriptions column={1} bordered>
+                    <Descriptions.Item label="id">
+                        <Typography.Paragraph copyable>
+                            {oakId}
+                        </Typography.Paragraph>
+                    </Descriptions.Item>
+                    <Descriptions.Item
+                        label={t('application:attr.name')}
+                    >
+                        {name}
+                    </Descriptions.Item>
+                    <Descriptions.Item
+                        label={t(
+                            'application:attr.description'
+                        )}
+                    >
+                        {description}
+                    </Descriptions.Item>
+
+                    <Descriptions.Item
+                        label={t('application:attr.type')}
+                    >
+                        {t(`application:v.type.${type}`)}
+                    </Descriptions.Item>
+                    <Descriptions.Item
+                        label={
+                            t('application:attr.system') +
+                            t('system:attr.name')
+                        }
+                    >
+                        {system?.name}
+                    </Descriptions.Item>
+                </Descriptions>
+            ),
+        },
+    ];
+    if (['wechatPublic', 'wechatMp'].includes(type)) {
+        items.push({
+            label: '模板消息管理',
+            key: 'mttId',
+            children: <MessageTypeTemplateIdList applicationId={oakId} oakPath="$application-detail-mttId"/>
+        })
+    }
 
     return (
         <PageHeader showBack={true} title="应用概览">
             <div className={Style.container}>
                 <Card title={name} bordered={false} actions={Actions}>
                     <Tabs
-                        items={[
-                            {
-                                label: '应用概览',
-                                key: 'detail',
-                                children: (
-                                    <Descriptions column={1} bordered>
-                                        <Descriptions.Item label="id">
-                                            <Typography.Paragraph copyable>
-                                                {oakId}
-                                            </Typography.Paragraph>
-                                        </Descriptions.Item>
-                                        <Descriptions.Item
-                                            label={t('application:attr.name')}
-                                        >
-                                            {name}
-                                        </Descriptions.Item>
-                                        <Descriptions.Item
-                                            label={t(
-                                                'application:attr.description'
-                                            )}
-                                        >
-                                            {description}
-                                        </Descriptions.Item>
-
-                                        <Descriptions.Item
-                                            label={t('application:attr.type')}
-                                        >
-                                            {t(`application:v.type.${type}`)}
-                                        </Descriptions.Item>
-                                        <Descriptions.Item
-                                            label={
-                                                t('application:attr.system') +
-                                                t('system:attr.name')
-                                            }
-                                        >
-                                            {system?.name}
-                                        </Descriptions.Item>
-                                    </Descriptions>
-                                ),
-                            },
-                        ]}
+                        items={items}
                     />
                 </Card>
             </div>

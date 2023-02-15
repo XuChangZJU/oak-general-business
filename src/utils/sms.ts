@@ -9,6 +9,7 @@ import {
     AliCloudConfig,
     AliSmsConfig,
 } from '../types/Config';
+import { OakExternalException } from 'oak-domain/lib/types';
 
 export async function sendSms<
     ED extends EntityDict,
@@ -18,11 +19,7 @@ export async function sendSms<
         origin: 'ali' | 'tencent';
         templateName: string;
         mobile: string;
-        templateParamSet?: Record<string, string>;
-        templateParamSetFn?: (
-            origin: 'ali' | 'tencent',
-            templateParamSet?: Record<string, string>
-        ) => string[] | Record<string, string> | undefined;
+        templateParamSet?: Record<string, string> | string[];
     },
     context: Cxt
 ) {
@@ -31,7 +28,6 @@ export async function sendSms<
         templateName,
         mobile,
         templateParamSet,
-        templateParamSetFn,
     } = options;
     const application = context.getApplication();
 
@@ -50,33 +46,36 @@ export async function sendSms<
     ) {
         assert(false, `${origin}短信未配置`);
     }
-    const templateParamSet2 = templateParamSetFn
-        ? templateParamSetFn(origin, templateParamSet)
-        : templateParamSet;
     if (origin === 'tencent') {
-        const accountConfig = accountConfigs[0] as TencentCloudConfig;
-        const smsConfig = smsConfigs[0] as TencentSmsConfig;
-        const template = smsConfig.templates?.[templateName];
-        const SmsSdkInstance = SmsSdk.getInstance(
-            origin,
-            accountConfig.secretId,
-            accountConfig.secretKey,
-            accountConfig.region,
-            accountConfig.endpoint
-        ) as TencentSmsInstance;
-        const data = await SmsSdkInstance.sendSms({
-            PhoneNumberSet: [mobile],
-            SmsSdkAppId: smsConfig.smsSdkAppId,
-            SignName: template.signName || smsConfig.defaultSignName,
-            TemplateId: template.code,
-            TemplateParamSet: templateParamSet2 as string[],
-        });
-        const sendStatus = data.SendStatusSet[0];
-        if (sendStatus.Code === 'Ok') {
-            return true;
+        for (const smsConfig of smsConfigs) {
+            const smsConfig = smsConfigs[0] as TencentSmsConfig;
+            const accountConfig = (accountConfigs as TencentCloudConfig[]).find(
+                ele => ele.secretId === smsConfig.secretId
+            )!;
+            const template = smsConfig.templates?.[templateName];
+            const SmsSdkInstance = SmsSdk.getInstance(
+                origin,
+                accountConfig.secretId,
+                accountConfig.secretKey,
+                accountConfig.region,
+                accountConfig.endpoint
+            ) as TencentSmsInstance;
+            const data = await SmsSdkInstance.sendSms({
+                PhoneNumberSet: [mobile],
+                SmsSdkAppId: smsConfig.smsSdkAppId,
+                SignName: template.signName || smsConfig.defaultSignName,
+                TemplateId: template.code,
+                TemplateParamSet: templateParamSet as string[],
+            });
+            const sendStatus = data.SendStatusSet[0];
+            if (sendStatus.Code === 'Ok') {
+                return true;
+            }
+            console.warn(`通过微信云发送sms失败，电话是${mobile}，模板Id是${template.code}`, sendStatus);
         }
-        return false;
     } else {
         throw new Error('未实现');
     }
+
+    throw new OakExternalException('尝试发送sms短信失败');
 }

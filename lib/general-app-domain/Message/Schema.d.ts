@@ -7,7 +7,7 @@ import { Action, ParticularAction, IState, VisitState } from "./Action";
 import { Channel, Weight } from "../../types/Message";
 import * as User from "../User/Schema";
 import * as MessageSystem from "../MessageSystem/Schema";
-declare type MessageParams = {
+declare type Router = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
@@ -26,7 +26,7 @@ export declare type OpSchema = EntityShape & {
     title: String<256>;
     content: Text;
     data?: Object | null;
-    params?: MessageParams | null;
+    router?: Router | null;
     iState?: IState | null;
     visitState?: VisitState | null;
 };
@@ -41,7 +41,7 @@ export declare type Schema = EntityShape & {
     title: String<256>;
     content: Text;
     data?: Object | null;
-    params?: MessageParams | null;
+    router?: Router | null;
     iState?: IState | null;
     visitState?: VisitState | null;
     user: User.Schema;
@@ -65,7 +65,7 @@ declare type AttrFilter = {
     title: Q_StringValue;
     content: Q_StringValue;
     data: Object;
-    params: Q_EnumValue<MessageParams>;
+    router: Q_EnumValue<Router>;
     iState: Q_EnumValue<IState>;
     visitState: Q_EnumValue<VisitState>;
 };
@@ -87,7 +87,7 @@ export declare type Projection = {
     title?: number;
     content?: number;
     data?: number;
-    params?: number;
+    router?: number;
     iState?: number;
     visitState?: number;
     messageSystem$message?: MessageSystem.Selection & {
@@ -130,7 +130,7 @@ export declare type SortAttr = {
 } | {
     content: number;
 } | {
-    params: number;
+    router: number;
 } | {
     iState: number;
 } | {

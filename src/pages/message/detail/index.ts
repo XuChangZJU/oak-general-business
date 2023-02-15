@@ -13,7 +13,7 @@ export default OakComponent({
             id: 1,
             name: 1,
         },
-        params: 1,
+        router: 1,
     },
     isList: false,
     formData: ({ data: message }) => {
@@ -31,10 +31,10 @@ export default OakComponent({
     },
     methods: {
         goPage() {
-            const { params } = this.state;
-            const pathname = params?.pathname;
-            const props = params?.props || {};
-            const state = params?.state;
+            const { router } = this.state;
+            const pathname = router?.pathname;
+            const props = router?.props || {};
+            const state = router?.state;
             if (!pathname) {
                 return;
             }

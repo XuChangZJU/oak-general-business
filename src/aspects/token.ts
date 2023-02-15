@@ -988,7 +988,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
     });
     if (captcha) {
         const code = captcha.code!;
-        if (process.env.NODE_ENV === 'development' || mockSend) {
+        if (process.env.NODE_ENV !== 'production' || mockSend) {
             return `验证码[${code}]已创建`;
         }
         else if (captcha.$$createAt$$! as number - now < 60000) {
@@ -1001,22 +1001,10 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
                     origin: 'tencent',
                     templateName: '登录',
                     mobile,
-                    templateParamSet: {
+                    templateParamSet: [
                         code,
-                        duration: duration.toString(),
-                    },
-                    templateParamSetFn: (origin, templateParamSet) => {
-                        if (!templateParamSet) {
-                            return templateParamSet;
-                        }
-                        if (origin === 'tencent') {
-                            return [
-                                templateParamSet.code,
-                                templateParamSet.duration,
-                            ];
-                        }
-                        return undefined;
-                    },
+                        duration.toString(),
+                    ],
                 },
                 context
             );
@@ -1064,22 +1052,10 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
                     origin: 'tencent',
                     templateName: '登录',
                     mobile,
-                    templateParamSet: {
+                    templateParamSet: [
                         code,
-                        duration: duration.toString(),
-                    },
-                    templateParamSetFn: (origin, templateParamSet) => {
-                        if (!templateParamSet) {
-                            return templateParamSet;
-                        }
-                        if (origin === 'tencent') {
-                            return [
-                                templateParamSet.code,
-                                templateParamSet.duration,
-                            ];
-                        }
-                        return undefined;
-                    },
+                        duration.toString(),
+                    ],
                 },
                 context
             );

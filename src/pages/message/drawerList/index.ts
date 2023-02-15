@@ -13,7 +13,7 @@ export default OakComponent({
             id: 1,
             name: 1,
         },
-        params: 1,
+        router: 1,
     },
     filters: [
         {

@@ -2,7 +2,7 @@ import { String, Text } from 'oak-domain/lib/types/DataType';
 import { Schema as User } from './User';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Channel, Weight } from '../types/Message';
-declare type MessageParams = {
+declare type Router = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
@@ -21,6 +21,6 @@ export interface Schema extends EntityShape {
     title: String<256>;
     content: Text;
     data?: Object;
-    params?: MessageParams;
+    router?: Router;
 }
 export {};

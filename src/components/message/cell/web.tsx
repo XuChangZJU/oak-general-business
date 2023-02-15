@@ -26,12 +26,12 @@ export default function Render(
         {
             onItemClicked: (item: {
                 id: string;
-                params: EntityDict['message']['Schema']['params'];
+                router: EntityDict['message']['Schema']['router'];
             }) => void;
             $$createAt$$: number;
             type: string;
             title: string;
-            params: EntityDict['message']['Schema']['params'];
+            router: EntityDict['message']['Schema']['router'];
             visitState: EntityDict['message']['Schema']['visitState'];
             id: string;
         },
@@ -41,7 +41,7 @@ export default function Render(
     const { data, methods } = props;
     const {
         id,
-        params,
+        router,
         title,
         type,
         $$createAt$$,
@@ -59,7 +59,7 @@ export default function Render(
                     ? () => {
                           onItemClicked({
                               id,
-                              params,
+                              router,
                           });
                       }
                     : undefined

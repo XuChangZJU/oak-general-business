@@ -25,7 +25,7 @@ function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof E
              * 这里要处理的就是把userId受到的约束扩展到存在merge的case
              * 大部分这类约束都来自relation类型的checker（auth）。来自auth的由系统创建的checker一定是{ userId: xxx }的形式，但用户手写的有可能是{ user: { id: xxxx }}的形式
              */
-            if (attr.endsWith('Id') && attr !== 'entityId') {
+            if (attr.endsWith('Id') && attr !== 'entityId' && schema[entity].attributes[attr as string]?.type === 'ref') {
                 // 只要是指向user的ref都要处理
                 const rel = judgeRelation(schema, entity, attr.slice(0, attr.length - 2));
                 if (rel === 'user') {

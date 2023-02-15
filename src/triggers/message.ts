@@ -20,10 +20,41 @@ export function registerMessageNotificationConverters<ED extends EntityDict, Cxt
 
 
 const InitialChannalByWeightMatrix: Record<Weight, Channel[]> = {
-    high: ['mp', 'wechatPublic', 'sms'],
-    medium: ['mp', 'wechatPublic'],
-    low: ['mp', 'wechatPublic'],
+    high: ['wechatMp', 'wechatPublic', 'sms'],
+    medium: ['wechatMp', 'wechatPublic'],
+    low: ['wechatMp', 'wechatPublic'],
 };
+
+async function tryCreateSmsNotification(message: EntityDict['message']['Schema'], context: BackendRuntimeContext<EntityDict>) {
+    const { userId, type, entity, entityId } = message;
+    const [mobile] = await context.select('mobile', {
+        data: {
+            id: 1,
+            mobile: 1,
+        },
+        filter: {
+            userId,
+        },
+        indexFrom: 0,
+        count: 1,
+    }, { dontCollect: true });
+    if (mobile) {
+        const converter = ConverterDict[type!] && ConverterDict[type!].toSms;
+        if (converter) {
+            const dispersedData = await converter(entity!, entityId!, context);
+            if (dispersedData) {
+                return {
+                    id: await generateNewIdAsync(),
+                    data: dispersedData,
+                    channel: 'sms',
+                    data1: {
+                        mobile,
+                    },
+                } as Omit<EntityDict['notification']['CreateSingle']['data'], 'messageSystemId'>;
+            }
+        }
+    }
+}
 
 async function createNotification(message: CreateMessageData, context: BRC) {
     const { restriction, userId, weight, type, entity, entityId } = message;
@@ -100,7 +131,7 @@ async function createNotification(message: CreateMessageData, context: BRC) {
             return true;
         }
     );
-    
+
     if (channels.length === 0) {
         console.warn(`类型为${type}的消息在生成时，尝试为之生成通知，找不到可推送的channel`);
         return 0;
@@ -114,21 +145,39 @@ async function createNotification(message: CreateMessageData, context: BRC) {
             async (system) => {
                 const { application$system: applications, config } = system;
                 const notificationDatas: Omit<EntityDict['notification']['CreateSingle']['data'], 'messageSystemId'>[] = [];
+
                 await Promise.all(
                     channels.map(
                         async (channel) => {
                             switch (channel) {
-                                case 'mp': {
-                                    const app = applications?.find(
+                                case 'wechatMp': {
+                                    const apps = applications!.filter(
                                         ele => ele.type === 'wechatMp',
                                     );
-                                    if (app) {
+                                    const wechatUsers = await context.select('wechatUser', {
+                                        data: {
+                                            id: 1,
+                                            applicationId: 1,
+                                            openId: 1,
+                                        },
+                                        filter: {
+                                            applicationId: {
+                                                $in: apps.map(ele => ele.id!),
+                                            },
+                                            userId,
+                                        }
+                                    }, { dontCollect: true });
+                                    for (const app of apps) {
+                                        // 如果是wechatMp或者wechat，还要保证用户已经有openId
+                                        const wechatUser = wechatUsers.find(
+                                            ele => ele.applicationId === app.id
+                                        );
                                         const messageTypeTemplateId = messageTypeTemplateIds.find(
                                             ele => ele.applicationId === app.id && ele.type === type
                                         );
-                                        if (messageTypeTemplateId) {
+                                        if (messageTypeTemplateId && wechatUser) {
                                             const converter = ConverterDict[type!] && ConverterDict[type!]!.toWechatMp;
-                                            const dispersedData = converter && await converter(entity!, entityId!, context);
+                                            const dispersedData = converter && await converter(entity!, entityId!, apps, app, context);
                                             if (dispersedData) {
                                                 notificationDatas.push({
                                                     id: await generateNewIdAsync(),
@@ -136,6 +185,9 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                                                     channel,
                                                     applicationId: app.id,
                                                     templateId: messageTypeTemplateId.templateId!,
+                                                    data1: {
+                                                        openId: wechatUser.openId!,
+                                                    }
                                                 });
                                             }
                                         }
@@ -143,23 +195,45 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                                     break;
                                 }
                                 case 'wechatPublic': {
-                                    const app = applications?.find(
+                                    const apps = applications!.filter(
                                         ele => ele.type === 'wechatPublic',
                                     );
-                                    if (app) {
+                                    const wechatUsers = await context.select('wechatUser', {
+                                        data: {
+                                            id: 1,
+                                            applicationId: 1,
+                                            openId: 1,
+                                        },
+                                        filter: {
+                                            applicationId: {
+                                                $in: apps.map(ele => ele.id!),
+                                            },
+                                            userId,
+                                        }
+                                    }, { dontCollect: true });
+                                    for (const app of apps) {
+                                        // 如果是wechatMp或者wechat，还要保证用户已经有openId
+                                        const wechatUser = wechatUsers.find(
+                                            ele => ele.applicationId === app.id
+                                        );
                                         const messageTypeTemplateId = messageTypeTemplateIds.find(
                                             ele => ele.applicationId === app.id && ele.type === type
                                         );
-                                        if (messageTypeTemplateId) {
+                                        if (messageTypeTemplateId && wechatUser) {
                                             const converter = ConverterDict[type!] && ConverterDict[type!]!.toWechatPublic;
-                                            const dispersedData = converter && await converter(entity!, entityId!, context);
-                                            if (dispersedData) {
+                                            const disperseResult = converter && await converter(entity!, entityId!, apps, app, context);
+                                            if (disperseResult) {
+                                                const { data, wechatMpAppId } = disperseResult;
                                                 notificationDatas.push({
                                                     id: await generateNewIdAsync(),
-                                                    data: dispersedData,
+                                                    data,
                                                     channel,
                                                     applicationId: app.id,
                                                     templateId: messageTypeTemplateId.templateId!,
+                                                    data1: {
+                                                        openId: wechatUser.openId!,
+                                                        wechatMpAppId,
+                                                    }
                                                 });
                                             }
                                         }
@@ -167,7 +241,7 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                                     break;
                                 }
                                 default: {
-                                    assert (channel === 'sms'); // 目前只支持三种
+                                    assert(channel === 'sms'); // 目前只支持三种
                                     break;
                                 }
                             }
@@ -175,19 +249,12 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                     )
                 );
                 if (channels.includes('sms')) {
-                    const converter = ConverterDict[type!] && ConverterDict[type!].toSms;
-                    if (converter) {
-                        const dispersedData = await converter(entity!, entityId!, context);
-                        if (dispersedData) {
-                            notificationDatas.push({
-                                id: await generateNewIdAsync(),
-                                data: dispersedData,
-                                channel: 'sms',
-                            });
-                        }
+                    const smsNotification = await tryCreateSmsNotification(message as EntityDict['message']['Schema'], context);
+                    if (smsNotification) {
+                        notificationDatas.push(smsNotification);
                     }
                 }
-    
+
                 const messageSystemData: EntityDict['messageSystem']['CreateSingle']['data'] = {
                     id: await generateNewIdAsync(),
                     messageId: message.id,

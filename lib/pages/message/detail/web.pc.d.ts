@@ -8,7 +8,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'message', f
     $$createAt$$: number;
     type: string;
     visitState: EntityDict['message']['Schema']['visitState'];
-    params: EntityDict['message']['Schema']['params'];
+    router: EntityDict['message']['Schema']['router'];
 }, {
     goPage: () => void;
 }>): JSX.Element;

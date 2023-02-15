@@ -6,7 +6,7 @@ import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Index, ActionDef } from 'oak-domain/lib/types';
 import { Channel, Weight } from '../types/Message';
 
-type MessageParams = {
+type Router = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
@@ -27,7 +27,7 @@ export interface Schema extends EntityShape {
     title: String<256>;
     content: Text;
     data?: Object; // 透传到前台的数据（OpRecords）
-    params?: MessageParams; // 通知前端需要到达的路由
+    router?: Router; // 通知前端需要到达的路由
 };
 
 type IAction = 'succeed' | 'fail';
@@ -74,7 +74,7 @@ const locale: LocaleDef<
             weight: '优先级',
             iState: '发送状态',
             visitState: '访问状态',
-            params: '渠道定制参数',
+            router: '目标路由',
             data: '透传数据',
         },
         action: {

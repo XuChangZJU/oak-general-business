@@ -1,5 +1,5 @@
 import { Trigger } from 'oak-domain/lib/types/Trigger';
 import { EntityDict } from '../general-app-domain/EntityDict';
-import { RuntimeCxt } from '../types/RuntimeCxt';
-declare const triggers: Trigger<EntityDict, 'notification', RuntimeCxt>[];
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+declare const triggers: Trigger<EntityDict, 'notification', BackendRuntimeContext<EntityDict>>[];
 export default triggers;

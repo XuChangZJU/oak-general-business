@@ -60,7 +60,7 @@ const locale: LocaleDef<Schema, Action, '', {
                 wechatPublic: '公众号',
                 jPush: '极光推送',
                 jim: '极光消息',
-                mp: '小程序',
+                wechatMp: '小程序',
                 sms: '短信',
             }
         }

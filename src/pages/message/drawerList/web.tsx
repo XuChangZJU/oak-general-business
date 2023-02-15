@@ -69,9 +69,8 @@ export default function Render(
                                 }
                                 onItemClicked={(item: {
                                     id: string;
-                                    params: EntityDict['message']['Schema']['params'];
                                 }) => {
-                                    const { params, id } = item;
+                                    const { id } = item;
                                     onClose && onClose();
                                     goDetailById(id);
                                 }}

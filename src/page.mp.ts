@@ -126,6 +126,7 @@ export function createComponent<
         lifetimes: {
             ready() {
                 if (relatedMessageTypes) {
+                    const applicationId = this.features.application.getApplicationId();
                     this.features.cache.refresh('messageTypeTemplateId', {
                         data: {
                             id: 1,
@@ -136,6 +137,7 @@ export function createComponent<
                             type: {
                                 $in: relatedMessageTypes,
                             },
+                            applicationId,
                         },
                     });
                 }
