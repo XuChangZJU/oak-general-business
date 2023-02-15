@@ -29,7 +29,6 @@ export default OakComponent({
         nickname: 1,
         birth: 1,
         gender: 1,
-        // avatar: 1,
         idCardType: 1,
         idNumber: 1,
         extraFile$entity: {
