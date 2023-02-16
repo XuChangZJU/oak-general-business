@@ -306,7 +306,7 @@ function Tencent(props: {
                                       layout="vertical"
                                       style={{ marginTop: 10 }}
                                   >
-                                      {/* <Form.Item
+                                      <Form.Item
                                           label="secretId"
                                           name="secretId"
                                       >
@@ -323,7 +323,7 @@ function Tencent(props: {
                                                   }
                                               />
                                           </>
-                                      </Form.Item> */}
+                                      </Form.Item>
                                       <Form.Item
                                           label="smsSdkAppId"
                                           name="smsSdkAppId"

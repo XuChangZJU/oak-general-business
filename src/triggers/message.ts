@@ -132,10 +132,10 @@ async function createNotification(message: CreateMessageData, context: BRC) {
         }
     );
 
-    if (channels.length === 0) {
+    /* if (channels.length === 0) {
         console.warn(`类型为${type}的消息在生成时，尝试为之生成通知，找不到可推送的channel`);
         return 0;
-    }
+    } */
 
     // 逐system逐channel去构造messageSystem和messageSent数据
     let messageSentCount = 0;
@@ -267,8 +267,8 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                         action: 'create',
                         data: notificationDatas,
                     };
-                    messageSystemDatas.push(messageSystemData);
                 }
+                messageSystemDatas.push(messageSystemData);
             }
         )
     );

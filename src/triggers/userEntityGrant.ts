@@ -43,6 +43,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                                 oakId: id,
                             },
                         },
+                        type: userEntityGrantData.qrCodeType,
                     },
                     context as BackendRuntimeContext<EntityDict>
                 );

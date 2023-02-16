@@ -63,7 +63,9 @@ const indexes: Index<Schema>[] = [
     },
 ];
 
-const locale: LocaleDef<Schema, '', '', {}> = {
+const locale: LocaleDef<Schema, '', '', {
+    type: QrCodeType,
+}> = {
     zh_CN: {
         attr: {
             entity: '关联对象',
@@ -80,5 +82,14 @@ const locale: LocaleDef<Schema, '', '', {}> = {
             application: '应用',
             props: '属性',
         },
+        v: {
+            type: {
+                webForWechatPublic: '网站引流到公众号',
+                wechatMpDomainUrl: '小程序url码',
+                wechatMpWxaCode: '小程序码',
+                wechatPublic: '公众号关注码',
+                wechatPublicForMp: '公众号回复小程序码',
+            }
+        }
     },
  };

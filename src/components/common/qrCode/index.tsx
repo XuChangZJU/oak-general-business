@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Space, QRCode } from 'antd';
+import { Button, Space } from 'antd';
 import { DownloadOutlined, ReloadOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
+import { QRCodeCanvas } from 'qrcode.react';
 
 import './index.less';
 
@@ -77,13 +78,14 @@ function QrCode(props: IQrCodeProps) {
                 style={{
                     width: size,
                     height: size,
+                    marginBottom: 10
                 }}
             >
                 {isBase64(url) ? (
                     <img src={url} alt="qrCode" width={size} height={size} />
-                ) : (
-                   url ? <QRCode value={url} size={size} /> : null
-                )}
+                ) : url ? (
+                    <QRCodeCanvas value={url} size={size} />
+                ) : null}
             </div>
             {V}
             {tips}
