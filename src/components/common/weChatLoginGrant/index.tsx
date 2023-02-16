@@ -66,6 +66,7 @@ function Grant(props: GrantProps) {
                         }}
                     ></input>
                     <Button
+                        className={`${prefixCls2}_dev_header_btn`}
                         type="primary"
                         shape="round"
                         size="large"
@@ -99,10 +100,11 @@ function Grant(props: GrantProps) {
              <div className={`${prefixCls2}_prod`}>
                  <div className={`${prefixCls2}_prod_header`}>
                      <Button
+                         className={`${prefixCls2}_prod_header_btn`}
                          type="primary"
                          shape="round"
                          size="large"
-                        //  block
+                         //  block
                          onClick={() => {
                              if (disabled) {
                                  messageApi.info(disableText || 'disabled');
