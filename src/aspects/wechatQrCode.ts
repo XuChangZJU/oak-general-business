@@ -80,22 +80,23 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
     }
     const id = generateNewId();
     if (qrCodeType) {
-        const self = applications.find((ele) => ele.id === applicationId);
         switch (qrCodeType) {
             case 'wechatPublic': {
+                const self = applications.find((ele) => ele.type === 'wechatPublic');
                 if (
                     !(
-                        self!.type === 'wechatPublic' &&
+                        self && self!.type === 'wechatPublic' &&
                         (self!.config as WechatPublicConfig).isService
                     )
                 ) {
                     throw new Error('无法生成公众号二维码，服务号未正确配置');
                 }
-                appId = applicationId;
+                appId = self.id;
                 appType = 'wechatPublic';
                 break;
             }
             case 'wechatMpDomainUrl': {
+                const self = applications.find((ele) => ele.type === 'wechatMp');
                 if (
                     !(
                         self!.type === 'wechatMp' &&
@@ -109,6 +110,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                 break;
             }
             case 'wechatMpWxaCode': {
+                const self = applications.find((ele) => ele.type === 'wechatMp');
                 if (self!.type !== 'wechatMp') {
                     throw new Error('无法生成小程序地址码，未配置跳转前缀');
                 }
@@ -137,9 +139,8 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                 appId = self.id;
                 if ((self!.config as WechatMpConfig).qrCodePrefix) {
                     appType = 'wechatMpDomainUrl';
-                    url = `${
-                        (self!.config as WechatMpConfig).qrCodePrefix
-                    }/${id}`;
+                    url = `${(self!.config as WechatMpConfig).qrCodePrefix
+                        }/${id}`;
                 } else {
                     appType = 'wechatMpWxaCode';
                 }
@@ -161,9 +162,8 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                         appId = mpApp.id;
                         if ((mpApp!.config as WechatMpConfig).qrCodePrefix) {
                             appType = 'wechatMpDomainUrl';
-                            url = `${
-                                (mpApp!.config as WechatMpConfig).qrCodePrefix
-                            }/${id}`;
+                            url = `${(mpApp!.config as WechatMpConfig).qrCodePrefix
+                                }/${id}`;
                         } else {
                             appType = 'wechatMpWxaCode';
                         }

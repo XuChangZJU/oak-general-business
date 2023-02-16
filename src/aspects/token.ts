@@ -475,6 +475,9 @@ async function tryRefreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends
     const { type, config } = application!;
 
     assert(type !== 'wechatMp' && config!.type !== 'wechatMp');
+    if (type === 'web') {
+        return;
+    }
     let appId: string, appSecret: string;
     const config2 = config as WechatPublicConfig;
     appId = config2.appId;
@@ -538,7 +541,7 @@ async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRunt
         const config2 = config as WechatMpConfig;
         appId = config2.appId;
         appSecret = config2.appSecret;
-    } 
+    }
     else {
         assert(type === 'web');
         const config2 = config as WebConfig;
@@ -833,7 +836,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
     code: string;
     env: WebEnv;
 }, context: Cxt): Promise<string> {
-    
+
     const tokenId = await loginFromWechatEnv<ED, Cxt>(code, env, context);
     const [tokenInfo] = await loadTokenInfo<ED, Cxt>(tokenId, context);
     assert(tokenInfo.entity === 'wechatUser');
@@ -852,7 +855,7 @@ export async function loginWechat<ED extends EntityDict, Cxt extends BackendRunt
 export async function loginWechatMp<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ code, env }: {
     code: string;
     env: WechatMpEnv;
-}, context: Cxt): Promise<string> {   
+}, context: Cxt): Promise<string> {
     const tokenId = await loginFromWechatEnv<ED, Cxt>(code, env, context);
     await loadTokenInfo<ED, Cxt>(tokenId, context);
 
