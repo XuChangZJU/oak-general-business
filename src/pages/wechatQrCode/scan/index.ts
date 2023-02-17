@@ -19,13 +19,16 @@ export default OakComponent(
         properties: {
             scene: String,
         },
+        data: {
+            loading: true,
+        },
         filters: [
             {
                 filter() {
                     const scene = decodeURIComponent(this.props.scene!);
                     const uuid = scene && expandUuidTo36Bytes(scene!);
                     return {
-                        id: uuid!,
+                        id: uuid! || 'illegal',
                     };
                 },
             },
@@ -34,6 +37,7 @@ export default OakComponent(
             const wechatQrCode = wechatQrCodes[0];
             if (!wechatQrCode) {
                 return {
+                    loading: false,
                     isExist: false,
                 };
             }
@@ -58,10 +62,12 @@ export default OakComponent(
                     url: url,
                 });
                 return {
+                    loading: false,
                     expired: false,
                 };
             } else {
                 return {
+                    loading: false,
                     expired: true,
                 };
             }

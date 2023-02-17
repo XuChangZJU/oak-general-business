@@ -38,7 +38,7 @@ export default function render(
         V = (
             <Fail
                 title="二维码非法"
-                description="抱歉，该二维码不存在，请检查是否扫错二维码"
+                description="抱歉，该码不存在，请重新扫二维码"
             />
         );
     } else if (expired) {
