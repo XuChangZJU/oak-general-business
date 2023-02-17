@@ -18,7 +18,7 @@ type IQrCodeProps = {
 
 
 function isBase64(url: string) {
-    return /data:image\/[\w|\W]+(;base64,)$/.test(url);
+    return /data:image\/[\w|\W]+(;base64,)[\w|\W]*/.test(url);
 }
 
 function QrCode(props: IQrCodeProps) {
