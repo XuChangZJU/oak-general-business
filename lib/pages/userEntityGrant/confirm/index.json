@@ -1,5 +1,5 @@
 {
-    "navigationBarTitleText": "认领权限",
+    "navigationBarTitleText": "领取",
     "usingComponents": {
         "l-icon": "../../../miniprogram_npm/lin-ui/icon/index",
         "l-button": "../../../miniprogram_npm/lin-ui/button/index"
