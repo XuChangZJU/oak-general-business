@@ -12,11 +12,14 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
         nickname: string;
     };
     entity: string;
-    isExists: boolean;
+    hasConfirmed: boolean;
     granteeId: string;
     number: number;
     confirmed: number;
     userId: string;
+    redirectTo: EntityDict['userEntityGrant']['Schema']['redirectTo'];
+    redirectCounter: number;
 }, {
     handleConfirm: () => void;
+    redirectPage: () => void;
 }>): JSX.Element;

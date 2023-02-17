@@ -250,7 +250,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
             if (process.env.OAK_PLATFORM === 'web') {
                 Object.assign(data, {
                     ticket: 'develop环境下无法真实获取二维码数据',
-                    url: 'https://www.test.com',
+                    url: `http://localhost:3000/wechatQrCode/scan?scene=${shrinkUuidTo32Bytes(id)}`,
                 });
             }
             else {

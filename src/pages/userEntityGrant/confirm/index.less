@@ -5,20 +5,20 @@
 .page-body {
   height: 100vh;
   display: flex;
-  justify-content: center;
   flex: 1;
   flex-direction: column;
-  background-color: @oak-bg-color-page;
+  background-color: @oak-bg-color-container;
   box-sizing: border-box;
   .safe-area-inset-bottom();
 }
+
 .content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  flex: 1;
+  margin-bottom: 60rpx;
 }
+
 .circle-view {
   margin-top: 30rpx;
   padding: 10rpx;
@@ -31,20 +31,14 @@
   justify-content: center;
   background-color: #fff;
 }
-.text {
-  font-size: medium;
-  color: @oak-text-color-secondary;
-}
-.relation {
-  margin-top: 30rpx;
+
+.title {
+  font-size: 32rpx;
   color: @oak-text-color-primary;
-  font-size: x-large;
 }
-.btn-view {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.redirect-btn {
-  margin-top: 40rpx;
+
+.desc {
+  margin-top: 16rpx;
+  font-size: 28rpx;
+  color: @oak-text-color-secondary;
 }

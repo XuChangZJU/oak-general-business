@@ -3,6 +3,11 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as User } from './User';
 import { Schema as WechatQrCode } from './WechatQrCode';
 import { QrCodeType } from '../types/Config';
+export declare type RedirectToProps = {
+    pathname: string;
+    props?: Record<string, any>;
+    state?: Record<string, any>;
+};
 export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
@@ -17,5 +22,5 @@ export interface Schema extends EntityShape {
     qrCodeType: QrCodeType;
     expiresAt?: Datetime;
     expired?: Boolean;
-    redirectTo?: Object;
+    redirectTo?: RedirectToProps;
 }

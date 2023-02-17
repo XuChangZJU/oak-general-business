@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Table, Button, Space, Typography, Modal, Tag } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
+import ActionBtnPanel from '../../../components/func/actionBtnPanel';
 
 import Style from './web.module.less';
 
@@ -142,22 +143,28 @@ export default function Render(
                         render: (value, record, index) => {
                             return (
                                 <>
-                                    <Button
-                                        type="link"
-                                        onClick={() => {
-                                            goDetail(record.id);
-                                        }}
-                                    >
-                                        详情
-                                    </Button>
-                                    <Button
-                                        type="link"
-                                        onClick={() => {
-                                            goUpdate(record.id);
-                                        }}
-                                    >
-                                        更新
-                                    </Button>
+                                    <ActionBtnPanel
+                                        mode="table-cell"
+                                        entity="system"
+                                        oakAutoUnmount={true}
+                                        oakId={record.id}
+                                        oakPath={`${oakFullpath}.${record.id}`}
+                                        items={[
+                                            {
+                                                label: '详情',
+                                                onClick: () => {
+                                                    goDetail(record.id);
+                                                },
+                                            },
+
+                                            {
+                                                action: 'update',
+                                                onClick: () => {
+                                                    goUpdate(record.id);
+                                                },
+                                            },
+                                        ]}
+                                    />
                                 </>
                             );
                         },
