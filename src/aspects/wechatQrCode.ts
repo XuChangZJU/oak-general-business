@@ -106,6 +106,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                     throw new Error('无法生成小程序地址码，未配置跳转前缀');
                 }
                 url = `${(self!.config as WechatMpConfig).qrCodePrefix}/${id}`;
+                appId = self!.id;
                 appType = 'wechatMpDomainUrl';
                 break;
             }
@@ -114,6 +115,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                 if (self!.type !== 'wechatMp') {
                     throw new Error('无法生成小程序地址码，未配置跳转前缀');
                 }
+                appId = self!.id;
                 appType = 'wechatMpWxaCode';
                 break;
             }
