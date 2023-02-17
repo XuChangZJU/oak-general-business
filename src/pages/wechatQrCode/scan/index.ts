@@ -14,6 +14,7 @@ export default OakComponent(
             expired: 1,
             buffer: 1,
             props: 1,
+            expiresAt: 1,
         },
         isList: true,
         properties: {
@@ -33,7 +34,7 @@ export default OakComponent(
                 },
             },
         ],
-        formData: function({ data: wechatQrCodes }) {
+        formData: function({ data: wechatQrCodes, props }) {
             const wechatQrCode = wechatQrCodes[0];
             if (!wechatQrCode) {
                 return {
@@ -41,26 +42,39 @@ export default OakComponent(
                     isExist: false,
                 };
             }
-            if (!wechatQrCode.expired) {
-                const { props, pathname } = wechatQrCode!.props!;
-                let url =
+
+            const scene = decodeURIComponent(props.scene!);
+            const uuid = scene && expandUuidTo36Bytes(scene!);
+            if (wechatQrCode.id !== uuid) {
+                return {
+                    loading: false,
+                    isExist: false,
+                };
+            }
+            else if (!wechatQrCode.expired) {
+                const { props = {}, state = {}, pathname } = wechatQrCode!.props!;
+                const url =
                     pathname.substring(0, 1) === '/'
                         ? pathname
                         : `/${pathname}`;
-                if (props) {
-                    for (const param in props) {
-                        const param2 = param as unknown as keyof typeof props;
-                        url += url.includes('?') ? '&' : '?';
-                        url += `${param}=${
-                            typeof props[param2] === 'string'
-                                ? props[param2]
-                                : JSON.stringify(props[param2])
-                        }`;
-                    }
-                }
-                this.redirectTo({
-                    url: url,
-                });
+                // if (props) {
+                //     for (const param in props) {
+                //         const param2 = param as unknown as keyof typeof props;
+                //         url += url.includes('?') ? '&' : '?';
+                //         url += `${param}=${
+                //             typeof props[param2] === 'string'
+                //                 ? props[param2]
+                //                 : JSON.stringify(props[param2])
+                //         }`;
+                //     }
+                // }
+                this.redirectTo(
+                    {
+                        url: url,
+                        ...props,
+                    },
+                    state
+                );
                 return {
                     loading: false,
                     expired: false,

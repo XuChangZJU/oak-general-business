@@ -1,3 +1,5 @@
+import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
+
 export default OakComponent({
     entity: 'userEntityGrant',
     projection: {
@@ -23,13 +25,18 @@ export default OakComponent({
     isList: false,
     formData({ data: userEntityGrant, features }) {
         const userId = features.token.getUserId(true);
+        const granter = userEntityGrant?.granter;
+        const type = userEntityGrant?.type;
+        const relation = userEntityGrant?.relation;
+        const entity = userEntityGrant?.entity;
+
         return {
-            relation: userEntityGrant?.relation,
-            type: userEntityGrant?.type,
+            relation,
+            type,
             expired: userEntityGrant?.expired,
             expiresAt: userEntityGrant?.expiresAt,
-            granter: userEntityGrant?.granter,
-            entity: userEntityGrant?.entity,
+            granter,
+            entity,
             entityId: userEntityGrant?.entityId,
             granteeId: userEntityGrant?.granteeId,
             number: userEntityGrant?.number,
@@ -41,6 +48,7 @@ export default OakComponent({
     data: {
         redirectCounter: 0,
         hasConfirmed: false,
+        loading: true,
     },
     observers: {
         redirectCounter(value) {
@@ -51,11 +59,39 @@ export default OakComponent({
                     });
                 }, 1000);
             } else {
-                this.redirectMp();
+                this.redirectPage();
             }
         },
     },
     methods: {
+        async getUserRelations() {
+            // 检查当前登陆者跟该授权实体缩手所受relation有关系了
+            const userId = await this.features.token.getUserId(true);
+            if (!userId) {
+                return;
+            }
+            const { entity, entityId, relation } = this.state;
+            const entityStr = firstLetterUpperCase(entity!);
+            const { data } = await this.features.cache.refresh(
+                `user${entityStr}`,
+                {
+                    data: {
+                        id: 1,
+                        userId: 1,
+                        relation: 1,
+                        [`${entity}Id`]: 1,
+                    },
+                    filter: {
+                        userId: userId,
+                        [`${entity}Id`]: entityId,
+                        relation,
+                    },
+                }
+            );
+            this.setState({
+                hasConfirmed: data.length > 0,
+            });
+        },
         async handleConfirm() {
             await this.execute('confirm');
             const { redirectTo } = this.state;
@@ -70,13 +106,18 @@ export default OakComponent({
                 });
             }
         },
-        redirectMp() {
+        redirectPage() {
             const { redirectTo } = this.props;
-            const { url, props = {} } = redirectTo;
-            this.redirectTo({
-                url,
-                ...props,
-            });
+            const { pathname, props = {}, state = {} } = redirectTo;
+            const url =
+                pathname.substring(0, 1) === '/' ? pathname : `/${pathname}`;
+            this.redirectTo(
+                {
+                    url,
+                    ...props,
+                },
+                state
+            );
         },
     },
 });
