@@ -69,7 +69,7 @@ export default OakComponent({
                 entityId,
                 type: (type as 'grant') || 'grant',
                 number: 1,
-                redirectTo: redirectToAfterConfirm,
+                redirectTo: redirectToAfterConfirm as EntityDict['userEntityGrant']['Schema']['redirectTo'],
                 qrCodeType: qrCodeType as QrCodeType,
             });
             this.setState({
