@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Table, Button, Space, Typography, Modal } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
+import ActionBtnPanel from '../../../components/func/actionBtnPanel';
 
 import Style from './web.module.less';
 import { EntityDict } from '../../../general-app-domain';
@@ -130,30 +131,37 @@ export default function Render(
                         render: (value, record, index) => {
                             return (
                                 <>
-                                    <Button
-                                        type="link"
-                                        onClick={() => {
-                                            goDetail(record.id);
-                                        }}
-                                    >
-                                        详情
-                                    </Button>
-                                    <Button
-                                        type="link"
-                                        onClick={() => {
-                                            goUpdate(record.id);
-                                        }}
-                                    >
-                                        更新
-                                    </Button>
-                                    <Button
-                                        type="link"
-                                        onClick={() => {
-                                            removeApplication(record.id);
-                                        }}
-                                    >
-                                        删除
-                                    </Button>
+                                    <ActionBtnPanel
+                                        mode="table-cell"
+                                        entity="application"
+                                        oakAutoUnmount={true}
+                                        oakId={record.id}
+                                        oakPath={`${oakFullpath}.${record.id}`}
+                                        items={[
+                                            {
+                                                label: '详情',
+                                                onClick: () => {
+                                                    goDetail(record.id);
+                                                },
+                                            },
+
+                                            {
+                                                action: 'update',
+                                                onClick: () => {
+                                                    goUpdate(record.id);
+                                                },
+                                            },
+                                            {
+                                                action: 'remove',
+                                                alerted: true,
+                                                onClick: () => {
+                                                    removeApplication(
+                                                        record.id
+                                                    );
+                                                },
+                                            },
+                                        ]}
+                                    />
                                 </>
                             );
                         },
