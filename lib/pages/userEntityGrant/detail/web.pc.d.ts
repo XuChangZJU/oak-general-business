@@ -6,4 +6,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'userEntityG
     variant: 'alone' | 'inline' | 'dialog';
     url: string;
     expiresAt: number;
+    title?: string;
 }, {}>): JSX.Element;

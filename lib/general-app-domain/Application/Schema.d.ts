@@ -19,6 +19,13 @@ export declare type WechatMpConfig = {
     appId: string;
     appSecret: string;
     qrCodePrefix?: string;
+    server?: {
+        url?: string;
+        token: string;
+        encodingAESKey: string;
+        mode: 'clear' | 'compatible' | 'safe';
+        dataFormat: 'json' | 'xml';
+    };
 };
 export declare type WebConfig = {
     type: 'web';

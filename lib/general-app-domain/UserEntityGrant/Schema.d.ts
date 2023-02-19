@@ -10,6 +10,11 @@ import * as Role from "../Role/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
+export declare type RedirectToProps = {
+    pathname: string;
+    props?: Record<string, any>;
+    state?: Record<string, any>;
+};
 export declare type OpSchema = EntityShape & {
     entity: "role" | string;
     entityId: String<64>;
@@ -23,7 +28,7 @@ export declare type OpSchema = EntityShape & {
     qrCodeType: QrCodeType;
     expiresAt?: Datetime | null;
     expired?: Boolean | null;
-    redirectTo?: Object | null;
+    redirectTo?: RedirectToProps | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
@@ -39,7 +44,7 @@ export declare type Schema = EntityShape & {
     qrCodeType: QrCodeType;
     expiresAt?: Datetime | null;
     expired?: Boolean | null;
-    redirectTo?: Object | null;
+    redirectTo?: RedirectToProps | null;
     granter: User.Schema;
     grantee?: User.Schema | null;
     role?: Role.Schema;
@@ -71,7 +76,7 @@ declare type AttrFilter<E> = {
     qrCodeType: Q_EnumValue<QrCodeType>;
     expiresAt: Q_DateValue;
     expired: Q_BooleanValue;
-    redirectTo: Object;
+    redirectTo: Q_EnumValue<RedirectToProps>;
     role: Role.Filter;
 };
 export declare type Filter<E = Q_EnumValue<"role" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
@@ -163,6 +168,8 @@ export declare type SortAttr = {
     expiresAt: number;
 } | {
     expired: number;
+} | {
+    redirectTo: number;
 } | {
     role: Role.SortAttr;
 } | {

@@ -1,3 +1,4 @@
+import { judgeRelation } from "oak-domain/lib/store/relation";
 import { OakInputIllegalException, Checker, OakUserUnpermittedException } from "oak-domain/lib/types";
 import { ROOT_ROLE_ID } from "../constants";
 import { EntityDict } from '../general-app-domain';
@@ -80,10 +81,17 @@ const checkers: Checker<EntityDict, 'user', RuntimeCxt> [] = [
         action: 'update',
         type: 'relation',
         relationFilter: (operation, context) => {
-            const userId = context.getCurrentUserId();
-            return {
-                id: userId,
-            };
+            const userId = context.getCurrentUserId();  
+            const { data } = operation as EntityDict['user']['Update'];
+            for (const attr in data) {
+                const rel = judgeRelation(context.getSchema(), 'user', attr);
+                if (rel === 1) {
+                    return {
+                        id: userId,
+                    };
+                }
+            }
+            return undefined;
         },
         errMsg: '您不能更新他人信息',
     }

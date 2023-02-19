@@ -162,14 +162,9 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                 }
             );
             if (result2.length) {
-                throw new OakRowInconsistencyException(
-                    {
-                        a: 'c',
-                        e: userRelation,
-                        d: result2 as any,
-                    },
-                    '已领取该权限'
-                );
+                const e = new OakRowInconsistencyException<EntityDict>(undefined, '已领取该权限');
+                e.addData(userRelation, result2);
+                throw e;
             } else {
                 await context.operate(
                     userRelation,
