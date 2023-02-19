@@ -15,13 +15,20 @@ export default function Render(
             variant: 'alone' | 'inline' | 'dialog';
             url: string;
             expiresAt: number;
+            title?: string
         },
         {}
     >
 ) {
-    const { variant, showBack = true, url, expiresAt } = props.data;
+    const {
+        variant,
+        showBack = true,
+        url,
+        expiresAt,
+        title = '授权二维码',
+    } = props.data;
     return (
-        <Container showBack={showBack} variant={variant}>
+        <Container showBack={showBack} variant={variant} title={title}>
             <QrCode url={url} expiresAt={expiresAt} />
         </Container>
     );
@@ -32,13 +39,19 @@ function Container(props: {
     children: React.ReactNode;
     variant?: 'inline' | 'alone' | 'dialog';
     showBack?: boolean;
+    title?: string;
 }) {
-    const { children, variant = 'alone', showBack } = props;
+    const {
+        children,
+        variant = 'alone',
+        showBack,
+        title,
+    } = props;
     if (['inline', 'dialog'].includes(variant)) {
         return <>{children}</>;
     }
     return (
-        <PageHeader showBack={showBack} title="授权二维码">
+        <PageHeader showBack={showBack} title={title}>
             <div className={Style.container}>{children}</div>
         </PageHeader>
     );
