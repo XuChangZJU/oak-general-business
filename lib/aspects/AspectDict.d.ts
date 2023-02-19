@@ -61,6 +61,7 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntime
     switchTo: (params: {
         userId: string;
     }, context: Cxt) => Promise<void>;
+    getMpUnlimitWxaCode: (wechatQrCodeId: string, context: Cxt) => Promise<string>;
 };
 export declare type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
 export {};

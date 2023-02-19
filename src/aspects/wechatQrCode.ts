@@ -213,40 +213,40 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
             );
             const config2 = config as WechatMpConfig;
             const { appId, appSecret } = config2;
-            if (process.env.OAK_PLATFORM === 'web') {
-                Object.assign(data, {
-                    buffer: 'develop环境下无法真实获取二维码数据',
-                });
-            }
-            else {
-                // 小程序码去实时获取（暂时不考虑缓存）
-                const wechatInstance = WechatSDK.getInstance(
-                    appId,
-                    'wechatMp',
-                    appSecret
-                ) as WechatMpInstance;
+            // if (process.env.OAK_PLATFORM === 'web') {
+            //     Object.assign(data, {
+            //         buffer: 'develop环境下无法真实获取二维码数据',
+            //     });
+            // }
+            // else {
+            //     // 小程序码去实时获取（暂时不考虑缓存）
+            //     const wechatInstance = WechatSDK.getInstance(
+            //         appId,
+            //         'wechatMp',
+            //         appSecret
+            //     ) as WechatMpInstance;
 
-                const envVersionVersionDict = {
-                    development: 'develop',
-                    staging: 'trial',
-                    production: 'release',
-                };
+            //     const envVersionVersionDict = {
+            //         development: 'develop',
+            //         staging: 'trial',
+            //         production: 'release',
+            //     };
                 
-                const buffer = await wechatInstance.getMpUnlimitWxaCode({
-                    scene: shrinkUuidTo32Bytes(id),
-                    envVersion:
-                        envVersionVersionDict[
-                            process.env
-                                .NODE_ENV as keyof typeof envVersionVersionDict
-                        ] as 'release',
-                    page: 'pages/wechatQrCode/scan/index', // todo，这里用其它的页面微信服务器拒绝，因为没发布。应该是 pages/wechatQrCode/scan/index
-                });
-                // 把arrayBuffer转成字符串返回
-                const str = String.fromCharCode(...new Uint8Array(buffer));
-                Object.assign(data, {
-                    buffer: str,
-                });
-            }
+            //     const buffer = await wechatInstance.getMpUnlimitWxaCode({
+            //         scene: shrinkUuidTo32Bytes(id),
+            //         envVersion:
+            //             envVersionVersionDict[
+            //                 process.env
+            //                     .NODE_ENV as keyof typeof envVersionVersionDict
+            //             ] as 'release',
+            //         page: 'pages/wechatQrCode/scan/index', // todo，这里用其它的页面微信服务器拒绝，因为没发布。应该是 pages/wechatQrCode/scan/index
+            //     });
+            //     // 把arrayBuffer转成字符串返回
+            //     const str = String.fromCharCode(...new Uint8Array(buffer));
+            //     Object.assign(data, {
+            //         buffer: str,
+            //     });
+            // }
 
             break;
         }
@@ -301,4 +301,60 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
             dontCollect: true,
         }
     );
+}
+
+
+export async function getMpUnlimitWxaCode<
+    ED extends EntityDict,
+    T extends keyof ED,
+    Cxt extends BackendRuntimeContext<ED>
+>(wechatQrCodeId: string, context: Cxt) {
+    const [wechatQrCode] = await context.select(
+        'wechatQrCode',
+        {
+            data: {
+                id: 1,
+                application: {
+                    id: 1,
+                    config: 1,
+                },
+            },
+            filter: {
+                id: wechatQrCodeId,
+            },
+        },
+        {}
+    );
+    const application = wechatQrCode.application;
+    const { config } = application!;
+
+    const config2 = config as WechatMpConfig;
+    const { appId, appSecret } = config2;
+    if (process.env.OAK_PLATFORM === 'web') {
+        return 'develop环境下无法真实获取二维码数据';
+    } else {
+        // 小程序码去实时获取（暂时不考虑缓存）
+        const wechatInstance = WechatSDK.getInstance(
+            appId,
+            'wechatMp',
+            appSecret
+        ) as WechatMpInstance;
+
+        const envVersionVersionDict = {
+            development: 'develop',
+            staging: 'trial',
+            production: 'release',
+        };
+
+        const buffer = await wechatInstance.getMpUnlimitWxaCode({
+            scene: shrinkUuidTo32Bytes(wechatQrCodeId),
+            envVersion: envVersionVersionDict[
+                process.env.NODE_ENV as keyof typeof envVersionVersionDict
+            ] as 'release',
+            page: 'pages/wechatQrCode/scan/index', // todo，这里用其它的页面微信服务器拒绝，因为没发布。应该是 pages/wechatQrCode/scan/index
+        });
+        // 把arrayBuffer转成字符串返回
+        const str = String.fromCharCode(...new Uint8Array(buffer));
+        return str;
+    }
 }

@@ -19,3 +19,4 @@ export declare function createWechatQrCode<ED extends EntityDict, T extends keyo
     type?: QrCodeType;
     props: WechatQrCodeProps;
 }, context: Cxt): Promise<void>;
+export declare function getMpUnlimitWxaCode<ED extends EntityDict, T extends keyof ED, Cxt extends BackendRuntimeContext<ED>>(wechatQrCodeId: string, context: Cxt): Promise<string>;

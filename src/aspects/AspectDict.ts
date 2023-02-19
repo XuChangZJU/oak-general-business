@@ -12,9 +12,15 @@ type GeneralAspectDict<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
 > = {
-    mergeUser: (params: { from: string, to: string }, context: Cxt) => Promise<void>;
+    mergeUser: (
+        params: { from: string; to: string },
+        context: Cxt
+    ) => Promise<void>;
     refreshWechatPublicUserInfo: (params: {}, context: Cxt) => Promise<void>;
-    getWechatMpUserPhoneNumber: (params: { code: string, env: WechatMpEnv }, context: Cxt) => Promise<string>;
+    getWechatMpUserPhoneNumber: (
+        params: { code: string; env: WechatMpEnv },
+        context: Cxt
+    ) => Promise<string>;
     loginByMobile: (
         params: {
             captcha?: string;
@@ -98,6 +104,10 @@ type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<void>;
+    getMpUnlimitWxaCode: (
+        wechatQrCodeId: string,
+        context: Cxt
+    ) => Promise<string>;
 };
 
 export type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;

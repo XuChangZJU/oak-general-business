@@ -1,11 +1,14 @@
 import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import { Trigger, CreateTrigger, UpdateTrigger } from 'oak-domain/lib/types/Trigger';
+import { Trigger, CreateTrigger, UpdateTrigger, SelectTrigger } from 'oak-domain/lib/types/Trigger';
 import { CreateOperationData as CreateUserEntityGrantData } from '../general-app-domain/UserEntityGrant/Schema';
 import { EntityDict } from '../general-app-domain/EntityDict';
 
 import { OakRowInconsistencyException, OakExternalException } from 'oak-domain/lib/types';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { createWechatQrCode } from '../aspects/wechatQrCode';
+import {
+    createWechatQrCode,
+    getMpUnlimitWxaCode,
+} from '../aspects/wechatQrCode';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { RuntimeCxt } from '../types/RuntimeCxt';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
@@ -18,7 +21,9 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
         when: 'before',
         fn: async ({ operation }, context, params) => {
             const { data, filter } = operation;
-            const fn = async (userEntityGrantData: CreateUserEntityGrantData) => {
+            const fn = async (
+                userEntityGrantData: CreateUserEntityGrantData
+            ) => {
                 const { userId } = context.getToken()!;
                 assert(userId);
                 const { id } = userEntityGrantData;
@@ -47,16 +52,14 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                     },
                     context as BackendRuntimeContext<EntityDict>
                 );
-
-            }
+            };
             if (data instanceof Array) {
-                assert('授权不存在一对多的情况')
-            }
-            else {
+                assert('授权不存在一对多的情况');
+            } else {
                 await fn(data);
             }
             return 0;
-        }
+        },
     } as CreateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
     {
         name: '当userEntityGrant准备确认时，附上被授权者id',
@@ -100,8 +103,8 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                     granteeId: userId,
                 });
             }
-            return 0
-        }
+            return 0;
+        },
     } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
     {
         name: '当userEntityGrant被确认时，生成user和entity关系',
@@ -132,7 +135,8 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                     dontCollect: true,
                 }
             );
-            const { entity, entityId, relation, granterId, type } = userEntityGrant;
+            const { entity, entityId, relation, granterId, type } =
+                userEntityGrant;
             const entityStr = firstLetterUpperCase(entity!);
             const userRelation = `user${entityStr}` as keyof EntityDict;
             //如果是relation是transfer，需要处理授权者名下entity关系转让给接收者
@@ -221,7 +225,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
 
                 return 1;
             }
-        }
+        },
     } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
     {
         name: '当userEntityGrant过期时，使其相关的wechatQrCode也过期',
@@ -229,7 +233,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
         action: 'update',
         check: (operation) => {
             const { data } = operation;
-            return !!(data.expired);
+            return !!data.expired;
         },
         when: 'before',
         fn: async ({ operation }, context) => {
@@ -239,10 +243,38 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                 action: 'update',
                 data: {
                     expired: true,
-                }
+                },
             };
             return 1;
-        }
-    } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>
+        },
+    } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
+    {
+        name: '当userEntityGrant查询时，使其相关的wechatQrCode动态生成buffer',
+        entity: 'userEntityGrant',
+        action: 'select',
+        when: 'after',
+        fn: async ({ operation, result }, context) => {
+            if (operation?.data?.wechatQrCode$entity?.data?.buffer) {
+                //如果projection写buffer 就动态获取
+                 for (let userEntityGrant of result) {
+                    if (userEntityGrant.qrCodeType === 'wechatMpWxaCode') {
+                        const wechatQrCode =
+                            userEntityGrant.wechatQrCode$entity &&
+                            userEntityGrant.wechatQrCode$entity[0];
+                        if (wechatQrCode) {
+                            const buffer = await getMpUnlimitWxaCode(
+                                wechatQrCode.id,
+                                context as BackendRuntimeContext<EntityDict>
+                            );
+                            Object.assign(wechatQrCode, {
+                                buffer,
+                            });
+                        }
+                    }
+                 }
+            }   
+            return 1;
+        },
+    } as SelectTrigger<EntityDict, 'userEntityGrant', >,
 ];
 export default triggers;

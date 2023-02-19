@@ -38,6 +38,7 @@ export default OakComponent({
     formData: ({ data: userEntityGrant }) => {
         let qrCodeUrl = userEntityGrant?.wechatQrCode$entity![0]?.url;
         const buffer = userEntityGrant?.wechatQrCode$entity![0]?.buffer;
+        console.log(userEntityGrant);
         if (buffer) {
             const newBuffer = new ArrayBuffer(buffer.length * 2);
             const newBufferToUint16 = new Uint16Array(newBuffer);
@@ -49,13 +50,15 @@ export default OakComponent({
                 const base64Str = wx.arrayBufferToBase64(newBufferToUint16);
                 qrCodeUrl = 'data:image/png;base64,' + base64Str;
             } else {
-                let binary = '';
-                const bytes = new Uint8Array(newBufferToUint16);
-                const len = bytes.byteLength;
-                for (let i = 0; i < len; i++) {
-                    binary += String.fromCharCode(bytes[i]);
-                }
-                const base64Str = window.btoa(binary);
+                // let binary = '';
+                // const bytes = new Uint8Array(newBufferToUint16);
+                // const len = bytes.byteLength;
+                // for (let i = 0; i < len; i++) {
+                //     binary += String.fromCharCode(bytes[i]);
+                // }
+                // const base64Str = window.btoa(binary);
+                const buffer2 = Buffer.from(newBufferToUint16, 'base64');
+                const base64Str = buffer2.toString('base64');
 
                 qrCodeUrl = 'data:image/png;base64,' + base64Str;
             }
