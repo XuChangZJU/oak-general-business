@@ -57,17 +57,7 @@ export default OakComponent(
                     pathname.substring(0, 1) === '/'
                         ? pathname
                         : `/${pathname}`;
-                // if (props) {
-                //     for (const param in props) {
-                //         const param2 = param as unknown as keyof typeof props;
-                //         url += url.includes('?') ? '&' : '?';
-                //         url += `${param}=${
-                //             typeof props[param2] === 'string'
-                //                 ? props[param2]
-                //                 : JSON.stringify(props[param2])
-                //         }`;
-                //     }
-                // }
+
                 this.redirectTo(
                     {
                         url: url,
