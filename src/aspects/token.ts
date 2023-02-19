@@ -139,8 +139,12 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
                         return currentToken.id!;
                     }
                     default: {
-                        assert(userState === 'normal');
-                        throw await makeDistinguishException<ED, Cxt>(userId as string, context, '该手机号已被一个有效用户占用，请联系管理员处理');
+                        /* assert(userState === 'normal');
+                        throw await makeDistinguishException<ED, Cxt>(userId as string, context, '该手机号已被一个有效用户占用，请联系管理员处理'); */
+                        
+                        // 直接合并
+                        await mergeUser<ED, Cxt>({ from: userId!, to: currentToken.userId! }, context, true);
+                        return currentToken.id!;
                     }
                 }
             }
