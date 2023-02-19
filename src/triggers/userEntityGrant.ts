@@ -3,7 +3,7 @@ import { Trigger, CreateTrigger, UpdateTrigger, SelectTrigger } from 'oak-domain
 import { CreateOperationData as CreateUserEntityGrantData } from '../general-app-domain/UserEntityGrant/Schema';
 import { EntityDict } from '../general-app-domain/EntityDict';
 
-import { OakRowInconsistencyException, OakExternalException } from 'oak-domain/lib/types';
+import { OakRowInconsistencyException, OakExternalException, SelectOpResult } from 'oak-domain/lib/types';
 import { assert } from 'oak-domain/lib/utils/assert';
 import {
     createWechatQrCode,
@@ -255,26 +255,37 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
         when: 'after',
         fn: async ({ operation, result }, context) => {
             if (operation?.data?.wechatQrCode$entity?.data?.buffer) {
-                //如果projection写buffer 就动态获取
+                //如果projection写buffer 就动态获取，临时性代码
                  for (let userEntityGrant of result) {
                     if (userEntityGrant.qrCodeType === 'wechatMpWxaCode') {
                         const wechatQrCode =
                             userEntityGrant.wechatQrCode$entity &&
                             userEntityGrant.wechatQrCode$entity[0];
                         if (wechatQrCode) {
+                            const { id } = wechatQrCode;
+                            const backContext = context as BackendRuntimeContext<EntityDict>;
                             const buffer = await getMpUnlimitWxaCode(
                                 wechatQrCode.id,
-                                context as BackendRuntimeContext<EntityDict>
+                                backContext,
                             );
-                            Object.assign(wechatQrCode, {
-                                buffer,
-                            });
+                            backContext.opRecords.forEach(
+                                ele => {
+                                    if (ele.a === 's') {
+                                        const { d } = ele as SelectOpResult<EntityDict>;
+                                        if (d.wechatQrCode && d.wechatQrCode[id]) {
+                                            Object.assign(d.wechatQrCode[id], {
+                                                buffer,
+                                            });
+                                        }
+                                    }
+                                }
+                            )
                         }
                     }
                  }
             }   
             return 1;
         },
-    } as SelectTrigger<EntityDict, 'userEntityGrant', >,
+    } as SelectTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
 ];
 export default triggers;
