@@ -115,7 +115,7 @@ export default function render(
                             领取
                         </Button>
                     )}
-                {!oakLoading && !expired && (isOwner || hasConfirmed) && (
+                {/* {!oakLoading && !expired && (isOwner || hasConfirmed) && (
                     <Button
                         size="large"
                         block
@@ -127,7 +127,7 @@ export default function render(
                     >
                         领取成功{redirectTo ? '(' + redirectCounter + 's)' : ''}
                     </Button>
-                )}
+                )} */}
 
                 {isWeiXin && (
                     <Button
