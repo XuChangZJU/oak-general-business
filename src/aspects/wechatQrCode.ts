@@ -81,20 +81,21 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
     const id = generateNewId();
     if (qrCodeType) {
         switch (qrCodeType) {
-            case 'wechatPublic': {
-                const self = applications.find((ele) => ele.type === 'wechatPublic');
-                if (
-                    !(
-                        self && self!.type === 'wechatPublic' &&
-                        (self!.config as WechatPublicConfig).isService
-                    )
-                ) {
-                    throw new Error('无法生成公众号二维码，服务号未正确配置');
+            case 'wechatPublic':
+                {
+                    const self = applications.find((ele) => ele.type === 'wechatPublic');
+                    if (
+                        !(
+                            self && self!.type === 'wechatPublic' &&
+                            (self!.config as WechatPublicConfig).isService
+                        )
+                    ) {
+                        throw new Error('无法生成公众号二维码，服务号未正确配置');
+                    }
+                    appId = self.id;
+                    appType = 'wechatPublic';
+                    break;
                 }
-                appId = self.id;
-                appType = 'wechatPublic';
-                break;
-            }
             case 'wechatMpDomainUrl': {
                 const self = applications.find((ele) => ele.type === 'wechatMp');
                 if (
@@ -117,6 +118,24 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                 }
                 appId = self!.id;
                 appType = 'wechatMpWxaCode';
+                break;
+            }
+            case 'wechatPublicForMp': {
+                const self = applications.find((ele) => ele.type === 'wechatPublic');
+                if (
+                    !(
+                        self && self!.type === 'wechatPublic' &&
+                        (self!.config as WechatPublicConfig).isService
+                    )
+                ) {
+                    throw new Error('无法生成公众号-小程序二维码，服务号未正确配置');
+                }
+                const selfMp = applications.find((ele) => ele.type = 'wechatMp');
+                if (!(selfMp!.config as WechatMpConfig).qrCodePrefix) {
+                    throw new Error('无法生成公众号-小程序二维码，小程序未正确配置');
+                }
+                appId = self.id;
+                appType = 'wechatPublic';
                 break;
             }
             default: {
@@ -231,7 +250,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
             //         staging: 'trial',
             //         production: 'release',
             //     };
-                
+
             //     const buffer = await wechatInstance.getMpUnlimitWxaCode({
             //         scene: shrinkUuidTo32Bytes(id),
             //         envVersion:
@@ -250,6 +269,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
 
             break;
         }
+        case 'wechatPublicForMp':
         case 'wechatPublic': {
             assert(
                 applicationType === 'wechatPublic' &&
