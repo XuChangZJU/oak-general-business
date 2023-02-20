@@ -181,7 +181,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         }
         if (this.token) {
             const { userState } = this.token.user!;
-            if (['disabled', 'merged'].includes(userState as string)) {
+            if (['disabled', 'merged'].includes(userState as string) && !this.isReallyRoot()) {
                 throw new OakUserDisabledException();
             }
         }
