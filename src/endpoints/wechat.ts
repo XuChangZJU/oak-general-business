@@ -10,10 +10,11 @@ import {
 } from 'oak-external-sdk';
 import { EntityDict } from '../general-app-domain';
 import { BRC } from '../types/RuntimeCxt';
-import { WechatPublicConfig } from '../entities/Application';
+import { WechatMpConfig, WechatPublicConfig } from '../entities/Application';
 import { WechatPublicEventData } from 'oak-external-sdk';
 import { expandUuidTo36Bytes, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { composeDomainUrl } from '../utils/domain';
+import { composeUrl } from 'oak-domain/lib/utils/url';
 
 type VerifyQuery = {
     signature: string,
@@ -218,7 +219,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
         );
         if (wechatQrCode) {
             const application = context.getApplication();
-            const { type, config } = application!;
+            const { type, config, systemId } = application!;
             assert(type === 'wechatPublic');
             const { appId, appSecret } = config as WechatPublicConfig;
 
@@ -254,6 +255,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                         {
                             data: {
                                 id: 1,
+                                qrCodeType: 1,
                                 granter: {
                                     id: 1,
                                     name: 1,
@@ -268,46 +270,80 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                         },
                         { dontCollect: true },
                     );
-                    const { id, granter, expired, entity: entity2 } = userEntityGrant!;
+                    const { id, granter, expired, entity: entity2, qrCodeType } = userEntityGrant!;
 
                     const name = granter?.name || granter?.nickname || '某用户';
-                    const [domain] = await context.select('domain', {
-                        data: {
-                            id: 1,
-                            url: 1,
-                            apiPath: 1,
-                            protocol: 1,
-                            port: 1,
-                        },
-                        filter: {
-                            systemId: {
-                                $in: {
-                                    entity: 'application',
-                                    data: {
-                                        systemId: 1,
-                                    },
-                                    filter: {
-                                        id: applicationId,
+                    if (qrCodeType === 'wechatPublic') {
+                        // 推domain上的scan/code链接
+
+                        const [domain] = await context.select('domain', {
+                            data: {
+                                id: 1,
+                                url: 1,
+                                apiPath: 1,
+                                protocol: 1,
+                                port: 1,
+                            },
+                            filter: {
+                                systemId: {
+                                    $in: {
+                                        entity: 'application',
+                                        data: {
+                                            systemId: 1,
+                                        },
+                                        filter: {
+                                            id: applicationId,
+                                        }
                                     }
                                 }
                             }
-                        }
-                    }, { dontCollect: true });
-                    assert(domain, `处理userEntityGrant时，找不到对应的domain，applicationId是「${applicationId}」`);
-                    const url = composeDomainUrl(domain as EntityDict['domain']['Schema'], 'wechatQrCode/scan', {
-                        scene: sceneStr,
-                        time: `${Date.now()}`,
-                    });
+                        }, { dontCollect: true });
+                        assert(domain, `处理userEntityGrant时，找不到对应的domain，applicationId是「${applicationId}」`);
+                        const url = composeDomainUrl(domain as EntityDict['domain']['Schema'], 'wechatQrCode/scan', {
+                            scene: sceneStr,
+                            time: `${Date.now()}`,
+                        });
+    
+                        assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
+                        wechatInstance.sendServeMessage({
+                            openId,
+                            type: 'news',
+                            url,
+                            title: `${name}为您创建了一个授权`,
+                            description: '请接受',
+                            picurl: 'http://img95.699pic.com/element/40018/2473.png_860.png',
+                        });
+                    }
+                    else {
+                        assert(qrCodeType === 'wechatPublicForMp');
+                        // 找到相关的小程序
+                        const [ appMp ] = await context.select('application', {
+                            data: {
+                                id: 1,
+                                config: 1,
+                            },
+                            filter: {
+                                systemId,
+                                type: 'wechatMp',
+                            }
+                        }, { dontCollect: true });
+                        assert(appMp, '公众号推送小程序码时找不到关联的小程序');
+                        const { config } = appMp;
+                        const { appId } = config as WechatMpConfig;
 
-                    assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
-                    wechatInstance.sendServeMessage({
-                        openId,
-                        type: 'news',
-                        url,
-                        title: `${name}给您创建了一个授权`,
-                        description: '请接受',
-                        picurl: 'http://img95.699pic.com/element/40018/2473.png_860.png',
-                    });
+                        // 先试着发文字链接
+                        const content = `${name}为您创建了一个授权，<a href="#" data-miniprogram-appid="${appId}" data-miniprogram-path="${composeUrl('/pages/wecharQrCode/scan', {
+                            oakId: wcqId,
+                            time: `${Date.now()}`,
+                        })}">请点击领取</a>`;
+                        
+                        assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
+                        wechatInstance.sendServeMessage({
+                            openId,
+                            type: 'text',
+                            content,
+                        });
+                    }
                 }
             }
         }
