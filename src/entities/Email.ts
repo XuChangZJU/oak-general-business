@@ -4,7 +4,7 @@ import { Schema as Token } from './Token';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { AbleAction, AbleState, makeAbleActionDef } from 'oak-domain/lib/actions/action';
-import { Index } from 'oak-domain/lib/types';
+import { ActionDef, Index } from 'oak-domain/lib/types';
 
 export interface Schema extends EntityShape {
     email: String<16>;
@@ -13,7 +13,7 @@ export interface Schema extends EntityShape {
 };
 
 type Action = AbleAction;
-const AbleActionDef = makeAbleActionDef('enabled');
+const AbleActionDef: ActionDef<AbleAction, AbleState> = makeAbleActionDef('enabled');
 
 const indexes: Index<Schema>[] = [
     {
