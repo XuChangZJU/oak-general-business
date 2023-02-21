@@ -135,22 +135,19 @@ export default OakComponent({
         ],
         idRemoveMp: '',
     },
-    observers: {
-        'entity,entityId': function (entity, entityId) {
-            if (this.state.oakFullpath && entity && entityId) {
-                this.refresh();
+    listeners: {
+        'entity,entityId'(prev, next) {
+            if (this.state.oakFullpath) {
+                if (prev.entity !== next.entity || prev.entityId !== next.entityId) {
+                    this.refresh();
+                }
             }
         },
-        relations: function (value) {
-            const { relations } = this.props;
-            if (
-                this.state.oakFullpath &&
-                (value.length !== relations.length ||
-                    difference(value, relations).length > 0)
-            ) {
+        relations(prev, next) {
+            if (this.state.oakFullpath && (prev.relations.length !== next.relations.length || difference(prev.relations, next.relations).length > 0)) {
                 this.refresh();
             }
-        },
+        }
     },
     lifetimes: {
         ready() {
