@@ -58,6 +58,7 @@ const memo = (props: AMapProps) => {
     const prefixCls = 'oak';
 
     useEffect(() => {
+        // 对安全密钥的支持
         if (serviceHost || securityJsCode) {
             if (serviceHost) {
                 (window as any)._AMapSecurityConfig = {
