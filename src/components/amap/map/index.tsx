@@ -35,12 +35,16 @@ export interface AMapProps extends APILoaderProps {
     useAMapUI?: boolean;
     uiVersion?: string;
     uiCallback?: (status: 'success' | 'fail', result?: any) => void;
+    securityJsCode?: string; //安全密钥 推荐开发模式下使用， 正式线上使用serviceHost
+    serviceHost?: string; // 您的代理服务器域名或地址
 };
 
 
 const memo = (props: AMapProps) => {
     const {
         akey,
+        securityJsCode,
+        serviceHost,
         version,
         className,
         style,
@@ -53,6 +57,19 @@ const memo = (props: AMapProps) => {
     } = props;
     const prefixCls = 'oak';
 
+    useEffect(() => {
+        if (serviceHost || securityJsCode) {
+            if (serviceHost) {
+                (window as any)._AMapSecurityConfig = {
+                    serviceHost: `${serviceHost}/_AMapService`,
+                };
+            } else {
+                (window as any)._AMapSecurityConfig = {
+                    securityJsCode,
+                };
+            }
+        }
+    }, []); 
 
     useEffect(() => {
         if (!useAMapUI) {
