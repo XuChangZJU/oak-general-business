@@ -26,6 +26,8 @@ export interface AMapProps extends APILoaderProps {
     useAMapUI?: boolean;
     uiVersion?: string;
     uiCallback?: (status: 'success' | 'fail', result?: any) => void;
+    securityJsCode?: string;
+    serviceHost?: string;
 }
 declare const memo: (props: AMapProps) => JSX.Element;
 export default memo;
