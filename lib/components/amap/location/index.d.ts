@@ -14,6 +14,8 @@ export declare type LocationProps = {
     geolocationProps?: GeolocationProps;
     useGeolocation?: boolean;
     dialogProps?: ModalProps;
+    securityJsCode?: string;
+    serviceHost?: string;
 };
 export declare type Poi = {
     id: string;
