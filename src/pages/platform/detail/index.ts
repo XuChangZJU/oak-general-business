@@ -11,11 +11,13 @@ export default OakComponent({
     formData({ data }) {
         return data || {};
     },
-    observers: {
-        tab: function (tab) {
-            this.setState({
-                tabValue: tab,
-            });
+    listeners: {
+        tab: function (prev, next) {
+            if (prev.tab !== next.tab) {
+                this.setState({
+                    tabValue: next.tab,
+                });
+            }
         },
     },
     lifetimes: {

@@ -36,12 +36,11 @@ export default OakComponent({
         origin: 'qiniu',
         contentTip: false,
     },
-    observers: {
-        'editor,content': function (editor, content) {
-            if (editor && content) {
-                editor.setHtml(content);
-                // this.setHtml(content);
-            }
+    listeners: {
+        'editor,content'(prev, next) {
+           if (next.editor && next.content) {
+               next.editor.setHtml(next.content);
+           }
         },
     },
     lifetimes: {

@@ -17,19 +17,21 @@ export default OakComponent({
         dirty: false,
         currentConfig: {} as Config,
     },
-    observers: {
-        config(config: Config) {
-            const config2 = config || {};
-            if (!config || !config?.type) {
-                Object.assign(config2, {
-                    type: this.props.type,
+    listeners: {
+        config(prev, next) {
+            if (prev.config !== next.config) {
+                const config2 = next.config || {};
+                if (!next.config || !next.config?.type) {
+                    Object.assign(config2, {
+                        type: this.props.type,
+                    });
+                }
+                this.setState({
+                    initialConfig: config2,
+                    dirty: false,
+                    currentConfig: cloneDeep(config2),
                 });
             }
-            this.setState({
-                initialConfig: config2,
-                dirty: false,
-                currentConfig: cloneDeep(config2),
-            });
         },
     },
     methods: {

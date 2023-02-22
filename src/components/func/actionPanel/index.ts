@@ -16,16 +16,17 @@ export default OakComponent({
             this.triggerEvent('action', { action });
         },
     },
-
-    observers: {
-        actions(actions) {
-            const { actionDescriptions } = this.props;
-
-            const actionss = actions.map((action: string) =>
-                Object.assign({}, actionDescriptions[action], { action })
-            );
-
-            this.setState({ actionss });
+    listeners: {
+        actions(prev, next) {
+            if (prev.actions !== next.actions) {
+                const { actionDescriptions } = this.props;
+                const actionss = next.actions?.map((action: string) =>
+                    Object.assign({}, actionDescriptions[action], {
+                        action,
+                    })
+                );
+                this.setState({ actionss });
+            }
         },
     },
 

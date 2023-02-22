@@ -491,32 +491,36 @@ export default OakComponent({
             });
         },
     },
-
-    observers: {
-        maxNumber: function () {
-            this.reRender();
-        },
-        /**
-         * size 属性变化时，重新调整图片大小
-         * @param size 新值
-         */
-        size: async function (size: number) {
-            if (!size) {
-                this.setState({ itemSizePercentage: '' });
-                return;
+    listeners: {
+        maxNumber(prev, next) {
+            if (this.state.oakFullpath) {
+                if (prev.maxNumber !== next.maxNumber) {
+                    this.reRender();
+                }
             }
+        },
+        async size(prev, next) {
+            if (process.env.OAK_PLATFORM === 'wechatMp') {
+                const size = next.size;
+                if (!size) {
+                    this.setState({ itemSizePercentage: '' });
+                    return;
+                }
 
-            // 获取 .file-list__container 容器宽度
-            const res: any = await this.getNodeRectFromComponent(
-                this,
-                '.file-list__container'
-            );
-            const widthRpx = this.px2rpx(res.right - res.left);
+                // 获取 .file-list__container 容器宽度
+                const res: any = await this.getNodeRectFromComponent(
+                    this,
+                    '.file-list__container'
+                );
+                const widthRpx = this.px2rpx(res.right - res.left);
 
-            // 根据容器宽度计算单张图片宽度百分比
-            const itemSizePercentage =
-                (10 / size) * 10 - (20 / widthRpx) * 100 + '%;';
-            this.setState({ itemSizePercentage: itemSizePercentage });
+                // 根据容器宽度计算单张图片宽度百分比
+                const itemSizePercentage =
+                    (10 / size) * 10 - (20 / widthRpx) * 100 + '%;';
+                this.setState({
+                    itemSizePercentage: itemSizePercentage,
+                });
+            }
         },
     },
 });

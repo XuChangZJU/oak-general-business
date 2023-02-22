@@ -14,13 +14,16 @@ export default OakComponent({
         dirty: false,
         currentConfig: {} as Config,
     },
-    observers: {
-        config(config: Config) {
-            this.setState({
-                initialConfig: config,
-                dirty: false,
-                currentConfig: cloneDeep(config),
-            });
+    listeners: {
+        config(prev, next) {
+            if (prev.config !== next.config) {
+                const config2 = next.config || {};
+                this.setState({
+                    initialConfig: config2,
+                    dirty: false,
+                    currentConfig: cloneDeep(config2),
+                });
+            }
         },
     },
     methods: {

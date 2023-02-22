@@ -50,12 +50,12 @@ export default OakComponent({
         hasConfirmed: false,
         loading: true,
     },
-    observers: {
-        redirectCounter(value) {
-            if (value > 0) {
+    listeners: {
+        redirectCounter(prev, next) {
+            if (next.redirectCounter > 0) {
                 setTimeout(() => {
                     this.setState({
-                        redirectCounter: value - 1,
+                        redirectCounter: next.redirectCounter - 1,
                     });
                 }, 1000);
             } else {

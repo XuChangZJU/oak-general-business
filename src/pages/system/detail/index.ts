@@ -19,17 +19,19 @@ export default OakComponent({
                 id: 1,
                 systemId: 1,
                 url: 1,
-            }
+            },
         },
     },
     formData({ data }) {
         return data || {};
     },
-    observers: {
-        tab: function (tab) {
-            this.setState({
-                tabValue: tab,
-            });
+    listeners: {
+        tab: function (prev, next) {
+            if (prev.tab !== next.tab) {
+                this.setState({
+                    tabValue: next.tab,
+                });
+            }
         },
     },
     lifetimes: {

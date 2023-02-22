@@ -19,14 +19,14 @@ export default OakComponent({
     formData: ({ data: message }) => {
         return message || {};
     },
-    observers: {
-        'visitState,userId': function (visitState, userId) {
-            const userId2 = this.features.token.getUserId(true);
-            if (userId === userId2) {
-                if (visitState === 'unvisited') {
-                    this.execute('visit', false);
-                }
-            }
+    listeners: {
+        'visitState,userId'(prev, next) {
+             const userId2 = this.features.token.getUserId(true);
+             if (next.userId === userId2) {
+                 if (next.visitState === 'unvisited') {
+                     this.execute('visit', false);
+                 }
+             }
         },
     },
     methods: {

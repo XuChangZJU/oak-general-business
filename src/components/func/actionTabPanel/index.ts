@@ -56,13 +56,16 @@ export default OakComponent({
             }
         },
     },
-    observers: {
-        oakLegalActions: function (value) {
-            if (process.env.OAK_PLATFORM === 'wechatMp') {
-                if (value) {
-                    this.getItemsMp();
-                }
-            }
+    listeners: {
+        oakLegalActions(prev, next) {
+             if (process.env.OAK_PLATFORM === 'wechatMp') {
+                 if (
+                     prev.oakLegalActions !== next.oakLegalActions ||
+                     prev.oakLegalActions?.length !== next.oakLegalActions?.length
+                 ) {
+                     this.getItemsMp();
+                 }
+             }
         },
     },
     methods: {

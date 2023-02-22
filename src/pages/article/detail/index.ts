@@ -23,11 +23,13 @@ export default OakComponent({
             content: article?.content,
         };
     },
-    observers: {
-        content: (val) => {
-            const ac = window.document.getElementById('article-content');
-            if (ac) {
-                ac.innerHTML = val;
+    listeners: {
+        content(prev, next) {
+            if (prev.content !== next.content) {
+                const ac = window.document.getElementById('article-content');
+                if (ac) {
+                    ac.innerHTML = next.content;
+                }
             }
         },
     },
