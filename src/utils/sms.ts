@@ -49,10 +49,11 @@ export async function sendSms<
     if (origin === 'tencent') {
         for (const smsConfig of smsConfigs) {
             const smsConfig = smsConfigs[0] as TencentSmsConfig;
+            const accountConfig = accountConfigs[0] as TencentCloudConfig;
+
             // const accountConfig = (accountConfigs as TencentCloudConfig[]).find(
             //     ele => ele.secretId === smsConfig.secretId
             // )!;
-            const accountConfig = accountConfigs[0] as TencentCloudConfig;
 
             const template = smsConfig.templates?.[templateName];
             const SmsSdkInstance = SmsSdk.getInstance(

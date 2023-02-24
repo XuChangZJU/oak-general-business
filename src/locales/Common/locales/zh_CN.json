@@ -15,5 +15,9 @@
         "grant": "授权",
         "revoke": "回收",
         "tip": "提示"
-    }
+    },
+    "reset": "重置",
+    "select": "查询",
+    "expand": "展开",
+    "shrink": "收起"
 }   

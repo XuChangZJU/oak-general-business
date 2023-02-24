@@ -32,6 +32,8 @@ export type LocationProps = {
     geolocationProps?: GeolocationProps;
     useGeolocation?: boolean;
     dialogProps?: ModalProps;
+    securityJsCode?: string; //安全密钥 推荐开发模式下使用， 正式线上使用serviceHost
+    serviceHost?: string; // 您的代理服务器域名或地址
 };
 
 export type Poi = {
@@ -62,6 +64,8 @@ const Location = (props: LocationProps) => {
     const {
         visible,
         akey,
+        securityJsCode,
+        serviceHost,
         version = '2.0',
         onClose,
         onConfirm,
@@ -136,6 +140,20 @@ const Location = (props: LocationProps) => {
         });
     };
 
+    useEffect(() => {
+        // 对安全密钥的支持
+        if (serviceHost || securityJsCode) {
+            if (serviceHost) {
+                (window as any)._AMapSecurityConfig = {
+                    serviceHost: `${serviceHost}/_AMapService`,
+                };
+            } else {
+                (window as any)._AMapSecurityConfig = {
+                    securityJsCode,
+                };
+            }
+        }
+    }, []); 
 
     useEffect(() => {
         if (window.AMap && !window.AMapUI) {
