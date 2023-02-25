@@ -73,7 +73,7 @@ export default OakComponent({
             const { entity, entityId } = this.props;
 
             await this.features.config.updateConfig(
-                entity,
+                entity as 'system' | 'platform',
                 entityId,
                 currentConfig
             );

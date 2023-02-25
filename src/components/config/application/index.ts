@@ -81,7 +81,7 @@ export default OakComponent({
             const { entity, entityId } = this.props;
 
             await this.features.config.updateApplicationConfig(
-                entity,
+                entity as 'application',
                 entityId,
                 currentConfig
             );
