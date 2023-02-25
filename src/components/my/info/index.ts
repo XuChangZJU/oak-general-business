@@ -7,7 +7,7 @@ export default OakComponent({
         const userInfo = features.token.getUserInfo();
         if (userInfo) {
             const {id, nickname, name, mobile$user, idState, userState, gender } = userInfo;
-            const mobileText = mobile$user.length > 1 ? this.t('moreThanOne') : (mobile$user.length == 1 ? mobile$user[0].mobile : this.t('unset'))
+            const mobileText = mobile$user!.length > 1 ? this.t('moreThanOne') : (mobile$user!.length == 1 ? mobile$user![0].mobile : this.t('unset'))
 
             return {
                 nameText: nickname || name,

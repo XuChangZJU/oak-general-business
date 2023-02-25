@@ -1,4 +1,5 @@
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
+import { EntityDict } from '../../../general-app-domain';
 
 export default OakComponent({
     entity: 'userEntityGrant',
@@ -66,14 +67,14 @@ export default OakComponent({
     methods: {
         async getUserRelations() {
             // 检查当前登陆者跟该授权实体缩手所受relation有关系了
-            const userId = await this.features.token.getUserId(true);
+            const userId = this.features.token.getUserId(true);
             if (!userId) {
                 return;
             }
             const { entity, entityId, relation } = this.state;
             const entityStr = firstLetterUpperCase(entity!);
             const { data } = await this.features.cache.refresh(
-                `user${entityStr}`,
+                `user${entityStr}` as keyof EntityDict,
                 {
                     data: {
                         id: 1,

@@ -41,7 +41,7 @@ export default OakComponent({
                 });
                 if (data.length > 0) {
                     this.clean();
-                    this.setId(data[0].id);
+                    this.setId(data[0].id!);
                 }
                 else {
                     this.clean();

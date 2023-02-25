@@ -1,4 +1,5 @@
 import assert from 'assert';
+import { WechatMpConfig } from '../../../../entities/Application';
 import { EntityDict } from '../../../../general-app-domain';
 import { QrCodeType } from '../../../../types/Config';
 
@@ -42,12 +43,11 @@ export default OakComponent({
             const app = this.features.application.getApplication();
             const {
                 config,
-                system: { config: systemConfig },
+                system,
             } = app;
+            const { config: systemConfig } = system!;
             const { userEntityGrantId } = this.state;
-            const imageUrl =
-                (config && config.App?.mpShareImageUrl) ||
-                (systemConfig && systemConfig?.App?.mpShareImageUrl) ||
+            const imageUrl = (systemConfig && systemConfig?.App?.mpShareImageUrl) ||
                 '';
             const { redirectToAfterConfirm } = this.props;
             return {

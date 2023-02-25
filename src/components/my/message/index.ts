@@ -7,7 +7,7 @@ export default OakComponent({
         },
     },
     data: {
-        count: undefined,
+        count: 0,
     },
     methods: {
         goMessageList() {

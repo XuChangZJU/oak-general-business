@@ -29,7 +29,7 @@ export default OakComponent({
                 type: 1,
             }
         }).map(
-            (ele: EntityDict['messageType']['OpSchema']) => ele.type
+            (ele) => ele.type!
         ).filter(
             (ele: string) => !selectedTypes.includes(ele)
         );

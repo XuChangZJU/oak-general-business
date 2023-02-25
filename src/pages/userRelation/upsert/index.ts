@@ -1,4 +1,5 @@
 import assert from 'assert';
+import { WebConfig } from '../../../entities/Application';
 
 export default OakComponent({
     isList: false,
@@ -22,11 +23,11 @@ export default OakComponent({
             let grantByUserEntityGrant = false,
                 grantByMobile = false,
                 grantByEmail = false;
-            if (type.startsWith('wechat')) {
+            if (type!.startsWith('wechat')) {
                 grantByUserEntityGrant = true;
             } else {
                 assert(type === 'web');
-                const passport = config.passport || [];
+                const passport = (config as WebConfig).passport || [];
                 grantByEmail = passport.includes('email');
                 grantByMobile = passport.includes('mobile');
                 grantByUserEntityGrant = passport.includes('wechat');

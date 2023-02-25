@@ -27,9 +27,7 @@ export default OakComponent({
             if (!this.state.oakFullpath) {
                 return;
             }
-            const dataSchema = this.features.runningTree.getSchema(
-                this.state.oakFullpath
-            );
+            const dataSchema = this.features.cache.getSchema();
             const attrs = field.split('.');
 
             let idx = 0;

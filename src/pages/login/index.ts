@@ -1,3 +1,5 @@
+import { WebConfig } from "../../entities/Application";
+
 const SEND_KEY = 'captcha:sendAt';
 const LOGIN_AGREED = 'login:agreed';
 const LOGIN_MODE = 'login:mode';
@@ -26,7 +28,7 @@ export default OakComponent({
     },
     formData({ features }) {
         const application = features.application.getApplication();
-        const appId = application?.config?.wechat?.appId;
+        const appId = (application?.config as WebConfig | undefined)?.wechat?.appId;
 
         const loginAgreed = features.localStorage.load(LOGIN_AGREED);
         const loginMode = features.localStorage.load(LOGIN_MODE) || 2;

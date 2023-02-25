@@ -1,10 +1,9 @@
-import { MakeOakComponent } from '../types/Page';
-import { EntityDict } from '../general-app-domain';
-import { GeneralRuntimeContext } from '../src/RuntimeContext';
+import { MakeOakComponent } from '../src/types/Page';
+import { EntityDict } from '../src/general-app-domain';
 import { AspectDict } from '../src/aspects/AspectDict';
 import { GeneralFeatures } from '../src/features';
-import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
-import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { FrontendRuntimeContext } from '../src/context/FrontendRuntimeContext';
+import { BackendRuntimeContext } from '../src/context/BackendRuntimeContext';
 
 declare global {
     const OakComponent: MakeOakComponent<

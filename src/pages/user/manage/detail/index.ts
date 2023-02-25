@@ -179,7 +179,7 @@ export default OakComponent({
                 }
                 case 'play': {
                     const { id } = this.state;
-                    await this.features.token.switchTo(id);
+                    await this.features.token.switchTo(id!);
                     break;
                 }
                 default: {
