@@ -280,7 +280,7 @@ async function createNotification(message: CreateMessageData, context: BRC) {
             data: messageSystemDatas,
         };
     }
-    message.iState = messageSentCount ? 'sending' : 'failed';
+    message.iState = messageSentCount ? 'sending' : 'failure';
     return messageSentCount;
 }
 
