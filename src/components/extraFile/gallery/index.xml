@@ -33,10 +33,10 @@
                </view>
                <view class="file-list-flow__item--btns">
                <view wx:if="{{!disableDownload}}" mut-bind:tap="onDownloadByMp" class="file-list-flow__download" data-value="{{item}}">
-                    <l-icon name="download" size="24" />
+                    <l-icon name="download" size="36" />
                 </view>
                 <view wx:if="{{!disableDelete}}" mut-bind:tap="onDeleteByMp" class="file-list-flow__remove" data-value="{{item}}">
-                    <l-icon name="delete" size="24" />
+                    <l-icon name="delete" size="36" />
                 </view>
                <view> 
              </view>

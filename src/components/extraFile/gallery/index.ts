@@ -424,6 +424,7 @@ export default OakComponent({
             const { value } = event.currentTarget.dataset;
             const fileUrl = this.features.extraFile.getUrl(value);
             const name = this.features.extraFile.getFileName(value);
+            const that = this;
             wx.showLoading({
                 title: '下载请求中，请耐心等待..',
             });
@@ -431,13 +432,45 @@ export default OakComponent({
                 url: fileUrl,
                 success: function (res) {
                     const filePath = res.tempFilePath || res.filePath;
-                    wx.hideLoading();
                     const fs = wx.getFileSystemManager();
-                    const writeFilePath = `${wx.env.USER_DATA_PATH}/${name}`;
-                    const res2 = fs.saveFileSync(filePath, writeFilePath);
+                    fs.saveFile({
+                        tempFilePath: filePath,
+                        success: (res) => {
+                            console.log(res, '下载成功');
+                            wx.hideLoading();
+                            const savedFilePath = res.savedFilePath;
+                            // 打开文件
+                            wx.openDocument({
+                                filePath: savedFilePath,
+                                success: function (res) {
+                                    console.log('打开文档成功');
+                                },
+                                fail: function (res) {
+                                    console.log(res, 'openDocument');
+                                    that.setMessage({
+                                        type: 'error',
+                                        content: '打开文档失败',
+                                    });
+                                },
+                            });
+                        },
+                        fail: function (res) {
+                            console.log(res, 'saveFile');
+                            wx.hideLoading();
+                            that.setMessage({
+                                type: 'error',
+                                content: '保存文件失败',
+                            });
+                        },
+                    });
                 },
                 fail: function (res) {
                     console.log(res);
+                    wx.hideLoading();
+                    that.setMessage({
+                        type: 'error',
+                        content: '下载文件失败'
+                    });
                 },
                 complete: function (res) {},
             });
