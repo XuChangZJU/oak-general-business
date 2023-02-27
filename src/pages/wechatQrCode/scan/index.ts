@@ -23,6 +23,15 @@ export default OakComponent(
         data: {
             loading: true,
         },
+        listeners: {
+            oakLoading(prev, next) {
+                if (!!prev.oakLoading && !next.oakLoading) {
+                    this.setState({
+                        loading: false,
+                    });
+                }
+            }
+        },
         filters: [
             {
                 filter() {
@@ -38,7 +47,6 @@ export default OakComponent(
             const wechatQrCode = wechatQrCodes[0];
             if (!wechatQrCode) {
                 return {
-                    loading: false,
                     isExist: false,
                 };
             }
@@ -47,7 +55,6 @@ export default OakComponent(
             const uuid = scene && expandUuidTo36Bytes(scene!);
             if (wechatQrCode.id !== uuid) {
                 return {
-                    loading: false,
                     isExist: false,
                 };
             }
@@ -66,12 +73,10 @@ export default OakComponent(
                     state
                 );
                 return {
-                    loading: false,
                     expired: false,
                 };
             } else {
                 return {
-                    loading: false,
                     expired: true,
                 };
             }
