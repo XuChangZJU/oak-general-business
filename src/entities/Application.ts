@@ -60,6 +60,7 @@ const locale: LocaleDef<Schema, '', '', {
     type: Schema['type'];
 }> = {
     zh_CN: {
+        name: '应用',
         attr: {
             description: '描述',
             type: '类型',

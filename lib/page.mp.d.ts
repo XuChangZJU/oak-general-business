@@ -5,7 +5,6 @@ import { BasicFeatures } from 'oak-frontend-base/lib/features/index';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { BackendRuntimeContext } from './context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from './context/FrontendRuntimeContext';
-import { MessageProps } from 'oak-frontend-base';
 import { GAD, GFD, OakComponentOption } from './types/Page';
 /**
  * 这里的逻辑暴露出去，是为了让general可以被其它库重载
@@ -16,5 +15,5 @@ import { GAD, GFD, OakComponentOption } from './types/Page';
  * @param messageProps
  * @returns
  */
-export declare function executeMpAfterSubscribeMessage<ED extends EntityDict & BaseEntityDict, T extends keyof ED, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends GAD<ED, Cxt>, FD extends GFD<ED, Cxt, FrontCxt, AD>, FormedData extends Record<string, any>, IsList extends boolean, TData extends Record<string, any> = {}, TProperty extends PropertyOption = {}, TMethod extends Record<string, Function> = {}>(this: ComponentPublicThisType<ED, T, Cxt, FrontCxt, AD, FD, FormedData, IsList, TData, TProperty, TMethod>, messageTypes: string[], haveToAccept?: boolean, action?: ED[T]['Action'], messageProps?: boolean | MessageProps): Promise<void>;
+export declare function subscribeMessage<ED extends EntityDict & BaseEntityDict, T extends keyof ED, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends GAD<ED, Cxt>, FD extends GFD<ED, Cxt, FrontCxt, AD>, FormedData extends Record<string, any>, IsList extends boolean, TData extends Record<string, any> = {}, TProperty extends PropertyOption = {}, TMethod extends Record<string, Function> = {}>(this: ComponentPublicThisType<ED, T, Cxt, FrontCxt, AD, FD, FormedData, IsList, TData, TProperty, TMethod>, messageTypes: string[], haveToAccept?: boolean): Promise<void>;
 export declare function createComponent<ED extends EntityDict & BaseEntityDict, T extends keyof ED, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends GAD<ED, Cxt>, FD extends GFD<ED, Cxt, FrontCxt, AD>, FormedData extends Record<string, any>, IsList extends boolean, TData extends Record<string, any> = {}, TProperty extends PropertyOption = {}, TMethod extends Record<string, Function> = {}>(option: OakComponentOption<ED, T, Cxt, FrontCxt, AD, FD, FormedData, IsList, TData, TProperty, TMethod>, features: BasicFeatures<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>> & FD): string;

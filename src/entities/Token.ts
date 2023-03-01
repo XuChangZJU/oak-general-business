@@ -66,6 +66,7 @@ const locale: LocaleDef<Schema, Action, '', {
     ableState: AbleState,
 }> = {
     zh_CN: {
+        name: '令牌',
         attr: {
             application: '应用',
             entity: '关联对象',

@@ -1,8 +1,6 @@
 import { OakComponentOption as BaseOakComponentOption, PropertyOption, DataOption, MethodOption } from 'oak-frontend-base/lib/types/Page';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { EntityDict } from '../general-app-domain';
-import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
-import { SyncContext } from 'oak-domain/lib/store/SyncRowStore';
 import { Aspect } from 'oak-domain/lib/types/Aspect';
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
 import { BasicFeatures } from 'oak-frontend-base/lib/features/index';
@@ -11,7 +9,6 @@ import { GeneralFeatures } from '../features';
 import { AspectDict as GeneralAspectDict } from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
-import { MessageProps } from 'oak-frontend-base';
 
 export type OakComponentOption<
     ED extends EntityDict & BaseEntityDict,
@@ -26,7 +23,7 @@ export type OakComponentOption<
     TProperty extends PropertyOption,
     TMethod extends Record<string, Function>,
 > = BaseOakComponentOption<ED, T, Cxt, FrontCxt, AD & GAD<ED, Cxt>, FD & GFD<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>, FormedData, IsList, TData, TProperty, TMethod, {
-    executeMpAfterSubscribeMessage: (messageTypes: string[], haveToAccept?: boolean, action?: ED[T]['Action'], messageProps?: boolean | MessageProps) => Promise<void>;
+    subscribeMessage: (messageTypes: string[], haveToAccept?: boolean) => Promise<void>;
 }> & Partial<{
     wechatMp: {
         relatedMessageTypes?: string[];

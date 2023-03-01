@@ -67,6 +67,7 @@ const locale: LocaleDef<Schema, '', '', {
     type: QrCodeType,
 }> = {
     zh_CN: {
+        name: '微信识别码',
         attr: {
             entity: '关联对象',
             entityId: '关联对象id',

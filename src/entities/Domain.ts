@@ -15,6 +15,7 @@ const locale: LocaleDef<Schema, '', '', {
     protocol: Required<Schema>['protocol'];
 }> = {
     zh_CN: {
+        name: '域名',
         attr: {
             url: '域名',
             apiPath: 'api路径',

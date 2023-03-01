@@ -29,6 +29,7 @@ const locale: LocaleDef<Schema, '', '', {
     origin: Schema['origin'];
 }> = {
     zh_CN: {
+        name: '微信用户',
         attr: {
             origin: '源',
             openId: 'openId',

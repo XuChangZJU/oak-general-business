@@ -45,6 +45,7 @@ const locale: LocaleDef<
     }
 > = {
     zh_CN: {
+        name: '文章',
         attr: {
             title: '标题',
             author: '作者',

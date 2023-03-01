@@ -30,6 +30,7 @@ const locale: LocaleDef<
     }
 > = {
     zh_CN: {
+        name: '文件',
         attr: {
             origin: '源',
             type: '类型',

@@ -33,6 +33,7 @@ const locale: LocaleDef<
     }
 > = {
     zh_CN: {
+        name: '直播流',
         attr: {
             title: '名称', // 用户定义直播间名称,
             streamTitle: '直播流名称',

@@ -32,6 +32,7 @@ const indexes: Index<Schema>[] = [
 
 const locale: LocaleDef<Schema, '', '', {}> = {
     zh_CN: {
+        name: '公众号标签',
         attr: {
             text: 'tag名',
             application: '关联应用',

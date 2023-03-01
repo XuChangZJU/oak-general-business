@@ -20,6 +20,7 @@ const locale: LocaleDef<Schema, '', '', {
     level: Schema['level'];
 }> = {
     zh_CN: {
+        name: '地区',
         attr: {
             level: '层级',
             depth: '深度',

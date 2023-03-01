@@ -15,6 +15,7 @@ export type Relation = 'owner';
 
 const locale: LocaleDef<Schema, '', Relation, {}> = {
    zh_CN: {
+      name: '角色',
        attr: {
            name: '名称',
        },

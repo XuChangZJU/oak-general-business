@@ -14,6 +14,7 @@ export interface Schema extends EntityShape {
 
 const locale: LocaleDef<Schema, '', '', {}> = {
     zh_CN: {
+        name: '地址',
         attr: {
             detail: '详细地址',
             area: '所在地区',

@@ -3,7 +3,7 @@ import { EntityDict } from '../general-app-domain';
 import { SerializedData } from './FrontendRuntimeContext';
 import assert from 'assert';
 import { OakTokenExpiredException, OakUserDisabledException } from '../types/Exception';
-import { OakUnloggedInException } from 'oak-domain/lib/types/Exception';
+import { OakException, OakUnloggedInException } from 'oak-domain/lib/types/Exception';
 import { ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
 import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
@@ -17,6 +17,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
     protected amIRoot?: boolean;
     protected amIReallyRoot?: boolean;
     protected rootMode?: boolean;
+    private tokenException?: OakException<ED>;
 
 
     async setTokenValue(tokenValue: string) {
@@ -68,11 +69,15 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         });
         if (result.length === 0) {
             console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`);
-            throw new OakTokenExpiredException();
+            // throw new OakTokenExpiredException();
+            this.tokenException = new OakTokenExpiredException();
+            return;
         }
         const token = result[0];
         if (token.ableState === 'disabled') {
-            throw new OakTokenExpiredException();
+            console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}已经被disable`);
+            this.tokenException = new OakTokenExpiredException();
+            return;
         }
         const { user, player } = token;
         const { userRole$user } = user!;
@@ -169,6 +174,9 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         if (this.rootMode) {
             return ROOT_TOKEN_ID;
         }
+        if (this.tokenException) {
+            throw this.tokenException;
+        }
         if (!this.token && !allowUnloggedIn) {
             throw new OakUnloggedInException();
         }
@@ -176,6 +184,9 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
     }
 
     getToken(allowUnloggedIn?: boolean) {
+        if (this.tokenException) {
+            throw this.tokenException;
+        }
         if (!this.token && !allowUnloggedIn) {
             throw new OakUnloggedInException();
         }

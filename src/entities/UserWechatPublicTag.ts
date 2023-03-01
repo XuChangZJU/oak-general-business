@@ -14,6 +14,7 @@ export interface Schema extends EntityShape {
 
 const locale: LocaleDef<Schema, '', '', {}> = {
     zh_CN: {
+        name: '用户公众号Tag',
         attr: {
             wechatPublicTag: 'tag',
             user: '用户',

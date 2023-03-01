@@ -35,6 +35,7 @@ const locale: LocaleDef<Schema, Action, '', {
     ableState: AbleState;
 }> = {
     zh_CN: {
+        name: '手机',
         attr: {
             ableState: '是否可用',
             mobile: '手机号',

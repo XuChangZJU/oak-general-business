@@ -56,6 +56,7 @@ const locale: LocaleDef<
     }
 > = {
     zh_CN: {
+        name: '订阅号',
         attr: {
             name: '名称',
             entity: '对象名称',

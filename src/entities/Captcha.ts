@@ -51,6 +51,7 @@ const locale: LocaleDef<Schema, Action, '', {
     iState: IState,
 }> = {
     zh_CN: {
+        name: '验证码',
         attr: {
             mobile: '手机号',
             code: '验证码',

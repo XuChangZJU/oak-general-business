@@ -36,6 +36,7 @@ const locale: LocaleDef<Schema, Action, '', {
     channel: Schema['channel']
 }> = {
     zh_CN: {
+        name: '通知',
         attr: {
             channel: '消息渠道',
             data: '消息数据',

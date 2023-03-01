@@ -90,6 +90,7 @@ const locale: LocaleDef<Schema, Action, '', {
     idCardType: Required<Schema>['idCardType'];
 }> = {
     "zh_CN": {
+        name: '用户',
         attr: {
             name: '姓名',
             nickname: '昵称',

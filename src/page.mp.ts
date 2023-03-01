@@ -19,7 +19,7 @@ import { GAD, GFD, OakComponentOption } from './types/Page';
  * @param messageProps 
  * @returns 
  */
-export async function executeMpAfterSubscribeMessage<
+export async function subscribeMessage<
     ED extends EntityDict & BaseEntityDict,
     T extends keyof ED,
     Cxt extends BackendRuntimeContext<ED>,
@@ -42,7 +42,7 @@ export async function executeMpAfterSubscribeMessage<
         TData,
         TProperty,
         TMethod
-    >, messageTypes: string[], haveToAccept?: boolean, action?: ED[T]['Action'], messageProps?: boolean | MessageProps) {
+    >, messageTypes: string[], haveToAccept?: boolean) {
     const mttIds = this.features.cache.get('messageTypeTemplateId', {
         data: {
             id: 1,
@@ -79,7 +79,7 @@ export async function executeMpAfterSubscribeMessage<
             throw new OakMpHaveToSubscribeMessage(rejected);
         }
     }
-    return this.execute(action, messageProps);
+    return;
 }
 
 export function createComponent<
@@ -112,18 +112,26 @@ export function createComponent<
 ) {
     const { wechatMp, methods, lifetimes, ...rest } = option;
     const { relatedMessageTypes } = wechatMp || {};
-    const { ready, ...restLifeTimes } = lifetimes || {};
+    const { ready, attached, ...restLifeTimes } = lifetimes || {};
 
     return createBaseComponent<ED, T, Cxt, FrontCxt, AD, FD, FormedData, IsList, TData, TProperty, TMethod & {
-        executeMpAfterSubscribeMessage: (messageTypes: string[], haveToAccept?: boolean, action?: ED[T]['Action'], messageProps?: boolean | MessageProps) => Promise<void>;
+        subscribeMessage: (messageTypes: string[], haveToAccept?: boolean) => Promise<void>;
     }>({
         methods: {
-            async executeMpAfterSubscribeMessage(messageTypes: string[], haveToAccept?: boolean, action?: ED[T]['Action'], messageProps?: boolean | MessageProps) {
-                await executeMpAfterSubscribeMessage.call(this as any, messageTypes, haveToAccept, action, messageProps);
+            async subscribeMessage(messageTypes: string[], haveToAccept?: boolean) {
+                await subscribeMessage.call(this as any, messageTypes, haveToAccept);
             },
             ...(methods as TMethod),
         },
         lifetimes: {
+            attached() {
+                this.subscribed.push(
+                    this.features.token.subscribe(
+                        () => this.refresh()
+                    )
+                );
+                attached && attached.call(this);
+            },
             ready() {
                 if (relatedMessageTypes) {
                     const applicationId = this.features.application.getApplicationId();
