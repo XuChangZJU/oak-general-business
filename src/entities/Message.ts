@@ -63,7 +63,7 @@ const locale: LocaleDef<
     }
 > = {
     zh_CN: {
-        name: '信息',
+        name: '消息',
         attr: {
             entity: '关联对象',
             entityId: '关联对象ID',
