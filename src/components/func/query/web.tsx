@@ -9,6 +9,7 @@ import {
     InputNumber,
 } from 'antd';
 import { WebComponentProps } from 'oak-frontend-base';
+import { ToYuan, ToCent } from 'oak-domain/lib/utils/money';
 import { EntityDict } from '../../../general-app-domain';
 import { initinctiveAttributes } from 'oak-domain/lib/types/Entity';
 import dayjs, { Dayjs } from 'dayjs';
@@ -165,15 +166,29 @@ export default function Render(
     const _value = transformValue(column, filter);
 
     switch (attrType) {
+        case 'money': {
+            const ops: Ops[] = ['$eq', '$ne', '$gt', '$gte', '$lt', '$lte'];
+            const moneyVal = _value ? ToYuan(_value) : '';
+            V = (
+                <Input
+                    placeholder={placeholder || t('placeholder.input')}
+                    value={moneyVal}
+                    onChange={(e) => {
+                        const val = e.target.value;
+                        const val2 =
+                            /^(-?[1-9]\d*(\.\d*[1-9])?)|(-?0\.\d*[1-9])$/.test(
+                                val
+                            ) ? ToCent(val) : moneyVal;
+                        setFilterAndResetFilter(val2);
+                    }}
+                    allowClear
+                    onPressEnter={() => {}}
+                />
+            );
+            break;
+        }
         case 'float': {
-            const ops: Ops[] = [
-                '$eq',
-                '$ne',
-                '$gt',
-                '$gte',
-                '$lt',
-                '$lte',
-            ];
+            const ops: Ops[] = ['$eq', '$ne', '$gt', '$gte', '$lt', '$lte'];
             V = (
                 <Input
                     placeholder={placeholder || t('placeholder.input')}
@@ -190,14 +205,7 @@ export default function Render(
         }
         case 'integer':
         case 'int': {
-            const ops: Ops[] = [
-                '$eq',
-                '$ne',
-                '$gt',
-                '$gte',
-                '$lt',
-                '$lte',
-            ];
+            const ops: Ops[] = ['$eq', '$ne', '$gt', '$gte', '$lt', '$lte'];
             if (op) {
                 assert(
                     ops.includes(op),
@@ -471,7 +479,6 @@ export default function Render(
                     column={column}
                 />
             );
-            
 
             break;
         }

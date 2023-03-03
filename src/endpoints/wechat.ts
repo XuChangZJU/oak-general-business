@@ -317,25 +317,33 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                     else {
                         assert(qrCodeType === 'wechatPublicForMp');
                         // 找到相关的小程序
-                        const [ appMp ] = await context.select('application', {
-                            data: {
-                                id: 1,
-                                config: 1,
+                        const [appMp] = await context.select(
+                            'application',
+                            {
+                                data: {
+                                    id: 1,
+                                    config: 1,
+                                },
+                                filter: {
+                                    systemId,
+                                    type: 'wechatMp',
+                                },
                             },
-                            filter: {
-                                systemId,
-                                type: 'wechatMp',
-                            }
-                        }, { dontCollect: true });
+                            { dontCollect: true }
+                        );
                         assert(appMp, '公众号推送小程序码时找不到关联的小程序');
                         const { config } = appMp;
                         const { appId } = config as WechatMpConfig;
 
+                        const url = composeUrl(
+                            '/pages/wecharQrCode/scan',
+                            {
+                                oakId: wcqId,
+                                time: `${Date.now()}`,
+                            }
+                        )
                         // 先试着发文字链接
-                        const content = `${name}为您创建了一个授权，<a href="#" data-miniprogram-appid="${appId}" data-miniprogram-path="${composeUrl('/pages/wecharQrCode/scan', {
-                            oakId: wcqId,
-                            time: `${Date.now()}`,
-                        })}">请点击领取</a>`;
+                        const content = `${name}为您创建了一个授权，<a href='#' data-miniprogram-appid='${appId}' data-miniprogram-path='${url}'>请点击领取</a>`;
                         
                         assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
                         wechatInstance.sendServeMessage({

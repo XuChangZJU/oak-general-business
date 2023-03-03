@@ -18,7 +18,7 @@ export type Ops =
 
 export type ColSpanType = 1 | 2 | 3 | 4;
 
-export type ValueType = string | boolean | Array<Dayjs> | Dayjs;
+export type ValueType = string | boolean | number | Array<Dayjs> | Dayjs;
 
 export type ColumnProps = {
     attr: string;
