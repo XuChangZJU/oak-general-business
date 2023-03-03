@@ -178,7 +178,7 @@ export default function Render(
                         const val2 =
                             /^(-?[1-9]\d*(\.\d*[1-9])?)|(-?0\.\d*[1-9])$/.test(
                                 val
-                            ) ? ToCent(val) : moneyVal;
+                            ) ? ToCent(Number(val)) : moneyVal;
                         setFilterAndResetFilter(val2);
                     }}
                     allowClear

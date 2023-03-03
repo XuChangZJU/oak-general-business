@@ -1,5 +1,5 @@
 import { OakUserUnpermittedException } from 'oak-domain/lib/types';
-import { difference } from 'oak-domain/lib/utils/lodash';
+import { difference, intersection } from 'oak-domain/lib/utils/lodash';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../../../general-app-domain';
@@ -59,15 +59,16 @@ export default OakComponent({
     filters: [
         {
             filter() {
-                const { entityId, entity, relations } = this.props;
+                const { entityId, entity } = this.props;
+                const { relationss } = this.state;
                 const relationEntity = `user${firstLetterUpperCase(entity!)}`;
                 const filter = {
                     [`${entity}Id`]: entityId,
                 };
-                if (relations) {
+                if (relationss.length > 0) {
                     Object.assign(filter, {
                         relation: {
-                            $in: relations,
+                            $in: relationss,
                         },
                     });
                 }
@@ -134,6 +135,7 @@ export default OakComponent({
             },
         ],
         idRemoveMp: '',
+        relationss: [] as string[],
     },
     listeners: {
         'entity,entityId'(prev, next) {
@@ -145,24 +147,41 @@ export default OakComponent({
         },
         relations(prev, next) {
             if (this.state.oakFullpath && (prev.relations.length !== next.relations.length || difference(prev.relations, next.relations).length > 0)) {
+                this.caclRelations();
                 this.refresh();
             }
         }
     },
     lifetimes: {
+        attached() {
+            this.calcRelations();
+        },
         ready() {
             //console.log('ready', this.props.relations);
         },
     },
     methods: {
+        calcRelations() {
+            const { relations, entity, entityId } = this.props;
+            const userId = this.features.token.getUserId();
+            const legalRelations = this.features.relation.getChildrenRelations(entity as keyof EntityDict, userId!, entityId);
+            const relationss = legalRelations ? (
+                relations ? relations.filter(
+                    ele => legalRelations.includes(ele)
+                ) : legalRelations
+            ) : [] as string[];
+            this.setState({
+                relationss,
+            });
+        },
         goUpsert() {
             const {
                 entity,
                 entityId,
-                relations,
                 redirectToAfterConfirm,
                 qrCodeType,
             } = this.props;
+            const { relationss } = this.state;
             this.navigateTo(
                 {
                     url: '/userRelation/upsert',
@@ -172,12 +191,13 @@ export default OakComponent({
                     qrCodeType,
                 },
                 {
-                    relations,
+                    relations: relationss,
                 }
             );
         },
         goUpdate(id: string) {
-            const { entity, entityId, relations } = this.props;
+            const { entity, entityId } = this.props;
+            const { relationss } = this.state;
             this.navigateTo(
                 {
                     url: '/userRelation/upsert/byUser',
@@ -186,7 +206,7 @@ export default OakComponent({
                     oakId: id,
                 },
                 {
-                    relations,
+                    relations: relationss,
                 }
             );
         },
@@ -253,10 +273,10 @@ export default OakComponent({
             const {
                 entity,
                 entityId,
-                relations,
                 redirectToAfterConfirm,
                 qrCodeType,
             } = this.props;
+            const { relationss } = this.state;
             const {
                 item: { mode },
             } = e.detail;
@@ -265,14 +285,14 @@ export default OakComponent({
                     url: '/userRelation/upsert/byMobile',
                     entity,
                     entityId,
-                    relations,
+                    relations: relationss,
                 });
             } else {
                 this.navigateTo({
                     url: '/userRelation/upsert/byUserEntityGrant',
                     entity,
                     entityId,
-                    relations,
+                    relations: relationss,
                     redirectToAfterConfirm,
                     qrCodeType,
                 });
@@ -292,14 +312,15 @@ export default OakComponent({
         },
 
         onItemTapMp(e: WechatMiniprogram.TouchEvent) {
-            const { entity, entityId, relations } = this.props;
+            const { entity, entityId } = this.props;
+            const { relationss } = this.state;
             const { id } = e.currentTarget.dataset;
             this.navigateTo({
                 url: '/userRelation/upsert/onUser',
                 oakId: id,
                 entity,
                 entityId,
-                relations,
+                relations: relationss,
             });
         },
 

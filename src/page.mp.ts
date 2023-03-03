@@ -6,7 +6,6 @@ import { CommonAspectDict } from 'oak-common-aspect';
 import { BackendRuntimeContext } from './context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from './context/FrontendRuntimeContext';
 import { createComponent as createBaseComponent } from 'oak-frontend-base/lib/page.mp';
-import { MessageProps } from 'oak-frontend-base';
 import { OakMpHaveToSubscribeMessage } from './types/Exception';
 import { GAD, GFD, OakComponentOption } from './types/Page';
 
@@ -19,7 +18,7 @@ import { GAD, GFD, OakComponentOption } from './types/Page';
  * @param messageProps 
  * @returns 
  */
-export async function subscribeMessage<
+export async function subscribeMpMessage<
     ED extends EntityDict & BaseEntityDict,
     T extends keyof ED,
     Cxt extends BackendRuntimeContext<ED>,
@@ -115,11 +114,11 @@ export function createComponent<
     const { ready, attached, ...restLifeTimes } = lifetimes || {};
 
     return createBaseComponent<ED, T, Cxt, FrontCxt, AD, FD, FormedData, IsList, TData, TProperty, TMethod & {
-        subscribeMessage: (messageTypes: string[], haveToAccept?: boolean) => Promise<void>;
+        subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean) => Promise<void>;
     }>({
         methods: {
-            async subscribeMessage(messageTypes: string[], haveToAccept?: boolean) {
-                await subscribeMessage.call(this as any, messageTypes, haveToAccept);
+            async subscribeMpMessage(messageTypes: string[], haveToAccept?: boolean) {
+                await subscribeMpMessage.call(this as any, messageTypes, haveToAccept);
             },
             ...(methods as TMethod),
         },

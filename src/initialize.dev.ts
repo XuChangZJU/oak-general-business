@@ -40,6 +40,11 @@ export function initialize<
     },
     actionDict?: ActionDictOfEntityDict<ED>,
     authDict?: AuthDefDict<ED>,
+    relationDict?: {
+        [K in keyof ED]?: {
+            [R in NonNullable<ED[K]['Relation']>]?: ED[K]['Relation'][];
+        }
+    },
     importations?: Importation<ED, keyof ED, any>[],
     exportations?: Exportation<ED, keyof ED, any>[]
 ) {
@@ -90,6 +95,7 @@ export function initialize<
         data2,
         actionDict2,
         authDict2,
+        relationDict,
         importations,
         exportations,
     );

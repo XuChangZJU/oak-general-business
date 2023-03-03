@@ -25,7 +25,12 @@ export function initialize<
     connector: Connector<ED, Cxt, FrontCxt>,
     checkers?: Array<Checker<ED, keyof ED, FrontCxt | Cxt>>,
     actionDict?: ActionDictOfEntityDict<ED>,
-    authDict?: AuthDefDict<ED>
+    authDict?: AuthDefDict<ED>,
+    relationDict?: {
+        [K in keyof ED]?: {
+            [R in NonNullable<ED[K]['Relation']>]?: ED[K]['Relation'][];
+        }
+    },
 ) {
     const checkers2 = (generalCheckers as Array<Checker<ED, keyof ED, FrontCxt | Cxt>>).concat(checkers || []);
     let intersected: string[];
@@ -50,7 +55,8 @@ export function initialize<
         connector,
         checkers2,
         actionDict2,
-        authDict2
+        authDict2,
+        relationDict
     );
     
     const generalFeatures = initGeneralFeatures<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>(features, type, domain);
