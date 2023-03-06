@@ -7,7 +7,7 @@
         <oak-icon name="{{selectedIndex===index?item.selectedIconName:item.iconName}}" size="{{item.iconSize || 22}}" color="{{selectedIndex===index? selectedColor : color}}" />
       </l-badge>
       <!-- 标签文字 -->
-      <view wx:if="{{item.text!==undefined}}" class="tab-bar__item-text" style="color: {{selectedIndex===index ? selectedColor : color}}">
+      <view wx:if="{{item.text}}" class="tab-bar__item-text {{ selectedIndex===index ? 'tab-bar__item--selected' : '' }}" style="color: {{selectedIndex===index ? selectedColor : color}}">
         {{item.text}}
       </view>
     </view>

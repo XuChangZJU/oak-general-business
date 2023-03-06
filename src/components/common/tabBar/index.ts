@@ -27,7 +27,7 @@ export default OakComponent({
     },
     selectedColor: {
       type: String,
-      value: '#0052d9'
+      value: ''
     }
   },
   lifetimes: {

@@ -30,7 +30,7 @@
         <l-list tag-position="right" is-link="{{false}}" title="认证状态">
             <view slot="right-section" class="value">
                 <l-tag l-class="{{idStateColor[idState]}}" size="mini" shape="circle">
-                    {{idState || '未设置'}}
+                    {{t('user:v.idState.' +  idState) || '未设置'}}
                 </l-tag>
             </view>
         </l-list>
