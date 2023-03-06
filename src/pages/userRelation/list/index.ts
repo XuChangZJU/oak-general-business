@@ -163,16 +163,30 @@ export default OakComponent({
     methods: {
         calcRelations() {
             const { relations, entity, entityId } = this.props;
-            const userId = this.features.token.getUserId();
-            const legalRelations = this.features.relation.getChildrenRelations(entity as keyof EntityDict, userId!, entityId);
-            const relationss = legalRelations ? (
-                relations ? relations.filter(
-                    ele => legalRelations.includes(ele)
-                ) : legalRelations
-            ) : [] as string[];
-            this.setState({
-                relationss,
-            });
+            if (this.features.token.isRoot()) {
+                const schema = this.features.cache.getSchema();
+                const legalRelations = schema![entity as keyof EntityDict].relation!;
+                const relationss = legalRelations ? (
+                    relations ? relations.filter(
+                        ele => legalRelations.includes(ele)
+                    ) : legalRelations
+                ) : [] as string[];
+                this.setState({
+                    relationss,
+                });
+            }
+            else {
+                const userId = this.features.token.getUserId();
+                const legalRelations = this.features.relation.getChildrenRelations(entity as keyof EntityDict, userId!, entityId);
+                const relationss = legalRelations ? (
+                    relations ? relations.filter(
+                        ele => legalRelations.includes(ele)
+                    ) : legalRelations
+                ) : [] as string[];
+                this.setState({
+                    relationss,
+                });
+            }
         },
         goUpsert() {
             const {
