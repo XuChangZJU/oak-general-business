@@ -25,9 +25,8 @@ type Item = {
 
 export type ActionBtnPanelProps = {
     entity: string;
-    actions: string[];
     items: Item[];
-    spaceProps: SpaceProps;
-    mode: 'cell' | 'table-cell';
-    column: 3;
+    spaceProps?: SpaceProps;
+    mode?: 'cell' | 'table-cell';
+    column?: 3;
 }
