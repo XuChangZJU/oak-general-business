@@ -1,1 +1,1 @@
-{ "attr": { "user": "用户", "system": "系统" } }
+{ "name": "用户系统", "attr": { "user": "用户", "system": "系统" } }

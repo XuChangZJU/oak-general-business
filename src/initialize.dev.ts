@@ -1,4 +1,5 @@
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { ColorDict } from 'oak-domain/lib/types/Style';
 import { ActionDictOfEntityDict, Aspect, AuthDefDict, Checker, Exportation, Importation, Routine, StorageSchema, Timer, Trigger, Watcher } from 'oak-domain/lib/types';
 import { EntityDict, ActionDefDict as generalActionDefDict } from './general-app-domain';
 import { CacheStore } from 'oak-frontend-base/lib/cacheStore/CacheStore';
@@ -45,6 +46,7 @@ export function initialize<
             [R in NonNullable<ED[K]['Relation']>]?: ED[K]['Relation'][];
         }
     },
+    colorDict?: ColorDict<ED>,
     importations?: Importation<ED, keyof ED, any>[],
     exportations?: Exportation<ED, keyof ED, any>[]
 ) {
@@ -96,6 +98,7 @@ export function initialize<
         actionDict2,
         authDict2,
         relationDict,
+        colorDict,
         importations,
         exportations,
     );

@@ -1,4 +1,5 @@
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { ColorDict } from 'oak-domain/lib/types/Style';
 import { ActionDictOfEntityDict, Aspect, AuthDefDict, Checker, Connector, StorageSchema } from 'oak-domain/lib/types';
 import { EntityDict, ActionDefDict as generalActionDefDict } from './general-app-domain';
 import { CacheStore } from 'oak-frontend-base/lib/cacheStore/CacheStore';
@@ -31,6 +32,7 @@ export function initialize<
             [R in NonNullable<ED[K]['Relation']>]?: ED[K]['Relation'][];
         }
     },
+    colorDict?: ColorDict<ED>
 ) {
     const checkers2 = (generalCheckers as Array<Checker<ED, keyof ED, FrontCxt | Cxt>>).concat(checkers || []);
     let intersected: string[];
@@ -56,7 +58,8 @@ export function initialize<
         checkers2,
         actionDict2,
         authDict2,
-        relationDict
+        relationDict,
+        colorDict
     );
     
     const generalFeatures = initGeneralFeatures<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>(features, type, domain);
