@@ -1,10 +1,10 @@
 {
     "navigationBarTitleText": "编辑用户信息",
     "usingComponents": {
-        "l-button": "../../../../miniprogram_npm/lin-ui/button/index",
-        "l-list": "../../../../miniprogram_npm/lin-ui/list/index",
-        "l-input": "../../../../miniprogram_npm/lin-ui/input/index",
-        "l-icon": "../../../../miniprogram_npm/lin-ui/icon/index",
+        "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index",
+        "l-list": "@oak-frontend-base/miniprogram_npm/lin-ui/list/index",
+        "l-input": "@oak-frontend-base/miniprogram_npm/lin-ui/input/index",
+        "l-icon": "@oak-frontend-base/miniprogram_npm/lin-ui/icon/index",
         "mobile-manage-list": "../../../../components/mobile/manageList/index",
         "oak-extraFile-avatar": "../../../../components/extraFile/avatar/index"
     }

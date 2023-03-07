@@ -1,14 +1,14 @@
 {
     "navigationBarTitleText": "添加权限",
     "usingComponents": {
-        "l-status-show": "../../../../miniprogram_npm/lin-ui/status-show/index",
-        "l-notice-bar": "../../../../miniprogram_npm/lin-ui/notice-bar/index",
-        "l-input": "../../../../miniprogram_npm/lin-ui/input/index",
-        "l-icon": "../../../../miniprogram_npm/lin-ui/icon/index",
-        "l-card": "../../../../miniprogram_npm/lin-ui/card/index",
-        "l-button": "../../../../miniprogram_npm/lin-ui/button/index",
-        "l-tag": "../../../../miniprogram_npm/lin-ui/tag/index",
-        "l-list": "../../../../miniprogram_npm/lin-ui/list/index",
+        "l-status-show": "@oak-frontend-base/miniprogram_npm/lin-ui/status-show/index",
+        "l-notice-bar": "@oak-frontend-base/miniprogram_npm/lin-ui/notice-bar/index",
+        "l-input": "@oak-frontend-base/miniprogram_npm/lin-ui/input/index",
+        "l-icon": "@oak-frontend-base/miniprogram_npm/lin-ui/icon/index",
+        "l-card": "@oak-frontend-base/miniprogram_npm/lin-ui/card/index",
+        "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index",
+        "l-tag": "@oak-frontend-base/miniprogram_npm/lin-ui/tag/index",
+        "l-list": "@oak-frontend-base/miniprogram_npm/lin-ui/list/index",
         "relation-on-user": "../onUser/index"
     }
 }

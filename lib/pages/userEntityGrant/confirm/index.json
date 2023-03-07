@@ -1,7 +1,7 @@
 {
     "navigationBarTitleText": "领取",
     "usingComponents": {
-        "l-icon": "../../../miniprogram_npm/lin-ui/icon/index",
-        "l-button": "../../../miniprogram_npm/lin-ui/button/index"
+        "l-icon": "@oak-frontend-base/miniprogram_npm/lin-ui/icon/index",
+        "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index"
     }
 }

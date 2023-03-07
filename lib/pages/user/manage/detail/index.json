@@ -3,10 +3,10 @@
     "usingComponents": {
         "actionPanel": "../../../../components/func/actionPanel/index",
         "oak-icon": "../../../../components/icon/index",
-        "l-button": "../../../../miniprogram_npm/lin-ui/button/index",
-        "l-avatar": "../../../../miniprogram_npm/lin-ui/avatar/index",
-        "l-list": "../../../../miniprogram_npm/lin-ui/list/index",
-        "l-icon": "../../../../miniprogram_npm/lin-ui/icon/index",
-        "l-tag": "../../../../miniprogram_npm/lin-ui/tag/index"
+        "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index",
+        "l-avatar": "@oak-frontend-base/miniprogram_npm/lin-ui/avatar/index",
+        "l-list": "@oak-frontend-base/miniprogram_npm/lin-ui/list/index",
+        "l-icon": "@oak-frontend-base/miniprogram_npm/lin-ui/icon/index",
+        "l-tag": "@oak-frontend-base/miniprogram_npm/lin-ui/tag/index"
     }
 }

@@ -1,6 +1,6 @@
 {
     "component": true,
     "usingComponents": {
-        "l-message": "../../miniprogram_npm/lin-ui/message/index"
+        "l-message": "@oak-frontend-base/miniprogram_npm/lin-ui/message/index"
     }
 }

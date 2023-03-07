@@ -2,9 +2,9 @@
     "component": true,
     "usingComponents": {
         "oak-icon": "../../icon/index",
-        "l-button": "../../../miniprogram_npm/lin-ui/button/index",
-        "l-arc-popup": "../../../miniprogram_npm/lin-ui/arc-popup/index",
-        "l-dialog": "../../../miniprogram_npm/lin-ui/dialog/index",
-        "l-icon": "../../../miniprogram_npm/lin-ui/icon/index"
+        "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index",
+        "l-arc-popup": "@oak-frontend-base/miniprogram_npm/lin-ui/arc-popup/index",
+        "l-dialog": "@oak-frontend-base/miniprogram_npm/lin-ui/dialog/index",
+        "l-icon": "@oak-frontend-base/miniprogram_npm/lin-ui/icon/index"
     }
 }

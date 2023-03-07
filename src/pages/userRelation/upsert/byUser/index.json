@@ -1,11 +1,11 @@
 {
-  "navigationBarTitleText": "添加权限",
-  "usingComponents": {
-      "t-checkbox": "../../../miniprogram_npm/tdesign/checkbox/checkbox",
-      "t-checkbox-group": "../../../miniprogram_npm/tdesign/checkbox-group/checkbox-group",
-      "t-input": "../../../miniprogram_npm/tdesign/input/input",
-      "t-tag": "../../../miniprogram_npm/tdesign/tag/tag",
-      "t-icon": "../../../miniprogram_npm/tdesign/icon/icon",
-      "t-button": "../../../miniprogram_npm/tdesign/button/button"
-  }
+    "navigationBarTitleText": "添加权限",
+    "usingComponents": {
+        "t-checkbox": "@oak-frontend-base/miniprogram_npm/tdesign/checkbox/checkbox",
+        "t-checkbox-group": "@oak-frontend-base/miniprogram_npm/tdesign/checkbox-group/checkbox-group",
+        "t-input": "@oak-frontend-base/miniprogram_npm/tdesign/input/input",
+        "t-tag": "@oak-frontend-base/miniprogram_npm/tdesign/tag/tag",
+        "t-icon": "@oak-frontend-base/miniprogram_npm/tdesign/icon/icon",
+        "t-button": "@oak-frontend-base/miniprogram_npm/tdesign/button/button"
+    }
 }

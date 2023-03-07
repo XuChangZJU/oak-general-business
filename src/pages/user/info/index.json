@@ -2,16 +2,16 @@
     "navigationBarTitleText": "修改个人信息",
     "oakDisablePulldownRefresh": true,
     "usingComponents": {
-        "l-button": "../../../miniprogram_npm/lin-ui/button/index",
-        "l-avatar": "../../../miniprogram_npm/lin-ui/avatar/index",
-        "l-list": "../../../miniprogram_npm/lin-ui/list/index",
-        "l-icon": "../../../miniprogram_npm/lin-ui/icon/index",
-        "l-tag": "../../../miniprogram_npm/lin-ui/tag/index",
-        "l-popup": "../../../miniprogram_npm/lin-ui/popup/index",
-        "l-input": "../../../miniprogram_npm/lin-ui/input/index",
-        "l-radio-group": "../../../miniprogram_npm/lin-ui/radio-group/index",
-        "l-radio": "../../../miniprogram_npm/lin-ui/radio/index",
-        "l-form-item": "../../../miniprogram_npm/lin-ui/form-item/index",
+        "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index",
+        "l-avatar": "@oak-frontend-base/miniprogram_npm/lin-ui/avatar/index",
+        "l-list": "@oak-frontend-base/miniprogram_npm/lin-ui/list/index",
+        "l-icon": "@oak-frontend-base/miniprogram_npm/lin-ui/icon/index",
+        "l-tag": "@oak-frontend-base/miniprogram_npm/lin-ui/tag/index",
+        "l-popup": "@oak-frontend-base/miniprogram_npm/lin-ui/popup/index",
+        "l-input": "@oak-frontend-base/miniprogram_npm/lin-ui/input/index",
+        "l-radio-group": "@oak-frontend-base/miniprogram_npm/lin-ui/radio-group/index",
+        "l-radio": "@oak-frontend-base/miniprogram_npm/lin-ui/radio/index",
+        "l-form-item": "@oak-frontend-base/miniprogram_npm/lin-ui/form-item/index",
         "oak-extraFile-avatar": "../../../components/extraFile/avatar/index"
     }
 }
