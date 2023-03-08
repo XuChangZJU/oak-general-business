@@ -12,13 +12,12 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', fal
     avatarUrl: string;
     shape?: 'circle' | 'square';
     size: AvatarSize;
-    iconType?: string;
     iconColor?: string;
     iconName?: string;
     iconLarger?: string;
     onClick?: () => void;
 }>) {
-    const { data: { avatarUrl, shape, size, iconType, iconColor, iconName, onClick } } = props;
+    const { data: { avatarUrl, shape, size, iconColor, iconName, onClick } } = props;
     return avatarUrl ? (
         <Avatar
             className={onClick ? Styles.avatar : undefined}
@@ -31,7 +30,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', fal
         <Avatar
             className={onClick ? Styles.avatar : undefined}
             icon={
-                <OakIcon name={iconName} color={iconColor} type={iconType} />
+                <OakIcon name={iconName} color={iconColor} />
             }
             shape={shape}
             size={size}

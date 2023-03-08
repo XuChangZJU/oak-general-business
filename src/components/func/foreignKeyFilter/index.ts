@@ -15,6 +15,7 @@ export default OakComponent({
     properties: {
         entity: String,
         column: Object,
+        formItem: Boolean,
     },
     methods: {
         getNamedFilter(name: string) {

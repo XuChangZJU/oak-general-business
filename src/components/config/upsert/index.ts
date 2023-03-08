@@ -74,7 +74,7 @@ export default OakComponent({
 
             await this.features.config.updateConfig(
                 entity as 'system' | 'platform',
-                entityId,
+                entityId!,
                 currentConfig
             );
             this.setMessage({

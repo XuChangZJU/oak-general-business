@@ -19,7 +19,7 @@ export default function Render(
             grantByEmail: boolean;
             grantByMobile: boolean;
             grantMethodCount: number;
-            redirectToAfterConfirm: string;
+            redirectToAfterConfirm: object;
             entity: string;
             entityId: string;
             relations: string[];

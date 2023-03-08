@@ -67,7 +67,7 @@ export default OakComponent({
             }
             this.setState({
                 userRelationRelativePath: `user${firstLetterUpperCase(
-                    entity
+                    entity!
                 )}$user`,
             });
         },

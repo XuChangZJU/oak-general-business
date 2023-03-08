@@ -11,6 +11,7 @@ export default OakComponent({
         name: String,
         entityId: String,
         type: String,
+        isService: Boolean,
     },
     data: {
         initialConfig: {} as Config,
@@ -82,7 +83,7 @@ export default OakComponent({
 
             await this.features.config.updateApplicationConfig(
                 entity as 'application',
-                entityId,
+                entityId!,
                 currentConfig
             );
             this.setMessage({

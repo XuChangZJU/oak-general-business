@@ -1,4 +1,4 @@
-import { OakComponentOption as BaseOakComponentOption, PropertyOption, DataOption, MethodOption } from 'oak-frontend-base/lib/types/Page';
+import { OakComponentOption as BaseOakComponentOption, PropertyOption, DataOption, MethodOption, ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { EntityDict } from '../general-app-domain';
 import { Aspect } from 'oak-domain/lib/types/Aspect';
@@ -72,4 +72,4 @@ export type MakeOakComponent<
         TProperty,
         TMethod
     >
-) => React.ComponentType<any>;
+) => (props: ReactComponentProps<IsList, TProperty>) => React.ReactElement;

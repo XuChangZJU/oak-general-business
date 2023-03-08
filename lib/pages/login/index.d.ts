@@ -1,3 +1,8 @@
 /// <reference types="react" />
-declare const _default: import("react").ComponentType<any>;
+declare const _default: (props: import("oak-frontend-base").ReactComponentProps<false, {
+    onlyCaptcha: BooleanConstructor;
+    onlyPassword: BooleanConstructor;
+    eventLoggedIn: StringConstructor;
+    backUrl: StringConstructor;
+}>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

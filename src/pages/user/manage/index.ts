@@ -117,7 +117,7 @@ export default OakComponent({
     },
     lifetimes: {
         detached() {
-            this.unsubAll(this.props.event);
+            this.unsubAll(this.props.event!);
         },
     },
 });

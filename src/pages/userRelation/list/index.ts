@@ -147,7 +147,7 @@ export default OakComponent({
         },
         relations(prev, next) {
             if (this.state.oakFullpath && (prev.relations.length !== next.relations.length || difference(prev.relations, next.relations).length > 0)) {
-                this.caclRelations();
+                this.calcRelations();
                 this.refresh();
             }
         }
@@ -177,7 +177,7 @@ export default OakComponent({
             }
             else {
                 const userId = this.features.token.getUserId();
-                const legalRelations = this.features.relation.getChildrenRelations(entity as keyof EntityDict, userId!, entityId);
+                const legalRelations = this.features.relation.getChildrenRelations(entity as keyof EntityDict, userId!, entityId!);
                 const relationss = legalRelations ? (
                     relations ? relations.filter(
                         ele => legalRelations.includes(ele)

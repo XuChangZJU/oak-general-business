@@ -123,7 +123,7 @@ export default OakComponent(
                 const { toUrl } = this.props;
                 const userIds = data?.map((ele: any) => ele.id);
                 this.navigateTo({
-                    url: toUrl,
+                    url: toUrl!,
                     userIds,
                 });
                 this.setState({
@@ -175,7 +175,7 @@ export default OakComponent(
                 this.save('user_searchList', JSON.stringify(searchArr));
                 this.setState({showList: false})
                 this.navigateTo({
-                    url: toUrl,
+                    url: toUrl!,
                     userIds: [userIds[index]],
                 })
             },

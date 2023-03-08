@@ -11,10 +11,6 @@ export default OakComponent({
             type: Number,
             optionalTypes: [Number, String],
         },
-        iconType: {
-            type: String,
-            value: 'fas',
-        },
         iconColor: {
             type: String,
             value: 'primary',

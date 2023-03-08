@@ -35,7 +35,7 @@ export default OakComponent({
             files,
             disableInsert:
                 this.props.maxNumber === 0 ||
-                files?.length >= this.props.maxNumber,
+                files?.length >= this.props.maxNumber!,
         };
     },
     data: {
@@ -221,7 +221,7 @@ export default OakComponent({
             const { selectCount, extension, fileType } = this.props;
             try {
                 const { errMsg, tempFiles } = await wx.chooseMessageFile({
-                    count: selectCount,
+                    count: selectCount!,
                     type: 'all',
                     ...(fileType === 'file' ? { extension } : {}),
                 });
@@ -255,7 +255,7 @@ export default OakComponent({
         },
         onPickByMp() {
             const { theme } = this.props;
-            if (['image', 'image-flow'].includes(theme)) {
+            if (['image', 'image-flow'].includes(theme!)) {
                 this.chooseMediaByMp();
             } else {
                 this.chooseFileByMp();

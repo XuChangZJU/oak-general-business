@@ -48,8 +48,8 @@ export default OakComponent({
       const currentPagePath = '/' + getCurrentPages()[0].route;
 
       let index;
-      for (let i = 0; i < list.length; i++) {
-        if (list[i].pagePath === currentPagePath) {
+      for (let i = 0; i < list!.length; i++) {
+        if (list![i].pagePath === currentPagePath) {
           index = i;
           break;
         }
@@ -67,7 +67,7 @@ export default OakComponent({
       });
 
       // 触发事件
-      const item = list[index];
+      const item = list![index];
       this.triggerEvent('linchange', { index, item });
 
     },
@@ -77,9 +77,9 @@ export default OakComponent({
      */
     onTapItem(e: { currentTarget: { dataset: { index: any; }; }; }) {
       const index = e.currentTarget.dataset.index;
-      const url = this.props.list[index].pagePath;
+      const url = this.props.list![index].pagePath;
 
-      this.triggerEvent('lintap', { index, item: this.props.list[index] });
+      this.triggerEvent('lintap', { index, item: this.props.list![index] });
 
       if (!url) {
         return;

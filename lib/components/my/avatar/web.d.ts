@@ -5,7 +5,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', fal
     avatarUrl: string;
     shape?: 'circle' | 'square';
     size: AvatarSize;
-    iconType?: string;
     iconColor?: string;
     iconName?: string;
     iconLarger?: string;

@@ -22,6 +22,8 @@ export default OakComponent({
     properties: {
         entity: String,
         projection: Object,
+        multiple: Boolean,
+        onSelect: Function,
     },
     methods: {},
 });

@@ -5,7 +5,7 @@ import { EntityDict } from "../../../../../general-app-domain";
 export default OakComponent({
     entity() {
         const { entity } = this.props;
-        return `user${firstLetterUpperCase(entity)}` as keyof EntityDict;
+        return `user${firstLetterUpperCase(entity!)}` as keyof EntityDict;
     },
     projection() {
         const { entity } = this.props;
@@ -34,7 +34,7 @@ export default OakComponent({
         const { relations } = this.props;
         const relations2: Array<{
             isChecked: boolean; relation: string;
-        }> = relations.map(
+        }> = relations!.map(
             (relation: string) => {
                 const isChecked = !!(userRelations?.find(
                     (ele: any) => ele.relation === relation && !ele.$$deleteAt$$
