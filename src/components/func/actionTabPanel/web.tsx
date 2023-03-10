@@ -22,9 +22,7 @@ type Item = {
     };
     label?: string;
     action?: string;
-    auth: boolean;
     type?: 'a' | 'button';
-    index?: number;
     alerted?: boolean;
     alertTitle?: string;
     alertContent?: string;

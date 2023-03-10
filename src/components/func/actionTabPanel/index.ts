@@ -28,10 +28,6 @@ export default OakComponent({
     },
     properties: {
         entity: String,
-        actions: {
-            type: Array,
-            value: [],
-        },
         items: {
             type: Array,
             value: [],
