@@ -1,10 +1,6 @@
 /// <reference types="react" />
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<false, {
     entity: StringConstructor;
-    actions: {
-        type: ArrayConstructor;
-        value: never[];
-    };
     items: {
         type: ArrayConstructor;
         value: never[];

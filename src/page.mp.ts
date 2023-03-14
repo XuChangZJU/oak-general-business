@@ -8,6 +8,7 @@ import { FrontendRuntimeContext } from './context/FrontendRuntimeContext';
 import { createComponent as createBaseComponent } from 'oak-frontend-base/lib/page.mp';
 import { OakMpHaveToSubscribeMessage } from './types/Exception';
 import { GAD, GFD, OakComponentOption } from './types/Page';
+import { BackTopProps } from 'antd';
 
 /**
  * 这里的逻辑暴露出去，是为了让general可以被其它库重载
@@ -41,7 +42,7 @@ export async function subscribeMpMessage<
         TData,
         TProperty,
         TMethod
-    >, messageTypes: string[], haveToAccept?: boolean) {
+    >, messageTypes: string[], haveToAccept?: boolean, showTip?: boolean) {
     const mttIds = this.features.cache.get('messageTypeTemplateId', {
         data: {
             id: 1,
@@ -75,10 +76,17 @@ export async function subscribeMpMessage<
             }
         );
         if (rejected.length > 0 && haveToAccept) {
+            if (showTip) {
+                this.setMessage({
+                    type: 'warning',
+                    content: '请接受订阅消息，以便及时收取系统通知',
+                });
+                return false;
+            }
             throw new OakMpHaveToSubscribeMessage(rejected);
         }
     }
-    return;
+    return true;
 }
 
 export function createComponent<
@@ -114,11 +122,11 @@ export function createComponent<
     const { ready, attached, ...restLifeTimes } = lifetimes || {};
 
     return createBaseComponent<ED, T, Cxt, FrontCxt, AD, FD, FormedData, IsList, TData, TProperty, TMethod & {
-        subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean) => Promise<void>;
+        subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean) => Promise<boolean>;
     }>({
         methods: {
-            async subscribeMpMessage(messageTypes: string[], haveToAccept?: boolean) {
-                await subscribeMpMessage.call(this as any, messageTypes, haveToAccept);
+            async subscribeMpMessage(messageTypes: string[], haveToAccept?: boolean, showTip?: boolean) {
+                return await subscribeMpMessage.call(this as any, messageTypes, haveToAccept, showTip);
             },
             ...(methods as TMethod),
         },
@@ -134,7 +142,7 @@ export function createComponent<
             ready() {
                 if (relatedMessageTypes) {
                     const applicationId = this.features.application.getApplicationId();
-                    this.features.cache.refresh('messageTypeTemplateId', {
+                    const existedOnes = this.features.cache.get('messageTypeTemplateId', {
                         data: {
                             id: 1,
                             templateId: 1,
@@ -147,6 +155,21 @@ export function createComponent<
                             applicationId,
                         },
                     });
+                    if (existedOnes.length === 0) {
+                        this.features.cache.refresh('messageTypeTemplateId', {
+                            data: {
+                                id: 1,
+                                templateId: 1,
+                                type: 1,
+                            },
+                            filter: {
+                                type: {
+                                    $in: relatedMessageTypes,
+                                },
+                                applicationId,
+                            },
+                        });                        
+                    }
                 }
                 ready && ready.call(this);
             },
