@@ -1,7 +1,7 @@
 <view class="editor-container">
     <view wx:if="{{showTabBar && !readOnly}}" class="editor-tab-bar">
         <view class="tool-view" data-mediaType="image" bindtap="onPickByMp">
-            <text class="iconfont icon-img">
+            <text class="iconfont icon-camera">
             </text>
         </view>
         <view class="tool-view" bind:tap="addItalic">
