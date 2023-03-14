@@ -117,7 +117,10 @@ export default OakComponent({
         entity: String,
         entityId: String,
         userIds: Array,
-        relations: Array,
+        relations: {
+            type: Array,
+            value: undefined,
+        },
         redirectToAfterConfirm: Object,
         qrCodeType: String,
     },
@@ -179,7 +182,8 @@ export default OakComponent({
                 const userId = this.features.token.getUserId();
                 const legalRelations = this.features.relation.getChildrenRelations(entity as keyof EntityDict, userId!, entityId!);
                 const relationss = legalRelations ? (
-                    relations ? relations.filter(
+                    // 这里小程序肯定会传入空数组，很恶心
+                    (relations && relations.length > 0 )? relations.filter(
                         ele => legalRelations.includes(ele)
                     ) : legalRelations
                 ) : [] as string[];
