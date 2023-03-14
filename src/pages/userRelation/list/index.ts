@@ -64,14 +64,10 @@ export default OakComponent({
                 const relationEntity = `user${firstLetterUpperCase(entity!)}`;
                 const filter = {
                     [`${entity}Id`]: entityId,
+                    relation: {
+                        $in: relationss,
+                    },
                 };
-                if (relationss.length > 0) {
-                    Object.assign(filter, {
-                        relation: {
-                            $in: relationss,
-                        },
-                    });
-                }
                 return {
                     id: {
                         $in: {
@@ -163,30 +159,29 @@ export default OakComponent({
     methods: {
         calcRelations() {
             const { relations, entity, entityId } = this.props;
-            if (this.features.token.isRoot()) {
-                const schema = this.features.cache.getSchema();
-                const legalRelations = schema![entity as keyof EntityDict].relation!;
-                const relationss = legalRelations ? (
-                    relations ? relations.filter(
-                        ele => legalRelations.includes(ele)
-                    ) : legalRelations
-                ) : [] as string[];
+            if (relations && relations.length > 0) {
+                // 这里小程序肯定会传入空数组，很恶心
                 this.setState({
-                    relationss,
+                    relationss: relations,
                 });
             }
             else {
-                const userId = this.features.token.getUserId();
-                const legalRelations = this.features.relation.getChildrenRelations(entity as keyof EntityDict, userId!, entityId!);
-                const relationss = legalRelations ? (
-                    // 这里小程序肯定会传入空数组，很恶心
-                    (relations && relations.length > 0 )? relations.filter(
-                        ele => legalRelations.includes(ele)
-                    ) : legalRelations
-                ) : [] as string[];
-                this.setState({
-                    relationss,
-                });
+                if (this.features.token.isRoot()) {
+                    const schema = this.features.cache.getSchema();
+                    const legalRelations = schema![entity as keyof EntityDict].relation!;
+                    this.setState({
+                        relationss: legalRelations,
+                    });
+                }
+                else {
+                    const userId = this.features.token.getUserId();
+                    const legalRelations = this.features.relation.getChildrenRelations(entity as keyof EntityDict, userId!, entityId!);
+                    
+                    this.setState({
+                        relationss: legalRelations as string[] | undefined,
+                    });
+                }
+
             }
         },
         goUpsert() {
