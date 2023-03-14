@@ -23,7 +23,7 @@ export type OakComponentOption<
     TProperty extends PropertyOption,
     TMethod extends Record<string, Function>,
 > = BaseOakComponentOption<ED, T, Cxt, FrontCxt, AD & GAD<ED, Cxt>, FD & GFD<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>, FormedData, IsList, TData, TProperty, TMethod, {
-    subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean, showTip?: boolean) => Promise<boolean>;
+    subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean, tip?: string) => Promise<boolean>;
 }> & Partial<{
     wechatMp: {
         relatedMessageTypes?: string[];

@@ -42,7 +42,7 @@ export async function subscribeMpMessage<
         TData,
         TProperty,
         TMethod
-    >, messageTypes: string[], haveToAccept?: boolean, showTip?: boolean) {
+    >, messageTypes: string[], haveToAccept?: boolean, tip?: string) {
     const mttIds = this.features.cache.get('messageTypeTemplateId', {
         data: {
             id: 1,
@@ -76,10 +76,10 @@ export async function subscribeMpMessage<
             }
         );
         if (rejected.length > 0 && haveToAccept) {
-            if (showTip) {
+            if (tip) {
                 this.setMessage({
                     type: 'warning',
-                    content: '请接受订阅消息，以便及时收取系统通知',
+                    content: tip,
                 });
                 return false;
             }
@@ -122,11 +122,11 @@ export function createComponent<
     const { ready, attached, ...restLifeTimes } = lifetimes || {};
 
     return createBaseComponent<ED, T, Cxt, FrontCxt, AD, FD, FormedData, IsList, TData, TProperty, TMethod & {
-        subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean) => Promise<boolean>;
+        subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean, tip?: string) => Promise<boolean>;
     }>({
         methods: {
-            async subscribeMpMessage(messageTypes: string[], haveToAccept?: boolean, showTip?: boolean) {
-                return await subscribeMpMessage.call(this as any, messageTypes, haveToAccept, showTip);
+            async subscribeMpMessage(messageTypes: string[], haveToAccept?: boolean, tip?: string) {
+                return await subscribeMpMessage.call(this as any, messageTypes, haveToAccept, tip);
             },
             ...(methods as TMethod),
         },
