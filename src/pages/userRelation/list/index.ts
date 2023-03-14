@@ -175,7 +175,7 @@ export default OakComponent({
                 }
                 else {
                     const userId = this.features.token.getUserId();
-                    const legalRelations = this.features.relation.getChildrenRelations(entity as keyof EntityDict, userId!, entityId!);
+                    const legalRelations = this.features.relation.getLegalRelations(entity as keyof EntityDict, userId!, entityId!);
                     
                     this.setState({
                         relationss: legalRelations as string[] | undefined,
