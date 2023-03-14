@@ -3,10 +3,7 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     entity: StringConstructor;
     entityId: StringConstructor;
     userIds: ArrayConstructor;
-    relations: {
-        type: ArrayConstructor;
-        value: undefined;
-    };
+    relations: ArrayConstructor;
     redirectToAfterConfirm: ObjectConstructor;
     qrCodeType: StringConstructor;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;

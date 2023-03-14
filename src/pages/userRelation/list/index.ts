@@ -117,10 +117,7 @@ export default OakComponent({
         entity: String,
         entityId: String,
         userIds: Array,
-        relations: {
-            type: Array,
-            value: undefined,
-        },
+        relations: Array,
         redirectToAfterConfirm: Object,
         qrCodeType: String,
     },
