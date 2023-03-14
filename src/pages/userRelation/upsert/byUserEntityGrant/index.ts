@@ -44,7 +44,7 @@ export default OakComponent({
             const {
                 config,
                 system,
-            } = app;
+            } = app!;
             const { config: systemConfig } = system!;
             const { userEntityGrantId } = this.state;
             const imageUrl = (systemConfig && systemConfig?.App?.mpShareImageUrl) ||

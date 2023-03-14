@@ -19,6 +19,6 @@ export declare class Application<ED extends EntityDict, Cxt extends BackendRunti
     private getApplicationFromCache;
     private loadApplicationInfo;
     initialize(appId?: string | null): Promise<void>;
-    getApplication(): Partial<import("../general-app-domain/Application/Schema").Schema>;
+    getApplication(): Partial<import("../general-app-domain/Application/Schema").Schema> | undefined;
     getApplicationId(): string | undefined;
 }

@@ -99,7 +99,7 @@ export class Application<
     }
 
     getApplication() {
-        return this.application!;
+        return this.application;
     }
 
     getApplicationId() {

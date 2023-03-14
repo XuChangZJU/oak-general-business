@@ -19,7 +19,7 @@ export default OakComponent({
     lifetimes: {
         ready() {
             const application = this.features.application.getApplication();
-            const { type, config } = application;
+            const { type, config } = application!;      // 这个页面总不可能是第一个页面吧，application肯定初始化完成了
             let grantByUserEntityGrant = false,
                 grantByMobile = false,
                 grantByEmail = false;
