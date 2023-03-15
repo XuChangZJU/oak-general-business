@@ -18,6 +18,7 @@ export default OakComponent({
     },
     lifetimes: {
         ready() {
+            const isRoot = this.features.token.isRoot();
             const application = this.features.application.getApplication();
             const { type, config } = application!;      // 这个页面总不可能是第一个页面吧，application肯定初始化完成了
             let grantByUserEntityGrant = false,
@@ -29,7 +30,8 @@ export default OakComponent({
                 assert(type === 'web');
                 const passport = (config as WebConfig).passport || [];
                 grantByEmail = passport.includes('email');
-                grantByMobile = passport.includes('mobile');
+                // 是超级管理员 不需要根据配置手机号来判断 by wkj
+                grantByMobile = isRoot || passport.includes('mobile');
                 grantByUserEntityGrant = passport.includes('wechat');
             }
             let grantMethodCount = 0;
