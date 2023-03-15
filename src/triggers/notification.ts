@@ -53,13 +53,14 @@ async function sendMessage(notification: CreateNotificationData, context: Backen
             const instance = WechatSDK.getInstance(appId!, 'wechatMp', appSecret) as WechatMpInstance;
             let page;
             if (router) {
+                const pathname = router.pathname;
+                const url = pathname.startsWith('/')
+                    ? `pages${pathname}/index`
+                    : `pages/${pathname}/index`;
                 page = composeUrl(
-                    router!.pathname!,
+                    url,
                     Object.assign({}, router!.props!, router!.state!)
                 );
-                page = page.startsWith('/')
-                     ? `/pages${page}`
-                     : `/pages/${page}`;
             }
 
             // 根据当前环境决定消息推哪个版本
@@ -141,23 +142,28 @@ async function sendMessage(notification: CreateNotificationData, context: Backen
             let page;
             // message 用户不需要跳转页面
             if (router) {
-                const url = wechatMpAppId
-                    ? router.pathname!
-                    : composeDomainUrl(
-                          domain as EntityDict['domain']['Schema'],
-                          router.pathname!
-                      );
-                page = composeUrl(
-                    url,
-                    Object.assign({}, router!.props!, router!.state!)
-                );
+                const pathname = router.pathname;
+
                 if (wechatMpAppId) {
-                    page = page.startsWith('/')
-                        ? `/pages${page}`
-                        : `/pages/${page}`;
+                    const url = pathname.startsWith('/')
+                        ? `pages${pathname}/index`
+                        : `pages/${pathname}/index`;
+
+                    page = composeUrl(
+                        url,
+                        Object.assign({}, router!.props!, router!.state!)
+                    );
+                } else {
+                    const url = composeDomainUrl(
+                        domain as EntityDict['domain']['Schema'],
+                        pathname
+                    );
+                    page = composeUrl(
+                        url,
+                        Object.assign({}, router!.props!, router!.state!)
+                    );
                 }
             }
-         
 
 
             try {
