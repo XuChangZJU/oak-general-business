@@ -4,6 +4,7 @@ import PageHeader from '../../../components/common/pageHeader';
 import QrCode from '../../../components/common/qrCode';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
+import { Spin } from 'antd';
 
 export default function Render(
     props: WebComponentProps<
@@ -26,10 +27,25 @@ export default function Render(
         url,
         expiresAt,
         title = '授权二维码',
+        oakLoading,
     } = props.data;
     return (
         <Container showBack={showBack} variant={variant} title={title}>
-            <QrCode url={url} expiresAt={expiresAt} />
+            {
+                oakLoading? (
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            padding: '48px',
+                        }}
+                    >
+                        <Spin size="large" />
+                    </div>
+                ) : (
+                    <QrCode url={url} expiresAt={expiresAt} />
+                )
+            }
         </Container>
     );
 }
