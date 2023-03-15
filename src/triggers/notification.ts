@@ -51,7 +51,16 @@ async function sendMessage(notification: CreateNotificationData, context: Backen
             const { config } = app!;
             const { appId, appSecret } = config as WechatMpConfig;
             const instance = WechatSDK.getInstance(appId!, 'wechatMp', appSecret) as WechatMpInstance;
-            const page = `/pages/${composeUrl(router!.pathname!, Object.assign({}, router!.props!, router!.state!))}`;
+            let page;
+            if (router) {
+                page = composeUrl(
+                    router!.pathname!,
+                    Object.assign({}, router!.props!, router!.state!)
+                );
+                page = page.startsWith('/')
+                     ? `/pages${page}`
+                     : `/pages/${page}`;
+            }
 
             // 根据当前环境决定消息推哪个版本
             const StateDict = {
