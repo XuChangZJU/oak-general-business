@@ -1,1 +1,1 @@
-{ "attr": { "ableState": "是否可用", "email": "邮箱", "user": "关联用户", "tokens": "相关令牌" }, "action": { "enable": "启用", "disable": "禁用" }, "v": { "ableState": { "enabled": "可用的", "disabled": "禁用的" } } }
+{ "name": "邮箱", "attr": { "ableState": "是否可用", "email": "邮箱", "user": "关联用户", "tokens": "相关令牌" }, "action": { "enable": "启用", "disable": "禁用" }, "v": { "ableState": { "enabled": "可用的", "disabled": "禁用的" } } }

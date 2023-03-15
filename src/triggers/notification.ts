@@ -10,6 +10,7 @@ import { composeUrl } from 'oak-domain/lib/utils/url';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { sendSms } from '../utils/sms';
 import { tryMakeSmsNotification } from './message';
+import { composeDomainUrl } from '../utils/domain';
 
 async function sendMessage(notification: CreateNotificationData, context: BackendRuntimeContext<EntityDict>) {
     const { data, templateId, channel, messageSystemId, data1, id } = notification;
@@ -94,14 +95,45 @@ async function sendMessage(notification: CreateNotificationData, context: Backen
             const app = applications!.find(
                 ele => ele.type === 'wechatPublic'
             );
-            const { config } = app!;
+            const { config, id: applicationId } = app!;
             const { appId, appSecret } = config as WechatPublicConfig;
+            const [domain] = await context.select(
+                'domain',
+                {
+                    data: {
+                        id: 1,
+                        url: 1,
+                        apiPath: 1,
+                        protocol: 1,
+                        port: 1,
+                    },
+                    filter: {
+                        systemId: {
+                            $in: {
+                                entity: 'application',
+                                data: {
+                                    systemId: 1,
+                                },
+                                filter: {
+                                    id: applicationId,
+                                },
+                            },
+                        },
+                    },
+                },
+                { dontCollect: true }
+            );
             const instance = WechatSDK.getInstance(appId!, 'wechatPublic', appSecret) as WechatPublicInstance;
-            const page = composeUrl(router!.pathname!, Object.assign({}, router!.props!, router!.state!));
             const { openId, wechatMpAppId } = data1 as {
                 openId: string,
                 wechatMpAppId?: string,
             };
+            const url = wechatMpAppId ? router!.pathname! : composeDomainUrl(domain as EntityDict['domain']['Schema'], router!.pathname!);
+            const page = composeUrl(
+                url,
+                Object.assign({}, router!.props!, router!.state!)
+            );
+
 
             try {
                 await instance.sendTemplateMessage({

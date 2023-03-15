@@ -96,8 +96,14 @@ export default function Render(
         items.push({
             label: '模板消息管理',
             key: 'mttId',
-            children: <MessageTypeTemplateIdList applicationId={oakId} oakPath="$application-detail-mttId"/>
-        })
+            children: (
+                <MessageTypeTemplateIdList
+                    oakAutoUnmount={true}
+                    applicationId={oakId}
+                    oakPath={`$application-detail-mttId-${oakId}`}
+                />
+            ),
+        });
     }
 
     return (
