@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { UploadFile } from 'antd';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
