@@ -128,11 +128,27 @@ async function sendMessage(notification: CreateNotificationData, context: Backen
                 openId: string,
                 wechatMpAppId?: string,
             };
-            const url = wechatMpAppId ? router!.pathname! : composeDomainUrl(domain as EntityDict['domain']['Schema'], router!.pathname!);
-            const page = composeUrl(
-                url,
-                Object.assign({}, router!.props!, router!.state!)
-            );
+
+            let page;
+            // message 用户不需要跳转页面
+            if (router) {
+                const url = wechatMpAppId
+                    ? router.pathname!
+                    : composeDomainUrl(
+                          domain as EntityDict['domain']['Schema'],
+                          router.pathname!
+                      );
+                page = composeUrl(
+                    url,
+                    Object.assign({}, router!.props!, router!.state!)
+                );
+                if (wechatMpAppId) {
+                    page = page.startsWith('/')
+                        ? `/pages${page}`
+                        : `/pages/${page}`;
+                }
+            }
+         
 
 
             try {
@@ -141,10 +157,12 @@ async function sendMessage(notification: CreateNotificationData, context: Backen
                     templateId: templateId!,
                     url: !wechatMpAppId ? page : undefined,
                     data: data!,
-                    miniProgram: wechatMpAppId ? {
-                        appid: wechatMpAppId,
-                        pagepath: `/pages/${page}`,
-                    } : undefined,
+                    miniProgram: wechatMpAppId
+                        ? {
+                              appid: wechatMpAppId,
+                              pagepath: page as string,
+                          }
+                        : undefined,
                     clientMsgId: id,
                 });
                 await context.operate('notification', {

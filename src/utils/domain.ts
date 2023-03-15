@@ -7,7 +7,7 @@ export function composeDomainUrl(domain: Domain, url?: string, props?: Record<st
         Url += `:${port}`;
     }
     if (url) {
-        Url += `/${url}`;
+        Url += url.startsWith('/') ? url : `/${url}`;
         if (props) {
             const k = Object.keys(props);
             if (k.length > 0) {
