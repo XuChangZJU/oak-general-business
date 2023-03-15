@@ -8,6 +8,11 @@
     </view>
     <view class="col">
         <text class="relation">{{t(entity + ':r.' + relation)}}</text>
-        <image src="{{url}}" mode="aspectFit" class="image" />
+        <block wx:if="{{oakLoading}}">
+            <l-loading show="{{true}}" type="circle"></l-loading>
+        </block>
+        <block wx:else>
+            <image src="{{url}}" mode="aspectFit" class="image" />
+        </block>
     </view>
 </view>
