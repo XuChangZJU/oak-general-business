@@ -130,7 +130,7 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                 ) {
                     throw new Error('无法生成公众号-小程序二维码，服务号未正确配置');
                 }
-                const selfMp = applications.find((ele) => ele.type = 'wechatMp');
+                const selfMp = applications.find((ele) => ele.type === 'wechatMp');
                 if (
                     !(
                         selfMp && (selfMp!.config as WechatMpConfig).appId &&

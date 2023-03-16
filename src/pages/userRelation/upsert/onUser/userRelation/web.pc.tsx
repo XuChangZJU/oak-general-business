@@ -19,7 +19,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     return (
         <>
             {
-                relations.map(
+                relations?.map(
                     (relation) => (
                         <Checkbox
                             checked={isChecked(relation)}
