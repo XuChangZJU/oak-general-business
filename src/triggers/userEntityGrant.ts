@@ -178,7 +178,9 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                             relation,
                         } as any,
                     },
-                    params
+                    Object.assign(params, {
+                        blockTrigger: true,
+                    })
                 );
                 // todo type是转让的话 需要回收授权者的关系
                 if (type === 'transfer') {
@@ -251,7 +253,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
         fn: async ({ operation, result }, context) => {
             if (operation?.data?.wechatQrCode$entity?.data?.buffer) {
                 //如果projection写buffer 就动态获取，临时性代码
-                 for (let userEntityGrant of result) {
+                for (let userEntityGrant of result) {
                     if (userEntityGrant.qrCodeType === 'wechatMpWxaCode') {
                         const wechatQrCode =
                             userEntityGrant.wechatQrCode$entity &&
@@ -277,8 +279,8 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                             )
                         }
                     }
-                 }
-            }   
+                }
+            }
             return 1;
         },
     } as SelectTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
