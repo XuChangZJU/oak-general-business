@@ -43,7 +43,7 @@
             </l-button>
         </block>
 
-        <block wx:elif="{{!oakLoading && !expired && (hasConfirmed || !!(granteeId && userId === granteeId) )}}">
+        <block wx:elif="{{redirectTo && !oakLoading && !expired && (hasConfirmed || !!(granteeId && userId === granteeId) )}}">
 <l-button l-class="btn" type="success" style="margin: 16rpx" size="large" bind:lintap="redirectPage" disabled="{{!redirectTo}}">
                 领取成功{{redirectTo ? '(' + redirectCounter + 's)' : '' }}
         </l-button>
