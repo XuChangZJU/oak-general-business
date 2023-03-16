@@ -108,7 +108,15 @@ export default OakComponent({
             }
         },
         redirectPage() {
-            const { redirectTo } = this.props;
+            const redirectTo = this.state
+                .redirectTo as EntityDict['userEntityGrant']['Schema']['redirectTo'];
+            if (!redirectTo) {
+                this.setMessage({
+                    type: 'error',
+                    content: '未配置跳转页面',
+                });
+                return;
+            }
             const { pathname, props = {}, state = {} } = redirectTo;
             const url =
                 pathname.substring(0, 1) === '/' ? pathname : `/${pathname}`;
