@@ -174,9 +174,9 @@ async function sendNotification(notification: CreateNotificationData, context: B
                     data: data!,
                     miniProgram: wechatMpAppId
                         ? {
-                              appid: wechatMpAppId,
-                              pagepath: page as string,
-                          }
+                            appid: wechatMpAppId,
+                            pagepath: page as string,
+                        }
                         : undefined,
                     clientMsgId: id,
                 });
@@ -346,7 +346,9 @@ const triggers: Trigger<EntityDict, 'notification', BackendRuntimeContext<Entity
                                         data: {
                                             messageSystemId: 1,
                                         },
-                                        id: filter!.id,                                    
+                                        filter: {
+                                            id: filter!.id,
+                                        }
                                     },
                                 }
                             }
@@ -401,15 +403,17 @@ const triggers: Trigger<EntityDict, 'notification', BackendRuntimeContext<Entity
                 return result;
             }
             // 标识消息发送失败
-            await context.operate('message', {
-                id: await generateNewIdAsync(),
-                action: 'fail',
-                data: {},
-                filter: {
-                    id: message.id,
-                },
-            }, { dontCollect: true });
-            return 1;
+            if (allFailed) {
+                await context.operate('message', {
+                    id: await generateNewIdAsync(),
+                    action: 'fail',
+                    data: {},
+                    filter: {
+                        id: message.id,
+                    },
+                }, { dontCollect: true });
+                return 1;
+            }
         }
     } as UpdateTriggerInTxn<EntityDict, 'notification', BackendRuntimeContext<EntityDict>>
 ];
