@@ -14,6 +14,7 @@ export declare type RedirectToProps = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
+    isTabBar?: boolean;
 };
 export declare type OpSchema = EntityShape & {
     entity: "role" | string;

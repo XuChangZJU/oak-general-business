@@ -117,13 +117,24 @@ export default OakComponent({
                 });
                 return;
             }
-            const { pathname, props = {}, state = {} } = redirectTo;
+            const { pathname, props, state, isTabBar } = redirectTo;
             const url =
                 pathname.substring(0, 1) === '/' ? pathname : `/${pathname}`;
+
+            if (isTabBar) {
+                this.switchTab(
+                    {
+                        url,
+                        ...(props || {}),
+                    },
+                    state
+                );
+                return;
+            }   
             this.redirectTo(
                 {
                     url,
-                    ...props,
+                    ...(props || {}),
                 },
                 state
             );

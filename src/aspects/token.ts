@@ -83,6 +83,59 @@ async function tryMakeChangeLoginWay<ED extends EntityDict, Cxt extends BackendR
     }
 }
 
+async function dealWithUserState(user: Partial<EntityDict['user']['Schema']>, context: BackendRuntimeContext<EntityDict>, tokenData: EntityDict['token']['CreateSingle']['data']): Promise<Partial<EntityDict['token']['CreateSingle']['data']>> {
+    switch (user.userState) {
+        case 'disabled': {
+            throw new OakUserDisabledException();
+        }
+        case 'shadow': {
+            return {
+                userId: user.id,
+                user: {
+                    id: await generateNewIdAsync(),
+                    action: 'activate',
+                    data: {},
+                }
+            }
+        }
+        case 'merged': {
+            assert(user?.refId);
+            const [user2] = await context.select('user', {
+                data: {
+                    id: 1,
+                    userState: 1,
+                    refId: 1,
+                    wechatUser$user: {
+                        $entity: 'wechatUser',
+                        data: {
+                            id: 1,
+                        },
+                    },
+                    userSystem$user: {
+                        $entity: 'userSystem',
+                        data: {
+                            id: 1,
+                            systemId: 1,
+                        },
+                    }
+                },
+                filter: {
+                    id: user.refId,
+                }
+            }, {
+                dontCollect: true,
+            })
+            return await dealWithUserState(user2, context, tokenData);
+        }
+        default: {
+            assert(user.userState === 'normal');
+            return {
+                userId: user.id,
+            };
+        }
+    }
+}
+
 async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(mobile: string, env: WebEnv | WechatMpEnv, context: Cxt) {
     const currentToken = context.getToken(true);
     const applicationId = context.getApplicationId();
@@ -97,6 +150,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
             user: {
                 id: 1,
                 userState: 1,
+                refId: 1,
                 wechatUser$user: {
                     $entity: 'wechatUser',
                     data: {
@@ -141,7 +195,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
                     default: {
                         /* assert(userState === 'normal');
                         throw await makeDistinguishException<ED, Cxt>(userId as string, context, '该手机号已被一个有效用户占用，请联系管理员处理'); */
-                        
+
                         // 直接合并
                         await mergeUser<ED, Cxt>({ from: userId!, to: currentToken.userId! }, context, true);
                         return currentToken.id!;
@@ -161,29 +215,9 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
             };
             const { user } = mobileRow;
             const { userState } = user!;
-            switch (userState) {
-                case 'disabled': {
-                    throw new OakUserDisabledException();
-                }
-                case 'shadow': {
-                    Object.assign(tokenData, {
-                        userId: mobileRow.userId,
-                        user: {
-                            id: await generateNewIdAsync(),
-                            action: 'activate',
-                            data: {},
-                        }
-                    });
-                    break;
-                }
-                default: {
-                    assert(userState === 'normal');
-                    Object.assign(tokenData, {
-                        userId: mobileRow.userId,
-                    });
-                }
-            }
 
+            // 可能出现多次merge的情况
+            Object.assign(tokenData, await dealWithUserState(user as Partial<EntityDict['user']['Schema']>, context as BackendRuntimeContext<EntityDict>, tokenData));
             await context.operate('token', {
                 id: await generateNewIdAsync(),
                 data: tokenData,
