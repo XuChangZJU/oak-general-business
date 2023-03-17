@@ -6,6 +6,7 @@ export declare type WechatQrCodeProps = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
+    isTabBar?: boolean;
 };
 export interface Schema extends EntityShape {
     entity: String<32>;

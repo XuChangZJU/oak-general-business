@@ -9,6 +9,7 @@ export type WechatQrCodeProps = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
+    isTabBar?: boolean; //小程序独有 小程序跳回tabBar的话 必须使用 wx.switchTab
 };
 
 export interface Schema extends EntityShape {

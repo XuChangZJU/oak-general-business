@@ -6,6 +6,7 @@ declare type Router = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
+    isTabBar?: boolean;
 };
 declare type MessageRestriction = {
     systemIds?: string[];
