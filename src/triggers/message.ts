@@ -6,6 +6,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { BRC } from '../types/RuntimeCxt';
 import { Channel, MessageNotificationConverter, Weight } from '../types/Message';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { uniqBy } from 'oak-domain/lib/utils/lodash';
 
 const ConverterDict: Record<string, MessageNotificationConverter<EntityDict, BRC>> = {}
 
@@ -87,7 +88,8 @@ async function createNotification(message: CreateMessageData, context: BRC) {
         },
     }, { dontCollect: true });
 
-    const systems = userSystems.map(
+    // 这里实测线上跑出来多条相同的userSystem，还未知道原因 by Xc 20230317
+    const systems = uniqBy(userSystems.map(
         ele => ele.system!
     ).filter(
         ele => {
@@ -96,7 +98,7 @@ async function createNotification(message: CreateMessageData, context: BRC) {
             }
             return true;
         }
-    );
+    ), 'id');
 
     if (systems.length === 0) {
         console.warn(`类型为${type}的消息在生成时，尝试为之生成通知，找不到可推送的system`);

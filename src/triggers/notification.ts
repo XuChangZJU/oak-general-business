@@ -12,7 +12,7 @@ import { sendSms } from '../utils/sms';
 import { tryMakeSmsNotification } from './message';
 import { composeDomainUrl } from '../utils/domain';
 
-async function sendMessage(notification: CreateNotificationData, context: BackendRuntimeContext<EntityDict>) {
+async function sendNotification(notification: CreateNotificationData, context: BackendRuntimeContext<EntityDict>) {
     const { data, templateId, channel, messageSystemId, data1, id } = notification;
     const [messageSystem] = await context.select('messageSystem', {
         data: {
@@ -291,11 +291,11 @@ const triggers: Trigger<EntityDict, 'notification', BackendRuntimeContext<Entity
             const { data } = operation;
             if (data instanceof Array) {
                 for (const d of data) {
-                    await sendMessage(d, context);
+                    await sendNotification(d, context);
                 }
             }
             else {
-                await sendMessage(data, context);
+                await sendNotification(data, context);
             }
             return 0;
         }
@@ -308,7 +308,7 @@ const triggers: Trigger<EntityDict, 'notification', BackendRuntimeContext<Entity
         fn: async ({ operation }, context) => {
             const { filter } = operation;
             assert(filter!.id);
-            const [message] = await context.select('message', {
+            const messages = await context.select('message', {
                 data: {
                     id: 1,
                     weight: 1,
@@ -331,9 +331,31 @@ const triggers: Trigger<EntityDict, 'notification', BackendRuntimeContext<Entity
                             },
                         },
                     },
+                },
+                filter: {
+                    id: {
+                        $in: {
+                            entity: 'messageSystem',
+                            data: {
+                                messageId: 1,
+                            },
+                            filter: {
+                                id: {
+                                    $in: {
+                                        entity: 'notification',
+                                        data: {
+                                            messageSystemId: 1,
+                                        },
+                                        id: filter!.id,                                    
+                                    },
+                                }
+                            }
+                        }
+                    }
                 }
             }, { dontCollect: true });
-            assert(message);
+            assert(messages.length === 1);
+            const [message] = messages;
             if (message.iState === 'success') {
                 return 0;
             }
