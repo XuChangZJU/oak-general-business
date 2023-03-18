@@ -93,13 +93,13 @@ export default OakComponent({
                 throw error;
             }
         },
-        async onPickByMp(event: WechatMiniprogram.TouchEvent) {
+        async onPickMp(event: any) {
             if (process.env.OAK_PLATFORM === 'wechatMp') {
                 const { mediaType } = event.currentTarget.dataset;
                 try {
                     const { errMsg, tempFiles } = await wx.chooseMedia({
                         count: 1,
-                        mediaType: [mediaType],
+                        mediaType: ['image'],
                         sourceType: ['album', 'camera'],
                         camera: 'back',
                     });
