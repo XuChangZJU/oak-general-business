@@ -273,7 +273,44 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                     const { id, granter, expired, entity: entity2, qrCodeType } = userEntityGrant!;
 
                     const name = granter?.name || granter?.nickname || '某用户';
-                    if (qrCodeType === 'wechatPublic') {
+                    if (qrCodeType === 'wechatPublicForMp') {
+                        // 找到相关的小程序
+                        const [appMp] = await context.select(
+                            'application',
+                            {
+                                data: {
+                                    id: 1,
+                                    config: 1,
+                                },
+                                filter: {
+                                    systemId,
+                                    type: 'wechatMp',
+                                },
+                            },
+                            { dontCollect: true }
+                        );
+                        assert(appMp, '公众号推送小程序码时找不到关联的小程序');
+                        const { config } = appMp;
+                        const { appId } = config as WechatMpConfig;
+
+                        const url = composeUrl(
+                            'pages/wechatQrCode/scan/index',
+                            {
+                                scene: sceneStr,
+                                time: `${Date.now()}`,
+                            }
+                        )
+                        // 先试着发文字链接
+                        const content = `${name}为您创建了一个授权，<a href='#' data-miniprogram-appid='${appId}' data-miniprogram-path='${url}'>请点击领取</a>`;
+
+                        assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
+                        wechatInstance.sendServeMessage({
+                            openId,
+                            type: 'text',
+                            content,
+                        });
+                    }
+                    else {
                         // 推domain上的scan/code链接
 
                         const [domain] = await context.select('domain', {
@@ -303,7 +340,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                             scene: sceneStr,
                             time: `${Date.now()}`,
                         });
-    
+
                         assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
                         wechatInstance.sendServeMessage({
                             openId,
@@ -312,44 +349,6 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                             title: `${name}为您创建了一个授权`,
                             description: '请接受',
                             picurl: 'http://img95.699pic.com/element/40018/2473.png_860.png',
-                        });
-                    }
-                    else {
-                        assert(qrCodeType === 'wechatPublicForMp');
-                        // 找到相关的小程序
-                        const [appMp] = await context.select(
-                            'application',
-                            {
-                                data: {
-                                    id: 1,
-                                    config: 1,
-                                },
-                                filter: {
-                                    systemId,
-                                    type: 'wechatMp',
-                                },
-                            },
-                            { dontCollect: true }
-                        );
-                        assert(appMp, '公众号推送小程序码时找不到关联的小程序');
-                        const { config } = appMp;
-                        const { appId } = config as WechatMpConfig;
-
-                        const url = composeUrl(
-                            '/pages/wecharQrCode/scan',
-                            {
-                                oakId: wcqId,
-                                time: `${Date.now()}`,
-                            }
-                        )
-                        // 先试着发文字链接
-                        const content = `${name}为您创建了一个授权，<a href='#' data-miniprogram-appid='${appId}' data-miniprogram-path='${url}'>请点击领取</a>`;
-                        
-                        assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
-                        wechatInstance.sendServeMessage({
-                            openId,
-                            type: 'text',
-                            content,
                         });
                     }
                 }
@@ -480,7 +479,7 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
         fn: async (context, params, body, req, headers) => {
             const { searchParams } = new URL(`http://${req.headers.host!}${req.url}`);
             const { appId } = params;
-            
+
             if (!appId || appId === '20230210') {
                 console.error('applicationId参数不存在');
                 const echostr = searchParams.get('echostr')!;
