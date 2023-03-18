@@ -64,7 +64,7 @@ export default function Render(
     return (
         <PageHeader title="权限列表" showBack={showBack}>
             <div className={Style.container}>
-                <Space>
+                <Space style={{ marginBottom: 16 }}>
                     <Button type="primary" onClick={() => goUpsert()}>
                         添加
                     </Button>
@@ -131,24 +131,22 @@ export default function Render(
                             render: (value, record, index) => {
                                 return (
                                     <Space>
-                                        <Button
-                                            type="link"
-                                            onClick={(e) => goUpdate(record.id)}
-                                        >
+                                        <a onClick={(e) => goUpdate(record.id)}>
                                             {record.relations?.length > 0
                                                 ? t('common:action.update')
                                                 : t('common:action.grant')}
-                                        </Button>
+                                        </a>
                                         {record.relations?.length > 0 && (
-                                            <Button
-                                                danger
-                                                type="link"
+                                            <a
+                                                style={{
+                                                    color: 'var(--oak-color-error)',
+                                                }}
                                                 onClick={() =>
                                                     setIdRemove(record.id)
                                                 }
                                             >
                                                 {t('common:action.revoke')}
-                                            </Button>
+                                            </a>
                                         )}
                                     </Space>
                                 );
