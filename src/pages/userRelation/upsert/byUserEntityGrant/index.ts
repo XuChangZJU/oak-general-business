@@ -49,7 +49,6 @@ export default OakComponent({
             const { userEntityGrantId } = this.state;
             const imageUrl = (systemConfig && systemConfig?.App?.mpShareImageUrl) ||
                 '';
-            const { redirectToAfterConfirm } = this.props;
             return {
                 title: '',
                 path: `/pages/userEntityGrant/confirm/index?oakId=${userEntityGrantId}`,
@@ -72,6 +71,7 @@ export default OakComponent({
                 redirectTo: redirectToAfterConfirm as EntityDict['userEntityGrant']['Schema']['redirectTo'],
                 qrCodeType: qrCodeType as QrCodeType,
             });
+                
             this.setState({
                 userEntityGrantId: '',
             });

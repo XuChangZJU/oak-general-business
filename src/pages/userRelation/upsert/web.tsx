@@ -114,6 +114,7 @@ export default function Render(
                                 : undefined
                         }
                         oakAutoUnmount={true}
+                        redirectToAfterConfirm={redirectToAfterConfirm}
                     />
                 ),
             },
