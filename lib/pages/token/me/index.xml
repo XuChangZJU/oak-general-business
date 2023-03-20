@@ -7,10 +7,10 @@
         <block wx:else>
             <l-avatar icon="user" size="140" icon-size="80" text="{{nickname || '未设置'}}" placement="bottom" bind:lintap="goMyInfo"/>
         </block>
-        <block wx:if="{{isLoggedIn && !isPlayingAnother && !oakLoading}}">
+        <!-- <block wx:if="{{isLoggedIn && !isPlayingAnother && !oakLoading}}">
             <l-button shape="semicircle" type="default" size="mini" disabled="{{refreshing}}"  plain="true" bind:lintap="onRefresh">{{t('syncWeChat')}}</l-button>
-        </block>
-        <block wx:elif="{{!isLoggedIn}}">
+        </block> -->
+        <block wx:if="{{!isLoggedIn}}">
             <l-button shape="semicircle" type="default" size="mini" disabled="{{refreshing || oakLoading}}" bind:lintap="doLogin">{{t('login')}}</l-button>
         </block>
     </view>

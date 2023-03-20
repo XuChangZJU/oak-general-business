@@ -75,7 +75,7 @@ export default function render(
 
     return (
         <div className={Style.container}>
-            {isSupportSyncWeChat && (
+            {/* {isSupportSyncWeChat && (
                 <div className={Style.syncWeChat}>
                     <Button
                         disabled={refreshing}
@@ -90,7 +90,7 @@ export default function render(
                         {t('syncWeChat')}
                     </Button>
                 </div>
-            )}
+            )} */}
 
             <List className={Style.list}>
                 <List.Item
