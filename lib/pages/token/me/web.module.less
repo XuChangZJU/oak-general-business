@@ -14,10 +14,14 @@
   background-color: var(--oak-bg-color-container);
 
   .avatar {
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
     background-color: var(--oak-color-primary);
-        margin-bottom: 10px;
+    margin-bottom: 10px;
+      display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
   }
 
   .nickname {
@@ -25,13 +29,12 @@
   }
 
   .userIcon {
-    height: 24px;
-    width: 24px;
     color: #fff;
   }
 }
 
 .list {
+  background-color: #fff;
   :global {
     .t-list-item__meta {
 

@@ -99,13 +99,20 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', tru
                 <Input
                     placeholder="请输入昵称"
                     value={nickname}
-                    onChange={(e) => updateItem({ user: {
-                        id: generateNewId(),
-                        action: 'update',
-                        data: {
-                            nickname: e.target.value
-                        }
-                    }}, tokenId! )}
+                    onChange={(e) =>
+                        updateItem(
+                            {
+                                user: {
+                                    id: generateNewId(),
+                                    action: 'update',
+                                    data: {
+                                        nickname: e.target.value,
+                                    },
+                                },
+                            },
+                            tokenId!
+                        )
+                    }
                 />
             </Drawer>
         </div>
