@@ -950,15 +950,15 @@ export async function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends Ba
 
 
     // console.log(avatarUrl);
-    // const { type, config } = application;
+    const { type, config: config2 } = application as Partial<EntityDict['application']['Schema']>;
 
-    // assert(type === 'wechatMp' || config.type === 'wechatMp');
+    assert(type === 'wechatMp' || config2!.type === 'wechatMp');
     // const config2 = config as WechatMpConfig;
-    // const { appId, appSecret } = config2;
-    // const wechatInstance = WechatSDK.getInstance(appId, 'wechatMp', appSecret);
-    // const result = wechatInstance.decryptData(sessionKey as string, encryptedData, iv, signature);
+    const { appId, appSecret } = config2 as WechatMpConfig;
+    const wechatInstance = WechatSDK.getInstance(appId, 'wechatMp', appSecret);
+    const result = wechatInstance.decryptData(sessionKey as string, encryptedData, iv, signature);
     // 实测发现解密出来的和userInfo完全一致……
-    // console.log(result);
+    console.log(result);
     await setUserInfoFromWechat<ED, Cxt>(user!, { nickname, avatar: avatarUrl }, context);
 }
 
