@@ -303,12 +303,21 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                         // 先试着发文字链接
                         const content = `${name}为您创建了一个授权，<a href='#' data-miniprogram-appid='${appId}' data-miniprogram-path='${url}'>请点击领取</a>`;
 
-                        assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
-                        wechatInstance.sendServeMessage({
-                            openId,
-                            type: 'text',
-                            content,
-                        });
+                        // assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
+                        if (!expired) {
+                            wechatInstance.sendServeMessage({
+                                openId,
+                                type: 'text',
+                                content,
+                            });
+                        } else {
+                            wechatInstance.sendServeMessage({
+                                openId,
+                                type: 'text',
+                                content: '您好，您扫描的二维码已经过期，请联系管理员重新获取',
+                            });
+                        }
+
                     }
                     else {
                         // 推domain上的scan/code链接
@@ -341,15 +350,23 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                             time: `${Date.now()}`,
                         });
 
-                        assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
-                        wechatInstance.sendServeMessage({
-                            openId,
-                            type: 'news',
-                            url,
-                            title: `${name}为您创建了一个授权`,
-                            description: '请接受',
-                            picurl: 'http://img95.699pic.com/element/40018/2473.png_860.png',
-                        });
+                        // assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
+                        if (!expired) {
+                            wechatInstance.sendServeMessage({
+                                openId,
+                                type: 'news',
+                                url,
+                                title: `${name}为您创建了一个授权`,
+                                description: '请接受',
+                                picurl: 'http://img95.699pic.com/element/40018/2473.png_860.png',
+                            });
+                        } else {
+                            wechatInstance.sendServeMessage({
+                                openId,
+                                type: 'text',
+                                content: '您好，您扫描的二维码已经过期，请联系管理员重新获取',
+                            });
+                        }
                     }
                 }
             }
