@@ -112,7 +112,7 @@ export class Token<
         return this.tokenValue;
     }
 
-    getToken(allowUnloggedIn?: boolean) {
+    getToken(allowUnloggedIn?: boolean, context?: FrontCxt) {
         if (this.tokenValue) {
             return this.cache.get(
                 'token',
@@ -122,7 +122,8 @@ export class Token<
                         id: this.tokenValue!,
                     },
                 },
-                allowUnloggedIn
+                allowUnloggedIn,
+                context
             )[0];
         }
         if (allowUnloggedIn) {
@@ -131,23 +132,23 @@ export class Token<
         throw new OakUnloggedInException();
     }
 
-    getUserId(allowUnloggedIn?: boolean) {
-        const token = this.getToken(allowUnloggedIn);
+    getUserId(allowUnloggedIn?: boolean, context?: FrontCxt) {
+        const token = this.getToken(allowUnloggedIn, context);
         if (token?.userId) {
             return token.userId!;
         }
     }
 
     // getUserInfo 不要求登录
-    getUserInfo() {
-        const token = this.getToken(true);
+    getUserInfo(context?: FrontCxt) {
+        const token = this.getToken(true, context);
         if (token?.user) {
             return token.user;
         }
     }
 
-    isRoot(): boolean {
-        const token = this.getToken(true);
+    isRoot(context?: FrontCxt): boolean {
+        const token = this.getToken(true, context);
         const userRole$user = token?.user?.userRole$user;
         return !!(
             userRole$user &&
@@ -160,8 +161,8 @@ export class Token<
      * 这个是指token的player到底是不是root
      * @returns
      */
-    isReallyRoot(): boolean {
-        const token = this.getToken(true);
+    isReallyRoot(context?: FrontCxt): boolean {
+        const token = this.getToken(true, context);
         const userRole$user = token?.player?.userRole$user;
         return !!(
             userRole$user &&
