@@ -24,8 +24,8 @@ export class FrontendRuntimeContext<
     Cxt extends BackendRuntimeContext<ED>,
     AD extends AspectDict<ED, Cxt>
     > extends SyncContext<ED> implements RuntimeContext {
-    private application?: Application<ED, Cxt, this, AD>;
-    private token?: Token<ED, Cxt, this, AD>;
+    private application?: Application<ED, Cxt, any, AD>;
+    private token?: Token<ED, Cxt, any, AD>;
     constructor(store: SyncRowStore<ED, FrontendRuntimeContext<ED, Cxt, AD>>, application?: Application<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>, token?: Token<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>) {
         super(store);
         this.application = application;
