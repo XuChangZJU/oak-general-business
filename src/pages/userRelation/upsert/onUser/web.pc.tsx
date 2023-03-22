@@ -16,14 +16,14 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     relations: string[];
     entity: string;
     entityId: string;
+    isNew: boolean;
 }, {
     onMobileChange: (value: string) => Promise<void>;
     onConfirm: () => Promise<void>;
     onReset: () => void;
 }>) {
-    const { name, nickname, password, relations, oakFullpath, entity, entityId } = props.data;
-    const { t, update, isCreation } = props.methods;
-    const isNew = oakFullpath && isCreation();
+    const { name, isNew, nickname, password, relations, oakFullpath, entity, entityId } = props.data;
+    const { t, update } = props.methods;
     return (
         <div className={Style.container}>
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>

@@ -1,4 +1,6 @@
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { isMobile } from 'oak-domain/lib/utils/validator';
+import { EntityDict } from '../../../../general-app-domain';
 
 export default OakComponent({
     entity: 'mobile',
@@ -45,11 +47,17 @@ export default OakComponent({
                 }
                 else {
                     this.clean();
-                    this.unsetId();
-                    // todo
-                    this.update({
-                        mobile: value,
-                    });
+                    this.create({
+                        mobile: value,  
+                        user: {
+                            id: generateNewId(),
+                            action: 'create',
+                            data: {
+                                id: generateNewId(),
+                                password: '12345678',
+                            }
+                        }
+                    } as EntityDict['mobile']['CreateSingle']['data']);
                 }
             }
             else {

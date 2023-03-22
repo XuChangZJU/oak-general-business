@@ -30,7 +30,7 @@ export default OakComponent({
     },
     isList: false,
     formData({ data: user }) {
-        const { name, nickname, password, extraFile$entity } = user || {};
+        const { name, nickname, password, extraFile$entity, $$createAt$$ } = user || {};
         const avatar = this.features.extraFile.getUrl(
             extraFile$entity && extraFile$entity[0]
         );
@@ -39,6 +39,7 @@ export default OakComponent({
             password,
             name,
             nickname,
+            isNew: $$createAt$$ === 1,
         };
     },
     properties: {
@@ -57,14 +58,6 @@ export default OakComponent({
     lifetimes: {
         async ready() {
             const { entity } = this.props;
-            const isCreation = this.isCreation();
-            if (isCreation) {
-                this.update(
-                    {
-                        password: '12345678',
-                    },
-                );
-            }
             this.setState({
                 userRelationRelativePath: `user${firstLetterUpperCase(
                     entity!

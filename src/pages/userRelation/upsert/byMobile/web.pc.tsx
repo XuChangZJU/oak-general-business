@@ -55,7 +55,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                     </>
                 </Form.Item>
             </Form>
-            {mobileValueReady && (
+            {mobileValueReady && userId && (
                 <OnUser
                     oakAutoUnmount={true}
                     oakPath={oakFullpath ? `${oakFullpath}.user`
