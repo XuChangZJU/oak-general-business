@@ -14,7 +14,9 @@ export default OakComponent({
     formData({ data }) {
         return data || {};
     },
-    data: {
+    properties: {
+        entityId: String,
+        entity: String,
     },
     lifetimes: {
         ready() {

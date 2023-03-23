@@ -9,6 +9,10 @@ export default OakComponent({
         entity: 1,
         entityId: 1,
     },
+    properties: {
+        entityId: String,
+        entity: String,
+    },
     filters: [
         {
             filter() {
@@ -20,10 +24,8 @@ export default OakComponent({
         },
     ],
     formData({ data }) {
-        const pagination = this.getPagination();
         return {
             list: data,
-            pagination,
         };
     },
     data: {
@@ -49,7 +51,7 @@ export default OakComponent({
             });
         },
         goCreate() {
-            const { width, entityId, entity } = this.props;
+            const { entityId, entity } = this.props;
             this.navigateTo({
                 url: '/subscription/upsert',
                 entityId,

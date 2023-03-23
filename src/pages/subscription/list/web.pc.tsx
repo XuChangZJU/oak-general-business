@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Table, Button, Space, Typography, Modal } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 
@@ -28,7 +28,7 @@ export default function Render(
     >
 ) {
     const {
-        pagination,
+        oakPagination,
         list = [],
         oakLoading,
         showBack,
@@ -36,7 +36,7 @@ export default function Render(
         oakFullpath,
     } = props.data;
 
-    const { pageSize, total, currentPage } = pagination || {};
+    const { pageSize, total, currentPage } = oakPagination || {};
 
     const {
         t,
@@ -51,7 +51,7 @@ export default function Render(
 
     return (
         <Container variant={variant}>
-            <Space>
+            <Space style={{ marginBottom: 16 }}>
                 <Button
                     type="primary"
                     onClick={() => {
