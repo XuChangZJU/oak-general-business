@@ -28,7 +28,8 @@ export default OakComponent({
     },
     formData({ features }) {
         const application = features.application.getApplication();
-        const appId = (application?.config as WebConfig | undefined)?.wechat?.appId;
+        const appId = (application?.config as WebConfig | undefined)?.wechat
+            ?.appId;
 
         const loginAgreed = features.localStorage.load(LOGIN_AGREED);
         const loginMode = features.localStorage.load(LOGIN_MODE) || 2;
@@ -54,6 +55,15 @@ export default OakComponent({
             appId,
         };
     },
+    lifetimes: {
+        attached() {
+            // 如果已登录， 返回上一页
+            const token = this.features.token.getTokenValue();
+            if (token) {
+                this.navigateBack();
+            }
+        },
+    },
     methods: {
         async sendCaptcha(mobile: string) {
             try {
@@ -72,7 +82,12 @@ export default OakComponent({
                 });
             }
         },
-        async loginByMobile(mobile: string, loginAgreed: boolean, password?: string, captcha?: string) {
+        async loginByMobile(
+            mobile: string,
+            loginAgreed: boolean,
+            password?: string,
+            captcha?: string
+        ) {
             const { eventLoggedIn, backUrl } = this.props;
             if (!loginAgreed) {
                 this.setMessage({
@@ -116,7 +131,13 @@ export default OakComponent({
                 });
             }
         },
-        async loginByMobileWeb(mobile: string, loginAgreed: boolean, password?: string, captcha?: string, loginMode?: number) {
+        async loginByMobileWeb(
+            mobile: string,
+            loginAgreed: boolean,
+            password?: string,
+            captcha?: string,
+            loginMode?: number
+        ) {
             await this.loginByMobile(mobile, loginAgreed, password, captcha);
             if (loginAgreed !== this.state.loginAgreed) {
                 this.setLoginAgreed(loginAgreed);
