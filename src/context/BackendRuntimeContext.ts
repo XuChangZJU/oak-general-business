@@ -7,6 +7,7 @@ import { OakException, OakUnloggedInException } from 'oak-domain/lib/types/Excep
 import { ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
 import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
+import { SelectOpResult } from 'oak-domain/lib/types';
 
 /**
  * general数据结构要求的后台上下文
@@ -19,6 +20,21 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
     protected rootMode?: boolean;
     private tokenException?: OakException<ED>;
 
+    async refineOpRecords(): Promise<void> {
+        for (const opRecord of this.opRecords) {
+            if (opRecord.a === 's') {
+                const { d } = opRecord as SelectOpResult<ED>;
+                for (const entity in d) {
+                    if (entity === 'wechatQrCode') {
+                        // todo 小程序码此时去微信服务器获得码数据
+                    }
+                    else if (['application', 'system', 'platform'].includes(entity)) {
+                        // todo 删除掉config中的敏感返回信息
+                    }
+                }
+            }
+        }
+    }
 
     async setTokenValue(tokenValue: string) {
         const result = await this.select('token', {

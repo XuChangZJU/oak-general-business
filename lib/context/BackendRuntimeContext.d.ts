@@ -12,6 +12,7 @@ export declare class BackendRuntimeContext<ED extends EntityDict> extends AsyncC
     protected amIReallyRoot?: boolean;
     protected rootMode?: boolean;
     private tokenException?;
+    refineOpRecords(): Promise<void>;
     setTokenValue(tokenValue: string): Promise<void>;
     setApplication(appId: string): Promise<void>;
     protected initialize(data?: SerializedData): Promise<void>;
