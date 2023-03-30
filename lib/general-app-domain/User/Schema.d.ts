@@ -15,8 +15,8 @@ import * as UserEntityGrant from "../UserEntityGrant/Schema";
 import * as UserSystem from "../UserSystem/Schema";
 import * as UserWechatPublicTag from "../UserWechatPublicTag/Schema";
 import * as WechatUser from "../WechatUser/Schema";
-import * as OperEntity from "../OperEntity/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
+import * as OperEntity from "../OperEntity/Schema";
 import * as ExtraFile from "../ExtraFile/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
 export declare type OpSchema = EntityShape & {
@@ -72,10 +72,10 @@ export declare type Schema = EntityShape & {
     userWechatPublicTag$user$$aggr?: AggregationResult<UserWechatPublicTag.Schema>;
     wechatUser$user?: Array<WechatUser.Schema>;
     wechatUser$user$$aggr?: AggregationResult<WechatUser.Schema>;
-    operEntity$entity?: Array<OperEntity.Schema>;
-    operEntity$entity$$aggr?: AggregationResult<OperEntity.Schema>;
     modiEntity$entity?: Array<ModiEntity.Schema>;
     modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;
+    operEntity$entity?: Array<OperEntity.Schema>;
+    operEntity$entity$$aggr?: AggregationResult<OperEntity.Schema>;
     extraFile$entity?: Array<ExtraFile.Schema>;
     extraFile$entity$$aggr?: AggregationResult<ExtraFile.Schema>;
     wechatQrCode$entity?: Array<WechatQrCode.Schema>;
@@ -199,17 +199,17 @@ export declare type Projection = {
     wechatUser$user$$aggr?: WechatUser.Aggregation & {
         $entity: "wechatUser";
     };
-    operEntity$entity?: OperEntity.Selection & {
-        $entity: "operEntity";
-    };
-    operEntity$entity$$aggr?: OperEntity.Aggregation & {
-        $entity: "operEntity";
-    };
     modiEntity$entity?: ModiEntity.Selection & {
         $entity: "modiEntity";
     };
     modiEntity$entity$$aggr?: ModiEntity.Aggregation & {
         $entity: "modiEntity";
+    };
+    operEntity$entity?: OperEntity.Selection & {
+        $entity: "operEntity";
+    };
+    operEntity$entity$$aggr?: OperEntity.Aggregation & {
+        $entity: "operEntity";
     };
     extraFile$entity?: ExtraFile.Selection & {
         $entity: "extraFile";
@@ -293,8 +293,8 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "refId">
     userSystem$user?: OakOperation<UserSystem.UpdateOperation["action"], Omit<UserSystem.UpdateOperationData, "user" | "userId">, UserSystem.Filter> | OakOperation<"create", Omit<UserSystem.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserSystem.CreateOperationData, "user" | "userId">> | OakOperation<UserSystem.UpdateOperation["action"], Omit<UserSystem.UpdateOperationData, "user" | "userId">, UserSystem.Filter>>;
     userWechatPublicTag$user?: OakOperation<UserWechatPublicTag.UpdateOperation["action"], Omit<UserWechatPublicTag.UpdateOperationData, "user" | "userId">, UserWechatPublicTag.Filter> | OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "user" | "userId">> | OakOperation<UserWechatPublicTag.UpdateOperation["action"], Omit<UserWechatPublicTag.UpdateOperationData, "user" | "userId">, UserWechatPublicTag.Filter>>;
     wechatUser$user?: OakOperation<WechatUser.UpdateOperation["action"], Omit<WechatUser.UpdateOperationData, "user" | "userId">, WechatUser.Filter> | OakOperation<"create", Omit<WechatUser.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<WechatUser.CreateOperationData, "user" | "userId">> | OakOperation<WechatUser.UpdateOperation["action"], Omit<WechatUser.UpdateOperationData, "user" | "userId">, WechatUser.Filter>>;
-    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
+    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     extraFile$entity?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, ExtraFile.Filter> | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, ExtraFile.Filter>>;
     wechatQrCode$entity?: OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, WechatQrCode.Filter> | OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">> | OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, WechatQrCode.Filter>>;
 };
@@ -328,8 +328,8 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "refId">
     userSystem$user?: UserSystem.UpdateOperation | UserSystem.RemoveOperation | OakOperation<"create", Omit<UserSystem.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserSystem.CreateOperationData, "user" | "userId">> | UserSystem.UpdateOperation | UserSystem.RemoveOperation>;
     userWechatPublicTag$user?: UserWechatPublicTag.UpdateOperation | UserWechatPublicTag.RemoveOperation | OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "user" | "userId">> | UserWechatPublicTag.UpdateOperation | UserWechatPublicTag.RemoveOperation>;
     wechatUser$user?: WechatUser.UpdateOperation | WechatUser.RemoveOperation | OakOperation<"create", Omit<WechatUser.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<WechatUser.CreateOperationData, "user" | "userId">> | WechatUser.UpdateOperation | WechatUser.RemoveOperation>;
-    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
+    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     extraFile$entity?: ExtraFile.UpdateOperation | ExtraFile.RemoveOperation | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | ExtraFile.UpdateOperation | ExtraFile.RemoveOperation>;
     wechatQrCode$entity?: WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation | OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">> | WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation>;
 };

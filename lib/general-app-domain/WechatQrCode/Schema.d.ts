@@ -8,8 +8,8 @@ import { QrCodeType } from "../../types/Config";
 import * as Application from "../Application/Schema";
 import * as User from "../User/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
-import * as OperEntity from "../OperEntity/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
+import * as OperEntity from "../OperEntity/Schema";
 export declare type WechatQrCodeProps = {
     pathname: string;
     props?: Record<string, any>;
@@ -49,10 +49,10 @@ export declare type Schema = EntityShape & {
     application: Application.Schema;
     user?: User.Schema;
     userEntityGrant?: UserEntityGrant.Schema;
-    operEntity$entity?: Array<OperEntity.Schema>;
-    operEntity$entity$$aggr?: AggregationResult<OperEntity.Schema>;
     modiEntity$entity?: Array<ModiEntity.Schema>;
     modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;
+    operEntity$entity?: Array<OperEntity.Schema>;
+    operEntity$entity$$aggr?: AggregationResult<OperEntity.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -102,17 +102,17 @@ export declare type Projection = {
     props?: number;
     user?: User.Projection;
     userEntityGrant?: UserEntityGrant.Projection;
-    operEntity$entity?: OperEntity.Selection & {
-        $entity: "operEntity";
-    };
-    operEntity$entity$$aggr?: OperEntity.Aggregation & {
-        $entity: "operEntity";
-    };
     modiEntity$entity?: ModiEntity.Selection & {
         $entity: "modiEntity";
     };
     modiEntity$entity$$aggr?: ModiEntity.Aggregation & {
         $entity: "modiEntity";
+    };
+    operEntity$entity?: OperEntity.Selection & {
+        $entity: "operEntity";
+    };
+    operEntity$entity$$aggr?: OperEntity.Aggregation & {
+        $entity: "operEntity";
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type WechatQrCodeIdProjection = OneOf<{
@@ -213,8 +213,8 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     entityId?: string;
     [K: string]: any;
 }) & {
-    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
+    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -244,8 +244,8 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     entityId?: String<64> | null;
 }) & {
     [k: string]: any;
-    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
+    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({

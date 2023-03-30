@@ -56,7 +56,15 @@ export async function mergeUser<ED extends EntityDict & BaseEntityDict, Cxt exte
             userState: 'merged',
         },
         filter: {
-            id: from,
-        }
+            $or: [
+                {
+                    id: from,
+                },
+                {
+                    userState: 'merged',
+                    refId: from,
+                }
+            ],
+        },
     }, {});
 }

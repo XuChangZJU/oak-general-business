@@ -6,8 +6,8 @@ import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOper
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as User from "../User/Schema";
 import * as Application from "../Application/Schema";
-import * as OperEntity from "../OperEntity/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
+import * as OperEntity from "../OperEntity/Schema";
 import * as Token from "../Token/Schema";
 export declare type OpSchema = EntityShape & {
     origin: 'mp' | 'public' | 'web';
@@ -47,10 +47,10 @@ export declare type Schema = EntityShape & {
     avatar?: Image | null;
     user?: User.Schema | null;
     application: Application.Schema;
-    operEntity$entity?: Array<OperEntity.Schema>;
-    operEntity$entity$$aggr?: AggregationResult<OperEntity.Schema>;
     modiEntity$entity?: Array<ModiEntity.Schema>;
     modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;
+    operEntity$entity?: Array<OperEntity.Schema>;
+    operEntity$entity$$aggr?: AggregationResult<OperEntity.Schema>;
     token$entity?: Array<Token.Schema>;
     token$entity$$aggr?: AggregationResult<Token.Schema>;
 } & {
@@ -106,17 +106,17 @@ export declare type Projection = {
     application?: Application.Projection;
     nickname?: number;
     avatar?: number;
-    operEntity$entity?: OperEntity.Selection & {
-        $entity: "operEntity";
-    };
-    operEntity$entity$$aggr?: OperEntity.Aggregation & {
-        $entity: "operEntity";
-    };
     modiEntity$entity?: ModiEntity.Selection & {
         $entity: "modiEntity";
     };
     modiEntity$entity$$aggr?: ModiEntity.Aggregation & {
         $entity: "modiEntity";
+    };
+    operEntity$entity?: OperEntity.Selection & {
+        $entity: "operEntity";
+    };
+    operEntity$entity$$aggr?: OperEntity.Aggregation & {
+        $entity: "operEntity";
     };
     token$entity?: Token.Selection & {
         $entity: "token";
@@ -206,8 +206,8 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "userId"
 } | {
     applicationId: String<64>;
 })) & {
-    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
+    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     token$entity?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "entity" | "entityId">, Token.Filter> | OakOperation<"create", Omit<Token.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "entity" | "entityId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "entity" | "entityId">, Token.Filter>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
@@ -239,8 +239,8 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId"
     applicationId?: String<64> | null;
 })) & {
     [k: string]: any;
-    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
+    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     token$entity?: Token.UpdateOperation | Token.RemoveOperation | OakOperation<"create", Omit<Token.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "entity" | "entityId">> | Token.UpdateOperation | Token.RemoveOperation>;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;

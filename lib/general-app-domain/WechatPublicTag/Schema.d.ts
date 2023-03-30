@@ -6,8 +6,8 @@ import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOper
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as Application from "../Application/Schema";
 import * as UserWechatPublicTag from "../UserWechatPublicTag/Schema";
-import * as OperEntity from "../OperEntity/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
+import * as OperEntity from "../OperEntity/Schema";
 export declare type OpSchema = EntityShape & {
     text: String<32>;
     applicationId: ForeignKey<"application">;
@@ -25,10 +25,10 @@ export declare type Schema = EntityShape & {
     application: Application.Schema;
     userWechatPublicTag$wechatPublicTag?: Array<UserWechatPublicTag.Schema>;
     userWechatPublicTag$wechatPublicTag$$aggr?: AggregationResult<UserWechatPublicTag.Schema>;
-    operEntity$entity?: Array<OperEntity.Schema>;
-    operEntity$entity$$aggr?: AggregationResult<OperEntity.Schema>;
     modiEntity$entity?: Array<ModiEntity.Schema>;
     modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;
+    operEntity$entity?: Array<OperEntity.Schema>;
+    operEntity$entity$$aggr?: AggregationResult<OperEntity.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -64,17 +64,17 @@ export declare type Projection = {
     userWechatPublicTag$wechatPublicTag$$aggr?: UserWechatPublicTag.Aggregation & {
         $entity: "userWechatPublicTag";
     };
-    operEntity$entity?: OperEntity.Selection & {
-        $entity: "operEntity";
-    };
-    operEntity$entity$$aggr?: OperEntity.Aggregation & {
-        $entity: "operEntity";
-    };
     modiEntity$entity?: ModiEntity.Selection & {
         $entity: "modiEntity";
     };
     modiEntity$entity$$aggr?: ModiEntity.Aggregation & {
         $entity: "modiEntity";
+    };
+    operEntity$entity?: OperEntity.Selection & {
+        $entity: "operEntity";
+    };
+    operEntity$entity$$aggr?: OperEntity.Aggregation & {
+        $entity: "operEntity";
     };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type WechatPublicTagIdProjection = OneOf<{
@@ -124,8 +124,8 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "applica
     applicationId: String<64>;
 })) & {
     userWechatPublicTag$wechatPublicTag?: OakOperation<UserWechatPublicTag.UpdateOperation["action"], Omit<UserWechatPublicTag.UpdateOperationData, "wechatPublicTag" | "wechatPublicTagId">, UserWechatPublicTag.Filter> | OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">[]> | Array<OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<UserWechatPublicTag.UpdateOperation["action"], Omit<UserWechatPublicTag.UpdateOperationData, "wechatPublicTag" | "wechatPublicTagId">, UserWechatPublicTag.Filter>>;
-    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
+    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -145,8 +145,8 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "applica
 })) & {
     [k: string]: any;
     userWechatPublicTag$wechatPublicTag?: UserWechatPublicTag.UpdateOperation | UserWechatPublicTag.RemoveOperation | OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">[]> | Array<OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">> | UserWechatPublicTag.UpdateOperation | UserWechatPublicTag.RemoveOperation>;
-    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
+    operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
