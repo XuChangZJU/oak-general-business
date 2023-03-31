@@ -8,7 +8,9 @@ import { ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
 import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { SelectOpResult } from 'oak-domain/lib/types';
-
+import {
+    getMpUnlimitWxaCode,
+} from '../aspects/wechatQrCode';
 /**
  * general数据结构要求的后台上下文
  */
@@ -27,6 +29,23 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
                 for (const entity in d) {
                     if (entity === 'wechatQrCode') {
                         // todo 小程序码此时去微信服务器获得码数据
+                        const wechatQrCodeListObj = d[entity];
+                        for (const id in wechatQrCodeListObj) {
+                            const wechatQrCodeData = wechatQrCodeListObj[id] as Partial<EntityDict['wechatQrCode']['OpSchema']>;
+                            if (wechatQrCodeData.type === 'wechatMpWxaCode') {
+                                const buffer = await getMpUnlimitWxaCode(
+                                    id,
+                                    this as BackendRuntimeContext<EntityDict>,
+                                );
+                                Object.assign(
+                                    wechatQrCodeData, {
+                                    buffer,
+                                }
+                                )
+                            }
+
+                        }
+
                     }
                     else if (['application', 'system', 'platform'].includes(entity)) {
                         // todo 删除掉config中的敏感返回信息
@@ -100,7 +119,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         this.amIRoot = (userRole$user as any).length > 0 && (userRole$user as any).find(
             (ele: any) => ele.role.name === 'root'
         );
-        const { userRole$user: userRole$player} = player!;
+        const { userRole$user: userRole$player } = player!;
         this.amIReallyRoot = (userRole$player as any).length > 0 && (userRole$player as any).find(
             (ele: any) => ele.role.name === 'root'
         );
@@ -163,7 +182,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
                 }
                 await this.commit();
             }
-            catch(err) {
+            catch (err) {
                 await this.rollback();
                 throw err;
             }
@@ -250,7 +269,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
             dontCollect: true,
         });
     }
-    
+
     allowUserUpdate(): boolean {
         if (this.isReallyRoot()) {
             return true;
