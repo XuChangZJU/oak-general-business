@@ -18,6 +18,7 @@ import generalData from './data';
 import generalAuthDict from './auth';
 import { initialize as initGeneralFeatures } from './features';
 import { AppType } from './general-app-domain/Application/Schema';
+import { rewriteSelection, rewriteOperation } from './utils/selectionRewriter';
 
 export function initialize<
     ED extends EntityDict & BaseEntityDict,
@@ -104,6 +105,10 @@ export function initialize<
     );
 
     const generalFeatures = initGeneralFeatures<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>(features, type, domain);
+
+    // 临时代码
+    features.cache.cacheStore.registerOperationRewriter(rewriteOperation);
+    features.cache.cacheStore.registerSelectionRewriter(rewriteSelection);
   
     return {
         features: Object.assign(features, generalFeatures) as GFD<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>,

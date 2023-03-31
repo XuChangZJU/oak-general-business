@@ -13,6 +13,8 @@ import generalAuthDict from './auth';
 import { initialize as initGeneralFeatures } from './features';
 import { AppType } from './general-app-domain/Application/Schema';
 
+import { rewriteSelection, rewriteOperation } from './utils/selectionRewriter';
+
 export function initialize<
     ED extends EntityDict & BaseEntityDict,
     Cxt extends BackendRuntimeContext<ED>,
@@ -62,6 +64,10 @@ export function initialize<
         colorDict
     );
     
+    // 临时代码
+    features.cache.cacheStore.registerOperationRewriter(rewriteOperation);
+    features.cache.cacheStore.registerSelectionRewriter(rewriteSelection);
+
     const generalFeatures = initGeneralFeatures<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>(features, type, domain);
   
     return {

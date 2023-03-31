@@ -14,7 +14,7 @@ export function registerMessageNotificationConverters<ED extends EntityDict, Cxt
     converters.forEach(
         ele => {
             assert(!ConverterDict[ele.type]);
-            (ConverterDict as Record<string, MessageNotificationConverter<ED, Cxt>>)[ele.type] = ele;
+            (ConverterDict as Record<string, any>)[ele.type] = ele;
         }
     );
 }
