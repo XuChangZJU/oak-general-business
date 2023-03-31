@@ -152,7 +152,6 @@ export default function Render(
                                 format="YYYY-MM-DD"
                                 inputReadOnly={true}
                                 allowClear={false}
-                                mode="date"
                                 value={birth ? dayjs(birth) : undefined}
                                 disabledDate={(current) => {
                                     if (
@@ -176,7 +175,7 @@ export default function Render(
                     <Form.Item label={t('mobile')}>
                         <>
                             <Space>
-                                <Typography>{mobile}</Typography>
+                                <Typography>{mobile || '未设置'}</Typography>
                                 <Button
                                     size="small"
                                     onClick={() => {
