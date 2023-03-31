@@ -129,8 +129,12 @@ function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof E
 
 function rewriteSelection<ED extends EntityDict & BaseEntityDict, T extends keyof ED>(schema: StorageSchema<ED>, entity: T, selection: ED[T]['Selection']) {
     const { filter } = selection;
-    if (filter) {
+    if (filter && !filter['#oak-general-business--rewrited']) {
         rewriteFilter(schema, entity, filter);
+        // 避免被重写多次
+        Object.assign(filter, {
+            ['#oak-general-business--rewrited']: true,
+        });
     }
     return;
 }
@@ -138,8 +142,12 @@ function rewriteSelection<ED extends EntityDict & BaseEntityDict, T extends keyo
 
 function rewriteOperation<ED extends EntityDict & BaseEntityDict, T extends keyof ED>(schema: StorageSchema<ED>, entity: T, operation: ED[T]['Operation']) {
     const { filter } = operation;
-    if (filter) {
+    if (filter && !filter['#oak-general-business--rewrited']) {
         rewriteFilter(schema, entity, filter);
+        // 避免被重写多次
+        Object.assign(filter, {
+            ['#oak-general-business--rewrited']: true,
+        });
     }
     return;
 }

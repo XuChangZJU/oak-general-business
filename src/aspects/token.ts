@@ -136,11 +136,253 @@ async function dealWithUserState(user: Partial<EntityDict['user']['Schema']>, co
     }
 }
 
-async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(mobile: string, env: WebEnv | WechatMpEnv, context: Cxt) {
+/**
+ * 根据user的不同情况，完成登录动作
+ * @param env 
+ * @param context 
+ * @param user 
+ * @return tokenId
+ */
+async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(
+    env: WebEnv | WechatMpEnv, 
+    context: Cxt, 
+    entity: string,     // 支持更多的登录渠道使用此函数创建token
+    entityId?: string,  // 如果是现有对象传id，如果没有对象传createData
+    createData?: any,
+    user?: Partial<ED['user']['Schema']>): Promise<string> {
     const currentToken = context.getToken(true);
-    const applicationId = context.getApplicationId();
-    const systemId = context.getSystemId();
+    const schema = context.getSchema();
+    assert(schema.hasOwnProperty(entity), `${entity}必须是有效的对象名 `);
+    assert(schema.token.attributes.entity.ref!.includes(entity), `${entity}必须是token的有效关联对象`);
+    assert(schema[entity as keyof ED].attributes.hasOwnProperty('userId') && (schema[entity as keyof ED].attributes as any).userId!.ref ==='user', `${entity}必须有指向user的userId属性`);
 
+    if (currentToken) {
+        assert(currentToken.id);
+        assert(currentToken.userId);
+        if (user) {
+            // 有用户，和当前用户进行合并
+            const { userState } = user;
+            switch (userState) {
+                case 'normal': {
+                    if (currentToken.id === user.id) {
+                        return currentToken.id;
+                    }
+                    await mergeUser<ED, Cxt>({ from: user.id!, to: currentToken.userId! }, context, true);
+                    return currentToken.id;
+                }
+                case 'shadow': {
+                    assert(currentToken.id !== user.id);
+                    await mergeUser<ED, Cxt>({ from: user.id!, to: currentToken.userId! }, context, true);
+                    await context.operate('user', {
+                        id: await generateNewIdAsync(),
+                        action: 'activate',
+                        data: {},
+                        filter: {
+                            id: user.id!,
+                        },
+                    }, { dontCollect: true });
+                    return currentToken.id;
+                }
+                case 'disabled': {
+                    throw new OakUserDisabledException();
+                }
+                case 'merged': {
+                    assert(user.refId);
+                    if (user.refId === currentToken.id) {
+                        return currentToken.id;
+                    }
+                    // 说明一个用户被其他用户merge了，现在还是暂时先merge，后面再说
+                    console.warn(`用户${user.id}已经是merged状态「${user.refId}」，再次被merged到「${currentToken.userId}]」`);
+                    await mergeUser<ED, Cxt>({ from: user.id!, to: currentToken.userId! }, context, true);
+                    return currentToken.id;
+                }
+                default: {
+                    assert(false, `不能理解的user状态「${userState}」`);
+                }
+            }
+        }
+        else {
+            // 没用户，指向当前用户
+            assert(createData && !entityId);
+            if (createData) {
+                await context.operate(entity as keyof ED, {
+                    id: await generateNewIdAsync(),
+                    action: 'create',
+                    data: Object.assign(createData, {
+                        userId: currentToken.userId,
+                    }),
+                } as any, { dontCollect: true });
+            }
+            else {
+                assert (entityId);
+                await context.operate(entity as keyof ED, {
+                    id: await generateNewIdAsync(),
+                    action: 'update',
+                    data: {
+                        userId: currentToken.userId,
+                    },
+                    filter: {
+                        id: entityId,
+                    }
+                } as any, { dontCollect: true });
+            }
+            return currentToken.id;
+        }
+    }
+    else {
+        if (entityId) {
+            // 已经有相应对象，判定一下能否重用上一次的token
+            const application = context.getApplication();
+            const [originToken] = await context.select('token', {
+                data: {
+                    id: 1,
+                },
+                filter: {
+                    applicationId: application!.id,
+                    ableState: 'enabled',
+                    entity,
+                    entityId: entityId,
+                },
+            }, { dontCollect: true });
+            if (originToken) {
+                return originToken.id!;
+            }
+        }
+        const tokenData: EntityDict['token']['CreateSingle']['data'] = {
+            id: await generateNewIdAsync(),
+            env,
+        };
+        if (user) {
+            // 根据此用户状态进行处理
+            const { userState } = user;
+            switch (userState) {
+                case 'normal': {
+                    tokenData.userId = user.id;
+                    tokenData.playerId = user.id;
+                    if (entityId) {
+                        tokenData.entity = entity;
+                        tokenData.entityId = entityId;
+                    }
+                    else {
+                        assert(createData);
+                        Object.assign(tokenData, {
+                            [entity]: Object.assign(createData, {
+                                userId: user.id,
+                            }),
+                        });
+                    }
+                    break;
+                }
+                case 'merged': {
+                    tokenData.userId = user.refId!;
+                    tokenData.playerId = user.refId!;
+                    if (entityId) {
+                        tokenData.entity = entity;
+                        tokenData.entityId = entityId;
+                    }
+                    else {
+                        assert(createData);
+                        Object.assign(tokenData, {
+                            [entity]: Object.assign(createData, {
+                                userId: user.refId,
+                            }),
+                        });
+                    }
+                    break;
+                }
+                case 'disabled': {
+                    throw new OakUserDisabledException();
+                }
+                case 'shadow': {
+                    await context.operate('user', {
+                        id: await generateNewIdAsync(),
+                        action: 'activate',
+                        data: {},
+                        filter: {
+                            id: user.id!,
+                        },
+                    }, { dontCollect: true });
+                    tokenData.userId = user.id;
+                    tokenData.playerId = user.id;
+                    if (entityId) {
+                        tokenData.entity = entity;
+                        tokenData.entityId = entityId;
+                    }
+                    else {
+                        assert(createData);
+                        Object.assign(tokenData, {
+                            [entity]: Object.assign(createData, {
+                                userId: user.id,
+                            }),
+                        });
+                    }
+                    break;                    
+                }
+                default: {
+                    assert(false, `不能理解的user状态「${userState}」`);
+                }                
+            }
+
+            await context.operate('token', {
+                id: await generateNewIdAsync(),
+                action: 'create',
+                data: tokenData,
+            }, { dontCollect: true });
+            return tokenData.id;
+        }
+        else {
+            // 创建新用户
+            // 要先create token，再create entity。不然可能权限会被挡住
+            const userData: EntityDict['user']['CreateSingle']['data'] = {
+                id: await generateNewIdAsync(),
+                userState: 'normal',
+            };
+            await context.operate('user', {
+                id: await generateNewIdAsync(),
+                action: 'create',
+                data: userData,
+            }, {});
+
+            tokenData.userId = userData.id;
+            tokenData.playerId = userData.id;
+            tokenData.entity = entity;
+            tokenData.entityId = createData.id;
+            await context.operate('token', {
+                id: await generateNewIdAsync(),
+                action: 'create',
+                data: tokenData,
+            }, { dontCollect: true });
+            await context.setTokenValue(tokenData.id);
+
+            if (createData) {
+                await context.operate(entity as keyof ED, {
+                    id: await generateNewIdAsync(),
+                    action: 'create',
+                    data: Object.assign(createData, {
+                        userId: userData.id,
+                    }),
+                } as any, { dontCollect: true });
+            }
+            else {
+                assert(entityId);
+                await context.operate(entity as keyof ED, {
+                    id: await generateNewIdAsync(),
+                    action: 'update',
+                    data: {
+                        userId: userData.id,
+                    },
+                    filter: {
+                        id: entityId,
+                    }
+                } as any, { dontCollect: true });
+            }
+
+            return tokenData.id;
+        }
+    }
+}
+
+async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(mobile: string, env: WebEnv | WechatMpEnv, context: Cxt) {
     const result2 = await context.select('mobile', {
         data: {
             id: 1,
@@ -175,131 +417,15 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
         // 此手机号已经存在
         assert(result2.length === 1);
         const [mobileRow] = result2;
-        if (currentToken) {
-            if (currentToken.userId === mobileRow.userId) {
-                return currentToken.id!;
-            }
-            else {
-                // 此时可能要合并用户，抛出OakDistinguishUser异常，用户根据自身情况选择合并
-                const { userId, user } = mobileRow;
-                const { userState } = user!;
-                switch (userState) {
-                    case 'disabled': {
-                        throw new OakUserDisabledException();
-                    }
-                    case 'shadow': {
-                        // 直接合并
-                        await mergeUser<ED, Cxt>({ from: userId!, to: currentToken.userId! }, context, true);
-                        return currentToken.id!;
-                    }
-                    default: {
-                        /* assert(userState === 'normal');
-                        throw await makeDistinguishException<ED, Cxt>(userId as string, context, '该手机号已被一个有效用户占用，请联系管理员处理'); */
-
-                        // 直接合并
-                        await mergeUser<ED, Cxt>({ from: userId!, to: currentToken.userId! }, context, true);
-                        return currentToken.id!;
-                    }
-                }
-            }
-        }
-        else {
-            // 此时以该手机号登录 todo根据环境来判断，用户也有可能是新获得此手机号，未来再进一步处理
-            const tokenData: EntityDict['token']['CreateSingle']['data'] = {
-                id: await generateNewIdAsync(),
-                applicationId: applicationId!,
-                playerId: mobileRow.userId as string,
-                env,
-                entity: 'mobile',
-                entityId: mobileRow.id as string,
-            };
-            const { user } = mobileRow;
-            const { userState } = user!;
-
-            // 可能出现多次merge的情况
-            Object.assign(tokenData, await dealWithUserState(user as Partial<EntityDict['user']['Schema']>, context as BackendRuntimeContext<EntityDict>, tokenData));
-            await context.operate('token', {
-                id: await generateNewIdAsync(),
-                data: tokenData,
-                action: 'create',
-            }, {
-                dontCollect: true,
-            });
-
-            // 检查此user和system之间有没有关系，如果没有要补上
-            if ((user as User)?.userSystem$user?.length == 0) {
-                await context.operate('userSystem', {
-                    id: await generateNewIdAsync(),
-                    action: 'create',
-                    data: {
-                        id: await generateNewIdAsync(),
-                        userId: (user as User).id!,
-                        systemId,
-                    }
-                }, {
-                    dontCollect: true,
-                })
-            }
-
-            return tokenData.id;
-        }
+        const { user } = mobileRow;
+        return await setUpTokenAndUser<ED, Cxt>(env, context, 'mobile', mobileRow.id, undefined, user);
     }
     else {
         //此手机号不存在
-        if (currentToken) {
-            // 创建手机号并与之关联即可
-            const mobileData: EntityDict['mobile']['CreateSingle']['data'] = {
-                id: await generateNewIdAsync(),
-                mobile,
-                userId: currentToken.userId!,
-            };
-            await context.operate('mobile', {
-                id: await generateNewIdAsync(),
-                action: 'create',
-                data: mobileData
-            }, {});
-            return currentToken.id!;
-        }
-        else {
-            // 创建token, mobile, user
-            const userData: EntityDict['user']['CreateSingle']['data'] = {
-                id: await generateNewIdAsync(),
-                userState: 'normal',
-            };
-            await context.operate('user', {
-                id: await generateNewIdAsync(),
-                action: 'create',
-                data: userData,
-            }, {});
-
-            // 这里要先创建token，再set context中的tokenValue，不然create mobile会被auth限制。by Xc
-            const mobileData: EntityDict['mobile']['CreateSingle']['data'] = {
-                id: await generateNewIdAsync(),
-                mobile,
-                userId: userData.id,
-            };
-            const tokenData: EntityDict['token']['CreateSingle']['data'] = {
-                id: await generateNewIdAsync(),
-                userId: userData.id,
-                playerId: userData.id,
-                env,
-                entity: 'mobile',
-                entityId: mobileData.id,
-            };
-            await context.operate('token', {
-                id: await generateNewIdAsync(),
-                action: 'create',
-                data: tokenData,
-            }, { dontCollect: true });
-            await context.setTokenValue(tokenData.id);
-            await context.operate('mobile', {
-                id: await generateNewIdAsync(),
-                action: 'create',
-                data: mobileData,
-            }, { dontCollect: true });
-
-            return tokenData.id;
-        }
+        return await setUpTokenAndUser<ED, Cxt>(env, context, 'mobile', undefined, {
+            id: await generateNewIdAsync(),
+            mobile,
+        });
     }
 }
 
@@ -594,6 +720,11 @@ async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRunt
         throw new OakUserException('请使用完整服务后再进行登录操作');
     }
 
+    const OriginMap = {
+        'web': 'web',
+        'wechatPublic': 'public',
+        'wechatMp': 'mp',
+    };
     const [wechatUser] = await context.select('wechatUser', {
         data: {
             id: 1,
@@ -603,6 +734,8 @@ async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRunt
                 id: 1,
                 name: 1,
                 nickname: 1,
+                userState: 1,
+                refId: 1,
                 userRole$user: {
                     $entity: 'userRole',
                     data: {
@@ -616,127 +749,29 @@ async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRunt
         filter: {
             applicationId: application!.id,
             openId,
+            origin: OriginMap[type]! as 'web',
         }
     }, {
         dontCollect: true,
     });
-
-    const OriginMap = {
-        'web': 'web',
-        'wechatPublic': 'public',
-        'wechatMp': 'mp',
-    };
-    const id = await generateNewIdAsync();
-    const newUserId = await generateNewIdAsync();
     if (wechatUser) {
-        const wechatUser2 = wechatUser!;
-
+        const tokenId = await setUpTokenAndUser<ED, Cxt>(env, context, 'wechatUser', wechatUser.id, undefined, wechatUser.user as undefined);
         const wechatUserUpdateData = wechatUserData;
         if (unionId !== wechatUser.unionId as any) {
             Object.assign(wechatUserUpdateData, {
                 unionId,
             });
         }
-
-        let userId = wechatUser2.userId;
-        if (wechatUser2.userId) {
-            // 若用户没有更换任何环境，则重用原来的token，避免token表增长过快
-            const [token] = await context.select('token', {
-                data: {
-                    id: 1,
-                    applicationId: 1,
-                    env: 1,
-                },
-                filter: {
-                    applicationId: application!.id,
-                    ableState: 'enabled',
-                    userId: wechatUser2.userId,
-                    playerId: wechatUser2.userId,
-                    entity: 'wechatUser',
-                    entityId: wechatUser2.id,
-                },
-            }, {
-                blockTrigger: true,
-            });
-            if (token && isEqual(token.env, env)) {
-                await context.operate('token', {
-                    id: await generateNewIdAsync(),
-                    action: 'update',
-                    data: {
-                        wechatUser: {
-                            id: await generateNewIdAsync(),
-                            action: 'update',
-                            data: wechatUserUpdateData,
-                        }
-                    },
-                    filter: {
-                        id: token.id as string,
-                    },
-                }, {
-                    dontCollect: true,
-                });
-                return token.id!;
-            }
-
-            await context.operate('token', {
-                id: await generateNewIdAsync(),
-                action: 'disable',
-                data: {
-                },
-                filter: {
-                    applicationId: application!.id,
-                    ableState: 'enabled',
-                    userId: wechatUser2.userId,
-                    playerId: wechatUser2.userId,
-                },
-            }, {
-                dontCollect: true,
-            });
-        }
-        else {
-            // 创建user
-            const userData2: EntityDict['user']['CreateSingle'] = {
-                id: await generateNewIdAsync(),
-                action: 'create',
-                data: {
-                    id: await generateNewIdAsync(),
-                    userState: 'normal',
-                    userSystem$user: {
-                        id: await generateNewIdAsync(),
-                        action: 'create',
-                        data: {
-                            id: await generateNewIdAsync(),
-                            systemId: context.getSystemId(),
-                        }
-                    }
-                } as CreateUser,
-            };
-            Object.assign(wechatUserUpdateData, {
-                user: userData2,
-            });
-            userId = userData2.data.id;
-        }
-
-        await context.operate('token', {
+        await context.operate('wechatUser', {
             id: await generateNewIdAsync(),
-            action: 'create',
-            data: {
-                id,
-                userId,
-                playerId: userId,
-                applicationId: application!.id,
-                entity: 'wechatUser',
-                entityId: wechatUser2.id as string,
-                wechatUser: {
-                    id: await generateNewIdAsync(),
-                    action: 'update',
-                    data: wechatUserUpdateData,
-                },
-                env
-            } as CreateToken
-        }, {});
-        return id;
+            action: 'update',
+            data: wechatUserUpdateData,
+            filter: {
+                id: wechatUser.id,
+            },
+        }, { dontCollect: true });
 
+        return tokenId;
     }
     else if (unionId) {
         // 如果有unionId，查找同一个system下有没有相同的unionId
@@ -745,6 +780,11 @@ async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRunt
                 id: 1,
                 userId: 1,
                 unionId: 1,
+                user: {
+                    id: 1,
+                    userState: 1,
+                    refId: 1,
+                },
             },
             filter: {
                 application: {
@@ -756,113 +796,46 @@ async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRunt
             dontCollect: true,
         });
         if (wechatUser3) {
-            if (wechatUser3.userId) {
-                /* await context.operate('token', {
+            const wechatUserCreateData: CreateWechatUser = {
+                id: await generateNewIdAsync(),
+                unionId,
+                origin: OriginMap[type] as 'mp',
+                openId,
+                applicationId: application!.id!,
+                ...wechatUserData,
+            };
+            const tokenId = await setUpTokenAndUser<ED, Cxt>(env, context, 'wechatUser', undefined, wechatUserCreateData, wechatUser3.user!);
+            
+            if (!wechatUser3.userId) {
+                // 这里顺便帮其它wechatUser数据也补上相应的userId
+                await context.operate('wechatUser', {
                     id: await generateNewIdAsync(),
-                    action: 'disable',
+                    action: 'update',
                     data: {
+                        userId: wechatUserCreateData.userId!,   // 在setUpTokenAndUser内赋上值
                     },
                     filter: {
-                        applicationId: application!.id,
-                        ableState: 'enabled',
-                        userId: wechatUser3.userId,
-                        playerId: wechatUser3.userId,
+                        id: wechatUser3.id,
                     },
-                }, {
-                    dontCollect: true,
-                }); */
-
-                const wechatUserCreateData: CreateWechatUser = {
-                    id: await generateNewIdAsync(),
-                    unionId,
-                    origin: OriginMap[type] as 'mp',
-                    openId,
-                    applicationId: application!.id!,
-                    userId: wechatUser3.userId,
-                    ...wechatUserData,
-                };
-                await context.operate('token', {
-                    id: await generateNewIdAsync(),
-                    action: 'create',
-                    data: {
-                        id,
-                        userId: wechatUser3.userId,
-                        playerId: wechatUser3.userId,
-                        applicationId: application!.id,
-                        wechatUser: {
-                            id: await generateNewIdAsync(),
-                            action: 'create',
-                            data: wechatUserCreateData,
-                        },
-                        env,
-                    }
-                }, {
-                    dontCollect: true,
-                });
-                return id;
+                }, { dontCollect: true });
             }
-            // 这里顺便帮其它wechatUser数据也补上相应的userId
-            await context.operate('wechatUser', {
-                id: await generateNewIdAsync(),
-                action: 'update',
-                data: {
-                    userId: newUserId,
-                },
-                filter: {
-                    id: wechatUser3.id,
-                },
-            }, { dontCollect: true });
+            
+            return tokenId;
         }
     }
 
     // 到这里都是要同时创建wechatUser和user对象了
-    const userData: CreateUser = {
-        id: newUserId,
-        userState: 'normal',
-        userSystem$user: [
-            {
-                id: await generateNewIdAsync(),
-                action: 'create',
-                data: {
-                    id: await generateNewIdAsync(),
-                    systemId,
-                },
-            }
-        ],
-    };
     const wechatUserCreateData: CreateWechatUser = {
         id: await generateNewIdAsync(),
         unionId,
         origin: OriginMap[type] as 'mp',
         openId,
         applicationId: application!.id!,
-        user: {
-            id: await generateNewIdAsync(),
-            action: 'create',
-            data: userData,
-        },
         ...wechatUserData,
     };
-    await context.operate('token', {
-        id: await generateNewIdAsync(),
-        action: 'create',
-        data: {
-            id,
-            userId: newUserId,
-            playerId: newUserId,
-            applicationId: application!.id,
-            wechatUser: {
-                id: await generateNewIdAsync(),
-                action: 'create',
-                data: wechatUserCreateData,
-            },
-            env,
-        }
-    }, {
-        dontCollect: true,
-    });
 
-    return id;
+    const tokenId = await setUpTokenAndUser<ED, Cxt>(env, context, 'wechatUser', undefined, wechatUserCreateData, undefined);
+    return tokenId;
 }
 
 /**

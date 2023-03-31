@@ -3,12 +3,15 @@ import { generateNewIdAsync } from "oak-domain/lib/utils/uuid";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { EntityDict } from "../general-app-domain";
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import assert from 'assert';
 
 export async function mergeUser<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(params: { from: string, to: string }, context: Cxt, innerLogic?: boolean) {
     if (!innerLogic && !context.isRoot()) {
         throw new OakUserUnpermittedException('不允许执行mergeUser操作');
     }
     const { from, to } = params;
+    assert(from);
+    assert(to);
     const schema = context.getSchema();
     /* for (const entity in schema) {
         if (['oper', 'modi', 'operEntity', 'modiEntity', 'userEntityGrant', 'wechatQrCode'].includes(entity)) {
@@ -47,6 +50,15 @@ export async function mergeUser<ED extends EntityDict & BaseEntityDict, Cxt exte
             }
         }
     } */
+
+    await context.operate('token', {
+        id: await generateNewIdAsync(),
+        action: 'disable',
+        data: {},
+        filter: {
+            playerId: from,         // todo 这里是playerId, root如果正在扮演该用户待处理
+        },
+    }, { dontCollect: true });
 
     await context.operate('user', {
         id: await generateNewIdAsync(),

@@ -7,6 +7,7 @@ export const userProjection: EntityDict['user']['Selection']['data'] = {
     nickname: 1,
     name: 1,
     userState: 1,
+    refId: 1,
     idState: 1,
     gender: 1,
     birth: 1,
@@ -67,6 +68,26 @@ export const tokenProjection: EntityDict['token']['Selection']['data'] = {
     },
     entity: 1,
     entityId: 1,
+    mobile: {
+        id: 1,
+        mobile: 1,
+        userId: 1,
+        ableState: 1,
+        user: {
+            id: 1,
+            userState: 1,
+            refId: 1,
+        },
+    },
+    wechatUser: {
+        id: 1,
+        userId: 1,
+        user: {
+            id: 1,
+            userState: 1,
+            refId: 1,
+        },
+    },
 };
 
 export const applicationProjection: EntityDict['application']['Selection']['data'] = {
