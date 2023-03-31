@@ -22,6 +22,7 @@ export declare type OpSchema = EntityShape & {
     type: QrCodeType;
     allowShare: Boolean;
     tag?: String<32> | null;
+    tag2?: String<64> | null;
     expiresAt?: Datetime | null;
     expired?: Boolean | null;
     ticket?: Text | null;
@@ -38,6 +39,7 @@ export declare type Schema = EntityShape & {
     type: QrCodeType;
     allowShare: Boolean;
     tag?: String<32> | null;
+    tag2?: String<64> | null;
     expiresAt?: Datetime | null;
     expired?: Boolean | null;
     ticket?: Text | null;
@@ -66,6 +68,7 @@ declare type AttrFilter<E> = {
     type: Q_EnumValue<QrCodeType>;
     allowShare: Q_BooleanValue;
     tag: Q_StringValue;
+    tag2: Q_StringValue;
     expiresAt: Q_DateValue;
     expired: Q_BooleanValue;
     ticket: Q_StringValue;
@@ -91,6 +94,7 @@ export declare type Projection = {
     type?: number;
     allowShare?: number;
     tag?: number;
+    tag2?: number;
     expiresAt?: number;
     expired?: number;
     ticket?: number;
@@ -145,6 +149,8 @@ export declare type SortAttr = {
     allowShare: number;
 } | {
     tag: number;
+} | {
+    tag2: number;
 } | {
     expiresAt: number;
 } | {

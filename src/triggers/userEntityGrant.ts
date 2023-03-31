@@ -38,20 +38,40 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                     });
                 }
                 // 为之创建微信体系下的一个weChatQrCode
-                await createWechatQrCode(
+                await context.operate(
+                    'wechatQrCode',
                     {
-                        entity: 'userEntityGrant',
-                        entityId: id,
-                        props: {
-                            pathname: '/userEntityGrant/confirm',
+                        id: await generateNewIdAsync(),
+                        action: 'create',
+                        data: {
+                            id: await generateNewIdAsync(),
+                            entity: 'userEntityGrant',
+                            entityId: id,
                             props: {
-                                oakId: id,
+                                pathname: '/userEntityGrant/confirm',
+                                props: {
+                                    oakId: id,
+                                },
                             },
+                            type: userEntityGrantData.qrCodeType,
                         },
-                        type: userEntityGrantData.qrCodeType,
                     },
-                    context as BackendRuntimeContext<EntityDict>
+                    {}
                 );
+                // await createWechatQrCode(
+                //     {
+                //         entity: 'userEntityGrant',
+                //         entityId: id,
+                //         props: {
+                //             pathname: '/userEntityGrant/confirm',
+                //             props: {
+                //                 oakId: id,
+                //             },
+                //         },
+                //         type: userEntityGrantData.qrCodeType,
+                //     },
+                //     context as BackendRuntimeContext<EntityDict>
+                // );
             };
             if (data instanceof Array) {
                 assert('授权不存在一对多的情况');
@@ -245,44 +265,44 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
             return 1;
         },
     } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
-    {
-        name: '当userEntityGrant查询时，使其相关的wechatQrCode动态生成buffer',
-        entity: 'userEntityGrant',
-        action: 'select',
-        when: 'after',
-        fn: async ({ operation, result }, context) => {
-            if (operation?.data?.wechatQrCode$entity?.data?.buffer) {
-                //如果projection写buffer 就动态获取，临时性代码
-                for (let userEntityGrant of result) {
-                    if (userEntityGrant.qrCodeType === 'wechatMpWxaCode') {
-                        const wechatQrCode =
-                            userEntityGrant.wechatQrCode$entity &&
-                            userEntityGrant.wechatQrCode$entity[0];
-                        if (wechatQrCode) {
-                            const { id } = wechatQrCode;
-                            const backContext = context as BackendRuntimeContext<EntityDict>;
-                            const buffer = await getMpUnlimitWxaCode(
-                                wechatQrCode.id,
-                                backContext,
-                            );
-                            backContext.opRecords.forEach(
-                                ele => {
-                                    if (ele.a === 's') {
-                                        const { d } = ele as SelectOpResult<EntityDict>;
-                                        if (d.wechatQrCode && d.wechatQrCode[id]) {
-                                            Object.assign(d.wechatQrCode[id], {
-                                                buffer,
-                                            });
-                                        }
-                                    }
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-            return 1;
-        },
-    } as SelectTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
+    // {
+    //     name: '当userEntityGrant查询时，使其相关的wechatQrCode动态生成buffer',
+    //     entity: 'userEntityGrant',
+    //     action: 'select',
+    //     when: 'after',
+    //     fn: async ({ operation, result }, context) => {
+    //         if (operation?.data?.wechatQrCode$entity?.data?.buffer) {
+    //             //如果projection写buffer 就动态获取，临时性代码
+    //             for (let userEntityGrant of result) {
+    //                 if (userEntityGrant.qrCodeType === 'wechatMpWxaCode') {
+    //                     const wechatQrCode =
+    //                         userEntityGrant.wechatQrCode$entity &&
+    //                         userEntityGrant.wechatQrCode$entity[0];
+    //                     if (wechatQrCode) {
+    //                         const { id } = wechatQrCode;
+    //                         const backContext = context as BackendRuntimeContext<EntityDict>;
+    //                         const buffer = await getMpUnlimitWxaCode(
+    //                             wechatQrCode.id,
+    //                             backContext,
+    //                         );
+    //                         backContext.opRecords.forEach(
+    //                             ele => {
+    //                                 if (ele.a === 's') {
+    //                                     const { d } = ele as SelectOpResult<EntityDict>;
+    //                                     if (d.wechatQrCode && d.wechatQrCode[id]) {
+    //                                         Object.assign(d.wechatQrCode[id], {
+    //                                             buffer,
+    //                                         });
+    //                                     }
+    //                                 }
+    //                             }
+    //                         )
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //         return 1;
+    //     },
+    // } as SelectTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
 ];
 export default triggers;

@@ -18,6 +18,7 @@ export interface Schema extends EntityShape {
     type: QrCodeType;
     allowShare: Boolean; // 是否允许通过分享授权
     tag?: String<32>; // 调用者加的tag
+    tag2?: String<64>; // tag2
     expiresAt?: Datetime; // 过期时间
     expired?: Boolean; //是否过期
     ticket?: Text;
@@ -75,6 +76,7 @@ const locale: LocaleDef<Schema, '', '', {
             type: '类型',
             allowShare: '允许分享',
             tag: 'tag',
+            tag2: 'tag2',
             ticket: 'ticket',
             url: 'url',
             permanent: '是否永久码',
@@ -94,4 +96,4 @@ const locale: LocaleDef<Schema, '', '', {
             }
         }
     },
- };
+};

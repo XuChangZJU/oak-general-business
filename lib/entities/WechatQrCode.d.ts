@@ -14,6 +14,7 @@ export interface Schema extends EntityShape {
     type: QrCodeType;
     allowShare: Boolean;
     tag?: String<32>;
+    tag2?: String<64>;
     expiresAt?: Datetime;
     expired?: Boolean;
     ticket?: Text;
