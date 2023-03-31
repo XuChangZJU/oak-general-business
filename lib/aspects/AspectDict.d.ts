@@ -24,6 +24,7 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntime
         code: string;
         env: WebEnv;
     }, context: Cxt) => Promise<string>;
+    logout: ({}: {}, context: Cxt) => Promise<void>;
     loginWechatMp: ({ code, env, }: {
         code: string;
         env: WechatMpEnv;

@@ -40,6 +40,7 @@ type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<string>;
+    logout: ({}, context: Cxt) => Promise<void>;
     loginWechatMp: (
         {
             code,

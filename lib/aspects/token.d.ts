@@ -51,3 +51,4 @@ export declare function getWechatMpUserPhoneNumber<ED extends EntityDict, Cxt ex
     code: string;
     env: WechatMpEnv;
 }, context: Cxt): Promise<string>;
+export declare function logout<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({}: {}, context: Cxt): Promise<void>;

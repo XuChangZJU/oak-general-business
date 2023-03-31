@@ -144,8 +144,8 @@ async function dealWithUserState(user: Partial<EntityDict['user']['Schema']>, co
  * @return tokenId
  */
 async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(
-    env: WebEnv | WechatMpEnv, 
-    context: Cxt, 
+    env: WebEnv | WechatMpEnv,
+    context: Cxt,
     entity: string,     // 支持更多的登录渠道使用此函数创建token
     entityId?: string,  // 如果是现有对象传id，如果没有对象传createData
     createData?: any,
@@ -154,7 +154,7 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
     const schema = context.getSchema();
     assert(schema.hasOwnProperty(entity), `${entity}必须是有效的对象名 `);
     assert(schema.token.attributes.entity.ref!.includes(entity), `${entity}必须是token的有效关联对象`);
-    assert(schema[entity as keyof ED].attributes.hasOwnProperty('userId') && (schema[entity as keyof ED].attributes as any).userId!.ref ==='user', `${entity}必须有指向user的userId属性`);
+    assert(schema[entity as keyof ED].attributes.hasOwnProperty('userId') && (schema[entity as keyof ED].attributes as any).userId!.ref === 'user', `${entity}必须有指向user的userId属性`);
 
     if (currentToken) {
         assert(currentToken.id);
@@ -214,7 +214,7 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
                 } as any, { dontCollect: true });
             }
             else {
-                assert (entityId);
+                assert(entityId);
                 await context.operate(entity as keyof ED, {
                     id: await generateNewIdAsync(),
                     action: 'update',
@@ -316,11 +316,11 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
                             }),
                         });
                     }
-                    break;                    
+                    break;
                 }
                 default: {
                     assert(false, `不能理解的user状态「${userState}」`);
-                }                
+                }
             }
 
             await context.operate('token', {
@@ -805,7 +805,7 @@ async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRunt
                 ...wechatUserData,
             };
             const tokenId = await setUpTokenAndUser<ED, Cxt>(env, context, 'wechatUser', undefined, wechatUserCreateData, wechatUser3.user!);
-            
+
             if (!wechatUser3.userId) {
                 // 这里顺便帮其它wechatUser数据也补上相应的userId
                 await context.operate('wechatUser', {
@@ -819,7 +819,7 @@ async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRunt
                     },
                 }, { dontCollect: true });
             }
-            
+
             return tokenId;
         }
     }
@@ -1123,4 +1123,21 @@ export async function getWechatMpUserPhoneNumber<
     //获取 绑定的手机号码
     const phoneNumber = result?.phoneNumber;
     return await setupMobile<ED, Cxt>(phoneNumber, env, context);
+}
+
+export async function logout<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>({}, context: Cxt) {
+    const tokenId = context.getTokenValue();
+    if (tokenId) {
+        await context.operate('token', {
+            id: await generateNewIdAsync(),
+            action: 'disable',
+            data: {},
+            filter: {
+                id: tokenId,
+            }
+        }, { dontCollect: true });
+    }
 }

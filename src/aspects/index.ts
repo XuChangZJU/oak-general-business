@@ -7,6 +7,7 @@ import {
     switchTo,
     refreshWechatPublicUserInfo,
     getWechatMpUserPhoneNumber,
+    logout,
 } from './token';
 import { getUploadInfo } from './extraFile';
 import { getApplication } from './application';
@@ -27,6 +28,7 @@ const aspectDict = {
     updateConfig,
     updateApplicationConfig,
     getWechatMpUserPhoneNumber,
+    logout,
 };
 
 export default aspectDict;
