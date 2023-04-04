@@ -135,6 +135,10 @@ export default OakComponent({
             type: Boolean,
             value: false,
         },
+        disabled: { // web独有
+            type: Boolean,
+            value: false,
+        },
         type: String,
         origin: String,
         tag1: String,
@@ -469,7 +473,7 @@ export default OakComponent({
                     wx.hideLoading();
                     that.setMessage({
                         type: 'error',
-                        content: '下载文件失败'
+                        content: '下载文件失败',
                     });
                 },
                 complete: function (res) {},
