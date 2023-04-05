@@ -32,7 +32,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
                         const wechatQrCodeListObj = d[entity];
                         for (const id in wechatQrCodeListObj) {
                             const wechatQrCodeData = wechatQrCodeListObj[id] as Partial<EntityDict['wechatQrCode']['OpSchema']>;
-                            if (wechatQrCodeData.type === 'wechatMpWxaCode') {
+                            if (wechatQrCodeData.hasOwnProperty('buffer') && wechatQrCodeData.type === 'wechatMpWxaCode') {
                                 const buffer = await getMpUnlimitWxaCode<ED, keyof ED, BackendRuntimeContext<ED>>(
                                     id,
                                     this,
