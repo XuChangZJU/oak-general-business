@@ -38,10 +38,18 @@ export function createComponent<
     >,
     features: BasicFeatures<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>> & FD,
 ) {
-    const { lifetimes, ...rest } = option;
+    const { lifetimes, methods, ...rest } = option;
     const { attached, ...restLifeTimes } = lifetimes || {};
 
-    return createBaseComponent<ED, T, Cxt, FrontCxt, AD, FD, FormedData, IsList, TData, TProperty, TMethod>({
+    return createBaseComponent<ED, T, Cxt, FrontCxt, AD, FD, FormedData, IsList, TData, TProperty, TMethod & {
+        subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean, tip?: string) => Promise<boolean>;
+    }>({
+        methods: {
+            async subscribeMpMessage(messageTypes: string[], haveToAccept?: boolean, tip?: string) {
+                throw new Error('小程序环境专有函数在web下不成立');
+            },
+            ...(methods as TMethod),
+        },
         lifetimes: {
             attached() {
                 this.subscribed.push(

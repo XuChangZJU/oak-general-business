@@ -485,8 +485,8 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
                 return '';
             }
             await context.setApplication(appId);
-            const { xml: data } = X2Js.xml2js(body);
-            const { content, contentType } = onWeChatPublicEvent(data as any, context);
+            const { xml: data } = X2Js.xml2js<{ xml: WechatPublicEventData }>(body);
+            const { content, contentType } = onWeChatPublicEvent(data, context);
             return content;
         },
     }, {

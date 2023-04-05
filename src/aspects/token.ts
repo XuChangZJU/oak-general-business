@@ -652,11 +652,11 @@ async function tryRefreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends
     let { accessToken, refreshToken, atExpiredAt, rtExpiredAt, scope, openId, user } = wechatUser;
     const now = Date.now();
     assert(scope!.toLowerCase().includes('userinfo'));
-    if (rtExpiredAt! < now) {
+    if (rtExpiredAt as number < now) {
         // refreshToken过期，直接返回未登录异常，使用户去重新登录
         throw new OakUnloggedInException();
     }
-    if (atExpiredAt! < now) {
+    if (atExpiredAt as number < now) {
         // 刷新accessToken
         const { accessToken: at2, atExpiredAt: ate2, scope: s2 } = await wechatInstance.refreshUserAccessToken(refreshToken!);
         await context.operate('wechatUser', {

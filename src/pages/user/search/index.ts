@@ -217,7 +217,7 @@ export default OakComponent(
                 const searchStr = this.load('user_searchList') as string;
                 let searchArr: Array<string> = [];
                 if (!searchStr) {
-                    searchArr.push(value)
+                    searchArr.push(value!);
                     this.setState({
                         searchArr,
                         go: true,
@@ -225,8 +225,8 @@ export default OakComponent(
                 }
                 else {
                     searchArr = JSON.parse(searchStr) as Array<string>;
-                    if (!searchArr.includes(value)) {
-                        searchArr.push(value);
+                    if (!searchArr.includes(value!)) {
+                        searchArr.push(value!);
                     }
                     this.setState({
                         searchArr,
@@ -234,7 +234,7 @@ export default OakComponent(
                     })
                 }
                 this.save('user_searchList', JSON.stringify(searchArr));
-                this.setFilter(value);
+                this.setFilter(value!);
                 this.refresh();
             },
         },
