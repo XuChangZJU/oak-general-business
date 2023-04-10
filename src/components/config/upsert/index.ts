@@ -4,10 +4,10 @@ import { Config } from '../../../types/Config';
 export default OakComponent({
     isList: false,
     properties: {
-        config: Object,
-        entity: String,
-        name: String,
-        entityId: String,
+        config: {} as Config,
+        entity: '' as 'system' | 'platform',
+        name: '',
+        entityId: '',
     },
     data: {
         initialConfig: {} as Config,
@@ -73,7 +73,7 @@ export default OakComponent({
             const { entity, entityId } = this.props;
 
             await this.features.config.updateConfig(
-                entity as 'system' | 'platform',
+                entity!,
                 entityId!,
                 currentConfig
             );

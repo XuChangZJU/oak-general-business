@@ -1,3 +1,4 @@
+import { EntityDict } from '../../../general-app-domain/EntityDict';
 
 
 export default OakComponent({
@@ -15,8 +16,8 @@ export default OakComponent({
         return data || {};
     },
     properties: {
-        entityId: String,
-        entity: String,
+        entityId: '',
+        entity: '' as keyof EntityDict,
     },
     lifetimes: {
         ready() {

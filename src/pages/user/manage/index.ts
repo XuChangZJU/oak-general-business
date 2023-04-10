@@ -78,7 +78,7 @@ export default OakComponent({
         };
     },
     properties: {
-        event: String,
+        event: '',
     },
     data: {
         stateColor: {

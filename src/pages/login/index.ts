@@ -23,8 +23,8 @@ export default OakComponent({
     properties: {
         onlyCaptcha: Boolean,
         onlyPassword: Boolean,
-        eventLoggedIn: String,
-        backUrl: String, //回调url
+        eventLoggedIn: '',
+        backUrl: '', //回调url
     },
     formData() {
         const { features } = this;

@@ -4,8 +4,7 @@ export default OakComponent({
     entity: 'wechatPublicTag',
     isList: false,
     properties: {
-        applicationId: String,
-        Tags: Object,
+        applicationId: '',
     },
     projection: {
         id: 1,

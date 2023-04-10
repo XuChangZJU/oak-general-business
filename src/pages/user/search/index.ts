@@ -66,7 +66,7 @@ export default OakComponent(
             };
         },
         properties: {
-            toUrl: String,
+            toUrl: '',
         },
         data: {
             go: false,

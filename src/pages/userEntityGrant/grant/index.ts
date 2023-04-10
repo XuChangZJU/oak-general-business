@@ -20,10 +20,10 @@ export default OakComponent({
         ...(userEntityGrant || {}),
     }),
     properties: {
-        entity: String,
-        entityId: String,
-        relations: Array,
-        type: String,
+        entity: '' as keyof EntityDict,
+        entityId: '',
+        relations: [] as string[],
+        type: '',
     },
     data: {
         period: 5,

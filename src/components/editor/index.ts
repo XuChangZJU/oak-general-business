@@ -1,57 +1,34 @@
-import React from 'react'
+import React from 'react';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../../general-app-domain';
-import {
-    OakException,
-    OakUnloggedInException,
-} from 'oak-domain/lib/types';
+import { OakException, OakUnloggedInException } from 'oak-domain/lib/types';
 export default OakComponent({
     isList: true,
     properties: {
-        html: {
-            type: String,
-            value: '',
-        },
-        delta: {
-            type: String,
-            value: '',
-        },
-        readOnly: {
-            type: Boolean,
-            value: false,
-        },
-        showImgSize: {
-            type: Boolean,
-            value: false,
-        },
-        showImgResize: {
-            type: Boolean,
-            value: false,
-        },
-        editorStyle: {
-            type: String,
-            value: '',
-        },
-        placeholder: {
-            type: String,
-            value: '请输入',
-        },
-        showTabBar: {
-            type: Boolean,
-            value: true,
-        },
+        html: '' as string,
+        delta: '' as string,
+        readOnly: false as boolean,
+        showImgSize: false as boolean,
+        showImgResize: false as boolean,
+        editorStyle: '' as string,
+        placeholder: '请输入' as string,
+        showTabBar: true as boolean,
     },
     methods: {
         onEditReady(e: WechatMiniprogram.EventCallback) {
             if (process.env.OAK_PLATFORM === 'wechatMp') {
                 const { html, delta } = this.props;
-                (this as any).createSelectorQuery().select('#editor').context((res: any) => {
-                    (this as any).editorCtx = res.context;
-                    (this as any).editorCtx.setContents({
-                        html,
-                        delta,
+                (this as any)
+                    .createSelectorQuery()
+                    .select('#editor')
+                    .context((res: any) => {
+                        (this as any).editorCtx = res.context;
+                        (this as any).editorCtx.setContents({
+                            html,
+                            delta,
+                        });
                     })
-                }).exec();
+                    .exec();
                 this.triggerEvent('ready', e);
             }
         },
@@ -110,8 +87,13 @@ export default OakComponent({
                         });
                     } else {
                         const { fileType, size, tempFilePath } = tempFiles[0];
-                        const extension = tempFilePath.substring(tempFilePath.lastIndexOf('.') + 1);
-                        const filename = tempFilePath.substring(0, tempFilePath.lastIndexOf('.'));
+                        const extension = tempFilePath.substring(
+                            tempFilePath.lastIndexOf('.') + 1
+                        );
+                        const filename = tempFilePath.substring(
+                            0,
+                            tempFilePath.lastIndexOf('.')
+                        );
                         const extraFile = {
                             extra1: tempFilePath,
                             origin: 'qiniu',
@@ -125,9 +107,8 @@ export default OakComponent({
                             bucket: '',
                             id: generateNewId(),
                         } as EntityDict['extraFile']['CreateSingle']['data'];
-                        const { url, bucket } = await this.features.extraFile.upload(
-                            extraFile
-                        );
+                        const { url, bucket } =
+                            await this.features.extraFile.upload(extraFile);
                         extraFile.bucket = bucket;
                         extraFile.extra1 = null;
                         await this.addExtraFile(extraFile);
@@ -149,30 +130,30 @@ export default OakComponent({
         onInput(e: WechatMiniprogram.TouchEvent) {
             const html = e.detail.html;
             const text = e.detail.text;
-            this.triggerEvent("input", { html, text }, {});
+            this.triggerEvent('input', { html, text }, {});
         },
-        addUnderline () {
-            (this as any).editorCtx.format("underline")
+        addUnderline() {
+            (this as any).editorCtx.format('underline');
         },
-        addItalic () {
-            (this as any).editorCtx.format("italic")
+        addItalic() {
+            (this as any).editorCtx.format('italic');
         },
-        addBold () {
-            (this as any).editorCtx.format("bold")
+        addBold() {
+            (this as any).editorCtx.format('bold');
         },
         addHeader(e: WechatMiniprogram.TouchEvent) {
             const headerType = e.currentTarget.dataset.header;
-            (this as any).editorCtx.format("header", headerType)
+            (this as any).editorCtx.format('header', headerType);
         },
         addAlign(e: WechatMiniprogram.TouchEvent) {
             const alignType = e.currentTarget.dataset.align;
-            (this as any).editorCtx.format("align", alignType);
+            (this as any).editorCtx.format('align', alignType);
         },
         addList(e: WechatMiniprogram.TouchEvent) {
             const listType = e.currentTarget.dataset.list;
-            (this as any).editorCtx.format("list", listType);
+            (this as any).editorCtx.format('list', listType);
         },
-        undo () {
+        undo() {
             (this as any).editorCtx.undo();
         },
     },

@@ -1,6 +1,6 @@
 import { OakInputIllegalException } from 'oak-domain/lib/types';
 import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
-import { EntityDict as BaseEntityDict } from '../../../../general-app-domain';
+import { EntityDict } from '../../../../general-app-domain';
 
 export default OakComponent({
     entity: 'user',
@@ -43,14 +43,11 @@ export default OakComponent({
         };
     },
     properties: {
-        entity: String,
-        entityId: String,
-        relations: Array,
-        mobile: String,
-        isComponent: {
-            type: Boolean,
-            value: false
-        },
+        entity: '' as keyof EntityDict,
+        entityId: '',
+        relations: [] as string[],
+        mobile: '',
+        isComponent: false,
     },
     data: {
         userRelationRelativePath: '',

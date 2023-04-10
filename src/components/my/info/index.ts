@@ -6,8 +6,21 @@ export default OakComponent({
     formData({ features }) {
         const userInfo = features.token.getUserInfo();
         if (userInfo) {
-            const {id, nickname, name, mobile$user, idState, userState, gender } = userInfo;
-            const mobileText = mobile$user!.length > 1 ? this.t('moreThanOne') : (mobile$user!.length == 1 ? mobile$user![0].mobile : this.t('unset'))
+            const {
+                id,
+                nickname,
+                name,
+                mobile$user,
+                idState,
+                userState,
+                gender,
+            } = userInfo;
+            const mobileText =
+                mobile$user!.length > 1
+                    ? this.t('moreThanOne')
+                    : mobile$user!.length == 1
+                    ? mobile$user![0].mobile
+                    : this.t('unset');
 
             return {
                 nameText: nickname || name,
@@ -20,32 +33,27 @@ export default OakComponent({
                 gender,
             };
         }
-        return {
-        };
+        return {};
     },
     properties: {
-        showLogout: Boolean,
+        showLogout: false as boolean,
     },
     lifetimes: {
         attached() {
             this.subscribed.push(
-                this.features.token.subscribe(
-                    () => this.reRender()
-                )
+                this.features.token.subscribe(() => this.reRender())
             );
             this.subscribed.push(
-                this.features.cache.subscribe(
-                    () => this.reRender()
-                )
+                this.features.cache.subscribe(() => this.reRender())
             );
-        }
+        },
     },
     methods: {
         logout() {
             this.features.token.logout();
         },
         updateAttribute(attr: string, value: any) {
-            const { userId } =  this.state;
+            const { userId } = this.state;
             assert(userId);
             return this.features.cache.operate('user', {
                 id: generateNewId(),
@@ -53,10 +61,10 @@ export default OakComponent({
                 data: {
                     [attr]: value,
                 },
-                filter:{
+                filter: {
                     id: userId,
-                }
+                },
             });
-        }
-    }
-})
+        },
+    },
+});

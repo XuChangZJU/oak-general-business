@@ -17,7 +17,7 @@ export default OakComponent({
     properties: {
         onlyCaptcha: Boolean,
         onlyPassword: Boolean,
-        eventLoggedIn: String,
+        eventLoggedIn: '',
         callback: Function,
     },
     formData({ features }) {

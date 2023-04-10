@@ -28,9 +28,6 @@ export default OakComponent({
     },
     properties: {
         // 图片显示模式
-        mode: {
-            type: String,
-            value: 'aspectFit',
-        },
+        mode: 'aspectFit' as string,
     },
 });

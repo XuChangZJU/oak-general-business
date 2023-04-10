@@ -22,12 +22,12 @@ export default OakComponent({
         userEntityGrant,
     }),
     properties: {
-        entity: String,
-        entityId: String,
-        relations: Array,
-        type: String,
-        redirectToAfterConfirm: Object,
-        qrCodeType: String,
+        entity: '' as keyof EntityDict,
+        entityId: '',
+        relations: [] as string[],
+        type: 'grant',
+        redirectToAfterConfirm: {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
+        qrCodeType: '' as QrCodeType,
     },
     data: {
         period: 5,
