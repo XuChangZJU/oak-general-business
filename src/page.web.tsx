@@ -1,5 +1,5 @@
 import React from 'react';
-import { PropertyOption } from 'oak-frontend-base/lib/types/Page';
+import { DataOption } from 'oak-frontend-base/lib/types/Page';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { EntityDict } from './general-app-domain';
 import { BasicFeatures } from 'oak-frontend-base/lib/features/index';
@@ -20,7 +20,7 @@ export function createComponent<
     FormedData extends Record<string, any>,
     IsList extends boolean,
     TData extends Record<string, any> = {},
-    TProperty extends PropertyOption = {},
+    TProperty extends DataOption = {},
     TMethod extends Record<string, Function> = {}
 >(
     option: OakComponentOption<

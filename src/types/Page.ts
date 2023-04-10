@@ -20,7 +20,7 @@ export type OakComponentOption<
     FormedData extends Record<string, any>,
     IsList extends boolean,
     TData extends Record<string, any>,
-    TProperty extends PropertyOption,
+    TProperty extends DataOption,
     TMethod extends Record<string, Function>,
 > = BaseOakComponentOption<ED, T, Cxt, FrontCxt, AD & GAD<ED, Cxt>, FD & GFD<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>, FormedData, IsList, TData, TProperty, TMethod, {
     subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean, tip?: string) => Promise<boolean>;
