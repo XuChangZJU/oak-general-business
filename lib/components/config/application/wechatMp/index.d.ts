@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { WechatMpConfig } from '../../../../general-app-domain/Application/Schema';
 export default function WechatMp(props: {
     config: WechatMpConfig;
