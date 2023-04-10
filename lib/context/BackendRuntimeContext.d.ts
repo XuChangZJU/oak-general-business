@@ -11,6 +11,7 @@ export declare class BackendRuntimeContext<ED extends EntityDict> extends AsyncC
     protected amIRoot?: boolean;
     protected amIReallyRoot?: boolean;
     protected rootMode?: boolean;
+    private temporaryUserId?;
     private tokenException?;
     refineOpRecords(): Promise<void>;
     setTokenValue(tokenValue: string): Promise<void>;
@@ -22,6 +23,7 @@ export declare class BackendRuntimeContext<ED extends EntityDict> extends AsyncC
     getTokenValue(allowUnloggedIn?: boolean): "oak-root-token" | ED["token"]["Schema"]["id"] | undefined;
     getToken(allowUnloggedIn?: boolean): Partial<ED["token"]["Schema"]> | undefined;
     getCurrentUserId(allowUnloggedIn?: boolean): string;
+    setTemporaryUserId(userId: string | undefined): void;
     toString(): string;
     isRoot(): boolean;
     isReallyRoot(): boolean;

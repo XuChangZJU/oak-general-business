@@ -1,3 +1,33 @@
 /// <reference types="react" />
-declare const _default: (props: any) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
+import { EntityDict } from '../../../general-app-domain';
+declare type SourceType = 'album' | 'camera';
+declare type Theme = 'file' | 'image' | 'image-flow' | 'custom';
+declare type FileType = 'all' | 'video' | 'image' | 'file';
+declare type ImgMode = 'scaleToFill' | 'aspectFit' | 'aspectFill' | 'widthFix' | "heightFix" | 'top' | 'bottom' | 'left' | 'right' | 'center' | 'top left' | 'top right' | 'bottom left' | 'bottom right';
+declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "extraFile", true, {
+    removeLater: BooleanConstructor;
+    autoUpload: boolean;
+    maxNumber: number;
+    extension: string[];
+    fileType: FileType;
+    selectCount: number;
+    sourceType: SourceType[];
+    mediaType: ("image" | "video")[];
+    mode: ImgMode;
+    size: number;
+    showUploadList: boolean;
+    accept: string;
+    preview: boolean;
+    disableDelete: boolean;
+    disableAdd: boolean;
+    disableDownload: boolean;
+    disabled: boolean;
+    type: string;
+    origin: string;
+    tag1: string;
+    tag2: string;
+    entity: keyof EntityDict;
+    entityId: string;
+    theme: Theme;
+}>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

@@ -5,7 +5,7 @@ import { List, Tag, Avatar } from 'antd-mobile';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../general-app-domain';
-import ActionPanel from '@oak-frontend-base/components/actionPanel';
+import ActionPanel from '../../../../components/func/actionPanel';
 
 
 export default function render(props: WebComponentProps<EntityDict, 'user', false, {
