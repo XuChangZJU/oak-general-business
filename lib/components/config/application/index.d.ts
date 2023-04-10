@@ -8,6 +8,6 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     name: string;
     entityId: string;
     type: string;
-    isService: BooleanConstructor;
+    isService: boolean;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

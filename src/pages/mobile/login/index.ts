@@ -18,7 +18,7 @@ export default OakComponent({
         onlyCaptcha: Boolean,
         onlyPassword: Boolean,
         eventLoggedIn: '',
-        callback: Function,
+        callback: (() => undefined) as Function,
     },
     formData({ features }) {
         const lastSendAt = features.localStorage.load(SEND_KEY);

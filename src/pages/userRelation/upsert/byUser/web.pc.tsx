@@ -9,7 +9,7 @@ import { EntityDict } from '../../../../general-app-domain';
 
 export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
     relations: string[];
-    entity: string;
+    entity: keyof EntityDict;
     entityId: string;
     oakId: string;
     legal: boolean;

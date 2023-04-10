@@ -18,8 +18,8 @@ export default function Render(
             grantByEmail: boolean;
             grantByMobile: boolean;
             grantMethodCount: number;
-            redirectToAfterConfirm: object;
-            entity: string;
+            redirectToAfterConfirm: EntityDict['userEntityGrant']['Schema']['redirectTo'];
+            entity: keyof EntityDict;
             entityId: string;
             relations: string[];
             qrCodeType?: QrCodeType;

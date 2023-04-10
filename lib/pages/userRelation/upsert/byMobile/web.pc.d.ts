@@ -1,7 +1,7 @@
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../general-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'mobile', false, {
-    entity: string;
+    entity: keyof EntityDict;
     entityId: string;
     relations: string[];
     mobileValue: string;

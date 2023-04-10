@@ -6,8 +6,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     grantByEmail: boolean;
     grantByMobile: boolean;
     grantMethodCount: number;
-    redirectToAfterConfirm: object;
-    entity: string;
+    redirectToAfterConfirm: EntityDict['userEntityGrant']['Schema']['redirectTo'];
+    entity: keyof EntityDict;
     entityId: string;
     relations: string[];
     qrCodeType?: QrCodeType;

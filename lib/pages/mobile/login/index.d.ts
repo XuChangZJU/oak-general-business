@@ -3,6 +3,6 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     onlyCaptcha: BooleanConstructor;
     onlyPassword: BooleanConstructor;
     eventLoggedIn: string;
-    callback: FunctionConstructor;
+    callback: Function;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

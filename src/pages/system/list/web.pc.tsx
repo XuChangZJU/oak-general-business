@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Table, Button, Space, Typography, Modal, Tag } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
-import ActionBtnPanel from '@oak-frontend-base/components/actionBtnPanel';
+import ActionBtnPanel from '../../../../../oak-frontend-base/lib/components/actionBtnPanel';
 
 import Style from './web.module.less';
 
 import { EntityDict } from '../../../general-app-domain';
-import { WebComponentProps } from 'oak-frontend-base';
+import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 
 export default function Render(
     props: WebComponentProps<
@@ -15,7 +15,7 @@ export default function Render(
         true,
         {
             searchValue: string;
-            list: EntityDict['system']['Schema'][];
+            list: RowWithActions<EntityDict, 'system'>[];
             pagination: any;
             showBack: boolean;
             variant?: 'inline' | 'alone' | 'dialog';
@@ -82,7 +82,7 @@ export default function Render(
                             return (
                                 <Typography.Link
                                     onClick={() => {
-                                        goDetail(record.id);
+                                        goDetail(record.id!);
                                     }}
                                 >
                                     {value}
@@ -126,7 +126,7 @@ export default function Render(
                                     <Button
                                         type="link"
                                         onClick={() => {
-                                            goSetConfig(record.id);
+                                            goSetConfig(record.id!);
                                         }}
                                     >
                                         配置
@@ -153,14 +153,15 @@ export default function Render(
                                             {
                                                 label: '详情',
                                                 onClick: () => {
-                                                    goDetail(record.id);
+                                                    goDetail(record.id!);
                                                 },
                                             },
 
                                             {
                                                 action: 'update',
+                                                show: record?.['#oakLegalActions']?.includes('update'),
                                                 onClick: () => {
-                                                    goUpdate(record.id);
+                                                    goUpdate(record.id!);
                                                 },
                                             },
                                         ]}

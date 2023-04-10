@@ -1,8 +1,8 @@
 import { EntityDict } from '../../../general-app-domain';
-import { WebComponentProps } from 'oak-frontend-base';
+import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 export default function Render(props: WebComponentProps<EntityDict, 'platform', true, {
     searchValue: string;
-    list: EntityDict['platform']['Schema'][];
+    list: RowWithActions<EntityDict, 'platform'>[];
     pagination: any;
     showBack: boolean;
     variant?: 'inline' | 'alone' | 'dialog';

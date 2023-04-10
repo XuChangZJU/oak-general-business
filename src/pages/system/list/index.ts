@@ -1,6 +1,7 @@
 export default OakComponent({
     isList: true,
     entity: 'system',
+    actions: ['update'],
     projection: {
         id: 1,
         name: 1,

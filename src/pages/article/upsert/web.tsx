@@ -279,13 +279,6 @@ export default function Render(
                                                         ? `${oakFullpath}.extraFile$entity`
                                                         : undefined
                                                 }
-                                                oakFilters={[
-                                                    {
-                                                        tag1: {
-                                                            $in: ['cover'],
-                                                        },
-                                                    },
-                                                ]}
                                                 type="image"
                                                 origin="qiniu"
                                                 tag1="cover"

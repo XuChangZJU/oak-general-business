@@ -17,9 +17,9 @@ export default OakComponent({
         };
     },
     properties: {
-        entity: String,
-        entityId: String,
-        relations: Array,
+        entity: '' as keyof EntityDict,
+        entityId: '',
+        relations: [] as string[],
     },
     data: {
         mobileValue: '',

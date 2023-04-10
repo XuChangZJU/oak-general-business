@@ -14,7 +14,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     mobileValueReady: boolean;
     oakId: string;
     relations: string[];
-    entity: string;
+    entity: keyof EntityDict;
     entityId: string;
     isNew: boolean;
 }, {
