@@ -1,27 +1,10 @@
-
 export default OakComponent({
     isList: false,
     properties: {
-        type: {
-            type: String,
-            value: 'fas',
-        },
-        size: {
-            type: Number,
-            optionalTypes: [Number, String],
-            value: 0,
-        },
-        color: {
-            type: String,
-            value: 'primary',
-        },
-        name: {
-            type: String,
-            value: '',
-        },
-        larger: {
-            type: String,
-            value: '1x',
-        },
+        type: 'fas' as string,
+        size: 0 as number | string,
+        color: 'primary' as string,
+        name: '' as string,
+        larger: '1x' as string,
     },
 });

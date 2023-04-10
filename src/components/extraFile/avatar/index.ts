@@ -23,7 +23,9 @@ export default OakComponent({
         const avatar = extraFiles?.filter(
             (ele) => !ele.$$deleteAt$$ && ele.tag1 === 'avatar'
         )[0];
-        const avatarUrl = features.extraFile.getUrl(avatar as EntityDict['extraFile']['OpSchema']);
+        const avatarUrl = features.extraFile.getUrl(
+            avatar as EntityDict['extraFile']['OpSchema']
+        );
         return {
             avatar,
             avatarUrl,
@@ -39,12 +41,9 @@ export default OakComponent({
     },
     properties: {
         // 图片是否可预览
-        preview: {
-            type: Boolean,
-            value: true,
-        },
+        preview: true as boolean,
         entity: '' as keyof EntityDict,
-        entityId: String,
+        entityId: '' as string,
     },
 
     methods: {

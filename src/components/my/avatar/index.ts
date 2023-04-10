@@ -3,22 +3,10 @@ import { OpSchema as ExtraFile } from '../../../general-app-domain/ExtraFile/Sch
 export default OakComponent({
     isList: false,
     properties: {
-        shape: {
-            type: String,
-            value: 'circle',
-        },
-        size: {
-            type: Number,
-            optionalTypes: [Number, String],
-        },
-        iconColor: {
-            type: String,
-            value: 'primary',
-        },
-        iconName: {
-            type: String,
-            value: 'user',
-        },
+        shape: 'circle' as string,
+        size: 0 as number | string,
+        iconColor: 'primary' as string,
+        iconName: 'user' as string,
     },
     formData({ features }) {
         const userInfo = features.token.getUserInfo();
@@ -39,10 +27,8 @@ export default OakComponent({
     lifetimes: {
         attached() {
             this.subscribed.push(
-                this.features.token.subscribe(
-                    () => this.reRender()
-                )
+                this.features.token.subscribe(() => this.reRender())
             );
-        }
-    }
-})
+        },
+    },
+});
