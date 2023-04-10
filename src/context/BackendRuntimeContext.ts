@@ -20,6 +20,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
     protected amIRoot?: boolean;
     protected amIReallyRoot?: boolean;
     protected rootMode?: boolean;
+    private temporaryUserId?: string;
     private tokenException?: OakException<ED>;
 
     async refineOpRecords(): Promise<void> {
@@ -238,8 +239,15 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         if (this.rootMode) {
             return ROOT_USER_ID as string;
         }
+        if (this.temporaryUserId) {
+            return this.temporaryUserId;
+        }
         const token = this.getToken(allowUnloggedIn);
         return token?.userId as string;
+    }
+
+    setTemporaryUserId(userId: string | undefined) {
+        this.temporaryUserId = userId;
     }
 
     toString() {
