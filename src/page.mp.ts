@@ -1,4 +1,4 @@
-import { ComponentPublicThisType, PropertyOption } from 'oak-frontend-base/lib/types/Page';
+import { ComponentPublicThisType, DataOption } from 'oak-frontend-base/lib/types/Page';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { EntityDict } from './general-app-domain';
 import { BasicFeatures } from 'oak-frontend-base/lib/features/index';
@@ -29,7 +29,7 @@ export async function subscribeMpMessage<
     FormedData extends Record<string, any>,
     IsList extends boolean,
     TData extends Record<string, any> = {},
-    TProperty extends PropertyOption = {},
+    TProperty extends DataOption = {},
     TMethod extends Record<string, Function> = {}>(this: ComponentPublicThisType<
         ED,
         T,
@@ -99,7 +99,7 @@ export function createComponent<
     FormedData extends Record<string, any>,
     IsList extends boolean,
     TData extends Record<string, any> = {},
-    TProperty extends PropertyOption = {},
+    TProperty extends DataOption = {},
     TMethod extends Record<string, Function> = {}
 >(
     option: OakComponentOption<
