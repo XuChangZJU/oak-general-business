@@ -115,7 +115,7 @@ export default OakComponent({
         entityId: '',
         relations: [] as string[],
         redirectToAfterConfirm: {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
-        qrCodeType: String,
+        qrCodeType: '' as string,
     },
     data: {
         searchValue: '',
@@ -176,7 +176,7 @@ export default OakComponent({
                 else {
                     const userId = this.features.token.getUserId();
                     const legalRelations = this.features.relation.getLegalRelations(entity as keyof EntityDict, userId!, entityId!);
-                    
+
                     this.setState({
                         relationss: legalRelations as string[] | undefined,
                     });
