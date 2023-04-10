@@ -1,4 +1,5 @@
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
+import { EntityDict } from '../../../general-app-domain';
 
 export default OakComponent({
     entity: 'user',
@@ -51,9 +52,9 @@ export default OakComponent({
         };
     },
     properties: {
-        entity: String,
-        entityId: String,
-        relations: Array,
+        entity: '' as keyof EntityDict,
+        entityId: '',
+        relations: [] as string[],
     },
     data: {
         show: false,

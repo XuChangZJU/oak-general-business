@@ -18,7 +18,7 @@ export default OakComponent(
         },
         isList: true,
         properties: {
-            scene: String,
+            scene: '',
         },
         data: {
             loading: true,

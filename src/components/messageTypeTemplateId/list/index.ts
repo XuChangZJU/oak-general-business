@@ -10,7 +10,7 @@ export default OakComponent({
         type: 1,
     },
     properties: {
-        applicationId: String,
+        applicationId: '',
     },
     formData({ data }) {
         const operations = this.getOperations();

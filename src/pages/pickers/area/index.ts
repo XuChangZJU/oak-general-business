@@ -23,8 +23,8 @@ export default OakComponent({
     }),
 
     properties: {
-        depth: Number,
-        itemSelectedEvent: String,
+        depth: undefined,
+        itemSelectedEvent: '',
     },
     methods: {
         onWechatMpItemClicked(input: any) {

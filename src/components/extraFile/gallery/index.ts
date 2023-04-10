@@ -3,6 +3,11 @@ import assert from 'assert';
 import Dialog from '../../../utils/dialog/index';
 import { EntityDict } from '../../../general-app-domain';
 
+type SourceType = 'album' | 'camera';
+type Theme = 'file' | 'image' | 'image-flow' | 'custom';
+type FileType = 'all' | 'video' | 'image' | 'file';
+type ImgMode = 'scaleToFill' | 'aspectFit' | 'aspectFill' | 'widthFix' | "heightFix" | 'top' | 'bottom' | 'left'
+    | 'right' | 'center' | 'top left' | 'top right' | 'bottom left' | 'bottom right';
 export default OakComponent({
     entity: 'extraFile',
     isList: true,
@@ -62,93 +67,35 @@ export default OakComponent({
     ],
     properties: {
         removeLater: Boolean,
-        autoUpload: {
-            type: Boolean,
-            value: false,
-        },
-        maxNumber: {
-            type: Number,
-            value: 20,
-        },
-        extension: {
-            //小程序独有 chooseMessageFile 根据文件拓展名过滤，仅 type==file 时有效。每一项都不能是空字符串。默认不过滤。
-            type: Array,
-        },
-        fileType: {
-            //小程序独有 chooseMessageFile 文件type
-            type: String,
-            value: 'all',
-        },
-        selectCount: {
-            //小程序独有 文件一次选择几个
-            type: Number,
-            value: 1,
-        },
-        sourceType: {
-            type: Array,
-            value: ['album', 'camera'],
-        },
-        mediaType: {
-            //小程序独有 文件上传类型
-            type: Array,
-            value: ['image'],
-        },
+        autoUpload: false,
+        maxNumber: 20,
+        extension: [] as string[],
+        fileType: 'all' as FileType,
+        selectCount: 1,
+        sourceType: ['album', 'camera'] as SourceType[],
+        mediaType: ['image'] as ('image' | 'video')[],
         // 图片显示模式
-        mode: {
-            //小程序独有
-            type: String,
-            value: 'aspectFit',
-        },
+        mode: 'aspectFit' as ImgMode,
         // 每行可显示的个数
-        size: {
-            // 小程序独有
-            type: Number,
-            value: 3,
-        },
-        showUploadList: {
-            // web独有 是否展示文件列表, 可设为一个对象
-            type: Boolean,
-            value: true,
-        },
-        accept: {
-            // web独有 文件上传类型
-            type: String,
-            value: 'image/*',
-        },
+        size: 3,
+        showUploadList: true,
+        accept: 'image/*' as string,
         // 图片是否可预览
-        preview: {
-            type: Boolean,
-            value: true,
-        },
+        preview: true,
         // 图片是否可删除
-        disableDelete: {
-            type: Boolean,
-            value: false,
-        },
+        disableDelete: false,
         // 上传按钮隐藏
-        disableAdd: {
-            type: Boolean,
-            value: false,
-        },
+        disableAdd: false,
         // 下按按钮隐藏
-        disableDownload: {
-            type: Boolean,
-            value: false,
-        },
-        disabled: { // web独有
-            type: Boolean,
-            value: false,
-        },
-        type: String,
-        origin: String,
-        tag1: String,
-        tag2: String,
-        entity: String,
-        entityId: String,
-        theme: {
-            type: String,
-            value: 'image',
-        },
+        disableDownload: false,
+        disabled: false,
+        type: '',
+        origin: '',
+        tag1: '',
+        tag2: '',
+        entity: '' as keyof EntityDict,
+        entityId: '',
+        theme: 'image' as Theme,
     },
 
     methods: {

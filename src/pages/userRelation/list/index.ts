@@ -3,6 +3,7 @@ import { difference, intersection } from 'oak-domain/lib/utils/lodash';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../../../general-app-domain';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/base-app-domain';
 
 export default OakComponent({
     entity: 'user',
@@ -110,11 +111,10 @@ export default OakComponent({
         };
     },
     properties: {
-        entity: String,
-        entityId: String,
-        userIds: Array,
-        relations: Array,
-        redirectToAfterConfirm: Object,
+        entity: '' as keyof EntityDict,
+        entityId: '',
+        relations: [] as string[],
+        redirectToAfterConfirm: {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
         qrCodeType: String,
     },
     data: {

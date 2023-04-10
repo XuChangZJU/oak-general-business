@@ -1,3 +1,4 @@
+import { EntityDict } from '../../../general-app-domain/EntityDict';
 export default OakComponent({
     isList: true,
     entity: 'subscription',
@@ -10,8 +11,8 @@ export default OakComponent({
         entityId: 1,
     },
     properties: {
-        entityId: String,
-        entity: String,
+        entityId: '',
+        entity: '' as keyof EntityDict,
     },
     filters: [
         {

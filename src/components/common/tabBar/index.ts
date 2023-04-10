@@ -2,25 +2,16 @@ export default OakComponent({
   isList: false,
   properties: {
     // 背景色
-    bgColor: {
-      type: String,
-      value: ''
-    },
+    bgColor: String,
     // 背景图
-    bgImg: {
-      type: String,
-      value: ''
-    },
+    bgImg: String,
     // 当前选中索引
     selectedIndex: {
       type: Number,
       value: 0
     },
     // tab 项
-    list: {
-      type: Array,
-      value: []
-    },
+    list: [] as { redDot: boolean; text: string; pagePath: string}[],
     color: {
       type: String,
       value: '#666'

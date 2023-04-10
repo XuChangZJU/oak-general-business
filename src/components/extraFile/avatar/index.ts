@@ -43,7 +43,7 @@ export default OakComponent({
             type: Boolean,
             value: true,
         },
-        entity: String,
+        entity: '' as keyof EntityDict,
         entityId: String,
     },
 

@@ -1,10 +1,11 @@
 import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
+import { EntityDict } from "oak-domain/lib/types";
 
 export default OakComponent({
     isList: true,
     formData({ data }) {
         const { nameProperty, oakEntity } = this.props;
-        const entityStr = firstLetterUpperCase(oakEntity!);
+        const entityStr = firstLetterUpperCase(oakEntity! as string);
 
         const rows = data?.map((ele) => {
             const {
@@ -27,10 +28,10 @@ export default OakComponent({
         };
     },
     properties: {
-        nameProperty: String,
-        user: Object,
-        relations: Array,
-        oakEntity: String,
+        nameProperty: '',
+        user: {} as EntityDict['user']['Schema'],
+        relations: [] as string[],
+        oakEntity: '' as keyof EntityDict,
     },
     methods: {
         onChange(input: any) {
@@ -45,7 +46,7 @@ export default OakComponent({
                 index: number;
             };
             const { oakEntity, user } = this.props;
-            const entityStr = firstLetterUpperCase(oakEntity!);
+            const entityStr = firstLetterUpperCase(oakEntity! as string);
             // todo 需要修改为最新写法
             // this.toggleNode(
             //     {
