@@ -2,6 +2,8 @@ import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import assert from 'assert';
 import Dialog from '../../../utils/dialog/index';
 import { EntityDict } from '../../../general-app-domain';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 
 type SourceType = 'album' | 'camera';
 type Theme = 'file' | 'image' | 'image-flow' | 'custom';
@@ -507,4 +509,42 @@ export default OakComponent({
             }
         },
     },
-});
+}) as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
+    props: ReactComponentProps<
+        ED2,
+        T2,
+        true,
+        {
+            removeLater: boolean,
+            autoUpload: boolean,
+            maxNumber: number,
+            extension: string[],
+            fileType: FileType,
+            selectCount: number,
+            sourceType: SourceType[],
+            mediaType: ('image' | 'video')[],
+            // 图片显示模式
+            mode: ImgMode,
+            // 每行可显示的个数
+            size: number,
+            showUploadList: boolean,
+            accept: string,
+            // 图片是否可预览
+            preview: boolean,
+            // 图片是否可删除
+            disableDelete: boolean,
+            // 上传按钮隐藏
+            disableAdd: boolean,
+            // 下按按钮隐藏
+            disableDownload: boolean,
+            disabled: boolean,
+            type: string,
+            origin: string,
+            tag1: string,
+            tag2: string,
+            entity: keyof ED2,
+            entityId: string,
+            theme: Theme,
+        }
+    >
+) => React.ReactElement;;

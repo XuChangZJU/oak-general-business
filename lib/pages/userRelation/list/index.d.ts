@@ -5,6 +5,6 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     entityId: string;
     relations: string[];
     redirectToAfterConfirm: import("../../../general-app-domain/UserEntityGrant/Schema").RedirectToProps | null | undefined;
-    qrCodeType: StringConstructor;
+    qrCodeType: string;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

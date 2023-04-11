@@ -1,18 +1,19 @@
-/// <reference types="react" />
 import { EntityDict } from '../../../general-app-domain';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 declare type SourceType = 'album' | 'camera';
 declare type Theme = 'file' | 'image' | 'image-flow' | 'custom';
 declare type FileType = 'all' | 'video' | 'image' | 'file';
 declare type ImgMode = 'scaleToFill' | 'aspectFit' | 'aspectFill' | 'widthFix' | "heightFix" | 'top' | 'bottom' | 'left' | 'right' | 'center' | 'top left' | 'top right' | 'bottom left' | 'bottom right';
-declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "extraFile", true, {
-    removeLater: BooleanConstructor;
+declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(props: ReactComponentProps<ED2, T2, true, {
+    removeLater: boolean;
     autoUpload: boolean;
     maxNumber: number;
     extension: string[];
     fileType: FileType;
     selectCount: number;
     sourceType: SourceType[];
-    mediaType: ("image" | "video")[];
+    mediaType: ('image' | 'video')[];
     mode: ImgMode;
     size: number;
     showUploadList: boolean;
@@ -26,8 +27,8 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     origin: string;
     tag1: string;
     tag2: string;
-    entity: keyof EntityDict;
+    entity: keyof ED2;
     entityId: string;
     theme: Theme;
-}>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
+}>) => React.ReactElement;
 export default _default;
