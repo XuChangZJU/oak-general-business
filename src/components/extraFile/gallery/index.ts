@@ -66,7 +66,7 @@ export default OakComponent({
         },
     ],
     properties: {
-        removeLater: Boolean,
+        removeLater: false as boolean,
         autoUpload: false,
         maxNumber: 20,
         extension: [] as string[],
