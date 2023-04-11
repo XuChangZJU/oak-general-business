@@ -3,7 +3,8 @@ import { difference, intersection } from 'oak-domain/lib/utils/lodash';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../../../general-app-domain';
-import { EntityDict as BaseEntityDict } from 'oak-domain/lib/base-app-domain';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 
 export default OakComponent({
     entity: 'user',
@@ -368,4 +369,17 @@ export default OakComponent({
             });
         },
     },
-});
+}) as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
+    props: ReactComponentProps<
+        ED2,
+        T2,
+        true,
+        {
+            entity: keyof ED2,
+            entityId: string,
+            relations: string[],
+            redirectToAfterConfirm: EntityDict['userEntityGrant']['Schema']['redirectTo'],
+            qrCodeType: string,
+        }
+    >
+) => React.ReactElement;

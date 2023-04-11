@@ -98,6 +98,7 @@ export default OakComponent({
         entity: '' as keyof EntityDict,
         entityId: '',
         theme: 'image' as Theme,
+        showUploadProgress: false,
     },
 
     methods: {
@@ -425,7 +426,7 @@ export default OakComponent({
                         content: '下载文件失败',
                     });
                 },
-                complete: function (res) {},
+                complete: function (res) { },
             });
         },
         async onOpenByMp(event: WechatMiniprogram.Touch) {
@@ -473,7 +474,7 @@ export default OakComponent({
                 fail: function (res) {
                     console.log(res);
                 },
-                complete: function (res) {},
+                complete: function (res) { },
             });
         },
     },
@@ -545,6 +546,8 @@ export default OakComponent({
             entity: keyof ED2,
             entityId: string,
             theme: Theme,
+            showUploadProgress: boolean,
+            children?: React.ReactNode,
         }
     >
-) => React.ReactElement;;
+) => React.ReactElement;

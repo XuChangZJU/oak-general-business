@@ -1,4 +1,7 @@
-import { EntityDict } from '../../../general-app-domain/EntityDict';
+import { EntityDict } from '../../../general-app-domain';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+
 export default OakComponent({
     isList: true,
     entity: 'subscription',
@@ -13,6 +16,7 @@ export default OakComponent({
     properties: {
         entityId: '',
         entity: '' as keyof EntityDict,
+        variant: 'inline' as 'inline' | 'alone' | 'dialog',
     },
     filters: [
         {
@@ -64,4 +68,15 @@ export default OakComponent({
             this.execute();
         },
     },
-});
+}) as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
+    props: ReactComponentProps<
+        ED2,
+        T2,
+        true,
+        {
+            entityId: string,
+            entity: keyof ED2,
+            variant?: 'inline' | 'alone' | 'dialog',
+        }
+    >
+) => React.ReactElement;

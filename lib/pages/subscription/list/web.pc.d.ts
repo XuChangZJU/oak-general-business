@@ -3,7 +3,6 @@ import { WebComponentProps } from 'oak-frontend-base';
 export default function Render(props: WebComponentProps<EntityDict, 'subscription', true, {
     searchValue: string;
     list: EntityDict['subscription']['Schema'][];
-    pagination: any;
     showBack: boolean;
     variant?: 'inline' | 'alone' | 'dialog';
 }, {

@@ -14,7 +14,6 @@ export default function Render(
         {
             searchValue: string;
             list: EntityDict['subscription']['Schema'][];
-            pagination: any;
             showBack: boolean;
             variant?: 'inline' | 'alone' | 'dialog';
         },
