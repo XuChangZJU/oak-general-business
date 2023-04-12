@@ -338,10 +338,10 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeCxt>[] = [
             }
             if (data instanceof Array) {
                 for (const ele of data) {
-                    fn(ele);
+                    await fn(ele);
                 }
             } else {
-                fn(data);
+                await fn(data);
             }
             return 1;
         }

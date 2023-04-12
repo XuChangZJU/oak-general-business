@@ -30,5 +30,7 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     entity: keyof ED2;
     entityId: string;
     theme: Theme;
+    showUploadProgress: boolean;
+    children?: React.ReactNode;
 }>) => React.ReactElement;
 export default _default;
