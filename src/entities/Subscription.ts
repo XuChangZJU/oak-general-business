@@ -19,9 +19,9 @@ export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
     name: String<32>;
-    description: Text;
-    config: WechatPublicConfig;
-    offset: Int<4>;
+    description?: Text;
+    config?: WechatPublicConfig;
+    offset?: Int<4>;
 };
 
 
