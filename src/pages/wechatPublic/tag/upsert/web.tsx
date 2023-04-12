@@ -49,7 +49,7 @@ export default function Render(
                     >
                         <Form.Item
                             label="TAG名称"
-                            requiredMark
+                            required
                             name="text"
                             rules={[
                                 {

@@ -52,7 +52,7 @@ export default function Render(
                     >
                         <Form.Item
                             label="名称"
-                            requiredMark
+                            required
                             name="name"
                             rules={[
                                 {
@@ -73,7 +73,7 @@ export default function Render(
                         </Form.Item>
                         <Form.Item
                             label="目录"
-                            requiredMark
+                            required
                             name="folder"
                             tooltip="目录属性应和开发目录下的对应目录名匹配，请谨慎修改"
                             rules={[
@@ -93,7 +93,7 @@ export default function Render(
                                 />
                             </>
                         </Form.Item>
-                        <Form.Item label="描述" requiredMark name="description">
+                        <Form.Item label="描述" required name="description">
                             <>
                                 <Input.TextArea
                                     onChange={(e) => {
@@ -107,7 +107,7 @@ export default function Render(
                         </Form.Item>
                         <Form.Item
                             label="是否为超级系统"
-                            requiredMark
+                            required
                             tooltip="超级用户属性可能影响程序的运行逻辑，请谨慎修改"
                             name="super"
                         >
@@ -125,7 +125,7 @@ export default function Render(
                             </>
                         </Form.Item>
 
-                        <Form.Item label="样式" requiredMark name="style">
+                        <Form.Item label="样式" required name="style">
                             <>
                                 <ComponentStyle
                                     onChange={(value) => {

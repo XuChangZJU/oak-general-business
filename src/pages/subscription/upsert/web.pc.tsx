@@ -46,7 +46,7 @@ export default function Render(
                     >
                         <Form.Item
                             label="名称"
-                            requiredMark
+                            required
                             name="name"
                             rules={[
                                 {
@@ -65,7 +65,7 @@ export default function Render(
                                 />
                             </>
                         </Form.Item>
-                        <Form.Item label="描述" requiredMark name="description">
+                        <Form.Item label="描述" required name="description">
                             <>
                                 <Input.TextArea
                                     onChange={(e) => {

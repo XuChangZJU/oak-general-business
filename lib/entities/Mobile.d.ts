@@ -4,6 +4,6 @@ import { Schema as Token } from './Token';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 export interface Schema extends EntityShape {
     mobile: String<16>;
-    user: User;
+    user?: User;
     tokens: Array<Token>;
 }
