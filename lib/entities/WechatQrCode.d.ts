@@ -19,7 +19,7 @@ export interface Schema extends EntityShape {
     expired?: Boolean;
     ticket?: Text;
     url?: String<64>;
-    permanent: Boolean;
+    permanent?: Boolean;
     buffer?: Text;
     application: Application;
     props: WechatQrCodeProps;
