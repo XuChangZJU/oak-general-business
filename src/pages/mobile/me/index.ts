@@ -41,7 +41,7 @@ export default OakComponent({
         deleteIdx: undefined,
     },
     properties: {
-        showBack: Boolean,
+        showBack: false,
     },
     methods: {
         async onRefreshMobile(e: any) {

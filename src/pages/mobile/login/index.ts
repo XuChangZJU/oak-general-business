@@ -15,10 +15,10 @@ export default OakComponent({
         password: '',
     },
     properties: {
-        onlyCaptcha: Boolean,
-        onlyPassword: Boolean,
+        onlyCaptcha: false,
+        onlyPassword: false,
         eventLoggedIn: '',
-        callback: (() => undefined) as Function,
+        callback: undefined as ((() => void) | undefined),
     },
     formData({ features }) {
         const lastSendAt = features.localStorage.load(SEND_KEY);

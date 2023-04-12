@@ -36,7 +36,7 @@ export default OakComponent({
         return {};
     },
     properties: {
-        showLogout: false as boolean,
+        showLogout: false,
     },
     lifetimes: {
         attached() {

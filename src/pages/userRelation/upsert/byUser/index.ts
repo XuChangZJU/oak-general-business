@@ -1,6 +1,4 @@
-import assert from 'assert';
-import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
-import { isMobile } from 'oak-domain/lib/utils/validator';
+import { EntityDict } from '../../../../general-app-domain';
 
 export default OakComponent({
     isList: false,
@@ -11,14 +9,14 @@ export default OakComponent({
         };
     },
     properties: {
-        entity: String,
-        entityId: String,
-        relations: Array,
+        entity: '' as keyof EntityDict,
+        entityId: '',
+        relations: [] as string[],
     },
     methods: {
         async onConfirm() {
             await this.execute();
             this.navigateBack();
-        }
+        },
     },
 });
