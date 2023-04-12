@@ -15,5 +15,5 @@ export interface Schema extends EntityShape {
     extension: String<16>;
     size?: Int<4>;
     sort?: Int<4>;
-    fileType: String<128>;
+    fileType?: String<128>;
 }
