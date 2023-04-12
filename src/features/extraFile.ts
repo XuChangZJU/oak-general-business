@@ -57,7 +57,7 @@ export class ExtraFile<
     }
 
     getUrl(
-        extraFile?: EntityDict['extraFile']['OpSchema'] | null,
+        extraFile?: EntityDict['extraFile']['OpSchema'] | EntityDict['extraFile']['Schema'] | null,
         style?: string
     ) {
         if (!extraFile) {
