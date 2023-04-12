@@ -390,14 +390,15 @@ export default OakComponent({
                     fs.saveFile({
                         tempFilePath: filePath,
                         success: (res) => {
-                            console.log(res, '下载成功');
+                            // console.log(res, '下载成功');
                             wx.hideLoading();
                             const savedFilePath = res.savedFilePath;
                             // 打开文件
                             wx.openDocument({
                                 filePath: savedFilePath,
+                                showMenu: true,
                                 success: function (res) {
-                                    console.log('打开文档成功');
+                                    // console.log('打开文档成功');
                                 },
                                 fail: function (res) {
                                     console.log(res, 'openDocument');
@@ -432,6 +433,7 @@ export default OakComponent({
         async onOpenByMp(event: WechatMiniprogram.Touch) {
             const { value } = event.currentTarget.dataset;
             const fileUrl = this.features.extraFile.getUrl(value);
+            const that = this;
             let extension = value.extension.toLowerCase();
             let extensions = [
                 'doc',
@@ -468,11 +470,20 @@ export default OakComponent({
                         },
                         fail: function (err) {
                             console.log(err);
+                            that.setMessage({
+                                type: 'error',
+                                content: '打开文件失败',
+                            });
                         },
                     });
                 },
                 fail: function (res) {
                     console.log(res);
+                    wx.hideLoading();
+                    that.setMessage({
+                        type: 'error',
+                        content: '下载失败',
+                    });
                 },
                 complete: function (res) { },
             });
