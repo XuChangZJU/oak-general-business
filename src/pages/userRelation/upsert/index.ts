@@ -1,5 +1,7 @@
 import assert from 'assert';
 import { WebConfig } from '../../../entities/Application';
+import { EntityDict } from '../../../general-app-domain';
+import { QrCodeType } from '../../../types/Config';
 
 export default OakComponent({
     isList: false,
@@ -10,17 +12,18 @@ export default OakComponent({
         grantMethodCount: 0,
     },
     properties: {
-        entity: String,
-        entityId: String,
-        relations: Array,
-        redirectToAfterConfirm: Object,
-        qrCodeType: String,
+        entity: '' as keyof EntityDict,
+        entityId: '',
+        relations: [] as string[],
+        redirectToAfterConfirm:
+            {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
+        qrCodeType: '' as QrCodeType,
     },
     lifetimes: {
         ready() {
             const isRoot = this.features.token.isRoot();
             const application = this.features.application.getApplication();
-            const { type, config } = application!;      // 这个页面总不可能是第一个页面吧，application肯定初始化完成了
+            const { type, config } = application!; // 这个页面总不可能是第一个页面吧，application肯定初始化完成了
             let grantByUserEntityGrant = false,
                 grantByMobile = false,
                 grantByEmail = false;
