@@ -11,10 +11,10 @@ export declare type OpSchema = EntityShape & {
     type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
     objectId: String<64>;
-    tag1: String<16>;
-    tag2: String<16>;
+    tag1?: String<16> | null;
+    tag2?: String<16> | null;
     filename: String<256>;
-    md5: Text;
+    md5?: Text | null;
     entity: "article" | "user" | string;
     entityId: String<64>;
     extra1?: Text | null;
@@ -29,10 +29,10 @@ export declare type Schema = EntityShape & {
     type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
     objectId: String<64>;
-    tag1: String<16>;
-    tag2: String<16>;
+    tag1?: String<16> | null;
+    tag2?: String<16> | null;
     filename: String<256>;
-    md5: Text;
+    md5?: Text | null;
     entity: "article" | "user" | string;
     entityId: String<64>;
     extra1?: Text | null;
