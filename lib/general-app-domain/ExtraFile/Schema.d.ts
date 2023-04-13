@@ -11,8 +11,8 @@ export declare type OpSchema = EntityShape & {
     type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
     objectId: String<64>;
-    tag1?: String<32> | null;
-    tag2?: String<32> | null;
+    tag1?: String<16> | null;
+    tag2?: String<16> | null;
     filename: String<256>;
     md5?: Text | null;
     entity: "article" | "user" | string;
@@ -29,8 +29,8 @@ export declare type Schema = EntityShape & {
     type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
     objectId: String<64>;
-    tag1?: String<32> | null;
-    tag2?: String<32> | null;
+    tag1?: String<16> | null;
+    tag2?: String<16> | null;
     filename: String<256>;
     md5?: Text | null;
     entity: "article" | "user" | string;
