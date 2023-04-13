@@ -8,7 +8,7 @@ import { ActionDef, Index } from 'oak-domain/lib/types';
 
 export interface Schema extends EntityShape {
     mobile: String<16>;
-    user: User;
+    user?: User;
     tokens: Array<Token>;
 };
 

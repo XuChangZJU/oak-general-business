@@ -25,7 +25,7 @@ export default OakComponent({
         };
     },
     properties: {
-        applicationId: String,
+        applicationId: '',
     },
     methods: {
         goCreate() {

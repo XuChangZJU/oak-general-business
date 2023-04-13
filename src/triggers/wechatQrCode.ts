@@ -248,10 +248,13 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeCxt>[] = [
                 const updateData = {
                     applicationId: appId,
                     allowShare: true,
-                    url,
                     expired: false,
                     expiresAt: permanent ? null : Date.now() + 2592000 * 1000,     // wecharQrCode里的过期时间都放到最大，由上层关联对象来主动过期（by Xc, 20230131)
                 };
+
+                if (url) {
+                    Object.assign(updateData, { url });
+                }
 
                 if (!wechatQrCode.type) {
                     Object.assign(

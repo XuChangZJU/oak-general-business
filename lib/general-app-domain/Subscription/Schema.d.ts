@@ -13,18 +13,18 @@ export declare type OpSchema = EntityShape & {
     entity: String<32>;
     entityId: String<64>;
     name: String<32>;
-    description: Text;
-    config: WechatPublicConfig;
-    offset: Int<4>;
+    description?: Text | null;
+    config?: WechatPublicConfig | null;
+    offset?: Int<4> | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
     entity: String<32>;
     entityId: String<64>;
     name: String<32>;
-    description: Text;
-    config: WechatPublicConfig;
-    offset: Int<4>;
+    description?: Text | null;
+    config?: WechatPublicConfig | null;
+    offset?: Int<4> | null;
 } & {
     [A in ExpressionKey]?: any;
 };

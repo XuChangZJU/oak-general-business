@@ -23,7 +23,7 @@ export interface Schema extends EntityShape {
     expired?: Boolean; //是否过期
     ticket?: Text;
     url?: String<64>;
-    permanent: Boolean; //是否永久码
+    permanent?: Boolean; //是否永久码
     buffer?: Text; // 若没有url，使用buffer存储生成的小程序码数据（base64)
     application: Application;
     props: WechatQrCodeProps;

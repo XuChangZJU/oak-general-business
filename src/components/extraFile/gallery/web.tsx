@@ -125,7 +125,7 @@ export default function render(
             name: features.extraFile.getFileName(extraFile),
             fileName: features.extraFile.getFileName(extraFile),
             size: extraFile.size!,
-            type: extraFile.fileType,
+            type: extraFile.fileType!,
             uid: extraFile.id, //upload 组件需要uid来维护fileList
             // status: 'done',
         };
@@ -184,10 +184,10 @@ export default function render(
                 showUploadList={
                     showUploadList
                         ? {
-                              showPreviewIcon: preview,
-                              showRemoveIcon: !disableDelete,
-                              showDownloadIcon: !disableDownload,
-                          }
+                            showPreviewIcon: preview,
+                            showRemoveIcon: !disableDelete,
+                            showDownloadIcon: !disableDownload,
+                        }
                         : false
                 }
                 beforeUpload={async (file) => {

@@ -51,7 +51,7 @@ export default function Render(
                     >
                         <Form.Item
                             label="访问域名"
-                            requiredMark
+                            required
                             name="url"
                             rules={[
                                 {
@@ -71,7 +71,7 @@ export default function Render(
                                 />
                             </>
                         </Form.Item>
-                        <Form.Item label="请求路径" requiredMark name="apiPath">
+                        <Form.Item label="请求路径" required name="apiPath">
                             <>
                                 <Input
                                     onChange={(e) => {
@@ -83,7 +83,7 @@ export default function Render(
                                 />
                             </>
                         </Form.Item>
-                        <Form.Item label="端口" requiredMark name="port">
+                        <Form.Item label="端口" required name="port">
                             <>
                                 <Input
                                     onChange={(e) => {

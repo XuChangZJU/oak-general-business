@@ -418,7 +418,7 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
         assert(result2.length === 1);
         const [mobileRow] = result2;
         const { user } = mobileRow;
-        return await setUpTokenAndUser<ED, Cxt>(env, context, 'mobile', mobileRow.id, undefined, user);
+        return await setUpTokenAndUser<ED, Cxt>(env, context, 'mobile', mobileRow.id, undefined, user as Partial<ED['user']['Schema']>);
     }
     else {
         //此手机号不存在
@@ -1128,7 +1128,7 @@ export async function getWechatMpUserPhoneNumber<
 export async function logout<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
->({}, context: Cxt) {
+>({ }, context: Cxt) {
     const tokenId = context.getTokenValue();
     if (tokenId) {
         await context.operate('token', {

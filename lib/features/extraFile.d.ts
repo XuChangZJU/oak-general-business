@@ -15,7 +15,7 @@ export declare class ExtraFile<ED extends EntityDict, Cxt extends BackendRuntime
         url: string;
         bucket: string;
     }>;
-    getUrl(extraFile?: EntityDict['extraFile']['OpSchema'] | null, style?: string): string;
+    getUrl(extraFile?: EntityDict['extraFile']['OpSchema'] | EntityDict['extraFile']['Schema'] | null, style?: string): string;
     getFileName(extraFile: EntityDict['extraFile']['OpSchema']): string;
     formatBytes(size: number): string;
 }

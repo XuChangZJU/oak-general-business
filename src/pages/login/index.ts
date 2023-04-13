@@ -21,8 +21,8 @@ export default OakComponent({
         loading: false,
     },
     properties: {
-        onlyCaptcha: Boolean,
-        onlyPassword: Boolean,
+        onlyCaptcha: false,
+        onlyPassword: false,
         eventLoggedIn: '',
         backUrl: '', //回调url
     },
