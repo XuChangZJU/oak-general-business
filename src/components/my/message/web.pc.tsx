@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Badge } from 'antd';
+import { Button, Badge, Drawer, Space } from 'antd';
 import classNames from 'classnames';
 import { BellOutlined } from '@ant-design/icons';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -26,9 +26,10 @@ export default function Render(
         }
     >
 ) {
-    const { data } = props;
+    const { data, methods } = props;
     const { count, className, onClick, style, buttonStyle, buttonClassName } =
         data;
+    const { goMessageList } = methods;
     const [open, setOpen] = useState(false);
 
     return (
@@ -54,14 +55,40 @@ export default function Render(
                     }}
                 />
             </Badge>
-            <MessageDrawerList
+            <Drawer
+                title="消息"
+                placement="right"
                 open={open}
                 onClose={() => {
                     setOpen(false);
                 }}
-                oakAutoUnmount={true}
-                oakPath="$my/message-/message/drawerList"
-            />
+                extra={
+                    <Space>
+                        <Button
+                            size="small"
+                            type="text"
+                            onClick={() => {
+                                setOpen(false);
+                                goMessageList();
+                            }}
+                        >
+                            查看更多
+                        </Button>
+                    </Space>
+                }
+                bodyStyle={{
+                    padding: 0,
+                }}
+                destroyOnClose={true}
+            >
+                <MessageDrawerList
+                    onClose={() => {
+                        setOpen(false);
+                    }}
+                    oakAutoUnmount={true}
+                    oakPath="$my/message-/message/drawerList"
+                />
+            </Drawer>
         </>
     );
 }

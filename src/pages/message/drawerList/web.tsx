@@ -30,62 +30,93 @@ export default function Render(
     const { messages, open, onClose, oakFullpath } = data;
     const { goDetailById, goMessageList } = methods;
 
+    // return (
+    //     <Drawer
+    //         title="消息"
+    //         placement="right"
+    //         onClose={onClose}
+    //         open={open}
+    //         extra={
+    //             <Space>
+    //                 <Button
+    //                     size="small"
+    //                     type="text"
+    //                     onClick={() => {
+    //                         onClose && onClose();
+    //                         goMessageList();
+    //                     }}
+    //                 >
+    //                     查看更多
+    //                 </Button>
+    //             </Space>
+    //         }
+    //         bodyStyle={{
+    //             padding: 0,
+    //         }}
+    //         destroyOnClose={true}
+    //     >
+    //         <div className={Style.container}>
+    //             {messages?.length > 0 ? (
+    //                 <div>
+    //                     {messages?.map((message, index: number) => (
+    //                         <MessageCell
+    //                             oakId={message.id}
+    //                             key={message.id}
+    //                             oakPath={
+    //                                 oakFullpath
+    //                                     ? `${oakFullpath}.${message.id}`
+    //                                     : ''
+    //                             }
+    //                             onItemClicked={(item: {
+    //                                 id: string;
+    //                             }) => {
+    //                                 const { id } = item;
+    //                                 onClose && onClose();
+    //                                 goDetailById(id);
+    //                             }}
+    //                         />
+    //                     ))}
+    //                 </div>
+    //             ) : (
+    //                 <div className={Style.noData}>
+    //                     <Empty
+    //                         description="暂无消息"
+    //                         image={Empty.PRESENTED_IMAGE_SIMPLE}
+    //                     ></Empty>
+    //                 </div>
+    //             )}
+    //         </div>
+    //     </Drawer>
+    // );
     return (
-        <Drawer
-            title="消息"
-            placement="right"
-            onClose={onClose}
-            open={open}
-            extra={
-                <Space>
-                    <Button
-                        size="small"
-                        type="text"
-                        onClick={() => {
-                            onClose && onClose();
-                            goMessageList();
-                        }}
-                    >
-                        查看更多
-                    </Button>
-                </Space>
-            }
-            bodyStyle={{
-                padding: 0,
-            }}
-            destroyOnClose={true}
-        >
-            <div className={Style.container}>
-                {messages?.length > 0 ? (
-                    <div>
-                        {messages?.map((message, index: number) => (
-                            <MessageCell
-                                oakId={message.id}
-                                key={message.id}
-                                oakPath={
-                                    oakFullpath
-                                        ? `${oakFullpath}.${message.id}`
-                                        : ''
-                                }
-                                onItemClicked={(item: {
-                                    id: string;
-                                }) => {
-                                    const { id } = item;
-                                    onClose && onClose();
-                                    goDetailById(id);
-                                }}
-                            />
-                        ))}
-                    </div>
-                ) : (
-                    <div className={Style.noData}>
-                        <Empty
-                            description="暂无消息"
-                            image={Empty.PRESENTED_IMAGE_SIMPLE}
-                        ></Empty>
-                    </div>
-                )}
-            </div>
-        </Drawer>
+        <div className={Style.container}>
+            {messages?.length > 0 ? (
+                <div>
+                    {messages?.map((message, index: number) => (
+                        <MessageCell
+                            oakId={message.id}
+                            key={message.id}
+                            oakPath={
+                                oakFullpath
+                                    ? `${oakFullpath}.${message.id}`
+                                    : ''
+                            }
+                            onItemClicked={(item: { id: string }) => {
+                                const { id } = item;
+                                onClose && onClose();
+                                goDetailById(id);
+                            }}
+                        />
+                    ))}
+                </div>
+            ) : (
+                <div className={Style.noData}>
+                    <Empty
+                        description="暂无消息"
+                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                    ></Empty>
+                </div>
+            )}
+        </div>
     );
 }

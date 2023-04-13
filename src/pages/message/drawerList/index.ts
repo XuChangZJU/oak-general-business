@@ -42,11 +42,12 @@ export default OakComponent({
             },
         },
     ],
+    properties: {
+        onClose: undefined as (() => void) | undefined,
+    },
     formData: function ({ data: messages, features, props }) {
-        const pagination = this.getPagination();
         return {
             messages,
-            pagination,
         };
     },
     methods: {
