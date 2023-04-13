@@ -7,8 +7,8 @@ export interface Schema extends EntityShape {
     type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
     objectId: String<64>;
-    tag1?: String<16>;
-    tag2?: String<16>;
+    tag1?: String<32>;
+    tag2?: String<32>;
     filename: String<256>;
     md5?: Text;
     entity: String<32>;
