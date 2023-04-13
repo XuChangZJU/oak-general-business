@@ -123,7 +123,6 @@ export class Token<
                         id: this.tokenValue!,
                     },
                 },
-                allowUnloggedIn,
                 context
             )[0];
         }
