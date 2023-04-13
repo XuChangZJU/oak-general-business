@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { Config } from '../../../../types/Config';
 export default function Sms(props: {
     sms: Required<Config>['Sms'];
