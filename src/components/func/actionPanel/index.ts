@@ -1,7 +1,7 @@
 export default OakComponent({
     isList: false,
     properties: {
-        onActionClick: undefined as (((action: string) => void) | undefined),
+        onActionClick: (() => undefined) as (action: string) => void,
         actions: [] as string[],
         actionDescriptions: {} as any,
         iconSize: '',
