@@ -13,6 +13,10 @@ export default OakComponent({
         editorStyle: '' as string,
         placeholder: '请输入' as string,
         showTabBar: true as boolean,
+        entity: '',
+        entityId: '',
+        tag1: '',
+        tag2: '',
     },
     methods: {
         onEditReady(e: WechatMiniprogram.EventCallback) {
@@ -98,12 +102,15 @@ export default OakComponent({
                             extra1: tempFilePath,
                             origin: 'qiniu',
                             type: 'image',
-                            tag1: 'editorImg',
+                            tag1: this.props.tag1 || 'editorImg',
+                            tag2: this.props.tag2,
                             objectId: generateNewId(),
                             filename,
                             size,
                             fileType,
                             extension,
+                            entity: this.props.entity,
+                            entityId: this.props.entityId,
                             bucket: '',
                             id: generateNewId(),
                         } as EntityDict['extraFile']['CreateSingle']['data'];
