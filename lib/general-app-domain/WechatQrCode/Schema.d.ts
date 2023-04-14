@@ -27,7 +27,7 @@ export declare type OpSchema = EntityShape & {
     expired?: Boolean | null;
     ticket?: Text | null;
     url?: String<64> | null;
-    permanent?: Boolean | null;
+    permanent: Boolean;
     buffer?: Text | null;
     applicationId: ForeignKey<"application">;
     props: WechatQrCodeProps;
@@ -44,7 +44,7 @@ export declare type Schema = EntityShape & {
     expired?: Boolean | null;
     ticket?: Text | null;
     url?: String<64> | null;
-    permanent?: Boolean | null;
+    permanent: Boolean;
     buffer?: Text | null;
     applicationId: ForeignKey<"application">;
     props: WechatQrCodeProps;

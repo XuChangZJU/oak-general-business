@@ -9,15 +9,15 @@ import * as User from "../User/Schema";
 import * as Token from "../Token/Schema";
 export declare type OpSchema = EntityShape & {
     mobile: String<16>;
-    userId?: ForeignKey<"user"> | null;
+    userId: ForeignKey<"user">;
     ableState?: AbleState | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
     mobile: String<16>;
-    userId?: ForeignKey<"user"> | null;
+    userId: ForeignKey<"user">;
     ableState?: AbleState | null;
-    user?: User.Schema | null;
+    user: User.Schema;
     token$entity?: Array<Token.Schema>;
     token$entity$$aggr?: AggregationResult<Token.Schema>;
 } & {
@@ -87,12 +87,12 @@ export declare type Selection<P extends Object = Projection> = Omit<SelectOperat
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "userId">> & (({
     userId?: never;
-    user?: User.CreateSingleOperation;
+    user: User.CreateSingleOperation;
 } | {
     userId: String<64>;
     user?: User.UpdateOperation;
 } | {
-    userId?: String<64>;
+    userId: String<64>;
 })) & {
     token$entity?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "entity" | "entityId">, Token.Filter> | OakOperation<"create", Omit<Token.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "entity" | "entityId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "entity" | "entityId">, Token.Filter>>;
 };
