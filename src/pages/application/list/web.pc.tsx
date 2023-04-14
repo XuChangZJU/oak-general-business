@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Table, Button, Space, Typography, Modal } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
-import ActionBtnPanel from '../../../../../oak-frontend-base/lib/components/actionBtnPanel';
+import ActionBtnPanel from 'oak-frontend-base/lib/components/actionBtnPanel';
 
 import Style from './web.module.less';
 import { EntityDict } from '../../../general-app-domain';
@@ -29,7 +29,7 @@ export default function Render(
     >
 ) {
     const {
-        pagination,
+        oakPagination,
         list = [],
         oakLoading,
         showBack,
@@ -37,7 +37,7 @@ export default function Render(
         oakFullpath,
     } = props.data;
 
-    const { pageSize, total, currentPage } = pagination || {};
+    const { pageSize, total, currentPage } = oakPagination || {};
 
     const {
         t,
@@ -134,7 +134,6 @@ export default function Render(
                                     <ActionBtnPanel
                                         mode="table-cell"
                                         entity="application"
-                                        oakAutoUnmount={true}
                                         items={[
                                             {
                                                 label: '详情',

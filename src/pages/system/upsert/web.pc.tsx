@@ -125,7 +125,7 @@ export default function Render(
                             </>
                         </Form.Item>
 
-                        <Form.Item label="样式" required name="style">
+                        <Form.Item label="样式" name="style">
                             <>
                                 <ComponentStyle
                                     onChange={(value) => {

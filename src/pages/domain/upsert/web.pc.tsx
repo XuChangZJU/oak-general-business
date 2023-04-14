@@ -89,14 +89,14 @@ export default function Render(
                                     onChange={(e) => {
                                         const v = e.target.value;
                                         update({
-                                            port: v ? Number(v) : undefined, 
+                                            port: v ? Number(v) : undefined,
                                         });
                                     }}
                                     value={port}
                                 />
                             </>
                         </Form.Item>
-                        <Form.Item name="protocol" label="协议">
+                        <Form.Item name="protocol" required label="协议">
                             <>
                                 <Select
                                     // mode="multiple"

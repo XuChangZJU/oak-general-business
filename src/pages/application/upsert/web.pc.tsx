@@ -73,7 +73,7 @@ export default function Render(
                                 />
                             </>
                         </Form.Item>
-                        <Form.Item label="描述" required name="description">
+                        <Form.Item label="描述" name="description">
                             <>
                                 <Input.TextArea
                                     onChange={(e) => {
@@ -117,7 +117,7 @@ export default function Render(
                             </>
                         </Form.Item>
 
-                        <Form.Item label="样式" required name="style">
+                        <Form.Item label="样式" name="style">
                             <>
                                 <ComponentStyle
                                     onChange={(value) => {

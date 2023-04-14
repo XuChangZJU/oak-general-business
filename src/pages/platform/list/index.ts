@@ -10,10 +10,8 @@ export default OakComponent({
         $$createAt$$: 1,
     },
     formData({ data }) {
-        const pagination = this.getPagination();
         return {
             list: data,
-            pagination,
         };
     },
     methods: {

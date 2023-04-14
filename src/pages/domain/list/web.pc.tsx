@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Table, Button, Space, Typography, Modal, Tag } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
-import ActionBtnPanel from '../../../../../oak-frontend-base/lib/components/actionBtnPanel';
+import ActionBtnPanel from 'oak-frontend-base/lib/components/actionBtnPanel';
 
 import Style from './web.module.less';
 
@@ -28,7 +28,7 @@ export default function Render(
     >
 ) {
     const {
-        pagination,
+        oakPagination,
         list = [],
         oakLoading,
         showBack,
@@ -36,7 +36,7 @@ export default function Render(
         oakFullpath,
     } = props.data;
 
-    const { pageSize, total, currentPage } = pagination || {};
+    const { pageSize, total, currentPage } = oakPagination || {};
 
     const {
         t,

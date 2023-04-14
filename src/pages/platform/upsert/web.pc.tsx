@@ -59,7 +59,6 @@ export default function Render(
                             </Form.Item>
                             <Form.Item
                                 label="描述"
-                                required
                                 name="description"
                             >
                                 <>

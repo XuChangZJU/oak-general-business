@@ -20,14 +20,14 @@ function Color(props: { value: StyleType['color'], setValue: (path: string, valu
                 <Form.Item
                     key={ele}
                     label={ele}
-                    required
+                    // required
                     name="folder"
                     tooltip={`设置系统【${ele}】颜色`}
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
+                    // rules={[
+                    //     {
+                    //         required: true,
+                    //     },
+                    // ]}
                 >
                     <>
                         <Input
