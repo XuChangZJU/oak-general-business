@@ -11,17 +11,17 @@ export declare type OpSchema = EntityShape & {
     type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
     objectId: String<64>;
-    tag1: String<16>;
-    tag2: String<16>;
+    tag1?: String<32> | null;
+    tag2?: String<32> | null;
     filename: String<256>;
-    md5: Text;
+    md5?: Text | null;
     entity: "article" | "user" | string;
     entityId: String<64>;
     extra1?: Text | null;
     extension: String<16>;
     size?: Int<4> | null;
     sort?: Int<4> | null;
-    fileType: String<128>;
+    fileType?: String<128> | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
@@ -29,17 +29,17 @@ export declare type Schema = EntityShape & {
     type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
     objectId: String<64>;
-    tag1: String<16>;
-    tag2: String<16>;
+    tag1?: String<32> | null;
+    tag2?: String<32> | null;
     filename: String<256>;
-    md5: Text;
+    md5?: Text | null;
     entity: "article" | "user" | string;
     entityId: String<64>;
     extra1?: Text | null;
     extension: String<16>;
     size?: Int<4> | null;
     sort?: Int<4> | null;
-    fileType: String<128>;
+    fileType?: String<128> | null;
     article?: Article.Schema;
     user?: User.Schema;
 } & {
