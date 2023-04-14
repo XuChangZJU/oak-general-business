@@ -6,9 +6,9 @@ import { Schema as MessageSystem } from './MessageSystem';
 export interface Schema extends EntityShape {
     channel: Channel;
     application?: Application;
-    data: Object;
+    data?: Object;
     messageSystem: MessageSystem;
-    data1: Object;
-    data2: Object;
+    data1?: Object;
+    data2?: Object;
     templateId?: String<128>;
 }
