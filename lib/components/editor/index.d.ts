@@ -9,5 +9,9 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     editorStyle: string;
     placeholder: string;
     showTabBar: boolean;
+    entity: string;
+    entityId: string;
+    tag1: string;
+    tag2: string;
 }>) => React.ReactElement<any, string | React.JSXElementConstructor<any>>;
 export default _default;
