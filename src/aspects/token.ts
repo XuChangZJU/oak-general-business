@@ -5,9 +5,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { WechatMpConfig, WechatPublicConfig, WebConfig } from '../general-app-domain/Application/Schema';
 import { CreateOperationData as CreateToken, WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
 import { CreateOperationData as CreateWechatUser } from '../general-app-domain/WechatUser/Schema';
-import { CreateOperationData as CreateUser, Schema as User } from '../general-app-domain/User/Schema';
 import { Operation as ExtraFileOperation } from '../general-app-domain/ExtraFile/Schema';
-import { isEqual } from 'oak-domain/lib/utils/lodash';
 import { OakRowInconsistencyException, OakUnloggedInException, OakUserException, OakUserUnpermittedException } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
 import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException } from '../types/Exception';
@@ -16,7 +14,6 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { tokenProjection } from '../types/projection';
 import { sendSms } from '../utils/sms';
 import { mergeUser } from './user';
-import Operation from 'antd/es/transfer/operation';
 
 async function makeDistinguishException<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(userId: string, context: Cxt, message?: string) {
     const [user] = await context.select('user', {
@@ -256,45 +253,13 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
         if (user) {
             // 根据此用户状态进行处理
             const { userState } = user;
+            let userId: string = user.id!;
             switch (userState) {
                 case 'normal': {
-                    tokenData.userId = user.id;
-                    tokenData.playerId = user.id;
-                    if (entityId) {
-                        tokenData.entity = entity;
-                        tokenData.entityId = entityId;
-                    }
-                    else {
-                        assert(createData);
-                        Object.assign(createData, {
-                            userId: user.id,
-                        });
-                        // Object.assign(tokenData, {
-                        //     [entity]: Object.assign(createData, {
-                        //         userId: user.id,
-                        //     }),
-                        // });
-                    }
                     break;
                 }
                 case 'merged': {
-                    tokenData.userId = user.refId!;
-                    tokenData.playerId = user.refId!;
-                    if (entityId) {
-                        tokenData.entity = entity;
-                        tokenData.entityId = entityId;
-                    }
-                    else {
-                        assert(createData);
-                        Object.assign(createData, {
-                            userId: user.refId,
-                        });
-                        // Object.assign(tokenData, {
-                        //     [entity]: Object.assign(createData, {
-                        //         userId: user.refId,
-                        //     }),
-                        // });
-                    }
+                    userId = user.refId!;
                     break;
                 }
                 case 'disabled': {
@@ -306,43 +271,34 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
                         action: 'activate',
                         data: {},
                         filter: {
-                            id: user.id!,
+                            id: userId,
                         },
                     }, { dontCollect: true });
-                    tokenData.userId = user.id;
-                    tokenData.playerId = user.id;
-                    if (entityId) {
-                        tokenData.entity = entity;
-                        tokenData.entityId = entityId;
-                    }
-                    else {
-                        assert(createData);
-                        Object.assign(createData, {
-                            userId: user.id,
-                        });
-                        // Object.assign(tokenData, {
-                        //     [entity]: Object.assign(createData, {
-                        //         userId: user.id,
-                        //     }),
-                        // });
-                    }
                     break;
                 }
                 default: {
                     assert(false, `不能理解的user状态「${userState}」`);
                 }
             }
-            if (!entityId) {
-                await context.operate(entity as keyof ED, {
-                    id: await generateNewIdAsync(),
-                    action: 'create',
-                    data: createData,
-                } as any, { dontCollect: true });
-                Object.assign(tokenData, {
-                    entity,
-                    entityId: createData.id,
-                })
+
+            tokenData.userId = userId;
+            tokenData.playerId = userId;
+            if (entityId) {
+                tokenData.entity = entity;
+                tokenData.entityId = entityId;
             }
+            else {
+                assert(createData);
+                Object.assign(tokenData, {
+                    [entity]: {
+                        action: 'create',
+                        data: Object.assign(createData, {
+                            userId,
+                        }),
+                    },
+                });
+            }
+
             await context.operate('token', {
                 id: await generateNewIdAsync(),
                 action: 'create',
