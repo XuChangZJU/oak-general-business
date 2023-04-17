@@ -8,7 +8,6 @@ import { FrontendRuntimeContext } from './context/FrontendRuntimeContext';
 import { createComponent as createBaseComponent } from 'oak-frontend-base/lib/page.mp';
 import { OakMpHaveToSubscribeMessage } from './types/Exception';
 import { GAD, GFD, OakComponentOption } from './types/Page';
-import { BackTopProps } from 'antd';
 
 /**
  * 这里的逻辑暴露出去，是为了让general可以被其它库重载
