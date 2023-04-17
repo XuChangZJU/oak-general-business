@@ -16,6 +16,7 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { tokenProjection } from '../types/projection';
 import { sendSms } from '../utils/sms';
 import { mergeUser } from './user';
+import Operation from 'antd/es/transfer/operation';
 
 async function makeDistinguishException<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(userId: string, context: Cxt, message?: string) {
     const [user] = await context.select('user', {
@@ -265,11 +266,14 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
                     }
                     else {
                         assert(createData);
-                        Object.assign(tokenData, {
-                            [entity]: Object.assign(createData, {
-                                userId: user.id,
-                            }),
+                        Object.assign(createData, {
+                            userId: user.id,
                         });
+                        // Object.assign(tokenData, {
+                        //     [entity]: Object.assign(createData, {
+                        //         userId: user.id,
+                        //     }),
+                        // });
                     }
                     break;
                 }
@@ -282,11 +286,14 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
                     }
                     else {
                         assert(createData);
-                        Object.assign(tokenData, {
-                            [entity]: Object.assign(createData, {
-                                userId: user.refId,
-                            }),
+                        Object.assign(createData, {
+                            userId: user.refId,
                         });
+                        // Object.assign(tokenData, {
+                        //     [entity]: Object.assign(createData, {
+                        //         userId: user.refId,
+                        //     }),
+                        // });
                     }
                     break;
                 }
@@ -310,11 +317,14 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
                     }
                     else {
                         assert(createData);
-                        Object.assign(tokenData, {
-                            [entity]: Object.assign(createData, {
-                                userId: user.id,
-                            }),
+                        Object.assign(createData, {
+                            userId: user.id,
                         });
+                        // Object.assign(tokenData, {
+                        //     [entity]: Object.assign(createData, {
+                        //         userId: user.id,
+                        //     }),
+                        // });
                     }
                     break;
                 }
@@ -322,7 +332,17 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
                     assert(false, `不能理解的user状态「${userState}」`);
                 }
             }
-
+            if (!entityId) {
+                await context.operate(entity as keyof ED, {
+                    id: await generateNewIdAsync(),
+                    action: 'create',
+                    data: createData,
+                } as any, { dontCollect: true });
+                Object.assign(tokenData, {
+                    entity,
+                    entityId: createData.id,
+                })
+            }
             await context.operate('token', {
                 id: await generateNewIdAsync(),
                 action: 'create',
