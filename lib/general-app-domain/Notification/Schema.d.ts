@@ -10,10 +10,10 @@ import * as MessageSystem from "../MessageSystem/Schema";
 export declare type OpSchema = EntityShape & {
     channel: Channel;
     applicationId?: ForeignKey<"application"> | null;
-    data: Object;
+    data?: Object | null;
     messageSystemId: ForeignKey<"messageSystem">;
-    data1: Object;
-    data2: Object;
+    data1?: Object | null;
+    data2?: Object | null;
     templateId?: String<128> | null;
     iState?: IState | null;
 };
@@ -21,10 +21,10 @@ export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
     channel: Channel;
     applicationId?: ForeignKey<"application"> | null;
-    data: Object;
+    data?: Object | null;
     messageSystemId: ForeignKey<"messageSystem">;
-    data1: Object;
-    data2: Object;
+    data1?: Object | null;
+    data2?: Object | null;
     templateId?: String<128> | null;
     iState?: IState | null;
     application?: Application.Schema | null;

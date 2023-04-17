@@ -291,6 +291,7 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
                 assert(createData);
                 Object.assign(tokenData, {
                     [entity]: {
+                        id: await generateNewIdAsync(),
                         action: 'create',
                         data: Object.assign(createData, {
                             userId,
