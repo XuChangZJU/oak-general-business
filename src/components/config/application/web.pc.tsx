@@ -88,7 +88,7 @@ export default function render(
         type,
         currentConfig,
         dirty,
-        isService = true,
+        isService,
     } = props.data;
     const { resetConfig, updateConfig, setValue, removeItem, cleanKey } =
         props.methods;

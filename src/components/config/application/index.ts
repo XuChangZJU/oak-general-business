@@ -12,7 +12,7 @@ export default OakComponent({
         name: '',
         entityId: '',
         type: '',
-        isService: false,
+        isService: true,
     },
     data: {
         initialConfig: {} as Config,

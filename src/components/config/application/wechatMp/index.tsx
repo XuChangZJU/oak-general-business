@@ -67,6 +67,18 @@ export default function WechatMp(props: {
                             />
                         </>
                     </Form.Item>
+                    <Form.Item label="原始ID" name="originalId">
+                        <>
+                            <Input
+                                placeholder="请输入原始ID"
+                                type="text"
+                                value={config?.originalId}
+                                onChange={(e) =>
+                                    setValue(`originalId`, e.target.value)
+                                }
+                            />
+                        </>
+                    </Form.Item>
                     <Form.Item label="qrCodePrefix" name="qrCodePrefix">
                         <>
                             <Input

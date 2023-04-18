@@ -1,8 +1,15 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict } from "../general-app-domain";
-import { AppType } from "../general-app-domain/Application/Schema";
+import { AppType, WechatPublicConfig } from "../general-app-domain/Application/Schema";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { applicationProjection } from '../types/projection';
+import {
+    WebEnv,
+} from '../general-app-domain/Token/Schema';
+import {
+    WechatPublicInstance,
+    WechatSDK,
+} from 'oak-external-sdk';
 
 export async function getApplication<
     ED extends EntityDict,
@@ -90,4 +97,25 @@ export async function getApplication<
     }
 
     return application.id as string;
+}
+
+
+export async function signatureJsSDK<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>({ url, env }: { url: string; env: WebEnv }, context: Cxt) {
+    const application = context.getApplication();
+    const { type, config, systemId } = application!;
+    assert(type === 'wechatPublic' && config!.type === 'wechatPublic');
+    const config2 = config as WechatPublicConfig;
+    const { appId, appSecret } = config2;
+    const wechatInstance = WechatSDK.getInstance(
+        appId,
+        'wechatPublic',
+        appSecret
+    ) as WechatPublicInstance;
+
+    const result = await wechatInstance.signatureJsSDK({ url });
+
+    return result;
 }
