@@ -10,7 +10,7 @@ export type WechatMpConfig = {
     type: 'wechatMp';
     appId: string;
     appSecret: string;
-    originalId: string; //原始id
+    originalId?: string; //原始id
     qrCodePrefix?: string; // 扫描二维码跳转的前缀(在小程序后台配置，必须统一跳转到weCharQrCode/scan/index)
     server?: {
         url?: string; //服务器地址(URL)
@@ -39,7 +39,7 @@ export type WechatPublicConfig = {
     isService: boolean; // 是否服务号
     appId: string;
     appSecret: string;
-    originalId: string; //原始id
+    originalId?: string; //原始id
     templateMsgs?: WechatPublicTemplateMsgsConfig;
     server?: {
         url?: string; //服务器地址(URL)
