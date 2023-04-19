@@ -47,6 +47,10 @@ export type WechatPublicConfig = {
         encodingAESKey: string; //消息加解密密钥(EncodingAESKey)
         mode: 'clear' | 'compatible' | 'safe'; //消息加解密方式 明文模式 兼容模式 安全模式
     };
+    wechatMp?: {
+        //公众号跳小程序配置 originalId
+        originalId?: string; //原始id
+    };
 };
 
 export interface Schema extends EntityShape {

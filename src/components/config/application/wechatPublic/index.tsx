@@ -104,6 +104,37 @@ export default function WechatPublic(props: {
                     )}
                 </Form>
             </Col>
+            <Col flex="auto">
+                <Divider orientation="left" className={Styles.title}>
+                    微信公众号-跳转小程序
+                </Divider>
+                <Form
+                    colon={true}
+                    labelAlign="left"
+                    layout="vertical"
+                    style={{ marginTop: 10 }}
+                >
+                    <Form.Item
+                        label="原始ID"
+                        name="originalId"
+                        tooltip="小程序的原始ID"
+                    >
+                        <>
+                            <Input
+                                placeholder="请输入小程序原始ID"
+                                type="text"
+                                value={config?.wechatMp?.originalId}
+                                onChange={(e) =>
+                                    setValue(
+                                        `wechatMp.originalId`,
+                                        e.target.value
+                                    )
+                                }
+                            />
+                        </>
+                    </Form.Item>
+                </Form>
+            </Col>
             {isService && (
                 <Col flex="auto">
                     <Divider orientation="left" className={Styles.title}>

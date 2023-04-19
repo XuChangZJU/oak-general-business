@@ -52,6 +52,9 @@ export declare type WechatPublicConfig = {
         encodingAESKey: string;
         mode: 'clear' | 'compatible' | 'safe';
     };
+    wechatMp?: {
+        originalId?: string;
+    };
 };
 export declare type OpSchema = EntityShape & {
     name: String<32>;
