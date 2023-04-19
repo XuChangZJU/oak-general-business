@@ -72,10 +72,13 @@ export class Application<
     }
 
     private async loadApplicationInfo(type: AppType, domain: string) {
-        const { result: applicationId } = await this.cache.exec('getApplication', {
-            type,
-            domain,
-        });
+        const { result: applicationId } = await this.cache.exec(
+            'getApplication',
+            {
+                type,
+                domain,
+            }
+        );
         this.applicationId = applicationId;
         this.getApplicationFromCache();
 
@@ -87,7 +90,7 @@ export class Application<
     }
 
     async initialize(appId?: string | null) {
-        if (process.env.NODE_ENV === 'development'  && appId) {
+        if (process.env.NODE_ENV === 'development' && appId) {
             // development环境下允许注入一个线上的appId
             this.applicationId = appId;
         }

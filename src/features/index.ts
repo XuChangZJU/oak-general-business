@@ -3,6 +3,7 @@ import { Token } from './token';
 import { ExtraFile } from './extraFile';
 import { Application } from './application';
 import { Config } from './config';
+import { WeiXinJsSdk } from './weiXinJsSdk';
 import { BasicFeatures } from 'oak-frontend-base/lib/features';
 import { AspectDict } from '../aspects/AspectDict';
 import { AspectWrapper } from 'oak-domain/lib/types';
@@ -33,11 +34,17 @@ export function initialize<
     );
     const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application);
     const config = new Config<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
+    const weiXinJsSdk = new WeiXinJsSdk<ED, Cxt, FrontCxt, AD>(
+        basicFeatures.cache,
+        basicFeatures.localStorage
+    );
+
     return {
         token,
         extraFile,
         application,
         config,
+        weiXinJsSdk,
     };
 }
 
@@ -46,9 +53,10 @@ export type GeneralFeatures<
     Cxt extends BackendRuntimeContext<ED>,
     FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>,
     AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>
-    > = {
-        token: Token<ED, Cxt, FrontCxt, AD>;
-        extraFile: ExtraFile<ED, Cxt, FrontCxt, AD>;
-        application: Application<ED, Cxt, FrontCxt, AD>;
-        config: Config<ED, Cxt, FrontCxt, AD>;
-    };
+> = {
+    token: Token<ED, Cxt, FrontCxt, AD>;
+    extraFile: ExtraFile<ED, Cxt, FrontCxt, AD>;
+    application: Application<ED, Cxt, FrontCxt, AD>;
+    config: Config<ED, Cxt, FrontCxt, AD>;
+    weiXinJsSdk: WeiXinJsSdk<ED, Cxt, FrontCxt, AD>;
+};

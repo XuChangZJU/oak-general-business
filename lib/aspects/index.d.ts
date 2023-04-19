@@ -1,6 +1,6 @@
 import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCaptcha, switchTo, refreshWechatPublicUserInfo, getWechatMpUserPhoneNumber, logout } from './token';
 import { getUploadInfo } from './extraFile';
-import { getApplication } from './application';
+import { getApplication, signatureJsSDK } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { mergeUser } from './user';
 declare const aspectDict: {
@@ -18,5 +18,6 @@ declare const aspectDict: {
     updateApplicationConfig: typeof updateApplicationConfig;
     getWechatMpUserPhoneNumber: typeof getWechatMpUserPhoneNumber;
     logout: typeof logout;
+    signatureJsSDK: typeof signatureJsSDK;
 };
 export default aspectDict;

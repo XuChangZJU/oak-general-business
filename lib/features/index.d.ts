@@ -3,6 +3,7 @@ import { Token } from './token';
 import { ExtraFile } from './extraFile';
 import { Application } from './application';
 import { Config } from './config';
+import { WeiXinJsSdk } from './weiXinJsSdk';
 import { BasicFeatures } from 'oak-frontend-base/lib/features';
 import { AspectDict } from '../aspects/AspectDict';
 import { AppType } from '../general-app-domain/Application/Schema';
@@ -15,4 +16,5 @@ export declare type GeneralFeatures<ED extends EntityDict, Cxt extends BackendRu
     extraFile: ExtraFile<ED, Cxt, FrontCxt, AD>;
     application: Application<ED, Cxt, FrontCxt, AD>;
     config: Config<ED, Cxt, FrontCxt, AD>;
+    weiXinJsSdk: WeiXinJsSdk<ED, Cxt, FrontCxt, AD>;
 };

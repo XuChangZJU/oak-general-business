@@ -15,7 +15,6 @@ import {
     Select,
 } from 'antd';
 import Styles from './web.module.less';
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import {
     AppType,
     WechatPublicConfig,
@@ -73,6 +72,18 @@ export default function WechatPublic(props: {
                                 value={config?.appSecret}
                                 onChange={(e) =>
                                     setValue(`appSecret`, e.target.value)
+                                }
+                            />
+                        </>
+                    </Form.Item>
+                    <Form.Item label="原始ID" name="originalId">
+                        <>
+                            <Input
+                                placeholder="请输入原始ID"
+                                type="text"
+                                value={config?.originalId}
+                                onChange={(e) =>
+                                    setValue(`originalId`, e.target.value)
                                 }
                             />
                         </>
@@ -173,124 +184,6 @@ export default function WechatPublic(props: {
                             </>
                         </Form.Item>
                     </Form>
-                </Col>
-            )}
-            {isService && (
-                <Col flex="auto">
-                    <Divider orientation="left" className={Styles.title}>
-                        微信公众号-模版
-                    </Divider>
-                    <Tabs
-                        tabPosition={'top'}
-                        size={'middle'}
-                        type="editable-card"
-                        // hideAdd={!(Object.keys(templateMsgs).length > 0)}
-                        onEdit={(targetKey: any, action: 'add' | 'remove') => {
-                            if (action === 'add') {
-                                setModal(true);
-                            } else {
-                                cleanKey(`templateMsgs`, targetKey);
-                            }
-                        }}
-                        items={
-                            Object.keys(templateMsgs).length > 0
-                                ? Object.keys(templateMsgs).map((name, idx) => {
-                                      const templateId = templateMsgs[name];
-                                      return {
-                                          key: `${name}`,
-                                          label: `${name}`,
-                                          children: (
-                                              <Form
-                                                  colon={true}
-                                                  labelAlign="left"
-                                                  layout="vertical"
-                                                  style={{ marginTop: 10 }}
-                                              >
-                                                  <Form.Item
-                                                      label="templateId"
-                                                      name="templateId"
-                                                  >
-                                                      <>
-                                                          <Input
-                                                              placeholder="请输入templateId"
-                                                              type="text"
-                                                              value={templateId}
-                                                              onChange={(e) =>
-                                                                  setValue(
-                                                                      `templateMsgs.${name}`,
-                                                                      e.target
-                                                                          .value
-                                                                  )
-                                                              }
-                                                          />
-                                                      </>
-                                                  </Form.Item>
-                                              </Form>
-                                          ),
-                                      };
-                                  })
-                                : []
-                        }
-                    ></Tabs>
-                    <Modal
-                        title="新建模版标签"
-                        onCancel={() => {
-                            setModal(false);
-                            setMessageType('');
-                        }}
-                        onOk={() => {
-                            if (!messageType) {
-                                message.error({
-                                    content: '请输入标签名称',
-                                });
-                                return;
-                            }
-                            if (
-                                Object.keys(templateMsgs).includes(messageType)
-                            ) {
-                                message.error({
-                                    content: '已存在相同的标签名，请重新输入',
-                                });
-                                return;
-                            }
-                            setValue(`templateMsgs.${messageType}`, '');
-                            setModal(false);
-                            setMessageType('');
-                        }}
-                        open={open}
-                        cancelText="取消"
-                        okText="确定"
-                        destroyOnClose={true}
-                    >
-                        <Form
-                            colon={true}
-                            labelAlign="left"
-                            layout="vertical"
-                            style={{ marginTop: 10 }}
-                        >
-                            <Form.Item
-                                label="标签名称"
-                                name="messageType"
-                                help="只能输入英文和中文"
-                            >
-                                <>
-                                    <Input
-                                        placeholder="请输入标签名称"
-                                        type="text"
-                                        value={messageType}
-                                        onChange={(e) =>
-                                            setMessageType(
-                                                e.target.value.replace(
-                                                    /[0-9-.]/g,
-                                                    ''
-                                                )
-                                            )
-                                        }
-                                    />
-                                </>
-                            </Form.Item>
-                        </Form>
-                    </Modal>
                 </Col>
             )}
         </Space>

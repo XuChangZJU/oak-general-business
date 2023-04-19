@@ -83,6 +83,18 @@ type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<string>;
+    signatureJsSDK: (
+        params: {
+            url: string;
+            env: WebEnv;
+        },
+        context: Cxt
+    ) => Promise<{
+        signature: any;
+        noncestr: string;
+        timestamp: number;
+        appId: string;
+    }>;
     updateConfig: (
         params: {
             entity: 'platform' | 'system';

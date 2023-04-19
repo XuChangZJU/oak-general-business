@@ -10,7 +10,7 @@ import {
     logout,
 } from './token';
 import { getUploadInfo } from './extraFile';
-import { getApplication } from './application';
+import { getApplication, signatureJsSDK } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { mergeUser } from './user';
 
@@ -29,6 +29,7 @@ const aspectDict = {
     updateApplicationConfig,
     getWechatMpUserPhoneNumber,
     logout,
+    signatureJsSDK,
 };
 
 export default aspectDict;
