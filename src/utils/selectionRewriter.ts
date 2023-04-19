@@ -53,6 +53,17 @@ function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof E
                         ];
                     }
                 }
+                else {
+                    const { $in, $nin } = filter[attr];
+                    if ($in && !($in instanceof Array)) {
+                        const { entity: e, filter: f } = $in;
+                        rewriteFilter(schema, e, f);
+                    }
+                    if ($nin && !($nin instanceof Array)) {
+                        const { entity: e, filter: f } = $nin;
+                        rewriteFilter(schema, e, f);
+                    }
+                }
             }
             else if (attr === 'entity' && filter[attr] === 'user') {
                 assert(filter.entityId);
