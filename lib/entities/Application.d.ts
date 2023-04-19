@@ -8,7 +8,7 @@ export declare type WechatMpConfig = {
     type: 'wechatMp';
     appId: string;
     appSecret: string;
-    originalId: string;
+    originalId?: string;
     qrCodePrefix?: string;
     server?: {
         url?: string;
@@ -34,7 +34,7 @@ export declare type WechatPublicConfig = {
     isService: boolean;
     appId: string;
     appSecret: string;
-    originalId: string;
+    originalId?: string;
     templateMsgs?: WechatPublicTemplateMsgsConfig;
     server?: {
         url?: string;
