@@ -10,6 +10,7 @@ declare type Options = WeixinJsSdk.CheckJsApiOptions | WeixinJsSdk.AddCardOption
 export declare class WeiXinJsSdk<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>> extends Feature {
     private cache;
     private storage;
+    private landingUrl?;
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage);
     signatureJsSDK(url: string): Promise<{
         signature: any;
@@ -17,14 +18,15 @@ export declare class WeiXinJsSdk<ED extends EntityDict, Cxt extends BackendRunti
         timestamp: number;
         appId: string;
     }>;
-    wxConfig(config: WeixinJsSdk.ConfigOptions): Promise<unknown>;
-    initWeiXinJsSDK(options?: {
+    getConfig(config: WeixinJsSdk.ConfigOptions): Promise<unknown>;
+    setLandingUrl(url?: string): void;
+    init(options?: {
         jsApiList?: WeixinJsSdk.JSApis[];
         openTagList?: string[];
     }): Promise<unknown>;
     /**
      * 微信jssdk 传入方法名
      */
-    loadWeiXinJsSDK(name: WeixinJsSdk.JSApis, options?: Options, jsApiList?: WeixinJsSdk.JSApis[], openTagList?: string[]): Promise<any>;
+    loadWxAPi(name: WeixinJsSdk.JSApis, options?: Options, jsApiList?: WeixinJsSdk.JSApis[], openTagList?: string[]): Promise<object>;
 }
 export {};

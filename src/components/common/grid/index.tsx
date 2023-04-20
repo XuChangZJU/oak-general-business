@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import './index.less';
 
 type Item = {
-    text: React.ReactNode;
-    image: React.ReactNode;
+    text?: React.ReactNode;
+    image?: React.ReactNode;
     render?: React.ReactNode; //自定义
 };
 
@@ -55,30 +55,36 @@ export default memo((props: GridProps) => {
                         onChange ? (event) => onChange(index, event) : undefined
                     }
                 >
-                    {typeof ele.image === 'string' ? (
-                        <img
-                            className={classNames(
-                                `${prefixCls}-grid-item-image`,
-                                imageClassName
-                            )}
-                            src={ele.image}
-                        />
+                    {ele.render ? (
+                        <>{ele.render}</>
                     ) : (
-                        ele.image
-                    )}
-                    <div className={`${prefixCls}-grid-item-text`}>
-                        <div
-                            className={classNames(
-                                `${prefixCls}-grid-item-title`,
-                                textClassName
+                        <>
+                            {typeof ele.image === 'string' ? (
+                                <img
+                                    className={classNames(
+                                        `${prefixCls}-grid-item-image`,
+                                        imageClassName
+                                    )}
+                                    src={ele.image}
+                                />
+                            ) : (
+                                ele.image
                             )}
-                            style={{
-                                paddingTop: 4,
-                            }}
-                        >
-                            {ele.text}
-                        </div>
-                    </div>
+                            <div className={`${prefixCls}-grid-item-text`}>
+                                <div
+                                    className={classNames(
+                                        `${prefixCls}-grid-item-title`,
+                                        textClassName
+                                    )}
+                                    style={{
+                                        paddingTop: 4,
+                                    }}
+                                >
+                                    {ele.text}
+                                </div>
+                            </div>
+                        </>
+                    )}
                 </div>
             ))}
         </div>

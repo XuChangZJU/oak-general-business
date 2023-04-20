@@ -1,4 +1,7 @@
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
+import { isIos, isWeiXin, isWeiXinDevTools } from 'oak-frontend-base/lib/utils/utils';
+import { promisify as wxPromisify } from 'oak-frontend-base/lib/utils/promisify';
+
 import { CommonAspectDict } from 'oak-common-aspect';
 import { EntityDict } from '../general-app-domain';
 import { AspectDict } from '../aspects/AspectDict';
@@ -47,11 +50,13 @@ export class WeiXinJsSdk<
 > extends Feature {
     private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
     private storage: LocalStorage;
+    private landingUrl?: string; //解决在IOS上，无论路由切换到哪个页面，实际真正有效的的签名URL是【第一次进入应用时的URL】;
 
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage) {
         super();
         this.cache = cache;
         this.storage = storage;
+        this.landingUrl = undefined;
     }
 
     async signatureJsSDK(url: string) {
@@ -64,7 +69,7 @@ export class WeiXinJsSdk<
         return result;
     }
 
-    wxConfig(config: WeixinJsSdk.ConfigOptions) {
+    async getConfig(config: WeixinJsSdk.ConfigOptions) {
         return new Promise((resolve, reject) => {
             weixin.config(config);
 
@@ -81,13 +86,27 @@ export class WeiXinJsSdk<
         });
     }
 
-    async initWeiXinJsSDK(options?: {
+    setLandingUrl(url?: string) {
+        if (isIos && isWeiXin) {
+            this.landingUrl = url;
+        }
+    }
+
+    async init(options?: {
         jsApiList?: WeixinJsSdk.JSApis[];
         openTagList?: string[];
     }) {
+        if (!isWeiXin) {
+            console.warn('只能在微信客户端初始化JSSDK');
+            return;
+        }
         const { jsApiList, openTagList } = options || {};
 
-        const url = window.location.href;
+        let url = window.location.href;
+        //在ios上 实际真正有效的的签名URL是【第一次进入应用时的URL】
+        if (isIos && !isWeiXinDevTools && this.landingUrl) {
+            url = this.landingUrl;
+        }
         const splitUrl = url.split('#')[0];
         const result = await this.signatureJsSDK(splitUrl); // 接口回来的是noncestr 不是nonceStr
 
@@ -116,7 +135,7 @@ export class WeiXinJsSdk<
             openTagList2 = uniq(openTagList2.concat(openTagList));
         }
 
-        return this.wxConfig({
+        return this.getConfig({
             debug: process.env.NODE_ENV === 'development',
             appId: result.appId,
             timestamp: result.timestamp,
@@ -131,39 +150,15 @@ export class WeiXinJsSdk<
     /**
      * 微信jssdk 传入方法名
      */
-    async loadWeiXinJsSDK(
+    async loadWxAPi(
         name: WeixinJsSdk.JSApis,
         options?: Options,
         jsApiList?: WeixinJsSdk.JSApis[],
         openTagList?: string[]
     ) {
-        /**
-         * 将小程序的API封装成支持Promise的API
-         */
-        function wxPromisify(fn: (obj: any) => any) {
-            return function (obj: any = {}): any {
-                return new Promise((resolve, reject) => {
-                    obj.success = function (res: any) {
-                        resolve(res);
-                    };
-
-                    obj.fail = function (res: any) {
-                        reject(res);
-                    };
-
-                    // 微信jsSdk api有cancel回调
-                    obj.cancel = function () {
-                        reject({ errMsg: 'request:cancel' });
-                    };
-
-                    fn(obj);
-                });
-            };
-        }
-
-        await this.initWeiXinJsSDK({ jsApiList, openTagList });
-        const fn = wxPromisify((weixin as any)[name as any] as any);
-        const result = await fn(options);
+        await this.init({ jsApiList, openTagList });
+        const wxFn = wxPromisify((weixin as any)[name as any]);
+        const result = await wxFn(options);
         return result;
     }
 }

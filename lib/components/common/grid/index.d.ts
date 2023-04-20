@@ -1,8 +1,8 @@
 import React from 'react';
 import './index.less';
 declare type Item = {
-    text: React.ReactNode;
-    image: React.ReactNode;
+    text?: React.ReactNode;
+    image?: React.ReactNode;
     render?: React.ReactNode;
 };
 declare type GridProps = {
