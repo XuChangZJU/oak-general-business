@@ -43,7 +43,8 @@ export declare type WechatPublicConfig = {
         mode: 'clear' | 'compatible' | 'safe';
     };
     wechatMp?: {
-        originalId?: string;
+        appId: string;
+        originalId: string;
     };
 };
 export interface Schema extends EntityShape {

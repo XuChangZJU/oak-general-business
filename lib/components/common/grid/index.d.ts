@@ -3,6 +3,7 @@ import './index.less';
 declare type Item = {
     text: React.ReactNode;
     image: React.ReactNode;
+    render?: React.ReactNode;
 };
 declare type GridProps = {
     column?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
@@ -11,7 +12,6 @@ declare type GridProps = {
     className?: string;
     imageClassName?: string;
     textClassName?: string;
-    children?: React.ReactNode;
     list: Array<Item>;
     onChange?: (index: number, event?: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };

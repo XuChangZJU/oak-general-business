@@ -6,6 +6,7 @@ import './index.less';
 type Item = {
     text: React.ReactNode;
     image: React.ReactNode;
+    render?: React.ReactNode; //自定义
 };
 
 type GridProps = {
@@ -15,7 +16,6 @@ type GridProps = {
     className?: string; // item容器样式
     imageClassName?: string;
     textClassName?: string;
-    children?: React.ReactNode;
     list: Array<Item>;
     onChange?: (
         index: number,
