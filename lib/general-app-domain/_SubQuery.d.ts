@@ -1,9 +1,13 @@
+import * as ActionAuth from "./ActionAuth/Schema";
 import * as Modi from "./Modi/Schema";
 import * as ModiEntity from "./ModiEntity/Schema";
 import * as Oper from "./Oper/Schema";
 import * as OperEntity from "./OperEntity/Schema";
+import * as Relation from "./Relation/Schema";
+import * as RelationAuth from "./RelationAuth/Schema";
 import * as User from "./User/Schema";
 import * as UserEntityGrant from "./UserEntityGrant/Schema";
+import * as UserRelation from "./UserRelation/Schema";
 import * as Address from "./Address/Schema";
 import * as Application from "./Application/Schema";
 import * as Area from "./Area/Schema";
@@ -22,7 +26,10 @@ import * as Notification from "./Notification/Schema";
 import * as Platform from "./Platform/Schema";
 import * as UserRole from "./UserRole/Schema";
 import * as Role from "./Role/Schema";
+import * as Station from "./Station/Schema";
 import * as Subscription from "./Subscription/Schema";
+import * as Subway from "./Subway/Schema";
+import * as SubwayStation from "./SubwayStation/Schema";
 import * as System from "./System/Schema";
 import * as Token from "./Token/Schema";
 import * as UserSystem from "./UserSystem/Schema";
@@ -30,6 +37,11 @@ import * as UserWechatPublicTag from "./UserWechatPublicTag/Schema";
 import * as WechatPublicTag from "./WechatPublicTag/Schema";
 import * as WechatQrCode from "./WechatQrCode/Schema";
 import * as WechatUser from "./WechatUser/Schema";
+export declare type ActionAuthIdSubQuery = {
+    [K in "$in" | "$nin"]?: (ActionAuth.ActionAuthIdSubQuery & {
+        entity: "actionAuth";
+    }) | any;
+};
 export declare type ModiIdSubQuery = {
     [K in "$in" | "$nin"]?: (ModiEntity.ModiIdSubQuery & {
         entity: "modiEntity";
@@ -54,11 +66,29 @@ export declare type OperEntityIdSubQuery = {
         entity: "operEntity";
     }) | any;
 };
+export declare type RelationIdSubQuery = {
+    [K in "$in" | "$nin"]?: (ActionAuth.RelationIdSubQuery & {
+        entity: "actionAuth";
+    }) | (RelationAuth.RelationIdSubQuery & {
+        entity: "relationAuth";
+    }) | (UserRelation.RelationIdSubQuery & {
+        entity: "userRelation";
+    }) | (Relation.RelationIdSubQuery & {
+        entity: "relation";
+    }) | any;
+};
+export declare type RelationAuthIdSubQuery = {
+    [K in "$in" | "$nin"]?: (RelationAuth.RelationAuthIdSubQuery & {
+        entity: "relationAuth";
+    }) | any;
+};
 export declare type UserIdSubQuery = {
     [K in "$in" | "$nin"]?: (Oper.UserIdSubQuery & {
         entity: "oper";
     }) | (User.UserIdSubQuery & {
         entity: "user";
+    }) | (UserRelation.UserIdSubQuery & {
+        entity: "userRelation";
     }) | (Email.UserIdSubQuery & {
         entity: "email";
     }) | (Message.UserIdSubQuery & {
@@ -84,6 +114,11 @@ export declare type UserIdSubQuery = {
 export declare type UserEntityGrantIdSubQuery = {
     [K in "$in" | "$nin"]?: (UserEntityGrant.UserEntityGrantIdSubQuery & {
         entity: "userEntityGrant";
+    }) | any;
+};
+export declare type UserRelationIdSubQuery = {
+    [K in "$in" | "$nin"]?: (UserRelation.UserRelationIdSubQuery & {
+        entity: "userRelation";
     }) | any;
 };
 export declare type AddressIdSubQuery = {
@@ -113,6 +148,10 @@ export declare type AreaIdSubQuery = {
         entity: "address";
     }) | (Area.AreaIdSubQuery & {
         entity: "area";
+    }) | (Station.AreaIdSubQuery & {
+        entity: "station";
+    }) | (Subway.AreaIdSubQuery & {
+        entity: "subway";
     }) | (Area.AreaIdSubQuery & {
         entity: "area";
     }) | any;
@@ -200,9 +239,28 @@ export declare type RoleIdSubQuery = {
         entity: "role";
     }) | any;
 };
+export declare type StationIdSubQuery = {
+    [K in "$in" | "$nin"]?: (SubwayStation.StationIdSubQuery & {
+        entity: "subwayStation";
+    }) | (Station.StationIdSubQuery & {
+        entity: "station";
+    }) | any;
+};
 export declare type SubscriptionIdSubQuery = {
     [K in "$in" | "$nin"]?: (Subscription.SubscriptionIdSubQuery & {
         entity: "subscription";
+    }) | any;
+};
+export declare type SubwayIdSubQuery = {
+    [K in "$in" | "$nin"]?: (SubwayStation.SubwayIdSubQuery & {
+        entity: "subwayStation";
+    }) | (Subway.SubwayIdSubQuery & {
+        entity: "subway";
+    }) | any;
+};
+export declare type SubwayStationIdSubQuery = {
+    [K in "$in" | "$nin"]?: (SubwayStation.SubwayStationIdSubQuery & {
+        entity: "subwayStation";
     }) | any;
 };
 export declare type SystemIdSubQuery = {
