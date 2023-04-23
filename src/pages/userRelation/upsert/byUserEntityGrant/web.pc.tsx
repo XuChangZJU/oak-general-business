@@ -1,25 +1,55 @@
 import React, { useState } from 'react';
-import { Form, Radio, Button, Alert, InputNumber, Space, Modal } from 'antd';
+import {
+    Form,
+    Radio,
+    Button,
+    Alert,
+    InputNumber,
+    Space,
+    Modal,
+    Select,
+} from 'antd';
 import UserEntityGrantDetail from '../../../../pages/userEntityGrant/detail';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../general-app-domain';
 
 import Style from './web.module.less';
 
-export default function render(props: WebComponentProps<EntityDict, 'userEntityGrant', false, {
-    relations: string[];
-    period: number;
-    userEntityGrant: EntityDict['userEntityGrant']['OpSchema'];
-    userEntityGrantId: string;
-}, {
-    confirm: () => Promise<void>;
-    onBack: () => void;
-    setInit: () => void;
-    setPeriod: (p: number) => void;
-}>) {
-    const { relations, userEntityGrant, userEntityGrantId, period } = props.data;
+type Unit = 'minute' | 'hour' | 'day';
+
+export default function render(
+    props: WebComponentProps<
+        EntityDict,
+        'userEntityGrant',
+        false,
+        {
+            relations: string[];
+            period: number;
+            userEntityGrant: EntityDict['userEntityGrant']['OpSchema'];
+            userEntityGrantId: string;
+            unit: Unit;
+            maxes: Record<Unit, number>;
+        },
+        {
+            confirm: () => Promise<void>;
+            onBack: () => void;
+            setInit: () => void;
+            setPeriod: (p: number) => void;
+            setUnit: (u: Unit) => void;
+        }
+    >
+) {
+    const {
+        relations,
+        userEntityGrant,
+        userEntityGrantId,
+        period,
+        unit,
+        maxes,
+    } = props.data;
     const { relation, type, number, entity } = userEntityGrant || {};
-    const { update, t, onBack, confirm, setInit, setPeriod } = props.methods;
+    const { update, t, onBack, confirm, setInit, setPeriod, setUnit } =
+        props.methods;
 
     const P = !!userEntityGrantId ? (
         <>
@@ -51,27 +81,31 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
         <Form labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
             <Form.Item
                 label="权限"
+                name="relation"
                 rules={[
                     {
                         required: true,
                     },
                 ]}
             >
-                <Radio.Group
-                    value={relation}
-                    onChange={({ target }) => {
-                        const { value } = target;
-                        update({ relation: value });
-                    }}
-                    options={relations?.map((ele: string) => ({
-                        value: ele,
-                        label: entity ? t(entity + ':r.' + ele) : ele,
-                    }))}
-                />
+                <>
+                    <Radio.Group
+                        value={relation}
+                        onChange={({ target }) => {
+                            const { value } = target;
+                            update({ relation: value });
+                        }}
+                        options={relations?.map((ele: string) => ({
+                            value: ele,
+                            label: entity ? t(entity + ':r.' + ele) : ele,
+                        }))}
+                    />
+                </>
             </Form.Item>
             {type === 'grant' && (
                 <Form.Item
                     label="人数"
+                    name="number"
                     rules={[
                         {
                             required: true,
@@ -79,35 +113,62 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
                         },
                     ]}
                 >
-                    <Radio.Group
-                        value={number}
-                        onChange={({ target }) => {
-                            const { value } = target;
-                            update({ number: value });
-                        }}
-                        options={[
-                            { value: 1, label: '单次' },
-                            { value: 10000, label: '不限次' },
-                        ]}
-                    />
+                    <>
+                        <Radio.Group
+                            value={number}
+                            onChange={({ target }) => {
+                                const { value } = target;
+                                update({ number: value });
+                            }}
+                            options={[
+                                { value: 1, label: '单次' },
+                                { value: 10000, label: '不限次' },
+                            ]}
+                        />
+                    </>
                 </Form.Item>
             )}
             <Form.Item
                 label="时效"
+                name="period"
                 rules={[
                     {
                         required: true,
                         message: '请选择一个时效',
                     },
                 ]}
+                help={<div style={{ marginBottom: 16 }}>支持分钟、小时选择</div>}
             >
-                <InputNumber
-                    min={1}
-                    max={15}
-                    value={period}
-                    onChange={(value) => setPeriod(value!)}
-                    addonAfter="分钟"
-                />
+                <>
+                    <InputNumber
+                        min={1}
+                        max={maxes[unit]}
+                        value={period}
+                        onChange={(value) => setPeriod(value!)}
+                        addonAfter={
+                            <Select
+                                value={unit}
+                                style={{ width: 80 }}
+                                onChange={(v) => {
+                                    setUnit(v);
+                                    if (v === 'minute') {
+                                        setPeriod(5);
+                                    } else if (v === 'hour') {
+                                        setPeriod(1);
+                                    } else if (v === 'day') {
+                                        setPeriod(1);
+                                    }
+                                }}
+                            >
+                                <Select.Option value="minute">
+                                    分钟
+                                </Select.Option>
+                                <Select.Option value="hour">小时</Select.Option>
+                                {/* <Select.Option value="day">天</Select.Option> */}
+                            </Select>
+                        }
+                    />
+                </>
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 4 }}>
                 <Space>
@@ -119,9 +180,5 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
             </Form.Item>
         </Form>
     );
-    return (
-        <div className={Style.container}>
-            {P}
-        </div>
-    );
+    return <div className={Style.container}>{P}</div>;
 }

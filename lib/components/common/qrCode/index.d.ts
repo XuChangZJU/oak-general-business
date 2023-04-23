@@ -8,6 +8,7 @@ declare type IQrCodeProps = {
     onRefresh?: () => void;
     size?: number;
     url: string;
+    loading?: boolean;
 };
 declare function QrCode(props: IQrCodeProps): JSX.Element;
 export default QrCode;

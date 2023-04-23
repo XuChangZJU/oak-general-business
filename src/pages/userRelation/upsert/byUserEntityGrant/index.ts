@@ -3,6 +3,8 @@ import { WechatMpConfig } from '../../../../entities/Application';
 import { EntityDict } from '../../../../general-app-domain';
 import { QrCodeType } from '../../../../types/Config';
 
+type Unit = 'minute' | 'hour' | 'day';
+
 export default OakComponent({
     entity: 'userEntityGrant',
     projection: {
@@ -25,13 +27,20 @@ export default OakComponent({
         entity: '' as keyof EntityDict,
         entityId: '',
         relations: [] as string[],
-        type: 'grant',
-        redirectToAfterConfirm: {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
+        type: 'grant' as EntityDict['userEntityGrant']['Schema']['type'],
+        redirectToAfterConfirm:
+            {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
         qrCodeType: '' as QrCodeType,
     },
     data: {
         period: 5,
         userEntityGrantId: '',
+        unit: 'minute' as Unit,
+        maxes: {
+            minute: 4320, // 60 * 24 * 3
+            hour: 72,
+            day: 3,
+        },
     },
     lifetimes: {
         ready() {
@@ -41,14 +50,11 @@ export default OakComponent({
     methods: {
         onShareAppMessage(e: any) {
             const app = this.features.application.getApplication();
-            const {
-                config,
-                system,
-            } = app!;
+            const { config, system } = app!;
             const { config: systemConfig } = system!;
             const { userEntityGrantId } = this.state;
-            const imageUrl = (systemConfig && systemConfig?.App?.mpShareImageUrl) ||
-                '';
+            const imageUrl =
+                (systemConfig && systemConfig?.App?.mpShareImageUrl) || '';
             return {
                 title: '',
                 path: `/pages/userEntityGrant/confirm/index?oakId=${userEntityGrantId}`,
@@ -66,12 +72,13 @@ export default OakComponent({
             this.update({
                 entity,
                 entityId,
-                type: (type as 'grant') || 'grant',
+                type: type || 'grant',
                 number: 1,
-                redirectTo: redirectToAfterConfirm as EntityDict['userEntityGrant']['Schema']['redirectTo'],
+                redirectTo:
+                    redirectToAfterConfirm as EntityDict['userEntityGrant']['Schema']['redirectTo'],
                 qrCodeType: qrCodeType as QrCodeType,
             });
-                
+
             this.setState({
                 userEntityGrantId: '',
             });
@@ -104,12 +111,37 @@ export default OakComponent({
             const { count } = e.detail;
             this.setPeriod(count);
         },
+        setUnit(u: Unit) {
+            this.setState({ unit: u });
+        },
         onBack() {
             this.navigateBack();
         },
         async confirm() {
-            const { period } = this.state;
-            const expiresAt = Date.now() + period * 60 * 1000;
+            const { period, unit, userEntityGrant } = this.state;
+            if (!userEntityGrant?.relation) {
+                this.setMessage({
+                    type: 'error',
+                    content: '请选择角色权限',
+                });
+                return;
+            }
+            let time = 0;
+            switch (unit) {
+                case 'hour': {
+                    time = period * 60 * 60 * 1000;
+                    break;
+                }
+                case 'day': {
+                    time = period * 24 * 60 * 60 * 1000;
+                    break;
+                }
+                default: {
+                    time = period * 60 * 1000;
+                    break;
+                }
+            }
+            const expiresAt = Date.now() + time;
             this.update({
                 expiresAt,
             });

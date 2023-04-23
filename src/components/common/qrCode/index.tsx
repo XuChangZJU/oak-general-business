@@ -14,6 +14,7 @@ type IQrCodeProps = {
     onRefresh?: () => void;
     size?: number;
     url: string;
+    loading?: boolean;
 };
 
 
@@ -30,6 +31,7 @@ function QrCode(props: IQrCodeProps) {
         onRefresh,
         size = 280,
         url,
+        loading = false,
     } = props;
     const prefixCls = 'oak';
 
@@ -37,7 +39,8 @@ function QrCode(props: IQrCodeProps) {
     if (expiresAt) {
         const diff = dayjs(expiresAt).diff(dayjs(), 'days');
         if (diff > 0) {
-            const expiresAtStr = dayjs(expiresAt).format('YYYY年MM月DD日');
+            const expiresAtStr =
+                dayjs(expiresAt).format('YYYY年MM月DD日 HH:mm');
 
             V = (
                 <span className={`${prefixCls}-qrCodeBox-caption`}>
@@ -45,7 +48,7 @@ function QrCode(props: IQrCodeProps) {
                     <span>{diff}</span>
                     天内(
                     <span>{expiresAtStr}</span>
-                    前)有效，失效请重新更新
+                    前)有效，失效请重新生成
                 </span>
             );
         } else {
@@ -57,13 +60,13 @@ function QrCode(props: IQrCodeProps) {
                     <span className={`${prefixCls}-qrCodeBox_caption`}>
                         该二维码1天内(
                         <span>{expiresAtStr}</span>
-                        前)有效，失效请重新更新
+                        前)有效，失效请重新生成
                     </span>
                 );
             } else {
                 V = (
                     <span className={`${prefixCls}-qrCodeBox_caption`}>
-                        该二维码已失效，请重新更新
+                        该二维码已失效，请重新生成
                     </span>
                 );
             }
@@ -78,7 +81,7 @@ function QrCode(props: IQrCodeProps) {
                 style={{
                     width: size,
                     height: size,
-                    marginBottom: 10
+                    marginBottom: 10,
                 }}
             >
                 {isBase64(url) ? (
@@ -91,7 +94,7 @@ function QrCode(props: IQrCodeProps) {
             {tips}
             {
                 <Space className={`${prefixCls}-qrCodeBox_actions`}>
-                    {
+                    {!!url && (
                         <Button
                             type="text"
                             onClick={() => {
@@ -119,7 +122,7 @@ function QrCode(props: IQrCodeProps) {
                                 className={`${prefixCls}-qrCodeBox_actions_downloadIcon`}
                             />
                         </Button>
-                    }
+                    )}
                     {onRefresh && (
                         <Button
                             type="text"
