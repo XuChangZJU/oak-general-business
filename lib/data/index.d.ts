@@ -26,5 +26,8 @@ declare const _default: {
             coordinate: number[];
         };
     })[];
+    subway: import("../general-app-domain/Subway/Schema").CreateOperationData[];
+    station: import("../general-app-domain/Station/Schema").CreateOperationData[];
+    subwayStation: import("../general-app-domain/SubwayStation/Schema").CreateOperationData[];
 };
 export default _default;
