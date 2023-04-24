@@ -14,6 +14,7 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { tokenProjection } from '../types/projection';
 import { sendSms } from '../utils/sms';
 import { mergeUser } from './user';
+import { users } from '../data/userRole';
 
 async function makeDistinguishException<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(userId: string, context: Cxt, message?: string) {
     const [user] = await context.select('user', {
@@ -162,14 +163,14 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
             const { userState } = user;
             switch (userState) {
                 case 'normal': {
-                    if (currentToken.id === user.id) {
+                    if (currentToken.userId === user.id) {
                         return currentToken.id;
                     }
                     await mergeUser<ED, Cxt>({ from: user.id!, to: currentToken.userId! }, context, true);
                     return currentToken.id;
                 }
                 case 'shadow': {
-                    assert(currentToken.id !== user.id);
+                    assert(currentToken.userId !== user.id);
                     await mergeUser<ED, Cxt>({ from: user.id!, to: currentToken.userId! }, context, true);
                     await context.operate('user', {
                         id: await generateNewIdAsync(),
@@ -186,7 +187,7 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
                 }
                 case 'merged': {
                     assert(user.refId);
-                    if (user.refId === currentToken.id) {
+                    if (user.refId === currentToken.userId) {
                         return currentToken.id;
                     }
                     // 说明一个用户被其他用户merge了，现在还是暂时先merge，后面再说
@@ -370,6 +371,11 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
                 id: 1,
                 userState: 1,
                 refId: 1,
+                ref: {
+                    id: 1,
+                    userState: 1,
+                    refId: 1,
+                },
                 wechatUser$user: {
                     $entity: 'wechatUser',
                     data: {
@@ -395,6 +401,11 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
         assert(result2.length === 1);
         const [mobileRow] = result2;
         const { user } = mobileRow;
+        const { userState, ref } = user!;
+        if (userState === 'merged') {
+            return await setUpTokenAndUser<ED, Cxt>(env, context, 'mobile', mobileRow.id, undefined, ref as Partial<ED['user']['Schema']>);
+
+        }
         return await setUpTokenAndUser<ED, Cxt>(env, context, 'mobile', mobileRow.id, undefined, user as Partial<ED['user']['Schema']>);
     }
     else {
