@@ -8,6 +8,10 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
     userEntityGrantId: string;
     unit: Unit;
     maxes: Record<Unit, number>;
+    unitArr: Array<{
+        label: string;
+        value: Unit;
+    }>;
 }, {
     confirm: () => Promise<void>;
     onBack: () => void;

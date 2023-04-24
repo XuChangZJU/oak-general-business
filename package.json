@@ -84,6 +84,7 @@
         "copy-xml": "copyfiles -u 1 src/**/*.xml lib/ & copyfiles -u 1 src/**/*.wxml lib/",
         "build": "tsc && npm run copy-js && npm run copy-less && npm run copy-wxs && npm run copy-svg && npm run copy-xml",
         "gen:areaDebug": "ts-node ./scripts/generateAreaDebug.ts",
+        "gen:subway": "ts-node ./scripts/local/getAmapSubway.ts",
         "clean:dir": "ts-node ./scripts/cleanDtsAndJs",
         "test": "ts-node ./test/test.ts",
         "prepare": "rimraf node_modules/react & rimraf node_modules/react-dom & rimraf node_modules/react-router",

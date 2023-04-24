@@ -29,6 +29,7 @@ export default function render(
             userEntityGrantId: string;
             unit: Unit;
             maxes: Record<Unit, number>;
+            unitArr: Array<{ label: string; value: Unit }>;
         },
         {
             confirm: () => Promise<void>;
@@ -46,6 +47,7 @@ export default function render(
         period,
         unit,
         maxes,
+        unitArr,
     } = props.data;
     const { relation, type, number, entity } = userEntityGrant || {};
     const { update, t, onBack, confirm, setInit, setPeriod, setUnit } =
@@ -137,7 +139,10 @@ export default function render(
                         message: '请选择一个时效',
                     },
                 ]}
-                help={<div style={{ marginBottom: 16 }}>支持分钟、小时选择</div>}
+                help={
+                    <div style={{ marginBottom: 16 }}>支持分钟、小时选择</div>
+                }
+                tooltip="通过配置实现在规定的时效内扫描二维码不过期的效果。"
             >
                 <>
                     <InputNumber
@@ -145,26 +150,23 @@ export default function render(
                         max={maxes[unit]}
                         value={period}
                         onChange={(value) => setPeriod(value!)}
+                        // addonAfter="分钟"
                         addonAfter={
                             <Select
                                 value={unit}
                                 style={{ width: 80 }}
                                 onChange={(v) => {
                                     setUnit(v);
-                                    if (v === 'minute') {
-                                        setPeriod(5);
-                                    } else if (v === 'hour') {
-                                        setPeriod(1);
-                                    } else if (v === 'day') {
-                                        setPeriod(1);
-                                    }
                                 }}
                             >
-                                <Select.Option value="minute">
-                                    分钟
-                                </Select.Option>
-                                <Select.Option value="hour">小时</Select.Option>
-                                {/* <Select.Option value="day">天</Select.Option> */}
+                                {unitArr.map((ele, index) => (
+                                    <Select.Option
+                                        key={index}
+                                        value={ele.value}
+                                    >
+                                        {ele.label}
+                                    </Select.Option>
+                                ))}
                             </Select>
                         }
                     />
