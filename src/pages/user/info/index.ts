@@ -24,6 +24,11 @@ export default OakComponent({
                 id: 1,
                 mobile: 1,
                 userId: 1,
+                user: {
+                    id: 1,
+                    userState: 1,
+                    refId: 1,
+                },
             },
         },
         extraFile$entity: {
