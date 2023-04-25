@@ -3,9 +3,9 @@ import { Button, Badge, Table, Space, Typography } from 'antd';
 import dayjs from 'dayjs';
 import Style from './web.module.less';
 import PageHeader from '../../../components/common/pageHeader';
-import CellButton from '../../../components/message/cellButton';
+import ActionBtnPanel from 'oak-frontend-base/lib/components/actionBtnPanel';
 
-import { WebComponentProps } from 'oak-frontend-base';
+import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 
 const MessageType = {
@@ -20,12 +20,7 @@ export default function Render(
         'message',
         true,
         {
-            pagination?: {
-                pageSize: number;
-                total: number;
-                currentPage: number;
-            };
-            messages: EntityDict['message']['Schema'][];
+            messages: RowWithActions<EntityDict, 'message'>[];
         },
         {
             goDetailById: (id: string) => void;
@@ -34,8 +29,8 @@ export default function Render(
 ) {
     const { data, methods } = props;
     const { t, setPageSize, setCurrentPage, goDetailById } = methods;
-    const { messages, oakFullpath, oakLoading, pagination } = data;
-    const { pageSize, total, currentPage } = pagination || {};
+    const { messages, oakFullpath, oakLoading, oakPagination } = data;
+    const { pageSize, total, currentPage } = oakPagination || {};
 
     return (
         <PageHeader title="消息通知">
@@ -121,20 +116,32 @@ export default function Render(
                             align: 'center',
                             render: (value, record, index) => {
                                 return (
-                                    <Space wrap>
-                                        <Button
-                                            type="link"
-                                            onClick={() => {
-                                                goDetailById(record?.id);
-                                            }}
-                                        >
-                                            详情
-                                        </Button>
-                                        <CellButton
-                                            oakId={record.id}
-                                            oakPath={`${oakFullpath}.${record.id}`}
-                                        />
-                                    </Space>
+                                    <ActionBtnPanel
+                                        mode="table-cell"
+                                        entity="message"
+                                        items={[
+                                            {
+                                                label: '详情',
+                                                onClick: () => {
+                                                    goDetailById(record.id!);
+                                                },
+                                            },
+                                            {
+                                                action: 'visit',
+                                                show: record[
+                                                    '#oakLegalActions'
+                                                ]?.includes('visit'),
+                                                onClick: async () => {
+                                                    methods.updateItem(
+                                                        {},
+                                                        record.id!,
+                                                        'visit'
+                                                    );
+                                                    await methods.execute();
+                                                },
+                                            },
+                                        ]}
+                                    ></ActionBtnPanel>
                                 );
                             },
                             fixed: 'right',

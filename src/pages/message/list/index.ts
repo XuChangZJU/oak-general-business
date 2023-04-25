@@ -25,8 +25,7 @@ export default OakComponent({
                     return {
                         userId,
                     };
-                }
-                else {
+                } else {
                     return {
                         id: 'illegal',
                     };
@@ -34,6 +33,7 @@ export default OakComponent({
             },
         },
     ],
+    actions: ['visit'],
     sorters: [
         {
             sorter: () => {
@@ -47,20 +47,16 @@ export default OakComponent({
         },
     ],
     formData: function ({ data: messages, features, props }) {
-        const pagination = this.getPagination();
         return {
             messages,
-            pagination,
         };
     },
     lifetimes: {
         attached() {
             this.subscribed.push(
-                this.features.token.subscribe(
-                    () => this.reRender()
-                )
+                this.features.token.subscribe(() => this.reRender())
             );
-        }
+        },
     },
     methods: {
         goDetailById(id: string) {
