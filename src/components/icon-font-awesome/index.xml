@@ -1,9 +1,0 @@
-<block wx:if="{{type==='far' || type==='fas'}}">
-    <text
-     class="fa {{type}} fa-{{name}} fa-{{larger || '1x'}} {{color || 'primary'}}"
-      style="{{ size ? 'font-size:'+size+'rpx;':''}}{{ color && color !== 'primary'  && color !== 'info'&& color !== 'error'&& color !== 'success'&& color !== 'warning' ? 'color:' + color+';' : '' }}">
-      </text>
-</block>
-<block wx:else>
-    <text>不支持的icon类型{{type}}</text>
-</block>
