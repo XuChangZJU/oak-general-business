@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Table, Button, Space, Typography, Modal } from 'antd';
 import dayjs from 'dayjs';
 import PageHeader from '../../../components/common/pageHeader';
-import CellButton from '../../../components/userEntityGrant/cellButton';
 import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 
@@ -122,21 +121,6 @@ export default function render(
                             );
                         },
                     },
-                    // {
-                    //     dataIndex: 'op',
-                    //     width: 200,
-                    //     title: '操作',
-                    //     align: 'center',
-                    //     render: (value, record, index) => {
-                    //         return (
-                    //             <CellButton
-                    //                 oakId={record.id}
-                    //                 oakPath={`${oakFullpath}.${record.id}`}
-                    //             />
-                    //         );
-                    //     },
-                    //     fixed: 'right',
-                    // },
                 ]}
                 pagination={{
                     total,
