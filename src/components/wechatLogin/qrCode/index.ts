@@ -18,17 +18,26 @@ export default OakComponent({
             }
         },
     },
+    data: {
+        loading: false,
+    },
+    properties: {
+        type: 'bind' as EntityDict['wechatLogin']['Schema']['type'],
+    },
     methods: {
         async createWechatLogin() {
             const userId = this.features.token.getUserId();
             const wechatLoginId = await generateNewIdAsync();
+
+            const { type = 'bind' } = this.props; 
+
             await this.features.cache.operate('wechatLogin', {
                 id: await generateNewIdAsync(),
                 action: 'create',
                 data: {
                     id: wechatLoginId,
                     userId,
-                    type: 'bind',
+                    type,
                     expiresAt: Date.now() + Interval,
                     expired: false,
                     qrCodeType: 'wechatPublic',
@@ -73,7 +82,7 @@ export default OakComponent({
                             applicationId: 1,
                         },
                         filter: {
-                            entity: 'userEntityGrant',
+                            entity: 'wechatLogin',
                         },
                         indexFrom: 0,
                         count: 1,

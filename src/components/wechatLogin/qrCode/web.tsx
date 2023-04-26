@@ -13,15 +13,21 @@ export default function Render(
         {
             wechatLoginId: string;
             qrCodeUrl: string;
+            loading: boolean;
         },
         {}
     >
 ) {
-    const { oakFullpath, wechatLoginId, qrCodeUrl } = props.data;
+    const { oakFullpath, qrCodeUrl, loading } = props.data;
 
     return (
         <div>
-            <QrCode url={qrCodeUrl} />
+            <QrCode
+                loading={loading}
+                url={qrCodeUrl}
+                disableDownload={true}
+                tips={<div>微信扫一扫</div>}
+            />
         </div>
     );
 }

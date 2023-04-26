@@ -15,6 +15,7 @@ type IQrCodeProps = {
     size?: number;
     url: string;
     loading?: boolean;
+    disableDownload?: boolean;
 };
 
 
@@ -32,6 +33,7 @@ function QrCode(props: IQrCodeProps) {
         size = 280,
         url,
         loading = false,
+        disableDownload = false,
     } = props;
     const prefixCls = 'oak';
 
@@ -81,7 +83,8 @@ function QrCode(props: IQrCodeProps) {
                 style={{
                     width: size,
                     height: size,
-                    marginBottom: 10,
+                    marginBottom: 16,
+                    marginTop: 16
                 }}
             >
                 {isBase64(url) ? (
@@ -94,7 +97,7 @@ function QrCode(props: IQrCodeProps) {
             {tips}
             {
                 <Space className={`${prefixCls}-qrCodeBox_actions`}>
-                    {!!url && (
+                    {!!url && !disableDownload && (
                         <Button
                             type="text"
                             onClick={() => {
