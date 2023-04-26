@@ -44,10 +44,8 @@ export default OakComponent({
         },
     ],
     formData({ data }) {
-        const pagination = this.getPagination();
         return {
             list: data,
-            pagination,
         };
     },
     data: {

@@ -15,6 +15,7 @@ import * as Token from "../Token/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
 import * as UserSystem from "../UserSystem/Schema";
 import * as UserWechatPublicTag from "../UserWechatPublicTag/Schema";
+import * as WechatLogin from "../WechatLogin/Schema";
 import * as WechatUser from "../WechatUser/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
@@ -73,6 +74,8 @@ export declare type Schema = EntityShape & {
     userSystem$user$$aggr?: AggregationResult<UserSystem.Schema>;
     userWechatPublicTag$user?: Array<UserWechatPublicTag.Schema>;
     userWechatPublicTag$user$$aggr?: AggregationResult<UserWechatPublicTag.Schema>;
+    wechatLogin$user?: Array<WechatLogin.Schema>;
+    wechatLogin$user$$aggr?: AggregationResult<WechatLogin.Schema>;
     wechatUser$user?: Array<WechatUser.Schema>;
     wechatUser$user$$aggr?: AggregationResult<WechatUser.Schema>;
     modiEntity$entity?: Array<ModiEntity.Schema>;
@@ -202,6 +205,12 @@ export declare type Projection = {
     userWechatPublicTag$user$$aggr?: UserWechatPublicTag.Aggregation & {
         $entity: "userWechatPublicTag";
     };
+    wechatLogin$user?: WechatLogin.Selection & {
+        $entity: "wechatLogin";
+    };
+    wechatLogin$user$$aggr?: WechatLogin.Aggregation & {
+        $entity: "wechatLogin";
+    };
     wechatUser$user?: WechatUser.Selection & {
         $entity: "wechatUser";
     };
@@ -302,6 +311,7 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "refId">
     userEntityGrant$grantee?: OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "grantee" | "granteeId">, UserEntityGrant.Filter> | OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "grantee" | "granteeId">[]> | Array<OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "grantee" | "granteeId">> | OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "grantee" | "granteeId">, UserEntityGrant.Filter>>;
     userSystem$user?: OakOperation<UserSystem.UpdateOperation["action"], Omit<UserSystem.UpdateOperationData, "user" | "userId">, UserSystem.Filter> | OakOperation<"create", Omit<UserSystem.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserSystem.CreateOperationData, "user" | "userId">> | OakOperation<UserSystem.UpdateOperation["action"], Omit<UserSystem.UpdateOperationData, "user" | "userId">, UserSystem.Filter>>;
     userWechatPublicTag$user?: OakOperation<UserWechatPublicTag.UpdateOperation["action"], Omit<UserWechatPublicTag.UpdateOperationData, "user" | "userId">, UserWechatPublicTag.Filter> | OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "user" | "userId">> | OakOperation<UserWechatPublicTag.UpdateOperation["action"], Omit<UserWechatPublicTag.UpdateOperationData, "user" | "userId">, UserWechatPublicTag.Filter>>;
+    wechatLogin$user?: OakOperation<WechatLogin.UpdateOperation["action"], Omit<WechatLogin.UpdateOperationData, "user" | "userId">, WechatLogin.Filter> | OakOperation<"create", Omit<WechatLogin.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<WechatLogin.CreateOperationData, "user" | "userId">> | OakOperation<WechatLogin.UpdateOperation["action"], Omit<WechatLogin.UpdateOperationData, "user" | "userId">, WechatLogin.Filter>>;
     wechatUser$user?: OakOperation<WechatUser.UpdateOperation["action"], Omit<WechatUser.UpdateOperationData, "user" | "userId">, WechatUser.Filter> | OakOperation<"create", Omit<WechatUser.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<WechatUser.CreateOperationData, "user" | "userId">> | OakOperation<WechatUser.UpdateOperation["action"], Omit<WechatUser.UpdateOperationData, "user" | "userId">, WechatUser.Filter>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
     operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
@@ -338,6 +348,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "refId">
     userEntityGrant$grantee?: UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation | OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "grantee" | "granteeId">[]> | Array<OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "grantee" | "granteeId">> | UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation>;
     userSystem$user?: UserSystem.UpdateOperation | UserSystem.RemoveOperation | OakOperation<"create", Omit<UserSystem.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserSystem.CreateOperationData, "user" | "userId">> | UserSystem.UpdateOperation | UserSystem.RemoveOperation>;
     userWechatPublicTag$user?: UserWechatPublicTag.UpdateOperation | UserWechatPublicTag.RemoveOperation | OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "user" | "userId">> | UserWechatPublicTag.UpdateOperation | UserWechatPublicTag.RemoveOperation>;
+    wechatLogin$user?: WechatLogin.UpdateOperation | WechatLogin.RemoveOperation | OakOperation<"create", Omit<WechatLogin.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<WechatLogin.CreateOperationData, "user" | "userId">> | WechatLogin.UpdateOperation | WechatLogin.RemoveOperation>;
     wechatUser$user?: WechatUser.UpdateOperation | WechatUser.RemoveOperation | OakOperation<"create", Omit<WechatUser.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<WechatUser.CreateOperationData, "user" | "userId">> | WechatUser.UpdateOperation | WechatUser.RemoveOperation>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
     operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;

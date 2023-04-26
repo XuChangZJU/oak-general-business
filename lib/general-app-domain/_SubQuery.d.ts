@@ -34,6 +34,7 @@ import * as System from "./System/Schema";
 import * as Token from "./Token/Schema";
 import * as UserSystem from "./UserSystem/Schema";
 import * as UserWechatPublicTag from "./UserWechatPublicTag/Schema";
+import * as WechatLogin from "./WechatLogin/Schema";
 import * as WechatPublicTag from "./WechatPublicTag/Schema";
 import * as WechatQrCode from "./WechatQrCode/Schema";
 import * as WechatUser from "./WechatUser/Schema";
@@ -105,6 +106,8 @@ export declare type UserIdSubQuery = {
         entity: "userSystem";
     }) | (UserWechatPublicTag.UserIdSubQuery & {
         entity: "userWechatPublicTag";
+    }) | (WechatLogin.UserIdSubQuery & {
+        entity: "wechatLogin";
     }) | (WechatUser.UserIdSubQuery & {
         entity: "wechatUser";
     }) | (User.UserIdSubQuery & {
@@ -289,6 +292,11 @@ export declare type UserSystemIdSubQuery = {
 export declare type UserWechatPublicTagIdSubQuery = {
     [K in "$in" | "$nin"]?: (UserWechatPublicTag.UserWechatPublicTagIdSubQuery & {
         entity: "userWechatPublicTag";
+    }) | any;
+};
+export declare type WechatLoginIdSubQuery = {
+    [K in "$in" | "$nin"]?: (WechatLogin.WechatLoginIdSubQuery & {
+        entity: "wechatLogin";
     }) | any;
 };
 export declare type WechatPublicTagIdSubQuery = {

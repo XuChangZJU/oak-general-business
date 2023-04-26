@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Table, Button, Space, Typography, Modal } from 'antd';
+import { Table, Space, Typography } from 'antd';
 import dayjs from 'dayjs';
+import { WebComponentProps } from 'oak-frontend-base';
 import PageHeader from '../../../components/common/pageHeader';
 import { EntityDict } from '../../../general-app-domain';
-import { WebComponentProps } from 'oak-frontend-base';
-
 import Style from './web.module.less';
 
 export default function render(
@@ -23,15 +22,15 @@ export default function render(
     >
 ) {
     const {
-        pagination,
+        oakPagination,
+        oakFullpath,
         list = [],
         oakLoading,
         showBack,
         variant,
-        oakFullpath,
     } = props.data;
 
-    const { pageSize, total, currentPage } = pagination || {};
+    const { pageSize, total, currentPage } = oakPagination || {};
 
      const { t, setPageSize, setCurrentPage } = props.methods;
 

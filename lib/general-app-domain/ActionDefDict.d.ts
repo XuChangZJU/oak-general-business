@@ -29,4 +29,5 @@ export declare const ActionDefDict: {
         userState: import("oak-domain/lib/types").ActionDef<string, string>;
     };
     userEntityGrant: {};
+    wechatLogin: {};
 };
