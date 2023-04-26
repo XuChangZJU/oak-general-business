@@ -12,7 +12,6 @@ import { ETheme, IThemeState } from '../types/themeState';
 const defaultTheme = ETheme.light;
 
 const initialThemeState: IThemeState = {
-    collapsed: false,
     setting: false,
     theme: defaultTheme,
     systemTheme: false,
@@ -54,16 +53,6 @@ export default class Theme<
         this.themeState = themeState;
         this.storage.save('theme:themeState', themeState);
         this.publish();
-    }
-
-    toggleMenu(collapsed?: boolean | undefined) {
-        const state = this.themeState;
-        if (collapsed === undefined) {
-            state.collapsed = !state.collapsed;
-        } else {
-            state.collapsed = !!collapsed;
-        }
-        this.set(state);
     }
 
     toggleSetting() {

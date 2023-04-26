@@ -5,7 +5,6 @@ export enum ETheme {
 }
 
 export interface IThemeState {
-    collapsed?: boolean;
     setting: boolean;
     color: string;
     /**
