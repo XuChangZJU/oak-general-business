@@ -9,6 +9,7 @@ import { AspectDict } from '../aspects/AspectDict';
 import { AspectWrapper } from 'oak-domain/lib/types';
 import { AppType } from '../general-app-domain/Application/Schema';
 import { EntityDict } from '../general-app-domain';
+import Theme from './theme';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 
@@ -38,13 +39,14 @@ export function initialize<
         basicFeatures.cache,
         basicFeatures.localStorage
     );
-
+    const theme = new Theme(basicFeatures.cache, basicFeatures.localStorage);
     return {
         token,
         extraFile,
         application,
         config,
         weiXinJsSdk,
+        theme,
     };
 }
 
@@ -59,4 +61,5 @@ export type GeneralFeatures<
     application: Application<ED, Cxt, FrontCxt, AD>;
     config: Config<ED, Cxt, FrontCxt, AD>;
     weiXinJsSdk: WeiXinJsSdk<ED, Cxt, FrontCxt, AD>;
+    theme: Theme<ED, Cxt, FrontCxt, AD>;
 };

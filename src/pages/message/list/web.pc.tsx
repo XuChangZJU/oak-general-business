@@ -61,7 +61,7 @@ export default function Render(
                                             ></Badge>
                                             <Typography.Link
                                                 onClick={() => {
-                                                    goDetailById(record.id);
+                                                    goDetailById(record.id!);
                                                 }}
                                             >
                                                 {value}
@@ -72,7 +72,7 @@ export default function Render(
                                 return (
                                     <Typography.Text
                                         onClick={() => {
-                                            goDetailById(record.id);
+                                            goDetailById(record.id!);
                                         }}
                                     >
                                         {value}
