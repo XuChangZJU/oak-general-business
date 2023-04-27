@@ -9,6 +9,7 @@ declare type IQrCodeProps = {
     size?: number;
     url: string;
     loading?: boolean;
+    disableDownload?: boolean;
 };
 declare function QrCode(props: IQrCodeProps): JSX.Element;
 export default QrCode;

@@ -23,5 +23,11 @@
     "shrink": "收起",
     "$$createAt$$": "创建时间",
     "$$updateAt$$": "更新时间",
-    "$$deleteAt$$": "删除时间"
+    "$$deleteAt$$": "删除时间",
+    "$$seq$$": "序号",
+    "message": "消息",
+    "more": "更多",
+    "view": "查看",
+    "scan": "扫一扫",
+    "bind": "绑定"
 }   

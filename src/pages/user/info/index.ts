@@ -52,6 +52,21 @@ export default OakComponent({
             indexFrom: 0,
             count: 1,
         },
+        wechatUser$user: {
+            $entity: 'wechatUser',
+            data: {
+                id: 1,
+                openId: 1,
+                unionId: 1,
+                userId: 1,
+                origin: 1,
+                user: {
+                    id: 1,
+                    userState: 1,
+                    refId: 1,
+                },
+            },
+        },
     },
     isList: false,
     formData({ data: user, features }) {

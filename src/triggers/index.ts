@@ -4,6 +4,7 @@ import userEntityGrantTriggers from './userEntityGrant';
 import wechatQrCodeTriggers from './wechatQrCode';
 import messageTriggers from './message';
 import notificationTriggers from './notification';
+import wechatLoginTriggers from './wechatLogin';
 
 export default [
     ...addressTriggers,
@@ -12,4 +13,5 @@ export default [
     ...wechatQrCodeTriggers,
     ...messageTriggers,
     ...notificationTriggers,
+    ...wechatLoginTriggers,
 ];

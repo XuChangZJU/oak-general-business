@@ -266,11 +266,17 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                             },
                             filter: {
                                 id: entityId,
-                            }
+                            },
                         },
-                        { dontCollect: true },
+                        { dontCollect: true }
                     );
-                    const { id, granter, expired, entity: entity2, qrCodeType } = userEntityGrant!;
+                    const {
+                        id,
+                        granter,
+                        expired,
+                        entity: entity2,
+                        qrCodeType,
+                    } = userEntityGrant!;
 
                     const name = granter?.name || granter?.nickname || '某用户';
                     if (qrCodeType === 'wechatPublicForMp') {
@@ -299,11 +305,10 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                                 scene: sceneStr,
                                 time: `${Date.now()}`,
                             }
-                        )
+                        );
                         // 先试着发文字链接
                         const content = `${name}为您创建了一个授权，<a href='#' data-miniprogram-appid='${appId}' data-miniprogram-path='${url}'>请点击领取</a>`;
 
-                        // assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
                         if (!expired) {
                             wechatInstance.sendServeMessage({
                                 openId,
@@ -314,43 +319,52 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                             wechatInstance.sendServeMessage({
                                 openId,
                                 type: 'text',
-                                content: '您好，您扫描的二维码已经过期，请联系管理员重新获取',
+                                content:
+                                    '您好，您扫描的二维码已经过期，请联系管理员重新获取',
                             });
                         }
-
-                    }
-                    else {
+                    } else {
                         // 推domain上的scan/code链接
 
-                        const [domain] = await context.select('domain', {
-                            data: {
-                                id: 1,
-                                url: 1,
-                                apiPath: 1,
-                                protocol: 1,
-                                port: 1,
-                            },
-                            filter: {
-                                systemId: {
-                                    $in: {
-                                        entity: 'application',
-                                        data: {
-                                            systemId: 1,
+                        const [domain] = await context.select(
+                            'domain',
+                            {
+                                data: {
+                                    id: 1,
+                                    url: 1,
+                                    apiPath: 1,
+                                    protocol: 1,
+                                    port: 1,
+                                },
+                                filter: {
+                                    systemId: {
+                                        $in: {
+                                            entity: 'application',
+                                            data: {
+                                                systemId: 1,
+                                            },
+                                            filter: {
+                                                id: applicationId,
+                                            },
                                         },
-                                        filter: {
-                                            id: applicationId,
-                                        }
-                                    }
-                                }
+                                    },
+                                },
+                            },
+                            { dontCollect: true }
+                        );
+                        assert(
+                            domain,
+                            `处理userEntityGrant时，找不到对应的domain，applicationId是「${applicationId}」`
+                        );
+                        const url = composeDomainUrl(
+                            domain as EntityDict['domain']['Schema'],
+                            'wechatQrCode/scan',
+                            {
+                                scene: sceneStr,
+                                time: `${Date.now()}`,
                             }
-                        }, { dontCollect: true });
-                        assert(domain, `处理userEntityGrant时，找不到对应的domain，applicationId是「${applicationId}」`);
-                        const url = composeDomainUrl(domain as EntityDict['domain']['Schema'], 'wechatQrCode/scan', {
-                            scene: sceneStr,
-                            time: `${Date.now()}`,
-                        });
+                        );
 
-                        // assert(!expired);   // 如果生成的wechatQrCode没过期，userEntityGrant就不可能过期。
                         if (!expired) {
                             wechatInstance.sendServeMessage({
                                 openId,
@@ -364,10 +378,99 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                             wechatInstance.sendServeMessage({
                                 openId,
                                 type: 'text',
-                                content: '您好，您扫描的二维码已经过期，请联系管理员重新获取',
+                                content:
+                                    '您好，您扫描的二维码已经过期，请联系管理员重新获取',
                             });
                         }
                     }
+                    break;
+                }
+                case 'wechatLogin': {
+                    const [wechatLogin] = await context.select(
+                        'wechatLogin',
+                        {
+                            data: {
+                                id: 1,
+                                qrCodeType: 1,
+                                expired: 1,
+                                userId: 1,
+                                type: 1,
+                                successed: 1,
+                            },
+                            filter: {
+                                id: entityId,
+                            },
+                        },
+                        { dontCollect: true }
+                    );
+                    const { qrCodeType, expired, userId, type, successed } =
+                        wechatLogin;
+                    if (qrCodeType === 'wechatPublicForMp') {
+                        // todo 公众号跳小程序 绑定login 后面再实现
+                    } else {
+                        const [domain] = await context.select(
+                            'domain',
+                            {
+                                data: {
+                                    id: 1,
+                                    url: 1,
+                                    apiPath: 1,
+                                    protocol: 1,
+                                    port: 1,
+                                },
+                                filter: {
+                                    systemId: {
+                                        $in: {
+                                            entity: 'application',
+                                            data: {
+                                                systemId: 1,
+                                            },
+                                            filter: {
+                                                id: applicationId,
+                                            },
+                                        },
+                                    },
+                                },
+                            },
+                            { dontCollect: true }
+                        );
+                        assert(
+                            domain,
+                            `处理wechatLogin时，找不到对应的domain，applicationId是「${applicationId}」`
+                        );
+                        const url = composeDomainUrl(
+                            domain as EntityDict['domain']['Schema'],
+                            'wechatQrCode/scan',
+                            {
+                                scene: sceneStr,
+                                time: `${Date.now()}`,
+                            }
+                        );
+                        const title = type === 'bind' ? '扫码绑定' : '扫码登录';
+                        const description =
+                            type === 'bind' ? '去绑定' : '去登录';
+                        if (!expired) {
+                            wechatInstance.sendServeMessage({
+                                openId,
+                                type: 'news',
+                                url,
+                                title,
+                                description,
+                                picurl: 'http://img95.699pic.com/element/40018/2473.png_860.png',
+                            });
+                        } else {
+                            wechatInstance.sendServeMessage({
+                                openId,
+                                type: 'text',
+                                content:
+                                    '您好，您扫描的二维码已经过期，请重新生成',
+                            });
+                        }
+                    }
+                    break;
+                }
+                default: {
+                    break;
                 }
             }
         }

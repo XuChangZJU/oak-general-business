@@ -8,6 +8,7 @@ import { BasicFeatures } from 'oak-frontend-base/lib/features';
 import { AspectDict } from '../aspects/AspectDict';
 import { AppType } from '../general-app-domain/Application/Schema';
 import { EntityDict } from '../general-app-domain';
+import Theme from './theme';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 export declare function initialize<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>>(basicFeatures: BasicFeatures<ED, Cxt, FrontCxt, AD>, type: AppType, domain: string): GeneralFeatures<ED, Cxt, FrontCxt, AD>;
@@ -17,4 +18,5 @@ export declare type GeneralFeatures<ED extends EntityDict, Cxt extends BackendRu
     application: Application<ED, Cxt, FrontCxt, AD>;
     config: Config<ED, Cxt, FrontCxt, AD>;
     weiXinJsSdk: WeiXinJsSdk<ED, Cxt, FrontCxt, AD>;
+    theme: Theme<ED, Cxt, FrontCxt, AD>;
 };

@@ -8,6 +8,7 @@ import { QrCodeType } from "../../types/Config";
 import * as Application from "../Application/Schema";
 import * as User from "../User/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
+import * as WechatLogin from "../WechatLogin/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 export declare type WechatQrCodeProps = {
@@ -17,7 +18,7 @@ export declare type WechatQrCodeProps = {
     isTabBar?: boolean;
 };
 export declare type OpSchema = EntityShape & {
-    entity: "user" | "userEntityGrant" | string;
+    entity: "user" | "userEntityGrant" | "wechatLogin" | string;
     entityId: String<64>;
     type: QrCodeType;
     allowShare: Boolean;
@@ -34,7 +35,7 @@ export declare type OpSchema = EntityShape & {
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
-    entity: "user" | "userEntityGrant" | string;
+    entity: "user" | "userEntityGrant" | "wechatLogin" | string;
     entityId: String<64>;
     type: QrCodeType;
     allowShare: Boolean;
@@ -51,6 +52,7 @@ export declare type Schema = EntityShape & {
     application: Application.Schema;
     user?: User.Schema;
     userEntityGrant?: UserEntityGrant.Schema;
+    wechatLogin?: WechatLogin.Schema;
     modiEntity$entity?: Array<ModiEntity.Schema>;
     modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;
     operEntity$entity?: Array<OperEntity.Schema>;
@@ -80,8 +82,9 @@ declare type AttrFilter<E> = {
     props: Q_EnumValue<WechatQrCodeProps>;
     user: User.Filter;
     userEntityGrant: UserEntityGrant.Filter;
+    wechatLogin: WechatLogin.Filter;
 };
-export declare type Filter<E = Q_EnumValue<"user" | "userEntityGrant" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
+export declare type Filter<E = Q_EnumValue<"user" | "userEntityGrant" | "wechatLogin" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -106,6 +109,7 @@ export declare type Projection = {
     props?: number;
     user?: User.Projection;
     userEntityGrant?: UserEntityGrant.Projection;
+    wechatLogin?: WechatLogin.Projection;
     modiEntity$entity?: ModiEntity.Selection & {
         $entity: "modiEntity";
     };
@@ -129,6 +133,9 @@ declare type UserIdProjection = OneOf<{
     entityId: number;
 }>;
 declare type UserEntityGrantIdProjection = OneOf<{
+    entityId: number;
+}>;
+declare type WechatLoginIdProjection = OneOf<{
     entityId: number;
 }>;
 export declare type SortAttr = {
@@ -174,6 +181,8 @@ export declare type SortAttr = {
 } | {
     userEntityGrant: UserEntityGrant.SortAttr;
 } | {
+    wechatLogin: WechatLogin.SortAttr;
+} | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
 export declare type SortNode = {
@@ -215,6 +224,17 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     entity: "userEntityGrant";
     entityId: String<64>;
 } | {
+    entity?: never;
+    entityId?: never;
+    wechatLogin: WechatLogin.CreateSingleOperation;
+} | {
+    entity: "wechatLogin";
+    entityId: String<64>;
+    wechatLogin: WechatLogin.UpdateOperation;
+} | {
+    entity: "wechatLogin";
+    entityId: String<64>;
+} | {
     entity?: string;
     entityId?: string;
     [K: string]: any;
@@ -246,7 +266,11 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("user" | "userEntityGrant" | string) | null;
+    wechatLogin?: WechatLogin.CreateSingleOperation | WechatLogin.UpdateOperation | WechatLogin.RemoveOperation;
+    entityId?: never;
+    entity?: never;
+} | {
+    entity?: ("user" | "userEntityGrant" | "wechatLogin" | string) | null;
     entityId?: String<64> | null;
 }) & {
     [k: string]: any;
@@ -261,6 +285,8 @@ export declare type RemoveOperationData = {} & (({
 } | {
     userEntityGrant?: UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation;
 } | {
+    wechatLogin?: WechatLogin.UpdateOperation | WechatLogin.RemoveOperation;
+} | {
     [k: string]: any;
 });
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
@@ -268,6 +294,7 @@ export declare type Operation = CreateOperation | UpdateOperation | RemoveOperat
 export declare type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
 export declare type UserIdSubQuery = Selection<UserIdProjection>;
 export declare type UserEntityGrantIdSubQuery = Selection<UserEntityGrantIdProjection>;
+export declare type WechatLoginIdSubQuery = Selection<WechatLoginIdProjection>;
 export declare type WechatQrCodeIdSubQuery = Selection<WechatQrCodeIdProjection>;
 export declare type EntityDef = {
     Schema: Schema;
