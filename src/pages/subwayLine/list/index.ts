@@ -89,12 +89,6 @@ export default OakComponent({
                         id: 1,
                         name: 1,
                         level: 1,
-                        subway$areaId: {
-                            $entity: 'subway',
-                            data: {
-                                id: 1
-                            }
-                        }
                     },
                     filter: {
 
