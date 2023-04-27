@@ -3,7 +3,6 @@ export declare enum ETheme {
     dark = "dark"
 }
 export interface IThemeState {
-    collapsed?: boolean;
     setting: boolean;
     color: string;
     /**
