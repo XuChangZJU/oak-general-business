@@ -149,11 +149,10 @@ export class Token<
 
     isRoot(context?: FrontCxt): boolean {
         const token = this.getToken(true, context);
-        const userRole$user = token?.user?.userRole$user;
+        const userRelation$user = token?.user?.userRelation$user;
         return !!(
-            userRole$user &&
-            userRole$user?.length > 0 &&
-            userRole$user.find((ele) => ele.roleId === ROOT_ROLE_ID)
+            userRelation$user &&
+            userRelation$user?.length > 0
         );
     }
 
@@ -163,11 +162,10 @@ export class Token<
      */
     isReallyRoot(context?: FrontCxt): boolean {
         const token = this.getToken(true, context);
-        const userRole$user = token?.player?.userRole$user;
+        const userRelation$user = token?.player?.userRelation$user;
         return !!(
-            userRole$user &&
-            userRole$user?.length > 0 &&
-            userRole$user.find((ele) => ele.roleId === ROOT_ROLE_ID)
+            userRelation$user &&
+            userRelation$user?.length > 0
         );
     }
 

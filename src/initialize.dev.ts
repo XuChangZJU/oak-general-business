@@ -1,6 +1,6 @@
-import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { AuthCascadePath, EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ColorDict } from 'oak-domain/lib/types/Style';
-import { ActionDictOfEntityDict, Aspect, AuthDefDict, Checker, Exportation, Importation, Routine, StorageSchema, Timer, Trigger, Watcher } from 'oak-domain/lib/types';
+import { ActionDictOfEntityDict, Aspect, AuthDefDict, CascadeRemoveDefDict, Checker, Exportation, Importation, Routine, StorageSchema, Timer, Trigger, Watcher } from 'oak-domain/lib/types';
 import { EntityDict, ActionDefDict as generalActionDefDict } from './general-app-domain';
 import { CacheStore } from 'oak-frontend-base/lib/cacheStore/CacheStore';
 import { AsyncRowStore } from 'oak-domain/lib/store/AsyncRowStore';
@@ -15,7 +15,6 @@ import generalTriggers from './triggers';
 import generalAspectDict from './aspects';
 import generalStartRoutines from './routines/start';
 import generalData from './data';
-import generalAuthDict from './auth';
 import { initialize as initGeneralFeatures } from './features';
 import { AppType } from './general-app-domain/Application/Schema';
 import { rewriteSelection, rewriteOperation } from './utils/selectionRewriter';
@@ -41,12 +40,9 @@ export function initialize<
         [T in keyof ED]?: Array<ED[T]['OpSchema']>;
     },
     actionDict?: ActionDictOfEntityDict<ED>,
-    authDict?: AuthDefDict<ED>,
-    relationDict?: {
-        [K in keyof ED]?: {
-            [R in NonNullable<ED[K]['Relation']>]?: ED[K]['Relation'][];
-        }
-    },
+    actionCascadePathGraph?: AuthCascadePath<ED>[],
+    relationCascadePathGraph?: AuthCascadePath<ED>[],
+    cascadeRemoveDict?: CascadeRemoveDefDict<ED>,
     colorDict?: ColorDict<ED>,
     importations?: Importation<ED, keyof ED, any>[],
     exportations?: Exportation<ED, keyof ED, any>[]
@@ -63,13 +59,23 @@ export function initialize<
     const triggers2 = (generalTriggers as Array<Trigger<ED, keyof ED, Cxt>>).concat(triggers || []);
     const watchers2 = (generalWatchers as Array<Watcher<ED, keyof ED, Cxt>>).concat(watchers || []);
     const startRoutines2 = (generalStartRoutines as Array<Routine<ED, Cxt>>).concat(startRoutines || []);
+
+    const data2 = Object.assign({}, generalData, initialData);
     if (initialData) {
         intersected = intersection(Object.keys(generalData), Object.keys(initialData));
         if (intersected.length > 0 && process.env.NODE_ENV === 'development') {
-            console.warn(`用户定义的initialData中存在和general-business中的initialData同名：「${intersected.join(',')}」，将覆盖general-business中定义的data，请确保逻辑正确`);
+            console.warn(`用户定义的initialData中存在和general-business中的initialData同名：「${intersected.join(',')}」，将产生合并，请确保逻辑正确`);
+            intersected.forEach(
+                (ele) => Object.assign(data2, {
+                    [ele]: [
+                        ...generalData[ele as keyof typeof generalData] as any,
+                        ...initialData[ele as keyof typeof initialData] as any,
+                    ],
+                })
+            );
         }
     }
-    const data2 = Object.assign({}, generalData, initialData);
+
     if (actionDict) {
         intersected = intersection(Object.keys(generalActionDefDict), Object.keys(actionDict));
         if (intersected.length > 0 && process.env.NODE_ENV === 'development') {
@@ -77,13 +83,6 @@ export function initialize<
         }
     }
     const actionDict2 = Object.assign({}, generalActionDefDict, actionDict);
-    if (authDict) {
-        intersected = intersection(Object.keys(generalAuthDict), Object.keys(authDict));
-        if (intersected.length > 0 && process.env.NODE_ENV === 'development') {
-            console.warn(`用户定义的authDict中存在和general-business中的authDict同名：「${intersected.join(',')}」，将覆盖general-business中定义的authDict，请确保逻辑正确`);
-        }
-    }
-    const authDict2 = Object.assign({}, generalAuthDict, authDict);
 
     const { features } = initDev<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>(
         storageSchema,
@@ -97,8 +96,9 @@ export function initialize<
         startRoutines2,
         data2,
         actionDict2,
-        authDict2,
-        relationDict,
+        actionCascadePathGraph,
+        relationCascadePathGraph,
+        cascadeRemoveDict,
         colorDict,
         importations,
         exportations,

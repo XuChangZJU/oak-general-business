@@ -1,5 +1,5 @@
-import { String, Boolean, Text, ForeignKey } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { String, Boolean, Text, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { Q_DateValue, Q_BooleanValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
@@ -52,12 +52,12 @@ declare type AttrFilter = {
     $$updateAt$$: Q_DateValue;
     name: Q_StringValue;
     description: Q_StringValue;
-    config: Q_EnumValue<Config>;
+    config: JsonFilter<Config>;
     platformId: Q_StringValue | SubQuery.PlatformIdSubQuery;
     platform: Platform.Filter;
     folder: Q_StringValue;
     super: Q_BooleanValue;
-    style: Q_EnumValue<Style>;
+    style: JsonFilter<Style>;
     entity: Q_StringValue;
     entityId: Q_StringValue;
 };
@@ -71,12 +71,12 @@ export declare type Projection = {
     $$seq$$?: number;
     name?: number;
     description?: number;
-    config?: number;
+    config?: number | JsonProjection<Config>;
     platformId?: number;
     platform?: Platform.Projection;
     folder?: number;
     super?: number;
-    style?: number;
+    style?: number | JsonProjection<Style>;
     entity?: number;
     entityId?: number;
     application$system?: Application.Selection & {

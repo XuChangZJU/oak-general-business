@@ -4,7 +4,7 @@ import { SerializedData } from './FrontendRuntimeContext';
 import assert from 'assert';
 import { OakTokenExpiredException, OakUserDisabledException } from '../types/Exception';
 import { OakException, OakUnloggedInException } from 'oak-domain/lib/types/Exception';
-import { ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
+import { ROOT_ROLE_ID, ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
 import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { SelectOpResult } from 'oak-domain/lib/types';
@@ -65,34 +65,47 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
                 player: {
                     id: 1,
                     userState: 1,
-                    userRole$user: {
-                        $entity: 'userRole',
+                    userRelation$user: {
+                        $entity: 'userRelation',
                         data: {
                             id: 1,
                             userId: 1,
-                            roleId: 1,
-                            role: {
+                            relationId: 1,
+                            relation: {
                                 id: 1,
-                                name: 1,
-                            }
+                                entity: 1,
+                                entityId: 1,
+                            },
                         },
+                        filter: {
+                            relation: {
+                                entity: 'role',
+                            }
+                        }
                     },
                 },
                 ableState: 1,
                 user: {
                     id: 1,
                     userState: 1,
-                    userRole$user: {
-                        $entity: 'userRole',
+                    userRelation$user: {
+                        $entity: 'userRelation',
                         data: {
                             id: 1,
                             userId: 1,
-                            roleId: 1,
-                            role: {
+                            relationId: 1,
+                            relation: {
                                 id: 1,
-                                name: 1,
-                            }
+                                entity: 1,
+                                entityId: 1,
+                            },
                         },
+                        filter: {
+                            relation: {
+                                entity: 'role',
+                                name: 'owner',
+                            }
+                        }
                     },
                 },
             },
@@ -116,14 +129,10 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
             return;
         }
         const { user, player } = token;
-        const { userRole$user } = user!;
-        this.amIRoot = (userRole$user as any).length > 0 && (userRole$user as any).find(
-            (ele: any) => ele.role.name === 'root'
-        );
-        const { userRole$user: userRole$player } = player!;
-        this.amIReallyRoot = (userRole$player as any).length > 0 && (userRole$player as any).find(
-            (ele: any) => ele.role.name === 'root'
-        );
+        const { userRelation$user } = user!;
+        this.amIRoot = (userRelation$user as any).length > 0;
+        const { userRelation$user: userRelation$player } = player!;
+        this.amIReallyRoot = (userRelation$player as any).length > 0;
         this.token = token;
     }
 
@@ -169,6 +178,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
     protected async initialize(data?: SerializedData) {
         if (data) {
             await this.begin();
+            this.setRootMode(true);
             try {
                 const { a: appId, t: tokenValue } = data;
                 const promises: Promise<void>[] = [];
@@ -181,9 +191,11 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
                 if (promises.length > 0) {
                     await Promise.all(promises);
                 }
+                this.setRootMode(false);
                 await this.commit();
             }
             catch (err) {
+                this.setRootMode(false);
                 await this.rollback();
                 throw err;
             }
@@ -204,6 +216,10 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
 
     getApplication() {
         return this.application;
+    }
+
+    setRootMode(mode: boolean) {
+        this.rootMode = mode;
     }
 
     getTokenValue(allowUnloggedIn?: boolean) {

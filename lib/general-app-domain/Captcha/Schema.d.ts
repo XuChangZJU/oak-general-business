@@ -53,7 +53,7 @@ export declare type Projection = {
     code?: number;
     visitorId?: number;
     reason?: number;
-    env?: number;
+    env?: number | Object;
     expired?: number;
     expiresAt?: number;
     iState?: number;

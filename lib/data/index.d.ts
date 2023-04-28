@@ -26,5 +26,6 @@ declare const _default: {
             coordinate: number[];
         };
     })[];
+    freeActionAuth: import("../general-app-domain/FreeActionAuth/Schema").CreateOperationData[];
 };
 export default _default;

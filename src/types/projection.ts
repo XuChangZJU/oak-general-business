@@ -1,5 +1,6 @@
 
 
+import { ROOT_ROLE_ID } from '../constants';
 import { EntityDict } from '../general-app-domain';
 
 export const userProjection: EntityDict['user']['Selection']['data'] = {
@@ -40,13 +41,24 @@ export const userProjection: EntityDict['user']['Selection']['data'] = {
             userId: 1,
         },
     },
-    userRole$user: {
-        $entity: 'userRole',
+    userRelation$user: {
+        $entity: 'userRelation',
         data: {
             id: 1,
             userId: 1,
-            roleId: 1,
+            relationId: 1,
+            relation: {
+                id: 1,
+                entity: 1,
+                entityId: 1,
+            },
         },
+        filter: {
+            relation: {
+                entity: 'role',
+                entityId: ROOT_ROLE_ID,
+            }
+        }
     },
 };
 export const tokenProjection: EntityDict['token']['Selection']['data'] = {
@@ -57,13 +69,24 @@ export const tokenProjection: EntityDict['token']['Selection']['data'] = {
     playerId: 1,
     player: {
         id: 1,
-        userRole$user: {
-            $entity: 'userRole',
+        userRelation$user: {
+            $entity: 'userRelation',
             data: {
                 id: 1,
                 userId: 1,
-                roleId: 1,
+                relationId: 1,
+                relation: {
+                    id: 1,
+                    entity: 1,
+                    entityId: 1,
+                },
             },
+            filter: {
+                relation: {
+                    entity: 'role',
+                    entityId: ROOT_ROLE_ID,
+                }
+            }
         },
     },
     entity: 1,

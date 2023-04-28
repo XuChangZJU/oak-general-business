@@ -1,5 +1,5 @@
 import { unset } from 'oak-domain/lib/utils/lodash';
-import { buildSchema, analyzeEntities } from 'oak-domain/lib/compiler/schemalBuilder';
+import { buildSchema, analyzeEntities } from 'oak-domain/src/compiler/schemalBuilder';
 
 process.env.NODE_ENV = 'development';
 process.env.COMPLING_AS_LIB = 'yes';

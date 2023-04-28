@@ -1,5 +1,5 @@
-import { String, Int, Text } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { String, Int, Text, JsonProjection } from "oak-domain/lib/types/DataType";
+import { Q_DateValue, Q_NumberValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
@@ -37,7 +37,7 @@ declare type AttrFilter = {
     entityId: Q_StringValue;
     name: Q_StringValue;
     description: Q_StringValue;
-    config: Q_EnumValue<WechatPublicConfig>;
+    config: JsonFilter<WechatPublicConfig>;
     offset: Q_NumberValue;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
@@ -52,7 +52,7 @@ export declare type Projection = {
     entityId?: number;
     name?: number;
     description?: number;
-    config?: number;
+    config?: number | JsonProjection<WechatPublicConfig>;
     offset?: number;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type SubscriptionIdProjection = OneOf<{

@@ -59,11 +59,11 @@ export declare type Projection = {
     channel?: number;
     applicationId?: number;
     application?: Application.Projection;
-    data?: number;
+    data?: number | Object;
     messageSystemId?: number;
     messageSystem?: MessageSystem.Projection;
-    data1?: number;
-    data2?: number;
+    data1?: number | Object;
+    data2?: number | Object;
     templateId?: number;
     iState?: number;
 } & Partial<ExprOp<OpAttr | string>>;

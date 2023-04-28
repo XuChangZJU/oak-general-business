@@ -176,11 +176,12 @@ export default OakComponent({
                 }
                 else {
                     const userId = this.features.token.getUserId();
-                    const legalRelations = this.features.relation.getLegalRelations(entity as keyof EntityDict, userId!, entityId!);
+                    throw new Error('待实现');
+                    /* const legalRelations = this.features.relation.getLegalRelations(entity as keyof EntityDict, userId!, entityId!);
 
                     this.setState({
                         relationss: legalRelations as string[] | undefined,
-                    });
+                    }); */
                 }
 
             }

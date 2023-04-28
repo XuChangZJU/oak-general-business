@@ -1,0 +1,1 @@
+{ "name": "直接对象访问授权", "attr": { "rootEntity": "根对象", "path": "路径", "destEntity": "目标对象", "deActions": "目标对象动作" } }

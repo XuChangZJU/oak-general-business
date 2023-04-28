@@ -1,5 +1,5 @@
-import { String, Int, Boolean, Text, Datetime, ForeignKey } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { String, Int, Boolean, Text, Datetime, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
@@ -77,7 +77,7 @@ declare type AttrFilter<E> = {
     qrCodeType: Q_EnumValue<QrCodeType>;
     expiresAt: Q_DateValue;
     expired: Q_BooleanValue;
-    redirectTo: Q_EnumValue<RedirectToProps>;
+    redirectTo: JsonFilter<RedirectToProps>;
     role: Role.Filter;
 };
 export declare type Filter<E = Q_EnumValue<"role" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
@@ -102,7 +102,7 @@ export declare type Projection = {
     qrCodeType?: number;
     expiresAt?: number;
     expired?: number;
-    redirectTo?: number;
+    redirectTo?: number | JsonProjection<RedirectToProps>;
     role?: Role.Projection;
     modiEntity$entity?: ModiEntity.Selection & {
         $entity: "modiEntity";

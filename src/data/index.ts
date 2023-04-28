@@ -1,5 +1,6 @@
 import { users, roles, mobiles, tokens } from './userRole';
 import { area } from './area';
+import freeActionAuth from './freeActionAuth';
 
 export default {
     user: users,
@@ -7,4 +8,5 @@ export default {
     mobile: mobiles,
     token: tokens,
     area,
+    freeActionAuth,
 };

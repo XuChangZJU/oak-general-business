@@ -1,5 +1,5 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { String, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
@@ -87,7 +87,7 @@ declare type AttrFilter<E> = {
     user: User.Filter;
     playerId: Q_StringValue | SubQuery.UserIdSubQuery;
     player: User.Filter;
-    env: Q_EnumValue<Environment>;
+    env: JsonFilter<Environment>;
     ableState: Q_EnumValue<AbleState>;
     email: Email.Filter;
     mobile: Mobile.Filter;
@@ -109,7 +109,7 @@ export declare type Projection = {
     user?: User.Projection;
     playerId?: number;
     player?: User.Projection;
-    env?: number;
+    env?: number | JsonProjection<Environment>;
     ableState?: number;
     email?: Email.Projection;
     mobile?: Mobile.Projection;

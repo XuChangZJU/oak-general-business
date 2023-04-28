@@ -1,5 +1,5 @@
-import { String, Boolean, Text, Datetime, ForeignKey } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { String, Boolean, Text, Datetime, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
@@ -77,7 +77,7 @@ declare type AttrFilter<E> = {
     buffer: Q_StringValue;
     applicationId: Q_StringValue | SubQuery.ApplicationIdSubQuery;
     application: Application.Filter;
-    props: Q_EnumValue<WechatQrCodeProps>;
+    props: JsonFilter<WechatQrCodeProps>;
     user: User.Filter;
     userEntityGrant: UserEntityGrant.Filter;
 };
@@ -103,7 +103,7 @@ export declare type Projection = {
     buffer?: number;
     applicationId?: number;
     application?: Application.Projection;
-    props?: number;
+    props?: number | JsonProjection<WechatQrCodeProps>;
     user?: User.Projection;
     userEntityGrant?: UserEntityGrant.Projection;
     modiEntity$entity?: ModiEntity.Selection & {

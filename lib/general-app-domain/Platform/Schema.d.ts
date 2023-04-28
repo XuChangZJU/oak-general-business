@@ -1,5 +1,5 @@
-import { String, Text } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { String, Text, JsonProjection } from "oak-domain/lib/types/DataType";
+import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
@@ -35,8 +35,8 @@ declare type AttrFilter = {
     $$updateAt$$: Q_DateValue;
     name: Q_StringValue;
     description: Q_StringValue;
-    config: Q_EnumValue<Config>;
-    style: Q_EnumValue<Style>;
+    config: JsonFilter<Config>;
+    style: JsonFilter<Style>;
     entity: Q_StringValue;
     entityId: Q_StringValue;
 };
@@ -50,8 +50,8 @@ export declare type Projection = {
     $$seq$$?: number;
     name?: number;
     description?: number;
-    config?: number;
-    style?: number;
+    config?: number | JsonProjection<Config>;
+    style?: number | JsonProjection<Style>;
     entity?: number;
     entityId?: number;
     system$platform?: System.Selection & {

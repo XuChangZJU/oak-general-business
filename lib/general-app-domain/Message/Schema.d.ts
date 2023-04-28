@@ -1,5 +1,5 @@
-import { String, Text, ForeignKey } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { String, Text, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
@@ -62,11 +62,11 @@ declare type AttrFilter = {
     user: User.Filter;
     type: Q_StringValue;
     weight: Q_EnumValue<Weight>;
-    restriction: Q_EnumValue<MessageRestriction>;
+    restriction: JsonFilter<MessageRestriction>;
     title: Q_StringValue;
     content: Q_StringValue;
     data: Object;
-    router: Q_EnumValue<Router>;
+    router: JsonFilter<Router>;
     iState: Q_EnumValue<IState>;
     visitState: Q_EnumValue<VisitState>;
 };
@@ -84,11 +84,11 @@ export declare type Projection = {
     user?: User.Projection;
     type?: number;
     weight?: number;
-    restriction?: number;
+    restriction?: number | JsonProjection<MessageRestriction>;
     title?: number;
     content?: number;
-    data?: number;
-    router?: number;
+    data?: number | Object;
+    router?: number | JsonProjection<Router>;
     iState?: number;
     visitState?: number;
     messageSystem$message?: MessageSystem.Selection & {

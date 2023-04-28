@@ -1,5 +1,5 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { String, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
@@ -31,7 +31,7 @@ declare type AttrFilter = {
     relation: Relation.Filter;
     path: Q_StringValue;
     destEntity: Q_StringValue;
-    deActions: Q_EnumValue<Actions>;
+    deActions: JsonFilter<Actions>;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -45,7 +45,7 @@ export declare type Projection = {
     relation?: Relation.Projection;
     path?: number;
     destEntity?: number;
-    deActions?: number;
+    deActions?: number | JsonProjection<Actions>;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type ActionAuthIdProjection = OneOf<{
     id: number;

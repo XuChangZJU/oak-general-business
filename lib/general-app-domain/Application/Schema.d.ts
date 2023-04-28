@@ -1,5 +1,5 @@
-import { String, Text, ForeignKey } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { String, Text, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
@@ -99,7 +99,7 @@ declare type AttrFilter = {
     type: Q_EnumValue<AppType>;
     systemId: Q_StringValue | SubQuery.SystemIdSubQuery;
     system: System.Filter;
-    style: Q_EnumValue<Style>;
+    style: JsonFilter<Style>;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -115,7 +115,7 @@ export declare type Projection = {
     systemId?: number;
     system?: System.Projection;
     config?: number;
-    style?: number;
+    style?: number | JsonProjection<Style>;
     messageTypeTemplateId$application?: MessageTypeTemplateId.Selection & {
         $entity: "messageTypeTemplateId";
     };

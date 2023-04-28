@@ -1,6 +1,6 @@
-import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { AuthCascadePath, EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ColorDict } from 'oak-domain/lib/types/Style';
-import { ActionDictOfEntityDict, Aspect, AuthDefDict, Checker, Connector, StorageSchema } from 'oak-domain/lib/types';
+import { ActionDictOfEntityDict, Aspect, AuthDefDict, CascadeRemoveDefDict, Checker, Connector, StorageSchema } from 'oak-domain/lib/types';
 import { EntityDict, ActionDefDict as generalActionDefDict } from './general-app-domain';
 import { CacheStore } from 'oak-frontend-base/lib/cacheStore/CacheStore';
 import { intersection } from 'oak-domain/lib/utils/lodash';
@@ -28,12 +28,9 @@ export function initialize<
     connector: Connector<ED, Cxt, FrontCxt>,
     checkers?: Array<Checker<ED, keyof ED, FrontCxt | Cxt>>,
     actionDict?: ActionDictOfEntityDict<ED>,
-    authDict?: AuthDefDict<ED>,
-    relationDict?: {
-        [K in keyof ED]?: {
-            [R in NonNullable<ED[K]['Relation']>]?: ED[K]['Relation'][];
-        }
-    },
+    actionCascadePathGraph?: AuthCascadePath<ED>[],
+    relationCascadePathGraph?: AuthCascadePath<ED>[],
+    cascadeRemoveDict?: CascadeRemoveDefDict<ED>,
     colorDict?: ColorDict<ED>
 ) {
     const checkers2 = (generalCheckers as Array<Checker<ED, keyof ED, FrontCxt | Cxt>>).concat(checkers || []);
@@ -45,22 +42,16 @@ export function initialize<
         }
     }
     const actionDict2 = Object.assign({}, generalActionDefDict, actionDict);
-    if (authDict) {
-        intersected = intersection(Object.keys(generalAuthDict), Object.keys(authDict));
-        if (intersected.length > 0 && process.env.NODE_ENV === 'development') {
-            console.warn(`用户定义的authDict中存在和general-business中的authDict同名：「${intersected.join(',')}」，将覆盖general-business中定义的authDict，请确保逻辑正确`);
-        }
-    }
-    const authDict2 = Object.assign({}, generalAuthDict, authDict);
-
+    
     const { features } = initProd<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>(
         storageSchema,
         frontendContextBuilder,
         connector,
         checkers2,
         actionDict2,
-        authDict2,
-        relationDict,
+        actionCascadePathGraph,
+        relationCascadePathGraph,
+        cascadeRemoveDict,
         colorDict
     );
     

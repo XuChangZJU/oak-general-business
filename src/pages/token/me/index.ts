@@ -46,13 +46,24 @@ export default OakComponent({
         },
         player: {
             id: 1,
-            userRole$user: {
-                $entity: 'userRole',
+            userRelation$user: {
+                $entity: 'userRelation',
                 data: {
                     id: 1,
                     userId: 1,
-                    roleId: 1,
+                    relationId: 1,
+                    relation: {
+                        id: 1,
+                        entity: 1,
+                        entityId: 1,
+                    },
                 },
+                filter: {
+                    relation: {
+                        entity: 'role',
+                        entityId: ROOT_ROLE_ID,
+                    }
+                }
             },
         },
     },
@@ -85,8 +96,8 @@ export default OakComponent({
         const isLoggedIn = !!token;
         const isPlayingAnother = token && token.userId !== token.playerId;
         const isRoot =
-            player?.userRole$user &&
-            player.userRole$user[0]?.roleId === ROOT_ROLE_ID;
+            player?.userRelation$user &&
+            player.userRelation$user.length > 0;
 
         const mobileText =
             mobileCount && mobileCount > 1
