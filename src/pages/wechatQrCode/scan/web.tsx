@@ -16,17 +16,17 @@ export default function render(
         'token',
         false,
         {
-            oakLoading: boolean;
-            isExist: boolean;
+            loading: boolean;
+            illegal: boolean;
             expired: boolean;
         },
         {}
     >
 ) {
-    const { oakLoading, isExist, expired } = props.data;
+    const { oakLoading, expired, illegal, loading } = props.data;
 
     let V;
-    if (oakLoading) {
+    if (oakLoading || loading) {
         V = (
             <Success
                 icon={<LoadingOutlined className={Style.brand_icon} />}
@@ -34,7 +34,7 @@ export default function render(
                 description="正在获取数据，请稍后"
             />
         );
-    } else if (!isExist) {
+    } else if (illegal) {
         V = (
             <Fail
                 title="二维码非法"
