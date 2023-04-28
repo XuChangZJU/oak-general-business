@@ -18,7 +18,7 @@
         <view class="circle-view">
             <l-icon name="warning" size="120" />
             <text class="text">二维码已过期</text>
-            <text class="desc">抱歉，该码已过期，请联系相关人员重新分享</text>
+            <text class="desc">抱歉，该码已过期</text>
         </view>
     </block>
     <block wx:else>

@@ -46,7 +46,7 @@ export default function render(
             <Fail
                 icon={<WarningOutlined className={Style.icon} />}
                 title="二维码已过期"
-                description="抱歉，该码已过期，请联系相关人员重新分享"
+                description="抱歉，该码已过期"
             />
         );
     } else {
