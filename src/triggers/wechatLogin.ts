@@ -68,14 +68,21 @@ const triggers: Trigger<EntityDict, 'wechatLogin', RuntimeCxt>[] = [
         },
         when: 'before',
         fn: async ({ operation }, context) => {
-            const { data } = operation;
-            data.wechatQrCode$entity = {
-                id: await generateNewIdAsync(),
-                action: 'update',
-                data: {
-                    expired: true,
+            const { data, filter } = operation;
+            await context.operate(
+                'wechatQrCode',
+                {
+                    id: await generateNewIdAsync(),
+                    action: 'update',
+                    data: {
+                        expired: true,
+                    },
+                    filter: {
+                        wechatLogin: filter,
+                    },
                 },
-            };
+                {}
+            );
             return 1;
         },
     } as UpdateTrigger<EntityDict, 'wechatLogin', RuntimeCxt>,

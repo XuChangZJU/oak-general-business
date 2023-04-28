@@ -163,7 +163,10 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                 }
             );
             if (result2.length) {
-                const e = new OakRowInconsistencyException<EntityDict>(undefined, '已领取该权限');
+                const e = new OakRowInconsistencyException<EntityDict>(
+                    undefined,
+                    '已领取该权限'
+                );
                 e.addData(userRelation, result2);
                 throw e;
             } else {
@@ -235,14 +238,22 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
         },
         when: 'before',
         fn: async ({ operation }, context) => {
-            const { data } = operation;
-            data.wechatQrCode$entity = {
-                id: await generateNewIdAsync(),
-                action: 'update',
-                data: {
-                    expired: true,
+            const { data, filter } = operation;
+            await context.operate(
+                'wechatQrCode',
+                {
+                    id: await generateNewIdAsync(),
+                    action: 'update',
+                    data: {
+                        expired: true,
+                    },
+                    filter: {
+                        userEntityGrant: filter,
+                    },
                 },
-            };
+                {}
+            );
+        
             return 1;
         },
     } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
