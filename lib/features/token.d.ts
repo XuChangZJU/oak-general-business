@@ -17,6 +17,7 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     loginWechatMp(): Promise<void>;
     syncUserInfoWechatMp(): Promise<void>;
     logout(): Promise<void>;
+    removeToken(): void;
     getTokenValue(): string | undefined;
     getToken(allowUnloggedIn?: boolean, context?: FrontCxt): Partial<ED["token"]["Schema"]> | undefined;
     getUserId(allowUnloggedIn?: boolean, context?: FrontCxt): NonNullable<ED["token"]["Schema"]["userId"]> | undefined;

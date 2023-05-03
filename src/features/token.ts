@@ -103,7 +103,11 @@ export class Token<
     }
 
     async logout() {
-        // await this.cache.exec('logout', {});
+        await this.cache.exec('logout', {});
+        this.removeToken();
+    }
+
+    removeToken() {
         this.tokenValue = undefined;
         this.storage.remove('token:token');
         this.publish();

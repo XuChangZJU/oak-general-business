@@ -8,14 +8,12 @@ import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 
-export default function render(
+export default function Render(
     props: WebComponentProps<
         EntityDict,
         'userEntityGrant',
         true,
         {
-            oakLoading: boolean;
-            oakExecuting: boolean;
             type: 'grant';
             expired: boolean;
             relation: boolean;
