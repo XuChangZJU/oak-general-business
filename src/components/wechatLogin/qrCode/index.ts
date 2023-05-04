@@ -55,6 +55,9 @@ export default OakComponent({
         },
         async getWechatLogin() {
             const { wechatLoginId } = this.state;
+            this.setState({
+                loading: true
+            });
             const {
                 data: [wechatLogin],
             } = await this.features.cache.refresh('wechatLogin', {
@@ -121,6 +124,7 @@ export default OakComponent({
             }
             this.setState({
                 qrCodeUrl,
+                loading: false,
             });
         },
     },
