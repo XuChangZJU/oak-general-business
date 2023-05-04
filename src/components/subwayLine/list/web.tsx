@@ -1,6 +1,5 @@
-import React, { useState }  from 'react';
 import { Checkbox, Button, Col, Tabs, Row, Space } from 'antd';
-import type { CheckboxValueType } from 'antd/es/checkbox/Group';
+import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -13,28 +12,24 @@ export default function render(
         'area',
         true,
         {
-            pagination: {
-                pageSize: number;
-                total: number;
-                currentPage: number;
-            };
             subways: EntityDict['subway']['Schema'][];
             areas: EntityDict['area']['Schema'][];
             stations: { label: string; value: string }[];
-            subwayId: string;
             areaId: string;
+            stationsList: string[];
         },
         {
             getStations: (subwayId: string) => void;
             getSubways: (areaId: string) => void;
+            setCheckedList: (station: string, flag: boolean) => void;
+            cancel: () => void;
         }
     >
 ) {
     const { data, methods } = props;
-    const { t, getStations, getSubways } =
+    const { t, getStations, getSubways, setCheckedList, cancel } =
         methods;
-    const { oakLoading, oakDirty, oakExecuting, subways, stations, subwayId, areaId, areas } = data;
-    const [stationsList, setCheckedList] = useState<CheckboxValueType[]>([]);
+    const { subways, stations, areaId, areas, stationsList } = data;
 
     return (
         <div className={Style.container}>
@@ -51,7 +46,6 @@ export default function render(
                     label: ele.name,
                     children: (
                         <Tabs
-                            // type="card"
                             style={{height: '40vh'}}
                             tabPosition={'top'}
                             onChange={(value) => {
@@ -61,24 +55,21 @@ export default function render(
                                 key: ele.id,
                                 label: ele.name,
                                 children: (
-                                    // <Checkbox.Group
-                                    //     options={stations}
-                                    // />
-                                    <Checkbox.Group
-                                        onChange={setCheckedList}
-                                        value={stationsList}
-                                    >
-                                        <Row gutter={[0, 8]}>
-                                            {stations?.map((ele: any) => {
-                                                return (
-                                                    <Col span={4}>
-                                                        <Checkbox value={ele.value}>{ele.label}</Checkbox>
-                                                    </Col>
-                                                )
-                                            })}
-                                        </Row>
-                                    </Checkbox.Group>
-                                    
+                                    <Space size={[0, 16]} wrap>
+                                        {stations?.map((ele: any) => {
+                                            return (
+                                                <Checkbox
+                                                    onChange={(e: CheckboxChangeEvent) => {
+                                                        setCheckedList(e.target.value, e.target.checked);
+                                                    }}
+                                                    checked={stationsList.includes(ele.value)}
+                                                    value={ele.value}
+                                                >
+                                                    {ele.label}
+                                                </Checkbox>
+                                            )
+                                        })}
+                                    </Space>
                                 ),
                             }))}
                         ></Tabs>
@@ -88,8 +79,9 @@ export default function render(
             <div style={{textAlign: 'center'}}>
                 <Space>
                     <Button
-                        // onClick={() => {
-                        // }}
+                        onClick={() => {
+                            cancel();
+                        }}
                     >
                         取消
                     </Button>

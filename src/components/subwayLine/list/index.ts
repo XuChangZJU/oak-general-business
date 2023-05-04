@@ -1,4 +1,3 @@
-
 export default OakComponent({
     isList: true,
 
@@ -46,6 +45,7 @@ export default OakComponent({
     },
     data: {
         open: false,
+        stationsList: [] as string[],
     },
     properties: {
         areaId: '' as string,
@@ -54,6 +54,18 @@ export default OakComponent({
         setAeraId(areaId: string) {
             this.setState({
                 areaId,
+            })
+        },
+        setCheckedList(value: string, flag: boolean) {
+            const { stationsList } = this.state;
+            if (flag) {
+                stationsList.push(value);
+            } else {
+                var index = stationsList.indexOf(value);
+                stationsList.splice(index, 1);
+            }
+            this.setState({
+                stationsList: [...stationsList],
             })
         },
         async getSubways(areaId: string) {
@@ -101,6 +113,11 @@ export default OakComponent({
             this.setState({
                 stations,
             });
+        },
+        cancel() {
+            this.setState({
+                stationsList: [],
+            })
         }
     },
 });
