@@ -315,16 +315,24 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
                 id: await generateNewIdAsync(),
                 userState: 'normal',
             };
-            await context.operate('user', {
-                id: await generateNewIdAsync(),
-                action: 'create',
-                data: userData,
-            }, {});
+            await context.operate(
+                'user',
+                {
+                    id: await generateNewIdAsync(),
+                    action: 'create',
+                    data: userData,
+                },
+                {}
+            );
+            assert(
+                entityId || createData.id,
+                'entityId和createData必须存在一项'
+            );
 
             tokenData.userId = userData.id;
             tokenData.playerId = userData.id;
             tokenData.entity = entity;
-            tokenData.entityId = createData.id;
+            tokenData.entityId = entityId || createData.id;
             await context.operate('token', {
                 id: await generateNewIdAsync(),
                 action: 'create',

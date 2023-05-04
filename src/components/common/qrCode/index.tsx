@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Space } from 'antd';
+import { Button, Space, Spin } from 'antd';
 import { DownloadOutlined, ReloadOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { QRCodeCanvas } from 'qrcode.react';
@@ -84,15 +84,23 @@ function QrCode(props: IQrCodeProps) {
                     width: size,
                     height: size,
                     marginBottom: 16,
-                    marginTop: 16
+                    marginTop: 16,
                 }}
             >
-                {isBase64(url) ? (
-                    <img src={url} alt="qrCode" width={size} height={size} />
-                ) : url ? (
-                    <QRCodeCanvas value={url} size={size} />
-                ) : null}
+                <Spin spinning={loading}>
+                    {isBase64(url) ? (
+                        <img
+                            src={url}
+                            alt="qrCode"
+                            width={size}
+                            height={size}
+                        />
+                    ) : url ? (
+                        <QRCodeCanvas value={url} size={size} />
+                    ) : null}
+                </Spin>
             </div>
+
             {V}
             {tips}
             {
