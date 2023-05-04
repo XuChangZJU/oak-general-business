@@ -1,6 +1,5 @@
 declare const _default: {
     user: import("../general-app-domain/User/Schema").CreateOperationData[];
-    role: import("../general-app-domain/Role/Schema").CreateOperationData[];
     mobile: import("../general-app-domain/Mobile/Schema").CreateOperationData[];
     token: import("../general-app-domain/Token/Schema").CreateOperationData[];
     area: ({

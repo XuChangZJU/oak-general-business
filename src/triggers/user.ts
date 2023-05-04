@@ -68,62 +68,25 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
             const { data } = operation;
             assert(!(data instanceof Array));
             if (NO_ANY_USER) {
-                const result = await Promise.all(
-                    [
-                        context.select('user', {
-                            data: {
-                                id: 1,
-                            },
-                            filter: {
-                                id: {
-                                    $in: {
-                                        entity: 'userRelation',
-                                        data: {
-                                            userId: 1,
-                                        },
-                                        filter: {
-                                            relation: {
-                                                entity: 'role',
-                                                name: 'owner',
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            indexFrom: 0,
-                            count: 1,
-                        }, {
-                            dontCollect: true,
-                        }),
-                        context.select('relation', {
-                            data: {
-                                id: 1,
-                            },
-                            filter: {
-                                name: 'owner',
-                                entity: 'role',                       
-                            }
-                        }, {
-                            dontCollect: true,
-                        })
-                    ]
-                );
-                if (result[0].length === 0) {
-                    assert(result[1].length > 0);
-                    const { id } = result[1][0];
-                    await context.operate('userRelation', {
-                        id: generateNewId(),
-                        action: 'create',
-                        data: {
-                            id: generateNewId(),
-                            userId: data.id,
-                            relationId: id!,
-                        },
-                    }, {
-                        blockTrigger: true,
-                        dontCollect: true,
+                const result = await context.select('user', {
+                    data: {
+                        id: 1,
+                    },
+                    filter: {
+                        isRoot: true,
+                        id: {
+                            $ne: ROOT_USER_ID,
+                        }
+                    },
+                    indexFrom: 0,
+                    count: 1,
+                }, {
+                    dontCollect: true,
+                });
+                if (result.length === 0) {
+                    Object.assign(data, {
+                        isRoot: true,
                     });
-                    return 1;
                 }
                 else {
                     NO_ANY_USER = false;

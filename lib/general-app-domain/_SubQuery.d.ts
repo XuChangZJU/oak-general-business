@@ -1,5 +1,6 @@
 import * as ActionAuth from "./ActionAuth/Schema";
 import * as DirectActionAuth from "./DirectActionAuth/Schema";
+import * as DirectRelationAuth from "./DirectRelationAuth/Schema";
 import * as FreeActionAuth from "./FreeActionAuth/Schema";
 import * as Modi from "./Modi/Schema";
 import * as ModiEntity from "./ModiEntity/Schema";
@@ -26,7 +27,6 @@ import * as MessageTypeTemplateId from "./MessageTypeTemplateId/Schema";
 import * as Mobile from "./Mobile/Schema";
 import * as Notification from "./Notification/Schema";
 import * as Platform from "./Platform/Schema";
-import * as Role from "./Role/Schema";
 import * as Station from "./Station/Schema";
 import * as Subscription from "./Subscription/Schema";
 import * as Subway from "./Subway/Schema";
@@ -46,6 +46,11 @@ export declare type ActionAuthIdSubQuery = {
 export declare type DirectActionAuthIdSubQuery = {
     [K in "$in" | "$nin"]?: (DirectActionAuth.DirectActionAuthIdSubQuery & {
         entity: "directActionAuth";
+    }) | any;
+};
+export declare type DirectRelationAuthIdSubQuery = {
+    [K in "$in" | "$nin"]?: (DirectRelationAuth.DirectRelationAuthIdSubQuery & {
+        entity: "directRelationAuth";
     }) | any;
 };
 export declare type FreeActionAuthIdSubQuery = {
@@ -80,6 +85,8 @@ export declare type OperEntityIdSubQuery = {
 export declare type RelationIdSubQuery = {
     [K in "$in" | "$nin"]?: (ActionAuth.RelationIdSubQuery & {
         entity: "actionAuth";
+    }) | (DirectRelationAuth.RelationIdSubQuery & {
+        entity: "directRelationAuth";
     }) | (RelationAuth.RelationIdSubQuery & {
         entity: "relationAuth";
     }) | (UserRelation.RelationIdSubQuery & {
@@ -254,17 +261,6 @@ export declare type PlatformIdSubQuery = {
         entity: "system";
     }) | (Platform.PlatformIdSubQuery & {
         entity: "platform";
-    }) | any;
-};
-export declare type RoleIdSubQuery = {
-    [K in "$in" | "$nin"]?: (UserEntityGrant.RoleIdSubQuery & {
-        entity: "userEntityGrant";
-    }) | (Relation.RoleIdSubQuery & {
-        entity: "relation";
-    }) | (UserRelation.RoleIdSubQuery & {
-        entity: "userRelation";
-    }) | (Role.RoleIdSubQuery & {
-        entity: "role";
     }) | any;
 };
 export declare type StationIdSubQuery = {

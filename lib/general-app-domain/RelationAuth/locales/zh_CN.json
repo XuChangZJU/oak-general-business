@@ -1,1 +1,1 @@
-{ "name": "用户授权", "attr": { "relation": "关系", "path": "路径", "destEntity": "目标对象", "deRelations": "目标对象关系" } }
+{ "name": "用户授权", "attr": { "sourceRelation": "源关系", "path": "路径", "destRelation": "目标关系" } }

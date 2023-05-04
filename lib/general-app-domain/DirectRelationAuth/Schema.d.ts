@@ -1,37 +1,30 @@
 import { String, ForeignKey } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
-import { ExcludeUpdateAction } from "oak-domain/lib/actions/action";
-import { Relation } from "../Role/Schema";
-import * as User from "../User/Schema";
-import * as Role from "../Role/Schema";
+import { GenericAction } from "oak-domain/lib/actions/action";
+import * as Relation from "../Relation/Schema";
 export declare type OpSchema = EntityShape & {
-    userId: ForeignKey<"user">;
-    roleId: ForeignKey<"role">;
-    relation: Relation;
+    path: String<256>;
+    destRelationId: ForeignKey<"relation">;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
-    userId: ForeignKey<"user">;
-    roleId: ForeignKey<"role">;
-    relation: Relation;
-    user: User.Schema;
-    role: Role.Schema;
+    path: String<256>;
+    destRelationId: ForeignKey<"relation">;
+    destRelation: Relation.Schema;
 } & {
     [A in ExpressionKey]?: any;
 };
 declare type AttrFilter = {
-    id: Q_StringValue | SubQuery.UserRoleIdSubQuery;
+    id: Q_StringValue | SubQuery.DirectRelationAuthIdSubQuery;
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    userId: Q_StringValue | SubQuery.UserIdSubQuery;
-    user: User.Filter;
-    roleId: Q_StringValue | SubQuery.RoleIdSubQuery;
-    role: Role.Filter;
-    relation: Q_EnumValue<Relation>;
+    path: Q_StringValue;
+    destRelationId: Q_StringValue | SubQuery.RelationIdSubQuery;
+    destRelation: Relation.Filter;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -41,20 +34,15 @@ export declare type Projection = {
     $$createAt$$?: number;
     $$updateAt$$?: number;
     $$seq$$?: number;
-    userId?: number;
-    user?: User.Projection;
-    roleId?: number;
-    role?: Role.Projection;
-    relation?: number;
+    path?: number;
+    destRelationId?: number;
+    destRelation?: Relation.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
-declare type UserRoleIdProjection = OneOf<{
+declare type DirectRelationAuthIdProjection = OneOf<{
     id: number;
 }>;
-declare type UserIdProjection = OneOf<{
-    userId: number;
-}>;
-declare type RoleIdProjection = OneOf<{
-    roleId: number;
+declare type RelationIdProjection = OneOf<{
+    destRelationId: number;
 }>;
 export declare type SortAttr = {
     id: number;
@@ -65,15 +53,11 @@ export declare type SortAttr = {
 } | {
     $$updateAt$$: number;
 } | {
-    userId: number;
+    path: number;
 } | {
-    user: User.SortAttr;
+    destRelationId: number;
 } | {
-    roleId: number;
-} | {
-    role: Role.SortAttr;
-} | {
-    relation: number;
+    destRelation: Relation.SortAttr;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
@@ -85,51 +69,45 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "userId" | "roleId">> & (({
-    userId?: never;
-    user?: User.CreateSingleOperation;
+export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "destRelationId">> & (({
+    destRelationId?: never;
+    destRelation: Relation.CreateSingleOperation;
 } | {
-    userId: String<64>;
-    user?: User.UpdateOperation;
+    destRelationId: String<64>;
+    destRelation?: Relation.UpdateOperation;
 } | {
-    userId?: String<64>;
-}) & {
-    roleId?: String<64>;
-});
+    destRelationId: String<64>;
+}));
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId" | "roleId">> & (({
-    user: User.CreateSingleOperation;
-    userId?: never;
+export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "destRelationId">> & (({
+    destRelation: Relation.CreateSingleOperation;
+    destRelationId?: never;
 } | {
-    user: User.UpdateOperation;
-    userId?: never;
+    destRelation: Relation.UpdateOperation;
+    destRelationId?: never;
 } | {
-    user: User.RemoveOperation;
-    userId?: never;
+    destRelation: Relation.RemoveOperation;
+    destRelationId?: never;
 } | {
-    user?: never;
-    userId?: String<64> | null;
-}) & {
-    role?: never;
-    roleId?: String<64> | null;
-}) & {
+    destRelation?: never;
+    destRelationId?: String<64> | null;
+})) & {
     [k: string]: any;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
-    user?: User.UpdateOperation | User.RemoveOperation;
+    destRelation?: Relation.UpdateOperation | Relation.RemoveOperation;
 }));
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation;
-export declare type UserIdSubQuery = Selection<UserIdProjection>;
-export declare type RoleIdSubQuery = Selection<RoleIdProjection>;
-export declare type UserRoleIdSubQuery = Selection<UserRoleIdProjection>;
+export declare type RelationIdSubQuery = Selection<RelationIdProjection>;
+export declare type DirectRelationAuthIdSubQuery = Selection<DirectRelationAuthIdProjection>;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: OakMakeAction<ExcludeUpdateAction> | string;
+    Action: OakMakeAction<GenericAction> | string;
     Selection: Selection;
     Aggregation: Aggregation;
     Operation: Operation;

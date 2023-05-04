@@ -1,4 +1,4 @@
-import { String, Text, Datetime } from 'oak-domain/lib/types/DataType';
+import { String, Text, Boolean, Datetime } from 'oak-domain/lib/types/DataType';
 import { Schema as ExtraFile } from './ExtraFile';
 import { Schema as WechatQrCode } from './WechatQrCode';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
@@ -14,4 +14,5 @@ export interface Schema extends EntityShape {
     ref?: Schema;
     files: Array<ExtraFile>;
     codes: Array<WechatQrCode>;
+    isRoot?: Boolean;
 }

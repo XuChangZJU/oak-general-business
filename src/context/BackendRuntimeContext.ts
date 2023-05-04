@@ -38,11 +38,9 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
                                     id,
                                     this,
                                 );
-                                Object.assign(
-                                    wechatQrCodeData, {
+                                Object.assign(wechatQrCodeData, {
                                     buffer,
-                                }
-                                )
+                                });
                             }
 
                         }
@@ -65,48 +63,13 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
                 player: {
                     id: 1,
                     userState: 1,
-                    userRelation$user: {
-                        $entity: 'userRelation',
-                        data: {
-                            id: 1,
-                            userId: 1,
-                            relationId: 1,
-                            relation: {
-                                id: 1,
-                                entity: 1,
-                                entityId: 1,
-                            },
-                        },
-                        filter: {
-                            relation: {
-                                entity: 'role',
-                            }
-                        }
-                    },
+                    isRoot: 1,
                 },
                 ableState: 1,
                 user: {
                     id: 1,
                     userState: 1,
-                    userRelation$user: {
-                        $entity: 'userRelation',
-                        data: {
-                            id: 1,
-                            userId: 1,
-                            relationId: 1,
-                            relation: {
-                                id: 1,
-                                entity: 1,
-                                entityId: 1,
-                            },
-                        },
-                        filter: {
-                            relation: {
-                                entity: 'role',
-                                name: 'owner',
-                            }
-                        }
-                    },
+                    isRoot: 1,
                 },
             },
             filter: {
@@ -129,10 +92,8 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
             return;
         }
         const { user, player } = token;
-        const { userRelation$user } = user!;
-        this.amIRoot = (userRelation$user as any).length > 0;
-        const { userRelation$user: userRelation$player } = player!;
-        this.amIReallyRoot = (userRelation$player as any).length > 0;
+        this.amIRoot = user?.isRoot!;
+        this.amIReallyRoot = player?.isRoot!;
         this.token = token;
     }
 

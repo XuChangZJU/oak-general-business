@@ -149,11 +149,7 @@ export class Token<
 
     isRoot(context?: FrontCxt): boolean {
         const token = this.getToken(true, context);
-        const userRelation$user = token?.user?.userRelation$user;
-        return !!(
-            userRelation$user &&
-            userRelation$user?.length > 0
-        );
+        return !!token?.user?.isRoot;
     }
 
     /**
@@ -162,11 +158,7 @@ export class Token<
      */
     isReallyRoot(context?: FrontCxt): boolean {
         const token = this.getToken(true, context);
-        const userRelation$user = token?.player?.userRelation$user;
-        return !!(
-            userRelation$user &&
-            userRelation$user?.length > 0
-        );
+        return !!token?.player?.isRoot;
     }
 
     async sendCaptcha(mobile: string) {

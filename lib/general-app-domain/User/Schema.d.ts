@@ -1,5 +1,5 @@
-import { String, Text, Datetime, ForeignKey } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { String, Boolean, Text, Datetime, ForeignKey } from "oak-domain/lib/types/DataType";
+import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
@@ -29,6 +29,7 @@ export declare type OpSchema = EntityShape & {
     idCardType?: ('ID-Card' | 'passport' | 'Mainland-passport') | null;
     idNumber?: String<32> | null;
     refId?: ForeignKey<"user"> | null;
+    isRoot?: Boolean | null;
     idState?: IdState | null;
     userState?: UserState | null;
 };
@@ -43,6 +44,7 @@ export declare type Schema = EntityShape & {
     idCardType?: ('ID-Card' | 'passport' | 'Mainland-passport') | null;
     idNumber?: String<32> | null;
     refId?: ForeignKey<"user"> | null;
+    isRoot?: Boolean | null;
     idState?: IdState | null;
     userState?: UserState | null;
     ref?: Schema | null;
@@ -98,6 +100,7 @@ declare type AttrFilter = {
     idNumber: Q_StringValue;
     refId: Q_StringValue | SubQuery.UserIdSubQuery;
     ref: Filter;
+    isRoot: Q_BooleanValue;
     idState: Q_EnumValue<IdState>;
     userState: Q_EnumValue<UserState>;
 };
@@ -119,6 +122,7 @@ export declare type Projection = {
     idNumber?: number;
     refId?: number;
     ref?: Projection;
+    isRoot?: number;
     idState?: number;
     userState?: number;
     oper$operator?: Oper.Selection & {
@@ -256,6 +260,8 @@ export declare type SortAttr = {
     refId: number;
 } | {
     ref: SortAttr;
+} | {
+    isRoot: number;
 } | {
     idState: number;
 } | {

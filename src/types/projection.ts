@@ -12,6 +12,7 @@ export const userProjection: EntityDict['user']['Selection']['data'] = {
     idState: 1,
     gender: 1,
     birth: 1,
+    isRoot: 1,
     extraFile$entity: {
         $entity: 'extraFile',
         data: {
@@ -41,25 +42,6 @@ export const userProjection: EntityDict['user']['Selection']['data'] = {
             userId: 1,
         },
     },
-    userRelation$user: {
-        $entity: 'userRelation',
-        data: {
-            id: 1,
-            userId: 1,
-            relationId: 1,
-            relation: {
-                id: 1,
-                entity: 1,
-                entityId: 1,
-            },
-        },
-        filter: {
-            relation: {
-                entity: 'role',
-                entityId: ROOT_ROLE_ID,
-            }
-        }
-    },
 };
 export const tokenProjection: EntityDict['token']['Selection']['data'] = {
     id: 1,
@@ -69,25 +51,7 @@ export const tokenProjection: EntityDict['token']['Selection']['data'] = {
     playerId: 1,
     player: {
         id: 1,
-        userRelation$user: {
-            $entity: 'userRelation',
-            data: {
-                id: 1,
-                userId: 1,
-                relationId: 1,
-                relation: {
-                    id: 1,
-                    entity: 1,
-                    entityId: 1,
-                },
-            },
-            filter: {
-                relation: {
-                    entity: 'role',
-                    entityId: ROOT_ROLE_ID,
-                }
-            }
-        },
+        isRoot: 1,        
     },
     entity: 1,
     entityId: 1,

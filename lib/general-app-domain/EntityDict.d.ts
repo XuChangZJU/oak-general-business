@@ -1,5 +1,6 @@
 import { EntityDef as ActionAuth } from "./ActionAuth/Schema";
 import { EntityDef as DirectActionAuth } from "./DirectActionAuth/Schema";
+import { EntityDef as DirectRelationAuth } from "./DirectRelationAuth/Schema";
 import { EntityDef as FreeActionAuth } from "./FreeActionAuth/Schema";
 import { EntityDef as Modi } from "./Modi/Schema";
 import { EntityDef as ModiEntity } from "./ModiEntity/Schema";
@@ -26,7 +27,6 @@ import { EntityDef as MessageTypeTemplateId } from "./MessageTypeTemplateId/Sche
 import { EntityDef as Mobile } from "./Mobile/Schema";
 import { EntityDef as Notification } from "./Notification/Schema";
 import { EntityDef as Platform } from "./Platform/Schema";
-import { EntityDef as Role } from "./Role/Schema";
 import { EntityDef as Station } from "./Station/Schema";
 import { EntityDef as Subscription } from "./Subscription/Schema";
 import { EntityDef as Subway } from "./Subway/Schema";
@@ -41,6 +41,7 @@ import { EntityDef as WechatUser } from "./WechatUser/Schema";
 export declare type EntityDict = {
     actionAuth: ActionAuth;
     directActionAuth: DirectActionAuth;
+    directRelationAuth: DirectRelationAuth;
     freeActionAuth: FreeActionAuth;
     modi: Modi;
     modiEntity: ModiEntity;
@@ -67,7 +68,6 @@ export declare type EntityDict = {
     mobile: Mobile;
     notification: Notification;
     platform: Platform;
-    role: Role;
     station: Station;
     subscription: Subscription;
     subway: Subway;

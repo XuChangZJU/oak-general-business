@@ -1,4 +1,4 @@
-import { String, Int, Text, Image, Datetime } from 'oak-domain/lib/types/DataType';
+import { String, Int, Text, Boolean, Datetime } from 'oak-domain/lib/types/DataType';
 import { ActionDef } from 'oak-domain/lib/types/Action';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Index } from 'oak-domain/lib/types/Storage';
@@ -18,6 +18,7 @@ export interface Schema extends EntityShape {
     ref?: Schema;
     files: Array<ExtraFile>;
     codes: Array<WechatQrCode>;
+    isRoot?: Boolean;
 };
 
 type IdAction = 'verify' | 'accept' | 'reject';
@@ -105,6 +106,7 @@ const locale: LocaleDef<Schema, Action, '', {
             userState: '用户状态',
             idState: '身份验证状态',
             codes: '微信分享二维码',
+            isRoot: '是否超级用户',
         },
         action: {
             activate: '激活',
