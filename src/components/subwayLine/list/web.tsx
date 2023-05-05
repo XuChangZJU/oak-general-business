@@ -16,25 +16,25 @@ export default function render(
             areas: EntityDict['area']['Schema'][];
             stations: { label: string; value: string }[];
             areaId: string;
-            stationsList: string[];
+            stationIds: string[];
         },
         {
             getStations: (subwayId: string) => void;
             getSubways: (areaId: string) => void;
             setCheckedList: (station: string, flag: boolean) => void;
             cancel: () => void;
+            confirm: () => void;
         }
     >
 ) {
     const { data, methods } = props;
-    const { t, getStations, getSubways, setCheckedList, cancel } =
+    const { t, getStations, getSubways, setCheckedList, cancel, confirm } =
         methods;
-    const { subways, stations, areaId, areas, stationsList } = data;
+    const { subways, stations, areaId, areas, stationIds } = data;
 
     return (
         <div className={Style.container}>
             <Tabs
-                style={{height: '40vh'}}
                 tabPosition={'left'}
                 type="card"
                 defaultActiveKey={areaId}
@@ -46,7 +46,6 @@ export default function render(
                     label: ele.name,
                     children: (
                         <Tabs
-                            style={{height: '40vh'}}
                             tabPosition={'top'}
                             onChange={(value) => {
                                 getStations(value);
@@ -59,15 +58,22 @@ export default function render(
                                         {stations?.map((ele: any) => {
                                             return (
                                                 <Checkbox
-                                                    onChange={(e: CheckboxChangeEvent) => {
-                                                        setCheckedList(e.target.value, e.target.checked);
+                                                    onChange={(
+                                                        e: CheckboxChangeEvent
+                                                    ) => {
+                                                        setCheckedList(
+                                                            e.target.value,
+                                                            e.target.checked
+                                                        );
                                                     }}
-                                                    checked={stationsList.includes(ele.value)}
+                                                    checked={stationIds.includes(
+                                                        ele.value
+                                                    )}
                                                     value={ele.value}
                                                 >
                                                     {ele.label}
                                                 </Checkbox>
-                                            )
+                                            );
                                         })}
                                     </Space>
                                 ),
@@ -76,7 +82,7 @@ export default function render(
                     ),
                 }))}
             ></Tabs>
-            <div style={{textAlign: 'center'}}>
+            <div style={{ textAlign: 'center' }}>
                 <Space>
                     <Button
                         onClick={() => {
@@ -87,9 +93,9 @@ export default function render(
                     </Button>
                     <Button
                         type="primary"
-                        // onClick={async () => {
-                        //     confirm();
-                        // }}
+                        onClick={async () => {
+                            confirm();
+                        }}
                     >
                         确定
                     </Button>
