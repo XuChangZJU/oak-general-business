@@ -17,6 +17,7 @@ export default function render(
             stations: { label: string; value: string }[];
             areaId: string;
             stationIds: string[];
+            selectIds: string[];
         },
         {
             getStations: (subwayId: string) => void;
@@ -30,11 +31,12 @@ export default function render(
     const { data, methods } = props;
     const { t, getStations, getSubways, setCheckedList, cancel, confirm } =
         methods;
-    const { subways, stations, areaId, areas, stationIds } = data;
+    const { subways, stations, areaId, areas, stationIds, selectIds } = data;
 
     return (
         <div className={Style.container}>
             <Tabs
+                style={{ minHeight: '40vh' }}
                 tabPosition={'left'}
                 type="card"
                 defaultActiveKey={areaId}
@@ -58,6 +60,9 @@ export default function render(
                                         {stations?.map((ele: any) => {
                                             return (
                                                 <Checkbox
+                                                    disabled={selectIds?.includes(
+                                                        ele.value
+                                                    )}
                                                     onChange={(
                                                         e: CheckboxChangeEvent
                                                     ) => {
@@ -66,9 +71,9 @@ export default function render(
                                                             e.target.checked
                                                         );
                                                     }}
-                                                    checked={stationIds.includes(
-                                                        ele.value
-                                                    )}
+                                                    checked={stationIds
+                                                        .concat(selectIds || [])
+                                                        .includes(ele.value)}
                                                     value={ele.value}
                                                 >
                                                     {ele.label}
@@ -82,7 +87,7 @@ export default function render(
                     ),
                 }))}
             ></Tabs>
-            <div style={{ textAlign: 'center' }}>
+            <div style={{ textAlign: 'center', marginTop: 16 }}>
                 <Space>
                     <Button
                         onClick={() => {

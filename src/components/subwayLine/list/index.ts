@@ -50,6 +50,7 @@ export default OakComponent({
         areaId: '' as string | undefined | null,
         onCancel: undefined as (() => void) | undefined,
         onConfirm: undefined as ((stationIds: string[]) => void) | undefined,
+        selectIds: [] as string[] | undefined,
     },
     methods: {
         setAeraId(areaId: string) {
