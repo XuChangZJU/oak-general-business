@@ -16,6 +16,7 @@ import { EntityDict } from '../../../general-app-domain';
 import PageHeader from '../../../components/common/pageHeader';
 import OakAvatar from '../../../components/extraFile/avatar';
 import MobileLogin from '../../../pages/mobile/login';
+// import WechatLoginQrCode from '../../../components/wechatLogin/qrCode';
 
 import Style from './web.module.less';
 
@@ -59,9 +60,10 @@ export default function Render(
         oakDirty,
     } = data;
     const [open, setOpen] = useState(false);
+    const [open2, setOpen2] = useState(false);
 
     return (
-        <PageHeader title="修改个人信息" showBack={showBack}>
+        <PageHeader title="个人设置" showBack={showBack}>
             <div className={Style.container}>
                 <Form
                     labelCol={{ xs: { span: 4 }, md: { span: 6 } }}
@@ -191,6 +193,21 @@ export default function Render(
                             </Space>
                         </>
                     </Form.Item>
+                    {/* <Form.Item label="帐号管理">
+                        <>
+                            <Space>
+                                <Typography>{mobile || '未设置'}</Typography>
+                                <Button
+                                    size="small"
+                                    onClick={() => {
+                                        setOpen2(true);
+                                    }}
+                                >
+                                    绑定
+                                </Button>
+                            </Space>
+                        </>
+                    </Form.Item> */}
                     <Form.Item
                         wrapperCol={{
                             xs: { offset: 4 },
@@ -228,6 +245,22 @@ export default function Render(
                     oakAutoUnmount={true}
                 />
             </Modal>
+{/* 
+            <Modal
+                title="绑定微信"
+                open={open2}
+                destroyOnClose={true}
+                footer={null}
+                maskClosable={false}
+                onCancel={() => {
+                    setOpen2(false);
+                }}
+            >
+                <WechatLoginQrCode
+                    oakPath="$user/info-wechatLogin/qrCode"
+                    oakAutoUnmount={true}
+                />
+            </Modal> */}
         </PageHeader>
     );
 }
