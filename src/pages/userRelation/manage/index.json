@@ -1,6 +1,0 @@
-{
-    "navigationBarTitleText": "修改权限",
-    "usingComponents": {
-        "t-cell": "@oak-frontend-base/miniprogram_npm/tdesign/cell/cell"
-    }
-}

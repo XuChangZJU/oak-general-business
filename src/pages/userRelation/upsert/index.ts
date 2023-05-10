@@ -4,17 +4,49 @@ import { EntityDict } from '../../../general-app-domain';
 import { QrCodeType } from '../../../types/Config';
 
 export default OakComponent({
-    isList: false,
+    isList: true,
+    entity: 'relation',
+    projection: {
+        id: 1,
+        entity: 1,
+        entityId: 1,
+        name: 1,
+        display: 1,
+    },
     data: {
         grantByUserEntityGrant: false,
         grantByEmail: false,
         grantByMobile: false,
         grantMethodCount: 0,
     },
+    filters: [
+        {
+            filter() {
+                const { entity, entityId } = this.props;
+                return {
+                    entity: entity as string,
+                    $or: [
+                        {
+                            entityId,
+                        },
+                        {
+                            entityId: {
+                                $exists: false,
+                            },
+                        }
+                    ]
+                };
+            }
+        }
+    ],
+    formData({ data }) {
+        return {
+            relations: data,
+        };
+    },
     properties: {
         entity: '' as keyof EntityDict,
         entityId: '',
-        relations: [] as string[],
         redirectToAfterConfirm:
             {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
         qrCodeType: '' as QrCodeType,

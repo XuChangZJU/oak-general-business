@@ -13,7 +13,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     mobileValue: string;
     mobileValueReady: boolean;
     oakId: string;
-    relations: string[];
+    relations: EntityDict['relation']['OpSchema'][];
     entity: keyof EntityDict;
     entityId: string;
     isNew: boolean;
@@ -101,7 +101,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                 >
                     <UserRelation
                         oakAutoUnmount={true}
-                        oakPath={oakFullpath ? `${oakFullpath}.user${firstLetterUpperCase(entity)}$user`
+                        oakPath={oakFullpath ? `${oakFullpath}.userRelation$user`
                             : undefined
                         }
                         entity={entity}

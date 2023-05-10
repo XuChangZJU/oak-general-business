@@ -6,30 +6,29 @@ import { CheckboxValueType } from 'antd/es/checkbox/Group';
 
 export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
     entity: string;
-    userRelations: Array<{
-        relation: string;
-    }>;
-    relations: string[];
+    relations2: {
+        relation: EntityDict['relation']['OpSchema'];
+        isChecked: boolean;
+    }[];
 }, {
-    onRelationChange: (relation: string, checked: boolean) => void;
-    isChecked: (relation: string) => boolean;
+    onRelationChange: (relation: EntityDict['relation']['OpSchema'], checked: boolean) => void;
 }>) {
-    const { entity, relations } = props.data;
-    const { t, onRelationChange, isChecked } = props.methods;
+    const { entity, relations2 } = props.data;
+    const { t, onRelationChange } = props.methods;
     return (
         <>
             {
-                relations?.map(
-                    (relation) => (
+                relations2?.map(
+                    ({ relation, isChecked }) => (
                         <Checkbox
-                            checked={isChecked(relation)}
+                            checked={isChecked}
                             value={relation}
                             onChange={({ target }) => {
                                 const { checked } = target;
                                 onRelationChange(relation, checked);
                             }}
                         >
-                            {(t(`${entity}:r.${relation}`)) || relation}
+                            {relation.name ? t(`${entity}:r.${relation.name}`) : relation.display}
                         </Checkbox>
                     )
                 )

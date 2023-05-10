@@ -18,6 +18,7 @@ import generalData from './data';
 import { initialize as initGeneralFeatures } from './features';
 import { AppType } from './general-app-domain/Application/Schema';
 import { rewriteSelection, rewriteOperation } from './utils/selectionRewriter';
+import { InitializeOptions } from 'oak-frontend-base';
 
 export function initialize<
     ED extends EntityDict & BaseEntityDict,
@@ -31,21 +32,15 @@ export function initialize<
     frontendContextBuilder: () => (store: CacheStore<ED, FrontCxt>) => FrontCxt,
     backendContextBuilder: (contextStr?: string) => (store: AsyncRowStore<ED, Cxt>) =>  Promise<Cxt>,
     aspectDict: AD,
-    triggers?: Array<Trigger<ED, keyof ED, Cxt>>,
-    checkers?: Array<Checker<ED, keyof ED, FrontCxt | Cxt>>,
-    watchers?: Array<Watcher<ED, keyof ED, Cxt>>,
-    timers?: Array<Timer<ED, Cxt>>,
-    startRoutines?: Array<Routine<ED, Cxt>>,
-    initialData?: {
+    triggers: Array<Trigger<ED, keyof ED, Cxt>>,
+    checkers: Array<Checker<ED, keyof ED, FrontCxt | Cxt>>,
+    watchers: Array<Watcher<ED, keyof ED, Cxt>>,
+    timers: Array<Timer<ED, Cxt>>,
+    startRoutines: Array<Routine<ED, Cxt>>,
+    initialData: {
         [T in keyof ED]?: Array<ED[T]['OpSchema']>;
     },
-    actionDict?: ActionDictOfEntityDict<ED>,
-    actionCascadePathGraph?: AuthCascadePath<ED>[],
-    relationCascadePathGraph?: AuthCascadePath<ED>[],
-    cascadeRemoveDict?: CascadeRemoveDefDict<ED>,
-    colorDict?: ColorDict<ED>,
-    importations?: Importation<ED, keyof ED, any>[],
-    exportations?: Exportation<ED, keyof ED, any>[]
+    option: InitializeOptions<ED>
 ) {
     
     let intersected = intersection(Object.keys(generalAspectDict), Object.keys(aspectDict));
@@ -76,13 +71,13 @@ export function initialize<
         }
     }
 
-    if (actionDict) {
-        intersected = intersection(Object.keys(generalActionDefDict), Object.keys(actionDict));
+    if (option.actionDict) {
+        intersected = intersection(Object.keys(generalActionDefDict), Object.keys(option.actionDict));
         if (intersected.length > 0 && process.env.NODE_ENV === 'development') {
             console.warn(`用户定义的actionDict中存在和general-business中的actionDict同名：「${intersected.join(',')}」，将覆盖general-business中定义的actionDict，请确保逻辑正确`);
         }
     }
-    const actionDict2 = Object.assign({}, generalActionDefDict, actionDict);
+    option.actionDict = Object.assign({}, generalActionDefDict, option.actionDict);
 
     const { features } = initDev<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>(
         storageSchema,
@@ -95,13 +90,7 @@ export function initialize<
         timers,
         startRoutines2,
         data2,
-        actionDict2,
-        actionCascadePathGraph,
-        relationCascadePathGraph,
-        cascadeRemoveDict,
-        colorDict,
-        importations,
-        exportations,
+        option
     );
 
     const generalFeatures = initGeneralFeatures<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>(features, type, domain);

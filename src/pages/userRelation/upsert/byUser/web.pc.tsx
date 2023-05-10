@@ -8,22 +8,22 @@ import { EntityDict } from '../../../../general-app-domain';
 
 
 export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
-    relations: string[];
+    relations: EntityDict['relation']['OpSchema'][];
     entity: keyof EntityDict;
     entityId: string;
     oakId: string;
-    legal: boolean;
 }, {
     onConfirm: () => Promise<void>;
+    onReset: () => void;
 }>) {
-    const { relations, entity, entityId, oakFullpath, oakId, legal } = props.data;
-    const { onConfirm, clean } = props.methods;
+    const { relations, entity, entityId, oakId, oakDirty, oakFullpath } = props.data;
+    const { onConfirm, onReset } = props.methods;
     return (
         <PageHeader showBack={true} title="编辑权限">
             <div className={Style.container}>
                 <OnUser
                     oakAutoUnmount={true}
-                    oakPath={oakFullpath ? `${oakFullpath}.user` : undefined}
+                    oakPath={oakFullpath && `${oakFullpath}.user`}
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
@@ -33,7 +33,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                     <Form.Item wrapperCol={{ offset: 4 }}>
                         <Space>
                             <Button
-                                disabled={!legal}
+                                disabled={!oakDirty}
                                 type="primary"
                                 onClick={() => onConfirm()}
                             >
@@ -41,7 +41,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                             </Button>
                             <Button
                                 htmlType="reset"
-                                onClick={() => clean()}
+                                onClick={() => onReset()}
                             >
                                 重置
                             </Button>

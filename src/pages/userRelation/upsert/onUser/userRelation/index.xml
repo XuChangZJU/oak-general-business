@@ -6,6 +6,6 @@
         key="{{item.relation}}"
         checked="{{item.isChecked}}"
     >
-        {{t(entity + ':r.' +  item.relation)}}
+        {{item.relation.name ? t(entity + ':r.' +  item.relation.name) : item.relation.display}}
     </l-checkbox>
 </l-checkbox-group>

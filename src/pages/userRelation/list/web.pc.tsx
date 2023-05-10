@@ -22,7 +22,7 @@ export default function Render(
         'user',
         true,
         {
-            users: any[];
+            users: EntityDict['user']['Schema'][];
             searchValue?: string;
             pagination: {
                 pageSize: number;
@@ -114,10 +114,10 @@ export default function Render(
                             render: (value, record, index) => {
                                 return (
                                     <Space>
-                                        {record.relations?.map(
-                                            (ele: string, index: number) => (
+                                        {record.userRelation$user?.map(
+                                            (ele, index) => (
                                                 <Tag key={index}>
-                                                    {t(entity + ':r.' + ele)}
+                                                    {ele.relation.name ? t(entity + ':r.' + ele.relation.name) : ele.relation.display}
                                                 </Tag>
                                             )
                                         )}
@@ -132,11 +132,11 @@ export default function Render(
                                 return (
                                     <Space>
                                         <a onClick={(e) => goUpdate(record.id)}>
-                                            {record.relations?.length > 0
+                                            {!!record.userRelation$user?.length
                                                 ? t('common:action.update')
                                                 : t('common:action.grant')}
                                         </a>
-                                        {record.relations?.length > 0 && (
+                                        {!!record.userRelation$user?.length && (
                                             <a
                                                 style={{
                                                     color: 'var(--oak-color-error)',

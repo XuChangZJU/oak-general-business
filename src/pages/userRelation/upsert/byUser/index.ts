@@ -2,21 +2,49 @@ import { EntityDict } from '../../../../general-app-domain';
 
 export default OakComponent({
     isList: false,
-    formData() {
-        let legal = this.tryExecute();
-        return {
-            legal: !!legal,
-        };
-    },
     properties: {
         entity: '' as keyof EntityDict,
         entityId: '',
-        relations: [] as string[],
+    },
+    data: {
+        relations: [] as EntityDict['relation']['OpSchema'][],
+    },
+    lifetimes: {
+        async ready() {
+            const { entity, entityId } = this.props;
+            const { data: relations } = await this.features.cache.refresh('relation', {
+                data: {
+                    id: 1,
+                    entity: 1,
+                    entityId: 1,
+                    name: 1,
+                    display: 1,
+                },
+                filter: {
+                    entity: entity as string,
+                    $or: [
+                        {
+                            entityId,
+                        },
+                        {
+                            entityId: {
+                                $exists: false,
+                            },
+                        }
+                    ],
+                },
+            });
+            this.setState({
+                relations: relations as EntityDict['relation']['OpSchema'][],
+            });
+        }
     },
     methods: {
-        async onConfirm() {
-            await this.execute();
-            this.navigateBack();
+        onConfirm() {
+            this.execute();
         },
-    },
+        onReset() {
+            this.clean();
+        }
+    }
 });

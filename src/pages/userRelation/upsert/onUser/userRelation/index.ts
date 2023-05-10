@@ -3,60 +3,59 @@ import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
 import { EntityDict } from "../../../../../general-app-domain";
 
 export default OakComponent({
-    entity() {
-        const { entity } = this.props;
-        return `user${firstLetterUpperCase(entity!)}` as keyof EntityDict;
-    },
-    projection() {
-        const { entity } = this.props;
-        return {
-            id: 1,
-            userId: 1,
-            relation: 1,
-            [`${entity}Id`]: 1,
-        };
+    entity: 'userRelation',
+    projection: {
+        id: 1,
+        userId: 1,
+        relationId: 1,
     },
     properties: {
         entity: '' as keyof EntityDict,
         entityId: '',
-        relations: [] as string[],
+        relations: [] as EntityDict['relation']['OpSchema'][],
     },
     isList: true,
     filters: [{
         filter() {
             const { entity, entityId } = this.props;
             return {
-                [`${entity}Id`]: entityId,
+                entity: entity as string,
+                entityId,
             };
         }
     }],
     formData({ data: userRelations }) {
         const { relations } = this.props;
         const relations2: Array<{
-            isChecked: boolean; relation: string;
-        }> = relations!.map(
-            (relation: string) => {
+            isChecked: boolean; relation: EntityDict['relation']['OpSchema'];
+        }> = relations ? relations.map(
+            (relation) => {
                 const isChecked = !!(userRelations?.find(
-                    (ele: any) => ele.relation === relation && !ele.$$deleteAt$$
+                    (ele: any) => ele.relationId === relation.id && !ele.$$deleteAt$$
                 ));
                 return {
                     isChecked,
                     relation,
                 };
             }
-        );
+        ) : [];
         return {
             relations2,
             userRelations,
         };
     },
+    listeners: {
+        relations() {
+            this.reRender();
+        },
+    },
     methods: {
-        onRelationChange(relation: string, checked: boolean) {
+        onRelationChange(relation: EntityDict['relation']['OpSchema'], checked: boolean) {
             const { entity, entityId } = this.props;
             const { userRelations } = this.state;
             if (checked) {
                 const userRelation = userRelations?.find(
-                    (ele: { relation: string, id: string, $$deleteAt$$: number }) => ele.relation === relation
+                    (ele: EntityDict['userRelation']['OpSchema']) => ele.relationId === relation.id
                 );
                 if (userRelation) {
                     assert(userRelation.$$deleteAt$$);
@@ -64,14 +63,15 @@ export default OakComponent({
                 }
                 else {
                     this.addItem({
-                        relation,
-                        [`${entity}Id`]: entityId,
+                        relationId: relation.id,
+                        entity,
+                        entityId,
                     });
                 }
             }
             else {
                 const userRelation = userRelations!.find(
-                    (ele: { relation: string, id: string }) => ele.relation === relation
+                    (ele: EntityDict['userRelation']['OpSchema']) => ele.relationId === relation.id,
                 );
                 assert(userRelation);
                 this.removeItem(userRelation.id);
@@ -80,13 +80,6 @@ export default OakComponent({
         onRelationChangeMp(e: WechatMiniprogram.TouchEvent) {
             const { key: relation, checked } = e.detail;
             this.onRelationChange(relation, checked);
-        },
-        isChecked(relation: string) {
-            const { userRelations } = this.state;
-            const userRelation = userRelations?.find(
-                (ele: { relation: string, $$deleteAt$$: number }) => ele.relation === relation && !ele.$$deleteAt$$
-            );
-            return !!userRelation;
         }
     }
 })

@@ -7,7 +7,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     mobileValue: string;
     mobileValueReady: boolean;
     oakId: string;
-    relations: string[];
+    relations: EntityDict['relation']['OpSchema'][];
     entity: keyof EntityDict;
     entityId: string;
     isNew: boolean;

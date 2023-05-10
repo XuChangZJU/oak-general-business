@@ -6,6 +6,16 @@ const freeActionAuths: EntityDict['freeActionAuth']['CreateSingle']['data'][] = 
         destEntity: 'application',
         deActions: ['select'],
     },
+    {
+        id: 'userEntityGrant',
+        destEntity: 'userEntityGrant',
+        deActions: ['confirm', 'select'],
+    },
+    {
+        id: 'user',
+        destEntity: 'user',
+        deActions: ['select'],
+    }
 ];
 
 export default freeActionAuths;

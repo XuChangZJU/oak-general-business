@@ -1,7 +1,7 @@
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 import { QrCodeType } from '../../../types/Config';
-export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
+export default function Render(props: WebComponentProps<EntityDict, 'relation', true, {
     grantByUserEntityGrant: boolean;
     grantByEmail: boolean;
     grantByMobile: boolean;
@@ -9,6 +9,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     redirectToAfterConfirm: EntityDict['userEntityGrant']['Schema']['redirectTo'];
     entity: keyof EntityDict;
     entityId: string;
-    relations: string[];
+    relations: EntityDict['relation']['OpSchema'][];
     qrCodeType?: QrCodeType;
 }, {}>): JSX.Element;

@@ -5,12 +5,14 @@ import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../../../general-app-domain';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import assert from 'assert';
 
 export default OakComponent({
     entity: 'user',
     projection() {
+        const userId = this.features.token.getUserId();
+        assert(userId);
         const { entity, entityId } = this.props;
-        const entityStr = firstLetterUpperCase(entity!);
         return {
             id: 1,
             name: 1,
@@ -23,16 +25,22 @@ export default OakComponent({
                     mobile: 1,
                 },
             },
-            [`user${entityStr}$user`]: {
-                $entity: `user${entityStr}`,
+            userRelation$user: {
+                $entity: 'userRelation',
                 data: {
                     id: 1,
-                    userId: 1,
-                    [`${entity}Id`]: 1,
-                    relation: 1,
+                    entity: 1,
+                    entityId: 1,
+                    relationId: 1,
+                    relation: {
+                        id: 1,
+                        name: 1,
+                        display: 1,
+                    }
                 },
                 filter: {
-                    [`${entity}Id`]: entityId,
+                    entity: entity as string,
+                    entityId,
                 },
             },
             extraFile$entity: {
@@ -62,18 +70,14 @@ export default OakComponent({
         {
             filter() {
                 const { entityId, entity } = this.props;
-                const { relationss } = this.state;
-                const relationEntity = `user${firstLetterUpperCase(entity!)}`;
                 const filter = {
-                    [`${entity}Id`]: entityId,
-                    relation: {
-                        $in: relationss,
-                    },
+                    entity,
+                    entityId,
                 };
                 return {
                     id: {
                         $in: {
-                            entity: relationEntity,
+                            entity: 'userRelation',
                             data: {
                                 userId: 1,
                             },
@@ -87,23 +91,18 @@ export default OakComponent({
     isList: true,
     formData({ data: users, props, features }) {
         const { entity, entityId } = props;
-        const entityStr = firstLetterUpperCase(entity!);
         const filter = this.getFilterByName('fulltext');
         const pagination = this.getPagination();
         return {
             users: users?.map((ele: any) => {
                 const { mobile$user, extraFile$entity } = ele;
                 const mobile = mobile$user && mobile$user[0]?.mobile;
-                const relations = ele[`user${entityStr}$user`]
-                    ?.filter((rt: any) => rt[`${entity}Id`] === entityId)
-                    .map((rt2: any) => rt2.relation);
                 const avatar = features.extraFile.getUrl(
                     extraFile$entity && extraFile$entity[0]
                 );
                 const user2 = Object.assign({}, ele, {
                     mobile,
                     avatar,
-                    relations,
                 });
                 return user2;
             }),
@@ -114,7 +113,6 @@ export default OakComponent({
     properties: {
         entity: '' as keyof EntityDict,
         entityId: '',
-        relations: [] as string[],
         redirectToAfterConfirm: {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
         qrCodeType: '' as string,
     },
@@ -132,7 +130,6 @@ export default OakComponent({
             },
         ],
         idRemoveMp: '',
-        relationss: [] as string[],
     },
     listeners: {
         'entity,entityId'(prev, next) {
@@ -142,50 +139,16 @@ export default OakComponent({
                 }
             }
         },
-        relations(prev, next) {
-            if (this.state.oakFullpath && (prev.relations.length !== next.relations.length || difference(prev.relations, next.relations).length > 0)) {
-                this.calcRelations();
-                this.refresh();
-            }
-        }
     },
     lifetimes: {
         attached() {
-            this.calcRelations();
+            // this.calcRelations();
         },
         ready() {
-            //console.log('ready', this.props.relations);
+            // console.log('ready', this.props.relations);
         },
     },
     methods: {
-        calcRelations() {
-            const { relations, entity, entityId } = this.props;
-            if (relations && relations.length > 0) {
-                // 这里小程序肯定会传入空数组，很恶心
-                this.setState({
-                    relationss: relations,
-                });
-            }
-            else {
-                if (this.features.token.isRoot()) {
-                    const schema = this.features.cache.getSchema();
-                    const legalRelations = schema![entity as keyof EntityDict].relation!;
-                    this.setState({
-                        relationss: legalRelations,
-                    });
-                }
-                else {
-                    const userId = this.features.token.getUserId();
-                    throw new Error('待实现');
-                    /* const legalRelations = this.features.relation.getLegalRelations(entity as keyof EntityDict, userId!, entityId!);
-
-                    this.setState({
-                        relationss: legalRelations as string[] | undefined,
-                    }); */
-                }
-
-            }
-        },
         goUpsert() {
             const {
                 entity,
@@ -193,23 +156,20 @@ export default OakComponent({
                 redirectToAfterConfirm,
                 qrCodeType,
             } = this.props;
-            const { relationss } = this.state;
             this.navigateTo(
                 {
                     url: '/userRelation/upsert',
                     entity,
                     entityId,
-                    redirectToAfterConfirm,
-                    qrCodeType,
                 },
                 {
-                    relations: relationss,
+                    redirectToAfterConfirm,
+                    qrCodeType,
                 }
             );
         },
         goUpdate(id: string) {
             const { entity, entityId } = this.props;
-            const { relationss } = this.state;
             this.navigateTo(
                 {
                     url: '/userRelation/upsert/byUser',
@@ -217,9 +177,6 @@ export default OakComponent({
                     entityId,
                     oakId: id,
                 },
-                {
-                    relations: relationss,
-                }
             );
         },
         async confirmDelete(idRemove: string) {
@@ -227,11 +184,11 @@ export default OakComponent({
             const entityStr = firstLetterUpperCase(entity!);
             const { users } = this.state;
             const user = users.find((ele: any) => ele.id === idRemove);
-            const relations = user[`user${entityStr}$user`];
+            const relations = user.userRelation$user;
             try {
                 this.updateItem(
                     {
-                        [`user${entityStr}$user`]: [
+                        userRelation$user: [
                             {
                                 id: generateNewId(),
                                 action: 'remove',
@@ -288,7 +245,6 @@ export default OakComponent({
                 redirectToAfterConfirm,
                 qrCodeType,
             } = this.props;
-            const { relationss } = this.state;
             const {
                 item: { mode },
             } = e.detail;
@@ -297,14 +253,12 @@ export default OakComponent({
                     url: '/userRelation/upsert/byMobile',
                     entity,
                     entityId,
-                    relations: relationss,
                 });
             } else {
                 this.navigateTo({
                     url: '/userRelation/upsert/byUserEntityGrant',
                     entity,
                     entityId,
-                    relations: relationss,
                     redirectToAfterConfirm,
                     qrCodeType,
                 });
@@ -325,14 +279,12 @@ export default OakComponent({
 
         onItemTapMp(e: WechatMiniprogram.TouchEvent) {
             const { entity, entityId } = this.props;
-            const { relationss } = this.state;
             const { id } = e.currentTarget.dataset;
             this.navigateTo({
                 url: '/userRelation/upsert/onUser',
                 oakId: id,
                 entity,
                 entityId,
-                relations: relationss,
             });
         },
 

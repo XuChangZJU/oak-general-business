@@ -45,27 +45,8 @@ export default OakComponent({
     properties: {
         entity: '' as keyof EntityDict,
         entityId: '',
-        relations: [] as string[],
+        relations: [] as EntityDict['relation']['OpSchema'][],
         mobile: '',
         isComponent: false,
-    },
-    data: {
-        userRelationRelativePath: '',
-    },
-    lifetimes: {
-        async ready() {
-            const { entity } = this.props;
-            this.setState({
-                userRelationRelativePath: `user${firstLetterUpperCase(
-                    entity!
-                )}$user`,
-            });
-        },
-    },
-    methods: {
-        async onConfirm() {
-            await this.execute();
-            this.navigateBack();
-        },
     },
 });

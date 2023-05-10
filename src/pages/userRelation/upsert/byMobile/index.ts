@@ -19,7 +19,7 @@ export default OakComponent({
     properties: {
         entity: '' as keyof EntityDict,
         entityId: '',
-        relations: [] as string[],
+        relations: [] as EntityDict['relation']['OpSchema'][],
     },
     data: {
         mobileValue: '',
