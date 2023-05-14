@@ -839,11 +839,21 @@ async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRunt
  * @param param0 
  * @param context 
  */
-export async function loginWechat<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ code, env }: {
-    code: string;
-    env: WebEnv;
-}, context: Cxt): Promise<string> {
-
+export async function loginWechat<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(
+    {
+        code,
+        env,
+        wechatLoginId,
+    }: {
+        code: string;
+        env: WebEnv;
+        wechatLoginId?: string;
+    },
+    context: Cxt
+): Promise<string> {
     const tokenId = await loginFromWechatEnv<ED, Cxt>(code, env, context);
     const [tokenInfo] = await loadTokenInfo<ED, Cxt>(tokenId, context);
     assert(tokenInfo.entity === 'wechatUser');

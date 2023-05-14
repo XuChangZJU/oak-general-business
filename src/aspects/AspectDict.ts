@@ -34,9 +34,11 @@ type GeneralAspectDict<
         {
             code,
             env,
+            wechatLoginId,
         }: {
             code: string;
             env: WebEnv;
+            wechatLoginId?: string;
         },
         context: Cxt
     ) => Promise<string>;
