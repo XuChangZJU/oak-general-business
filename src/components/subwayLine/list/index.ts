@@ -135,16 +135,12 @@ export default OakComponent({
             }
         },
         confirm() {
-            const d = [...this.state.stationIds];
+            if (this.props.onConfirm) {
+                this.props.onConfirm(this.state.stationIds);
+            }
             this.setState({
                 stationIds: [],
-            }, () => {
-                if (this.props.onConfirm) {
-                    this.props.onConfirm(d);
-                }
             });
-
-
         },
     },
 });
