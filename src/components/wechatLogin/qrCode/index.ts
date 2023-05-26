@@ -7,42 +7,40 @@ export default OakComponent({
     isList: false,
     lifetimes: {
         async attached() {
+            const { type } = this.props;
             this.createWechatLogin();
             (this as any).createTimer = setInterval(() => {
                 this.createWechatLogin();
             }, Interval);
+            (this as any).intervalId = setInterval(() => {
+                this.getWechatLogin2();
+            }, 1000)
         },
         async detached() {
             if ((this as any).createTimer) {
                 clearInterval((this as any).createTimer);
             }
+            if ((this as any).intervalId) {
+                clearInterval((this as any).intervalId);
+            }
         },
     },
     data: {
+        intervalId: '',
         loading: false,
+        successed: false,
     },
     properties: {
         type: 'bind' as EntityDict['wechatLogin']['Schema']['type'],
+        backUrl: '',
+        isGoBack: false,
     },
     methods: {
         async createWechatLogin() {
-            const userId = this.features.token.getUserId();
-            const wechatLoginId = await generateNewIdAsync();
-
-            const { type = 'bind' } = this.props; 
-
-            await this.features.cache.operate('wechatLogin', {
-                id: await generateNewIdAsync(),
-                action: 'create',
-                data: {
-                    id: wechatLoginId,
-                    userId,
-                    type,
-                    expiresAt: Date.now() + Interval,
-                    expired: false,
-                    qrCodeType: 'wechatPublic',
-                    successed: false,
-                } as EntityDict['wechatLogin']['CreateSingle']['data'],
+            const { type = 'bind' } = this.props;
+            const {result: wechatLoginId} = await this.features.cache.exec('createWechatLogin', {
+                type,
+                interval: Interval,
             });
             this.setState(
                 {
@@ -127,5 +125,46 @@ export default OakComponent({
                 loading: false,
             });
         },
+        // 每秒调取下面方法，监听用户是否已在微信端授权登录或绑定
+        async getWechatLogin2() {
+            const { wechatLoginId } = this.state;
+            const {
+                data: [wechatLogin],
+            } = await this.features.cache.refresh('wechatLogin', {
+                data: {
+                    id: 1,
+                    userId: 1,
+                    type: 1,
+                    qrCodeType: 1,
+                    remark: 1,
+                    expired: 1,
+                    expiresAt: 1,
+                    successed: 1,
+                },
+                filter: {
+                    id: wechatLoginId,
+                },
+            });
+            const { successed, type } = wechatLogin;
+            this.setState({
+                successed,
+                type,
+            }, async () => {
+                // 未登录的情况下才走这里
+                if (successed && type === 'login') {
+                    await this.features.token.loginByWechatInWebEnv(wechatLoginId);
+                    const { backUrl, isGoBack } = this.props;
+                    if (isGoBack) {
+                        this.navigateBack();
+                        return;
+                    }
+                    else if (backUrl) {
+                        this.redirectTo({
+                            url: backUrl,
+                        });
+                    }
+                }
+            })
+        }
     },
 });

@@ -3,5 +3,13 @@
     "mobile": "手机号",
     "manage": "管理",
     "bind": "绑定",
-    "syncWeChat": "同步微信信息"
+    "syncWeChat": "同步微信信息",
+    "send": "发送验证码",
+    "cancel": "取消",
+    "unbind": "解绑",
+    "Mobile-Number-Verification": "手机号验证",
+    "unbindingWechat": "确定解绑微信账号",
+    "placeholder": {
+        "Captcha": "输入4位短信验证码"
+    }
 }

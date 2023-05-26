@@ -1,8 +1,10 @@
-import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCaptcha, switchTo, refreshWechatPublicUserInfo, getWechatMpUserPhoneNumber, logout } from './token';
+import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCaptcha, switchTo, refreshWechatPublicUserInfo, getWechatMpUserPhoneNumber, logout, loginByWechat } from './token';
 import { getUploadInfo } from './extraFile';
 import { getApplication, signatureJsSDK } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { mergeUser } from './user';
+import { createWechatLogin } from './wechaLogin';
+import { unbindingWechat } from './wechatUser';
 declare const aspectDict: {
     mergeUser: typeof mergeUser;
     switchTo: typeof switchTo;
@@ -19,5 +21,8 @@ declare const aspectDict: {
     getWechatMpUserPhoneNumber: typeof getWechatMpUserPhoneNumber;
     logout: typeof logout;
     signatureJsSDK: typeof signatureJsSDK;
+    createWechatLogin: typeof createWechatLogin;
+    unbindingWechat: typeof unbindingWechat;
+    loginByWechat: typeof loginByWechat;
 };
 export default aspectDict;

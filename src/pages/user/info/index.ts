@@ -7,6 +7,8 @@ import {
 } from '../../../general-app-domain/Application/Schema';
 import dayjs from 'dayjs';
 type Attr = 'nickname' | 'gender' | 'birth';
+const SEND_KEY = 'captcha:sendAt';
+const SEND_CAPTCHA_LATENCY = process.env.NODE_ENV === 'development' ? 10 : 60;
 
 export default OakComponent({
     entity: 'user',
@@ -60,6 +62,7 @@ export default OakComponent({
                 unionId: 1,
                 userId: 1,
                 origin: 1,
+                nickname: 1,
                 user: {
                     id: 1,
                     userState: 1,
@@ -79,7 +82,6 @@ export default OakComponent({
         const genderOption =
             user?.gender &&
             this.state.genderOptions.find((ele) => ele.value === user?.gender);
-
         const appType = application?.type as AppType;
         const config = application?.config;
         let appId;
@@ -89,6 +91,25 @@ export default OakComponent({
             const isService = config2?.isService; //是否服务号 服务号才能授权登录
             appId = config2?.appId;
             isSupportSyncWeChat = !!(isService && appId);
+        }
+
+        const lastSendAt = features.localStorage.load(SEND_KEY);
+        const now = Date.now();
+        let counter = 0;
+        if (typeof lastSendAt === 'number') {
+            counter = Math.max(
+                SEND_CAPTCHA_LATENCY - Math.ceil((now - lastSendAt) / 1000),
+                0
+            );
+            if (counter > 0) {
+                (this as any).counterHandler = setTimeout(
+                    () => this.reRender(),
+                    1000
+                );
+            } else if ((this as any).counterHandler) {
+                clearTimeout((this as any).counterHandler);
+                (this as any).counterHandler = undefined;
+            }
         }
 
         return {
@@ -107,6 +128,8 @@ export default OakComponent({
             idState: user?.idState,
 
             isSupportSyncWeChat,
+            wechatUser: user?.wechatUser$user?.[0],
+            counter,
         };
     },
     data: {
@@ -284,5 +307,44 @@ export default OakComponent({
             // }
             await this.execute('update');
         },
+        async sendCaptcha() {
+            const { mobile } = this.state;
+            try {
+                const result = await this.features.token.sendCaptcha(mobile);
+                // 显示返回消息
+                this.setMessage({
+                    type: 'success',
+                    content: result,
+                });
+                this.save(SEND_KEY, Date.now());
+                this.reRender();
+            } catch (err) {
+                this.setMessage({
+                    type: 'error',
+                    content: (err as Error).message,
+                });
+            }
+        },
+        async unbunding(captcha?: string) {
+            const { mobile, wechatUser } = this.state;
+            try {
+                await this.features.cache.exec('unbindingWechat', {
+                    wechatUserId: wechatUser.id,
+                    mobile,
+                    captcha,
+                })
+                this.refresh();
+                this.setMessage({
+                    content: '解绑成功',
+                    type: 'success',
+                })
+            }
+            catch (err) {
+                this.setMessage({
+                    content: '解绑失败',
+                    type: 'warning'
+                })
+            }
+        }
     },
 });

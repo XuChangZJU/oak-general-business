@@ -32,7 +32,7 @@ export default function render(
     const { t, getStations, getSubways, setCheckedList, cancel, confirm } =
         methods;
     const { subways, stations, areaId, areas, stationIds, selectIds } = data;
-
+  
     return (
         <div className={Style.container}>
             <Tabs

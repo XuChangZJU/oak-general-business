@@ -4,4 +4,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'wechatLogin
     wechatLoginId: string;
     qrCodeUrl: string;
     loading: boolean;
+    successed: boolean;
+    type: EntityDict['wechatLogin']['Schema']['type'];
 }, {}>): JSX.Element;

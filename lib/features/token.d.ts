@@ -13,8 +13,9 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage);
     loadTokenInfo(): Promise<void>;
     loginByMobile(mobile: string, password?: string, captcha?: string): Promise<void>;
+    loginByWechatInWebEnv(wechatLoginId: string): Promise<void>;
     loginWechat(code: string, params?: {
-        wechatLoginId: string;
+        wechatLoginId?: string;
     }): Promise<void>;
     loginWechatMp(): Promise<void>;
     syncUserInfoWechatMp(): Promise<void>;

@@ -16,11 +16,17 @@ import { EntityDict } from '../../../general-app-domain';
 import PageHeader from '../../../components/common/pageHeader';
 import OakAvatar from '../../../components/extraFile/avatar';
 import MobileLogin from '../../../pages/mobile/login';
-// import WechatLoginQrCode from '../../../components/wechatLogin/qrCode';
+import WechatLoginQrCode from '../../../components/wechatLogin/qrCode';
+import WechatUserList from '../../../components/wechatUser/bindingList';
+import {
+    isMobile,
+    isPassword,
+    isCaptcha,
+} from 'oak-domain/lib/utils/validator';
 
 import Style from './web.module.less';
 
-
+const { confirm } = Modal;
 export default function Render(
     props: WebComponentProps<
         EntityDict,
@@ -37,15 +43,19 @@ export default function Render(
             attr: string;
             showBack: boolean;
             genderOptions: Array<{ label: string; value: string }>;
+            wechatUser: EntityDict['wechatUser']['Schema'];
+            counter: number;
         },
         {
             updateMyInfo: () => void;
             goAddMobile: () => void;
+            sendCaptcha: () => void;
+            unbunding: (captcha?: string) => void;
         }
     >
 ) {
     const { data, methods } = props;
-    const { t, updateMyInfo, goAddMobile } = methods;
+    const { t, updateMyInfo, goAddMobile, sendCaptcha, unbunding  } = methods;
     const {
         nickname,
         name,
@@ -58,9 +68,13 @@ export default function Render(
         genderOptions,
         oakFullpath,
         oakDirty,
+        wechatUser,
+        counter,
     } = data;
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
+    const [open3, setOpen3] = useState(false);
+    const [captcha, setCaptcha] = useState('');
 
     return (
         <PageHeader title="个人设置" showBack={showBack}>
@@ -193,10 +207,16 @@ export default function Render(
                             </Space>
                         </>
                     </Form.Item>
-                    {/* <Form.Item label="帐号管理">
+                    <Form.Item label="微信帐号">
                         <>
-                            <Space>
-                                <Typography>{mobile || '未设置'}</Typography>
+                            {wechatUser ? (
+                                <Space>
+                                    <Typography>{wechatUser.nickname}</Typography>
+                                    <WechatUserList
+                                        oakPath={oakFullpath ? `${oakFullpath}.wechatUser$user` : undefined}
+                                    />
+                                </Space>
+                            ) : (
                                 <Button
                                     size="small"
                                     onClick={() => {
@@ -205,9 +225,9 @@ export default function Render(
                                 >
                                     绑定
                                 </Button>
-                            </Space>
+                            )}
                         </>
-                    </Form.Item> */}
+                    </Form.Item>
                     <Form.Item
                         wrapperCol={{
                             xs: { offset: 4 },
@@ -245,7 +265,7 @@ export default function Render(
                     oakAutoUnmount={true}
                 />
             </Modal>
-{/* 
+
             <Modal
                 title="绑定微信"
                 open={open2}
@@ -260,7 +280,62 @@ export default function Render(
                     oakPath="$user/info-wechatLogin/qrCode"
                     oakAutoUnmount={true}
                 />
-            </Modal> */}
+            </Modal>
+            <Modal
+                title={t('Mobile-Number-Verification')}
+                open={open3}
+                destroyOnClose={true}
+                footer={[
+                    <Button key="cancel" onClick={() => setOpen3(false)}>
+                        {t('cancel')}
+                    </Button>,
+                    <Button
+                        key="send"
+                        type="primary"
+                        disabled={!isCaptcha(captcha)}
+                        onClick={() => {
+                            unbunding(captcha);
+                            setOpen3(false);
+                        }}
+                    >
+                        {t('unbind')}
+                    </Button>
+                ]}
+                maskClosable={false}
+                onCancel={() => {
+                    setOpen3(false);
+                }}
+            >
+                <Space direction="vertical" style={{width: '100%'}}>
+                    <Typography>
+                        请输入{mobile && mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}收到的验证码
+                    </Typography>
+                    <Form.Item name="captcha">
+                        <Input
+                            allowClear
+                            value={captcha}
+                            data-attr="captcha"
+                            // type="number"
+                            maxLength={4}
+                            placeholder={t('placeholder.Captcha')}
+                            size="large"
+                            onChange={(e) => {
+                                setCaptcha(e.target.value);
+                            }}
+                            className={Style['loginbox-input']}
+                            suffix={
+                                <Button
+                                    type="link"
+                                    disabled={counter > 0}
+                                    onClick={() => sendCaptcha()}
+                                >
+                                    {counter > 0 ? `${counter}秒后可重发` : t('send')}
+                                </Button>
+                            }
+                        />
+                    </Form.Item>
+                </Space>
+            </Modal>
         </PageHeader>
     );
 }

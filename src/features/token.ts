@@ -56,7 +56,18 @@ export class Token<
         this.publish();
     }
 
-    async loginWechat(code: string, params?: { wechatLoginId: string }) {
+    async loginByWechatInWebEnv(wechatLoginId: string) {
+        const env = await getEnv();
+        const { result } = await this.cache.exec('loginByWechat', {
+            env,
+            wechatLoginId,
+        });
+        this.tokenValue = result;
+        this.storage.save('token:token', result);
+        this.publish();
+    }
+
+    async loginWechat(code: string, params?: { wechatLoginId?: string }) {
         const env = await getEnv();
         const { result } = await this.cache.exec('loginWechat', {
             code,

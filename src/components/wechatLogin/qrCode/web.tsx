@@ -14,11 +14,13 @@ export default function Render(
             wechatLoginId: string;
             qrCodeUrl: string;
             loading: boolean;
+            successed: boolean;
+            type: EntityDict['wechatLogin']['Schema']['type']
         },
         {}
     >
 ) {
-    const { oakFullpath, qrCodeUrl, loading } = props.data;
+    const { oakFullpath, qrCodeUrl, loading, successed, type } = props.data;
 
     return (
         <div>
@@ -27,6 +29,8 @@ export default function Render(
                 url={qrCodeUrl}
                 disableDownload={true}
                 tips={<div>微信扫一扫</div>}
+                successed={successed}
+                type={type}
             />
         </div>
     );

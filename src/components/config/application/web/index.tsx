@@ -10,6 +10,7 @@ import {
     Space,
     Select,
     Switch,
+    message,
 } from 'antd';
 import Styles from './web.module.less';
 import {
@@ -28,6 +29,7 @@ export default function Web(props: {
     cleanKey: (path: string, key: string) => void;
 }) {
     const { config, setValue } = props;
+    const [messageApi] = message.useMessage();
     return (
         <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
             <Row>
@@ -86,9 +88,10 @@ export default function Web(props: {
                         </>
                     </Form.Item>
                     <Form.Item
-                        label="是否开启"
+                        label="微信网站应用授权登录"
                         name="enable"
-                        tooltip="网页微信扫码登录是否开启，如果不开启，登录页不会出现微信扫码入口"
+                        tooltip="开启后，登录页显示微信扫码入口，微信扫码后使用微信网站应用授权登录"
+                        help="开启当前登录方式时，将同时关闭微信公众号扫码登录"
                     >
                         <>
                             <Switch
@@ -122,7 +125,12 @@ export default function Web(props: {
                                 style={{ width: '100%' }}
                                 placeholder="请选择授权方式"
                                 value={config?.passport as Passport[]}
-                                onChange={(value: string[]) => {
+                                onChange={(value: Passport[]) => {
+                                    if (value.includes('wechat') && value.includes('wechatPublic')) {
+                                        // messageApi.warning('微信网站和微信公众号中，只能选择一个');
+                                        message.warning('微信网站和微信公众号中，只能选择一个')
+                                        return;
+                                    }
                                     setValue(`passport`, value);
                                 }}
                                 options={
@@ -136,8 +144,12 @@ export default function Web(props: {
                                             value: 'mobile',
                                         },
                                         {
-                                            label: '微信二维码',
+                                            label: '微信网站',
                                             value: 'wechat',
+                                        },
+                                        {
+                                            label: '微信公众号',
+                                            value: 'wechatPublic',
                                         },
                                     ] as Array<{
                                         label: string;

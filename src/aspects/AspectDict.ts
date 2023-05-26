@@ -122,7 +122,29 @@ type GeneralAspectDict<
     getMpUnlimitWxaCode: (
         wechatQrCodeId: string,
         context: Cxt
-    ) => Promise<string>;
+        ) => Promise<string>;
+    createWechatLogin: (
+        params: {
+            type: EntityDict['wechatLogin']['Schema']['type'];
+            interval: number;
+        },
+        context: Cxt
+        ) => Promise<string>;
+        unbindingWechat: (
+            params: {
+                wechatUserId: string;
+                captcha?: string;
+                mobile?: string;
+            },
+            context: Cxt
+        ) => Promise<void>;
+        loginByWechat: (
+            params: {
+                wechatLoginId: string;
+                env: WebEnv;
+            },
+            context: Cxt
+        ) => Promise<string>;
 };
 
 export type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;

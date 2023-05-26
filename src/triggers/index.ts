@@ -5,8 +5,10 @@ import wechatQrCodeTriggers from './wechatQrCode';
 import messageTriggers from './message';
 import notificationTriggers from './notification';
 import wechatLoginTriggers from './wechatLogin';
+import applicationTriggers from './application';
 
 export default [
+    ...applicationTriggers,
     ...addressTriggers,
     ...userTriggers,
     ...userEntityGrantTriggers,

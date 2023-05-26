@@ -11,6 +11,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'wechatLogin
     successed: number;
     userId: string;
     loginUserId: string;
+    appId: string;
 }, {
-    handleConfirm: () => void;
+    getCodeAndRedirect: () => void;
 }>): JSX.Element;

@@ -1,4 +1,5 @@
-import { Url } from "url";
+import URL from 'url';
+
 export default OakComponent({
     isList: false,
     data: {
@@ -21,22 +22,13 @@ export default OakComponent({
             const { features } = this;
             const token = features.token.getToken(true);
             // 解析url
-            let url = decodeURIComponent(window.location.href);
-            if (this.strCharPosition(url, '?') > 1) {
-                const startStr = url.substring(0, url.lastIndexOf('?'));
-                let endStr = url.substring(url.lastIndexOf('?'));
-                if (process.env.NODE_ENV === 'production') {
-                    endStr = endStr.replace(/&/g, '%26');
-                }
-                url = startStr + endStr;
-            }
-            const urlObj = new URL(url);
-            //console.warn('urlObj: '+ JSON.stringify(urlObj))
+            const url = window.location.href;
+            const urlObj = URL.parse(url, true);
             //格式 xx?code=xx&state=/xx/xx?d=xx
-            const code = urlObj.searchParams.get('code');
-            const state = urlObj.searchParams.get('state') as string;
-            const wechatLoginId = urlObj.searchParams.get('wechatLoginId') as string;
-
+            const query = urlObj?.query;
+            const code = query?.code;
+            const state = query?.state;
+            const wechatLoginId = query?.wechatLoginId;
             if (!code) {
                 this.setState({
                     error: '缺少code参数',
@@ -51,16 +43,18 @@ export default OakComponent({
                 this.setState({
                     loading: false,
                 });
-                this.go(state);
+                this.go(state as string);
             } else {
                 console.log('token不存在或失效');
                 try {
                     // web微信扫码跟公众号授权
-                    await features.token.loginWechat(code as string, { wechatLoginId });
+                    await features.token.loginWechat(code as string, {
+                        wechatLoginId: wechatLoginId as string,
+                    });
                     this.setState({
                         loading: false,
                     });
-                    this.go(state);
+                    this.go(state as string);
                 } catch (err) {
                     console.warn(err);
                     this.setState({
@@ -72,33 +66,34 @@ export default OakComponent({
             }
         },
         go(state?: string | string[]) {
-            //解析state里面的数据
-            //console.log('state', state)
             if (!state) {
                 this.redirectTo({
                     url: '/',
                 });
                 return;
             }
-            const { URL } = require('url');
-            const stateObj = new URL(decodeURIComponent(state as string));
-            // console.log('stateObj' + JSON.stringify(stateObj));
+            //需要对backUrl进行处理
+            let url = state;
+            if (url.indexOf('backUrl') > 0) {
+                url =
+                    '?backUrl=' +
+                    encodeURIComponent((url as string).replace('?backUrl=', ''));
+            }
+            //解析state里面的数据
+            const stateObj = URL.parse(url as string, true);
+            const stateQuery = stateObj?.query;
             const pathname = stateObj?.pathname;
-            const backUrl = stateObj.searchParams.get('backUrl');
-            const isGoBack = stateObj.searchParams.get('isGoBack');
 
-            const urlSearchParams = new URLSearchParams(stateObj.search);
-            const stateQuery = Object.fromEntries(urlSearchParams.entries());
-            if (backUrl) {
+            if (stateQuery?.backUrl) {
                 // todo 现在不存在跨域名登录 不需要使用window.location.replace
                 // window.location.replace(stateQuery?.backUrl as string);
                 this.redirectTo({
-                    url: backUrl as string,
+                    url: stateQuery?.backUrl as string,
                 });
                 return;
             }
             // 如果stateQuery存在isGoBack为true 返回上一页
-            if (isGoBack) {
+            if (stateQuery?.isGoBack) {
                 this.navigateBack(2);
                 return;
             }

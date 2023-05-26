@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Space, Spin } from 'antd';
+import { Button, Space, Spin, Result } from 'antd';
 import { DownloadOutlined, ReloadOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { QRCodeCanvas } from 'qrcode.react';
 
 import './index.less';
+import { EntityDict } from '../../../general-app-domain';
+import { useTranslation } from 'react-i18next';
 
 type IQrCodeProps = {
     filename?: string;
@@ -16,6 +18,8 @@ type IQrCodeProps = {
     url: string;
     loading?: boolean;
     disableDownload?: boolean;
+    successed?: boolean;
+    type?: EntityDict['wechatLogin']['Schema']['type'];
 };
 
 
@@ -34,9 +38,11 @@ function QrCode(props: IQrCodeProps) {
         url,
         loading = false,
         disableDownload = false,
+        successed,
+        type,
     } = props;
     const prefixCls = 'oak';
-
+    const { t } = useTranslation();
     let V;
     if (expiresAt) {
         const diff = dayjs(expiresAt).diff(dayjs(), 'days');
@@ -75,6 +81,16 @@ function QrCode(props: IQrCodeProps) {
         }
     }
 
+    if (successed) {
+        return (
+            <div className={`${prefixCls}-qrCodeBox`}>
+                <Result
+                    status="success"
+                    title={type === 'bind' ? t('weChat-account-successfully-bound') : t('weChat-authorization-login-successful')}
+                />
+            </div>
+        )
+    }
 
     return (
         <div id="oakQrCode" className={`${prefixCls}-qrCodeBox`}>

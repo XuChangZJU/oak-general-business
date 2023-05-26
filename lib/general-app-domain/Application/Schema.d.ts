@@ -12,7 +12,7 @@ import * as Token from "../Token/Schema";
 import * as WechatPublicTag from "../WechatPublicTag/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
 import * as WechatUser from "../WechatUser/Schema";
-export declare type Passport = 'email' | 'mobile' | 'wechat';
+export declare type Passport = 'email' | 'mobile' | 'wechat' | 'wechatPublic';
 export declare type AppType = 'web' | 'wechatMp' | 'wechatPublic';
 export declare type WechatMpConfig = {
     type: 'wechatMp';
@@ -27,6 +27,7 @@ export declare type WechatMpConfig = {
         mode: 'clear' | 'compatible' | 'safe';
         dataFormat: 'json' | 'xml';
     };
+    passport: Passport[];
 };
 export declare type WebConfig = {
     type: 'web';
@@ -45,6 +46,7 @@ export declare type WechatPublicConfig = {
     appId: string;
     appSecret: string;
     originalId?: string;
+    enable?: boolean;
     templateMsgs?: WechatPublicTemplateMsgsConfig;
     server?: {
         url?: string;
@@ -56,6 +58,7 @@ export declare type WechatPublicConfig = {
         appId: string;
         originalId: string;
     };
+    passport: Passport[];
 };
 export declare type OpSchema = EntityShape & {
     name: String<32>;

@@ -1,3 +1,5 @@
+import { pull } from "oak-domain/lib/utils/lodash";
+
 export default OakComponent({
     isList: true,
 
@@ -61,14 +63,17 @@ export default OakComponent({
         setCheckedList(value: string, flag: boolean) {
             const { stationIds } = this.state;
             if (flag) {
-                stationIds.push(value);
+                this.setState({
+                    stationIds: stationIds.concat(value),
+                });
+                // stationIds.push(value);
             } else {
                 var index = stationIds.indexOf(value);
-                stationIds.splice(index, 1);
+                // stationIds.splice(index, 1);
+                this.setState({
+                    stationIds: pull(stationIds, value),
+                });
             }
-            this.setState({
-                stationIds: [...stationIds],
-            });
         },
         async getSubways(areaId: string) {
             this.setState({
