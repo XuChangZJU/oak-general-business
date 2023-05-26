@@ -155,12 +155,10 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
     assert(schema.hasOwnProperty(entity), `${entity}必须是有效的对象名 `);
     assert(schema.token.attributes.entity.ref!.includes(entity), `${entity}必须是token的有效关联对象`);
     assert(schema[entity as keyof ED].attributes.hasOwnProperty('userId') && (schema[entity as keyof ED].attributes as any).userId!.ref === 'user', `${entity}必须有指向user的userId属性`);
-    console.log('-------------currentToken-------------',currentToken);
     if (currentToken) {
         assert(currentToken.id);
         assert(currentToken.userId);
         if (user) {
-            console.log('-------ifcurrentTokenifuser----------------')
             // 有用户，和当前用户进行合并
             const { userState } = user;
             switch (userState) {
@@ -203,7 +201,6 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
             }
         }
         else {
-            console.log('-------ifcurrentToken-else----------------')
             // 没用户，指向当前用户
             assert(createData && !entityId);
             if (createData) {
@@ -232,7 +229,6 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
         }
     }
     else {
-        console.log('------------elseToken------------');
         if (entityId) {
             // 已经有相应对象，判定一下能否重用上一次的token
             const application = context.getApplication();

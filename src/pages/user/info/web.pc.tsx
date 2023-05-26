@@ -207,27 +207,29 @@ export default function Render(
                             </Space>
                         </>
                     </Form.Item>
-                    {/* <Form.Item label="微信帐号">
-                        <>
-                            {wechatUser ? (
-                                <Space>
-                                    <Typography>{wechatUser.nickname}</Typography>
-                                    <WechatUserList
-                                        oakPath={oakFullpath ? `${oakFullpath}.wechatUser$user` : undefined}
-                                    />
-                                </Space>
-                            ) : (
-                                <Button
-                                    size="small"
-                                    onClick={() => {
-                                        setOpen2(true);
-                                    }}
-                                >
-                                    绑定
-                                </Button>
-                            )}
-                        </>
-                    </Form.Item> */}
+                    {process.env.NODE_ENV === 'development' && (
+                        <Form.Item label="微信帐号">
+                            <>
+                                {wechatUser ? (
+                                    <Space>
+                                        <Typography>{wechatUser.nickname}</Typography>
+                                        <WechatUserList
+                                            oakPath={oakFullpath ? `${oakFullpath}.wechatUser$user` : undefined}
+                                        />
+                                    </Space>
+                                ) : (
+                                    <Button
+                                        size="small"
+                                        onClick={() => {
+                                            setOpen2(true);
+                                        }}
+                                    >
+                                        绑定
+                                    </Button>
+                                )}
+                            </>
+                        </Form.Item>
+                    )}
                     <Form.Item
                         wrapperCol={{
                             xs: { offset: 4 },

@@ -17,7 +17,7 @@ export declare type WechatMpConfig = {
         mode: 'clear' | 'compatible' | 'safe';
         dataFormat: 'json' | 'xml';
     };
-    passport: Passport[];
+    passport?: Passport[];
 };
 export declare type WebConfig = {
     type: 'web';
@@ -27,7 +27,7 @@ export declare type WebConfig = {
         domain?: string;
         enable?: boolean;
     };
-    passport: Passport[];
+    passport?: Passport[];
 };
 export declare type WechatPublicTemplateMsgsConfig = Record<string, string>;
 export declare type WechatPublicConfig = {
@@ -48,7 +48,7 @@ export declare type WechatPublicConfig = {
         appId: string;
         originalId: string;
     };
-    passport: Passport[];
+    passport?: Passport[];
 };
 export interface Schema extends EntityShape {
     name: String<32>;
