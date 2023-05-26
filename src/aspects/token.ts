@@ -504,10 +504,10 @@ export async function loginByMobile<ED extends EntityDict, Cxt extends BackendRu
         }
     };
 
-    context.setRootMode(true);
+    const closeRootMode = context.openRootMode();
     const tokenId = await loginLogic();
     await loadTokenInfo<ED, Cxt>(tokenId, context);
-    context.setRootMode(false);
+    closeRootMode();
 
     return tokenId;
 }
@@ -928,7 +928,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
     const mockSend = system?.config?.Sms?.mockSend;
     const now = Date.now();
     const duration = 1; // 多少分钟内有效
-    context.setRootMode(true);
+    const closeRootMode = context.openRootMode();
     if (process.env.NODE_ENV !== 'development' && !mockSend) {
         const [count1, count2] = await Promise.all([
             context.count(
@@ -961,7 +961,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
             ),
         ]);
         if (count1 > 5 || count2 > 5) {
-            context.setRootMode(false);
+            closeRootMode();
             throw new OakUserException('您已发送很多次短信，请休息会再发吧');
         }
     }
@@ -984,11 +984,11 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
     if (captcha) {
         const code = captcha.code!;
         if (process.env.NODE_ENV !== 'production' || mockSend) {
-            context.setRootMode(false);
+            closeRootMode();
             return `验证码[${code}]已创建`;
         }
         else if (captcha.$$createAt$$! as number - now < 60000) {
-            context.setRootMode(false);
+            closeRootMode();
             throw new OakUserException('您的操作太迅捷啦，请稍等再点吧');
         }
         else {
@@ -1005,7 +1005,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
                 },
                 context
             );
-            context.setRootMode(false);
+            closeRootMode();
             if (result === true) {
                 return '验证码已发送';
             }
@@ -1042,7 +1042,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
         });
 
         if (process.env.NODE_ENV === 'development' || mockSend) {
-            context.setRootMode(false);
+            closeRootMode();
             return `验证码[${code}]已创建`;
         } else {
             //发送短信
@@ -1058,7 +1058,7 @@ export async function sendCaptcha<ED extends EntityDict, Cxt extends BackendRunt
                 },
                 context
             );
-            context.setRootMode(false);
+            closeRootMode();
             if (result === true) {
                 return '验证码已发送';
             }

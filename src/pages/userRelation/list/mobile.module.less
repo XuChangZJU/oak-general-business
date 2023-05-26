@@ -1,17 +1,25 @@
 
 
 .container {
-  height: 100vh;
+  height: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   background-color: var(--oak-bg-color-page);
 }
 
+.header {
+  padding: 16px;
+  background-color: var(--oak-bg-color-container);
+  margin-bottom: 10rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 
 .avatar {
   height: 56px;
   width: 56px;
-  background-color: var(--oak-color-primary);
 
   .text {
     color: #fff;

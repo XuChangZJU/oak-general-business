@@ -4,6 +4,7 @@ import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Index } from 'oak-domain/lib/types/Storage';
 import { Schema as User } from './User';
 import { Schema as WechatQrCode } from './WechatQrCode';
+import { Schema as Relation } from 'oak-domain/lib/entities/Relation';
 import { QrCodeType } from '../types/Config';
 
 export type RedirectToProps = {
@@ -16,7 +17,7 @@ export type RedirectToProps = {
 export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
-    relation: String<32>;
+    relation: Relation;
     type: 'grant' | 'transfer';
     number: Int<2>;
     confirmed: Int<2>;

@@ -9,6 +9,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     redirectToAfterConfirm: EntityDict['userEntityGrant']['Schema']['redirectTo'];
     entity: keyof EntityDict;
     entityId: string;
-    relations: string[];
+    relations: EntityDict['relation']['OpSchema'][];
     qrCodeType?: QrCodeType;
 }, {}>): JSX.Element;

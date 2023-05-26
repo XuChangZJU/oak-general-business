@@ -1,7 +1,10 @@
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'user', true, {
-    users: any[];
+    users: (EntityDict['user']['Schema'] & {
+        avatar?: string;
+        mobile?: string;
+    })[];
     searchValue?: string;
     pagination: {
         pageSize: number;
@@ -12,6 +15,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', true
     entityId: string;
 }, {
     goUpsert: () => void;
-    goDetail: (id: string) => void;
     confirmDelete: (id: string) => Promise<void>;
+    goUpdate: (id: string) => void;
 }>): JSX.Element;

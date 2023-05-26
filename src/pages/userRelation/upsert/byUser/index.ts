@@ -12,6 +12,44 @@ export default OakComponent({
     lifetimes: {
         async ready() {
             const { entity, entityId } = this.props;
+            const isRoot = this.features.token.isRoot();
+            const filter: EntityDict['relation']['Selection']['filter'] = {
+                entity: entity as string,
+                $or: [
+                    {
+                        entityId,
+                    },
+                    {
+                        entityId: {
+                            $exists: false,
+                        },
+                    }
+                ],
+            };
+            if (!isRoot) {
+                const userId = this.features.token.getUserId();
+                filter.id = {
+                    $in: {
+                        entity: 'relationAuth',
+                        data: {
+                            destRelationId: 1,
+                        },
+                        filter: {
+                            sourceRelationId: {
+                                $in: {
+                                    entity: 'userRelation',
+                                    data: {
+                                        relationId: 1,
+                                    },
+                                    filter: {
+                                        userId,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                };
+            }
             const { data: relations } = await this.features.cache.refresh('relation', {
                 data: {
                     id: 1,
@@ -20,19 +58,7 @@ export default OakComponent({
                     name: 1,
                     display: 1,
                 },
-                filter: {
-                    entity: entity as string,
-                    $or: [
-                        {
-                            entityId,
-                        },
-                        {
-                            entityId: {
-                                $exists: false,
-                            },
-                        }
-                    ],
-                },
+                filter,
             });
             this.setState({
                 relations: relations as EntityDict['relation']['OpSchema'][],

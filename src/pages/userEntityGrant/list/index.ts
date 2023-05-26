@@ -5,7 +5,12 @@ export default OakComponent({
         id: 1,
         entity: 1,
         entityId: 1,
-        relation: 1,
+        relationId: 1,
+        relation: {
+            id: 1,
+            name: 1,
+            display: 1,
+        },
         type: 1,
         qrCodeType: 1,
         remark: 1,

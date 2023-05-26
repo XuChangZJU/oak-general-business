@@ -29,7 +29,7 @@ export class Token<
         const tokenValue = storage.load('token:token');
         if (tokenValue) {
             this.tokenValue = tokenValue;
-            this.loadTokenInfo();
+            // this.loadTokenInfo();
         }
     }
 
@@ -115,7 +115,7 @@ export class Token<
 
     getToken(allowUnloggedIn?: boolean, context?: FrontCxt) {
         if (this.tokenValue) {
-            return this.cache.get(
+            const token = this.cache.get(
                 'token',
                 {
                     data: tokenProjection,
@@ -125,6 +125,10 @@ export class Token<
                 },
                 context
             )[0];
+            if (!token) {
+                this.loadTokenInfo(); 
+            }
+            return token;
         }
         if (allowUnloggedIn) {
             return undefined;

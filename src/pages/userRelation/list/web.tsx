@@ -1,16 +1,15 @@
 import React from 'react';
 
-import { List, Avatar, Tag, Button, Space } from 'antd';
+import { List, Avatar, Tag, Button, Input } from 'antd-mobile';
+import { UserCircleOutline } from 'antd-mobile-icons';
 
-import { PlusOutlined } from '@ant-design/icons';
 import Style from './mobile.module.less';
-import { getName } from '../../../utils/randomUser';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 
 
 export default function Render(props: WebComponentProps<EntityDict, 'user', true, {
-    users: any[];
+    users: (EntityDict['user']['Schema'] & { avatar?: string, mobile?: string })[];
     searchValue?: string;
     pagination: {
         pageSize: number;
@@ -21,88 +20,79 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', true
     entityId: string;
 }, {
     goUpsert: () => void;
-    goDetail: (id: string) => void;
     confirmDelete: (id: string) => Promise<void>;
+    goUpdate: (id: string) => void;
 }>) {
-    const { t, goUpsert, goDetail } = props.methods;
-    const { entity, users } = props.data;
+    const { t, goUpsert, goUpdate, addNamedFilter, refresh, removeNamedFilterByName } = props.methods;
+    const { entity, users, searchValue } = props.data;
     return (
         <div className={Style.container}>
+            <span className={Style.header}>
+                <div style={{ flex: 1 }}>
+                    <Input
+                        placeholder={t('search')}
+                        value={searchValue}
+                        onChange={value => {
+                            addNamedFilter({
+                                '#name': 'name',
+                                filter: {
+                                    $text: {
+                                        $search: value,
+                                    }
+                                }
+                            }, false);
+                        }}
+                        onEnterPress={() => refresh()}
+                        clearable
+                        onClear={() => removeNamedFilterByName('name')}
+                    />
+                </div>
+                <Button
+                    size='small'
+                    color='primary'
+                    onClick={() => goUpsert()}
+                >
+                    {t('common:action.create')}
+                </Button>
+            </span>
             <List>
-                {users?.map((ele: any, index: number) => {
+                {users?.map((ele, index) => {
                     return (
-                        <div onClick={(e) => goDetail(ele.id)} key={index}>
-                            <List.Item>
-                                <List.Item.Meta
-                                    avatar={
-                                        ele.avatar ? (
-                                            <Avatar
-                                                className={Style.avatar}
-                                                src={ele.avatar}
-                                            />
-                                        ) : (
-                                            <Avatar className={Style.avatar}>
-                                                <span className={Style.text}>
-                                                    {getName(ele.name)}
-                                                </span>
-                                            </Avatar>
+                        <List.Item
+                            prefix={
+                                ele.avatar ? <Avatar
+                                    className={Style.avatar}
+                                    src={ele.avatar}
+                                /> : <UserCircleOutline
+                                    className={Style.avatar}
+                                />
+                            }
+                            extra={ele.mobile || '--'}
+                            description={
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        flexWrap: 'wrap',
+                                    }}
+                                >
+                                    {
+                                        ele.userRelation$user?.map(
+                                            (ele2, index2) => (
+                                                <Tag key={index} fill="outline">
+                                                    {ele2.relation?.name ? t(entity + ':r.' + ele2.relation!.name) : ele2.relation?.display}
+                                                </Tag>
+                                            )
                                         )
                                     }
-                                    title={<div>{ele.name || '--'}</div>}
-                                    description={
-                                        <div className={Style.description}>
-                                            <div className={Style.row}>
-                                                <span className={Style.label}>
-                                                    昵称:&nbsp;
-                                                </span>
-                                                <span className={Style.value}>
-                                                    {ele.nickname || '--'}
-                                                </span>
-                                            </div>
-                                            <div className={Style.row}>
-                                                <span className={Style.label}>
-                                                    手机号:&nbsp;
-                                                </span>
-                                                <span className={Style.value}>
-                                                    {ele.mobile || '--'}
-                                                </span>
-                                            </div>
-                                            <Space>
-                                                {ele.relations?.map(
-                                                    (
-                                                        relation: string,
-                                                        index: number
-                                                    ) => (
-                                                        <Tag
-                                                            key={index}
-                                                            color="processing"
-                                                        >
-                                                            {t(
-                                                                `${entity}:r.${relation}`
-                                                            )}
-                                                        </Tag>
-                                                    )
-                                                )}
-                                            </Space>
-                                        </div>
-                                    }
-                                ></List.Item.Meta>
-                            </List.Item>
-                        </div>
+                                </div>
+                            }
+                            onClick={() => goUpdate(ele.id)}
+                        >
+                            {ele.name || ele.nickname || '--'}
+                        </List.Item>
                     );
                 })}
             </List>
-
-            <div className={Style.fab}>
-                <Button
-                    size="large"
-                    shape="circle"
-                    icon={<PlusOutlined />}
-                    onClick={() => {
-                        goUpsert();
-                    }}
-                />
-            </div>
         </div>
     );
 }

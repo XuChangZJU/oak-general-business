@@ -11,8 +11,36 @@ export default OakComponent({
     entity: 'user',
     projection() {
         const userId = this.features.token.getUserId();
+        const isRoot = this.features.token.isRoot();
         assert(userId);
         const { entity, entityId } = this.props;
+        const userRelationFilter: EntityDict['userRelation']['Selection']['filter'] = {
+            entity: entity as string,
+            entityId,
+        };
+        if (!isRoot) {
+            userRelationFilter.relationId = {
+                $in: {
+                    entity: 'relationAuth',
+                    data: {
+                        destRelationId: 1,
+                    },
+                    filter: {
+                        sourceRelationId: {
+                            $in: {
+                                entity: 'userRelation',
+                                data: {
+                                    relationId: 1,
+                                },
+                                filter: {
+                                    userId,
+                                },
+                            },
+                        },
+                    },
+                },
+            };
+        }
         return {
             id: 1,
             name: 1,
@@ -38,10 +66,7 @@ export default OakComponent({
                         display: 1,
                     }
                 },
-                filter: {
-                    entity: entity as string,
-                    entityId,
-                },
+                filter: userRelationFilter,
             },
             extraFile$entity: {
                 $entity: 'extraFile',
@@ -69,11 +94,36 @@ export default OakComponent({
     filters: [
         {
             filter() {
+                const userId = this.features.token.getUserId();
+                const isRoot = this.features.token.isRoot();
                 const { entityId, entity } = this.props;
-                const filter = {
+                const filter: EntityDict['userRelation']['Selection']['filter'] = {
                     entity,
                     entityId,
                 };
+                if (!isRoot) {
+                    filter.relationId = {
+                        $in: {
+                            entity: 'relationAuth',
+                            data: {
+                                destRelationId: 1,
+                            },
+                            filter: {
+                                sourceRelationId: {
+                                    $in: {
+                                        entity: 'userRelation',
+                                        data: {
+                                            relationId: 1,
+                                        },
+                                        filter: {
+                                            userId,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    };
+                }
                 return {
                     id: {
                         $in: {

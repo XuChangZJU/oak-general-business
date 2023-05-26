@@ -23,7 +23,7 @@ export default function render(
         'userEntityGrant',
         false,
         {
-            relations: string[];
+            relations: EntityDict['relation']['OpSchema'][];
             period: number;
             userEntityGrant: EntityDict['userEntityGrant']['OpSchema'];
             userEntityGrantId: string;
@@ -46,8 +46,9 @@ export default function render(
         period,
         unit,
         maxes,
+        oakExecutable,
     } = props.data;
-    const { relation, type, number, entity } = userEntityGrant || {};
+    const { relationId, type, number, entity } = userEntityGrant || {};
     const { update, t, onBack, confirm, setInit, setPeriod, setUnit } =
         props.methods;
 
@@ -55,7 +56,7 @@ export default function render(
         <>
             <Alert
                 showIcon
-                message="请将二维码发给待分享权限的用户扫描"
+                message={t('shareCode')}
                 type="info"
                 style={{ marginBottom: 16 }}
             />
@@ -73,14 +74,14 @@ export default function render(
                 }}
             >
                 <Button type="primary" onClick={() => setInit()}>
-                    重新生成
+                    {t('restart')}
                 </Button>
             </div>
         </>
     ) : (
         <Form labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
             <Form.Item
-                label="权限"
+                label={t('userEntityGrant:attr.relation')}
                 name="relation"
                 rules={[
                     {
@@ -90,26 +91,26 @@ export default function render(
             >
                 <>
                     <Radio.Group
-                        value={relation}
+                        value={relationId}
                         onChange={({ target }) => {
                             const { value } = target;
-                            update({ relation: value });
+                            update({ relationId: value });
                         }}
-                        options={relations?.map((ele: string) => ({
-                            value: ele,
-                            label: entity ? t(entity + ':r.' + ele) : ele,
+                        options={relations?.map((ele) => ({
+                            value: ele.id,
+                            label: ele.display || t(`${entity as string}:r.${ele.name}`),
                         }))}
                     />
                 </>
             </Form.Item>
             {type === 'grant' && (
                 <Form.Item
-                    label="人数"
+                label={t('userEntityGrant:attr.number')}
                     name="number"
                     rules={[
                         {
                             required: true,
-                            message: '请选择分享的目标人数',
+                            message: t('chooseNumber'),
                         },
                     ]}
                 >
@@ -121,23 +122,23 @@ export default function render(
                                 update({ number: value });
                             }}
                             options={[
-                                { value: 1, label: '单次' },
-                                { value: 10000, label: '不限次' },
+                                { value: 1, label: t('single') },
+                                { value: 10000, label: t('unlimited') },
                             ]}
                         />
                     </>
                 </Form.Item>
             )}
             <Form.Item
-                label="时效"
+                label={t('userEntityGrant:attr.expiresAt')}
                 name="period"
                 rules={[
                     {
                         required: true,
-                        message: '请选择一个时效',
+                        message: t('chooseExpiresAt'),
                     },
                 ]}
-                help={<div style={{ marginBottom: 16 }}>支持分钟、小时选择</div>}
+                help={<div style={{ marginBottom: 16 }}>{t('expiresAt')}</div>}
             >
                 <>
                     <InputNumber
@@ -161,10 +162,11 @@ export default function render(
                                 }}
                             >
                                 <Select.Option value="minute">
-                                    分钟
+                                    {t('unit.minute')}
                                 </Select.Option>
-                                <Select.Option value="hour">小时</Select.Option>
-                                {/* <Select.Option value="day">天</Select.Option> */}
+                                <Select.Option value="hour">
+                                    {t('unit.hour')}
+                                </Select.Option>
                             </Select>
                         }
                     />
@@ -172,10 +174,12 @@ export default function render(
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 4 }}>
                 <Space>
-                    <Button type="primary" onClick={() => confirm()}>
-                        提交
+                    <Button type="primary" onClick={() => confirm()} disabled={oakExecutable !== true}>
+                        {t('common:action.confirm')}
                     </Button>
-                    <Button onClick={() => onBack()}>返回</Button>
+                    <Button onClick={() => onBack()}>
+                        {t('common.back')}
+                    </Button>
                 </Space>
             </Form.Item>
         </Form>

@@ -22,7 +22,7 @@ export interface Schema extends EntityShape {
     expiresAt?: Datetime; // 过期时间
     expired?: Boolean; //是否过期
     ticket?: Text;
-    url?: String<64>;
+    url?: String<256>;
     permanent?: Boolean; //是否永久码
     buffer?: Text; // 若没有url，使用buffer存储生成的小程序码数据（base64)
     application: Application;

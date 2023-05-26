@@ -17,16 +17,7 @@ const checkers: Checker<
         checker: (data) => {
             if (data instanceof Array) {
                 data.forEach((ele) => {
-                    checkAttributesNotNull('userEntityGrant', ele, [
-                        'type',
-                        'entity',
-                        'entityId',
-                        'relation',
-                    ]);
                     if (ele.type === 'grant') {
-                        checkAttributesNotNull('userEntityGrant', ele, [
-                            'number',
-                        ]);
                         if (ele.number! <= 0) {
                             throw new OakInputIllegalException(
                                 'userEntityGrant',
@@ -34,26 +25,13 @@ const checkers: Checker<
                             );
                         }
                     }
-                    Object.assign(ele, {
-                        confirmed: 0,
-                    });
                 });
             } else {
-                checkAttributesNotNull('userEntityGrant', data, [
-                    'type',
-                    'entity',
-                    'entityId',
-                    'relation',
-                ]);
                 if (data.type === 'grant') {
-                    checkAttributesNotNull('userEntityGrant', data, ['number']);
                     if (data.number! <= 0 ) {
                         throw new OakInputIllegalException('userEntityGrant', ['number', '分享的权限数量必须大于0']);
                     }
                 }
-                Object.assign(data, {
-                    confirmed: 0,
-                });
             }
         },
     },

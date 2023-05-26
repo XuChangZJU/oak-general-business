@@ -8,7 +8,12 @@ export default OakComponent({
         id: 1,
         entity: 1,
         entityId: 1,
-        relation: 1,
+        relationId: 1,
+        relation: {
+            id: 1,
+            name: 1,
+            display: 1,
+        },
         type: 1,
         qrCodeType: 1,
         remark: 1,
@@ -22,7 +27,7 @@ export default OakComponent({
     properties: {
         entity: '' as keyof EntityDict,
         entityId: '',
-        relations: [] as string[],
+        relations: [] as EntityDict['relation']['OpSchema'][],
         type: '',
     },
     data: {
@@ -43,9 +48,9 @@ export default OakComponent({
                 number: 1,
             });
         },
-        setRelation(value: any) {
+        setRelationId(value: string) {
             this.update({
-                relation: value,
+                relationId: value,
             });
         },
         setNumber(value: number) {

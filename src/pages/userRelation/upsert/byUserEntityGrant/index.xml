@@ -34,16 +34,16 @@
                     placement="row"
                     l-class="radio-container"
                     bind:linchange="setRelationMp"
-                    current="{{relation}}"
+                    current="{{userEntityGrant.relationId}}"
                 >
                     <l-radio
                         wx:for-items="{{relations}}"
                         wx:key="index"
-                        key="{{item}}"
+                        key="{{item.id}}"
                         l-class="radio"
                         size="48rpx"
                     >                    
-                        {{t(entity + ':r.' +  item)}}
+                        {{item.display || t(entity + ':r.' + item.name)}}
                     </l-radio>
                 </l-radio-group>
             </view>
@@ -55,7 +55,7 @@
                     placement="row"
                     l-class="radio-container"
                     bind:linchange="setNumberMp"
-                    current="{{number}}"
+                    current="{{userEntityGrant.number}}"
                 >
                     <l-radio
                         wx:key="1"
@@ -79,7 +79,7 @@
             <view class="label">有效期：</view>
             <view class="value-period">
                 <l-counter 
-                    count="{{period}}" 
+                    count="{{userEntityGrant.period}}" 
                     max="120" 
                     min="5" 
                     round-float="{{true}}"

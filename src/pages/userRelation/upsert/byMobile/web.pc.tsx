@@ -19,7 +19,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
 }>) {
     const { mobileValue, mobileValueReady, relations, entity, entityId, userId,
         oakFullpath, oakExecutable } = props.data;
-    const { onConfirm, onMobileChange, onReset } = props.methods;
+    const { onConfirm, onMobileChange, onReset, t } = props.methods;
     return (
         <div className={Style.container}>
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
@@ -71,16 +71,21 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                 <Form.Item wrapperCol={{ offset: 4 }}>
                     <Space>
                         <Button
+                            style={{ flex: 2 }}
                             type="primary"
                             onClick={() => {
                                 onConfirm();
                             }}
                             disabled={!oakExecutable}
                         >
-                            提交
+                            {t('common:action.confirm')}
                         </Button>
-                        <Button htmlType="reset" onClick={() => onReset()}>
-                            重置
+                        <Button 
+                            htmlType="reset"
+                            onClick={() => onReset()}
+                            style={{ flex: 1 }}
+                        >
+                            {t('common:reset')}
                         </Button>
                     </Space>
                 </Form.Item>

@@ -96,7 +96,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                         id: 1,
                         entity: 1,
                         entityId: 1,
-                        relation: 1,
+                        relationId: 1,
                         number: 1,
                         confirmed: 1,
                     },
@@ -131,7 +131,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
         entity: 'userEntityGrant',
         action: 'confirm',
         when: 'after',
-        fn: async ({ operation }, context, params) => {
+        fn: async ({ operation }, context, option) => {
             const { data, filter } = operation;
             const { userId } = context.getToken()!;
             const [userEntityGrant] = await context.select(
@@ -141,7 +141,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                         id: 1,
                         entity: 1,
                         entityId: 1,
-                        relation: 1,
+                        relationId: 1,
                         granterId: 1,
                         type: 1,
                     },
@@ -155,24 +155,21 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                     dontCollect: true,
                 }
             );
-            const { entity, entityId, relation, granterId, type } =
+            const { entity, entityId, relationId, granterId, type } =
                 userEntityGrant;
-            const entityStr = firstLetterUpperCase(entity!);
-            const userRelation = `user${entityStr}` as keyof EntityDict;
-            //如果是relation是transfer，需要处理授权者名下entity关系转让给接收者
             const result2 = await context.select(
-                userRelation,
+                'userRelation',
                 {
                     data: {
                         id: 1,
                         userId: 1,
-                        relation: 1,
-                        [`${entity}Id`]: 1,
+                        relationId: 1,
                     },
                     filter: {
                         userId: userId!,
-                        relation,
-                        [`${entity}Id`]: entityId,
+                        relationId,
+                        entity,
+                        entityId,
                     },
                     indexFrom: 0,
                     count: 1,
@@ -183,61 +180,37 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
             );
             if (result2.length) {
                 const e = new OakRowInconsistencyException<EntityDict>(undefined, '已领取该权限');
-                e.addData(userRelation, result2);
+                e.addData('userRelation', result2);
                 throw e;
             } else {
                 await context.operate(
-                    userRelation,
+                    'userRelation',
                     {
                         id: generateNewId(),
                         action: 'create',
                         data: {
                             id: generateNewId(),
                             userId,
-                            [`${entity}Id`]: entityId,
-                            relation,
-                        } as any,
+                            relationId,
+                            entity,
+                            entityId,
+                        },
                     },
-                    Object.assign(params, {
-                        blockTrigger: true,
-                    })
+                    option
                 );
                 // todo type是转让的话 需要回收授权者的关系
                 if (type === 'transfer') {
-                    const result3 = await context.select(
-                        userRelation,
-                        {
-                            data: {
-                                id: 1,
-                                userId: 1,
-                                relation: 1,
-                                [`${entity}Id`]: 1,
-                            },
-                            filter: {
-                                userId: granterId!,
-                                relation,
-                                [`${entity}Id`]: entityId,
-                            },
-                            indexFrom: 0,
-                            count: 1,
-                        },
-                        {
-                            dontCollect: true,
+                    await context.operate('userRelation', {
+                        id: await generateNewIdAsync(),
+                        action: 'remove',
+                        data: {},
+                        filter: {
+                            relationId,
+                            userId: granterId,
+                            entity,
+                            entityId,
                         }
-                    );
-                    assert(result3[0]);
-                    await context.operate(
-                        userRelation,
-                        {
-                            id: generateNewId(),
-                            action: 'remove',
-                            data: {},
-                            filter: {
-                                id: result3[0].id,
-                            },
-                        },
-                        params
-                    );
+                    }, option);
                 }
 
                 return 1;

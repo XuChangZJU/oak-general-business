@@ -21,6 +21,7 @@
     "select": "查询",
     "expand": "展开",
     "shrink": "收起",
+    "back": "返回",
     "$$createAt$$": "创建时间",
     "$$updateAt$$": "更新时间",
     "$$deleteAt$$": "删除时间"

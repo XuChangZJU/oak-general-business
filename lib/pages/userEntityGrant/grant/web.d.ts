@@ -1,17 +1,18 @@
 import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 export default function render(props: WebComponentProps<EntityDict, 'token', false, {
-    relation: string;
+    relation: EntityDict['relation']['OpSchema'];
     type: 'grant';
     number: number;
     period: number;
-    relations: string[];
+    relations: EntityDict['relation']['OpSchema'][];
     entity: string;
     entityId: string;
+    relationId: string;
 }, {
     confirm: () => void;
     reset: () => void;
-    setRelation: (value: string) => void;
+    setRelationId: (value: string) => void;
     setNumber: (value: string) => void;
     setPeriod: (value: number | null) => void;
 }>): JSX.Element;

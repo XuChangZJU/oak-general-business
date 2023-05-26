@@ -20,7 +20,7 @@ export declare class BackendRuntimeContext<ED extends EntityDict> extends AsyncC
     getApplicationId(): ED["application"]["Schema"]["id"] | undefined;
     getSystemId(): ED["application"]["Schema"]["systemId"] | undefined;
     getApplication(): Partial<ED["application"]["Schema"]> | undefined;
-    setRootMode(mode: boolean): void;
+    openRootMode(): () => void;
     getTokenValue(allowUnloggedIn?: boolean): "oak-root-token" | ED["token"]["Schema"]["id"] | undefined;
     getToken(allowUnloggedIn?: boolean): Partial<ED["token"]["Schema"]> | undefined;
     getCurrentUserId(allowUnloggedIn?: boolean): string;

@@ -18,7 +18,7 @@ export interface Schema extends EntityShape {
     expiresAt?: Datetime;
     expired?: Boolean;
     ticket?: Text;
-    url?: String<64>;
+    url?: String<256>;
     permanent?: Boolean;
     buffer?: Text;
     application: Application;

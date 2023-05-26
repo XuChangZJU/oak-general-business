@@ -5,6 +5,7 @@ import OnUser from '../onUser/index';
 import PageHeader from '../../../../components/common/pageHeader';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../general-app-domain';
+import { t } from '@wangeditor/editor';
 
 
 export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
@@ -17,7 +18,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     onReset: () => void;
 }>) {
     const { relations, entity, entityId, oakId, oakDirty, oakFullpath } = props.data;
-    const { onConfirm, onReset } = props.methods;
+    const { onConfirm, onReset, t } = props.methods;
     return (
         <PageHeader showBack={true} title="编辑权限">
             <div className={Style.container}>
@@ -37,13 +38,13 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                                 type="primary"
                                 onClick={() => onConfirm()}
                             >
-                                提交
+                                {t('common:action.confirm')}
                             </Button>
                             <Button
                                 htmlType="reset"
                                 onClick={() => onReset()}
                             >
-                                重置
+                                {t('common:action.reset')}
                             </Button>
                         </Space>
                     </Form.Item>

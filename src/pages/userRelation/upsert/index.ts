@@ -23,7 +23,8 @@ export default OakComponent({
         {
             filter() {
                 const { entity, entityId } = this.props;
-                return {
+                const isRoot = this.features.token.isRoot();
+                const filter: EntityDict['relation']['Selection']['filter'] = {
                     entity: entity as string,
                     $or: [
                         {
@@ -34,8 +35,33 @@ export default OakComponent({
                                 $exists: false,
                             },
                         }
-                    ]
+                    ],
                 };
+                if (!isRoot) {
+                    const userId = this.features.token.getUserId();
+                    filter.id = {
+                        $in: {
+                            entity: 'relationAuth',
+                            data: {
+                                destRelationId: 1,
+                            },
+                            filter: {
+                                sourceRelationId: {
+                                    $in: {
+                                        entity: 'userRelation',
+                                        data: {
+                                            relationId: 1,
+                                        },
+                                        filter: {
+                                            userId,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    };
+                }
+                return filter;
             }
         }
     ],

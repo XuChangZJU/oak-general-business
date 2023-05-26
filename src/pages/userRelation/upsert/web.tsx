@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs } from 'antd';
+import { Tabs } from 'antd-mobile';
 import Style from './mobile.module.less';
 import ByMobile from './byMobile/index';
 import ByUserEntityGrant from './byUserEntityGrant';
@@ -21,7 +21,7 @@ export default function Render(
             redirectToAfterConfirm: EntityDict['userEntityGrant']['Schema']['redirectTo'];
             entity: keyof EntityDict;
             entityId: string;
-            relations: string[];
+            relations: EntityDict['relation']['OpSchema'][];
             qrCodeType?: QrCodeType;
         },
         {}
@@ -55,7 +55,7 @@ export default function Render(
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
-                    oakPath={oakFullpath ? `${oakFullpath}.mobile` : undefined}
+                    oakPath={oakFullpath ? `$${oakFullpath}-mobile` : undefined}
                     oakAutoUnmount={true}
                 />
             );
@@ -69,7 +69,7 @@ export default function Render(
                     relations={relations}
                     oakPath={
                         oakFullpath
-                            ? `${oakFullpath}.userEntityGrant`
+                            ? `$${oakFullpath}-userEntityGrant`
                             : undefined
                     }
                     oakAutoUnmount={true}
@@ -93,7 +93,7 @@ export default function Render(
                         entityId={entityId}
                         relations={relations}
                         oakPath={
-                            oakFullpath ? `${oakFullpath}.mobile` : undefined
+                            oakFullpath ? `$${oakFullpath}-mobile` : undefined
                         }
                         oakAutoUnmount={true}
                     />
@@ -110,7 +110,7 @@ export default function Render(
                         qrCodeType={qrCodeType}
                         oakPath={
                             oakFullpath
-                                ? `${oakFullpath}.userEntityGrant`
+                                ? `$${oakFullpath}-userEntityGrant`
                                 : undefined
                         }
                         oakAutoUnmount={true}
@@ -129,7 +129,17 @@ export default function Render(
         if (grantByUserEntityGrant) {
             items2.push(items[2]);
         }
-        SubPart = <Tabs items={items2} />;
+        SubPart = (
+            <Tabs>
+                {
+                    items2.map(
+                        ele => <Tabs.Tab title={ele.label} key={ele.key}>
+                            {ele.children}
+                        </Tabs.Tab>
+                    )
+                }
+            </Tabs>
+            );
     }
     return SubPart;
 }

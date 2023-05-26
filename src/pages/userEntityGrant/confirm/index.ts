@@ -5,7 +5,12 @@ export default OakComponent({
     entity: 'userEntityGrant',
     projection: {
         id: 1,
-        relation: 1,
+        relationId: 1,
+        relation: {
+            id: 1,
+            name: 1,
+            display: 1,
+        },
         granterId: 1,
         granter: {
             id: 1,
@@ -30,9 +35,11 @@ export default OakComponent({
         const type = userEntityGrant?.type;
         const relation = userEntityGrant?.relation;
         const entity = userEntityGrant?.entity;
+        const relationId = userEntityGrant?.relationId;
 
         return {
             relation,
+            relationId,
             type,
             expired: userEntityGrant?.expired,
             expiresAt: userEntityGrant?.expiresAt,
@@ -66,26 +73,26 @@ export default OakComponent({
     },
     methods: {
         async getUserRelations() {
-            // 检查当前登陆者跟该授权实体缩手所受relation有关系了
+            // 检查当前登陆者跟该授权实体缩手所受relation有关系了(todo)
+            const { entity, entityId, relationId} = this.state;
             const userId = this.features.token.getUserId(true);
             if (!userId) {
                 return;
             }
-            const { entity, entityId, relation } = this.state;
-            const entityStr = firstLetterUpperCase(entity!);
+            const { oakId } = this.props;
             const { data } = await this.features.cache.refresh(
-                `user${entityStr}` as keyof EntityDict,
+                'userRelation',
                 {
                     data: {
                         id: 1,
                         userId: 1,
-                        relation: 1,
-                        [`${entity}Id`]: 1,
+                        relationId: 1,
                     },
                     filter: {
-                        userId: userId,
-                        [`${entity}Id`]: entityId,
-                        relation,
+                        userId,
+                        relationId,
+                        entity,
+                        entityId,
                     },
                 }
             );

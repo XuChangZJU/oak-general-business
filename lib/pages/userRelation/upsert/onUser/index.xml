@@ -8,7 +8,4 @@
         </view>
     </l-card>
     <view style="flex: 1" />
-    <l-button size="long" bind:lintap="onConfirm">
-    确定
-    </l-button>
 </view>

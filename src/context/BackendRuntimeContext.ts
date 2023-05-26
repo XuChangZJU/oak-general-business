@@ -139,7 +139,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
     protected async initialize(data?: SerializedData) {
         if (data) {
             await this.begin();
-            this.setRootMode(true);
+            const closeRootMode = this.openRootMode();
             try {
                 const { a: appId, t: tokenValue } = data;
                 const promises: Promise<void>[] = [];
@@ -152,11 +152,11 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
                 if (promises.length > 0) {
                     await Promise.all(promises);
                 }
-                this.setRootMode(false);
+                closeRootMode();
                 await this.commit();
             }
             catch (err) {
-                this.setRootMode(false);
+                closeRootMode();
                 await this.rollback();
                 throw err;
             }
@@ -179,8 +179,12 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         return this.application;
     }
 
-    setRootMode(mode: boolean) {
-        this.rootMode = mode;
+    openRootMode(): () => void {
+        if (this.rootMode) {
+            return () => undefined;
+        }
+        this.rootMode = true;
+        return () => this.rootMode = false;
     }
 
     getTokenValue(allowUnloggedIn?: boolean) {

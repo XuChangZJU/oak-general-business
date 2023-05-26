@@ -91,7 +91,7 @@ export default function render(
                         dataIndex: 'relation',
                         title: '权限',
                         render: (value, record, index) => {
-                            return t(`${record.entity}:r.${value}`);
+                            return value.display || t(`${record.entity}:r.${value.name}`);
                         },
                     },
                     {

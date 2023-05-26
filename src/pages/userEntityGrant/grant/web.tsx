@@ -11,26 +11,27 @@ export default function render(
         'token',
         false,
         {
-            relation: string;
+            relation: EntityDict['relation']['OpSchema'];
             type: 'grant';
             number: number;
             period: number;
-            relations: string[];
+            relations: EntityDict['relation']['OpSchema'][];
             entity: string;
             entityId: string;
+            relationId: string;
         },
         {
             confirm: () => void;
             reset: () => void;
-            setRelation: (value: string) => void;
+            setRelationId: (value: string) => void;
             setNumber: (value: string) => void;
             setPeriod: (value: number | null) => void;
         }
     >
 ) {
-    const { relation, type, number, period, relations, entity, entityId } =
+    const { relation, type, number, period, relations, entity, entityId, relationId } =
         props.data;
-    const { t, confirm, reset, setRelation, setNumber, setPeriod } =
+    const { t, confirm, reset, setRelationId, setNumber, setPeriod } =
         props.methods;
 
     return (
@@ -47,13 +48,13 @@ export default function render(
                         ]}
                     >
                         <Radio.Group
-                            value={relation}
+                            value={relationId}
                             onChange={(e) => {
-                                setRelation(e.target.value);
+                                setRelationId(e.target.value);
                             }}
-                            options={relations?.map((ele: string) => ({
-                                value: ele,
-                                label: entity ? t(entity + ':r.' + ele) : ele,
+                            options={relations?.map((ele) => ({
+                                value: ele.id,
+                                label: ele.display || t(`${entity}:r.${ele.name}`),
                             }))}
                         ></Radio.Group>
                     </Form.Item>

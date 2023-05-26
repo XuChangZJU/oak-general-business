@@ -11,7 +11,7 @@ export default OakComponent({
         id: 1,
         entity: 1,
         entityId: 1,
-        relation: 1,
+        relationId: 1,
         type: 1,
         number: 1,
         remark: 1,
@@ -26,7 +26,7 @@ export default OakComponent({
     properties: {
         entity: '' as keyof EntityDict,
         entityId: '',
-        relations: [] as string[],
+        relations: [] as EntityDict['relation']['OpSchema'][],
         type: 'grant' as EntityDict['userEntityGrant']['Schema']['type'],
         redirectToAfterConfirm:
             {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
@@ -62,6 +62,7 @@ export default OakComponent({
             };
         },
         setInit() {
+            const userId = this.features.token.getUserId();
             const {
                 entity,
                 entityId,
@@ -70,10 +71,12 @@ export default OakComponent({
                 qrCodeType,
             } = this.props;
             this.update({
+                confirmed: 0,
                 entity,
                 entityId,
                 type: type || 'grant',
                 number: 1,
+                granterId: userId,
                 redirectTo:
                     redirectToAfterConfirm as EntityDict['userEntityGrant']['Schema']['redirectTo'],
                 qrCodeType: qrCodeType as QrCodeType,
@@ -88,7 +91,7 @@ export default OakComponent({
         },
         setRelation(value: any) {
             this.update({
-                relation: value,
+                relationId: value,
             });
         },
         setRelationMp(e: any) {
@@ -119,7 +122,7 @@ export default OakComponent({
         },
         async confirm() {
             const { period, unit, userEntityGrant } = this.state;
-            if (!userEntityGrant?.relation) {
+            if (!userEntityGrant?.relationId) {
                 this.setMessage({
                     type: 'error',
                     content: '请选择角色权限',
@@ -137,7 +140,16 @@ export default OakComponent({
                     break;
                 }
                 default: {
-                    time = period * 60 * 1000;
+                    if (unit === 'minute') {
+                        time = period * 60 * 1000;                        
+                    }
+                    else {
+                        this.setMessage({
+                            type: 'error',
+                            content: '请选择过期时长单位',
+                        });
+                        return;                        
+                    }
                     break;
                 }
             }
