@@ -19,7 +19,7 @@ export type WechatMpConfig = {
         mode: 'clear' | 'compatible' | 'safe'; //消息加解密方式 明文模式 兼容模式 安全模式
         dataFormat: 'json' | 'xml';
     };
-    passport: Passport[];
+    passport?: Passport[];
 };
 
 export type WebConfig = {
@@ -30,7 +30,7 @@ export type WebConfig = {
         domain?: string;
         enable?: boolean; //启用扫码登录
     };
-    passport: Passport[];
+    passport?: Passport[];
 };
 
 export type WechatPublicTemplateMsgsConfig = Record<string, string>;     // key值代表messageTypeId，value的值代表对应的templateId，data的转换改成message上的函数注入
@@ -54,7 +54,7 @@ export type WechatPublicConfig = {
         //公众号跳小程序配置 originalId
         originalId: string; //原始id
     };
-    passport: Passport[];
+    passport?: Passport[];
 };
 
 export interface Schema extends EntityShape {

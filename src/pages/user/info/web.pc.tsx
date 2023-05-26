@@ -207,7 +207,7 @@ export default function Render(
                             </Space>
                         </>
                     </Form.Item>
-                    <Form.Item label="微信帐号">
+                    {/* <Form.Item label="微信帐号">
                         <>
                             {wechatUser ? (
                                 <Space>
@@ -227,7 +227,7 @@ export default function Render(
                                 </Button>
                             )}
                         </>
-                    </Form.Item>
+                    </Form.Item> */}
                     <Form.Item
                         wrapperCol={{
                             xs: { offset: 4 },
