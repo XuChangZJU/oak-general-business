@@ -4,4 +4,4 @@ export default function render(props: WebComponentProps<EntityDict, 'area', true
     areas?: EntityDict['area']['OpSchema'][];
 }, {
     onItemClicked: (area: EntityDict['area']['OpSchema']) => Promise<void>;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

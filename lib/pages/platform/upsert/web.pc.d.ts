@@ -6,4 +6,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'platform', 
     style: EntityDict['system']['Schema']['style'];
 }, {
     confirm: () => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

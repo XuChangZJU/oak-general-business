@@ -1,4 +1,4 @@
-import { String, Int, Text, Image } from 'oak-domain/lib/types/DataType';
+import { String, Int, Text, Image, Float } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 
@@ -16,7 +16,7 @@ export interface Schema extends EntityShape {
     extra1?: Text;
     extension: String<16>;
     size?: Int<4>;
-    sort?: Int<4>;
+    sort?: Float<4,2>;
     fileType?: String<128>;
 };
 

@@ -3,4 +3,4 @@ import { WebComponentProps } from 'oak-frontend-base';
 export default function render(props: WebComponentProps<EntityDict, 'token', false, {
     error: string;
     loading: boolean;
-}, {}>): JSX.Element;
+}, {}>): import("react/jsx-runtime").JSX.Element;

@@ -37,5 +37,5 @@ export declare type Poi = {
     email?: string;
     businessArea?: string;
 };
-declare const Location: (props: LocationProps) => JSX.Element;
+declare const Location: (props: LocationProps) => import("react/jsx-runtime").JSX.Element;
 export default Location;
