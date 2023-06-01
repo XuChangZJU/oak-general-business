@@ -1,4 +1,4 @@
-import { String, Int, Float, Text } from "oak-domain/lib/types/DataType";
+import { String, Int, Text } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
@@ -20,7 +20,7 @@ export declare type OpSchema = EntityShape & {
     extra1?: Text | null;
     extension: String<16>;
     size?: Int<4> | null;
-    sort?: Float<4, 2> | null;
+    sort?: Int<4> | null;
     fileType?: String<128> | null;
 };
 export declare type OpAttr = keyof OpSchema;
@@ -38,7 +38,7 @@ export declare type Schema = EntityShape & {
     extra1?: Text | null;
     extension: String<16>;
     size?: Int<4> | null;
-    sort?: Float<4, 2> | null;
+    sort?: Int<4> | null;
     fileType?: String<128> | null;
     article?: Article.Schema;
     user?: User.Schema;

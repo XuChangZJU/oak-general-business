@@ -145,6 +145,11 @@ type GeneralAspectDict<
             },
             context: Cxt
         ) => Promise<string>;
+        getImgsByUrl: (
+            params: {
+                url: string;
+            },
+        ) => Promise<any>
 };
 
 export type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;

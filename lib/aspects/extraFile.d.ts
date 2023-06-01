@@ -7,3 +7,6 @@ export declare function getUploadInfo<ED extends EntityDict, Cxt extends Backend
     bucket?: string;
     key?: string;
 }, context: Cxt): Promise<QiniuUploadInfo>;
+export declare function getImgsByUrl(params: {
+    url: string;
+}): Promise<any>;
