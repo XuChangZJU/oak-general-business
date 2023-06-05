@@ -5,6 +5,7 @@ import { AbleAction, AbleState, makeAbleActionDef } from 'oak-domain/lib/actions
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { ActionDef } from 'oak-domain/lib/types/Action';
+import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 // https://developers.weixin.qq.com/miniprogram/dev/api/base/system/wx.getSystemInfoSync.html
 export type WechatMpEnv = {
     type: 'wechatMp',
@@ -61,30 +62,31 @@ type Action = AbleAction;
 
 const AbleActionDef: ActionDef<AbleAction, AbleState> = makeAbleActionDef('enabled');
 
-
-const locale: LocaleDef<Schema, Action, '', {
+const entityDesc: EntityDesc<Schema, Action, '', {
     ableState: AbleState,
 }> = {
-    zh_CN: {
-        name: '令牌',
-        attr: {
-            application: '应用',
-            entity: '关联对象',
-            entityId: '关联对象id',
-            user: '用户',
-            player: '扮演者',
-            env: '环境',
-            ableState: '状态',
-        },
-        action: {
-            enable: '激活',
-            disable: '禁用',
-        },
-        v: {
-            ableState: {
-                enabled: '使用中',
-                disabled: '已禁用'
+    locales: {
+        zh_CN: {
+            name: '令牌',
+            attr: {
+                application: '应用',
+                entity: '关联对象',
+                entityId: '关联对象id',
+                user: '用户',
+                player: '扮演者',
+                env: '环境',
+                ableState: '状态',
+            },
+            action: {
+                enable: '激活',
+                disable: '禁用',
+            },
+            v: {
+                ableState: {
+                    enabled: '使用中',
+                    disabled: '已禁用'
+                },
             },
         },
-    },
- };
+    }
+};

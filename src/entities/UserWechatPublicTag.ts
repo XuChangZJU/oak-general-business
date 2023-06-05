@@ -3,6 +3,7 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Schema as WechatPublicTag } from './WechatPublicTag';
 import { Schema as User } from './User';
+import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
 export interface Schema extends EntityShape {
     wechatPublicTag: WechatPublicTag;
@@ -11,15 +12,16 @@ export interface Schema extends EntityShape {
     syncAt: Datetime;
 };
 
-
-const locale: LocaleDef<Schema, '', '', {}> = {
-    zh_CN: {
-        name: '用户公众号Tag',
-        attr: {
-            wechatPublicTag: 'tag',
-            user: '用户',
-            sync: '同步状态',
-            syncAt: '同步时间',
+const entityDesc: EntityDesc<Schema> = {
+    locales: {
+        zh_CN: {
+            name: '用户公众号Tag',
+            attr: {
+                wechatPublicTag: 'tag',
+                user: '用户',
+                sync: '同步状态',
+                syncAt: '同步时间',
+            },
         },
-    },
- };
+    }
+};

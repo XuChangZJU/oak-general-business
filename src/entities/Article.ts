@@ -7,8 +7,8 @@ import {
 } from 'oak-domain/lib/types/DataType';
 import { ActionDef } from 'oak-domain/lib/types/Action';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
-import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Schema as ExtraFile } from './ExtraFile';
+import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
 export interface Schema extends EntityShape {
     entity?: String<32>;
@@ -36,38 +36,35 @@ const IActionDef: ActionDef<IAction, IState> = {
 
 type Action = IAction;
 
-const locale: LocaleDef<
-    Schema,
-    Action,
-    '',
-    {
-        iState: IState;
-    }
-> = {
-    zh_CN: {
-        name: '文章',
-        attr: {
-            title: '标题',
-            author: '作者',
-            abstract: '简介',
-            content: '正文',
-            files: '封面图',
-            iState: '状态',
-            url: '外部链接',
-            entity: '关联对象',
-            entityId: '关联对象id',
-            sign: '唯一标志',
-        },
-        action: {
-            online: '上架',
-            offline: '下架',
-            disabled: '禁用',
-        },
-        v: {
-            iState: {
-                online: '已上架',
-                offline: '已下架',
-                disabled: '已禁用',
+const entityDesc: EntityDesc<Schema, Action, '', {
+    iState: IState;
+}> = {
+    locales: {
+        zh_CN: {
+            name: '文章',
+            attr: {
+                title: '标题',
+                author: '作者',
+                abstract: '简介',
+                content: '正文',
+                files: '封面图',
+                iState: '状态',
+                url: '外部链接',
+                entity: '关联对象',
+                entityId: '关联对象id',
+                sign: '唯一标志',
+            },
+            action: {
+                online: '上架',
+                offline: '下架',
+                disabled: '禁用',
+            },
+            v: {
+                iState: {
+                    online: '已上架',
+                    offline: '已下架',
+                    disabled: '已禁用',
+                },
             },
         },
     },

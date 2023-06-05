@@ -4,10 +4,8 @@ import {
     Text,
     Int,
 } from 'oak-domain/lib/types/DataType';
-import { ActionDef } from 'oak-domain/lib/types/Action';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
-import { LocaleDef } from 'oak-domain/lib/types/Locale';
-import { Index } from 'oak-domain/lib/types/Storage';
+import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
 export type WechatPublicConfig = {
     type: 'wechatPublic';
@@ -24,46 +22,40 @@ export interface Schema extends EntityShape {
     offset?: Int<4>;
 };
 
-
-const indexes: Index<Schema>[] = [
-    //索引
-    {
-        name: 'index_name',
-        attributes: [
-            {
-                name: 'name',
+const entityDesc: EntityDesc<Schema> = {
+    locales: {
+        zh_CN: {
+            name: '订阅号',
+            attr: {
+                name: '名称',
+                entity: '对象名称',
+                entityId: '对象Id',
+                description: '描述',
+                config: '配置',
+                offset: '已同步素材位置',
             },
-        ],
-    },
-    {
-        name: 'index_entity',
-        attributes: [
-            {
-                name: 'entity',
-            },
-            {
-                name: 'entityId',
-            }
-        ],
-    },
-];
-
-const locale: LocaleDef<
-    Schema,
-    '',
-    '',
-    {
-    }
-> = {
-    zh_CN: {
-        name: '订阅号',
-        attr: {
-            name: '名称',
-            entity: '对象名称',
-            entityId: '对象Id',
-            description: '描述',
-            config: '配置',
-            offset: '已同步素材位置',
         },
     },
+    indexes: [
+        //索引
+        {
+            name: 'index_name',
+            attributes: [
+                {
+                    name: 'name',
+                },
+            ],
+        },
+        {
+            name: 'index_entity',
+            attributes: [
+                {
+                    name: 'entity',
+                },
+                {
+                    name: 'entityId',
+                }
+            ],
+        },
+    ]
 };

@@ -3,6 +3,8 @@ import { String, Text, Datetime, Boolean, Uint } from 'oak-domain/lib/types/Data
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Schema as Application } from './Application';
+import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
+
 
 export interface Schema extends EntityShape {
     text: String<32>;
@@ -12,33 +14,34 @@ export interface Schema extends EntityShape {
     syncAt: Datetime;
 };
 
-
-const indexes: Index<Schema>[] = [
-    {
-        name: 'index_text_application',
-        attributes: [
-            {
-                name: 'text',
+const entityDesc: EntityDesc<Schema> = {
+    locales: {
+        zh_CN: {
+            name: '公众号标签',
+            attr: {
+                text: 'tag名',
+                application: '关联应用',
+                wechatId: '微信端id',
+                sync: '同步状态',
+                syncAt: '同步时间',
             },
-            {
-                name: 'application',
+        },
+     },
+     indexes: [
+        {
+            name: 'index_text_application',
+            attributes: [
+                {
+                    name: 'text',
+                },
+                {
+                    name: 'application',
+                },
+            ],
+            config: {
+                unique: true,
             },
-        ],
-        config: {
-            unique: true,
         },
-    },
-];
+    ],
+};
 
-const locale: LocaleDef<Schema, '', '', {}> = {
-    zh_CN: {
-        name: '公众号标签',
-        attr: {
-            text: 'tag名',
-            application: '关联应用',
-            wechatId: '微信端id',
-            sync: '同步状态',
-            syncAt: '同步时间',
-        },
-    },
- };

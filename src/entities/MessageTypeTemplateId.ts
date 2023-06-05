@@ -6,8 +6,8 @@ import {
     Datetime,
 } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
-import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Schema as Application } from './Application';
+import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
 export interface Schema extends EntityShape {
     type: String<64>,
@@ -15,13 +15,15 @@ export interface Schema extends EntityShape {
     application: Application,
 };
 
-const locale: LocaleDef<Schema, '', '', {}> = {
-    zh_CN: {
-        name: '消息类型模板',
-        attr: {
-            type: '消息类型',
-            templateId: '模板编号',
-            application: '关联应用',
+const entityDesc: EntityDesc<Schema> = {
+    locales: {
+        zh_CN: {
+            name: '消息类型模板',
+            attr: {
+                type: '消息类型',
+                templateId: '模板编号',
+                application: '关联应用',
+            },
         },
     },
 };

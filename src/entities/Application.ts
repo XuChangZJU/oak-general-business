@@ -1,8 +1,8 @@
 import { String, Int, Datetime, Image, Boolean, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as System } from './System';
-import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Style } from '../types/Style';
+import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
 export type Passport = 'email' | 'mobile' | 'wechat';
 export type AppType = 'web' | 'wechatMp' | 'wechatPublic';
@@ -63,25 +63,25 @@ export interface Schema extends EntityShape {
     style?: Style;
 };
 
-const locale: LocaleDef<Schema, '', '', {
-    type: Schema['type'];
-}> = {
-    zh_CN: {
-        name: '应用',
-        attr: {
-            description: '描述',
-            type: '类型',
-            system: '系统',
-            name: '名称',
-            config: '设置',
-            style: '样式',
-        },
-        v: {
-            type: {
-                web: '网站',
-                wechatPublic: '微信公众号',
-                wechatMp: '微信小程序',
+const entityDesc: EntityDesc<Schema> = {
+    locales: {
+        zh_CN: {
+            name: '应用',
+            attr: {
+                description: '描述',
+                type: '类型',
+                system: '系统',
+                name: '名称',
+                config: '设置',
+                style: '样式',
+            },
+            v: {
+                type: {
+                    web: '网站',
+                    wechatPublic: '微信公众号',
+                    wechatMp: '微信小程序',
+                }
             }
-        }
-    },
+        },
+    }
 };

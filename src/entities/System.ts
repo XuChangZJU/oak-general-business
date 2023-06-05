@@ -1,9 +1,9 @@
 import { String, Boolean, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
-import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Schema as Platform } from './Platform';
 import { Config } from '../types/Config';
 import { Style } from '../types/Style';
+import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
 export interface Schema extends EntityShape {
     name: String<32>;
@@ -17,20 +17,21 @@ export interface Schema extends EntityShape {
     entityId?: String<64>;
 };
 
-
-const locale: LocaleDef<Schema, '', '', {}> = {
-    zh_CN: {
-        name: '系统',
-        attr: {
-            name: '名称',
-            description: '描述',
-            config: '设置',
-            platform: '平台',
-            super: '超级系统',
-            folder: '代码目录名',
-            style: '样式',
-            entity: '关联对象',
-            entityId: '关联对象id',
+const entityDesc: EntityDesc<Schema> = {
+    locales: {
+        zh_CN: {
+            name: '系统',
+            attr: {
+                name: '名称',
+                description: '描述',
+                config: '设置',
+                platform: '平台',
+                super: '超级系统',
+                folder: '代码目录名',
+                style: '样式',
+                entity: '关联对象',
+                entityId: '关联对象id',
+            },
         },
-    },
+    }
 };
