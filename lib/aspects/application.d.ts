@@ -10,7 +10,7 @@ export declare function signatureJsSDK<ED extends EntityDict, Cxt extends Backen
     url: string;
     env: WebEnv;
 }, context: Cxt): Promise<{
-    signature: any;
+    signature: string;
     noncestr: string;
     timestamp: number;
     appId: string;
