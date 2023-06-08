@@ -86,9 +86,13 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntime
         wechatLoginId: string;
         env: WebEnv;
     }, context: Cxt) => Promise<string>;
-    getImgsByUrl: (params: {
+    getInfoByUrl: (params: {
         url: string;
-    }) => Promise<any>;
+    }) => Promise<{
+        title: string;
+        publishDate: number | undefined;
+        imageList: string[];
+    }>;
 };
 export declare type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
 export {};

@@ -1,4 +1,4 @@
-import { String, Int, Text, Image, Float } from 'oak-domain/lib/types/DataType';
+import { String, Int, Text, Image, Float, Boolean } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 
@@ -18,6 +18,7 @@ export interface Schema extends EntityShape {
     size?: Int<4>;
     sort?: Float<4,2>;
     fileType?: String<128>;
+    isBridge?: Boolean;
 };
 
 const locale: LocaleDef<
@@ -47,6 +48,7 @@ const locale: LocaleDef<
             size: '文件大小',
             sort: '排序',
             fileType: '文件类型',
+            isBridge: '是否桥接访问',
         },
         v: {
             origin: {

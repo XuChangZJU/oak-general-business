@@ -6,7 +6,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { QiniuCloudInstance } from 'oak-external-sdk';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import fetch from 'node-fetch';
-
+import { WechatSDK } from 'oak-external-sdk';
 export async function getUploadInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(
     params: { origin: Origin; bucket?: string; key?: string },
     context: Cxt): Promise<QiniuUploadInfo> {
@@ -21,21 +21,16 @@ export async function getUploadInfo<ED extends EntityDict, Cxt extends BackendRu
     return (instance as QiniuCloudInstance).getUploadInfo(uploadHost, domain, bucket || bucket2, key);
 }
 
-export async function getImgsByUrl(
+
+// 请求链接获取标题，发布时间，图片等信息
+export async function getInfoByUrl(
     params: { url: string; }
-): Promise<any> {
+): Promise<{
+    title: string;
+    publishDate: number | undefined;
+    imageList: string[];
+}> {
     const { url } = params;
-    const imgs: string[] = [];
-    const response = await fetch(url);
-    const html = await response.text();
-    const regex = /<img.*?src="(.*?)"/g;
-    const matches = html.matchAll(regex);
-    for (const match of matches) {
-        // 不是链接的不要
-        if (match[1].includes('https://') || match.includes('http://')) {
-            imgs.push(match[1]);
-        }
-    }
-    return imgs;
+    return await WechatSDK.analyzePublicArticle(url);
 }
 

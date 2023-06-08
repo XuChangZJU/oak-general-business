@@ -16,6 +16,13 @@ export declare class ExtraFile<ED extends EntityDict, Cxt extends BackendRuntime
         bucket: string;
     }>;
     getUrl(extraFile?: EntityDict['extraFile']['OpSchema'] | EntityDict['extraFile']['Schema'] | null, style?: string): string;
+    /**
+     * 使用该方法，要在使用完url时，通过URL.revokeObjectURL释放缓存
+     *
+     * @param url 需要桥接访问的图片链接
+     * @returns 浏览器 img可访问的url
+     */
+    getBridgeUrl(url: string): Promise<string>;
     getFileName(extraFile: EntityDict['extraFile']['OpSchema']): string;
     formatBytes(size: number): string;
 }

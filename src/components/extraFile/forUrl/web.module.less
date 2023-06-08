@@ -1,0 +1,58 @@
+.imgBox {
+    width: 220px;
+    height: 100px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #888;
+    box-sizing: border-box;
+    border: 2px dashed #EBEBEB;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.1s;
+}
+.methodList {
+    width: 160px;
+    padding: 8px 0px;
+    border-radius: 8px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    flex-direction: column;
+    box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2),0px 3px 4px 0px rgba(0,0,0,0.14),0px 1px 8px 0px rgba(0,0,0,0.12);
+    background-color: #fff;
+    z-index: 10;
+    .methodListItem {
+        cursor: pointer;
+        padding: 4px 0px;
+    }
+    .methodListItem:hover {
+        background-color: #f6f7f8;
+    }
+}
+
+
+.imgBox:hover .methodList,
+.methodList:hover {
+    display: flex;
+}
+
+.previewImg {
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: none;
+}
+
+.formMT {
+  margin-top: 16px;
+}

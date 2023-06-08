@@ -10,7 +10,7 @@ import {
     logout,
     loginByWechat,
 } from './token';
-import { getUploadInfo, getImgsByUrl } from './extraFile';
+import { getUploadInfo, getInfoByUrl } from './extraFile';
 import { getApplication, signatureJsSDK } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { mergeUser } from './user';
@@ -36,7 +36,7 @@ const aspectDict = {
     createWechatLogin,
     unbindingWechat,
     loginByWechat,
-    getImgsByUrl,
+    getInfoByUrl,
 };
 
 export default aspectDict;
