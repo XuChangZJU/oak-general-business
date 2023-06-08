@@ -17,6 +17,7 @@ export default function render(
 		{
 			src: string;
 			bridgeUrl: string;
+			renderImgUrl: string;
 			isModalOpen: boolean;
 			isModalOpen1: boolean;
 			renderImgs: { renderUrl: string, originUrl: string, id: number }[];
@@ -38,13 +39,13 @@ export default function render(
 		src,
 		bridgeUrl,
 		originImgLoading,
+		renderImgUrl,
 	} = props.data;
 	const { t, onModalConfirm, chooseMethod, closeModal1, closeModal, onModal1Confirm } = props.methods;
 
 	const methods: MethodsType[] = ['original', 'url', 'uploadLocalImg'];
 	const [selectedId, setSelectedId] = useState(-1);
 	const [form] = Form.useForm();
-	const renderUrl = bridgeUrl || src; // 用户选图预览
 
 	const handleOk = () => {
 		onModalConfirm(form.getFieldValue('url'));
@@ -57,7 +58,7 @@ export default function render(
 				<PlusOutlined />
 				<div>选择封面</div>
 			</Space>
-			<img id="previewImg" src={renderUrl} alt="previewImg" className={Style.previewImg} style={{ display: renderUrl ? 'inline-block' : 'none'}} />
+			<img id="previewImg" src={renderImgUrl} alt="previewImg" className={Style.previewImg} style={{ display: renderImgUrl ? 'inline-block' : 'none'}} />
 			<div className={Style.methodList}>
 				{methods && methods.map((ele) => (
 					<div

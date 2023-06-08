@@ -6,4 +6,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'station', f
     onClose: () => void;
     openStation: boolean;
     subwayId: string;
-}, {}>): JSX.Element;
+}, {}>): import("react/jsx-runtime").JSX.Element;

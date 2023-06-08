@@ -8,4 +8,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     legal: boolean;
 }, {
     onConfirm: () => Promise<void>;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

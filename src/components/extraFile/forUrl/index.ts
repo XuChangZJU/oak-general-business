@@ -2,11 +2,12 @@ import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import assert from 'assert';
 import { EntityDict } from '../../../general-app-domain';
 import { OpSchema as ExtraFile } from '../../../general-app-domain/ExtraFile/Schema';
-
+import { isEqual } from 'oak-domain/lib/utils/lodash';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 type MethodsType = 'original' | 'url' | 'uploadLocalImg';
 type ImgUrlsOrigin = 'wechat' | 'others'; // 原文链接来源
+type RenderImgItem = { renderUrl: any, originUrl: string, id: number };
 export default OakComponent({
     entity: 'extraFile',
     isList: true,
@@ -51,6 +52,7 @@ export default OakComponent({
             file = originalFiles?.filter((ele) => ele?.tag2 === this.props.tag2)?.[0];
         }
         return {
+            file,
             src: features.extraFile.getUrl(file as ExtraFile),
             isBridge: file?.isBridge,
         };
@@ -58,10 +60,11 @@ export default OakComponent({
     data: {
         isModalOpen: false,
         isModalOpen1: false,
-        renderImgs: [] as { renderUrl: any, originUrl: string, id: number }[], // 读取的原文图片，在modal使用
+        renderImgs: [] as RenderImgItem[], // 读取的原文图片，在modal使用
         methodsType: '' as MethodsType,
         bridgeUrl: '', // 通过桥接方式获得的url
         originImgLoading: false,
+        renderImgUrl: '',
     },
     properties: {
         type: '',
@@ -87,18 +90,35 @@ export default OakComponent({
     listeners: {
         async src(prev, next) {
             if (prev !== next && !!this.state.src) {
-                try {
-                    const url = await this.features.extraFile.getBridgeUrl(this.state.src);
+                if(this.state.isBridge) {
+                    try {
+                        const url = await this.features.extraFile.getBridgeUrl(this.state.src);
+                        this.setState({
+                            renderImgUrl: url,
+                        })
+                    }
+                    catch (err) {
+                        this.setMessage({
+                            content: '图片加载错误',
+                            type: 'error'
+                        })
+                    }
+                }
+                else {
                     this.setState({
-                        bridgeUrl: url,
+                        renderImgUrl: this.state.src,
                     })
                 }
-                catch (err) {
-                    this.setMessage({
-                        content: '图片加载错误',
-                        type: 'error'
-                    })
-                }
+            }
+        },
+        async imgUrls(prev, next) {
+            // 因为imgUrls是从请求来的， 它有可能比上边的src listener中的getBridgeUrl慢
+            // 所以此处增加前后项imgUrls里都有值且不等的条件再去clean
+            if(prev?.imgUrls.length && next?.imgUrls.length && !isEqual(prev.imgUrls, next.imgUrls)) {
+                this.clean();
+                this.setState({
+                    renderImgUrl: '',
+                })
             }
         }
     },
@@ -146,24 +166,23 @@ export default OakComponent({
                     })
                     const { imgUrlsOrigin, imgUrls } = this.props;
                     const { renderImgs } = this.state;
+                    let renderImgs2: RenderImgItem[] = new Array(...renderImgs);
                     if (imgUrls && imgUrls.length) {
                         this.setState({
                             originImgLoading: true,
                         })
                         for (let i = 0; i < imgUrls.length; i++) {
-                            if (renderImgs[i] && renderImgs[i].originUrl === imgUrls[i]) {
+                            if (renderImgs2[i] && renderImgs2[i].originUrl === imgUrls[i]) {
                                 this.setState({
                                     originImgLoading: false,
                                 })
                                 return;
                             }
-                            else if (renderImgs[i] && renderImgs[i].originUrl !== imgUrls[i]) {
+                            else if (renderImgs2[i] && renderImgs2[i].originUrl !== imgUrls[i]) {
                                 if (imgUrlsOrigin === 'wechat') {
-                                    URL.revokeObjectURL(renderImgs[i].renderUrl);
+                                    URL.revokeObjectURL(renderImgs2[i].renderUrl);
                                 }
-                                this.setState({
-                                    renderImgs: [],
-                                })
+                                renderImgs2 = [];
                             }
                             let renderUrl: string;
                             if (imgUrlsOrigin === 'wechat') {
@@ -172,14 +191,14 @@ export default OakComponent({
                             else {
                                 renderUrl = imgUrls[i]
                             }
-                            renderImgs.push({
+                            renderImgs2.push({
                                 renderUrl,
                                 originUrl: imgUrls[i],
                                 id: i,
                             });
                         }
                         this.setState({
-                            renderImgs: [...renderImgs],
+                            renderImgs: renderImgs2,
                             originImgLoading: false,
                         })
                     }
@@ -268,14 +287,19 @@ export default OakComponent({
             });
         },
         async myUpdateItem(params: File | string) {
-            const { files } = this.state;
-            if (files && files.length) {
-                files.map(async (ele: EntityDict['extraFile']['OpSchema']) => {
-                    this.removeItem(ele.id);
+            const { file } = this.state;
+            if (file) {
+                this.removeItem(file.id);
+            }
+            if(!!params) {
+                const createData = this.createExtraFileData(params);
+                this.myAddItem(createData);
+            }
+            if(!params) {
+                this.setState({
+                    renderImgUrl: '',
                 })
             }
-            const createData = this.createExtraFileData(params);
-            this.myAddItem(createData);
         },
         onModalConfirm(value: string){
             const reg = new RegExp(/(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/);
@@ -290,10 +314,10 @@ export default OakComponent({
         onModal1Confirm(value: number) {
             const { renderImgs } = this.state;
             const img = renderImgs.find((ele) => ele.id === value);
-            this.myUpdateItem(img!.originUrl);
-            const imgElement = document.getElementById('previewImg') as HTMLImageElement;
-            imgElement!.src = img?.renderUrl || '';
-            imgElement.style.display = 'block';
+            this.myUpdateItem(img?.originUrl);
+            // const imgElement = document.getElementById('previewImg') as HTMLImageElement;
+            // imgElement!.src = img?.renderUrl || '';
+            // imgElement.style.display = 'block';
             this.closeModal1();
         },
     },

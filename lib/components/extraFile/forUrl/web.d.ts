@@ -4,6 +4,7 @@ declare type MethodsType = 'original' | 'url' | 'uploadLocalImg';
 export default function render(props: WebComponentProps<EntityDict, "extraFile", true, {
     src: string;
     bridgeUrl: string;
+    renderImgUrl: string;
     isModalOpen: boolean;
     isModalOpen1: boolean;
     renderImgs: {
@@ -18,5 +19,5 @@ export default function render(props: WebComponentProps<EntityDict, "extraFile",
     closeModal1: () => void;
     closeModal: () => void;
     onModal1Confirm: (value: number) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
 export {};

@@ -28,6 +28,7 @@ export default OakComponent({
         entityId: 1,
         fileType: 1,
         sort:1,
+        isBridge: 1,
     },
     formData({ data: originalFiles, features }) {
         let files = (

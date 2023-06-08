@@ -15,4 +15,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', tru
     doLogin: () => Promise<void>;
     goMyMobile: () => Promise<void>;
     goUserManage: () => Promise<void>;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
