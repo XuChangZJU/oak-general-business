@@ -13,11 +13,13 @@ export default function render(props: WebComponentProps<EntityDict, "extraFile",
         id: number;
     }[];
     originImgLoading: boolean;
+    selectedId: number;
 }, {
     onModalConfirm: (value: string) => void;
     chooseMethod: (method: MethodsType) => void;
     closeModal1: () => void;
     closeModal: () => void;
     onModal1Confirm: (value: number) => void;
+    setSelectedId: (id: number) => void;
 }>): import("react/jsx-runtime").JSX.Element;
 export {};
