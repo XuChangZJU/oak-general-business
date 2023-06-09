@@ -6,8 +6,7 @@ import { isEqual } from 'oak-domain/lib/utils/lodash';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 type MethodsType = 'original' | 'url' | 'uploadLocalImg';
-type ImgUrlsOrigin = 'wechat' | 'others'; // 原文链接来源
-type RenderImgItem = { renderUrl: any, originUrl: string, id: number };
+type RenderImgItem = { renderUrl: any, originUrl: string, id: number, isBridge: boolean };
 export default OakComponent({
     entity: 'extraFile',
     isList: true,
@@ -45,11 +44,12 @@ export default OakComponent({
     ],
     formData({ data: originalFiles, features }) {
         let file;
+        const notDeleteFiles = originalFiles?.filter((ele) => !ele.$$deleteAt$$);
         if (this.props.tag1) {
-            file = originalFiles?.filter((ele) => ele?.tag1 === this.props.tag1)?.[0];
+            file = notDeleteFiles?.filter((ele) => ele?.tag1 === this.props.tag1)?.[0];
         }
         if (this.props.tag2) {
-            file = originalFiles?.filter((ele) => ele?.tag2 === this.props.tag2)?.[0];
+            file = notDeleteFiles?.filter((ele) => ele?.tag2 === this.props.tag2)?.[0];
         }
         return {
             file,
@@ -65,6 +65,7 @@ export default OakComponent({
         bridgeUrl: '', // 通过桥接方式获得的url
         originImgLoading: false,
         renderImgUrl: '',
+        selectedId: -1,
     },
     properties: {
         type: '',
@@ -73,16 +74,16 @@ export default OakComponent({
         entity: '' as keyof EntityDict,
         entityId: '',
         imgUrls: [] as string[],
-        imgUrlsOrigin: 'others' as ImgUrlsOrigin,
     },
     lifetimes: {
         // features.getBridgeUrl 中使用了URL.createObjectURL
         attached() {
-            const { imgUrlsOrigin } = this.props;
             const { renderImgs } = this.state;
-            if (imgUrlsOrigin === 'wechat' && renderImgs && renderImgs.length) {
+            if (renderImgs && renderImgs.length) {
                 renderImgs.forEach((ele) => {
-                    URL.revokeObjectURL(ele.renderUrl);
+                    if(ele.isBridge){
+                        URL.revokeObjectURL(ele.renderUrl);
+                    }
                 })
             }
         }
@@ -90,7 +91,7 @@ export default OakComponent({
     listeners: {
         async src(prev, next) {
             if (prev !== next && !!this.state.src) {
-                if(this.state.isBridge) {
+                if (this.state.isBridge) {
                     try {
                         const url = await this.features.extraFile.getBridgeUrl(this.state.src);
                         this.setState({
@@ -114,7 +115,7 @@ export default OakComponent({
         async imgUrls(prev, next) {
             // 因为imgUrls是从请求来的， 它有可能比上边的src listener中的getBridgeUrl慢
             // 所以此处增加前后项imgUrls里都有值且不等的条件再去clean
-            if(prev?.imgUrls.length && next?.imgUrls.length && !isEqual(prev.imgUrls, next.imgUrls)) {
+            if (prev?.imgUrls.length && next?.imgUrls.length && !isEqual(prev.imgUrls, next.imgUrls)) {
                 this.clean();
                 this.setState({
                     renderImgUrl: '',
@@ -152,6 +153,7 @@ export default OakComponent({
                     this.setState({
                         methodsType: method
                     })
+                    this.setSelectedId(-1);
                     break;
                 case 'url':
                     this.setState({
@@ -164,7 +166,7 @@ export default OakComponent({
                         isModalOpen1: true,
                         methodsType: method
                     })
-                    const { imgUrlsOrigin, imgUrls } = this.props;
+                    const { imgUrls } = this.props;
                     const { renderImgs } = this.state;
                     let renderImgs2: RenderImgItem[] = new Array(...renderImgs);
                     if (imgUrls && imgUrls.length) {
@@ -179,13 +181,14 @@ export default OakComponent({
                                 return;
                             }
                             else if (renderImgs2[i] && renderImgs2[i].originUrl !== imgUrls[i]) {
-                                if (imgUrlsOrigin === 'wechat') {
+                                if (renderImgs2[i].isBridge) {
                                     URL.revokeObjectURL(renderImgs2[i].renderUrl);
                                 }
                                 renderImgs2 = [];
                             }
                             let renderUrl: string;
-                            if (imgUrlsOrigin === 'wechat') {
+                            const isWechatUrl = this.isWechatUrlFn(imgUrls[i]);
+                            if (isWechatUrl) {
                                 renderUrl = await this.features.extraFile.getBridgeUrl(imgUrls[i]);
                             }
                             else {
@@ -195,6 +198,7 @@ export default OakComponent({
                                 renderUrl,
                                 originUrl: imgUrls[i],
                                 id: i,
+                                isBridge: isWechatUrl
                             });
                         }
                         this.setState({
@@ -218,7 +222,6 @@ export default OakComponent({
 
         createExtraFileData(params: File | string) {
             const { methodsType } = this.state;
-            const { imgUrlsOrigin } = this.props;
             const { tag1, tag2, entity, entityId } = this.props;
             let extension = '';
             let filename = '';
@@ -252,7 +255,7 @@ export default OakComponent({
                         origin: 'unknown',
                         extension,
                         filename,
-                        isBridge: imgUrlsOrigin === 'wechat'
+                        isBridge: this.isWechatUrlFn(params)
                     });
                     break;
                 case 'original':
@@ -260,7 +263,7 @@ export default OakComponent({
                         origin: 'unknown',
                         extension,
                         filename,
-                        isBridge: imgUrlsOrigin === 'wechat',
+                        isBridge: this.isWechatUrlFn(params)
                     })
                     break;
             }
@@ -268,7 +271,7 @@ export default OakComponent({
         },
 
         async myAddItem(createData: EntityDict['extraFile']['CreateSingle']['data']) {
-             // 目前只支持七牛上传
+            // 目前只支持七牛上传
             const { methodsType } = this.state;
             this.addItem(createData, async () => {
                 if (createData.bucket) {
@@ -291,36 +294,39 @@ export default OakComponent({
             if (file) {
                 this.removeItem(file.id);
             }
-            if(!!params) {
+            if (!!params) {
                 const createData = this.createExtraFileData(params);
                 this.myAddItem(createData);
             }
-            if(!params) {
+            if (!params) {
                 this.setState({
                     renderImgUrl: '',
                 })
             }
         },
-        onModalConfirm(value: string){
+        onModalConfirm(value: string) {
             const reg = new RegExp(/(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/);
             if (!reg.test(value)) {
                 return
             }
             this.myUpdateItem(value);
-            const imgElement = document.getElementById('previewImg') as HTMLImageElement;
-            imgElement!.src = value;
-            imgElement.style.display = 'block';
+            this.setSelectedId(-1);
         },
         onModal1Confirm(value: number) {
             const { renderImgs } = this.state;
             const img = renderImgs.find((ele) => ele.id === value);
             this.myUpdateItem(img?.originUrl);
-            // const imgElement = document.getElementById('previewImg') as HTMLImageElement;
-            // imgElement!.src = img?.renderUrl || '';
-            // imgElement.style.display = 'block';
             this.closeModal1();
         },
-    },
+        isWechatUrlFn(url: string) {
+            return (url.startsWith('https://mmbiz.qpic.cn') || url.startsWith('http://mmbiz.qpic.cn'));
+        },
+        setSelectedId(id :number) {
+            this.setState({
+                selectedId: id
+            });
+        }
+    }
 }) as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
     props: ReactComponentProps<
         ED2,
@@ -334,7 +340,6 @@ export default OakComponent({
             entity: keyof ED2,
             entityId: string,
             imgUrls: string[],
-            imgUrlsOrigin: ImgUrlsOrigin,
         }
     >
 ) => React.ReactElement;
