@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'userEntityGrant', true, {
@@ -6,4 +7,4 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
     pagination: any;
     showBack: boolean;
     variant?: 'inline' | 'alone' | 'dialog';
-}, {}>): import("react/jsx-runtime").JSX.Element;
+}, {}>): JSX.Element;

@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { EntityDict } from './../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 export default function render(props: WebComponentProps<EntityDict, 'article', false, {
@@ -6,4 +7,4 @@ export default function render(props: WebComponentProps<EntityDict, 'article', f
     abstract?: string;
     content?: string;
     html?: string;
-}, {}>): import("react/jsx-runtime").JSX.Element;
+}, {}>): JSX.Element;

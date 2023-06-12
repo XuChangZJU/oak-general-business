@@ -1,1 +1,2 @@
-export default function render(): import("react/jsx-runtime").JSX.Element;
+/// <reference types="react" />
+export default function render(): JSX.Element;

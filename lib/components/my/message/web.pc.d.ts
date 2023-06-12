@@ -10,4 +10,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     buttonClassName?: string;
 }, {
     goMessageList: () => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

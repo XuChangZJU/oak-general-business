@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'userEntityGrant', true, {
@@ -6,4 +7,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'userEntityG
     url: string;
     expiresAt: number;
     title?: string;
-}, {}>): import("react/jsx-runtime").JSX.Element;
+}, {}>): JSX.Element;
