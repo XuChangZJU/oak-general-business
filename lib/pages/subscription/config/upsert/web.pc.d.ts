@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WechatPublicConfig } from '../../../../general-app-domain/Application/Schema';
 import { EntityDict } from '../../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';

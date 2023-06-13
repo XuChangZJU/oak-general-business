@@ -63,8 +63,6 @@ export default OakComponent({
         renderImgs: [] as RenderImgItem[], // 读取的原文图片，在modal使用
         methodsType: '' as MethodsType,
         bridgeUrl: '', // 通过桥接方式获得的url
-        originImgLoading: false,
-        renderImgUrl: '',
         selectedId: -1,
     },
     properties: {
@@ -76,50 +74,13 @@ export default OakComponent({
         imgUrls: [] as string[],
     },
     lifetimes: {
-        // features.getBridgeUrl 中使用了URL.createObjectURL
-        attached() {
-            const { renderImgs } = this.state;
-            if (renderImgs && renderImgs.length) {
-                renderImgs.forEach((ele) => {
-                    if(ele.isBridge){
-                        URL.revokeObjectURL(ele.renderUrl);
-                    }
-                })
-            }
-        }
     },
     listeners: {
-        async src(prev, next) {
-            if (prev !== next && !!this.state.src) {
-                if (this.state.isBridge) {
-                    try {
-                        const url = await this.features.extraFile.getBridgeUrl(this.state.src);
-                        this.setState({
-                            renderImgUrl: url,
-                        })
-                    }
-                    catch (err) {
-                        this.setMessage({
-                            content: '图片加载错误',
-                            type: 'error'
-                        })
-                    }
-                }
-                else {
-                    this.setState({
-                        renderImgUrl: this.state.src,
-                    })
-                }
-            }
-        },
         async imgUrls(prev, next) {
             // 因为imgUrls是从请求来的， 它有可能比上边的src listener中的getBridgeUrl慢
             // 所以此处增加前后项imgUrls里都有值且不等的条件再去clean
             if (prev?.imgUrls.length && next?.imgUrls.length && !isEqual(prev.imgUrls, next.imgUrls)) {
                 this.clean();
-                this.setState({
-                    renderImgUrl: '',
-                })
             }
         }
     },
@@ -136,17 +97,6 @@ export default OakComponent({
                         if (!fileInput.files || fileInput.files.length === 0) {
                             return;
                         }
-
-                        // 创建一个 FileReader 对象
-                        const reader = new FileReader();
-
-                        // 当文件读取完成后，显示预览图像
-                        reader.addEventListener("load", function () {
-                            imgElement!.src = reader.result as string;
-                            imgElement.style.display = 'block';
-                        });
-                        // 读取用户选择的文件
-                        reader.readAsDataURL(fileInput.files[0]);
                         this.myUpdateItem(fileInput.files[0]);
                     });
                     fileInput.click();
@@ -170,26 +120,17 @@ export default OakComponent({
                     const { renderImgs } = this.state;
                     let renderImgs2: RenderImgItem[] = new Array(...renderImgs);
                     if (imgUrls && imgUrls.length) {
-                        this.setState({
-                            originImgLoading: true,
-                        })
                         for (let i = 0; i < imgUrls.length; i++) {
                             if (renderImgs2[i] && renderImgs2[i].originUrl === imgUrls[i]) {
-                                this.setState({
-                                    originImgLoading: false,
-                                })
                                 return;
                             }
                             else if (renderImgs2[i] && renderImgs2[i].originUrl !== imgUrls[i]) {
-                                if (renderImgs2[i].isBridge) {
-                                    URL.revokeObjectURL(renderImgs2[i].renderUrl);
-                                }
                                 renderImgs2 = [];
                             }
                             let renderUrl: string;
                             const isWechatUrl = this.isWechatUrlFn(imgUrls[i]);
                             if (isWechatUrl) {
-                                renderUrl = await this.features.extraFile.getBridgeUrl(imgUrls[i]);
+                                renderUrl = this.features.extraFile.getUrl({isBridge: true, extra1: imgUrls[i]} as ExtraFile);
                             }
                             else {
                                 renderUrl = imgUrls[i]
@@ -203,7 +144,6 @@ export default OakComponent({
                         }
                         this.setState({
                             renderImgs: renderImgs2,
-                            originImgLoading: false,
                         })
                     }
                     break;
@@ -297,11 +237,6 @@ export default OakComponent({
             if (!!params) {
                 const createData = this.createExtraFileData(params);
                 this.myAddItem(createData);
-            }
-            if (!params) {
-                this.setState({
-                    renderImgUrl: '',
-                })
             }
         },
         onModalConfirm(value: string) {

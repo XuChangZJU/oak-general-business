@@ -20,7 +20,7 @@ export declare type OpSchema = EntityShape & {
     extra1?: Text | null;
     extension: String<16>;
     size?: Int<4> | null;
-    sort?: Float<22, 10> | null;
+    sort?: Float<4, 2> | null;
     fileType?: String<128> | null;
     isBridge?: Boolean | null;
 };
@@ -39,7 +39,7 @@ export declare type Schema = EntityShape & {
     extra1?: Text | null;
     extension: String<16>;
     size?: Int<4> | null;
-    sort?: Float<22, 10> | null;
+    sort?: Float<4, 2> | null;
     fileType?: String<128> | null;
     isBridge?: Boolean | null;
     article?: Article.Schema;
