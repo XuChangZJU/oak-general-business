@@ -32,6 +32,7 @@ export default function Render(
             entity: string;
             entityId: string;
             showBack: boolean;
+            showTitle: boolean;
         },
         {
             goUpsert: () => void;
@@ -47,6 +48,7 @@ export default function Render(
         entityId,
         oakLoading,
         showBack = false,
+        showTitle = true,
     } = props.data;
     const { pageSize, total, currentPage } = pagination || {};
     const {
@@ -62,7 +64,7 @@ export default function Render(
     const [inviteVisible, setInviteVisible] = useState(false);
 
     return (
-        <PageHeader title="权限列表" showBack={showBack}>
+        <PageHeader title={showTitle ? '权限列表' : undefined} showBack={showBack}>
             <div className={Style.container}>
                 <Space style={{ marginBottom: 16 }}>
                     <Button type="primary" onClick={() => goUpsert()}>

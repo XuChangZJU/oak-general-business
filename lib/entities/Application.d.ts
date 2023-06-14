@@ -2,7 +2,7 @@ import { String, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as System } from './System';
 import { Style } from '../types/Style';
-export declare type Passport = 'email' | 'mobile' | 'wechat';
+export declare type Passport = 'email' | 'mobile' | 'wechat' | 'wechatPublic';
 export declare type AppType = 'web' | 'wechatMp' | 'wechatPublic';
 export declare type WechatMpConfig = {
     type: 'wechatMp';
@@ -17,6 +17,7 @@ export declare type WechatMpConfig = {
         mode: 'clear' | 'compatible' | 'safe';
         dataFormat: 'json' | 'xml';
     };
+    passport?: Passport[];
 };
 export declare type WebConfig = {
     type: 'web';
@@ -26,7 +27,7 @@ export declare type WebConfig = {
         domain?: string;
         enable?: boolean;
     };
-    passport: Passport[];
+    passport?: Passport[];
 };
 export declare type WechatPublicTemplateMsgsConfig = Record<string, string>;
 export declare type WechatPublicConfig = {
@@ -35,6 +36,7 @@ export declare type WechatPublicConfig = {
     appId: string;
     appSecret: string;
     originalId?: string;
+    enable?: boolean;
     templateMsgs?: WechatPublicTemplateMsgsConfig;
     server?: {
         url?: string;
@@ -46,6 +48,7 @@ export declare type WechatPublicConfig = {
         appId: string;
         originalId: string;
     };
+    passport?: Passport[];
 };
 export interface Schema extends EntityShape {
     name: String<32>;

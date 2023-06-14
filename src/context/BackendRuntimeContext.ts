@@ -2,19 +2,27 @@ import { RuntimeContext } from './RuntimeContext';
 import { EntityDict } from '../general-app-domain';
 import { SerializedData } from './FrontendRuntimeContext';
 import assert from 'assert';
-import { OakTokenExpiredException, OakUserDisabledException } from '../types/Exception';
-import { OakException, OakUnloggedInException } from 'oak-domain/lib/types/Exception';
-import { ROOT_ROLE_ID, ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
+import {
+    OakTokenExpiredException,
+    OakUserDisabledException,
+} from '../types/Exception';
+import {
+    OakException,
+    OakUnloggedInException,
+} from 'oak-domain/lib/types/Exception';
+import { ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
 import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { SelectOpResult } from 'oak-domain/lib/types';
-import {
-    getMpUnlimitWxaCode,
-} from '../aspects/wechatQrCode';
+import { applicationProjection } from '../types/projection';
+import { getMpUnlimitWxaCode } from '../aspects/wechatQrCode';
 /**
  * general数据结构要求的后台上下文
  */
-export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<ED> implements RuntimeContext {
+export class BackendRuntimeContext<ED extends EntityDict>
+    extends AsyncContext<ED>
+    implements RuntimeContext
+{
     protected application?: Partial<ED['application']['Schema']>;
     protected token?: Partial<ED['token']['Schema']>;
     protected amIRoot?: boolean;
@@ -42,11 +50,10 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
                                     buffer,
                                 });
                             }
-
                         }
-
-                    }
-                    else if (['application', 'system', 'platform'].includes(entity)) {
+                    } else if (
+                        ['application', 'system', 'platform'].includes(entity)
+                    ) {
                         // todo 删除掉config中的敏感返回信息
                     }
                 }
@@ -55,39 +62,42 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
     }
 
     async setTokenValue(tokenValue: string) {
-        const result = await this.select('token', {
-            data: {
-                id: 1,
-                userId: 1,
-                playerId: 1,
-                player: {
+        const result = await this.select(
+            'token',
+            {
+                data: {
                     id: 1,
                     userState: 1,
                     isRoot: 1,
+                    ableState: 1,
+                    user: {
+                        id: 1,
+                        userState: 1,
+                        isRoot: 1,
+                    },
                 },
-                ableState: 1,
-                user: {
-                    id: 1,
-                    userState: 1,
-                    isRoot: 1,
+                filter: {
+                    id: tokenValue,
                 },
             },
-            filter: {
-                id: tokenValue,
-            },
-        }, {
-            dontCollect: true,
-            blockTrigger: true,
-        });
+            {
+                dontCollect: true,
+                blockTrigger: true,
+            }
+        );
         if (result.length === 0) {
-            console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`);
+            console.log(
+                `构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`
+            );
             // throw new OakTokenExpiredException();
             this.tokenException = new OakTokenExpiredException();
             return;
         }
         const token = result[0];
         if (token.ableState === 'disabled') {
-            console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}已经被disable`);
+            console.log(
+                `构建BackendRuntimeContext对应tokenValue「${tokenValue}已经被disable`
+            );
             this.tokenException = new OakTokenExpiredException();
             return;
         }
@@ -101,28 +111,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         const result = await this.select(
             'application',
             {
-                data: {
-                    id: 1,
-                    name: 1,
-                    config: 1,
-                    type: 1,
-                    systemId: 1,
-                    style: 1,
-                    system: {
-                        id: 1,
-                        name: 1,
-                        config: 1,
-                        platformId: 1,
-                        style: 1,
-                        folder: 1,
-                        super: 1,
-                        platform: {
-                            id: 1,
-                            config: 1,
-                            style: 1,
-                        },
-                    },
-                },
+                data: applicationProjection,
                 filter: {
                     id: appId,
                 },
@@ -132,7 +121,10 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
                 blockTrigger: true,
             }
         );
-        assert(result.length > 0, `构建BackendRuntimeContext对应appId「${appId}」找不到application`);
+        assert(
+            result.length > 0,
+            `构建BackendRuntimeContext对应appId「${appId}」找不到application`
+        );
         this.application = result[0];
     }
 
@@ -160,8 +152,7 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
                 await this.rollback();
                 throw err;
             }
-        }
-        else {
+        } else {
             // 否则是后台模式，默认用root
             this.rootMode = true;
         }
@@ -209,7 +200,10 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         }
         if (this.token) {
             const { userState } = this.token.user!;
-            if (['disabled', 'merged'].includes(userState as string) && !this.isReallyRoot()) {
+            if (
+                ['disabled', 'merged'].includes(userState as string) &&
+                !this.isReallyRoot()
+            ) {
                 throw new OakUserDisabledException();
             }
         }
@@ -250,13 +244,17 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
     }
 
     async sendMessage(data: ED['message']['CreateSingle']['data']) {
-        return this.operate('message', {
-            id: await generateNewIdAsync(),
-            action: 'create',
-            data,
-        }, {
-            dontCollect: true,
-        });
+        return this.operate(
+            'message',
+            {
+                id: await generateNewIdAsync(),
+                action: 'create',
+                data,
+            },
+            {
+                dontCollect: true,
+            }
+        );
     }
 
     allowUserUpdate(): boolean {
@@ -267,12 +265,14 @@ export class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<E
         if (userInfo) {
             const { userState } = userInfo!;
             if (userState === 'disabled') {
-                throw new OakUserDisabledException('您的帐号已经被禁用，请联系客服');
-            }
-            else if (['shadow', 'merged'].includes(userState!)) {
-                throw new OakTokenExpiredException('您的登录状态有异常，请重新登录 ');
-            }
-            else {
+                throw new OakUserDisabledException(
+                    '您的帐号已经被禁用，请联系客服'
+                );
+            } else if (['shadow', 'merged'].includes(userState!)) {
+                throw new OakTokenExpiredException(
+                    '您的登录状态有异常，请重新登录 '
+                );
+            } else {
                 assert(userState === 'normal');
             }
             return true;

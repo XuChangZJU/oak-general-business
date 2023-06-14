@@ -4,7 +4,7 @@ import { Schema as System } from './System';
 import { Style } from '../types/Style';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
-export type Passport = 'email' | 'mobile' | 'wechat';
+export type Passport = 'email' | 'mobile' | 'wechat' | 'wechatPublic';
 export type AppType = 'web' | 'wechatMp' | 'wechatPublic';
 export type WechatMpConfig = {
     type: 'wechatMp';
@@ -19,6 +19,7 @@ export type WechatMpConfig = {
         mode: 'clear' | 'compatible' | 'safe'; //消息加解密方式 明文模式 兼容模式 安全模式
         dataFormat: 'json' | 'xml';
     };
+    passport?: Passport[];
 };
 
 export type WebConfig = {
@@ -29,7 +30,7 @@ export type WebConfig = {
         domain?: string;
         enable?: boolean; //启用扫码登录
     };
-    passport: Passport[];
+    passport?: Passport[];
 };
 
 export type WechatPublicTemplateMsgsConfig = Record<string, string>;     // key值代表messageTypeId，value的值代表对应的templateId，data的转换改成message上的函数注入
@@ -40,6 +41,7 @@ export type WechatPublicConfig = {
     appId: string;
     appSecret: string;
     originalId?: string; //原始id
+    enable?: boolean;
     templateMsgs?: WechatPublicTemplateMsgsConfig;
     server?: {
         url?: string; //服务器地址(URL)
@@ -52,6 +54,7 @@ export type WechatPublicConfig = {
         //公众号跳小程序配置 originalId
         originalId: string; //原始id
     };
+    passport?: Passport[];
 };
 
 export interface Schema extends EntityShape {
@@ -63,7 +66,9 @@ export interface Schema extends EntityShape {
     style?: Style;
 };
 
-const entityDesc: EntityDesc<Schema> = {
+const entityDesc: EntityDesc<Schema, '', '', {
+    type: Schema['type'];
+}> = {
     locales: {
         zh_CN: {
             name: '应用',

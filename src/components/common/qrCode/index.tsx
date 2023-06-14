@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Space } from 'antd';
+import { Button, Space, Spin, Result } from 'antd';
 import { DownloadOutlined, ReloadOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { QRCodeCanvas } from 'qrcode.react';
 
 import './index.less';
+import { EntityDict } from '../../../general-app-domain';
+import { useTranslation } from 'react-i18next';
 
 type IQrCodeProps = {
     filename?: string;
@@ -15,6 +17,9 @@ type IQrCodeProps = {
     size?: number;
     url: string;
     loading?: boolean;
+    disableDownload?: boolean;
+    successed?: boolean;
+    type?: EntityDict['wechatLogin']['Schema']['type'];
 };
 
 
@@ -32,9 +37,12 @@ function QrCode(props: IQrCodeProps) {
         size = 280,
         url,
         loading = false,
+        disableDownload = false,
+        successed,
+        type,
     } = props;
     const prefixCls = 'oak';
-
+    const { t } = useTranslation();
     let V;
     if (expiresAt) {
         const diff = dayjs(expiresAt).diff(dayjs(), 'days');
@@ -73,6 +81,16 @@ function QrCode(props: IQrCodeProps) {
         }
     }
 
+    if (successed) {
+        return (
+            <div className={`${prefixCls}-qrCodeBox`}>
+                <Result
+                    status="success"
+                    title={type === 'bind' ? t('weChat-account-successfully-bound') : t('weChat-authorization-login-successful')}
+                />
+            </div>
+        )
+    }
 
     return (
         <div id="oakQrCode" className={`${prefixCls}-qrCodeBox`}>
@@ -81,20 +99,29 @@ function QrCode(props: IQrCodeProps) {
                 style={{
                     width: size,
                     height: size,
-                    marginBottom: 10,
+                    marginBottom: 16,
+                    marginTop: 16,
                 }}
             >
-                {isBase64(url) ? (
-                    <img src={url} alt="qrCode" width={size} height={size} />
-                ) : url ? (
-                    <QRCodeCanvas value={url} size={size} />
-                ) : null}
+                <Spin spinning={loading}>
+                    {isBase64(url) ? (
+                        <img
+                            src={url}
+                            alt="qrCode"
+                            width={size}
+                            height={size}
+                        />
+                    ) : url ? (
+                        <QRCodeCanvas value={url} size={size} />
+                    ) : null}
+                </Spin>
             </div>
+
             {V}
             {tips}
             {
                 <Space className={`${prefixCls}-qrCodeBox_actions`}>
-                    {!!url && (
+                    {!!url && !disableDownload && (
                         <Button
                             type="text"
                             onClick={() => {

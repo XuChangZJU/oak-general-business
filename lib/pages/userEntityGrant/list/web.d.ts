@@ -1,5 +1,5 @@
-import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../general-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'userEntityGrant', true, {
     searchValue: string;
     list: EntityDict['userEntityGrant']['Schema'][];

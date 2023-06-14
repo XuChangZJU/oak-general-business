@@ -1,5 +1,7 @@
 
 const SEND_KEY = 'captcha:sendAt';
+const SEND_CAPTCHA_LATENCY = process.env.NODE_ENV === 'development' ? 10 : 60;
+
 export default OakComponent({
     isList: false,
     projection: {
@@ -25,7 +27,10 @@ export default OakComponent({
         const now = Date.now();
         let counter = 0;
         if (typeof lastSendAt === 'number') {
-            counter = Math.max(60 - Math.ceil((now - lastSendAt) / 1000), 0);
+            counter = Math.max(
+                SEND_CAPTCHA_LATENCY - Math.ceil((now - lastSendAt) / 1000),
+                0
+            );
             if (counter > 0) {
                 (this as any).counterHandler = setTimeout(
                     () => this.reRender(),

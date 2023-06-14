@@ -1,5 +1,5 @@
 {
-    "navigationBarTitleText": "修改个人信息",
+    "navigationBarTitleText": "个人设置",
     "oakDisablePulldownRefresh": true,
     "usingComponents": {
         "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index",

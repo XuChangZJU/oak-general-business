@@ -12,6 +12,7 @@ export async function mergeUser<ED extends EntityDict & BaseEntityDict, Cxt exte
     const { from, to } = params;
     assert(from);
     assert(to);
+    assert(from !== to, '不能merge到相同user');
     const schema = context.getSchema();
     /* for (const entity in schema) {
         if (['oper', 'modi', 'operEntity', 'modiEntity', 'userEntityGrant', 'wechatQrCode'].includes(entity)) {
@@ -56,6 +57,7 @@ export async function mergeUser<ED extends EntityDict & BaseEntityDict, Cxt exte
         action: 'disable',
         data: {},
         filter: {
+            ableState: 'enabled',
             playerId: from,         // todo 这里是playerId, root如果正在扮演该用户待处理
         },
     }, { dontCollect: true });

@@ -165,6 +165,8 @@ export default OakComponent({
         entityId: '',
         redirectToAfterConfirm: {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
         qrCodeType: '' as string,
+        showTitle: true,
+        showBack: false,
     },
     data: {
         searchValue: '',

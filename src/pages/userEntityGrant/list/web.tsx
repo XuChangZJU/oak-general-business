@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { Table, Button, Space, Typography, Modal } from 'antd';
+import { Table, Space, Typography } from 'antd';
 import dayjs from 'dayjs';
-import PageHeader from '../../../components/common/pageHeader';
-import CellButton from '../../../components/userEntityGrant/cellButton';
-import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
-
+import PageHeader from '../../../components/common/pageHeader';
+import { EntityDict } from '../../../general-app-domain';
 import Style from './web.module.less';
 
 export default function render(
@@ -24,15 +22,15 @@ export default function render(
     >
 ) {
     const {
-        pagination,
+        oakPagination,
+        oakFullpath,
         list = [],
         oakLoading,
         showBack,
         variant,
-        oakFullpath,
     } = props.data;
 
-    const { pageSize, total, currentPage } = pagination || {};
+    const { pageSize, total, currentPage } = oakPagination || {};
 
      const { t, setPageSize, setCurrentPage } = props.methods;
 
@@ -122,21 +120,6 @@ export default function render(
                             );
                         },
                     },
-                    // {
-                    //     dataIndex: 'op',
-                    //     width: 200,
-                    //     title: '操作',
-                    //     align: 'center',
-                    //     render: (value, record, index) => {
-                    //         return (
-                    //             <CellButton
-                    //                 oakId={record.id}
-                    //                 oakPath={`${oakFullpath}.${record.id}`}
-                    //             />
-                    //         );
-                    //     },
-                    //     fixed: 'right',
-                    // },
                 ]}
                 pagination={{
                     total,

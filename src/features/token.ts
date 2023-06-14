@@ -56,11 +56,23 @@ export class Token<
         this.publish();
     }
 
-    async loginWechat(code: string) {
+    async loginByWechatInWebEnv(wechatLoginId: string) {
+        const env = await getEnv();
+        const { result } = await this.cache.exec('loginByWechat', {
+            env,
+            wechatLoginId,
+        });
+        this.tokenValue = result;
+        this.storage.save('token:token', result);
+        this.publish();
+    }
+
+    async loginWechat(code: string, params?: { wechatLoginId?: string }) {
         const env = await getEnv();
         const { result } = await this.cache.exec('loginWechat', {
             code,
             env: env as WebEnv,
+            wechatLoginId: params?.wechatLoginId,
         });
         this.tokenValue = result;
         this.storage.save('token:token', result);
@@ -104,6 +116,10 @@ export class Token<
 
     async logout() {
         // await this.cache.exec('logout', {});
+        this.removeToken();
+    }
+
+    removeToken() {
         this.tokenValue = undefined;
         this.storage.remove('token:token');
         this.publish();

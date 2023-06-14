@@ -8,11 +8,14 @@ import {
     refreshWechatPublicUserInfo,
     getWechatMpUserPhoneNumber,
     logout,
+    loginByWechat,
 } from './token';
-import { getUploadInfo } from './extraFile';
+import { getUploadInfo, getInfoByUrl } from './extraFile';
 import { getApplication, signatureJsSDK } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { mergeUser } from './user';
+import { createWechatLogin } from './wechaLogin';
+import { unbindingWechat } from './wechatUser';
 
 const aspectDict = {
     mergeUser,
@@ -30,6 +33,10 @@ const aspectDict = {
     getWechatMpUserPhoneNumber,
     logout,
     signatureJsSDK,
+    createWechatLogin,
+    unbindingWechat,
+    loginByWechat,
+    getInfoByUrl,
 };
 
 export default aspectDict;

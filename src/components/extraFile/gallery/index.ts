@@ -27,11 +27,15 @@ export default OakComponent({
         entity: 1,
         entityId: 1,
         fileType: 1,
+        sort:1,
+        isBridge: 1,
     },
     formData({ data: originalFiles, features }) {
         let files = (
             originalFiles as Array<EntityDict['extraFile']['OpSchema']>
-        )?.filter((ele) => !ele.$$deleteAt$$);
+        )?.filter((ele) => !ele.$$deleteAt$$).sort(
+          (ele1, ele2) => ele1.sort! - ele2.sort!
+        );
         if (this.props.tag1) {
             files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
         }
@@ -219,18 +223,26 @@ export default OakComponent({
             uploadFiles: any[],
             callback?: (file: any, status: string) => void
         ) {
+          const { files } = this.state
+            const currentSort = files?.length  ? files[files.length - 1].sort : 0;
             await Promise.all(
-                uploadFiles.map(async (uploadFile) => {
+                uploadFiles.map(async (uploadFile, index) => {
                     const { name, type, size, originFileObj } = uploadFile;
+              
+
+                 
                     await this.pushExtraFile(
                         {
                             name,
                             fileType: type,
                             size,
                             extra1: originFileObj,
+                            sort: currentSort + (index + 1) * 100
                         },
                         callback
                     );
+                   
+                    
                 })
             );
         },
@@ -240,12 +252,13 @@ export default OakComponent({
                 extra1: any;
                 fileType: string;
                 size: number;
+                sort: number;
             },
             callback?: (file: any, status: string) => void
         ) {
             const { type, origin, tag1, tag2, entity, entityId, autoUpload } =
                 this.props;
-            const { name, extra1, fileType, size } = options;
+            const { name, extra1, fileType, size, sort } = options;
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
             assert(entity, '必须传入entity');
@@ -264,6 +277,7 @@ export default OakComponent({
                 fileType,
                 id: generateNewId(),
                 entityId,
+                sort
             } as EntityDict['extraFile']['CreateSingle']['data'];
             // autoUpload为true, 选择直接上传七牛，再提交extraFile
             if (autoUpload) {

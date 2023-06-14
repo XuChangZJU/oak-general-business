@@ -1,4 +1,4 @@
-import { String, Int, Text, Image } from 'oak-domain/lib/types/DataType';
+import { String, Int, Text, Image, Float, Boolean } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
@@ -16,8 +16,9 @@ export interface Schema extends EntityShape {
     extra1?: Text;
     extension: String<16>;
     size?: Int<4>;
-    sort?: Int<4>;
+    sort?: Float<22,10>;
     fileType?: String<128>;
+    isBridge?: Boolean;
 };
 
 const entityDesc: EntityDesc<Schema, '', '', {
@@ -43,6 +44,7 @@ const entityDesc: EntityDesc<Schema, '', '', {
                 size: '文件大小',
                 sort: '排序',
                 fileType: '文件类型',
+                isBridge: '是否桥接访问',
             },
             v: {
                 origin: {

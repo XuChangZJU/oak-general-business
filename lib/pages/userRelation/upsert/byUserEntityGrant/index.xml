@@ -79,15 +79,31 @@
             <view class="label">有效期：</view>
             <view class="value-period">
                 <l-counter 
+<<<<<<< HEAD
                     count="{{userEntityGrant.period}}" 
                     max="120" 
                     min="5" 
+=======
+                    count="{{period}}" 
+                    max="{{ maxes[unit] }}" 
+                    min="1" 
+>>>>>>> dev
                     round-float="{{true}}"
                     bind:linchange="setPeriodMp"
                 />
-                <view style="margin-left: 30rpx">
+                <!-- <view style="margin-left: 30rpx">
                     分钟
-                </view>
+                </view> -->
+                <picker range="{{unitArr}}" range-key="label" value="{{unitIndex}}" bind:change="setUnitMp">
+                    <view class="unit-box">
+                    <view class="unit">
+                       {{unitArr[unitIndex].label}}
+                    </view>
+
+                       <l-icon l-class="icon" name="down" size="18" />
+                    </view>
+                   
+                </picker>
             </view>
         </view>
         <view style="flex: 1" />

@@ -14,8 +14,8 @@ export declare type OpSchema = EntityShape & {
     openId?: String<32> | null;
     unionId?: String<32> | null;
     sessionKey?: String<64> | null;
-    accessToken?: String<64> | null;
-    refreshToken?: String<64> | null;
+    accessToken?: String<128> | null;
+    refreshToken?: String<128> | null;
     scope?: String<64> | null;
     atExpiredAt?: Datetime | null;
     rtExpiredAt?: Datetime | null;
@@ -33,8 +33,8 @@ export declare type Schema = EntityShape & {
     openId?: String<32> | null;
     unionId?: String<32> | null;
     sessionKey?: String<64> | null;
-    accessToken?: String<64> | null;
-    refreshToken?: String<64> | null;
+    accessToken?: String<128> | null;
+    refreshToken?: String<128> | null;
     scope?: String<64> | null;
     atExpiredAt?: Datetime | null;
     rtExpiredAt?: Datetime | null;

@@ -4,7 +4,7 @@ import { EntityDict } from "../general-app-domain";
 import { QiniuUploadInfo } from "oak-frontend-base/lib/types/Upload";
 import { Config, Origin } from "../types/Config";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
-declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = {
+export declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = {
     mergeUser: (params: {
         from: string;
         to: string;
@@ -20,9 +20,10 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntime
         mobile: string;
         env: WebEnv | WechatMpEnv;
     }, context: Cxt) => Promise<string>;
-    loginWechat: ({ code, env, }: {
+    loginWechat: ({ code, env, wechatLoginId, }: {
         code: string;
         env: WebEnv;
+        wechatLoginId?: string;
     }, context: Cxt) => Promise<string>;
     logout: ({}: {}, context: Cxt) => Promise<void>;
     loginWechatMp: ({ code, env, }: {
@@ -72,6 +73,25 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntime
         userId: string;
     }, context: Cxt) => Promise<void>;
     getMpUnlimitWxaCode: (wechatQrCodeId: string, context: Cxt) => Promise<string>;
+    createWechatLogin: (params: {
+        type: EntityDict['wechatLogin']['Schema']['type'];
+        interval: number;
+    }, context: Cxt) => Promise<string>;
+    unbindingWechat: (params: {
+        wechatUserId: string;
+        captcha?: string;
+        mobile?: string;
+    }, context: Cxt) => Promise<void>;
+    loginByWechat: (params: {
+        wechatLoginId: string;
+        env: WebEnv;
+    }, context: Cxt) => Promise<string>;
+    getInfoByUrl: (params: {
+        url: string;
+    }) => Promise<{
+        title: string;
+        publishDate: number | undefined;
+        imageList: string[];
+    }>;
 };
-export declare type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
-export {};
+export default GeneralAspectDict;

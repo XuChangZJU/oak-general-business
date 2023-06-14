@@ -18,6 +18,7 @@ import Styles from './web.module.less';
 import {
     AppType,
     WechatPublicConfig,
+    Passport,
 } from '../../../../general-app-domain/Application/Schema';
 
 
@@ -102,6 +103,60 @@ export default function WechatPublic(props: {
                             </>
                         </Form.Item>
                     )}
+                </Form>
+            </Col>
+            <Col flex="auto">
+                <Divider orientation="left" className={Styles.title}>
+                    网站-授权方式
+                </Divider>
+                <Form
+                    colon={true}
+                    labelAlign="left"
+                    layout="vertical"
+                    style={{ marginTop: 10 }}
+                >
+                    <Form.Item label="passport" name="passport">
+                        <>
+                            <Select
+                                mode="multiple"
+                                allowClear
+                                style={{ width: '100%' }}
+                                placeholder="请选择授权方式"
+                                value={config?.passport as Passport[]}
+                                onChange={(value: Passport[]) => {
+                                    if (value.includes('wechat') && value.includes('wechatPublic')) {
+                                        // messageApi.warning('微信网站和微信公众号中，只能选择一个');
+                                        message.warning('微信网站和微信公众号中，只能选择一个')
+                                        return;
+                                    }
+                                    setValue(`passport`, value);
+                                }}
+                                options={
+                                    [
+                                        {
+                                            label: '邮箱',
+                                            value: 'email',
+                                        },
+                                        {
+                                            label: '手机号',
+                                            value: 'mobile',
+                                        },
+                                        {
+                                            label: '微信网站',
+                                            value: 'wechat',
+                                        },
+                                        {
+                                            label: '微信公众号',
+                                            value: 'wechatPublic',
+                                        },
+                                    ] as Array<{
+                                        label: string;
+                                        value: Passport;
+                                    }>
+                                }
+                            />
+                        </>
+                    </Form.Item>
                 </Form>
             </Col>
             <Col flex="auto">

@@ -20,23 +20,15 @@ export default OakComponent({
                 loading: true,
             });
             const { features } = this;
-            const token = await features.token.getToken(true);
+            const token = features.token.getToken(true);
             // 解析url
-            let url = decodeURIComponent(window.location.href);
-            if (this.strCharPosition(url, '?') > 1) {
-                const startStr = url.substring(0, url.lastIndexOf('?'));
-                let endStr = url.substring(url.lastIndexOf('?'));
-                if (process.env.NODE_ENV === 'production') {
-                    endStr = endStr.replace(/&/g, '%26');
-                }
-                url = startStr + endStr;
-            }
+            const url = window.location.href;
             const urlObj = URL.parse(url, true);
-            //console.warn('urlObj: '+ JSON.stringify(urlObj))
             //格式 xx?code=xx&state=/xx/xx?d=xx
             const query = urlObj?.query;
             const code = query?.code;
             const state = query?.state;
+            const wechatLoginId = query?.wechatLoginId;
             if (!code) {
                 this.setState({
                     error: '缺少code参数',
@@ -51,16 +43,18 @@ export default OakComponent({
                 this.setState({
                     loading: false,
                 });
-                this.go(state);
+                this.go(state as string);
             } else {
                 console.log('token不存在或失效');
                 try {
                     // web微信扫码跟公众号授权
-                    await features.token.loginWechat(code as string);
+                    await features.token.loginWechat(code as string, {
+                        wechatLoginId: wechatLoginId as string,
+                    });
                     this.setState({
                         loading: false,
                     });
-                    this.go(state);
+                    this.go(state as string);
                 } catch (err) {
                     console.warn(err);
                     this.setState({
@@ -72,19 +66,21 @@ export default OakComponent({
             }
         },
         go(state?: string | string[]) {
-            //解析state里面的数据
-            //console.log('state', state)
             if (!state) {
                 this.redirectTo({
                     url: '/',
                 });
                 return;
             }
-            const stateObj = URL.parse(
-                decodeURIComponent(state as string),
-                true
-            );
-            // console.log('stateObj' + JSON.stringify(stateObj));
+            //需要对backUrl进行处理
+            let url = state;
+            if (url.indexOf('backUrl') > 0) {
+                url =
+                    '?backUrl=' +
+                    encodeURIComponent((url as string).replace('?backUrl=', ''));
+            }
+            //解析state里面的数据
+            const stateObj = URL.parse(url as string, true);
             const stateQuery = stateObj?.query;
             const pathname = stateObj?.pathname;
 

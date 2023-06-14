@@ -1,5 +1,5 @@
-import { String, Int, Text } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { String, Int, Float, Boolean, Text } from "oak-domain/lib/types/DataType";
+import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
@@ -20,8 +20,9 @@ export declare type OpSchema = EntityShape & {
     extra1?: Text | null;
     extension: String<16>;
     size?: Int<4> | null;
-    sort?: Int<4> | null;
+    sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
+    isBridge?: Boolean | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
@@ -38,8 +39,9 @@ export declare type Schema = EntityShape & {
     extra1?: Text | null;
     extension: String<16>;
     size?: Int<4> | null;
-    sort?: Int<4> | null;
+    sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
+    isBridge?: Boolean | null;
     article?: Article.Schema;
     user?: User.Schema;
 } & {
@@ -65,6 +67,7 @@ declare type AttrFilter<E> = {
     size: Q_NumberValue;
     sort: Q_NumberValue;
     fileType: Q_StringValue;
+    isBridge: Q_BooleanValue;
     article: Article.Filter;
     user: User.Filter;
 };
@@ -91,6 +94,7 @@ export declare type Projection = {
     size?: number;
     sort?: number;
     fileType?: number;
+    isBridge?: number;
     article?: Article.Projection;
     user?: User.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
@@ -141,6 +145,8 @@ export declare type SortAttr = {
     sort: number;
 } | {
     fileType: number;
+} | {
+    isBridge: number;
 } | {
     article: Article.SortAttr;
 } | {

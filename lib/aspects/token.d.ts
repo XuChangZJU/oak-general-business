@@ -9,14 +9,19 @@ export declare function loginByMobile<ED extends EntityDict, Cxt extends Backend
     env: WebEnv | WechatMpEnv;
 }, context: Cxt): Promise<string>;
 export declare function refreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({}: {}, context: Cxt): Promise<void>;
+export declare function loginByWechat<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+    wechatLoginId: string;
+    env: WebEnv | WechatMpEnv;
+}, context: Cxt): Promise<string>;
 /**
  * 公众号授权登录
  * @param param0
  * @param context
  */
-export declare function loginWechat<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ code, env }: {
+export declare function loginWechat<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ code, env, wechatLoginId, }: {
     code: string;
     env: WebEnv;
+    wechatLoginId?: string;
 }, context: Cxt): Promise<string>;
 /**
  * 小程序授权登录

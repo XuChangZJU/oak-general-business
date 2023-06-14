@@ -33,14 +33,30 @@ export default OakComponent({
         qrCodeType: '' as QrCodeType,
     },
     data: {
-        period: 5,
+        period: 15,
         userEntityGrantId: '',
         unit: 'minute' as Unit,
         maxes: {
-            minute: 4320, // 60 * 24 * 3
-            hour: 72,
+            minute: 3 * 24 * 60,
+            hour: 3 * 24,
             day: 3,
         },
+        defaultPeriods: {
+            minute: 15,
+            hour: 1,
+            day: 1,
+        },
+        unitArr: [
+            {
+                label: '分钟',
+                value: 'minute',
+            },
+            {
+                label: '小时',
+                value: 'hour',
+            },
+        ],
+        unitIndex: 0,
     },
     lifetimes: {
         ready() {
@@ -115,7 +131,18 @@ export default OakComponent({
             this.setPeriod(count);
         },
         setUnit(u: Unit) {
+            const { defaultPeriods } = this.state;
             this.setState({ unit: u });
+            this.setPeriod(defaultPeriods[u as Unit]);
+        },
+        setUnitMp(e: any) {
+            const { unitArr } = this.state;
+            const { value } = e.detail;
+            const unitObj = unitArr[value];
+            this.setState({
+                unitIndex: value,
+            });
+            this.setUnit(unitObj.value as Unit);
         },
         onBack() {
             this.navigateBack();

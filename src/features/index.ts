@@ -9,6 +9,7 @@ import AspectDict from '../aspects/AspectDict';
 import { AspectWrapper } from 'oak-domain/lib/types';
 import { AppType } from '../general-app-domain/Application/Schema';
 import { EntityDict } from '../general-app-domain';
+import Theme from './theme';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 
@@ -32,12 +33,15 @@ export function initialize<
         basicFeatures.cache,
         basicFeatures.localStorage
     );
-    const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application);
+
+    // 临时代码，合并后再删
+    const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application, basicFeatures.locales);
     const config = new Config<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
     const weiXinJsSdk = new WeiXinJsSdk<ED, Cxt, FrontCxt, AD>(
         basicFeatures.cache,
         basicFeatures.localStorage
     );
+    const theme = new Theme(basicFeatures.cache, basicFeatures.localStorage);
 
     return {
         token,
@@ -45,6 +49,7 @@ export function initialize<
         application,
         config,
         weiXinJsSdk,
+        theme,
     };
 }
 
@@ -59,4 +64,5 @@ export type GeneralFeatures<
     application: Application<ED, Cxt, FrontCxt, AD>;
     config: Config<ED, Cxt, FrontCxt, AD>;
     weiXinJsSdk: WeiXinJsSdk<ED, Cxt, FrontCxt, AD>;
+    theme: Theme<ED, Cxt, FrontCxt, AD>;
 };

@@ -1,8 +1,6 @@
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
-export default function render(props: WebComponentProps<EntityDict, 'userEntityGrant', true, {
-    oakLoading: boolean;
-    oakExecuting: boolean;
+export default function Render(props: WebComponentProps<EntityDict, 'userEntityGrant', true, {
     type: 'grant';
     expired: boolean;
     relation: boolean;

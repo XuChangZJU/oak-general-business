@@ -1,5 +1,6 @@
 import React from 'react';
 import './index.less';
+import { EntityDict } from '../../../general-app-domain';
 declare type IQrCodeProps = {
     filename?: string;
     expiresAt?: number;
@@ -9,6 +10,9 @@ declare type IQrCodeProps = {
     size?: number;
     url: string;
     loading?: boolean;
+    disableDownload?: boolean;
+    successed?: boolean;
+    type?: EntityDict['wechatLogin']['Schema']['type'];
 };
 declare function QrCode(props: IQrCodeProps): JSX.Element;
 export default QrCode;

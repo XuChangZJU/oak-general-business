@@ -34,9 +34,11 @@ export type GeneralAspectDict<
         {
             code,
             env,
+            wechatLoginId,
         }: {
             code: string;
             env: WebEnv;
+            wechatLoginId?: string;
         },
         context: Cxt
     ) => Promise<string>;
@@ -120,7 +122,38 @@ export type GeneralAspectDict<
     getMpUnlimitWxaCode: (
         wechatQrCodeId: string,
         context: Cxt
-    ) => Promise<string>;
+        ) => Promise<string>;
+    createWechatLogin: (
+        params: {
+            type: EntityDict['wechatLogin']['Schema']['type'];
+            interval: number;
+        },
+        context: Cxt
+        ) => Promise<string>;
+        unbindingWechat: (
+            params: {
+                wechatUserId: string;
+                captcha?: string;
+                mobile?: string;
+            },
+            context: Cxt
+        ) => Promise<void>;
+        loginByWechat: (
+            params: {
+                wechatLoginId: string;
+                env: WebEnv;
+            },
+            context: Cxt
+        ) => Promise<string>;
+        getInfoByUrl: (
+            params: {
+                url: string;
+            },
+        ) => Promise<{
+            title: string;
+            publishDate: number | undefined;
+            imageList: string[];
+        }>
 };
 
 export default GeneralAspectDict;

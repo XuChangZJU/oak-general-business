@@ -1,8 +1,8 @@
-import { UploadFile } from 'antd';
-import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
-declare type Theme = 'file' | 'image' | 'image-flow' | 'custom';
-export default function render(props: WebComponentProps<EntityDict, 'extraFile', true, {
+import { UploadFile } from "antd";
+import { WebComponentProps } from "oak-frontend-base";
+import { EntityDict } from "../../../general-app-domain";
+declare type Theme = "file" | "image" | "image-flow" | "custom";
+export default function render(props: WebComponentProps<EntityDict, "extraFile", true, {
     accept?: string;
     maxNumber?: number;
     multiple?: boolean;
@@ -18,7 +18,7 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
     onDownload?: (file: UploadFile<any>) => void;
     showUploadList?: boolean;
     children?: JSX.Element;
-    files?: EntityDict['extraFile']['OpSchema'][];
+    files?: EntityDict["extraFile"]["OpSchema"][];
     disableInsert?: boolean;
     disableAdd?: boolean;
     disableDownload?: boolean;

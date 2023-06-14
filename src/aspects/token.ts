@@ -5,6 +5,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { WechatMpConfig, WechatPublicConfig, WebConfig } from '../general-app-domain/Application/Schema';
 import { CreateOperationData as CreateToken, WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
 import { CreateOperationData as CreateWechatUser } from '../general-app-domain/WechatUser/Schema';
+import { UpdateOperationData as UpdateWechatLoginData } from '../general-app-domain/WechatLogin/Schema';
 import { Operation as ExtraFileOperation } from '../general-app-domain/ExtraFile/Schema';
 import { OakRowInconsistencyException, OakUnloggedInException, OakUserException, OakUserUnpermittedException } from 'oak-domain/lib/types';
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
@@ -14,6 +15,7 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { tokenProjection } from '../types/projection';
 import { sendSms } from '../utils/sms';
 import { mergeUser } from './user';
+import { users } from '../data/userRole';
 
 async function makeDistinguishException<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(userId: string, context: Cxt, message?: string) {
     const [user] = await context.select('user', {
@@ -153,7 +155,6 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
     assert(schema.hasOwnProperty(entity), `${entity}必须是有效的对象名 `);
     assert(schema.token.attributes.entity.ref!.includes(entity), `${entity}必须是token的有效关联对象`);
     assert(schema[entity as keyof ED].attributes.hasOwnProperty('userId') && (schema[entity as keyof ED].attributes as any).userId!.ref === 'user', `${entity}必须有指向user的userId属性`);
-
     if (currentToken) {
         assert(currentToken.id);
         assert(currentToken.userId);
@@ -162,14 +163,14 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
             const { userState } = user;
             switch (userState) {
                 case 'normal': {
-                    if (currentToken.id === user.id) {
+                    if (currentToken.userId === user.id) {
                         return currentToken.id;
                     }
                     await mergeUser<ED, Cxt>({ from: user.id!, to: currentToken.userId! }, context, true);
                     return currentToken.id;
                 }
                 case 'shadow': {
-                    assert(currentToken.id !== user.id);
+                    assert(currentToken.userId !== user.id);
                     await mergeUser<ED, Cxt>({ from: user.id!, to: currentToken.userId! }, context, true);
                     await context.operate('user', {
                         id: await generateNewIdAsync(),
@@ -186,7 +187,7 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
                 }
                 case 'merged': {
                     assert(user.refId);
-                    if (user.refId === currentToken.id) {
+                    if (user.refId === currentToken.userId) {
                         return currentToken.id;
                     }
                     // 说明一个用户被其他用户merge了，现在还是暂时先merge，后面再说
@@ -314,16 +315,24 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
                 id: await generateNewIdAsync(),
                 userState: 'normal',
             };
-            await context.operate('user', {
-                id: await generateNewIdAsync(),
-                action: 'create',
-                data: userData,
-            }, {});
+            await context.operate(
+                'user',
+                {
+                    id: await generateNewIdAsync(),
+                    action: 'create',
+                    data: userData,
+                },
+                {}
+            );
+            assert(
+                entityId || createData.id,
+                'entityId和createData必须存在一项'
+            );
 
             tokenData.userId = userData.id;
             tokenData.playerId = userData.id;
             tokenData.entity = entity;
-            tokenData.entityId = createData.id;
+            tokenData.entityId = entityId || createData.id;
             await context.operate('token', {
                 id: await generateNewIdAsync(),
                 action: 'create',
@@ -370,6 +379,11 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
                 id: 1,
                 userState: 1,
                 refId: 1,
+                ref: {
+                    id: 1,
+                    userState: 1,
+                    refId: 1,
+                },
                 wechatUser$user: {
                     $entity: 'wechatUser',
                     data: {
@@ -395,6 +409,11 @@ async function setupMobile<ED extends EntityDict, Cxt extends BackendRuntimeCont
         assert(result2.length === 1);
         const [mobileRow] = result2;
         const { user } = mobileRow;
+        const { userState, ref } = user!;
+        if (userState === 'merged') {
+            return await setUpTokenAndUser<ED, Cxt>(env, context, 'mobile', mobileRow.id, undefined, ref as Partial<ED['user']['Schema']>);
+
+        }
         return await setUpTokenAndUser<ED, Cxt>(env, context, 'mobile', mobileRow.id, undefined, user as Partial<ED['user']['Schema']>);
     }
     else {
@@ -671,7 +690,60 @@ export async function refreshWechatPublicUserInfo<ED extends EntityDict, Cxt ext
     return await tryRefreshWechatPublicUserInfo<ED, Cxt>(token.entityId, context);
 }
 
-async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(code: string, env: WebEnv | WechatMpEnv, context: Cxt): Promise<string> {
+// 用户在微信端授权登录后，在web端触发该方法
+export async function loginByWechat<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(
+    params: {
+        wechatLoginId: string,
+        env: WebEnv | WechatMpEnv,
+    },
+    context: Cxt,
+): Promise<string> {
+    const { wechatLoginId, env } = params;
+    const [wechatLoginData] = await context.select('wechatLogin', {
+        data: {
+            id: 1,
+            userId: 1,
+            type: 1,
+
+        },
+        filter: {
+            id: wechatLoginId,
+        }
+    }, {
+        dontCollect: true,
+    });
+    const [wechatUserLogin] = await context.select('wechatUser', {
+        data: {
+            id: 1,
+            userId: 1,
+            user: {
+                id: 1,
+                name: 1,
+                nickname: 1,
+                userState: 1,
+                refId: 1,
+                userRole$user: {
+                    $entity: 'userRole',
+                    data: {
+                        id: 1,
+                        userId: 1,
+                        roleId: 1,
+                    },
+                }
+            },
+        },
+        filter: {
+            userId: wechatLoginData.userId!,
+        }
+    }, {
+        dontCollect: true,
+    });
+    const tokenId = await setUpTokenAndUser<ED, Cxt>(env, context, 'wechatUser', wechatUserLogin.id, undefined, (wechatUserLogin as EntityDict['wechatUser']['Schema']).user!);
+    await loadTokenInfo<ED, Cxt>(tokenId, context);
+    return tokenId;
+}
+
+async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(code: string, env: WebEnv | WechatMpEnv, context: Cxt, wechatLoginId?: string): Promise<string> {
     const application = context.getApplication();
     const { type, config, systemId } = application!;
 
@@ -704,6 +776,22 @@ async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRunt
         'wechatPublic': 'public',
         'wechatMp': 'mp',
     };
+
+    const createWechatUserAndReturnTokenId = async (user?: EntityDict['user']['Schema']) => {
+        const wechatUserCreateData: CreateWechatUser = {
+            id: await generateNewIdAsync(),
+            unionId,
+            origin: OriginMap[type] as 'mp',
+            openId,
+            applicationId: application!.id!,
+            ...wechatUserData,
+        };
+
+        const tokenId = await setUpTokenAndUser<ED, Cxt>(env, context, 'wechatUser', undefined, wechatUserCreateData, user);
+        return tokenId;
+    }
+
+    // 扫码者
     const [wechatUser] = await context.select('wechatUser', {
         data: {
             id: 1,
@@ -733,88 +821,204 @@ async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRunt
     }, {
         dontCollect: true,
     });
-    if (wechatUser) {
-        const tokenId = await setUpTokenAndUser<ED, Cxt>(env, context, 'wechatUser', wechatUser.id, undefined, wechatUser.user as undefined);
-        const wechatUserUpdateData = wechatUserData;
-        if (unionId !== wechatUser.unionId as any) {
-            Object.assign(wechatUserUpdateData, {
-                unionId,
-            });
+    if (wechatLoginId) {
+        const updateWechatLogin = async (updateData: UpdateWechatLoginData) => {
+            await context.operate('wechatLogin', {
+                id: await generateNewIdAsync(),
+                action: 'update',
+                data: updateData,
+                filter: {
+                    id: wechatLoginId,
+                },
+            }, { dontCollect: true });
         }
-        await context.operate('wechatUser', {
-            id: await generateNewIdAsync(),
-            action: 'update',
-            data: wechatUserUpdateData,
-            filter: {
-                id: wechatUser.id,
-            },
-        }, { dontCollect: true });
-
-        return tokenId;
-    }
-    else if (unionId) {
-        // 如果有unionId，查找同一个system下有没有相同的unionId
-        const [wechatUser3] = await context.select('wechatUser', {
+        // 扫码产生的实体wechaLogin
+        const [wechatLoginData] = await context.select('wechatLogin', {
             data: {
                 id: 1,
                 userId: 1,
-                unionId: 1,
+                type: 1,
                 user: {
                     id: 1,
+                    name: 1,
+                    nickname: 1,
                     userState: 1,
                     refId: 1,
+                    userRole$user: {
+                        $entity: 'userRole',
+                        data: {
+                            id: 1,
+                            userId: 1,
+                            roleId: 1,
+                        },
+                    }
                 },
             },
             filter: {
-                application: {
-                    systemId: application!.systemId,
-                },
-                unionId,
+                id: wechatLoginId,
             }
         }, {
             dontCollect: true,
         });
-        if (wechatUser3) {
-            const wechatUserCreateData: CreateWechatUser = {
-                id: await generateNewIdAsync(),
-                unionId,
-                origin: OriginMap[type] as 'mp',
-                openId,
-                applicationId: application!.id!,
-                ...wechatUserData,
-            };
-            const tokenId = await setUpTokenAndUser<ED, Cxt>(env, context, 'wechatUser', undefined, wechatUserCreateData, wechatUser3.user!);
-
-            if (!wechatUser3.userId) {
-                // 这里顺便帮其它wechatUser数据也补上相应的userId
+        // 用户已登录，通过扫描二维码绑定
+        if (wechatLoginData && wechatLoginData.type === "bind") {
+            // 首先通过wechaLogin.userId查询是否存在wechatUser 判断是否绑定
+            // 登录者
+            const [wechatUserLogin] = await context.select('wechatUser', {
+                data: {
+                    id: 1,
+                    userId: 1,
+                    user: {
+                        id: 1,
+                        name: 1,
+                        nickname: 1,
+                        userState: 1,
+                        refId: 1,
+                        userRole$user: {
+                            $entity: 'userRole',
+                            data: {
+                                id: 1,
+                                userId: 1,
+                                roleId: 1,
+                            },
+                        }
+                    },
+                },
+                filter: {
+                    userId: wechatLoginData.userId!,
+                }
+            }, {
+                dontCollect: true,
+            });
+            // 已绑定
+            assert(!wechatUserLogin, '登录者已经绑定微信公众号')
+            // 未绑定的情况，就要先看扫码者是否绑定了公众号
+            // 扫码者已绑定, 将扫码者的userId替换成登录者的userId
+            if (wechatUser) {
                 await context.operate('wechatUser', {
                     id: await generateNewIdAsync(),
                     action: 'update',
                     data: {
-                        userId: wechatUserCreateData.userId!,   // 在setUpTokenAndUser内赋上值
+                        userId: wechatLoginData.userId!,
                     },
                     filter: {
-                        id: wechatUser3.id,
+                        id: wechatUser.id,
                     },
                 }, { dontCollect: true });
+                const tokenId = await setUpTokenAndUser<ED, Cxt>(env, context, 'wechatUser', wechatUser.id, undefined, (wechatUserLogin as EntityDict['wechatUser']['Schema']).user!);
+                await updateWechatLogin({ successed: true });
+                return tokenId;
             }
-
+            else {
+                const tokenId = await createWechatUserAndReturnTokenId(wechatLoginData.user!);
+                await updateWechatLogin({ successed: true });
+                return tokenId;
+            }
+        }
+        // 用户未登录情况下
+        else if (wechatLoginData.type === 'login') {
+            // wechatUser存在直接登录
+            if (wechatUser) {
+                const tokenId = await setUpTokenAndUser<ED, Cxt>(env, context, 'wechatUser', wechatUser.id, undefined, wechatUser.user!);
+                await updateWechatLogin({ successed: true });
+                return tokenId;
+            }
+            else {
+                // 创建user和wechatUser(绑定并登录)
+                const userId = await generateNewIdAsync();
+                const userData = {
+                    id: userId,
+                    userState: 'normal',
+                };
+                await context.operate(
+                    'user',
+                    {
+                        id: await generateNewIdAsync(),
+                        action: 'create',
+                        data: userData,
+                    },
+                    {}
+                );
+                const tokenId = await createWechatUserAndReturnTokenId(userData as EntityDict['user']['Schema']);
+                await updateWechatLogin({ userId, successed: true });
+                return tokenId;
+            }
+        }
+    }
+    else {
+        if (wechatUser) {
+            const tokenId = await setUpTokenAndUser<ED, Cxt>(env, context, 'wechatUser', wechatUser.id, undefined, wechatUser.user as undefined);
+            const wechatUserUpdateData = wechatUserData;
+            if (unionId !== wechatUser.unionId as any) {
+                Object.assign(wechatUserUpdateData, {
+                    unionId,
+                });
+            }
+            await context.operate('wechatUser', {
+                id: await generateNewIdAsync(),
+                action: 'update',
+                data: wechatUserUpdateData,
+                filter: {
+                    id: wechatUser.id,
+                },
+            }, { dontCollect: true });
+    
             return tokenId;
+        }
+        else if (unionId) {
+            // 如果有unionId，查找同一个system下有没有相同的unionId
+            const [wechatUser3] = await context.select('wechatUser', {
+                data: {
+                    id: 1,
+                    userId: 1,
+                    unionId: 1,
+                    user: {
+                        id: 1,
+                        userState: 1,
+                        refId: 1,
+                    },
+                },
+                filter: {
+                    application: {
+                        systemId: application!.systemId,
+                    },
+                    unionId,
+                }
+            }, {
+                dontCollect: true,
+            });
+            if (wechatUser3) {
+                const wechatUserCreateData: CreateWechatUser = {
+                    id: await generateNewIdAsync(),
+                    unionId,
+                    origin: OriginMap[type] as 'mp',
+                    openId,
+                    applicationId: application!.id!,
+                    ...wechatUserData,
+                };
+                const tokenId = await setUpTokenAndUser<ED, Cxt>(env, context, 'wechatUser', undefined, wechatUserCreateData, wechatUser3.user!);
+    
+                if (!wechatUser3.userId) {
+                    // 这里顺便帮其它wechatUser数据也补上相应的userId
+                    await context.operate('wechatUser', {
+                        id: await generateNewIdAsync(),
+                        action: 'update',
+                        data: {
+                            userId: wechatUserCreateData.userId!,   // 在setUpTokenAndUser内赋上值
+                        },
+                        filter: {
+                            id: wechatUser3.id,
+                        },
+                    }, { dontCollect: true });
+                }
+    
+                return tokenId;
+            }
         }
     }
 
     // 到这里都是要同时创建wechatUser和user对象了
-    const wechatUserCreateData: CreateWechatUser = {
-        id: await generateNewIdAsync(),
-        unionId,
-        origin: OriginMap[type] as 'mp',
-        openId,
-        applicationId: application!.id!,
-        ...wechatUserData,
-    };
-
-    const tokenId = await setUpTokenAndUser<ED, Cxt>(env, context, 'wechatUser', undefined, wechatUserCreateData, undefined);
-    return tokenId;
+    return await createWechatUserAndReturnTokenId();
 }
 
 /**
@@ -822,12 +1026,22 @@ async function loginFromWechatEnv<ED extends EntityDict, Cxt extends BackendRunt
  * @param param0 
  * @param context 
  */
-export async function loginWechat<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ code, env }: {
-    code: string;
-    env: WebEnv;
-}, context: Cxt): Promise<string> {
-
-    const tokenId = await loginFromWechatEnv<ED, Cxt>(code, env, context);
+export async function loginWechat<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(
+    {
+        code,
+        env,
+        wechatLoginId,
+    }: {
+        code: string;
+        env: WebEnv;
+        wechatLoginId?: string;
+    },
+    context: Cxt
+): Promise<string> {
+    const tokenId = await loginFromWechatEnv<ED, Cxt>(code, env, context, wechatLoginId);
     const [tokenInfo] = await loadTokenInfo<ED, Cxt>(tokenId, context);
     assert(tokenInfo.entity === 'wechatUser');
     await context.setTokenValue(tokenId);

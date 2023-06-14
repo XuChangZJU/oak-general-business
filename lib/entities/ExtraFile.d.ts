@@ -1,4 +1,4 @@
-import { String, Int, Text } from 'oak-domain/lib/types/DataType';
+import { String, Int, Text, Float, Boolean } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 export interface Schema extends EntityShape {
     origin: 'qiniu' | 'unknown';
@@ -14,6 +14,7 @@ export interface Schema extends EntityShape {
     extra1?: Text;
     extension: String<16>;
     size?: Int<4>;
-    sort?: Int<4>;
+    sort?: Float<22, 10>;
     fileType?: String<128>;
+    isBridge?: Boolean;
 }

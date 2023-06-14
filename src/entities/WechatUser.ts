@@ -10,8 +10,8 @@ export interface Schema extends EntityShape {
     openId?: String<32>;
     unionId?: String<32>;
     sessionKey?: String<64>;
-    accessToken?: String<64>;
-    refreshToken?: String<64>;
+    accessToken?: String<128>;
+    refreshToken?: String<128>;
     scope?: String<64>;
     atExpiredAt?: Datetime;
     rtExpiredAt?: Datetime;
