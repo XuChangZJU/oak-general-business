@@ -8,7 +8,7 @@ import { CommonAspectDict } from "oak-common-aspect";
 import { FrontendRuntimeContext } from "../context/FrontendRuntimeContext";
 
 
-type GeneralAspectDict<
+export type GeneralAspectDict<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
 > = {
@@ -123,4 +123,4 @@ type GeneralAspectDict<
     ) => Promise<string>;
 };
 
-export type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
+export default GeneralAspectDict;

@@ -1,6 +1,5 @@
 import { String, Text, Datetime, Boolean, Uint } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
-import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Schema as WechatPublicTag } from './WechatPublicTag';
 import { Schema as User } from './User';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';

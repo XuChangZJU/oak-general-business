@@ -6,7 +6,7 @@ import { CommonAspectDict } from 'oak-common-aspect';
 import { WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
 import { EntityDict } from '../general-app-domain';
 import { getEnv } from '../utils/env';
-import { AspectDict } from '../aspects/AspectDict';
+import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { ROOT_ROLE_ID } from '../constants';

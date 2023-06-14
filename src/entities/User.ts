@@ -1,7 +1,5 @@
 import { String, Int, Text, Boolean, Datetime } from 'oak-domain/lib/types/DataType';
 import { ActionDef } from 'oak-domain/lib/types/Action';
-import { LocaleDef } from 'oak-domain/lib/types/Locale';
-import { Index } from 'oak-domain/lib/types/Storage';
 import { Schema as ExtraFile } from './ExtraFile';
 import { Schema as WechatQrCode } from './WechatQrCode';
 import { EntityShape } from 'oak-domain/lib/types/Entity';

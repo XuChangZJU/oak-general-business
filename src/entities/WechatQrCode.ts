@@ -1,7 +1,5 @@
 import { String, Text, Datetime, Boolean } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
-import { LocaleDef } from 'oak-domain/lib/types/Locale';
-import { Index } from 'oak-domain/lib/types/Storage';
 import { QrCodeType } from '../types/Config';
 import { Schema as Application } from './Application';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';

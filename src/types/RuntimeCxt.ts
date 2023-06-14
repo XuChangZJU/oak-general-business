@@ -1,6 +1,6 @@
 
 import { CommonAspectDict } from "oak-common-aspect";
-import { AspectDict as GeneralAspectDict } from "../aspects/AspectDict";
+import GeneralAspectDict from "../aspects/AspectDict";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { FrontendRuntimeContext } from "../context/FrontendRuntimeContext";
 import { EntityDict } from "../general-app-domain";

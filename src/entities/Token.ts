@@ -3,7 +3,6 @@ import { Schema as User } from './User';
 import { Schema as Application } from './Application';
 import { AbleAction, AbleState, makeAbleActionDef } from 'oak-domain/lib/actions/action';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
-import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { ActionDef } from 'oak-domain/lib/types/Action';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 // https://developers.weixin.qq.com/miniprogram/dev/api/base/system/wx.getSystemInfoSync.html

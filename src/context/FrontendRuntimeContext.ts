@@ -4,7 +4,7 @@ import { EntityDict } from '../general-app-domain';
 import { RuntimeContext } from './RuntimeContext';
 import { Application } from '../features/application';
 import { Token } from '../features/token';
-import { AspectDict as GeneralAspectDict } from '../aspects/AspectDict';
+import GeneralAspectDict from '../aspects/AspectDict';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { SyncContext, SyncRowStore } from 'oak-domain/lib/store/SyncRowStore';
 import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';

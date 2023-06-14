@@ -4,7 +4,7 @@ import { promisify as wxPromisify } from 'oak-frontend-base/lib/utils/promisify'
 
 import { CommonAspectDict } from 'oak-common-aspect';
 import { EntityDict } from '../general-app-domain';
-import { AspectDict } from '../aspects/AspectDict';
+import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Cache } from 'oak-frontend-base/lib/features/cache';

@@ -5,7 +5,7 @@ import { Application } from './application';
 import { Config } from './config';
 import { WeiXinJsSdk } from './weiXinJsSdk';
 import { BasicFeatures } from 'oak-frontend-base/lib/features';
-import { AspectDict } from '../aspects/AspectDict';
+import AspectDict from '../aspects/AspectDict';
 import { AspectWrapper } from 'oak-domain/lib/types';
 import { AppType } from '../general-app-domain/Application/Schema';
 import { EntityDict } from '../general-app-domain';

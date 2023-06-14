@@ -6,7 +6,7 @@ import { Feature } from 'oak-frontend-base/lib/types/Feature';
 import { BasicFeatures } from 'oak-frontend-base/lib/features/index';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { GeneralFeatures } from '../features';
-import { AspectDict as GeneralAspectDict } from '../aspects/AspectDict';
+import GeneralAspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 

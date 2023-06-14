@@ -7,6 +7,7 @@ export const IgnoredForeignKeyMap = {
 
 // 此对象所标识的路径不参与relation的路径判定，以减少relation的路径数量
 export const IgnoredRelationPathMap = {
+    token: ['wechatUser.application'],
 };
 
 // 此对象所标识的entity的权限由其外键指向的父对象判定

@@ -6,7 +6,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
 
 import { EntityDict } from '../general-app-domain';
 import { AppType } from '../general-app-domain/Application/Schema';
-import { AspectDict } from '../aspects/AspectDict';
+import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 

@@ -1,5 +1,5 @@
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
-import { AspectDict } from '../aspects/AspectDict';
+import AspectDict from '../aspects/AspectDict';
 import { EntityDict } from '../general-app-domain';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Config as ConfigDef } from '../types/Config';
