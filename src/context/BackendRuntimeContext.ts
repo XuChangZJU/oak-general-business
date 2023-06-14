@@ -67,8 +67,6 @@ export class BackendRuntimeContext<ED extends EntityDict>
             {
                 data: {
                     id: 1,
-                    userState: 1,
-                    isRoot: 1,
                     ableState: 1,
                     user: {
                         id: 1,
