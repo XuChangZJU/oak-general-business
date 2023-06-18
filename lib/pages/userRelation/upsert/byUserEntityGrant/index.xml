@@ -79,15 +79,9 @@
             <view class="label">有效期：</view>
             <view class="value-period">
                 <l-counter 
-<<<<<<< HEAD
                     count="{{userEntityGrant.period}}" 
-                    max="120" 
-                    min="5" 
-=======
-                    count="{{period}}" 
                     max="{{ maxes[unit] }}" 
                     min="1" 
->>>>>>> dev
                     round-float="{{true}}"
                     bind:linchange="setPeriodMp"
                 />

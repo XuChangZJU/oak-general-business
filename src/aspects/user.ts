@@ -3,6 +3,7 @@ import { generateNewIdAsync } from "oak-domain/lib/utils/uuid";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { EntityDict } from "../general-app-domain";
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { uniq } from 'oak-domain/lib/utils/lodash';
 import assert from 'assert';
 
 export async function mergeUser<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(params: { from: string, to: string }, context: Cxt, innerLogic?: boolean) {
@@ -81,4 +82,58 @@ export async function mergeUser<ED extends EntityDict & BaseEntityDict, Cxt exte
             ],
         },
     }, {});
+}
+
+/**
+ * 获取有对entity进行actions操作权限的用户Id（不包含root）
+ * @param params 
+ * @param context 
+ */
+export async function getUserIdsByActionAuth<ED extends EntityDict & BaseEntityDict, T extends keyof ED, Cxt extends BackendRuntimeContext<ED>>(params: {
+    entity: T;
+    entityId: string;
+    actions: ED[T]['Action'][];
+    overlap?: boolean;
+}, context: Cxt) {
+    const { entity, entityId, actions, overlap } = params;
+    const filter = {
+        destEntity: entity as string,
+        relation: {
+            entity: entity as string,
+            entityId,
+        },
+    };
+    if (overlap) {
+        Object.assign(filter, {
+            deActions: {
+                $overlaps: actions,
+            },
+        });
+    }
+    else {
+        Object.assign(filter, {
+            deActions: {
+                $contains: actions,
+            },
+        });
+    }
+    const actionAuths = await context.select('actionAuth', {
+        data: {
+            id: 1,
+            relation: {
+                id: 1,
+                userRelation$relation: {
+                    $entity: 'userRelation',
+                    data: {
+                        id: 1,
+                        userId: 1,
+                    },
+                },
+            },
+        },
+        filter,
+    }, { dontCollect: true });
+
+    const userRelations = actionAuths.map(ele => ele.relation!.userEntityGrant$relation!);
+    return uniq(Array.prototype.concat.apply(undefined, userRelations).map(ele => ele.userId)) as string[];
 }
