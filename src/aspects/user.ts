@@ -134,6 +134,6 @@ export async function getUserIdsByActionAuth<ED extends EntityDict & BaseEntityD
         filter,
     }, { dontCollect: true });
 
-    const userRelations = actionAuths.map(ele => ele.relation!.userEntityGrant$relation!);
-    return uniq(Array.prototype.concat.apply(undefined, userRelations).map(ele => ele.userId)) as string[];
+    const userRelations = actionAuths.map(ele => ele.relation!.userRelation$relation!);
+    return uniq(Array.prototype.concat.apply([], userRelations).map(ele => ele.userId)) as string[];
 }
