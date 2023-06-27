@@ -320,15 +320,25 @@ export default OakComponent({
       }
       await this.execute();
     },
-    gotoPreview(content: string,title: string) {
+    gotoPreview(content: string,title: string, articleId: string) {
             this.save(
                 'article_html',
                 JSON.stringify({
                     content,
                     title,
+                    articleId,
                 })
             );
-      window.open('/article2/preview');
-    }
+      window.open(`/article2/preview?oakId=${articleId}`);
+    },
+    copy(articleId: string) {
+      const url = `${window.location.hostname}:3000/article2/preview?oakId=${articleId}`;
+            navigator.clipboard.writeText(url).then(() => {
+                this.setMessage({
+                    content: '复制链接成功',
+                    type: 'success',
+                });
+            });
+    },
   }
 })

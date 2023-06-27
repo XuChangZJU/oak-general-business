@@ -11,9 +11,7 @@ import PageHeader from "../../../components/common/pageHeader";
 import { Editor } from "@wangeditor/editor-for-react";
 import { IEditorConfig } from "@wangeditor/editor";
 import ArticleUpsert from "../../../components/article/detail";
-import {
-	EyeOutlined,
-} from "@ant-design/icons";
+import { EyeOutlined } from "@ant-design/icons";
 const { SubMenu } = Menu;
 interface DataNode {
 	label: string;
@@ -45,9 +43,9 @@ export default function render(
 			articleId: string;
 			name: string;
 			isArticle: boolean;
-      isChildren: boolean;
-      logo: string;
-      title: string;
+			isChildren: boolean;
+			logo: string;
+			title: string;
 		},
 		{
 			gotoUpsert: (id?: string) => void;
@@ -60,7 +58,8 @@ export default function render(
 			gotoArticleEdit: (articleId: string) => void;
 			onRemoveArticle: (id: string) => void;
 			gotoArticleEditByArticleMenuId: (articleMenuId: string) => void;
-      gotoPreview: (content: string, title: string) => void;
+			gotoPreview: (content: string, title: string, articleId: string) => void;
+      copy: (articleId: string) => void;
 		}
 	>
 ) {
@@ -74,9 +73,9 @@ export default function render(
 		content,
 		oakFullpath,
 		isArticle,
-    isChildren,
-    logo,
-    title,
+		isChildren,
+		logo,
+		title,
 	} = props.data;
 	const {
 		t,
@@ -89,7 +88,8 @@ export default function render(
 		gotoArticleEdit,
 		onRemoveArticle,
 		gotoArticleEditByArticleMenuId,
-    gotoPreview,
+		gotoPreview,
+    copy
 	} = props.methods;
 	const features = useFeatures();
 	const editorConfig: Partial<IEditorConfig> = {
@@ -102,11 +102,20 @@ export default function render(
 			if (menuItem.children || menuItem.isLeaf) {
 				return (
 					<Menu.SubMenu
-            icon={menuItem.logo ? <Image height={26} width={26} src={menuItem.logo} preview={false}/> : null}
+						icon={
+							menuItem.logo ? (
+								<Image
+									height={26}
+									width={26}
+									src={menuItem.logo}
+									preview={false}
+								/>
+							) : null
+						}
 						key={menuItem.key}
 						title={menuItem.title}
 						onTitleClick={(e) => {
-							gotoUpsertById(e.key);  
+							gotoUpsertById(e.key);
 						}}
 					>
 						{renderMenuItems(menuItem.children)}
@@ -137,15 +146,25 @@ export default function render(
 					>
 						新增
 					</Button>
-          {
-            articleId && <Button
-						onClick={() => {
-							gotoPreview(content,title);
-						}}
-					>
-						<EyeOutlined/>预览
-					</Button>
-          }
+					{articleId && (
+						<Space>
+              <Button
+                onClick={() => {
+                  copy(articleId);
+                }} 
+              >
+                复制链接
+              </Button>
+							<Button
+								onClick={() => {
+									gotoPreview(content, title, articleId);
+								}}
+							>
+								<EyeOutlined />
+								预览
+							</Button>
+						</Space>
+					)}
 				</div>
 				<div className={Style.article}>
 					<div className={Style.menu}>
@@ -181,16 +200,15 @@ export default function render(
 												>
 													<>{`${name}`}</>
 												</Form.Item>
-                        <Form.Item
-                    label="分类LOGO"
-                    name="extraFile$entity"
-                >
-                    <>
-                       {
-                        logo? <Image src={logo} width={100} height={100}/> : '暂无图片'
-                       } 
-                    </>
-                </Form.Item>
+												<Form.Item label="分类LOGO" name="extraFile$entity">
+													<>
+														{logo ? (
+															<Image src={logo} width={100} height={100} />
+														) : (
+															"暂无图片"
+														)}
+													</>
+												</Form.Item>
 											</>
 
 											<Form.Item wrapperCol={{ offset: 4 }}>
@@ -212,7 +230,7 @@ export default function render(
 															添加子节点
 														</Button>
 													)}
-													{(!isArticle && !isChildren)  && (
+													{!isArticle && !isChildren && (
 														<Button
 															onClick={() => {
 																gotoArticleEditByArticleMenuId(id);
@@ -245,12 +263,12 @@ export default function render(
 								</Row>
 							</div>
 						) : articleId?.length > 0 ? (
-              <ArticleUpsert 
-                oakAutoUnmount={true}
-                content={content}
-                articleId={articleId}
-                oakPath={`$article-detail-${articleId}`}
-              />
+							<ArticleUpsert
+								oakAutoUnmount={true}
+								content={content}
+								articleId={articleId}
+								oakPath={`$article-detail-${articleId}`}
+							/>
 						) : (
 							""
 						)}

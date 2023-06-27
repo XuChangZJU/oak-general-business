@@ -160,5 +160,17 @@ export default OakComponent({
             );
             window.open('/article2/preview');
         },
+        gotoPreview(content?: string, title?:string) {
+          this.save(
+              'article_html',
+              JSON.stringify({
+                  content,
+                  title,
+                  // author,
+                  // title,
+              })
+          );
+          window.open('/article2/preview');
+        },
     },
 });

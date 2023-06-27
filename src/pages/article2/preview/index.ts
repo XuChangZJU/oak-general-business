@@ -2,17 +2,39 @@
 
 export default OakComponent({
     isList: false,
-    formData: async function ({ features }) {
-        return {};
+    entity: 'article',
+    projection: {
+      id: 1,
+        name: 1,
+        content: 1,
+        articleMenu: {
+          id: 1,
+        },
+        entity: 1,
+        entityId: 1,
     },
+    formData: function ({ data: article, features }) {
+      return {
+          id: article?.id,
+          content: article?.content,
+          name: article?.name,
+          entity: article?.entity,
+          entityId: article?.entityId,
+      };
+  },
     listeners: {
         content(prev, next) {
+          if(this.props.oakId) {
+
+          } else {
             if (prev.content !== next.content) {
-                const ac = window.document.getElementById('article-content');
-                if (ac) {
-                    ac.innerHTML = next.content;
-                }
-            }
+              const ac = window.document.getElementById('article-content');
+              if (ac) {
+                  ac.innerHTML = next.content;
+              }
+          }
+          }
+            
         },
     },
     data: {
