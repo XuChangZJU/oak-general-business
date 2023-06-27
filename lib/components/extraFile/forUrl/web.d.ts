@@ -18,5 +18,5 @@ export default function render(props: WebComponentProps<EntityDict, "extraFile",
     closeModal1: () => void;
     closeModal: () => void;
     onModal1Confirm: (value: number) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
 export {};
