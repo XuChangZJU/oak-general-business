@@ -33,13 +33,16 @@ export function initialize<
         basicFeatures.cache,
         basicFeatures.localStorage
     );
-    const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application);
+
+    // 临时代码，合并后再删
+    const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application, basicFeatures.locales);
     const config = new Config<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
     const weiXinJsSdk = new WeiXinJsSdk<ED, Cxt, FrontCxt, AD>(
         basicFeatures.cache,
         basicFeatures.localStorage
     );
     const theme = new Theme(basicFeatures.cache, basicFeatures.localStorage);
+
     return {
         token,
         extraFile,

@@ -10,6 +10,7 @@ import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Application } from './application'
 import { composeFileUrl, bytesToSize } from '../utils/extraFile'
 import assert from 'assert';
+import { Locales } from 'oak-frontend-base/lib/features/locales';
 
 export class ExtraFile<
     ED extends EntityDict,
@@ -19,13 +20,16 @@ export class ExtraFile<
 > extends Feature {
     private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
     private application: Application<ED, Cxt, FrontCxt, AD>;
+    private locales: Locales<ED, Cxt, AD>;
     constructor(
         cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>,
-        application: Application<ED, Cxt, FrontCxt, AD>
+        application: Application<ED, Cxt, FrontCxt, AD>,
+        locales: Locales<ED, Cxt, AD>,
     ) {
         super();
         this.cache = cache;
         this.application = application;
+        this.locales = locales;
     }
 
     private async getUploadInfo(origin: Origin, key?: string) {
@@ -67,8 +71,14 @@ export class ExtraFile<
         const config =
             application?.system?.config ||
             application?.system?.platform?.config;
-
-        const url = composeFileUrl(extraFile, config, style);
+        let url;
+        if(extraFile?.isBridge && extraFile?.extra1) {
+            if(typeof extraFile?.extra1 === 'string') {
+                url = this.locales.makeBridgeUrl(extraFile?.extra1);
+                return url;
+            }
+        }
+        url = composeFileUrl(extraFile, config, style);
         return url;
     }
 

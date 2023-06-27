@@ -20,7 +20,7 @@ export default function render(
 			isModalOpen: boolean;
 			isModalOpen1: boolean;
 			renderImgs: { renderUrl: string, originUrl: string, id: number }[];
-			originImgLoading: boolean;
+			selectedId: number;
 		},
 		{
 			onModalConfirm: (value: string) => void;
@@ -28,6 +28,7 @@ export default function render(
 			closeModal1: () => void;
 			closeModal: () => void;
 			onModal1Confirm: (value: number) => void;
+			setSelectedId: (id: number) => void;
 		}
 	>
 ) {
@@ -37,14 +38,12 @@ export default function render(
 		renderImgs,
 		src,
 		bridgeUrl,
-		originImgLoading,
+		selectedId,
 	} = props.data;
-	const { t, onModalConfirm, chooseMethod, closeModal1, closeModal, onModal1Confirm } = props.methods;
+	const { t, onModalConfirm, chooseMethod, closeModal1, closeModal, onModal1Confirm, setSelectedId } = props.methods;
 
 	const methods: MethodsType[] = ['original', 'url', 'uploadLocalImg'];
-	const [selectedId, setSelectedId] = useState(-1);
 	const [form] = Form.useForm();
-	const renderUrl = bridgeUrl || src; // 用户选图预览
 
 	const handleOk = () => {
 		onModalConfirm(form.getFieldValue('url'));
@@ -57,7 +56,7 @@ export default function render(
 				<PlusOutlined />
 				<div>选择封面</div>
 			</Space>
-			<img id="previewImg" src={renderUrl} alt="previewImg" className={Style.previewImg} style={{ display: renderUrl ? 'inline-block' : 'none'}} />
+			<img id="previewImg" src={src} alt="previewImg" className={Style.previewImg} style={{ display: src ? 'inline-block' : 'none' }} />
 			<div className={Style.methodList}>
 				{methods && methods.map((ele) => (
 					<div
@@ -109,35 +108,33 @@ export default function render(
 				onOk={() => onModal1Confirm(selectedId)}
 				onCancel={closeModal1}
 			>
-				<Spin spinning={originImgLoading}>
-					{(renderImgs && renderImgs.length) ? (
-						<>
-							<Row gutter={[4,4]}>
-								{renderImgs.map((img: { renderUrl: string, originUrl: string, id: number }) => 
-									<Col span={4}>
-										<ImgBox
-											width={"100%"}
-											bordered={true}
-											mode="select"
-											src={img.renderUrl}
-											key={img.id}
-											selected={selectedId === img.id}
-											onClick={() => {
-												if (selectedId === img.id) {
-													setSelectedId(-1);
-												} else {
-													setSelectedId(img.id);
-												}
-											}}
-										/>
-									</Col>
-								)}
-							</Row>
-						</>
-					) : (
-						<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-					)}
-				</Spin>
+				{(renderImgs && renderImgs.length) ? (
+					<>
+						<Row gutter={[4, 4]}>
+							{renderImgs.map((img: { renderUrl: string, originUrl: string, id: number }) =>
+								<Col span={4}>
+									<ImgBox
+										width={"100%"}
+										bordered={true}
+										mode="select"
+										src={img.renderUrl}
+										key={img.id}
+										selected={selectedId === img.id}
+										onClick={() => {
+											if (selectedId === img.id) {
+												setSelectedId(-1);
+											} else {
+												setSelectedId(img.id);
+											}
+										}}
+									/>
+								</Col>
+							)}
+						</Row>
+					</>
+				) : (
+					<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+				)}
 			</Modal>
 		</div>
 	);
