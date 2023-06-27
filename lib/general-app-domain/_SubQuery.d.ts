@@ -12,6 +12,7 @@ import * as Address from "./Address/Schema";
 import * as Application from "./Application/Schema";
 import * as Area from "./Area/Schema";
 import * as Article from "./Article/Schema";
+import * as ArticleMenu from "./ArticleMenu/Schema";
 import * as Captcha from "./Captcha/Schema";
 import * as Domain from "./Domain/Schema";
 import * as Email from "./Email/Schema";
@@ -162,6 +163,15 @@ export declare type AreaIdSubQuery = {
 export declare type ArticleIdSubQuery = {
     [K in "$in" | "$nin"]?: (Article.ArticleIdSubQuery & {
         entity: "article";
+    }) | any;
+};
+export declare type ArticleMenuIdSubQuery = {
+    [K in "$in" | "$nin"]?: (Article.ArticleMenuIdSubQuery & {
+        entity: "article";
+    }) | (ArticleMenu.ArticleMenuIdSubQuery & {
+        entity: "articleMenu";
+    }) | (ArticleMenu.ArticleMenuIdSubQuery & {
+        entity: "articleMenu";
     }) | any;
 };
 export declare type CaptchaIdSubQuery = {

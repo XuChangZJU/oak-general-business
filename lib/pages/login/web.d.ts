@@ -12,4 +12,4 @@ export default function render(props: WebComponentProps<EntityDict, 'token', fal
     sendCaptcha: (mobile: string) => Promise<void>;
     loginByMobileWeb: (mobile: string, loginAgreed: boolean, password?: string, captcha?: string, loginMode?: number) => Promise<void>;
     goPage: (destination: string) => Promise<void>;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

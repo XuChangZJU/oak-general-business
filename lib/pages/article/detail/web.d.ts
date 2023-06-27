@@ -6,4 +6,4 @@ export default function render(props: WebComponentProps<EntityDict, 'article', f
     abstract?: string;
     content?: string;
     html?: string;
-}, {}>): JSX.Element;
+}, {}>): import("react/jsx-runtime").JSX.Element;

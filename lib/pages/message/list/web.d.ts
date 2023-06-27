@@ -4,4 +4,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'message', t
     messages: EntityDict['message']['Schema'][];
 }, {
     goDetailById: (id: string) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

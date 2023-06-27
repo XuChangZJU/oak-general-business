@@ -14,4 +14,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'wechatLogin
     appId: string;
 }, {
     getCodeAndRedirect: () => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

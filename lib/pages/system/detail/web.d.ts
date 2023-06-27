@@ -14,4 +14,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'platform', 
     };
 }, {
     onTabClick: (key: string) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
