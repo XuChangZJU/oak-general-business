@@ -161,7 +161,7 @@ export default function render(
 								}}
 							>
 								<EyeOutlined />
-								预览
+								查看
 							</Button>
 						</Space>
 					)}
@@ -189,7 +189,7 @@ export default function render(
 										>
 											<>
 												<Form.Item
-													label={t("articleMenu:attr.name")}
+													label={'分类标题'}
 													name="name"
 													//  rules={[
 													//      {
