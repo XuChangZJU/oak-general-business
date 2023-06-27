@@ -252,6 +252,7 @@ export default function Render(
 								onChange={(editorDom: any) => {
 									setHtml(editorDom.getHtml());
 								}}
+                
 								style={{
 									minHeight: 440,
 								}}

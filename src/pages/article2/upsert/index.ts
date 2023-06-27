@@ -98,7 +98,6 @@ export default OakComponent({
     },
     methods: {
         async onRemoveArticle(id: string) {
-          console.log(id);
           this.removeItem(id);
           await this.execute();
           this.navigateBack();
@@ -144,9 +143,13 @@ export default OakComponent({
             // 重置
             this.clean();
         },
-        setHtml(content: string) {
-            this.update({ content });
-            this.setState({ html: content });
+        setHtml(html: string) {
+          this.setState({
+            html,
+        });
+        if (html && html !== '<p><br></p>' && this.state.oakFullpath) {
+            this.update({ content: html });
+        }
         },
         preview() {
             const { html } = this.state;
