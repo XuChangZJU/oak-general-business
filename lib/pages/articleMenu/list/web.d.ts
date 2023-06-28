@@ -27,6 +27,7 @@ export default function render(props: WebComponentProps<EntityDict, "articleMenu
     isArticle: boolean;
     isChildren: boolean;
     logo: string;
+    title: string;
 }, {
     gotoUpsert: (id?: string) => void;
     gotoUpsertById: (id: string) => void;
@@ -38,5 +39,7 @@ export default function render(props: WebComponentProps<EntityDict, "articleMenu
     gotoArticleEdit: (articleId: string) => void;
     onRemoveArticle: (id: string) => void;
     gotoArticleEditByArticleMenuId: (articleMenuId: string) => void;
+    gotoPreview: (content: string, title: string, articleId: string) => void;
+    copy: (articleId: string) => void;
 }>): import("react/jsx-runtime").JSX.Element;
 export {};
