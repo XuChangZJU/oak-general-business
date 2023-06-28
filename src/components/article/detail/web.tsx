@@ -42,7 +42,7 @@ export default function Render(
 
 
     return (
-        <div>
+        <div className={Style.container}>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Space>
                     <Button

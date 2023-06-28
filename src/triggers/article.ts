@@ -76,23 +76,40 @@ const triggers: Trigger<EntityDict, 'article', BackendRuntimeContext<EntityDict>
                   },
                   {},
               );
-              if(article) {
-                await context.operate(
-                  'articleMenu',
-                  {
-                      id: await generateNewIdAsync(),
-                      action: 'update',
-                      data: {
-                          isArticle: false,
+              if (article) {
+                  const articles = await context.select(
+                      'article',
+                      {
+                          data: {
+                              id: 1,
+                          },
+                          filter: {
+                              articleMenuId: article.articleMenuId,
+                              id: {
+                                  $ne: article.id,
+                              },
+                          },
                       },
-                      filter: {
-                          id: article.articleMenuId,
-                      }
-                  },
-                  {},
-              )
-            
-          }
+                      {}
+                  );
+                  if (articles.length === 0) {
+                        await context.operate(
+                            'articleMenu',
+                            {
+                                id: await generateNewIdAsync(),
+                                action: 'update',
+                                data: {
+                                    isArticle: false,
+                                },
+                                filter: {
+                                    id: article.articleMenuId,
+                                },
+                            },
+                            {}
+                        );
+                  }
+              
+              }
           return 0;
       },
   },

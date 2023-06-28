@@ -1,12 +1,12 @@
 import { EntityDict } from '../../../general-app-domain';
 interface DataNode {
     label: string;
-    title: string;
     key: string;
     isArticle?: boolean;
     isLeaf?: boolean;
     logo?: string;
     children?: DataNode[];
+    type?: stirng;
 }
 export default OakComponent({
     entity: 'articleMenu',
@@ -126,15 +126,13 @@ export default OakComponent({
                 parent: ele?.articleMenuId,
                 parentId: ele?.articleMenuId,
                 isArticle: true,
-                content: ele?.content,
-                logo: null,
+                type: 'article',
             }));
             const arr: any[] = [...newArticleMenus, ...newArticles];
             const rootNodes = arr?.filter((node) => !node.parent);
             const treeData = rootNodes?.map((rootNode) => {
                 return {
                     label: rootNode.name,
-                    title: rootNode.name,
                     key: rootNode.id?.toString(),
                     isArticle: rootNode.isArticle,
                     logo: rootNode?.logo,
@@ -160,11 +158,11 @@ export default OakComponent({
                 if (node.parentId === parentId) {
                     const treeNode: DataNode = {
                         label: node.name,
-                        title: node.name,
                         key: node.id.toString(),
                         isArticle: node.isArticle,
                         isLeaf: node.isLeaf,
                         logo: node.logo,
+                        type: node.type,
                     };
 
                     const nestedChildren = this.buildTreeData(nodes, node.id);

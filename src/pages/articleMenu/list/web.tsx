@@ -26,13 +26,7 @@ export default function render(
             articles: EntityDict['article']['Schema'][];
             treeData: DataNode[];
             selectArticleMenuId: string;
-            parentId: string;
             selectArticleId: string;
-            name: string;
-            isArticle: boolean;
-            isChildren: boolean;
-            logo: string;
-            title: string;
         },
         {
             gotoUpsertById: (id: string) => void;
@@ -58,7 +52,7 @@ export default function render(
 
     const renderMenuItems = (data: any) => {
         return data?.map((menuItem: any) => {
-            if (menuItem.children || menuItem.isLeaf) {
+            if (menuItem.children) {
                 return (
                     <Menu.SubMenu
                         icon={
@@ -74,7 +68,7 @@ export default function render(
                         key={menuItem.key}
                         title={
                             <div style={{ marginLeft: 8 }}>
-                                {menuItem.title}
+                                {menuItem.label}
                             </div>
                         }
                         onTitleClick={(e) => {
@@ -89,7 +83,11 @@ export default function render(
                 <Menu.Item
                     key={menuItem.key}
                     onClick={(e) => {
-                        gotoArticleUpsert(e.key);
+						if (menuItem.type === 'article') {
+                            gotoArticleUpsert(e.key);
+                        } else {
+                            gotoUpsertById(e.key);
+                        }
                     }}
                 >
                     {menuItem.label}
