@@ -22,7 +22,7 @@ import { WebComponentProps } from "oak-frontend-base";
 import Style from "./web.module.less";
 import useFeatures from "../../../hooks/useFeatures";
 import {
-  EyeOutlined,
+	EyeOutlined,
 } from "@ant-design/icons";
 
 type InsertFnType = (url: string, alt?: string, href?: string) => void;
@@ -85,7 +85,7 @@ export default function Render(
 			) => Promise<{ bucket: string; url: string }>;
 			clearContentTip: () => void;
 			onRemoveArticle: (id: string) => void;
-      gotoPreview: (content?: string, title?: string) => void;
+			gotoPreview: (content?: string, title?: string) => void;
 		}
 	>
 ) {
@@ -100,9 +100,9 @@ export default function Render(
 		update,
 		setHtml,
 		onRemoveArticle,
-    gotoPreview
+		gotoPreview
 	} = method;
-	const { id, content, editor, origin1, oakFullpath, entity, entityId } = data;
+	const { id, content, editor, origin1, oakFullpath, entity, entityId, html } = data;
 	const features = useFeatures();
 	const [articleId, setArticleId] = useState("");
 	useEffect(() => {
@@ -242,17 +242,17 @@ export default function Render(
 														"http://" + url,
 														"http://" + url + "?vframe/jpg/offset/0"
 													);
-												} catch (err) {}
+												} catch (err) { }
 											},
 										},
 									},
 								}}
-								value={content}
+								value={html}
 								onCreated={setEditor}
 								onChange={(editorDom: any) => {
 									setHtml(editorDom.getHtml());
 								}}
-                
+
 								style={{
 									minHeight: 440,
 								}}
