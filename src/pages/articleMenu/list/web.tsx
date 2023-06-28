@@ -113,7 +113,7 @@ export default function render(
 							) : null
 						}
 						key={menuItem.key}
-						title={menuItem.title}
+						title={<div style={{ marginLeft: 8 }}>{menuItem.title}</div>}
 						onTitleClick={(e) => {
 							gotoUpsertById(e.key);
 						}}

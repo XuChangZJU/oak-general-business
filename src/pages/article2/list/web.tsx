@@ -103,7 +103,7 @@ export default function render(
 					<Menu.SubMenu
             icon={menuItem.logo ? <Image height={26} width={26} src={menuItem.logo} preview={false}/> : null}
 						key={menuItem.key}
-						title={menuItem.title}
+						title={<div style={{ marginLeft: 8 }}>{menuItem.title}</div>}
 						onTitleClick={(e) => {
 							getOpenKeys(e.key,treeData,openKeys);  
 						}}
