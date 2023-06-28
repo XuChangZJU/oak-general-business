@@ -1,199 +1,252 @@
-import React from 'react';
-import {
-    Table,
-    Tag,
-    Button,
-    Modal,
-    Space,
-    Row,
-    Col,
-    Input,
-} from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
-import Style from './web.module.less';
-import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
-import PageHeader from '../../../components/common/pageHeader';
-
-
+import { Form, Tree, Row, Col, Space, Button, Menu, Modal, Image, Empty } from "antd";
+const { confirm } = Modal;
+import type { MenuProps } from "antd";
+import React, { useState, useEffect, useCallback } from "react";
+import classNames from "classnames";
+import Style from "./web.module.less";
+import { WebComponentProps } from "oak-frontend-base";
+import { EntityDict } from "../../../general-app-domain";
+import useFeatures from "../../../hooks/useFeatures";
+import PageHeader from "../../../components/common/pageHeader";
+import { Editor } from "@wangeditor/editor-for-react";
+import { IEditorConfig } from "@wangeditor/editor";
+import ArticleUpsert from "../../../components/article/detail2";
+const { SubMenu } = Menu;
+interface DataNode {
+	label: string;
+	title: string;
+	key: string;
+	isArticle?: boolean;
+	children?: DataNode[];
+}
 export default function render(
-    props: WebComponentProps<
-        EntityDict,
-        'article',
-        true,
-        {
-            searchValue: string;
-            articles: EntityDict['article']['Schema'][];
-            pagination: any;
-            title?: string;
-            showBack?: boolean;
-        },
-        {
-            goUpsert: () => Promise<void>;
-            goDetailById: (id: string) => Promise<void>;
-            goUpsertById: (id: string) => Promise<void>;
-            searchValueChange: (v: string) => Promise<void>;
-            searchConfirm: () => Promise<void>;
-            onRemove: (id: string) => Promise<void>;
-        }
-    >
+	props: WebComponentProps<
+		EntityDict,
+		"articleMenu",
+		true,
+		{
+			articleMenu: EntityDict["articleMenu"]["Schema"][];
+			articles: EntityDict["article"]["Schema"][];
+			treeData: DataNode[];
+			content: string;
+			arr: {
+				id: string | undefined;
+				name: string | undefined;
+				parent: string | undefined;
+				parentId: string | undefined;
+				isArticle: boolean;
+				isLeaf: boolean;
+			}[];
+			id: string;
+			parentId: string;
+			articleId: string;
+			name: string;
+			isArticle: boolean;
+      isChildren: boolean;
+      logo: string;
+      openKeys: string[];
+      selectedKeys: string[];
+		},
+		{
+			gotoUpsert: (id?: string) => void;
+			gotoUpsertById: (id: string) => void;
+			gotoArticleUpsert: (articleId: string, selectedKeys?: string[] ) => void;
+			check: () => void;
+			onRemoveArticleMenu: (id: string) => void;
+			gotoEdit: (id?: string) => void;
+			gotoEditByParentId: (parentId: string) => void;
+			gotoArticleEdit: (articleId: string) => void;
+			onRemoveArticle: (id: string) => void;
+			gotoArticleEditByArticleMenuId: (articleMenuId: string) => void;
+      getOpenKeys: (targetKey: string, treeData: DataNode[], openKeys: string[]) => void;
+		}
+	>
 ) {
-    const {
-        pagination,
-        articles = [],
-        oakLoading,
-        searchValue,
-        title,
-        showBack = false,
-    } = props.data;
-    const { pageSize, total, currentPage } = pagination || {};
-    const {
-        t,
-        goUpsert,
-        goDetailById,
-        goUpsertById,
-        searchConfirm,
-        searchValueChange,
-        setCurrentPage,
-        setPageSize,
-        onRemove,
-    } = props.methods;
+	const {
+		arr,
+		treeData,
+		id,
+		parentId,
+		articleId,
+		name,
+		content,
+		oakFullpath,
+		isArticle,
+    isChildren,
+    logo,
+    openKeys,
+    selectedKeys,
+	} = props.data;
+	const {
+		t,
+		gotoUpsert,
+		gotoUpsertById,
+		gotoArticleUpsert,
+		onRemoveArticleMenu,
+		gotoEdit,
+		gotoEditByParentId,
+		gotoArticleEdit,
+		onRemoveArticle,
+		gotoArticleEditByArticleMenuId,
+    getOpenKeys,
+	} = props.methods;
+	const features = useFeatures();
+	const editorConfig: Partial<IEditorConfig> = {
+		readOnly: true,
+		autoFocus: true,
+		scroll: false,
+	};
+	const renderMenuItems = (data: any) => {
+		return data?.map((menuItem: any) => {
+			if (menuItem.children || menuItem.isLeaf) {
+				return (
+					<Menu.SubMenu
+            icon={menuItem.logo ? <Image height={26} width={26} src={menuItem.logo} preview={false}/> : null}
+						key={menuItem.key}
+						title={<div style={{ marginLeft: 8 }}>{menuItem.title}</div>}
+						onTitleClick={(e) => {
+							getOpenKeys(e.key,treeData,openKeys);  
+						}}
+					>
+						{renderMenuItems(menuItem.children)}
+					</Menu.SubMenu>
+				);
+			}
+			return (
+				<Menu.Item
+					key={menuItem.key}
+					onClick={(e) => {
+						gotoArticleUpsert(e.key, selectedKeys);
+					}}
+				>
+					{menuItem.label}
+				</Menu.Item>
+			);
+		});
+	};
+  const [a, setA] = useState('');
+	return (
+		<PageHeader title="帮助文档">
+			<div className={Style.container}>
+        {
+          treeData?.length === 0 ? (
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          ) : (
+            <div className={Style.article}>
+					<div className={Style.menu}>
+						<Menu
+							// onClick={(e) => gotoArticleUpsert(e.keyPath[1])}
+              openKeys={openKeys}
+              selectedKeys={selectedKeys}
+							style={{ width: 256 }}
+							mode="inline"
+							// items={renderMenuItems(treeData)}
+						>
+							{renderMenuItems(treeData)}
+						</Menu>
+					</div>
+					<div className={Style.editor}>
+						{id?.length > 0 ? (
+							<div className={Style.rightContainer}>
+								<Row>
+									<Col xs={24} sm={16}>
+										<Form
+											colon
+											labelCol={{ span: 4 }}
+											wrapperCol={{ span: 20 }}
+										>
+											<>
+												<Form.Item
+													label={t("articleMenu:attr.name")}
+													name="name"
+													//  rules={[
+													//      {
+													//          required: true,
+													//          message: '文章分类名称必填',
+													//      },
+													//  ]}
+												>
+													<>{`${name}`}</>
+												</Form.Item>
+                        <Form.Item
+                    label="分站LOGO"
+                    name="extraFile$entity"
+                >
+                    <>
+                       {
+                        logo? <Image src={logo} width={100} height={100}/> : ''
+                       } 
+                    </>
+                </Form.Item>
+											</>
 
-    return (
-        <PageHeader title={title || '文章管理'} showBack={showBack}>
-            <div className={Style.container}>
-                <Row>
-                    <Col flex="auto">
-                        <Space>
-                            <Button
-                                type="primary"
-                                onClick={() => {
-                                    goUpsert();
-                                }}
-                            >
-                                {t('action.add')}
-                            </Button>
-                        </Space>
-                    </Col>
-                    <Col flex="none">
-                        <Input
-                            placeholder="请输入标题"
-                            value={searchValue}
-                            allowClear
-                            onChange={(e) => {
-                                searchValueChange(e.target.value);
-                            }}
-                            suffix={<SearchOutlined />}
-                            onPressEnter={(e) => {
-                                searchConfirm();
-                            }}
-                        />
-                    </Col>
-                </Row>
-
-                <Table
-                    loading={oakLoading}
-                    dataSource={articles}
-                    rowKey="index"
-                    columns={[
-                        {
-                            align: 'center',
-                            dataIndex: 'serial-number',
-                            title: '序号',
-                            render(value, record, index) {
-                                return index + 1;
-                            },
-                        },
-                        {
-                            dataIndex: 'iState',
-                            title: t('book:attr.iState'),
-                            render: (value, record, index) => {
-                                return (
-                                    <Tag color="processing">
-                                        {t(`book:v.iState.${value}`)}
-                                    </Tag>
-                                );
-                            },
-                        },
-                        {
-                            dataIndex: 'title',
-                            title: t('article:attr.title'),
-                        },
-                        {
-                            dataIndex: 'author',
-                            title: t('article:attr.author'),
-                        },
-                        {
-                            dataIndex: 'abstract',
-                            title: t('article:attr.abstract'),
-                        },
-                        {
-                            dataIndex: 'op',
-                            width: 300,
-                            title: '操作',
-                            align: 'center',
-                            render: (value, record, index) => {
-                                return (
-                                    <Space>
-                                        <Button
-                                            type="link"
-                                            onClick={() => {
-                                                goDetailById(record.id);
-                                            }}
-                                        >
-                                            详情
-                                        </Button>
-                                        <Button
-                                            type="link"
-                                            onClick={() => {
-                                                goUpsertById(record.id);
-                                            }}
-                                        >
-                                            编辑
-                                        </Button>
-                                        <Button
-                                            type="link"
-                                            onClick={() => {
-                                                const modal = Modal!.confirm!({
-                                                    title: '确认删除该文章吗？',
-                                                    content:
-                                                        '删除后，文章不可恢复',
-                                                    okText: '确定',
-                                                    cancelText: '取消',
-                                                    onOk: async (e) => {
-                                                        onRemove(record.id);
-                                                        modal!.destroy!();
-                                                    },
-                                                    onCancel: (e) => {
-                                                        modal!.destroy!();
-                                                    },
-                                                });
-                                            }}
-                                        >
-                                            删除
-                                        </Button>
-                                    </Space>
-                                );
-                            },
-                            fixed: 'right',
-                        },
-                    ]}
-                    pagination={{
-                        total,
-                        pageSize,
-                        current: currentPage,
-                        onShowSizeChange: (
-                            current: number,
-                            pageSize: number
-                        ) => {
-                            setPageSize(pageSize);
-                        },
-                        onChange: (current: number) => {
-                            setCurrentPage(current);
-                        },
-                    }}
-                />
-            </div>
-        </PageHeader>
-    );
+											<Form.Item wrapperCol={{ offset: 4 }}>
+												<Space>
+													<Button
+														type="primary"
+														onClick={() => {
+															gotoEdit(id);
+														}}
+													>
+														编辑
+													</Button>
+													{!isArticle && (
+														<Button
+															onClick={() => {
+																gotoEditByParentId(id);
+															}}
+														>
+															添加子节点
+														</Button>
+													)}
+													{(!isArticle && !isChildren)  && (
+														<Button
+															onClick={() => {
+																gotoArticleEditByArticleMenuId(id);
+															}}
+														>
+															添加文章
+														</Button>
+													)}
+													<Button
+														type="link"
+														onClick={() => {
+															const modal = confirm({
+																title: "确定删除该文章分类吗？",
+																content: "删除后不可恢复",
+																okText: "确定",
+																cancelText: "取消",
+																onOk: (e) => {
+																	onRemoveArticleMenu(id);
+																	modal!.destroy();
+																},
+															});
+														}}
+													>
+														删除
+													</Button>
+												</Space>
+											</Form.Item>
+										</Form>
+									</Col>
+								</Row>
+							</div>
+						) : articleId?.length > 0 ? (
+              <ArticleUpsert 
+                oakAutoUnmount={true}
+                content={content}
+                articleId={articleId}
+                oakPath={`$article-detail-${articleId}`}
+              />
+						) : (
+							""
+						)}
+					</div>
+				</div>
+          )
+        }
+				
+			</div>
+		</PageHeader>
+	);
 }

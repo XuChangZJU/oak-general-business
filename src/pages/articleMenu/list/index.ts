@@ -292,13 +292,13 @@ export default OakComponent({
     },
     gotoArticleEdit(articleId: string) {
       this.navigateTo({
-        url: '/article2/upsert',
+        url: '/article/upsert',
         oakId: articleId
       })
     },
     gotoArticleEditByArticleMenuId(articleMenuId: string) {
       this.navigateTo({
-        url: '/article2/upsert',
+        url: '/article/upsert',
         articleMenuId
       })
     },
@@ -329,10 +329,10 @@ export default OakComponent({
                     articleId,
                 })
             );
-      window.open(`/article2/preview?oakId=${articleId}`);
+      window.open(`/article/preview?oakId=${articleId}`);
     },
     copy(articleId: string) {
-      const url = `${window.location.host}/article2/preview?oakId=${articleId}`;
+      const url = `${window.location.host}/article/preview?oakId=${articleId}`;
             navigator.clipboard.writeText(url).then(() => {
                 this.setMessage({
                     content: '复制链接成功',

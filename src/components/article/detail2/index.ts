@@ -19,7 +19,7 @@ export default OakComponent({
     },
     gotoArticleEdit(articleId: string) {
       this.navigateTo({
-        url: '/article2/upsert',
+        url: '/article/upsert',
         oakId: articleId
       })
     },
