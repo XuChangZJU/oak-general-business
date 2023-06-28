@@ -5,8 +5,13 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { OakPreConditionUnsetException } from 'oak-domain/lib/types';
 import { RuntimeCxt } from '../types/RuntimeCxt';
+import { CreateOperationData as CreateArticleMenuData } from '../general-app-domain/ArticleMenu/Schema';
 
-const triggers: Trigger<EntityDict, 'articleMenu', BackendRuntimeContext<EntityDict>>[] = [
+const triggers: Trigger<
+    EntityDict,
+    'articleMenu',
+    BackendRuntimeContext<EntityDict>
+>[] = [
     {
         name: '在创建文章分类时，查询文章分类是否重名',
         entity: 'articleMenu',
@@ -17,7 +22,7 @@ const triggers: Trigger<EntityDict, 'articleMenu', BackendRuntimeContext<EntityD
                 operation: { data },
             } = event;
             assert(!(data instanceof Array)); // 不可能是成组创建
-            if ((data as any).name && (data as any).parentId) {
+            if ((data as any).name) {
                 const [articleMenu] = await context.select(
                     'articleMenu',
                     {
@@ -28,14 +33,20 @@ const triggers: Trigger<EntityDict, 'articleMenu', BackendRuntimeContext<EntityD
                         },
                         filter: {
                             name: (data as any).name,
-                            parentId: (data as any).parentId,
+                            parentId: (data as any).parentId
+                                ? (data as any).parentId
+                                : {
+                                      $exists: false,
+                                  },
                         },
                     },
-                    {},
+                    {}
                 );
                 if (articleMenu) {
                     throw new OakPreConditionUnsetException(
-                        `父分类的同一子集中存在同名分类【${(data as any).name}】，请重新输入`
+                        `父分类的同一子集中存在同名分类【${
+                            (data as any).name
+                        }】，请重新输入`
                     );
                 }
             }
@@ -43,53 +54,177 @@ const triggers: Trigger<EntityDict, 'articleMenu', BackendRuntimeContext<EntityD
         },
     },
     {
-      name: '在更新文章分类时，查询文章分类是否重名',
-      entity: 'articleMenu',
-      action: 'update',
-      when: 'before',
-      fn: async (event, context) => {
-          const {
-              operation: { data, filter },
-          } = event;
-          assert(!(data instanceof Array)); // 不可能是成组创建
-          if ((data as any).name) {
-              const [articleMenus] = await context.select(
-                  'articleMenu',
-                  {
-                      data: {
-                          id: 1,
-                          name: 1,
-                          parentId: 1,
-                      },
-                      filter,
-                  },
-                  {},
-              );
-              if(articleMenus && articleMenus.parentId) {
-                const [articleMenus2] = await context.select(
-                  'articleMenu',
-                  {
-                      data: {
-                          id: 1,
-                          name: 1,
-                          parentId: 1,
-                      },
-                      filter: {
-                          name: (data as any).name,
-                          parentId: articleMenus.parentId as string,
-                      },
-                  },
-                  {},
-              );
-                if (articleMenus2) {
-                    throw new OakPreConditionUnsetException(
-                        `父分类的同一子集中存在同名分类【${(data as any).name}】，请重新输入`
+        name: '在创建文章分类时，文章分类的父节点的【isLeaf】置为【true】',
+        entity: 'articleMenu',
+        action: 'create',
+        when: 'after',
+        fn: async (event: any, context: any) => {
+            const {
+                operation: { data, filter },
+            } = event;
+            assert(!(data instanceof Array));
+            const { id } = data as CreateArticleMenuData;
+
+            const [articleMenu] = await context.select(
+                'articleMenu',
+                {
+                    data: {
+                        id: 1,
+                        name: 1,
+                        parentId: 1,
+                        parent: {
+                            id: 1,
+                            isLeaf: 1,
+                        },
+                    },
+                    filter: {
+                        id,
+                    },
+                },
+                {}
+            );
+            if (
+                articleMenu &&
+                articleMenu.parent &&
+                !articleMenu.parent.isLeaf
+            ) {
+                await context.operate(
+                    'articleMenu',
+                    {
+                        id: await generateNewIdAsync(),
+                        action: 'update',
+                        data: {
+                            isLeaf: true,
+                        },
+                        filter: {
+                            id: articleMenu.parentId,
+                        },
+                    },
+                    {
+                        blockTrigger: true,
+                    }
+                );
+            }
+
+            return 0;
+        },
+    },
+    {
+        name: '在删除文章分类前，将文章分类的父节点的【isLeaf】置为【false】',
+        entity: 'articleMenu',
+        action: 'remove',
+        when: 'before',
+        fn: async (event: any, context: any) => {
+            const {
+                operation: { data, filter },
+            } = event;
+
+            const [articleMenu] = await context.select(
+                'articleMenu',
+                {
+                    data: {
+                        id: 1,
+                        name: 1,
+                        parentId: 1,
+                        parent: {
+                            id: 1,
+                            isLeaf: 1,
+                        },
+                    },
+                    filter,
+                },
+                {}
+            );
+            if (articleMenu) {
+                const articleMenus = await context.select(
+                    'articleMenu',
+                    {
+                        data: {
+                            id: 1,
+                        },
+                        filter: {
+                            parentId: articleMenu.parentId,
+                            id: {
+                                $ne: articleMenu.id,
+                            },
+                        },
+                    },
+                    {}
+                );
+                if (articleMenus.length === 0) {
+                    await context.operate(
+                        'articleMenu',
+                        {
+                            id: await generateNewIdAsync(),
+                            action: 'update',
+                            data: {
+                                isLeaf: false,
+                            },
+                            filter: {
+                                id: articleMenu.parentId,
+                            },
+                        },
+                        {}
                     );
                 }
-              }
-          }
-          return 1;
-      },
-    }
+            }
+            return 0;
+        },
+    },
+    {
+        name: '在更新文章分类时，查询文章分类是否重名',
+        entity: 'articleMenu',
+        action: 'update',
+        when: 'before',
+        fn: async (event, context) => {
+            const {
+                operation: { data, filter },
+            } = event;
+            assert(!(data instanceof Array)); // 不可能是成组创建
+            if ((data as any).name) {
+                const [articleMenu] = await context.select(
+                    'articleMenu',
+                    {
+                        data: {
+                            id: 1,
+                            name: 1,
+                            parentId: 1,
+                        },
+                        filter,
+                    },
+                    {}
+                );
+                if (articleMenu) {
+                    const [articleMenu2] = await context.select(
+                        'articleMenu',
+                        {
+                            data: {
+                                id: 1,
+                                name: 1,
+                                parentId: 1,
+                            },
+                            filter: {
+                                name: (data as any).name,
+                                parentId: articleMenu.parentId
+                                    ? articleMenu.parentId
+                                    : {
+                                          $exists: false,
+                                      },
+                            },
+                        },
+                        {}
+                    );
+                    if (articleMenu2) {
+                        throw new OakPreConditionUnsetException(
+                            `父分类的同一子集中存在同名分类【${
+                                (data as any).name
+                            }】，请重新输入`
+                        );
+                    }
+                }
+            }
+            return 1;
+        },
+    },
 ];
 export default triggers;

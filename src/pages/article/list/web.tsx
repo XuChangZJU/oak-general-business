@@ -109,11 +109,7 @@ export default function render(
         getOpenKeys,
     } = props.methods;
     const features = useFeatures();
-    const editorConfig: Partial<IEditorConfig> = {
-        readOnly: true,
-        autoFocus: true,
-        scroll: false,
-    };
+
     const renderMenuItems = (data: any) => {
         return data?.map((menuItem: any) => {
             if (menuItem.children || menuItem.isLeaf) {
@@ -155,7 +151,6 @@ export default function render(
             );
         });
     };
-    const [a, setA] = useState('');
     return (
         <PageHeader title="帮助文档">
             <div className={Style.container}>
@@ -165,134 +160,23 @@ export default function render(
                     <div className={Style.article}>
                         <div className={Style.menu}>
                             <Menu
-                                // onClick={(e) => gotoArticleUpsert(e.keyPath[1])}
                                 openKeys={openKeys}
                                 selectedKeys={selectedKeys}
                                 style={{ width: 256 }}
                                 mode="inline"
-                                // items={renderMenuItems(treeData)}
                             >
                                 {renderMenuItems(treeData)}
                             </Menu>
                         </div>
                         <div className={Style.editor}>
-                            {id?.length > 0 ? (
-                                <div className={Style.rightContainer}>
-                                    <Row>
-                                        <Col xs={24} sm={16}>
-                                            <Form
-                                                colon
-                                                labelCol={{ span: 4 }}
-                                                wrapperCol={{ span: 20 }}
-                                            >
-                                                <>
-                                                    <Form.Item
-                                                        label={t(
-                                                            'articleMenu:attr.name'
-                                                        )}
-                                                        name="name"
-                                                        //  rules={[
-                                                        //      {
-                                                        //          required: true,
-                                                        //          message: '文章分类名称必填',
-                                                        //      },
-                                                        //  ]}
-                                                    >
-                                                        <>{`${name}`}</>
-                                                    </Form.Item>
-                                                    <Form.Item
-                                                        label="分站LOGO"
-                                                        name="extraFile$entity"
-                                                    >
-                                                        <>
-                                                            {logo ? (
-                                                                <Image
-                                                                    src={logo}
-                                                                    width={100}
-                                                                    height={100}
-                                                                />
-                                                            ) : (
-                                                                ''
-                                                            )}
-                                                        </>
-                                                    </Form.Item>
-                                                </>
-
-                                                <Form.Item
-                                                    wrapperCol={{ offset: 4 }}
-                                                >
-                                                    <Space>
-                                                        <Button
-                                                            type="primary"
-                                                            onClick={() => {
-                                                                gotoEdit(id);
-                                                            }}
-                                                        >
-                                                            编辑
-                                                        </Button>
-                                                        {!isArticle && (
-                                                            <Button
-                                                                onClick={() => {
-                                                                    gotoEditByParentId(
-                                                                        id
-                                                                    );
-                                                                }}
-                                                            >
-                                                                添加子节点
-                                                            </Button>
-                                                        )}
-                                                        {!isArticle &&
-                                                            !isChildren && (
-                                                                <Button
-                                                                    onClick={() => {
-                                                                        gotoArticleEditByArticleMenuId(
-                                                                            id
-                                                                        );
-                                                                    }}
-                                                                >
-                                                                    添加文章
-                                                                </Button>
-                                                            )}
-                                                        <Button
-                                                            type="link"
-                                                            onClick={() => {
-                                                                const modal =
-                                                                    confirm({
-                                                                        title: '确定删除该文章分类吗？',
-                                                                        content:
-                                                                            '删除后不可恢复',
-                                                                        okText: '确定',
-                                                                        cancelText:
-                                                                            '取消',
-                                                                        onOk: (
-                                                                            e
-                                                                        ) => {
-                                                                            onRemoveArticleMenu(
-                                                                                id
-                                                                            );
-                                                                            modal!.destroy();
-                                                                        },
-                                                                    });
-                                                            }}
-                                                        >
-                                                            删除
-                                                        </Button>
-                                                    </Space>
-                                                </Form.Item>
-                                            </Form>
-                                        </Col>
-                                    </Row>
-                                </div>
-                            ) : articleId?.length > 0 ? (
+                            {articleId?.length > 0 ? (
                                 <ArticleUpsert
                                     oakAutoUnmount={true}
                                     content={content}
                                     articleId={articleId}
                                     oakPath={`$article-detail-${articleId}`}
                                 />
-                            ) : (
-                                ''
-                            )}
+                            ) : null}
                         </div>
                     </div>
                 )}
