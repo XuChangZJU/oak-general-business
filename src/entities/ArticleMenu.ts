@@ -15,11 +15,11 @@ export interface Schema extends EntityShape {
   entityId: String<64>;
   files?: Array<ExtraFile>; //logo
 }
-export type Relation = 'owner' | 'manager';
+
 const locale: LocaleDef<
     Schema,
     '',
-    Relation,
+    '',
     {
     }
 > = {
@@ -34,9 +34,5 @@ const locale: LocaleDef<
             isLeaf: '是否为叶结点',
             files: '图片'
         },
-        r: {
-          owner: '所有者',
-          manager: '管理员',
-        }
     },
 };
