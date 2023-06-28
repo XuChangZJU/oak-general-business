@@ -20,17 +20,17 @@ export default OakComponent({
             articles: articles?.map((article, index: number) => {
                 return {
                     id: article?.id,
-                    iState: article?.iState,
-                    title: article?.title,
-                    abstract: article?.abstract,
-                    author: article?.author,
+                    // iState: article?.iState,
+                    // title: article?.title,
+                    // abstract: article?.abstract,
+                    // author: article?.author,
                     content: article?.content,
                     entity: article?.entity,
                     entityId: article?.entityId,
                 };
             }),
             pagination,
-            searchValue: (filter?.title as { $includes: string })?.$includes,
+            // searchValue: (filter?.title as { $includes: string })?.$includes,
         };
     },
     filters: [
@@ -82,14 +82,14 @@ export default OakComponent({
             this.searchValueChange(value);
         },
         async searchValueChange(value: string) {
-            this.addNamedFilter({
-                filter: {
-                    title: {
-                        $includes: value!,
-                    },
-                },
-                '#name': 'title',
-            });
+            // this.addNamedFilter({
+            //     filter: {
+            //         title: {
+            //             $includes: value!,
+            //         },
+            //     },
+            //     '#name': 'title',
+            // });
         },
         async searchCancel() {
             this.removeNamedFilterByName('title');

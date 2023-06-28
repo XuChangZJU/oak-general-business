@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Button } from 'antd';
+// @ts-ignore
 import { useNavigate } from 'react-router-dom';
 
 import { ReactComponent as Light403Icon } from './assets/svg/assets-result-403.svg';
