@@ -332,7 +332,7 @@ export default OakComponent({
       window.open(`/article2/preview?oakId=${articleId}`);
     },
     copy(articleId: string) {
-      const url = `${window.location.hostname}:3000/article2/preview?oakId=${articleId}`;
+      const url = `${window.location.host}/article2/preview?oakId=${articleId}`;
             navigator.clipboard.writeText(url).then(() => {
                 this.setMessage({
                     content: '复制链接成功',
