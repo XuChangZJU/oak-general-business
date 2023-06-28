@@ -158,15 +158,16 @@ export default OakComponent({
               // 当前子菜单已收起，展开当前子菜单及其所有子菜单
               openKeys.push(node.key);
               openKeys.push(...getAllChildKeys(node));
+              const leafNode = findLeafNode(node);
+              if (leafNode) {
+                const parentKeys = getParentKeys(leafNode);
+                selectedKeys.push(...parentKeys);
+                this.gotoArticleUpsert(leafNode.key);
+              }
             }
     
             // 存储第一个没有子节点的节点及其全部父节点到 selectedKeys
-            const leafNode = findLeafNode(node);
-            if (leafNode) {
-              const parentKeys = getParentKeys(leafNode);
-              selectedKeys.push(...parentKeys);
-              this.gotoArticleUpsert(leafNode.key);
-            }
+           
           } else if (node.children) {
             toggleOpenKeys(node.children, openKeys.includes(node.key) || parentOpen); // 递归处理子菜单的展开和收起
           }
@@ -331,33 +332,33 @@ export default OakComponent({
         }
     },
     async gotoArticleUpsert(articleId: string, selectedKeys: string[] = []) {
-      if(articleId) {
-        const { data: article } = await this.features.cache.refresh('article', {
-          data: {
-            id: 1,
-            name: 1,
-            content: 1,
-            articleMenuId: 1,
-          },
-          filter: {
-            id: articleId
-          },
-        });
-        console.log(selectedKeys)
-        if(article) {
-          this.setState({
-            content: article[0]?.content,
-            articleId,
-            id: '',
-            parentId: '',
+      if(selectedKeys.includes(articleId)) {
+
+      } else {
+        if(articleId) {
+          const { data: article } = await this.features.cache.refresh('article', {
+            data: {
+              id: 1,
+              name: 1,
+              content: 1,
+              articleMenuId: 1,
+            },
+            filter: {
+              id: articleId
+            },
           });
+          if(article) {
+            this.setState({
+              selectedKeys: [articleId],
+              content: article[0]?.content,
+              articleId,
+              id: '',
+              parentId: '',
+            });
+          };
         };
-      };
-        // this.setState({
-        //   articleId,
-        //   id: '',
-        //   parentId: '',
-        // });
+
+      }
     },
     gotoEdit(id?: string) {
       if (id) {

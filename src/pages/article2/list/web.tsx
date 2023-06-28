@@ -50,7 +50,7 @@ export default function render(
 		{
 			gotoUpsert: (id?: string) => void;
 			gotoUpsertById: (id: string) => void;
-			gotoArticleUpsert: (articleId: string) => void;
+			gotoArticleUpsert: (articleId: string, selectedKeys?: string[] ) => void;
 			check: () => void;
 			onRemoveArticleMenu: (id: string) => void;
 			gotoEdit: (id?: string) => void;
@@ -116,7 +116,7 @@ export default function render(
 				<Menu.Item
 					key={menuItem.key}
 					onClick={(e) => {
-						gotoArticleUpsert(e.key);
+						gotoArticleUpsert(e.key, selectedKeys);
 					}}
 				>
 					{menuItem.label}
