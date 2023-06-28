@@ -16,23 +16,17 @@ export interface Schema extends EntityShape {
   files?: Array<ExtraFile>; //logo
 }
 
-const locale: LocaleDef<
-    Schema,
-    '',
-    '',
-    {
-    }
-> = {
+const locale: LocaleDef<Schema, '', '', {}> = {
     zh_CN: {
-        name: '文章菜单',
+        name: '文章分类',
         attr: {
-            name: '文章分类标题',
+            name: '分类标题',
             isArticle: '是否存在文章',
             parent: '所属分类',
             entity: '对象',
             entityId: '对象Id',
             isLeaf: '是否为叶结点',
-            files: '图片'
+            files: '图片',
         },
     },
 };

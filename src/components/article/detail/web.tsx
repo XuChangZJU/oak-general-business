@@ -1,15 +1,18 @@
-import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { useState, useRef, useEffect } from 'react';
-import { Alert, Card, Button, Row, Col, Space, Affix, Input, Form, Modal } from 'antd';
-const { confirm } = Modal;
+import { Button, Space, Form, Modal } from 'antd';
 import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import { Editor } from "@wangeditor/editor-for-react";
 import { IEditorConfig } from "@wangeditor/editor";
-import OakGallery from '../../extraFile/gallery';
 import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 import Style from './web.module.less';
+import { EyeOutlined } from '@ant-design/icons';
 
+const editorConfig: Partial<IEditorConfig> = {
+    readOnly: true,
+    autoFocus: true,
+    scroll: false,
+};
 
 export default function Render(
     props: WebComponentProps<
@@ -17,84 +20,96 @@ export default function Render(
         'article',
         false,
         {
-           articleId: string;
-           content: string;
+            oakId: string;
+            content: string;
+            name: string;
         },
-        {   
-            gotoArticleEdit: (articleId:string) => void;
-            onRemoveArticle: (id:string) => void;
+        {
+            gotoArticleEdit: (articleId: string) => void;
+            onRemoveArticle: (id: string) => void;
+            gotoPreview: (
+                content: string,
+                name: string,
+                articleId: string
+            ) => void;
+            copy: (articleId: string) => void;
         }
     >
 ) {
-    const { methods: method, data } = props;
-    const { content, articleId } = props.data;
-    const {
-        t,
-        onRemoveArticle,
-        gotoArticleEdit,
-    } = method;
-    const editorConfig: Partial<IEditorConfig> = {
-      readOnly: true,
-      autoFocus: true,
-      scroll: false,
-    };
+    const { methods, data } = props;
+    const { content, oakId, name } = data;
+    const { t, onRemoveArticle, gotoArticleEdit, gotoPreview, copy } = methods;
+
 
     return (
-      <div className={Style.rightContainer}>
-      <Row>
-        <Col xs={24} sm={16}>
-          <Form
-            colon
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 20 }}
-          >
-            <>
-              <Form.Item>
+        <div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Space>
+                    <Button
+                        onClick={() => {
+                            copy(oakId);
+                        }}
+                    >
+                        复制链接
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            gotoPreview(content, name, oakId);
+                        }}
+                    >
+                        <EyeOutlined />
+                        查看
+                    </Button>
+                </Space>
+            </div>
+            <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
                 <>
-                  <Editor
-                    defaultConfig={editorConfig}
-                    value={content}
-                    mode="default"
-                    style={{
-                      width: 750
-                    }}
-                  />
+                    <Form.Item>
+                        <>
+                            {content ? (
+                                <Editor
+                                    defaultConfig={editorConfig}
+                                    value={content}
+                                    mode="default"
+                                    style={{
+                                        width: 750,
+                                    }}
+                                />
+                            ) : null}
+                        </>
+                    </Form.Item>
                 </>
-              </Form.Item>
-            </>
 
-            <Form.Item wrapperCol={{ offset: 4 }}>
-              <Space>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    gotoArticleEdit(articleId);
-                  }}
-                >
-                  编辑
-                </Button>
-                <Button
-                  type="link"
-                  onClick={() => {
-                    const modal = confirm({
-                      title: "确定删除该文章吗？",
-                      content: "删除后不可恢复",
-                      okText: "确定",
-                      cancelText: "取消",
-                      onOk: (e) => {
-                        onRemoveArticle(articleId);
-                        modal!.destroy();
-                      },
-                    });
-                  }}
-                >
-                  删除
-                </Button>
-              </Space>
-            </Form.Item>
-          </Form>
-        </Col>
-      </Row>
-    </div>
+                <Form.Item wrapperCol={{ offset: 4 }}>
+                    <Space>
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                gotoArticleEdit(oakId);
+                            }}
+                        >
+                            编辑
+                        </Button>
+                        <Button
+                            type="link"
+                            onClick={() => {
+                                const modal = Modal.confirm({
+                                    title: '确定删除该文章吗？',
+                                    content: '删除后不可恢复',
+                                    okText: '确定',
+                                    cancelText: '取消',
+                                    onOk: (e) => {
+                                        onRemoveArticle(oakId);
+                                        modal!.destroy();
+                                    },
+                                });
+                            }}
+                        >
+                            删除
+                        </Button>
+                    </Space>
+                </Form.Item>
+            </Form>
+        </div>
     );
 }

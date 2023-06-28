@@ -1,27 +1,53 @@
 export default OakComponent({
-  entity: 'article',
-  isList: true,
-  projection: {
-    id: 1,
-    name: 1,
-    content: 1,
-    articleMenu: {
-      id: 1,
-      name: 1,
-      isArticle: 1,
-      isLeaf: 1,
-    }
-  },
-  methods: {
-    async onRemoveArticle(id: string) {
-      this.removeItem(id);
-      await this.execute();
+    entity: 'article',
+    isList: false,
+    projection: {
+        id: 1,
+        name: 1,
+        content: 1,
+        articleMenu: {
+            id: 1,
+            name: 1,
+            isArticle: 1,
+            isLeaf: 1,
+        },
     },
-    gotoArticleEdit(articleId: string) {
-      this.navigateTo({
-        url: '/article/upsert',
-        oakId: articleId
-      })
+    formData: function ({ data: article }) {
+        return {
+            content: article?.content,
+            name: article?.name,
+        };
     },
-  },
+    methods: {
+        async onRemoveArticle(id: string) {
+            this.removeItem(id);
+            await this.execute();
+        },
+        gotoArticleEdit(articleId: string) {
+            this.navigateTo({
+                url: '/article/upsert',
+                oakId: articleId,
+            });
+        },
+        gotoPreview(content: string, title: string, articleId: string) {
+            this.save(
+                'article_html',
+                JSON.stringify({
+                    content,
+                    title,
+                    articleId,
+                })
+            );
+            window.open(`/article/preview?oakId=${articleId}`);
+        },
+        copy(articleId: string) {
+            const url = `${window.location.host}/article/preview?oakId=${articleId}`;
+            navigator.clipboard.writeText(url).then(() => {
+                this.setMessage({
+                    content: '复制链接成功',
+                    type: 'success',
+                });
+            });
+        },
+    },
 });

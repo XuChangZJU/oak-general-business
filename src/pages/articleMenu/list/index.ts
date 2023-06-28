@@ -1,81 +1,27 @@
-
-import { EntityDict } from "../../../general-app-domain";
+import { EntityDict } from '../../../general-app-domain';
 interface DataNode {
-  label: string,
-	title: string;
-	key: string;
-	isArticle?: boolean;
-  isLeaf?: boolean;
-  logo?: string;
-	children?: DataNode[];
+    label: string;
+    title: string;
+    key: string;
+    isArticle?: boolean;
+    isLeaf?: boolean;
+    logo?: string;
+    children?: DataNode[];
 }
 export default OakComponent({
-  entity: 'articleMenu',
-  projection: {
-    id: 1,
-    name: 1,
-    isArticle: 1,
-    isLeaf: 1,
-    parent: {
-      id: 1,
-      name: 1,
-      isArticle: 1,
-      isLeaf: 1,
-    },
-    extraFile$entity: {
-      $entity: 'extraFile',
-      data: {
-          id: 1,
-          tag1: 1,
-          origin: 1,
-          bucket: 1,
-          objectId: 1,
-          filename: 1,
-          extra1: 1,
-          extension: 1,
-          type: 1,
-          entity: 1,
-          entityId: 1,
-      },
-      filter: {
-          tag1: {
-              $in: ['logo', 'introduce'],
-          },
-      },
-  },
-  },
-  isList: true,
-  formData({ data:articleMenu }) {
-    return {
-      articleMenu,
-    }
-  },
-  filters: [
-
-  ],
-  lifetimes: {
-    async ready() {
-      const { data: articles } = await this.features.cache.refresh('article', {
-                  data: {
-                      id: 1,
-                      name: 1,
-                      content: 1,
-                      articleMenuId: 1,
-                  },
-              });
-      const { data: articleMenus } = await this.features.cache.refresh('articleMenu', {
-        data: {
-          id: 1,
-          name: 1,
-          isArticle: 1,
-          isLeaf: 1,
-          parent: {
+    entity: 'articleMenu',
+    projection: {
+        id: 1,
+        name: 1,
+        isArticle: 1,
+        isLeaf: 1,
+        parent: {
             id: 1,
             name: 1,
             isArticle: 1,
             isLeaf: 1,
-          },
-          extraFile$entity: {
+        },
+        extraFile$entity: {
             $entity: 'extraFile',
             data: {
                 id: 1,
@@ -92,253 +38,185 @@ export default OakComponent({
             },
             filter: {
                 tag1: {
-                    $in: ['logo'],
+                    $in: ['logo', 'introduce'],
                 },
             },
         },
-        },
-        sorter: [
-          {
-              $attr: {
-                $$createAt$$: 1,
-              },
-              $direction: 'asc',
-          },
-      ],
-      });
-      
-      const newArticleMenus = articleMenus?.map((ele) => {
+    },
+    isList: true,
+    formData({ data: articleMenu }) {
         return {
-          ...ele,
-          logo: this.features.extraFile.getUrl(ele?.extraFile$entity?.find((ele) => ele.tag1 === 'logo'))
-        }
-      })
-      const newArticles = articles?.map((ele) => (
-        {
-          id: ele?.id,
-          name: ele?.name,
-          parent: ele?.articleMenuId,
-          parentId: ele?.articleMenuId,
-          isArticle: true,
-          content: ele?.content,
-          logo: null,
-        }
-      ));
-      const arr: any[] = [...newArticleMenus,...newArticles];
-      const rootNodes = arr?.filter((node) => !node.parent);
-		  const treeData = rootNodes?.map((rootNode) => {
-			  return {
-          label: rootNode.name,
-				  title: rootNode.name,
-				  key: (rootNode.id)?.toString(),
-				  isArticle: rootNode.isArticle,
-          logo: rootNode?.logo,
-				  children: this.buildTreeData(arr, rootNode.id),
-			  };
-		    });
-              this.setState({
-                arr,
-                treeData
-              });
-            } 
-  },
-  methods: {
-    buildTreeData(
-      nodes: EntityDict["articleMenu"]["Schema"][] | any[],
-      parentId: string | null
-    ): DataNode[]{
-      const children: DataNode[] = [];
-      for (const node of nodes) {
-        if (node.parentId === parentId) {
-          const treeNode: DataNode = {
-            label: node.name,
-            title: node.name,
-            key: node.id.toString(),
-            isArticle: node.isArticle,
-            isLeaf: node.isLeaf,
-            logo: node.logo,
-          };
-  
-          const nestedChildren = this.buildTreeData(nodes, node.id);
-          if (nestedChildren.length > 0) {
-            treeNode.children = nestedChildren;
-          }
-  
-          children.push(treeNode);
-        }
-      }
-      return children;
-    },
-    gotoUpsert(parentId?: string) { 
-        this.setState({
-          parentId,
-          id: '',
-          articleMenuId: '',
-        });
-    },
-    async gotoUpsertById(id: string) {
-        if(id) {
-          const { data: articleMenu } = await this.features.cache.refresh('articleMenu', {
-            data: {
-              id: 1,
-              name: 1,
-              isArticle: 1,
-              parentId: 1,
-              extraFile$entity: {
-                $entity: 'extraFile',
-                data: {
-                    id: 1,
-                    tag1: 1,
-                    origin: 1,
-                    bucket: 1,
-                    objectId: 1,
-                    filename: 1,
-                    extra1: 1,
-                    extension: 1,
-                    type: 1,
-                    entity: 1,
-                    entityId: 1,
-                },
-                filter: {
-                  tag1: {
-                      $in: ['logo'],
-                  },
-                },
-            },
-            },
-            filter: {
-             $or: [
-              {
-                id,
-              },
-              {
-                parentId: id,
-              }
-             ]
-          },
-          });
-          if(articleMenu && articleMenu?.length > 1) {
-            this.setState({
-              id: articleMenu[0].id,
-              name: articleMenu[0].name,
-              parentId: '',
-              articleMenuId: '',
-              isArticle: articleMenu[0].isArticle,
-              isChildren: true,
-              logo: this.features.extraFile.getUrl(articleMenu[0].extraFile$entity?.find((ele) => ele.tag1 === 'logo'))
-            })
-          }
-          if(articleMenu && articleMenu?.length === 1) {
-            this.setState({
-              id: articleMenu[0].id,
-              name: articleMenu[0].name,
-              parentId: '',
-              articleMenuId: '',
-              isArticle: articleMenu[0].isArticle,
-              isChildren: false,
-              logo: this.features.extraFile.getUrl(articleMenu[0].extraFile$entity?.find((ele) => ele.tag1 === 'logo')),
-              content: undefined,
-              articleId: undefined,
-            })
-          }
-        }
-    },
-    async gotoArticleUpsert(articleId: string) {
-      if(articleId) {
-        const { data: article } = await this.features.cache.refresh('article', {
-          data: {
-            id: 1,
-            name: 1,
-            content: 1,
-            articleMenuId: 1,
-          },
-          filter: {
-            id: articleId
-          },
-        });
-        if(article) {
-          this.setState({
-            title: article[0]?.name,
-            content: article[0]?.content,
-            articleId,
-            id: '',
-            parentId: '',
-          });
+            articleMenu,
         };
-      };
-        // this.setState({
-        //   articleId,
-        //   id: '',
-        //   parentId: '',
-        // });
     },
-    gotoEdit(id?: string) {
-      if (id) {
-        this.navigateTo({
-            url: '/articleMenu/upsert',
-            oakId: id,
-        });
-      } else {
-        this.navigateTo({
-            url: '/articleMenu/upsert',
-        });
-    }
-    },
-    gotoEditByParentId(parentId?: string) {
-      this.navigateTo({
-        url: '/articleMenu/upsert',
-        parentId
-      })
-    },
-    gotoArticleEdit(articleId: string) {
-      this.navigateTo({
-        url: '/article/upsert',
-        oakId: articleId
-      })
-    },
-    gotoArticleEditByArticleMenuId(articleMenuId: string) {
-      this.navigateTo({
-        url: '/article/upsert',
-        articleMenuId
-      })
-    },
-    async onRemoveArticleMenu(id: string) {
-      this.removeItem(id);
-      await this.execute();
-    },
-    async onRemoveArticle(id: string) {
-      this.removeItem(id);
-      await this.execute();
-    },
-    async check() {
-      if (!this.state.name) {
-          this.setMessage({
-              type: 'error',
-              content: '请输入文章分类名称',
-          });
-          return;
-      }
-      await this.execute();
-    },
-    gotoPreview(content: string,title: string, articleId: string) {
-            this.save(
-                'article_html',
-                JSON.stringify({
-                    content,
-                    title,
-                    articleId,
-                })
+    filters: [],
+    lifetimes: {
+        async ready() {
+            const { data: articles } = await this.features.cache.refresh(
+                'article',
+                {
+                    data: {
+                        id: 1,
+                        name: 1,
+                        content: 1,
+                        articleMenuId: 1,
+                    },
+                }
             );
-      window.open(`/article/preview?oakId=${articleId}`);
-    },
-    copy(articleId: string) {
-      const url = `${window.location.host}/article/preview?oakId=${articleId}`;
-            navigator.clipboard.writeText(url).then(() => {
-                this.setMessage({
-                    content: '复制链接成功',
-                    type: 'success',
-                });
+            const { data: articleMenus } = await this.features.cache.refresh(
+                'articleMenu',
+                {
+                    data: {
+                        id: 1,
+                        name: 1,
+                        isArticle: 1,
+                        isLeaf: 1,
+                        parent: {
+                            id: 1,
+                            name: 1,
+                            isArticle: 1,
+                            isLeaf: 1,
+                        },
+                        extraFile$entity: {
+                            $entity: 'extraFile',
+                            data: {
+                                id: 1,
+                                tag1: 1,
+                                origin: 1,
+                                bucket: 1,
+                                objectId: 1,
+                                filename: 1,
+                                extra1: 1,
+                                extension: 1,
+                                type: 1,
+                                entity: 1,
+                                entityId: 1,
+                            },
+                            filter: {
+                                tag1: {
+                                    $in: ['logo'],
+                                },
+                            },
+                        },
+                    },
+                    sorter: [
+                        {
+                            $attr: {
+                                $$createAt$$: 1,
+                            },
+                            $direction: 'asc',
+                        },
+                    ],
+                }
+            );
+
+            const newArticleMenus = articleMenus?.map((ele) => {
+                return {
+                    ...ele,
+                    logo: this.features.extraFile.getUrl(
+                        ele?.extraFile$entity?.find(
+                            (ele) => ele.tag1 === 'logo'
+                        )
+                    ),
+                };
             });
+            const newArticles = articles?.map((ele) => ({
+                id: ele?.id,
+                name: ele?.name,
+                parent: ele?.articleMenuId,
+                parentId: ele?.articleMenuId,
+                isArticle: true,
+                content: ele?.content,
+                logo: null,
+            }));
+            const arr: any[] = [...newArticleMenus, ...newArticles];
+            const rootNodes = arr?.filter((node) => !node.parent);
+            const treeData = rootNodes?.map((rootNode) => {
+                return {
+                    label: rootNode.name,
+                    title: rootNode.name,
+                    key: rootNode.id?.toString(),
+                    isArticle: rootNode.isArticle,
+                    logo: rootNode?.logo,
+                    children: this.buildTreeData(arr, rootNode.id),
+                };
+            });
+            this.setState({
+                treeData,
+            });
+        },
     },
-  }
-})
+    data: {
+        selectArticleMenuId: '',
+        selectArticleId: '',
+    },
+    methods: {
+        buildTreeData(
+            nodes: EntityDict['articleMenu']['Schema'][] | any[],
+            parentId: string | null
+        ): DataNode[] {
+            const children: DataNode[] = [];
+            for (const node of nodes) {
+                if (node.parentId === parentId) {
+                    const treeNode: DataNode = {
+                        label: node.name,
+                        title: node.name,
+                        key: node.id.toString(),
+                        isArticle: node.isArticle,
+                        isLeaf: node.isLeaf,
+                        logo: node.logo,
+                    };
+
+                    const nestedChildren = this.buildTreeData(nodes, node.id);
+                    if (nestedChildren.length > 0) {
+                        treeNode.children = nestedChildren;
+                    }
+
+                    children.push(treeNode);
+                }
+            }
+            return children;
+        },
+        async gotoUpsertById(id: string) {
+            this.setState({
+                selectArticleMenuId: id,
+                selectArticleId: '',
+            });
+        },
+        async gotoArticleUpsert(articleId: string) {
+           this.setState({
+               selectArticleId: articleId,
+               selectArticleMenuId: '',
+           });
+        },
+        gotoEdit(id?: string) {
+            if (id) {
+                this.navigateTo({
+                    url: '/articleMenu/upsert',
+                    oakId: id,
+                });
+            } else {
+                this.navigateTo({
+                    url: '/articleMenu/upsert',
+                });
+            }
+        },
+        gotoEditByParentId(parentId?: string) {
+            this.navigateTo({
+                url: '/articleMenu/upsert',
+                parentId,
+            });
+        },
+        gotoArticleEdit(articleId: string) {
+            this.navigateTo({
+                url: '/article/upsert',
+                oakId: articleId,
+            });
+        },
+
+        async onRemoveArticleMenu(id: string) {
+            this.removeItem(id);
+            await this.execute();
+        },
+    },
+});
