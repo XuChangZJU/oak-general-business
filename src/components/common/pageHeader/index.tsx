@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+// @ts-ignore
 import { useNavigate } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';

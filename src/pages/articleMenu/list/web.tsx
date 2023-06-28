@@ -204,7 +204,7 @@ export default function render(
 														>
 															<>{`${name}`}</>
 														</Form.Item>
-														<Form.Item label="分类LOGO" name="extraFile$entity">
+														<Form.Item label="LOGO" name="extraFile$entity">
 															<>
 																{logo ? (
 																	<Image src={logo} width={100} height={100} />
@@ -234,7 +234,7 @@ export default function render(
 																	添加子节点
 																</Button>
 															)}
-															{!isArticle && (
+															{!isArticle && !isChildren && (
 																<Button
 																	onClick={() => {
 																		gotoArticleEditByArticleMenuId(id);
