@@ -1,4 +1,4 @@
-import { Form, Tree, Row, Col, Space, Button, Menu, Modal, Image } from "antd";
+import { Form, Tree, Row, Col, Space, Button, Menu, Modal, Image, Empty } from "antd";
 const { confirm } = Modal;
 import type { MenuProps } from "antd";
 import React, { useState, useEffect, useCallback } from "react";
@@ -137,7 +137,7 @@ export default function render(
 	return (
 		<PageHeader title="分类管理">
 			<div className={Style.container}>
-				<div className={Style.space}>
+      <div className={Style.space}>
 					<Button
 						type="primary"
 						onClick={() => {
@@ -166,7 +166,11 @@ export default function render(
 						</Space>
 					)}
 				</div>
-				<div className={Style.article}>
+        {
+          treeData?.length === 0 ? (
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          ) : (
+            <div className={Style.article}>
 					<div className={Style.menu}>
 						<Menu
 							// onClick={(e) => gotoArticleUpsert(e.keyPath[1])}
@@ -274,6 +278,10 @@ export default function render(
 						)}
 					</div>
 				</div>
+          )
+        }
+				
+				
 			</div>
 		</PageHeader>
 	);
