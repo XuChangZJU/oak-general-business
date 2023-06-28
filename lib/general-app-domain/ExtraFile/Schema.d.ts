@@ -4,6 +4,7 @@ import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import * as Article from "../Article/Schema";
 import * as ArticleMenu from "../ArticleMenu/Schema";
 import * as User from "../User/Schema";
 export declare type OpSchema = EntityShape & {
@@ -15,12 +16,12 @@ export declare type OpSchema = EntityShape & {
     tag2?: String<32> | null;
     filename: String<256>;
     md5?: Text | null;
-    entity: "articleMenu" | "user" | string;
+    entity: "article" | "articleMenu" | "user" | string;
     entityId: String<64>;
     extra1?: Text | null;
     extension: String<16>;
     size?: Int<4> | null;
-    sort?: Float<4, 2> | null;
+    sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
     isBridge?: Boolean | null;
 };
@@ -34,14 +35,15 @@ export declare type Schema = EntityShape & {
     tag2?: String<32> | null;
     filename: String<256>;
     md5?: Text | null;
-    entity: "articleMenu" | "user" | string;
+    entity: "article" | "articleMenu" | "user" | string;
     entityId: String<64>;
     extra1?: Text | null;
     extension: String<16>;
     size?: Int<4> | null;
-    sort?: Float<4, 2> | null;
+    sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
     isBridge?: Boolean | null;
+    article?: Article.Schema;
     articleMenu?: ArticleMenu.Schema;
     user?: User.Schema;
 } & {
@@ -68,10 +70,11 @@ declare type AttrFilter<E> = {
     sort: Q_NumberValue;
     fileType: Q_StringValue;
     isBridge: Q_BooleanValue;
+    article: Article.Filter;
     articleMenu: ArticleMenu.Filter;
     user: User.Filter;
 };
-export declare type Filter<E = Q_EnumValue<"articleMenu" | "user" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
+export declare type Filter<E = Q_EnumValue<"article" | "articleMenu" | "user" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -95,11 +98,15 @@ export declare type Projection = {
     sort?: number;
     fileType?: number;
     isBridge?: number;
+    article?: Article.Projection;
     articleMenu?: ArticleMenu.Projection;
     user?: User.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type ExtraFileIdProjection = OneOf<{
     id: number;
+}>;
+declare type ArticleIdProjection = OneOf<{
+    entityId: number;
 }>;
 declare type ArticleMenuIdProjection = OneOf<{
     entityId: number;
@@ -148,6 +155,8 @@ export declare type SortAttr = {
 } | {
     isBridge: number;
 } | {
+    article: Article.SortAttr;
+} | {
     articleMenu: ArticleMenu.SortAttr;
 } | {
     user: User.SortAttr;
@@ -163,6 +172,17 @@ export declare type SelectOperation<P extends Object = Projection> = OakSelectio
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
+    entity?: never;
+    entityId?: never;
+    article: Article.CreateSingleOperation;
+} | {
+    entity: "article";
+    entityId: String<64>;
+    article: Article.UpdateOperation;
+} | {
+    entity: "article";
+    entityId: String<64>;
+} | {
     entity?: never;
     entityId?: never;
     articleMenu: ArticleMenu.CreateSingleOperation;
@@ -193,6 +213,10 @@ export declare type CreateSingleOperation = OakOperation<"create", CreateOperati
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId">> & ({
+    article?: Article.CreateSingleOperation | Article.UpdateOperation | Article.RemoveOperation;
+    entityId?: never;
+    entity?: never;
+} | {
     articleMenu?: ArticleMenu.CreateSingleOperation | ArticleMenu.UpdateOperation | ArticleMenu.RemoveOperation;
     entityId?: never;
     entity?: never;
@@ -201,13 +225,15 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("articleMenu" | "user" | string) | null;
+    entity?: ("article" | "articleMenu" | "user" | string) | null;
     entityId?: String<64> | null;
 }) & {
     [k: string]: any;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & ({
+    article?: Article.UpdateOperation | Article.RemoveOperation;
+} | {
     articleMenu?: ArticleMenu.UpdateOperation | ArticleMenu.RemoveOperation;
 } | {
     user?: User.UpdateOperation | User.RemoveOperation;
@@ -216,6 +242,7 @@ export declare type RemoveOperationData = {} & ({
 });
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation;
+export declare type ArticleIdSubQuery = Selection<ArticleIdProjection>;
 export declare type ArticleMenuIdSubQuery = Selection<ArticleMenuIdProjection>;
 export declare type UserIdSubQuery = Selection<UserIdProjection>;
 export declare type ExtraFileIdSubQuery = Selection<ExtraFileIdProjection>;

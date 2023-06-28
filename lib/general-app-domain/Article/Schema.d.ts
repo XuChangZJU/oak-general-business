@@ -2,9 +2,10 @@ import { String, Text, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import * as SubQuery from "../_SubQuery";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as ArticleMenu from "../ArticleMenu/Schema";
+import * as ExtraFile from "../ExtraFile/Schema";
 export declare type OpSchema = EntityShape & {
     name: String<32>;
     content: Text;
@@ -20,6 +21,8 @@ export declare type Schema = EntityShape & {
     entity: String<32>;
     entityId: String<64>;
     articleMenu: ArticleMenu.Schema;
+    extraFile$entity?: Array<ExtraFile.Schema>;
+    extraFile$entity$$aggr?: AggregationResult<ExtraFile.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -49,6 +52,12 @@ export declare type Projection = {
     articleMenu?: ArticleMenu.Projection;
     entity?: number;
     entityId?: number;
+    extraFile$entity?: ExtraFile.Selection & {
+        $entity: "extraFile";
+    };
+    extraFile$entity$$aggr?: ExtraFile.Aggregation & {
+        $entity: "extraFile";
+    };
 } & Partial<ExprOp<OpAttr | string>>;
 declare type ArticleIdProjection = OneOf<{
     id: number;
@@ -99,7 +108,9 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     entity?: string;
     entityId?: string;
     [K: string]: any;
-});
+}) & {
+    extraFile$entity?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, ExtraFile.Filter> | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, ExtraFile.Filter>>;
+};
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
@@ -117,6 +128,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "article
     articleMenuId?: String<64> | null;
 })) & {
     [k: string]: any;
+    extraFile$entity?: ExtraFile.UpdateOperation | ExtraFile.RemoveOperation | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | ExtraFile.UpdateOperation | ExtraFile.RemoveOperation>;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({
