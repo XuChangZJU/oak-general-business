@@ -45,18 +45,18 @@ export default function render(
 										<Tooltip>{parentName}</Tooltip>
 									</Form.Item>
 									<Form.Item
-										label={t("articleMenu:attr.name")}
+										label={"分类名称"}
 										name="name"
 										rules={[
 											{
 												required: true,
-												message: "文章分类名称必填",
+												message: "分类名称必填",
 											},
 										]}
 									>
 										<>
 											<Input
-												placeholder="请输入文章分类名称"
+												placeholder="请输入分类名称"
 												onChange={(e) => {
 													update({
 														name: e.target.value,
@@ -67,11 +67,11 @@ export default function render(
 										</>
 									</Form.Item>
 									<Form.Item
-										label="分类LOGO"
+										label="LOGO"
 										name="extraFile$entity"
 										help={
 											<div className={Style.help}>
-												<span>请上传分类LOGO高清图片，</span>
+												<span>请上传LOGO高清图片，</span>
 												<span>
 													108*108像素，仅支持PNG、JPG格式，大小不超过300KB。
 												</span>
@@ -98,18 +98,18 @@ export default function render(
 							) : (
 								<>
 									<Form.Item
-										label={t("articleMenu:attr.name")}
+										label={"分类名称"}
 										name="name"
 										rules={[
 											{
 												required: true,
-												message: "文章分类名称必填",
+												message: "分类名称必填",
 											},
 										]}
 									>
 										<>
 											<Input
-												placeholder="请输入文章分类名称"
+												placeholder="请输入分类名称"
 												onChange={(e) => {
 													update({
 														name: e.target.value,
@@ -120,11 +120,11 @@ export default function render(
 										</>
 									</Form.Item>
                   <Form.Item
-                    label="分类LOGO"
+                    label="LOGO"
                     name="extraFile$entity"
                     help={
                         <div className={Style.help}>
-                            <span>请上传分类LOGO高清图片，</span>
+                            <span>请上传LOGO高清图片，</span>
                             <span>
                                 108*108像素，仅支持PNG、JPG格式，大小不超过300KB。
                             </span>
