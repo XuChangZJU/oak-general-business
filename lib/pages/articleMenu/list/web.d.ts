@@ -13,6 +13,8 @@ export default function render(props: WebComponentProps<EntityDict, 'articleMenu
     treeData: DataNode[];
     selectArticleMenuId: string;
     selectArticleId: string;
+    entity: string;
+    entityId: string;
 }, {
     gotoUpsertById: (id: string) => void;
     gotoArticleUpsert: (articleId: string) => void;

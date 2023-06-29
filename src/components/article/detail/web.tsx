@@ -26,7 +26,7 @@ export default function Render(
         },
         {
             gotoArticleEdit: (articleId: string) => void;
-            onRemoveArticle: (id: string) => void;
+            onRemoveArticle: () => void;
             gotoPreview: (
                 content: string,
                 name: string,
@@ -99,7 +99,7 @@ export default function Render(
                                     okText: '确定',
                                     cancelText: '取消',
                                     onOk: (e) => {
-                                        onRemoveArticle(oakId);
+                                        onRemoveArticle();
                                         modal!.destroy();
                                     },
                                 });

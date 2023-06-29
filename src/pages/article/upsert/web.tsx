@@ -18,6 +18,7 @@ import { IToolbarConfig } from "@wangeditor/editor";
 import OakGallery from "./../../../components/extraFile/gallery";
 import { EntityDict } from "./../../../general-app-domain";
 import { WebComponentProps } from "oak-frontend-base";
+import PageHeader from "../../../components/common/pageHeader";
 
 import Style from "./web.module.less";
 import useFeatures from "../../../hooks/useFeatures";
@@ -111,6 +112,7 @@ export default function Render(
 		}
 	}, [id]);
 	return (
+    <PageHeader showBack={true} title="添加文章">
 		<div className={Style.container}>
 			<Affix offsetTop={64}>
 				<Toolbar editor={editor} defaultConfig={toolbarConfig} mode="default" />
@@ -133,17 +135,6 @@ export default function Render(
 									className={Style.titleInput}
 								/>
 							</div>
-							{/* <div className={Style.authorContainer}>
-                                <Input
-                                    onChange={(e) =>
-                                        update({ author: e.target.value })
-                                    }
-                                    value={data.author}
-                                    placeholder={t('placeholder.author')}
-                                    className={Style.input}
-                                    maxLength={16}
-                                />
-                            </div> */}
 							{data.contentTip && (
 								<Alert
 									type="info"
@@ -258,55 +249,8 @@ export default function Render(
 								}}
 								mode="default"
 							/>
-							{/* <div className={Style.abstract}>
-                                <Card
-                                    title="封面及摘要"
-                                    bordered={false}
-                                    className={Style.card}
-                                >
-                                    <Row>
-                                        <Col flex="none">
-                                            <OakGallery
-                                                maxNumber={1}
-                                                oakPath={
-                                                    oakFullpath
-                                                        ? `${oakFullpath}.extraFile$entity`
-                                                        : undefined
-                                                }
-                                                type="image"
-                                                origin="qiniu"
-                                                tag1="cover"
-                                                entity="article"
-                                            ></OakGallery>
-                                        </Col>
-                                        <Col flex="auto">
-                                            <Input.TextArea
-                                                autoSize={{
-                                                    minRows: 4,
-                                                }}
-                                                maxLength={120}
-                                                placeholder={t(
-                                                    'placeholder.abstract'
-                                                )}
-                                                onChange={(e) =>
-                                                    update({
-                                                        abstract:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                                value={data.abstract || ''}
-                                            ></Input.TextArea>
-                                        </Col>
-                                    </Row>
-                                </Card>
-                            </div> */}
 							<div className={Style.footer}>
 								<Row align="middle">
-									{/* <Col flex="auto">
-                                        <div className={Style.contentNumber}>
-                                            <span>正文字数 {wordCount}</span>
-                                        </div>
-                                    </Col> */}
 									<Col flex="none">
 										<Space>
 											<Button
@@ -325,22 +269,6 @@ export default function Render(
 												<EyeOutlined />
 												预览
 											</Button>
-											{/* <Button
-                                                onClick={() => {
-                                                  const modal = confirm({
-                                                    title: "确定删除该文章吗？",
-                                                    content: "删除后不可恢复",
-                                                    okText: "确定",
-                                                    cancelText: "取消",
-                                                    onOk: (e) => {
-                                                      onRemoveArticle(id);
-                                                      modal!.destroy();
-                                                    },
-                                                  });
-                                                }}
-                                            >
-                                                删除
-                                            </Button> */}
 										</Space>
 									</Col>
 								</Row>
@@ -351,5 +279,6 @@ export default function Render(
 				<Col flex={4} />
 			</Row>
 		</div>
+    </PageHeader>
 	);
 }

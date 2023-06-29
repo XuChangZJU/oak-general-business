@@ -6,7 +6,5 @@ export interface Schema extends EntityShape {
     name: String<32>;
     content: Text;
     articleMenu: ArticleMenu;
-    entity: String<32>;
-    entityId: String<64>;
     files?: Array<ExtraFile>;
 }

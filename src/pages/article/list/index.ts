@@ -142,10 +142,22 @@ export default OakComponent({
                 };
             });
             this.setState({
-                arr,
                 treeData,
             });
         },
+    },
+    data: {
+      selectedArticleId: '',
+      openKeys: [] as string[],
+      selectedKeys: [] as string[],
+      treeData: [] as DataNode[],
+      parentId: '',
+      articleMenuId: '',
+      id: '',
+      name: '',
+      isArticle: false,
+      isChildren: false,
+      logo: '',
     },
     methods: {
         getOpenKeys(
@@ -367,33 +379,14 @@ export default OakComponent({
         ) {
             if (selectedKeys.includes(articleId)) {
             } else {
-                if (articleId) {
-                    const { data: article } = await this.features.cache.refresh(
-                        'article',
-                        {
-                            data: {
-                                id: 1,
-                                name: 1,
-                                content: 1,
-                                articleMenuId: 1,
-                            },
-                            filter: {
-                                id: articleId,
-                            },
-                        }
-                    );
-                    if (article) {
                         this.setState({
                             selectedKeys: [articleId],
-                            content: article[0]?.content,
-                            articleId,
+                            selectedArticleId: articleId,
                             id: '',
                             parentId: '',
                         });
-                    }
                 }
-            }
-        },
+            },
         gotoEdit(id?: string) {
             if (id) {
                 this.navigateTo({

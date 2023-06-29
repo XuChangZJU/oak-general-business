@@ -47,6 +47,10 @@ export default OakComponent({
     },
     filters: [],
     lifetimes: {},
+    properties: {
+      entity: '', 
+      entityId: ''
+    },
     methods: {
         goUpsert(id: string) {
             this.navigateTo({
@@ -55,9 +59,12 @@ export default OakComponent({
             });
         },
         gotoEditByParentId(parentId?: string) {
+           const { entity, entityId } = this.props;
             this.navigateTo({
                 url: '/articleMenu/upsert',
                 parentId,
+                entity,
+                 entityId
             });
         },
         gotoArticleEdit(articleId: string) {
@@ -72,5 +79,8 @@ export default OakComponent({
                 articleMenuId,
             });
         },
+        async onRemoveArticleMenu(id: string) {
+          await this.execute('remove');
+      },
     },
 });

@@ -39,26 +39,27 @@ export default OakComponent({
         };
     },
     filters: [],
+    properties: {
+       entity: '',
+       entityId: '',
+       parentId: '',
+    },
     lifetimes: {
         async ready() {
-            const { parentId, oakId } = this.props;
+            const { parentId, oakId, entity, entityId} = this.props;
             if (!oakId) {
                 if (parentId) {
                     this.update({
                         parentId,
-                        entity: 'platformProvider',
-                        entityId:
-                            this.features.application.getApplication()?.system!
-                                .platform?.entityId!,
+                        entity,
+                        entityId,
                         isArticle: false,
                         isLeaf: false,
                     });
                 } else {
                     this.update({
-                        entity: 'platformProvider',
-                        entityId:
-                            this.features.application.getApplication()?.system!
-                                .platform?.entityId!,
+                        entity,
+                        entityId,
                         isArticle: false,
                         isLeaf: false,
                     });

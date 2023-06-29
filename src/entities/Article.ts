@@ -10,8 +10,6 @@ export interface Schema extends EntityShape {
   name: String<32>; //标题名称
   content: Text; //文章内容
   articleMenu: ArticleMenu; //文章菜单
-  entity: String<32>;
-  entityId: String<64>;
   files?: Array<ExtraFile>; 
 }
 const locale: LocaleDef<
@@ -27,8 +25,6 @@ const locale: LocaleDef<
             name: '文章标题',
             content: '请输入正文内容',
             articleMenu: '文章菜单',
-            entity: '对象',
-            entityId: '对象Id',
             files: '文件'
         },
     },

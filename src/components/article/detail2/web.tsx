@@ -17,8 +17,9 @@ export default function Render(
         'article',
         false,
         {
-           articleId: string;
-           content: string;
+          oakId: string;
+          content: string;
+          name: string;
         },
         {   
             gotoArticleEdit: (articleId:string) => void;
@@ -27,7 +28,7 @@ export default function Render(
     >
 ) {
     const { methods: method, data } = props;
-    const { content, articleId } = props.data;
+    const { content, name } = props.data;
     const {
         t,
         onRemoveArticle,
@@ -38,7 +39,12 @@ export default function Render(
       autoFocus: true,
       scroll: false,
     };
-
+    const [value, setValue] = useState('');
+    useEffect(() => {
+      if(content) {
+        setValue(content);
+      }
+    },[content])
     return (
       <div className={Style.rightContainer}>
       <Row>
@@ -53,7 +59,7 @@ export default function Render(
                 <>
                   <Editor
                     defaultConfig={editorConfig}
-                    value={content}
+                    value={value}
                     mode="default"
                     style={{
                       width: 750
@@ -62,36 +68,6 @@ export default function Render(
                 </>
               </Form.Item>
             </>
-
-            {/* <Form.Item wrapperCol={{ offset: 4 }}>
-              <Space>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    gotoArticleEdit(articleId);
-                  }}
-                >
-                  编辑
-                </Button>
-                <Button
-                  type="link"
-                  onClick={() => {
-                    const modal = confirm({
-                      title: "确定删除该文章吗？",
-                      content: "删除后不可恢复",
-                      okText: "确定",
-                      cancelText: "取消",
-                      onOk: (e) => {
-                        onRemoveArticle(articleId);
-                        modal!.destroy();
-                      },
-                    });
-                  }}
-                >
-                  删除
-                </Button>
-              </Space>
-            </Form.Item> */}
           </Form>
         </Col>
       </Row>

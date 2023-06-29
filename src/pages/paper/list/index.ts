@@ -25,8 +25,8 @@ export default OakComponent({
                     // abstract: article?.abstract,
                     // author: article?.author,
                     content: article?.content,
-                    entity: article?.entity,
-                    entityId: article?.entityId,
+                    // entity: article?.entity,
+                    // entityId: article?.entityId,
                 };
             }),
             pagination,
@@ -35,15 +35,15 @@ export default OakComponent({
     },
     filters: [
         // 由调用者注入oakFilter
-        {
-            filter() {
-                const { entityId, entity } = this.props;
-                return {
-                    entityId,
-                    entity,
-                };
-            },
-        },
+        // {
+        //     filter() {
+        //         const { entityId, entity } = this.props;
+        //         return {
+        //             entityId,
+        //             entity,
+        //         };
+        //     },
+        // },
     ],
     // sorters: [],
     methods: {

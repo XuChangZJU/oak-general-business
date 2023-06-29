@@ -20,8 +20,8 @@ export default OakComponent({
     },
     methods: {
         async onRemoveArticle(id: string) {
-            this.removeItem(id);
-            await this.execute();
+          this.remove();
+          await this.execute();
         },
         gotoArticleEdit(articleId: string) {
             this.navigateTo({

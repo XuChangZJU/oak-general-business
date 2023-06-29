@@ -8,9 +8,9 @@ export default function render(props: WebComponentProps<EntityDict, 'articleMenu
     isArticle: boolean;
     isLeaf: boolean;
     logo: string;
-    onRemoveArticleMenu: (id: string) => void;
 }, {
     goUpsert: (id?: string) => void;
     gotoEditByParentId: (parentId: string) => void;
     gotoArticleEditByArticleMenuId: (articleMenuId: string) => void;
+    onRemoveArticleMenu: (id: string) => void;
 }>): import("react/jsx-runtime").JSX.Element;

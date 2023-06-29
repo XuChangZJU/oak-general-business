@@ -16,8 +16,6 @@ export default OakComponent({
         articleMenu: {
           id: 1,
         },
-        entity: 1,
-        entityId: 1,
     },
     isList: false,
     formData: function ({ data: article, features }) {
@@ -25,8 +23,6 @@ export default OakComponent({
             id: article?.id,
             content: article?.content,
             name: article?.name,
-            entity: article?.entity,
-            entityId: article?.entityId,
         };
     },
     data: {
@@ -55,8 +51,6 @@ export default OakComponent({
                     id: 1,
                     name: 1,
                   },
-                  entity: 1,
-                  entityId: 1,
                 },
                 filter: {
                   id: oakId
@@ -77,11 +71,8 @@ export default OakComponent({
                     id: articleMenuId,
                 },
             });
-              if (articleMenuId && !articleMenu.isArticle) {
+              if (articleMenuId ) {
                   this.update({
-                    entity: 'platformProvider',
-                    entityId: this.features.application.getApplication()?.system!
-                    .platform?.entityId!,
                     articleMenuId,
                     
                   });

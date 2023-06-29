@@ -21,6 +21,8 @@ export default OakComponent({
             isArticle: 1,
             isLeaf: 1,
         },
+        entity: 1,
+        entityId: 1,
         extraFile$entity: {
             $entity: 'extraFile',
             data: {
@@ -149,6 +151,11 @@ export default OakComponent({
         selectArticleId: '',
         treeData: [] as DataNode[],
     },
+    properties: {
+      entity: '',
+      entityId: '',
+    },
+    actions: ['create', 'update', 'remove'],
     methods: {
         buildTreeData(
             nodes: EntityDict['articleMenu']['Schema'][] | any[],
@@ -195,24 +202,14 @@ export default OakComponent({
                     oakId: id,
                 });
             } else {
+                const { entity, entityId } = this.props;
                 this.navigateTo({
                     url: '/articleMenu/upsert',
+                    entity,
+                    entityId,
                 });
             }
         },
-        gotoEditByParentId(parentId?: string) {
-            this.navigateTo({
-                url: '/articleMenu/upsert',
-                parentId,
-            });
-        },
-        gotoArticleEdit(articleId: string) {
-            this.navigateTo({
-                url: '/article/upsert',
-                oakId: articleId,
-            });
-        },
-
         async onRemoveArticleMenu(id: string) {
             this.removeItem(id);
             await this.execute();

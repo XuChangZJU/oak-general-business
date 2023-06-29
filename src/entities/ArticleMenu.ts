@@ -25,7 +25,7 @@ const locale: LocaleDef<Schema, '', '', {}> = {
             parent: '所属分类',
             entity: '对象',
             entityId: '对象Id',
-            isLeaf: '是否为叶结点',
+            isLeaf: '结点下是否存在叶子结点',
             files: '图片',
         },
     },

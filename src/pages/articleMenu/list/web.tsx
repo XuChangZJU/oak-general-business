@@ -27,6 +27,8 @@ export default function render(
             treeData: DataNode[];
             selectArticleMenuId: string;
             selectArticleId: string;
+            entity: string;
+            entityId: string;
         },
         {
             gotoUpsertById: (id: string) => void;
@@ -37,10 +39,13 @@ export default function render(
     >
 ) {
     const {
+        entity,
+        entityId,
         treeData,
         selectArticleMenuId,
         selectArticleId,
         oakFullpath,
+        oakLegalActions,
     } = props.data;
     const {
         t,
@@ -49,7 +54,6 @@ export default function render(
         onRemoveArticleMenu,
         gotoEdit,
     } = props.methods;
-
     const renderMenuItems = (data: any) => {
         return data?.map((menuItem: any) => {
             if (menuItem.children) {
@@ -126,9 +130,8 @@ export default function render(
                                     oakAutoUnmount={true}
                                     oakId={selectArticleMenuId}
                                     oakPath={`$articleMenu-cell-${selectArticleMenuId}`}
-                                    onRemoveArticleMenu={(id: string) => {
-                                        onRemoveArticleMenu(id);
-                                    }}
+                                    entity={entity}
+                                    entityId={entityId}
                                 />
                             ) : null}
                             {selectArticleId ? (

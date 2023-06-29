@@ -135,7 +135,7 @@ const triggers: Trigger<
                 },
                 {}
             );
-            if (articleMenu) {
+            if (articleMenu && articleMenu.parentId) {
                 const articleMenus = await context.select(
                     'articleMenu',
                     {

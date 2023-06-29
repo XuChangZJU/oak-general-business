@@ -18,12 +18,12 @@ export default function render(
             isArticle: boolean;
             isLeaf: boolean;
             logo: string;
-            onRemoveArticleMenu: (id: string) => void;
         },
         {
             goUpsert: (id?: string) => void;
             gotoEditByParentId: (parentId: string) => void;
             gotoArticleEditByArticleMenuId: (articleMenuId: string) => void;
+            onRemoveArticleMenu: (id: string) => void;
         }
     >
 ) {
@@ -34,6 +34,7 @@ export default function render(
         goUpsert,
         gotoEditByParentId,
         gotoArticleEditByArticleMenuId,
+        onRemoveArticleMenu,
     } = methods;
     const {
         name,
@@ -43,7 +44,6 @@ export default function render(
         logo,
         isLeaf,
         oakId,
-        onRemoveArticleMenu,
     } = data;
 
     return (
@@ -105,7 +105,11 @@ export default function render(
                                 添加文章
                             </Button>
                         )}
-                        <Button
+                        {
+                          (isArticle || isLeaf ) ? (
+                            ''
+                          ) : (
+                            <Button
                             type="link"
                             onClick={() => {
                                 const modal = Modal.confirm({
@@ -122,6 +126,9 @@ export default function render(
                         >
                             删除
                         </Button>
+                          )
+                        }
+                        
                     </Space>
                 </Form.Item>
             </Form>

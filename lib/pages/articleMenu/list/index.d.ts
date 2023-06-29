@@ -1,5 +1,7 @@
-/// <reference types="wechat-miniprogram" />
 /// <reference types="react" />
 import { EntityDict } from '../../../general-app-domain';
-declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "articleMenu", true, WechatMiniprogram.Component.DataOption>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
+declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "articleMenu", true, {
+    entity: string;
+    entityId: string;
+}>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

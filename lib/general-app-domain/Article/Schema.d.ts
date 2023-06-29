@@ -10,16 +10,12 @@ export declare type OpSchema = EntityShape & {
     name: String<32>;
     content: Text;
     articleMenuId: ForeignKey<"articleMenu">;
-    entity: String<32>;
-    entityId: String<64>;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
     name: String<32>;
     content: Text;
     articleMenuId: ForeignKey<"articleMenu">;
-    entity: String<32>;
-    entityId: String<64>;
     articleMenu: ArticleMenu.Schema;
     extraFile$entity?: Array<ExtraFile.Schema>;
     extraFile$entity$$aggr?: AggregationResult<ExtraFile.Schema>;
@@ -35,8 +31,6 @@ declare type AttrFilter = {
     content: Q_StringValue;
     articleMenuId: Q_StringValue | SubQuery.ArticleMenuIdSubQuery;
     articleMenu: ArticleMenu.Filter;
-    entity: Q_StringValue;
-    entityId: Q_StringValue;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -50,8 +44,6 @@ export declare type Projection = {
     content?: number;
     articleMenuId?: number;
     articleMenu?: ArticleMenu.Projection;
-    entity?: number;
-    entityId?: number;
     extraFile$entity?: ExtraFile.Selection & {
         $entity: "extraFile";
     };
@@ -82,10 +74,6 @@ export declare type SortAttr = {
 } | {
     articleMenu: ArticleMenu.SortAttr;
 } | {
-    entity: number;
-} | {
-    entityId: number;
-} | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
 export declare type SortNode = {
@@ -96,7 +84,7 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
 export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "articleMenuId">> & (({
+export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "articleMenuId">> & (({
     articleMenuId?: never;
     articleMenu: ArticleMenu.CreateSingleOperation;
 } | {
@@ -104,11 +92,7 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     articleMenu?: ArticleMenu.UpdateOperation;
 } | {
     articleMenuId: String<64>;
-})) & ({
-    entity?: string;
-    entityId?: string;
-    [K: string]: any;
-}) & {
+})) & {
     extraFile$entity?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, ExtraFile.Filter> | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, ExtraFile.Filter>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;

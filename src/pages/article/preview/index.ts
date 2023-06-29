@@ -18,8 +18,8 @@ export default OakComponent({
           id: article?.id,
           content: article?.content,
           name: article?.name,
-          entity: article?.entity,
-          entityId: article?.entityId,
+          // entity: article?.entity,
+          // entityId: article?.entityId,
       };
   },
     // listeners: {

@@ -57,6 +57,7 @@ export default function render(
             logo: string;
             openKeys: string[];
             selectedKeys: string[];
+            selectedArticleId: string;
         },
         {
             gotoUpsert: (id?: string) => void;
@@ -94,6 +95,7 @@ export default function render(
         logo,
         openKeys,
         selectedKeys,
+        selectedArticleId
     } = props.data;
     const {
         t,
@@ -169,12 +171,11 @@ export default function render(
                             </Menu>
                         </div>
                         <div className={Style.editor}>
-                            {articleId?.length > 0 ? (
+                            {selectedArticleId?.length > 0 ? (
                                 <ArticleUpsert
                                     oakAutoUnmount={true}
-                                    content={content}
-                                    articleId={articleId}
-                                    oakPath={`$article-detail-${articleId}`}
+                                    oakId={selectedArticleId}
+                                    oakPath={`$article-detail2-${selectedArticleId}`}
                                 />
                             ) : null}
                         </div>
