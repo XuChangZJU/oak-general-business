@@ -6,7 +6,7 @@ interface DataNode {
     isLeaf?: boolean;
     logo?: string;
     children?: DataNode[];
-    type?: stirng;
+    type?: string;
 }
 export default OakComponent({
     entity: 'articleMenu',
@@ -139,14 +139,15 @@ export default OakComponent({
                     children: this.buildTreeData(arr, rootNode.id),
                 };
             });
-            this.setState({
-                treeData,
-            });
+           this.setState({
+              treeData,
+           })
         },
     },
     data: {
         selectArticleMenuId: '',
         selectArticleId: '',
+        treeData: [] as DataNode[],
     },
     methods: {
         buildTreeData(
