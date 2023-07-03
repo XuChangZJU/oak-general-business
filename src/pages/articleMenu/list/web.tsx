@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Space, Button, Menu, Image, Empty } from 'antd';
+import { Space, Button, Menu, Image, Empty, Pagination } from 'antd';
 import classNames from "classnames";
 import Style from "./web.module.less";
 import { WebComponentProps } from "oak-frontend-base";
@@ -10,11 +10,11 @@ import ArticleMenuCell from '../../../components/articleMenu/cell';
 
 
 interface DataNode {
-	label: string;
-	title: string;
-	key: string;
-	isArticle?: boolean;
-	children?: DataNode[];
+    label: string;
+    title: string;
+    key: string;
+    isArticle?: boolean;
+    children?: DataNode[];
 }
 export default function render(
     props: WebComponentProps<
@@ -29,6 +29,11 @@ export default function render(
             selectArticleId: string;
             entity: string;
             entityId: string;
+            pagination?: {
+                pageSize: number;
+                total: number;
+                currentPage: number;
+            };
         },
         {
             gotoUpsertById: (id: string) => void;
@@ -46,6 +51,7 @@ export default function render(
         selectArticleId,
         oakFullpath,
         oakLegalActions,
+        oakPagination,
     } = props.data;
     const {
         t,
@@ -53,7 +59,10 @@ export default function render(
         gotoArticleUpsert,
         onRemoveArticleMenu,
         gotoEdit,
+        setCurrentPage,
+        setPageSize,
     } = props.methods;
+    const { pageSize, total, currentPage } = oakPagination || {};
     const renderMenuItems = (data: any) => {
         return data?.map((menuItem: any) => {
             if (menuItem.children) {
@@ -87,7 +96,7 @@ export default function render(
                 <Menu.Item
                     key={menuItem.key}
                     onClick={(e) => {
-						if (menuItem.type === 'article') {
+                        if (menuItem.type === 'article') {
                             gotoArticleUpsert(e.key);
                         } else {
                             gotoUpsertById(e.key);
@@ -115,33 +124,51 @@ export default function render(
                 {treeData?.length === 0 ? (
                     <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
                 ) : (
-                    <div className={Style.article}>
-                        <div className={Style.menu}>
-                            <Menu
-                                style={{ width: 256 }}
-                                mode="inline"
-                            >
-                                {renderMenuItems(treeData)}
-                            </Menu>
+                    <div className={Style.rightContent}>
+                        <div className={Style.article}>
+                            <div className={Style.menu}>
+                                <Menu
+                                    style={{ width: 256 }}
+                                    mode="inline"
+                                >
+                                    {renderMenuItems(treeData)}
+                                </Menu>
+                            </div>
+                            <div className={Style.editor}>
+                                {selectArticleMenuId ? (
+                                    <ArticleMenuCell
+                                        oakAutoUnmount={true}
+                                        oakId={selectArticleMenuId}
+                                        oakPath={`$articleMenu-cell-${selectArticleMenuId}`}
+                                        entity={entity}
+                                        entityId={entityId}
+                                    />
+                                ) : null}
+                                {selectArticleId ? (
+                                    <ArticleDetail
+                                        oakAutoUnmount={true}
+                                        oakId={selectArticleId}
+                                        oakPath={`$article-detail-${selectArticleId}`}
+                                    />
+                                ) : null}
+                            </div>
+                            
                         </div>
-                        <div className={Style.editor}>
-                            {selectArticleMenuId ? (
-                                <ArticleMenuCell
-                                    oakAutoUnmount={true}
-                                    oakId={selectArticleMenuId}
-                                    oakPath={`$articleMenu-cell-${selectArticleMenuId}`}
-                                    entity={entity}
-                                    entityId={entityId}
+                        <div className={Style.pagination}>
+                                <Pagination
+                                    className={Style.pagination}
+                                    total={total}
+                                    current={currentPage || 1}
+                                    pageSize={20}
+                                    // pageSizeOptions={pageSize}
+                                    onChange={(current) => {
+                                        setCurrentPage(current);
+                                    }}
+                                    onShowSizeChange={(pageSize) => {
+                                        setPageSize(pageSize);
+                                    }}
                                 />
-                            ) : null}
-                            {selectArticleId ? (
-                                <ArticleDetail
-                                    oakAutoUnmount={true}
-                                    oakId={selectArticleId}
-                                    oakPath={`$article-detail-${selectArticleId}`}
-                                />
-                            ) : null}
-                        </div>
+                            </div>
                     </div>
                 )}
             </div>

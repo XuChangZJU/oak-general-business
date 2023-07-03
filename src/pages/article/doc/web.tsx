@@ -158,7 +158,7 @@ export default function render(
                         <div className={Style.menu}>
                             <Sider
                                 theme="light"
-                                width={256}
+                                width={275}
                                 className={Style.siderPanel}
                             >
                                 <Menu

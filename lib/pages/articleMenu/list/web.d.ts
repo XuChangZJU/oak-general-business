@@ -15,6 +15,11 @@ export default function render(props: WebComponentProps<EntityDict, 'articleMenu
     selectArticleId: string;
     entity: string;
     entityId: string;
+    pagination?: {
+        pageSize: number;
+        total: number;
+        currentPage: number;
+    };
 }, {
     gotoUpsertById: (id: string) => void;
     gotoArticleUpsert: (articleId: string) => void;
