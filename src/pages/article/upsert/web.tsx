@@ -70,8 +70,6 @@ export default function Render(
 			origin?: string;
 			contentTip: boolean;
 			origin1: string;
-			entity: string;
-			entityId: string;
 		},
 		{
 			setHtml: (content: string) => void;
@@ -103,7 +101,7 @@ export default function Render(
 		onRemoveArticle,
 		gotoPreview
 	} = method;
-	const { id, content, editor, origin1, oakFullpath, entity, entityId, html } = data;
+	const { id, content, editor, origin1, oakFullpath, html } = data;
 	const features = useFeatures();
 	const [articleId, setArticleId] = useState("");
 	useEffect(() => {

@@ -45,6 +45,19 @@ export default OakComponent({
     },
     isList: true,
     formData({ data: articleMenu }) {
+        // const articleMenus = this.features.cache.get('articleMenu', {
+        //     data: {
+        //         id: 1,
+        //         name: 1,
+        //         content: 1,
+        //         articleMenuId: 1,
+        //     },
+        //     filter: {
+        //         parentId: {
+        //             $exists: false
+        //         },
+        //     },
+        // });
         return {
             articleMenu,
         };
@@ -147,17 +160,17 @@ export default OakComponent({
         },
     },
     data: {
-      selectedArticleId: '',
-      openKeys: [] as string[],
-      selectedKeys: [] as string[],
-      treeData: [] as DataNode[],
-      parentId: '',
-      articleMenuId: '',
-      id: '',
-      name: '',
-      isArticle: false,
-      isChildren: false,
-      logo: '',
+        selectedArticleId: '',
+        openKeys: [] as string[],
+        selectedKeys: [] as string[],
+        treeData: [] as DataNode[],
+        parentId: '',
+        articleMenuId: '',
+        id: '',
+        name: '',
+        isArticle: false,
+        isChildren: false,
+        logo: '',
     },
     methods: {
         getOpenKeys(
@@ -379,14 +392,14 @@ export default OakComponent({
         ) {
             if (selectedKeys.includes(articleId)) {
             } else {
-                        this.setState({
-                            selectedKeys: [articleId],
-                            selectedArticleId: articleId,
-                            id: '',
-                            parentId: '',
-                        });
-                }
-            },
+                this.setState({
+                    selectedKeys: [articleId],
+                    selectedArticleId: articleId,
+                    id: '',
+                    parentId: '',
+                });
+            }
+        },
         gotoEdit(id?: string) {
             if (id) {
                 this.navigateTo({
