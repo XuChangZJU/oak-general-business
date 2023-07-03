@@ -6,7 +6,7 @@ import { IEditorConfig } from "@wangeditor/editor";
 import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 import Style from './web.module.less';
-import { EyeOutlined } from '@ant-design/icons';
+import { EyeOutlined, CopyOutlined } from '@ant-design/icons';
 import copy from 'copy-to-clipboard';
 
 const editorConfig: Partial<IEditorConfig> = {
@@ -55,7 +55,7 @@ export default function Render(
                             });
                         }}
                     >
-                        复制链接
+                        <CopyOutlined/>复制链接
                     </Button>
                     <Button
                         onClick={() => {

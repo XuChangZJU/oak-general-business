@@ -5,8 +5,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
     oakId: string;
     content: string;
     name: string;
-}, {
-    gotoArticleEdit: (articleId: string) => void;
-    onRemoveArticle: (id: string) => void;
-    copy: (id: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}, {}>): import("react/jsx-runtime").JSX.Element;

@@ -9,5 +9,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
     gotoArticleEdit: (articleId: string) => void;
     onRemoveArticle: () => void;
     gotoPreview: (content: string, name: string, articleId: string) => void;
-    copy: (articleId: string) => void;
 }>): import("react/jsx-runtime").JSX.Element;

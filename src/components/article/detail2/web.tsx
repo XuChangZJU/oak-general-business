@@ -8,6 +8,7 @@ import { IEditorConfig } from "@wangeditor/editor";
 import OakGallery from '../../extraFile/gallery';
 import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
+import { EyeOutlined, CopyOutlined } from '@ant-design/icons';
 import Style from './web.module.less';
 import copy from 'copy-to-clipboard';
 
@@ -53,7 +54,7 @@ export default function Render(
                             });
                         }}
                     >
-                        复制链接
+                        <CopyOutlined/>复制链接
                     </Button>
                 </Space>
             </div>
