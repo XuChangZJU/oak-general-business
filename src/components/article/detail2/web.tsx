@@ -18,34 +18,27 @@ export default function Render(
         'article',
         false,
         {
-          oakId: string;
-          content: string;
-          name: string;
+            oakId: string;
+            content: string;
+            name: string;
         },
-        {   
-            gotoArticleEdit: (articleId:string) => void;
-            onRemoveArticle: (id:string) => void;
-        }
+        {}
     >
 ) {
-    const { methods: method, data } = props;
+    const { methods, data } = props;
     const { content, name, oakId } = props.data;
-    const {
-        t,
-        onRemoveArticle,
-        gotoArticleEdit,
-    } = method;
+    const { t } = methods;
     const editorConfig: Partial<IEditorConfig> = {
-      readOnly: true,
-      autoFocus: true,
-      scroll: false,
+        readOnly: true,
+        autoFocus: true,
+        scroll: false,
     };
     const [value, setValue] = useState('');
     useEffect(() => {
-      if(content) {
-        setValue(content);
-      }
-    },[content])
+        if (content) {
+            setValue(content);
+        }
+    }, [content]);
     return (
         <div className={Style.rightContainer}>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
