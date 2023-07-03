@@ -14,7 +14,7 @@ export default OakComponent({
         name: 1,
         content: 1,
         articleMenu: {
-            id: 1,
+          id: 1,
         },
     },
     isList: false,
@@ -36,9 +36,9 @@ export default OakComponent({
     },
     listeners: {
         'editor,content'(prev, next) {
-            if (next.editor && next.content) {
-                next.editor.setHtml(next.content);
-            }
+           if (next.editor && next.content) {
+               next.editor.setHtml(next.content);
+           }
         },
     },
     lifetimes: {
@@ -46,11 +46,13 @@ export default OakComponent({
             const { oakId, articleMenuId } = this.props;
             if (!oakId) {
                 if (articleMenuId) {
-                    this.update({
-                        articleMenuId,
-                    });
-                }
+                  this.update({
+                    articleMenuId,
+                    
+                  });
+              }
             }
+           
         },
         detached() {
             const { editor } = this.state;
@@ -61,20 +63,20 @@ export default OakComponent({
     },
     methods: {
         async onRemoveArticle(id: string) {
-            this.removeItem(id);
-            await this.execute();
-            this.navigateBack();
+          this.removeItem(id);
+          await this.execute();
+          this.navigateBack();
         },
         async addExtraFile(
-            extraFile: EntityDict['extraFile']['CreateSingle']['data']
-        ) {
-            const result = await this.features.cache.operate('extraFile', {
-                action: 'create',
-                data: extraFile,
-                id: generateNewId(),
-            });
-            return result;
-        },
+          extraFile: EntityDict['extraFile']['CreateSingle']['data']
+      ) {
+          const result = await this.features.cache.operate('extraFile', {
+              action: 'create',
+              data: extraFile,
+              id: generateNewId(),
+          });
+          return result;
+      },
 
         uploadFile(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
             return this.features.extraFile.upload(extraFile);
@@ -91,27 +93,28 @@ export default OakComponent({
             });
         },
         async check() {
-            if (this.state.name && this.state.name.length > 0) {
-                await this.execute();
-                this.navigateBack();
+            if(this.state.name && this.state.name.length > 0){
+              await this.execute();
+              this.navigateBack();
             } else {
-                this.setMessage({
-                    content: '请填写文章标题!',
-                    type: 'warning',
-                });
+              this.setMessage({
+                content: '请填写文章标题!',
+                type: 'warning',
+            });
             }
+           
         },
         async reset() {
             // 重置
             this.clean();
         },
         setHtml(html: string) {
-            this.setState({
-                html,
-            });
-            if (html && html !== '<p><br></p>' && this.state.oakFullpath) {
-                this.update({ content: html });
-            }
+          this.setState({
+            html,
+        });
+        if (html && html !== '<p><br></p>' && this.state.oakFullpath) {
+            this.update({ content: html });
+        }
         },
         preview() {
             const { html } = this.state;
@@ -125,17 +128,17 @@ export default OakComponent({
             );
             window.open('/article/preview');
         },
-        gotoPreview(content?: string, title?: string) {
-            this.save(
-                'article_html',
-                JSON.stringify({
-                    content,
-                    title,
-                    // author,
-                    // title,
-                })
-            );
-            window.open('/article/preview');
+        gotoPreview(content?: string, title?:string) {
+          this.save(
+              'article_html',
+              JSON.stringify({
+                  content,
+                  title,
+                  // author,
+                  // title,
+              })
+          );
+          window.open('/article/preview');
         },
     },
 });

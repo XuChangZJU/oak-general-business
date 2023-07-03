@@ -11,8 +11,6 @@ export default function Render(props: WebComponentProps<EntityDict, "article", f
     origin?: string;
     contentTip: boolean;
     origin1: string;
-    entity: string;
-    entityId: string;
 }, {
     setHtml: (content: string) => void;
     setEditor: (editor: any) => void;
