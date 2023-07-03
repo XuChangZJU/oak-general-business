@@ -7,6 +7,7 @@ import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 import Style from './web.module.less';
 import { EyeOutlined } from '@ant-design/icons';
+import copy from 'copy-to-clipboard';
 
 const editorConfig: Partial<IEditorConfig> = {
     readOnly: true,
@@ -32,13 +33,12 @@ export default function Render(
                 name: string,
                 articleId: string
             ) => void;
-            copy: (articleId: string) => void;
         }
     >
 ) {
     const { methods, data } = props;
     const { content, oakId, name } = data;
-    const { t, onRemoveArticle, gotoArticleEdit, gotoPreview, copy } = methods;
+    const { t, onRemoveArticle, gotoArticleEdit, gotoPreview } = methods;
 
 
     return (
@@ -47,7 +47,12 @@ export default function Render(
                 <Space>
                     <Button
                         onClick={() => {
-                            copy(oakId);
+                            const url = `${window.location.host}/article/detail?oakId=${oakId}`;
+                            copy(url);
+                            methods.setMessage({
+                                content: '复制链接成功',
+                                type: 'success',
+                            });
                         }}
                     >
                         复制链接

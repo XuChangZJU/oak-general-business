@@ -9,6 +9,7 @@ import OakGallery from '../../extraFile/gallery';
 import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 import Style from './web.module.less';
+import copy from 'copy-to-clipboard';
 
 
 export default function Render(
@@ -24,7 +25,6 @@ export default function Render(
         {   
             gotoArticleEdit: (articleId:string) => void;
             onRemoveArticle: (id:string) => void;
-            copy: (id:string) => void;
         }
     >
 ) {
@@ -34,7 +34,6 @@ export default function Render(
         t,
         onRemoveArticle,
         gotoArticleEdit,
-        copy,
     } = method;
     const editorConfig: Partial<IEditorConfig> = {
       readOnly: true,
@@ -48,42 +47,47 @@ export default function Render(
       }
     },[content])
     return (
-      <div className={Style.rightContainer}>
-         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <div className={Style.rightContainer}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Space>
                     <Button
                         onClick={() => {
-                            copy(oakId);
+                            const url = `${window.location.host}/article/detail?oakId=${oakId}`;
+                            copy(url);
+                            methods.setMessage({
+                                content: '复制链接成功',
+                                type: 'success',
+                            });
                         }}
                     >
                         复制链接
                     </Button>
                 </Space>
             </div>
-      <Row>
-        <Col xs={24} sm={16}>
-          <Form
-            colon
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 20 }}
-          >
-            <>
-              <Form.Item>
-                <>
-                  <Editor
-                    defaultConfig={editorConfig}
-                    value={value}
-                    mode="default"
-                    style={{
-                      width: 750
-                    }}
-                  />
-                </>
-              </Form.Item>
-            </>
-          </Form>
-        </Col>
-      </Row>
-    </div>
+            <Row>
+                <Col xs={24} sm={16}>
+                    <Form
+                        colon
+                        labelCol={{ span: 4 }}
+                        wrapperCol={{ span: 20 }}
+                    >
+                        <>
+                            <Form.Item>
+                                <>
+                                    <Editor
+                                        defaultConfig={editorConfig}
+                                        value={value}
+                                        mode="default"
+                                        style={{
+                                            width: 750,
+                                        }}
+                                    />
+                                </>
+                            </Form.Item>
+                        </>
+                    </Form>
+                </Col>
+            </Row>
+        </div>
     );
 }
