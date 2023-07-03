@@ -25,11 +25,11 @@ export default function render(props: WebComponentProps<EntityDict, "articleMenu
     articleId: string;
     name: string;
     isArticle: boolean;
-    isChildren: boolean;
     logo: string;
     openKeys: string[];
     selectedKeys: string[];
     selectedArticleId: string;
+    width: string;
 }, {
     gotoUpsert: (id?: string) => void;
     gotoUpsertById: (id: string) => void;

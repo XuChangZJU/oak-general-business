@@ -1,9 +1,6 @@
 .container {
   background: var(--oak-bg-color-container);
-//   box-shadow: 0 2px 3px #0000001a;
-//   border-radius: 3px;
-//   padding: 30px 32px;
-//   min-height: 450px;
+  min-height: 100vh;
 
   .article {
     display: flex;
@@ -15,12 +12,20 @@
 
     .editor {
       display: flex;
-      margin-left: 20px;
-
-      .rightContainer {
-        width: 950px;
-      }
     }
+  }
+
+  .article_v {
+    display: flex;
+      flex-direction: column;
+    
+      .menu {
+        display: flex;
+      }
+    
+      .editor {
+        display: flex;
+      }
   }
 }
 
@@ -37,6 +42,7 @@
      }
   }
 }
+
 .siderPanel {
     flex-shrink: 0;
     height: 100%;
@@ -55,10 +61,13 @@
             height: 100%;
             overflow-y: auto;
         }
-        .ant-layout-sider-trigger {
-            // text-align: left;
-            // padding-left: 16px;
-            // border-right: 1px solid var(--oak-border-color);
-        }
     }
+}
+
+.drawerPanel {
+  :global {
+    .ant-drawer-body {
+      padding: 0 !important;
+    }
+  }
 }

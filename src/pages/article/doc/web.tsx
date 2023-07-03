@@ -13,7 +13,7 @@ import {
     Drawer,
 } from 'antd';
 const { confirm } = Modal;
-import type { MenuProps } from "antd";
+import type { MenuProps  } from "antd";
 import React, { useState, useEffect, useCallback } from "react";
 import classNames from "classnames";
 import Style from "./web.module.less";

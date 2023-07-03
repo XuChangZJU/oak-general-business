@@ -5,6 +5,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
     oakId: string;
     content: string;
     name: string;
+    width: string;
 }, {
     gotoArticleEdit: (articleId: string) => void;
     onRemoveArticle: (id: string) => void;
