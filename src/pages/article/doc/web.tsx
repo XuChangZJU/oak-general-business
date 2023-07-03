@@ -10,7 +10,8 @@ import {
     Image,
     Empty,
     Layout,
-} from "antd";
+    Drawer,
+} from 'antd';
 const { confirm } = Modal;
 import type { MenuProps } from "antd";
 import React, { useState, useEffect, useCallback } from "react";
@@ -55,11 +56,11 @@ export default function render(
             articleId: string;
             name: string;
             isArticle: boolean;
-            isChildren: boolean;
             logo: string;
             openKeys: string[];
             selectedKeys: string[];
             selectedArticleId: string;
+            width: string
         },
         {
             gotoUpsert: (id?: string) => void;
@@ -90,28 +91,21 @@ export default function render(
         content,
         oakFullpath,
         isArticle,
-        isChildren,
         logo,
         openKeys,
         selectedKeys,
         selectedArticleId,
+        width,
     } = props.data;
     const {
         t,
-        gotoUpsert,
-        gotoUpsertById,
         gotoArticleUpsert,
-        onRemoveArticleMenu,
-        gotoEdit,
-        gotoEditByParentId,
-        gotoArticleEdit,
-        onRemoveArticle,
-        gotoArticleEditByArticleMenuId,
         getOpenKeys,
     } = props.methods;
     const features = useFeatures();
+    const [open, setOpen] = useState(false);
 
-    const renderMenuItems = (data: any) => {
+    const renderMenuItems = (data: any, callback?: () => void) => {
         return data?.map((menuItem: any) => {
             if (menuItem.children || menuItem.isLeaf) {
                 return (
@@ -127,12 +121,16 @@ export default function render(
                             ) : null
                         }
                         key={menuItem.key}
-                        title={<div style={{ marginLeft: 8 }}>{menuItem.title}</div>}
+                        title={
+                            <div style={{ marginLeft: 8 }}>
+                                {menuItem.title}
+                            </div>
+                        }
                         onTitleClick={(e) => {
                             getOpenKeys(e.key, treeData, openKeys);
                         }}
                     >
-                        {renderMenuItems(menuItem.children)}
+                        {renderMenuItems(menuItem.children, callback)}
                     </Menu.SubMenu>
                 );
             }
@@ -141,6 +139,10 @@ export default function render(
                     key={menuItem.key}
                     onClick={(e) => {
                         gotoArticleUpsert(e.key, selectedKeys);
+                        if (typeof callback === 'function') {
+                            callback();
+                        }
+                      
                     }}
                 >
                     {menuItem.label}
@@ -148,43 +150,100 @@ export default function render(
             );
         });
     };
-    return (
-       
+
+    if (treeData?.length === 0) {
+        return (
             <div className={Style.container}>
-                {treeData?.length === 0 ? (
-                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-                ) : (
-                    <div className={Style.article}>
-                        <div className={Style.menu}>
-                            <Sider
-                                theme="light"
-                                width={275}
-                                className={Style.siderPanel}
-                            >
-                                <Menu
-                                    openKeys={openKeys}
-                                    selectedKeys={selectedKeys}
-                                    style={{ width: 256 }}
-                                    mode="inline"
-                                >
-                                    {renderMenuItems(treeData)}
-                                </Menu>
-                            </Sider>
-                        </div>
-                        <div className={Style.editor} style={{
-                            marginLeft: 300
-                        }}>
-                            {selectedArticleId?.length > 0 ? (
-                                <ArticleUpsert
-                                    oakAutoUnmount={true}
-                                    oakId={selectedArticleId}
-                                    oakPath={`$article-detail2-${selectedArticleId}`}
-                                />
-                            ) : null}
-                        </div>
-                    </div>
-                )}
+                <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
             </div>
-       
+        );
+    }
+
+    if (width === 'xs') {
+        return (
+            <div className={Style.container}>
+                <div className={Style.article_v}>
+                    <div
+                        className={Style.menu}
+                        onClick={() => {
+                            setOpen(true);
+                        }}
+                    >
+                        帮助文档
+                    </div>
+                    <div className={Style.editor}>
+                        {selectedArticleId?.length > 0 ? (
+                            <ArticleUpsert
+                                oakAutoUnmount={true}
+                                oakId={selectedArticleId}
+                                oakPath={`$article-detail2-${selectedArticleId}`}
+                            />
+                        ) : null}
+                    </div>
+                </div>
+                <Drawer
+                    className={Style.drawerPanel}
+                    open={open}
+                    onClose={() => {
+                        setOpen(false);
+                    }}
+                    width={256}
+                >
+                    <Sider
+                        theme="light"
+                        width={256}
+                        className={Style.siderPanel}
+                    >
+                        <Menu
+                            openKeys={openKeys}
+                            selectedKeys={selectedKeys}
+                            style={{ width: 256 }}
+                            mode="inline"
+                        >
+                            {renderMenuItems(treeData, () => {
+                                setOpen(false);
+                            })}
+                        </Menu>
+                    </Sider>
+                </Drawer>
+            </div>
+        );
+    }
+
+    return (
+        <div className={Style.container}>
+            <div className={Style.article}>
+                <div className={Style.menu}>
+                    <Sider
+                        theme="light"
+                        width={275}
+                        className={Style.siderPanel}
+                    >
+                        <Menu
+                            openKeys={openKeys}
+                            selectedKeys={selectedKeys}
+                            style={{ width: 256 }}
+                            mode="inline"
+                        >
+                            {renderMenuItems(treeData)}
+                        </Menu>
+                    </Sider>
+                </div>
+                <div
+                    className={Style.editor}
+                    style={{
+                        marginLeft: 300,
+                    }}
+                >
+                    {selectedArticleId?.length > 0 ? (
+                        <ArticleUpsert
+                            oakAutoUnmount={true}
+                            oakId={selectedArticleId}
+                            oakPath={`$article-detail2-${selectedArticleId}`}
+                        />
+                    ) : null}
+                </div>
+            </div>
+        </div>
     );
 }

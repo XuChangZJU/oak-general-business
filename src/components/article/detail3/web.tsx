@@ -17,62 +17,46 @@ export default function Render(
         'article',
         false,
         {
-          oakId: string;
-          content: string;
-          name: string;
+            oakId: string;
+            content: string;
+            name: string;
+            width: string;
         },
-        {   
-            gotoArticleEdit: (articleId:string) => void;
-            onRemoveArticle: (id:string) => void;
-            copy: (id:string) => void;
+        {
+            gotoArticleEdit: (articleId: string) => void;
+            onRemoveArticle: (id: string) => void;
+            copy: (id: string) => void;
         }
     >
 ) {
     const { methods: method, data } = props;
-    const { content, name, oakId } = props.data;
-    const {
-        t,
-        onRemoveArticle,
-        gotoArticleEdit,
-        copy,
-    } = method;
+    const { content, name, oakId, width } = props.data;
+    const { t, onRemoveArticle, gotoArticleEdit, copy } = method;
     const editorConfig: Partial<IEditorConfig> = {
-      readOnly: true,
-      autoFocus: true,
-      scroll: false,
+        readOnly: true,
+        autoFocus: true,
+        scroll: false,
     };
     const [value, setValue] = useState('');
     useEffect(() => {
-      if(content) {
-        setValue(content);
-      }
-    },[content])
+        if (content) {
+            setValue(content);
+        }
+    }, [content]);
     return (
-      <div className={Style.rightContainer}>
-      <Row>
-        <Col xs={24} sm={16}>
-          <Form
-            colon
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 20 }}
-          >
-            <>
-              <Form.Item>
-                <>
-                  <Editor
-                    defaultConfig={editorConfig}
-                    value={value}
-                    mode="default"
-                    style={{
-                      width: 750
-                    }}
-                  />
-                </>
-              </Form.Item>
-            </>
-          </Form>
-        </Col>
-      </Row>
-    </div>
+        <div className={Style.container}>
+            <Row>
+                <Col xs={24} sm={16}>
+                    <Editor
+                        defaultConfig={editorConfig}
+                        value={value}
+                        mode="default"
+                        style={{
+                            width: width === 'xs' ? '100vw' : 750,
+                        }}
+                    />
+                </Col>
+            </Row>
+        </div>
     );
 }
