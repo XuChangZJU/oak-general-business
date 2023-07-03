@@ -9,6 +9,7 @@ import {
     Modal,
     Image,
     Empty,
+    Layout,
 } from "antd";
 const { confirm } = Modal;
 import type { MenuProps } from "antd";
@@ -21,8 +22,9 @@ import useFeatures from "../../../hooks/useFeatures";
 import PageHeader from "../../../components/common/pageHeader";
 import { Editor } from "@wangeditor/editor-for-react";
 import { IEditorConfig } from "@wangeditor/editor";
-import ArticleUpsert from "../../../components/article/detail2";
+import ArticleUpsert from "../../../components/article/detail3";
 const { SubMenu } = Menu;
+const { Sider, Content } = Layout;
 interface DataNode {
     label: string;
     title: string;
@@ -147,23 +149,31 @@ export default function render(
         });
     };
     return (
-        <PageHeader title="帮助文档">
+       
             <div className={Style.container}>
                 {treeData?.length === 0 ? (
                     <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
                 ) : (
                     <div className={Style.article}>
                         <div className={Style.menu}>
-                            <Menu
-                                openKeys={openKeys}
-                                selectedKeys={selectedKeys}
-                                style={{ width: 256 }}
-                                mode="inline"
+                            <Sider
+                                theme="light"
+                                width={256}
+                                className={Style.siderPanel}
                             >
-                                {renderMenuItems(treeData)}
-                            </Menu>
+                                <Menu
+                                    openKeys={openKeys}
+                                    selectedKeys={selectedKeys}
+                                    style={{ width: 256 }}
+                                    mode="inline"
+                                >
+                                    {renderMenuItems(treeData)}
+                                </Menu>
+                            </Sider>
                         </div>
-                        <div className={Style.editor}>
+                        <div className={Style.editor} style={{
+                            marginLeft: 300
+                        }}>
                             {selectedArticleId?.length > 0 ? (
                                 <ArticleUpsert
                                     oakAutoUnmount={true}
@@ -175,6 +185,6 @@ export default function render(
                     </div>
                 )}
             </div>
-        </PageHeader>
+       
     );
 }

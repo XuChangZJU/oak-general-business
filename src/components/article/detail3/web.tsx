@@ -49,17 +49,6 @@ export default function Render(
     },[content])
     return (
       <div className={Style.rightContainer}>
-         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Space>
-                    <Button
-                        onClick={() => {
-                            copy(oakId);
-                        }}
-                    >
-                        复制链接
-                    </Button>
-                </Space>
-            </div>
       <Row>
         <Col xs={24} sm={16}>
           <Form

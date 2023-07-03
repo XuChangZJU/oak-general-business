@@ -1,0 +1,63 @@
+.container {
+  background: var(--oak-bg-color-container);
+//   box-shadow: 0 2px 3px #0000001a;
+//   border-radius: 3px;
+//   padding: 30px 32px;
+//   min-height: 450px;
+
+  .article {
+    display: flex;
+    flex-direction: row;
+
+    .menu {
+      display: flex;
+    }
+
+    .editor {
+      display: flex;
+      margin-left: 20px;
+
+      .rightContainer {
+        width: 950px;
+      }
+    }
+  }
+}
+
+
+.space {
+  margin-bottom: 15px;
+}
+
+.tree {
+  :global {
+     .ant-tree-title {
+        display: flex;
+        flex: 1;
+     }
+  }
+}
+.siderPanel {
+    flex-shrink: 0;
+    height: 100%;
+    // border-right: 1px solid var(--oak-border-color);
+    overflow-y: hidden;
+    overflow-x: hidden;
+    position: fixed;
+
+    .icon {
+        font-size: 20px;
+    }
+
+    :global {
+        .ant-layout-sider-children {
+            height: calc(100% - 48px);
+            overflow-y: auto;
+        }
+        .ant-layout-sider-trigger {
+            // text-align: left;
+            // padding-left: 16px;
+            // border-right: 1px solid var(--oak-border-color);
+        }
+    }
+}

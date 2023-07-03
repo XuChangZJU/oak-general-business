@@ -44,7 +44,7 @@ export default function Render(
             <div className={Style.content}>
                 <div className={Style.editorContainer}>
                     <div className={Style.titleContainer}>
-                        <span className={Style.title}>{title}</span>
+                        <span className={Style.title}>{name}</span>
                     </div>
                     {/* <div className={Style.authorContainer}>
                         <span className={Style.author}>{author}</span>

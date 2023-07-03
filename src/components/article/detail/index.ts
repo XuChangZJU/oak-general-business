@@ -41,7 +41,7 @@ export default OakComponent({
             window.open(`/article/preview?oakId=${articleId}`);
         },
         copy(articleId: string) {
-            const url = `${window.location.host}/article/preview?oakId=${articleId}`;
+            const url = `${window.location.host}/article/detail?oakId=${articleId}`;
             navigator.clipboard.writeText(url).then(() => {
                 this.setMessage({
                     content: '复制链接成功',
