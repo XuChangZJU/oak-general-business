@@ -11,6 +11,7 @@ import {
     Empty,
     Layout,
     Drawer,
+    Divider,
 } from 'antd';
 const { confirm } = Modal;
 import type { MenuProps  } from "antd";
@@ -186,6 +187,7 @@ export default function render(
                             />
                         )}
                     </div>
+                    <Divider style={{ margin: 0 }} />
                     <div className={Style.editor}>
                         {selectedArticleId?.length > 0 ? (
                             <ArticleUpsert
