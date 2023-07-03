@@ -26,6 +26,8 @@ import { IEditorConfig } from "@wangeditor/editor";
 import ArticleUpsert from "../../../components/article/detail3";
 const { SubMenu } = Menu;
 const { Sider, Content } = Layout;
+import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+
 interface DataNode {
     label: string;
     title: string;
@@ -164,12 +166,25 @@ export default function render(
             <div className={Style.container}>
                 <div className={Style.article_v}>
                     <div
-                        className={Style.menu}
+                        className={Style.menuHeader}
                         onClick={() => {
                             setOpen(true);
                         }}
                     >
-                        帮助文档
+                        <div>帮助文档</div>
+                        {open ? (
+                            <MenuFoldOutlined
+                                style={{
+                                    fontSize: 18,
+                                }}
+                            />
+                        ) : (
+                            <MenuUnfoldOutlined
+                                style={{
+                                    fontSize: 18,
+                                }}
+                            />
+                        )}
                     </div>
                     <div className={Style.editor}>
                         {selectedArticleId?.length > 0 ? (
@@ -188,6 +203,7 @@ export default function render(
                         setOpen(false);
                     }}
                     width={256}
+                    placement="left"
                 >
                     <Sider
                         theme="light"
