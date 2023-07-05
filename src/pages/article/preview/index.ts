@@ -18,21 +18,6 @@ export default OakComponent({
 			name: article?.name,
 		};
 	},
-	// listeners: {
-	//     content(prev, next) {
-	//       if(this.props.oakId) {
-
-	//       } else {
-	//         if (prev.content !== next.content) {
-	//           const ac = window.document.getElementById('article-content');
-	//           if (ac) {
-	//               ac.innerHTML = next.content;
-	//           }
-	//       }
-	//       }
-
-	//     },
-	// },
 	data: {
 		content: '',
 		title: '',

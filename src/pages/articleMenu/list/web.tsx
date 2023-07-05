@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Space, Button, Menu, Image, Empty, Pagination } from 'antd';
-import classNames from "classnames";
 import Style from "./web.module.less";
 import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from "../../../general-app-domain";
@@ -22,24 +21,17 @@ export default function render(
         'articleMenu',
         true,
         {
-            articleMenu: EntityDict['articleMenu']['Schema'][];
-            articles: EntityDict['article']['Schema'][];
             treeData: DataNode[];
             selectArticleMenuId: string;
             selectArticleId: string;
             entity: string;
             entityId: string;
-            pagination?: {
-                pageSize: number;
-                total: number;
-                currentPage: number;
-            };
         },
         {
             gotoUpsertById: (id: string) => void;
             gotoArticleUpsert: (articleId: string) => void;
-            onRemoveArticleMenu: (id: string) => void;
             gotoEdit: (id?: string) => void;
+            loadArticles: (articleMenuId: string) => void;
         }
     >
 ) {
@@ -49,20 +41,14 @@ export default function render(
         treeData,
         selectArticleMenuId,
         selectArticleId,
-        oakFullpath,
-        oakLegalActions,
-        oakPagination,
     } = props.data;
     const {
         t,
         gotoUpsertById,
         gotoArticleUpsert,
-        onRemoveArticleMenu,
         gotoEdit,
-        setCurrentPage,
-        setPageSize,
+        loadArticles,
     } = props.methods;
-    const { pageSize, total, currentPage } = oakPagination || {};
     const renderMenuItems = (data: any) => {
         return data?.map((menuItem: any) => {
             if (menuItem.children) {
@@ -85,6 +71,9 @@ export default function render(
                             </div>
                         }
                         onTitleClick={(e) => {
+                            if (menuItem.isArticle) {
+                                loadArticles(e.key)
+                            }
                             gotoUpsertById(e.key);
                         }}
                     >
@@ -152,23 +141,23 @@ export default function render(
                                     />
                                 ) : null}
                             </div>
-                            
+
                         </div>
-                        <div className={Style.pagination}>
-                                <Pagination
-                                    className={Style.pagination}
-                                    total={total}
-                                    current={currentPage || 1}
-                                    pageSize={20}
-                                    // pageSizeOptions={pageSize}
-                                    onChange={(current) => {
-                                        setCurrentPage(current);
-                                    }}
-                                    onShowSizeChange={(pageSize) => {
-                                        setPageSize(pageSize);
-                                    }}
-                                />
-                            </div>
+                        {/* <div className={Style.pagination}>
+                            <Pagination
+                                className={Style.pagination}
+                                total={total}
+                                current={currentPage || 1}
+                                pageSize={100}
+                                // pageSizeOptions={pageSize}
+                                onChange={(current) => {
+                                    setCurrentPage(current);
+                                }}
+                                onShowSizeChange={(pageSize) => {
+                                    setPageSize(pageSize);
+                                }}
+                            />
+                        </div> */}
                     </div>
                 )}
             </div>

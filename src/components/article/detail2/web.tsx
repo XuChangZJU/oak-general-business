@@ -42,22 +42,7 @@ export default function Render(
     }, [content]);
     return (
         <div className={Style.rightContainer}>
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Space>
-                    <Button
-                        onClick={() => {
-                            const url = `${window.location.host}/article/detail?oakId=${oakId}`;
-                            copy(url);
-                            methods.setMessage({
-                                content: '复制链接成功',
-                                type: 'success',
-                            });
-                        }}
-                    >
-                        <CopyOutlined/>复制链接
-                    </Button>
-                </Space>
-            </div>
+           
             <Row>
                 <Col xs={24} sm={16}>
                     <Form

@@ -9,19 +9,17 @@ import {
     Modal,
     Image,
     Empty,
+    Breadcrumb,
 } from "antd";
-const { confirm } = Modal;
-import type { MenuProps } from "antd";
-import React, { useState, useEffect, useCallback } from "react";
-import classNames from "classnames";
+import { EyeOutlined, CopyOutlined } from '@ant-design/icons';
 import Style from "./web.module.less";
 import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from "../../../general-app-domain";
 import useFeatures from "../../../hooks/useFeatures";
 import PageHeader from "../../../components/common/pageHeader";
-import { Editor } from "@wangeditor/editor-for-react";
-import { IEditorConfig } from "@wangeditor/editor";
 import ArticleUpsert from "../../../components/article/detail2";
+import copy from "copy-to-clipboard";
+import { useState, useEffect } from "react";
 const { SubMenu } = Menu;
 interface DataNode {
     label: string;
@@ -36,82 +34,58 @@ export default function render(
         "articleMenu",
         true,
         {
-            articleMenu: EntityDict["articleMenu"]["Schema"][];
-            articles: EntityDict["article"]["Schema"][];
             treeData: DataNode[];
-            content: string;
-            arr: {
-                id: string | undefined;
-                name: string | undefined;
-                parent: string | undefined;
-                parentId: string | undefined;
-                isArticle: boolean;
-                isLeaf: boolean;
-            }[];
-            id: string;
-            parentId: string;
-            articleId: string;
-            name: string;
-            isArticle: boolean;
-            isChildren: boolean;
-            logo: string;
             openKeys: string[];
             selectedKeys: string[];
             selectedArticleId: string;
+            breadcrumbItems: { title: string }[];
         },
         {
-            gotoUpsert: (id?: string) => void;
-            gotoUpsertById: (id: string) => void;
             gotoArticleUpsert: (articleId: string, selectedKeys?: string[]) => void;
-            check: () => void;
-            onRemoveArticleMenu: (id: string) => void;
-            gotoEdit: (id?: string) => void;
-            gotoEditByParentId: (parentId: string) => void;
-            gotoArticleEdit: (articleId: string) => void;
-            onRemoveArticle: (id: string) => void;
-            gotoArticleEditByArticleMenuId: (articleMenuId: string) => void;
             getOpenKeys: (
                 targetKey: string,
                 treeData: DataNode[],
                 openKeys: string[]
             ) => void;
+            loadArticles: (articleMenuId: string) => void;
+            findFirstArticle: (treeData: DataNode[]) => {
+                label: string,
+                title: string,
+                key: string,
+                isArticle?: boolean,
+                children?: DataNode[],
+            };
         }
     >
 ) {
     const {
-        arr,
         treeData,
-        id,
-        parentId,
-        articleId,
-        name,
-        content,
-        oakFullpath,
-        isArticle,
-        isChildren,
-        logo,
         openKeys,
         selectedKeys,
         selectedArticleId,
+        breadcrumbItems,
     } = props.data;
     const {
         t,
-        gotoUpsert,
-        gotoUpsertById,
         gotoArticleUpsert,
-        onRemoveArticleMenu,
-        gotoEdit,
-        gotoEditByParentId,
-        gotoArticleEdit,
-        onRemoveArticle,
-        gotoArticleEditByArticleMenuId,
         getOpenKeys,
+        loadArticles,
+        setMessage,
+        findFirstArticle,
     } = props.methods;
     const features = useFeatures();
-
+    const [executed, setExecuted] = useState(false);
+    useEffect(() => {
+        if (!executed && treeData.length > 0) {
+            const node = findFirstArticle(treeData);
+            getOpenKeys(node.key, treeData, openKeys)
+            setExecuted(true);
+        }
+    }, [treeData, executed]);
     const renderMenuItems = (data: any) => {
         return data?.map((menuItem: any) => {
-            if (menuItem.children || menuItem.isLeaf) {
+
+            if (menuItem.children) {
                 return (
                     <Menu.SubMenu
                         icon={
@@ -125,8 +99,15 @@ export default function render(
                             ) : null
                         }
                         key={menuItem.key}
-                        title={<div style={{ marginLeft: 8 }}>{menuItem.title}</div>}
-                        onTitleClick={(e) => {
+                        title={
+                            <div style={{ marginLeft: 8 }}>
+                                {menuItem.label}
+                            </div>
+                        }
+                        onTitleClick={async (e) => {
+                            if (menuItem.isArticle) {
+                                loadArticles(e.key);
+                            }
                             getOpenKeys(e.key, treeData, openKeys);
                         }}
                     >
@@ -138,7 +119,10 @@ export default function render(
                 <Menu.Item
                     key={menuItem.key}
                     onClick={(e) => {
-                        gotoArticleUpsert(e.key, selectedKeys);
+                        if (menuItem.type === 'article') {
+                            gotoArticleUpsert(e.key, selectedKeys);
+                        }
+
                     }}
                 >
                     {menuItem.label}
@@ -165,11 +149,33 @@ export default function render(
                         </div>
                         <div className={Style.editor}>
                             {selectedArticleId?.length > 0 ? (
-                                <ArticleUpsert
-                                    oakAutoUnmount={true}
-                                    oakId={selectedArticleId}
-                                    oakPath={`$article-detail2-${selectedArticleId}`}
-                                />
+                                <div>
+                                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                        <Space>
+                                            <Button
+                                                onClick={() => {
+                                                    const url = `${window.location.host}/article/detail?oakId=${selectedArticleId}`;
+                                                    copy(url);
+                                                    setMessage({
+                                                        content: '复制链接成功',
+                                                        type: 'success',
+                                                    });
+                                                }}
+                                            >
+                                                <CopyOutlined />复制链接
+                                            </Button>
+                                        </Space>
+                                    </div>
+                                    <Breadcrumb
+                                        style={{ padding: '10px 10px' }}
+                                        items={breadcrumbItems}
+                                    />
+                                    <ArticleUpsert
+                                        oakAutoUnmount={true}
+                                        oakId={selectedArticleId}
+                                        oakPath={`$article-detail2-${selectedArticleId}`}
+                                    />
+                                </div>
                             ) : null}
                         </div>
                     </div>

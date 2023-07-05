@@ -1,6 +1,7 @@
 .container {
   background: var(--oak-bg-color-container);
   min-height: 100vh;
+  max-width: 100vw;
 
   .article {
     display: flex;
@@ -18,18 +19,26 @@
   .article_v {
     display: flex;
       flex-direction: column;
-    
-      .menuHeader {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 10px;
-        height: 50px;
+
+      .topBar {
+        position: fixed;
+        z-index: 99;
+        background: var(--oak-bg-color-container);
+        .menuHeader {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            height: 50px;
+            width: 100vw;
+           
+          }
       }
-    
       .editor {
+        margin-top: 50px;
         display: flex;
+        z-index: 98;
       }
   }
 }
