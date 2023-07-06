@@ -12,13 +12,14 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
     mobileValue: string;
     mobileValueReady: boolean;
     userId: string;
+    legal: boolean;
 }, {
     onMobileChange: (value: string) => Promise<void>;
     onConfirm: () => Promise<void>;
     onReset: () => void;
 }>) {
     const { mobileValue, mobileValueReady, relations, entity, entityId, userId,
-        oakFullpath, oakExecutable } = props.data;
+        oakFullpath, oakExecutable, legal } = props.data;
     const { onConfirm, onMobileChange, onReset, t } = props.methods;
     return (
         <div className={Style.container}>
@@ -76,7 +77,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                             onClick={() => {
                                 onConfirm();
                             }}
-                            disabled={!oakExecutable}
+                            disabled={!legal}
                         >
                             {t('common:action.confirm')}
                         </Button>
