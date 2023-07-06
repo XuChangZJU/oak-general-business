@@ -46,7 +46,6 @@ export default function render(
 									</Form.Item>
 									<Form.Item
 										label={"分类名称"}
-										name="name"
 										rules={[
 											{
 												required: true,
@@ -68,7 +67,6 @@ export default function render(
 									</Form.Item>
 									<Form.Item
 										label="LOGO"
-										name="extraFile$entity"
 										help={
 											<div className={Style.help}>
 												<span>请上传LOGO高清图片，</span>
@@ -99,7 +97,6 @@ export default function render(
 								<>
 									<Form.Item
 										label={"分类名称"}
-										name="name"
 										rules={[
 											{
 												required: true,
@@ -121,7 +118,6 @@ export default function render(
 									</Form.Item>
                   <Form.Item
                     label="LOGO"
-                    name="extraFile$entity"
                     help={
                         <div className={Style.help}>
                             <span>请上传LOGO高清图片，</span>
@@ -152,6 +148,7 @@ export default function render(
 							<Form.Item wrapperCol={{ offset: 4 }}>
 								<Space>
 									<Button
+                                        disabled={!data.oakDirty || data.oakExecuting}
 										type="primary"
 										onClick={() => {
 											confirm();
