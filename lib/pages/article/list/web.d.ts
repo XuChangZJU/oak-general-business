@@ -1,5 +1,5 @@
-import { WebComponentProps } from "oak-frontend-base";
-import { EntityDict } from "../../../general-app-domain";
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../general-app-domain';
 interface DataNode {
     label: string;
     title: string;
@@ -7,7 +7,7 @@ interface DataNode {
     isArticle?: boolean;
     children?: DataNode[];
 }
-export default function render(props: WebComponentProps<EntityDict, "articleMenu", true, {
+export default function render(props: WebComponentProps<EntityDict, 'articleMenu', true, {
     treeData: DataNode[];
     openKeys: string[];
     selectedKeys: string[];
