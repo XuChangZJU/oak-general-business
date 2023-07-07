@@ -439,8 +439,11 @@ export default OakComponent({
         ) {
             if (selectedKeys.includes(articleId)) {
             } else {
-                const parentNodes = this.findParentNodes(this.state.treeData,articleId)?.map((ele: { label: any; }) => {
-                    return {title: ele.label}
+                const parentNodes = this.findParentNodes(
+                    this.state.treeData,
+                    articleId
+                )?.map((ele: { label: any }) => {
+                    return { title: ele.label };
                 });
                 this.setState({
                     breadcrumbItems: parentNodes,

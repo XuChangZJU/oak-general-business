@@ -41,32 +41,43 @@ export default function Render(
         }
     }, [content]);
     return (
-        <div className={Style.rightContainer}>
-           
-            <Row>
-                <Col xs={24} sm={16}>
-                    <Form
-                        colon
-                        labelCol={{ span: 4 }}
-                        wrapperCol={{ span: 20 }}
+        <div className={Style.container}>
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                }}
+            >
+                <Space>
+                    <Button
+                        onClick={() => {
+                            const url = `${window.location.host}/article/detail?oakId=${oakId}`;
+                            copy(url);
+                            methods.setMessage({
+                                content: '复制链接成功',
+                                type: 'success',
+                            });
+                        }}
                     >
-                        <>
-                            <Form.Item>
-                                <>
-                                    <Editor
-                                        defaultConfig={editorConfig}
-                                        value={value}
-                                        mode="default"
-                                        style={{
-                                            width: 750,
-                                        }}
-                                    />
-                                </>
-                            </Form.Item>
-                        </>
-                    </Form>
-                </Col>
-            </Row>
+                        <CopyOutlined />
+                        复制链接
+                    </Button>
+                </Space>
+            </div>
+            <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+                <Form.Item>
+                    <>
+                        <Editor
+                            defaultConfig={editorConfig}
+                            value={value}
+                            mode="default"
+                            style={{
+                                width: 750,
+                            }}
+                        />
+                    </>
+                </Form.Item>
+            </Form>
         </div>
     );
 }

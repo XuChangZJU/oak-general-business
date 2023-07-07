@@ -19,14 +19,5 @@ export default OakComponent({
       };
   },
   methods: {
-    copy(articleId: string) {
-        const url = `${window.location.host}/article/detail?oakId=${articleId}`;
-        navigator.clipboard.writeText(url).then(() => {
-            this.setMessage({
-                content: '复制链接成功',
-                type: 'success',
-            });
-        });
-    },
   }
 });

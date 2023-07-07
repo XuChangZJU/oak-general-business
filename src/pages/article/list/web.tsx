@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+
 import {
     Form,
     Tree,
@@ -10,17 +12,13 @@ import {
     Image,
     Empty,
     Breadcrumb,
-} from "antd";
-import { EyeOutlined, CopyOutlined } from '@ant-design/icons';
-import Style from "./web.module.less";
-import { WebComponentProps } from "oak-frontend-base";
-import { EntityDict } from "../../../general-app-domain";
-import useFeatures from "../../../hooks/useFeatures";
-import PageHeader from "../../../components/common/pageHeader";
-import ArticleUpsert from "../../../components/article/detail2";
-import copy from "copy-to-clipboard";
-import { useState, useEffect } from "react";
-const { SubMenu } = Menu;
+} from 'antd';
+import Style from './web.module.less';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../general-app-domain';
+import useFeatures from '../../../hooks/useFeatures';
+import PageHeader from '../../../components/common/pageHeader';
+import ArticleUpsert from '../../../components/article/detail2';
 interface DataNode {
     label: string;
     title: string;
@@ -31,7 +29,7 @@ interface DataNode {
 export default function render(
     props: WebComponentProps<
         EntityDict,
-        "articleMenu",
+        'articleMenu',
         true,
         {
             treeData: DataNode[];
@@ -41,7 +39,10 @@ export default function render(
             breadcrumbItems: { title: string }[];
         },
         {
-            gotoArticleUpsert: (articleId: string, selectedKeys?: string[]) => void;
+            gotoArticleUpsert: (
+                articleId: string,
+                selectedKeys?: string[]
+            ) => void;
             getOpenKeys: (
                 targetKey: string,
                 treeData: DataNode[],
@@ -49,11 +50,11 @@ export default function render(
             ) => void;
             loadArticles: (articleMenuId: string) => void;
             findFirstArticle: (treeData: DataNode[]) => {
-                label: string,
-                title: string,
-                key: string,
-                isArticle?: boolean,
-                children?: DataNode[],
+                label: string;
+                title: string;
+                key: string;
+                isArticle?: boolean;
+                children?: DataNode[];
             };
         }
     >
@@ -78,13 +79,13 @@ export default function render(
     useEffect(() => {
         if (!executed && treeData.length > 0) {
             const node = findFirstArticle(treeData);
-            getOpenKeys(node.key, treeData, openKeys)
+            getOpenKeys(node.key, treeData, openKeys);
             setExecuted(true);
         }
     }, [treeData, executed]);
+
     const renderMenuItems = (data: any) => {
         return data?.map((menuItem: any) => {
-
             if (menuItem.children) {
                 return (
                     <Menu.SubMenu
@@ -122,7 +123,6 @@ export default function render(
                         if (menuItem.type === 'article') {
                             gotoArticleUpsert(e.key, selectedKeys);
                         }
-
                     }}
                 >
                     {menuItem.label}
@@ -149,25 +149,9 @@ export default function render(
                         </div>
                         <div className={Style.editor}>
                             {selectedArticleId?.length > 0 ? (
-                                <div>
-                                    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                        <Space>
-                                            <Button
-                                                onClick={() => {
-                                                    const url = `${window.location.host}/article/detail?oakId=${selectedArticleId}`;
-                                                    copy(url);
-                                                    setMessage({
-                                                        content: '复制链接成功',
-                                                        type: 'success',
-                                                    });
-                                                }}
-                                            >
-                                                <CopyOutlined />复制链接
-                                            </Button>
-                                        </Space>
-                                    </div>
+                                <div className={Style.editorInner}>
                                     <Breadcrumb
-                                        style={{ padding: '10px 10px' }}
+                                        style={{ padding: 10 }}
                                         items={breadcrumbItems}
                                     />
                                     <ArticleUpsert

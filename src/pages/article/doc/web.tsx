@@ -172,7 +172,7 @@ export default function render(
                         {selectedArticleId?.length > 0 ? (
                             <div>
                                 <Breadcrumb
-                                    style={{ padding: '10px 10px' }}
+                                    style={{ padding: 10 }}
                                     items={breadcrumbItems}
                                 />
                                 <ArticleUpsert
