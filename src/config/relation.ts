@@ -15,4 +15,4 @@ export const DeducedRelationMap = {
     extraFile: 'entity',
 }
 
-export const SelectFreeEntities = ['application', 'area', 'mobile'];
+export const SelectFreeEntities = ['application', 'area', 'mobile', 'wechatQrCode'];
