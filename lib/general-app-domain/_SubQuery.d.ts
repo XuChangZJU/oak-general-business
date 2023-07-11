@@ -184,6 +184,8 @@ export declare type ArticleMenuIdSubQuery = {
         entity: "article";
     }) | (ArticleMenu.ArticleMenuIdSubQuery & {
         entity: "articleMenu";
+    }) | (ExtraFile.ArticleMenuIdSubQuery & {
+        entity: "extraFile";
     }) | (ArticleMenu.ArticleMenuIdSubQuery & {
         entity: "articleMenu";
     }) | any;

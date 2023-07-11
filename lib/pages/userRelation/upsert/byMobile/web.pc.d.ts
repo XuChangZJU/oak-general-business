@@ -12,4 +12,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
     onMobileChange: (value: string) => Promise<void>;
     onConfirm: () => Promise<void>;
     onReset: () => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

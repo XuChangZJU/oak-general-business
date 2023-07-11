@@ -24,4 +24,4 @@ export default function Render(props: WebComponentProps<EntityDict, "article", f
     clearContentTip: () => void;
     onRemoveArticle: (id: string) => void;
     gotoPreview: (content?: string, title?: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

@@ -27,5 +27,5 @@ export default function render(props: WebComponentProps<EntityDict, "articleMenu
         isArticle?: boolean;
         children?: DataNode[];
     };
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;
 export {};
