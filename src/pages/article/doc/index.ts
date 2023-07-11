@@ -29,7 +29,7 @@ export default OakComponent({
                 name: 1,
                 content: 1,
                 articleMenuId: 1,
-            }
+            },
         },
         extraFile$entity: {
             $entity: 'extraFile',
@@ -59,8 +59,9 @@ export default OakComponent({
         more: true,
     },
     isList: true,
-    formData({ data: rows }) {
-        const articleMenus: Partial<EntityDict['articleMenu']['Schema']>[] = this.getArticleMenus();
+    formData({ data: rows, props }) {
+        const articleMenus: Partial<EntityDict['articleMenu']['Schema']>[] =
+            this.getArticleMenus(props.articleMenuId);
 
         const treeData = articleMenus?.map((articleMenu) => {
             return {
@@ -73,7 +74,10 @@ export default OakComponent({
                     )
                 ),
                 parentKey: articleMenu?.parentId,
-                children: this.buildTreeData(articleMenu.id, articleMenu.isArticle),
+                children: this.buildTreeData(
+                    articleMenu.id,
+                    articleMenu.isArticle
+                ),
             };
         });
         return {
@@ -81,7 +85,9 @@ export default OakComponent({
         };
     },
     filters: [],
-    lifetimes: {
+    lifetimes: {},
+    properties: {
+        articleMenuId: '',
     },
     data: {
         selectedArticleId: '',
@@ -89,12 +95,6 @@ export default OakComponent({
         selectedKeys: [] as string[],
         treeData: [] as DataNode[],
         parentId: '',
-        articleMenuId: '',
-        id: '',
-        name: '',
-        isArticle: false,
-        isChildren: false,
-        logo: '',
         breadcrumbItems: [] as { title: string }[],
     },
     methods: {
@@ -118,7 +118,7 @@ export default OakComponent({
                             name: 1,
                             content: 1,
                             articleMenuId: 1,
-                        }
+                        },
                     },
                     extraFile$entity: {
                         $entity: 'extraFile',
@@ -143,9 +143,11 @@ export default OakComponent({
                     },
                 },
                 filter: {
-                    parentId: parentId ? parentId : {
-                        $exists: false
-                    }
+                    parentId: parentId
+                        ? parentId
+                        : {
+                              $exists: false,
+                          },
                 },
                 sorter: [
                     {
@@ -156,66 +158,71 @@ export default OakComponent({
                     },
                 ],
             });
-            return articleMenus
+            return articleMenus;
         },
         async loadArticleMenus(parentId?: string) {
-            const articleMenus = await this.features.cache.refresh('articleMenu', {
-                data: {
-                    id: 1,
-                    name: 1,
-                    isArticle: 1,
-                    isLeaf: 1,
-                    parent: {
+            const articleMenus = await this.features.cache.refresh(
+                'articleMenu',
+                {
+                    data: {
                         id: 1,
                         name: 1,
                         isArticle: 1,
                         isLeaf: 1,
-                    },
-                    article$articleMenu: {
-                        $entity: 'article',
-                        data: {
+                        parent: {
                             id: 1,
                             name: 1,
-                            content: 1,
-                            articleMenuId: 1,
-                        }
-                    },
-                    extraFile$entity: {
-                        $entity: 'extraFile',
-                        data: {
-                            id: 1,
-                            tag1: 1,
-                            origin: 1,
-                            bucket: 1,
-                            objectId: 1,
-                            filename: 1,
-                            extra1: 1,
-                            extension: 1,
-                            type: 1,
-                            entity: 1,
-                            entityId: 1,
+                            isArticle: 1,
+                            isLeaf: 1,
                         },
-                        filter: {
-                            tag1: {
-                                $in: ['logo', 'introduce'],
+                        article$articleMenu: {
+                            $entity: 'article',
+                            data: {
+                                id: 1,
+                                name: 1,
+                                content: 1,
+                                articleMenuId: 1,
+                            },
+                        },
+                        extraFile$entity: {
+                            $entity: 'extraFile',
+                            data: {
+                                id: 1,
+                                tag1: 1,
+                                origin: 1,
+                                bucket: 1,
+                                objectId: 1,
+                                filename: 1,
+                                extra1: 1,
+                                extension: 1,
+                                type: 1,
+                                entity: 1,
+                                entityId: 1,
+                            },
+                            filter: {
+                                tag1: {
+                                    $in: ['logo', 'introduce'],
+                                },
                             },
                         },
                     },
-                },
-                filter: {
-                    parentId: parentId ? parentId : {
-                        $exists: false
-                    }
-                },
-                sorter: [
-                    {
-                        $attr: {
-                            $$createAt$$: 1,
-                        },
-                        $direction: 'asc',
+                    filter: {
+                        parentId: parentId
+                            ? parentId
+                            : {
+                                  $exists: false,
+                              },
                     },
-                ],
-            });
+                    sorter: [
+                        {
+                            $attr: {
+                                $$createAt$$: 1,
+                            },
+                            $direction: 'asc',
+                        },
+                    ],
+                }
+            );
         },
         getArticles(articleMenuId: string) {
             const articleMenus = this.features.cache.get('article', {
@@ -226,7 +233,7 @@ export default OakComponent({
                     articleMenuId: 1,
                 },
                 filter: {
-                    articleMenuId
+                    articleMenuId,
                 },
                 sorter: [
                     {
@@ -237,7 +244,7 @@ export default OakComponent({
                     },
                 ],
             });
-            return articleMenus
+            return articleMenus;
         },
 
         async loadArticles(articleMenuId?: string) {
@@ -249,7 +256,7 @@ export default OakComponent({
                     articleMenuId: 1,
                 },
                 filter: {
-                    articleMenuId
+                    articleMenuId,
                 },
                 sorter: [
                     {
@@ -362,54 +369,55 @@ export default OakComponent({
             return openKeys;
         },
 
-        buildTreeData(
-            parentId: string,
-            isArticle: boolean
-        ): DataNode[] {
+        buildTreeData(parentId: string, isArticle: boolean): DataNode[] {
             let children: DataNode[] = [];
             if (isArticle) {
-                const articles: Partial<EntityDict['article']['Schema']>[] = this.getArticles(parentId!);
-                children = articles?.map(
-                    article => {
-                        return {
-                            label: article.name!,
-                            key: article.id!,
-                            type: 'article'!,
-                            parentKey: article.articleMenuId!,
-                        }
-                    }
-                )
-            }
-            else {
-                const articleMenus: Partial<EntityDict['articleMenu']['Schema']>[] = this.getArticleMenus(parentId!);
+                const articles: Partial<EntityDict['article']['Schema']>[] =
+                    this.getArticles(parentId!);
+                children = articles?.map((article) => {
+                    return {
+                        label: article.name!,
+                        key: article.id!,
+                        type: 'article'!,
+                        parentKey: article.articleMenuId!,
+                    };
+                });
+            } else {
+                const articleMenus: Partial<
+                    EntityDict['articleMenu']['Schema']
+                >[] = this.getArticleMenus(parentId!);
 
-                children = articleMenus?.map(
-                    articleMenu => {
-                        return {
-                            label: articleMenu.name!,
-                            key: articleMenu.id?.toString()!,
-                            isArticle: articleMenu.isArticle!,
-                            logo: this.features.extraFile.getUrl(
-                                articleMenu?.extraFile$entity?.find(
-                                    (ele) => ele.tag1 === 'logo'
-                                )
-                            ),
-                            parentKey: articleMenu?.parentId!,
-                            children: this.buildTreeData(articleMenu.id, articleMenu.isArticle),
-                        }
-                    }
-                )
+                children = articleMenus?.map((articleMenu) => {
+                    return {
+                        label: articleMenu.name!,
+                        key: articleMenu.id?.toString()!,
+                        isArticle: articleMenu.isArticle!,
+                        logo: this.features.extraFile.getUrl(
+                            articleMenu?.extraFile$entity?.find(
+                                (ele) => ele.tag1 === 'logo'
+                            )
+                        ),
+                        parentKey: articleMenu?.parentId!,
+                        children: this.buildTreeData(
+                            articleMenu.id,
+                            articleMenu.isArticle
+                        ),
+                    };
+                });
             }
             return children;
         },
-        findParentNodes(treeData:DataNode[], targetKey:string) {
+        findParentNodes(treeData: DataNode[], targetKey: string) {
             for (let i = 0; i < treeData.length; i++) {
                 const node = treeData[i];
                 if (node.key === targetKey) {
                     return [node];
                 }
                 if (node.children) {
-                    const parentNodes = this.findParentNodes(node.children, targetKey);
+                    const parentNodes = this.findParentNodes(
+                        node.children,
+                        targetKey
+                    );
                     if (parentNodes.length > 0) {
                         return [node, ...parentNodes];
                     }
@@ -421,12 +429,15 @@ export default OakComponent({
             for (let i = 0; i < treeData.length; i++) {
                 const node = treeData[i];
                 if (node.type === 'article') {
-                    const parentNode = this.findParentNodes(this.state.treeData,node.key)[0];
+                    const parentNode = this.findParentNodes(
+                        this.state.treeData,
+                        node.key
+                    )[0];
                     return parentNode;
                 }
                 if (node.children && node.children.length > 0) {
                     const childNode = this.findFirstArticle(node.children);
-                    if(childNode) {
+                    if (childNode) {
                         return childNode;
                     }
                 }
@@ -439,12 +450,15 @@ export default OakComponent({
         ) {
             if (selectedKeys.includes(articleId)) {
             } else {
-                const parentNodes = this.findParentNodes(this.state.treeData,articleId)?.map((ele: { label: any; }) => {
-                    return {title: ele.label}
+                const parentNodes = this.findParentNodes(
+                    this.state.treeData,
+                    articleId
+                )?.map((ele: { label: any }) => {
+                    return { title: ele.label };
                 });
                 this.setState({
                     breadcrumbItems: parentNodes,
-                })
+                });
                 this.setState({
                     selectedKeys: [articleId],
                     selectedArticleId: articleId,
@@ -453,6 +467,5 @@ export default OakComponent({
                 });
             }
         },
-
     },
 });
