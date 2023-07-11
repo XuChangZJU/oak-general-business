@@ -8,4 +8,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     style?: React.CSSProperties;
 }, {
     goMessageList: () => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

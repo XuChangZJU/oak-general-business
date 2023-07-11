@@ -15,4 +15,4 @@ export default function render(props: WebComponentProps<EntityDict, 'token', fal
     setRelationId: (value: string) => void;
     setNumber: (value: string) => void;
     setPeriod: (value: number | null) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

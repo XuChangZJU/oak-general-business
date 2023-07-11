@@ -2,8 +2,9 @@ import React from 'react';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
-
-
+import { Editor } from '@wangeditor/editor-for-react';
+import { IEditorConfig } from '@wangeditor/editor';
+import { useState, useEffect } from 'react';
 
 export default function Render(
     props: WebComponentProps<
@@ -11,10 +12,12 @@ export default function Render(
         'article',
         false,
         {
+            id: string;
+            name: string;
             editor: any;
             title?: string;
-            author?: string;
-            abstract?: string;
+            // author?: string;
+            // abstract?: string;
             content?: string;
             html?: string;
             origin?: string;
@@ -22,8 +25,19 @@ export default function Render(
         {}
     >
 ) {
-    const { editor, title, author, abstract, content } = props.data;
-
+    const { id, name, editor, title, content } = props.data;
+    console.log(title, content)
+    const editorConfig: Partial<IEditorConfig> = {
+        readOnly: true,
+        autoFocus: true,
+        scroll: false,
+    };
+    const [value, setValue] = useState('');
+    useEffect(() => {
+        if (content) {
+            setValue(content);
+        }
+    }, [content]);
     return (
         <div className={Style.container}>
             <div className={Style.content}>
@@ -31,10 +45,19 @@ export default function Render(
                     <div className={Style.titleContainer}>
                         <span className={Style.title}>{title}</span>
                     </div>
-                    <div className={Style.authorContainer}>
+                    {/* <div className={Style.authorContainer}>
                         <span className={Style.author}>{author}</span>
+                    </div> */}
+                    <div id="article-content" style={{ width: '100%' }}>
+                        <Editor
+                            defaultConfig={editorConfig}
+                            value={value}
+                            mode="default"
+                            style={{
+                                width: '100%',
+                            }}
+                        />
                     </div>
-                    <div id="article-content"></div>
                 </div>
             </div>
         </div>

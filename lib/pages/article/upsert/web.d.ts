@@ -1,24 +1,27 @@
-import '@wangeditor/editor/dist/css/style.css';
-import { EntityDict } from './../../../general-app-domain';
-import { WebComponentProps } from 'oak-frontend-base';
-export default function Render(props: WebComponentProps<EntityDict, 'article', false, {
+import "@wangeditor/editor/dist/css/style.css";
+import { EntityDict } from "./../../../general-app-domain";
+import { WebComponentProps } from "oak-frontend-base";
+export default function Render(props: WebComponentProps<EntityDict, "article", false, {
+    id: string;
+    name: string;
     editor: any;
-    title?: string;
-    author?: string;
     abstract?: string;
     content?: string;
     html?: string;
     origin?: string;
     contentTip: boolean;
+    origin1: string;
 }, {
     setHtml: (content: string) => void;
     setEditor: (editor: any) => void;
-    confirm: () => void;
+    check: () => void;
     preview: () => void;
-    addExtraFile: (file: EntityDict['extraFile']['CreateSingle']['data']) => Promise<void>;
-    uploadFile: (file: EntityDict['extraFile']['CreateSingle']['data']) => Promise<{
+    addExtraFile: (file: EntityDict["extraFile"]["CreateSingle"]["data"]) => Promise<void>;
+    uploadFile: (file: EntityDict["extraFile"]["CreateSingle"]["data"]) => Promise<{
         bucket: string;
         url: string;
     }>;
     clearContentTip: () => void;
-}>): JSX.Element;
+    onRemoveArticle: (id: string) => void;
+    gotoPreview: (content?: string, title?: string) => void;
+}>): import("react/jsx-runtime").JSX.Element;
