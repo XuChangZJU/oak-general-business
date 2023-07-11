@@ -71,7 +71,7 @@ export default function render(
     } = props.methods;
     const [executed, setExecuted] = useState(false);
     useEffect(() => {
-      if (!executed && treeData.length > 0) {
+      if (!executed && treeData.length > 0 && openKeys.length === 0) {
         const node = findFirstArticle(treeData);
         getOpenKeys(node.key,treeData,openKeys)
         setExecuted(true);
