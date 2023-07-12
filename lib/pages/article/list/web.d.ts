@@ -1,16 +1,30 @@
-import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
-export default function render(props: WebComponentProps<EntityDict, 'article', true, {
-    searchValue: string;
-    articles: EntityDict['article']['Schema'][];
-    pagination: any;
-    title?: string;
-    showBack?: boolean;
+import { WebComponentProps } from "oak-frontend-base";
+import { EntityDict } from "../../../general-app-domain";
+interface DataNode {
+    label: string;
+    title: string;
+    key: string;
+    isArticle?: boolean;
+    children?: DataNode[];
+}
+export default function render(props: WebComponentProps<EntityDict, "articleMenu", true, {
+    treeData: DataNode[];
+    openKeys: string[];
+    selectedKeys: string[];
+    selectedArticleId: string;
+    breadcrumbItems: {
+        title: string;
+    }[];
 }, {
-    goUpsert: () => Promise<void>;
-    goDetailById: (id: string) => Promise<void>;
-    goUpsertById: (id: string) => Promise<void>;
-    searchValueChange: (v: string) => Promise<void>;
-    searchConfirm: () => Promise<void>;
-    onRemove: (id: string) => Promise<void>;
+    gotoArticleUpsert: (articleId: string, selectedKeys?: string[]) => void;
+    getOpenKeys: (targetKey: string, treeData: DataNode[], openKeys: string[]) => void;
+    loadArticles: (articleMenuId: string) => void;
+    findFirstArticle: (treeData: DataNode[]) => {
+        label: string;
+        title: string;
+        key: string;
+        isArticle?: boolean;
+        children?: DataNode[];
+    };
 }>): JSX.Element;
+export {};

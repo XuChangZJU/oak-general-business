@@ -5,6 +5,7 @@ import { Index } from 'oak-domain/lib/types/Storage';
 import { Schema as User } from './User';
 import { Schema as WechatQrCode } from './WechatQrCode';
 import { QrCodeType } from '../types/Config';
+import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
 export interface Schema extends EntityShape {
     user?: User;
@@ -32,8 +33,7 @@ const indexes: Index<Schema>[] = [
         ],
     },
 ];
-
-const locale: LocaleDef<
+const entityDesc: EntityDesc<
     Schema,
     Action,
     '',
@@ -42,33 +42,48 @@ const locale: LocaleDef<
         qrCodeType: QrCodeType;
     }
 > = {
-    zh_CN: {
-        name: '绑定微信号',
-        attr: {
-            user: '用户',
-            type: '类型',
-            successed: '是否成功',
-            remark: '备注',
-            codes: '微信码',
-            expired: '是否过期',
-            expiresAt: '过期时间',
-            qrCodeType: '二维码类型',
+    indexes: [
+        {
+            name: 'index_uuid',
+            attributes: [
+                {
+                    name: 'expired',
+                },
+                {
+                    name: 'expiresAt',
+                }
+            ],
         },
-        action: {
-            success: '成功',
-        },
-        v: {
-            type: {
-                bind: '绑定',
-                login: '登录',
+    ],
+    locales: {
+        zh_CN: {
+            name: '绑定微信号',
+            attr: {
+                user: '用户',
+                type: '类型',
+                successed: '是否成功',
+                remark: '备注',
+                codes: '微信码',
+                expired: '是否过期',
+                expiresAt: '过期时间',
+                qrCodeType: '二维码类型',
             },
-            qrCodeType: {
-                webForWechatPublic: '网站引流到公众号',
-                wechatMpDomainUrl: '小程序url码',
-                wechatMpWxaCode: '小程序码',
-                wechatPublic: '公众号关注码',
-                wechatPublicForMp: '公众号跳转小程序码',
+            action: {
+                success: '成功',
+            },
+            v: {
+                type: {
+                    bind: '绑定',
+                    login: '登录',
+                },
+                qrCodeType: {
+                    webForWechatPublic: '网站引流到公众号',
+                    wechatMpDomainUrl: '小程序url码',
+                    wechatMpWxaCode: '小程序码',
+                    wechatPublic: '公众号关注码',
+                    wechatPublicForMp: '公众号跳转小程序码',
+                },
             },
         },
-    },
-};
+    }
+}

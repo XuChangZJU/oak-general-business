@@ -6,6 +6,8 @@ import messageTriggers from './message';
 import notificationTriggers from './notification';
 import wechatLoginTriggers from './wechatLogin';
 import applicationTriggers from './application';
+import articleMenuTriggers from './articleMenu';
+import article from './article';
 
 export default [
     ...applicationTriggers,
@@ -16,4 +18,6 @@ export default [
     ...messageTriggers,
     ...notificationTriggers,
     ...wechatLoginTriggers,
+    ...articleMenuTriggers,
+    ...article,
 ];

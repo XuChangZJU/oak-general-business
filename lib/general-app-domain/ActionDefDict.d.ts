@@ -2,9 +2,6 @@ export declare const ActionDefDict: {
     modi: {
         iState: import("oak-domain/lib/types").ActionDef<string, string>;
     };
-    article: {
-        iState: import("oak-domain/lib/types").ActionDef<string, string>;
-    };
     captcha: {
         iState: import("oak-domain/lib/types").ActionDef<string, string>;
     };

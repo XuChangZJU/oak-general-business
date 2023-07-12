@@ -11,30 +11,28 @@ export default OakComponent({
     entity: 'article',
     projection: {
         id: 1,
-        iState: 1,
-        title: 1,
-        author: 1,
-        abstract: 1,
+        name: 1,
         content: 1,
-        entity: 1,
-        entityId: 1,
+        articleMenu: {
+          id: 1,
+        },
     },
     isList: false,
     formData: function ({ data: article, features }) {
         return {
             id: article?.id,
-            iState: article?.iState,
-            title: article?.title,
-            abstract: article?.abstract,
-            author: article?.author,
             content: article?.content,
+            name: article?.name,
         };
     },
     data: {
         editor: null as IDomEditor | null,
         html: '',
-        origin: 'qiniu',
+        origin1: 'qiniu',
         contentTip: false,
+    },
+    properties: {
+        articleMenuId: '',
     },
     listeners: {
         'editor,content'(prev, next) {
@@ -44,14 +42,17 @@ export default OakComponent({
         },
     },
     lifetimes: {
-        ready() {
-            const { entityId, entity, oakId } = this.props;
+        async ready() {
+            const { oakId, articleMenuId } = this.props;
             if (!oakId) {
-                this.update({
-                    entityId,
-                    entity,
-                });
+                if (articleMenuId) {
+                  this.update({
+                    articleMenuId,
+                    
+                  });
+              }
             }
+           
         },
         detached() {
             const { editor } = this.state;
@@ -61,33 +62,21 @@ export default OakComponent({
         },
     },
     methods: {
-        async addExtraFile(
-            extraFile: EntityDict['extraFile']['CreateSingle']['data']
-        ) {
-            try {
-                const result = await this.features.cache.operate('extraFile', {
-                    action: 'create',
-                    data: extraFile,
-                    id: generateNewId(),
-                });
-                return result;
-            } catch (error) {
-                // if (
-                //     (<OakException>error).constructor.name ===
-                //     OakUnloggedInException.name
-                // ) {
-                //     this.navigateTo(
-                //         {
-                //             url: '/login',
-                //         },
-                //         undefined,
-                //         true
-                //     );
-                //     return;
-                // }
-                throw error;
-            }
+        async onRemoveArticle(id: string) {
+          this.removeItem(id);
+          await this.execute();
+          this.navigateBack();
         },
+        async addExtraFile(
+          extraFile: EntityDict['extraFile']['CreateSingle']['data']
+      ) {
+          const result = await this.features.cache.operate('extraFile', {
+              action: 'create',
+              data: extraFile,
+              id: generateNewId(),
+          });
+          return result;
+      },
 
         uploadFile(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
             return this.features.extraFile.upload(extraFile);
@@ -103,29 +92,53 @@ export default OakComponent({
                 contentTip: false,
             });
         },
-        async confirm() {
-            await this.execute();
-            this.navigateBack();
+        async check() {
+            if(this.state.name && this.state.name.length > 0){
+              await this.execute();
+              this.navigateBack();
+            } else {
+              this.setMessage({
+                content: '请填写文章标题!',
+                type: 'warning',
+            });
+            }
+           
         },
         async reset() {
             // 重置
             this.clean();
         },
-        setHtml(content: string) {
-            this.update({ content });
-            this.setState({ html: content });
+        setHtml(html: string) {
+          this.setState({
+            html,
+        });
+        if (html && html !== '<p><br></p>' && this.state.oakFullpath) {
+            this.update({ content: html });
+        }
         },
         preview() {
-            const { html, title, author } = this.state;
+            const { html } = this.state;
             this.save(
                 'article_html',
                 JSON.stringify({
                     content: html,
-                    author,
-                    title,
+                    // author,
+                    // title,
                 })
             );
             window.open('/article/preview');
+        },
+        gotoPreview(content?: string, title?:string) {
+          this.save(
+              'article_html',
+              JSON.stringify({
+                  content,
+                  title,
+                  // author,
+                  // title,
+              })
+          );
+          window.open('/article/preview');
         },
     },
 });

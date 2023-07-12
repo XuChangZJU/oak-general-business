@@ -70,7 +70,7 @@ export async function sendSms<
                 TemplateId: template.code,
                 TemplateParamSet: templateParamSet as string[],
             });
-            const sendStatus = data.SendStatusSet[0];
+            const sendStatus = data.SendStatusSet![0];
             if (sendStatus.Code === 'Ok') {
                 return true;
             }
