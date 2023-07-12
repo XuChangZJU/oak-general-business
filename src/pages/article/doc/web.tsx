@@ -14,7 +14,7 @@ import { EntityDict } from "../../../general-app-domain";
 import useFeatures from "../../../hooks/useFeatures";
 import ArticleUpsert from "../../../components/article/detail3";
 const { Sider } = Layout;
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { MenuUnfoldOutlined, MenuFoldOutlined, RightOutlined, DownOutlined } from '@ant-design/icons';
 
 interface DataNode {
     label: string;
@@ -44,7 +44,7 @@ export default function render(
                 openKeys: string[]
             ) => void;
             loadArticles: (articleMenuId: string) => void;
-            findFirstArticle: (treeData: DataNode[]) => { 
+            findFirstArticle: (treeData: DataNode[]) => {
                 label: string,
                 title: string,
                 key: string,
@@ -71,34 +71,32 @@ export default function render(
     } = props.methods;
     const [executed, setExecuted] = useState(false);
     useEffect(() => {
-      if (!executed && treeData.length > 0 && openKeys.length === 0) {
-        const node = findFirstArticle(treeData);
-        getOpenKeys(node.key,treeData,openKeys)
-        setExecuted(true);
-      }
+        if (!executed && treeData.length > 0 && openKeys.length === 0) {
+            const node = findFirstArticle(treeData);
+            getOpenKeys(node.key, treeData, openKeys)
+            setExecuted(true);
+        }
     }, [treeData, executed]);
     const features = useFeatures();
     const [open, setOpen] = useState(false);
-    const renderMenuItems = (data: any, callback?: () => void) => {
+    const renderMenuItems = (data: any, callback?: () => void, fontSize = 16, fontWeight = 800) => {
         return data?.map((menuItem: any) => {
-
             if (menuItem.children) {
                 return (
                     <Menu.SubMenu
-                        icon={
-                            menuItem.logo ? (
-                                <Image
-                                    height={26}
-                                    width={26}
-                                    src={menuItem.logo}
-                                    preview={false}
-                                />
-                            ) : null
-                        }
+                        style={{ background: '#ffffff', margin: '0px', borderRadius: '0px' }}
                         key={menuItem.key}
                         title={
-                            <div style={{ marginLeft: 8 }}>
-                                {menuItem.label}
+                            <div style={{ display: 'flex', marginLeft: 8, fontWeight: `${fontWeight}`, fontSize: `${fontSize}px`, flexDirection: 'row' }}>
+                                {menuItem.logo ? (
+                                    <Image
+                                        height={26}
+                                        width={26}
+                                        src={menuItem.logo}
+                                        preview={false}
+                                    />
+                                ) : null}
+                                <div style={{marginLeft: 8}}>{menuItem.label}</div>
                             </div>
                         }
                         onTitleClick={(e) => {
@@ -108,26 +106,37 @@ export default function render(
                             getOpenKeys(e.key, treeData, openKeys);
                         }}
                     >
-                        {renderMenuItems(menuItem.children, callback)}
+                        {renderMenuItems(menuItem.children, callback, fontSize - 2, fontWeight - 100)}
                     </Menu.SubMenu>
                 );
-            }
-            return (
-                <Menu.Item
-                    key={menuItem.key}
-                    onClick={(e) => {
-                        if (menuItem.type === 'article') {
-                            gotoArticleUpsert(e.key, selectedKeys);
-                            if (typeof callback === 'function') {
-                                callback();
+            } else {
+                const isSelected = selectedKeys.includes(menuItem.key);
+                return (
+                    <Menu.Item
+                        style={{ background: '#ffffff', margin: '0', width: '100%', borderRadius: '0px' }}
+                        key={menuItem.key}
+                        onClick={(e) => {
+                            if (menuItem.type === 'article') {
+                                gotoArticleUpsert(e.key, selectedKeys);
+                                if (typeof callback === 'function') {
+                                    callback();
+                                }
                             }
-                        }
 
-                    }}
-                >
-                    {menuItem.label}
-                </Menu.Item>
-            );
+                        }}
+                    >
+                        <span style={isSelected ? { color: '#1677ff' } : undefined}>
+                            <div className={Style.articleItem}>
+                                <div className={Style.icon}>
+                                    {isSelected ? <div className={Style.dot} /> : null}
+                                </div>
+                                <div className={Style.label} style={{ fontSize: `${fontSize}px` }}>{menuItem.label}</div>
+                            </div>
+                        </span>
+                    </Menu.Item>
+                );
+            }
+
         });
     };
 
@@ -171,10 +180,27 @@ export default function render(
                     <div className={Style.editor}>
                         {selectedArticleId?.length > 0 ? (
                             <div>
-                                <Breadcrumb
-                                    style={{ padding: 10 }}
+                                {/* <Breadcrumb
+                                    style={{ padding: '25px 10px 10px 10px' }}
                                     items={breadcrumbItems}
-                                />
+                                /> */}
+                                <div style={{ padding: '25px 10px 10px 10px', display: 'flex', flexDirection: 'row', fontSize: '14px' }}>
+                                    {
+                                        breadcrumbItems.length > 0 &&
+                                        breadcrumbItems.map((breadcrumbItem: any, index: number) => {
+                                            return index !== breadcrumbItems.length - 1 ? (
+                                                <div style={{ color: '#B2B2B2' }} key={index}>
+                                                    {breadcrumbItem.title}
+                                                    <span style={{ margin: '0 6px' }}>/</span>
+                                                </div>
+                                            ) : (
+                                                <div className={Style.breadcrumbItem} key={index}>
+                                                    {breadcrumbItem.title}
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
                                 <ArticleUpsert
                                     oakAutoUnmount={true}
                                     oakId={selectedArticleId}
@@ -193,22 +219,23 @@ export default function render(
                     width={256}
                     placement="left"
                 >
-                    <Sider
+                    {/* <Sider
                         theme="light"
                         width={256}
                         className={Style.siderPanel}
+                    > */}
+                    <Menu
+                        className={Style.myMenu}
+                        openKeys={openKeys}
+                        selectedKeys={selectedKeys}
+                        style={{ width: 256 }}
+                        mode="inline"
                     >
-                        <Menu
-                            openKeys={openKeys}
-                            selectedKeys={selectedKeys}
-                            style={{ width: 256 }}
-                            mode="inline"
-                        >
-                            {renderMenuItems(treeData, () => {
-                                setOpen(false);
-                            })}
-                        </Menu>
-                    </Sider>
+                        {renderMenuItems(treeData, () => {
+                            setOpen(false);
+                        })}
+                    </Menu>
+                    {/* </Sider> */}
                 </Drawer>
             </div>
         );
@@ -220,13 +247,14 @@ export default function render(
                 <div className={Style.menu}>
                     <Sider
                         theme="light"
-                        width={275}
+                        width={336}
                         className={Style.siderPanel}
                     >
                         <Menu
+                            className={Style.myMenu}
                             openKeys={openKeys}
                             selectedKeys={selectedKeys}
-                            style={{ width: 256 }}
+                            style={{ width: 256, margin: '40px 30px' }}
                             mode="inline"
                         >
                             {renderMenuItems(treeData)}
@@ -236,15 +264,32 @@ export default function render(
                 <div
                     className={Style.editor}
                     style={{
-                        marginLeft: 300,
+                        marginLeft: 380,
                     }}
                 >
                     {selectedArticleId?.length > 0 ? (
                         <div>
-                            <Breadcrumb
-                                style={{ padding: '10px 10px' }}
+                            {/* <Breadcrumb
+                                style={{ padding: '40px 10px 10px 10px' }}
                                 items={breadcrumbItems}
-                            />
+                            /> */}
+                            <div style={{ padding: '40px 10px 10px 10px', display: 'flex', flexDirection: 'row', fontSize: '14px' }}>
+                                {
+                                    breadcrumbItems.length > 0 &&
+                                    breadcrumbItems.map((breadcrumbItem: any, index: number) => {
+                                        return index !== breadcrumbItems.length - 1 ? (
+                                            <div style={{ color: '#B2B2B2' }} key={index}>
+                                                {breadcrumbItem.title}
+                                                <span style={{ margin: '0 8px' }}>/</span>
+                                            </div>
+                                        ) : (
+                                            <div className={Style.breadcrumbItem} key={index}>
+                                                {breadcrumbItem.title}
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
                             <ArticleUpsert
                                 oakAutoUnmount={true}
                                 oakId={selectedArticleId}

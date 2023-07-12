@@ -6,7 +6,7 @@ import { EntityDict } from "../../../general-app-domain";
 import PageHeader from "../../../components/common/pageHeader";
 import ArticleDetail from '../../../components/article/detail';
 import ArticleMenuCell from '../../../components/articleMenu/cell';
-
+import { EyeOutlined } from '@ant-design/icons';
 
 interface DataNode {
     label: string;
@@ -32,6 +32,7 @@ export default function render(
             gotoArticleUpsert: (articleId: string) => void;
             gotoEdit: (id?: string) => void;
             loadArticles: (articleMenuId: string) => void;
+            gotoDoc: () => void;
         }
     >
 ) {
@@ -48,26 +49,26 @@ export default function render(
         gotoArticleUpsert,
         gotoEdit,
         loadArticles,
+        gotoDoc,
     } = props.methods;
-    const renderMenuItems = (data: any) => {
+    const renderMenuItems = (data: any, fontSize = 16, fontWeight = 800) => {
         return data?.map((menuItem: any) => {
             if (menuItem.children) {
                 return (
                     <Menu.SubMenu
-                        icon={
-                            menuItem.logo ? (
-                                <Image
-                                    height={26}
-                                    width={26}
-                                    src={menuItem.logo}
-                                    preview={false}
-                                />
-                            ) : null
-                        }
+                        style={{ background: '#ffffff', margin: '0px', borderRadius: '0px' }}
                         key={menuItem.key}
                         title={
-                            <div style={{ marginLeft: 8 }}>
-                                {menuItem.label}
+                            <div style={{ display: 'flex', marginLeft: 8, fontWeight: `${fontWeight}`, fontSize: `${fontSize}px`, flexDirection: 'row' }}>
+                                {menuItem.logo ? (
+                                    <Image
+                                        height={26}
+                                        width={26}
+                                        src={menuItem.logo}
+                                        preview={false}
+                                    />
+                                ) : null}
+                                <div style={{ marginLeft: 8 }}>{menuItem.label}</div>
                             </div>
                         }
                         onTitleClick={(e) => {
@@ -77,24 +78,33 @@ export default function render(
                             gotoUpsertById(e.key);
                         }}
                     >
-                        {renderMenuItems(menuItem.children)}
+                        {renderMenuItems(menuItem.children, fontSize - 2, fontWeight - 100)}
                     </Menu.SubMenu>
                 );
+            } else {
+                return (
+                    <Menu.Item
+                        key={menuItem.key}
+                        onClick={(e) => {
+                            if (menuItem.type === 'article') {
+                                gotoArticleUpsert(e.key);
+                            } else {
+                                gotoUpsertById(e.key);
+                            }
+                        }}
+                    >
+                        <span style={selectArticleId === menuItem.key ? { color: '#1677ff' } : undefined}>
+                            <div className={Style.articleItem}>
+                                <div className={Style.icon}>
+                                    {selectArticleId === menuItem.key ? <div className={Style.dot} /> : null}
+                                </div>
+                                <div className={Style.label} style={{ fontSize: `${fontSize}px` }}>{menuItem.label}</div>
+                            </div>
+                        </span>
+                    </Menu.Item>
+                );
             }
-            return (
-                <Menu.Item
-                    key={menuItem.key}
-                    onClick={(e) => {
-                        if (menuItem.type === 'article') {
-                            gotoArticleUpsert(e.key);
-                        } else {
-                            gotoUpsertById(e.key);
-                        }
-                    }}
-                >
-                    {menuItem.label}
-                </Menu.Item>
-            );
+
         });
     };
     return (
@@ -109,6 +119,14 @@ export default function render(
                     >
                         新增
                     </Button>
+                    <Button
+                        onClick={() => {
+                            gotoDoc();
+                        }}
+                    >
+                        <EyeOutlined/>
+                        查看
+                    </Button>
                 </Space>
                 {treeData?.length === 0 ? (
                     <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
@@ -117,6 +135,7 @@ export default function render(
                         <div className={Style.article}>
                             <div className={Style.menu}>
                                 <Menu
+                                    className={Style.myMenu}
                                     style={{ width: 256 }}
                                     mode="inline"
                                 >

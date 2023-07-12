@@ -29,7 +29,7 @@ export default function render(
 	const { name, parentId, parentName, oakFullpath } = data;
 
 	return (
-		<PageHeader showBack={true} title="添加文章分类">
+		<PageHeader showBack={true} title="添加分类">
 			<div
 				className={classNames(
 					CommonStyle.pageWithPadding,

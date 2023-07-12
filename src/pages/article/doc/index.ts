@@ -62,7 +62,6 @@ export default OakComponent({
     formData({ data: rows, props }) {
         const articleMenus: Partial<EntityDict['articleMenu']['Schema']>[] =
             this.getArticleMenus(props.articleMenuId);
-
         const treeData = articleMenus?.map((articleMenu) => {
             return {
                 label: articleMenu.name,

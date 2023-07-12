@@ -18,5 +18,6 @@ export default function render(props: WebComponentProps<EntityDict, 'articleMenu
     gotoArticleUpsert: (articleId: string) => void;
     gotoEdit: (id?: string) => void;
     loadArticles: (articleMenuId: string) => void;
+    gotoDoc: () => void;
 }>): import("react/jsx-runtime").JSX.Element;
 export {};

@@ -339,5 +339,8 @@ export default OakComponent({
             this.removeItem(id);
             await this.execute();
         },
+        gotoDoc() {
+            window.open('/article/doc')
+        },
     },
 });

@@ -49,3 +49,50 @@
      }
   }
 }
+
+.articleItem {
+    display: flex;
+    flex-direction: row;
+
+    .icon {
+        display: flex;
+        margin-right: 5px;
+        align-items: center; 
+        
+        .dot {
+            width: 4px;
+            height: 4px;
+            border-radius: 2px;
+            background: #1677ff;
+        }
+    }
+
+    .label {
+        display: flex;
+        align-items: center;
+    }
+}
+.myMenu {
+    :global {
+        .ant-menu-submenu-title {
+            display: flex;
+            flex-direction: row-reverse;
+            margin-block: 0;        
+        }
+        .ant-menu-submenu-arrow {
+           position: unset;
+        }
+        .ant-menu-submenu-title > .ant-menu-submenu-arrow::before {
+            transform: rotate(135deg) translateX(2.5px);
+        }
+        .ant-menu-submenu-arrow::after {
+            transform: rotate(45deg) translatex(-2.5px);
+        }
+        .ant-menu-submenu-open.ant-menu-submenu-inline>.ant-menu-submenu-title>.ant-menu-submenu-arrow::before {
+            transform: rotate(225deg) translatex(2.5px);
+        }
+        .ant-menu-submenu-open.ant-menu-submenu-inline>.ant-menu-submenu-title>.ant-menu-submenu-arrow::after {
+            transform: rotate(135deg) translatex(-2.5px);
+        }
+    }
+}
