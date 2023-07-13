@@ -11,6 +11,7 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { ROOT_ROLE_ID } from '../constants';
 import { tokenProjection } from '../types/projection';
+import { OakUserInfoLoadingException } from '../types/Exception';
 
 export class Token<
     ED extends EntityDict,
@@ -143,6 +144,10 @@ export class Token<
             )[0];
             if (!token) {
                 this.loadTokenInfo(); 
+                if (allowUnloggedIn) {
+                    return undefined;
+                }
+                throw new OakUserInfoLoadingException();
             }
             return token;
         }
