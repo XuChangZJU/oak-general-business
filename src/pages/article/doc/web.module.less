@@ -80,6 +80,26 @@
             .ant-menu-inline {
                 border: none !important;
             }
+            .ant-menu-light {
+                background: transparent !important;
+            }
+            .ant-menu-submenu {
+                background: transparent !important;
+            }
+    
+            .ant-menu-submenu-inline {
+                background: transparent !important;
+            }
+    
+            .ant-menu-submenu-open {
+                background: transparent !important;
+            }
+            .ant-menu-submenu-active {
+                background: transparent !important;
+            }
+            .ant-menu-inline {
+                background: transparent !important;
+            }
         }
     }
 }
@@ -117,12 +137,14 @@
 
 .myMenu {
     :global {
+
         .ant-layout-sider-children{
             .ant-menu-inline {
                 border-inline-end: 0px !important;
             }
+        
         }
-       
+      
         .ant-menu-submenu-title {
             display: flex !important;
             flex-direction: row-reverse !important;
@@ -132,7 +154,7 @@
             color: #000 !important;
         }
         .ant-menu-submenu-title:hover:not(.ant-menu-item-selected) {
-            background: #ffffff !important;
+            background: transparent !important;
         }
         .ant-menu-title-content:hover {
             color: #999 !important;

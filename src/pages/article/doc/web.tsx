@@ -84,7 +84,7 @@ export default function render(
             if (menuItem.children) {
                 return (
                     <Menu.SubMenu
-                        style={{ background: '#ffffff', margin: '0px', borderRadius: '0px' }}
+                        style={{ margin: 0, borderRadius: 0 }}
                         key={menuItem.key}
                         title={
                             <div style={{ display: 'flex', marginLeft: 8, fontWeight: `${fontWeight}`, fontSize: `${fontSize}px`, flexDirection: 'row' }}>
@@ -96,7 +96,7 @@ export default function render(
                                         preview={false}
                                     />
                                 ) : null}
-                                <div style={{marginLeft: 8}}>{menuItem.label}</div>
+                                <div style={{ marginLeft: 8 }}>{menuItem.label}</div>
                             </div>
                         }
                         onTitleClick={(e) => {
@@ -113,7 +113,7 @@ export default function render(
                 const isSelected = selectedKeys.includes(menuItem.key);
                 return (
                     <Menu.Item
-                        style={{ background: '#ffffff', margin: '0', width: '100%', borderRadius: '0px' }}
+                        style={{ margin: 0, width: '100%', borderRadius: 0 }}
                         key={menuItem.key}
                         onClick={(e) => {
                             if (menuItem.type === 'article') {
