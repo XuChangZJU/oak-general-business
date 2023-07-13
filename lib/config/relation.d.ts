@@ -1,11 +1,13 @@
 export declare const IgnoredForeignKeyMap: {
-    message: string[];
     system: string[];
+    messageSystem: string[];
+    notification: string[];
 };
 export declare const IgnoredRelationPathMap: {
     token: string[];
 };
 export declare const DeducedRelationMap: {
     extraFile: string;
+    message: string;
 };
 export declare const SelectFreeEntities: string[];
