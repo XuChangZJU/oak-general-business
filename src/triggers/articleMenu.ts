@@ -1,5 +1,5 @@
 import { EntityDict } from '../general-app-domain/EntityDict';
-import { Trigger } from 'oak-domain/lib/types';
+import { CreateTrigger, Trigger } from 'oak-domain/lib/types';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
@@ -17,12 +17,13 @@ const triggers: Trigger<
         entity: 'articleMenu',
         action: 'create',
         when: 'before',
-        fn: async (event: any, context: any) => {
+        fn: async (event, context) => {
             const {
                 operation: { data },
             } = event;
             assert(!(data instanceof Array)); // 不可能是成组创建
             if ((data as any).name) {
+                const { entity, entityId } = data;
                 const [articleMenu] = await context.select(
                     'articleMenu',
                     {
@@ -32,6 +33,8 @@ const triggers: Trigger<
                             parentId: 1,
                         },
                         filter: {
+                            entity,
+                            entityId,
                             name: (data as any).name,
                             parentId: (data as any).parentId
                                 ? (data as any).parentId
@@ -52,7 +55,7 @@ const triggers: Trigger<
             }
             return 0;
         },
-    },
+    } as CreateTrigger<EntityDict, 'articleMenu', RuntimeCxt>,
     {
         name: '在创建文章分类时，文章分类的父节点的【isLeaf】置为【true】',
         entity: 'articleMenu',
