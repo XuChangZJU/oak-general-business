@@ -80,7 +80,21 @@ export default OakComponent({
             treeData,
         };
     },
-    filters: [],
+    properties: {
+        entity: '',
+        entityId: '',
+    },
+    filters: [
+        {
+            filter() {
+                return {
+                    entity: this.props.entity,
+                    entityId: this.props.entityId,
+               } 
+            }, 
+            '#name': 'entityId',
+        }
+    ],
     lifetimes: {
     },
     data: {
