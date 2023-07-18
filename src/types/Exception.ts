@@ -95,6 +95,11 @@ export class OakMpHaveToSubscribeMessage extends Error {
     }
 }
 
+export class OakUserInfoLoadingException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
+    constructor(message?: string) {
+        super(message || '正在装载用户信息');
+    }
+};
 
 export function makeException<ED extends EntityDict & BaseEntityDict>(data: {
     name: string;
@@ -136,6 +141,11 @@ export function makeException<ED extends EntityDict & BaseEntityDict>(data: {
         }
         case 'OakUserInfoUncompletedException': {
             const e = new OakUserInfoUncompletedException(message);
+            e.setOpRecords(opRecords);
+            return e;
+        }
+        case 'OakUserInfoLoadingException': {
+            const e = new OakUserInfoLoadingException(message);
             e.setOpRecords(opRecords);
             return e;
         }

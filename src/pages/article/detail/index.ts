@@ -1,36 +1,58 @@
 
 
 export default OakComponent({
-    entity: 'article',
-    projection: {
-        id: 1,
-        iState: 1,
-        title: 1,
-        author: 1,
-        abstract: 1,
-        content: 1,
-        entity: 1,
-        entityId: 1,
-    },
-    isList: false,
-    formData: async function ({ data: article, features }) {
-        return {
-            id: article?.id,
-            iState: article?.iState,
-            title: article?.title,
-            abstract: article?.abstract,
-            author: article?.author,
-            content: article?.content,
-        };
-    },
-    listeners: {
-        content(prev, next) {
-            if (prev.content !== next.content) {
-                const ac = window.document.getElementById('article-content');
-                if (ac) {
-                    ac.innerHTML = next.content;
-                }
-            }
-        },
-    },
+	isList: false,
+	entity: 'article',
+	projection: {
+		id: 1,
+		name: 1,
+		content: 1,
+		articleMenu: {
+			id: 1,
+		}
+	},
+	formData: function ({ data: article, features }) {
+		return {
+			id: article?.id,
+			content: article?.content,
+			name: article?.name,
+			// entity: article?.entity,
+			// entityId: article?.entityId,
+		};
+	},
+	// listeners: {
+	//     content(prev, next) {
+	//       if(this.props.oakId) {
+
+	//       } else {
+	//         if (prev.content !== next.content) {
+	//           const ac = window.document.getElementById('article-content');
+	//           if (ac) {
+	//               ac.innerHTML = next.content;
+	//           }
+	//       }
+	//       }
+
+	//     },
+	// },
+	data: {
+		content: '',
+		title: '',
+		author: '',
+	},
+	lifetimes: {
+		// attached() {
+		// 	const data = this.load('article_html') || '{}';
+		// 	const data2 = typeof data === 'string' ? JSON.parse(data) : data;
+		// 	this.setState({
+		// 		content: data2?.content,
+		// 		title: data2?.title,
+		// 		author: data2?.author,
+		// 	});
+		// },
+		// detached() {
+		// 	this.save('article_html', '{}');
+		// },
+	},
+	methods: {},
 });

@@ -1,14 +1,10 @@
 import { String, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as ExtraFile } from './ExtraFile';
+import { Schema as ArticleMenu } from './ArticleMenu';
 export interface Schema extends EntityShape {
-    entity?: String<32>;
-    entityId?: String<64>;
-    title: String<128>;
-    author: String<32>;
-    abstract?: Text;
-    content?: Text;
-    url?: Text;
-    files: Array<ExtraFile>;
-    sign: String<32>;
+    name: String<32>;
+    content: Text;
+    articleMenu: ArticleMenu;
+    files?: Array<ExtraFile>;
 }
