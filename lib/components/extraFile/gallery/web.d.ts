@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { UploadFile } from "antd";
 import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from "../../../general-app-domain";
@@ -27,5 +28,5 @@ export default function render(props: WebComponentProps<EntityDict, "extraFile",
 }, {
     onPickByWeb: (files: UploadFile[], callback?: (file: any, status: string) => void) => void;
     onDeleteByWeb: (file: UploadFile) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;
 export {};

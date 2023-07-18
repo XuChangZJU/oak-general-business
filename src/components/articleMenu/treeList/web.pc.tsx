@@ -102,7 +102,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                                 <PlusOutlined />
                             }
                             onClick={
-                                () => createOne()
+                                () => createOne('齐圣晨的大坑')
                             }
                         >
                             {t('common:action.add')}

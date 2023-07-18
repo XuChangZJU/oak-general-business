@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 declare type DataProps = {
@@ -27,5 +28,5 @@ declare type MethodsProps = {
     onConfirm: (attr: string) => Promise<void>;
     refreshWechatPublicUserInfo: () => void;
 };
-export default function render(props: WebComponentProps<EntityDict, 'user', false, DataProps, MethodsProps>): import("react/jsx-runtime").JSX.Element;
+export default function render(props: WebComponentProps<EntityDict, 'user', false, DataProps, MethodsProps>): JSX.Element;
 export {};

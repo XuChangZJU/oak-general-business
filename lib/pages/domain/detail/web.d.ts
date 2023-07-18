@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 export default function Render(props: WebComponentProps<EntityDict, 'domain', false, {
@@ -11,4 +12,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'domain', fa
     system: EntityDict['system']['Schema'];
 }, {
     onTabClick: (key: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

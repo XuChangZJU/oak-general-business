@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../general-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'token', false, {
@@ -12,4 +13,4 @@ export default function render(props: WebComponentProps<EntityDict, 'token', fal
     sendCaptcha: (mobile: string) => Promise<void>;
     loginByMobileWeb: (mobile: string, loginAgreed: boolean, password?: string, captcha?: string, loginMode?: number) => Promise<void>;
     goPage: (destination: string) => Promise<void>;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

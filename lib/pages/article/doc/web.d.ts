@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from "../../../general-app-domain";
 interface DataNode {
@@ -27,5 +28,5 @@ export default function render(props: WebComponentProps<EntityDict, "articleMenu
         isArticle?: boolean;
         children?: DataNode[];
     };
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;
 export {};

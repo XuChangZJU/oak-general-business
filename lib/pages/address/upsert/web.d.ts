@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'address', false, {
@@ -9,4 +10,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'address', f
 }, {
     callAreaPicker: () => void;
     confirm: () => Promise<void>;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

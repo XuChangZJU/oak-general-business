@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import './index.less';
-declare const Empty: () => import("react/jsx-runtime").JSX.Element;
+declare const Empty: () => JSX.Element;
 export default Empty;

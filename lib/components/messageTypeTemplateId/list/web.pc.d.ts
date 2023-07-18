@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from '../../../general-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'messageTypeTemplateId', true, {
@@ -5,4 +6,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'messageType
     dirtyIds: string[];
     messageTypes: string[];
     applicationId: string;
-}, {}>): import("react/jsx-runtime").JSX.Element;
+}, {}>): JSX.Element;

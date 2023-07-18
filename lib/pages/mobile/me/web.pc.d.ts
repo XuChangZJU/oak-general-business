@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'mobile', true, {
@@ -6,4 +7,4 @@ export default function render(props: WebComponentProps<EntityDict, 'mobile', tr
     showBack: boolean;
 }, {
     goAddMobile: () => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

@@ -15,5 +15,5 @@ declare type GridProps = {
     list: Array<Item>;
     onChange?: (index: number, event?: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
-declare const _default: React.MemoExoticComponent<(props: GridProps) => import("react/jsx-runtime").JSX.Element>;
+declare const _default: React.MemoExoticComponent<(props: GridProps) => JSX.Element>;
 export default _default;
