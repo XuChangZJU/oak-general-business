@@ -1,7 +1,6 @@
 import { String, Boolean, Text, Datetime, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import { QrCodeType } from "../../types/Config";
@@ -60,12 +59,12 @@ export declare type Schema = EntityShape & {
 } & {
     [A in ExpressionKey]?: any;
 };
-declare type AttrFilter<E> = {
-    id: Q_StringValue | SubQuery.WechatQrCodeIdSubQuery;
+declare type AttrFilter = {
+    id: Q_StringValue;
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    entity: E;
+    entity: Q_EnumValue<"user" | "userEntityGrant" | "wechatLogin" | string>;
     entityId: Q_StringValue;
     type: Q_EnumValue<QrCodeType>;
     allowShare: Q_BooleanValue;
@@ -77,14 +76,16 @@ declare type AttrFilter<E> = {
     url: Q_StringValue;
     permanent: Q_BooleanValue;
     buffer: Q_StringValue;
-    applicationId: Q_StringValue | SubQuery.ApplicationIdSubQuery;
+    applicationId: Q_StringValue;
     application: Application.Filter;
     props: JsonFilter<WechatQrCodeProps>;
     user: User.Filter;
     userEntityGrant: UserEntityGrant.Filter;
     wechatLogin: WechatLogin.Filter;
+    modiEntity$entity: ModiEntity.Filter;
+    operEntity$entity: OperEntity.Filter;
 };
-export declare type Filter<E = Q_EnumValue<"user" | "userEntityGrant" | "wechatLogin" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
+export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -191,7 +192,7 @@ export declare type SortNode = {
 };
 export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
-export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
+export declare type Selection<P extends Object = Projection> = SelectOperation<P>;
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "applicationId">> & (({
     applicationId?: never;

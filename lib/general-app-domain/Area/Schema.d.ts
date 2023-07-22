@@ -1,7 +1,6 @@
 import { String, ForeignKey, Geo } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { ReadOnlyAction } from "oak-domain/lib/actions/action";
 import * as Address from "../Address/Schema";
@@ -36,16 +35,20 @@ export declare type Schema = EntityShape & {
     [A in ExpressionKey]?: any;
 };
 declare type AttrFilter = {
-    id: Q_StringValue | SubQuery.AreaIdSubQuery;
+    id: Q_StringValue;
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     name: Q_StringValue;
     level: Q_EnumValue<'province' | 'city' | 'district' | 'street' | 'country'>;
     depth: Q_EnumValue<0 | 1 | 2 | 3 | 4>;
-    parentId: Q_StringValue | SubQuery.AreaIdSubQuery;
+    parentId: Q_StringValue;
     parent: Filter;
     code: Q_StringValue;
+    address$area: Address.Filter;
+    area$parent: Filter;
+    station$area: Station.Filter;
+    subway$area: Subway.Filter;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -122,14 +125,14 @@ export declare type SortNode = {
 };
 export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
-export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
+export declare type Selection<P extends Object = Projection> = SelectOperation<P>;
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "parentId">> & ({
     parentId?: String<64>;
 }) & {
-    address$area?: OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "area" | "areaId">, Address.Filter> | OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId">> | OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "area" | "areaId">, Address.Filter>>;
-    station$area?: OakOperation<Station.UpdateOperation["action"], Omit<Station.UpdateOperationData, "area" | "areaId">, Station.Filter> | OakOperation<"create", Omit<Station.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Station.CreateOperationData, "area" | "areaId">> | OakOperation<Station.UpdateOperation["action"], Omit<Station.UpdateOperationData, "area" | "areaId">, Station.Filter>>;
-    subway$area?: OakOperation<Subway.UpdateOperation["action"], Omit<Subway.UpdateOperationData, "area" | "areaId">, Subway.Filter> | OakOperation<"create", Omit<Subway.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Subway.CreateOperationData, "area" | "areaId">> | OakOperation<Subway.UpdateOperation["action"], Omit<Subway.UpdateOperationData, "area" | "areaId">, Subway.Filter>>;
+    address$area?: OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "area" | "areaId">, Omit<Address.Filter, "area" | "areaId">> | OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId">> | OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "area" | "areaId">, Omit<Address.Filter, "area" | "areaId">>>;
+    station$area?: OakOperation<Station.UpdateOperation["action"], Omit<Station.UpdateOperationData, "area" | "areaId">, Omit<Station.Filter, "area" | "areaId">> | OakOperation<"create", Omit<Station.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Station.CreateOperationData, "area" | "areaId">> | OakOperation<Station.UpdateOperation["action"], Omit<Station.UpdateOperationData, "area" | "areaId">, Omit<Station.Filter, "area" | "areaId">>>;
+    subway$area?: OakOperation<Subway.UpdateOperation["action"], Omit<Subway.UpdateOperationData, "area" | "areaId">, Omit<Subway.Filter, "area" | "areaId">> | OakOperation<"create", Omit<Subway.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Subway.CreateOperationData, "area" | "areaId">> | OakOperation<Subway.UpdateOperation["action"], Omit<Subway.UpdateOperationData, "area" | "areaId">, Omit<Subway.Filter, "area" | "areaId">>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -139,9 +142,9 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "parentI
     parentId?: String<64> | null;
 }) & {
     [k: string]: any;
-    address$area?: Address.UpdateOperation | Address.RemoveOperation | OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId">> | Address.UpdateOperation | Address.RemoveOperation>;
-    station$area?: Station.UpdateOperation | Station.RemoveOperation | OakOperation<"create", Omit<Station.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Station.CreateOperationData, "area" | "areaId">> | Station.UpdateOperation | Station.RemoveOperation>;
-    subway$area?: Subway.UpdateOperation | Subway.RemoveOperation | OakOperation<"create", Omit<Subway.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Subway.CreateOperationData, "area" | "areaId">> | Subway.UpdateOperation | Subway.RemoveOperation>;
+    address$area?: OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "area" | "areaId">, Omit<Address.Filter, "area" | "areaId">> | OakOperation<Address.RemoveOperation["action"], Omit<Address.RemoveOperationData, "area" | "areaId">, Omit<Address.Filter, "area" | "areaId">> | OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId">> | OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "area" | "areaId">, Omit<Address.Filter, "area" | "areaId">> | OakOperation<Address.RemoveOperation["action"], Omit<Address.RemoveOperationData, "area" | "areaId">, Omit<Address.Filter, "area" | "areaId">>>;
+    station$area?: OakOperation<Station.UpdateOperation["action"], Omit<Station.UpdateOperationData, "area" | "areaId">, Omit<Station.Filter, "area" | "areaId">> | OakOperation<Station.RemoveOperation["action"], Omit<Station.RemoveOperationData, "area" | "areaId">, Omit<Station.Filter, "area" | "areaId">> | OakOperation<"create", Omit<Station.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Station.CreateOperationData, "area" | "areaId">> | OakOperation<Station.UpdateOperation["action"], Omit<Station.UpdateOperationData, "area" | "areaId">, Omit<Station.Filter, "area" | "areaId">> | OakOperation<Station.RemoveOperation["action"], Omit<Station.RemoveOperationData, "area" | "areaId">, Omit<Station.Filter, "area" | "areaId">>>;
+    subway$area?: OakOperation<Subway.UpdateOperation["action"], Omit<Subway.UpdateOperationData, "area" | "areaId">, Omit<Subway.Filter, "area" | "areaId">> | OakOperation<Subway.RemoveOperation["action"], Omit<Subway.RemoveOperationData, "area" | "areaId">, Omit<Subway.Filter, "area" | "areaId">> | OakOperation<"create", Omit<Subway.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Subway.CreateOperationData, "area" | "areaId">> | OakOperation<Subway.UpdateOperation["action"], Omit<Subway.UpdateOperationData, "area" | "areaId">, Omit<Subway.Filter, "area" | "areaId">> | OakOperation<Subway.RemoveOperation["action"], Omit<Subway.RemoveOperationData, "area" | "areaId">, Omit<Subway.Filter, "area" | "areaId">>>;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {};

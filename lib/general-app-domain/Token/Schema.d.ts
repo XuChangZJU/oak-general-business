@@ -1,7 +1,6 @@
 import { String, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { AbleState } from 'oak-domain/lib/actions/action';
 import { Action, ParticularAction } from "./Action";
@@ -74,18 +73,18 @@ export declare type Schema = EntityShape & {
 } & {
     [A in ExpressionKey]?: any;
 };
-declare type AttrFilter<E> = {
-    id: Q_StringValue | SubQuery.TokenIdSubQuery;
+declare type AttrFilter = {
+    id: Q_StringValue;
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    applicationId: Q_StringValue | SubQuery.ApplicationIdSubQuery;
+    applicationId: Q_StringValue;
     application: Application.Filter;
-    entity: E;
+    entity: Q_EnumValue<"email" | "mobile" | "wechatUser" | string>;
     entityId: Q_StringValue;
-    userId: Q_StringValue | SubQuery.UserIdSubQuery;
+    userId: Q_StringValue;
     user: User.Filter;
-    playerId: Q_StringValue | SubQuery.UserIdSubQuery;
+    playerId: Q_StringValue;
     player: User.Filter;
     env: JsonFilter<Environment>;
     ableState: Q_EnumValue<AbleState>;
@@ -93,7 +92,7 @@ declare type AttrFilter<E> = {
     mobile: Mobile.Filter;
     wechatUser: WechatUser.Filter;
 };
-export declare type Filter<E = Q_EnumValue<"email" | "mobile" | "wechatUser" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
+export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -177,7 +176,7 @@ export declare type SortNode = {
 };
 export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
-export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
+export declare type Selection<P extends Object = Projection> = SelectOperation<P>;
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "applicationId" | "userId" | "playerId">> & (({
     applicationId?: never;

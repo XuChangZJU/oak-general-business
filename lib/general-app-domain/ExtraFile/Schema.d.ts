@@ -1,7 +1,6 @@
 import { String, Int, Float, Boolean, Text } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as Article from "../Article/Schema";
@@ -49,8 +48,8 @@ export declare type Schema = EntityShape & {
 } & {
     [A in ExpressionKey]?: any;
 };
-declare type AttrFilter<E> = {
-    id: Q_StringValue | SubQuery.ExtraFileIdSubQuery;
+declare type AttrFilter = {
+    id: Q_StringValue;
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
@@ -62,7 +61,7 @@ declare type AttrFilter<E> = {
     tag2: Q_StringValue;
     filename: Q_StringValue;
     md5: Q_StringValue;
-    entity: E;
+    entity: Q_EnumValue<"article" | "articleMenu" | "user" | string>;
     entityId: Q_StringValue;
     extra1: Q_StringValue;
     extension: Q_StringValue;
@@ -74,7 +73,7 @@ declare type AttrFilter<E> = {
     articleMenu: ArticleMenu.Filter;
     user: User.Filter;
 };
-export declare type Filter<E = Q_EnumValue<"article" | "articleMenu" | "user" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
+export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -169,7 +168,7 @@ export declare type SortNode = {
 };
 export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
-export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
+export declare type Selection<P extends Object = Projection> = SelectOperation<P>;
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
     entity?: never;

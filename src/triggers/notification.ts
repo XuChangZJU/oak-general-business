@@ -118,15 +118,9 @@ async function sendNotification(notification: CreateNotificationData, context: B
                         port: 1,
                     },
                     filter: {
-                        systemId: {
-                            $in: {
-                                entity: 'application',
-                                data: {
-                                    systemId: 1,
-                                },
-                                filter: {
-                                    id: applicationId,
-                                },
+                        system: {
+                            application$system: {
+                                id: applicationId,
                             },
                         },
                     },
@@ -333,7 +327,12 @@ const triggers: Trigger<EntityDict, 'notification', BackendRuntimeContext<Entity
                     },
                 },
                 filter: {
-                    id: {
+                    messageSystem$message: {
+                        notification$messageSystem: {
+                            id: filter!.id,
+                        }
+                    },
+                    /* id: {
                         $in: {
                             entity: 'messageSystem',
                             data: {
@@ -353,7 +352,7 @@ const triggers: Trigger<EntityDict, 'notification', BackendRuntimeContext<Entity
                                 }
                             }
                         }
-                    }
+                    } */
                 }
             }, { dontCollect: true });
             assert(messages.length === 1);

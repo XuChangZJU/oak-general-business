@@ -11,20 +11,10 @@ export default OakComponent({
     filters: [
         {
             filter() {
-                const token = this.features.token.getToken();
+                // const token = this.features.token.getToken();
+                const userId = this.features.token.getUserId();
                 return {
-                    userId: {
-                        $in: {
-                            entity: 'token',
-                            data: {
-                                userId: 1,
-                            },
-                            filter: {
-                                id: token?.id,
-                                ableState: 'enabled',
-                            },
-                        },
-                    },
+                    userId,
                 };
             },
         },

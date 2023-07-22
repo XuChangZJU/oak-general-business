@@ -1,7 +1,6 @@
 import { String } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
 import * as ModiEntity from "../ModiEntity/Schema";
@@ -31,7 +30,7 @@ export declare type Schema = EntityShape & {
     [A in ExpressionKey]?: any;
 };
 declare type AttrFilter = {
-    id: Q_StringValue | SubQuery.ModiIdSubQuery;
+    id: Q_StringValue;
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
@@ -43,6 +42,7 @@ declare type AttrFilter = {
     filter: Object;
     extra: Object;
     iState: Q_EnumValue<IState>;
+    modiEntity$modi: ModiEntity.Filter;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -97,7 +97,7 @@ export declare type SortNode = {
 };
 export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
-export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
+export declare type Selection<P extends Object = Projection> = SelectOperation<P>;
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
     entity?: string;

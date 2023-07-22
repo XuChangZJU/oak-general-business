@@ -1,7 +1,6 @@
 import { String, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as Message from "../Message/Schema";
@@ -23,14 +22,15 @@ export declare type Schema = EntityShape & {
     [A in ExpressionKey]?: any;
 };
 declare type AttrFilter = {
-    id: Q_StringValue | SubQuery.MessageSystemIdSubQuery;
+    id: Q_StringValue;
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    messageId: Q_StringValue | SubQuery.MessageIdSubQuery;
+    messageId: Q_StringValue;
     message: Message.Filter;
-    systemId: Q_StringValue | SubQuery.SystemIdSubQuery;
+    systemId: Q_StringValue;
     system: System.Filter;
+    notification$messageSystem: Notification.Filter;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -85,7 +85,7 @@ export declare type SortNode = {
 };
 export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
-export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
+export declare type Selection<P extends Object = Projection> = SelectOperation<P>;
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "messageId" | "systemId">> & (({
     messageId?: never;
@@ -104,7 +104,7 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "message
 } | {
     systemId: String<64>;
 })) & {
-    notification$messageSystem?: OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Notification.Filter> | OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">[]> | Array<OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">> | OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Notification.Filter>>;
+    notification$messageSystem?: OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">> | OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">[]> | Array<OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">> | OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -135,7 +135,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "message
     systemId?: String<64> | null;
 })) & {
     [k: string]: any;
-    notification$messageSystem?: Notification.UpdateOperation | Notification.RemoveOperation | OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">[]> | Array<OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">> | Notification.UpdateOperation | Notification.RemoveOperation>;
+    notification$messageSystem?: OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">> | OakOperation<Notification.RemoveOperation["action"], Omit<Notification.RemoveOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">> | OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">[]> | Array<OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">> | OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">> | OakOperation<Notification.RemoveOperation["action"], Omit<Notification.RemoveOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">>>;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({

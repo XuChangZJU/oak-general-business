@@ -19,27 +19,15 @@ export default OakComponent({
             entityId,
         };
         if (!isRoot) {
-            userRelationFilter.relationId = {
-                $in: {
-                    entity: 'relationAuth',
-                    data: {
-                        destRelationId: 1,
-                    },
-                    filter: {
-                        sourceRelationId: {
-                            $in: {
-                                entity: 'userRelation',
-                                data: {
-                                    relationId: 1,
-                                },
-                                filter: {
-                                    userId,
-                                },
-                            },
+            userRelationFilter.relation = {
+                relationAuth$destRelation: {
+                    sourceRelation: {
+                        userRelation$relation: {
+                            userId,
                         },
                     },
-                },
-            };
+                }
+            }
         }
         return {
             id: 1,
@@ -102,7 +90,16 @@ export default OakComponent({
                     entityId,
                 };
                 if (!isRoot) {
-                    filter.relationId = {
+                    filter.relation = {
+                        relationAuth$destRelation: {
+                            sourceRelation: {
+                                userRelation$relation: {
+                                    userId,
+                                }
+                            }
+                        }
+                    };
+                    /* filter.relationId = {
                         $in: {
                             entity: 'relationAuth',
                             data: {
@@ -122,10 +119,11 @@ export default OakComponent({
                                 },
                             },
                         },
-                    };
+                    }; */
                 }
                 return {
-                    id: {
+                    userRelation$user: filter,
+                    /* id: {
                         $in: {
                             entity: 'userRelation',
                             data: {
@@ -133,7 +131,7 @@ export default OakComponent({
                             },
                             filter,
                         },
-                    },
+                    }, */
                 };
             },
         },

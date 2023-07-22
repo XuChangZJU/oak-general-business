@@ -13,17 +13,9 @@ const checkers: Checker<EntityDict, 'message', RuntimeCxt> [] = [
         checker: (operation, context) => {
             const systemId = context.getSystemId();
             const filter: EntityDict['message']['Selection']['filter'] = {
-                id: {
-                    $in: {
-                        entity: 'messageSystem',
-                        data: {
-                            messageId: 1,
-                        },
-                        filter: {
-                            systemId,
-                        },
-                    },
-                },
+                messageSystem$message: {
+                    systemId,
+                }
             };
             operation.filter = operation.filter ? combineFilters([operation.filter, filter]): filter;
         },

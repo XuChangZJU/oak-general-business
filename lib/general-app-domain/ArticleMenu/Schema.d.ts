@@ -1,7 +1,6 @@
 import { String, Boolean, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import * as Article from "../Article/Schema";
@@ -33,17 +32,20 @@ export declare type Schema = EntityShape & {
     [A in ExpressionKey]?: any;
 };
 declare type AttrFilter = {
-    id: Q_StringValue | SubQuery.ArticleMenuIdSubQuery;
+    id: Q_StringValue;
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     name: Q_StringValue;
     isArticle: Q_BooleanValue;
-    parentId: Q_StringValue | SubQuery.ArticleMenuIdSubQuery;
+    parentId: Q_StringValue;
     parent: Filter;
     isLeaf: Q_BooleanValue;
     entity: Q_StringValue;
     entityId: Q_StringValue;
+    article$articleMenu: Article.Filter;
+    articleMenu$parent: Filter;
+    extraFile$entity: ExtraFile.Filter;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -114,7 +116,7 @@ export declare type SortNode = {
 };
 export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
-export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
+export declare type Selection<P extends Object = Projection> = SelectOperation<P>;
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "parentId">> & (({
     parentId?: never;
@@ -129,9 +131,9 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     entityId?: string;
     [K: string]: any;
 }) & {
-    article$articleMenu?: OakOperation<Article.UpdateOperation["action"], Omit<Article.UpdateOperationData, "articleMenu" | "articleMenuId">, Article.Filter> | OakOperation<"create", Omit<Article.CreateOperationData, "articleMenu" | "articleMenuId">[]> | Array<OakOperation<"create", Omit<Article.CreateOperationData, "articleMenu" | "articleMenuId">> | OakOperation<Article.UpdateOperation["action"], Omit<Article.UpdateOperationData, "articleMenu" | "articleMenuId">, Article.Filter>>;
-    articleMenu$parent?: OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "parent" | "parentId">, Filter> | OakOperation<"create", Omit<CreateOperationData, "parent" | "parentId">[]> | Array<OakOperation<"create", Omit<CreateOperationData, "parent" | "parentId">> | OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "parent" | "parentId">, Filter>>;
-    extraFile$entity?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, ExtraFile.Filter> | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, ExtraFile.Filter>>;
+    article$articleMenu?: OakOperation<Article.UpdateOperation["action"], Omit<Article.UpdateOperationData, "articleMenu" | "articleMenuId">, Omit<Article.Filter, "articleMenu" | "articleMenuId">> | OakOperation<"create", Omit<Article.CreateOperationData, "articleMenu" | "articleMenuId">[]> | Array<OakOperation<"create", Omit<Article.CreateOperationData, "articleMenu" | "articleMenuId">> | OakOperation<Article.UpdateOperation["action"], Omit<Article.UpdateOperationData, "articleMenu" | "articleMenuId">, Omit<Article.Filter, "articleMenu" | "articleMenuId">>>;
+    articleMenu$parent?: OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "parent" | "parentId">, Omit<Filter, "parent" | "parentId">> | OakOperation<"create", Omit<CreateOperationData, "parent" | "parentId">[]> | Array<OakOperation<"create", Omit<CreateOperationData, "parent" | "parentId">> | OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "parent" | "parentId">, Omit<Filter, "parent" | "parentId">>>;
+    extraFile$entity?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -150,9 +152,9 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "parentI
     parentId?: String<64> | null;
 })) & {
     [k: string]: any;
-    article$articleMenu?: Article.UpdateOperation | Article.RemoveOperation | OakOperation<"create", Omit<Article.CreateOperationData, "articleMenu" | "articleMenuId">[]> | Array<OakOperation<"create", Omit<Article.CreateOperationData, "articleMenu" | "articleMenuId">> | Article.UpdateOperation | Article.RemoveOperation>;
-    articleMenu$parent?: UpdateOperation | RemoveOperation | OakOperation<"create", Omit<CreateOperationData, "parent" | "parentId">[]> | Array<OakOperation<"create", Omit<CreateOperationData, "parent" | "parentId">> | UpdateOperation | RemoveOperation>;
-    extraFile$entity?: ExtraFile.UpdateOperation | ExtraFile.RemoveOperation | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | ExtraFile.UpdateOperation | ExtraFile.RemoveOperation>;
+    article$articleMenu?: OakOperation<Article.UpdateOperation["action"], Omit<Article.UpdateOperationData, "articleMenu" | "articleMenuId">, Omit<Article.Filter, "articleMenu" | "articleMenuId">> | OakOperation<Article.RemoveOperation["action"], Omit<Article.RemoveOperationData, "articleMenu" | "articleMenuId">, Omit<Article.Filter, "articleMenu" | "articleMenuId">> | OakOperation<"create", Omit<Article.CreateOperationData, "articleMenu" | "articleMenuId">[]> | Array<OakOperation<"create", Omit<Article.CreateOperationData, "articleMenu" | "articleMenuId">> | OakOperation<Article.UpdateOperation["action"], Omit<Article.UpdateOperationData, "articleMenu" | "articleMenuId">, Omit<Article.Filter, "articleMenu" | "articleMenuId">> | OakOperation<Article.RemoveOperation["action"], Omit<Article.RemoveOperationData, "articleMenu" | "articleMenuId">, Omit<Article.Filter, "articleMenu" | "articleMenuId">>>;
+    articleMenu$parent?: OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "parent" | "parentId">, Omit<Filter, "parent" | "parentId">> | OakOperation<RemoveOperation["action"], Omit<RemoveOperationData, "parent" | "parentId">, Omit<Filter, "parent" | "parentId">> | OakOperation<"create", Omit<CreateOperationData, "parent" | "parentId">[]> | Array<OakOperation<"create", Omit<CreateOperationData, "parent" | "parentId">> | OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "parent" | "parentId">, Omit<Filter, "parent" | "parentId">> | OakOperation<RemoveOperation["action"], Omit<RemoveOperationData, "parent" | "parentId">, Omit<Filter, "parent" | "parentId">>>;
+    extraFile$entity?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">> | OakOperation<ExtraFile.RemoveOperation["action"], Omit<ExtraFile.RemoveOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">> | OakOperation<ExtraFile.RemoveOperation["action"], Omit<ExtraFile.RemoveOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">>>;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export declare type RemoveOperationData = {} & (({

@@ -3,6 +3,7 @@ import { area } from "./area";
 import { subway } from "./subway";
 import { station } from "./station";
 import { subwayStation } from "./subwayStation";
+import { actionAuth } from './actionAuth';
 
 export default {
   user: users,
@@ -12,4 +13,5 @@ export default {
   subway,
   station,
   subwayStation,
+  actionAuth,
 };

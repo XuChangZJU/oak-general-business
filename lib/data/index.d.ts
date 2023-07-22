@@ -28,5 +28,6 @@ declare const _default: {
     subway: import("../general-app-domain/Subway/Schema").CreateOperationData[];
     station: import("../general-app-domain/Station/Schema").CreateOperationData[];
     subwayStation: import("../general-app-domain/SubwayStation/Schema").CreateOperationData[];
+    actionAuth: import("../general-app-domain/ActionAuth/Schema").CreateOperationData[];
 };
 export default _default;

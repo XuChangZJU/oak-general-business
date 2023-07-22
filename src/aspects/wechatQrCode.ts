@@ -49,17 +49,9 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
                 },
             },
             filter: {
-                id: {
-                    $in: {
-                        entity: 'application',
-                        data: {
-                            systemId: 1,
-                        },
-                        filter: {
-                            id: applicationId,
-                        },
-                    },
-                },
+                application$system: {
+                    id: applicationId,
+                }
             },
         },
         {

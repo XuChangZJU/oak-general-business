@@ -38,17 +38,7 @@ const checkers: Checker<EntityDict, 'user', RuntimeCxt> [] = [
         action: 'disable',
         entity: 'user',
         filter: {
-            id: {
-                $nin: {
-                    entity: 'userRole',
-                    data: {
-                        userId: 1,
-                    },
-                    filter: {
-                        roleId: ROOT_ROLE_ID,
-                    },
-                },
-            }
+            isRoot: false,
         },
         errMsg: '不能禁用root用户',
     },

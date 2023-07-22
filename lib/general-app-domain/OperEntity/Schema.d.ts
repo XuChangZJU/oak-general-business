@@ -1,7 +1,6 @@
 import { String, ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import * as SubQuery from "../_SubQuery";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { AppendOnlyAction } from "oak-domain/lib/actions/action";
 import * as Oper from "../Oper/Schema";
@@ -35,14 +34,14 @@ export declare type Schema = EntityShape & {
 } & {
     [A in ExpressionKey]?: any;
 };
-declare type AttrFilter<E> = {
-    id: Q_StringValue | SubQuery.OperEntityIdSubQuery;
+declare type AttrFilter = {
+    id: Q_StringValue;
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    operId: Q_StringValue | SubQuery.OperIdSubQuery;
+    operId: Q_StringValue;
     oper: Oper.Filter;
-    entity: E;
+    entity: Q_EnumValue<"user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatLogin" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string>;
     entityId: Q_StringValue;
     user: User.Filter;
     userEntityGrant: UserEntityGrant.Filter;
@@ -53,7 +52,7 @@ declare type AttrFilter<E> = {
     wechatQrCode: WechatQrCode.Filter;
     wechatUser: WechatUser.Filter;
 };
-export declare type Filter<E = Q_EnumValue<"user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatLogin" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string>> = MakeFilter<AttrFilter<E> & ExprOp<OpAttr | string>>;
+export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
@@ -145,7 +144,7 @@ export declare type SortNode = {
 };
 export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
-export declare type Selection<P extends Object = Projection> = Omit<SelectOperation<P>, "action">;
+export declare type Selection<P extends Object = Projection> = SelectOperation<P>;
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "operId">> & (({
     operId?: never;

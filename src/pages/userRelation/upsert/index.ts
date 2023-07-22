@@ -39,24 +39,10 @@ export default OakComponent({
                 };
                 if (!isRoot) {
                     const userId = this.features.token.getUserId();
-                    filter.id = {
-                        $in: {
-                            entity: 'relationAuth',
-                            data: {
-                                destRelationId: 1,
-                            },
-                            filter: {
-                                sourceRelationId: {
-                                    $in: {
-                                        entity: 'userRelation',
-                                        data: {
-                                            relationId: 1,
-                                        },
-                                        filter: {
-                                            userId,
-                                        },
-                                    },
-                                },
+                    filter.relationAuth$destRelation = {
+                        sourceRelation: {
+                            userRelation$relation: {
+                                userId,
                             },
                         },
                     };

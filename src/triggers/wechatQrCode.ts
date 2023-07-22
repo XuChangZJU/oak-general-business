@@ -38,17 +38,9 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeCxt>[] = [
                         },
                     },
                     filter: {
-                        id: {
-                            $in: {
-                                entity: 'application',
-                                data: {
-                                    systemId: 1,
-                                },
-                                filter: {
-                                    id: applicationId,
-                                },
-                            },
-                        },
+                        application$system: {
+                            id: applicationId,
+                        }
                     },
                 },
                 {

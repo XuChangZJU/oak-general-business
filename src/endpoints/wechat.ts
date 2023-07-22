@@ -337,15 +337,9 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                                     port: 1,
                                 },
                                 filter: {
-                                    systemId: {
-                                        $in: {
-                                            entity: 'application',
-                                            data: {
-                                                systemId: 1,
-                                            },
-                                            filter: {
-                                                id: applicationId,
-                                            },
+                                    system: {
+                                        application$system: {
+                                            id: applicationId,
                                         },
                                     },
                                 },
@@ -419,17 +413,11 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                                     port: 1,
                                 },
                                 filter: {
-                                    systemId: {
-                                        $in: {
-                                            entity: 'application',
-                                            data: {
-                                                systemId: 1,
-                                            },
-                                            filter: {
-                                                id: applicationId,
-                                            },
-                                        },
-                                    },
+                                    system: {
+                                        application$system: {
+                                            id: applicationId,
+                                        }
+                                    }
                                 },
                             },
                             { dontCollect: true }

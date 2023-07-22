@@ -18,17 +18,9 @@ export default OakComponent(
         filters: [
             {
                 filter: {
-                    id: {
-                        $in: {
-                            entity: 'mobile',
-                            data: {
-                                userId: 1,
-                            },
-                            filter: {
-                                mobile: {
-                                    $eq: '11111111112',
-                                }
-                            }
+                    mobile$user: {
+                        mobile: {
+                            $eq: '11111111112',
                         }
                     }
                 },
@@ -100,17 +92,9 @@ export default OakComponent(
                                 },
                             },
                             {
-                                id: {
-                                    $in: {
-                                        entity: 'mobile',
-                                        data: {
-                                            userId: 1,
-                                        },
-                                        filter: {
-                                            mobile: {
-                                                $includes: value!,
-                                            }
-                                        }
+                                mobile$user: {
+                                    mobile: {
+                                        $includes: value!,
                                     }
                                 }
                             }

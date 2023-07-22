@@ -12,13 +12,7 @@ export default OakComponent({
                     level: 1,
                 },
                 filter: {
-                    id: {
-                        $in: {
-                            entity: 'subway',
-                            data: {
-                                areaId: 1,
-                            },
-                        },
+                    subway$area: {
                     },
                     level: 'city',
                 },

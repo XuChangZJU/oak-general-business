@@ -32,24 +32,16 @@ export async function getApplication<
             filter: {
                 type,
                 system: {
-                    id: {
-                        $in: {
-                            entity: 'domain',
-                            data: {
-                                systemId: 1,
-                            },
-                            filter: {
-                                url: domain,
-                            },
-                        },
-                    },
+                    domain$system: {
+                        url: domain,
+                    }
                 },
             },
         },
         {}
     );
 
-        //微信小程序环境下 没有就报错
+    //微信小程序环境下 没有就报错
     if (type === 'wechatMp') {
         assert(
             application,
@@ -67,17 +59,9 @@ export async function getApplication<
                         filter: {
                             type: 'web',
                             system: {
-                                id: {
-                                    $in: {
-                                        entity: 'domain',
-                                        data: {
-                                            systemId: 1,
-                                        },
-                                        filter: {
-                                            url: domain,
-                                        },
-                                    },
-                                },
+                                domain$system: {
+                                    url: domain,
+                                }
                             },
                         },
                     },
