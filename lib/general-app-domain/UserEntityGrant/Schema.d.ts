@@ -1,5 +1,5 @@
 import { String, Int, Boolean, Text, Datetime, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction } from "./Action";
@@ -78,9 +78,9 @@ declare type AttrFilter = {
     expiresAt: Q_DateValue;
     expired: Q_BooleanValue;
     redirectTo: JsonFilter<RedirectToProps>;
-    modiEntity$entity: ModiEntity.Filter;
-    operEntity$entity: OperEntity.Filter;
-    wechatQrCode$entity: WechatQrCode.Filter;
+    modiEntity$entity: ModiEntity.Filter & SubQueryPredicateMetadata;
+    operEntity$entity: OperEntity.Filter & SubQueryPredicateMetadata;
+    wechatQrCode$entity: WechatQrCode.Filter & SubQueryPredicateMetadata;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {

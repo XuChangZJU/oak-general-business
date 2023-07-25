@@ -1,5 +1,5 @@
 import { String, Text, JsonProjection } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
@@ -38,7 +38,7 @@ declare type AttrFilter = {
     style: JsonFilter<Style>;
     entity: Q_StringValue;
     entityId: Q_StringValue;
-    system$platform: System.Filter;
+    system$platform: System.Filter & SubQueryPredicateMetadata;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {

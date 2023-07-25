@@ -1,5 +1,5 @@
 import { String, ForeignKey } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { AppendOnlyAction } from "oak-domain/lib/actions/action";
@@ -39,7 +39,7 @@ declare type AttrFilter = {
     operatorId: Q_StringValue;
     operator: User.Filter;
     targetEntity: Q_StringValue;
-    operEntity$oper: OperEntity.Filter;
+    operEntity$oper: OperEntity.Filter & SubQueryPredicateMetadata;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {

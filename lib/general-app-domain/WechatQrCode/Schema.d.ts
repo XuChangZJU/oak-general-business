@@ -1,5 +1,5 @@
 import { String, Boolean, Text, Datetime, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
@@ -82,8 +82,8 @@ declare type AttrFilter = {
     user: User.Filter;
     userEntityGrant: UserEntityGrant.Filter;
     wechatLogin: WechatLogin.Filter;
-    modiEntity$entity: ModiEntity.Filter;
-    operEntity$entity: OperEntity.Filter;
+    modiEntity$entity: ModiEntity.Filter & SubQueryPredicateMetadata;
+    operEntity$entity: OperEntity.Filter & SubQueryPredicateMetadata;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {

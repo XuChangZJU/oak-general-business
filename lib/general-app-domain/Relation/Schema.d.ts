@@ -1,5 +1,5 @@
 import { String } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
@@ -41,11 +41,11 @@ declare type AttrFilter = {
     entityId: Q_StringValue;
     name: Q_StringValue;
     display: Q_StringValue;
-    actionAuth$relation: ActionAuth.Filter;
-    relationAuth$sourceRelation: RelationAuth.Filter;
-    relationAuth$destRelation: RelationAuth.Filter;
-    userEntityGrant$relation: UserEntityGrant.Filter;
-    userRelation$relation: UserRelation.Filter;
+    actionAuth$relation: ActionAuth.Filter & SubQueryPredicateMetadata;
+    relationAuth$sourceRelation: RelationAuth.Filter & SubQueryPredicateMetadata;
+    relationAuth$destRelation: RelationAuth.Filter & SubQueryPredicateMetadata;
+    userEntityGrant$relation: UserEntityGrant.Filter & SubQueryPredicateMetadata;
+    userRelation$relation: UserRelation.Filter & SubQueryPredicateMetadata;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {

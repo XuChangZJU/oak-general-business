@@ -1,5 +1,5 @@
 import { String, Boolean, ForeignKey } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_BooleanValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_BooleanValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
@@ -43,9 +43,9 @@ declare type AttrFilter = {
     isLeaf: Q_BooleanValue;
     entity: Q_StringValue;
     entityId: Q_StringValue;
-    article$articleMenu: Article.Filter;
-    articleMenu$parent: Filter;
-    extraFile$entity: ExtraFile.Filter;
+    article$articleMenu: Article.Filter & SubQueryPredicateMetadata;
+    articleMenu$parent: Filter & SubQueryPredicateMetadata;
+    extraFile$entity: ExtraFile.Filter & SubQueryPredicateMetadata;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {

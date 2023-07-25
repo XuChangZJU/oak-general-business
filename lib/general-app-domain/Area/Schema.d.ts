@@ -1,5 +1,5 @@
 import { String, ForeignKey, Geo } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { ReadOnlyAction } from "oak-domain/lib/actions/action";
@@ -45,10 +45,10 @@ declare type AttrFilter = {
     parentId: Q_StringValue;
     parent: Filter;
     code: Q_StringValue;
-    address$area: Address.Filter;
-    area$parent: Filter;
-    station$area: Station.Filter;
-    subway$area: Subway.Filter;
+    address$area: Address.Filter & SubQueryPredicateMetadata;
+    area$parent: Filter & SubQueryPredicateMetadata;
+    station$area: Station.Filter & SubQueryPredicateMetadata;
+    subway$area: Subway.Filter & SubQueryPredicateMetadata;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {

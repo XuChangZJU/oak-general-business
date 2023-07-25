@@ -1,5 +1,5 @@
 import { String, Text, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState, VisitState } from "./Action";
@@ -68,7 +68,7 @@ declare type AttrFilter = {
     router: JsonFilter<Router>;
     iState: Q_EnumValue<IState>;
     visitState: Q_EnumValue<VisitState>;
-    messageSystem$message: MessageSystem.Filter;
+    messageSystem$message: MessageSystem.Filter & SubQueryPredicateMetadata;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {

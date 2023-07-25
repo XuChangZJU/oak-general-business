@@ -6,7 +6,30 @@ import { EXPRESSION_PREFIX, StorageSchema } from 'oak-domain/lib/types';
 import assert from 'assert';
 
 function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof ED>(
-    schema: StorageSchema<ED>, entity: T, filter: ED[T]['Selection']['filter']) {
+    schema: StorageSchema<ED>, entity: T, filter: NonNullable<ED[T]['Selection']['filter']>) {
+
+    const addOrLogic = (orLogic: ED[T]['Selection']['filter'][]) => {
+        if (!filter.$or) {
+            Object.assign(filter, {
+                $or: orLogic,
+            });
+        }
+        else if (filter.$and) {
+            filter.$and.push({
+                $or: orLogic,
+            });
+        }
+        else {
+            Object.assign({
+                $and: [
+                    {
+                        $or: orLogic,
+                    }
+                ]
+            });
+        }
+    };
+
     for (const attr in filter) {
         if (attr === '#id' || attr === '$text' || attr.toLowerCase().startsWith(EXPRESSION_PREFIX)) {
         }
@@ -29,102 +52,75 @@ function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof E
                 if (rel === 'user') {
                     const f = filter[attr];
                     delete filter[attr];
-                    if (filter.$or) {
-                        filter.$or.push({
+                    addOrLogic([
+                        {
                             [attr]: f,
                         }, {
                             [attr.slice(0, attr.length - 2)]: {
                                 userState: 'merged',
                                 refId: f,
                             }
-                        });
-                    }
-                    else {
-                        filter.$or = [
-                            {
-                                [attr]: f,
-                            },
-                            {
-                                [attr.slice(0, attr.length - 2)]: {
-                                    userState: 'merged',
-                                    refId: f,
-                                }
-                            }
-                        ];
-                    }
-                }
-                else {
-                    const { $in, $nin } = filter[attr];
-                    if ($in && !($in instanceof Array)) {
-                        const { entity: e, filter: f } = $in;
-                        rewriteFilter(schema, e, f);
-                    }
-                    if ($nin && !($nin instanceof Array)) {
-                        const { entity: e, filter: f } = $nin;
-                        rewriteFilter(schema, e, f);
-                    }
+                        }
+                    ]);
                 }
             }
             else if (attr === 'entity' && filter[attr] === 'user') {
                 assert(filter.entityId);
                 const f = filter.entityId;
                 delete filter.entityId;
-                if (filter.$or) {
-                    filter.$or.push({
+                addOrLogic([
+                    {
                         entityId: f,
                     }, {
                         user: {
                             userState: 'merged',
                             refId: f,
                         }
-                    });
-                }
-                else {
-                    filter.$or = [
-                        {
-                            entityId: f,
-                        },
-                        {
-                            user: {
-                                userState: 'merged',
-                                refId: f,
-                            }
-                        }
-                    ];
-                }
+                    }
+                ]);
             }
             else {
                 const rel = judgeRelation(schema, entity, attr);
                 if (rel === 2) {
-                    if (attr === 'user' && filter[attr].id) {
-                        throw new Error('不应该出现{user: {id:}}格式的查询');
-                    }
                     rewriteFilter(schema, attr, filter[attr]);
+                    if (attr === 'user') {
+                        const f = filter[attr];
+                        delete filter[attr];
+                        Object.assign(filter, {
+                            [attr]: {
+                                $or: [
+                                    f,
+                                    {
+                                        userState: 'merged',
+                                        ref: f
+                                    }
+                                ]
+                            }
+                        });
+                    }
                 }
                 else if (typeof rel === 'string') {
-                    if (rel === 'user' && filter[attr].id) {
-                        throw new Error('不应该出现{user: {id:}}格式的查询');
-                    }
                     rewriteFilter(schema, rel, filter[attr]);
+                    if (rel === 'user') {                        
+                        const f = filter[attr];
+                        delete filter[attr];
+                        Object.assign(filter, {
+                            [attr]: {
+                                $or: [
+                                    f,
+                                    {
+                                        userState: 'merged',
+                                        ref: f
+                                    }
+                                ]
+                            }
+                        });
+                    }
                 }
                 else if (rel instanceof Array) {
                     const [e] = rel;
-                    const { filter: f } = filter[attr];
-                    if (f) {
-                        rewriteFilter(schema, e, f);
-                    }
-                }
-                else if (typeof filter[attr] === 'object') {
-                    //  还要处理子查询
-                    const { $in, $nin } = filter[attr];
-                    if ($in && !($in instanceof Array)) {
-                        const { entity: e, filter: f } = $in;
-                        rewriteFilter(schema, e, f);
-                    }
-                    if ($nin && !($nin instanceof Array)) {
-                        const { entity: e, filter: f } = $nin;
-                        rewriteFilter(schema, e, f);
-                    }
+                    assert(e !== 'user', '会出现一对多user的情况么');
+                    rewriteFilter(schema, e, filter[attr]);
                 }
             }
         }
@@ -139,7 +135,7 @@ function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof E
 export async function rewriteSelection<ED extends EntityDict & BaseEntityDict, T extends keyof ED>(schema: StorageSchema<ED>, entity: T, selection: ED[T]['Selection']) {
     const { filter } = selection;
     if (filter && !filter['#oak-general-business--rewrited']) {
-        rewriteFilter(schema, entity, filter);
+        rewriteFilter(schema, entity, filter as NonNullable<ED[T]['Selection']['filter']>);
         // 避免被重写多次
         Object.assign(filter, {
             ['#oak-general-business--rewrited']: true,
@@ -152,7 +148,7 @@ export async function rewriteSelection<ED extends EntityDict & BaseEntityDict, T
 export async function rewriteOperation<ED extends EntityDict & BaseEntityDict, T extends keyof ED>(schema: StorageSchema<ED>, entity: T, operation: ED[T]['Operation']) {
     const { filter } = operation;
     if (filter && !filter['#oak-general-business--rewrited']) {
-        rewriteFilter(schema, entity, filter);
+        rewriteFilter(schema, entity, filter as NonNullable<ED[T]['Selection']['filter']>);
         // 避免被重写多次
         Object.assign(filter, {
             ['#oak-general-business--rewrited']: true,
