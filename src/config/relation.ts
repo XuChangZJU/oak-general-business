@@ -16,6 +16,7 @@ export const DeducedRelationMap = {
     extraFile: 'entity',
     message: 'entity',
     userEntityGrant: 'entity',
+    wechatQrCode: 'entity',
 };
 
 export const SelectFreeEntities = ['application', 'area', 'mobile', 'wechatQrCode'];
