@@ -30,6 +30,9 @@ function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof E
         }
     };
 
+    const userIdPointers: string[] = [];
+    const userPointers: string[] = [];
+
     for (const attr in filter) {
         if (attr === '#id' || attr === '$text' || attr.toLowerCase().startsWith(EXPRESSION_PREFIX)) {
         }
@@ -50,22 +53,39 @@ function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof E
                 // 只要是指向user的ref都要处理
                 const rel = judgeRelation(schema, entity, attr.slice(0, attr.length - 2));
                 if (rel === 'user') {
-                    const f = filter[attr];
-                    delete filter[attr];
-                    addOrLogic([
-                        {
-                            [attr]: f,
-                        }, {
-                            [attr.slice(0, attr.length - 2)]: {
-                                userState: 'merged',
-                                refId: f,
-                            }
-                        }
-                    ]);
+                    userIdPointers.push(attr);
                 }
             }
             else if (attr === 'entity' && filter[attr] === 'user') {
                 assert(filter.entityId);
+                userIdPointers.push('entityId');                
+            }
+            else {
+                const rel = judgeRelation(schema, entity, attr);
+                if (rel === 2) {
+                    rewriteFilter(schema, attr, filter[attr]);
+                    if (attr === 'user') {
+                        userPointers.push(attr);
+                    }
+                }
+                else if (typeof rel === 'string') {
+                    rewriteFilter(schema, rel, filter[attr]);
+                    if (rel === 'user') {
+                        userPointers.push(attr);
+                    }
+                }
+                else if (rel instanceof Array) {
+                    const [e] = rel;
+                    assert(e !== 'user', '会出现一对多user的情况么');
+                    rewriteFilter(schema, e, filter[attr]);
+                }
+            }
+        }
+    }
+
+    userIdPointers.forEach(
+        (attr) => {
+            if (attr === 'entityId') {
                 const f = filter.entityId;
                 delete filter.entityId;
                 addOrLogic([
@@ -80,51 +100,39 @@ function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof E
                 ]);
             }
             else {
-                const rel = judgeRelation(schema, entity, attr);
-                if (rel === 2) {
-                    rewriteFilter(schema, attr, filter[attr]);
-                    if (attr === 'user') {
-                        const f = filter[attr];
-                        delete filter[attr];
-                        Object.assign(filter, {
-                            [attr]: {
-                                $or: [
-                                    f,
-                                    {
-                                        userState: 'merged',
-                                        ref: f
-                                    }
-                                ]
-                            }
-                        });
+                const f = filter[attr];
+                delete filter[attr];
+                addOrLogic([
+                    {
+                        [attr]: f,
+                    }, {
+                        [attr.slice(0, attr.length - 2)]: {
+                            userState: 'merged',
+                            refId: f,
+                        }
                     }
-                }
-                else if (typeof rel === 'string') {
-                    rewriteFilter(schema, rel, filter[attr]);
-                    if (rel === 'user') {                        
-                        const f = filter[attr];
-                        delete filter[attr];
-                        Object.assign(filter, {
-                            [attr]: {
-                                $or: [
-                                    f,
-                                    {
-                                        userState: 'merged',
-                                        ref: f
-                                    }
-                                ]
-                            }
-                        });
-                    }
-                }
-                else if (rel instanceof Array) {
-                    const [e] = rel;
-                    assert(e !== 'user', '会出现一对多user的情况么');
-                    rewriteFilter(schema, e, filter[attr]);
-                }
+                ]);
             }
         }
-    }
+    );
+
+    userPointers.forEach(
+        (attr) => {
+            const f = filter[attr];
+            delete filter[attr];
+            Object.assign(filter, {
+                [attr]: {
+                    $or: [
+                        f,
+                        {
+                            userState: 'merged',
+                            ref: f
+                        }
+                    ]
+                }
+            });
+        }
+    )
 
     // { user: { id: xxxxx }} 的查询大都来自cascade查询，只能先不处理
     if (entity === 'user' && filter!.id) {
