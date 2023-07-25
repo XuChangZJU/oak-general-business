@@ -32,16 +32,12 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                         expiresAt: Date.now() + 300 * 1000,
                     });
                 }
-                // 为之创建微信体系下的一个weChatQrCode
-                await context.operate(
-                    'wechatQrCode',
+                userEntityGrantData.wechatQrCode$entity = [
                     {
                         id: await generateNewIdAsync(),
                         action: 'create',
                         data: {
                             id: await generateNewIdAsync(),
-                            entity: 'userEntityGrant',
-                            entityId: id,
                             props: {
                                 pathname: '/userEntityGrant/confirm',
                                 props: {
@@ -50,9 +46,8 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                             },
                             type: userEntityGrantData.qrCodeType,
                         },
-                    },
-                    {}
-                );
+                    }
+                ];
             };
             if (data instanceof Array) {
                 assert('授权不存在一对多的情况');
