@@ -9,5 +9,6 @@ export declare const IgnoredRelationPathMap: {
 export declare const DeducedRelationMap: {
     extraFile: string;
     message: string;
+    userEntityGrant: string;
 };
 export declare const SelectFreeEntities: string[];
