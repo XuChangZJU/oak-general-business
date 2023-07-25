@@ -3,6 +3,14 @@ export default OakComponent({
     isList: true,
     properties: {
         articleMenuId: '' as string | undefined,
+        onChildEditArticleChange: (data: string) => undefined as void,
+        show: '',
+        getBreadcrumbItemsByParent: (breadcrumbItems: string[]) => undefined as void,
+        breadcrumbItems: [] as string[],
+        drawerOpen: false,
+        changeDrawerOpen: (open:boolean) => undefined as void,
+        selectedArticleId: '',
+        openArray: [] as string[],
     },
     projection: {
         id: 1,
@@ -33,6 +41,6 @@ export default OakComponent({
                 articleMenuId,
             });
             await this.execute();
-        }
+        },
     }
 })

@@ -1,12 +1,10 @@
-
 import React from 'react';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
-import { Editor } from "@wangeditor/editor-for-react";
-import { IEditorConfig } from "@wangeditor/editor";
+import { Editor } from '@wangeditor/editor-for-react';
+import { IEditorConfig } from '@wangeditor/editor';
 import { useState, useEffect } from 'react';
-
 
 export default function Render(
     props: WebComponentProps<
@@ -23,7 +21,7 @@ export default function Render(
             content?: string;
             html?: string;
             origin?: string;
-        }, 
+        },
         {}
     >
 ) {
@@ -36,7 +34,7 @@ export default function Render(
     const [value, setValue] = useState('');
     useEffect(() => {
         if (content) {
-            setValue(content)
+            setValue(content);
         }
     }, [content]);
     return (
@@ -44,15 +42,15 @@ export default function Render(
             <div className={Style.content}>
                 <div className={Style.editorContainer}>
                     <div className={Style.titleContainer}>
-                        <span className={Style.title}>{name}</span>
+                        <span className={Style.title}>{title}</span>
                     </div>
-                    <div id="article-content" style={{ width: "100%" }}>
+                    <div id="article-content" style={{ width: '100%' }}>
                         <Editor
                             defaultConfig={editorConfig}
                             value={value}
                             mode="default"
                             style={{
-                                width: '100%'
+                                width: '100%',
                             }}
                         />
                     </div>
