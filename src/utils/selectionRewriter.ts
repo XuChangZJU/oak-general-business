@@ -5,17 +5,25 @@ import { EntityDict as BaseEntityDict } from '../general-app-domain';
 import { EXPRESSION_PREFIX, StorageSchema } from 'oak-domain/lib/types';
 import assert from 'assert';
 
+/**
+ * 这个修改是不可反复做的，会产生无穷递归
+ * 因此只能产生新的filter结构
+ * @param schema 
+ * @param entity 
+ * @param filter2 
+ */
 function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof ED>(
     schema: StorageSchema<ED>, entity: T, filter: NonNullable<ED[T]['Selection']['filter']>) {
 
+    const filter2 = {} as NonNullable<ED[T]['Selection']['filter']>;
     const addOrLogic = (orLogic: ED[T]['Selection']['filter'][]) => {
-        if (!filter.$or) {
-            Object.assign(filter, {
+        if (!filter2.$or) {
+            Object.assign(filter2, {
                 $or: orLogic,
             });
         }
-        else if (filter.$and) {
-            filter.$and.push({
+        else if (filter2.$and) {
+            filter2.$and.push({
                 $or: orLogic,
             });
         }
@@ -30,19 +38,19 @@ function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof E
         }
     };
 
-    const userIdPointers: string[] = [];
-    const userPointers: string[] = [];
-
     for (const attr in filter) {
-        if (attr === '#id' || attr === '$text' || attr.toLowerCase().startsWith(EXPRESSION_PREFIX)) {
+        if (attr.startsWith('#') || attr === '$text' || attr.toLowerCase().startsWith(EXPRESSION_PREFIX)) {
+            filter2[attr] = filter[attr];
         }
         else if (['$and', '$or'].includes(attr)) {
-            for (const node of filter[attr]!) {
-                rewriteFilter(schema, entity, node);
-            }
+            filter2[attr] = filter[attr].map(
+                (ele: NonNullable<ED[T]['Selection']['filter']>) => rewriteFilter(schema, entity, ele)
+            );
         }
         else if (attr === '$not') {
-            rewriteFilter(schema, entity, filter[attr]!);
+            Object.assign(filter2, {
+                $not: rewriteFilter(schema, entity, filter[attr]!),
+            });
         }
         else {
             /**
@@ -53,101 +61,106 @@ function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof E
                 // 只要是指向user的ref都要处理
                 const rel = judgeRelation(schema, entity, attr.slice(0, attr.length - 2));
                 if (rel === 'user') {
-                    userIdPointers.push(attr);
+                    addOrLogic([
+                        {
+                            [attr]: filter[attr],
+                        }, {
+                            [attr.slice(0, attr.length - 2)]: {
+                                userState: 'merged',
+                                refId: filter[attr],
+                            }
+                        }
+                    ]);
+                }
+                else {
+                    filter2[attr] = filter[attr];
                 }
             }
             else if (attr === 'entity' && filter[attr] === 'user') {
                 assert(filter.entityId);
-                userIdPointers.push('entityId');                
+                addOrLogic([
+                    {
+                        entityId: filter.entityId,
+                    },
+                    {
+                        user: {
+                            userState: 'merged',
+                            refId: filter.entityId,
+                        }
+                    }
+                ]);
             }
             else {
                 const rel = judgeRelation(schema, entity, attr);
                 if (rel === 2) {
-                    rewriteFilter(schema, attr, filter[attr]);
+                    const filter3 = rewriteFilter(schema, attr, filter[attr]);
                     if (attr === 'user') {
-                        userPointers.push(attr);
+                        Object.assign(filter2, {
+                            [attr]: {
+                                $or: [
+                                    filter3,
+                                    {
+                                        userState: 'merged',
+                                        ref: filter3
+                                    }
+                                ]
+                            }
+                        });
+                    }
+                    else {
+                        Object.assign(filter2, {
+                            [attr]: filter3,
+                        });
                     }
                 }
                 else if (typeof rel === 'string') {
-                    rewriteFilter(schema, rel, filter[attr]);
+                    const filter3 = rewriteFilter(schema, rel, filter[attr]);
                     if (rel === 'user') {
-                        userPointers.push(attr);
+                        Object.assign(filter2, {
+                            [attr]: {
+                                $or: [
+                                    filter3,
+                                    {
+                                        userState: 'merged',
+                                        ref: filter3
+                                    }
+                                ]
+                            }
+                        });
+                    }
+                    else {
+                        Object.assign(filter2, {
+                            [attr]: filter3,
+                        });
                     }
                 }
                 else if (rel instanceof Array) {
                     const [e] = rel;
                     assert(e !== 'user', '会出现一对多user的情况么');
-                    rewriteFilter(schema, e, filter[attr]);
+                    Object.assign(filter2, {
+                        [attr]: rewriteFilter(schema, e, filter[attr]),
+                    })
+                }
+                else {
+                    assert(rel === 1);
+                    filter2[attr] = filter[attr];
                 }
             }
         }
     }
 
-    userIdPointers.forEach(
-        (attr) => {
-            if (attr === 'entityId') {
-                const f = filter.entityId;
-                delete filter.entityId;
-                addOrLogic([
-                    {
-                        entityId: f,
-                    }, {
-                        user: {
-                            userState: 'merged',
-                            refId: f,
-                        }
-                    }
-                ]);
-            }
-            else {
-                const f = filter[attr];
-                delete filter[attr];
-                addOrLogic([
-                    {
-                        [attr]: f,
-                    }, {
-                        [attr.slice(0, attr.length - 2)]: {
-                            userState: 'merged',
-                            refId: f,
-                        }
-                    }
-                ]);
-            }
-        }
-    );
-
-    userPointers.forEach(
-        (attr) => {
-            const f = filter[attr];
-            delete filter[attr];
-            Object.assign(filter, {
-                [attr]: {
-                    $or: [
-                        f,
-                        {
-                            userState: 'merged',
-                            ref: f
-                        }
-                    ]
-                }
-            });
-        }
-    )
-
-    // { user: { id: xxxxx }} 的查询大都来自cascade查询，只能先不处理
-    if (entity === 'user' && filter!.id) {
-        // throw new Error('不应该出现{user: {id:}}格式的查询');
-    }
+    return filter2;
 }
 
 export function rewriteSelection<ED extends EntityDict & BaseEntityDict, T extends keyof ED>(schema: StorageSchema<ED>, entity: T, selection: ED[T]['Selection']) {
     const { filter } = selection;
     if (filter && !filter['#oak-general-business--rewrited']) {
-        rewriteFilter(schema, entity, filter as NonNullable<ED[T]['Selection']['filter']>);
+        const filter2 = rewriteFilter(schema, entity, filter as NonNullable<ED[T]['Selection']['filter']>);
         // 避免被重写多次
-        Object.assign(filter, {
+        Object.assign(filter2, {
             ['#oak-general-business--rewrited']: true,
         });
+        selection.filter = filter2;
     }
     return;
 }
@@ -156,11 +169,12 @@ export function rewriteSelection<ED extends EntityDict & BaseEntityDict, T exten
 export function rewriteOperation<ED extends EntityDict & BaseEntityDict, T extends keyof ED>(schema: StorageSchema<ED>, entity: T, operation: ED[T]['Operation']) {
     const { filter } = operation;
     if (filter && !filter['#oak-general-business--rewrited']) {
-        rewriteFilter(schema, entity, filter as NonNullable<ED[T]['Selection']['filter']>);
+        const filter2 = rewriteFilter(schema, entity, filter as NonNullable<ED[T]['Selection']['filter']>);
         // 避免被重写多次
-        Object.assign(filter, {
+        Object.assign(filter2, {
             ['#oak-general-business--rewrited']: true,
         });
+        operation.filter = filter2;
     }
     return;
 }
