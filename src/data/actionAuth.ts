@@ -5,7 +5,7 @@ export const actionAuth: ActionAuth[] = [
         id: 'message-user',
         path: 'user',
         destEntity: 'message',
-        deActions: ['select', 'remove'],
+        deActions: ['select', 'remove', 'update'],
     },
     {
         id: 'mobile-user',
