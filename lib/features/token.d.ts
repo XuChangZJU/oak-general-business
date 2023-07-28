@@ -35,4 +35,5 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     switchTo(userId: string): Promise<void>;
     refreshWechatPublicUserInfo(): Promise<void>;
     getWechatMpUserPhoneNumber(code: string): Promise<void>;
+    wakeupParasite(id: string): Promise<void>;
 }

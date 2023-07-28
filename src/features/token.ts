@@ -226,4 +226,15 @@ export class Token<
         });
         this.publish();
     }
+
+    async wakeupParasite(id: string) {
+        const env = await getEnv();
+        const { result } = await this.cache.exec('wakeupParasite', {
+            id,
+            env: env as WechatMpEnv,
+        });
+        this.tokenValue = result;
+        this.storage.save('token:token', result);
+        this.publish();
+    }
 }

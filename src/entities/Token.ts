@@ -54,6 +54,7 @@ export interface Schema extends EntityShape {
     entityId: String<64>;
     user?: User;
     player?: User;
+    disablesAt?: Datetime;
     env: Environment;
 };
 
@@ -75,6 +76,7 @@ const locale: LocaleDef<Schema, Action, '', {
             player: '扮演者',
             env: '环境',
             ableState: '状态',
+            disablesAt: '禁用时间',
         },
         action: {
             enable: '激活',

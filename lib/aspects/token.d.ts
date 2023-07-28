@@ -57,3 +57,13 @@ export declare function getWechatMpUserPhoneNumber<ED extends EntityDict, Cxt ex
     env: WechatMpEnv;
 }, context: Cxt): Promise<string>;
 export declare function logout<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({}: {}, context: Cxt): Promise<void>;
+/**
+ * 创建一个当前parasite上的token
+ * @param params
+ * @param context
+ * @returns
+ */
+export declare function wakeupParasite<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+    id: string;
+    env: WebEnv | WechatMpEnv;
+}, context: Cxt): Promise<string>;

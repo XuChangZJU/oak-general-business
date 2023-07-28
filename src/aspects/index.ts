@@ -9,6 +9,7 @@ import {
     getWechatMpUserPhoneNumber,
     logout,
     loginByWechat,
+    wakeupParasite,
 } from './token';
 import { getUploadInfo, getInfoByUrl } from './extraFile';
 import { getApplication, signatureJsSDK } from './application';
@@ -24,6 +25,7 @@ const aspectDict = {
     loginByMobile,
     loginWechat,
     loginWechatMp,
+    wakeupParasite,
     syncUserInfoWechatMp,
     getUploadInfo,
     sendCaptcha,

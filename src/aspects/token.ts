@@ -15,7 +15,7 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { tokenProjection } from '../types/projection';
 import { sendSms } from '../utils/sms';
 import { mergeUser } from './user';
-import { users } from '../data/userRole';
+import { pick } from 'oak-domain/lib/utils/lodash';
 
 async function makeDistinguishException<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(userId: string, context: Cxt, message?: string) {
     const [user] = await context.select('user', {
@@ -283,6 +283,7 @@ async function setUpTokenAndUser<ED extends EntityDict, Cxt extends BackendRunti
             }
 
             tokenData.userId = userId;
+            tokenData.applicationId = context.getApplicationId();
             tokenData.playerId = userId;
             if (entityId) {
                 tokenData.entity = entity;
@@ -1331,4 +1332,80 @@ export async function logout<
             }
         }, { dontCollect: true });
     }
+}
+
+/**
+ * 创建一个当前parasite上的token
+ * @param params 
+ * @param context 
+ * @returns 
+ */
+export async function wakeupParasite<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+    id: string;
+    env: WebEnv | WechatMpEnv;
+}, context: Cxt) {
+    const { id, env } = params;
+    const [parasite] = await context.select('parasite', {
+        data: {
+            id: 1,
+            expired: 1,
+            multiple: 1,
+            userId: 1,
+            tokenLifeLength: 1,
+            user: {
+                id: 1,
+                userState: 1,
+            },
+        },
+        filter: {
+            id,
+        },
+    }, { dontCollect: true });
+    if (parasite.expired) {
+        throw new OakRowInconsistencyException({
+            a: 's',
+            d: {
+                parasite: {
+                    [id]: pick(parasite, ['id', 'expired'])
+                }
+            }
+        }, '数据已经过期');
+    }
+    if (parasite.user?.userState !== 'shadow') {
+        throw new OakUserException('此用户已经登录过系统，不允许借用身份');
+    }
+
+    // const closeFn = context.openRootMode();
+    if (!parasite.multiple) {
+        await context.operate('parasite', {
+            id: await generateNewIdAsync(),
+            action: 'wakeup',
+            data: {
+                expired: true,
+            },
+            filter: {
+                id,
+            },
+        }, { dontCollect: true });   
+    }
+
+    const tokenId = await generateNewIdAsync();
+    await context.operate('token', {
+        id: await generateNewIdAsync(),
+        action: 'create',
+        data: {
+            id: tokenId,
+            entity: 'parasite',
+            entityId: id,
+            userId: parasite.userId,
+            playerId: parasite.userId,
+            disablesAt: Date.now() + parasite.tokenLifeLength!,
+            env,
+            applicationId: context.getApplicationId(),
+        }
+    }, { dontCollect: true });
+
+    await loadTokenInfo<ED, Cxt>(tokenId, context);
+    // closeFn();
+    return tokenId;
 }

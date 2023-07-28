@@ -1,4 +1,4 @@
-import { generateNewId } from 'oak-domain/lib/utils/uuid';
+import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { CreateTrigger, Trigger } from 'oak-domain/lib/types/Trigger';
 import { EntityDict } from '../general-app-domain/EntityDict';
 import { CreateOperationData as CreateUserRoleData } from '../general-app-domain/UserRole/Schema';
@@ -106,6 +106,30 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
             return 0;
         }
     } as CreateTrigger<EntityDict, 'user', RuntimeCxt>,
+    {
+        name: '当用户被激活时，将所有的parasite作废',
+        entity: 'user',
+        action: 'activate',
+        when: 'before',
+        fn: async({ operation }) => {
+            const { data } = operation as EntityDict['user']['Update'];
+            assert(!(data instanceof Array));
+            data.parasite$user = {
+                id: await generateNewIdAsync(),
+                action: 'update',
+                data: {
+                    expired: true,
+                    token$entity: {
+                        id: await generateNewIdAsync(),
+                        action: 'disable',
+                        data: {},
+                    }
+                }
+            };
+
+            return 1;
+        }
+    }
 ];
 
 export default triggers;

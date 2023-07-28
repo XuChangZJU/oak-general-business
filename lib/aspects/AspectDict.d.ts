@@ -37,6 +37,10 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntime
         iv: string;
         signature: string;
     }, context: Cxt) => Promise<void>;
+    wakeupParasite: (params: {
+        id: string;
+        env: WebEnv | WechatMpEnv;
+    }, context: Cxt) => Promise<string>;
     getUploadInfo: (params: {
         origin: Origin;
         bucket?: string;

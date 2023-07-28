@@ -24,6 +24,7 @@ import { EntityDef as MessageType } from "./MessageType/Schema";
 import { EntityDef as MessageTypeTemplateId } from "./MessageTypeTemplateId/Schema";
 import { EntityDef as Mobile } from "./Mobile/Schema";
 import { EntityDef as Notification } from "./Notification/Schema";
+import { EntityDef as Parasite } from "./Parasite/Schema";
 import { EntityDef as Platform } from "./Platform/Schema";
 import { EntityDef as UserRole } from "./UserRole/Schema";
 import { EntityDef as Role } from "./Role/Schema";
@@ -66,6 +67,7 @@ export declare type EntityDict = {
     messageTypeTemplateId: MessageTypeTemplateId;
     mobile: Mobile;
     notification: Notification;
+    parasite: Parasite;
     platform: Platform;
     userRole: UserRole;
     role: Role;

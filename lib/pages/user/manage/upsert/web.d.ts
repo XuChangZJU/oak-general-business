@@ -15,4 +15,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
         value: string;
         label: string;
     }>;
-}, {}>): import("react/jsx-runtime").JSX.Element;
+}, {}>): JSX.Element;

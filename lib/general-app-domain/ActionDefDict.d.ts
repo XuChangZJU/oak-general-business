@@ -18,6 +18,7 @@ export declare const ActionDefDict: {
     notification: {
         iState: import("oak-domain/lib/types").ActionDef<string, string>;
     };
+    parasite: {};
     token: {
         ableState: import("oak-domain/lib/types").ActionDef<import("oak-domain/lib/actions/action").AbleAction, import("oak-domain/lib/actions/action").AbleState>;
     };

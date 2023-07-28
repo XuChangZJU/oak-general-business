@@ -1,0 +1,5 @@
+<view class="page-body">
+    <l-button type="default" shape="semicircle" disabled="{{loading}}" width="320" bind:lintap="loginByWechatMp">
+       授权登录
+    </l-button>
+</view>
