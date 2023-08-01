@@ -5,4 +5,9 @@ export default function render(props: WebComponentProps<EntityDict, 'parasite', 
     list: EntityDict['userEntityGrant']['Schema'][];
     showBack: boolean;
     variant?: 'inline' | 'alone' | 'dialog';
-}, {}>): import("react/jsx-runtime").JSX.Element;
+    qrCodeUrl: string;
+    qrCodeExpiresAt: number;
+}, {
+    cancel: () => void;
+    getQrCode: () => Promise<void>;
+}>): import("react/jsx-runtime").JSX.Element;

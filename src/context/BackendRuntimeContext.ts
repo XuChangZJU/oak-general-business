@@ -21,8 +21,7 @@ import { getMpUnlimitWxaCode } from '../aspects/wechatQrCode';
  */
 export class BackendRuntimeContext<ED extends EntityDict>
     extends AsyncContext<ED>
-    implements RuntimeContext
-{
+    implements RuntimeContext {
     protected application?: Partial<ED['application']['Schema']>;
     protected token?: Partial<ED['token']['Schema']>;
     protected amIRoot?: boolean;
@@ -299,12 +298,12 @@ export class BackendRuntimeContext<ED extends EntityDict>
                 throw new OakUserDisabledException(
                     '您的帐号已经被禁用，请联系客服'
                 );
-            } else if (['shadow', 'merged'].includes(userState!)) {
+            } else if (['merged'].includes(userState!)) {
                 throw new OakTokenExpiredException(
                     '您的登录状态有异常，请重新登录 '
                 );
             } else {
-                assert(userState === 'normal');
+                assert(userState === 'normal' || userState === 'shadow');
             }
             return true;
         }

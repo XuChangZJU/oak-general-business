@@ -30,7 +30,7 @@ export interface Schema extends EntityShape {
     tokens: Token[];
 }
 
-type IAction = 'wakeup' | 'cancel';
+type IAction = 'wakeup' | 'cancel' | 'qrcode';
 type Action = IAction;
 
 const locale: LocaleDef<Schema, Action, '', {}> = {
@@ -51,6 +51,7 @@ const locale: LocaleDef<Schema, Action, '', {}> = {
         action: {
             wakeup: '激活',
             cancel: '作废',
+            qrcode: '采集码'
         },
     },
 };

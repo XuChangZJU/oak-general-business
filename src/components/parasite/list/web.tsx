@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { Table, Space, Typography } from 'antd';
+import { Table, Button, Typography, Modal } from 'antd';
 import dayjs from 'dayjs';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 import Style from './web.module.less';
-
+import ActionBtnPanel from '@oak-frontend-base/components/actionBtnPanel';
+import ParasiteDetail from '../detail';
+import { useState } from 'react';
 export default function render(
     props: WebComponentProps<
         EntityDict,
@@ -15,8 +17,13 @@ export default function render(
             list: EntityDict['userEntityGrant']['Schema'][];
             showBack: boolean;
             variant?: 'inline' | 'alone' | 'dialog';
+            qrCodeUrl: string;
+            qrCodeExpiresAt: number;
         },
-        {}
+        {
+            cancel: () => void;
+            getQrCode: () => Promise<void>;
+        }
     >
 ) {
     const {
@@ -25,12 +32,16 @@ export default function render(
         list = [],
         oakLoading,
         variant,
+        qrCodeUrl,
+        qrCodeExpiresAt,
     } = props.data;
+
 
     const { pageSize, total, currentPage } = oakPagination || {};
 
-     const { t, setPageSize, setCurrentPage } = props.methods;
-
+    const { t, setPageSize, setCurrentPage, updateItem, execute, getQrCode } = props.methods;
+    const [qrCodeOpen, setQrCodeOpen] = useState(false);
+    const [parasiteId, setParasiteId] = useState('');
     return (
         <Container variant={variant}>
             <Table
@@ -80,6 +91,79 @@ export default function render(
                             );
                         },
                     },
+                    // {
+                    //     dataIndex: 'op',
+                    //     width: 200,
+                    //     title: '操作',
+                    //     align: 'center',
+                    //     render: (value, record, index) => {
+                    //         return (
+                    //             <>
+                    //                 <Button
+                    //                     type="link"
+                    //                     onClick={() => {
+                    //                         updateItem(
+                    //                             {
+                    //                                 expired: true
+                    //                             },
+                    //                             record.id!,
+                    //                             'cancel'
+                    //                         );
+                    //                         execute();
+                    //                     }}
+                    //                 >
+                    //                     失效
+                    //                 </Button>
+                    //             </>
+                    //         );
+                    //     },
+                    //     fixed: 'right',
+                    // },
+                    {
+                        width: 200,
+                        title: '操作',
+                        key: 'action',
+                        align: 'center',
+                        fixed: 'right',
+                        render: (value, record, rowIndex) => {
+                            return (
+                                <ActionBtnPanel
+                                    mode="table-cell"
+                                    entity="parasite"
+                                    items={[
+                                        {
+                                            label: '失效',
+                                            action: 'cancel',
+                                            // alerted: true,
+                                            show: record[
+                                                '#oakLegalActions'
+                                            ]?.includes('cancel'),
+                                            onClick: () => {
+                                                updateItem(
+                                                    { expired: true },
+                                                    record.id!,
+                                                    'cancel'
+                                                );
+                                                execute();
+                                            },
+                                        },
+                                        {
+                                            label: '采集码',
+                                            action: 'qrcode',
+                                            show: record[
+                                                '#oakLegalActions'
+                                            ]?.includes('qrcode'),
+                                            // alerted: true,
+                                            onClick: async () => {
+                                                setParasiteId(record.id!)
+                                                setQrCodeOpen(true);
+                                            },
+                                        },
+                                    ]}
+                                />
+                            );
+                        },
+                    }
                 ]}
                 pagination={{
                     total,
@@ -93,6 +177,21 @@ export default function render(
                     },
                 }}
             />
+            <Modal
+                width={786}
+                open={qrCodeOpen}
+                destroyOnClose={true}
+                onCancel={() => {
+                    setQrCodeOpen(false);
+                }}
+                footer={null}
+            >
+                <ParasiteDetail
+                    oakId={parasiteId}
+                    oakAutoUnmount={true}
+                    oakPath="$parasite/list-parasite/detail"
+                />
+            </Modal>
         </Container>
     );
 }

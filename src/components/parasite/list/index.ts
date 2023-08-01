@@ -14,6 +14,10 @@ export default OakComponent({
             nickname: 1,
         }
     },
+    actions: [
+        'cancel',
+        'qrcode'
+    ],
     properties: {
         entity: '',
         entityId: '',
@@ -47,5 +51,6 @@ export default OakComponent({
     data: {
         open: false,
     },
-    methods: {},
+    methods: {
+    },
 });

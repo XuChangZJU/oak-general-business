@@ -23,7 +23,7 @@ export class FrontendRuntimeContext<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>,
     AD extends AspectDict<ED, Cxt>
-    > extends SyncContext<ED> implements RuntimeContext {
+> extends SyncContext<ED> implements RuntimeContext {
     private application?: Application<ED, Cxt, any, AD>;
     private token?: Token<ED, Cxt, any, AD>;
     constructor(store: SyncRowStore<ED, FrontendRuntimeContext<ED, Cxt, AD>>, application?: Application<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>, token?: Token<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>) {
@@ -57,7 +57,7 @@ export class FrontendRuntimeContext<
         return this.token?.getUserId(allowUnloggedIn, this);
     }
 
-    toString(): string{
+    toString(): string {
         const data = {
         };
         const a = this.application?.getApplicationId();
@@ -90,11 +90,11 @@ export class FrontendRuntimeContext<
             if (userState === 'disabled') {
                 throw new OakUserDisabledException('您的帐号已经被禁用，请联系客服');
             }
-            else if (['shadow', 'merged'].includes(userState!)) {
+            else if (['merged'].includes(userState!)) {
                 throw new OakTokenExpiredException('您的登录状态有异常，请重新登录 ');
             }
             else {
-                assert(userState === 'normal');
+                assert(userState === 'normal' || userState === 'shadow');
             }
             return true;
         }

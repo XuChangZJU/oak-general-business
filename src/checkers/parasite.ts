@@ -59,6 +59,24 @@ const checkers: Checker<EntityDict, 'parasite', RuntimeCxt>[] = [
             );
         },
     },
+    {
+        type: 'row',
+        entity: 'parasite',
+        action: ['cancel'],
+        errMsg: '您没有设置失效的权限',
+        filter: {
+            expired: false,
+        },
+    },
+    {
+        type: 'row',
+        entity: 'parasite',
+        action: ['qrcode'],
+        errMsg: '您没有查看二维码的权限',
+        filter: {
+            expired: false,
+        },
+    },
 ];
 
 export default checkers;
