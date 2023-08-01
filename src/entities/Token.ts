@@ -54,6 +54,7 @@ export interface Schema extends EntityShape {
     entityId: String<64>;
     user?: User;
     player?: User;
+    disablesAt?: Datetime;
     env: Environment;
 };
 
@@ -62,9 +63,14 @@ type Action = AbleAction;
 const AbleActionDef: ActionDef<AbleAction, AbleState> = makeAbleActionDef('enabled');
 
 
-const locale: LocaleDef<Schema, Action, '', {
-    ableState: AbleState,
-}> = {
+const locale: LocaleDef<
+    Schema,
+    Action,
+    '',
+    {
+        ableState: AbleState;
+    }
+> = {
     zh_CN: {
         name: '令牌',
         attr: {
@@ -75,6 +81,7 @@ const locale: LocaleDef<Schema, Action, '', {
             player: '扮演者',
             env: '环境',
             ableState: '状态',
+            disablesAt: '禁用时间',
         },
         action: {
             enable: '激活',
@@ -83,8 +90,8 @@ const locale: LocaleDef<Schema, Action, '', {
         v: {
             ableState: {
                 enabled: '使用中',
-                disabled: '已禁用'
+                disabled: '已禁用',
             },
         },
     },
- };
+};
