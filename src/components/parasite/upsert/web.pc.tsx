@@ -99,7 +99,7 @@ export default function Render(
                             max={30}
                             placeholder="请输入"
                             onChange={(value) => {
-                                setPeriod(value);
+                                setPeriod(value!);
                             }}
                             value={period}
                             addonAfter={<Typography>天</Typography>}

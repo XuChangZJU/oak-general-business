@@ -10,6 +10,7 @@ import * as UserRelation from "../UserRelation/Schema";
 import * as Email from "../Email/Schema";
 import * as Message from "../Message/Schema";
 import * as Mobile from "../Mobile/Schema";
+import * as Parasite from "../Parasite/Schema";
 import * as UserRole from "../UserRole/Schema";
 import * as Token from "../Token/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
@@ -60,6 +61,8 @@ export declare type Schema = EntityShape & {
     message$user$$aggr?: AggregationResult<Message.Schema>;
     mobile$user?: Array<Mobile.Schema>;
     mobile$user$$aggr?: AggregationResult<Mobile.Schema>;
+    parasite$user?: Array<Parasite.Schema>;
+    parasite$user$$aggr?: AggregationResult<Parasite.Schema>;
     userRole$user?: Array<UserRole.Schema>;
     userRole$user$$aggr?: AggregationResult<UserRole.Schema>;
     token$user?: Array<Token.Schema>;
@@ -162,6 +165,12 @@ export declare type Projection = {
     };
     mobile$user$$aggr?: Mobile.Aggregation & {
         $entity: "mobile";
+    };
+    parasite$user?: Parasite.Selection & {
+        $entity: "parasite";
+    };
+    parasite$user$$aggr?: Parasite.Aggregation & {
+        $entity: "parasite";
     };
     userRole$user?: UserRole.Selection & {
         $entity: "userRole";
@@ -304,6 +313,7 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "refId">
     email$user?: OakOperation<Email.UpdateOperation["action"], Omit<Email.UpdateOperationData, "user" | "userId">, Email.Filter> | OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">> | OakOperation<Email.UpdateOperation["action"], Omit<Email.UpdateOperationData, "user" | "userId">, Email.Filter>>;
     message$user?: OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "user" | "userId">, Message.Filter> | OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">> | OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "user" | "userId">, Message.Filter>>;
     mobile$user?: OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Mobile.Filter> | OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">> | OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Mobile.Filter>>;
+    parasite$user?: OakOperation<Parasite.UpdateOperation["action"], Omit<Parasite.UpdateOperationData, "user" | "userId">, Parasite.Filter> | OakOperation<"create", Omit<Parasite.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Parasite.CreateOperationData, "user" | "userId">> | OakOperation<Parasite.UpdateOperation["action"], Omit<Parasite.UpdateOperationData, "user" | "userId">, Parasite.Filter>>;
     userRole$user?: OakOperation<"create", Omit<UserRole.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserRole.CreateOperationData, "user" | "userId">>>;
     token$user?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "user" | "userId">, Token.Filter> | OakOperation<"create", Omit<Token.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "user" | "userId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "user" | "userId">, Token.Filter>>;
     token$player?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "player" | "playerId">, Token.Filter> | OakOperation<"create", Omit<Token.CreateOperationData, "player" | "playerId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "player" | "playerId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "player" | "playerId">, Token.Filter>>;
@@ -341,6 +351,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "refId">
     email$user?: Email.UpdateOperation | Email.RemoveOperation | OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">> | Email.UpdateOperation | Email.RemoveOperation>;
     message$user?: Message.UpdateOperation | Message.RemoveOperation | OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">> | Message.UpdateOperation | Message.RemoveOperation>;
     mobile$user?: Mobile.UpdateOperation | Mobile.RemoveOperation | OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">> | Mobile.UpdateOperation | Mobile.RemoveOperation>;
+    parasite$user?: Parasite.UpdateOperation | Parasite.RemoveOperation | OakOperation<"create", Omit<Parasite.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Parasite.CreateOperationData, "user" | "userId">> | Parasite.UpdateOperation | Parasite.RemoveOperation>;
     userRole$user?: UserRole.RemoveOperation | OakOperation<"create", Omit<UserRole.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserRole.CreateOperationData, "user" | "userId">> | UserRole.RemoveOperation>;
     token$user?: Token.UpdateOperation | Token.RemoveOperation | OakOperation<"create", Omit<Token.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "user" | "userId">> | Token.UpdateOperation | Token.RemoveOperation>;
     token$player?: Token.UpdateOperation | Token.RemoveOperation | OakOperation<"create", Omit<Token.CreateOperationData, "player" | "playerId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "player" | "playerId">> | Token.UpdateOperation | Token.RemoveOperation>;

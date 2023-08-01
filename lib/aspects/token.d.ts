@@ -29,7 +29,7 @@ export declare function loginWechat<ED extends EntityDict, Cxt extends BackendRu
  * @param context
  * @returns
  */
-export declare function loginWechatMp<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ code, env }: {
+export declare function loginWechatMp<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ code, env, }: {
     code: string;
     env: WechatMpEnv;
 }, context: Cxt): Promise<string>;
@@ -38,14 +38,14 @@ export declare function loginWechatMp<ED extends EntityDict, Cxt extends Backend
  * @param param0
  * @param context
  */
-export declare function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ nickname, avatarUrl, encryptedData, iv, signature }: {
+export declare function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ nickname, avatarUrl, encryptedData, iv, signature, }: {
     nickname: string;
     avatarUrl: string;
     encryptedData: string;
     iv: string;
     signature: string;
 }, context: Cxt): Promise<void>;
-export declare function sendCaptcha<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ mobile, env }: {
+export declare function sendCaptcha<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ mobile, env, }: {
     mobile: string;
     env: WechatMpConfig | WebEnv;
 }, context: Cxt): Promise<string>;
@@ -57,3 +57,13 @@ export declare function getWechatMpUserPhoneNumber<ED extends EntityDict, Cxt ex
     env: WechatMpEnv;
 }, context: Cxt): Promise<string>;
 export declare function logout<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({}: {}, context: Cxt): Promise<void>;
+/**
+ * 创建一个当前parasite上的token
+ * @param params
+ * @param context
+ * @returns
+ */
+export declare function wakeupParasite<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+    id: string;
+    env: WebEnv | WechatMpEnv;
+}, context: Cxt): Promise<string>;
