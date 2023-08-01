@@ -145,7 +145,7 @@ export default function render(
 		EntityDict["extraFile"]["OpSchema"][]
 	>([]);
 
-	const [newUploadFiles, setNewUploadFiles] = useState([] as NewUploadFile[]);
+	const [newUploadFiles, setNewUploadFiles] = useState<NewUploadFile[]>([]);
 
 	const listType = getListType(theme);
 
@@ -290,7 +290,7 @@ export default function render(
 							if (theme !== "custom") {
 								onPickByWeb([file2Obj(file as RcFile)]);
 							} else {
-								setNewUploadFiles([file2Obj(file as RcFile)]);
+								setNewUploadFiles(fileList);
 							}
 						}
 					}}
