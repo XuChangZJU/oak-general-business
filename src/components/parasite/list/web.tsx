@@ -2,14 +2,13 @@ import * as React from 'react';
 import { Table, Space, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { WebComponentProps } from 'oak-frontend-base';
-import PageHeader from '../../../components/common/pageHeader';
 import { EntityDict } from '../../../general-app-domain';
 import Style from './web.module.less';
 
 export default function render(
     props: WebComponentProps<
         EntityDict,
-        'userEntityGrant',
+        'parasite',
         true,
         {
             searchValue: string;
@@ -25,7 +24,6 @@ export default function render(
         oakFullpath,
         list = [],
         oakLoading,
-        showBack,
         variant,
     } = props.data;
 
@@ -34,7 +32,7 @@ export default function render(
      const { t, setPageSize, setCurrentPage } = props.methods;
 
     return (
-        <Container showBack={showBack} variant={variant}>
+        <Container variant={variant}>
             <Table
                 loading={oakLoading}
                 dataSource={list}
@@ -48,47 +46,10 @@ export default function render(
                         },
                     },
                     {
-                        dataIndex: 'name',
-                        title: '授权人',
+                        dataIndex: ['user', 'nickname'],
+                        title: '姓名',
                         render: (value, record, index) => {
-                            return (
-                                <Space direction="vertical">
-                                    <Typography.Text>
-                                        姓名：{record.granter?.name || '-'}
-                                    </Typography.Text>
-                                    <Typography.Text>
-                                        昵称：{record.granter?.nickname}
-                                    </Typography.Text>
-                                </Space>
-                            );
-                        },
-                    },
-                    {
-                        dataIndex: 'number',
-                        title: '邀请成员数',
-                        render: (value, record, index) => {
-                            return `${value || 0}人`;
-                        },
-                    },
-                    {
-                        dataIndex: 'confirmed',
-                        title: '加入成员数',
-                        render: (value, record, index) => {
-                            return `${value || 0}人`;
-                        },
-                    },
-                    {
-                        dataIndex: 'type',
-                        title: '授权类型',
-                        render: (value, record, index) => {
-                            return t(`userEntityGrant:v.type.${value}`);
-                        },
-                    },
-                    {
-                        dataIndex: 'relation',
-                        title: '权限',
-                        render: (value, record, index) => {
-                            return t(`${record.entity}:r.${value}`);
+                            return value || '--';
                         },
                     },
                     {
@@ -139,15 +100,10 @@ export default function render(
 function Container(props: {
     children: React.ReactNode;
     variant?: 'inline' | 'alone' | 'dialog';
-    showBack?: boolean;
 }) {
-    const { children, variant = 'alone', showBack } = props;
+    const { children, variant = 'alone' } = props;
     if (['inline', 'dialog'].includes(variant)) {
         return <>{children}</>;
     }
-    return (
-        <PageHeader showBack={showBack} title="授权记录">
-            <div className={Style.container}>{children}</div>
-        </PageHeader>
-    );
+    return <div className={Style.container}>{children}</div>;
 }

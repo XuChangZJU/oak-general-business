@@ -1,26 +1,18 @@
 export default OakComponent({
     isList: true,
-    entity: 'userEntityGrant',
+    entity: 'parasite',
     projection: {
         id: 1,
         entity: 1,
         entityId: 1,
-        relation: 1,
-        type: 1,
-        qrCodeType: 1,
-        remark: 1,
-        granterId: 1,
-        number: 1,
-        confirmed: 1,
-        granter: {
-            id: 1,
-            name: 1,
-            nickname: 1,
-        },
-        granteeId: 1,
         $$createAt$$: 1,
         expired: 1,
         expiresAt: 1,
+        userId: 1,
+        user: {
+            id: 1,
+            nickname: 1,
+        }
     },
     properties: {
         entity: '',

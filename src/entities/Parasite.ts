@@ -23,12 +23,11 @@ export interface Schema extends EntityShape {
     tokens: Token[];
 };
 
-type IAction = 'wakeup';
+type IAction = 'wakeup' | 'cancel';
 type Action = IAction;
 
-const locale: LocaleDef<Schema, Action, '', {
-}> = {
-    "zh_CN": {
+const locale: LocaleDef<Schema, Action, '', {}> = {
+    zh_CN: {
         name: '寄生',
         attr: {
             user: '用户',
@@ -44,7 +43,8 @@ const locale: LocaleDef<Schema, Action, '', {
         },
         action: {
             wakeup: '激活',
+            cancel: '作废',
         },
-    }
+    },
 };
 
