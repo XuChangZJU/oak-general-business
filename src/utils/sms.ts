@@ -33,7 +33,7 @@ export async function sendSms<
 
     const { system } = application!;
     const { platform, config: systemConfig } = system!;
-    const { config: platformConfig } = platform;
+    const { config: platformConfig } = platform || {};
     const accountConfigs =
         systemConfig?.Account?.[origin] || platformConfig?.Account?.[origin];
     const smsConfigs =

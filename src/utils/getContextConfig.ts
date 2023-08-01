@@ -46,7 +46,7 @@ export async function getConfig<
     let originCloudAccounts =
         originConfig && systemConfig.Account && systemConfig.Account[origin];
 
-    if (!originConfig) {
+    if (!originConfig && platform) {
         const { config: platformConfig } = platform;
         originConfig =
             platformConfig[service] && (platformConfig[service] as any)[origin];

@@ -14,7 +14,7 @@ export declare type OpSchema = EntityShape & {
     name: String<32>;
     description: Text;
     config: Config;
-    platformId: ForeignKey<"platform">;
+    platformId?: ForeignKey<"platform"> | null;
     folder: String<16>;
     super?: Boolean | null;
     style?: Style | null;
@@ -26,13 +26,13 @@ export declare type Schema = EntityShape & {
     name: String<32>;
     description: Text;
     config: Config;
-    platformId: ForeignKey<"platform">;
+    platformId?: ForeignKey<"platform"> | null;
     folder: String<16>;
     super?: Boolean | null;
     style?: Style | null;
     entity?: String<32> | null;
     entityId?: String<64> | null;
-    platform: Platform.Schema;
+    platform?: Platform.Schema | null;
     application$system?: Array<Application.Schema>;
     application$system$$aggr?: AggregationResult<Application.Schema>;
     domain$system?: Array<Domain.Schema>;
@@ -154,12 +154,12 @@ export declare type Selection<P extends Object = Projection> = SelectOperation<P
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "platformId">> & (({
     platformId?: never;
-    platform: Platform.CreateSingleOperation;
+    platform?: Platform.CreateSingleOperation;
 } | {
     platformId: String<64>;
     platform?: Platform.UpdateOperation;
 } | {
-    platformId: String<64>;
+    platformId?: String<64>;
 })) & ({
     entity?: string;
     entityId?: string;
