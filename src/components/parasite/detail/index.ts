@@ -22,4 +22,16 @@ export default OakComponent({
             expiresAt: parasite?.expiresAt,
         };
     },
+    methods: {
+        copy(text: string) {
+            if (text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    this.setMessage({
+                        content: '复制成功',
+                        type: 'success',
+                    });
+                });
+            }
+        },
+    }
 });
