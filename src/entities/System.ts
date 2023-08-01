@@ -9,7 +9,7 @@ export interface Schema extends EntityShape {
     name: String<32>;
     description: Text;
     config: Config;
-    platform: Platform;
+    platform?: Platform;
     folder: String<16>;
     super?: Boolean; // super表示是这个platform本身的系统，可以操作application/system这些数据，也可以访问超出本system的其它数据。
     style?: Style;

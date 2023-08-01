@@ -1,7 +1,6 @@
-import { WebConfig } from "../../entities/Application";
+import { WebConfig, WechatPublicConfig, AppType } from "../../../entities/Application";
 
 const SEND_KEY = 'captcha:sendAt';
-const LOGIN_AGREED = 'login:agreed';
 const LOGIN_MODE = 'login:mode';
 const SEND_CAPTCHA_LATENCY = process.env.NODE_ENV === 'development' ? 10 : 60;
 
@@ -24,17 +23,14 @@ export default OakComponent({
     properties: {
         onlyCaptcha: false,
         onlyPassword: false,
-        eventLoggedIn: '',
-        backUrl: '', //回调url
+        disabled: '',
+        redirectUri: '',        // 微信登录后的redirectUri，要指向wechatUser/login去处理
+        url: '',                // 登录成功后redirectTo的页面，不配置的话就认为是goBack
     },
-    formData() {
-        const { features } = this;
+    formData({ features, props }) {
         const application = features.application.getApplication();
-        const appId = (application?.config as WebConfig | undefined)?.wechat
-            ?.appId;
 
-        const loginAgreed = features.localStorage.load(LOGIN_AGREED);
-        const loginMode = features.localStorage.load(LOGIN_MODE) || 2;
+        let loginMode = features.localStorage.load(LOGIN_MODE) || 2;
         const lastSendAt = features.localStorage.load(SEND_KEY);
         const now = Date.now();
         let counter = 0;
@@ -53,11 +49,47 @@ export default OakComponent({
                 (this as any).counterHandler = undefined;
             }
         }
+        const appType = application?.type as AppType;
+        const config = application?.config;
+        let appId;
+        let domain; //网站扫码 授权回调域
+        let isSupportScan = false; //是否支持微信扫码登录
+        let isSupportWechat = false; // 微信扫码网站登录
+        let isSupportWechatPublic = false; // 微信扫码公众号登录
+        let isSupportGrant = false; // 是否支持微信公众号授权登录
+        if (appType === 'wechatPublic') {
+            const config2 = config as WechatPublicConfig;
+            const isService = config2?.isService; //是否服务号 服务号才能授权登录
+            appId = config2?.appId;
+            isSupportGrant = !!(isService && appId);
+            isSupportWechat = !!config2?.passport?.includes('wechat');
+            isSupportWechatPublic = !!config2?.passport?.includes('wechatPublic') //是否开启
+        } else if (appType === 'web') {
+            const config2 = config as WebConfig;
+            appId = config2?.wechat?.appId;
+            domain = config2?.wechat?.domain;
+            isSupportWechat = !!config2?.passport?.includes('wechat');
+            isSupportWechatPublic = !!config2?.passport?.includes('wechatPublic') //是否开启
+        }
+
+        if (isSupportGrant) {
+            loginMode = 1;
+        } else if (props.onlyPassword) {
+            loginMode = 1;
+        } else if (props.onlyCaptcha) {
+            loginMode = 2;
+        } else {
+            loginMode = loginMode === 3 && !isSupportScan ? 2 : loginMode;
+        }
+
         return {
             counter,
-            loginAgreed,
             loginMode,
             appId,
+            isSupportWechat,
+            isSupportWechatPublic,
+            isSupportGrant,
+            domain,
         };
     },
     lifetimes: {
@@ -89,18 +121,11 @@ export default OakComponent({
         },
         async loginByMobile(
             mobile: string,
-            loginAgreed: boolean,
             password?: string,
             captcha?: string
         ) {
-            const { eventLoggedIn, backUrl } = this.props;
-            if (!loginAgreed) {
-                this.setMessage({
-                    type: 'info',
-                    content: '请阅读并同意服务条款和隐私政策',
-                });
-                return;
-            }
+            const { url } = this.props;
+            
             try {
                 this.setState({
                     loading: true,
@@ -113,19 +138,14 @@ export default OakComponent({
                 this.setState({
                     loading: false,
                 });
-                if (eventLoggedIn) {
-                    this.pub(eventLoggedIn);
-                    return;
-                }
-                if (backUrl) {
-                    // todo 现在不存在跨域名登录 不需要使用window.location.replace
-                    //  window.location.replace(backUrl);
+                if (url) {
                     this.redirectTo({
-                        url: backUrl,
+                        url,
                     });
-                    return;
                 }
-                this.navigateBack();
+                else {
+                    this.navigateBack();
+                }
             } catch (err) {
                 this.setState({
                     loading: false,
@@ -136,57 +156,11 @@ export default OakComponent({
                 });
             }
         },
-        async loginByMobileWeb(
-            mobile: string,
-            loginAgreed: boolean,
-            password?: string,
-            captcha?: string,
-            loginMode?: number
-        ) {
-            await this.loginByMobile(mobile, loginAgreed, password, captcha);
-            if (loginAgreed !== this.state.loginAgreed) {
-                this.setLoginAgreed(loginAgreed);
-            }
-            if (loginMode && loginMode !== this.state.loginMode) {
-                this.setLoginMode(loginMode);
-            }
-        },
-        setLoginAgreed(checked: boolean) {
-            this.features.localStorage.save(LOGIN_AGREED, checked);
-            this.setState({
-                loginAgreed: checked,
-            });
-        },
         setLoginMode(value: number) {
             this.features.localStorage.save(LOGIN_MODE, value);
             this.setState({
                 loginMode: value,
             });
-        },
-        goPage(type: 'service' | 'privacy') {
-            const { width } = this.props as any;
-            switch (type) {
-                case 'service':
-                    if (width !== 'xs') {
-                        window.open('');
-                    } else {
-                        this.navigateTo({
-                            url: '',
-                        });
-                    }
-                    break;
-                case 'privacy':
-                    if (width !== 'xs') {
-                        window.open('');
-                    } else {
-                        this.navigateTo({
-                            url: '',
-                        });
-                    }
-                    break;
-                default:
-                    break;
-            }
         },
     },
 });

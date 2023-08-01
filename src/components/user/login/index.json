@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText": "登录",
+    "oakDisablePulldownRefresh": true,
+    "usingComponents": {
+        "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index"
+    }
+}
