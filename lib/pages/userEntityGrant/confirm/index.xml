@@ -1,0 +1,51 @@
+<!-- index.wxml -->
+<view class="page-body">
+<view class="content">
+
+
+    <view class="circle-view">
+        <l-icon name="user" size="80"/>
+    </view>
+    <block wx:if="{{ type === 'grant' }}">
+        <view class="title">
+          {{granter.name || granter.nickname}}
+           授予您【
+          {{relation ? t(entity + ':r.' + relation) : ''}}
+          】
+        </view>
+    </block>
+    <block wx:else>
+<view class="title">
+          {{granter.name || granter.nickname}}
+           转让您【
+          {{relation ? t(entity + ':r.' + relation) : ''}}
+          】
+    </view>
+</block>
+
+<block wx:if="{{hasConfirmed || !!(granteeId && userId === granteeId)}}">
+    <view class="desc">您已领取</view>
+</block>
+<block wx:elif="{{!!expired}}">
+    <view class="desc">已过期，请联系相关人员重新分享</view>
+</block>
+<block wx:elif="{{number === 1 && confirmed > 0 && (!(granteeId && userId === granteeId) || !hasConfirmed)}}">
+    <view class="desc">被他人已领取</view>
+</block>
+<block wx:else>
+    <view class="desc">请您领取</view>
+</block>
+
+</view>
+<block wx:if="{{!oakLoading && !expired && number > confirmed && !hasConfirmed}}">
+            <l-button disabled="{{oakExecuting}}" type="default" style="margin: 16rpx" size="large" bind:lintap="handleConfirm">
+                确定
+            </l-button>
+        </block>
+
+        <block wx:elif="{{redirectTo && !oakLoading && !expired && (hasConfirmed || !!(granteeId && userId === granteeId) )}}">
+<l-button l-class="btn" type="success" style="margin: 16rpx" size="large" bind:lintap="redirectPage">
+                领取成功{{redirectTo && redirectCounter > 0 ? '(' + redirectCounter + 's)' : '' }}
+        </l-button>
+    </block>
+</view>
