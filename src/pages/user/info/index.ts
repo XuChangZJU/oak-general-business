@@ -200,6 +200,17 @@ export default OakComponent({
                 }
             );
         },
+        goChangePassword() {
+            this.navigateTo(
+                {
+                    url: '/changePassword',
+                    userId: this.props.oakId,
+                },
+                {
+                    showBack: true,
+                }
+            );
+        },
         setVisibleMp(e: WechatMiniprogram.Touch) {
             const {
                 target: { dataset },
