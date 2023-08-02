@@ -204,5 +204,5 @@ function Container(props: {
     if (['inline', 'dialog'].includes(variant)) {
         return <>{children}</>;
     }
-    return <div className={Style.container}>{children}</div>;
+    return <div>{children}</div>;
 }
