@@ -19,9 +19,10 @@ export default OakComponent({
             | EntityDict['parasite']['Schema']['redirectTo']
             | undefined,
         multiple: false,
+        nameLabel: '',
     },
     lifetimes: {
-        ready() {},
+        ready() { },
     },
     formData: ({ data }) => {
         return {
@@ -31,6 +32,23 @@ export default OakComponent({
     },
     methods: {
         async onSearch(value: string) {
+            if ((this as any).timer) {
+                clearTimeout((this as any).timer)
+            }
+            (this as any).timer = setTimeout(() => {
+                this.search(value);
+            }, 500);
+        },
+        async search(value: string) {
+            while (value.indexOf("'") !== -1) {
+                value = value.replace("'", '');
+            }
+            if (!value) {
+                this.setState({
+                    options: []
+                });
+                return;
+            }
             const { entity, entityId, relation } = this.props;
             const userRelation = `user${firstLetterUpperCase(entity!)}`;
             const { data } = await this.features.cache.refresh('user', {

@@ -25,6 +25,7 @@ export default function Render(
             period: number;
             parasiteId: string;
             options: { value: string }[];
+            nameLabel: string;
         },
         {
             search: (value: string) => void;
@@ -38,7 +39,7 @@ export default function Render(
     >
 ) {
     const { methods, data } = props;
-    const { entity, entityId, relation, period, parasiteId, options } =
+    const { entity, entityId, relation, period, parasiteId, options, nameLabel } =
         props.data;
     const {
         setPeriod,
@@ -81,29 +82,37 @@ export default function Render(
         <>
             <div className={Style.container}>
                 <Form labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
-                    <Form.Item label="名称">
-                        <AutoComplete
-                            options={options}
-                            style={{ width: 200 }}
-                            onSelect={onSelect}
-                            onSearch={(text) => onSearch(text)}
-                            placeholder="请输入"
-                            onChange={(value) => {
-                                setSearchValue(value);
-                            }}
-                        />
+                    <Form.Item label={nameLabel || '名称'}
+                        required
+                    >
+                        <>
+                            <AutoComplete
+                                options={options}
+                                style={{ width: 200 }}
+                                onSelect={onSelect}
+                                onSearch={(text) => onSearch(text)}
+                                placeholder="请输入"
+                                onChange={(value) => {
+                                    setSearchValue(value);
+                                }}
+                            />
+                        </>
                     </Form.Item>
-                    <Form.Item label="有效期">
-                        <InputNumber
-                            min={1}
-                            max={30}
-                            placeholder="请输入"
-                            onChange={(value) => {
-                                setPeriod(value!);
-                            }}
-                            value={period}
-                            addonAfter={<Typography>天</Typography>}
-                        ></InputNumber>
+                    <Form.Item label="有效期"
+                        required
+                    >
+                        <>
+                            <InputNumber
+                                min={1}
+                                max={30}
+                                placeholder="请输入"
+                                onChange={(value) => {
+                                    setPeriod(value!);
+                                }}
+                                value={period}
+                                addonAfter={<Typography>天</Typography>}
+                            ></InputNumber>
+                        </>
                     </Form.Item>
 
                     <Form.Item wrapperCol={{ offset: 4 }}>
