@@ -22,6 +22,7 @@ export class Token<
     private tokenValue?: string;
     private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
     private storage: LocalStorage;
+    private isLoading = false;
 
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage) {
         super();
@@ -35,13 +36,17 @@ export class Token<
     }
 
     async loadTokenInfo() {
-        await this.cache.refresh('token', {
-            data: tokenProjection,
-            filter: {
-                id: this.tokenValue!,
-            },
-        });
-        this.publish();
+        if (this.tokenValue && !this.isLoading) {
+            this.isLoading = true;
+            await this.cache.refresh('token', {
+                data: tokenProjection,
+                filter: {
+                    id: this.tokenValue!,
+                },
+            });
+            this.publish();
+            this.isLoading = false;
+        }
     }
 
     async loginByMobile(mobile: string, password?: string, captcha?: string) {

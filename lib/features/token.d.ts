@@ -10,6 +10,7 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     private tokenValue?;
     private cache;
     private storage;
+    private isLoading;
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage);
     loadTokenInfo(): Promise<void>;
     loginByMobile(mobile: string, password?: string, captcha?: string): Promise<void>;
