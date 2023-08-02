@@ -10,7 +10,7 @@ const checkers: Checker<EntityDict, 'parasite', RuntimeCxt>[] = [
         entity: 'parasite',
         checker: (operation, context, option) => {
             const { data } = operation as EntityDict['parasite']['Create'];
-            assert (!(data instanceof Array));
+            assert(!(data instanceof Array));
             if (!data.expiresAt) {
                 data.expiresAt = Date.now() + 3600 * 1000;
             }
@@ -20,18 +20,24 @@ const checkers: Checker<EntityDict, 'parasite', RuntimeCxt>[] = [
             }
 
             if (data.userId) {
-                const users2 = context.select('user', {
-                    data: {
-                        id: 1,
-                        userState: 1,
+                const users2 = context.select(
+                    'user',
+                    {
+                        data: {
+                            id: 1,
+                            userState: 1,
+                        },
+                        filter: {
+                            id: data.userId,
+                        },
                     },
-                    filter: {
-                        id: data.userId,
-                    },
-                }, { dontCollect: true });
-    
-                const checkUser = (users: Partial<EntityDict['user']['OpSchema']>[]) => {
-                    const [ user ] = users;
+                    { dontCollect: true }
+                );
+
+                const checkUser = (
+                    users: Partial<EntityDict['user']['OpSchema']>[]
+                ) => {
+                    const [user] = users;
                     if (user.userState !== 'shadow') {
                         throw new OakRowInconsistencyException({
                             a: 's',
@@ -44,14 +50,32 @@ const checkers: Checker<EntityDict, 'parasite', RuntimeCxt>[] = [
                     }
                 };
                 if (users2 instanceof Promise) {
-                    return users2.then(
-                        (u) => checkUser(u)
-                    );
+                    return users2.then((u) => checkUser(u));
                 }
                 return checkUser(users2);
             }
-            assert((data as any).user && (data as any).user.action === 'create');
-        }
+            assert(
+                (data as any).user && (data as any).user.action === 'create'
+            );
+        },
+    },
+    {
+        type: 'row',
+        entity: 'parasite',
+        action: ['cancel'],
+        errMsg: '您没有设置失效的权限',
+        filter: {
+            expired: false,
+        },
+    },
+    {
+        type: 'row',
+        entity: 'parasite',
+        action: ['qrcode'],
+        errMsg: '您没有查看二维码的权限',
+        filter: {
+            expired: false,
+        },
     },
 ];
 

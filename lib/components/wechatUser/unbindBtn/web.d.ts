@@ -4,4 +4,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'wechatUser'
     wechatLoginId: string;
     qrCodeUrl: string;
     loading: boolean;
-}, {}>): JSX.Element;
+}, {}>): import("react/jsx-runtime").JSX.Element;

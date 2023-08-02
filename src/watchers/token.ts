@@ -1,8 +1,11 @@
 import { EntityDict } from '../general-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { Watcher, BBWatcher } from 'oak-domain/lib/types/Watcher';
-
-const watchers: Watcher<EntityDict, 'token', BackendRuntimeContext<EntityDict>>[] = [
+const watchers: Watcher<
+    EntityDict,
+    'token',
+    BackendRuntimeContext<EntityDict>
+>[] = [
     {
         name: '使定期禁用的token被禁用',
         entity: 'token',
@@ -17,7 +20,6 @@ const watchers: Watcher<EntityDict, 'token', BackendRuntimeContext<EntityDict>>[
         },
         action: 'disable',
         actionData: {},
-    }
+    },
 ];
-
 export default watchers;

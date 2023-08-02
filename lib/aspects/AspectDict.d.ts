@@ -1,9 +1,9 @@
-import { WebEnv, WechatMpEnv } from "../general-app-domain/Token/Schema";
+import { WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
 import { AppType } from '../general-app-domain/Application/Schema';
-import { EntityDict } from "../general-app-domain";
-import { QiniuUploadInfo } from "oak-frontend-base/lib/types/Upload";
-import { Config, Origin } from "../types/Config";
-import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
+import { EntityDict } from '../general-app-domain';
+import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
+import { Config, Origin } from '../types/Config';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = {
     mergeUser: (params: {
         from: string;

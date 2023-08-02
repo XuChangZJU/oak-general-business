@@ -1,5 +1,9 @@
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
-import { OakRowInconsistencyException, OakUnloggedInException, OakUserUnpermittedException } from 'oak-domain/lib/types/Exception';
+import {
+    OakRowInconsistencyException,
+    OakUnloggedInException,
+    OakUserUnpermittedException,
+} from 'oak-domain/lib/types/Exception';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
 import { CommonAspectDict } from 'oak-common-aspect';

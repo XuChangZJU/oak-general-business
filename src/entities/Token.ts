@@ -63,9 +63,14 @@ type Action = AbleAction;
 const AbleActionDef: ActionDef<AbleAction, AbleState> = makeAbleActionDef('enabled');
 
 
-const locale: LocaleDef<Schema, Action, '', {
-    ableState: AbleState,
-}> = {
+const locale: LocaleDef<
+    Schema,
+    Action,
+    '',
+    {
+        ableState: AbleState;
+    }
+> = {
     zh_CN: {
         name: '令牌',
         attr: {
@@ -85,8 +90,8 @@ const locale: LocaleDef<Schema, Action, '', {
         v: {
             ableState: {
                 enabled: '使用中',
-                disabled: '已禁用'
+                disabled: '已禁用',
             },
         },
     },
- };
+};

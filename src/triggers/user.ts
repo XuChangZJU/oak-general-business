@@ -28,37 +28,39 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
             };
             if (data instanceof Array) {
                 await Promise.all(
-                    data.map(
-                        async ele => {
-                            Object.assign(ele, {
-                                userSystem$user: [{
+                    data.map(async (ele) => {
+                        Object.assign(ele, {
+                            userSystem$user: [
+                                {
                                     id: generateNewId(),
                                     action: 'create',
                                     data: {
                                         id: generateNewId(),
                                         systemId,
-                                    }
-                                }],
-                            })
-                            setDefaultState(ele);
-                        }
-                    ));
-            }
-            else {
+                                    },
+                                },
+                            ],
+                        });
+                        setDefaultState(ele);
+                    })
+                );
+            } else {
                 Object.assign(data, {
-                    userSystem$user: [{
-                        id: generateNewId(),
-                        action: 'create',
-                        data: {
+                    userSystem$user: [
+                        {
                             id: generateNewId(),
-                            systemId,
-                        }
-                    }],
-                })
+                            action: 'create',
+                            data: {
+                                id: generateNewId(),
+                                systemId,
+                            },
+                        },
+                    ],
+                });
                 setDefaultState(data);
             }
             return 1;
-        }
+        },
     } as CreateTrigger<EntityDict, 'user', RuntimeCxt>,
     {
         name: '系统生成的第一个用户默认注册为root，用户的初始状态默认为shadow',
@@ -69,49 +71,56 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
             const { data } = operation;
             assert(!(data instanceof Array));
             if (NO_ANY_USER) {
-                const result = await context.select('user', {
-                    data: {
-                        id: 1,
-                    },
-                    filter: {
-                        id: {
-                            $ne: ROOT_USER_ID,
-                        },
-                    },
-                    indexFrom: 0,
-                    count: 1,
-                }, {
-                    dontCollect: true,
-                });
-                if (result.length === 0) {
-                    await context.operate('userRole', {
-                        id: generateNewId(),
-                        action: 'create',
+                const result = await context.select(
+                    'user',
+                    {
                         data: {
-                            id: generateNewId(),
-                            userId: data.id,
-                            roleId: ROOT_ROLE_ID,
-                            relation: 'owner',
+                            id: 1,
                         },
-                    }, {
-                        blockTrigger: true,
+                        filter: {
+                            id: {
+                                $ne: ROOT_USER_ID,
+                            },
+                        },
+                        indexFrom: 0,
+                        count: 1,
+                    },
+                    {
                         dontCollect: true,
-                    });
+                    }
+                );
+                if (result.length === 0) {
+                    await context.operate(
+                        'userRole',
+                        {
+                            id: generateNewId(),
+                            action: 'create',
+                            data: {
+                                id: generateNewId(),
+                                userId: data.id,
+                                roleId: ROOT_ROLE_ID,
+                                relation: 'owner',
+                            },
+                        },
+                        {
+                            blockTrigger: true,
+                            dontCollect: true,
+                        }
+                    );
                     return 1;
-                }
-                else {
+                } else {
                     NO_ANY_USER = false;
                 }
             }
             return 0;
-        }
+        },
     } as CreateTrigger<EntityDict, 'user', RuntimeCxt>,
     {
         name: '当用户被激活时，将所有的parasite作废',
         entity: 'user',
         action: 'activate',
         when: 'before',
-        fn: async({ operation }) => {
+        fn: async ({ operation }) => {
             const { data } = operation as EntityDict['user']['Update'];
             assert(!(data instanceof Array));
             data.parasite$user = {
@@ -123,13 +132,13 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
                         id: await generateNewIdAsync(),
                         action: 'disable',
                         data: {},
-                    }
-                }
+                    },
+                },
             };
 
             return 1;
-        }
-    }
+        },
+    },
 ];
 
 export default triggers;

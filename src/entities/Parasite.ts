@@ -1,4 +1,11 @@
-import { String, Int, Datetime, Image, Boolean, Text } from 'oak-domain/lib/types/DataType';
+import {
+    String,
+    Int,
+    Datetime,
+    Image,
+    Boolean,
+    Text,
+} from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Schema as User } from './User';
@@ -21,14 +28,13 @@ export interface Schema extends EntityShape {
     multiple?: Boolean;
     tokenLifeLength?: Int<4>;
     tokens: Token[];
-};
+}
 
-type IAction = 'wakeup';
+type IAction = 'wakeup' | 'cancel' | 'qrcode';
 type Action = IAction;
 
-const locale: LocaleDef<Schema, Action, '', {
-}> = {
-    "zh_CN": {
+const locale: LocaleDef<Schema, Action, '', {}> = {
+    zh_CN: {
         name: '寄生',
         attr: {
             user: '用户',
@@ -44,7 +50,8 @@ const locale: LocaleDef<Schema, Action, '', {
         },
         action: {
             wakeup: '激活',
+            cancel: '作废',
+            qrcode: '采集码'
         },
-    }
+    },
 };
-

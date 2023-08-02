@@ -1,12 +1,11 @@
-import { WebEnv, WechatMpEnv } from "../general-app-domain/Token/Schema";
+import { WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
 import { AppType } from '../general-app-domain/Application/Schema';
-import { EntityDict } from "../general-app-domain";
-import { QiniuUploadInfo } from "oak-frontend-base/lib/types/Upload";
-import { Config, Origin } from "../types/Config";
-import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
-import { CommonAspectDict } from "oak-common-aspect";
-import { FrontendRuntimeContext } from "../context/FrontendRuntimeContext";
-
+import { EntityDict } from '../general-app-domain';
+import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
+import { Config, Origin } from '../types/Config';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { CommonAspectDict } from 'oak-common-aspect';
+import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 
 type GeneralAspectDict<
     ED extends EntityDict,
@@ -69,10 +68,13 @@ type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<void>;
-    wakeupParasite: (params: {
-        id: string;
-        env: WebEnv | WechatMpEnv;
-    }, context: Cxt) => Promise<string>;
+    wakeupParasite: (
+        params: {
+            id: string;
+            env: WebEnv | WechatMpEnv;
+        },
+        context: Cxt
+    ) => Promise<string>;
     getUploadInfo: (
         params: { origin: Origin; bucket?: string; key?: string },
         context: Cxt
@@ -149,18 +151,17 @@ type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<string>;
-    getInfoByUrl: (
-        params: {
-            url: string;
-        },
-    ) => Promise<{
+    getInfoByUrl: (params: { url: string }) => Promise<{
         title: string;
         publishDate: number | undefined;
         imageList: string[];
-    }>
+    }>;
     getChangePasswordChannels: (
         params: { userId: string }
     ) => Promise<string[]>;
 };
 
-export type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
+export type AspectDict<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+> = GeneralAspectDict<ED, Cxt>;
