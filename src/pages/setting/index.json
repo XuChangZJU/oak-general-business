@@ -1,6 +1,6 @@
 {
     "navigationBarTitleText": "设置",
-    "oakDisablePulldownRefresh": true,
+    "enablePullDownRefresh": false,
     "usingComponents": {
         "l-list": "@oak-frontend-base/miniprogram_npm/lin-ui/list/index"
     }
