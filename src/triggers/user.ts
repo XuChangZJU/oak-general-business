@@ -121,7 +121,7 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
         action: 'activate',
         when: 'before',
         fn: async ({ operation }) => {
-            const { data } = operation as EntityDict['user']['Update'];
+            const { data, filter } = operation as EntityDict['user']['Update'];
             assert(!(data instanceof Array));
             data.parasite$user = {
                 id: await generateNewIdAsync(),
@@ -132,8 +132,33 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
                         id: await generateNewIdAsync(),
                         action: 'disable',
                         data: {},
+                        filter: {
+                            ableState: 'enabled',
+                            parasite: {
+                                userId: {
+                                    $in: {
+                                        entity: 'user',
+                                        data: {
+                                            id: 1,
+                                        },
+                                        filter,
+                                    }
+                                }
+                            }
+                        }
                     },
                 },
+                filter: {
+                    userId: {
+                        $in: {
+                            entity: 'user',
+                            data: {
+                                id: 1,
+                            },
+                            filter,
+                        }
+                    }
+                }
             };
 
             return 1;
