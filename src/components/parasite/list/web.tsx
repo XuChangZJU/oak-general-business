@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Table, Button, Typography, Modal } from 'antd';
 import dayjs from 'dayjs';
-import { WebComponentProps } from 'oak-frontend-base';
+import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import ActionBtnPanel from 'oak-frontend-base/lib/components/actionBtnPanel';
 import { EntityDict } from '../../../general-app-domain';
 import Style from './web.module.less';
@@ -15,7 +15,7 @@ export default function render(
         true,
         {
             searchValue: string;
-            list: EntityDict['userEntityGrant']['Schema'][];
+            list: RowWithActions<EntityDict, 'userEntityGrant'>[];
             showBack: boolean;
             variant?: 'inline' | 'alone' | 'dialog';
             qrCodeUrl: string;

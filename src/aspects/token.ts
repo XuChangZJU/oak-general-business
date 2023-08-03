@@ -222,8 +222,8 @@ async function setUpTokenAndUser<
     );
     assert(
         schema[entity as keyof ED].attributes.hasOwnProperty('userId') &&
-            (schema[entity as keyof ED].attributes as any).userId!.ref ===
-                'user',
+        (schema[entity as keyof ED].attributes as any).userId!.ref ===
+        'user',
         `${entity}必须有指向user的userId属性`
     );
     if (currentToken) {
@@ -897,7 +897,7 @@ async function tryRefreshWechatPublicUserInfo<
 export async function refreshWechatPublicUserInfo<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
->({}, context: Cxt) {
+>({ }, context: Cxt) {
     const tokenValue = context.getTokenValue();
     const [token] = await context.select(
         'token',
@@ -1512,7 +1512,7 @@ export async function sendCaptcha<
         env,
     }: {
         mobile: string;
-        env: WechatMpConfig | WebEnv;
+        env: WechatMpEnv | WebEnv;
     },
     context: Cxt
 ): Promise<string> {
@@ -1708,7 +1708,7 @@ export async function getWechatMpUserPhoneNumber<
 export async function logout<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
->({}, context: Cxt) {
+>({ }, context: Cxt) {
     const tokenId = context.getTokenValue();
     if (tokenId) {
         await context.operate(

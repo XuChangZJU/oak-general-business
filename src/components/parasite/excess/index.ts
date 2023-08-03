@@ -68,7 +68,7 @@ export default OakComponent({
     methods: {
         redirectPage(
             redirectTo?: EntityDict['parasite']['Schema']['redirectTo'],
-            nickname?: string
+            nickname?: string | null
         ) {
             if (!redirectTo) {
                 this.setMessage({
