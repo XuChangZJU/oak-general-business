@@ -2,10 +2,11 @@ import * as React from 'react';
 import { Table, Button, Typography, Modal } from 'antd';
 import dayjs from 'dayjs';
 import { WebComponentProps } from 'oak-frontend-base';
+import ActionBtnPanel from 'oak-frontend-base/lib/components/actionBtnPanel';
 import { EntityDict } from '../../../general-app-domain';
 import Style from './web.module.less';
-import ActionBtnPanel from '@oak-frontend-base/components/actionBtnPanel';
 import ParasiteDetail from '../detail';
+
 import { useState } from 'react';
 export default function render(
     props: WebComponentProps<
@@ -31,9 +32,6 @@ export default function render(
         oakFullpath,
         list = [],
         oakLoading,
-        variant,
-        qrCodeUrl,
-        qrCodeExpiresAt,
     } = props.data;
 
 
@@ -43,7 +41,7 @@ export default function render(
     const [qrCodeOpen, setQrCodeOpen] = useState(false);
     const [parasiteId, setParasiteId] = useState('');
     return (
-        <Container variant={variant}>
+        <>
             <Table
                 loading={oakLoading}
                 dataSource={list}
@@ -155,7 +153,7 @@ export default function render(
                                             ]?.includes('qrcode'),
                                             // alerted: true,
                                             onClick: async () => {
-                                                setParasiteId(record.id!)
+                                                setParasiteId(record.id!);
                                                 setQrCodeOpen(true);
                                             },
                                         },
@@ -163,7 +161,7 @@ export default function render(
                                 />
                             );
                         },
-                    }
+                    },
                 ]}
                 pagination={{
                     total,
@@ -192,17 +190,6 @@ export default function render(
                     oakPath="$parasite/list-parasite/detail"
                 />
             </Modal>
-        </Container>
+        </>
     );
-}
-
-function Container(props: {
-    children: React.ReactNode;
-    variant?: 'inline' | 'alone' | 'dialog';
-}) {
-    const { children, variant = 'alone' } = props;
-    if (['inline', 'dialog'].includes(variant)) {
-        return <>{children}</>;
-    }
-    return <div>{children}</div>;
 }

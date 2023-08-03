@@ -26,6 +26,10 @@ export default OakComponent({
                         entityId: 1,
                         redirectTo: 1,
                         userId: 1,
+                        user: {
+                            id: 1,
+                            nickname: 1,
+                        }
                     },
                     filter: {
                         id: oakId || 'illegal',
@@ -48,7 +52,10 @@ export default OakComponent({
 
                 // 登录之后
                 this.features.token.wakeupParasite(parasite.id!);
-                this.redirectPage(parasite.redirectTo);
+                this.redirectPage(
+                    parasite.redirectTo,
+                    parasite?.user?.nickname
+                );
             } catch (err) {
                 this.setState({
                     loading: false,
@@ -60,7 +67,8 @@ export default OakComponent({
     },
     methods: {
         redirectPage(
-            redirectTo?: EntityDict['parasite']['Schema']['redirectTo']
+            redirectTo?: EntityDict['parasite']['Schema']['redirectTo'],
+            nickname?: string
         ) {
             if (!redirectTo) {
                 this.setMessage({
@@ -87,6 +95,7 @@ export default OakComponent({
                 {
                     url,
                     ...(props || {}),
+                    name: nickname,
                 },
                 state
             );
