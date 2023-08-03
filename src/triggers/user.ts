@@ -130,7 +130,15 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
                         id: 1,
                     },
                     filter: {
-                        user: filter,
+                        userId: {
+                            $in: {
+                                entity: 'user',
+                                filter,
+                                data: {
+                                    id: 1,
+                                }
+                            }
+                        },
                         expired: false,
                     },
                 },
