@@ -10,5 +10,6 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
         state?: Record<string, any> | undefined;
     } | undefined;
     multiple: boolean;
+    nameLabel: string;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

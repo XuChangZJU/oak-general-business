@@ -13,4 +13,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', fal
 }, {
     logout: () => void;
     updateAttribute: (attr: string, value: any) => Promise<void>;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

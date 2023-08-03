@@ -1,8 +1,8 @@
-import { WebComponentProps } from 'oak-frontend-base';
+import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'parasite', true, {
     searchValue: string;
-    list: EntityDict['userEntityGrant']['Schema'][];
+    list: RowWithActions<EntityDict, 'userEntityGrant'>[];
     showBack: boolean;
     variant?: 'inline' | 'alone' | 'dialog';
     qrCodeUrl: string;
@@ -10,4 +10,4 @@ export default function render(props: WebComponentProps<EntityDict, 'parasite', 
 }, {
     cancel: () => void;
     getQrCode: () => Promise<void>;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

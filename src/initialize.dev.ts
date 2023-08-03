@@ -13,6 +13,7 @@ import generalWatchers from './watchers';
 import generalCheckers from './checkers';
 import generalTriggers from './triggers';
 import generalAspectDict from './aspects';
+import { AspectDict as GeneralAspectDict } from './aspects/AspectDict';
 import generalStartRoutines from './routines/start';
 import generalData from './data';
 import generalAuthDict from './auth';
@@ -85,11 +86,11 @@ export function initialize<
     }
     const authDict2 = Object.assign({}, generalAuthDict, authDict);
 
-    const { features } = initDev<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>(
+    const { features } = initDev<ED, Cxt, FrontCxt, AD & GeneralAspectDict<ED, Cxt>>(
         storageSchema,
         frontendContextBuilder,
         backendContextBuilder,
-        aspectDict2 as AD & GAD<ED, Cxt>,
+        aspectDict2 as AD & GeneralAspectDict<ED, Cxt>,
         triggers2,
         checkers2,
         watchers2,

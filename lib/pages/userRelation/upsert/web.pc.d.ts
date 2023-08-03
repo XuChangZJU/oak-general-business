@@ -11,4 +11,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     entityId: string;
     relations: string[];
     qrCodeType?: QrCodeType;
-}, {}>): import("react/jsx-runtime").JSX.Element;
+}, {}>): JSX.Element;

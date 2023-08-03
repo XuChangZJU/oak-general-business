@@ -6,4 +6,4 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
     avatarUrl?: string;
 }, {
     onPickByWeb: (files: File[]) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

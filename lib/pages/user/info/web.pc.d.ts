@@ -20,5 +20,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     updateMyInfo: () => void;
     goAddMobile: () => void;
     sendCaptcha: () => void;
+    goChangePassword: () => void;
     unbunding: (captcha?: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

@@ -83,7 +83,7 @@ type GeneralAspectDict<
     sendCaptcha: (params: {
         mobile: string;
         env: WechatMpEnv | WebEnv;
-    }) => Promise<string>;
+    }, context: Cxt) => Promise<string>;
     getApplication: (
         params: {
             type: AppType;
@@ -157,7 +157,8 @@ type GeneralAspectDict<
         imageList: string[];
     }>;
     getChangePasswordChannels: (
-        params: { userId: string }
+        params: { userId: string },
+        context: Cxt
     ) => Promise<string[]>;
 };
 
