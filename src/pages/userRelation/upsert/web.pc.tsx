@@ -1,6 +1,5 @@
 import React from 'react';
 import { Tabs } from 'antd';
-import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
 import ByMobile from './byMobile/index';
 import ByUserEntityGrant from './byUserEntityGrant';
@@ -56,7 +55,7 @@ export default function Render(
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
-                    oakPath={oakFullpath ? `$${oakFullpath}-mobile` : undefined}
+                    oakPath={oakFullpath ? `$userRelation-upsert-by-mobile` : undefined}
                     oakAutoUnmount={true}
                 />
             );
@@ -70,7 +69,7 @@ export default function Render(
                     relations={relations}
                     oakPath={
                         oakFullpath
-                            ? `$${oakFullpath}-userEntityGrant`
+                            ? `$userRelation-upsert-by-userEntityGrant`
                             : undefined
                     }
                     oakAutoUnmount={true}
@@ -94,7 +93,7 @@ export default function Render(
                         entityId={entityId}
                         relations={relations}
                         oakPath={
-                            oakFullpath ? `$${oakFullpath}-mobile` : undefined
+                            oakFullpath ? `$userRelation-upsert-by-mobile` : undefined
                         }
                         oakAutoUnmount={true}
                     />
@@ -111,7 +110,7 @@ export default function Render(
                         qrCodeType={qrCodeType}
                         oakPath={
                             oakFullpath
-                                ? `$${oakFullpath}-userEntityGrant`
+                                ? `$userRelation-upsert-by-userEntityGrant`
                                 : undefined
                         }
                         oakAutoUnmount={true}
@@ -133,8 +132,8 @@ export default function Render(
         SubPart = <Tabs items={items2} />;
     }
     return (
-        <PageHeader showBack={true} title="添加权限">
+        <>
             {SubPart}
-        </PageHeader>
+        </>
     );
 }

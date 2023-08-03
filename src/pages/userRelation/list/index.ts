@@ -165,6 +165,8 @@ export default OakComponent({
         qrCodeType: '' as string,
         showTitle: true,
         showBack: false,
+        onUpdate: (id: string) => undefined as void,
+        onCreate: () => undefined as void,
     },
     data: {
         searchValue: '',
@@ -205,29 +207,46 @@ export default OakComponent({
                 entityId,
                 redirectToAfterConfirm,
                 qrCodeType,
+                onCreate,
             } = this.props;
-            this.navigateTo(
-                {
-                    url: '/userRelation/upsert',
-                    entity,
-                    entityId,
-                },
-                {
-                    redirectToAfterConfirm,
-                    qrCodeType,
+            if (onCreate) {
+                onCreate();
+            }
+            else {
+                if (process.env.NODE_ENV === 'development') {
+                    console.warn('userRelation将不再作为page直接使用，请使用回调函数处理');
                 }
-            );
+                this.navigateTo(
+                    {
+                        url: '/userRelation/upsert',
+                        entity,
+                        entityId,
+                    },
+                    {
+                        redirectToAfterConfirm,
+                        qrCodeType,
+                    }
+                );
+            }
         },
         goUpdate(id: string) {
-            const { entity, entityId } = this.props;
-            this.navigateTo(
-                {
-                    url: '/userRelation/upsert/byUser',
-                    entity,
-                    entityId,
-                    oakId: id,
-                },
-            );
+            const { entity, entityId, onUpdate } = this.props;
+            if (onUpdate) {
+                onUpdate(id);
+            }
+            else {
+                if (process.env.NODE_ENV === 'development') {
+                    console.warn('userRelation将不再作为page直接使用，请使用回调函数处理');
+                }
+                this.navigateTo(
+                    {
+                        url: '/userRelation/upsert/byUser',
+                        entity,
+                        entityId,
+                        oakId: id,
+                    },
+                );
+            }
         },
         async confirmDelete(idRemove: string) {
             const { entity, entityId } = this.props;
@@ -373,16 +392,19 @@ export default OakComponent({
         },
     },
 }) as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
-    props: ReactComponentProps<
-        ED2,
-        T2,
-        true,
-        {
-            entity: keyof ED2,
-            entityId: string,
-            relations: string[],
-            redirectToAfterConfirm: EntityDict['userEntityGrant']['Schema']['redirectTo'],
-            qrCodeType: string,
-        }
-    >
-) => React.ReactElement;
+        props: ReactComponentProps<
+            ED2,
+            T2,
+            true,
+            {
+                entity: keyof ED2,
+                entityId: string,
+                redirectToAfterConfirm: ED2['userEntityGrant']['Schema']['redirectTo'],
+                qrCodeType: string,
+                showTitle: true,
+                showBack: false,
+                onCreate: () => void,
+                onUpdate: (id: string) => void,
+            }
+        >
+    ) => React.ReactElement;

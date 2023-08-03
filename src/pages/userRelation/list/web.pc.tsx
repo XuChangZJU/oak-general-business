@@ -9,7 +9,6 @@ import {
     Tag,
     Modal,
 } from 'antd';
-import PageHeader from '../../../components/common/pageHeader';
 // import UserEntityGrantList from '../../../pages/userEntityGrant/list';
 
 import Style from './web.module.less';
@@ -64,7 +63,7 @@ export default function Render(
     const [inviteVisible, setInviteVisible] = useState(false);
 
     return (
-        <PageHeader title={showTitle ? '权限列表' : undefined} showBack={showBack}>
+        <>
             <div className={Style.container}>
                 <Space style={{ marginBottom: 16 }}>
                     <Button type="primary" onClick={() => goUpsert()}>
@@ -197,6 +196,6 @@ export default function Render(
                     oakPath="$userRelation/list-userEntityGrant/list"
                 />
             </Modal> */}
-        </PageHeader>
+        </>
     );
 }
