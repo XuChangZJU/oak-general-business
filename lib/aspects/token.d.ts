@@ -1,5 +1,4 @@
 import { EntityDict } from '../general-app-domain';
-import { WechatMpConfig } from '../general-app-domain/Application/Schema';
 import { WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 export declare function loginByMobile<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
@@ -47,7 +46,7 @@ export declare function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends 
 }, context: Cxt): Promise<void>;
 export declare function sendCaptcha<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ mobile, env, }: {
     mobile: string;
-    env: WechatMpConfig | WebEnv;
+    env: WechatMpEnv | WebEnv;
 }, context: Cxt): Promise<string>;
 export declare function switchTo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ userId }: {
     userId: string;

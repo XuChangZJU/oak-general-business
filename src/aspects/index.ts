@@ -17,6 +17,7 @@ import { updateConfig, updateApplicationConfig } from './config';
 import { mergeUser, getChangePasswordChannels } from './user';
 import { createWechatLogin } from './wechaLogin';
 import { unbindingWechat } from './wechatUser';
+import { getMpUnlimitWxaCode } from './wechatQrCode';
 
 const aspectDict = {
     mergeUser,
@@ -40,6 +41,7 @@ const aspectDict = {
     loginByWechat,
     getInfoByUrl,
     getChangePasswordChannels,
+    getMpUnlimitWxaCode,
 };
 
 export default aspectDict;

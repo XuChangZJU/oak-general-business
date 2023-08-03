@@ -6,4 +6,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'wechatLogin
     loading: boolean;
     successed: boolean;
     type: EntityDict['wechatLogin']['Schema']['type'];
-}, {}>): import("react/jsx-runtime").JSX.Element;
+}, {}>): JSX.Element;

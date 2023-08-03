@@ -9,4 +9,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
 }, {
     gotoDoc: () => void;
     gotoArticleDetail: (oakId: string) => void;
-}>): import("react/jsx-runtime").JSX.Element | null;
+}>): JSX.Element | null;
