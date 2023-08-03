@@ -54,7 +54,7 @@ export default OakComponent({
                 this.features.token.wakeupParasite(parasite.id!);
                 this.redirectPage(
                     parasite.redirectTo,
-                    parasite?.user?.nickname
+                    parasite?.user?.nickname === 'shadow_user' ? undefined : parasite?.user?.nickname
                 );
             } catch (err) {
                 this.setState({
