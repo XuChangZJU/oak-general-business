@@ -16,10 +16,7 @@ export default function render(
         {
             searchValue: string;
             list: EntityDict['userEntityGrant']['Schema'][];
-            showBack: boolean;
-            variant?: 'inline' | 'alone' | 'dialog';
-            qrCodeUrl: string;
-            qrCodeExpiresAt: number;
+            nameLabel: string;
         },
         {
             cancel: () => void;
@@ -32,6 +29,7 @@ export default function render(
         oakFullpath,
         list = [],
         oakLoading,
+        nameLabel,
     } = props.data;
 
 
@@ -56,9 +54,9 @@ export default function render(
                     },
                     {
                         dataIndex: ['user', 'nickname'],
-                        title: '姓名',
+                        title: nameLabel || '名称',
                         render: (value, record, index) => {
-                            return value || '--';
+                            return value !== 'shadow_user' && value || '--';
                         },
                     },
                     {

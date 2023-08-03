@@ -20,6 +20,7 @@ export default OakComponent({
             | undefined,
         multiple: false,
         nameLabel: '',
+        nameRequired: true
     },
     lifetimes: {
         ready() { },
@@ -117,18 +118,25 @@ export default OakComponent({
             });
         },
         confirm() {
-            const { entityId, entity, redirectTo, relation, multiple } =
+            const { entityId, entity, redirectTo, relation, multiple, nameRequired } =
                 this.props;
             const { period, userId, searchValue } = this.state;
 
+
+            let nickname = searchValue;
             const time = period * 24 * 60 * 60 * 1000;
-            if (!userId && !searchValue) {
-                this.setMessage({
-                    type: 'error',
-                    content: '请输入名称',
-                });
-                return;
+            if (nameRequired) {
+                if (!userId && !searchValue) {
+                    this.setMessage({
+                        type: 'error',
+                        content: '请输入名称',
+                    });
+                    return;
+                }
+            } else {
+                nickname = 'shadow_user'
             }
+
 
             if (!period) {
                 this.setMessage({
@@ -152,7 +160,7 @@ export default OakComponent({
                         action: 'create',
                         data: {
                             id: generateNewId(),
-                            nickname: searchValue,
+                            nickname: nickname,
 
                             [`${userRelationRelativePath}`]: [
                                 {
