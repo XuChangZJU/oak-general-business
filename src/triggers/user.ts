@@ -119,47 +119,100 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
         name: '当用户被激活时，将所有的parasite作废',
         entity: 'user',
         action: 'activate',
-        when: 'before',
-        fn: async ({ operation }) => {
+        when: 'after',
+        fn: async ({ operation }, context) => {
             const { data, filter } = operation as EntityDict['user']['Update'];
             assert(!(data instanceof Array));
-            data.parasite$user = {
-                id: await generateNewIdAsync(),
-                action: 'update',
-                data: {
-                    expired: true,
-                    token$entity: {
-                        id: await generateNewIdAsync(),
-                        action: 'disable',
-                        data: {},
-                        filter: {
-                            ableState: 'enabled',
-                            parasite: {
-                                userId: {
-                                    $in: {
-                                        entity: 'user',
-                                        data: {
-                                            id: 1,
-                                        },
-                                        filter,
-                                    }
-                                }
-                            }
-                        }
+            const parasiteList = await context.select(
+                'parasite',
+                {
+                    data: {
+                        id: 1,
+                    },
+                    filter: {
+                        user: filter,
+                        expired: false,
                     },
                 },
-                filter: {
-                    userId: {
-                        $in: {
-                            entity: 'user',
-                            data: {
-                                id: 1,
-                            },
-                            filter,
-                        }
-                    }
-                }
-            };
+                {}
+            );
+            const parasiteIds = parasiteList.map((ele) => ele.id);
+            if (parasiteIds.length > 0) {
+                await context.operate(
+                    'parasite',
+                    {
+                        id: await generateNewIdAsync(),
+                        action: 'update',
+                        data: {
+                            expired: true,
+                        },
+                        filter: {
+                            id: {
+                                $in: parasiteIds
+                            }
+                        },
+                    },
+                    { blockTrigger: true }
+                );
+                await context.operate(
+                    'token',
+                    {
+                        id: await generateNewIdAsync(),
+                        action: 'disable',
+                        data: {
+                            expired: true,
+                        },
+                        filter: {
+                            ableState: 'enabled',
+                            entity: 'parasite',
+                            entityId: {
+                                $in: parasiteIds as string[]
+                            }
+                        },
+                    },
+                    { blockTrigger: true }
+                );
+
+            }
+
+            // operation的级联写法目前不能正确解析上层对象对下层对象的filter关系
+            // data.parasite$user = { 
+            //     id: await generateNewIdAsync(),
+            //     action: 'update',
+            //     data: {
+            //         expired: true,
+            //         token$entity: {
+            //             id: await generateNewIdAsync(),
+            //             action: 'disable',
+            //             data: {},
+            //             filter: {
+            //                 ableState: 'enabled',
+            //                 parasite: {
+            //                     userId: {
+            //                         $in: {
+            //                             entity: 'user',
+            //                             data: {
+            //                                 id: 1,
+            //                             },
+            //                             filter,
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //         },
+            //     },
+            //     filter: {
+            //         userId: {
+            //             $in: {
+            //                 entity: 'user',
+            //                 data: {
+            //                     id: 1,
+            //                 },
+            //                 filter,
+            //             }
+            //         }
+            //     }
+            // };
 
             return 1;
         },
