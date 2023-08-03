@@ -26,6 +26,7 @@ export default function Render(
             parasiteId: string;
             options: { value: string }[];
             nameLabel: string;
+            nameRequired: boolean;
         },
         {
             search: (value: string) => void;
@@ -47,6 +48,7 @@ export default function Render(
         parasiteId,
         options,
         nameLabel,
+        nameRequired,
     } = props.data;
     const { setPeriod, confirm, setInit, onSelect, onSearch, setSearchValue } =
         methods;
@@ -83,7 +85,7 @@ export default function Render(
         <>
             <div className={Style.container}>
                 <Form labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
-                    <Form.Item label={nameLabel || '名称'} required>
+                    <Form.Item label={nameLabel || '名称'} required={nameRequired}>
                         <>
                             <AutoComplete
                                 options={options}

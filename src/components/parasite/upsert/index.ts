@@ -118,7 +118,7 @@ export default OakComponent({
             });
         },
         confirm() {
-            const { entityId, entity, redirectTo, relation, multiple, nameRequired } =
+            const { entityId, entity, redirectTo, relation, multiple, nameRequired, nameLabel } =
                 this.props;
             const { period, userId, searchValue } = this.state;
 
@@ -129,7 +129,7 @@ export default OakComponent({
                 if (!userId && !searchValue) {
                     this.setMessage({
                         type: 'error',
-                        content: '请输入名称',
+                        content: `请输入${nameLabel || '名称'}`,
                     });
                     return;
                 }
