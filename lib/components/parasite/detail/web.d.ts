@@ -8,4 +8,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'userEntityG
     title?: string;
 }, {
     copy: (text: string) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

@@ -10,4 +10,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     }>;
 }, {
     onClick: (action: string) => void;
-}>): JSX.Element | null;
+}>): import("react/jsx-runtime").JSX.Element | null;

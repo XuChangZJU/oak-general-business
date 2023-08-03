@@ -9,4 +9,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
 }, {
     onRelationChange: (relation: string, checked: boolean) => void;
     isChecked: (relation: string) => boolean;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
