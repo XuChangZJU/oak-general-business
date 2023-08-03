@@ -168,7 +168,6 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
                         id: await generateNewIdAsync(),
                         action: 'disable',
                         data: {
-                            expired: true,
                         },
                         filter: {
                             ableState: 'enabled',
