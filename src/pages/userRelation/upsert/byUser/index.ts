@@ -1,4 +1,6 @@
 import { EntityDict } from '../../../../general-app-domain';
+import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 
 export default OakComponent({
     isList: false,
@@ -59,4 +61,15 @@ export default OakComponent({
             this.clean();
         }
     }
-});
+})as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
+    props: ReactComponentProps<
+        ED2,
+        T2,
+        true,
+        {
+            entity: keyof ED2,
+            entityId: string,
+        }
+    >
+) => React.ReactElement;
+
