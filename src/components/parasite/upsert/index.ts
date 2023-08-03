@@ -122,7 +122,6 @@ export default OakComponent({
                 this.props;
             const { period, userId, searchValue } = this.state;
 
-
             let nickname = searchValue;
             const time = period * 24 * 60 * 60 * 1000;
             if (nameRequired) {
@@ -134,7 +133,7 @@ export default OakComponent({
                     return;
                 }
             } else {
-                nickname = 'shadow_user'
+                nickname = searchValue || 'shadow_user'
             }
 
 
