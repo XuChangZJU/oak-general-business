@@ -10,6 +10,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'parasite', 
         value: string;
     }[];
     nameLabel: string;
+    nameRequired: boolean;
 }, {
     search: (value: string) => void;
     setPeriod: (period: number) => void;
