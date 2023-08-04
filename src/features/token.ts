@@ -1,5 +1,9 @@
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
-import { OakRowInconsistencyException, OakUnloggedInException, OakUserUnpermittedException } from 'oak-domain/lib/types/Exception';
+import {
+    OakRowInconsistencyException,
+    OakUnloggedInException,
+    OakUserUnpermittedException,
+} from 'oak-domain/lib/types/Exception';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
 import { CommonAspectDict } from 'oak-common-aspect';
@@ -228,6 +232,17 @@ export class Token<
             code,
             env: env as WechatMpEnv,
         });
+        this.publish();
+    }
+
+    async wakeupParasite(id: string) {
+        const env = await getEnv();
+        const { result } = await this.cache.exec('wakeupParasite', {
+            id,
+            env: env as WechatMpEnv,
+        });
+        this.tokenValue = result;
+        this.storage.save('token:token', result);
         this.publish();
     }
 }

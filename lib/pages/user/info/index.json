@@ -1,6 +1,6 @@
 {
     "navigationBarTitleText": "个人设置",
-    "oakDisablePulldownRefresh": true,
+    "enablePullDownRefresh": false,
     "usingComponents": {
         "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index",
         "l-avatar": "@oak-frontend-base/miniprogram_npm/lin-ui/avatar/index",

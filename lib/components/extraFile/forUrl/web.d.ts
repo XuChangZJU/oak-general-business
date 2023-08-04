@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from "../../../general-app-domain";
 declare type MethodsType = 'original' | 'url' | 'uploadLocalImg';

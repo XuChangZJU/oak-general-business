@@ -50,12 +50,13 @@ export default function Render(
             updateMyInfo: () => void;
             goAddMobile: () => void;
             sendCaptcha: () => void;
+            goChangePassword: () => void;
             unbunding: (captcha?: string) => void;
         }
     >
 ) {
     const { data, methods } = props;
-    const { t, updateMyInfo, goAddMobile, sendCaptcha, unbunding  } = methods;
+    const { t, updateMyInfo, goAddMobile, sendCaptcha, unbunding, goChangePassword } = methods;
     const {
         nickname,
         name,
@@ -141,7 +142,7 @@ export default function Render(
                     <Form.Item
                         name="gender"
                         label={t('user:attr.gender')}
-                        // rules={[{ required: true }]}
+                    // rules={[{ required: true }]}
                     >
                         <Space direction="vertical">
                             <Radio.Group
@@ -156,11 +157,11 @@ export default function Render(
                     <Form.Item
                         label={t('user:attr.birth')}
                         name="birth"
-                        // rules={[
-                        //     {
-                        //         required: true,
-                        //     },
-                        // ]}
+                    // rules={[
+                    //     {
+                    //         required: true,
+                    //     },
+                    // ]}
                     >
                         <>
                             <DatePicker
@@ -188,6 +189,34 @@ export default function Render(
                             />
                         </>
                     </Form.Item>
+                    <Form.Item
+                        wrapperCol={{
+                            xs: { offset: 4 },
+                            md: { offset: 6 },
+                        }}
+                    >
+                        <Space>
+                            <Button
+                                disabled={oakExecuting || !oakDirty}
+                                type="primary"
+                                onClick={() => {
+                                    updateMyInfo();
+                                }}
+                            >
+                                确定
+                            </Button>
+                        </Space>
+                    </Form.Item>
+
+
+                </Form>
+            </div>
+            <div style={{ marginTop: '10px' }}></div>
+            <div className={Style.container}>
+                <Form
+                    labelCol={{ xs: { span: 4 }, md: { span: 6 } }}
+                    wrapperCol={{ xs: { span: 16 }, md: { span: 12 } }}
+                >
                     <Form.Item label={t('mobile')}>
                         <>
                             <Space>
@@ -207,6 +236,22 @@ export default function Render(
                             </Space>
                         </>
                     </Form.Item>
+                    {process.env.NODE_ENV === 'development' && (<Form.Item label={t('user:attr.password')}>
+                        <>
+                            <Space>
+                                <Typography>{'********'}</Typography>
+                                <Button
+                                    size="small"
+                                    onClick={() => {
+                                        goChangePassword();
+                                        return;
+                                    }}
+                                >
+                                    {t('manage')}
+                                </Button>
+                            </Space>
+                        </>
+                    </Form.Item>)}
                     {process.env.NODE_ENV === 'development' && (
                         <Form.Item label="微信帐号">
                             <>
@@ -230,24 +275,6 @@ export default function Render(
                             </>
                         </Form.Item>
                     )}
-                    <Form.Item
-                        wrapperCol={{
-                            xs: { offset: 4 },
-                            md: { offset: 6 },
-                        }}
-                    >
-                        <Space>
-                            <Button
-                                disabled={oakExecuting || !oakDirty}
-                                type="primary"
-                                onClick={() => {
-                                    updateMyInfo();
-                                }}
-                            >
-                                确定
-                            </Button>
-                        </Space>
-                    </Form.Item>
                 </Form>
             </div>
             <Modal
@@ -308,7 +335,7 @@ export default function Render(
                     setOpen3(false);
                 }}
             >
-                <Space direction="vertical" style={{width: '100%'}}>
+                <Space direction="vertical" style={{ width: '100%' }}>
                     <Typography>
                         请输入{mobile && mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}收到的验证码
                     </Typography>

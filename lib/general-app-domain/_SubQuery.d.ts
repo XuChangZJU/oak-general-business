@@ -24,6 +24,7 @@ import * as MessageType from "./MessageType/Schema";
 import * as MessageTypeTemplateId from "./MessageTypeTemplateId/Schema";
 import * as Mobile from "./Mobile/Schema";
 import * as Notification from "./Notification/Schema";
+import * as Parasite from "./Parasite/Schema";
 import * as Platform from "./Platform/Schema";
 import * as Station from "./Station/Schema";
 import * as Subscription from "./Subscription/Schema";
@@ -97,6 +98,8 @@ export declare type UserIdSubQuery = {
         entity: "message";
     }) | (Mobile.UserIdSubQuery & {
         entity: "mobile";
+    }) | (Parasite.UserIdSubQuery & {
+        entity: "parasite";
     }) | (Token.UserIdSubQuery & {
         entity: "token";
     }) | (UserEntityGrant.UserIdSubQuery & {
@@ -251,6 +254,13 @@ export declare type MobileIdSubQuery = {
 export declare type NotificationIdSubQuery = {
     [K in "$in" | "$nin"]?: (Notification.NotificationIdSubQuery & {
         entity: "notification";
+    }) | any;
+};
+export declare type ParasiteIdSubQuery = {
+    [K in "$in" | "$nin"]?: (Token.ParasiteIdSubQuery & {
+        entity: "token";
+    }) | (Parasite.ParasiteIdSubQuery & {
+        entity: "parasite";
     }) | any;
 };
 export declare type PlatformIdSubQuery = {

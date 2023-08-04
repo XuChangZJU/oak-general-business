@@ -9,13 +9,15 @@ import {
     getWechatMpUserPhoneNumber,
     logout,
     loginByWechat,
+    wakeupParasite,
 } from './token';
 import { getUploadInfo, getInfoByUrl } from './extraFile';
 import { getApplication, signatureJsSDK } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
-import { mergeUser } from './user';
+import { mergeUser, getChangePasswordChannels } from './user';
 import { createWechatLogin } from './wechaLogin';
 import { unbindingWechat } from './wechatUser';
+import { getMpUnlimitWxaCode } from './wechatQrCode';
 
 const aspectDict = {
     mergeUser,
@@ -24,6 +26,7 @@ const aspectDict = {
     loginByMobile,
     loginWechat,
     loginWechatMp,
+    wakeupParasite,
     syncUserInfoWechatMp,
     getUploadInfo,
     sendCaptcha,
@@ -37,6 +40,8 @@ const aspectDict = {
     unbindingWechat,
     loginByWechat,
     getInfoByUrl,
+    getChangePasswordChannels,
+    getMpUnlimitWxaCode,
 };
 
 export default aspectDict;

@@ -5,3 +5,6 @@ export declare function mergeUser<ED extends EntityDict & BaseEntityDict, Cxt ex
     from: string;
     to: string;
 }, context: Cxt, innerLogic?: boolean): Promise<void>;
+export declare function getChangePasswordChannels<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+    userId: string;
+}, context: Cxt, innerLogic?: boolean): Promise<never[]>;

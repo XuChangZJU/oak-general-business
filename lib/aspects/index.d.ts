@@ -1,10 +1,11 @@
-import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCaptcha, switchTo, refreshWechatPublicUserInfo, getWechatMpUserPhoneNumber, logout, loginByWechat } from './token';
+import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCaptcha, switchTo, refreshWechatPublicUserInfo, getWechatMpUserPhoneNumber, logout, loginByWechat, wakeupParasite } from './token';
 import { getUploadInfo, getInfoByUrl } from './extraFile';
 import { getApplication, signatureJsSDK } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
-import { mergeUser } from './user';
+import { mergeUser, getChangePasswordChannels } from './user';
 import { createWechatLogin } from './wechaLogin';
 import { unbindingWechat } from './wechatUser';
+import { getMpUnlimitWxaCode } from './wechatQrCode';
 declare const aspectDict: {
     mergeUser: typeof mergeUser;
     switchTo: typeof switchTo;
@@ -12,6 +13,7 @@ declare const aspectDict: {
     loginByMobile: typeof loginByMobile;
     loginWechat: typeof loginWechat;
     loginWechatMp: typeof loginWechatMp;
+    wakeupParasite: typeof wakeupParasite;
     syncUserInfoWechatMp: typeof syncUserInfoWechatMp;
     getUploadInfo: typeof getUploadInfo;
     sendCaptcha: typeof sendCaptcha;
@@ -25,5 +27,7 @@ declare const aspectDict: {
     unbindingWechat: typeof unbindingWechat;
     loginByWechat: typeof loginByWechat;
     getInfoByUrl: typeof getInfoByUrl;
+    getChangePasswordChannels: typeof getChangePasswordChannels;
+    getMpUnlimitWxaCode: typeof getMpUnlimitWxaCode;
 };
 export default aspectDict;

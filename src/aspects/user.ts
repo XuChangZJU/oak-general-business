@@ -83,3 +83,23 @@ export async function mergeUser<ED extends EntityDict & BaseEntityDict, Cxt exte
         },
     }, {});
 }
+
+export async function getChangePasswordChannels<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(params: { userId: string }, context: Cxt, innerLogic?: boolean) {
+    const { userId } = params;
+    const mobileList = await context.select(
+        'mobile',
+        {
+            data: {
+                id: 1,
+                mobile: 1,
+                userId: 1,
+            },
+            filter: {
+                userId,
+                ableState: 'enabled',
+            },
+        },
+        {}
+    )
+    return [];
+}

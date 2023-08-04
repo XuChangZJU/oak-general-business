@@ -213,6 +213,9 @@ const triggers: Trigger<
                                     : {
                                           $exists: false,
                                       },
+                                id: {
+                                    $ne: articleMenu.id!
+                                }      
                             },
                         },
                         {}

@@ -1,4 +1,4 @@
-import { String, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { String, Datetime, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
@@ -8,6 +8,7 @@ import * as Application from "../Application/Schema";
 import * as User from "../User/Schema";
 import * as Email from "../Email/Schema";
 import * as Mobile from "../Mobile/Schema";
+import * as Parasite from "../Parasite/Schema";
 import * as WechatUser from "../WechatUser/Schema";
 export declare type WechatMpEnv = {
     type: 'wechatMp';
@@ -48,20 +49,22 @@ export declare type ServerEnv = {
 export declare type Environment = WechatMpEnv | WebEnv | ServerEnv;
 export declare type OpSchema = EntityShape & {
     applicationId?: ForeignKey<"application"> | null;
-    entity: "email" | "mobile" | "wechatUser" | string;
+    entity: "email" | "mobile" | "parasite" | "wechatUser" | string;
     entityId: String<64>;
     userId?: ForeignKey<"user"> | null;
     playerId?: ForeignKey<"user"> | null;
+    disablesAt?: Datetime | null;
     env: Environment;
     ableState?: AbleState | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
     applicationId?: ForeignKey<"application"> | null;
-    entity: "email" | "mobile" | "wechatUser" | string;
+    entity: "email" | "mobile" | "parasite" | "wechatUser" | string;
     entityId: String<64>;
     userId?: ForeignKey<"user"> | null;
     playerId?: ForeignKey<"user"> | null;
+    disablesAt?: Datetime | null;
     env: Environment;
     ableState?: AbleState | null;
     application?: Application.Schema | null;
@@ -69,6 +72,7 @@ export declare type Schema = EntityShape & {
     player?: User.Schema | null;
     email?: Email.Schema;
     mobile?: Mobile.Schema;
+    parasite?: Parasite.Schema;
     wechatUser?: WechatUser.Schema;
 } & {
     [A in ExpressionKey]?: any;
@@ -80,16 +84,18 @@ declare type AttrFilter = {
     $$updateAt$$: Q_DateValue;
     applicationId: Q_StringValue;
     application: Application.Filter;
-    entity: Q_EnumValue<"email" | "mobile" | "wechatUser" | string>;
+    entity: Q_EnumValue<"email" | "mobile" | "parasite" | "wechatUser" | string>;
     entityId: Q_StringValue;
     userId: Q_StringValue;
     user: User.Filter;
     playerId: Q_StringValue;
     player: User.Filter;
+    disablesAt: Q_DateValue;
     env: JsonFilter<Environment>;
     ableState: Q_EnumValue<AbleState>;
     email: Email.Filter;
     mobile: Mobile.Filter;
+    parasite: Parasite.Filter;
     wechatUser: WechatUser.Filter;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
@@ -108,10 +114,12 @@ export declare type Projection = {
     user?: User.Projection;
     playerId?: number;
     player?: User.Projection;
+    disablesAt?: number;
     env?: number | JsonProjection<Environment>;
     ableState?: number;
     email?: Email.Projection;
     mobile?: Mobile.Projection;
+    parasite?: Parasite.Projection;
     wechatUser?: WechatUser.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type TokenIdProjection = OneOf<{
@@ -128,6 +136,9 @@ declare type EmailIdProjection = OneOf<{
     entityId: number;
 }>;
 declare type MobileIdProjection = OneOf<{
+    entityId: number;
+}>;
+declare type ParasiteIdProjection = OneOf<{
     entityId: number;
 }>;
 declare type WechatUserIdProjection = OneOf<{
@@ -158,6 +169,8 @@ export declare type SortAttr = {
 } | {
     player: User.SortAttr;
 } | {
+    disablesAt: number;
+} | {
     env: number;
 } | {
     ableState: number;
@@ -165,6 +178,8 @@ export declare type SortAttr = {
     email: Email.SortAttr;
 } | {
     mobile: Mobile.SortAttr;
+} | {
+    parasite: Parasite.SortAttr;
 } | {
     wechatUser: WechatUser.SortAttr;
 } | {
@@ -223,6 +238,17 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     mobile: Mobile.UpdateOperation;
 } | {
     entity: "mobile";
+    entityId: String<64>;
+} | {
+    entity?: never;
+    entityId?: never;
+    parasite: Parasite.CreateSingleOperation;
+} | {
+    entity: "parasite";
+    entityId: String<64>;
+    parasite: Parasite.UpdateOperation;
+} | {
+    entity: "parasite";
     entityId: String<64>;
 } | {
     entity?: never;
@@ -288,11 +314,15 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     entityId?: never;
     entity?: never;
 } | {
+    parasite?: Parasite.CreateSingleOperation | Parasite.UpdateOperation | Parasite.RemoveOperation;
+    entityId?: never;
+    entity?: never;
+} | {
     wechatUser?: WechatUser.CreateSingleOperation | WechatUser.UpdateOperation | WechatUser.RemoveOperation;
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("email" | "mobile" | "wechatUser" | string) | null;
+    entity?: ("email" | "mobile" | "parasite" | "wechatUser" | string) | null;
     entityId?: String<64> | null;
 }) & {
     [k: string]: any;
@@ -309,6 +339,8 @@ export declare type RemoveOperationData = {} & (({
 } | {
     mobile?: Mobile.UpdateOperation | Mobile.RemoveOperation;
 } | {
+    parasite?: Parasite.UpdateOperation | Parasite.RemoveOperation;
+} | {
     wechatUser?: WechatUser.UpdateOperation | WechatUser.RemoveOperation;
 } | {
     [k: string]: any;
@@ -319,6 +351,7 @@ export declare type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
 export declare type UserIdSubQuery = Selection<UserIdProjection>;
 export declare type EmailIdSubQuery = Selection<EmailIdProjection>;
 export declare type MobileIdSubQuery = Selection<MobileIdProjection>;
+export declare type ParasiteIdSubQuery = Selection<ParasiteIdProjection>;
 export declare type WechatUserIdSubQuery = Selection<WechatUserIdProjection>;
 export declare type TokenIdSubQuery = Selection<TokenIdProjection>;
 export declare type EntityDef = {
