@@ -138,7 +138,7 @@ export default function render(
 		disableDelete = false,
 		preview = true,
 	} = props.data;
-	const { onPickByWeb, onDeleteByWeb, updateItem } = props.methods;
+	const { onPickByWeb, onDeleteByWeb, updateItem, t } = props.methods;
 	const features = useFeatures();
 
 	const [newFiles, setNewFiles] = useState<
@@ -346,13 +346,13 @@ export default function render(
 									let cpn: any;
 									switch (value) {
 										case "success":
-											cpn = <Tag color="success">success</Tag>;
+											cpn = <Tag color="success">{t("success")}</Tag>;
 											break;
 										case "uploading":
-											cpn = <Tag color="processing">uploading</Tag>;
+											cpn = <Tag color="processing">{t("uploading")}</Tag>;
 											break;
 										default:
-											cpn = <Tag color="warning">waiting</Tag>;
+											cpn = <Tag color="warning">{t("waiting")}</Tag>;
 											break;
 									}
 									return cpn;

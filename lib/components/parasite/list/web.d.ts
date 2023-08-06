@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'parasite', true, {
