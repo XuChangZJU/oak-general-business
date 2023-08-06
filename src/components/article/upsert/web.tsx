@@ -67,6 +67,7 @@ export default function Render(
             origin1: string;
             articleMenuId: string;
             oakId: string;
+            changeIsEdit: () => void;
         },
         {
             setHtml: (content: string) => void;
@@ -94,9 +95,9 @@ export default function Render(
         uploadFile,
         update,
         setHtml,
-        gotoPreview
+        gotoPreview,
     } = method;
-    const { id, content, editor, origin1, oakFullpath, html, oakId, articleMenuId } = data;
+    const { id, content, editor, origin1, oakFullpath, html, oakId, articleMenuId, changeIsEdit } = data;
     const features = useFeatures();
     const [articleId, setArticleId] = useState("");
     useEffect(() => {

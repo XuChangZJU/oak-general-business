@@ -5,7 +5,7 @@ import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from "../../../general-app-domain";
 import Styles from './web.pc.module.less';
 import { Button, Divider, Tooltip, Space, Drawer, Empty } from 'antd';
-import { EyeOutlined, CopyOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlusOutlined } from '@ant-design/icons';
+import { EyeOutlined, CopyOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import ArticleUpsert from '../../article/upsert';
 import ArticleDetail from '../../article/cell';
 import copy from 'copy-to-clipboard';
@@ -37,6 +37,10 @@ export default function Render(
     const [selectedArticleId, setSelectedArticleId] = useState('');
     const [defaultOpen, setDefaultOpen] = useState(true);
     const [openArray, setOpenArray] = useState([] as string[]);
+    const [isEdit, setIsEdit] = useState(false);
+    const changeIsEdit= () => {
+        setIsEdit(false);
+    };
     const changeDefaultOpen = (defaultOpen: boolean, openArray: string[]) => {
         setDefaultOpen(defaultOpen);
         setOpenArray(openArray);
@@ -56,6 +60,7 @@ export default function Render(
     useEffect(() => {
         if (editArticle) {
             setSelectedArticleId(editArticle);
+            changeIsEdit();
         }
     }, [editArticle])
     if (oakFullpath) {
@@ -296,6 +301,12 @@ export default function Render(
                                                 <CopyOutlined />
                                                 复制链接
                                             </Button>
+                                            <Button
+                                                onClick={() => setIsEdit(true)}
+                                            >
+                                                <EditOutlined />
+                                                更新
+                                            </Button>
                                         </Space>
                                     </div>
                                     <div style={{ fontSize: 14, display: 'flex', flexDirection: 'row', marginLeft: 10, marginBottom: 5 }}>
@@ -315,11 +326,22 @@ export default function Render(
                                             })
                                         }
                                     </div>
-                                    <ArticleDetail
-                                        oakId={editArticle}
-                                        oakAutoUnmount={true}
-                                        oakPath={`article-detail-${editArticle}`}
-                                    />
+                                    {
+                                        isEdit ? (
+                                            <ArticleUpsert
+                                                oakId={editArticle}
+                                                oakAutoUnmount={true}
+                                                oakPath={`article-upsert-${editArticle}`}
+                                                changeIsEdit={changeIsEdit}
+                                            />
+                                        ) : (
+                                            <ArticleDetail
+                                                oakId={editArticle}
+                                                oakAutoUnmount={true}
+                                                oakPath={`article-detail-${editArticle}`}
+                                            />
+                                        )
+                                    }
                                 </div>
                             )
                         }

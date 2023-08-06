@@ -13,6 +13,7 @@ export default function Render(props: WebComponentProps<EntityDict, "article", f
     origin1: string;
     articleMenuId: string;
     oakId: string;
+    changeIsEdit: () => void;
 }, {
     setHtml: (content: string) => void;
     setEditor: (editor: any) => void;

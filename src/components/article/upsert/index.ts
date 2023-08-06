@@ -34,6 +34,7 @@ export default OakComponent({
     },
     properties: {
         articleMenuId: '',
+        changeIsEdit: () => undefined as void,
     },
     listeners: {
         'editor,content'(prev, next) {
@@ -109,6 +110,9 @@ export default OakComponent({
                 this.state.html !== '<p><br></p>'
             ) {
                 await this.execute();
+                if(this.props.changeIsEdit) {
+                    this.props.changeIsEdit();
+                }
             } else if (this.state.name && this.state.name.length > 0) {
                 this.setMessage({
                     content: '请填写文章内容!',
