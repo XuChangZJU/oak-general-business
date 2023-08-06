@@ -174,7 +174,7 @@ export default function render(
                         {t('common:action.confirm')}
                     </Button>
                     <Button onClick={() => onBack()}>
-                        {t('common.back')}
+                        {t('common:back')}
                     </Button>
                 </Space>
             </Form.Item>
