@@ -23,11 +23,6 @@ export default function Render(
         {
             users: EntityDict['user']['Schema'][];
             searchValue?: string;
-            pagination: {
-                pageSize: number;
-                total: number;
-                currentPage: number;
-            };
             entity: string;
             entityId: string;
             showBack: boolean;
@@ -41,15 +36,13 @@ export default function Render(
     >
 ) {
     const {
-        pagination,
+        oakPagination,
         users = [],
         entity,
         entityId,
         oakLoading,
-        showBack = false,
-        showTitle = true,
     } = props.data;
-    const { pageSize, total, currentPage } = pagination || {};
+    const { pageSize, total, currentPage } = oakPagination || {};
     const {
         goUpsert,
         t,

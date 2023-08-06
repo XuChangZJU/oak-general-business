@@ -140,7 +140,6 @@ export default OakComponent({
     formData({ data: users, props, features }) {
         const { entity, entityId } = props;
         const filter = this.getFilterByName('fulltext');
-        const pagination = this.getPagination();
         return {
             users: users?.map((ele: any) => {
                 const { mobile$user, extraFile$entity } = ele;
@@ -155,7 +154,6 @@ export default OakComponent({
                 return user2;
             }),
             searchValue: filter?.$text && filter.$text.$search,
-            pagination,
         };
     },
     properties: {
@@ -163,8 +161,6 @@ export default OakComponent({
         entityId: '',
         redirectToAfterConfirm: {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
         qrCodeType: '' as string,
-        showTitle: true,
-        showBack: false,
         onUpdate: (id: string) => undefined as void,
         onCreate: () => undefined as void,
     },
