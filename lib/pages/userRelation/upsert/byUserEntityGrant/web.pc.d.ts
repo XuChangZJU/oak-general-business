@@ -18,5 +18,5 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
     setInit: () => void;
     setPeriod: (p: number) => void;
     setUnit: (u: Unit) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
 export {};

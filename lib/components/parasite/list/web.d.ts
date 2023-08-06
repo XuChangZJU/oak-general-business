@@ -7,4 +7,4 @@ export default function render(props: WebComponentProps<EntityDict, 'parasite', 
 }, {
     cancel: () => void;
     getQrCode: () => Promise<void>;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

@@ -6,4 +6,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'system', fa
     description: string;
     oakId: string;
     config: Config;
-}, {}>): JSX.Element;
+}, {}>): import("react/jsx-runtime").JSX.Element;
