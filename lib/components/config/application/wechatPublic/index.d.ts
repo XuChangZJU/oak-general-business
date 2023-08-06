@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WechatPublicConfig } from '../../../../general-app-domain/Application/Schema';
 export default function WechatPublic(props: {
     isService?: boolean;
@@ -6,4 +5,4 @@ export default function WechatPublic(props: {
     setValue: (path: string, value: any) => void;
     removeItem: (path: string, index: number) => void;
     cleanKey: (path: string, key: string) => void;
-}): JSX.Element;
+}): import("react/jsx-runtime").JSX.Element;

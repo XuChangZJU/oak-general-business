@@ -2,23 +2,17 @@ import { Checker, OakRowInconsistencyException } from 'oak-domain/lib/types';
 import assert from 'assert';
 import { EntityDict } from '../general-app-domain';
 import { RuntimeCxt } from '../types/RuntimeCxt';
+import { checkAttributesNotNull } from 'oak-domain/lib/utils/validator';
 
 const checkers: Checker<EntityDict, 'parasite', RuntimeCxt>[] = [
     {
-        type: 'logical',
+        type: 'data',
         action: 'create',
         entity: 'parasite',
-        checker: (operation, context, option) => {
-            const { data } = operation as EntityDict['parasite']['Create'];
+        checker: (data, context) => {
+            // const { data } = operation as EntityDict['parasite']['Create'];
             assert(!(data instanceof Array));
-            if (!data.expiresAt) {
-                data.expiresAt = Date.now() + 3600 * 1000;
-            }
-            data.expired = false;
-            if (!data.tokenLifeLength) {
-                data.tokenLifeLength = 3600 * 1000;
-            }
-
+            checkAttributesNotNull('parasite', data, ['expiresAt', 'tokenLifeLength']);
             if (data.userId) {
                 const users2 = context.select(
                     'user',

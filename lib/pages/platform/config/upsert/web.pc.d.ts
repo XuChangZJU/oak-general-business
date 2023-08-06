@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { Config } from '../../../../types/Config';
 import { EntityDict } from '../../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -7,4 +6,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'platform', 
     description: string;
     oakId: string;
     config: Config;
-}, {}>): JSX.Element;
+}, {}>): import("react/jsx-runtime").JSX.Element;

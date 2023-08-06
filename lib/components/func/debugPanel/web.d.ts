@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'address', true, {
@@ -11,4 +10,4 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
     resetInitialData: () => void;
     downloadEnv: () => void;
     resetEnv: (data: Record<string, any>) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

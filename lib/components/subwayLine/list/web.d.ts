@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'area', true, {
@@ -17,4 +16,4 @@ export default function render(props: WebComponentProps<EntityDict, 'area', true
     setCheckedList: (station: string, flag: boolean) => void;
     cancel: () => void;
     confirm: () => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

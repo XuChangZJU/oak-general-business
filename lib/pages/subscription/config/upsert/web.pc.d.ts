@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WechatPublicConfig } from '../../../../general-app-domain/Application/Schema';
 import { EntityDict } from '../../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -8,5 +7,5 @@ export default function render(props: WebComponentProps<EntityDict, 'application
     description: string;
     oakId: string;
     config: Config;
-}, {}>): JSX.Element;
+}, {}>): import("react/jsx-runtime").JSX.Element;
 export {};

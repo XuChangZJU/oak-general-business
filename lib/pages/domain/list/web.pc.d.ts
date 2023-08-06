@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 export default function Render(props: WebComponentProps<EntityDict, 'domain', true, {
@@ -11,4 +10,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'domain', tr
     goDetail: (id: string) => void;
     goCreate: () => void;
     goUpdate: (id: string) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

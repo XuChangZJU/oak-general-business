@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'parasite', true, {
@@ -8,4 +7,4 @@ export default function render(props: WebComponentProps<EntityDict, 'parasite', 
 }, {
     cancel: () => void;
     getQrCode: () => Promise<void>;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

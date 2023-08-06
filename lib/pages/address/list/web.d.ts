@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'address', true, {
@@ -6,4 +5,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'address', t
 }, {
     gotoUpsert: (id: string) => void;
     goNewAddress: () => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

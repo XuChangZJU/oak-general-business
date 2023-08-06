@@ -1,8 +1,7 @@
-/// <reference types="react" />
 import { Style as StyleType } from '../../../types/Style';
 declare type StyleProps = {
     value?: StyleType | null;
     onChange: (value: StyleType) => void;
 };
-export default function Render(props: StyleProps): JSX.Element;
+export default function Render(props: StyleProps): import("react/jsx-runtime").JSX.Element;
 export {};

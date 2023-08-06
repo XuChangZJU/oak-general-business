@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 import { QrCodeType } from '../../../types/Config';
@@ -12,4 +11,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'relation', 
     entityId: string;
     relations: EntityDict['relation']['OpSchema'][];
     qrCodeType?: QrCodeType;
-}, {}>): JSX.Element;
+}, {}>): import("react/jsx-runtime").JSX.Element;

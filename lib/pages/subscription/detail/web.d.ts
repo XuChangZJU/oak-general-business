@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WechatPublicConfig } from '../../../general-app-domain/Application/Schema';
 import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -13,5 +12,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'subscriptio
     tabValue: 'detail';
 }, {
     onTabClick: (key: string) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
 export {};

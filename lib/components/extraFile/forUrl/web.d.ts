@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from "../../../general-app-domain";
 declare type MethodsType = 'original' | 'url' | 'uploadLocalImg';
@@ -20,5 +19,5 @@ export default function render(props: WebComponentProps<EntityDict, "extraFile",
     closeModal: () => void;
     onModal1Confirm: (value: number) => void;
     setSelectedId: (id: number) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
 export {};

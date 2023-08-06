@@ -1,8 +1,7 @@
-/// <reference types="react" />
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import { EntityDict } from '../../../general-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'message', true, {
     messages: RowWithActions<EntityDict, 'message'>[];
 }, {
     goDetailById: (id: string) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

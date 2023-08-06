@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../general-app-domain';
 declare type Unit = 'minute' | 'hour' | 'day';
@@ -15,5 +14,5 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
     setInit: () => void;
     setPeriod: (p: number) => void;
     setUnit: (u: Unit) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
 export {};

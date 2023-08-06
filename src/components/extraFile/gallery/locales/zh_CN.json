@@ -1,5 +1,6 @@
 
 {
-    "waiting": "等待中",
-    "success": "上传成功"
+    "waiting": "等待上传",
+    "success": "上传成功",
+    "uploading": "上传中"
 }

@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../general-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'user', false, {
@@ -10,4 +9,4 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
 }, {
     logout: () => void;
     setVisible: () => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

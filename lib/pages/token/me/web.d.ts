@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { EntityDict } from '../../../general-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 export default function Render(props: WebComponentProps<EntityDict, 'token', true, {
@@ -16,4 +15,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', tru
     doLogin: () => Promise<void>;
     goMyMobile: () => Promise<void>;
     goUserManage: () => Promise<void>;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
