@@ -19,4 +19,10 @@ export const DeducedRelationMap = {
     wechatQrCode: 'entity',
 };
 
-export const SelectFreeEntities = ['application', 'area', 'mobile', 'wechatQrCode'];
+export const SelectFreeEntities = [
+    'application',
+    'area',
+    'mobile',
+    'wechatQrCode',
+    'messageTypeTemplateId',
+];
