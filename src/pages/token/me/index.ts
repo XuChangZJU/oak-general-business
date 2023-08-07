@@ -1,4 +1,3 @@
-import { ROOT_ROLE_ID } from '../../../constants';
 
 export default OakComponent({
     entity: 'token',
@@ -15,6 +14,7 @@ export default OakComponent({
             gender: 1,
             idState: 1,
             userState: 1,
+            isRoot: 1,
             extraFile$entity: {
                 $entity: 'extraFile',
                 data: {
@@ -46,25 +46,7 @@ export default OakComponent({
         },
         player: {
             id: 1,
-            userRelation$user: {
-                $entity: 'userRelation',
-                data: {
-                    id: 1,
-                    userId: 1,
-                    relationId: 1,
-                    relation: {
-                        id: 1,
-                        entity: 1,
-                        entityId: 1,
-                    },
-                },
-                filter: {
-                    relation: {
-                        entity: 'role',
-                        entityId: ROOT_ROLE_ID,
-                    }
-                }
-            },
+            isRoot: 1,
         },
     },
     filters: [
@@ -95,9 +77,7 @@ export default OakComponent({
 
         const isLoggedIn = !!token;
         const isPlayingAnother = token && token.userId !== token.playerId;
-        const isRoot =
-            player?.userRelation$user &&
-            player.userRelation$user.length > 0;
+        const isRoot = !!player?.isRoot;
 
         const mobileText =
             mobileCount && mobileCount > 1
@@ -184,7 +164,7 @@ export default OakComponent({
         },
         goMyInfo() {
             if (!this.state.isLoggedIn) {
-                return
+                return;
             }
             this.navigateTo({
                 url: '/user/info',
