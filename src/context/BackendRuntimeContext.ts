@@ -72,6 +72,10 @@ export class BackendRuntimeContext<ED extends EntityDict>
                         userState: 1,
                         isRoot: 1,
                     },
+                    player: {
+                        id: 1,
+                        isRoot: 1,
+                    },
                 },
                 filter: {
                     id: tokenValue,
