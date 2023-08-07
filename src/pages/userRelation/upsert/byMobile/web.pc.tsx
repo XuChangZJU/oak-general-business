@@ -26,10 +26,10 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
                 <Form.Item
                     label="手机号码"
+                    required
                     name="mobile"
                     rules={[
                         {
-                            required: true,
                             message: '手机号不能为空',
                         },
                         {

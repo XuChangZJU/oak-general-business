@@ -170,10 +170,12 @@ export default function Render(
                         <Button
                             size="small"
                             type="link"
-                            disabled={!!disabled || (!validMobile || counter > 0)}
+                            disabled={!!disabled || !validMobile || counter > 0}
                             onClick={() => sendCaptcha(mobile)}
                         >
-                            {counter > 0 ? t('resendAfter', { second: counter }) : t('Send')}
+                            {counter > 0
+                                ? counter + t('resendAfter')
+                                : t('Send')}
                         </Button>
                     }
                 />
