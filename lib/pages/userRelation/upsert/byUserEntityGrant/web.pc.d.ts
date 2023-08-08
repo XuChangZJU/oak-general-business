@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../general-app-domain';
 declare type Unit = 'minute' | 'hour' | 'day';

@@ -15,7 +15,6 @@ export const IgnoredRelationPathMap = {
 export const DeducedRelationMap = {
     extraFile: 'entity',
     message: 'entity',
-    userEntityGrant: 'entity',
     wechatQrCode: 'entity',
 };
 

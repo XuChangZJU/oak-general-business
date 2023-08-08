@@ -9,7 +9,6 @@ export declare const IgnoredRelationPathMap: {
 export declare const DeducedRelationMap: {
     extraFile: string;
     message: string;
-    userEntityGrant: string;
     wechatQrCode: string;
 };
 export declare const SelectFreeEntities: string[];

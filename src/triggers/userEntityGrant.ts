@@ -6,9 +6,9 @@ import { EntityDict } from '../general-app-domain/EntityDict';
 import { OakRowInconsistencyException, OakExternalException, SelectOpResult } from 'oak-domain/lib/types';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
-import { RuntimeCxt } from '../types/RuntimeCxt';
+import { BRC } from '../types/RuntimeCxt';
 
-const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
+const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
     {
         name: '当创建userEntityGrant时，尝试为之创建一个wechatQrCode',
         entity: 'userEntityGrant',
@@ -56,7 +56,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
             }
             return 0;
         },
-    } as CreateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
+    } as CreateTrigger<EntityDict, 'userEntityGrant', BRC>,
     {
         name: '当userEntityGrant准备确认时，附上被授权者id',
         entity: 'userEntityGrant',
@@ -101,7 +101,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
             }
             return 0;
         },
-    } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
+    } as UpdateTrigger<EntityDict, 'userEntityGrant', BRC>,
     {
         name: '当userEntityGrant被确认时，生成user和entity关系',
         entity: 'userEntityGrant',
@@ -133,6 +133,8 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
             );
             const { entity, entityId, relationId, granterId, type } =
                 userEntityGrant;
+
+            const closeRootMode = context.openRootMode();
             const result2 = await context.select(
                 'userRelation',
                 {
@@ -157,6 +159,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
             if (result2.length) {
                 const e = new OakRowInconsistencyException<EntityDict>(undefined, '已领取该权限');
                 e.addData('userRelation', result2);
+                closeRootMode();
                 throw e;
             } else {
                 await context.operate(
@@ -189,10 +192,11 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
                     }, option);
                 }
 
+                closeRootMode();
                 return 1;
             }
         },
-    } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
+    } as UpdateTrigger<EntityDict, 'userEntityGrant', BRC>,
     {
         name: '当userEntityGrant过期时，使其相关的wechatQrCode也过期',
         entity: 'userEntityGrant',
@@ -221,6 +225,6 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', RuntimeCxt>[] = [
         
             return 1;
         },
-    } as UpdateTrigger<EntityDict, 'userEntityGrant', RuntimeCxt>,
+    } as UpdateTrigger<EntityDict, 'userEntityGrant', BRC>,
 ];
 export default triggers;
