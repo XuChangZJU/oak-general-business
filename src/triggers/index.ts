@@ -8,6 +8,7 @@ import wechatLoginTriggers from './wechatLogin';
 import applicationTriggers from './application';
 import articleMenuTriggers from './articleMenu';
 import article from './article';
+import parasiteTriggers from './parasite';
 
 export default [
     ...applicationTriggers,
@@ -20,4 +21,5 @@ export default [
     ...wechatLoginTriggers,
     ...articleMenuTriggers,
     ...article,
+    ...parasiteTriggers,
 ];
