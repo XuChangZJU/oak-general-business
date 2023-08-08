@@ -1,7 +1,7 @@
 
 // 此对象所标识的外键关系不参与relation的路径判定，以减少relation的路径数量
 export const IgnoredForeignKeyMap = {
-    system: ['park'],
+    //system: ['park'],
     messageSystem: ['message'],
     notification: ['messsageSystem'],
 };
@@ -18,4 +18,10 @@ export const DeducedRelationMap = {
     wechatQrCode: 'entity',
 };
 
-export const SelectFreeEntities = ['application', 'area', 'mobile', 'wechatQrCode'];
+export const SelectFreeEntities = [
+    'application',
+    'area',
+    'mobile',
+    'wechatQrCode',
+    'messageTypeTemplateId',
+];

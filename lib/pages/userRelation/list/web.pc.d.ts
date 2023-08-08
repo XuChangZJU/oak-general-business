@@ -3,11 +3,6 @@ import { EntityDict } from '../../../general-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'user', true, {
     users: EntityDict['user']['Schema'][];
     searchValue?: string;
-    pagination: {
-        pageSize: number;
-        total: number;
-        currentPage: number;
-    };
     entity: string;
     entityId: string;
     showBack: boolean;

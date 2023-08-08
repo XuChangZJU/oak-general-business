@@ -963,14 +963,7 @@ export async function loginByWechat<
                     nickname: 1,
                     userState: 1,
                     refId: 1,
-                    userRole$user: {
-                        $entity: 'userRole',
-                        data: {
-                            id: 1,
-                            userId: 1,
-                            roleId: 1,
-                        },
-                    },
+                    isRoot: 1,
                 },
             },
             filter: {
@@ -1076,14 +1069,7 @@ async function loginFromWechatEnv<
                     nickname: 1,
                     userState: 1,
                     refId: 1,
-                    userRole$user: {
-                        $entity: 'userRole',
-                        data: {
-                            id: 1,
-                            userId: 1,
-                            roleId: 1,
-                        },
-                    },
+                    isRoot: 1,
                 },
             },
             filter: {
@@ -1125,14 +1111,7 @@ async function loginFromWechatEnv<
                         nickname: 1,
                         userState: 1,
                         refId: 1,
-                        userRole$user: {
-                            $entity: 'userRole',
-                            data: {
-                                id: 1,
-                                userId: 1,
-                                roleId: 1,
-                            },
-                        },
+                        isRoot: 1,
                     },
                 },
                 filter: {
@@ -1159,14 +1138,7 @@ async function loginFromWechatEnv<
                             nickname: 1,
                             userState: 1,
                             refId: 1,
-                            userRole$user: {
-                                $entity: 'userRole',
-                                data: {
-                                    id: 1,
-                                    userId: 1,
-                                    roleId: 1,
-                                },
-                            },
+                            isRoot: 1,
                         },
                     },
                     filter: {
@@ -1406,9 +1378,10 @@ export async function loginWechatMp<
     },
     context: Cxt
 ): Promise<string> {
+    const closeRootMode = context.openRootMode();
     const tokenId = await loginFromWechatEnv<ED, Cxt>(code, env, context);
     await loadTokenInfo<ED, Cxt>(tokenId, context);
-
+    closeRootMode();
     return tokenId;
 }
 

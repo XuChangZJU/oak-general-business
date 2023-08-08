@@ -10,5 +10,5 @@
         "Mobile": "请输入手机号",
         "Password": "请输入密码"
     },
-    "resendAfter": "{{second}}秒后可重发"
+    "resendAfter": "秒后可重发"
 }

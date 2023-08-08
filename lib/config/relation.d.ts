@@ -1,5 +1,4 @@
 export declare const IgnoredForeignKeyMap: {
-    system: string[];
     messageSystem: string[];
     notification: string[];
 };

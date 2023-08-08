@@ -66,7 +66,7 @@ export default OakComponent({
                         relation: {
                             name: relation,
                         },
-                        [`${entity}Id`]: entityId,
+                        entityId,
                     }
                 },
             });
@@ -110,7 +110,7 @@ export default OakComponent({
                 period: 7,
             });
         },
-        confirm() {
+        async confirm() {
             const { entityId, entity, redirectTo, relation, multiple, nameRequired, nameLabel } =
                 this.props;
             const { period, userId, searchValue } = this.state;
@@ -137,7 +137,7 @@ export default OakComponent({
                 });
                 return;
             }
-            const userRelation = `user${firstLetterUpperCase(entity!)}`;
+            const userRelation = `userRelation`;
 
             const userRelationRelativePath = `${userRelation}$user`;
 
@@ -146,6 +146,10 @@ export default OakComponent({
                     userId: userId,
                 });
             } else {
+                const relationId = await this.features.relationAuth.getRelationIdByName(
+                    entity!,
+                    relation!
+                )!;
                 this.update({
                     user: {
                         id: generateNewId(),
@@ -160,8 +164,9 @@ export default OakComponent({
                                     action: 'create',
                                     data: {
                                         id: generateNewId(),
-                                        relation: relation,
-                                        [`${entity}Id`]: entityId,
+                                        entityId,
+                                        entity,
+                                        relationId: relationId
                                     },
                                 },
                             ],
