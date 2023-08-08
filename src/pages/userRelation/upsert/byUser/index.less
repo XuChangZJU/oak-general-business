@@ -2,27 +2,15 @@
 @import "../../../config/styles/mp/index.less";
 @import "../../../config/styles/mp/mixins.less";
 
+
 page {
   height: 100%;
-  background-color: @bg-color;
+  display: flex;
+  flex-direction: column;
 }
 
-.page-body {
-  height: 100%;
+.container {
   display: flex;
+  flex-direction: column;
   flex: 1;
-  flex-direction: column;
-  box-sizing: border-box;
-  align-items: stretch;
-  padding: 0;
-  .safe-area-inset-bottom();
-}
-
-.col {
-  display: flex;
-  flex-direction: column;
-}
-.btn-view {
-  display: flex;
-  margin: 0rpx @spacer-2;
 }

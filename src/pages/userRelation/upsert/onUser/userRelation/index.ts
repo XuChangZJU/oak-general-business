@@ -78,8 +78,15 @@ export default OakComponent({
             }
         },
         onRelationChangeMp(e: WechatMiniprogram.TouchEvent) {
-            const { key: relation, checked } = e.detail;
-            this.onRelationChange(relation, checked);
+            const { key: relationId, checked } = e.detail;
+            const { relations2 } = this.state;
+            const userRelation = relations2?.find(
+                (ele: {
+                    isChecked: boolean;
+                    relation: EntityDict['relation']['OpSchema'];
+                }) => ele.relation.id === relationId
+            );
+            this.onRelationChange(userRelation?.relation, checked);
         }
     }
 })

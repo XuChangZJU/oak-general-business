@@ -1,0 +1,9 @@
+
+<view class="container">
+
+<onUser style="display: flex;flex-direction: column; flex: 1;" oakAutoUnmount="{{true}}" oakPath="{{oakFullpath ? oakFullpath + '.user' : undefined}}" entity="{{entity}}" entityId="{{entityId}}" relations="{{relations}}" oakId="{{oakId}}" />
+
+    <l-button disabled="{{!oakDirty}}" size="long" bind:lintap="onConfirm">
+        确定
+    </l-button>
+</view>

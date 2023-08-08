@@ -47,11 +47,28 @@ export default OakComponent({
                     id: 1,
                     entity: 1,
                     entityId: 1,
+                    userId: 1,
                     relationId: 1,
                     relation: {
                         id: 1,
                         name: 1,
                         display: 1,
+                        relationAuth$destRelation: {
+                            $entity: 'relationAuth',
+                            data: {
+                                id: 1,
+                                sourceRelation: {
+                                    userRelation$relation: {
+                                        $entity: 'userRelation',
+                                        data: {
+                                            id: 1,
+                                            userId: 1,
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
                     }
                 },
                 filter: userRelationFilter,
@@ -70,6 +87,7 @@ export default OakComponent({
                     entity: 1,
                     entityId: 1,
                     extension: 1,
+                    sort: 1,
                 },
                 filter: {
                     tag1: 'avatar',
@@ -346,7 +364,7 @@ export default OakComponent({
             const { entity, entityId } = this.props;
             const { id } = e.currentTarget.dataset;
             this.navigateTo({
-                url: '/userRelation/upsert/onUser',
+                url: '/userRelation/upsert/byUser',
                 oakId: id,
                 entity,
                 entityId,
