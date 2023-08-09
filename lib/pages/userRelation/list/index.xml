@@ -28,9 +28,9 @@
             >
                 <l-list bind:lintap="onItemTapMp" data-id="{{item.id}}">
                     <view class="relation" slot="left-section">
-                        <block wx:if="{{item.userRelation$entity.length}}" wx:for="{{item.userRelation$entity}}" wx:for-item="item2" wx:for-index="index2" wx:key="index2">
+                        <block wx:if="{{item.userRelation$user.length > 0}}" wx:for="{{item.userRelation$user}}" wx:for-item="item2" wx:for-index="index2" wx:key="index2">
                             <l-tag l-class="tag" plain="{{true}}">
-                                {{item2.name ? t(entity + ':r.' +  item2) : item2.display}}
+                                {{item2.relation.name ? t(entity + ':r.' +  item2.relation.name) : item2.relation.display}}
                             </l-tag>
                         </block>
                     </view>

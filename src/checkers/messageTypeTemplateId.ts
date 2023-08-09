@@ -1,7 +1,6 @@
 import { Checker } from "oak-domain/lib/types";
 import { EntityDict } from '../general-app-domain';
 import { RuntimeCxt } from '../types/RuntimeCxt';
-import { combineFilters } from 'oak-domain/lib/store/filter';
 import assert from "assert";
 import { checkAttributesNotNull } from "oak-domain/lib/utils/validator";
 

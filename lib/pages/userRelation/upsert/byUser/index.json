@@ -1,11 +1,7 @@
 {
     "navigationBarTitleText": "添加权限",
     "usingComponents": {
-        "t-checkbox": "@oak-frontend-base/miniprogram_npm/tdesign/checkbox/checkbox",
-        "t-checkbox-group": "@oak-frontend-base/miniprogram_npm/tdesign/checkbox-group/checkbox-group",
-        "t-input": "@oak-frontend-base/miniprogram_npm/tdesign/input/input",
-        "t-tag": "@oak-frontend-base/miniprogram_npm/tdesign/tag/tag",
-        "t-icon": "@oak-frontend-base/miniprogram_npm/tdesign/icon/icon",
-        "t-button": "@oak-frontend-base/miniprogram_npm/tdesign/button/button"
+        "onUser": "./../onUser/index",
+        "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index"
     }
 }

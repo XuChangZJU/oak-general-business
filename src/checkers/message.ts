@@ -17,7 +17,7 @@ const checkers: Checker<EntityDict, 'message', RuntimeCxt> [] = [
                     systemId,
                 }
             };
-            operation.filter = operation.filter ? combineFilters([operation.filter, filter]): filter;
+            operation.filter = operation.filter ? combineFilters('message', context.getSchema(), [operation.filter, filter]): filter;
         },
     }
 ];
