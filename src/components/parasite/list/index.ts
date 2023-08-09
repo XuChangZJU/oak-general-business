@@ -21,6 +21,7 @@ export default OakComponent({
     properties: {
         entity: '',
         entityId: '',
+        nameLabel: '',
     },
     filters: [
         {
