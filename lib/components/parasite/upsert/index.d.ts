@@ -1,16 +1,13 @@
-/// <reference types="react" />
 import { EntityDict } from '../../../general-app-domain';
-declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "parasite", false, {
-    entity: keyof EntityDict;
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(props: ReactComponentProps<ED2, T2, false, {
+    entity: keyof ED2;
     entityId: string;
     relation: string;
-    redirectTo: {
-        pathname: string;
-        props?: Record<string, any> | undefined;
-        state?: Record<string, any> | undefined;
-    } | undefined;
+    redirectTo: EntityDict['parasite']['Schema']['redirectTo'];
     multiple: boolean;
     nameLabel: string;
     nameRequired: boolean;
-}>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
+}>) => React.ReactElement;
 export default _default;
