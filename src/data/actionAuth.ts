@@ -3,31 +3,31 @@ import { CreateOperationData as ActionAuth } from '../general-app-domain/ActionA
 export const actionAuth: ActionAuth[] = [
     {
         id: 'message-user',
-        path: 'user',
+        paths: ['user'],
         destEntity: 'message',
         deActions: ['select', 'remove', 'update'],
     },
     {
         id: 'mobile-user',
-        path: 'user',
+        paths: ['user'],
         destEntity: 'mobile',
         deActions: ['create', 'update', 'remove', 'select'],
     },
     {
         id: 'token-user',
-        path: 'user',
+        paths: ['user'],
         destEntity: 'token',
         deActions: ['create', 'update', 'remove', 'select'],
     },
     {
         id: 'wechatLogin-user',
-        path: 'user',
+        paths: ['user'],
         destEntity: 'wechatLogin',
         deActions: ['create', 'update', 'select'],
     },
     {
         id: 'wechatUser-user',
-        path: 'user',
+        paths: ['user'],
         destEntity: 'wechatUser',
         deActions: ['create', 'update', 'select'],
     }
