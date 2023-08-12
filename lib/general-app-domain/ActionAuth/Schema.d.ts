@@ -1,8 +1,10 @@
-import { String, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { String } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Relation from "../Relation/Schema";
 declare type Actions = string[];
 declare type Paths = string[];
@@ -86,10 +88,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "relatio
     relationId?: never;
     relation?: Relation.CreateSingleOperation;
 } | {
-    relationId: String<64>;
+    relationId: ForeignKey<"relation">;
     relation?: Relation.UpdateOperation;
 } | {
-    relationId?: String<64>;
+    relationId?: ForeignKey<"relation">;
 }));
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -105,7 +107,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "relatio
     relationId?: never;
 } | {
     relation?: never;
-    relationId?: String<64> | null;
+    relationId?: ForeignKey<"relation"> | null;
 })) & {
     [k: string]: any;
 };

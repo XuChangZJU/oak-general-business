@@ -6,12 +6,14 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
+import { Environment } from 'oak-frontend-base/lib/features/environment';
 declare type Options = WeixinJsSdk.CheckJsApiOptions | WeixinJsSdk.AddCardOptions | WeixinJsSdk.ChooseCardOptions | WeixinJsSdk.OnMenuShareTimelineOptions | WeixinJsSdk.OnMenuShareAppMessageOptions | WeixinJsSdk.OnMenuShareQQ | WeixinJsSdk.OnMenuShareWeibo | WeixinJsSdk.OnMenuShareQZone | WeixinJsSdk.ChooseImageOptions | WeixinJsSdk.PreviewImageOptions | WeixinJsSdk.UploadImageOptions | WeixinJsSdk.DownloadImageOptions | WeixinJsSdk.GetLocalImgDataOptions | WeixinJsSdk.LocalVoiceOptions | WeixinJsSdk.UploadVoiceOptions | WeixinJsSdk.DownloadVoiceOptions | WeixinJsSdk.OpenLocationOptions | WeixinJsSdk.GetLocationOptions | WeixinJsSdk.ScanQRCodeOptions | WeixinJsSdk.OpenProductSpecificViewOptions | WeixinJsSdk.ChooseCardOptions | WeixinJsSdk.OpenCardOptions | WeixinJsSdk.ChooseWXPayOptions;
 export declare class WeiXinJsSdk<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>> extends Feature {
     private cache;
     private storage;
+    private environment;
     private landingUrl?;
-    constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage);
+    constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage, environment: Environment);
     signatureJsSDK(url: string): Promise<{
         signature: any;
         noncestr: string;

@@ -1,8 +1,9 @@
-import { String } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
+import { String } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as ModiEntity from "../ModiEntity/Schema";
 export declare type OpSchema = EntityShape & {
     targetEntity: String<32>;

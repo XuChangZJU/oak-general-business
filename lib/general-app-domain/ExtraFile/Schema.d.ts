@@ -1,8 +1,10 @@
-import { String, Int, Float, Boolean, Text } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { String, Int, Text, Float, Boolean } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Article from "../Article/Schema";
 import * as ArticleMenu from "../ArticleMenu/Schema";
 import * as User from "../User/Schema";
@@ -176,33 +178,33 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     article: Article.CreateSingleOperation;
 } | {
     entity: "article";
-    entityId: String<64>;
+    entityId: ForeignKey<"Article">;
     article: Article.UpdateOperation;
 } | {
     entity: "article";
-    entityId: String<64>;
+    entityId: ForeignKey<"Article">;
 } | {
     entity?: never;
     entityId?: never;
     articleMenu: ArticleMenu.CreateSingleOperation;
 } | {
     entity: "articleMenu";
-    entityId: String<64>;
+    entityId: ForeignKey<"ArticleMenu">;
     articleMenu: ArticleMenu.UpdateOperation;
 } | {
     entity: "articleMenu";
-    entityId: String<64>;
+    entityId: ForeignKey<"ArticleMenu">;
 } | {
     entity?: never;
     entityId?: never;
     user: User.CreateSingleOperation;
 } | {
     entity: "user";
-    entityId: String<64>;
+    entityId: ForeignKey<"User">;
     user: User.UpdateOperation;
 } | {
     entity: "user";
-    entityId: String<64>;
+    entityId: ForeignKey<"User">;
 } | {
     entity?: string;
     entityId?: string;
@@ -225,7 +227,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     entity?: never;
 } | {
     entity?: ("article" | "articleMenu" | "user" | string) | null;
-    entityId?: String<64> | null;
+    entityId?: ForeignKey<"Article" | "ArticleMenu" | "User"> | null;
 }) & {
     [k: string]: any;
 };

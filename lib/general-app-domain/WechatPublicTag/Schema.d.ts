@@ -1,8 +1,10 @@
-import { String, Uint, Boolean, Datetime, ForeignKey } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { String, Datetime, Boolean, Uint } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Application from "../Application/Schema";
 import * as UserWechatPublicTag from "../UserWechatPublicTag/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
@@ -120,10 +122,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "applica
     applicationId?: never;
     application: Application.CreateSingleOperation;
 } | {
-    applicationId: String<64>;
+    applicationId: ForeignKey<"application">;
     application?: Application.UpdateOperation;
 } | {
-    applicationId: String<64>;
+    applicationId: ForeignKey<"application">;
 })) & {
     userWechatPublicTag$wechatPublicTag?: OakOperation<UserWechatPublicTag.UpdateOperation["action"], Omit<UserWechatPublicTag.UpdateOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<UserWechatPublicTag.Filter, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">[]> | Array<OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<UserWechatPublicTag.UpdateOperation["action"], Omit<UserWechatPublicTag.UpdateOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<UserWechatPublicTag.Filter, "wechatPublicTag" | "wechatPublicTagId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
@@ -143,7 +145,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "applica
     applicationId?: never;
 } | {
     application?: never;
-    applicationId?: String<64> | null;
+    applicationId?: ForeignKey<"application"> | null;
 })) & {
     [k: string]: any;
     userWechatPublicTag$wechatPublicTag?: OakOperation<UserWechatPublicTag.UpdateOperation["action"], Omit<UserWechatPublicTag.UpdateOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<UserWechatPublicTag.Filter, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<UserWechatPublicTag.RemoveOperation["action"], Omit<UserWechatPublicTag.RemoveOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<UserWechatPublicTag.Filter, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">[]> | Array<OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<UserWechatPublicTag.UpdateOperation["action"], Omit<UserWechatPublicTag.UpdateOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<UserWechatPublicTag.Filter, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<UserWechatPublicTag.RemoveOperation["action"], Omit<UserWechatPublicTag.RemoveOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<UserWechatPublicTag.Filter, "wechatPublicTag" | "wechatPublicTagId">>>;

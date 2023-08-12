@@ -1,8 +1,9 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Message from "../Message/Schema";
 import * as System from "../System/Schema";
 import * as Notification from "../Notification/Schema";
@@ -91,18 +92,18 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "message
     messageId?: never;
     message: Message.CreateSingleOperation;
 } | {
-    messageId: String<64>;
+    messageId: ForeignKey<"message">;
     message?: Message.UpdateOperation;
 } | {
-    messageId: String<64>;
+    messageId: ForeignKey<"message">;
 }) & ({
     systemId?: never;
     system: System.CreateSingleOperation;
 } | {
-    systemId: String<64>;
+    systemId: ForeignKey<"system">;
     system?: System.UpdateOperation;
 } | {
-    systemId: String<64>;
+    systemId: ForeignKey<"system">;
 })) & {
     notification$messageSystem?: OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">> | OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">[]> | Array<OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">> | OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">>>;
 };
@@ -120,7 +121,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "message
     messageId?: never;
 } | {
     message?: never;
-    messageId?: String<64> | null;
+    messageId?: ForeignKey<"message"> | null;
 }) & ({
     system: System.CreateSingleOperation;
     systemId?: never;
@@ -132,7 +133,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "message
     systemId?: never;
 } | {
     system?: never;
-    systemId?: String<64> | null;
+    systemId?: ForeignKey<"system"> | null;
 })) & {
     [k: string]: any;
     notification$messageSystem?: OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">> | OakOperation<Notification.RemoveOperation["action"], Omit<Notification.RemoveOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">> | OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">[]> | Array<OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">> | OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">> | OakOperation<Notification.RemoveOperation["action"], Omit<Notification.RemoveOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">>>;

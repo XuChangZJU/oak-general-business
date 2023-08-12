@@ -1,8 +1,9 @@
-import { String, Boolean, Text, Datetime } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
+import { EntityShape } from "oak-domain/lib/types/Entity";
+import { String, Text, Boolean, Datetime } from "oak-domain/lib/types/DataType";
 export declare type OpSchema = EntityShape & {
     mobile: String<11>;
     code: String<4>;

@@ -1,4 +1,5 @@
 import { EntityDef as ActionAuth } from "./ActionAuth/Schema";
+import { EntityDef as I18n } from "./I18n/Schema";
 import { EntityDef as Modi } from "./Modi/Schema";
 import { EntityDef as ModiEntity } from "./ModiEntity/Schema";
 import { EntityDef as Oper } from "./Oper/Schema";
@@ -40,6 +41,7 @@ import { EntityDef as WechatQrCode } from "./WechatQrCode/Schema";
 import { EntityDef as WechatUser } from "./WechatUser/Schema";
 export declare type EntityDict = {
     actionAuth: ActionAuth;
+    i18n: I18n;
     modi: Modi;
     modiEntity: ModiEntity;
     oper: Oper;

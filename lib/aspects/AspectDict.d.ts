@@ -1,4 +1,4 @@
-import { WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
+import { WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
 import { AppType } from '../general-app-domain/Application/Schema';
 import { EntityDict } from '../general-app-domain';
 import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';

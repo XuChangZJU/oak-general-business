@@ -1,8 +1,10 @@
-import { String, Int, ForeignKey } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { String, Int } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as System from "../System/Schema";
 export declare type OpSchema = EntityShape & {
     url: String<64>;
@@ -90,10 +92,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "systemI
     systemId?: never;
     system: System.CreateSingleOperation;
 } | {
-    systemId: String<64>;
+    systemId: ForeignKey<"system">;
     system?: System.UpdateOperation;
 } | {
-    systemId: String<64>;
+    systemId: ForeignKey<"system">;
 }));
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -109,7 +111,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "systemI
     systemId?: never;
 } | {
     system?: never;
-    systemId?: String<64> | null;
+    systemId?: ForeignKey<"system"> | null;
 })) & {
     [k: string]: any;
 };

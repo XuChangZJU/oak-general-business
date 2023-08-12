@@ -1,8 +1,10 @@
-import { String, Int, Boolean, Datetime, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction } from "./Action";
+import { String, Int, Datetime, Boolean } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as User from "../User/Schema";
 import * as Token from "../Token/Schema";
 declare type RedirectTo = {
@@ -129,10 +131,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     userId?: never;
     user: User.CreateSingleOperation;
 } | {
-    userId: String<64>;
+    userId: ForeignKey<"user">;
     user?: User.UpdateOperation;
 } | {
-    userId: String<64>;
+    userId: ForeignKey<"user">;
 })) & ({
     entity?: string;
     entityId?: string;
@@ -154,7 +156,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId"
     userId?: never;
 } | {
     user?: never;
-    userId?: String<64> | null;
+    userId?: ForeignKey<"user"> | null;
 })) & {
     [k: string]: any;
     token$entity?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "entity" | "entityId">, Omit<Token.Filter, "entity" | "entityId">> | OakOperation<Token.RemoveOperation["action"], Omit<Token.RemoveOperationData, "entity" | "entityId">, Omit<Token.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Token.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "entity" | "entityId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "entity" | "entityId">, Omit<Token.Filter, "entity" | "entityId">> | OakOperation<Token.RemoveOperation["action"], Omit<Token.RemoveOperationData, "entity" | "entityId">, Omit<Token.Filter, "entity" | "entityId">>>;

@@ -1,8 +1,10 @@
-import { String, Boolean, Text, Datetime, ForeignKey } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction } from "./Action";
+import { Boolean, Text, Datetime } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import { QrCodeType } from "../../types/Config";
 import * as User from "../User/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
@@ -133,10 +135,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "userId"
     userId?: never;
     user?: User.CreateSingleOperation;
 } | {
-    userId: String<64>;
+    userId: ForeignKey<"user">;
     user?: User.UpdateOperation;
 } | {
-    userId?: String<64>;
+    userId?: ForeignKey<"user">;
 })) & {
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
     operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
@@ -156,7 +158,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId"
     userId?: never;
 } | {
     user?: never;
-    userId?: String<64> | null;
+    userId?: ForeignKey<"user"> | null;
 })) & {
     [k: string]: any;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;

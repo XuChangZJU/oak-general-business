@@ -1,8 +1,10 @@
-import { String, Boolean, Text, Datetime, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { String, Text, Datetime, Boolean } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import { QrCodeType } from "../../types/Config";
 import * as Application from "../Application/Schema";
 import * as User from "../User/Schema";
@@ -198,43 +200,43 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     applicationId?: never;
     application: Application.CreateSingleOperation;
 } | {
-    applicationId: String<64>;
+    applicationId: ForeignKey<"application">;
     application?: Application.UpdateOperation;
 } | {
-    applicationId: String<64>;
+    applicationId: ForeignKey<"application">;
 })) & ({
     entity?: never;
     entityId?: never;
     user: User.CreateSingleOperation;
 } | {
     entity: "user";
-    entityId: String<64>;
+    entityId: ForeignKey<"User">;
     user: User.UpdateOperation;
 } | {
     entity: "user";
-    entityId: String<64>;
+    entityId: ForeignKey<"User">;
 } | {
     entity?: never;
     entityId?: never;
     userEntityGrant: UserEntityGrant.CreateSingleOperation;
 } | {
     entity: "userEntityGrant";
-    entityId: String<64>;
+    entityId: ForeignKey<"UserEntityGrant">;
     userEntityGrant: UserEntityGrant.UpdateOperation;
 } | {
     entity: "userEntityGrant";
-    entityId: String<64>;
+    entityId: ForeignKey<"UserEntityGrant">;
 } | {
     entity?: never;
     entityId?: never;
     wechatLogin: WechatLogin.CreateSingleOperation;
 } | {
     entity: "wechatLogin";
-    entityId: String<64>;
+    entityId: ForeignKey<"WechatLogin">;
     wechatLogin: WechatLogin.UpdateOperation;
 } | {
     entity: "wechatLogin";
-    entityId: String<64>;
+    entityId: ForeignKey<"WechatLogin">;
 } | {
     entity?: string;
     entityId?: string;
@@ -257,7 +259,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     applicationId?: never;
 } | {
     application?: never;
-    applicationId?: String<64> | null;
+    applicationId?: ForeignKey<"application"> | null;
 })) & ({
     user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
     entityId?: never;
@@ -272,7 +274,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     entity?: never;
 } | {
     entity?: ("user" | "userEntityGrant" | "wechatLogin" | string) | null;
-    entityId?: String<64> | null;
+    entityId?: ForeignKey<"User" | "UserEntityGrant" | "WechatLogin"> | null;
 }) & {
     [k: string]: any;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;

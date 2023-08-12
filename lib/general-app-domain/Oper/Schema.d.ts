@@ -1,8 +1,10 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { AppendOnlyAction } from "oak-domain/lib/actions/action";
+import { String } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as User from "../User/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 export declare type OpSchema = EntityShape & {
@@ -100,10 +102,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "operato
     operatorId?: never;
     operator?: User.CreateSingleOperation;
 } | {
-    operatorId: String<64>;
+    operatorId: ForeignKey<"operator">;
     operator?: User.UpdateOperation;
 } | {
-    operatorId?: String<64>;
+    operatorId?: ForeignKey<"operator">;
 })) & {
     operEntity$oper?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "oper" | "operId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "oper" | "operId">>>;
 };
@@ -121,7 +123,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "operato
     operatorId?: never;
 } | {
     operator?: never;
-    operatorId?: String<64> | null;
+    operatorId?: ForeignKey<"operator"> | null;
 })) & {
     [k: string]: any;
     operEntity$oper?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "oper" | "operId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "oper" | "operId">>>;

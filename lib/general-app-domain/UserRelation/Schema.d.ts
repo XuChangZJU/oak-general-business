@@ -1,8 +1,10 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { String } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as User from "../User/Schema";
 import * as Relation from "../Relation/Schema";
 export declare type OpSchema = EntityShape & {
@@ -93,18 +95,18 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     userId?: never;
     user: User.CreateSingleOperation;
 } | {
-    userId: String<64>;
+    userId: ForeignKey<"user">;
     user?: User.UpdateOperation;
 } | {
-    userId: String<64>;
+    userId: ForeignKey<"user">;
 }) & ({
     relationId?: never;
     relation: Relation.CreateSingleOperation;
 } | {
-    relationId: String<64>;
+    relationId: ForeignKey<"relation">;
     relation?: Relation.UpdateOperation;
 } | {
-    relationId: String<64>;
+    relationId: ForeignKey<"relation">;
 })) & ({
     entity?: string;
     entityId?: string;
@@ -124,7 +126,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId"
     userId?: never;
 } | {
     user?: never;
-    userId?: String<64> | null;
+    userId?: ForeignKey<"user"> | null;
 }) & ({
     relation: Relation.CreateSingleOperation;
     relationId?: never;
@@ -136,7 +138,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId"
     relationId?: never;
 } | {
     relation?: never;
-    relationId?: String<64> | null;
+    relationId?: ForeignKey<"relation"> | null;
 })) & {
     [k: string]: any;
 };

@@ -1,8 +1,10 @@
-import { String, Boolean, ForeignKey } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { String, Boolean } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Article from "../Article/Schema";
 import * as ExtraFile from "../ExtraFile/Schema";
 export declare type OpSchema = EntityShape & {
@@ -122,10 +124,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     parentId?: never;
     parent?: CreateSingleOperation;
 } | {
-    parentId: String<64>;
+    parentId: ForeignKey<"parent">;
     parent?: UpdateOperation;
 } | {
-    parentId?: String<64>;
+    parentId?: ForeignKey<"parent">;
 })) & ({
     entity?: string;
     entityId?: string;
@@ -149,7 +151,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "parentI
     parentId?: never;
 } | {
     parent?: never;
-    parentId?: String<64> | null;
+    parentId?: ForeignKey<"parent"> | null;
 })) & {
     [k: string]: any;
     article$articleMenu?: OakOperation<Article.UpdateOperation["action"], Omit<Article.UpdateOperationData, "articleMenu" | "articleMenuId">, Omit<Article.Filter, "articleMenu" | "articleMenuId">> | OakOperation<Article.RemoveOperation["action"], Omit<Article.RemoveOperationData, "articleMenu" | "articleMenuId">, Omit<Article.Filter, "articleMenu" | "articleMenuId">> | OakOperation<"create", Omit<Article.CreateOperationData, "articleMenu" | "articleMenuId">[]> | Array<OakOperation<"create", Omit<Article.CreateOperationData, "articleMenu" | "articleMenuId">> | OakOperation<Article.UpdateOperation["action"], Omit<Article.UpdateOperationData, "articleMenu" | "articleMenuId">, Omit<Article.Filter, "articleMenu" | "articleMenuId">> | OakOperation<Article.RemoveOperation["action"], Omit<Article.RemoveOperationData, "articleMenu" | "articleMenuId">, Omit<Article.Filter, "articleMenu" | "articleMenuId">>>;

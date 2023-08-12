@@ -1,5 +1,5 @@
 import { EntityDict } from '../general-app-domain';
-import { WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
+import { WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 export declare function loginByMobile<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     captcha?: string;

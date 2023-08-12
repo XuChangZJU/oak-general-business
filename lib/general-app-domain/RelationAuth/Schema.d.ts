@@ -1,8 +1,10 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { String } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Relation from "../Relation/Schema";
 export declare type OpSchema = EntityShape & {
     sourceRelationId: ForeignKey<"relation">;
@@ -84,18 +86,18 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "sourceR
     sourceRelationId?: never;
     sourceRelation: Relation.CreateSingleOperation;
 } | {
-    sourceRelationId: String<64>;
+    sourceRelationId: ForeignKey<"sourceRelation">;
     sourceRelation?: Relation.UpdateOperation;
 } | {
-    sourceRelationId: String<64>;
+    sourceRelationId: ForeignKey<"sourceRelation">;
 }) & ({
     destRelationId?: never;
     destRelation: Relation.CreateSingleOperation;
 } | {
-    destRelationId: String<64>;
+    destRelationId: ForeignKey<"destRelation">;
     destRelation?: Relation.UpdateOperation;
 } | {
-    destRelationId: String<64>;
+    destRelationId: ForeignKey<"destRelation">;
 }));
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -111,7 +113,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "sourceR
     sourceRelationId?: never;
 } | {
     sourceRelation?: never;
-    sourceRelationId?: String<64> | null;
+    sourceRelationId?: ForeignKey<"sourceRelation"> | null;
 }) & ({
     destRelation: Relation.CreateSingleOperation;
     destRelationId?: never;
@@ -123,7 +125,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "sourceR
     destRelationId?: never;
 } | {
     destRelation?: never;
-    destRelationId?: String<64> | null;
+    destRelationId?: ForeignKey<"destRelation"> | null;
 })) & {
     [k: string]: any;
 };

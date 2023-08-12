@@ -1,4 +1,5 @@
 import * as ActionAuth from "./ActionAuth/Schema";
+import * as I18n from "./I18n/Schema";
 import * as Modi from "./Modi/Schema";
 import * as ModiEntity from "./ModiEntity/Schema";
 import * as Oper from "./Oper/Schema";
@@ -41,6 +42,11 @@ import * as WechatUser from "./WechatUser/Schema";
 export declare type ActionAuthIdSubQuery = {
     [K in "$in" | "$nin"]?: (ActionAuth.ActionAuthIdSubQuery & {
         entity: "actionAuth";
+    }) | any;
+};
+export declare type I18nIdSubQuery = {
+    [K in "$in" | "$nin"]?: (I18n.I18nIdSubQuery & {
+        entity: "i18n";
     }) | any;
 };
 export declare type ModiIdSubQuery = {

@@ -1,4 +1,4 @@
-import { String, Float, Text } from 'oak-domain/lib/types/DataType';
+import { String, Boolean } from 'oak-domain/lib/types/DataType';
 import { ActionDef } from 'oak-domain/lib/types/Action';
 import { EntityShape, Configuration } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';

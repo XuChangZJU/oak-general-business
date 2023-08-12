@@ -1,4 +1,4 @@
-import { String } from 'oak-domain/lib/types/DataType';
+import { String, Boolean } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as ExtraFile } from './ExtraFile';
 export interface Schema extends EntityShape {

@@ -1,8 +1,10 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { AppendOnlyAction } from "oak-domain/lib/actions/action";
+import { String } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Oper from "../Oper/Schema";
 import * as User from "../User/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
@@ -150,95 +152,95 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     operId?: never;
     oper: Oper.CreateSingleOperation;
 } | {
-    operId: String<64>;
+    operId: ForeignKey<"oper">;
 })) & ({
     entity?: never;
     entityId?: never;
     user: User.CreateSingleOperation;
 } | {
     entity: "user";
-    entityId: String<64>;
+    entityId: ForeignKey<"User">;
     user: User.UpdateOperation;
 } | {
     entity: "user";
-    entityId: String<64>;
+    entityId: ForeignKey<"User">;
 } | {
     entity?: never;
     entityId?: never;
     userEntityGrant: UserEntityGrant.CreateSingleOperation;
 } | {
     entity: "userEntityGrant";
-    entityId: String<64>;
+    entityId: ForeignKey<"UserEntityGrant">;
     userEntityGrant: UserEntityGrant.UpdateOperation;
 } | {
     entity: "userEntityGrant";
-    entityId: String<64>;
+    entityId: ForeignKey<"UserEntityGrant">;
 } | {
     entity?: never;
     entityId?: never;
     userSystem: UserSystem.CreateSingleOperation;
 } | {
     entity: "userSystem";
-    entityId: String<64>;
+    entityId: ForeignKey<"UserSystem">;
     userSystem: UserSystem.UpdateOperation;
 } | {
     entity: "userSystem";
-    entityId: String<64>;
+    entityId: ForeignKey<"UserSystem">;
 } | {
     entity?: never;
     entityId?: never;
     userWechatPublicTag: UserWechatPublicTag.CreateSingleOperation;
 } | {
     entity: "userWechatPublicTag";
-    entityId: String<64>;
+    entityId: ForeignKey<"UserWechatPublicTag">;
     userWechatPublicTag: UserWechatPublicTag.UpdateOperation;
 } | {
     entity: "userWechatPublicTag";
-    entityId: String<64>;
+    entityId: ForeignKey<"UserWechatPublicTag">;
 } | {
     entity?: never;
     entityId?: never;
     wechatLogin: WechatLogin.CreateSingleOperation;
 } | {
     entity: "wechatLogin";
-    entityId: String<64>;
+    entityId: ForeignKey<"WechatLogin">;
     wechatLogin: WechatLogin.UpdateOperation;
 } | {
     entity: "wechatLogin";
-    entityId: String<64>;
+    entityId: ForeignKey<"WechatLogin">;
 } | {
     entity?: never;
     entityId?: never;
     wechatPublicTag: WechatPublicTag.CreateSingleOperation;
 } | {
     entity: "wechatPublicTag";
-    entityId: String<64>;
+    entityId: ForeignKey<"WechatPublicTag">;
     wechatPublicTag: WechatPublicTag.UpdateOperation;
 } | {
     entity: "wechatPublicTag";
-    entityId: String<64>;
+    entityId: ForeignKey<"WechatPublicTag">;
 } | {
     entity?: never;
     entityId?: never;
     wechatQrCode: WechatQrCode.CreateSingleOperation;
 } | {
     entity: "wechatQrCode";
-    entityId: String<64>;
+    entityId: ForeignKey<"WechatQrCode">;
     wechatQrCode: WechatQrCode.UpdateOperation;
 } | {
     entity: "wechatQrCode";
-    entityId: String<64>;
+    entityId: ForeignKey<"WechatQrCode">;
 } | {
     entity?: never;
     entityId?: never;
     wechatUser: WechatUser.CreateSingleOperation;
 } | {
     entity: "wechatUser";
-    entityId: String<64>;
+    entityId: ForeignKey<"WechatUser">;
     wechatUser: WechatUser.UpdateOperation;
 } | {
     entity: "wechatUser";
-    entityId: String<64>;
+    entityId: ForeignKey<"WechatUser">;
 } | {
     entity?: string;
     entityId?: string;
@@ -252,7 +254,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     operId?: never;
 } | {
     oper?: never;
-    operId?: String<64> | null;
+    operId?: ForeignKey<"oper"> | null;
 })) & ({
     user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
     entityId?: never;
@@ -287,7 +289,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     entity?: never;
 } | {
     entity?: ("user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatLogin" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string) | null;
-    entityId?: String<64> | null;
+    entityId?: ForeignKey<"User" | "UserEntityGrant" | "UserSystem" | "UserWechatPublicTag" | "WechatLogin" | "WechatPublicTag" | "WechatQrCode" | "WechatUser"> | null;
 }) & {
     [k: string]: any;
 };

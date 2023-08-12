@@ -1,8 +1,10 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
+import { String } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import { Channel } from "../../types/Message";
 import * as Application from "../Application/Schema";
 import * as MessageSystem from "../MessageSystem/Schema";
@@ -112,18 +114,18 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "applica
     applicationId?: never;
     application?: Application.CreateSingleOperation;
 } | {
-    applicationId: String<64>;
+    applicationId: ForeignKey<"application">;
     application?: Application.UpdateOperation;
 } | {
-    applicationId?: String<64>;
+    applicationId?: ForeignKey<"application">;
 }) & ({
     messageSystemId?: never;
     messageSystem: MessageSystem.CreateSingleOperation;
 } | {
-    messageSystemId: String<64>;
+    messageSystemId: ForeignKey<"messageSystem">;
     messageSystem?: MessageSystem.UpdateOperation;
 } | {
-    messageSystemId: String<64>;
+    messageSystemId: ForeignKey<"messageSystem">;
 }));
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -139,7 +141,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "applica
     applicationId?: never;
 } | {
     application?: never;
-    applicationId?: String<64> | null;
+    applicationId?: ForeignKey<"application"> | null;
 }) & ({
     messageSystem: MessageSystem.CreateSingleOperation;
     messageSystemId?: never;
@@ -151,7 +153,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "applica
     messageSystemId?: never;
 } | {
     messageSystem?: never;
-    messageSystemId?: String<64> | null;
+    messageSystemId?: ForeignKey<"messageSystem"> | null;
 })) & {
     [k: string]: any;
 };

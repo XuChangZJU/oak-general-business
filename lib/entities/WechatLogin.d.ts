@@ -1,4 +1,4 @@
-import { Text, Datetime } from 'oak-domain/lib/types/DataType';
+import { Boolean, Text, Datetime } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as User } from './User';
 import { Schema as WechatQrCode } from './WechatQrCode';

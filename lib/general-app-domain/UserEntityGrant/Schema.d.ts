@@ -1,8 +1,10 @@
-import { String, Int, Boolean, Text, Datetime, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction } from "./Action";
+import { String, Text, Datetime, Int } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import { QrCodeType } from "../../types/Config";
 import * as Relation from "../Relation/Schema";
 import * as User from "../User/Schema";
@@ -190,26 +192,26 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     relationId?: never;
     relation: Relation.CreateSingleOperation;
 } | {
-    relationId: String<64>;
+    relationId: ForeignKey<"relation">;
     relation?: Relation.UpdateOperation;
 } | {
-    relationId: String<64>;
+    relationId: ForeignKey<"relation">;
 }) & ({
     granterId?: never;
     granter: User.CreateSingleOperation;
 } | {
-    granterId: String<64>;
+    granterId: ForeignKey<"granter">;
     granter?: User.UpdateOperation;
 } | {
-    granterId: String<64>;
+    granterId: ForeignKey<"granter">;
 }) & ({
     granteeId?: never;
     grantee?: User.CreateSingleOperation;
 } | {
-    granteeId: String<64>;
+    granteeId: ForeignKey<"grantee">;
     grantee?: User.UpdateOperation;
 } | {
-    granteeId?: String<64>;
+    granteeId?: ForeignKey<"grantee">;
 })) & ({
     entity?: string;
     entityId?: string;
@@ -233,7 +235,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "relatio
     relationId?: never;
 } | {
     relation?: never;
-    relationId?: String<64> | null;
+    relationId?: ForeignKey<"relation"> | null;
 }) & ({
     granter: User.CreateSingleOperation;
     granterId?: never;
@@ -245,7 +247,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "relatio
     granterId?: never;
 } | {
     granter?: never;
-    granterId?: String<64> | null;
+    granterId?: ForeignKey<"granter"> | null;
 }) & ({
     grantee: User.CreateSingleOperation;
     granteeId?: never;
@@ -257,7 +259,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "relatio
     granteeId?: never;
 } | {
     grantee?: never;
-    granteeId?: String<64> | null;
+    granteeId?: ForeignKey<"grantee"> | null;
 })) & {
     [k: string]: any;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;

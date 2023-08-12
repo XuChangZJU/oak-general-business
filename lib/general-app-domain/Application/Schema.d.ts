@@ -1,8 +1,10 @@
-import { String, Text, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { String, Text } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import { Style } from "../../types/Style";
 import * as System from "../System/Schema";
 import * as MessageTypeTemplateId from "../MessageTypeTemplateId/Schema";
@@ -203,10 +205,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "systemI
     systemId?: never;
     system: System.CreateSingleOperation;
 } | {
-    systemId: String<64>;
+    systemId: ForeignKey<"system">;
     system?: System.UpdateOperation;
 } | {
-    systemId: String<64>;
+    systemId: ForeignKey<"system">;
 })) & {
     messageTypeTemplateId$application?: OakOperation<MessageTypeTemplateId.UpdateOperation["action"], Omit<MessageTypeTemplateId.UpdateOperationData, "application" | "applicationId">, Omit<MessageTypeTemplateId.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<MessageTypeTemplateId.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<MessageTypeTemplateId.CreateOperationData, "application" | "applicationId">> | OakOperation<MessageTypeTemplateId.UpdateOperation["action"], Omit<MessageTypeTemplateId.UpdateOperationData, "application" | "applicationId">, Omit<MessageTypeTemplateId.Filter, "application" | "applicationId">>>;
     notification$application?: OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "application" | "applicationId">, Omit<Notification.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<Notification.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<Notification.CreateOperationData, "application" | "applicationId">> | OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "application" | "applicationId">, Omit<Notification.Filter, "application" | "applicationId">>>;
@@ -229,7 +231,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "systemI
     systemId?: never;
 } | {
     system?: never;
-    systemId?: String<64> | null;
+    systemId?: ForeignKey<"system"> | null;
 })) & {
     [k: string]: any;
     messageTypeTemplateId$application?: OakOperation<MessageTypeTemplateId.UpdateOperation["action"], Omit<MessageTypeTemplateId.UpdateOperationData, "application" | "applicationId">, Omit<MessageTypeTemplateId.Filter, "application" | "applicationId">> | OakOperation<MessageTypeTemplateId.RemoveOperation["action"], Omit<MessageTypeTemplateId.RemoveOperationData, "application" | "applicationId">, Omit<MessageTypeTemplateId.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<MessageTypeTemplateId.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<MessageTypeTemplateId.CreateOperationData, "application" | "applicationId">> | OakOperation<MessageTypeTemplateId.UpdateOperation["action"], Omit<MessageTypeTemplateId.UpdateOperationData, "application" | "applicationId">, Omit<MessageTypeTemplateId.Filter, "application" | "applicationId">> | OakOperation<MessageTypeTemplateId.RemoveOperation["action"], Omit<MessageTypeTemplateId.RemoveOperationData, "application" | "applicationId">, Omit<MessageTypeTemplateId.Filter, "application" | "applicationId">>>;

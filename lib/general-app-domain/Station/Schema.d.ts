@@ -1,8 +1,10 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { String } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Area from "../Area/Schema";
 import * as SubwayStation from "../SubwayStation/Schema";
 export declare type OpSchema = EntityShape & {
@@ -79,7 +81,7 @@ export declare type SelectOperation<P extends Object = Projection> = OakSelectio
 export declare type Selection<P extends Object = Projection> = SelectOperation<P>;
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "areaId">> & ({
-    areaId: String<64>;
+    areaId: ForeignKey<"area">;
 }) & {
     subwayStation$station?: OakOperation<SubwayStation.UpdateOperation["action"], Omit<SubwayStation.UpdateOperationData, "station" | "stationId">, Omit<SubwayStation.Filter, "station" | "stationId">> | OakOperation<"create", Omit<SubwayStation.CreateOperationData, "station" | "stationId">[]> | Array<OakOperation<"create", Omit<SubwayStation.CreateOperationData, "station" | "stationId">> | OakOperation<SubwayStation.UpdateOperation["action"], Omit<SubwayStation.UpdateOperationData, "station" | "stationId">, Omit<SubwayStation.Filter, "station" | "stationId">>>;
 };
@@ -88,7 +90,7 @@ export declare type CreateMultipleOperation = OakOperation<"create", Array<Creat
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "areaId">> & ({
     area?: never;
-    areaId?: String<64> | null;
+    areaId?: ForeignKey<"area"> | null;
 }) & {
     [k: string]: any;
     subwayStation$station?: OakOperation<SubwayStation.UpdateOperation["action"], Omit<SubwayStation.UpdateOperationData, "station" | "stationId">, Omit<SubwayStation.Filter, "station" | "stationId">> | OakOperation<SubwayStation.RemoveOperation["action"], Omit<SubwayStation.RemoveOperationData, "station" | "stationId">, Omit<SubwayStation.Filter, "station" | "stationId">> | OakOperation<"create", Omit<SubwayStation.CreateOperationData, "station" | "stationId">[]> | Array<OakOperation<"create", Omit<SubwayStation.CreateOperationData, "station" | "stationId">> | OakOperation<SubwayStation.UpdateOperation["action"], Omit<SubwayStation.UpdateOperationData, "station" | "stationId">, Omit<SubwayStation.Filter, "station" | "stationId">> | OakOperation<SubwayStation.RemoveOperation["action"], Omit<SubwayStation.RemoveOperationData, "station" | "stationId">, Omit<SubwayStation.Filter, "station" | "stationId">>>;

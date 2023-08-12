@@ -1,8 +1,10 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { String } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Application from "../Application/Schema";
 export declare type OpSchema = EntityShape & {
     type: String<64>;
@@ -78,10 +80,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "applica
     applicationId?: never;
     application: Application.CreateSingleOperation;
 } | {
-    applicationId: String<64>;
+    applicationId: ForeignKey<"application">;
     application?: Application.UpdateOperation;
 } | {
-    applicationId: String<64>;
+    applicationId: ForeignKey<"application">;
 }));
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -97,7 +99,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "applica
     applicationId?: never;
 } | {
     application?: never;
-    applicationId?: String<64> | null;
+    applicationId?: ForeignKey<"application"> | null;
 })) & {
     [k: string]: any;
 };

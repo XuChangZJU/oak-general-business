@@ -1,8 +1,10 @@
-import { String, Boolean, Text, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { String, Boolean, Text } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import { Config } from "../../types/Config";
 import { Style } from "../../types/Style";
 import * as Platform from "../Platform/Schema";
@@ -156,10 +158,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     platformId?: never;
     platform?: Platform.CreateSingleOperation;
 } | {
-    platformId: String<64>;
+    platformId: ForeignKey<"platform">;
     platform?: Platform.UpdateOperation;
 } | {
-    platformId?: String<64>;
+    platformId?: ForeignKey<"platform">;
 })) & ({
     entity?: string;
     entityId?: string;
@@ -184,7 +186,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "platfor
     platformId?: never;
 } | {
     platform?: never;
-    platformId?: String<64> | null;
+    platformId?: ForeignKey<"platform"> | null;
 })) & {
     [k: string]: any;
     application$system?: OakOperation<Application.UpdateOperation["action"], Omit<Application.UpdateOperationData, "system" | "systemId">, Omit<Application.Filter, "system" | "systemId">> | OakOperation<Application.RemoveOperation["action"], Omit<Application.RemoveOperationData, "system" | "systemId">, Omit<Application.Filter, "system" | "systemId">> | OakOperation<"create", Omit<Application.CreateOperationData, "system" | "systemId">[]> | Array<OakOperation<"create", Omit<Application.CreateOperationData, "system" | "systemId">> | OakOperation<Application.UpdateOperation["action"], Omit<Application.UpdateOperationData, "system" | "systemId">, Omit<Application.Filter, "system" | "systemId">> | OakOperation<Application.RemoveOperation["action"], Omit<Application.RemoveOperationData, "system" | "systemId">, Omit<Application.Filter, "system" | "systemId">>>;

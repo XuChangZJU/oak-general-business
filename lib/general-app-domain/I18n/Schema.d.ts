@@ -1,31 +1,23 @@
-import { JsonProjection } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_NumberValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
-import { String, Text, Int } from "oak-domain/lib/types/DataType";
+import { String } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
-export declare type WechatPublicConfig = {
-    type: 'wechatPublic';
-    appId: string;
-    appSecret: string;
-};
 export declare type OpSchema = EntityShape & {
-    entity: String<32>;
-    entityId: String<64>;
-    name: String<32>;
-    description?: Text | null;
-    config?: WechatPublicConfig | null;
-    offset?: Int<4> | null;
+    module: String<64>;
+    position: String<188>;
+    namespace: String<256>;
+    language: String<32>;
+    data: Object;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
-    entity: String<32>;
-    entityId: String<64>;
-    name: String<32>;
-    description?: Text | null;
-    config?: WechatPublicConfig | null;
-    offset?: Int<4> | null;
+    module: String<64>;
+    position: String<188>;
+    namespace: String<256>;
+    language: String<32>;
+    data: Object;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -34,12 +26,11 @@ declare type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    entity: Q_StringValue;
-    entityId: Q_StringValue;
-    name: Q_StringValue;
-    description: Q_StringValue;
-    config: JsonFilter<WechatPublicConfig>;
-    offset: Q_NumberValue;
+    module: Q_StringValue;
+    position: Q_StringValue;
+    namespace: Q_StringValue;
+    language: Q_StringValue;
+    data: Object;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -49,14 +40,13 @@ export declare type Projection = {
     $$createAt$$?: number;
     $$updateAt$$?: number;
     $$seq$$?: number;
-    entity?: number;
-    entityId?: number;
-    name?: number;
-    description?: number;
-    config?: number | JsonProjection<WechatPublicConfig>;
-    offset?: number;
+    module?: number;
+    position?: number;
+    namespace?: number;
+    language?: number;
+    data?: number | Object;
 } & Partial<ExprOp<OpAttr | string>>;
-declare type SubscriptionIdProjection = OneOf<{
+declare type I18nIdProjection = OneOf<{
     id: number;
 }>;
 export declare type SortAttr = {
@@ -68,17 +58,13 @@ export declare type SortAttr = {
 } | {
     $$updateAt$$: number;
 } | {
-    entity: number;
+    module: number;
 } | {
-    entityId: number;
+    position: number;
 } | {
-    name: number;
+    namespace: number;
 } | {
-    description: number;
-} | {
-    config: number;
-} | {
-    offset: number;
+    language: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
@@ -90,11 +76,7 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
 export declare type Selection<P extends Object = Projection> = SelectOperation<P>;
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
-    entity?: string;
-    entityId?: string;
-    [K: string]: any;
-});
+export declare type CreateOperationData = FormCreateData<OpSchema>;
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
@@ -105,7 +87,7 @@ export declare type UpdateOperation = OakOperation<"update" | string, UpdateOper
 export declare type RemoveOperationData = {};
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation;
-export declare type SubscriptionIdSubQuery = Selection<SubscriptionIdProjection>;
+export declare type I18nIdSubQuery = Selection<I18nIdProjection>;
 export declare type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

@@ -11,7 +11,7 @@ export declare class ExtraFile<ED extends EntityDict, Cxt extends BackendRuntime
     private cache;
     private application;
     private locales;
-    constructor(cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>, application: Application<ED, Cxt, FrontCxt, AD>, locales: Locales<ED, Cxt, AD>);
+    constructor(cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>, application: Application<ED, Cxt, FrontCxt, AD>, locales: Locales<ED, Cxt, FrontCxt, AD>);
     private getUploadInfo;
     upload(extraFile: EntityDict['extraFile']['CreateSingle']['data']): Promise<{
         url: string;

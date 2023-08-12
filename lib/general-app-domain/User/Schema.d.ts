@@ -1,9 +1,11 @@
-import { String, Boolean, Text, Datetime, ForeignKey } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, UserState, IdState } from "./Action";
 import { RelationAction } from "oak-domain/lib/actions/action";
+import { String, Text, Boolean, Datetime } from "oak-domain/lib/types/DataType";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Oper from "../Oper/Schema";
 import * as UserRelation from "../UserRelation/Schema";
 import * as Email from "../Email/Schema";
@@ -317,10 +319,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "refId">
     refId?: never;
     ref?: CreateSingleOperation;
 } | {
-    refId: String<64>;
+    refId: ForeignKey<"ref">;
     ref?: UpdateOperation;
 } | {
-    refId?: String<64>;
+    refId?: ForeignKey<"ref">;
 })) & {
     oper$operator?: OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">[]> | Array<OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">>>;
     user$ref?: OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "ref" | "refId">, Omit<Filter, "ref" | "refId">> | OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">[]> | Array<OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">> | OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "ref" | "refId">, Omit<Filter, "ref" | "refId">>>;
@@ -356,7 +358,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "refId">
     refId?: never;
 } | {
     ref?: never;
-    refId?: String<64> | null;
+    refId?: ForeignKey<"ref"> | null;
 })) & {
     [k: string]: any;
     oper$operator?: OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">[]> | Array<OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">>>;

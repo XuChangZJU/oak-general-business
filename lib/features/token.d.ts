@@ -1,6 +1,7 @@
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
+import { Environment } from 'oak-frontend-base/lib/features/environment';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { EntityDict } from '../general-app-domain';
 import AspectDict from '../aspects/AspectDict';
@@ -8,10 +9,11 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>> extends Feature {
     private tokenValue?;
+    private environment;
     private cache;
     private storage;
     private isLoading;
-    constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage);
+    constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage, environment: Environment);
     loadTokenInfo(): Promise<void>;
     loginByMobile(mobile: string, password?: string, captcha?: string): Promise<void>;
     loginByWechatInWebEnv(wechatLoginId: string): Promise<void>;

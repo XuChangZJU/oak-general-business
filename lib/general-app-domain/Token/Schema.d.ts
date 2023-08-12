@@ -1,52 +1,18 @@
-import { String, Datetime, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
+import { ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
-import { AbleState } from 'oak-domain/lib/actions/action';
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction } from "./Action";
+import { String, Datetime } from "oak-domain/lib/types/DataType";
+import { AbleState } from "oak-domain/lib/actions/action";
+import { EntityShape } from "oak-domain/lib/types/Entity";
+import { Environment } from "oak-domain/lib/types/Environment";
 import * as Application from "../Application/Schema";
 import * as User from "../User/Schema";
 import * as Email from "../Email/Schema";
 import * as Mobile from "../Mobile/Schema";
 import * as Parasite from "../Parasite/Schema";
 import * as WechatUser from "../WechatUser/Schema";
-export declare type WechatMpEnv = {
-    type: 'wechatMp';
-    brand: string;
-    model: string;
-    pixelRatio: number;
-    screenWidth: number;
-    screenHeight: number;
-    windowWidth: number;
-    windowHeight: number;
-    statusBarHeight: number;
-    language: string;
-    version: string;
-    system: string;
-    platform: string;
-    fontSizeSetting: number;
-    SDKVersion: string;
-};
-export declare type WebEnv = {
-    type: 'web';
-    visitorId: string;
-    platform: {
-        value: string;
-    };
-    timezone: {
-        value: string;
-    };
-    vendor: {
-        value: string;
-    };
-    vendorFlavors: {
-        value: string[];
-    };
-};
-export declare type ServerEnv = {
-    type: 'server';
-};
-export declare type Environment = WechatMpEnv | WebEnv | ServerEnv;
 export declare type OpSchema = EntityShape & {
     applicationId?: ForeignKey<"application"> | null;
     entity: "email" | "mobile" | "parasite" | "wechatUser" | string;
@@ -197,70 +163,70 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     applicationId?: never;
     application?: Application.CreateSingleOperation;
 } | {
-    applicationId: String<64>;
+    applicationId: ForeignKey<"application">;
     application?: Application.UpdateOperation;
 } | {
-    applicationId?: String<64>;
+    applicationId?: ForeignKey<"application">;
 }) & ({
     userId?: never;
     user?: User.CreateSingleOperation;
 } | {
-    userId: String<64>;
+    userId: ForeignKey<"user">;
     user?: User.UpdateOperation;
 } | {
-    userId?: String<64>;
+    userId?: ForeignKey<"user">;
 }) & ({
     playerId?: never;
     player?: User.CreateSingleOperation;
 } | {
-    playerId: String<64>;
+    playerId: ForeignKey<"player">;
     player?: User.UpdateOperation;
 } | {
-    playerId?: String<64>;
+    playerId?: ForeignKey<"player">;
 })) & ({
     entity?: never;
     entityId?: never;
     email: Email.CreateSingleOperation;
 } | {
     entity: "email";
-    entityId: String<64>;
+    entityId: ForeignKey<"Email">;
     email: Email.UpdateOperation;
 } | {
     entity: "email";
-    entityId: String<64>;
+    entityId: ForeignKey<"Email">;
 } | {
     entity?: never;
     entityId?: never;
     mobile: Mobile.CreateSingleOperation;
 } | {
     entity: "mobile";
-    entityId: String<64>;
+    entityId: ForeignKey<"Mobile">;
     mobile: Mobile.UpdateOperation;
 } | {
     entity: "mobile";
-    entityId: String<64>;
+    entityId: ForeignKey<"Mobile">;
 } | {
     entity?: never;
     entityId?: never;
     parasite: Parasite.CreateSingleOperation;
 } | {
     entity: "parasite";
-    entityId: String<64>;
+    entityId: ForeignKey<"Parasite">;
     parasite: Parasite.UpdateOperation;
 } | {
     entity: "parasite";
-    entityId: String<64>;
+    entityId: ForeignKey<"Parasite">;
 } | {
     entity?: never;
     entityId?: never;
     wechatUser: WechatUser.CreateSingleOperation;
 } | {
     entity: "wechatUser";
-    entityId: String<64>;
+    entityId: ForeignKey<"WechatUser">;
     wechatUser: WechatUser.UpdateOperation;
 } | {
     entity: "wechatUser";
-    entityId: String<64>;
+    entityId: ForeignKey<"WechatUser">;
 } | {
     entity?: string;
     entityId?: string;
@@ -280,7 +246,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     applicationId?: never;
 } | {
     application?: never;
-    applicationId?: String<64> | null;
+    applicationId?: ForeignKey<"application"> | null;
 }) & ({
     user: User.CreateSingleOperation;
     userId?: never;
@@ -292,7 +258,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     userId?: never;
 } | {
     user?: never;
-    userId?: String<64> | null;
+    userId?: ForeignKey<"user"> | null;
 }) & ({
     player: User.CreateSingleOperation;
     playerId?: never;
@@ -304,7 +270,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     playerId?: never;
 } | {
     player?: never;
-    playerId?: String<64> | null;
+    playerId?: ForeignKey<"player"> | null;
 })) & ({
     email?: Email.CreateSingleOperation | Email.UpdateOperation | Email.RemoveOperation;
     entityId?: never;
@@ -323,7 +289,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     entity?: never;
 } | {
     entity?: ("email" | "mobile" | "parasite" | "wechatUser" | string) | null;
-    entityId?: String<64> | null;
+    entityId?: ForeignKey<"Email" | "Mobile" | "Parasite" | "WechatUser"> | null;
 }) & {
     [k: string]: any;
 };

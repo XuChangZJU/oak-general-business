@@ -1,8 +1,9 @@
-import { String, ForeignKey } from "oak-domain/lib/types/DataType";
+import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
+import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Station from "../Station/Schema";
 import * as Subway from "../Subway/Schema";
 export declare type OpSchema = EntityShape & {
@@ -81,18 +82,18 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "station
     stationId?: never;
     station: Station.CreateSingleOperation;
 } | {
-    stationId: String<64>;
+    stationId: ForeignKey<"station">;
     station?: Station.UpdateOperation;
 } | {
-    stationId: String<64>;
+    stationId: ForeignKey<"station">;
 }) & ({
     subwayId?: never;
     subway: Subway.CreateSingleOperation;
 } | {
-    subwayId: String<64>;
+    subwayId: ForeignKey<"subway">;
     subway?: Subway.UpdateOperation;
 } | {
-    subwayId: String<64>;
+    subwayId: ForeignKey<"subway">;
 }));
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -108,7 +109,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "station
     stationId?: never;
 } | {
     station?: never;
-    stationId?: String<64> | null;
+    stationId?: ForeignKey<"station"> | null;
 }) & ({
     subway: Subway.CreateSingleOperation;
     subwayId?: never;
@@ -120,7 +121,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "station
     subwayId?: never;
 } | {
     subway?: never;
-    subwayId?: String<64> | null;
+    subwayId?: ForeignKey<"subway"> | null;
 })) & {
     [k: string]: any;
 };
