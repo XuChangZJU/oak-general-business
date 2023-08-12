@@ -6,14 +6,13 @@ import {
 } from 'oak-domain/lib/types/Exception';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
+import { Environment } from 'oak-frontend-base/lib/features/environment';
 import { CommonAspectDict } from 'oak-common-aspect';
-import { WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
+import { WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
 import { EntityDict } from '../general-app-domain';
-import { getEnv } from '../utils/env';
 import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
-import { ROOT_ROLE_ID } from '../constants';
 import { tokenProjection } from '../types/projection';
 import { OakUserInfoLoadingException } from '../types/Exception';
 
@@ -24,14 +23,16 @@ export class Token<
     AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>
 > extends Feature {
     private tokenValue?: string;
+    private environment: Environment;
     private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
     private storage: LocalStorage;
     private isLoading = false;
 
-    constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage) {
+    constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage, environment: Environment) {
         super();
         this.cache = cache;
         this.storage = storage;
+        this.environment = environment;
         const tokenValue = storage.load('token:token');
         if (tokenValue) {
             this.tokenValue = tokenValue;
@@ -54,7 +55,7 @@ export class Token<
     }
 
     async loginByMobile(mobile: string, password?: string, captcha?: string) {
-        const env = await getEnv();
+        const env = await this.environment.getEnv();
         const { result } = await this.cache.exec('loginByMobile', {
             password,
             mobile,
@@ -67,9 +68,9 @@ export class Token<
     }
 
     async loginByWechatInWebEnv(wechatLoginId: string) {
-        const env = await getEnv();
+        const env = await this.environment.getEnv();
         const { result } = await this.cache.exec('loginByWechat', {
-            env,
+            env: env as WebEnv,
             wechatLoginId,
         });
         this.tokenValue = result;
@@ -78,7 +79,7 @@ export class Token<
     }
 
     async loginWechat(code: string, params?: { wechatLoginId?: string }) {
-        const env = await getEnv();
+        const env = await this.environment.getEnv();
         const { result } = await this.cache.exec('loginWechat', {
             code,
             env: env as WebEnv,
@@ -92,7 +93,7 @@ export class Token<
     async loginWechatMp() {
         const { code } = await wx.login();
 
-        const env = await getEnv();
+        const env = await this.environment.getEnv();
         const { result } = await this.cache.exec('loginWechatMp', {
             code,
             env: env as WechatMpEnv,
@@ -196,7 +197,7 @@ export class Token<
     }
 
     async sendCaptcha(mobile: string) {
-        const env = await getEnv();
+        const env = await this.environment.getEnv();
         const { result } = await this.cache.exec('sendCaptcha', {
             mobile,
             env: env as WebEnv,
@@ -227,7 +228,7 @@ export class Token<
     }
 
     async getWechatMpUserPhoneNumber(code: string) {
-        const env = await getEnv();
+        const env = await this.environment.getEnv();
         await this.cache.exec('getWechatMpUserPhoneNumber', {
             code,
             env: env as WechatMpEnv,
@@ -236,7 +237,7 @@ export class Token<
     }
 
     async wakeupParasite(id: string) {
-        const env = await getEnv();
+        const env = await this.environment.getEnv();
         const { result } = await this.cache.exec('wakeupParasite', {
             id,
             env: env as WechatMpEnv,

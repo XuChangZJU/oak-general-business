@@ -5,48 +5,7 @@ import { AbleAction, AbleState, makeAbleActionDef } from 'oak-domain/lib/actions
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { ActionDef } from 'oak-domain/lib/types/Action';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
-// https://developers.weixin.qq.com/miniprogram/dev/api/base/system/wx.getSystemInfoSync.html
-export type WechatMpEnv = {
-    type: 'wechatMp',
-    brand: string;          // 设备品牌
-    model: string;          // 设备型号
-    pixelRatio: number;     // 设备像素比
-    screenWidth: number;    // 屏幕宽度
-    screenHeight: number;   // 屏幕高度
-    windowWidth: number;    // 窗口宽度
-    windowHeight: number;   // 窗口高度
-    statusBarHeight: number;    // 状态栏高度
-    language: string;       // 语言
-    version: string;        // 微信版本号
-    system: string;         // 操作系统及版本
-    platform: string;       // 平台
-    fontSizeSetting: number;    // 字体大小
-    SDKVersion: string;     // 基础库版本
-};
-
-
-export type WebEnv = {
-    type: 'web',
-    visitorId: string;
-    platform: {
-        value: string;
-    };
-    timezone: {
-        value: string;
-    };
-    vendor: {
-        value: string;
-    };
-    vendorFlavors: {
-        value: string[];
-    };
-};
-
-export type ServerEnv = {
-    type: 'server',
-}
-
-export type Environment = WechatMpEnv | WebEnv | ServerEnv;
+import { Environment } from 'oak-domain/lib/types/Environment';
 
 export interface Schema extends EntityShape {
     application?: Application;

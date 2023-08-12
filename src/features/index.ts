@@ -31,7 +31,8 @@ export function initialize<
     );
     const token = new Token<ED, Cxt, FrontCxt, AD>(
         basicFeatures.cache,
-        basicFeatures.localStorage
+        basicFeatures.localStorage,
+        basicFeatures.environment
     );
 
     // 临时代码，合并后再删
@@ -39,7 +40,8 @@ export function initialize<
     const config = new Config<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
     const weiXinJsSdk = new WeiXinJsSdk<ED, Cxt, FrontCxt, AD>(
         basicFeatures.cache,
-        basicFeatures.localStorage
+        basicFeatures.localStorage,
+        basicFeatures.environment
     );
     const theme = new Theme(basicFeatures.cache, basicFeatures.localStorage);
 

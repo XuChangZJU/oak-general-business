@@ -1,11 +1,9 @@
-import { WebEnv, WechatMpEnv } from '../general-app-domain/Token/Schema';
+import { WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
 import { AppType } from '../general-app-domain/Application/Schema';
 import { EntityDict } from '../general-app-domain';
 import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
 import { Config, Origin } from '../types/Config';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
-import { CommonAspectDict } from 'oak-common-aspect';
-import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 
 export type GeneralAspectDict<
     ED extends EntityDict,

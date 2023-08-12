@@ -12,10 +12,9 @@ import {
     WebConfig,
 } from '../general-app-domain/Application/Schema';
 import {
-    CreateOperationData as CreateToken,
     WebEnv,
     WechatMpEnv,
-} from '../general-app-domain/Token/Schema';
+} from 'oak-domain/lib/types/Environment';
 import { CreateOperationData as CreateWechatUser } from '../general-app-domain/WechatUser/Schema';
 import { UpdateOperationData as UpdateWechatLoginData } from '../general-app-domain/WechatLogin/Schema';
 import { Operation as ExtraFileOperation } from '../general-app-domain/ExtraFile/Schema';

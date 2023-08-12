@@ -5,7 +5,7 @@ import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { applicationProjection } from '../types/projection';
 import {
     WebEnv,
-} from '../general-app-domain/Token/Schema';
+} from 'oak-domain/lib/types/Environment';
 import {
     WechatPublicInstance,
     WechatSDK,

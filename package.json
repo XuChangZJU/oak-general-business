@@ -10,7 +10,6 @@
         "src/entities/*"
     ],
     "dependencies": {
-        "@fingerprintjs/fingerprintjs": "^3.3.3",
         "@uiw/react-amap": "^4.0.2",
         "@wangeditor/editor": "^5.1.22",
         "@wangeditor/editor-for-react": "^1.0.4",

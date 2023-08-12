@@ -1,4 +1,4 @@
-import { String, Text, Datetime, Int } from 'oak-domain/lib/types/DataType';
+import { Boolean, Text, Datetime, Int } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { Index } from 'oak-domain/lib/types/Storage';

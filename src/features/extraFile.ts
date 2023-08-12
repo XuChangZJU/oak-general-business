@@ -20,11 +20,11 @@ export class ExtraFile<
 > extends Feature {
     private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
     private application: Application<ED, Cxt, FrontCxt, AD>;
-    private locales: Locales<ED, Cxt, AD>;
+    private locales: Locales<ED, Cxt, FrontCxt, AD>;
     constructor(
         cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>,
         application: Application<ED, Cxt, FrontCxt, AD>,
-        locales: Locales<ED, Cxt, AD>,
+        locales: Locales<ED, Cxt, FrontCxt, AD>,
     ) {
         super();
         this.cache = cache;

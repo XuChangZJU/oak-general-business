@@ -9,12 +9,12 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
-import { getEnv } from '../utils/env';
-import { WebEnv } from '../general-app-domain/Token/Schema';
+import { WebEnv } from 'oak-domain/lib/types/Environment';
 import { uniq } from 'oak-domain/lib/utils/lodash';
 
 // const weixin = require('weixin-js-sdk');
 import weixin from 'weixin-js-sdk';
+import { Environment } from 'oak-frontend-base/lib/features/environment';
 
 type Options =
     | WeixinJsSdk.CheckJsApiOptions
@@ -50,17 +50,19 @@ export class WeiXinJsSdk<
 > extends Feature {
     private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
     private storage: LocalStorage;
+    private environment: Environment;
     private landingUrl?: string; //解决在IOS上，无论路由切换到哪个页面，实际真正有效的的签名URL是【第一次进入应用时的URL】;
 
-    constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage) {
+    constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage, environment: Environment) {
         super();
         this.cache = cache;
         this.storage = storage;
         this.landingUrl = undefined;
+        this.environment = environment;
     }
 
     async signatureJsSDK(url: string) {
-        const env = await getEnv();
+        const env = await this.environment.getEnv();
         const { result } = await this.cache.exec('signatureJsSDK', {
             url,
             env: env as WebEnv,
