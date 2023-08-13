@@ -20,19 +20,7 @@ export interface Schema extends EntityShape {
 
 type Action = 'success';
 
-const indexes: Index<Schema>[] = [
-    {
-        name: 'index_uuid',
-        attributes: [
-            {
-                name: 'expired',
-            },
-            {
-                name: 'expiresAt',
-            }
-        ],
-    },
-];
+
 const entityDesc: EntityDesc<
     Schema,
     Action,
@@ -42,19 +30,6 @@ const entityDesc: EntityDesc<
         qrCodeType: QrCodeType;
     }
 > = {
-    indexes: [
-        {
-            name: 'index_uuid',
-            attributes: [
-                {
-                    name: 'expired',
-                },
-                {
-                    name: 'expiresAt',
-                }
-            ],
-        },
-    ],
     locales: {
         zh_CN: {
             name: '绑定微信号',
@@ -85,5 +60,18 @@ const entityDesc: EntityDesc<
                 },
             },
         },
-    }
-}
+    },
+    indexes: [
+        {
+            name: 'index_uuid',
+            attributes: [
+                {
+                    name: 'expired',
+                },
+                {
+                    name: 'expiresAt',
+                },
+            ],
+        },
+    ],
+};
