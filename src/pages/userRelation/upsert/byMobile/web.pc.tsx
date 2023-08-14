@@ -75,8 +75,9 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                     <Space>
                         <Button
                             type="primary"
-                            onClick={() => {
-                                onConfirm();
+                            onClick={async () => {
+                                await onConfirm();
+                                setPasswordConfirm(false);
                             }}
                             disabled={!oakExecutable || (isNew && !passwordConfirm)}
                         >

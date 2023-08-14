@@ -104,20 +104,18 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                                 validateStatus={validateStatus}
 
                             >
-                                <>
-                                    <Input.Password
-                                        value={password}
-                                        onChange={(e) => {
-                                            const strValue = e.target.value;
-                                            update({
-                                                password: strValue,
-                                            });
-                                            setPasswordConfirm(strValue === password2 && strValue !== '')
-                                        }}
-                                        iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-                                        placeholder={t('placeholder.password')}
-                                    />
-                                </>
+                                <Input.Password
+                                    value={password}
+                                    onChange={(e) => {
+                                        const strValue = e.target.value;
+                                        update({
+                                            password: strValue,
+                                        });
+                                        setPasswordConfirm(strValue === password2 && strValue !== '')
+                                    }}
+                                    iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                                    placeholder={t('placeholder.password')}
+                                />
                             </Form.Item>
                             <Form.Item
                                 label={'确认密码'}
@@ -139,23 +137,21 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                                 validateStatus={validateStatus}
                                 hasFeedback
                             >
-                                <>
-                                    <Input.Password
-                                        value={password2}
-                                        onChange={(e) => {
-                                            const strValue = e.target.value;
-                                            setPassword2(strValue)
-                                            if (password === strValue) {
-                                                update({
-                                                    passwordSha1: encryptPasswordSha1(password)
-                                                })
-                                            }
-                                            setPasswordConfirm(password === strValue)
-                                        }}
-                                        iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-                                        placeholder={'请再次输入密码'}
-                                    />
-                                </>
+                                <Input.Password
+                                    value={password2}
+                                    onChange={(e) => {
+                                        const strValue = e.target.value;
+                                        setPassword2(strValue)
+                                        if (password === strValue) {
+                                            update({
+                                                passwordSha1: encryptPasswordSha1(password)
+                                            })
+                                        }
+                                        setPasswordConfirm(password === strValue)
+                                    }}
+                                    iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                                    placeholder={'请再次输入密码'}
+                                />
                             </Form.Item>
                         </>
 
