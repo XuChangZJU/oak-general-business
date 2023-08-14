@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { WebComponentProps } from "oak-frontend-base";
-import { EntityDict } from "../../../general-app-domain";
+import { EntityDict } from "../../../oak-app-domain";
 import TreeCell from '../treeCell';
 import Styles from './web.pc.module.less';
 import { PlusOutlined } from '@ant-design/icons';

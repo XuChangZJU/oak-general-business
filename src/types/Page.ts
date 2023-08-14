@@ -1,6 +1,6 @@
 import { OakComponentOption as BaseOakComponentOption, DataOption, MethodOption, ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { Aspect } from 'oak-domain/lib/types/Aspect';
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
 import { BasicFeatures } from 'oak-frontend-base/lib/features/index';
@@ -11,6 +11,7 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 
 export type OakComponentOption<
+    IsList extends boolean,
     ED extends EntityDict & BaseEntityDict,
     T extends keyof ED,
     Cxt extends BackendRuntimeContext<ED>,
@@ -18,11 +19,10 @@ export type OakComponentOption<
     AD extends Record<string, Aspect<ED, Cxt>>,
     FD extends Record<string, Feature>,
     FormedData extends Record<string, any>,
-    IsList extends boolean,
     TData extends Record<string, any>,
     TProperty extends DataOption,
     TMethod extends Record<string, Function>,
-> = BaseOakComponentOption<ED, T, Cxt, FrontCxt, AD & GAD<ED, Cxt>, FD & GFD<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>, FormedData, IsList, TData, TProperty, TMethod, {
+> = BaseOakComponentOption<IsList, ED, T, Cxt, FrontCxt, AD & GAD<ED, Cxt>, FD & GFD<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>, FormedData, TData, TProperty, TMethod, {
     subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean, tip?: string) => Promise<boolean>;
 }> & Partial<{
     wechatMp: {
@@ -52,14 +52,15 @@ export type MakeOakComponent<
     AD extends Record<string, Aspect<ED, Cxt>>,
     FD extends Record<string, Feature>
 > = <
+    IsList extends boolean,
     T extends keyof ED,
     FormedData extends DataOption,
-    IsList extends boolean,
     TData extends DataOption,
     TProperty extends DataOption,
     TMethod extends MethodOption
 >(
     options: OakComponentOption<
+        IsList,
         ED,
         T,
         Cxt,
@@ -67,7 +68,6 @@ export type MakeOakComponent<
         AD,
         FD,
         FormedData,
-        IsList,
         TData,
         TProperty,
         TMethod

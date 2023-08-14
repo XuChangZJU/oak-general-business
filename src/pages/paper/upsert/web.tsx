@@ -5,7 +5,7 @@ import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
 import { IToolbarConfig } from '@wangeditor/editor';
 import OakGallery from './../../../components/extraFile/gallery';
-import { EntityDict } from './../../../general-app-domain';
+import { EntityDict } from './../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 
 

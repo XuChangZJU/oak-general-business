@@ -1,6 +1,6 @@
 import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../../../general-app-domain';
+import { EntityDict } from '../../../../../oak-app-domain';
 import { Checkbox } from 'antd';
 
 export default function Render(props: WebComponentProps<EntityDict, 'user', false, {

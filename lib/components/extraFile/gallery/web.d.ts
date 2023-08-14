@@ -1,6 +1,6 @@
 import { UploadFile } from "antd";
 import { WebComponentProps } from "oak-frontend-base";
-import { EntityDict } from "../../../general-app-domain";
+import { EntityDict } from "../../../oak-app-domain";
 declare type Theme = "file" | "image" | "image-flow" | "custom";
 export default function render(props: WebComponentProps<EntityDict, "extraFile", true, {
     accept?: string;

@@ -12,7 +12,7 @@ import {
 } from 'antd';
 import dayjs from 'dayjs';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import PageHeader from '../../../components/common/pageHeader';
 import OakAvatar from '../../../components/extraFile/avatar';
 import MobileLogin from '../../../pages/mobile/login';

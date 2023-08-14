@@ -1,7 +1,7 @@
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
 import { CommonAspectDict } from 'oak-common-aspect';
 import AspectDict from '../aspects/AspectDict';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Cache } from 'oak-frontend-base/lib/features/cache';

@@ -1,5 +1,5 @@
 import { RuntimeContext } from './RuntimeContext';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { SerializedData } from './FrontendRuntimeContext';
 import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
 /**

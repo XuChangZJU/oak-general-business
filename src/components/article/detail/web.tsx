@@ -2,7 +2,7 @@
 import React from 'react';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { Editor } from "@wangeditor/editor-for-react";
 import { IEditorConfig } from "@wangeditor/editor";
 import { useState, useEffect } from 'react';

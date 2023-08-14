@@ -8,9 +8,9 @@ import {
     WebConfig,
     WechatPublicConfig,
     WechatMpConfig,
-} from '../../../general-app-domain/Application/Schema';
+} from '../../../oak-app-domain/Application/Schema';
 
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 import MessageTypeTemplateIdList from '../../../components/messageTypeTemplateId/list';
 

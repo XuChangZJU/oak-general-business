@@ -1,6 +1,6 @@
-import { CreateOperationData as UserCreate } from '../general-app-domain/User/Schema';
-import { CreateOperationData as MobileCreate } from '../general-app-domain/Mobile/Schema';
-import { CreateOperationData as TokenCreate } from '../general-app-domain/Token/Schema';
+import { CreateOperationData as UserCreate } from '../oak-app-domain/User/Schema';
+import { CreateOperationData as MobileCreate } from '../oak-app-domain/Mobile/Schema';
+import { CreateOperationData as TokenCreate } from '../oak-app-domain/Token/Schema';
 import { ROOT_MOBILE_ID, ROOT_ROLE_ID, ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
 
 export const users: Array<UserCreate> = [

@@ -13,7 +13,7 @@ import {
 import "@wangeditor/editor/dist/css/style.css"; // 引入 css
 import { Editor, Toolbar } from "@wangeditor/editor-for-react";
 import { IToolbarConfig } from "@wangeditor/editor";
-import { EntityDict } from "./../../../general-app-domain";
+import { EntityDict } from "./../../../oak-app-domain";
 import { WebComponentProps } from "oak-frontend-base";
 import Style from "./web.module.less";
 import useFeatures from "../../../hooks/useFeatures";

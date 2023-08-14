@@ -1,7 +1,7 @@
 
 import { SmsSdk, TencentSmsInstance } from 'oak-external-sdk';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import {
     TencentSmsConfig,

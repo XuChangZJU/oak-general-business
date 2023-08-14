@@ -1,6 +1,6 @@
 import { WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
-import { AppType } from '../general-app-domain/Application/Schema';
-import { EntityDict } from '../general-app-domain';
+import { AppType } from '../oak-app-domain/Application/Schema';
+import { EntityDict } from '../oak-app-domain';
 import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
 import { Config, Origin } from '../types/Config';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';

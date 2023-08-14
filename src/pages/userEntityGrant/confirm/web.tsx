@@ -6,7 +6,7 @@ import { UserAddOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
 
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 
 export default function Render(
     props: WebComponentProps<

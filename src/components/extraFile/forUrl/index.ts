@@ -1,7 +1,7 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import assert from 'assert';
-import { EntityDict } from '../../../general-app-domain';
-import { OpSchema as ExtraFile } from '../../../general-app-domain/ExtraFile/Schema';
+import { EntityDict } from '../../../oak-app-domain';
+import { OpSchema as ExtraFile } from '../../../oak-app-domain/ExtraFile/Schema';
 import { isEqual } from 'oak-domain/lib/utils/lodash';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';

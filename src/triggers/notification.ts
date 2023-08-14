@@ -1,10 +1,10 @@
 import { Trigger, CreateTrigger, UpdateTrigger, UpdateTriggerInTxn } from 'oak-domain/lib/types/Trigger';
-import { EntityDict } from '../general-app-domain/EntityDict';
-import { CreateOperationData as CreateNotificationData } from '../general-app-domain/Notification/Schema';
+import { EntityDict } from '../oak-app-domain/EntityDict';
+import { CreateOperationData as CreateNotificationData } from '../oak-app-domain/Notification/Schema';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { RuntimeCxt } from '../types/RuntimeCxt';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
-import { WechatMpConfig, WechatPublicConfig, WebConfig } from '../general-app-domain/Application/Schema';
+import { WechatMpConfig, WechatPublicConfig, WebConfig } from '../oak-app-domain/Application/Schema';
 import { WechatMpInstance, WechatPublicInstance, WechatSDK } from 'oak-external-sdk';
 import { composeUrl } from 'oak-domain/lib/utils/url';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';

@@ -1,5 +1,5 @@
 import { OakUserException, makeException as makeException2, OakException } from "oak-domain/lib/types";
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { EntityDict as BaseEntityDict, SelectOpResult } from 'oak-domain/lib/types/Entity';
 
 

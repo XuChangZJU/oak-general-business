@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { OpSchema as ExtraFile } from '../general-app-domain/ExtraFile/Schema';
+import { OpSchema as ExtraFile } from '../oak-app-domain/ExtraFile/Schema';
 import useFeatures from './useFeatures';
 
 export default function useMyInfo() {

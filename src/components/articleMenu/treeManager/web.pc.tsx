@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TreeList from '../treeList';
 
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from "../../../general-app-domain";
+import { EntityDict } from "../../../oak-app-domain";
 import Styles from './web.pc.module.less';
 import { Button, Divider, Tooltip, Space, Drawer, Empty } from 'antd';
 import { EyeOutlined, CopyOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';

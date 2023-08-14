@@ -5,7 +5,7 @@ import ByMobile from './byMobile/index';
 import ByUserEntityGrant from './byUserEntityGrant';
 import assert from 'assert';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { QrCodeType } from '../../../types/Config';
 
 export default function Render(

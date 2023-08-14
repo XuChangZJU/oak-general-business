@@ -4,7 +4,7 @@ import Style from './web.module.less';
 import Success from '../../../components/common/result/success';
 import Fail from '../../../components/common/result/fail';
 
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 
 export default function render(

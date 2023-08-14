@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { WebComponentProps } from "oak-frontend-base";
-import { EntityDict } from "../../../general-app-domain";
+import { EntityDict } from "../../../oak-app-domain";
 import Styles from './web.pc.module.less';
 import { Input, Button, MenuProps, Dropdown, Divider, Modal, InputRef } from 'antd';
 import { EditOutlined, MinusOutlined, CopyOutlined, FileTextOutlined } from '@ant-design/icons';

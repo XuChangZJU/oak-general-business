@@ -1,4 +1,4 @@
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { WebConfig } from "../../../entities/Application";
 
 

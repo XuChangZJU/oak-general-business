@@ -4,8 +4,8 @@ import { Feature } from 'oak-frontend-base/lib/types/Feature';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { assert } from 'oak-domain/lib/utils/assert';
 
-import { EntityDict } from '../general-app-domain';
-import { AppType } from '../general-app-domain/Application/Schema';
+import { EntityDict } from '../oak-app-domain';
+import { AppType } from '../oak-app-domain/Application/Schema';
 import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';

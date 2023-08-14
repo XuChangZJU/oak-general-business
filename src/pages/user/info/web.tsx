@@ -13,7 +13,7 @@ import {
 import type { DatePickerRef } from 'antd-mobile/es/components/date-picker';
 import dayjs from 'dayjs';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import OakAvatar from '../../../components/extraFile/avatar';
 import Style from './mobile.module.less';
 

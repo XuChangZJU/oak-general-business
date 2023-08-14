@@ -1,5 +1,5 @@
 import { BRC } from './RuntimeCxt';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
 type WechatPublicTemplateMsgKeyword =

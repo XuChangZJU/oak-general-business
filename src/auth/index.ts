@@ -1,5 +1,5 @@
 import { AuthDefDict } from 'oak-domain/lib/types/Auth';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 
 import mobile from './mobile';
 

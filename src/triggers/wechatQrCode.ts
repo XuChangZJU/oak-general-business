@@ -3,11 +3,11 @@ import { shrinkUuidTo32Bytes } from 'oak-domain/lib/utils/uuid';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { WechatSDK, WechatMpInstance, WechatPublicInstance } from 'oak-external-sdk';
 
-import { WechatMpConfig, WechatPublicConfig } from '../general-app-domain/Application/Schema';
-import { EntityDict } from '../general-app-domain/EntityDict';
+import { WechatMpConfig, WechatPublicConfig } from '../oak-app-domain/Application/Schema';
+import { EntityDict } from '../oak-app-domain/EntityDict';
 import { RuntimeCxt } from '../types/RuntimeCxt';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import { CreateOperationData as CreateWechatQrCodeData } from '../general-app-domain/WechatQrCode/Schema';
+import { CreateOperationData as CreateWechatQrCodeData } from '../oak-app-domain/WechatQrCode/Schema';
 import { Config as SysConfig, QrCodeType } from '../types/Config';
 
 

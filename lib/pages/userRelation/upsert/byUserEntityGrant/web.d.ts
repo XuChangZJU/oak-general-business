@@ -1,5 +1,5 @@
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../../general-app-domain';
+import { EntityDict } from '../../../../oak-app-domain';
 declare type Unit = 'minute' | 'hour' | 'day';
 export default function render(props: WebComponentProps<EntityDict, 'userEntityGrant', false, {
     relations: EntityDict['relation']['OpSchema'][];

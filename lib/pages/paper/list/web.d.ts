@@ -1,5 +1,5 @@
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'article', true, {
     searchValue: string;
     articles: EntityDict['article']['Schema'][];

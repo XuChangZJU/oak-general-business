@@ -1,6 +1,6 @@
 import { Button } from 'antd-mobile';
 import { WebComponentProps } from "oak-frontend-base";
-import { EntityDict } from "../../../general-app-domain";
+import { EntityDict } from "../../../oak-app-domain";
 import Styles from './web.module.less';
 
 export default function Render(props: WebComponentProps<EntityDict, 'user', false, {

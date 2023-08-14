@@ -4,7 +4,7 @@ import {
 import {
     AppType,
     WechatPublicConfig,
-} from '../../../general-app-domain/Application/Schema';
+} from '../../../oak-app-domain/Application/Schema';
 import dayjs from 'dayjs';
 type Attr = 'nickname' | 'gender' | 'birth';
 const SEND_KEY = 'captcha:sendAt';

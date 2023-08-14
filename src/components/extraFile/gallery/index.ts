@@ -1,7 +1,7 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import assert from 'assert';
 import Dialog from '../../../utils/dialog/index';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 

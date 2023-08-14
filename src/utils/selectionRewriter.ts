@@ -1,7 +1,7 @@
 
 import { EntityDict } from 'oak-domain/lib/types/Entity';
 import { judgeRelation } from 'oak-domain/lib/store/relation';
-import { EntityDict as BaseEntityDict } from '../general-app-domain';
+import { EntityDict as BaseEntityDict } from '../oak-app-domain';
 import { EXPRESSION_PREFIX, StorageSchema } from 'oak-domain/lib/types';
 import assert from 'assert';
 

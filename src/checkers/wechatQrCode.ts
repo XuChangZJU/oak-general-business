@@ -1,7 +1,7 @@
 import {
     Checker,
 } from 'oak-domain/lib/types';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { RuntimeContext } from '../context/RuntimeContext';
 import { RuntimeCxt } from '../types/RuntimeCxt';
 

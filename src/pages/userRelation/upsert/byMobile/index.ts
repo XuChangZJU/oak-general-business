@@ -1,6 +1,6 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { isMobile } from 'oak-domain/lib/utils/validator';
-import { EntityDict } from '../../../../general-app-domain';
+import { EntityDict } from '../../../../oak-app-domain';
 
 export default OakComponent({
     entity: 'mobile',

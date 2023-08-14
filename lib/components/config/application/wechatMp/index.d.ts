@@ -1,4 +1,4 @@
-import { WechatMpConfig } from '../../../../general-app-domain/Application/Schema';
+import { WechatMpConfig } from '../../../../oak-app-domain/Application/Schema';
 export default function WechatMp(props: {
     config: WechatMpConfig;
     setValue: (path: string, value: any) => void;

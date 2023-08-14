@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Style from './web.module.less';
 import QrCode from '../../../components/common/qrCode';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { Spin, Button, Space, Input, Tooltip } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
 import copy from 'copy-to-clipboard';

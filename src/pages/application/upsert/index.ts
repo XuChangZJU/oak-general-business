@@ -1,4 +1,4 @@
-import { AppType } from '../../../general-app-domain/Application/Schema';
+import { AppType } from '../../../oak-app-domain/Application/Schema';
 
 type typeOption = {
     value: AppType

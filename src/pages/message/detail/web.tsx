@@ -3,7 +3,7 @@ import {
     Card,
     Button,
 } from 'antd';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 import Style from './mobile.module.less';
 

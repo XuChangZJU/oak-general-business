@@ -1,6 +1,6 @@
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
 import AspectDict from '../aspects/AspectDict';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Config as ConfigDef } from '../types/Config';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';

@@ -10,7 +10,7 @@ import {
 } from 'antd-mobile';
 import UserEntityGrantDetail from '../../../../pages/userEntityGrant/detail';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../../general-app-domain';
+import { EntityDict } from '../../../../oak-app-domain';
 
 import Style from './web.module.less';
 

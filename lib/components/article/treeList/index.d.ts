@@ -1,5 +1,5 @@
 /// <reference types="react" />
-declare const _default: (props: import("oak-frontend-base").ReactComponentProps<import("../../../general-app-domain").EntityDict, "article", true, {
+declare const _default: (props: import("oak-frontend-base").ReactComponentProps<import("../../../oak-app-domain").EntityDict, "article", true, {
     articleMenuId: string | undefined;
     onChildEditArticleChange: (data: string) => void;
     show: string;

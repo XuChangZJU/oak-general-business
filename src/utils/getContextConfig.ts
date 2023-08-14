@@ -1,7 +1,7 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { OakDataException } from 'oak-domain/lib/types/Exception';
 import { AmapSDK, QiniuSDK } from 'oak-external-sdk';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import {
     AliCloudConfig,
     AmapCloudConfig,

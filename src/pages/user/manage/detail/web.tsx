@@ -4,7 +4,7 @@ import { List, Tag, Avatar } from 'antd-mobile';
 
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../../general-app-domain';
+import { EntityDict } from '../../../../oak-app-domain';
 import ActionPanel from '../../../../components/func/actionPanel';
 
 

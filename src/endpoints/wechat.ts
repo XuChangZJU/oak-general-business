@@ -8,7 +8,7 @@ import {
     WechatMpInstance,
     WechatPublicInstance,
 } from 'oak-external-sdk';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { BRC } from '../types/RuntimeCxt';
 import { WechatMpConfig, WechatPublicConfig } from '../entities/Application';
 import { WechatPublicEventData } from 'oak-external-sdk';

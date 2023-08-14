@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { List, Button, Modal, Dialog } from 'antd-mobile';
 import { MobileOutlined, DeleteOutlined } from '@ant-design/icons';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import Style from './mobile.module.less';
 
 export default function render(

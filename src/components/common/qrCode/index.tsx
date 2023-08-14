@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { QRCodeCanvas } from 'qrcode.react';
 
 import './index.less';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { useTranslation } from 'react-i18next';
 
 type IQrCodeProps = {

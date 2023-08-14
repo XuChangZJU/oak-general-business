@@ -1,4 +1,4 @@
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { Watcher, BBWatcher } from 'oak-domain/lib/types/Watcher';
 const watchers: Watcher<

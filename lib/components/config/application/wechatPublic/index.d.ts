@@ -1,4 +1,4 @@
-import { WechatPublicConfig } from '../../../../general-app-domain/Application/Schema';
+import { WechatPublicConfig } from '../../../../oak-app-domain/Application/Schema';
 export default function WechatPublic(props: {
     isService?: boolean;
     config: WechatPublicConfig;

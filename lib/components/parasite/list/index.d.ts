@@ -1,5 +1,5 @@
 /// <reference types="react" />
-declare const _default: (props: import("oak-frontend-base").ReactComponentProps<import("../../../general-app-domain").EntityDict, "parasite", true, {
+declare const _default: (props: import("oak-frontend-base").ReactComponentProps<import("../../../oak-app-domain").EntityDict, "parasite", true, {
     entity: string;
     entityId: string;
     nameLabel: string;

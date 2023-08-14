@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.less';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 declare type IQrCodeProps = {
     filename?: string;
     expiresAt?: number;

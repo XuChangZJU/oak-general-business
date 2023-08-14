@@ -1,4 +1,4 @@
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 export interface RuntimeContext {
     getApplicationId(): string | undefined;
     getSystemId(): string | undefined;

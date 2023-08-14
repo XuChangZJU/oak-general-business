@@ -1,6 +1,6 @@
 
 // import { TreeNode } from '@project/types/interface';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 
 
 type TreeNode = {

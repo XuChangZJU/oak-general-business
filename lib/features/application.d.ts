@@ -2,8 +2,8 @@ import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
 import { CommonAspectDict } from 'oak-common-aspect';
-import { EntityDict } from '../general-app-domain';
-import { AppType } from '../general-app-domain/Application/Schema';
+import { EntityDict } from '../oak-app-domain';
+import { AppType } from '../oak-app-domain/Application/Schema';
 import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
@@ -19,6 +19,6 @@ export declare class Application<ED extends EntityDict, Cxt extends BackendRunti
     private getApplicationFromCache;
     private loadApplicationInfo;
     initialize(appId?: string | null): Promise<void>;
-    getApplication(): Partial<import("../general-app-domain/Application/Schema").Schema> | undefined;
+    getApplication(): Partial<import("../oak-app-domain/Application/Schema").Schema> | undefined;
     getApplicationId(): string | undefined;
 }

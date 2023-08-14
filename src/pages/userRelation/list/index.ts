@@ -2,7 +2,7 @@ import { OakUserUnpermittedException } from 'oak-domain/lib/types';
 import { difference, intersection } from 'oak-domain/lib/utils/lodash';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 import assert from 'assert';

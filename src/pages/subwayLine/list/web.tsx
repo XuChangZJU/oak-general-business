@@ -5,7 +5,7 @@ import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
 
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { DataNode } from 'antd/es/tree'
 import UpsertSubway from '../upsertSubway';
 import UpsertStation from '../upsertStation';

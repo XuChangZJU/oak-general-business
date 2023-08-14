@@ -4,7 +4,7 @@ import { EditOutlined, DownOutlined, UpOutlined, RightOutlined, MinusOutlined, P
 import { WebComponentProps } from "oak-frontend-base";
 import ArticleMenuTreeList from '../treeList';
 import ArticleTreeList from '../../article/treeList';
-import { EntityDict } from "../../../general-app-domain";
+import { EntityDict } from "../../../oak-app-domain";
 import Styles from './web.pc.module.less';
 import { xml } from 'cheerio';
 import OakGallery from "../../../components/extraFile/gallery";

@@ -1,5 +1,5 @@
-import { EntityDict } from '../general-app-domain';
-import { Schema as Livestream } from '../general-app-domain/Livestream/Schema';
+import { EntityDict } from '../oak-app-domain';
+import { Schema as Livestream } from '../oak-app-domain/Livestream/Schema';
 import { Origin } from '../types/Config';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 /**

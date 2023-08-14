@@ -3,7 +3,7 @@ import Style from './web.module.less';
 import PageHeader from '../../../components/common/pageHeader';
 import QrCode from '../../../components/common/qrCode';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { Spin } from 'antd';
 
 export default function Render(

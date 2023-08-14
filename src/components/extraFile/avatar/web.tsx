@@ -6,7 +6,7 @@ import { UserOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import useFeatures from '../../../hooks/useFeatures';
 
 

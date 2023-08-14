@@ -1,5 +1,5 @@
 import { WebComponentProps } from "oak-frontend-base";
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import * as React from 'react';
 import { Table, Button, Space, Typography, Input, Select } from 'antd';
 import Styles from './web.module.less';

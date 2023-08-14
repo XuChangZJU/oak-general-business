@@ -1,6 +1,6 @@
 import { Checker, OakRowInconsistencyException } from 'oak-domain/lib/types';
 import assert from 'assert';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { RuntimeCxt } from '../types/RuntimeCxt';
 import { checkAttributesNotNull } from 'oak-domain/lib/utils/validator';
 

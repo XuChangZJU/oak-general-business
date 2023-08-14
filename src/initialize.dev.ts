@@ -1,7 +1,7 @@
 import { AuthCascadePath, EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ColorDict } from 'oak-domain/lib/types/Style';
 import { ActionDictOfEntityDict, Aspect, AuthDefDict, CascadeRemoveDefDict, Checker, Exportation, Importation, Routine, StorageSchema, Timer, Trigger, Watcher } from 'oak-domain/lib/types';
-import { EntityDict, ActionDefDict as generalActionDefDict } from './general-app-domain';
+import { EntityDict, ActionDefDict as generalActionDefDict } from './oak-app-domain';
 import { CacheStore } from 'oak-frontend-base/lib/cacheStore/CacheStore';
 import { AsyncRowStore } from 'oak-domain/lib/store/AsyncRowStore';
 import { intersection } from 'oak-domain/lib/utils/lodash';
@@ -17,7 +17,7 @@ import GeneralAspectDict from './aspects/AspectDict';
 import generalStartRoutines from './routines/start';
 import generalData from './data';
 import { initialize as initGeneralFeatures } from './features';
-import { AppType } from './general-app-domain/Application/Schema';
+import { AppType } from './oak-app-domain/Application/Schema';
 import { rewriteSelection, rewriteOperation } from './utils/selectionRewriter';
 import { InitializeOptions } from 'oak-frontend-base';
 

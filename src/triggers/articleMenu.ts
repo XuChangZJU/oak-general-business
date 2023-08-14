@@ -1,11 +1,11 @@
-import { EntityDict } from '../general-app-domain/EntityDict';
+import { EntityDict } from '../oak-app-domain/EntityDict';
 import { CreateTrigger, Trigger } from 'oak-domain/lib/types';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { OakPreConditionUnsetException } from 'oak-domain/lib/types';
 import { RuntimeCxt } from '../types/RuntimeCxt';
-import { CreateOperationData as CreateArticleMenuData } from '../general-app-domain/ArticleMenu/Schema';
+import { CreateOperationData as CreateArticleMenuData } from '../oak-app-domain/ArticleMenu/Schema';
 
 const triggers: Trigger<
     EntityDict,

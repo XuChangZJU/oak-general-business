@@ -3,7 +3,7 @@ import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
 import { Environment } from 'oak-frontend-base/lib/features/environment';
 import { CommonAspectDict } from 'oak-common-aspect';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';

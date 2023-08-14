@@ -1,4 +1,4 @@
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { Origin } from '../types/Config';
 import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';

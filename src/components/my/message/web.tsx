@@ -3,7 +3,7 @@ import { Badge } from 'antd-mobile';
 import classNames from 'classnames';
 import { BellOutlined } from '@ant-design/icons';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 
 import Style from './mobile.module.less';
 

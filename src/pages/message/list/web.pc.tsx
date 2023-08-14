@@ -6,7 +6,7 @@ import PageHeader from '../../../components/common/pageHeader';
 import ActionBtnPanel from 'oak-frontend-base/lib/components/actionBtnPanel';
 
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 
 const MessageType = {
     adminNotification: '系统通知',

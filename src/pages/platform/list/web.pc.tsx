@@ -6,7 +6,7 @@ import ActionBtnPanel from 'oak-frontend-base/lib/components/actionBtnPanel';
 import Style from './web.module.less';
 import dayjs from 'dayjs';
 
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 
 export default function Render(

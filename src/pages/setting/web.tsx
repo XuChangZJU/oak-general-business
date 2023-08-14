@@ -2,7 +2,7 @@ import React from 'react';
 import { List, Button } from 'antd-mobile';
 
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../general-app-domain';
+import { EntityDict } from '../../oak-app-domain';
 
 import Style from './mobile.module.less';
 

@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { WechatMpConfig } from '../../../../entities/Application';
-import { EntityDict } from '../../../../general-app-domain';
+import { EntityDict } from '../../../../oak-app-domain';
 import { QrCodeType } from '../../../../types/Config';
 
 type Unit = 'minute' | 'hour' | 'day';

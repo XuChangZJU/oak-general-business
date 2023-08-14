@@ -1,6 +1,6 @@
 /// <reference types="react" />
-import { WebConfig, WechatPublicConfig, WechatMpConfig } from '../../../general-app-domain/Application/Schema';
-import { EntityDict } from '../../../general-app-domain/EntityDict';
+import { WebConfig, WechatPublicConfig, WechatMpConfig } from '../../../oak-app-domain/Application/Schema';
+import { EntityDict } from '../../../oak-app-domain/EntityDict';
 declare type Config = WebConfig | WechatPublicConfig | WechatMpConfig;
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, keyof EntityDict, false, {
     config: Config;

@@ -1,4 +1,4 @@
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 
 const Interval = 2 * 60 * 1000;

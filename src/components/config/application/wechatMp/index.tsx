@@ -14,7 +14,7 @@ import Styles from './web.module.less';
 import {
     AppType,
     WechatMpConfig,
-} from '../../../../general-app-domain/Application/Schema';
+} from '../../../../oak-app-domain/Application/Schema';
 
 
 

@@ -7,7 +7,7 @@ import Style from './web.module.less';
 import { set, get } from 'oak-domain/lib/utils/lodash';
 
 
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 
 export default function Render(

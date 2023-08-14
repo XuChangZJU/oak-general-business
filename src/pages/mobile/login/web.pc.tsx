@@ -5,7 +5,7 @@ import {
     isCaptcha,
 } from 'oak-domain/lib/utils/validator';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { MobileOutlined } from '@ant-design/icons';
 import { Form, Input, Button } from 'antd';
 import Style from './web.module.less';

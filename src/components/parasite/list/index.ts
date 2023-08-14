@@ -35,12 +35,12 @@ export default OakComponent({
     ],
     sorters: [
         {
-            sorter: {
+            sorter: () => ({
                 $attr: {
                     $$createAt$$: 1,
                 },
                 $direction: 'desc',
-            },
+            }),
             '#name': 'default',
         },
     ],

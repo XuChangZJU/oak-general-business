@@ -1,4 +1,4 @@
-import { Schema as Domain } from '../general-app-domain/Domain/Schema';
+import { Schema as Domain } from '../oak-app-domain/Domain/Schema';
 
 export function composeDomainUrl(domain: Domain, url?: string, props?: Record<string, string>) {
     const { port, protocol, apiPath, url: domainUrl } = domain;

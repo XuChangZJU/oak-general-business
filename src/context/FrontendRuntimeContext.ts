@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 
 import { RuntimeContext } from './RuntimeContext';
 import { Application } from '../features/application';

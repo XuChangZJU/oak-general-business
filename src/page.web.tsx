@@ -1,7 +1,7 @@
 import React from 'react';
 import { DataOption } from 'oak-frontend-base/lib/types/Page';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
-import { EntityDict } from './general-app-domain';
+import { EntityDict } from './oak-app-domain';
 import { BasicFeatures } from 'oak-frontend-base/lib/features/index';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { BackendRuntimeContext } from './context/BackendRuntimeContext';
@@ -11,6 +11,7 @@ import { createComponent as createBaseComponent } from 'oak-frontend-base/lib/pa
 
 
 export function createComponent<
+    IsList extends boolean,
     ED extends EntityDict & BaseEntityDict,
     T extends keyof ED,
     Cxt extends BackendRuntimeContext<ED>,
@@ -18,12 +19,12 @@ export function createComponent<
     AD extends GAD<ED, Cxt>,
     FD extends GFD<ED, Cxt, FrontCxt, AD>,
     FormedData extends Record<string, any>,
-    IsList extends boolean,
     TData extends Record<string, any> = {},
     TProperty extends DataOption = {},
     TMethod extends Record<string, Function> = {}
 >(
     option: OakComponentOption<
+        IsList,
         ED,
         T,
         Cxt,
@@ -31,7 +32,6 @@ export function createComponent<
         AD,
         FD,
         FormedData,
-        IsList,
         TData,
         TProperty,
         TMethod
@@ -41,7 +41,7 @@ export function createComponent<
     const { lifetimes, methods, ...rest } = option;
     const { attached, ...restLifeTimes } = lifetimes || {};
 
-    return createBaseComponent<ED, T, Cxt, FrontCxt, AD, FD, FormedData, IsList, TData, TProperty, TMethod & {
+    return createBaseComponent<IsList, ED, T, Cxt, FrontCxt, AD, FD, FormedData, TData, TProperty, TMethod & {
         subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean, tip?: string) => Promise<boolean>;
     }>({
         methods: {

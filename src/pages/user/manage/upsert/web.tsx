@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Checkbox, Input, Form, Radio, DatePicker, Space } from 'antd-mobile';
 import dayjs from 'dayjs';
 import Style from './web.module.less';
-import { EntityDict } from '../../../../general-app-domain';
+import { EntityDict } from '../../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 
 

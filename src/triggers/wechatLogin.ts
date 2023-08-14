@@ -1,7 +1,7 @@
 import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { Trigger, CreateTrigger, UpdateTrigger, SelectTrigger } from 'oak-domain/lib/types/Trigger';
-import { CreateOperationData as CreateWechatLoginData } from '../general-app-domain/WechatLogin/Schema';
-import { EntityDict } from '../general-app-domain/EntityDict';
+import { CreateOperationData as CreateWechatLoginData } from '../oak-app-domain/WechatLogin/Schema';
+import { EntityDict } from '../oak-app-domain/EntityDict';
 
 import { OakRowInconsistencyException, OakExternalException, SelectOpResult } from 'oak-domain/lib/types';
 import { assert } from 'oak-domain/lib/utils/assert';

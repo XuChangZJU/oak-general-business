@@ -1,4 +1,4 @@
-import { OpSchema as Area } from '../../../general-app-domain/Area/Schema';
+import { OpSchema as Area } from '../../../oak-app-domain/Area/Schema';
 
 export default OakComponent({
     entity: 'area',
@@ -10,11 +10,11 @@ export default OakComponent({
     },
     filters: [
         {
-            filter: {
+            filter: () => ({
                 parent: {
                     level: 'country',
                 },
-            },
+            }),
         },
     ],
     isList: true,

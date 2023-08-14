@@ -1,6 +1,6 @@
 import assert from "assert";
 import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
-import { EntityDict } from "../../../../../general-app-domain";
+import { EntityDict } from "../../../../../oak-app-domain";
 
 export default OakComponent({
     entity: 'userRelation',

@@ -19,7 +19,7 @@ import {
     AppType,
     WechatPublicConfig,
     Passport,
-} from '../../../../general-app-domain/Application/Schema';
+} from '../../../../oak-app-domain/Application/Schema';
 
 
 

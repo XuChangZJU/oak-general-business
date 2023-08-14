@@ -1,7 +1,7 @@
 import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { CreateTrigger, Trigger } from 'oak-domain/lib/types/Trigger';
-import { EntityDict } from '../general-app-domain/EntityDict';
-import { CreateOperationData as CreateUserData } from '../general-app-domain/User/Schema';
+import { EntityDict } from '../oak-app-domain/EntityDict';
+import { CreateOperationData as CreateUserData } from '../oak-app-domain/User/Schema';
 import { ROOT_USER_ID } from '../constants';
 import { randomName } from '../utils/randomUser';
 import { RuntimeCxt } from '../types/RuntimeCxt';

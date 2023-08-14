@@ -1,7 +1,7 @@
 declare const _default: {
-    user: import("../general-app-domain/User/Schema").CreateOperationData[];
-    mobile: import("../general-app-domain/Mobile/Schema").CreateOperationData[];
-    token: import("../general-app-domain/Token/Schema").CreateOperationData[];
+    user: import("../oak-app-domain/User/Schema").CreateOperationData[];
+    mobile: import("../oak-app-domain/Mobile/Schema").CreateOperationData[];
+    token: import("../oak-app-domain/Token/Schema").CreateOperationData[];
     area: ({
         code: string;
         level: string;
@@ -25,9 +25,9 @@ declare const _default: {
             coordinate: number[];
         };
     })[];
-    subway: import("../general-app-domain/Subway/Schema").CreateOperationData[];
-    station: import("../general-app-domain/Station/Schema").CreateOperationData[];
-    subwayStation: import("../general-app-domain/SubwayStation/Schema").CreateOperationData[];
-    actionAuth: import("../general-app-domain/ActionAuth/Schema").CreateOperationData[];
+    subway: import("../oak-app-domain/Subway/Schema").CreateOperationData[];
+    station: import("../oak-app-domain/Station/Schema").CreateOperationData[];
+    subwayStation: import("../oak-app-domain/SubwayStation/Schema").CreateOperationData[];
+    actionAuth: import("../oak-app-domain/ActionAuth/Schema").CreateOperationData[];
 };
 export default _default;

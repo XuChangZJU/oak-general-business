@@ -1,4 +1,4 @@
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { RuntimeContext } from './RuntimeContext';
 import { Application } from '../features/application';
 import { Token } from '../features/token';
@@ -17,7 +17,7 @@ export declare class FrontendRuntimeContext<ED extends EntityDict, Cxt extends B
     constructor(store: SyncRowStore<ED, FrontendRuntimeContext<ED, Cxt, AD>>, application?: Application<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>, token?: Token<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>);
     getApplicationId(): string | undefined;
     getSystemId(): string | undefined;
-    getApplication(): Partial<import("../general-app-domain/Application/Schema").Schema> | undefined;
+    getApplication(): Partial<import("../oak-app-domain/Application/Schema").Schema> | undefined;
     getTokenValue(): string | undefined;
     getToken(allowUnloggedIn?: boolean): Partial<ED["token"]["Schema"]> | undefined;
     getCurrentUserId(allowUnloggedIn?: boolean): string | undefined;

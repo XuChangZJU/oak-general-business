@@ -1,4 +1,4 @@
-import { WebConfig } from '../../../../general-app-domain/Application/Schema';
+import { WebConfig } from '../../../../oak-app-domain/Application/Schema';
 export default function Web(props: {
     config: WebConfig;
     setValue: (path: string, value: any) => void;

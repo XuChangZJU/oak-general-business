@@ -9,7 +9,7 @@ import Sms from './sms/index';
 
 import { Config } from '../../../types/Config';
 
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 
 export default function Render(

@@ -4,7 +4,7 @@ import {
     Button,
 } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 import Style from './web.module.less';
 

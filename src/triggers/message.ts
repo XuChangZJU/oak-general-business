@@ -1,7 +1,7 @@
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { Trigger, CreateTrigger } from 'oak-domain/lib/types/Trigger';
-import { EntityDict } from '../general-app-domain/EntityDict';
-import { CreateOperationData as CreateMessageData } from '../general-app-domain/Message/Schema';
+import { EntityDict } from '../oak-app-domain/EntityDict';
+import { CreateOperationData as CreateMessageData } from '../oak-app-domain/Message/Schema';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { BRC } from '../types/RuntimeCxt';
 import { Channel, MessageNotificationConverter, Weight } from '../types/Message';

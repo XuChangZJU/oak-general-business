@@ -1,5 +1,5 @@
 import { OakException, OakCongruentRowExists } from "oak-domain/lib/types";
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 
 export default OakComponent({
     entity: 'userEntityGrant',

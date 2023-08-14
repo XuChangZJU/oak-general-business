@@ -1,7 +1,7 @@
 import { judgeRelation } from "oak-domain/lib/store/relation";
 import { OakInputIllegalException, Checker, OakUserUnpermittedException } from "oak-domain/lib/types";
 import { ROOT_ROLE_ID } from "../constants";
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { RuntimeCxt } from "../types/RuntimeCxt";
 
 const checkers: Checker<EntityDict, 'user', RuntimeCxt> [] = [

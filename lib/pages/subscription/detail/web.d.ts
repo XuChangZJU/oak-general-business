@@ -1,5 +1,5 @@
-import { WechatPublicConfig } from '../../../general-app-domain/Application/Schema';
-import { EntityDict } from '../../../general-app-domain';
+import { WechatPublicConfig } from '../../../oak-app-domain/Application/Schema';
+import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 declare type Config = WechatPublicConfig;
 export default function Render(props: WebComponentProps<EntityDict, 'subscription', false, {

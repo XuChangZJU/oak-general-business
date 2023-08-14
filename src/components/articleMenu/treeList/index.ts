@@ -1,5 +1,5 @@
 
-import { EntityDict } from "../../../general-app-domain";
+import { EntityDict } from "../../../oak-app-domain";
 export default OakComponent({
     entity: 'articleMenu',
     isList: true,
@@ -67,12 +67,12 @@ export default OakComponent({
     },
     sorters: [
         {
-            sorter: {
+            sorter: () => ({
                 $attr: {
                     $$createAt$$: 1,
                 },
                 $direction: 'asc',
-            },
+            }),
         },
     ],
     filters: [

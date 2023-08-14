@@ -3,7 +3,7 @@ import { Table, Space, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { WebComponentProps } from 'oak-frontend-base';
 import PageHeader from '../../../components/common/pageHeader';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import Style from './web.module.less';
 
 export default function render(

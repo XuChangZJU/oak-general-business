@@ -1,5 +1,5 @@
 import { OakUserException, OakException } from "oak-domain/lib/types";
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { EntityDict as BaseEntityDict, SelectOpResult } from 'oak-domain/lib/types/Entity';
 export declare class OakNotEnoughMoneyException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string);

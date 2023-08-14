@@ -1,5 +1,5 @@
 import { makeTreeAncestorFilter, makeTreeDescendantFilter } from 'oak-domain/lib/store/filter';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 
 export function makeAreaAncestorFilter(filter: EntityDict['area']['Selection']['filter'], level: number = 1, includeAll?: boolean, includeSelf?: boolean) {
     return makeTreeAncestorFilter<EntityDict, 'area'>('area', 'parentId', filter, level, includeAll, includeSelf);

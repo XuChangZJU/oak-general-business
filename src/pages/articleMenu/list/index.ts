@@ -1,4 +1,4 @@
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 interface DataNode {
     label: string;
     key: string;
@@ -56,12 +56,12 @@ export default OakComponent({
     },
     sorters: [
         {
-            sorter: {
+            sorter: () => ({
                 $attr: {
                     $$createAt$$: 1,
                 },
                 $direction: 'asc',
-            },
+            }),
         },
     ],
     isList: true,

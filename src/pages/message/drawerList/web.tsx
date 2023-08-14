@@ -5,7 +5,7 @@ import MessageCell from '../../../components/message/cell';
 import Empty from '../../../components/common/empty';
 
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 
 
 

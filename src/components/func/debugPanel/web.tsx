@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Space, Drawer, Modal, Tooltip } from 'antd';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import Style from './web.module.less';
 import OakIcon from '../../icon'
 

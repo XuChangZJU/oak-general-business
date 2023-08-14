@@ -5,7 +5,7 @@ import SystemList from '../../system/list';
 
 import Style from './web.module.less';
 
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { Config } from '../../../types/Config';
 import { WebComponentProps } from 'oak-frontend-base';
 

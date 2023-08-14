@@ -1,5 +1,5 @@
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import {
     WechatMpInstance,
     WechatPublicInstance,
@@ -10,14 +10,14 @@ import {
     WechatMpConfig,
     WechatPublicConfig,
     WebConfig,
-} from '../general-app-domain/Application/Schema';
+} from '../oak-app-domain/Application/Schema';
 import {
     WebEnv,
     WechatMpEnv,
 } from 'oak-domain/lib/types/Environment';
-import { CreateOperationData as CreateWechatUser } from '../general-app-domain/WechatUser/Schema';
-import { UpdateOperationData as UpdateWechatLoginData } from '../general-app-domain/WechatLogin/Schema';
-import { Operation as ExtraFileOperation } from '../general-app-domain/ExtraFile/Schema';
+import { CreateOperationData as CreateWechatUser } from '../oak-app-domain/WechatUser/Schema';
+import { UpdateOperationData as UpdateWechatLoginData } from '../oak-app-domain/WechatLogin/Schema';
+import { Operation as ExtraFileOperation } from '../oak-app-domain/ExtraFile/Schema';
 import {
     OakRowInconsistencyException,
     OakUnloggedInException,

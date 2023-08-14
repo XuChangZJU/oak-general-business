@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { Button, Input, Form, TextArea, List } from 'antd-mobile';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { OakInputIllegalException } from 'oak-domain/lib/types';
 import assert from 'assert';
 import { InputRef } from 'antd-mobile/es/components/input';

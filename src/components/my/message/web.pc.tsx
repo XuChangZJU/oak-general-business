@@ -3,7 +3,7 @@ import { Button, Badge, Drawer, Space } from 'antd';
 import classNames from 'classnames';
 import { BellOutlined } from '@ant-design/icons';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import MessageDrawerList from '../../../pages/message/drawerList';
 
 import Style from './web.module.less';

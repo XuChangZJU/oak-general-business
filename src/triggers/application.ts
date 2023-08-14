@@ -1,11 +1,11 @@
 import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { CreateTrigger, Trigger } from 'oak-domain/lib/types/Trigger';
-import { EntityDict } from '../general-app-domain/EntityDict';
+import { EntityDict } from '../oak-app-domain/EntityDict';
 import { RuntimeCxt } from '../types/RuntimeCxt';
 import {
     AppType,
     WechatPublicConfig,
-} from '../general-app-domain/Application/Schema';
+} from '../oak-app-domain/Application/Schema';
 import { set } from 'oak-domain/lib/utils/lodash';
 
 const triggers: Trigger<EntityDict, 'application', RuntimeCxt>[] = [

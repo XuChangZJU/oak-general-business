@@ -12,7 +12,7 @@ import {
     MobileOutlined,
 } from '@ant-design/icons';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 
 import classNames from 'classnames';
 import Style from './web.module.less';

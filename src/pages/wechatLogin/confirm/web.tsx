@@ -6,7 +6,7 @@ import { UserAddOutlined, WechatOutlined, MehOutlined } from '@ant-design/icons'
 import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
 
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 
 const { Text, Title } = Typography;
 

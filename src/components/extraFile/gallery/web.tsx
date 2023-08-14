@@ -7,7 +7,7 @@ import { RcFile } from "antd/es/upload/interface";
 import classNames from "classnames";
 import Style from "./web.module.less";
 import { WebComponentProps } from "oak-frontend-base";
-import { EntityDict } from "../../../general-app-domain";
+import { EntityDict } from "../../../oak-app-domain";
 import useFeatures from "../../../hooks/useFeatures";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";

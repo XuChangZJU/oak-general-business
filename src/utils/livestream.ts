@@ -1,5 +1,5 @@
-import { EntityDict } from '../general-app-domain';
-import { Schema as Livestream } from '../general-app-domain/Livestream/Schema';
+import { EntityDict } from '../oak-app-domain';
+import { Schema as Livestream } from '../oak-app-domain/Livestream/Schema';
 import { Origin, QiniuLiveConfig } from '../types/Config';
 import { getConfig } from './getContextConfig';
 import { QiniuCloudInstance } from 'oak-external-sdk';

@@ -1,4 +1,4 @@
-import { EntityDict } from '../../../../general-app-domain';
+import { EntityDict } from '../../../../oak-app-domain';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 

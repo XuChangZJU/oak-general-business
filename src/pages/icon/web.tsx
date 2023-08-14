@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { EntityDict } from '../../general-app-domain';
+import { EntityDict } from '../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 
 import JsonData from './iconfont.json';

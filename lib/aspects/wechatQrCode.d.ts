@@ -1,6 +1,6 @@
-import { EntityDict } from "../general-app-domain";
+import { EntityDict } from "../oak-app-domain";
 import { QrCodeType } from '../types/Config';
-import { WechatQrCodeProps } from '../general-app-domain/WechatQrCode/Schema';
+import { WechatQrCodeProps } from '../oak-app-domain/WechatQrCode/Schema';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 /**
  * 生成二维码优先级如下：

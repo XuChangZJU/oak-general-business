@@ -1,6 +1,6 @@
 import { Routine } from 'oak-domain/lib/types/Timer';
 import { EntityDict } from 'oak-domain/lib/types/Entity';
-import { EntityDict as BaseEntityDict } from '../general-app-domain';
+import { EntityDict as BaseEntityDict } from '../oak-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
 import { rewriteOperation, rewriteSelection } from '../utils/selectionRewriter';

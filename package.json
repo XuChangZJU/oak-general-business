@@ -85,6 +85,7 @@
         "typescript": "~4.7.4"
     },
     "scripts": {
+        "make:locale": "ts-node ./scripts/buildLocale.ts",
         "make:domain": "ts-node ./scripts/make.ts",
         "clean": "rimraf lib/*",
         "copy-js": "copyfiles -u 1 src/**/*.js lib/",

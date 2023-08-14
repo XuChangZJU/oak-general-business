@@ -1,5 +1,5 @@
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { QrCodeType } from '../../../types/Config';
 export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
     grantByUserEntityGrant: boolean;

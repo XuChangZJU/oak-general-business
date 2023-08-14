@@ -1,6 +1,6 @@
 import { WebComponentProps } from 'oak-frontend-base';
 import React, { useState } from 'react';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import Styles from './web.pc.module.less';
 import { Button, List, Modal, Tag, Input, Radio } from 'antd';
 import MyAvatar from '../avatar';

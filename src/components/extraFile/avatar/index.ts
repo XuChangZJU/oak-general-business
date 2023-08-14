@@ -1,5 +1,5 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import assert from 'assert';
 
 export default OakComponent({

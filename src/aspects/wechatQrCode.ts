@@ -1,9 +1,9 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { EntityDict } from "../general-app-domain";
+import { EntityDict } from "../oak-app-domain";
 import { Config as SysConfig, QrCodeType } from '../types/Config';
-import { Schema as Application, WechatMpConfig, WechatPublicConfig } from "../general-app-domain/Application/Schema";
-import { CreateOperationData as CreateWechatQrcodeData, WechatQrCodeProps } from '../general-app-domain/WechatQrCode/Schema';
+import { Schema as Application, WechatMpConfig, WechatPublicConfig } from "../oak-app-domain/Application/Schema";
+import { CreateOperationData as CreateWechatQrcodeData, WechatQrCodeProps } from '../oak-app-domain/WechatQrCode/Schema';
 import {
     WechatSDK,
     WechatMpInstance,

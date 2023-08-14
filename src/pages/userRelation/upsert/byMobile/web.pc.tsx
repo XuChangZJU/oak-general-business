@@ -3,7 +3,7 @@ import { Form, Input, Button, Space } from 'antd';
 import Style from './web.module.less';
 import OnUser from '../onUser/index';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../../general-app-domain';
+import { EntityDict } from '../../../../oak-app-domain';
 
 export default function Render(props: WebComponentProps<EntityDict, 'mobile', false, {
     entity: keyof EntityDict;

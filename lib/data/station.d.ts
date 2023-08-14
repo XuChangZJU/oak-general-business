@@ -1,2 +1,2 @@
-import { CreateOperationData as Station } from '../general-app-domain/Station/Schema';
+import { CreateOperationData as Station } from '../oak-app-domain/Station/Schema';
 export declare const station: Station[];

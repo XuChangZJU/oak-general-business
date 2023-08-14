@@ -1,4 +1,4 @@
-import { OpSchema as ExtraFile } from '../../../general-app-domain/ExtraFile/Schema';
+import { OpSchema as ExtraFile } from '../../../oak-app-domain/ExtraFile/Schema';
 
 export default OakComponent({
     isList: false,

@@ -4,7 +4,7 @@ import { Space, Spin, Modal, Form, Input, Empty, Row, Col } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Style from "./web.module.less";
 import { WebComponentProps } from "oak-frontend-base";
-import { EntityDict } from "../../../general-app-domain";
+import { EntityDict } from "../../../oak-app-domain";
 import ImgBox from "oak-frontend-base/src/components/imgBox"
 
 type MethodsType = 'original' | 'url' | 'uploadLocalImg';

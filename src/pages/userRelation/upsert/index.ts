@@ -1,7 +1,7 @@
 import assert from 'assert';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 import { WebConfig } from '../../../entities/Application';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { QrCodeType } from '../../../types/Config';
 

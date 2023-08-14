@@ -1,4 +1,4 @@
-import { EntityDict } from '../../../general-app-domain/EntityDict';
+import { EntityDict } from '../../../oak-app-domain/EntityDict';
 
 
 export default OakComponent({

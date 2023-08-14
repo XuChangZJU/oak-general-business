@@ -5,7 +5,7 @@ import { UserCircleOutline } from 'antd-mobile-icons';
 
 import Style from './mobile.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 
 
 export default function Render(props: WebComponentProps<EntityDict, 'user', true, {

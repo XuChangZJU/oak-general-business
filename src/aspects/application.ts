@@ -1,6 +1,6 @@
 import { assert } from 'oak-domain/lib/utils/assert';
-import { EntityDict } from "../general-app-domain";
-import { AppType, WechatPublicConfig } from "../general-app-domain/Application/Schema";
+import { EntityDict } from "../oak-app-domain";
+import { AppType, WechatPublicConfig } from "../oak-app-domain/Application/Schema";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { applicationProjection } from '../types/projection';
 import {

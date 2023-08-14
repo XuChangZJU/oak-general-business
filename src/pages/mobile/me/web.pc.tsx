@@ -3,7 +3,7 @@ import { List, Button, Modal } from 'antd';
 import { MobileOutlined, DeleteOutlined } from '@ant-design/icons';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import PageHeader from '../../../components/common/pageHeader';
 import MobileLogin from '../../../pages/mobile/login';
 

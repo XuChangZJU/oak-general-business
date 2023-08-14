@@ -2,7 +2,7 @@ import React from 'react';
 import { Dropdown, Button, Avatar } from 'antd';
 import Styles from './web.module.less';
 
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import OakIcon from '../../icon/index';
 import { WebComponentProps } from 'oak-frontend-base';
 import { AvatarSize } from 'antd/es/avatar/SizeContext';

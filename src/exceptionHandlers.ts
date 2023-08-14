@@ -1,6 +1,6 @@
 import { ExceptionHandlerDict } from "oak-frontend-base/lib/types/ExceptionHandler";
 import { OakUnloggedInException } from "oak-domain/lib/types/Exception";
-import { EntityDict } from './general-app-domain';
+import { EntityDict } from './oak-app-domain';
 import { GeneralFeatures } from './features/index';
 import { OakTokenExpiredException } from "./types/Exception";
 import { BRC, FRC, FrcAspectDict } from './types/RuntimeCxt';

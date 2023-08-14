@@ -1,4 +1,4 @@
-import { CreateOperationData as SubwayStation } from '../general-app-domain/SubwayStation/Schema';
+import { CreateOperationData as SubwayStation } from '../oak-app-domain/SubwayStation/Schema';
 export const subwayStation: SubwayStation[] = [
   {
     id: '26246383-c8a1-4ce4-8d17-5cbe34e6c001',

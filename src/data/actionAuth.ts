@@ -1,4 +1,4 @@
-import { CreateOperationData as ActionAuth } from '../general-app-domain/ActionAuth/Schema';
+import { CreateOperationData as ActionAuth } from '../oak-app-domain/ActionAuth/Schema';
 
 export const actionAuth: ActionAuth[] = [
     {

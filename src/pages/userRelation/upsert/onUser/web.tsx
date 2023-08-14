@@ -3,7 +3,7 @@ import { Form, Checkbox, Input } from 'antd-mobile';
 import Style from './mobile.module.less';
 import UserRelation from './userRelation';
 import { WebComponentProps } from 'oak-frontend-base';
-import { EntityDict } from '../../../../general-app-domain';
+import { EntityDict } from '../../../../oak-app-domain';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 
 export default function Render(props: WebComponentProps<EntityDict, 'user', false, {

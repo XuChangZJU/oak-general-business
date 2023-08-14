@@ -1,5 +1,5 @@
 import { AuthDef } from 'oak-domain/lib/types/Auth';
-import { EntityDict } from '../general-app-domain';
+import { EntityDict } from '../oak-app-domain';
 
 const userAuth = {
     cascadePath: '',

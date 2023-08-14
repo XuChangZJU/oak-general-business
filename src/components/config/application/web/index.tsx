@@ -17,7 +17,7 @@ import {
     AppType,
     WebConfig,
     Passport,
-} from '../../../../general-app-domain/Application/Schema';
+} from '../../../../oak-app-domain/Application/Schema';
 
 
 

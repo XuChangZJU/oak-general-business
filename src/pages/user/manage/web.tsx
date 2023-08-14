@@ -3,7 +3,7 @@ import { Button, List, Tag, Avatar } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Style from './mobile.module.less';
 import { getName } from '../../../utils/randomUser';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 
 export default function render(props: WebComponentProps<EntityDict, 'user', true, {

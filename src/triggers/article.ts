@@ -1,4 +1,4 @@
-import { EntityDict } from '../general-app-domain/EntityDict';
+import { EntityDict } from '../oak-app-domain/EntityDict';
 import { Trigger } from 'oak-domain/lib/types';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { assert } from 'oak-domain/lib/utils/assert';

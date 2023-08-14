@@ -3,7 +3,7 @@ import { Table, Button, Typography, Modal } from 'antd';
 import dayjs from 'dayjs';
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import ActionBtnPanel from 'oak-frontend-base/lib/components/actionBtnPanel';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import Style from './web.module.less';
 import ParasiteDetail from '../detail';
 

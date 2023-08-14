@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { List, Button, Avatar, Input, Drawer } from 'antd';
 import { UserOutlined, MobileOutlined } from '@ant-design/icons';
-import { EntityDict } from '../../../general-app-domain';
+import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 
 import Style from './web.module.less';

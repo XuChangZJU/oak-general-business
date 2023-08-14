@@ -17,13 +17,13 @@ export default OakComponent(
         },
         filters: [
             {
-                filter: {
+                filter: () => ({
                     mobile$user: {
                         mobile: {
                             $eq: '11111111112',
                         }
                     }
-                },
+                }),
                 '#name': 'userSearch'
             }
         ],
