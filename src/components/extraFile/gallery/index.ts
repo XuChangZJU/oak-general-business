@@ -489,7 +489,7 @@ export default OakComponent({
                             ) {
                                 that.setMessage({
                                     type: 'error',
-                                    content: '该文件类型不支持打开下载',
+                                    content: '该文件类型不支持打开',
                                 });
                                 return;
                             }
