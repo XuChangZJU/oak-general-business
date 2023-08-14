@@ -5,6 +5,7 @@ import UserRelation from './userRelation';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../general-app-domain';
 import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 
 export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
     name: string;
@@ -77,7 +78,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                         ]}
                     >
                         <>
-                            <Input
+                            <Input.Password
                                 value={password}
                                 onChange={(e) => {
                                     const strValue = e.target.value;
@@ -85,6 +86,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                                         password: strValue,
                                     });
                                 }}
+                                iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                                 placeholder={t('placeholder.password')}
                             />
                         </>
