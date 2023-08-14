@@ -64,6 +64,5 @@ jspm_packages/
 
 build
 package-lock.json
-src/general-app-domain
-src/oak-app-domain
+# src/oak-app-domain
 scripts/local

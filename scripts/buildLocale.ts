@@ -1,4 +1,4 @@
 import LocaleBuilder from 'oak-domain/src/compiler/localeBuilder';
 
-const localeBuilder = new LocaleBuilder();
+const localeBuilder = new LocaleBuilder(true);
 localeBuilder.build();
