@@ -63,7 +63,11 @@ export async function subscribeMpMessage<
         });
         const rejected = Object.keys(result).filter(
             ele => {
-                if (result[ele] === 'reject') {
+                // 排除errMsg
+                if (ele === 'errMsg') {
+                    return false;
+                }
+                else if (result[ele] === 'reject') {
                     return true;
                 }
                 else if (result[ele] !== 'accept') {
