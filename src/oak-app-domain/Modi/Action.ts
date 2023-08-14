@@ -10,8 +10,8 @@ const IActionDef: ActionDef<IAction, IState> = {
     is: 'active'
 };
 export type ParticularAction = IAction;
-export type Action = GenericAction | ParticularAction | string;
 export const actions = ["count", "stat", "download", "select", "aggregate", "create", "remove", "update", "apply", "abandon"];
+export type Action = GenericAction | ParticularAction | string;
 export const ActionDefDict = {
     iState: IActionDef
 };

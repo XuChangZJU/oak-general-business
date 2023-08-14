@@ -3,8 +3,8 @@ import { GenericAction } from "oak-domain/lib/actions/action";
 export declare type IAction = 'succeed' | 'fail' | string;
 export declare type IState = 'sending' | 'success' | 'failure' | string;
 export declare type ParticularAction = IAction;
-export declare type Action = GenericAction | ParticularAction | string;
 export declare const actions: string[];
+export declare type Action = GenericAction | ParticularAction | string;
 export declare const ActionDefDict: {
     iState: ActionDef<string, string>;
 };

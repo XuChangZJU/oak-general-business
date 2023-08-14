@@ -5,7 +5,6 @@ export type IState = 'sending' | 'success' | 'failure' | string;
 export type VisitState = 'unvisited' | 'visited' | string;
 export type VisitAction = 'visit' | string;
 export type ParticularAction = IAction | VisitAction;
-export type Action = GenericAction | ParticularAction | string;
 export const actions = ["count", "stat", "download", "select", "aggregate", "create", "remove", "update", "succeed", "fail", "visit"];
 const IActionDef: ActionDef<IAction, IState> = {
     stm: {
@@ -19,6 +18,7 @@ const VisitActionDef: ActionDef<VisitAction, VisitState> = {
     },
     is: 'unvisited'
 };
+export type Action = GenericAction | ParticularAction | string;
 export const ActionDefDict = {
     iState: IActionDef,
     visitState: VisitActionDef

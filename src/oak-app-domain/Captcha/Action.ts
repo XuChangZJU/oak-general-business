@@ -11,8 +11,8 @@ const IActionDef: ActionDef<IAction, IState> = {
     is: 'unsent'
 };
 export type ParticularAction = IAction;
-export type Action = GenericAction | ParticularAction | string;
 export const actions = ["count", "stat", "download", "select", "aggregate", "create", "remove", "update", "send", "success", "fail"];
+export type Action = GenericAction | ParticularAction | string;
 export const ActionDefDict = {
     iState: IActionDef
 };

@@ -22,8 +22,8 @@ const UserActionDef: ActionDef<UserAction, UserState> = {
     }
 };
 export type ParticularAction = UserAction | IdAction;
-export type Action = GenericAction | ParticularAction | RelationAction | string;
 export const actions = ["count", "stat", "download", "select", "aggregate", "create", "remove", "update", "grant", "revoke", "activate", "disable", "enable", "mergeTo", "mergeFrom", "verify", "accept", "reject"];
+export type Action = GenericAction | ParticularAction | RelationAction | string;
 export const ActionDefDict = {
     idState: IdActionDef,
     userState: UserActionDef
