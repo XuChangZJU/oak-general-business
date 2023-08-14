@@ -17,7 +17,7 @@ export default OakComponent({
         content: '',
         name: '',
     },
-    formData: function ({ data: article }) {
+    formData({ data: article }) {
         return {
             content: article?.content,
             name: article?.name,

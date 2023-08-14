@@ -1,5 +1,5 @@
 import { CreateOperationData as SubwayStation } from '../oak-app-domain/SubwayStation/Schema';
-export const subwayStation: SubwayStation[] = [
+const subwayStation: SubwayStation[] = [
   {
     id: '26246383-c8a1-4ce4-8d17-5cbe34e6c001',
     stationId: '330100023133026',
@@ -1791,3 +1791,5 @@ export const subwayStation: SubwayStation[] = [
     subwayId: '900000109349',
   },
 ];
+
+export default subwayStation;

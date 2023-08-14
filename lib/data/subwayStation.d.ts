@@ -1,2 +1,3 @@
 import { CreateOperationData as SubwayStation } from '../oak-app-domain/SubwayStation/Schema';
-export declare const subwayStation: SubwayStation[];
+declare const subwayStation: SubwayStation[];
+export default subwayStation;

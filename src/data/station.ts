@@ -1,5 +1,5 @@
 import { CreateOperationData as Station } from '../oak-app-domain/Station/Schema';
-export const station: Station[] = [
+const station: Station[] = [
   {
     id: '330100023133026',
     name: '湘湖',
@@ -1541,3 +1541,5 @@ export const station: Station[] = [
     areaId: '330300',
   },
 ];
+
+export default station;

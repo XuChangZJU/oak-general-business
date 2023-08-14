@@ -21,4 +21,4 @@ declare const area: ({
         coordinate: number[];
     };
 })[];
-export { area, };
+export default area;

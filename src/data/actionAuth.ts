@@ -1,6 +1,6 @@
 import { CreateOperationData as ActionAuth } from '../oak-app-domain/ActionAuth/Schema';
 
-export const actionAuth: ActionAuth[] = [
+const actionAuths: ActionAuth[] = [
     {
         id: 'message-user',
         paths: ['user'],
@@ -32,3 +32,5 @@ export const actionAuth: ActionAuth[] = [
         deActions: ['create', 'update', 'select'],
     }
 ];
+
+export default actionAuths;

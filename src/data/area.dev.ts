@@ -2,6 +2,4 @@
 import area_debug from './areaDebug.json';
 
 const area = area_debug;
-export {
-    area,
-};
+export default area;
