@@ -3,7 +3,7 @@ import { getUploadInfo, getInfoByUrl } from './extraFile';
 import { getApplication, signatureJsSDK } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { mergeUser, getChangePasswordChannels } from './user';
-import { createWechatLogin } from './wechaLogin';
+import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
 import { getMpUnlimitWxaCode } from './wechatQrCode';
 declare const aspectDict: {
