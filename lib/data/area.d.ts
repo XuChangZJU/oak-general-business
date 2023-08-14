@@ -1,2 +1,2 @@
-declare const _default: "./area.dev";
-export default _default;
+import area from './area.dev';
+export default area;
