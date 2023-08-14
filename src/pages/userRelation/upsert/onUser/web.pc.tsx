@@ -68,29 +68,33 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                                 value={nickname}
                             />
                         </>
-                    </Form.Item> : <Form.Item
-                        label={t('user:attr.password')}
-                        name="password"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
+                    </Form.Item> :
                         <>
-                            <Input.Password
-                                value={password}
-                                onChange={(e) => {
-                                    const strValue = e.target.value;
-                                    update({
-                                        password: strValue,
-                                    });
-                                }}
-                                iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-                                placeholder={t('placeholder.password')}
-                            />
+                            <Form.Item
+                                label={t('user:attr.password')}
+                                name="password"
+                                rules={[
+                                    {
+                                        required: true,
+                                    },
+                                ]}
+                            >
+                                <>
+                                    <Input.Password
+                                        value={password}
+                                        onChange={(e) => {
+                                            const strValue = e.target.value;
+                                            update({
+                                                password: strValue,
+                                            });
+                                        }}
+                                        iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                                        placeholder={t('placeholder.password')}
+                                    />
+                                </>
+                            </Form.Item>
                         </>
-                    </Form.Item>
+
                 }
                 <Form.Item
                     label={t('auth')}
