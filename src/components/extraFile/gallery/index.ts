@@ -394,7 +394,7 @@ export default OakComponent({
             const name = this.features.extraFile.getFileName(value);
             const that = this;
             wx.showLoading({
-                title: '下载请求中，请耐心等待..',
+                title: '下载请求中...',
             });
             wx.downloadFile({
                 url: fileUrl,
@@ -404,7 +404,6 @@ export default OakComponent({
                     fs.saveFile({
                         tempFilePath: filePath,
                         success: (res) => {
-                            // console.log(res, '下载成功');
                             wx.hideLoading();
                             const savedFilePath = res.savedFilePath;
                             // 打开文件
@@ -415,16 +414,26 @@ export default OakComponent({
                                     // console.log('打开文档成功');
                                 },
                                 fail: function (res) {
-                                    console.log(res, 'openDocument');
+                                    const { errMsg } = res;
+                                    if (
+                                        errMsg.includes(
+                                            'fail filetype not supported'
+                                        )
+                                    ) {
+                                        that.setMessage({
+                                            type: 'error',
+                                            content: '该文件类型不支持打开',
+                                        });
+                                        return;
+                                    }
                                     that.setMessage({
                                         type: 'error',
-                                        content: '打开文档失败',
+                                        content: '该文件类型打开失败',
                                     });
                                 },
                             });
                         },
                         fail: function (res) {
-                            console.log(res, 'saveFile');
                             wx.hideLoading();
                             that.setMessage({
                                 type: 'error',
