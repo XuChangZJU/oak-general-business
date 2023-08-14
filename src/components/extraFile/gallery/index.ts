@@ -467,7 +467,7 @@ export default OakComponent({
             }
 
             wx.showLoading({
-                title: '下载请求中，请耐心等待..',
+                title: '下载请求中...',
             });
             wx.downloadFile({
                 url: fileUrl,
@@ -504,7 +504,7 @@ export default OakComponent({
                     wx.hideLoading();
                     that.setMessage({
                         type: 'error',
-                        content: '文件下载失败',
+                        content: '下载文件失败',
                     });
                 },
                 complete: function (res) { },
