@@ -1,6 +1,7 @@
 import { OakInputIllegalException } from 'oak-domain/lib/types';
 import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
 import { EntityDict } from '../../../../general-app-domain';
+import { encryptPasswordSha1 } from '../../../../utils/password';
 
 export default OakComponent({
     entity: 'user',
@@ -48,6 +49,7 @@ export default OakComponent({
         relations: [] as string[],
         mobile: '',
         isComponent: false,
+        setPasswordConfirm: (value: boolean) => { }
     },
     data: {
         userRelationRelativePath: '',

@@ -24,6 +24,7 @@ export default OakComponent({
     data: {
         mobileValue: '',
         mobileValueReady: false,
+        isNew: false,
     },
     methods: {
         async onMobileChange(value: string) {
@@ -44,17 +45,22 @@ export default OakComponent({
                 if (data.length > 0) {
                     this.clean();
                     this.setId(data[0].id!);
+                    this.setState({
+                        isNew: false,
+                    })
                 }
                 else {
                     this.clean();
+                    this.setState({
+                        isNew: true,
+                    })
                     this.create({
-                        mobile: value,  
+                        mobile: value,
                         user: {
                             id: generateNewId(),
                             action: 'create',
                             data: {
                                 id: generateNewId(),
-                                password: '12345678',
                             }
                         }
                     } as EntityDict['mobile']['CreateSingle']['data']);
@@ -70,6 +76,30 @@ export default OakComponent({
             });
         },
         async onConfirm() {
+            if (this.state.isNew) {
+                const userValue = this.getFreshValue(
+                    'user'
+                ) as Partial<EntityDict['user']['Schema']>;
+                if (!userValue.name) {
+                    this.setMessage(
+                        {
+                            type: 'error',
+                            content: '用户姓名未填写',
+                        }
+                    )
+                    return;
+                }
+                if (!userValue.password) {
+                    this.setMessage(
+                        {
+                            type: 'error',
+                            content: '用户密码未设置',
+                        }
+                    )
+                    return;
+                }
+            }
+
             await this.execute();
             this.setState({
                 mobileValue: '',

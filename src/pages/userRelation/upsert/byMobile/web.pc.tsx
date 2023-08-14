@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button, Space } from 'antd';
 import Style from './web.module.less';
 import OnUser from '../onUser/index';
@@ -12,14 +12,16 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
     mobileValue: string;
     mobileValueReady: boolean;
     userId: string;
+    isNew: boolean;
 }, {
     onMobileChange: (value: string) => Promise<void>;
     onConfirm: () => Promise<void>;
     onReset: () => void;
 }>) {
     const { mobileValue, mobileValueReady, relations, entity, entityId, userId,
-        oakFullpath, oakExecutable } = props.data;
+        oakFullpath, oakExecutable, isNew } = props.data;
     const { onConfirm, onMobileChange, onReset } = props.methods;
+    const [passwordConfirm, setPasswordConfirm] = useState(false);
     return (
         <div className={Style.container}>
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
@@ -59,12 +61,13 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                 <OnUser
                     oakAutoUnmount={true}
                     oakPath={oakFullpath ? `${oakFullpath}.user`
-                            : undefined
+                        : undefined
                     }
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
                     oakId={userId}
+                    setPasswordConfirm={setPasswordConfirm}
                 />
             )}
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
@@ -75,7 +78,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                             onClick={() => {
                                 onConfirm();
                             }}
-                            disabled={!oakExecutable}
+                            disabled={!oakExecutable || (isNew && !passwordConfirm)}
                         >
                             提交
                         </Button>
