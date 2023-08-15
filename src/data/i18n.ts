@@ -1,11 +1,13 @@
+// 本文件为自动编译产生，请勿直接修改
+
 import { CreateOperationData as I18n } from "../oak-app-domain/I18n/Schema";
 const i18ns: I18n[] = [
     {
-        id: "0847fcee-2c29-43bc-a99d-8553d2fc0037",
+        id: "9d670f30-1b02-4bc3-b6bd-cb19078161f2",
         namespace: "oak-general-business-p-mobile-login",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "pages\\mobile\\login",
+        position: "src\\pages\\mobile\\login",
         data: {
             "Login": "确定",
             "Send": "发送验证码",
@@ -16,21 +18,21 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "cc42fad1-0bc3-4762-9f13-73a3a6a140a2",
+        id: "e85a361e-7401-427f-8c82-4ba01bcd123f",
         namespace: "oak-general-business-p-paper-detail",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "pages\\paper\\detail",
+        position: "src\\pages\\paper\\detail",
         data: {
             "detail": "详情"
         }
     },
     {
-        id: "ad39d7e6-183b-43de-8cf3-ee388260035c",
+        id: "0108e0ef-c972-43cc-873b-c0f411d053a0",
         namespace: "oak-general-business-p-paper-list",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "pages\\paper\\list",
+        position: "src\\pages\\paper\\list",
         data: {
             "action": {
                 "add": "添加"
@@ -38,21 +40,21 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "1ceaa1a2-91f4-48a2-b9f7-045ef7c22bc4",
+        id: "fdb333f4-afd1-456c-b001-80c7a4ec2d1f",
         namespace: "oak-general-business-p-paper-preview",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "pages\\paper\\preview",
+        position: "src\\pages\\paper\\preview",
         data: {
             "detail": "预览"
         }
     },
     {
-        id: "ad1b09c9-337e-4d01-b170-dea2f684024d",
+        id: "00eb8ffa-4a52-4492-8b70-110ee8de9a46",
         namespace: "oak-general-business-p-paper-upsert",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "pages\\paper\\upsert",
+        position: "src\\pages\\paper\\upsert",
         data: {
             "submit": "提交",
             "reset": "重置",
@@ -68,22 +70,22 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "e0c24a1a-1f9d-4513-a7ea-de4889f320cc",
+        id: "9e51835f-5293-483b-9946-0392718b12c5",
         namespace: "oak-general-business-p-token-me",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "pages\\token\\me",
+        position: "src\\pages\\token\\me",
         data: {
             "login": "登录",
             "syncWeChat": "同步微信信息"
         }
     },
     {
-        id: "76a965c5-40bb-45e3-ac89-58caa0e56d5b",
+        id: "fdf100bb-f3d1-45fc-b086-e3556506a575",
         namespace: "oak-general-business-p-user-info",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "pages\\user\\info",
+        position: "src\\pages\\user\\info",
         data: {
             "avatar": "头像",
             "mobile": "手机号",
@@ -101,43 +103,43 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "4052589d-c5f3-4154-81c7-ae087ac565f4",
+        id: "00f1b032-6663-4abc-b4ac-e4d9cfb0ae44",
         namespace: "oak-general-business-p-user-manage-detail",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "pages\\user\\manage\\detail",
+        position: "src\\pages\\user\\manage\\detail",
         data: {
             "mobile": "手机号",
             "unset": "未设置"
         }
     },
     {
-        id: "cf4134ca-94e6-4cdb-9211-178a7fc6a897",
+        id: "56a1d00c-f668-45ee-904c-da09cc26d506",
         namespace: "oak-general-business-p-userRelation-list",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "pages\\userRelation\\list",
+        position: "src\\pages\\userRelation\\list",
         data: {
             "confirmRevokeAll": "确认删除用户的所有权限吗？",
             "search": "搜索用户名"
         }
     },
     {
-        id: "1c012491-4a8c-4d83-9021-fdfb93e7069f",
+        id: "cba98c2e-1392-457e-bdaf-96be1262fcc6",
         namespace: "oak-general-business-p-userRelation-upsert-byMobile",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "pages\\userRelation\\upsert\\byMobile",
+        position: "src\\pages\\userRelation\\upsert\\byMobile",
         data: {
             "inputMobile": "请输入手机号查找"
         }
     },
     {
-        id: "6ab6c256-428b-4f1c-bd64-1588b05534fe",
+        id: "703a12d7-6f85-43e7-9464-e00c2ab705ec",
         namespace: "oak-general-business-p-userRelation-upsert-byUserEntityGrant",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "pages\\userRelation\\upsert\\byUserEntityGrant",
+        position: "src\\pages\\userRelation\\upsert\\byUserEntityGrant",
         data: {
             "single": "单次",
             "unlimited": "不限",
@@ -153,11 +155,11 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "94787da9-99b7-4550-86c1-10fd14d83841",
+        id: "388a7718-6412-4a96-845d-7625c1af48ef",
         namespace: "oak-general-business-p-userRelation-upsert-onUser",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "pages\\userRelation\\upsert\\onUser",
+        position: "src\\pages\\userRelation\\upsert\\onUser",
         data: {
             "placeholder": {
                 "name": "请输入姓名",
@@ -170,22 +172,22 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "15018a30-b711-4cbe-91fa-dd818cfc6403",
+        id: "8c0d1155-20c2-4f10-8714-9d8c4f5fcf08",
         namespace: "oak-general-business-c-common-qrCode",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "components\\common\\qrCode",
+        position: "src\\components\\common\\qrCode",
         data: {
             "weChat-account-successfully-bound": "微信账号绑定成功",
             "weChat-authorization-login-successful": "微信授权登录成功"
         }
     },
     {
-        id: "88f40686-aa42-443d-9085-7f2036322024",
+        id: "3f544d34-3592-42c3-ade0-8dd26129f01d",
         namespace: "oak-general-business-c-extraFile-forUrl",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "components\\extraFile\\forUrl",
+        position: "src\\components\\extraFile\\forUrl",
         data: {
             "original": "从原文中选取",
             "url": "图片链接",
@@ -195,11 +197,11 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "5b25a288-7748-450a-9738-909a7957b958",
+        id: "2ba1fb81-1ae6-4cf2-a470-8bd2da44d0ae",
         namespace: "oak-general-business-c-extraFile-gallery",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "components\\extraFile\\gallery",
+        position: "src\\components\\extraFile\\gallery",
         data: {
             "waiting": "等待上传",
             "success": "上传成功",
@@ -207,11 +209,11 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "cda71e7d-91a4-448e-b5be-8077a17b71f5",
+        id: "71647f57-53d6-447d-9d12-8a482afa64e7",
         namespace: "oak-general-business-c-my-info",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "components\\my\\info",
+        position: "src\\components\\my\\info",
         data: {
             "login": "登录/注册",
             "unset": "未设置",
@@ -221,11 +223,11 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "df071449-3850-416a-a765-dafac92a0616",
+        id: "f266b371-f043-4ad8-b72d-fd43339172e4",
         namespace: "oak-general-business-c-user-login",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "components\\user\\login",
+        position: "src\\components\\user\\login",
         data: {
             "Login": "登录",
             "Remember me": "记住账号",
@@ -242,27 +244,23 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "a216fa43-f85f-4ff3-800d-b09f650ff5c5",
+        id: "3d36a832-106d-4e05-98f4-1ca0b3c40df4",
         namespace: "oak-general-business-c-wechatUser-unbindBtn",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
-        position: "components\\wechatUser\\unbindBtn",
+        position: "src\\components\\wechatUser\\unbindBtn",
         data: {
             "unbind": "解绑",
             "unbindingWechat": "确定解绑该微信账号"
         }
     },
     {
-        id: "d740c333-cdb2-4176-bcf5-02a04b52dadc",
+        id: "f11e3d06-f112-4e47-bc69-4d1e9bab9944",
         namespace: "oak-general-business-l-common",
-        language: "zh_CN",
+        language: "zh-CN",
         module: "oak-general-business",
         position: "locales\\common",
         data: {
-            "ptrActivate": "松开刷新",
-            "ptrDeactivate": "下拉刷新",
-            "ptrRelease": "正在刷新...",
-            "ptrFinish": "刷新完成",
             "noData": "暂无数据",
             "areYouSure": "请确认",
             "action": {
