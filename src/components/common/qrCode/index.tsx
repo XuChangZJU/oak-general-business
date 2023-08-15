@@ -6,7 +6,7 @@ import { QRCodeCanvas } from 'qrcode.react';
 
 import './index.less';
 import { EntityDict } from '../../../oak-app-domain';
-import { useTranslation } from 'react-i18next';
+import useFeatures from '../../../hooks/useFeatures';
 
 type IQrCodeProps = {
     filename?: string;
@@ -42,7 +42,7 @@ function QrCode(props: IQrCodeProps) {
         type,
     } = props;
     const prefixCls = 'oak';
-    const { t } = useTranslation();
+    const features = useFeatures();
     let V;
     if (expiresAt) {
         const diff = dayjs(expiresAt).diff(dayjs(), 'days');
@@ -86,7 +86,7 @@ function QrCode(props: IQrCodeProps) {
             <div className={`${prefixCls}-qrCodeBox`}>
                 <Result
                     status="success"
-                    title={type === 'bind' ? t('weChat-account-successfully-bound') : t('weChat-authorization-login-successful')}
+                    title={type === 'bind' ? features.locales.t('weChat-account-successfully-bound') : features.locales.t('weChat-authorization-login-successful')}
                 />
             </div>
         )

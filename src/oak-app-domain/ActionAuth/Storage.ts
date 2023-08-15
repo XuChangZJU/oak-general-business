@@ -35,10 +35,7 @@ export const desc: StorageDesc<OpSchema> = {
                 {
                     name: "relationId"
                 },
-            ],
-            config: {
-                unique: true
-            }
+            ]
         }
     ]
 };

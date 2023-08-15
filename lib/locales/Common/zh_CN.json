@@ -1,8 +1,4 @@
 {
-    "ptrActivate": "松开刷新",
-    "ptrDeactivate": "下拉刷新",
-    "ptrRelease": "正在刷新...",
-    "ptrFinish": "刷新完成",
     "noData": "暂无数据",
     "areYouSure": "请确认",
     "action": {
