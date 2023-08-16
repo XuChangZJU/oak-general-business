@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import spawn from 'cross-spawn';
 
     // ts-node scripts/build-app-domain & npm link ./app-domain
-    console.log(`${chalk.greenBright(`build general-app-domain`)}`);
+    console.log(`${chalk.greenBright(`build oak-app-domain`)}`);
 
     const result = spawn.sync(
         'ts-node',

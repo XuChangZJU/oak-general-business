@@ -41,7 +41,7 @@ export const desc: StorageDesc<OpSchema> = {
     actions,
     indexes: [
         {
-            name: 'namespace-language',
+            name: 'namespace_language',
             attributes: [
                 {
                     name: 'namespace'
