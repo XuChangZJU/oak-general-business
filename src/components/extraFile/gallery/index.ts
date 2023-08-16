@@ -106,6 +106,15 @@ export default OakComponent({
     },
 
     methods: {
+        getUrl(extraFile: EntityDict['extraFile']['OpSchema']) {
+            return this.features.extraFile.getUrl(extraFile);
+        },
+        getFileName(extraFile: EntityDict['extraFile']['OpSchema']) {
+            return this.features.extraFile.getFileName(extraFile);
+        },
+        eFFormatBytes(value: number) {
+            return this.features.extraFile.formatBytes(value);
+        },
         /**
          * 获取组件内部节点位置信息（单个）
          * @param component 组件实例
