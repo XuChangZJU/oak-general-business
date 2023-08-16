@@ -3,7 +3,7 @@
 import { CreateOperationData as I18n } from "../oak-app-domain/I18n/Schema";
 const i18ns: I18n[] = [
     {
-        id: "8e56267d-a60d-4800-97d5-d1d128d7b912",
+        id: "ae2826a9f7a8f93c6619f05a9dfe6215",
         namespace: "oak-general-business-p-mobile-login",
         language: "zh-CN",
         module: "oak-general-business",
@@ -18,7 +18,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "3cf4f0ce-7a44-4b3f-92cf-824c6e4ea06e",
+        id: "e4d09f64c5d4d4218d56c253dc3d59ee",
         namespace: "oak-general-business-p-paper-detail",
         language: "zh-CN",
         module: "oak-general-business",
@@ -28,7 +28,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "78f961a0-9d71-4334-b1b6-9aadc5ca88df",
+        id: "a6ce9ec7ba519326a8c2cab09b1ced9b",
         namespace: "oak-general-business-p-paper-list",
         language: "zh-CN",
         module: "oak-general-business",
@@ -40,7 +40,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "1e10d1c3-3226-465c-9c52-600285dc97c7",
+        id: "4f4219196fff9022b13d76ad3ea1eeec",
         namespace: "oak-general-business-p-paper-preview",
         language: "zh-CN",
         module: "oak-general-business",
@@ -50,7 +50,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "411a51aa-b6dc-4bcd-be4e-d5fea4388c80",
+        id: "5554f702229f815805bda1840d6b339b",
         namespace: "oak-general-business-p-paper-upsert",
         language: "zh-CN",
         module: "oak-general-business",
@@ -70,7 +70,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "4a4cf1b2-1707-46ac-8ad4-b2520f7fab55",
+        id: "ec290f3786755108eb9282414ee549b6",
         namespace: "oak-general-business-p-token-me",
         language: "zh-CN",
         module: "oak-general-business",
@@ -81,7 +81,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "35036a6e-de68-434c-b729-6ab941c6b16e",
+        id: "6d4c32af0d53a57033b31d37b8eff1ed",
         namespace: "oak-general-business-p-user-info",
         language: "zh-CN",
         module: "oak-general-business",
@@ -103,7 +103,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "9c1710b5-815e-47c6-9b2b-c87652c62b11",
+        id: "dd7bf7361f630ae8cc90f65bc33b8662",
         namespace: "oak-general-business-p-user-manage-detail",
         language: "zh-CN",
         module: "oak-general-business",
@@ -114,7 +114,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "d0cd612e-5a0d-4aa6-86ac-a8e1f496fd2b",
+        id: "6528a94c33e1aa46aabd578a7222877a",
         namespace: "oak-general-business-p-userRelation-list",
         language: "zh-CN",
         module: "oak-general-business",
@@ -125,7 +125,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "061dac54-b1bc-4d9e-91b6-5cea73e6ee04",
+        id: "dbcbdc87418b58632e646b053968f99c",
         namespace: "oak-general-business-p-userRelation-upsert-byMobile",
         language: "zh-CN",
         module: "oak-general-business",
@@ -135,7 +135,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "ed6760b4-36a8-4749-aff6-5124b402b125",
+        id: "c007ed3c3ee704eb24ae3303af0eb64e",
         namespace: "oak-general-business-p-userRelation-upsert-byUserEntityGrant",
         language: "zh-CN",
         module: "oak-general-business",
@@ -155,7 +155,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "54180db9-dcb1-448b-b0e1-be78bbc8531c",
+        id: "b6ca5c32944603de336ebec4c402f28d",
         namespace: "oak-general-business-p-userRelation-upsert-onUser",
         language: "zh-CN",
         module: "oak-general-business",
@@ -172,7 +172,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "0b5949b9-3bc7-4714-9258-b043c6f2cbd2",
+        id: "b39143cdead5b9d1def6790bd374f0dd",
         namespace: "oak-general-business-c-common-qrCode",
         language: "zh-CN",
         module: "oak-general-business",
@@ -183,7 +183,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "89516485-a95b-44d6-8484-ed37248f9bc2",
+        id: "a46bf8e5a220d1fc8cdeb25a769e41e6",
         namespace: "oak-general-business-c-extraFile-forUrl",
         language: "zh-CN",
         module: "oak-general-business",
@@ -197,7 +197,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "9dc6a926-ebea-4f93-b3ff-c06e8592ea64",
+        id: "939c04e984bac15864c2541cf2123123",
         namespace: "oak-general-business-c-extraFile-gallery",
         language: "zh-CN",
         module: "oak-general-business",
@@ -209,7 +209,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "25ec03aa-cbf6-4e2a-a78c-9d27e9aafcf1",
+        id: "1fa5619676df365c0aaee6645e3c5ef1",
         namespace: "oak-general-business-c-my-info",
         language: "zh-CN",
         module: "oak-general-business",
@@ -223,7 +223,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "62ae7899-7210-4f01-aa7e-88b983feeb86",
+        id: "bedcb9dbb3de06b80b582507b21b470d",
         namespace: "oak-general-business-c-user-login",
         language: "zh-CN",
         module: "oak-general-business",
@@ -244,7 +244,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "535d8ac8-1bf4-4878-b28c-5048c76c0872",
+        id: "491aa39ba7ec77e4c21d1b6ea6a648f9",
         namespace: "oak-general-business-c-wechatUser-unbindBtn",
         language: "zh-CN",
         module: "oak-general-business",
@@ -255,7 +255,7 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "45d88f0d-91ea-4121-8e25-8ee115161642",
+        id: "e07ce685f0383e7f7f3ce86501567f28",
         namespace: "oak-general-business-l-common",
         language: "zh-CN",
         module: "oak-general-business",
