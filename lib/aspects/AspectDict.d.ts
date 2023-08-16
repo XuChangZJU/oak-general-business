@@ -49,6 +49,7 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntime
     sendCaptcha: (params: {
         mobile: string;
         env: WechatMpEnv | WebEnv;
+        type: 'login' | 'changePassword';
     }, context: Cxt) => Promise<string>;
     getApplication: (params: {
         type: AppType;
@@ -100,6 +101,16 @@ declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntime
     getChangePasswordChannels: (params: {
         userId: string;
     }, context: Cxt) => Promise<string[]>;
+    updateUserPassword: (params: {
+        userId: string;
+        prevPassword?: string;
+        mobile?: string;
+        captcha?: string;
+        newPassword: string;
+    }, context: Cxt) => Promise<{
+        result: string;
+        times?: number;
+    }>;
 };
 export declare type AspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt>;
 export {};

@@ -16,20 +16,25 @@ export default function render(
         {
             showBack: boolean;
             userId: string;
+            currentUserId: string
         },
         {
         }
     >
 ) {
-    const { showBack, userId } = props.data;
+    const { showBack, userId, currentUserId } = props.data;
 
     return (
-        <PageHeader showBack={showBack} title="密码设置">
-            <ChangePassword
-                oakId={userId}
-                oakPath="$changePassword-component"
-                oakAutoUnmount={true}
-            />
-        </PageHeader>
+        (userId || currentUserId) ? <PageHeader showBack={showBack} title="密码设置">
+            <div className={Style.container}>
+                <ChangePassword
+                    oakId={userId || currentUserId}
+                    oakPath="$changePassword-component"
+                    oakAutoUnmount={true}
+                />
+
+            </div>
+
+        </PageHeader> : <></>
     );
 }

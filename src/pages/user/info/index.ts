@@ -204,7 +204,6 @@ export default OakComponent({
             this.navigateTo(
                 {
                     url: '/changePassword',
-                    userId: this.props.oakId,
                 },
                 {
                     showBack: true,
@@ -321,7 +320,7 @@ export default OakComponent({
         async sendCaptcha() {
             const { mobile } = this.state;
             try {
-                const result = await this.features.token.sendCaptcha(mobile);
+                const result = await this.features.token.sendCaptcha(mobile, 'login');
                 // 显示返回消息
                 this.setMessage({
                     type: 'success',

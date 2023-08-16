@@ -7,6 +7,7 @@ import { Action, ParticularAction, UserState, IdState } from "./Action";
 import { RelationAction } from "oak-domain/lib/actions/action";
 import * as Oper from "../Oper/Schema";
 import * as UserRelation from "../UserRelation/Schema";
+import * as ChangePasswordTemp from "../ChangePasswordTemp/Schema";
 import * as Email from "../Email/Schema";
 import * as Message from "../Message/Schema";
 import * as Mobile from "../Mobile/Schema";
@@ -55,6 +56,8 @@ export declare type Schema = EntityShape & {
     user$ref$$aggr?: AggregationResult<Schema>;
     userRelation$user?: Array<UserRelation.Schema>;
     userRelation$user$$aggr?: AggregationResult<UserRelation.Schema>;
+    changePasswordTemp$user?: Array<ChangePasswordTemp.Schema>;
+    changePasswordTemp$user$$aggr?: AggregationResult<ChangePasswordTemp.Schema>;
     email$user?: Array<Email.Schema>;
     email$user$$aggr?: AggregationResult<Email.Schema>;
     message$user?: Array<Message.Schema>;
@@ -147,6 +150,12 @@ export declare type Projection = {
     };
     userRelation$user$$aggr?: UserRelation.Aggregation & {
         $entity: "userRelation";
+    };
+    changePasswordTemp$user?: ChangePasswordTemp.Selection & {
+        $entity: "changePasswordTemp";
+    };
+    changePasswordTemp$user$$aggr?: ChangePasswordTemp.Aggregation & {
+        $entity: "changePasswordTemp";
     };
     email$user?: Email.Selection & {
         $entity: "email";
@@ -310,6 +319,7 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "refId">
     oper$operator?: OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">[]> | Array<OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">>>;
     user$ref?: OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "ref" | "refId">, Filter> | OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">[]> | Array<OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">> | OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "ref" | "refId">, Filter>>;
     userRelation$user?: OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "user" | "userId">, UserRelation.Filter> | OakOperation<"create", Omit<UserRelation.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserRelation.CreateOperationData, "user" | "userId">> | OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "user" | "userId">, UserRelation.Filter>>;
+    changePasswordTemp$user?: OakOperation<ChangePasswordTemp.UpdateOperation["action"], Omit<ChangePasswordTemp.UpdateOperationData, "user" | "userId">, ChangePasswordTemp.Filter> | OakOperation<"create", Omit<ChangePasswordTemp.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<ChangePasswordTemp.CreateOperationData, "user" | "userId">> | OakOperation<ChangePasswordTemp.UpdateOperation["action"], Omit<ChangePasswordTemp.UpdateOperationData, "user" | "userId">, ChangePasswordTemp.Filter>>;
     email$user?: OakOperation<Email.UpdateOperation["action"], Omit<Email.UpdateOperationData, "user" | "userId">, Email.Filter> | OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">> | OakOperation<Email.UpdateOperation["action"], Omit<Email.UpdateOperationData, "user" | "userId">, Email.Filter>>;
     message$user?: OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "user" | "userId">, Message.Filter> | OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">> | OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "user" | "userId">, Message.Filter>>;
     mobile$user?: OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Mobile.Filter> | OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">> | OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Mobile.Filter>>;
@@ -348,6 +358,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "refId">
     oper$operator?: OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">[]> | Array<OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">>>;
     user$ref?: UpdateOperation | RemoveOperation | OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">[]> | Array<OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">> | UpdateOperation | RemoveOperation>;
     userRelation$user?: UserRelation.UpdateOperation | UserRelation.RemoveOperation | OakOperation<"create", Omit<UserRelation.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserRelation.CreateOperationData, "user" | "userId">> | UserRelation.UpdateOperation | UserRelation.RemoveOperation>;
+    changePasswordTemp$user?: ChangePasswordTemp.UpdateOperation | ChangePasswordTemp.RemoveOperation | OakOperation<"create", Omit<ChangePasswordTemp.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<ChangePasswordTemp.CreateOperationData, "user" | "userId">> | ChangePasswordTemp.UpdateOperation | ChangePasswordTemp.RemoveOperation>;
     email$user?: Email.UpdateOperation | Email.RemoveOperation | OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">> | Email.UpdateOperation | Email.RemoveOperation>;
     message$user?: Message.UpdateOperation | Message.RemoveOperation | OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">> | Message.UpdateOperation | Message.RemoveOperation>;
     mobile$user?: Mobile.UpdateOperation | Mobile.RemoveOperation | OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">> | Mobile.UpdateOperation | Mobile.RemoveOperation>;

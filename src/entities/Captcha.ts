@@ -11,6 +11,7 @@ export interface Schema extends EntityShape {
     env: Object;
     expired: Boolean;
     expiresAt: Datetime;
+    type: 'login' | 'changePassword';
 };
 
 type IState = 'unsent' | 'sending' | 'sent' | 'failure';
@@ -49,6 +50,7 @@ const indexes: Index<Schema>[] = [
 
 const locale: LocaleDef<Schema, Action, '', {
     iState: IState,
+    type: Schema['type']
 }> = {
     zh_CN: {
         name: '验证码',
@@ -61,6 +63,7 @@ const locale: LocaleDef<Schema, Action, '', {
             expired: '是否过期',
             expiresAt: '过期时间',
             iState: '状态',
+            type: '类型',
         },
         action: {
             send: '发送',
@@ -73,6 +76,10 @@ const locale: LocaleDef<Schema, Action, '', {
                 sending: '发送中',
                 sent: '已发送',
                 failure: '已失败',
+            },
+            type: {
+                login: '登录',
+                changePassword: '修改密码'
             }
         },
     },

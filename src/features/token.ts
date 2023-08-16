@@ -191,11 +191,12 @@ export class Token<
         );
     }
 
-    async sendCaptcha(mobile: string) {
+    async sendCaptcha(mobile: string, type: 'login' | 'changePassword') {
         const env = await getEnv();
         const { result } = await this.cache.exec('sendCaptcha', {
             mobile,
             env: env as WebEnv,
+            type,
         });
         return result as string;
     }
