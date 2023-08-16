@@ -31,7 +31,7 @@ export default function render(props: WebComponentProps<EntityDict, 'area', true
     }
     return (
         <div className={Style.container}>
-            {t('common:noData')}
+            {t('common::noData')}
         </div>
     );
 }

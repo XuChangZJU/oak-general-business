@@ -131,7 +131,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'address', f
                     }
                 }}
             >
-                {t('common:action.confirm')}
+                {t('common::action.confirm')}
             </Button>
         </div>
     );

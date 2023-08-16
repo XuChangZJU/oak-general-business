@@ -42,7 +42,7 @@ export default function Render(props: WebComponentProps<
                         });
                     }}
                 >
-                    {t('common:action.create')}
+                    {t('common::action.create')}
                 </Button>
                 {
                     dirtyIds.length > 0 && (
@@ -52,7 +52,7 @@ export default function Render(props: WebComponentProps<
                                 execute();
                             }}
                         >
-                            {t('common:action.confirm')}
+                            {t('common::action.confirm')}
                         </Button>
                     )
                 }
@@ -138,7 +138,7 @@ export default function Render(props: WebComponentProps<
                                                     removeItem(record.id);
                                                 }}
                                             >
-                                                {t('common:action.remove')}
+                                                {t('common::action.remove')}
                                             </Button>
                                         ) : (
                                             <Button
@@ -159,7 +159,7 @@ export default function Render(props: WebComponentProps<
                                                     updateItem({}, record.id);
                                                 }}
                                             >
-                                                {t('common:action.update')}
+                                                {t('common::action.update')}
                                             </Button>
                                         ) : (
                                             <Button

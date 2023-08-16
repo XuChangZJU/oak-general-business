@@ -36,13 +36,13 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                             type="primary"
                             onClick={() => onConfirm()}
                         >
-                            {t('common:action.confirm')}
+                            {t('common::action.confirm')}
                         </Button>
                         <Button
                             htmlType="reset"
                             onClick={() => onReset()}
                         >
-                            {t('common:reset')}
+                            {t('common::reset')}
                         </Button>
                     </Space>
                 </Form.Item>

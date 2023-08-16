@@ -52,7 +52,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', true
                     color='primary'
                     onClick={() => goUpsert()}
                 >
-                    {t('common:action.create')}
+                    {t('common::action.create')}
                 </Button>
             </span>
             <List>

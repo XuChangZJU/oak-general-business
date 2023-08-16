@@ -45,8 +45,8 @@ export default function Render(
                 confirm({
                     title: '解绑微信账号',
                     content: '解绑后，您将无法使用该微信扫码登录',
-                    okText: t('common:action.confirm'),
-                    cancelText: t('common:action.cancel'),
+                    okText: t('common::action.confirm'),
+                    cancelText: t('common::action.cancel'),
                     onOk() {
                         methods.update({
                             userId: null,

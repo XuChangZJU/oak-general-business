@@ -127,8 +127,8 @@ export default function Render(
                                     <Space>
                                         <a onClick={(e) => goUpdate(record.id)}>
                                             {!!record.userRelation$user?.length
-                                                ? t('common:action.update')
-                                                : t('common:action.grant')}
+                                                ? t('common::action.update')
+                                                : t('common::action.grant')}
                                         </a>
                                         {!!record.userRelation$user?.length && (
                                             <a
@@ -139,7 +139,7 @@ export default function Render(
                                                     setIdRemove(record.id)
                                                 }
                                             >
-                                                {t('common:action.revoke')}
+                                                {t('common::action.revoke')}
                                             </a>
                                         )}
                                     </Space>
@@ -162,15 +162,15 @@ export default function Render(
                 />
             </div>
             <Modal
-                title={t('common:areYouSure')}
+                title={t('common::areYouSure')}
                 open={!!idRemove}
                 onOk={async () => {
                     await confirmDelete(idRemove!);
                     setIdRemove(undefined);
                 }}
                 onCancel={() => setIdRemove(undefined)}
-                cancelText={t('common:action.cancel')}
-                okText={t('common:action.confirm')}
+                cancelText={t('common::action.cancel')}
+                okText={t('common::action.confirm')}
             >
                 <p>{t('confirmRevokeAll')}</p>
             </Modal>

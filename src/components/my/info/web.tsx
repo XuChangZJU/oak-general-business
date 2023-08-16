@@ -146,7 +146,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', fal
                                     setUpdateValue(undefined);
                                 }}
                             >
-                                {t('common:action.confirm')}
+                                {t('common::action.confirm')}
                             </Button>
                         }
                     >

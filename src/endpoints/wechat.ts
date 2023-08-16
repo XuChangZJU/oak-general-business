@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { URL } from 'url';
+import URL from 'url';
 import sha1 from 'sha1';
 import x2js from 'x2js';
 import { Endpoint } from 'oak-domain/lib/types/Endpoint';
@@ -585,7 +585,7 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
         method: 'get',
         params: ['appId'],
         fn: async (context, params, body, req, headers) => {
-            const { searchParams } = new URL(`http://${req.headers.host!}${req.url}`);
+            const { searchParams } = new URL.URL(`http://${req.headers.host!}${req.url}`);
             const { appId } = params;
 
             if (!appId || appId === '20230210') {

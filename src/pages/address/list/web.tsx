@@ -31,7 +31,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'address', t
     }
     return (
         <div className={Style.container}>
-            {methods.t('common:noData')}
+            {methods.t('common::noData')}
             <Button
                 block={false}
                 ghost={false}
@@ -40,7 +40,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'address', t
                 style={{ marginTop: 10 }}
                 onClick={() => methods.goNewAddress()}
             >
-                {methods.t('common:action.create')}
+                {methods.t('common::action.create')}
             </Button>
         </div>
     );

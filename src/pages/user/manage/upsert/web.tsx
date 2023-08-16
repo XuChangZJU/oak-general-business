@@ -118,7 +118,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                 color="primary"
                 onClick={() => execute()}
             >
-                {t('common:action.confirm')}
+                {t('common::action.confirm')}
             </Button>
         </div>
     );

@@ -79,14 +79,14 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                             }}
                             disabled={!legal}
                         >
-                            {t('common:action.confirm')}
+                            {t('common::action.confirm')}
                         </Button>
                         <Button 
                             htmlType="reset"
                             onClick={() => onReset()}
                             style={{ flex: 1 }}
                         >
-                            {t('common:reset')}
+                            {t('common::reset')}
                         </Button>
                     </Space>
                 </Form.Item>

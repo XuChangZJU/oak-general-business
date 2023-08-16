@@ -41,7 +41,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', tru
                         loading={refreshing}
                         onClick={() => goMyInfo()}
                     >
-                        {t('common:action.update')}
+                        {t('common::action.update')}
                     </Button>
                 ) : (
                     <Button
@@ -92,7 +92,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', tru
                             setShowDrawer(false);
                         }}
                     >
-                        {t('common:action.confirm')}
+                        {t('common::action.confirm')}
                     </Button>
                 }
             >

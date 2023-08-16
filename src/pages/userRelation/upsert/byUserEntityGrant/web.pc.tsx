@@ -171,10 +171,10 @@ export default function render(
             <Form.Item wrapperCol={{ offset: 4 }}>
                 <Space>
                     <Button type="primary" onClick={() => confirm()} disabled={oakExecutable !== true}>
-                        {t('common:action.confirm')}
+                        {t('common::action.confirm')}
                     </Button>
                     <Button onClick={() => onBack()}>
-                        {t('common:back')}
+                        {t('common::back')}
                     </Button>
                 </Space>
             </Form.Item>
