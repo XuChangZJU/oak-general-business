@@ -93,7 +93,7 @@ export type I18nIdSubQuery = Selection<I18nIdProjection>;
 export type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: OakMakeAction<GenericAction> | string;
+    Action: OakMakeAction<ReadOnlyAction> | string;
     Selection: Selection;
     Aggregation: Aggregation;
     Operation: Operation;

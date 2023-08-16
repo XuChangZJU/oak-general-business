@@ -112,6 +112,9 @@ export default function render(
 				callback?: (file: any, status: string) => void
 			) => void;
 			onDeleteByWeb: (file: UploadFile) => void;
+			getUrl: (extraFile: EntityDict['extraFile']['OpSchema']) => string;
+			getFileName: (extraFile: EntityDict['extraFile']['OpSchema']) => string;
+			eFFormatBytes: (value: number) => string;
 		}
 	>
 ) {
@@ -138,8 +141,7 @@ export default function render(
 		disableDelete = false,
 		preview = true,
 	} = props.data;
-	const { onPickByWeb, onDeleteByWeb, updateItem, t } = props.methods;
-	const features = useFeatures();
+	const { onPickByWeb, onDeleteByWeb, updateItem, t, getFileName, getUrl, eFFormatBytes } = props.methods;
 
 	const [newFiles, setNewFiles] = useState<
 		EntityDict["extraFile"]["OpSchema"][]
@@ -162,10 +164,10 @@ export default function render(
 	): NewUploadFile => {
 		return {
 			id: extraFile.id,
-			url: features.extraFile.getUrl(extraFile),
-			thumbUrl: features.extraFile.getUrl(extraFile),
-			name: features.extraFile.getFileName(extraFile),
-			fileName: features.extraFile.getFileName(extraFile),
+			url: getUrl(extraFile),
+			thumbUrl: getUrl(extraFile),
+			name: getFileName(extraFile),
+			fileName: getFileName(extraFile),
 			size: extraFile.size!,
 			type: extraFile.fileType!,
 			uid: extraFile.id, //upload 组件需要uid来维护fileList
@@ -336,7 +338,7 @@ export default function render(
 								dataIndex: "size",
 								title: "文件大小",
 								render: (value, record, index) => {
-									return features.extraFile.formatBytes(value as number);
+									return eFFormatBytes(value as number);
 								},
 							},
 							{

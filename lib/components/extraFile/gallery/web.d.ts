@@ -27,5 +27,8 @@ export default function render(props: WebComponentProps<EntityDict, "extraFile",
 }, {
     onPickByWeb: (files: UploadFile[], callback?: (file: any, status: string) => void) => void;
     onDeleteByWeb: (file: UploadFile) => void;
+    getUrl: (extraFile: EntityDict['extraFile']['OpSchema']) => string;
+    getFileName: (extraFile: EntityDict['extraFile']['OpSchema']) => string;
+    eFFormatBytes: (value: number) => string;
 }>): JSX.Element;
 export {};

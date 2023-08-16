@@ -7,12 +7,9 @@ export const desc: StorageDesc<OpSchema> = {
             type: "ref",
             ref: "relation"
         },
-        path: {
+        paths: {
             notNull: true,
-            type: "varchar",
-            params: {
-                length: 256
-            }
+            type: "object"
         },
         destEntity: {
             notNull: true,
@@ -30,16 +27,13 @@ export const desc: StorageDesc<OpSchema> = {
     actions,
     indexes: [
         {
-            name: 'index_entity_relation_path',
+            name: 'index_entity_relation',
             attributes: [
                 {
                     name: 'destEntity'
                 },
                 {
                     name: "relationId"
-                },
-                {
-                    name: 'path'
                 },
             ],
             config: {
