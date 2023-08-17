@@ -38,18 +38,18 @@ export default function Render(
     const [validateStatus, setValidateStatus] = useState('' as '' | "success" | "warning" | "error" | "validating" | undefined);
 
     const reset = () => {
-        setPassword2('');
-        setPassword('');
-        setPrevPassword('');
-        setValidateHelp0('');
-        setValidateStatus0('');
-        setValidateHelp('');
-        setValidateHelp1('');
-        setValidateStatus('');
+        setPassword2(() => '');
+        setPassword(() => '');
+        setPrevPassword(() => '');
+        setValidateHelp0(() => '');
+        setValidateStatus0(() => '');
+        setValidateHelp(() => '');
+        setValidateHelp1(() => '');
+        setValidateStatus(() => '');
     };
     return (
         <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
-            {failTimes > 5 && <Alert message="您今日尝试次数过多，请稍候再进行操作或使用手机号验证" type="error" />}
+            {failTimes >= 5 && <Alert message="您今日尝试次数过多，请稍候再进行操作或使用手机号验证" type="error" style={{ marginBottom: 20 }} />}
             <Form.Item
                 label={'输入原密码'}
                 name="prevPassword"
@@ -148,18 +148,17 @@ export default function Render(
                         setPassword2(strValue)
                     }}
                     iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-                    placeholder={'请再次输入新密码'}
+                    placeholder={'请再次输入密码'}
                 />
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 4 }}>
                 <Space>
                     <Button
+                        htmlType="reset"
                         type="primary"
                         onClick={async () => {
                             await onConfirm(prevPassword, password);
-                            setPrevPassword('');
-                            setValidateHelp0('');
-                            setValidateStatus0('');
+                            reset();
                         }}
                         disabled={!(failTimes < 5 && prevPassword && password && password.length >= 8 && password === password2)}
                     >

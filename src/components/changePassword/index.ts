@@ -35,7 +35,6 @@ export default OakComponent({
             const { result } = await this.features.cache.exec('getChangePasswordChannels', {
                 userId,
             });
-            console.log(result);
             this.setState({
                 channels: result
             });
