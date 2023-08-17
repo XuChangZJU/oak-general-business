@@ -85,7 +85,6 @@ export default OakComponent({
         },
         async onConfirmByMobile(mobile: string, captcha: string, newPassword: string) {
             const userId = this.props.oakId as string;
-            console.log(newPassword);
             const { user } = this.state;
             const { result } = await this.features.cache.exec('updateUserPassword', {
                 userId,

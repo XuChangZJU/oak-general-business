@@ -51,16 +51,16 @@ export default function Render(
         <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
             {failTimes > 5 && <Alert message="您今日尝试次数过多，请稍候再进行操作或使用手机号验证" type="error" />}
             <Form.Item
-                label={'输入当前密码'}
+                label={'输入原密码'}
                 name="prevPassword"
                 help={validateHelp0}
                 rules={[
                     {
                         required: true,
-                        message: '请输入密码',
+                        message: '请输入原密码',
                         validator: (_, value) => {
                             if (!value) {
-                                setValidateHelp0('必须填写当前密码')
+                                setValidateHelp0('必须填写原密码')
                                 setValidateStatus0('error')
                                 return;
                             } else {
@@ -80,7 +80,7 @@ export default function Render(
                         setPrevPassword(strValue);
                     }}
                     iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-                    placeholder={'请输入当前密码'}
+                    placeholder={'请输入原密码'}
                 />
             </Form.Item>
             <Form.Item
@@ -90,7 +90,7 @@ export default function Render(
                 rules={[
                     {
                         required: true,
-                        message: '请输入密码',
+                        message: '请输入新密码',
                         validator: (_, value) => {
                             if (value.length < 8) {
                                 setValidateHelp1('密码最短长度为8位')
@@ -122,7 +122,7 @@ export default function Render(
                 />
             </Form.Item>
             <Form.Item
-                label={'确认密码'}
+                label={'确认新密码'}
                 name="passwordConfirm"
                 rules={[
                     {
@@ -148,7 +148,7 @@ export default function Render(
                         setPassword2(strValue)
                     }}
                     iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-                    placeholder={'请再次输入密码'}
+                    placeholder={'请再次输入新密码'}
                 />
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 4 }}>

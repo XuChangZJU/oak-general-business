@@ -67,11 +67,17 @@ export default function Render(
                     }}
                 />
             </Form.Item>}
-            <Form.Item name="captcha" label={'输入验证码'}>
+            <Form.Item name="captcha" label={'输入验证码'}
+                rules={[
+                    {
+                        required: true,
+                        message: '请输入验证码',
+                    },
+                ]}
+            >
                 <Input
                     allowClear
                     value={captcha}
-                    size="large"
                     maxLength={4}
                     placeholder={'请输入验证码'}
                     onChange={(e) => {

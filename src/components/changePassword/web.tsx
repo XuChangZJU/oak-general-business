@@ -35,7 +35,7 @@ export default function Render(
     const items = [
         {
             key: 'password',
-            label: '旧密码验证',
+            label: '原密码验证',
             children: <ByPassword
                 oakId={oakId}
                 oakPath={oakFullpath}
