@@ -135,7 +135,7 @@ export default function Render(
                 />
             </Form.Item>
             <Form.Item
-                label={'确认密码'}
+                label={'确认新密码'}
                 name="passwordConfirm"
                 rules={[
                     {
