@@ -79,7 +79,7 @@ export default function Render(
     const [captcha, setCaptcha] = useState('');
 
     return (
-        <PageHeader title="个人设置" showBack={showBack}>
+        <PageHeader title="个人信息" showBack={showBack}>
             <div className={Style.container}>
                 <Descriptions title={'基本信息'}></Descriptions>
                 <Form
