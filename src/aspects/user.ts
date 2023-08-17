@@ -243,9 +243,9 @@ export async function updateUserPassword<ED extends EntityDict & BaseEntityDict,
                 {}
             );
             return {
-                result: '当前密码不正确，请检查后输入',
+                result: '原密码不正确，请检查后输入',
                 times: count1,
-            }
+            };
         }
     }
     if (mobile && captcha) {

@@ -161,7 +161,7 @@ export default function Render(
                         setPassword2(strValue)
                     }}
                     iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-                    placeholder={'请再次输入密码'}
+                    placeholder={'请再次输入新密码'}
                 />
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 4 }}>
