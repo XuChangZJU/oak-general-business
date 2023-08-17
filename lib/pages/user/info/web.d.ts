@@ -21,6 +21,7 @@ declare type DataProps = {
 };
 declare type MethodsProps = {
     goAddMobile: () => void;
+    goChangePassword: () => void;
     setAvatar: () => void;
     setVisible: (visible: boolean, attr: string) => void;
     setCustomData: (attr: string, value: string | number) => void;

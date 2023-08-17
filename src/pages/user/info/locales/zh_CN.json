@@ -1,6 +1,7 @@
 {
     "avatar": "头像",
     "mobile": "手机号",
+    "password": "密码",
     "manage": "管理",
     "bind": "绑定",
     "syncWeChat": "同步微信信息",

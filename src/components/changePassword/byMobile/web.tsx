@@ -163,7 +163,7 @@ export default function Render(
                     <Button
                         type="primary"
                         onClick={async () => {
-                            await onConfirmByMobile(mobile, captcha, password2);
+                            await onConfirmByMobile(mobile, captcha, password);
                         }}
                         disabled={!(password.length >= 8 && password === password2)}
                     >

@@ -108,6 +108,9 @@ export async function getChangePasswordChannels<ED extends EntityDict & BaseEnti
             data: {
                 id: 1,
                 password: 1,
+            },
+            filter: {
+                id: userId,
             }
         },
         {}
