@@ -8,4 +8,5 @@ export interface Schema extends EntityShape {
     env: Object;
     expired: Boolean;
     expiresAt: Datetime;
+    type: 'login' | 'changePassword';
 }

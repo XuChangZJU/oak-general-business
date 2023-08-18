@@ -10,6 +10,7 @@ import { EntityShape } from "oak-domain/lib/types/Entity";
 import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 import * as Oper from "../Oper/Schema";
 import * as UserRelation from "../UserRelation/Schema";
+import * as ChangePasswordTemp from "../ChangePasswordTemp/Schema";
 import * as Email from "../Email/Schema";
 import * as Message from "../Message/Schema";
 import * as Mobile from "../Mobile/Schema";
@@ -59,6 +60,8 @@ export type Schema = EntityShape & {
     user$ref$$aggr?: AggregationResult<Schema>;
     userRelation$user?: Array<UserRelation.Schema>;
     userRelation$user$$aggr?: AggregationResult<UserRelation.Schema>;
+    changePasswordTemp$user?: Array<ChangePasswordTemp.Schema>;
+    changePasswordTemp$user$$aggr?: AggregationResult<ChangePasswordTemp.Schema>;
     email$user?: Array<Email.Schema>;
     email$user$$aggr?: AggregationResult<Email.Schema>;
     message$user?: Array<Message.Schema>;
@@ -115,6 +118,7 @@ type AttrFilter = {
     oper$operator: Oper.Filter & SubQueryPredicateMetadata;
     user$ref: Filter & SubQueryPredicateMetadata;
     userRelation$user: UserRelation.Filter & SubQueryPredicateMetadata;
+    changePasswordTemp$user: ChangePasswordTemp.Filter & SubQueryPredicateMetadata;
     email$user: Email.Filter & SubQueryPredicateMetadata;
     message$user: Message.Filter & SubQueryPredicateMetadata;
     mobile$user: Mobile.Filter & SubQueryPredicateMetadata;
@@ -170,6 +174,12 @@ export type Projection = {
     };
     userRelation$user$$aggr?: UserRelation.Aggregation & {
         $entity: "userRelation";
+    };
+    changePasswordTemp$user?: ChangePasswordTemp.Selection & {
+        $entity: "changePasswordTemp";
+    };
+    changePasswordTemp$user$$aggr?: ChangePasswordTemp.Aggregation & {
+        $entity: "changePasswordTemp";
     };
     email$user?: Email.Selection & {
         $entity: "email";
@@ -329,6 +339,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "refId">> & (({
     oper$operator?: OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">[]> | Array<OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">>>;
     user$ref?: OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "ref" | "refId">, Omit<Filter, "ref" | "refId">> | OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">[]> | Array<OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">> | OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "ref" | "refId">, Omit<Filter, "ref" | "refId">>>;
     userRelation$user?: OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "user" | "userId">, Omit<UserRelation.Filter, "user" | "userId">> | OakOperation<"create", Omit<UserRelation.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserRelation.CreateOperationData, "user" | "userId">> | OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "user" | "userId">, Omit<UserRelation.Filter, "user" | "userId">>>;
+    changePasswordTemp$user?: OakOperation<ChangePasswordTemp.UpdateOperation["action"], Omit<ChangePasswordTemp.UpdateOperationData, "user" | "userId">, Omit<ChangePasswordTemp.Filter, "user" | "userId">> | OakOperation<"create", Omit<ChangePasswordTemp.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<ChangePasswordTemp.CreateOperationData, "user" | "userId">> | OakOperation<ChangePasswordTemp.UpdateOperation["action"], Omit<ChangePasswordTemp.UpdateOperationData, "user" | "userId">, Omit<ChangePasswordTemp.Filter, "user" | "userId">>>;
     email$user?: OakOperation<Email.UpdateOperation["action"], Omit<Email.UpdateOperationData, "user" | "userId">, Omit<Email.Filter, "user" | "userId">> | OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">> | OakOperation<Email.UpdateOperation["action"], Omit<Email.UpdateOperationData, "user" | "userId">, Omit<Email.Filter, "user" | "userId">>>;
     message$user?: OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "user" | "userId">, Omit<Message.Filter, "user" | "userId">> | OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">> | OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "user" | "userId">, Omit<Message.Filter, "user" | "userId">>>;
     mobile$user?: OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Omit<Mobile.Filter, "user" | "userId">> | OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">> | OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Omit<Mobile.Filter, "user" | "userId">>>;
@@ -366,6 +377,7 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "refId">> & (({
     oper$operator?: OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">[]> | Array<OakOperation<"create", Omit<Oper.CreateOperationData, "operator" | "operatorId">>>;
     user$ref?: OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "ref" | "refId">, Omit<Filter, "ref" | "refId">> | OakOperation<RemoveOperation["action"], Omit<RemoveOperationData, "ref" | "refId">, Omit<Filter, "ref" | "refId">> | OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">[]> | Array<OakOperation<"create", Omit<CreateOperationData, "ref" | "refId">> | OakOperation<UpdateOperation["action"], Omit<UpdateOperationData, "ref" | "refId">, Omit<Filter, "ref" | "refId">> | OakOperation<RemoveOperation["action"], Omit<RemoveOperationData, "ref" | "refId">, Omit<Filter, "ref" | "refId">>>;
     userRelation$user?: OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "user" | "userId">, Omit<UserRelation.Filter, "user" | "userId">> | OakOperation<UserRelation.RemoveOperation["action"], Omit<UserRelation.RemoveOperationData, "user" | "userId">, Omit<UserRelation.Filter, "user" | "userId">> | OakOperation<"create", Omit<UserRelation.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<UserRelation.CreateOperationData, "user" | "userId">> | OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "user" | "userId">, Omit<UserRelation.Filter, "user" | "userId">> | OakOperation<UserRelation.RemoveOperation["action"], Omit<UserRelation.RemoveOperationData, "user" | "userId">, Omit<UserRelation.Filter, "user" | "userId">>>;
+    changePasswordTemp$user?: OakOperation<ChangePasswordTemp.UpdateOperation["action"], Omit<ChangePasswordTemp.UpdateOperationData, "user" | "userId">, Omit<ChangePasswordTemp.Filter, "user" | "userId">> | OakOperation<ChangePasswordTemp.RemoveOperation["action"], Omit<ChangePasswordTemp.RemoveOperationData, "user" | "userId">, Omit<ChangePasswordTemp.Filter, "user" | "userId">> | OakOperation<"create", Omit<ChangePasswordTemp.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<ChangePasswordTemp.CreateOperationData, "user" | "userId">> | OakOperation<ChangePasswordTemp.UpdateOperation["action"], Omit<ChangePasswordTemp.UpdateOperationData, "user" | "userId">, Omit<ChangePasswordTemp.Filter, "user" | "userId">> | OakOperation<ChangePasswordTemp.RemoveOperation["action"], Omit<ChangePasswordTemp.RemoveOperationData, "user" | "userId">, Omit<ChangePasswordTemp.Filter, "user" | "userId">>>;
     email$user?: OakOperation<Email.UpdateOperation["action"], Omit<Email.UpdateOperationData, "user" | "userId">, Omit<Email.Filter, "user" | "userId">> | OakOperation<Email.RemoveOperation["action"], Omit<Email.RemoveOperationData, "user" | "userId">, Omit<Email.Filter, "user" | "userId">> | OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Email.CreateOperationData, "user" | "userId">> | OakOperation<Email.UpdateOperation["action"], Omit<Email.UpdateOperationData, "user" | "userId">, Omit<Email.Filter, "user" | "userId">> | OakOperation<Email.RemoveOperation["action"], Omit<Email.RemoveOperationData, "user" | "userId">, Omit<Email.Filter, "user" | "userId">>>;
     message$user?: OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "user" | "userId">, Omit<Message.Filter, "user" | "userId">> | OakOperation<Message.RemoveOperation["action"], Omit<Message.RemoveOperationData, "user" | "userId">, Omit<Message.Filter, "user" | "userId">> | OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">> | OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "user" | "userId">, Omit<Message.Filter, "user" | "userId">> | OakOperation<Message.RemoveOperation["action"], Omit<Message.RemoveOperationData, "user" | "userId">, Omit<Message.Filter, "user" | "userId">>>;
     mobile$user?: OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Omit<Mobile.Filter, "user" | "userId">> | OakOperation<Mobile.RemoveOperation["action"], Omit<Mobile.RemoveOperationData, "user" | "userId">, Omit<Mobile.Filter, "user" | "userId">> | OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">> | OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Omit<Mobile.Filter, "user" | "userId">> | OakOperation<Mobile.RemoveOperation["action"], Omit<Mobile.RemoveOperationData, "user" | "userId">, Omit<Mobile.Filter, "user" | "userId">>>;

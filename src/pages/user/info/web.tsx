@@ -39,6 +39,7 @@ type DataProps = {
 
 type MethodsProps = {
     goAddMobile: () => void;
+    goChangePassword: () => void;
     setAvatar: () => void;
     setVisible: (visible: boolean, attr: string) => void;
     setCustomData: (attr: string, value: string | number) => void;
@@ -57,6 +58,7 @@ export default function render(
         setVisible,
         goAddMobile,
         refreshWechatPublicUserInfo,
+        goChangePassword,
     } = methods;
     const {
         oakFullpath,
@@ -140,6 +142,14 @@ export default function render(
                     }}
                 >
                     {t('mobile')}
+                </List.Item>
+                <List.Item
+                    extra={'********'}
+                    onClick={() => {
+                        goChangePassword();
+                    }}
+                >
+                    {t('password')}
                 </List.Item>
             </List>
 

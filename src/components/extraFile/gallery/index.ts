@@ -403,7 +403,7 @@ export default OakComponent({
             const name = this.features.extraFile.getFileName(value);
             const that = this;
             wx.showLoading({
-                title: '下载请求中，请耐心等待..',
+                title: '下载请求中...',
             });
             wx.downloadFile({
                 url: fileUrl,
@@ -413,7 +413,6 @@ export default OakComponent({
                     fs.saveFile({
                         tempFilePath: filePath,
                         success: (res) => {
-                            // console.log(res, '下载成功');
                             wx.hideLoading();
                             const savedFilePath = res.savedFilePath;
                             // 打开文件
@@ -424,16 +423,26 @@ export default OakComponent({
                                     // console.log('打开文档成功');
                                 },
                                 fail: function (res) {
-                                    console.log(res, 'openDocument');
+                                    const { errMsg } = res;
+                                    if (
+                                        errMsg.includes(
+                                            'fail filetype not supported'
+                                        )
+                                    ) {
+                                        that.setMessage({
+                                            type: 'error',
+                                            content: '该文件类型不支持打开',
+                                        });
+                                        return;
+                                    }
                                     that.setMessage({
                                         type: 'error',
-                                        content: '打开文档失败',
+                                        content: '该文件类型打开失败',
                                     });
                                 },
                             });
                         },
                         fail: function (res) {
-                            console.log(res, 'saveFile');
                             wx.hideLoading();
                             that.setMessage({
                                 type: 'error',
@@ -476,7 +485,7 @@ export default OakComponent({
             }
 
             wx.showLoading({
-                title: '下载请求中，请耐心等待..',
+                title: '下载请求中...',
             });
             wx.downloadFile({
                 url: fileUrl,
@@ -489,23 +498,31 @@ export default OakComponent({
                         fileType: extension,
                         showMenu: true, // 是否显示右上角菜单按钮 默认为false(看自身需求，可要可不要。后期涉及到右上角分享功能)
                         success: function () {
-                            console.log(`打开文件成功`);
+                            //console.log(`打开文件成功`);
                         },
-                        fail: function (err) {
-                            console.log(err);
+                        fail: function (res) {
+                            const { errMsg } = res;
+                            if (
+                                errMsg.includes('fail filetype not supported')
+                            ) {
+                                that.setMessage({
+                                    type: 'error',
+                                    content: '该文件类型不支持打开',
+                                });
+                                return;
+                            }
                             that.setMessage({
                                 type: 'error',
-                                content: '打开文件失败',
+                                content: '该文件类型打开失败',
                             });
                         },
                     });
                 },
                 fail: function (res) {
-                    console.log(res);
                     wx.hideLoading();
                     that.setMessage({
                         type: 'error',
-                        content: '下载失败',
+                        content: '下载文件失败',
                     });
                 },
                 complete: function (res) { },

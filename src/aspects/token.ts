@@ -1484,9 +1484,11 @@ export async function sendCaptcha<
     {
         mobile,
         env,
+        type: type2
     }: {
         mobile: string;
         env: WechatMpEnv | WebEnv;
+        type: 'login' | 'changePassword';
     },
     context: Cxt
 ): Promise<string> {
@@ -1510,6 +1512,7 @@ export async function sendCaptcha<
                         $$createAt$$: {
                             $gt: now - 3600 * 1000,
                         },
+                        type: type2,
                     },
                 },
                 {
@@ -1524,6 +1527,7 @@ export async function sendCaptcha<
                         $$createAt$$: {
                             $gt: now - 3600 * 1000,
                         },
+                        type: type2,
                     },
                 },
                 {
@@ -1550,6 +1554,7 @@ export async function sendCaptcha<
                     $gt: now - 60 * 1000,
                 },
                 expired: false,
+                type: type2,
             },
         },
         {
@@ -1607,6 +1612,7 @@ export async function sendCaptcha<
                     env,
                     expired: false,
                     expiresAt: now + 660 * 1000,
+                    type: type2,
                 },
             },
             {

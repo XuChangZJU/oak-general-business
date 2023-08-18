@@ -51,7 +51,8 @@ export default OakComponent({
                 }
 
                 // 登录之后
-                this.features.token.wakeupParasite(parasite.id!);
+                this.features.token.removeToken();
+                await this.features.token.wakeupParasite(parasite.id!);
                 this.redirectPage(
                     parasite.redirectTo,
                     parasite?.user?.nickname === 'shadow_user' ? undefined : parasite?.user?.nickname

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Input, Button, Space } from 'antd';
 import Style from './web.module.less';
 import OnUser from '../onUser/index';
@@ -13,14 +13,16 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
     mobileValueReady: boolean;
     userId: string;
     legal: boolean;
+    isNew: boolean;
 }, {
     onMobileChange: (value: string) => Promise<void>;
     onConfirm: () => Promise<void>;
     onReset: () => void;
 }>) {
     const { mobileValue, mobileValueReady, relations, entity, entityId, userId,
-        oakFullpath, oakExecutable, legal } = props.data;
+        oakFullpath, oakExecutable, legal, isNew } = props.data;
     const { onConfirm, onMobileChange, onReset, t } = props.methods;
+    const [passwordConfirm, setPasswordConfirm] = useState(false);
     return (
         <div className={Style.container}>
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
@@ -60,12 +62,13 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                 <OnUser
                     oakAutoUnmount={true}
                     oakPath={oakFullpath ? `${oakFullpath}.user`
-                            : undefined
+                        : undefined
                     }
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
                     oakId={userId}
+                    setPasswordConfirm={setPasswordConfirm}
                 />
             )}
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
@@ -74,14 +77,15 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                         <Button
                             style={{ flex: 2 }}
                             type="primary"
-                            onClick={() => {
-                                onConfirm();
+                            onClick={async () => {
+                                await onConfirm();
+                                setPasswordConfirm(false);
                             }}
-                            disabled={!legal}
+                            disabled={!legal || !oakExecutable || (isNew && !passwordConfirm)}
                         >
                             {t('common::action.confirm')}
                         </Button>
-                        <Button 
+                        <Button
                             htmlType="reset"
                             onClick={() => onReset()}
                             style={{ flex: 1 }}

@@ -2,6 +2,7 @@ import { AuthCascadePath, AuthDeduceRelationMap, SelectFreeEntities } from "oak-
 import { EntityDict } from "./EntityDict";
 import { CreateOperationData as Relation } from "./Relation/Schema";
 export const ActionCascadePathGraph: AuthCascadePath<EntityDict>[] = [
+    ["changePasswordTemp", "user", "changePasswordTemp", false],
     ["email", "user", "email", false],
     ["extraFile", "user", "extraFile", false],
     ["message", "user", "message", false],

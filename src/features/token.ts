@@ -153,7 +153,7 @@ export class Token<
                 context
             )[0];
             if (!token) {
-                this.loadTokenInfo(); 
+                this.loadTokenInfo();
                 if (allowUnloggedIn) {
                     return undefined;
                 }
@@ -196,11 +196,12 @@ export class Token<
         return !!token?.player?.isRoot;
     }
 
-    async sendCaptcha(mobile: string) {
+    async sendCaptcha(mobile: string, type: 'login' | 'changePassword') {
         const env = await this.environment.getEnv();
         const { result } = await this.cache.exec('sendCaptcha', {
             mobile,
             env: env as WebEnv,
+            type,
         });
         return result as string;
     }

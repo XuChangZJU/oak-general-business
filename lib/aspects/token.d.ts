@@ -44,9 +44,10 @@ export declare function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends 
     iv: string;
     signature: string;
 }, context: Cxt): Promise<void>;
-export declare function sendCaptcha<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ mobile, env, }: {
+export declare function sendCaptcha<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ mobile, env, type: type2 }: {
     mobile: string;
     env: WechatMpEnv | WebEnv;
+    type: 'login' | 'changePassword';
 }, context: Cxt): Promise<string>;
 export declare function switchTo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ userId }: {
     userId: string;

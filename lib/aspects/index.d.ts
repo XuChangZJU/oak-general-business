@@ -2,7 +2,7 @@ import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCa
 import { getUploadInfo, getInfoByUrl } from './extraFile';
 import { getApplication, signatureJsSDK } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
-import { mergeUser, getChangePasswordChannels } from './user';
+import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user';
 import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
 import { getMpUnlimitWxaCode } from './wechatQrCode';
@@ -28,6 +28,7 @@ declare const aspectDict: {
     loginByWechat: typeof loginByWechat;
     getInfoByUrl: typeof getInfoByUrl;
     getChangePasswordChannels: typeof getChangePasswordChannels;
+    updateUserPassword: typeof updateUserPassword;
     getMpUnlimitWxaCode: typeof getMpUnlimitWxaCode;
 };
 export default aspectDict;

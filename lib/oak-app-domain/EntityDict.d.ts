@@ -15,6 +15,7 @@ import { EntityDef as Area } from "./Area/Schema";
 import { EntityDef as Article } from "./Article/Schema";
 import { EntityDef as ArticleMenu } from "./ArticleMenu/Schema";
 import { EntityDef as Captcha } from "./Captcha/Schema";
+import { EntityDef as ChangePasswordTemp } from "./ChangePasswordTemp/Schema";
 import { EntityDef as Domain } from "./Domain/Schema";
 import { EntityDef as Email } from "./Email/Schema";
 import { EntityDef as ExtraFile } from "./ExtraFile/Schema";
@@ -57,6 +58,7 @@ export declare type EntityDict = {
     article: Article;
     articleMenu: ArticleMenu;
     captcha: Captcha;
+    changePasswordTemp: ChangePasswordTemp;
     domain: Domain;
     email: Email;
     extraFile: ExtraFile;

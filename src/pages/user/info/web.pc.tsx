@@ -9,6 +9,7 @@ import {
     Form,
     Typography,
     Modal,
+    Descriptions
 } from 'antd';
 import dayjs from 'dayjs';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -78,8 +79,9 @@ export default function Render(
     const [captcha, setCaptcha] = useState('');
 
     return (
-        <PageHeader title="个人设置" showBack={showBack}>
+        <PageHeader title="个人信息" showBack={showBack}>
             <div className={Style.container}>
+                <Descriptions title={'基本信息'}></Descriptions>
                 <Form
                     labelCol={{ xs: { span: 4 }, md: { span: 6 } }}
                     wrapperCol={{ xs: { span: 16 }, md: { span: 12 } }}
@@ -213,6 +215,7 @@ export default function Render(
             </div>
             <div style={{ marginTop: '10px' }}></div>
             <div className={Style.container}>
+                <Descriptions title={'安全信息'}></Descriptions>
                 <Form
                     labelCol={{ xs: { span: 4 }, md: { span: 6 } }}
                     wrapperCol={{ xs: { span: 16 }, md: { span: 12 } }}
@@ -236,7 +239,7 @@ export default function Render(
                             </Space>
                         </>
                     </Form.Item>
-                    {process.env.NODE_ENV === 'development' && (<Form.Item label={t('user:attr.password')}>
+                    <Form.Item label={t('user:attr.password')}>
                         <>
                             <Space>
                                 <Typography>{'********'}</Typography>
@@ -251,7 +254,7 @@ export default function Render(
                                 </Button>
                             </Space>
                         </>
-                    </Form.Item>)}
+                    </Form.Item>
                     {process.env.NODE_ENV === 'development' && (
                         <Form.Item label="微信帐号">
                             <>

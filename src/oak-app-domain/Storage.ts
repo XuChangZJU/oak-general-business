@@ -17,6 +17,7 @@ import { desc as areaDesc } from "./Area/Storage";
 import { desc as articleDesc } from "./Article/Storage";
 import { desc as articleMenuDesc } from "./ArticleMenu/Storage";
 import { desc as captchaDesc } from "./Captcha/Storage";
+import { desc as changePasswordTempDesc } from "./ChangePasswordTemp/Storage";
 import { desc as domainDesc } from "./Domain/Storage";
 import { desc as emailDesc } from "./Email/Storage";
 import { desc as extraFileDesc } from "./ExtraFile/Storage";
@@ -59,6 +60,7 @@ export const storageSchema: StorageSchema<EntityDict> = {
     article: articleDesc,
     articleMenu: articleMenuDesc,
     captcha: captchaDesc,
+    changePasswordTemp: changePasswordTempDesc,
     domain: domainDesc,
     email: emailDesc,
     extraFile: extraFileDesc,

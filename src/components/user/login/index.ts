@@ -104,7 +104,7 @@ export default OakComponent({
     methods: {
         async sendCaptcha(mobile: string) {
             try {
-                const result = await this.features.token.sendCaptcha(mobile);
+                const result = await this.features.token.sendCaptcha(mobile, 'login');
                 // 显示返回消息
                 this.setMessage({
                     type: 'success',

@@ -16,6 +16,7 @@ export type OpSchema = EntityShape & {
     env: Object;
     expired: Boolean;
     expiresAt: Datetime;
+    type: 'login' | 'changePassword';
     iState?: IState | null;
 };
 export type OpAttr = keyof OpSchema;
@@ -27,6 +28,7 @@ export type Schema = EntityShape & {
     env: Object;
     expired: Boolean;
     expiresAt: Datetime;
+    type: 'login' | 'changePassword';
     iState?: IState | null;
 } & {
     [A in ExpressionKey]?: any;
@@ -43,6 +45,7 @@ type AttrFilter = {
     env: Object;
     expired: Q_BooleanValue;
     expiresAt: Q_DateValue;
+    type: Q_EnumValue<'login' | 'changePassword'>;
     iState: Q_EnumValue<IState>;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
@@ -60,6 +63,7 @@ export type Projection = {
     env?: number | Object;
     expired?: number;
     expiresAt?: number;
+    type?: number;
     iState?: number;
 } & Partial<ExprOp<OpAttr | string>>;
 type CaptchaIdProjection = OneOf<{
@@ -85,6 +89,8 @@ export type SortAttr = {
     expired: number;
 } | {
     expiresAt: number;
+} | {
+    type: number;
 } | {
     iState: number;
 } | {

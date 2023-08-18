@@ -21,11 +21,12 @@ declare type DataProps = {
 };
 declare type MethodsProps = {
     goAddMobile: () => void;
+    goChangePassword: () => void;
     setAvatar: () => void;
     setVisible: (visible: boolean, attr: string) => void;
     setCustomData: (attr: string, value: string | number) => void;
     onConfirm: (attr: string) => Promise<void>;
     refreshWechatPublicUserInfo: () => void;
 };
-export default function render(props: WebComponentProps<EntityDict, 'user', false, DataProps, MethodsProps>): JSX.Element;
+export default function render(props: WebComponentProps<EntityDict, 'user', false, DataProps, MethodsProps>): import("react/jsx-runtime").JSX.Element;
 export {};

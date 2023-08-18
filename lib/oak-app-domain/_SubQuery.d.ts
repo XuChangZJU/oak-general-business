@@ -15,6 +15,7 @@ import * as Area from "./Area/Schema";
 import * as Article from "./Article/Schema";
 import * as ArticleMenu from "./ArticleMenu/Schema";
 import * as Captcha from "./Captcha/Schema";
+import * as ChangePasswordTemp from "./ChangePasswordTemp/Schema";
 import * as Domain from "./Domain/Schema";
 import * as Email from "./Email/Schema";
 import * as ExtraFile from "./ExtraFile/Schema";
@@ -98,6 +99,8 @@ export declare type UserIdSubQuery = {
         entity: "user";
     }) | (UserRelation.UserIdSubQuery & {
         entity: "userRelation";
+    }) | (ChangePasswordTemp.UserIdSubQuery & {
+        entity: "changePasswordTemp";
     }) | (Email.UserIdSubQuery & {
         entity: "email";
     }) | (Message.UserIdSubQuery & {
@@ -202,6 +205,11 @@ export declare type ArticleMenuIdSubQuery = {
 export declare type CaptchaIdSubQuery = {
     [K in "$in" | "$nin"]?: (Captcha.CaptchaIdSubQuery & {
         entity: "captcha";
+    }) | any;
+};
+export declare type ChangePasswordTempIdSubQuery = {
+    [K in "$in" | "$nin"]?: (ChangePasswordTemp.ChangePasswordTempIdSubQuery & {
+        entity: "changePasswordTemp";
     }) | any;
 };
 export declare type DomainIdSubQuery = {

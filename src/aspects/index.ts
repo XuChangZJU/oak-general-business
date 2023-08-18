@@ -14,7 +14,7 @@ import {
 import { getUploadInfo, getInfoByUrl } from './extraFile';
 import { getApplication, signatureJsSDK } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
-import { mergeUser, getChangePasswordChannels } from './user';
+import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user';
 import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
 import { getMpUnlimitWxaCode } from './wechatQrCode';
@@ -41,6 +41,7 @@ const aspectDict = {
     loginByWechat,
     getInfoByUrl,
     getChangePasswordChannels,
+    updateUserPassword,
     getMpUnlimitWxaCode,
 };
 
