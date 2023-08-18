@@ -61,9 +61,22 @@ async function createNotification(message: CreateMessageData, context: BRC) {
     const { restriction, userId, weight, type, entity, entityId } = message;
     assert(userId);
 
-    // 根据用户所关联的system和定义限制，选择将要发送的system。一般来说不可能跨platform
+    // 根据用户所关联的system和定义限制，选择将要发送的system。这里有的应用是到platform级别，有的是到system级别
     const application = context.getApplication();
     const platformId = application!.system!.platformId!;
+    const systemId = application!.systemId;
+    const filter: EntityDict['userSystem']['Selection']['filter'] = {
+        userId,
+    };
+    if (platformId) {
+        filter.system = {
+            platformId,
+        };
+    }
+    else {
+        assert(systemId);
+        filter.systemId = systemId;
+    }
     const userSystems = await context.select('userSystem', {
         data: {
             id: 1,
@@ -80,12 +93,7 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                 },
             },
         },
-        filter: {
-            userId,
-            system: {
-                platformId,
-            }
-        },
+        filter,
     }, { dontCollect: true });
 
     // 这里实测线上跑出来多条相同的userSystem，还未知道原因 by Xc 20230317
