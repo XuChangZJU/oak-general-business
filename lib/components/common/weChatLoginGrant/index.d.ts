@@ -14,5 +14,5 @@ interface GrantProps {
     rootStyle?: React.CSSProperties;
     rootClassName?: string;
 }
-declare function Grant(props: GrantProps): import("react/jsx-runtime").JSX.Element;
+declare function Grant(props: GrantProps): JSX.Element;
 export default Grant;

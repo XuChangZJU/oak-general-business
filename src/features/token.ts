@@ -15,6 +15,7 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { tokenProjection } from '../types/projection';
 import { OakUserInfoLoadingException } from '../types/Exception';
+import { LOCAL_STORAGE_KEYS } from '../config/constants';
 
 export class Token<
     ED extends EntityDict,
@@ -33,7 +34,16 @@ export class Token<
         this.cache = cache;
         this.storage = storage;
         this.environment = environment;
-        const tokenValue = storage.load('token:token');
+        let tokenValue = storage.load(LOCAL_STORAGE_KEYS.token);
+        if (!tokenValue) {
+            // 历史数据，原来用的key太随意
+            tokenValue = storage.load('token:token');
+            if (tokenValue) {
+                storage.save(LOCAL_STORAGE_KEYS.token, tokenValue);
+                storage.remove('token:token');
+            }
+        }
+        
         if (tokenValue) {
             this.tokenValue = tokenValue;
             // this.loadTokenInfo();
@@ -63,7 +73,7 @@ export class Token<
             env,
         });
         this.tokenValue = result;
-        this.storage.save('token:token', result);
+        this.storage.save(LOCAL_STORAGE_KEYS.token, result);
         this.publish();
     }
 
@@ -74,7 +84,7 @@ export class Token<
             wechatLoginId,
         });
         this.tokenValue = result;
-        this.storage.save('token:token', result);
+        this.storage.save(LOCAL_STORAGE_KEYS.token, result);
         this.publish();
     }
 
@@ -86,7 +96,7 @@ export class Token<
             wechatLoginId: params?.wechatLoginId,
         });
         this.tokenValue = result;
-        this.storage.save('token:token', result);
+        this.storage.save(LOCAL_STORAGE_KEYS.token, result);
         this.publish();
     }
 
@@ -99,7 +109,7 @@ export class Token<
             env: env as WechatMpEnv,
         });
         this.tokenValue = result;
-        this.storage.save('token:token', result);
+        this.storage.save(LOCAL_STORAGE_KEYS.token, result);
         this.publish();
     }
 
@@ -132,7 +142,7 @@ export class Token<
 
     removeToken() {
         this.tokenValue = undefined;
-        this.storage.remove('token:token');
+        this.storage.remove(LOCAL_STORAGE_KEYS.token);
         this.publish();
     }
 
@@ -244,7 +254,7 @@ export class Token<
             env: env as WechatMpEnv,
         });
         this.tokenValue = result;
-        this.storage.save('token:token', result);
+        this.storage.save(LOCAL_STORAGE_KEYS.token, result);
         this.publish();
     }
 }

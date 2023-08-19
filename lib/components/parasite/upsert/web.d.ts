@@ -19,4 +19,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'parasite', 
     onSearch: (value: string) => void;
     onSelect: (value: string) => void;
     setSearchValue: (value: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

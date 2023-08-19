@@ -1,5 +1,5 @@
 import { EntityDict } from '../oak-app-domain';
-import { BasicFeatures } from 'oak-frontend-base/lib/features';
+import { LOCAL_STORAGE_KEYS } from '../config/constants';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
 import { CommonAspectDict } from 'oak-common-aspect';
@@ -39,7 +39,7 @@ export default class Theme<
         super();
         this.cache = cache;
         this.storage = storage;
-        const themeState = storage.load('theme:themeState');
+        const themeState = storage.load(LOCAL_STORAGE_KEYS.themeState);
         this.themeState = themeState || initialThemeState;
         this.switchTheme(this.themeState.theme);
         this.switchColor(this.themeState.color);
@@ -51,7 +51,7 @@ export default class Theme<
 
     set(themeState: IThemeState) {
         this.themeState = themeState;
-        this.storage.save('theme:themeState', themeState);
+        this.storage.save(LOCAL_STORAGE_KEYS.themeState, themeState);
         this.publish();
     }
 

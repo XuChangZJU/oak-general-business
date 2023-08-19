@@ -1,7 +1,8 @@
 import { WebConfig, WechatPublicConfig, AppType } from "../../../entities/Application";
 
-const SEND_KEY = 'captcha:sendAt';
-const LOGIN_MODE = 'login:mode';
+import { LOCAL_STORAGE_KEYS } from '../../../config/constants';
+const SEND_KEY = LOCAL_STORAGE_KEYS.captchaSendAt;
+const LOGIN_MODE = LOCAL_STORAGE_KEYS.loginMode;
 const SEND_CAPTCHA_LATENCY = process.env.NODE_ENV === 'development' ? 10 : 60;
 
 export default OakComponent({

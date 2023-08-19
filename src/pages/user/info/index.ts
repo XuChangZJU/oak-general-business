@@ -7,7 +7,8 @@ import {
 } from '../../../oak-app-domain/Application/Schema';
 import dayjs from 'dayjs';
 type Attr = 'nickname' | 'gender' | 'birth';
-const SEND_KEY = 'captcha:sendAt';
+import { LOCAL_STORAGE_KEYS } from '../../../config/constants';
+const SEND_KEY = LOCAL_STORAGE_KEYS.captchaSendAt;
 const SEND_CAPTCHA_LATENCY = process.env.NODE_ENV === 'development' ? 10 : 60;
 
 export default OakComponent({

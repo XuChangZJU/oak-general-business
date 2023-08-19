@@ -6,4 +6,4 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
     pagination: any;
     showBack: boolean;
     variant?: 'inline' | 'alone' | 'dialog';
-}, {}>): import("react/jsx-runtime").JSX.Element;
+}, {}>): JSX.Element;

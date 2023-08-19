@@ -1,4 +1,5 @@
 import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
+import { LOCAL_STORAGE_KEYS } from '../config/constants';
 import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
 import { CommonAspectDict } from 'oak-common-aspect';
@@ -34,7 +35,7 @@ export class Application<
         super();
         this.cache = cache;
         this.storage = storage;
-        const applicationId = storage.load('application:applicationId');
+        const applicationId = storage.load(LOCAL_STORAGE_KEYS.appId);
         this.applicationId = applicationId;
         this.type = type;
         this.domain = domain;
@@ -53,7 +54,7 @@ export class Application<
         );
         this.application = data[0];
         if (this.application!.type !== this.type) {
-            this.storage.remove('application:applicationId');
+            this.storage.remove(LOCAL_STORAGE_KEYS.appId);
         }
     }
 
@@ -84,7 +85,7 @@ export class Application<
 
         // 如果取得的type和当前环境不同，则不缓存id(未来可能有type相同的appliction上线)
         if (this.application?.type === type) {
-            this.storage.save('application:applicationId', applicationId);
+            this.storage.save(LOCAL_STORAGE_KEYS.appId, applicationId);
         }
         this.publish();
     }

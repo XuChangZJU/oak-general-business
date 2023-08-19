@@ -1,4 +1,4 @@
-
+import { LOCAL_STORAGE_KEYS } from '../../../config/constants';
 export default OakComponent(
     {
         entity: 'user',
@@ -68,7 +68,7 @@ export default OakComponent(
         },
         lifetimes: {
             ready() {
-                const searchStr = this.load('user_searchList') as string;
+                const searchStr = this.load(LOCAL_STORAGE_KEYS.userSearchHistory) as string;
                 if (searchStr.length) {
                     this.setState({
                         searchArr: JSON.parse(searchStr),
@@ -145,7 +145,7 @@ export default OakComponent(
                     })
                     return;
                 }
-                const searchStr = this.load('user_searchList') as string;
+                const searchStr = this.load(LOCAL_STORAGE_KEYS.userSearchHistory) as string;
                 let searchArr: Array<string> = [];
                 if (!searchStr) {
                     searchArr.push(searchValue)
@@ -198,7 +198,7 @@ export default OakComponent(
             },
             async searchConfirm(input: any) {
                 const { value } = this.resolveInput(input);
-                const searchStr = this.load('user_searchList') as string;
+                const searchStr = this.load(LOCAL_STORAGE_KEYS.userSearchHistory) as string;
                 let searchArr: Array<string> = [];
                 if (!searchStr) {
                     searchArr.push(value!);

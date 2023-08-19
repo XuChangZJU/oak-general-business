@@ -11,4 +11,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'system', tr
     goCreate: () => void;
     goSetConfig: (id: string) => void;
     goUpdate: (id: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

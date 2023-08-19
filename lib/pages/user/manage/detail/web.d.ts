@@ -22,4 +22,4 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
     executableActions: string[];
 }, {
     onActionClick: (action: string) => Promise<void>;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;
