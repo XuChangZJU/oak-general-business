@@ -34,7 +34,7 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
      * @returns
      */
     isReallyRoot(context?: FrontCxt): boolean;
-    sendCaptcha(mobile: string, type: 'login' | 'changePassword'): Promise<string>;
+    sendCaptcha(mobile: string, type: 'login' | 'changePassword' | 'confirm'): Promise<string>;
     switchTo(userId: string): Promise<void>;
     refreshWechatPublicUserInfo(): Promise<void>;
     getWechatMpUserPhoneNumber(code: string): Promise<void>;

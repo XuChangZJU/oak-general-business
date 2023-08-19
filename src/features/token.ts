@@ -196,7 +196,7 @@ export class Token<
         return !!token?.player?.isRoot;
     }
 
-    async sendCaptcha(mobile: string, type: 'login' | 'changePassword') {
+    async sendCaptcha(mobile: string, type: 'login' | 'changePassword' | 'confirm') {
         const env = await this.environment.getEnv();
         const { result } = await this.cache.exec('sendCaptcha', {
             mobile,

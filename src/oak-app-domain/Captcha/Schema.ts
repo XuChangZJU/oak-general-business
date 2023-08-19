@@ -16,7 +16,7 @@ export type OpSchema = EntityShape & {
     env: Object;
     expired: Boolean;
     expiresAt: Datetime;
-    type: 'login' | 'changePassword';
+    type: 'login' | 'changePassword' | 'confirm';
     iState?: IState | null;
 };
 export type OpAttr = keyof OpSchema;
@@ -28,7 +28,7 @@ export type Schema = EntityShape & {
     env: Object;
     expired: Boolean;
     expiresAt: Datetime;
-    type: 'login' | 'changePassword';
+    type: 'login' | 'changePassword' | 'confirm';
     iState?: IState | null;
 } & {
     [A in ExpressionKey]?: any;
@@ -45,7 +45,7 @@ type AttrFilter = {
     env: Object;
     expired: Q_BooleanValue;
     expiresAt: Q_DateValue;
-    type: Q_EnumValue<'login' | 'changePassword'>;
+    type: Q_EnumValue<'login' | 'changePassword' | 'confirm'>;
     iState: Q_EnumValue<IState>;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;

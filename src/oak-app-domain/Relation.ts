@@ -1,4 +1,4 @@
-import { AuthCascadePath, AuthDeduceRelationMap, SelectFreeEntities } from "oak-domain/lib/types/Entity";
+import { AuthCascadePath, AuthDeduceRelationMap } from "oak-domain/lib/types/Entity";
 import { EntityDict } from "./EntityDict";
 import { CreateOperationData as Relation } from "./Relation/Schema";
 export const ActionCascadePathGraph: AuthCascadePath<EntityDict>[] = [
@@ -30,4 +30,6 @@ export const ActionCascadePathGraph: AuthCascadePath<EntityDict>[] = [
 export const RelationCascadePathGraph: AuthCascadePath<EntityDict>[] = [];
 export const relations: Relation[] = [];
 export const deducedRelationMap: AuthDeduceRelationMap<EntityDict> = {};
-export const selectFreeEntities: SelectFreeEntities<EntityDict> = [];
+export const selectFreeEntities: (keyof EntityDict)[] = [];
+export const updateFreeEntities: (keyof EntityDict)[] = [];
+export const createFreeEntities: (keyof EntityDict)[] = [];

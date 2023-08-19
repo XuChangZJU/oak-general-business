@@ -49,7 +49,7 @@ export declare type GeneralAspectDict<ED extends EntityDict, Cxt extends Backend
     sendCaptcha: (params: {
         mobile: string;
         env: WechatMpEnv | WebEnv;
-        type: 'login' | 'changePassword';
+        type: 'login' | 'changePassword' | 'confirm';
     }, context: Cxt) => Promise<string>;
     getApplication: (params: {
         type: AppType;

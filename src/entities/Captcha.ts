@@ -11,7 +11,7 @@ export interface Schema extends EntityShape {
     env: Object;
     expired: Boolean;
     expiresAt: Datetime;
-    type: 'login' | 'changePassword';
+    type: 'login' | 'changePassword' | 'confirm';
 };
 
 type IState = 'unsent' | 'sending' | 'sent' | 'failure';
@@ -60,7 +60,8 @@ const entityDesc: EntityDesc<Schema, Action, '', {
                 },
                 type: {
                     login: '登录',
-                    changePassword: '修改密码'
+                    changePassword: '修改密码',
+                    confirm: '校验',
                 }
             },
         },

@@ -47,7 +47,7 @@ export declare function syncUserInfoWechatMp<ED extends EntityDict, Cxt extends 
 export declare function sendCaptcha<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ mobile, env, type: type2 }: {
     mobile: string;
     env: WechatMpEnv | WebEnv;
-    type: 'login' | 'changePassword';
+    type: 'login' | 'changePassword' | 'confirm';
 }, context: Cxt): Promise<string>;
 export declare function switchTo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({ userId }: {
     userId: string;

@@ -1488,7 +1488,7 @@ export async function sendCaptcha<
     }: {
         mobile: string;
         env: WechatMpEnv | WebEnv;
-        type: 'login' | 'changePassword';
+        type: 'login' | 'changePassword' | 'confirm';
     },
     context: Cxt
 ): Promise<string> {

@@ -1,6 +1,6 @@
 import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { Trigger, CreateTrigger, UpdateTrigger, SelectTrigger } from 'oak-domain/lib/types/Trigger';
-import { CreateOperationData as CreateParasiteData } from '../general-app-domain/Parasite/Schema';
+// import { CreateOperationData as CreateParasiteData } from '../general-app-domain/Parasite/Schema';
 import { EntityDict } from '../oak-app-domain/EntityDict';
 
 import { OakRowInconsistencyException, OakExternalException, SelectOpResult } from 'oak-domain/lib/types';

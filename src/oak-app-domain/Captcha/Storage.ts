@@ -39,7 +39,7 @@ export const desc: StorageDesc<OpSchema> = {
         type: {
             notNull: true,
             type: "enum",
-            enumeration: ["login", "changePassword"]
+            enumeration: ["login", "changePassword", "confirm"]
         },
         iState: {
             type: "enum",
