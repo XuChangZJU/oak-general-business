@@ -14,11 +14,12 @@ export declare class Application<ED extends EntityDict, Cxt extends BackendRunti
     private application?;
     private cache;
     private storage;
+    private projection;
     constructor(type: AppType, domain: string, cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage);
     private refresh;
     private getApplicationFromCache;
     private loadApplicationInfo;
-    initialize(appId?: string | null): Promise<void>;
+    initialize(appId?: string | null, projection?: EntityDict['application']['Selection']['data']): Promise<void>;
     getApplication(): Partial<import("../oak-app-domain/Application/Schema").Schema> | undefined;
     getApplicationId(): string | undefined;
 }

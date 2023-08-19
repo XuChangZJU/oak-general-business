@@ -4,6 +4,7 @@ import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Feature } from 'oak-frontend-base/lib/types/Feature';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { assert } from 'oak-domain/lib/utils/assert';
+import { merge } from 'oak-domain/lib/utils/lodash';
 
 import { EntityDict } from '../oak-app-domain';
 import { AppType } from '../oak-app-domain/Application/Schema';
@@ -25,6 +26,7 @@ export class Application<
     private application?: Partial<EntityDict['application']['Schema']>;
     private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
     private storage: LocalStorage;
+    private projection: EntityDict['application']['Selection']['data'];
 
     constructor(
         type: AppType,
@@ -39,11 +41,12 @@ export class Application<
         this.applicationId = applicationId;
         this.type = type;
         this.domain = domain;
+        this.projection = applicationProjection;
     }
 
     private async refresh() {
         const { data } = await this.cache.refresh('application', {
-            data: applicationProjection,
+            data: this.projection,
             filter: {
                 id: this.applicationId!,
             },
@@ -60,7 +63,7 @@ export class Application<
 
     private getApplicationFromCache() {
         const data = this.cache.get('application', {
-            data: applicationProjection,
+            data: this.projection,
             filter: {
                 id: this.applicationId,
             },
@@ -90,7 +93,12 @@ export class Application<
         this.publish();
     }
 
-    async initialize(appId?: string | null) {
+    async initialize(
+        appId?: string | null,
+        projection?: EntityDict['application']['Selection']['data']
+    ) {
+        //接收外层注入的projection
+        this.projection = merge(this.projection, projection);
         if (process.env.NODE_ENV === 'development' && appId) {
             // development环境下允许注入一个线上的appId
             this.applicationId = appId;
