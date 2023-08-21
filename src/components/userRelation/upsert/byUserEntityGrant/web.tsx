@@ -8,7 +8,7 @@ import {
     NoticeBar,
     Selector,
 } from 'antd-mobile';
-import UserEntityGrantDetail from '../../../userEntityGrant/detail';
+import UserEntityGrantDetail from '../../../../pages/userEntityGrant/detail';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
 

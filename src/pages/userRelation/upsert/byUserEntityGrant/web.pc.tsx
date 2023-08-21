@@ -9,7 +9,7 @@ import {
     Modal,
     Select,
 } from 'antd';
-import UserEntityGrantDetail from '../../../../pages/userEntityGrant/detail';
+import UserEntityGrantDetail from '../../../userEntityGrant/detail';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
 

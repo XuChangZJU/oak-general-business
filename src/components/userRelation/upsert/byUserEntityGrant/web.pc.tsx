@@ -3,12 +3,13 @@ import {
     Form,
     Radio,
     Button,
-    Input,
+    Alert,
+    InputNumber,
     Space,
-    NoticeBar,
-    Selector,
-} from 'antd-mobile';
-import UserEntityGrantDetail from '../../../userEntityGrant/detail';
+    Modal,
+    Select,
+} from 'antd';
+import UserEntityGrantDetail from '../../../../pages/userEntityGrant/detail';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
 
@@ -28,6 +29,7 @@ export default function render(
             userEntityGrantId: string;
             unit: Unit;
             maxes: Record<Unit, number>;
+            unitArr: Array<{ label: string; value: Unit }>;
         },
         {
             confirm: () => Promise<void>;
@@ -53,7 +55,12 @@ export default function render(
 
     const P = !!userEntityGrantId ? (
         <>
-            <NoticeBar content={t('shareCode')} color='info' />
+            <Alert
+                showIcon
+                message={t('shareCode')}
+                type="info"
+                style={{ marginBottom: 16 }}
+            />
             <UserEntityGrantDetail
                 showBack={false}
                 oakId={userEntityGrantId}
@@ -64,16 +71,16 @@ export default function render(
                 style={{
                     width: '100%',
                     display: 'flex',
-                    justifyContent: 'center',
+                    justifyContent: 'flex-end',
                 }}
             >
-                <Button color="primary" onClick={() => setInit()} block>
+                <Button type="primary" onClick={() => setInit()}>
                     {t('restart')}
                 </Button>
             </div>
         </>
     ) : (
-        <Form>
+        <Form labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
             <Form.Item
                 label={t('userEntityGrant:attr.relation')}
                 name="relation"
@@ -86,23 +93,20 @@ export default function render(
                 <>
                     <Radio.Group
                         value={relationId}
-                        onChange={(value) => {
-                            update({ relationId: value as string });
+                        onChange={({ target }) => {
+                            const { value } = target;
+                            update({ relationId: value });
                         }}
-                    >
-                        {
-                            relations.map(
-                                (ele) => <Radio value={ele.id} style={{ marginRight: 20 }}>
-                                    {ele.display || t(`${entity as string}:r.${ele.name}`)}
-                                </Radio>
-                            )
-                        }
-                    </Radio.Group>
+                        options={relations?.map((ele) => ({
+                            value: ele.id,
+                            label: ele.display || t(`${entity as string}:r.${ele.name}`),
+                        }))}
+                    />
                 </>
             </Form.Item>
             {type === 'grant' && (
                 <Form.Item
-                    label={t('userEntityGrant:attr.number')}
+                label={t('userEntityGrant:attr.number')}
                     name="number"
                     rules={[
                         {
@@ -114,13 +118,15 @@ export default function render(
                     <>
                         <Radio.Group
                             value={number}
-                            onChange={(value) => {
-                                update({ number: value as number });
+                            onChange={({ target }) => {
+                                const { value } = target;
+                                update({ number: value });
                             }}
-                        >
-                            <Radio value={1} style={{ marginRight: 20 }}>{t('single')}</Radio>
-                            <Radio value={10000}>{t('unlimited')}</Radio>
-                        </Radio.Group>
+                            options={[
+                                { value: 1, label: t('single') },
+                                { value: 10000, label: t('unlimited') },
+                            ]}
+                        />
                     </>
                 </Form.Item>
             )}
@@ -133,42 +139,38 @@ export default function render(
                         message: t('chooseExpiresAt'),
                     },
                 ]}
-                help={<div style={{ marginBottom: 16 }}>{t('expiresAt')}</div>}
-                extra={
-                    <Selector
-                        options={[
-                            {
-                                label: t('unit.hour'),
-                                value: 'hour',
-                            },
-                            {
-                                label: t('unit.minute'),
-                                value: 'minute',
-                            }
-                        ]}
-                        defaultValue={['minute']}
-                        value={unit && [unit]}
-                        onChange={(arr) => setUnit(arr[0])}
-                    />
-                }
+                help={<div style={{ marginBottom: 16 }}>{t('expiresHelp')}</div>}
+                tooltip="通过配置实现在规定的时效内扫描二维码不过期的效果。"
             >
                 <>
-                    <Input
+                    <InputNumber
                         min={1}
                         max={maxes[unit]}
-                        value={`${period}`}
-                        type="number"
-                        placeholder={t('chooseExpiresAt')}
-                        onChange={(value) => {
-                            const v = parseInt(value);
-                            setPeriod(v);
-                        }}
+                        value={period}
+                        onChange={(value) => setPeriod(value!)}
+                        // addonAfter="分钟"
+                        addonAfter={
+                            <Select
+                                value={unit}
+                                style={{ width: 80 }}
+                                onChange={(v) => {
+                                    setUnit(v);
+                                }}
+                            >
+                                <Select.Option value="minute">
+                                    {t('unit.minute')}
+                                </Select.Option>
+                                <Select.Option value="hour">
+                                    {t('unit.hour')}
+                                </Select.Option>
+                            </Select>
+                        }
                     />
                 </>
             </Form.Item>
-            <Form.Item>
+            <Form.Item wrapperCol={{ offset: 4 }}>
                 <Space>
-                    <Button color="primary" onClick={() => confirm()} disabled={oakExecutable !== true}>
+                    <Button type="primary" onClick={() => confirm()} disabled={oakExecutable !== true}>
                         {t('common::action.confirm')}
                     </Button>
                     <Button onClick={() => onBack()}>
