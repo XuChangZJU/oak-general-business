@@ -1,8 +1,9 @@
-/// <reference types="react" />
 import { EntityDict } from '../../../../oak-app-domain';
-declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "mobile", false, {
-    entity: keyof EntityDict;
+import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(props: ReactComponentProps<ED2, T2, true, {
+    entity: keyof ED2;
     entityId: string;
-    relations: import("../../../../oak-app-domain/Relation/Schema").OpSchema[];
-}>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
+    relations: EntityDict['relation']['OpSchema'][];
+}>) => React.ReactElement;
 export default _default;

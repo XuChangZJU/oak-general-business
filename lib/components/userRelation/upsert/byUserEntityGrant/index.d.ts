@@ -1,12 +1,13 @@
-/// <reference types="react" />
 import { EntityDict } from '../../../../oak-app-domain';
 import { QrCodeType } from '../../../../types/Config';
-declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "userEntityGrant", false, {
-    entity: keyof EntityDict;
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(props: ReactComponentProps<ED2, T2, true, {
+    entity: keyof ED2;
     entityId: string;
-    relations: import("../../../../oak-app-domain/Relation/Schema").OpSchema[];
-    type: "grant" | "transfer";
-    redirectToAfterConfirm: import("../../../../oak-app-domain/UserEntityGrant/Schema").RedirectToProps | null | undefined;
+    redirectToAfterConfirm: ED2["userEntityGrant"]["Schema"]["redirectTo"];
     qrCodeType: QrCodeType;
-}>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
+    type: EntityDict['userEntityGrant']['Schema']['type'];
+    relations: EntityDict['relation']['OpSchema'][];
+}>) => React.ReactElement;
 export default _default;
