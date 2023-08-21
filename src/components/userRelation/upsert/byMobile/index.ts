@@ -1,6 +1,8 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { isMobile } from 'oak-domain/lib/utils/validator';
 import { EntityDict } from '../../../../oak-app-domain';
+import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 
 export default OakComponent({
     entity: 'mobile',
@@ -129,4 +131,15 @@ export default OakComponent({
             this.onReset();
         }
     },
-});
+}) as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
+    props: ReactComponentProps<
+        ED2,
+        T2,
+        true,
+        {
+            entity: keyof ED2;
+            entityId: string;
+            relations: EntityDict['relation']['OpSchema'][];
+        }
+    >
+) => React.ReactElement;
