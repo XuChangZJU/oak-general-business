@@ -1,0 +1,159 @@
+/**  index.wxss  **/
+@import "../../../config/styles/mp/index.less";
+@import "../../../config/styles/mp/mixins.less";
+
+page {
+    height: 100%;
+}
+
+.container {
+    height: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    box-sizing: border-box;
+    align-items: stretch;
+    padding: 0;
+    .safe-area-inset-bottom();
+}
+
+.primary-bg {
+    width: 100%;
+    height: 140rpx;
+    background-color: @primary-color;
+}
+
+.img {
+    width: 180rpx;
+    height: 180rpx;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: @bg-color-fade;
+}
+
+.row-end {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.white-bg {
+    display: flex;
+    flex-direction: column;
+    padding: @spacer;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-110rpx);
+}
+
+.name {
+    margin: @spacer auto;
+    font-size: @font-size-base;
+    color: @text-level-2-color;
+}
+
+.mobile {
+    margin: 0 auto;
+    font-size: @font-size-base;
+    color: @text-level-3-color;
+}
+
+.tag-view {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: @spacer;
+}
+
+.tag {
+    margin: 2rpx;
+}
+
+.btn-view {
+    display: flex;
+    justify-content: center;
+}
+
+.check-view {
+    width: 700rpx;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    background-color: #fff;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.singleRelationItem {
+    display: flex;
+    padding: 18rpx;
+    flex-direction: row;
+    align-items: center;
+    width: 92%;
+    box-shadow: 0 4rpx 20rpx 0 rgba(212, 217, 223, 0.5);
+    border-radius: 4px;
+
+    .name {
+        color: @text-level-3-color;
+        flex: 1;
+        margin-right: 10rpx;
+    }
+}
+
+.multiRelationItem {
+    display: flex;
+    padding: 18rpx;
+    flex-direction: column;
+    align-items: stretch;
+    width: 92%;
+    box-shadow: 0 4rpx 20rpx 0 rgba(212, 217, 223, 0.5);
+    border-radius: 4px;
+
+    .name {
+        color: @text-level-3-color;
+    }
+
+    .relationList {
+        display: flex;
+        flex-direction: row;
+
+        .relationItem {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10rpx;
+
+            text {
+                color: @text-level-4-color;
+                font-size: @font-size-base;
+            }
+        }
+    }
+}
+
+.btn-container {
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    .btn {
+      flex: 1;
+    }
+    padding-left: 10rpx;
+    padding-right: 10rpx;
+  }
+  

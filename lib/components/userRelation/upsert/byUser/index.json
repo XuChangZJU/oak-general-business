@@ -1,0 +1,7 @@
+{
+    "navigationBarTitleText": "添加权限",
+    "usingComponents": {
+        "onUser": "./../onUser/index",
+        "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index"
+    }
+}
