@@ -1,4 +1,4 @@
-<view class="page-body">
+<view class="body">
     <l-notice-bar
         front-icon-name="notification"
         show="{{true}}"
@@ -20,7 +20,7 @@
     <block wx:if="{{mobileValueReady}}">
         <block wx:if="{{userId}}">
             <relation-on-user
-                class="r-o-u"
+                style="display: flex;flex-direction: column; flex: 1; margin-top: 30rpx"
                 oakId="{{userId}}"
                 mobile="{{mobileValue}}"
                 oakPath="{{oakFullpath ? oakFullpath + '.user' : undefined}}"
@@ -36,7 +36,8 @@
         </block>
     </block>
 
-
+    <view style="flex: 1" />
+ 
     <l-button disabled="{{!oakDirty || !mobileValueReady}}" size="long" bind:lintap="onConfirm">
         {{t('common::action.confirm')}}
     </l-button>
