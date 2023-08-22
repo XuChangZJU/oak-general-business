@@ -8,4 +8,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', true
     goCreate: () => void;
     goUpdate: (id: string) => void;
     goDelete: (id: string) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
