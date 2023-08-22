@@ -1768,7 +1768,7 @@ export async function wakeupParasite<
         throw new OakUserException('此用户已经登录过系统，不允许借用身份');
     }
 
-    // const closeFn = context.openRootMode();
+    const closeFn = context.openRootMode();
     if (!parasite.multiple) {
         await context.operate(
             'parasite',
@@ -1807,6 +1807,6 @@ export async function wakeupParasite<
     );
 
     await loadTokenInfo<ED, Cxt>(tokenId, context);
-    // closeFn();
+    closeFn();
     return tokenId;
 }
