@@ -37,7 +37,7 @@
     </block>
 
 
-   <l-button disabled="{{!oakDirty}}" size="long" bind:lintap="onConfirm">
+    <l-button disabled="{{!oakDirty || !mobileValueReady}}" size="long" bind:lintap="onConfirm">
         {{t('common::action.confirm')}}
     </l-button>
 </view>
