@@ -7,6 +7,7 @@ import { ActionType, EntityShape } from "oak-domain/lib/types/Entity";
 import { String, Text, Boolean, Datetime } from "oak-domain/lib/types/DataType";
 import { LocaleDef } from "oak-domain/lib/types/Locale";
 import { ActionDef, Index } from "oak-domain/lib/types";
+import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 import * as User from "../User/Schema";
 export type OpSchema = EntityShape & {
     userId: ForeignKey<"user">;
