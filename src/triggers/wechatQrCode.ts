@@ -214,7 +214,6 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeCxt>[] = [
 
                 const { type: applicationType, config } = application;
 
-                // console.log(process.env.OAK_PLATFORM, process.env.NODE_ENV);
                 switch (appType) {
                     case 'wechatMpWxaCode': {
                         assert(

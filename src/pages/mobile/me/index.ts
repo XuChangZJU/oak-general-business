@@ -80,7 +80,6 @@ export default OakComponent({
 
         onRemoveModalOpen(e: WechatMiniprogram.Touch) {
             const mobileId = e.currentTarget.dataset.id;
-            console.log(mobileId);
             this.setState({
                 confirmDeleteModalVisible: true,
                 mobileId,

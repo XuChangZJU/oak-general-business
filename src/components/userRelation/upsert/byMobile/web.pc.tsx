@@ -23,7 +23,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
         oakFullpath, oakExecutable, legal, isNew } = props.data;
     const { onConfirm, onMobileChange, onReset, t } = props.methods;
     const [passwordConfirm, setPasswordConfirm] = useState(true);
-    console.log(passwordConfirm);
     return (
         <div className={Style.container}>
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
