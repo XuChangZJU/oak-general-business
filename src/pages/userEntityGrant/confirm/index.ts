@@ -74,7 +74,7 @@ export default OakComponent({
     methods: {
         async getUserRelations() {
             // 检查当前登陆者跟该授权实体缩手所受relation有关系了(todo)
-            const { entity, entityId, relationId} = this.state;
+            const { entity, entityId, relationId } = this.state;
             const userId = this.features.token.getUserId(true);
             if (!userId) {
                 return;
@@ -137,7 +137,7 @@ export default OakComponent({
                     state
                 );
                 return;
-            }   
+            }
             this.redirectTo(
                 {
                     url,
