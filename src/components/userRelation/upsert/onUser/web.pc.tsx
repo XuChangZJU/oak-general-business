@@ -82,20 +82,25 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                                 help={validateHelp1}
                                 rules={[
                                     {
-                                        required: true,
                                         message: '请输入密码',
                                         validator: (_, value) => {
+                                            if (!value && !password2) {
+                                                setValidateHelp1('')
+                                                setValidateStatus('')
+                                                return
+                                            }
                                             if (value.length < 8) {
                                                 setValidateHelp1('密码最短长度为8位')
                                                 setValidateStatus('error')
                                                 return;
                                             } else {
-                                                setValidateHelp1('')
-                                                setValidateStatus('')
-                                            }
-                                            if (password2) {
-                                                setValidateHelp(value === password2 ? '' : '两次输入的密码不一致，请检查')
-                                                setValidateStatus(value === password2 ? 'success' : 'error')
+                                                if (password2) {
+                                                    setValidateHelp(value === password2 ? '' : '两次输入的密码不一致，请检查')
+                                                    setValidateStatus(value === password2 ? 'success' : 'error')
+                                                } else {
+                                                    setValidateHelp('请再次确认密码')
+                                                    setValidateStatus('error')
+                                                }
                                             }
                                         }
                                     },
@@ -111,7 +116,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                                         update({
                                             password: strValue,
                                         });
-                                        setPasswordConfirm(strValue === password2 && strValue !== '')
+                                        setPasswordConfirm((password2 || strValue) ? password2 === strValue : true)
                                     }}
                                     iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                                     placeholder={t('placeholder.password')}
@@ -122,8 +127,12 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                                 name="passwordConfirm"
                                 rules={[
                                     {
-                                        required: true,
                                         validator: (_, value) => {
+                                            if (!value && !password) {
+                                                setValidateHelp('')
+                                                setValidateStatus('')
+                                                return
+                                            }
                                             if (password.length < 8) {
                                                 return;
                                             }
@@ -147,7 +156,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                                                 passwordSha1: encryptPasswordSha1(password)
                                             })
                                         }
-                                        setPasswordConfirm(password === strValue)
+                                        setPasswordConfirm((password || strValue) ? password === strValue : true)
                                     }}
                                     iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                                     placeholder={'请再次输入密码'}
