@@ -29,7 +29,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                 <Form.Item
                     label="手机号码"
                     required
-                    name="mobile"
+                    // name="mobile"
                     rules={[
                         {
                             message: '手机号不能为空',
@@ -44,18 +44,16 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                         },
                     ]}
                 >
-                    <>
-                        <Input
-                            maxLength={11}
-                            value={mobileValue}
-                            onChange={(e) => {
-                                const strValue = e.target.value;
-                                onMobileChange(strValue);
-                            }}
-                            placeholder="请输入手机号码"
-                            type="tel"
-                        />
-                    </>
+                    <Input
+                        maxLength={11}
+                        value={mobileValue}
+                        onChange={(e) => {
+                            const strValue = e.target.value;
+                            onMobileChange(strValue);
+                        }}
+                        placeholder="请输入手机号码"
+                        type="tel"
+                    />
                 </Form.Item>
             </Form>
             {mobileValueReady && userId && (

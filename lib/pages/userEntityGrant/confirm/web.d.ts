@@ -20,4 +20,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'userEntityG
 }, {
     handleConfirm: () => void;
     redirectPage: () => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

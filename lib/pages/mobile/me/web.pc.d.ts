@@ -6,4 +6,4 @@ export default function render(props: WebComponentProps<EntityDict, 'mobile', tr
     showBack: boolean;
 }, {
     goAddMobile: () => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
