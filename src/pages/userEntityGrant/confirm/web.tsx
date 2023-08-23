@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Space } from 'antd';
 import Style from './web.module.less';
 import { UserAddOutlined, UserSwitchOutlined } from '@ant-design/icons';
- 
+
 import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
 
 import { WebComponentProps } from 'oak-frontend-base';
@@ -16,7 +16,7 @@ export default function Render(
         {
             type: 'grant';
             expired: boolean;
-            relation: boolean;
+            relation: EntityDict['relation']['Schema'];
             expiresAt: boolean;
             granter?: {
                 name: string;
@@ -59,7 +59,7 @@ export default function Render(
 
     const getRelationTip = () => {
         let str = `${granter?.name || granter?.nickname}`;
-        const relationStr = relation ? t(`${entity}:r.${relation}`) : '';
+        const relationStr = relation?.display || relation ? t(`${entity}:r.${relation?.name}`) : '';
         if (type === 'grant') {
             str = str.concat('授予您【').concat(relationStr).concat('】');
             return str;
