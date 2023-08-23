@@ -14,5 +14,5 @@ declare type IQrCodeProps = {
     successed?: boolean;
     type?: EntityDict['wechatLogin']['Schema']['type'];
 };
-declare function QrCode(props: IQrCodeProps): import("react/jsx-runtime").JSX.Element;
+declare function QrCode(props: IQrCodeProps): JSX.Element;
 export default QrCode;

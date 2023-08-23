@@ -8,5 +8,5 @@ export default function render(props: WebComponentProps<EntityDict, 'application
     oakId: string;
     config: Config;
     type: AppType;
-}, {}>): import("react/jsx-runtime").JSX.Element;
+}, {}>): JSX.Element;
 export {};
