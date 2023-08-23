@@ -22,7 +22,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
     const { mobileValue, mobileValueReady, relations, entity, entityId, userId,
         oakFullpath, oakExecutable, legal, isNew } = props.data;
     const { onConfirm, onMobileChange, onReset, t } = props.methods;
-    const [passwordConfirm, setPasswordConfirm] = useState(false);
+    const [passwordConfirm, setPasswordConfirm] = useState(true);
+    console.log(passwordConfirm);
     return (
         <div className={Style.container}>
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
@@ -78,7 +79,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                             htmlType="reset"
                             onClick={async () => {
                                 await onConfirm();
-                                setPasswordConfirm(false);
+                                setPasswordConfirm(true);
                             }}
                             disabled={
                                 !legal ||

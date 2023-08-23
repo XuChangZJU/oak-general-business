@@ -15,9 +15,9 @@ export default OakComponent({
     isList: false,
     formData({ data: mobile }) {
         const { oakFullpath } = this.state;
-        
+
         const userRelations = oakFullpath && this.features.runningTree.getOperations(`${oakFullpath}.user.userRelation$user`);
-        
+
         return {
             userId: mobile?.userId,
             legal: userRelations && userRelations.length > 0,
@@ -94,15 +94,6 @@ export default OakComponent({
                         {
                             type: 'error',
                             content: '用户姓名未填写',
-                        }
-                    )
-                    return;
-                }
-                if (!userValue.password) {
-                    this.setMessage(
-                        {
-                            type: 'error',
-                            content: '用户密码未设置',
                         }
                     )
                     return;
