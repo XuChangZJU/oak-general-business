@@ -83,94 +83,99 @@ export default function render(
         <Form labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
             <Form.Item
                 label={t('userEntityGrant:attr.relation')}
-                name="relation"
-                rules={[
-                    {
-                        required: true,
-                    },
-                ]}
+                required
+                // name="relation"
+                // rules={[
+                //     {
+                //         required: true,
+                //     },
+                // ]}
             >
-                <>
-                    <Radio.Group
-                        value={relationId}
-                        onChange={({ target }) => {
-                            const { value } = target;
-                            update({ relationId: value });
-                        }}
-                        options={relations?.map((ele) => ({
-                            value: ele.id,
-                            label: ele.display || t(`${entity as string}:r.${ele.name}`),
-                        }))}
-                    />
-                </>
+                <Radio.Group
+                    value={relationId}
+                    onChange={({ target }) => {
+                        const { value } = target;
+                        update({ relationId: value });
+                    }}
+                    options={relations?.map((ele) => ({
+                        value: ele.id,
+                        label:
+                            ele.display ||
+                            t(`${entity as string}:r.${ele.name}`),
+                    }))}
+                />
             </Form.Item>
             {type === 'grant' && (
                 <Form.Item
-                label={t('userEntityGrant:attr.number')}
-                    name="number"
-                    rules={[
-                        {
-                            required: true,
-                            message: t('chooseNumber'),
-                        },
-                    ]}
+                    label={t('userEntityGrant:attr.number')}
+                    required
+                    // name="number"
+                    // rules={[
+                    //     {
+                    //         required: true,
+                    //         message: t('chooseNumber'),
+                    //     },
+                    // ]}
                 >
-                    <>
-                        <Radio.Group
-                            value={number}
-                            onChange={({ target }) => {
-                                const { value } = target;
-                                update({ number: value });
-                            }}
-                            options={[
-                                { value: 1, label: t('single') },
-                                { value: 10000, label: t('unlimited') },
-                            ]}
-                        />
-                    </>
+                    <Radio.Group
+                        value={number}
+                        onChange={({ target }) => {
+                            const { value } = target;
+                            update({ number: value });
+                        }}
+                        options={[
+                            { value: 1, label: t('single') },
+                            { value: 10000, label: t('unlimited') },
+                        ]}
+                    />
                 </Form.Item>
             )}
             <Form.Item
                 label={t('userEntityGrant:attr.expiresAt')}
-                name="period"
-                rules={[
-                    {
-                        required: true,
-                        message: t('chooseExpiresAt'),
-                    },
-                ]}
-                help={<div style={{ marginBottom: 16 }}>{t('expiresHelp')}</div>}
+                required
+                // name="period"
+                // rules={[
+                //     {
+                //         required: true,
+                //         message: t('chooseExpiresAt'),
+                //     },
+                // ]}
+                help={
+                    <div style={{ marginBottom: 16 }}>{t('expiresHelp')}</div>
+                }
                 tooltip="通过配置实现在规定的时效内扫描二维码不过期的效果。"
             >
-                <>
-                    <InputNumber
-                        min={1}
-                        max={maxes[unit]}
-                        value={period}
-                        onChange={(value) => setPeriod(value!)}
-                        // addonAfter="分钟"
-                        addonAfter={
-                            <Select
-                                value={unit}
-                                style={{ width: 80 }}
-                                onChange={(v) => {
-                                    setUnit(v);
-                                }}
-                            >
-                                <Select.Option value="minute">
-                                    {t('unit.minute')}
-                                </Select.Option>
-                                <Select.Option value="hour">
-                                    {t('unit.hour')}
-                                </Select.Option>
-                            </Select>
-                        }
-                    />
-                </>
+                <InputNumber
+                    min={1}
+                    max={maxes[unit]}
+                    value={period}
+                    onChange={(value) => setPeriod(value!)}
+                    // addonAfter="分钟"
+                    addonAfter={
+                        <Select
+                            value={unit}
+                            style={{ width: 80 }}
+                            onChange={(v) => {
+                                setUnit(v);
+                            }}
+                        >
+                            <Select.Option value="minute">
+                                {t('unit.minute')}
+                            </Select.Option>
+                            <Select.Option value="hour">
+                                {t('unit.hour')}
+                            </Select.Option>
+                        </Select>
+                    }
+                />
             </Form.Item>
             <Form.Item wrapperCol={{ offset: 4 }}>
                 <Space>
-                    <Button type="primary" onClick={() => confirm()} disabled={oakExecutable !== true}>
+                    <Button
+                        type="primary"
+                        onClick={() => confirm()}
+                        disabled={oakExecutable !== true}
+                    >
                         {t('common::action.confirm')}
                     </Button>
                     <Button onClick={() => onBack()}>
