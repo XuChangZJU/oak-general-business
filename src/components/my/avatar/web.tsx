@@ -5,7 +5,7 @@ import Styles from './web.module.less';
 import { EntityDict } from '../../../oak-app-domain';
 import OakIcon from '../../icon/index';
 import { WebComponentProps } from 'oak-frontend-base';
-import { AvatarSize } from 'antd/es/avatar/SizeContext';
+import { AvatarSize } from 'antd/es/avatar/AvatarContext';
 
 
 export default function Render(props: WebComponentProps<EntityDict, 'token', false, {

@@ -10,7 +10,7 @@
         <view class="title">
           {{granter.name || granter.nickname}}
            授予您【
-          {{relation ? t(entity + ':r.' + relation) : ''}}
+          {{relation.display || relation ? t(entity + ':r.' + relation.name) : ''}}
           】
         </view>
     </block>
@@ -18,7 +18,7 @@
 <view class="title">
           {{granter.name || granter.nickname}}
            转让您【
-          {{relation ? t(entity + ':r.' + relation) : ''}}
+          {{relation.display || relation ? t(entity + ':r.' + relation.name) : ''}}
           】
     </view>
 </block>

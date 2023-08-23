@@ -51,6 +51,7 @@ export default OakComponent({
                 });
                 if (data.length > 0) {
                     this.clean();
+                    this.unsetId();
                     this.setId(data[0].id!);
                     this.setState({
                         isNew: false,
@@ -58,6 +59,7 @@ export default OakComponent({
                 }
                 else {
                     this.clean();
+                    this.unsetId();
                     this.setState({
                         isNew: true,
                     })

@@ -61,9 +61,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
             {mobileValueReady && userId && (
                 <OnUser
                     oakAutoUnmount={true}
-                    oakPath={oakFullpath ? `${oakFullpath}.user`
-                        : undefined
-                    }
+                    oakPath={oakFullpath ? `${oakFullpath}.user` : undefined}
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
@@ -77,11 +75,16 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                         <Button
                             style={{ flex: 2 }}
                             type="primary"
+                            htmlType="reset"
                             onClick={async () => {
                                 await onConfirm();
                                 setPasswordConfirm(false);
                             }}
-                            disabled={!legal || !oakExecutable || (isNew && !passwordConfirm)}
+                            disabled={
+                                !legal ||
+                                !oakExecutable ||
+                                (isNew && !passwordConfirm)
+                            }
                         >
                             {t('common::action.confirm')}
                         </Button>
