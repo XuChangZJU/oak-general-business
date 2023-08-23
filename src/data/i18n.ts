@@ -256,11 +256,11 @@ const i18ns: I18n[] = [
         }
     },
     {
-        id: "65801f60e3c6d0197f2f0a44a794ccf7",
-        namespace: "oak-general-business-l-common",
+        id: "ada0227a3fe7b54eddce578f15f015b8",
+        namespace: "oak-general-business-l-Common",
         language: "zh-CN",
         module: "oak-general-business",
-        position: "locales/common",
+        position: "locales/Common",
         data: {
             "noData": "暂无数据",
             "areYouSure": "请确认",
