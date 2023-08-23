@@ -3,7 +3,7 @@ import { EntityDict } from '../../../oak-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'userEntityGrant', true, {
     type: 'grant';
     expired: boolean;
-    relation: boolean;
+    relation: EntityDict['relation']['Schema'];
     expiresAt: boolean;
     granter?: {
         name: string;
