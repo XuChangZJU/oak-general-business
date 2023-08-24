@@ -68,7 +68,6 @@ export const desc: StorageDesc<OpSchema> = {
             type: "text"
         },
         extension: {
-            notNull: true,
             type: "varchar",
             params: {
                 length: 16

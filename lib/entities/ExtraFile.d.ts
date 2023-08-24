@@ -12,7 +12,7 @@ export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
     extra1?: Text;
-    extension: String<16>;
+    extension?: String<16>;
     size?: Int<4>;
     sort?: Float<22, 10>;
     fileType?: String<128>;

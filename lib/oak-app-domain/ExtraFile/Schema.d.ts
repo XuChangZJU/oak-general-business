@@ -17,10 +17,10 @@ export declare type OpSchema = EntityShape & {
     tag2?: String<32> | null;
     filename: String<256>;
     md5?: Text | null;
-    entity: "article" | "articleMenu" | "user" | string;
+    entity: 'article' | 'articleMenu' | 'user' | string;
     entityId: String<64>;
     extra1?: Text | null;
-    extension: String<16>;
+    extension?: String<16> | null;
     size?: Int<4> | null;
     sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
@@ -36,10 +36,10 @@ export declare type Schema = EntityShape & {
     tag2?: String<32> | null;
     filename: String<256>;
     md5?: Text | null;
-    entity: "article" | "articleMenu" | "user" | string;
+    entity: 'article' | 'articleMenu' | 'user' | string;
     entityId: String<64>;
     extra1?: Text | null;
-    extension: String<16>;
+    extension?: String<16> | null;
     size?: Int<4> | null;
     sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
