@@ -52,12 +52,12 @@ export default function Render(
                         <Form.Item
                             label="访问域名"
                             required
-                            name="url"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
+                            // name="url"
+                            // rules={[
+                            //     {
+                            //         required: true,
+                            //     },
+                            // ]}
                         >
                             <>
                                 <Input
@@ -71,7 +71,11 @@ export default function Render(
                                 />
                             </>
                         </Form.Item>
-                        <Form.Item label="请求路径" required name="apiPath">
+                        <Form.Item
+                            label="请求路径"
+                            required
+                            //name="apiPath"
+                        >
                             <>
                                 <Input
                                     onChange={(e) => {
@@ -83,7 +87,11 @@ export default function Render(
                                 />
                             </>
                         </Form.Item>
-                        <Form.Item label="端口" required name="port">
+                        <Form.Item
+                            label="端口"
+                            required
+                            //name="port"
+                        >
                             <>
                                 <Input
                                     onChange={(e) => {
@@ -96,7 +104,11 @@ export default function Render(
                                 />
                             </>
                         </Form.Item>
-                        <Form.Item name="protocol" required label="协议">
+                        <Form.Item
+                            //name="protocol"
+                            required
+                            label="协议"
+                        >
                             <>
                                 <Select
                                     // mode="multiple"

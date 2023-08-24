@@ -1,17 +1,7 @@
 import React, { useState } from 'react';
-import {
-    Tabs,
-    Row,
-    Col,
-    Card,
-    Divider,
-    Input,
-    Form,
-    Space,
-} from 'antd';
+import { Tabs, Row, Col, Card, Divider, Input, Form, Space } from 'antd';
 import Styles from './web.module.less';
 import { Config, QiniuLiveConfig } from '../../../../types/Config';
-
 
 function Qiniu(props: {
     live: QiniuLiveConfig;
@@ -38,7 +28,10 @@ function Qiniu(props: {
                                 layout="vertical"
                                 style={{ marginTop: 10 }}
                             >
-                                <Form.Item label="accessKey" name="accessKey">
+                                <Form.Item
+                                    label="accessKey"
+                                    // name="accessKey"
+                                >
                                     <>
                                         <Input
                                             placeholder="请输入accessKey"
@@ -53,7 +46,10 @@ function Qiniu(props: {
                                         />
                                     </>
                                 </Form.Item>
-                                <Form.Item label="hub" name="hub">
+                                <Form.Item
+                                    label="hub"
+                                    //name="hub"
+                                >
                                     <>
                                         <Input
                                             placeholder="请输入hub"
@@ -65,7 +61,10 @@ function Qiniu(props: {
                                         />
                                     </>
                                 </Form.Item>
-                                <Form.Item label="liveHost" name="liveHost">
+                                <Form.Item
+                                    label="liveHost"
+                                    //name="liveHost"
+                                >
                                     <>
                                         <Input
                                             placeholder="请输入liveHost"
@@ -80,7 +79,10 @@ function Qiniu(props: {
                                         />
                                     </>
                                 </Form.Item>
-                                <Form.Item label="playDomain" name="playDomain">
+                                <Form.Item
+                                    label="playDomain"
+                                    //name="playDomain"
+                                >
                                     <>
                                         <Input
                                             placeholder="请输入playDomain"
@@ -97,7 +99,7 @@ function Qiniu(props: {
                                 </Form.Item>
                                 <Form.Item
                                     label="playBackDomain"
-                                    name="playBackDomain"
+                                    //name="playBackDomain"
                                 >
                                     <>
                                         <Input
@@ -113,7 +115,10 @@ function Qiniu(props: {
                                         />
                                     </>
                                 </Form.Item>
-                                <Form.Item label="playKey" name="playKey">
+                                <Form.Item
+                                    label="playKey"
+                                    //name="playKey"
+                                >
                                     <>
                                         <Input
                                             placeholder="请输入playKey"
@@ -130,7 +135,7 @@ function Qiniu(props: {
                                 </Form.Item>
                                 <Form.Item
                                     label="publishDomain"
-                                    name="publishDomain"
+                                    //name="publishDomain"
                                 >
                                     <>
                                         <Input
@@ -146,7 +151,10 @@ function Qiniu(props: {
                                         />
                                     </>
                                 </Form.Item>
-                                <Form.Item label="publishKey" name="publishKey">
+                                <Form.Item
+                                    label="publishKey"
+                                    //name="publishKey"
+                                >
                                     <>
                                         <Input
                                             placeholder="请输入publishKey"

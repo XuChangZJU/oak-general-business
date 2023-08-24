@@ -243,7 +243,7 @@ function Ali(props: {
                 >
                     <Form.Item
                         label="标签名称"
-                        name="messageType"
+                        //name="messageType"
                         help="只能输入英文和中文"
                     >
                         <>
@@ -308,7 +308,7 @@ function Tencent(props: {
                                   >
                                       <Form.Item
                                           label="secretId"
-                                          name="secretId"
+                                          //name="secretId"
                                       >
                                           <>
                                               <Input
@@ -326,7 +326,7 @@ function Tencent(props: {
                                       </Form.Item>
                                       <Form.Item
                                           label="smsSdkAppId"
-                                          name="smsSdkAppId"
+                                          //name="smsSdkAppId"
                                       >
                                           <>
                                               <Input
@@ -344,7 +344,7 @@ function Tencent(props: {
                                       </Form.Item>
                                       <Form.Item
                                           label="defaultSignName"
-                                          name="defaultSignName"
+                                          //name="defaultSignName"
                                       >
                                           <>
                                               <Input
@@ -362,7 +362,7 @@ function Tencent(props: {
                                       </Form.Item>
                                       <Form.Item
                                           label="templates"
-                                          name="templates"
+                                          //name="templates"
                                       >
                                           <Tabs
                                               tabPosition={'top'}
@@ -410,7 +410,7 @@ function Tencent(props: {
                                                                     >
                                                                         <Form.Item
                                                                             label="signName"
-                                                                            name="signName"
+                                                                            //name="signName"
                                                                         >
                                                                             <>
                                                                                 <Input
@@ -434,7 +434,7 @@ function Tencent(props: {
                                                                         </Form.Item>
                                                                         <Form.Item
                                                                             label="code"
-                                                                            name="code"
+                                                                            //name="code"
                                                                         >
                                                                             <>
                                                                                 <Input
@@ -508,7 +508,7 @@ function Tencent(props: {
                 >
                     <Form.Item
                         label="标签名称"
-                        name="messageType"
+                        //name="messageType"
                         help="只能输入英文和中文"
                     >
                         <>
@@ -552,7 +552,7 @@ export default function Sms(props: {
                 <Form>
                     <Form.Item
                         label="模拟发送"
-                        name="mockSend"
+                        //name="mockSend"
                         tooltip="开启模拟发送短信，发短信不会调用api"
                     >
                         <>

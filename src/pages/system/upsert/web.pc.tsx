@@ -53,12 +53,12 @@ export default function Render(
                         <Form.Item
                             label="名称"
                             required
-                            name="name"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
+                            // name="name"
+                            // rules={[
+                            //     {
+                            //         required: true,
+                            //     },
+                            // ]}
                         >
                             <>
                                 <Input
@@ -74,7 +74,7 @@ export default function Render(
                         <Form.Item
                             label="目录"
                             required
-                            name="folder"
+                            // name="folder"
                             tooltip="目录属性应和开发目录下的对应目录名匹配，请谨慎修改"
                             rules={[
                                 {
@@ -93,7 +93,11 @@ export default function Render(
                                 />
                             </>
                         </Form.Item>
-                        <Form.Item label="描述" required name="description">
+                        <Form.Item
+                            label="描述"
+                            required
+                            //name="description"
+                        >
                             <>
                                 <Input.TextArea
                                     onChange={(e) => {
@@ -109,7 +113,7 @@ export default function Render(
                             label="是否为超级系统"
                             required
                             tooltip="超级用户属性可能影响程序的运行逻辑，请谨慎修改"
-                            name="super"
+                            //name="super"
                         >
                             <>
                                 <Switch
@@ -125,7 +129,10 @@ export default function Render(
                             </>
                         </Form.Item>
 
-                        <Form.Item label="样式" name="style">
+                        <Form.Item
+                            label="样式"
+                            //name="style"
+                        >
                             <>
                                 <ComponentStyle
                                     onChange={(value) => {

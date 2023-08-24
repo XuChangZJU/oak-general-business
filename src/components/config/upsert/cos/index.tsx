@@ -13,7 +13,6 @@ import {
 import Styles from './web.module.less';
 import { Config, QiniuCosConfig } from '../../../../types/Config';
 
-
 function QiniuCos(props: {
     cos: QiniuCosConfig;
     setValue: (path: string, value: any) => void;
@@ -39,7 +38,10 @@ function QiniuCos(props: {
                                 layout="vertical"
                                 style={{ marginTop: 10 }}
                             >
-                                <Form.Item label="accessKey" name="accessKey">
+                                <Form.Item
+                                    label="accessKey"
+                                    //name="accessKey"
+                                >
                                     <>
                                         <Input
                                             placeholder="请输入accessKey"
@@ -54,7 +56,10 @@ function QiniuCos(props: {
                                         />
                                     </>
                                 </Form.Item>
-                                <Form.Item label="bucket" name="bucket">
+                                <Form.Item
+                                    label="bucket"
+                                    //name="bucket"
+                                >
                                     <>
                                         <Input
                                             placeholder="请输入bucket"
@@ -69,7 +74,10 @@ function QiniuCos(props: {
                                         />
                                     </>
                                 </Form.Item>
-                                <Form.Item label="uploadHost" name="uploadHost">
+                                <Form.Item
+                                    label="uploadHost"
+                                    //name="uploadHost"
+                                >
                                     <>
                                         <Input
                                             placeholder="请输入uploadHost"
@@ -84,7 +92,10 @@ function QiniuCos(props: {
                                         />
                                     </>
                                 </Form.Item>
-                                <Form.Item label="domain" name="domain">
+                                <Form.Item
+                                    label="domain"
+                                    // name="domain"
+                                >
                                     <>
                                         <Input
                                             placeholder="请输入domain"
@@ -99,7 +110,10 @@ function QiniuCos(props: {
                                         />
                                     </>
                                 </Form.Item>
-                                <Form.Item label="protocol" name="protocol">
+                                <Form.Item
+                                    label="protocol"
+                                    //name="protocol"
+                                >
                                     <>
                                         <Select
                                             mode="multiple"

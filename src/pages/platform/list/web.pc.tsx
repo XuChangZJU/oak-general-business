@@ -53,7 +53,7 @@ export default function Render(
     return (
         <PageHeader title="平台管理">
             <div className={Style.container}>
-                <Space>
+                <Space style={{ marginBottom: 16 }}>
                     <Button
                         type="primary"
                         onClick={() => {

@@ -48,7 +48,7 @@ function TencentAccount(props: {
                                   >
                                       <Form.Item
                                           label="secretId"
-                                          name="secretId"
+                                          //name="secretId"
                                       >
                                           <>
                                               <Input
@@ -66,7 +66,7 @@ function TencentAccount(props: {
                                       </Form.Item>
                                       <Form.Item
                                           label="secretKey"
-                                          name="secretKey"
+                                          //name="secretKey"
                                       >
                                           <>
                                               <Input
@@ -82,7 +82,9 @@ function TencentAccount(props: {
                                               />
                                           </>
                                       </Form.Item>
-                                      <Form.Item label="region" name="region">
+                                      <Form.Item label="region"
+                                       //name="region"
+                                       >
                                           <>
                                               <Input
                                                   placeholder="请输入region"
@@ -99,7 +101,7 @@ function TencentAccount(props: {
                                       </Form.Item>
                                       <Form.Item
                                           label="endpoint"
-                                          name="endpoint"
+                                         // name="endpoint"
                                           tooltip="访问的域名，如：tencentcloudapi.com"
                                       >
                                           <>
@@ -118,7 +120,7 @@ function TencentAccount(props: {
                                       </Form.Item>
                                       <Form.Item
                                           label="短信endpoint"
-                                          name="smsEndpoint"
+                                          //name="smsEndpoint"
                                           tooltip="访问的域名，如：sms.tencentcloudapi.com"
                                       >
                                           <>
@@ -151,7 +153,7 @@ function TencentAccount(props: {
                                       >
                                           <Form.Item
                                               label="secretId"
-                                              name="secretId"
+                                             // name="secretId"
                                           >
                                               <>
                                                   <Input
@@ -169,7 +171,7 @@ function TencentAccount(props: {
                                           </Form.Item>
                                           <Form.Item
                                               label="secretKey"
-                                              name="secretKey"
+                                             // name="secretKey"
                                           >
                                               <>
                                                   <Input
@@ -187,7 +189,7 @@ function TencentAccount(props: {
                                           </Form.Item>
                                           <Form.Item
                                               label="region"
-                                              name="region"
+                                             // name="region"
                                               tooltip="地域, 华北地区(北京): ap-beijing、 华南地区(广州): ap-guangzhou、华东地区(南京): ap-nanjing"
                                           >
                                               <>
@@ -206,7 +208,7 @@ function TencentAccount(props: {
                                           </Form.Item>
                                           <Form.Item
                                               label="短信endpoint"
-                                              name="smsEndpoint"
+                                             // name="smsEndpoint"
                                               tooltip="访问的域名，如：sms.tencentcloudapi.com"
                                           >
                                               <>
@@ -271,7 +273,7 @@ function QiniuAccount(props: {
                                   >
                                       <Form.Item
                                           label="accessKey"
-                                          name="accessKey"
+                                         // name="accessKey"
                                       >
                                           <>
                                               <Input
@@ -289,7 +291,7 @@ function QiniuAccount(props: {
                                       </Form.Item>
                                       <Form.Item
                                           label="secretKey"
-                                          name="secretKey"
+                                         // name="secretKey"
                                       >
                                           <>
                                               <Input
@@ -321,7 +323,7 @@ function QiniuAccount(props: {
                                       >
                                           <Form.Item
                                               label="accessKey"
-                                              name="accessKey"
+                                             // name="accessKey"
                                           >
                                               <>
                                                   <Input
@@ -339,7 +341,7 @@ function QiniuAccount(props: {
                                           </Form.Item>
                                           <Form.Item
                                               label="secretKey"
-                                              name="secretKey"
+                                             // name="secretKey"
                                           >
                                               <>
                                                   <Input
@@ -403,7 +405,7 @@ function AliAccount(props: {
                                   >
                                       <Form.Item
                                           label="accessKeyId"
-                                          name="accessKeyId"
+                                         // name="accessKeyId"
                                       >
                                           <>
                                               <Input
@@ -421,7 +423,7 @@ function AliAccount(props: {
                                       </Form.Item>
                                       <Form.Item
                                           label="accessKeySecret"
-                                          name="accessKeySecret"
+                                          //name="accessKeySecret"
                                       >
                                           <>
                                               <Input
@@ -439,7 +441,7 @@ function AliAccount(props: {
                                       </Form.Item>
                                       <Form.Item
                                           label="regionId"
-                                          name="regionId"
+                                          //name="regionId"
                                       >
                                           <>
                                               <Input
@@ -457,7 +459,7 @@ function AliAccount(props: {
                                       </Form.Item>
                                       <Form.Item
                                           label="endpoint"
-                                          name="endpoint"
+                                          //name="endpoint"
                                           tooltip="访问的域名，如：dysmsapi.aliyuncs.com"
                                       >
                                           <>
@@ -476,7 +478,7 @@ function AliAccount(props: {
                                       </Form.Item>
                                       <Form.Item
                                           label="apiVersion"
-                                          name="apiVersion"
+                                          //name="apiVersion"
                                       >
                                           <>
                                               <Input
@@ -494,7 +496,7 @@ function AliAccount(props: {
                                       </Form.Item>
                                       <Form.Item
                                           label="短信endpoint"
-                                          name="smsEndpoint"
+                                          //name="smsEndpoint"
                                           tooltip="访问的域名，如：dysmsapi.aliyuncs.com"
                                       >
                                           <>
@@ -527,7 +529,7 @@ function AliAccount(props: {
                                       >
                                           <Form.Item
                                               label="accessKeyId"
-                                              name="accessKeyId"
+                                              //name="accessKeyId"
                                           >
                                               <>
                                                   <Input
@@ -545,7 +547,7 @@ function AliAccount(props: {
                                           </Form.Item>
                                           <Form.Item
                                               label="accessKeySecret"
-                                              name="accessKeySecret"
+                                              //name="accessKeySecret"
                                           >
                                               <>
                                                   <Input
@@ -563,7 +565,7 @@ function AliAccount(props: {
                                           </Form.Item>
                                           <Form.Item
                                               label="regionId"
-                                              name="regionId"
+                                              //name="regionId"
                                           >
                                               <>
                                                   <Input
@@ -581,7 +583,7 @@ function AliAccount(props: {
                                           </Form.Item>
                                           <Form.Item
                                               label="endpoint"
-                                              name="endpoint"
+                                             // name="endpoint"
                                               tooltip="访问的域名，如：dysmsapi.aliyuncs.com"
                                           >
                                               <>
@@ -600,7 +602,7 @@ function AliAccount(props: {
                                           </Form.Item>
                                           <Form.Item
                                               label="apiVersion"
-                                              name="apiVersion"
+                                             // name="apiVersion"
                                           >
                                               <>
                                                   <Input
@@ -618,7 +620,7 @@ function AliAccount(props: {
                                           </Form.Item>
                                           <Form.Item
                                               label="短信endpoint"
-                                              name="smsEndpoint"
+                                              //name="smsEndpoint"
                                               tooltip="访问的域名，如：dysmsapi.aliyuncs.com"
                                           >
                                               <>
@@ -683,7 +685,7 @@ function AmapAccount(props: {
                                   >
                                       <Form.Item
                                           label="webApiKey"
-                                          name="webApiKey"
+                                          //name="webApiKey"
                                       >
                                           <>
                                               <Input
@@ -715,7 +717,7 @@ function AmapAccount(props: {
                                       >
                                           <Form.Item
                                               label="webApiKey"
-                                              name="webApiKey"
+                                             // name="webApiKey"
                                           >
                                               <>
                                                   <Input

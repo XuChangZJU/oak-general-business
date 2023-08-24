@@ -47,7 +47,9 @@ export default function Web(props: {
                     layout="vertical"
                     style={{ marginTop: 10 }}
                 >
-                    <Form.Item label="appId" name="appId">
+                    <Form.Item label="appId"
+                     //name="appId"
+                     >
                         <>
                             <Input
                                 placeholder="请输入appId"
@@ -59,7 +61,9 @@ export default function Web(props: {
                             />
                         </>
                     </Form.Item>
-                    <Form.Item label="appSecret" name="appSecret">
+                    <Form.Item label="appSecret"
+                     //name="appSecret"
+                     >
                         <>
                             <Input
                                 placeholder="请输入appSecret"
@@ -73,7 +77,7 @@ export default function Web(props: {
                     </Form.Item>
                     <Form.Item
                         label="授权回调域"
-                        name="domain"
+                        //name="domain"
                         tooltip="授权回调域可选填，未填写的话，使用网页访问的域名当作授权回调域"
                     >
                         <>
@@ -89,7 +93,7 @@ export default function Web(props: {
                     </Form.Item>
                     <Form.Item
                         label="微信网站应用授权登录"
-                        name="enable"
+                       // name="enable"
                         tooltip="开启后，登录页显示微信扫码入口，微信扫码后使用微信网站应用授权登录"
                         help="开启当前登录方式时，将同时关闭微信公众号扫码登录"
                     >
@@ -117,7 +121,9 @@ export default function Web(props: {
                     layout="vertical"
                     style={{ marginTop: 10 }}
                 >
-                    <Form.Item label="passport" name="passport">
+                    <Form.Item label="passport"
+                     //name="passport"
+                     >
                         <>
                             <Select
                                 mode="multiple"
@@ -127,7 +133,6 @@ export default function Web(props: {
                                 value={config?.passport as Passport[]}
                                 onChange={(value: Passport[]) => {
                                     if (value.includes('wechat') && value.includes('wechatPublic')) {
-                                        // messageApi.warning('微信网站和微信公众号中，只能选择一个');
                                         message.warning('微信网站和微信公众号中，只能选择一个')
                                         return;
                                     }

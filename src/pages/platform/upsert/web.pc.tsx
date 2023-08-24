@@ -39,12 +39,12 @@ export default function Render(
                             <Form.Item
                                 label="名称"
                                 required
-                                name="name"
-                                rules={[
-                                    {
-                                        required: true,
-                                    },
-                                ]}
+                                // name="name"
+                                // rules={[
+                                //     {
+                                //         required: true,
+                                //     },
+                                // ]}
                             >
                                 <>
                                     <Input
@@ -59,7 +59,7 @@ export default function Render(
                             </Form.Item>
                             <Form.Item
                                 label="描述"
-                                name="description"
+                                // name="description"
                             >
                                 <>
                                     <Input.TextArea
@@ -74,8 +74,8 @@ export default function Render(
                             </Form.Item>
                             <Form.Item
                                 label="样式"
-                                required
-                                name="style"
+                                // required
+                                // name="style"
                             >
                                 <>
                                     <ComponentStyle

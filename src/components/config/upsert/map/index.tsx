@@ -39,7 +39,10 @@ function Qiniu(props: {
                                 layout="vertical"
                                 style={{ marginTop: 10 }}
                             >
-                                <Form.Item label="webApiKey" name="webApiKey">
+                                <Form.Item
+                                    label="webApiKey"
+                                    //name="webApiKey"
+                                >
                                     <>
                                         <Input
                                             placeholder="请输入webApiKey"

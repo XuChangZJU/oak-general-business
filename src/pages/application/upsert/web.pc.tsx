@@ -55,12 +55,12 @@ export default function Render(
                         <Form.Item
                             label="名称"
                             required
-                            name="name"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
+                            // name="name"
+                            // rules={[
+                            //     {
+                            //         required: true,
+                            //     },
+                            // ]}
                         >
                             <>
                                 <Input
@@ -73,7 +73,10 @@ export default function Render(
                                 />
                             </>
                         </Form.Item>
-                        <Form.Item label="描述" name="description">
+                        <Form.Item
+                            label="描述"
+                            //name="description"
+                        >
                             <>
                                 <Input.TextArea
                                     onChange={(e) => {
@@ -88,12 +91,12 @@ export default function Render(
                         <Form.Item
                             label="应用类型"
                             required
-                            name="type"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
+                            // name="type"
+                            // rules={[
+                            //     {
+                            //         required: true,
+                            //     },
+                            // ]}
                         >
                             <>
                                 <Select
@@ -117,7 +120,10 @@ export default function Render(
                             </>
                         </Form.Item>
 
-                        <Form.Item label="样式" name="style">
+                        <Form.Item
+                            label="样式"
+                            //name="style"
+                        >
                             <>
                                 <ComponentStyle
                                     onChange={(value) => {

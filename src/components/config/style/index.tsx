@@ -21,7 +21,7 @@ function Color(props: { value: StyleType['color'], setValue: (path: string, valu
                     key={ele}
                     label={ele}
                     // required
-                    name="folder"
+                   // name="folder"
                     tooltip={`设置系统【${ele}】颜色`}
                     // rules={[
                     //     {
