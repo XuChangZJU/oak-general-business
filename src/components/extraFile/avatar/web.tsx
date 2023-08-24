@@ -7,7 +7,6 @@ import classNames from 'classnames';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
-import useFeatures from '../../../hooks/useFeatures';
 
 
 export default function render(
@@ -27,7 +26,6 @@ export default function render(
 ) {
     const { style, className, avatarUrl } = props.data;
     const { onPickByWeb } = props.methods;
-    const features = useFeatures();
 
     return (
         <>
