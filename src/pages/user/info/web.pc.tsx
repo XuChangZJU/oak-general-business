@@ -101,7 +101,6 @@ export default function Render(
                     </Form.Item>
                     <Form.Item
                         label={t('user:attr.name')}
-                        name="name"
                         rules={[
                             {
                                 required: true,
@@ -122,7 +121,6 @@ export default function Render(
                     </Form.Item>
                     <Form.Item
                         label={t('user:attr.nickname')}
-                        name="nickname"
                         rules={[
                             {
                                 required: true,
@@ -142,7 +140,6 @@ export default function Render(
                         </>
                     </Form.Item>
                     <Form.Item
-                        name="gender"
                         label={t('user:attr.gender')}
                     // rules={[{ required: true }]}
                     >
@@ -158,7 +155,6 @@ export default function Render(
                     </Form.Item>
                     <Form.Item
                         label={t('user:attr.birth')}
-                        name="birth"
                     // rules={[
                     //     {
                     //         required: true,
