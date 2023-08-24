@@ -294,7 +294,9 @@ const i18ns: I18n[] = [
             "scan": "扫一扫",
             "bind": "绑定",
             "true": "是",
-            "false": "否"
+            "false": "否",
+            "open": "开",
+            "close": "关"
         }
     }
 ];
