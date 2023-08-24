@@ -934,6 +934,7 @@ export async function loginByWechat<
     context: Cxt
 ): Promise<string> {
     const { wechatLoginId, env } = params;
+    const closeRootMode = context.openRootMode();
     const [wechatLoginData] = await context.select(
         'wechatLogin',
         {
@@ -982,6 +983,7 @@ export async function loginByWechat<
         (wechatUserLogin as EntityDict['wechatUser']['Schema']).user!
     );
     await loadTokenInfo<ED, Cxt>(tokenId, context);
+    closeRootMode();
     return tokenId;
 }
 
@@ -1344,6 +1346,7 @@ export async function loginWechat<
     },
     context: Cxt
 ): Promise<string> {
+    const closeRootMode = context.openRootMode();
     const tokenId = await loginFromWechatEnv<ED, Cxt>(
         code,
         env,
@@ -1354,6 +1357,7 @@ export async function loginWechat<
     assert(tokenInfo.entity === 'wechatUser');
     await context.setTokenValue(tokenId);
     await tryRefreshWechatPublicUserInfo<ED, Cxt>(tokenInfo.entityId!, context);
+    closeRootMode();
 
     return tokenId;
 }
@@ -1768,7 +1772,7 @@ export async function wakeupParasite<
         throw new OakUserException('此用户已经登录过系统，不允许借用身份');
     }
 
-    const closeFn = context.openRootMode();
+    const closeRootMode = context.openRootMode();
     if (!parasite.multiple) {
         await context.operate(
             'parasite',
@@ -1807,6 +1811,6 @@ export async function wakeupParasite<
     );
 
     await loadTokenInfo<ED, Cxt>(tokenId, context);
-    closeFn();
+    closeRootMode();
     return tokenId;
 }

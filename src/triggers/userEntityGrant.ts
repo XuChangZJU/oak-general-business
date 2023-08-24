@@ -162,34 +162,43 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
                 closeRootMode();
                 throw e;
             } else {
-                await context.operate(
-                    'userRelation',
-                    {
-                        id: generateNewId(),
-                        action: 'create',
-                        data: {
+                try {
+                    await context.operate(
+                        'userRelation',
+                        {
                             id: generateNewId(),
-                            userId,
-                            relationId,
-                            entity,
-                            entityId,
+                            action: 'create',
+                            data: {
+                                id: generateNewId(),
+                                userId,
+                                relationId,
+                                entity,
+                                entityId,
+                            },
                         },
-                    },
-                    option
-                );
-                // todo type是转让的话 需要回收授权者的关系
-                if (type === 'transfer') {
-                    await context.operate('userRelation', {
-                        id: await generateNewIdAsync(),
-                        action: 'remove',
-                        data: {},
-                        filter: {
-                            relationId,
-                            userId: granterId,
-                            entity,
-                            entityId,
-                        }
-                    }, option);
+                        option
+                    );
+                    // todo type是转让的话 需要回收授权者的关系
+                    if (type === 'transfer') {
+                        await context.operate(
+                            'userRelation',
+                            {
+                                id: await generateNewIdAsync(),
+                                action: 'remove',
+                                data: {},
+                                filter: {
+                                    relationId,
+                                    userId: granterId,
+                                    entity,
+                                    entityId,
+                                },
+                            },
+                            option
+                        );
+                    }
+                } catch (err) {
+                    closeRootMode();
+                    throw err;
                 }
 
                 closeRootMode();

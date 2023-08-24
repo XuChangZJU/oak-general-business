@@ -283,14 +283,20 @@ const triggers: Trigger<EntityDict, 'notification', BackendRuntimeContext<Entity
         strict: 'takeEasy',
         fn: async ({ operation }, context) => {
             const { data } = operation;
-            if (data instanceof Array) {
-                for (const d of data) {
-                    await sendNotification(d, context);
+            const closeRootMode = context.openRootMode();
+            try {
+                if (data instanceof Array) {
+                    for (const d of data) {
+                        await sendNotification(d, context);
+                    }
+                } else {
+                    await sendNotification(data, context);
                 }
+            } catch (err) {
+                closeRootMode();
+                throw err;
             }
-            else {
-                await sendNotification(data, context);
-            }
+            closeRootMode();
             return 0;
         }
     } as CreateTrigger<EntityDict, 'notification', BackendRuntimeContext<EntityDict>>,
@@ -302,37 +308,42 @@ const triggers: Trigger<EntityDict, 'notification', BackendRuntimeContext<Entity
         fn: async ({ operation }, context) => {
             const { filter } = operation;
             assert(filter!.id);
-            const messages = await context.select('message', {
-                data: {
-                    id: 1,
-                    weight: 1,
-                    iState: 1,
-                    type: 1,
-                    entity: 1,
-                    entityId: 1,
-                    userId: 1,
-                    messageSystem$message: {
-                        $entity: 'messageSystem',
+            const closeRootMode = context.openRootMode();
+
+            try {
+                const messages = await context.select(
+                    'message',
+                    {
                         data: {
                             id: 1,
-                            notification$messageSystem: {
-                                $entity: 'notification',
+                            weight: 1,
+                            iState: 1,
+                            type: 1,
+                            entity: 1,
+                            entityId: 1,
+                            userId: 1,
+                            messageSystem$message: {
+                                $entity: 'messageSystem',
                                 data: {
                                     id: 1,
-                                    iState: 1,
-                                    channel: 1,
+                                    notification$messageSystem: {
+                                        $entity: 'notification',
+                                        data: {
+                                            id: 1,
+                                            iState: 1,
+                                            channel: 1,
+                                        },
+                                    },
                                 },
                             },
                         },
-                    },
-                },
-                filter: {
-                    messageSystem$message: {
-                        notification$messageSystem: {
-                            id: filter!.id,
-                        }
-                    },
-                    /* id: {
+                        filter: {
+                            messageSystem$message: {
+                                notification$messageSystem: {
+                                    id: filter!.id,
+                                },
+                            },
+                            /* id: {
                         $in: {
                             entity: 'messageSystem',
                             data: {
@@ -353,65 +364,86 @@ const triggers: Trigger<EntityDict, 'notification', BackendRuntimeContext<Entity
                             }
                         }
                     } */
+                        },
+                    },
+                    { dontCollect: true }
+                );
+                assert(messages.length === 1);
+                const [message] = messages;
+                if (message.iState === 'success') {
+                    closeRootMode();
+                    return 0;
                 }
-            }, { dontCollect: true });
-            assert(messages.length === 1);
-            const [message] = messages;
-            if (message.iState === 'success') {
-                return 0;
-            }
 
-            // 查看所有的notification状态，只要有一个完成就已经完成了
-            let success = false;
-            let allFailed = true;
-            let smsTried = false;
-            for (const ms of message.messageSystem$message!) {
-                for (const n of ms.notification$messageSystem!) {
-                    if (n.iState === 'success') {
-                        success = true;
+                // 查看所有的notification状态，只要有一个完成就已经完成了
+                let success = false;
+                let allFailed = true;
+                let smsTried = false;
+                for (const ms of message.messageSystem$message!) {
+                    for (const n of ms.notification$messageSystem!) {
+                        if (n.iState === 'success') {
+                            success = true;
+                            break;
+                        }
+                        if (n.iState !== 'failure') {
+                            allFailed = false;
+                        }
+                        if (n.channel === 'sms') {
+                            smsTried = true;
+                        }
+                    }
+                    if (success === true) {
                         break;
                     }
-                    if (n.iState !== 'failure') {
-                        allFailed = false;
-                    }
-                    if (n.channel === 'sms') {
-                        smsTried = true;
-                    }
                 }
-                if (success === true) {
-                    break;
+
+                if (success) {
+                    // 有一个完成就算完成
+                    await context.operate(
+                        'message',
+                        {
+                            id: await generateNewIdAsync(),
+                            action: 'succeed',
+                            data: {},
+                            filter: {
+                                id: message.id,
+                            },
+                        },
+                        { dontCollect: true }
+                    );
+                    closeRootMode();
+                    return 1;
                 }
-            }
 
-            if (success) {
-                // 有一个完成就算完成
-                await context.operate('message', {
-                    id: await generateNewIdAsync(),
-                    action: 'succeed',
-                    data: {},
-                    filter: {
-                        id: message.id,
-                    },
-                }, { dontCollect: true });
-                return 1;
-            }
-
-            if (message.weight === 'medium' && !smsTried && allFailed) {
-                // 中级的消息，在其它途径都失败的情况下再发短信
-                const result = await tryCreateSmsNotification(message as EntityDict['message']['Schema'], context);
-                return result;
-            }
-            // 标识消息发送失败
-            if (allFailed) {
-                await context.operate('message', {
-                    id: await generateNewIdAsync(),
-                    action: 'fail',
-                    data: {},
-                    filter: {
-                        id: message.id,
-                    },
-                }, { dontCollect: true });
-                return 1;
+                if (message.weight === 'medium' && !smsTried && allFailed) {
+                    // 中级的消息，在其它途径都失败的情况下再发短信
+                    const result = await tryCreateSmsNotification(
+                        message as EntityDict['message']['Schema'],
+                        context
+                    );
+                    closeRootMode();
+                    return result;
+                }
+                // 标识消息发送失败
+                if (allFailed) {
+                    await context.operate(
+                        'message',
+                        {
+                            id: await generateNewIdAsync(),
+                            action: 'fail',
+                            data: {},
+                            filter: {
+                                id: message.id,
+                            },
+                        },
+                        { dontCollect: true }
+                    );
+                    closeRootMode();
+                    return 1;
+                }
+            } catch (err) {
+                closeRootMode();
+                throw err;
             }
         }
     } as UpdateTriggerInTxn<EntityDict, 'notification', BackendRuntimeContext<EntityDict>>

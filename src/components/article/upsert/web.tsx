@@ -16,7 +16,6 @@ import { IToolbarConfig } from "@wangeditor/editor";
 import { EntityDict } from "./../../../oak-app-domain";
 import { WebComponentProps } from "oak-frontend-base";
 import Style from "./web.module.less";
-import useFeatures from "../../../hooks/useFeatures";
 import {
     EyeOutlined,
 } from "@ant-design/icons";
@@ -98,8 +97,8 @@ export default function Render(
         gotoPreview,
     } = method;
     const { id, content, editor, origin1, oakFullpath, html, oakId, articleMenuId, changeIsEdit } = data;
-    const features = useFeatures();
     const [articleId, setArticleId] = useState("");
+
     useEffect(() => {
         if (id) {
             setArticleId(id);
@@ -169,8 +168,7 @@ export default function Render(
 
                                                     try {
                                                         // 自己实现上传，并得到图片 url alt href
-                                                        const { url, bucket } =
-                                                            await features.extraFile.upload(extraFile);
+                                                        const { url, bucket } = await uploadFile(extraFile);
                                                         extraFile.bucket = bucket;
                                                         extraFile.extra1 = null;
                                                         await addExtraFile(extraFile);
@@ -213,8 +211,7 @@ export default function Render(
 
                                                     try {
                                                         // 自己实现上传，并得到图片 url alt href
-                                                        const { url, bucket } =
-                                                            await features.extraFile.upload(extraFile);
+                                                        const { url, bucket } = await uploadFile(extraFile);
                                                         extraFile.bucket = bucket;
                                                         extraFile.extra1 = null;
                                                         await addExtraFile(extraFile);

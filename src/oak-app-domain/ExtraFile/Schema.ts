@@ -21,7 +21,7 @@ export type OpSchema = EntityShape & {
     entity: "article" | "articleMenu" | "user" | string;
     entityId: String<64>;
     extra1?: Text | null;
-    extension: String<16>;
+    extension?: String<16> | null;
     size?: Int<4> | null;
     sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
@@ -40,7 +40,7 @@ export type Schema = EntityShape & {
     entity: "article" | "articleMenu" | "user" | string;
     entityId: String<64>;
     extra1?: Text | null;
-    extension: String<16>;
+    extension?: String<16> | null;
     size?: Int<4> | null;
     sort?: Float<22, 10> | null;
     fileType?: String<128> | null;

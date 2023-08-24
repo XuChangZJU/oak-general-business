@@ -23,7 +23,7 @@ export default OakComponent({
             id: article?.id,
             content: article?.content,
             name: article?.name,
-            articleMenuId: article?.articleMenuId
+            articleMenuId: article?.articleMenuId,
         };
     },
     data: {
@@ -42,14 +42,14 @@ export default OakComponent({
                 next.editor.setHtml(next.content);
             }
         },
-        'oakId'(prev, next) {
-            if(prev.oakId !== next.oakId) {
+        oakId(prev, next) {
+            if (prev.oakId !== next.oakId) {
                 const { editor } = this.state;
-            if (editor == null) return;
-            editor.destroy();
-            this.setEditor(null);
+                if (editor == null) return;
+                editor.destroy();
+                this.setEditor(null);
             }
-        }
+        },
     },
     lifetimes: {
         async ready() {
@@ -62,7 +62,7 @@ export default OakComponent({
                     const { editor } = this.state;
                     editor?.setHtml('');
                     this.update({
-                        content: ''
+                        content: '',
                     });
                 }
             } else {
@@ -87,8 +87,11 @@ export default OakComponent({
             return result;
         },
 
-        uploadFile(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
-            return this.features.extraFile.upload(extraFile);
+        async uploadFile(
+            extraFile: EntityDict['extraFile']['CreateSingle']['data']
+        ) {
+            const result = await this.features.extraFile.upload(extraFile);
+            return result; 
         },
 
         setEditor(editor: IDomEditor | null) {
@@ -110,7 +113,7 @@ export default OakComponent({
                 this.state.html !== '<p><br></p>'
             ) {
                 await this.execute();
-                if(this.props.changeIsEdit) {
+                if (this.props.changeIsEdit) {
                     this.props.changeIsEdit();
                 }
             } else if (this.state.name && this.state.name.length > 0) {
@@ -118,7 +121,11 @@ export default OakComponent({
                     content: '请填写文章内容!',
                     type: 'warning',
                 });
-            } else if (this.state.content && this.state.content.length > 0 && this.state.html !== '<p><br></p>') {
+            } else if (
+                this.state.content &&
+                this.state.content.length > 0 &&
+                this.state.html !== '<p><br></p>'
+            ) {
                 this.setMessage({
                     content: '请填写文章标题!',
                     type: 'warning',

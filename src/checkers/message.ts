@@ -12,6 +12,13 @@ const checkers: Checker<EntityDict, 'message', RuntimeCxt> [] = [
         entity: 'message',
         checker: (operation, context) => {
             const systemId = context.getSystemId();
+            if (!systemId) {
+                return;
+            }
+            const isRoot = context.isRoot();
+            if (isRoot) {
+                return;
+            }
             const filter: EntityDict['message']['Selection']['filter'] = {
                 messageSystem$message: {
                     systemId,
