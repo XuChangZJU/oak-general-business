@@ -303,14 +303,20 @@ const triggers: Trigger<EntityDict, 'message', BRC>[] = [
         fn: async ({ operation }, context, params) => {
             const { data } = operation;
             let count = 0;
-            if (data instanceof Array) {
-                for (const d of data) {
-                    count += await createNotification(d, context);
+            const closeRootMode = context.openRootMode();
+            try {
+                if (data instanceof Array) {
+                    for (const d of data) {
+                        count += await createNotification(d, context);
+                    }
+                } else {
+                    count = await createNotification(data, context);
                 }
+            } catch (err) {
+                closeRootMode();
+                throw err;
             }
-            else {
-                count = await createNotification(data, context);
-            }
+            closeRootMode();
             return count;
         }
     } as CreateTrigger<EntityDict, 'message', BRC>,
