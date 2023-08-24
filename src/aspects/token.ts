@@ -981,7 +981,9 @@ export async function loginByWechat<
         undefined,
         (wechatUserLogin as EntityDict['wechatUser']['Schema']).user!
     );
+    const closeRootMode = context.openRootMode();
     await loadTokenInfo<ED, Cxt>(tokenId, context);
+    closeRootMode();
     return tokenId;
 }
 
