@@ -101,7 +101,10 @@ export default OakComponent({
             });
         },
         async handleConfirm() {
-            await this.execute('confirm');
+            // await this.execute('confirm');
+            await this.features.cache.exec('confirmUserEntityGrant', {
+                id: this.props.oakId,
+            });
             const { redirectTo } = this.state;
             if (redirectTo) {
                 this.setState({

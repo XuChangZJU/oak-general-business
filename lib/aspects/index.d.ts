@@ -6,6 +6,7 @@ import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user
 import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
 import { getMpUnlimitWxaCode } from './wechatQrCode';
+import { confirmUserEntityGrant } from './userEntityGrant';
 declare const aspectDict: {
     mergeUser: typeof mergeUser;
     switchTo: typeof switchTo;
@@ -30,5 +31,6 @@ declare const aspectDict: {
     getChangePasswordChannels: typeof getChangePasswordChannels;
     updateUserPassword: typeof updateUserPassword;
     getMpUnlimitWxaCode: typeof getMpUnlimitWxaCode;
+    confirmUserEntityGrant: typeof confirmUserEntityGrant;
 };
 export default aspectDict;

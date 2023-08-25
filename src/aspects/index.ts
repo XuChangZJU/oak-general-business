@@ -18,7 +18,7 @@ import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user
 import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
 import { getMpUnlimitWxaCode } from './wechatQrCode';
-
+import { confirmUserEntityGrant } from './userEntityGrant'
 const aspectDict = {
     mergeUser,
     switchTo,
@@ -43,6 +43,7 @@ const aspectDict = {
     getChangePasswordChannels,
     updateUserPassword,
     getMpUnlimitWxaCode,
+    confirmUserEntityGrant,
 };
 
 export default aspectDict;
