@@ -152,6 +152,14 @@ function QrCode(props: QrCodeProps) {
         );
     }
 
+    if (!appId) {
+        V = (
+            <div className={`${prefixCls2}_err`}>
+                <div className={`${prefixCls2}_err_text`}>缺少参数</div>
+            </div>
+        );
+    }
+
     return (
         <>
             {DisableV}
