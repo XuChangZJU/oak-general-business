@@ -128,185 +128,198 @@ export async function getChangePasswordChannels<ED extends EntityDict & BaseEnti
 
 export async function updateUserPassword<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(params: { userId: string, prevPassword?: string, captcha?: string, newPassword: string, mobile?: string }, context: Cxt, innerLogic?: boolean) {
     const { userId, prevPassword, captcha, mobile, newPassword } = params;
-    const [user] = await context.select(
-        'user',
-        {
-            data: {
-                id: 1,
-                password: 1,
-            }
-        },
-        {}
-    )
-    if (prevPassword) {
-        const [lastSuccessfulTemp] = await context.select(
-            'changePasswordTemp',
+    const closeRootMode = context.openRootMode();
+    try {
+        const [user] = await context.select(
+            'user',
             {
                 data: {
                     id: 1,
-                    $$seq$$: 1,
-                },
-                filter: {
-                    userId,
-                    $$createAt$$: {
-                        $gt: dayjs().startOf('day').valueOf(),
-                    },
-                    result: 'success',
-                },
-                sorter: [
-                    {
-                        $attr: {
-                            $$seq$$: 1,
-                        },
-                        $direction: 'desc',
-                    },
-                ],
-                indexFrom: 0,
-                count: 1,
+                    password: 1,
+                }
             },
             {}
         )
-        const count1 = await context.count(
-            'changePasswordTemp',
-            {
-                filter: lastSuccessfulTemp ? {
-                    userId,
-                    $$seq$$: {
-                        $gt: lastSuccessfulTemp.$$seq$$!,
-                    },
-                    result: 'fail',
-                } : {
-                    userId,
-                    $$createAt$$: {
-                        $gt: dayjs().startOf('day').valueOf(),
-                    },
-                    result: 'fail',
-                },
-            },
-            {
-            }
-        )
-        if (count1 >= 5) {
-            return {
-                result: '您今天已尝试过太多次，请稍候再进行操作',
-                times: count1,
-            }
-        }
-
-        if (user.password === prevPassword) {
-            await context.operate(
-                'user',
+        if (prevPassword) {
+            const [lastSuccessfulTemp] = await context.select(
+                'changePasswordTemp',
                 {
-                    id: await generateNewIdAsync(),
-                    action: 'update',
                     data: {
-                        password: newPassword,
-                        passwordSha1: encryptPasswordSha1(newPassword)
+                        id: 1,
+                        $$seq$$: 1,
                     },
                     filter: {
-                        id: userId,
-                    },
-                },
-                {}
-            );
-            await context.operate(
-                'changePasswordTemp',
-                {
-                    id: await generateNewIdAsync(),
-                    action: 'create',
-                    data: {
-                        id: await generateNewIdAsync(),
                         userId,
-                        prevPassword,
-                        newPassword,
+                        $$createAt$$: {
+                            $gt: dayjs().startOf('day').valueOf(),
+                        },
                         result: 'success',
                     },
+                    sorter: [
+                        {
+                            $attr: {
+                                $$seq$$: 1,
+                            },
+                            $direction: 'desc',
+                        },
+                    ],
+                    indexFrom: 0,
+                    count: 1,
                 },
                 {}
-            );
-            return {
-                result: 'success'
-            };
-        } else {
-            await context.operate(
+            )
+            const count1 = await context.count(
                 'changePasswordTemp',
                 {
-                    id: await generateNewIdAsync(),
-                    action: 'create',
-                    data: {
-                        id: await generateNewIdAsync(),
+                    filter: lastSuccessfulTemp ? {
                         userId,
-                        prevPassword,
-                        newPassword,
+                        $$seq$$: {
+                            $gt: lastSuccessfulTemp.$$seq$$!,
+                        },
+                        result: 'fail',
+                    } : {
+                        userId,
+                        $$createAt$$: {
+                            $gt: dayjs().startOf('day').valueOf(),
+                        },
                         result: 'fail',
                     },
                 },
-                {}
-            );
-            return {
-                result: '原密码不正确，请检查后输入',
-                times: count1,
-            };
-        }
-    }
-    if (mobile && captcha) {
-        const [aliveCaptcha] = await context.select(
-            'captcha',
-            {
-                data: {
-                    id: 1,
-                },
-                filter: {
-                    mobile,
-                    code: captcha,
-                    expired: false,
-                },
-                indexFrom: 0,
-                count: 1,
-            },
-            {}
-        );
-        if (aliveCaptcha) {
-            await context.operate(
-                'user',
                 {
-                    id: await generateNewIdAsync(),
-                    action: 'update',
-                    data: {
-                        password: newPassword,
-                        passwordSha1: encryptPasswordSha1(newPassword)
-                    },
-                    filter: {
-                        id: userId,
-                    },
-                },
-                {}
-            );
-            await context.operate(
-                'changePasswordTemp',
-                {
-                    id: await generateNewIdAsync(),
-                    action: 'create',
-                    data: {
+                }
+            )
+            if (count1 >= 5) {
+                closeRootMode();
+                return {
+                    result: '您今天已尝试过太多次，请稍候再进行操作',
+                    times: count1,
+                }
+            }
+
+            if (user.password === prevPassword) {
+                await context.operate(
+                    'user',
+                    {
                         id: await generateNewIdAsync(),
-                        userId,
-                        prevPassword: user.password,
-                        newPassword,
-                        result: 'success',
+                        action: 'update',
+                        data: {
+                            password: newPassword,
+                            passwordSha1: encryptPasswordSha1(newPassword)
+                        },
+                        filter: {
+                            id: userId,
+                        },
                     },
-                },
-                {}
-            );
-            return {
-                result: 'success'
-            };
-        } else {
-            return {
-                result: '验证码错误',
+                    {}
+                );
+                await context.operate(
+                    'changePasswordTemp',
+                    {
+                        id: await generateNewIdAsync(),
+                        action: 'create',
+                        data: {
+                            id: await generateNewIdAsync(),
+                            userId,
+                            prevPassword,
+                            newPassword,
+                            result: 'success',
+                        },
+                    },
+                    {}
+                );
+                closeRootMode();
+                return {
+                    result: 'success'
+                };
+            } else {
+                await context.operate(
+                    'changePasswordTemp',
+                    {
+                        id: await generateNewIdAsync(),
+                        action: 'create',
+                        data: {
+                            id: await generateNewIdAsync(),
+                            userId,
+                            prevPassword,
+                            newPassword,
+                            result: 'fail',
+                        },
+                    },
+                    {}
+                );
+                closeRootMode();
+                return {
+                    result: '原密码不正确，请检查后输入',
+                    times: count1,
+                };
             }
         }
+        if (mobile && captcha) {
+            const [aliveCaptcha] = await context.select(
+                'captcha',
+                {
+                    data: {
+                        id: 1,
+                    },
+                    filter: {
+                        mobile,
+                        code: captcha,
+                        expired: false,
+                    },
+                    indexFrom: 0,
+                    count: 1,
+                },
+                {}
+            );
+            if (aliveCaptcha) {
+                await context.operate(
+                    'user',
+                    {
+                        id: await generateNewIdAsync(),
+                        action: 'update',
+                        data: {
+                            password: newPassword,
+                            passwordSha1: encryptPasswordSha1(newPassword)
+                        },
+                        filter: {
+                            id: userId,
+                        },
+                    },
+                    {}
+                );
+                await context.operate(
+                    'changePasswordTemp',
+                    {
+                        id: await generateNewIdAsync(),
+                        action: 'create',
+                        data: {
+                            id: await generateNewIdAsync(),
+                            userId,
+                            prevPassword: user.password,
+                            newPassword,
+                            result: 'success',
+                        },
+                    },
+                    {}
+                );
+                closeRootMode();
+                return {
+                    result: 'success'
+                };
+            } else {
+                closeRootMode();
+                return {
+                    result: '验证码错误',
+                }
+            }
+        }
+        closeRootMode();
+        return {
+            result: '缺少原密码或验证码，请检查后再进行操作'
+        }
+    } catch (err) {
+        closeRootMode();
+        throw err;
     }
-    return {
-        result: '缺少原密码或验证码，请检查后再进行操作'
-    }
+
 }
