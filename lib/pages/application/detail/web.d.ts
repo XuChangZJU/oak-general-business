@@ -14,5 +14,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
 }, {
     onTabClick: (key: string) => void;
     goWechatPublicTagList: () => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
 export {};

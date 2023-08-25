@@ -20,6 +20,7 @@ export const DeducedRelationMap = {
 
 export const SelectFreeEntities = [
     'application',
+    'domain',
     'area',
     'mobile',
     'wechatQrCode',

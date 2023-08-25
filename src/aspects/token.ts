@@ -1692,9 +1692,13 @@ export async function getWechatMpUserPhoneNumber<
         appSecret
     ) as WechatMpInstance;
     const result = await wechatInstance.getUserPhoneNumber(code);
+    const closeRootMode = context.openRootMode();
     //获取 绑定的手机号码
     const phoneNumber = result?.phoneNumber;
-    return await setupMobile<ED, Cxt>(phoneNumber, env, context);
+    const reuslt = await setupMobile<ED, Cxt>(phoneNumber, env, context);
+    closeRootMode()
+    return reuslt;
+
 }
 
 export async function logout<

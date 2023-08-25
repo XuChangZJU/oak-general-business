@@ -12,4 +12,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     openArray: string[];
 }, {
     createOne: () => Promise<void>;
-}>): JSX.Element | null;
+}>): import("react/jsx-runtime").JSX.Element | null;

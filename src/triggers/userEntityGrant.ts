@@ -64,7 +64,8 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
         when: 'before',
         fn: async ({ operation }, context, params) => {
             const { data, filter } = operation;
-            const { userId } = (await context.getToken())!;
+            const { userId } = context.getToken()!;
+            const closeRootMode = context.openRootMode();
             const result = await context.select(
                 'userEntityGrant',
                 {
@@ -86,6 +87,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
                     dontCollect: true,
                 }
             );
+
             const { number, confirmed } = result[0];
             if (confirmed! >= number!) {
                 throw new OakExternalException(`超出分享上限人数${number}人`);
@@ -99,6 +101,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
                     granteeId: userId,
                 });
             }
+            closeRootMode();
             return 0;
         },
     } as UpdateTrigger<EntityDict, 'userEntityGrant', BRC>,
@@ -110,6 +113,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
         fn: async ({ operation }, context, option) => {
             const { data, filter } = operation;
             const { userId } = context.getToken()!;
+            const closeRootMode = context.openRootMode();
             const [userEntityGrant] = await context.select(
                 'userEntityGrant',
                 {
@@ -134,7 +138,6 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
             const { entity, entityId, relationId, granterId, type } =
                 userEntityGrant;
 
-            const closeRootMode = context.openRootMode();
             const result2 = await context.select(
                 'userRelation',
                 {
@@ -231,7 +234,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
                 },
                 {}
             );
-        
+
             return 1;
         },
     } as UpdateTrigger<EntityDict, 'userEntityGrant', BRC>,
