@@ -327,7 +327,7 @@ export default function Render(
                                 {isSupportWechatPublic && (
                                     <WechatLoginQrCodeForPublic
                                         type="login"
-                                        oakPath="$user/info-wechatLogin/qrCode"
+                                        oakPath="$login-wechatLogin/qrCode"
                                         oakAutoUnmount={true}
                                         url={state}
                                     />
