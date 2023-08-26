@@ -9,7 +9,7 @@ interface GrantProps {
     appId: string;
     scope: 'snsapi_userinfo' | 'snsapi_login';
     redirectUri: string;
-    state: string;
+    state?: string;
     style?: React.CSSProperties;
     className?: string;
     dev?: boolean;
@@ -19,7 +19,7 @@ interface GrantProps {
     rootClassName?: string;
 }
 
-const WeChatLoginUrl = template`https://open.weixin.qq.com/connect/oauth2/authorize?redirect_uri=${0}&appid=${1}&response_type=code&scope=${2}&state=${3}&#wechat_redirect`;
+const WeChatLoginUrl = template`https://open.weixin.qq.com/connect/oauth2/authorize?redirect_uri=${0}&appid=${1}&response_type=code&scope=${2}${3}&#wechat_redirect`;
 
 function Grant(props: GrantProps) {
     const {
@@ -76,9 +76,14 @@ function Grant(props: GrantProps) {
                                 messageApi.info(disableText || 'disabled');
                                 return;
                             }
-                            window.location.href =
-                                decodeURIComponent(redirectUri) +
-                                `?code=${code}&state=${state}`;
+                            const url = new URL(
+                                decodeURIComponent(redirectUri)
+                            );
+                            url.searchParams.set('code', code);
+                            if (state) {
+                                url.searchParams.set('state', state);
+                            }
+                            window.location.href = url.toString();
                         }}
                     >
                         微信授权一键登录
@@ -114,7 +119,7 @@ function Grant(props: GrantProps) {
                                  redirectUri,
                                  appId,
                                  scope,
-                                 state
+                                 state ? `&state=${state}` : '', 
                              );
 
                              window.location.href = url;

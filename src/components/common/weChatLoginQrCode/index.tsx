@@ -8,7 +8,7 @@ interface QrCodeProps {
     appId: string;
     scope: 'snsapi_userinfo' | 'snsapi_login';
     redirectUri: string;
-    state: string;
+    state?: string;
     style?: string;
     href?: string;
     dev?: boolean;
@@ -48,16 +48,27 @@ function QrCode(props: QrCodeProps) {
             loadScript(
                 `${window.location.protocol}//res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js`,
                 () => {
-                    // @ts-ignore
-                    new WxLogin({
+                    const params: {
+                        id: string;
+                        appid: string;
+                        scope: string;
+                        redirect_uri: string;
+                        style?: string;
+                        href?: string;
+                        state?: string;
+                    } = {
                         id,
                         appid: appId,
                         scope,
                         redirect_uri: redirectUri,
-                        state,
                         style,
                         href,
-                    });
+                    };
+                    if (state) {
+                        params.state = state;
+                    }
+                    // @ts-ignore
+                    new WxLogin(params);
                 }
             );
         }
@@ -129,9 +140,14 @@ function QrCode(props: QrCodeProps) {
                     <button
                         className={`${prefixCls2}_dev_header_btn`}
                         onClick={() => {
-                            window.location.href =
-                                decodeURIComponent(redirectUri) +
-                                `?code=${code}&state=${state}`;
+                            const url = new URL(
+                                decodeURIComponent(redirectUri)
+                            );
+                            url.searchParams.set('code', code);
+                            if (state) {
+                                url.searchParams.set('state', state);
+                            }
+                            window.location.href = url.toString();
                         }}
                     >
                         登录

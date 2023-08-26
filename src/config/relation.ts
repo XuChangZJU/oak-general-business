@@ -24,6 +24,7 @@ export const SelectFreeEntities = [
     'area',
     'mobile',
     'wechatQrCode',
+    'wechatLogin',
     'messageTypeTemplateId',
     'token',
 ];

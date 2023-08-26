@@ -5,7 +5,7 @@ interface GrantProps {
     appId: string;
     scope: 'snsapi_userinfo' | 'snsapi_login';
     redirectUri: string;
-    state: string;
+    state?: string;
     style?: React.CSSProperties;
     className?: string;
     dev?: boolean;

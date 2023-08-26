@@ -74,12 +74,7 @@ export default function Render(
         redirectUri,
         url,
     } = data;
-    const {
-        sendCaptcha,
-        loginByMobile,
-        t,
-        setLoginMode,
-    } = methods;
+    const { sendCaptcha, loginByMobile, t, setLoginMode } = methods;
 
     const [mobile, setMobile] = useState('');
     const [captcha, setCaptcha] = useState('');
@@ -240,16 +235,18 @@ export default function Render(
 
     useEffect(() => {
         getOptions();
-    }, [isSupportGrant, onlyPassword, onlyCaptcha, isSupportWechat, isSupportWechatPublic]);
+    }, [
+        isSupportGrant,
+        onlyPassword,
+        onlyCaptcha,
+        isSupportWechat,
+        isSupportWechatPublic,
+    ]);
 
-    // 构建state 默认网站首页
-    let state = '/';
+    // 构建微信扫码所需state参数，url存在，扫码后重定向url，否则返回上一页
+    let state = '';
     if (url) {
-        state = encodeURIComponent(`?backUrl=${decodeURIComponent(url)}`);
-    }
-    else {
-        // isGoBack 登录过期抛出异常 返回上一页
-        state = encodeURIComponent('?isGoBack=true');
+        state = encodeURIComponent(decodeURIComponent(url));
     }
 
     return (
@@ -332,13 +329,13 @@ export default function Render(
                                         type="login"
                                         oakPath="$user/info-wechatLogin/qrCode"
                                         oakAutoUnmount={true}
-                                        isGoBack={true}
+                                        url={state}
                                     />
                                 )}
                             </div>
                         </>
                     )}
-                </div>                
+                </div>
             </div>
         </div>
     );

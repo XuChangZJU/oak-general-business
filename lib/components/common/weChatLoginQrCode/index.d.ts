@@ -5,7 +5,7 @@ interface QrCodeProps {
     appId: string;
     scope: 'snsapi_userinfo' | 'snsapi_login';
     redirectUri: string;
-    state: string;
+    state?: string;
     style?: string;
     href?: string;
     dev?: boolean;

@@ -143,10 +143,9 @@ export default OakComponent({
                     this.redirectTo({
                         url,
                     });
+                    return;
                 }
-                else {
-                    this.navigateBack();
-                }
+                this.navigateBack();
             } catch (err) {
                 this.setState({
                     loading: false,

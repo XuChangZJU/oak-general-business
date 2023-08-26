@@ -65,54 +65,14 @@ export default OakComponent({
                 }
             }
         },
-        go(state?: string | string[]) {
+        go(state?: string) {
             if (!state) {
-                this.redirectTo({
-                    url: '/',
-                });
-                return;
-            }
-            //需要对backUrl进行处理
-            let url = state;
-            if (url.indexOf('backUrl') > 0) {
-                url =
-                    '?backUrl=' +
-                    encodeURIComponent((url as string).replace('?backUrl=', ''));
-            }
-            //解析state里面的数据
-            const stateObj = URL.parse(url as string, true);
-            const stateQuery = stateObj?.query;
-            const pathname = stateObj?.pathname;
-
-            if (stateQuery?.backUrl) {
-                // todo 现在不存在跨域名登录 不需要使用window.location.replace
-                // window.location.replace(stateQuery?.backUrl as string);
-                this.redirectTo({
-                    url: stateQuery?.backUrl as string,
-                });
-                return;
-            }
-            // 如果stateQuery存在isGoBack为true 返回上一页
-            if (stateQuery?.isGoBack) {
                 this.navigateBack(2);
                 return;
             }
-            this.redirectTo(
-                {
-                    url: pathname!,
-                },
-                stateQuery
-            );
-        },
-        strCharPosition(str: string, char: string) {
-            let pos: number;
-            const arr: number[] = [];
-            pos = str.indexOf(char);
-            while (pos > -1) {
-                arr.push(pos);
-                pos = str.indexOf(char, pos + 1);
-            }
-            return arr.length;
+            this.redirectTo({
+                url: state as string,
+            });
         },
     },
 });

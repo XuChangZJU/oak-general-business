@@ -14,7 +14,7 @@ export default OakComponent({
             }, Interval);
             (this as any).intervalId = setInterval(() => {
                 this.getWechatLogin2();
-            }, 1000)
+            }, 1000);
         },
         async detached() {
             if ((this as any).createTimer) {
@@ -32,16 +32,18 @@ export default OakComponent({
     },
     properties: {
         type: 'bind' as EntityDict['wechatLogin']['Schema']['type'],
-        backUrl: '',
-        isGoBack: false,
+        url: '',
     },
     methods: {
         async createWechatLogin() {
             const { type = 'bind' } = this.props;
-            const {result: wechatLoginId} = await this.features.cache.exec('createWechatLogin', {
-                type,
-                interval: Interval,
-            });
+            const { result: wechatLoginId } = await this.features.cache.exec(
+                'createWechatLogin',
+                {
+                    type,
+                    interval: Interval,
+                }
+            );
             this.setState(
                 {
                     wechatLoginId,
@@ -54,7 +56,7 @@ export default OakComponent({
         async getWechatLogin() {
             const { wechatLoginId } = this.state;
             this.setState({
-                loading: true
+                loading: true,
             });
             const {
                 data: [wechatLogin],
@@ -146,25 +148,28 @@ export default OakComponent({
                 },
             });
             const { successed, type } = wechatLogin;
-            this.setState({
-                successed,
-                type,
-            }, async () => {
-                // 未登录的情况下才走这里
-                if (successed && type === 'login') {
-                    await this.features.token.loginByWechatInWebEnv(wechatLoginId);
-                    const { backUrl, isGoBack } = this.props;
-                    if (isGoBack) {
+            this.setState(
+                {
+                    successed,
+                    type,
+                },
+                async () => {
+                    // 未登录的情况下才走这里
+                    if (successed && type === 'login') {
+                        await this.features.token.loginByWechatInWebEnv(
+                            wechatLoginId
+                        );
+                        const { url } = this.props;
+                        if (url) {
+                            this.redirectTo({
+                                url: url,
+                            });
+                            return;
+                        }
                         this.navigateBack();
-                        return;
-                    }
-                    else if (backUrl) {
-                        this.redirectTo({
-                            url: backUrl,
-                        });
                     }
                 }
-            })
-        }
+            );
+        },
     },
 });
