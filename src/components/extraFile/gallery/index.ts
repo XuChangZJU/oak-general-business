@@ -27,14 +27,14 @@ export default OakComponent({
         entity: 1,
         entityId: 1,
         fileType: 1,
-        sort:1,
+        sort: 1,
         isBridge: 1,
     },
     formData({ data: originalFiles, features }) {
         let files = (
             originalFiles as Array<EntityDict['extraFile']['OpSchema']>
         )?.filter((ele) => !ele.$$deleteAt$$).sort(
-          (ele1, ele2) => ele1.sort! - ele2.sort!
+            (ele1, ele2) => ele1.sort! - ele2.sort!
         );
         if (this.props.tag1) {
             files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
@@ -72,7 +72,7 @@ export default OakComponent({
         },
     ],
     properties: {
-        removeLater: false as boolean,
+        removeLater: true,
         autoUpload: false,
         maxNumber: 20,
         extension: [] as string[],
@@ -85,7 +85,7 @@ export default OakComponent({
         // 每行可显示的个数
         size: 3,
         showUploadList: true,
-        accept: 'image/*' as string,
+        accept: 'image/*',
         // 图片是否可预览
         preview: true,
         // 图片是否可删除
@@ -232,14 +232,11 @@ export default OakComponent({
             uploadFiles: any[],
             callback?: (file: any, status: string) => void
         ) {
-          const { files } = this.state
-            const currentSort = files?.length  ? files[files.length - 1].sort : 0;
+            const { files } = this.state
+            const currentSort = files?.length ? files[files.length - 1].sort : 0;
             await Promise.all(
                 uploadFiles.map(async (uploadFile, index) => {
                     const { name, type, size, originFileObj } = uploadFile;
-              
-
-                 
                     await this.pushExtraFile(
                         {
                             name,
@@ -250,8 +247,8 @@ export default OakComponent({
                         },
                         callback
                     );
-                   
-                    
+
+
                 })
             );
         },
@@ -360,8 +357,8 @@ export default OakComponent({
         async onDeleteByMp(event: WechatMiniprogram.Touch) {
             const { value } = event.currentTarget.dataset;
             const { id, bucket, origin } = value;
-
-            if (this.props.removeLater || (origin !== 'unknown' && !bucket)) {
+            const { removeLater } = this.props;
+            if (removeLater || (origin !== 'unknown' && !bucket)) {
                 this.removeItem(id);
             } else {
                 const result = await wx.showModal({
@@ -377,8 +374,9 @@ export default OakComponent({
         },
         async onDeleteByWeb(value: any) {
             const { id, bucket, origin } = value;
+            const { removeLater = true } = this.props;
             // 如果 removeLater为true 或 origin === 'qiniu' 且 bucket不存在
-            if (this.props.removeLater || (origin !== 'unknown' && !bucket)) {
+            if (removeLater || (origin !== 'unknown' && !bucket)) {
                 this.removeItem(id);
             } else {
                 const confirm = Dialog.confirm({
