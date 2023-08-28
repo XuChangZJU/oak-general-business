@@ -19,8 +19,11 @@ export default OakComponent({
             },
         },
     ],
-    formData: ({ data: mobiles }) => {
+    formData: ({ data: mobiles, features }) => {
+        const token = features.token.getToken();
+        const tokenMobileId = token!.entity === 'mobile' && token!.entityId;
         return {
+            tokenMobileId,
             mobiles,
             allowRemove: mobiles.length > 1,
         };

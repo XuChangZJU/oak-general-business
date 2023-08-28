@@ -50,11 +50,11 @@ export class FrontendRuntimeContext<
     }
 
     getToken(allowUnloggedIn?: boolean) {
-        return this.token?.getToken(allowUnloggedIn, this);
+        return this.token?.getToken(allowUnloggedIn);
     }
 
     getCurrentUserId(allowUnloggedIn?: boolean): string | undefined {
-        return this.token?.getUserId(allowUnloggedIn, this);
+        return this.token?.getUserId(allowUnloggedIn);
     }
 
     toString(): string {
@@ -84,7 +84,7 @@ export class FrontendRuntimeContext<
     }
 
     allowUserUpdate(): boolean {
-        const userInfo = this.token?.getUserInfo(this);
+        const userInfo = this.token?.getUserInfo();
         if (userInfo) {
             const { userState } = userInfo;
             if (userState === 'disabled') {

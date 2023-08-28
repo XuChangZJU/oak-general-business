@@ -12,4 +12,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     setValue: (path: string, value: string) => void;
     removeItem: (path: string, index: number) => void;
     cleanKey: (path: string, key: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;
