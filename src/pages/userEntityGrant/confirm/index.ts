@@ -29,7 +29,7 @@ export default OakComponent({
         redirectTo: 1,
     },
     isList: false,
-    formData({ data: userEntityGrant, features }) {
+    formData({ data: userEntityGrant, features, props }) {
         const userId = features.token.getUserId(true);
         const granter = userEntityGrant?.granter;
         const type = userEntityGrant?.type;
@@ -51,12 +51,12 @@ export default OakComponent({
             confirmed: userEntityGrant?.confirmed,
             userId,
             redirectTo: userEntityGrant?.redirectTo,
+            id: userEntityGrant?.id,
         };
     },
     data: {
         redirectCounter: 0,
         hasConfirmed: false,
-        loading: true,
     },
     listeners: {
         redirectCounter(prev, next) {
@@ -101,12 +101,12 @@ export default OakComponent({
             });
         },
         async handleConfirm() {
-            // await this.execute('confirm');
-            await this.features.cache.exec('confirmUserEntityGrant', {
-                id: this.props.oakId,
-            });
+            await this.execute('confirm');
+            // await this.features.cache.exec('confirmUserEntityGrant', {
+            //     id: this.props.oakId,
+            // });
             const { redirectTo } = this.state;
-            if (redirectTo) {
+            if (redirectTo && Object.keys(redirectTo).length > 0) {
                 this.setState({
                     redirectCounter: 5,
                     hasConfirmed: true,
@@ -120,11 +120,7 @@ export default OakComponent({
         redirectPage() {
             const redirectTo = this.state
                 .redirectTo as EntityDict['userEntityGrant']['Schema']['redirectTo'];
-            if (!redirectTo) {
-                this.setMessage({
-                    type: 'error',
-                    content: '未配置跳转页面',
-                });
+            if (!redirectTo || Object.keys(redirectTo).length === 0) {
                 return;
             }
             const { pathname, props, state, isTabBar } = redirectTo;

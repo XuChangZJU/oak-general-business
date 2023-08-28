@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import { Button, Space } from 'antd';
 import Style from './web.module.less';
-import { UserAddOutlined, UserSwitchOutlined } from '@ant-design/icons';
-
+import {
+    UserAddOutlined,
+    UserSwitchOutlined,
+    LoadingOutlined,
+    WarningOutlined,
+} from '@ant-design/icons';
 import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
 
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
+import Success from '../../../components/common/result/success';
+import Fail from '../../../components/common/result/fail';
 
 export default function Render(
     props: WebComponentProps<
@@ -30,6 +36,8 @@ export default function Render(
             userId: string;
             redirectTo: EntityDict['userEntityGrant']['Schema']['redirectTo'];
             redirectCounter: number;
+            id: string;
+            oakId: string;
         },
         {
             handleConfirm: () => void;
@@ -53,13 +61,18 @@ export default function Render(
         userId,
         redirectTo,
         redirectCounter,
+        id,
+        oakId,
     } = props.data;
     const { t, handleConfirm, redirectPage } = props.methods;
     const isOwner = !!(granteeId && userId === granteeId);
 
     const getRelationTip = () => {
         let str = `${granter?.name || granter?.nickname}`;
-        const relationStr = relation?.display || relation ? t(`${entity}:r.${relation?.name}`) : '';
+        const relationStr =
+            relation?.display || relation
+                ? t(`${entity}:r.${relation?.name}`)
+                : '';
         if (type === 'grant') {
             str = str.concat('授予您【').concat(relationStr).concat('】');
             return str;
@@ -82,6 +95,25 @@ export default function Render(
         }
         return '请您领取';
     };
+
+    if (oakLoading) {
+        return (
+            <div className={Style.container}>
+                <Success
+                    icon={<LoadingOutlined className={Style.brand_icon} />}
+                    title="加载中"
+                    description="正在获取数据，请稍后"
+                />
+            </div>
+        );
+    }
+    if (oakId !== id) {
+        return (
+            <div className={Style.container}>
+                <Fail title="数据非法" description="抱歉，该数据不存在" />
+            </div>
+        );
+    }
 
     return (
         <div className={Style.container}>
