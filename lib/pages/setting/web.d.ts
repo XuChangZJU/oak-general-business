@@ -9,4 +9,4 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
 }, {
     logout: () => void;
     setVisible: () => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;
