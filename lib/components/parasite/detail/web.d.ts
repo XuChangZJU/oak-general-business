@@ -6,4 +6,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'userEntityG
     url: string;
     expiresAt: number;
     title?: string;
-}, {}>): JSX.Element;
+}, {}>): import("react/jsx-runtime").JSX.Element;
