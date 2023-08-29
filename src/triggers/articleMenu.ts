@@ -113,7 +113,7 @@ const triggers: Trigger<
         },
     },
     {
-        name: '在删除文章分类前，将文章分类的父节点的【isLeaf】置为【false】',
+        name: '在删除文章分类前，将文章分类的父节点的【isLeaf】置为【false】,同时删除extraFile',
         entity: 'articleMenu',
         action: 'remove',
         when: 'before',
@@ -135,6 +135,18 @@ const triggers: Trigger<
                         },
                     },
                     filter,
+                },
+                {}
+            );
+            await context.operate(
+                'extraFile',
+                {
+                    id: await generateNewIdAsync(),
+                    action: 'remove',
+                    data: {},
+                    filter: {
+                        entityId: filter!.id as string,
+                    },
                 },
                 {}
             );
