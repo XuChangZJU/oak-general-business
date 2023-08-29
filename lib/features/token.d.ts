@@ -25,15 +25,15 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     logout(): Promise<void>;
     removeToken(): void;
     getTokenValue(): string | undefined;
-    getToken(allowUnloggedIn?: boolean, context?: FrontCxt): Partial<ED["token"]["Schema"]> | undefined;
-    getUserId(allowUnloggedIn?: boolean, context?: FrontCxt): NonNullable<ED["token"]["Schema"]["userId"]> | undefined;
-    getUserInfo(context?: FrontCxt): ED["token"]["Schema"]["user"] | undefined;
-    isRoot(context?: FrontCxt): boolean;
+    getToken(allowUnloggedIn?: boolean): Partial<ED["token"]["Schema"]> | undefined;
+    getUserId(allowUnloggedIn?: boolean): NonNullable<ED["token"]["Schema"]["userId"]> | undefined;
+    getUserInfo(): ED["token"]["Schema"]["user"] | undefined;
+    isRoot(): boolean;
     /**
      * 这个是指token的player到底是不是root
      * @returns
      */
-    isReallyRoot(context?: FrontCxt): boolean;
+    isReallyRoot(): boolean;
     sendCaptcha(mobile: string, type: 'login' | 'changePassword' | 'confirm'): Promise<string>;
     switchTo(userId: string): Promise<void>;
     refreshWechatPublicUserInfo(): Promise<void>;

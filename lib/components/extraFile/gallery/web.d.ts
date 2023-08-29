@@ -1,6 +1,9 @@
 import { UploadFile } from "antd";
 import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from "../../../oak-app-domain";
+interface NewUploadFile extends UploadFile {
+    id?: string;
+}
 declare type Theme = "file" | "image" | "image-flow" | "custom";
 export default function render(props: WebComponentProps<EntityDict, "extraFile", true, {
     accept?: string;
@@ -25,7 +28,7 @@ export default function render(props: WebComponentProps<EntityDict, "extraFile",
     disableDelete?: boolean;
     preview?: boolean;
 }, {
-    onPickByWeb: (files: UploadFile[], callback?: (file: any, status: string) => void) => void;
+    onPickByWeb: (files: UploadFile[], callback?: (file: NewUploadFile, status: string) => void) => void;
     onDeleteByWeb: (file: UploadFile) => void;
     getUrl: (extraFile: EntityDict['extraFile']['OpSchema']) => string;
     getFileName: (extraFile: EntityDict['extraFile']['OpSchema']) => string;

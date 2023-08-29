@@ -4,6 +4,7 @@ export default function render(props: WebComponentProps<EntityDict, 'mobile', tr
     mobiles?: EntityDict['mobile']['OpSchema'][];
     allowRemove: boolean;
     showBack: boolean;
+    tokenMobileId?: string;
 }, {
     goAddMobile: () => void;
 }>): import("react/jsx-runtime").JSX.Element;

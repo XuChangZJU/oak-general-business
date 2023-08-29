@@ -13,14 +13,15 @@ export default function render(
         {
             mobiles?: EntityDict['mobile']['OpSchema'][];
             allowRemove: boolean;
+            tokenMobileId?: string;
         },
         {
             goAddMobile: () => void;
         }
     >
 ) {
-    const { mobiles, allowRemove } = props.data;
-    const { goAddMobile, removeItem, execute } = props.methods;
+    const { mobiles, allowRemove, tokenMobileId } = props.data;
+    const { goAddMobile, removeItem, recoverItem, execute } = props.methods;
     return (
         <div className={Style.container}>
             {mobiles && mobiles.length > 0 ? (
@@ -31,7 +32,7 @@ export default function render(
                                 key={index}
                                 prefix={<MobileOutlined />}
                                 extra={
-                                    allowRemove && (
+                                    allowRemove && tokenMobileId !== ele.id && (
                                         <div
                                             onClick={async () => {
                                                 const result =
@@ -41,7 +42,13 @@ export default function render(
                                                     });
                                                 if (result) {
                                                     removeItem(ele.id);
-                                                    await execute();
+                                                    try {
+                                                        await execute();
+                                                    }
+                                                    catch (err) {
+                                                        recoverItem(ele.id);
+                                                        throw err;
+                                                    }
                                                 }
                                             }}
                                         >

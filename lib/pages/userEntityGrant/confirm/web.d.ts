@@ -17,6 +17,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'userEntityG
     userId: string;
     redirectTo: EntityDict['userEntityGrant']['Schema']['redirectTo'];
     redirectCounter: number;
+    id: string;
+    oakId: string;
 }, {
     handleConfirm: () => void;
     redirectPage: () => void;

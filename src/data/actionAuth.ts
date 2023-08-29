@@ -30,7 +30,13 @@ const actionAuths: ActionAuth[] = [
         paths: ['user'],
         destEntity: 'wechatUser',
         deActions: ['create', 'update', 'select'],
-    }
+    },
+    {
+        id: 'passwordChangeTemp-user',
+        paths: ['user'],
+        destEntity: 'passwordChangeTemp',
+        deActions: ['create', 'select'],
+    },
 ];
 
 export default actionAuths;

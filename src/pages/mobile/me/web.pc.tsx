@@ -17,14 +17,15 @@ export default function render(
             mobiles?: EntityDict['mobile']['OpSchema'][];
             allowRemove: boolean;
             showBack: boolean;
+            tokenMobileId?: string;
         },
         {
             goAddMobile: () => void;
         }
     >
 ) {
-    const { mobiles, allowRemove, showBack = false } = props.data;
-    const { goAddMobile, removeItem, execute, sub } = props.methods;
+    const { mobiles, allowRemove, tokenMobileId, showBack = false } = props.data;
+    const { goAddMobile, removeItem, recoverItem, execute, sub } = props.methods;
     const [open, setOpen] = useState(false);
     const eventLoggedIn = `user:info:login:${Date.now()}`;
 
@@ -44,7 +45,7 @@ export default function render(
                         <List.Item
                             key={index}
                             extra={
-                                allowRemove && (
+                                allowRemove && tokenMobileId !== ele.id && (
                                     <div
                                         onClick={() => {
                                             const modal = Modal!.confirm!({
@@ -53,7 +54,13 @@ export default function render(
                                                 cancelText: '取消',
                                                 onOk: async (e) => {
                                                     removeItem(ele.id);
-                                                    await execute();
+                                                    try {
+                                                        await execute();
+                                                    }
+                                                    catch (err) {
+                                                        recoverItem(ele.id);
+                                                        throw err;
+                                                    }
                                                     modal!.destroy!();
                                                 },
                                                 onCancel: (e) => {

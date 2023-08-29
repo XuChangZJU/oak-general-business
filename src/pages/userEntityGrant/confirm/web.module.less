@@ -1,5 +1,3 @@
-
-
 .container {
   height: 100vh;
   display: flex;
@@ -8,34 +6,41 @@
 
 }
 
+.icon {
+  font-size: 72px;
+  color: var(--oak-text-color-secondary);
+}
+
+.brand_icon {
+  font-size: 72px;
+  color: var(--oak-color-primary);
+}
+
 .content {
-    display: flex;
-      flex-direction: column;
-      align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
 
+  .icon {
+    font-size: 72px;
+    color: var(--oak-color-primary);
 
-      .icon {
+  }
 
-        font-size: 72px;
+  .title {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 28px;
+    margin-top: 8px;
+    color: var(--oak-text-color-primary);
+  }
 
-        color: var(--oak-color-primary);
+  .description {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 22px;
+    color: var(--oak-text-color-secondary);
+  }
 
-      }
-
-            .title {
-              font-weight: 500;
-              font-size: 16px;
-              line-height: 28px;
-              margin-top: 8px;
-              color: var(--oak-text-color-primary);
-            }
-      
-            .description {
-              margin-top: 8px;
-              font-size: 14px;
-              line-height: 22px;
-              color: var(--oak-text-color-secondary);
-            }
-
-      margin-bottom: 30px;
 }
