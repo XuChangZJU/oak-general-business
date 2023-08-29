@@ -163,12 +163,22 @@ export function rewriteSelection<ED extends EntityDict & BaseEntityDict, T exten
         selection.filter = filter2;
     }
     // RewriteSelection只在入口处调用一次，因此需要在这里处理一对多的projection
-    for (const attr in data) {
-        const rel = judgeRelation(schema, entity, attr);
-        if (typeof rel === 'object' && rel instanceof Array) {
-            rewriteSelection(schema, rel[0], data[attr]);
+    const rewriteProjection = (e: keyof ED, d: ED[keyof ED]['Selection']['data']) => {
+        for (const attr in d) {
+            const rel = judgeRelation(schema, e, attr);
+            if (rel === 2) {
+                rewriteProjection(attr, d[attr]);
+            }
+            else if (typeof rel === 'string') {
+                rewriteProjection(rel, d[attr]);
+            }
+            else if (typeof rel === 'object' && rel instanceof Array) {
+                rewriteSelection(schema, rel[0], d[attr]);
+            }
         }
     }
+
+    rewriteProjection(entity, data);
     return;
 }
 
