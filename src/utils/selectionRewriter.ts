@@ -153,7 +153,7 @@ function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof E
 }
 
 export function rewriteSelection<ED extends EntityDict & BaseEntityDict, T extends keyof ED>(schema: StorageSchema<ED>, entity: T, selection: ED[T]['Selection']) {
-    const { filter } = selection;
+    const { filter, data } = selection;
     if (filter && !filter['#oak-general-business--rewrited']) {
         const filter2 = rewriteFilter(schema, entity, filter as NonNullable<ED[T]['Selection']['filter']>);
         // 避免被重写多次
@@ -161,6 +161,13 @@ export function rewriteSelection<ED extends EntityDict & BaseEntityDict, T exten
             ['#oak-general-business--rewrited']: true,
         });
         selection.filter = filter2;
+    }
+    // RewriteSelection只在入口处调用一次，因此需要在这里处理一对多的projection
+    for (const attr in data) {
+        const rel = judgeRelation(schema, entity, attr);
+        if (typeof rel === 'object' && rel instanceof Array) {
+            rewriteSelection(schema, rel[0], data[attr]);
+        }
     }
     return;
 }

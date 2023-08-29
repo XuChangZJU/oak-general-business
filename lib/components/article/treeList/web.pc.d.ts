@@ -16,4 +16,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     }) => void;
 }, {
     createOne: () => Promise<void>;
-}>): import("react/jsx-runtime").JSX.Element | null;
+}>): JSX.Element | null;

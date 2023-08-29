@@ -29,5 +29,5 @@ export interface AMapProps extends APILoaderProps {
     securityJsCode?: string;
     serviceHost?: string;
 }
-declare const memo: (props: AMapProps) => import("react/jsx-runtime").JSX.Element;
+declare const memo: (props: AMapProps) => JSX.Element;
 export default memo;
