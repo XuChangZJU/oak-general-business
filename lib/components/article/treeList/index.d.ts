@@ -9,5 +9,9 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     changeDrawerOpen: (open: boolean) => void;
     selectedArticleId: string;
     openArray: string[];
+    getTopInfo: (data: {
+        name: string;
+        date: number;
+    }) => void;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

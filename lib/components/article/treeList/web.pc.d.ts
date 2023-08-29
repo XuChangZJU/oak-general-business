@@ -10,6 +10,10 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     changeDrawerOpen: (open: boolean) => void;
     selectedArticleId: string;
     openArray: string[];
+    getTopInfo: (data: {
+        name: string;
+        date: number;
+    }) => void;
 }, {
     createOne: () => Promise<void>;
 }>): import("react/jsx-runtime").JSX.Element | null;

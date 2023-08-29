@@ -99,4 +99,112 @@
 .container2:hover {
     color: #999;
 }
+.test { 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 45px;
+    justify-content: space-between;
+    cursor: pointer;
+    padding-left: 10px;
+    .ne {
+        min-width: 140px;
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
 
+        .name {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            flex: 1;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    }
+
+    .control {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-evenly;
+        padding: 10px;
+
+        .ph {
+            width: 24px;
+            height: 24px;
+        }
+
+        .addAction {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .leftArrow {
+            width: 0;
+            height: 0;
+            position: relative;
+            margin: 20px;
+        }
+        .leftArrow::before,
+        .leftArrow::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px; /* 调整箭头线的粗细 */
+            background-color: #000000E0; /* 调整箭头线的颜色 */
+            top: 50%; /* 垂直居中 */
+        }
+
+        .leftArrow::before {
+            left: 0;
+            transform: rotate(45deg); /* 调整箭头线的角度 */
+            transform-origin: 0 100%; /* 调整旋转的中心点 */
+            width: 6px; /* 调整箭头线的长度 */
+        }
+
+        .leftArrow::after {
+            left: 0;
+            width: 6px; /* 调整箭头线的长度 */
+            transform: rotate(-45deg); /* 调整箭头线的角度 */
+            transform-origin: 0 0; /* 调整旋转的中心点 */
+        }
+        .downArrow {
+            width: 0;
+            height: 0;
+            position: relative;
+            margin: 20px;
+        }
+        .downArrow::before,
+        .downArrow::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px; /* 调整箭头线的粗细 */
+            background-color: #000000E0; /* 调整箭头线的颜色 */
+            top: 50%; /* 垂直居中 */
+        }
+
+        .downArrow::before {
+            left: 0;
+            transform: rotate(-45deg); /* 调整箭头线的角度 */
+            transform-origin: 0 100%; /* 调整旋转的中心点 */
+            width: 6px; /* 调整箭头线的长度 */
+        }
+
+        .downArrow::after {
+            left: 0;
+            width: 6px; /* 调整箭头线的长度 */
+            transform: rotate(-135deg); /* 调整箭头线的角度 */
+            transform-origin: 0 0; /* 调整旋转的中心点 */
+        }
+    }
+}
+.test:hover {
+    color: #999
+}
+.sub3 {
+    padding-left: 0px;
+}

@@ -15,6 +15,10 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     defaultOpen: boolean;
     changeDefaultOpen: (defaultOpen: boolean, openArray: string[]) => void;
     openArray: string[];
+    getTopInfo: (data: {
+        name: string;
+        date: number;
+    }) => void;
 }, {
     createOne: (name?: string) => Promise<void>;
     getDefaultArticle: (rows: EntityDict['articleMenu']['OpSchema'][]) => void;

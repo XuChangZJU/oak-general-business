@@ -17,6 +17,10 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     changeDrawerOpen: (open: boolean) => void;
     selectedArticleId: string;
     openArray: string[];
+    getTopInfo: (data: {
+        name: string;
+        date: number;
+    }) => void;
 }, {
     createSubArticle: (name: string) => Promise<void>;
     createSubArticleMenu: (name: string) => Promise<void>;
