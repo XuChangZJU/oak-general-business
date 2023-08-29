@@ -250,18 +250,18 @@ async function setUpTokenAndUser<
                         context,
                         true
                     );
-                    await context.operate(
-                        'user',
-                        {
-                            id: await generateNewIdAsync(),
-                            action: 'activate',
-                            data: {},
-                            filter: {
-                                id: user.id!,
-                            },
-                        },
-                        { dontCollect: true }
-                    );
+                    // await context.operate(
+                    //     'user',
+                    //     {
+                    //         id: await generateNewIdAsync(),
+                    //         action: 'activate',
+                    //         data: {},
+                    //         filter: {
+                    //             id: user.id!,
+                    //         },
+                    //     },
+                    //     { dontCollect: true }
+                    // );
                     return currentToken.id;
                 }
                 case 'disabled': {

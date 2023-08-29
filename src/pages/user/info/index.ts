@@ -1,13 +1,14 @@
 import {
     OakUserUnpermittedException,
 } from 'oak-domain/lib/types';
+import dayjs from 'dayjs';
 import {
     AppType,
     WechatPublicConfig,
 } from '../../../oak-app-domain/Application/Schema';
-import dayjs from 'dayjs';
-type Attr = 'nickname' | 'gender' | 'birth';
 import { LOCAL_STORAGE_KEYS } from '../../../config/constants';
+
+type Attr = 'nickname' | 'gender' | 'birth';
 const SEND_KEY = LOCAL_STORAGE_KEYS.captchaSendAt;
 const SEND_CAPTCHA_LATENCY = process.env.NODE_ENV === 'development' ? 10 : 60;
 
@@ -321,7 +322,10 @@ export default OakComponent({
         async sendCaptcha() {
             const { mobile } = this.state;
             try {
-                const result = await this.features.token.sendCaptcha(mobile, 'login');
+                const result = await this.features.token.sendCaptcha(
+                    mobile,
+                    'login'
+                );
                 // 显示返回消息
                 this.setMessage({
                     type: 'success',
@@ -343,19 +347,18 @@ export default OakComponent({
                     wechatUserId: wechatUser.id,
                     mobile,
                     captcha,
-                })
+                });
                 this.refresh();
                 this.setMessage({
                     content: '解绑成功',
                     type: 'success',
-                })
-            }
-            catch (err) {
+                });
+            } catch (err) {
                 this.setMessage({
                     content: '解绑失败',
-                    type: 'warning'
-                })
+                    type: 'warning',
+                });
             }
-        }
+        },
     },
 });
