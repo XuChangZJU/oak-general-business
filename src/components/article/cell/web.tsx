@@ -51,7 +51,7 @@ export default function Render(
                                 value={content ? content : value}
                                 mode="default"
                                 style={{
-                                    width: width === 'xs' ? '100vw' : '100%',
+                                    width: width === 'xs' ? '100vw' : '900px',
                                 }}
                             />
                         )

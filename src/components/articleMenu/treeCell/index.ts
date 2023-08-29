@@ -59,6 +59,7 @@ export default OakComponent({
         changeDrawerOpen: (open:boolean) => undefined as void,
         selectedArticleId: '',
         openArray: [] as string[],
+        getTopInfo: (data: {name: string, date: number}) => undefined as void,
     },
     formData({ data: row }) {
         const { articleMenu$parent, article$articleMenu } = row || {};

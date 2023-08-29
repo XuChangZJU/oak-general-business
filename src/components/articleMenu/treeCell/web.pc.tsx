@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Input, Button, MenuProps, Dropdown, Divider, Modal, InputRef, Form, Image } from 'antd';
-import { EditOutlined, DownOutlined, UpOutlined, RightOutlined, MinusOutlined, PlusOutlined, EyeOutlined } from '@ant-design/icons';
+import { EditOutlined, DownOutlined, UpOutlined, RightOutlined, LeftOutlined, MinusOutlined, PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import { WebComponentProps } from "oak-frontend-base";
 import ArticleMenuTreeList from '../treeList';
 import ArticleTreeList from '../../article/treeList';
@@ -23,32 +23,34 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     getBreadcrumbItemsByParent: (breadcrumbItems: string[]) => void;
     breadItems: string[];
     drawerOpen: boolean;
-    changeDrawerOpen: (open:boolean) => void;
+    changeDrawerOpen: (open: boolean) => void;
     selectedArticleId: string;
     openArray: string[];
+    getTopInfo: (data: {name: string, date: number}) => void;
 }, {
     createSubArticle: (name: string) => Promise<void>;
     createSubArticleMenu: (name: string) => Promise<void>;
     gotoDoc: (articleMenuId: string) => void;
 }>) {
-    const { 
-        row, 
-        allowCreateSubArticle, 
-        allowCreateSubMenu, 
-        allowRemove, 
-        onRemove, 
-        onUpdateName, 
-        oakFullpath, 
-        logo, 
-        onChildEditArticleChange, 
-        editArticle, 
-        show, 
-        getBreadcrumbItemsByParent, 
+    const {
+        row,
+        allowCreateSubArticle,
+        allowCreateSubMenu,
+        allowRemove,
+        onRemove,
+        onUpdateName,
+        oakFullpath,
+        logo,
+        onChildEditArticleChange,
+        editArticle,
+        show,
+        getBreadcrumbItemsByParent,
         breadItems,
         drawerOpen,
         changeDrawerOpen,
         selectedArticleId,
         openArray,
+        getTopInfo,
     } = props.data;
     const { update, execute, createSubArticle, createSubArticleMenu, setMessage, gotoDoc } = props.methods;
     const [nameEditing, setNameEditing] = useState(false);
@@ -68,14 +70,14 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     const hasSubMenus = !allowCreateSubArticle;
     const [onlyOne, setOnlyOne] = useState(false);
     useEffect(() => {
-        if(openArray && openArray.length > 0 && row && !onlyOne) {
-            if(openArray.includes(row.id)) {
+        if (openArray && openArray.length > 0 && row && !onlyOne) {
+            if (openArray.includes(row.id)) {
                 setShowSub(true);
-                setNewBreadcrumbItems([...breadItems,row?.name]);
+                setNewBreadcrumbItems([...breadItems, row?.name]);
                 setOnlyOne(true);
             }
         }
-    },[openArray, row])
+    }, [openArray, row])
     if (oakFullpath && row) {
         if (!show) {
             const Sub = showSub && hasSubArticles ? (
@@ -349,7 +351,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                     drawerOpen={drawerOpen}
                     changeDrawerOpen={changeDrawerOpen}
                     selectedArticleId={selectedArticleId}
-                    openArray={openArray ? openArray: undefined}
+                    openArray={openArray ? openArray : undefined}
+                    getTopInfo={getTopInfo}
                 />
             ) : (
                 <ArticleMenuTreeList
@@ -363,13 +366,14 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                     changeDrawerOpen={changeDrawerOpen}
                     selectedArticleId={selectedArticleId}
                     openArray={openArray ? openArray : undefined}
+                    getTopInfo={getTopInfo}
                 />
             );
             return (
                 <>
                     <div className={Styles.container2} onClick={() => {
                         setShowSub(!showSub);
-                        setNewBreadcrumbItems([...breadItems,row?.name])
+                        setNewBreadcrumbItems([...breadItems, row?.name])
                     }}>
                         <div className={Styles.control}>
                             {
@@ -390,10 +394,10 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                                         width={26}
                                         src={logo}
                                         preview={false}
-                                        style={{marginRight: 4}}
+                                        style={{ marginRight: 4 }}
                                     />
                                 ) : null}
-                                <div style={{width: 204}}>{row?.name}</div>
+                                <div style={{ width: 204 }}>{row?.name}</div>
                             </div>
                         </div>
                     </div >
@@ -405,6 +409,46 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                         )
                     }
                     {contextHolder}
+                    {/* <div className={Styles.test} onClick={() => {
+                        setShowSub(!showSub);
+                        setNewBreadcrumbItems([...breadItems, row?.name])
+                    }}
+                        style={showSub ? { background: '#f5f5f5' } : { background: 'transparent' }}
+                    >
+                        <div
+                            className={Styles.ne}
+                        >
+                            <div className={Styles.name}>
+                                {logo ? (
+                                    <Image
+                                        height={26}
+                                        width={26}
+                                        src={logo}
+                                        preview={false}
+                                        style={{ marginRight: 4 }}
+                                    />
+                                ) : null}
+                                <div>{row?.name}</div>
+                            </div>
+                        </div>
+                        <div className={Styles.control}>
+                            {
+                                (hasSubArticles || hasSubMenus) ? (
+                                    showSub ?
+                                        <div className={Styles.downArrow}></div> :
+                                        <div className={Styles.leftArrow}></div>
+                                ) : <div className={Styles.ph} />
+                            }
+                        </div>
+                    </div >
+                    {
+                        showSub && (
+                            <div className={Styles.sub3}>
+                                {Sub}
+                            </div>
+                        )
+                    }
+                    {contextHolder} */}
                 </>
             );
         }

@@ -23,6 +23,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     defaultOpen: boolean;
     changeDefaultOpen: (defaultOpen: boolean, openArray: string[]) => void;
     openArray: string[];
+    getTopInfo: (data: {name: string, date: number}) => void;
 }, {
     createOne: (name?: string) => Promise<void>;
     getDefaultArticle: (rows: EntityDict['articleMenu']['OpSchema'][]) => void;
@@ -43,6 +44,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
         defaultOpen,
         changeDefaultOpen,
         openArray,
+        getTopInfo,
     } = props.data;
     const { t, createOne, removeItem, updateItem, execute, setMessage, getDefaultArticle } = props.methods;
     useEffect(() => {
@@ -195,6 +197,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                                             changeDrawerOpen={changeDrawerOpen}
                                             selectedArticleId={selectedArticleId}
                                             openArray={openArray ? openArray : undefined}
+                                            getTopInfo={getTopInfo}
                                         />
                                     </>
                                 )

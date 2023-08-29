@@ -4,11 +4,13 @@ import TreeList from '../treeList';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from "../../../oak-app-domain";
 import Styles from './web.pc.module.less';
-import { Button, Divider, Tooltip, Space, Drawer, Empty } from 'antd';
-import { EyeOutlined, CopyOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Divider, Tooltip, Space, Drawer, Empty, Input, Image } from 'antd';
+const { Search } = Input;
+import { EyeOutlined, CopyOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlusOutlined, EditOutlined, MenuOutlined, SearchOutlined } from '@ant-design/icons';
 import ArticleUpsert from '../../article/upsert';
 import ArticleDetail from '../../article/cell';
 import copy from 'copy-to-clipboard';
+import dayjs from 'dayjs';
 
 export default function Render(
     props: WebComponentProps<
@@ -38,7 +40,8 @@ export default function Render(
     const [defaultOpen, setDefaultOpen] = useState(true);
     const [openArray, setOpenArray] = useState([] as string[]);
     const [isEdit, setIsEdit] = useState(false);
-    const changeIsEdit= () => {
+    const [topInfo, setTopInfo] = useState({name: '', date: 0});
+    const changeIsEdit = () => {
         setIsEdit(false);
     };
     const changeDefaultOpen = (defaultOpen: boolean, openArray: string[]) => {
@@ -57,12 +60,15 @@ export default function Render(
     const changeDrawerOpen = (open: boolean) => {
         setOpen(open);
     }
+    const getTopInfo = (data: {name: string, date: number}) => {
+        setTopInfo(data);
+    }
     useEffect(() => {
         if (editArticle) {
             setSelectedArticleId(editArticle);
             changeIsEdit();
         }
-    }, [editArticle])
+    }, [editArticle]);
     if (oakFullpath) {
         if (!show) {
             return (
@@ -254,6 +260,106 @@ export default function Render(
                             }
                         </div>
                     </div>
+                    // <div className={Styles.test}>
+                    //     <div className={Styles.leftBox}>
+                    //         <div className={Styles.topBox}>
+                    //             <div className={Styles.boldFont}>SOA</div>
+                    //             <div className={Styles.font}>帮助文档</div>
+                    //         </div>
+                    //         <div className={Styles.bottomBox}>
+                    //             <div className={Styles.infoBox}>
+                    //                 <div className={Styles.top}>
+                    //                     <div className={Styles.left}>
+                    //                         <Image
+                    //                             preview={false}
+                    //                             style={{ borderRadius: '50%', width: 50, height: 50 }}
+                    //                         />
+                    //                     </div>
+                    //                     <div className={Styles.right}>
+                    //                         <div className={Styles.top}>SOA帮助文档</div>
+                    //                         <div className={Styles.bottom}>
+                    //                             <div className={Styles.circle}></div>
+                    //                             <div className={Styles.font}>帮助文档</div>
+                    //                         </div>
+                    //                     </div>
+                    //                 </div>
+                    //                 <Input
+                    //                     placeholder='Search...'
+                    //                     suffix={<SearchOutlined />}
+                    //                 />
+                    //                 <div className={Styles.helpFont}>帮助文档</div>
+                    //             </div>
+                    //             <div className={Styles.menu}>
+                    //                 <TreeList
+                    //                     oakPath={`${oakFullpath}.articleMenus`}
+                    //                     entity={entity}
+                    //                     entityId={entityId}
+                    //                     onGrandChildEditArticleChange={checkEditArticle}
+                    //                     show={show}
+                    //                     articleMenuId={articleMenuId ? articleMenuId : undefined}
+                    //                     getBreadcrumbItems={getBreadcrumbItems}
+                    //                     breadcrumbItems={[]}
+                    //                     selectedArticleId={selectedArticleId ? selectedArticleId : undefined}
+                    //                     defaultOpen={defaultOpen}
+                    //                     changeDefaultOpen={changeDefaultOpen}
+                    //                     openArray={openArray ? openArray : undefined}
+                    //                     getTopInfo={getTopInfo}
+                    //                 />
+                    //             </div>
+                    //         </div>
+                    //     </div>
+                    //     <div className={Styles.rightBox}>
+                    //         <div className={Styles.topBox}>
+                    //             <MenuOutlined />
+                    //             <Search
+                    //                 style={{ width: 200 }}
+                    //                 placeholder='Search...'
+                    //             />
+                    //         </div>
+                    //         {
+                    //             editArticle && (
+                    //                 <div className={Styles.bottomBox}>
+                    //                     <div className={Styles.breadcrumb}>
+                    //                         {
+                    //                             breadcrumbItems.length > 0 &&
+                    //                             breadcrumbItems.map((breadcrumbItem: string, index: number) => {
+                    //                                 return index !== breadcrumbItems.length - 1 ? (
+                    //                                     <div style={{ color: '#B2B2B2' }} key={index}>
+                    //                                         {breadcrumbItem}
+                    //                                         <span style={{ margin: '0 6px' }}>
+                    //                                             {'>'}
+                    //                                         </span>
+                    //                                     </div>
+                    //                                 ) : (
+                    //                                     <div className={Styles.breadcrumbItem} key={index}>
+                    //                                         {breadcrumbItem}
+                    //                                     </div>
+                    //                                 )
+                    //                             })
+                    //                         }
+                    //                     </div>
+                    //                     <div className={Styles.article}>
+                    //                         <div className={Styles.top}>
+                    //                             <div className={Styles.title}>
+                    //                                 {topInfo.name}
+                    //                             </div>
+                    //                             <div className={Styles.date}>
+                    //                                 {dayjs(topInfo.date).format('YYYY-MM-DD')}
+                    //                             </div>
+                    //                         </div>
+                    //                         <div className={Styles.editor}>
+                    //                             <ArticleDetail
+                    //                                 oakId={editArticle}
+                    //                                 oakAutoUnmount={true}
+                    //                                 oakPath={`article-detail-${editArticle}`}
+                    //                             />
+                    //                         </div>
+                    //                     </div>
+                    //                 </div>
+                    //             )
+                    //         }
+                    //     </div>
+                    // </div>
                 )
             }
         } else {

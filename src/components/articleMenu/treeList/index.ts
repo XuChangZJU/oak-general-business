@@ -20,6 +20,7 @@ export default OakComponent({
         defaultOpen: false,
         changeDefaultOpen: (defaultOpen: boolean, openArray: string[]) => undefined as void,
         openArray: [] as string[],
+        getTopInfo: (data: {name: string, date: number}) => undefined as void,
     },
     projection: {
         id: 1,

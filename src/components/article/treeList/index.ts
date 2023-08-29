@@ -11,6 +11,7 @@ export default OakComponent({
         changeDrawerOpen: (open:boolean) => undefined as void,
         selectedArticleId: '',
         openArray: [] as string[],
+        getTopInfo: (data: {name: string, date: number}) => undefined as void,
     },
     projection: {
         id: 1,

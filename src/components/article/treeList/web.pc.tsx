@@ -16,6 +16,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     changeDrawerOpen: (open: boolean) => void;
     selectedArticleId: string;
     openArray: string[];
+    getTopInfo: (data: {name: string, date: number}) => void;
 }, {
     createOne: () => Promise<void>;
 }>) {
@@ -30,6 +31,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
         changeDrawerOpen,
         selectedArticleId,
         openArray,
+        getTopInfo,
     } = props.data;
     const { t, setMessage, addItem, removeItem, updateItem, execute } = props.methods;
     const [modal, contextHolder] = Modal.useModal();
@@ -47,6 +49,14 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
             })
         }
     },[openArray,rows]);
+    useEffect(() => {
+        if(rows && rows.length > 0 && selectedArticleId) {
+            const data = rows.find((ele) => ele.id === selectedArticleId);
+            if(data) {
+                getTopInfo({name: data.name, date: data.$$createAt$$ as number});
+            }     
+        }
+    },[selectedArticleId, rows])
     if (oakFullpath) {
         if (!show) {
             if (rows?.length > 0) {
@@ -178,6 +188,31 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
 
                                             </div>
                                         </div >
+                                        {/* <div className={Styles.test} onClick={() => {
+                                            onChildEditArticleChange(ele.id);
+                                            getBreadcrumbItemsByParent([...breadcrumbItems, ele.name]);
+                                            changeDrawerOpen(!drawerOpen);
+                                            getTopInfo({name: ele.name, date: ele.$$createAt$$ as number});
+                                        }}>
+                                            <div
+                                                className={Styles.ne}
+                                            >
+                                                {
+                                                    selectedArticleId === ele.id ? (
+                                                        <div className={Styles.name}>
+                                                            <div className={Styles.dot} />
+                                                            <div className={Styles.title}>{ele?.name}</div>
+                                                        </div>
+                                                    ) : (
+                                                        <div className={Styles.name}>
+                                                            <div className={Styles.dot2} />
+                                                            <div>{ele?.name}</div>
+                                                        </div>
+                                                    )
+                                                }
+
+                                            </div>
+                                        </div > */}
                                     </>
                                 )
                             )

@@ -39,6 +39,7 @@
     }
     .editor {
         flex: 1;
+        overflow-x: scroll;
     }
 }
 .container2 {
@@ -127,4 +128,140 @@
     background: var(--oak-bg-color-container);
     width: 100%;
     height: 100%;
+}
+.test {
+    display: flex;
+    flex-direction: row;
+    width: 1190px;
+    margin: 0px auto;
+    .leftBox {
+        display: flex;
+        flex-direction: column;
+        width: 250px;
+        border-left: 1px solid #dbdbdb;
+        border-right: 1px solid #dbdbdb;
+        .topBox {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            background-color: var(--oak-bg-color-container);
+            border-bottom: 1px solid #dbdbdb;
+            .boldFont {
+                font-weight: bold;
+                font-size: 18px;
+            }
+            .font {
+                font-size: 16px;
+                margin-left: 5px;
+            }
+        }
+        .bottomBox {
+            display: flex;
+            flex-direction: column;
+            background: #f9fbfc;
+            .infoBox {
+                padding: 10px;
+                .top {
+                    display: flex;
+                    flex-direction: row;
+                    margin-bottom: 20px;
+                    align-items: center;
+                    .left {
+                        width: 50px;
+                        height: 50px;
+                    }
+                    .right {
+                        display: flex;
+                        flex-direction: column;
+                        font-size: 12px;
+                        margin-left: 10px;
+                        .top {
+                            font-weight: bold;
+                            margin-bottom: 10px;
+                        }
+                        .bottom {
+                            display: flex;
+                            flex-direction: row;
+                            align-items: center;
+                            .circle {
+                                width: 12px;
+                                height: 12px;
+                                border-radius: 50%;
+                                background: #3f7644;
+                            }
+                            .font {
+                                margin-left: 5px;
+                            }
+                        }
+                    }
+                }
+                .helpFont {
+                    font-size: 12px;
+                    color: #333;
+                    margin-top: 20px;
+                }
+            }
+            .menu {
+                max-height: 415px;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+        }
+    }
+    .rightBox {
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid #dbdbdb;
+        flex: 1;
+        .topBox {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            flex-direction: row;
+            justify-content: space-between;
+            background-color: var(--oak-bg-color-container);
+            padding: 0px 10px;
+        }
+        .bottomBox{
+            display: flex;
+            flex-direction: column;
+            padding: 20px 10px 0 10px;
+            width: 100%;
+            .breadcrumb {
+                font-size: 12px;
+                display: flex; 
+                flex-direction: row; 
+                margin-bottom: 10px;
+            }
+            .article {
+                display: flex;
+                flex-direction: column;
+                padding: 10px;
+                background: var(--oak-bg-color-container);
+                .top {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding-bottom: 10px;
+                    border-bottom: 1px solid #dbdbdb;
+                    .title {
+                        font-size: 16px;
+
+                    }
+                    .date {
+                        font-size: 12px;
+                    }
+                }
+                .editor {
+                    flex: 1;
+                    max-height: 467px;
+                    overflow-y: scroll;
+                    overflow-x: hidden;
+                }
+            }
+        }
+    }
 }
