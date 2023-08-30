@@ -3,7 +3,7 @@ import React from 'react';
 import { MapProps, APILoaderConfig } from '@uiw/react-amap';
 import './index.less';
 export declare type APILoaderProps = {
-    akey: APILoaderConfig['akay'];
+    akey: APILoaderConfig['akey'];
     version?: APILoaderConfig['version'];
 };
 declare type RenderProps = {
