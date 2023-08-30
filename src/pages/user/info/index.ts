@@ -1,6 +1,4 @@
-import {
-    OakUserUnpermittedException,
-} from 'oak-domain/lib/types';
+import { OakUserInvisibleException } from 'oak-domain/lib/types';
 import dayjs from 'dayjs';
 import {
     AppType,
@@ -32,6 +30,24 @@ export default OakComponent({
                     id: 1,
                     userState: 1,
                     refId: 1,
+                },
+            },
+        },
+        user$ref: {
+            $entity: 'user',
+            data: {
+                mobile$user: {
+                    $entity: 'mobile',
+                    data: {
+                        id: 1,
+                        mobile: 1,
+                        userId: 1,
+                        user: {
+                            id: 1,
+                            userState: 1,
+                            refId: 1,
+                        },
+                    },
                 },
             },
         },
@@ -79,7 +95,13 @@ export default OakComponent({
 
         const avatar = user?.extraFile$entity && user?.extraFile$entity[0];
         const avatarUrl = features.extraFile.getUrl(avatar);
-        const { mobile } = (user?.mobile$user && user?.mobile$user[0]) || {};
+        const { mobile } =
+            (user?.mobile$user && user?.mobile$user[0]) ||
+            (user?.user$ref &&
+                user?.user$ref[0] &&
+                user?.user$ref[0].mobile$user &&
+                user?.user$ref[0].mobile$user[0]) ||
+            {};
 
         const genderOption =
             user?.gender &&
@@ -170,7 +192,7 @@ export default OakComponent({
             const { oakId } = this.props;
             const userId = this.features.token.getUserId();
             if (userId !== oakId) {
-                throw new OakUserUnpermittedException();
+                throw new OakUserInvisibleException();
             }
             this.setState({ birthEnd: dayjs().format('YYYY-MM-DD') });
         },

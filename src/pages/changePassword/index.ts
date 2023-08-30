@@ -1,6 +1,4 @@
-import {
-    OakUserUnpermittedException,
-} from 'oak-domain/lib/types';
+import { OakUserInvisibleException } from 'oak-domain/lib/types';
 
 export default OakComponent({
     isList: false,
@@ -35,7 +33,7 @@ export default OakComponent({
                 if (userId !== currentUserId) {
                     const isRoot = this.features.token.isRoot();
                     if (!isRoot) {
-                        throw new OakUserUnpermittedException();
+                        throw new OakUserInvisibleException();
                     }
                 }
             }
