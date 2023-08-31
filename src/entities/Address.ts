@@ -10,6 +10,8 @@ export interface Schema extends EntityShape {
     name: String<32>;
     default: Boolean;
     remark: Text;
+    entity?: String<32>;
+    entityId?: String<64>;
 };
 
 const entityDesc: EntityDesc<Schema> = {
@@ -23,6 +25,8 @@ const entityDesc: EntityDesc<Schema> = {
                 name: '姓名',
                 default: '是否默认',
                 remark: '备注',
+                entity: '对象实体',
+                entityId: '对象实体Id'
             },
         },
     },

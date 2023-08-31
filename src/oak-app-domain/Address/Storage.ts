@@ -36,6 +36,18 @@ export const desc: StorageDesc<OpSchema> = {
         remark: {
             notNull: true,
             type: "text"
+        },
+        entity: {
+            type: "varchar",
+            params: {
+                length: 32
+            }
+        },
+        entityId: {
+            type: "varchar",
+            params: {
+                length: 64
+            }
         }
     },
     actionType: "crud",
