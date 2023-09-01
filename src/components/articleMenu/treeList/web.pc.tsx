@@ -23,10 +23,17 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     defaultOpen: boolean;
     changeDefaultOpen: (defaultOpen: boolean, openArray: string[]) => void;
     openArray: string[];
-    getTopInfo: (data: {name: string, date: number}) => void;
+    getTopInfo: (data: { name: string, date: number }) => void;
+    articleId: string;
+    articleMenuId: string;
+    getSearchOpen: (searchOpenArray: string[]) => void;
+    getSideInfo: (data: { id: string, name: string, coverUrl: string }) => void;
+    currentArticle: string;
+    setCurrentArticle: (id: string) => void;
 }, {
     createOne: (name?: string) => Promise<void>;
     getDefaultArticle: (rows: EntityDict['articleMenu']['OpSchema'][]) => void;
+    getSearchArticle: () => Promise<string[]>;
 }>) {
     const {
         rows,
@@ -45,14 +52,31 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
         changeDefaultOpen,
         openArray,
         getTopInfo,
+        articleId,
+        articleMenuId,
+        getSearchOpen,
+        getSideInfo,
+        currentArticle,
+        setCurrentArticle
     } = props.data;
-    const { t, createOne, removeItem, updateItem, execute, setMessage, getDefaultArticle } = props.methods;
+    const { t, createOne, removeItem, updateItem, execute, setMessage, getDefaultArticle, getSearchArticle } = props.methods;
     useEffect(() => {
-        if(rows && rows.length > 0 && defaultOpen) {
-           const arr: any = getDefaultArticle(rows);
-           changeDefaultOpen(false, arr);
-        } 
-    },[rows]);
+        if (rows && rows.length > 0 && defaultOpen && !articleId) {
+            const arr: any = getDefaultArticle(rows);
+            changeDefaultOpen(false, arr);
+            return;
+        }
+    }, [rows]);
+    useEffect(() => {
+        const fetchData = async() => {
+            if(articleId) {
+                const arr = await getSearchArticle();
+                getSearchOpen(arr);
+                return;
+            }
+        }
+        fetchData();
+    },[articleId]);
     const [modal, contextHolder] = Modal.useModal();
     const menuNameRef = useRef<InputRef>(null);
     if (oakFullpath) {
@@ -197,7 +221,12 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                                             changeDrawerOpen={changeDrawerOpen}
                                             selectedArticleId={selectedArticleId}
                                             openArray={openArray ? openArray : undefined}
+                                            articleId={articleId}
+                                            articleMenuId={articleMenuId}
                                             getTopInfo={getTopInfo}
+                                            getSideInfo={getSideInfo}
+                                            currentArticle={currentArticle}
+                                            setCurrentArticle={setCurrentArticle}
                                         />
                                     </>
                                 )

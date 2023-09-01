@@ -10,6 +10,7 @@ export default OakComponent({
         onGrandChildEditArticleChange: (data: string) => undefined as void,
         show: '',
         articleMenuId: '',
+        articleId: '',
         getBreadcrumbItems: (breadcrumbItems: string[]) => undefined as void,
         breadcrumbItems: [] as string[],
         drawerOpen: false,
@@ -20,7 +21,11 @@ export default OakComponent({
         defaultOpen: false,
         changeDefaultOpen: (defaultOpen: boolean, openArray: string[]) => undefined as void,
         openArray: [] as string[],
-        getTopInfo: (data: {name: string, date: number}) => undefined as void,
+        getTopInfo: (data: { name: string, date: number }) => undefined as void,
+        getSearchOpen: (searchOpenArray: string[]) => undefined as void,
+        getSideInfo: (data: { id: string, name: string, coverUrl: string }) => undefined as void,
+        currentArticle: '',
+        setCurrentArticle: (id: string) => undefined as void,
     },
     projection: {
         id: 1,
@@ -76,6 +81,17 @@ export default OakComponent({
             }),
         },
     ],
+    // listeners: {
+    //     articleId(prev, next) {
+    //         if (prev.articleId !== next.articleId) {
+    //             this.getSearchArticle().then((getSearchArr: string[]) => {
+    //                 this.setState({
+    //                     getSearchArr,
+    //                 })
+    //             })
+    //         }
+    //     }
+    // },
     filters: [
         {
             filter() {
@@ -207,6 +223,67 @@ export default OakComponent({
                 getChildArticleMenu(rows[0].id);
             }
             return toggleItems;
+        },
+        async getSearchArticle() {
+            const { rows } = this.state
+            const { entity, entityId, articleId } = this.props;
+            const { data: article } = await this.features.cache.refresh(
+                'article',
+                {
+                    data: {
+                        id: 1,
+                        name: 1,
+                        articleMenuId: 1,
+                        articleMenu: {
+                            entity: 1,
+                            entityId: 1,
+                        }
+                    },
+                    filter: {
+                        id: articleId,
+                        articleMenu: {
+                            entity,
+                            entityId,
+                        }
+                    },
+                }
+            );
+            const toggleItems: (string | undefined)[] = [];
+            const getArticleMenu = async (parentId: string) => {
+                const { data: articleMenu } = await this.features.cache.refresh(
+                    'articleMenu',
+                    {
+                        data: {
+                            id: 1,
+                            name: 1,
+                            entity: 1,
+                            entityId: 1,
+                            parentId: 1,
+                        },
+                        filter: {
+                            id: parentId,
+                            entity,
+                            entityId,
+                        }
+                    }
+                );
+                if (articleMenu && articleMenu.length > 0 && !articleMenu[0]?.parentId) {
+                    toggleItems.push(articleMenu[0].id);
+                    return toggleItems
+                }
+                if (articleMenu && articleMenu.length > 0 && articleMenu[0]?.parentId) {
+                    toggleItems.push(articleMenu[0].id);
+                    const parentToggleItems = await getArticleMenu(articleMenu[0].parentId!);
+                    if(parentToggleItems) {
+                        return toggleItems;
+                    }
+                };
+            };
+            if (article && article.length > 0) {
+                toggleItems.push(article[0].id);
+                getArticleMenu(article[0].articleMenuId!);
+            };
+            return toggleItems.reverse();
         }
     }
 })

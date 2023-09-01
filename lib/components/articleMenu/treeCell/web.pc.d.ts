@@ -21,6 +21,15 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
         name: string;
         date: number;
     }) => void;
+    articleId: string;
+    articleMenuId: string;
+    getSideInfo: (data: {
+        id: string;
+        name: string;
+        coverUrl: string;
+    }) => void;
+    currentArticle: string;
+    setCurrentArticle: (id: string) => void;
 }, {
     createSubArticle: (name: string) => Promise<void>;
     createSubArticleMenu: (name: string) => Promise<void>;

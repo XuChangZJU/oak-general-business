@@ -6,7 +6,6 @@ import ArticleMenuTreeList from '../treeList';
 import ArticleTreeList from '../../article/treeList';
 import { EntityDict } from "../../../oak-app-domain";
 import Styles from './web.pc.module.less';
-import { xml } from 'cheerio';
 import OakGallery from "../../../components/extraFile/gallery";
 
 export default function Render(props: WebComponentProps<EntityDict, 'articleMenu', false, {
@@ -26,7 +25,12 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     changeDrawerOpen: (open: boolean) => void;
     selectedArticleId: string;
     openArray: string[];
-    getTopInfo: (data: {name: string, date: number}) => void;
+    getTopInfo: (data: { name: string, date: number }) => void;
+    articleId: string;
+    articleMenuId: string;
+    getSideInfo: (data: { id: string, name: string, coverUrl: string }) => void;
+    currentArticle: string;
+    setCurrentArticle: (id: string) => void;
 }, {
     createSubArticle: (name: string) => Promise<void>;
     createSubArticleMenu: (name: string) => Promise<void>;
@@ -51,6 +55,11 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
         selectedArticleId,
         openArray,
         getTopInfo,
+        articleId,
+        articleMenuId,
+        getSideInfo,
+        currentArticle,
+        setCurrentArticle
     } = props.data;
     const { update, execute, createSubArticle, createSubArticleMenu, setMessage, gotoDoc } = props.methods;
     const [nameEditing, setNameEditing] = useState(false);
@@ -77,7 +86,14 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                 setOnlyOne(true);
             }
         }
-    }, [openArray, row])
+    }, [openArray, row]);
+    useEffect(() => {
+        if (row && !row.parentId && articleMenuId) {
+            getSideInfo({ id: row.id, name: row.name, coverUrl: logo })
+        } else {
+            getSideInfo({ id: '', name: '帮助文档', coverUrl: '' });
+        }
+    }, [row])
     if (oakFullpath && row) {
         if (!show) {
             const Sub = showSub && hasSubArticles ? (
@@ -277,14 +293,17 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                         </div>
                         <Divider type="vertical" style={{ height: '100%', marginTop: 4, marginBottom: 4 }} />
                         <div className={Styles.control}>
-                            <Button
-                                type="text"
-                                onClick={() => {
-                                    gotoDoc(row?.id);
-                                }}
-                                icon={<EyeOutlined />}
-                            >
-                            </Button>
+                            {
+                                !row.parentId && <Button
+                                    type="text"
+                                    onClick={() => {
+                                        gotoDoc(row?.id);
+                                    }}
+                                    icon={<EyeOutlined />}
+                                >
+                                </Button>
+                            }
+
 
                             <Dropdown menu={{ items }} placement="bottomRight" arrow>
                                 <Button
@@ -353,6 +372,9 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                     selectedArticleId={selectedArticleId}
                     openArray={openArray ? openArray : undefined}
                     getTopInfo={getTopInfo}
+                    articleId={articleId}
+                    currentArticle={currentArticle}
+                    setCurrentArticle={setCurrentArticle}
                 />
             ) : (
                 <ArticleMenuTreeList
@@ -367,90 +389,103 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                     selectedArticleId={selectedArticleId}
                     openArray={openArray ? openArray : undefined}
                     getTopInfo={getTopInfo}
+                    articleId={articleId}
+                    currentArticle={currentArticle}
+                    setCurrentArticle={setCurrentArticle}
                 />
             );
-            return (
-                <>
-                    <div className={Styles.container2} onClick={() => {
-                        setShowSub(!showSub);
-                        setNewBreadcrumbItems([...breadItems, row?.name])
-                    }}>
-                        <div className={Styles.control}>
-                            {
-                                (hasSubArticles || hasSubMenus) ? (
-                                    showSub ?
-                                        <DownOutlined /> :
-                                        <RightOutlined />
-                                ) : <div className={Styles.ph} />
-                            }
+            if (!row.parentId && articleMenuId) {
+                return (
+                    <>
+                        <div>
+                            {Sub}
                         </div>
-                        <div
-                            className={Styles.ne}
+                        {contextHolder}
+                    </>
+                );
+            } else {
+                return (
+                    <>
+                        {/* <div className={Styles.container2} onClick={() => {
+                            setShowSub(!showSub);
+                            setNewBreadcrumbItems([...breadItems, row?.name])
+                        }}>
+                            <div className={Styles.control}>
+                                {
+                                    (hasSubArticles || hasSubMenus) ? (
+                                        showSub ?
+                                            <DownOutlined /> :
+                                            <RightOutlined />
+                                    ) : <div className={Styles.ph} />
+                                }
+                            </div>
+                            <div
+                                className={Styles.ne}
+                            >
+                                <div className={Styles.name}>
+                                    {logo ? (
+                                        <Image
+                                            height={26}
+                                            width={26}
+                                            src={logo}
+                                            preview={false}
+                                            style={{ marginRight: 4 }}
+                                        />
+                                    ) : null}
+                                    <div style={{ width: 204 }}>{row?.name}</div>
+                                </div>
+                            </div>
+                        </div >
+                        {
+                            showSub && (
+                                <div className={Styles.sub2}>
+                                    {Sub}
+                                </div>
+                            )
+                        }
+                        {contextHolder} */}
+                        <div className={Styles.test} onClick={() => {
+                            setShowSub(!showSub);
+                            setNewBreadcrumbItems([...breadItems, row?.name])
+                        }} style={showSub ? { background: '#f5f5f5' } : { background: 'transparent' }}
                         >
-                            <div className={Styles.name}>
-                                {logo ? (
-                                    <Image
-                                        height={26}
-                                        width={26}
-                                        src={logo}
-                                        preview={false}
-                                        style={{ marginRight: 4 }}
-                                    />
-                                ) : null}
-                                <div style={{ width: 204 }}>{row?.name}</div>
+                            <div
+                                className={Styles.ne}
+                            >
+                                <div className={Styles.name}>
+                                    {logo ? (
+                                        <Image
+                                            height={26}
+                                            width={26}
+                                            src={logo}
+                                            preview={false}
+                                            style={{ marginRight: 4 }}
+                                        />
+                                    ) : null}
+                                    <div>{row?.name}</div>
+                                </div>
                             </div>
-                        </div>
-                    </div >
-                    {
-                        showSub && (
-                            <div className={Styles.sub2}>
-                                {Sub}
+                            <div className={Styles.control}>
+                                {
+                                    (hasSubArticles || hasSubMenus) ? (
+                                        showSub ?
+                                            <div className={Styles.downArrow}></div> :
+                                            <div className={Styles.leftArrow}></div>
+                                    ) : <div className={Styles.ph} />
+                                }
                             </div>
-                        )
-                    }
-                    {contextHolder}
-                    {/* <div className={Styles.test} onClick={() => {
-                        setShowSub(!showSub);
-                        setNewBreadcrumbItems([...breadItems, row?.name])
-                    }}
-                        style={showSub ? { background: '#f5f5f5' } : { background: 'transparent' }}
-                    >
-                        <div
-                            className={Styles.ne}
-                        >
-                            <div className={Styles.name}>
-                                {logo ? (
-                                    <Image
-                                        height={26}
-                                        width={26}
-                                        src={logo}
-                                        preview={false}
-                                        style={{ marginRight: 4 }}
-                                    />
-                                ) : null}
-                                <div>{row?.name}</div>
-                            </div>
-                        </div>
-                        <div className={Styles.control}>
-                            {
-                                (hasSubArticles || hasSubMenus) ? (
-                                    showSub ?
-                                        <div className={Styles.downArrow}></div> :
-                                        <div className={Styles.leftArrow}></div>
-                                ) : <div className={Styles.ph} />
-                            }
-                        </div>
-                    </div >
-                    {
-                        showSub && (
-                            <div className={Styles.sub3}>
-                                {Sub}
-                            </div>
-                        )
-                    }
-                    {contextHolder} */}
-                </>
-            );
+                        </div >
+                        {
+                            showSub && (
+                                <div className={Styles.sub3} style={{ background: '#f5f5f5' }}>
+                                    {Sub}
+                                </div>
+                            )
+                        }
+                        {contextHolder}
+                    </>
+                );
+            }
         }
     }
     return null;

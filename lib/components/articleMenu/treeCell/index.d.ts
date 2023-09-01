@@ -14,5 +14,14 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
         name: string;
         date: number;
     }) => void;
+    articleId: string;
+    articleMenuId: string;
+    getSideInfo: (data: {
+        id: string;
+        name: string;
+        coverUrl: string;
+    }) => void;
+    currentArticle: string;
+    setCurrentArticle: (id: string) => void;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;
