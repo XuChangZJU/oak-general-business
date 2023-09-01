@@ -6,21 +6,21 @@ import classNames from 'classnames';
 import './index.less'
 
 export type APILoaderProps = {
-    akey: APILoaderConfig['akay'];
+    akey: APILoaderConfig['akey'];
     version?: APILoaderConfig['version'];
 };
 
 type RenderProps =
     | {
-          children?: (data: {
-              AMap: typeof AMap;
-              map: AMap.Map;
-              container?: HTMLDivElement | null;
-          }) => undefined;
-      }
+        children?: (data: {
+            AMap: typeof AMap;
+            map: AMap.Map;
+            container?: HTMLDivElement | null;
+        }) => undefined;
+    }
     | {
-          children?: React.ReactNode;
-      };
+        children?: React.ReactNode;
+    };
 
 export interface AMapProps extends APILoaderProps {
     style?: React.CSSProperties;
@@ -70,7 +70,7 @@ const memo = (props: AMapProps) => {
                 };
             }
         }
-    }, []); 
+    }, []);
 
     useEffect(() => {
         if (!useAMapUI) {
@@ -95,7 +95,7 @@ const memo = (props: AMapProps) => {
             style={style}
             className={classNames(`${prefixCls}-map`, className)}
         >
-            <APILoader akay={akey} version={version}>
+            <APILoader akey={akey} version={version}>
                 <Map ref={mapRef} {...mapProps}>
                     {children as MapProps['children']}
                 </Map>

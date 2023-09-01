@@ -14,6 +14,8 @@ export type OpSchema = EntityShape & {
     name: String<32>;
     default: Boolean;
     remark: Text;
+    entity?: String<32> | null;
+    entityId?: String<64> | null;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
@@ -23,6 +25,8 @@ export type Schema = EntityShape & {
     name: String<32>;
     default: Boolean;
     remark: Text;
+    entity?: String<32> | null;
+    entityId?: String<64> | null;
     area: Area.Schema;
 } & {
     [A in ExpressionKey]?: any;
@@ -39,6 +43,8 @@ type AttrFilter = {
     name: Q_StringValue;
     default: Q_BooleanValue;
     remark: Q_StringValue;
+    entity: Q_StringValue;
+    entityId: Q_StringValue;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export type Projection = {
@@ -55,6 +61,8 @@ export type Projection = {
     name?: number;
     default?: number;
     remark?: number;
+    entity?: number;
+    entityId?: number;
 } & Partial<ExprOp<OpAttr | string>>;
 type AddressIdProjection = OneOf<{
     id: number;
@@ -85,6 +93,10 @@ export type SortAttr = {
 } | {
     remark: number;
 } | {
+    entity: number;
+} | {
+    entityId: number;
+} | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
 export type SortNode = {
@@ -95,8 +107,12 @@ export type Sorter = SortNode[];
 export type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
 export type Selection<P extends Object = Projection> = SelectOperation<P>;
 export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export type CreateOperationData = FormCreateData<Omit<OpSchema, "areaId">> & ({
+export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "areaId">> & ({
     areaId: ForeignKey<"area">;
+}) & ({
+    entity?: string;
+    entityId?: string;
+    [K: string]: any;
 });
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;

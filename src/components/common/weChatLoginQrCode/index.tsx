@@ -63,10 +63,8 @@ function QrCode(props: QrCodeProps) {
                         redirect_uri: redirectUri,
                         style,
                         href,
+                        state: state || ''
                     };
-                    if (state) {
-                        params.state = state;
-                    }
                     // @ts-ignore
                     new WxLogin(params);
                 }

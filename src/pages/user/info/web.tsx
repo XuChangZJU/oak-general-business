@@ -18,8 +18,6 @@ import OakAvatar from '../../../components/extraFile/avatar';
 import Style from './mobile.module.less';
 
 
-//todo 头像跟绑定手机号 未实现
-
 type DataProps = {
     visible: boolean;
     nickname: string;

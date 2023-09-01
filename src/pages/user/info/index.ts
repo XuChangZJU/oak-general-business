@@ -1,13 +1,12 @@
-import {
-    OakUserUnpermittedException,
-} from 'oak-domain/lib/types';
+import { OakUserInvisibleException } from 'oak-domain/lib/types';
+import dayjs from 'dayjs';
 import {
     AppType,
     WechatPublicConfig,
 } from '../../../oak-app-domain/Application/Schema';
-import dayjs from 'dayjs';
-type Attr = 'nickname' | 'gender' | 'birth';
 import { LOCAL_STORAGE_KEYS } from '../../../config/constants';
+
+type Attr = 'nickname' | 'gender' | 'birth';
 const SEND_KEY = LOCAL_STORAGE_KEYS.captchaSendAt;
 const SEND_CAPTCHA_LATENCY = process.env.NODE_ENV === 'development' ? 10 : 60;
 
@@ -31,6 +30,24 @@ export default OakComponent({
                     id: 1,
                     userState: 1,
                     refId: 1,
+                },
+            },
+        },
+        user$ref: {
+            $entity: 'user',
+            data: {
+                mobile$user: {
+                    $entity: 'mobile',
+                    data: {
+                        id: 1,
+                        mobile: 1,
+                        userId: 1,
+                        user: {
+                            id: 1,
+                            userState: 1,
+                            refId: 1,
+                        },
+                    },
                 },
             },
         },
@@ -78,7 +95,13 @@ export default OakComponent({
 
         const avatar = user?.extraFile$entity && user?.extraFile$entity[0];
         const avatarUrl = features.extraFile.getUrl(avatar);
-        const { mobile } = (user?.mobile$user && user?.mobile$user[0]) || {};
+        const { mobile } =
+            (user?.mobile$user && user?.mobile$user[0]) ||
+            (user?.user$ref &&
+                user?.user$ref[0] &&
+                user?.user$ref[0].mobile$user &&
+                user?.user$ref[0].mobile$user[0]) ||
+            {};
 
         const genderOption =
             user?.gender &&
@@ -169,7 +192,7 @@ export default OakComponent({
             const { oakId } = this.props;
             const userId = this.features.token.getUserId();
             if (userId !== oakId) {
-                throw new OakUserUnpermittedException();
+                throw new OakUserInvisibleException();
             }
             this.setState({ birthEnd: dayjs().format('YYYY-MM-DD') });
         },
@@ -321,7 +344,10 @@ export default OakComponent({
         async sendCaptcha() {
             const { mobile } = this.state;
             try {
-                const result = await this.features.token.sendCaptcha(mobile, 'login');
+                const result = await this.features.token.sendCaptcha(
+                    mobile,
+                    'login'
+                );
                 // 显示返回消息
                 this.setMessage({
                     type: 'success',
@@ -343,19 +369,18 @@ export default OakComponent({
                     wechatUserId: wechatUser.id,
                     mobile,
                     captcha,
-                })
+                });
                 this.refresh();
                 this.setMessage({
                     content: '解绑成功',
                     type: 'success',
-                })
-            }
-            catch (err) {
+                });
+            } catch (err) {
                 this.setMessage({
                     content: '解绑失败',
-                    type: 'warning'
-                })
+                    type: 'warning',
+                });
             }
-        }
+        },
     },
 });

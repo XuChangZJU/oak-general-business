@@ -3,7 +3,7 @@ import React from 'react';
 import { MapProps, APILoaderConfig } from '@uiw/react-amap';
 import './index.less';
 export declare type APILoaderProps = {
-    akey: APILoaderConfig['akay'];
+    akey: APILoaderConfig['akey'];
     version?: APILoaderConfig['version'];
 };
 declare type RenderProps = {
@@ -29,5 +29,5 @@ export interface AMapProps extends APILoaderProps {
     securityJsCode?: string;
     serviceHost?: string;
 }
-declare const memo: (props: AMapProps) => import("react/jsx-runtime").JSX.Element;
+declare const memo: (props: AMapProps) => JSX.Element;
 export default memo;
