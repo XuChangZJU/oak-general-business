@@ -106,8 +106,8 @@
     height: 45px;
     justify-content: space-between;
     cursor: pointer;
-    padding-left: 10px;
     .ne {
+        margin-left: 10px;
         min-width: 140px;
         flex: 1;
         display: flex;
@@ -130,7 +130,7 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-evenly;
-        padding: 10px;
+        // padding: 10px;
 
         .ph {
             width: 24px;
@@ -161,13 +161,13 @@
         .leftArrow::before {
             left: 0;
             transform: rotate(45deg); /* 调整箭头线的角度 */
-            transform-origin: 0 100%; /* 调整旋转的中心点 */
+            transform-origin: 0 0; /* 调整旋转的中心点 */
             width: 6px; /* 调整箭头线的长度 */
         }
 
         .leftArrow::after {
             left: 0;
-            width: 6px; /* 调整箭头线的长度 */
+            width: 5px; /* 调整箭头线的长度 */
             transform: rotate(-45deg); /* 调整箭头线的角度 */
             transform-origin: 0 0; /* 调整旋转的中心点 */
         }
@@ -190,13 +190,13 @@
         .downArrow::before {
             left: 0;
             transform: rotate(-45deg); /* 调整箭头线的角度 */
-            transform-origin: 0 100%; /* 调整旋转的中心点 */
+            transform-origin: 0 0; /* 调整旋转的中心点 */
             width: 6px; /* 调整箭头线的长度 */
         }
 
         .downArrow::after {
             left: 0;
-            width: 6px; /* 调整箭头线的长度 */
+            width: 5px; /* 调整箭头线的长度 */
             transform: rotate(-135deg); /* 调整箭头线的角度 */
             transform-origin: 0 0; /* 调整旋转的中心点 */
         }
@@ -206,5 +206,5 @@
     color: #999
 }
 .sub3 {
-    padding-left: 0px;
+    padding-left: 10px;
 }

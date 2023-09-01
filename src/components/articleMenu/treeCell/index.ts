@@ -60,6 +60,11 @@ export default OakComponent({
         selectedArticleId: '',
         openArray: [] as string[],
         getTopInfo: (data: {name: string, date: number}) => undefined as void,
+        articleId: '',
+        articleMenuId: '',
+        getSideInfo: (data: {id: string, name: string, coverUrl: string}) => undefined as void,
+        currentArticle: '',
+        setCurrentArticle: (id: string) => undefined as void,
     },
     formData({ data: row }) {
         const { articleMenu$parent, article$articleMenu } = row || {};

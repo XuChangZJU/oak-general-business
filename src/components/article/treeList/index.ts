@@ -12,6 +12,9 @@ export default OakComponent({
         selectedArticleId: '',
         openArray: [] as string[],
         getTopInfo: (data: {name: string, date: number}) => undefined as void,
+        articleId: '',
+        currentArticle: '',
+        setCurrentArticle: (id: string) => undefined as void,
     },
     projection: {
         id: 1,

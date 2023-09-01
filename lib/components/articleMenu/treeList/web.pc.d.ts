@@ -19,7 +19,18 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
         name: string;
         date: number;
     }) => void;
+    articleId: string;
+    articleMenuId: string;
+    getSearchOpen: (searchOpenArray: string[]) => void;
+    getSideInfo: (data: {
+        id: string;
+        name: string;
+        coverUrl: string;
+    }) => void;
+    currentArticle: string;
+    setCurrentArticle: (id: string) => void;
 }, {
     createOne: (name?: string) => Promise<void>;
     getDefaultArticle: (rows: EntityDict['articleMenu']['OpSchema'][]) => void;
+    getSearchArticle: () => Promise<string[]>;
 }>): import("react/jsx-runtime").JSX.Element | null;
