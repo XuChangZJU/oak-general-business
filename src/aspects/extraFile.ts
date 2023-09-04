@@ -8,8 +8,15 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import fetch from 'node-fetch';
 import { WechatSDK } from 'oak-external-sdk';
 export async function getUploadInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(
-    params: { origin: Origin; bucket?: string; key?: string },
+    params: { extraFile: EntityDict['extraFile']['CreateSingle']['data'] },
     context: Cxt): Promise<QiniuUploadInfo> {
+    const { origin, extra1, filename, objectId, extension, entity } =
+        extraFile;
+    // 构造文件上传所需的key
+    const key = `${entity ? entity + '/' : ''}${objectId}${extension ? '.' + extension : ''}`;
+    assert(origin && origin !== 'unknown');
+    const { result: uploadInfo } = await this.getUploadInfo(origin, key);
+
     const { origin, key, bucket } = params;
 
     const {
