@@ -1,0 +1,8 @@
+<l-card l-class="card" type="avatar" image="{{avatar}}" title="{{name || nickname || '未设置'}}" description="{{mobile}}">
+    <view class="list-item">
+        <view class="label">权限：</view>
+        <view class="relation-box">
+            <user-relations oakPath="{{oakFullpath ? oakFullpath + '.userRelation$user' : undefined }}" oakAutoUnmount="{{true}}" entity="{{entity}}" entityId="{{entityId}}" relations="{{relations}}" />
+        </view>
+    </view>
+</l-card>

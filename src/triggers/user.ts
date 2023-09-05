@@ -5,7 +5,7 @@ import { CreateOperationData as CreateUserData } from '../oak-app-domain/User/Sc
 import { ROOT_USER_ID } from '../constants';
 import { randomName } from '../utils/randomUser';
 import { RuntimeCxt } from '../types/RuntimeCxt';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 
 let NO_ANY_USER = true;
 const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [

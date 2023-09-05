@@ -1,12 +1,12 @@
 import { EntityDict } from '../oak-app-domain';
 import { Origin, QiniuCosConfig } from '../types/Config';
-import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
+import { QiniuUploadInfo } from 'oak-frontend-base';
 import { getConfig } from '../utils/getContextConfig';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { QiniuCloudInstance } from 'oak-external-sdk';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
-import fetch from 'node-fetch';
 import { WechatSDK } from 'oak-external-sdk';
+
 export async function getUploadInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(
     params: { origin: Origin; bucket?: string; key?: string },
     context: Cxt): Promise<QiniuUploadInfo> {

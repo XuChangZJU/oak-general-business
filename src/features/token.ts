@@ -1,12 +1,12 @@
-import { Feature } from 'oak-frontend-base/lib/types/Feature';
+import { Feature } from 'oak-frontend-base';
 import {
     OakRowInconsistencyException,
     OakUnloggedInException,
     OakUserUnpermittedException,
 } from 'oak-domain/lib/types/Exception';
-import { Cache } from 'oak-frontend-base/lib/features/cache';
-import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
-import { Environment } from 'oak-frontend-base/lib/features/environment';
+import { Cache } from 'oak-frontend-base/es/features/cache';
+import { LocalStorage } from 'oak-frontend-base/es/features/localStorage';
+import { Environment } from 'oak-frontend-base/es/features/environment';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
 import { EntityDict } from '../oak-app-domain';

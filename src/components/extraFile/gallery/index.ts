@@ -1,9 +1,9 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import Dialog from '../../../utils/dialog/index';
 import { EntityDict } from '../../../oak-app-domain';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
-import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import { ReactComponentProps } from 'oak-frontend-base';
 
 type SourceType = 'album' | 'camera';
 type Theme = 'file' | 'image' | 'image-flow' | 'custom';

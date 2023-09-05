@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 
 export default OakComponent({

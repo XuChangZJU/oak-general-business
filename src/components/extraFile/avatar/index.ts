@@ -1,6 +1,6 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../../../oak-app-domain';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 
 export default OakComponent({
     entity: 'extraFile',

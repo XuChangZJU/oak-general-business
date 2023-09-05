@@ -2,14 +2,13 @@ import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { InitializeOptions } from 'oak-frontend-base';
 import { ActionDictOfEntityDict, Aspect, AuthDefDict, CascadeRemoveDefDict, Checker, Connector, StorageSchema } from 'oak-domain/lib/types';
 import { EntityDict, ActionDefDict as generalActionDefDict } from './oak-app-domain';
-import { CacheStore } from 'oak-frontend-base/lib/cacheStore/CacheStore';
+import { CacheStore } from 'oak-frontend-base';
 import { intersection } from 'oak-domain/lib/utils/lodash';
 import { BackendRuntimeContext } from './context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from './context/FrontendRuntimeContext';
 import { GAD, GFD } from './types/Page';
-import { initialize as initProd } from 'oak-frontend-base/lib/initialize-prod';
+import { initialize as initProd } from 'oak-frontend-base/es/initialize-prod';
 import generalCheckers from './checkers';
-import generalAuthDict from './auth';
 import { initialize as initGeneralFeatures } from './features';
 import { AppType } from './oak-app-domain/Application/Schema';
 
@@ -25,7 +24,7 @@ export function initialize<
     domain: string,
     storageSchema: StorageSchema<ED>,
     frontendContextBuilder: () => (store: CacheStore<ED, FrontCxt>) => FrontCxt,
-    connector: Connector<ED, Cxt, FrontCxt>,
+    connector: Connector<ED, FrontCxt>,
     checkers: Array<Checker<ED, keyof ED, FrontCxt | Cxt>>,
     option: InitializeOptions<ED>
 ) {

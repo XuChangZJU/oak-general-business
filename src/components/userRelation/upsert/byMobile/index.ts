@@ -1,7 +1,7 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { isMobile } from 'oak-domain/lib/utils/validator';
 import { EntityDict } from '../../../../oak-app-domain';
-import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import { ReactComponentProps } from 'oak-frontend-base';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 
 export default OakComponent({

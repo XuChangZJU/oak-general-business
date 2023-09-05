@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import URL from 'url';
 import sha1 from 'sha1';
 import x2js from 'x2js';
@@ -12,15 +12,18 @@ import { EntityDict } from '../oak-app-domain';
 import { BRC } from '../types/RuntimeCxt';
 import { WechatMpConfig, WechatPublicConfig } from '../entities/Application';
 import { WechatPublicEventData } from 'oak-external-sdk';
-import { expandUuidTo36Bytes, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
+import {
+    expandUuidTo36Bytes,
+    generateNewIdAsync,
+} from 'oak-domain/lib/utils/uuid';
 import { composeDomainUrl } from '../utils/domain';
 import { composeUrl } from 'oak-domain/lib/utils/url';
 
 type VerifyQuery = {
-    signature: string,
-    nonce: string,
-    timestamp: string,
-}
+    signature: string;
+    nonce: string;
+    timestamp: string;
+};
 
 const X2Js = new x2js();
 
@@ -36,20 +39,25 @@ function assertFromWeChat(query: VerifyQuery, config: WechatPublicConfig) {
     return signature === sha1Sign;
 }
 
-const CALLBACK: Record<string, (data: WechatPublicEventData, context: BRC) => void> = {};
+const CALLBACK: Record<
+    string,
+    (data: WechatPublicEventData, context: BRC) => void
+> = {};
 
-export function registerWeChatPublicEventCallback(appId: string, callback: (data: WechatPublicEventData, context: BRC) => void) {
+export function registerWeChatPublicEventCallback(
+    appId: string,
+    callback: (data: WechatPublicEventData, context: BRC) => void
+) {
     assert(!CALLBACK.hasOwnProperty(appId));
 
     CALLBACK[appId] = callback;
 }
 
-
 /**
  * 用户取关事件，注意要容wechatUser不存在的情况
- * @param openId 
- * @param context 
- * @returns 
+ * @param openId
+ * @param context
+ * @returns
  */
 async function setUserUnsubscribed(openId: string, context: BRC) {
     const list = await context.select(
@@ -67,7 +75,7 @@ async function setUserUnsubscribed(openId: string, context: BRC) {
             indexFrom: 0,
             count: 10,
         },
-        { dontCollect: true },
+        { dontCollect: true }
     );
     if (list && list.length > 0) {
         assert(list.length === 1);
@@ -87,7 +95,7 @@ async function setUserUnsubscribed(openId: string, context: BRC) {
                         id: weChatUser.id,
                     },
                 },
-                { dontCollect: true, dontCreateOper: true },
+                { dontCollect: true, dontCreateOper: true }
             );
         }
     } else {
@@ -103,15 +111,19 @@ async function setUserUnsubscribed(openId: string, context: BRC) {
                     openId,
                 },
             },
-            { dontCollect: true, dontCreateOper: true },
+            { dontCollect: true, dontCreateOper: true }
         );
     }
     return;
 }
 
-
-async function setUserSubscribed(openId: string, eventKey: string, context: BRC) {
-    const { id: applicationId, type: applicationType } = context.getApplication()!;
+async function setUserSubscribed(
+    openId: string,
+    eventKey: string,
+    context: BRC
+) {
+    const { id: applicationId, type: applicationType } =
+        context.getApplication()!;
     const list = await context.select(
         'wechatUser',
         {
@@ -127,7 +139,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
             indexFrom: 0,
             count: 1,
         },
-        { dontCollect: true },
+        { dontCollect: true }
     );
 
     const now = Date.now();
@@ -147,14 +159,18 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                 });
             }
 
-            return await context.operate('wechatUser', {
-                id: await generateNewIdAsync(),
-                action: 'update',
-                data,
-                filter: {
-                    id: wechatUser.id,
+            return await context.operate(
+                'wechatUser',
+                {
+                    id: await generateNewIdAsync(),
+                    action: 'update',
+                    data,
+                    filter: {
+                        id: wechatUser.id,
+                    },
                 },
-            }, { dontCollect: true, dontCreateOper: true });
+                { dontCollect: true, dontCreateOper: true }
+            );
         }
 
         Object.assign(data, {
@@ -180,11 +196,15 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
          return warden.insertEntity(tables.weChatUser, data, txn);
          }
          );*/
-        return await context.operate('wechatUser', {
-            id: await generateNewIdAsync(),
-            action: 'create',
-            data,
-        }, { dontCollect: true });
+        return await context.operate(
+            'wechatUser',
+            {
+                id: await generateNewIdAsync(),
+                action: 'create',
+                data,
+            },
+            { dontCollect: true }
+        );
     };
 
     if (eventKey) {
@@ -192,8 +212,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
         let sceneStr;
         if (eventKey.startsWith('qrscene_')) {
             sceneStr = eventKey.slice(eventKey.indexOf('qrscene_') + 8);
-        }
-        else {
+        } else {
             sceneStr = eventKey;
         }
 
@@ -215,7 +234,7 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                 indexFrom: 0,
                 count: 10,
             },
-            { dontCollect: true },
+            { dontCollect: true }
         );
         if (wechatQrCode) {
             const application = context.getApplication();
@@ -416,8 +435,8 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                                     system: {
                                         application$system: {
                                             id: applicationId,
-                                        }
-                                    }
+                                        },
+                                    },
                                 },
                             },
                             { dontCollect: true }
@@ -461,18 +480,26 @@ async function setUserSubscribed(openId: string, eventKey: string, context: BRC)
                     break;
                 }
             }
-        }
-        else {
-            console.warn(`线上有扫描二维码场景值，但找不到对应的qrCode，eventKey是${eventKey}`);
+        } else {
+            console.warn(
+                `线上有扫描二维码场景值，但找不到对应的qrCode，eventKey是${eventKey}`
+            );
         }
     }
     await doUpdate();
     return;
 }
 
-
 function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
-    const { ToUserName, FromUserName, CreateTime, MsgType, Event, Content, EventKey } = data;
+    const {
+        ToUserName,
+        FromUserName,
+        CreateTime,
+        MsgType,
+        Event,
+        Content,
+        EventKey,
+    } = data;
 
     const appId = context.getApplicationId()!;
     let evt: string;
@@ -512,12 +539,20 @@ function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
             case 'templatesendjobfinish': {
                 // 模板消息发送完成，去更新对应的messageSent对象
                 // 这个在线上测试没法通过，返回的msgId不符合，不知道为什么
-                const { MsgID: msgId, Status: status, FromUserName: openId } = data;
-                evt = `应用${appId}的用户${FromUserName}发来了${Event}事件，内容是${JSON.stringify(data)}`;
+                const {
+                    MsgID: msgId,
+                    Status: status,
+                    FromUserName: openId,
+                } = data;
+                evt = `应用${appId}的用户${FromUserName}发来了${Event}事件，内容是${JSON.stringify(
+                    data
+                )}`;
                 break;
             }
             default: {
-                evt = `应用${appId}的用户${FromUserName}发来了${Event}事件，内容是${JSON.stringify(data)}`;
+                evt = `应用${appId}的用户${FromUserName}发来了${Event}事件，内容是${JSON.stringify(
+                    data
+                )}`;
                 break;
             }
         }
@@ -531,7 +566,8 @@ function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
     }
 
     assert(MsgType);
-    const content = '<xml>' +
+    const content =
+        '<xml>' +
         `<ToUserName>${FromUserName}</ToUserName>` +
         `<FromUserName>${ToUserName}</FromUserName>` +
         `<CreateTime>${CreateTime}</CreateTime>` +
@@ -564,65 +600,76 @@ function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
 }
 
 const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
-    wechatPublicEvent: [{
-        name: '微信公众号回调接口',
-        method: 'post',
-        params: ['appId'],
-        fn: async (context, params, headers, req, body) => {
-            const { appId } = params;
-            if (!appId || appId === '20230210') {
-                console.error('applicationId参数不存在');
-                console.log(JSON.stringify(body));
-                return '';
-            }
-            await context.setApplication(appId);
-            const { xml: data } = X2Js.xml2js<{ xml: WechatPublicEventData }>(body);
-            const { content, contentType } = onWeChatPublicEvent(data, context);
-            return content;
+    wechatPublicEvent: [
+        {
+            name: '微信公众号回调接口',
+            method: 'post',
+            params: ['appId'],
+            fn: async (context, params, headers, req, body) => {
+                const { appId } = params;
+                if (!appId || appId === '20230210') {
+                    console.error('applicationId参数不存在');
+                    console.log(JSON.stringify(body));
+                    return '';
+                }
+                await context.setApplication(appId);
+                const { xml: data } = X2Js.xml2js<{
+                    xml: WechatPublicEventData;
+                }>(body);
+                const { content, contentType } = onWeChatPublicEvent(
+                    data,
+                    context
+                );
+                return content;
+            },
         },
-    }, {
-        name: '微信公众号验证接口',
-        method: 'get',
-        params: ['appId'],
-        fn: async (context, params, body, req, headers) => {
-            const { searchParams } = new URL.URL(`http://${req.headers.host!}${req.url}`);
-            const { appId } = params;
+        {
+            name: '微信公众号验证接口',
+            method: 'get',
+            params: ['appId'],
+            fn: async (context, params, body, req, headers) => {
+                const { searchParams } = new URL.URL(
+                    `http://${req.headers.host!}${req.url}`
+                );
+                const { appId } = params;
 
-            if (!appId || appId === '20230210') {
-                console.error('applicationId参数不存在');
-                const echostr = searchParams.get('echostr')!;
-                return echostr;
-            }
-            const [application] = await context.select(
-                'application',
-                {
-                    data: {
-                        id: 1,
-                        config: 1,
+                if (!appId || appId === '20230210') {
+                    console.error('applicationId参数不存在');
+                    const echostr = searchParams.get('echostr')!;
+                    return echostr;
+                }
+                const [application] = await context.select(
+                    'application',
+                    {
+                        data: {
+                            id: 1,
+                            config: 1,
+                        },
+                        filter: {
+                            id: appId,
+                        },
                     },
-                    filter: {
-                        id: appId,
-                    },
-                },
-                {}
-            );
-            if (!application) {
-                throw new Error(`未找到${appId}对应的app`);
-            }
-            const signature = searchParams.get('signature')!;
-            const timestamp = searchParams.get('timestamp')!;
-            const nonce = searchParams.get('nonce')!;
-            const isWeChat = assertFromWeChat({ signature, timestamp, nonce }, application.config as WechatPublicConfig);
-            if (isWeChat) {
-                const echostr = searchParams.get('echostr')!;
-                return echostr;
-            }
-            else {
-                throw new Error('Verify Failed');
-            }
+                    {}
+                );
+                if (!application) {
+                    throw new Error(`未找到${appId}对应的app`);
+                }
+                const signature = searchParams.get('signature')!;
+                const timestamp = searchParams.get('timestamp')!;
+                const nonce = searchParams.get('nonce')!;
+                const isWeChat = assertFromWeChat(
+                    { signature, timestamp, nonce },
+                    application.config as WechatPublicConfig
+                );
+                if (isWeChat) {
+                    const echostr = searchParams.get('echostr')!;
+                    return echostr;
+                } else {
+                    throw new Error('Verify Failed');
+                }
+            },
         },
-    }],
+    ],
 };
-
 
 export default endpoints;

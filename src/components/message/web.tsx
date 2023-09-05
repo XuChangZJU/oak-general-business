@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { message } from 'antd';
-import { MessageProps } from 'oak-frontend-base/lib/types/Message';
+import { MessageProps } from 'oak-frontend-base';
 
 export default function render(props: { data: { data: MessageProps } }) {
     const [messageApi, contextHolder] = message.useMessage();

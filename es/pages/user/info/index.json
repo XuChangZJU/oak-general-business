@@ -1,0 +1,17 @@
+{
+    "navigationBarTitleText": "个人设置",
+    "enablePullDownRefresh": false,
+    "usingComponents": {
+        "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index",
+        "l-avatar": "@oak-frontend-base/miniprogram_npm/lin-ui/avatar/index",
+        "l-list": "@oak-frontend-base/miniprogram_npm/lin-ui/list/index",
+        "l-icon": "@oak-frontend-base/miniprogram_npm/lin-ui/icon/index",
+        "l-tag": "@oak-frontend-base/miniprogram_npm/lin-ui/tag/index",
+        "l-popup": "@oak-frontend-base/miniprogram_npm/lin-ui/popup/index",
+        "l-input": "@oak-frontend-base/miniprogram_npm/lin-ui/input/index",
+        "l-radio-group": "@oak-frontend-base/miniprogram_npm/lin-ui/radio-group/index",
+        "l-radio": "@oak-frontend-base/miniprogram_npm/lin-ui/radio/index",
+        "l-form-item": "@oak-frontend-base/miniprogram_npm/lin-ui/form-item/index",
+        "oak-extraFile-avatar": "../../../components/extraFile/avatar/index"
+    }
+}

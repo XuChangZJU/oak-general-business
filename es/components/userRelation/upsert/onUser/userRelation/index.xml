@@ -1,0 +1,11 @@
+<l-checkbox-group bind:linchange="onRelationChangeMp" >
+    <l-checkbox
+        size="64rpx"
+        wx:for-items="{{relations2}}"
+        wx:key="index"
+        key="{{item.relation.id}}"
+        checked="{{item.isChecked}}"
+    >
+        {{item.relation.name ? t(entity + ':r.' +  item.relation.name) : item.relation.display}}
+    </l-checkbox>
+</l-checkbox-group>

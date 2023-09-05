@@ -1,10 +1,11 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict } from '../../../oak-app-domain';
 import { OpSchema as ExtraFile } from '../../../oak-app-domain/ExtraFile/Schema';
 import { isEqual } from 'oak-domain/lib/utils/lodash';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
-import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import { ReactComponentProps } from 'oak-frontend-base';
+
 type MethodsType = 'original' | 'url' | 'uploadLocalImg';
 type RenderImgItem = { renderUrl: any, originUrl: string, id: number, isBridge: boolean };
 export default OakComponent({

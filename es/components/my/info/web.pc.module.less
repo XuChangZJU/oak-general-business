@@ -1,0 +1,75 @@
+@import '../../../config/styles/web/index.less';
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    background-color: var(--oak-bg-color-container);
+
+    .header {
+        height: 200px;
+        background-color: var(--oak-color-primary);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .name {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            color: var(--oak-bg-color-container);
+        }
+    }
+
+    .body {
+        .tag {
+            .primary {
+                background-color: var(--oak-color-primary);
+            }
+
+            .success {
+                background-color: var(--oak-color-success);
+            }
+
+            .danger {
+                background-color: var(--oak-color-error);
+            }
+
+            .warning {
+                background-color: var(--oak-color-warning);
+            }
+        }
+    }
+    .extraContainer {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .extra {
+            border: 1px;
+            border-style: double;
+            border-color: var(--oak-color-warning);
+            border-radius: 50%;
+            padding: 8px;            
+        }
+    }
+    .extraMobile {
+        border: 1px;
+        border-style: double;
+        border-color: var(--oak-color-warning);
+        border-radius: 50%;
+        padding: 8px;
+        position: fixed;
+        right: 10px;
+        top: 10px;
+    }
+}
+
+.editor {
+    display: flex;
+    align-items: center;
+    .input {
+        flex: auto;
+    }
+}

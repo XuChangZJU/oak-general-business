@@ -1,0 +1,8 @@
+{
+    "component": true,
+    "usingComponents": {
+        "l-input": "@oak-frontend-base/miniprogram_npm/lin-ui/input/index",
+        "l-icon": "@oak-frontend-base/miniprogram_npm/lin-ui/icon/index",
+        "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index"
+    }
+}

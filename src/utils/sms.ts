@@ -1,6 +1,7 @@
 
 import { SmsSdk, TencentSmsInstance } from 'oak-external-sdk';
 import { assert } from 'oak-domain/lib/utils/assert';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { EntityDict } from '../oak-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import {
@@ -12,7 +13,7 @@ import {
 import { OakExternalException } from 'oak-domain/lib/types';
 
 export async function sendSms<
-    ED extends EntityDict,
+    ED extends EntityDict & BaseEntityDict,
     Cxt extends BackendRuntimeContext<ED>
 >(
     options: {

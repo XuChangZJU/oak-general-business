@@ -1,9 +1,9 @@
 import { EntityDict } from '../oak-app-domain';
 import { LOCAL_STORAGE_KEYS } from '../config/constants';
-import { Cache } from 'oak-frontend-base/lib/features/cache';
-import { Feature } from 'oak-frontend-base/lib/types/Feature';
+import { Feature } from 'oak-frontend-base';
 import { CommonAspectDict } from 'oak-common-aspect';
-import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
+import { Cache } from 'oak-frontend-base/es/features/cache';
+import { LocalStorage } from 'oak-frontend-base/es/features/localStorage';
 import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';

@@ -3,7 +3,7 @@ import { Tabs } from 'antd';
 import Style from './web.module.less';
 import ByMobile from './byMobile/index';
 import ByUserEntityGrant from './byUserEntityGrant';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 import { QrCodeType } from '../../../types/Config';

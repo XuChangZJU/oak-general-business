@@ -1,4 +1,3 @@
-import assert from 'assert';
 import { OakInputIllegalException, Checker } from "oak-domain/lib/types";
 import { EntityDict } from '../oak-app-domain';
 import { checkAttributesNotNull } from 'oak-domain/lib/utils/validator';
