@@ -10,6 +10,6 @@ export * from './types/RuntimeCxt';
 export { composeFileUrl, decomposeFileUrl } from './utils/extraFile';
 export { getLivestream, getPlayBackUrl, getStreamObj } from './utils/livestream';
 export { BackendRuntimeContext } from './context/BackendRuntimeContext';
-export { FrontendRuntimeContext } from './context/FrontendRuntimeContext';
+export { FrontendRuntimeContext, SerializedData, } from './context/FrontendRuntimeContext';
 export { RuntimeContext } from './context/RuntimeContext';
 export { registerWechatPublicTags } from './config/constants';

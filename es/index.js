@@ -9,5 +9,5 @@ export * from './types/RuntimeCxt';
 export { composeFileUrl, decomposeFileUrl } from './utils/extraFile';
 export { getLivestream, getPlayBackUrl, getStreamObj } from './utils/livestream';
 export { BackendRuntimeContext } from './context/BackendRuntimeContext';
-export { FrontendRuntimeContext } from './context/FrontendRuntimeContext';
+export { FrontendRuntimeContext, } from './context/FrontendRuntimeContext';
 export { registerWechatPublicTags } from './config/constants';

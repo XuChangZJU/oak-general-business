@@ -4,7 +4,7 @@ import { ExtraFile } from './extraFile';
 import { Application } from './application';
 import { Config } from './config';
 import { WeiXinJsSdk } from './weiXinJsSdk';
-import { BasicFeatures } from 'oak-frontend-base/lib/features';
+import { BasicFeatures } from 'oak-frontend-base';
 import AspectDict from '../aspects/AspectDict';
 import { AppType } from '../oak-app-domain/Application/Schema';
 import { EntityDict } from '../oak-app-domain';

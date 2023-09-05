@@ -1,6 +1,6 @@
 import { EntityDict } from '../oak-app-domain';
 import { Origin } from '../types/Config';
-import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
+import { QiniuUploadInfo } from 'oak-frontend-base';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 export declare function getUploadInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     origin: Origin;

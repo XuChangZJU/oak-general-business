@@ -1,11 +1,12 @@
 import { RuntimeContext } from './RuntimeContext';
 import { EntityDict } from '../oak-app-domain';
 import { SerializedData } from './FrontendRuntimeContext';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
 /**
  * general数据结构要求的后台上下文
  */
-export declare class BackendRuntimeContext<ED extends EntityDict> extends AsyncContext<ED> implements RuntimeContext {
+export declare class BackendRuntimeContext<ED extends EntityDict & BaseEntityDict> extends AsyncContext<ED> implements RuntimeContext {
     protected application?: Partial<ED['application']['Schema']>;
     protected token?: Partial<ED['token']['Schema']>;
     protected amIRoot?: boolean;

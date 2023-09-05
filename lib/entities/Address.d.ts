@@ -8,4 +8,6 @@ export interface Schema extends EntityShape {
     name: String<32>;
     default: Boolean;
     remark: Text;
+    entity?: String<32>;
+    entityId?: String<64>;
 }

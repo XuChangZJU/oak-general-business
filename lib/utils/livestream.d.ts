@@ -1,3 +1,4 @@
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { EntityDict } from '../oak-app-domain';
 import { Schema as Livestream } from '../oak-app-domain/Livestream/Schema';
 import { Origin } from '../types/Config';
@@ -9,7 +10,7 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
  * @param context context
  * @returns Livestream 对象
  */
-export declare function getLivestream<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+export declare function getLivestream<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     origin: Origin;
     streamTitle: string;
     expireAt: number;
@@ -21,12 +22,12 @@ export declare function getLivestream<ED extends EntityDict, Cxt extends Backend
  * @param context context
  * @returns livestream对象
  */
-export declare function getStreamObj<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+export declare function getStreamObj<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     origin: Origin;
     streamTitle: string;
     expireAt: number;
 }, context: Cxt): Promise<Pick<Livestream, 'streamTitle' | 'hub' | 'rtmpPushUrl' | 'rtmpPlayUrl' | 'pcPushUrl' | 'streamKey' | 'expireAt'>>;
-export declare function getPlayBackUrl<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+export declare function getPlayBackUrl<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     origin: Origin;
     streamTitle: string;
     start: number;

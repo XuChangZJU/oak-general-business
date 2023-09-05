@@ -1,4 +1,4 @@
-import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
+import { QiniuUploadInfo } from 'oak-frontend-base';
 export default class qiniuInstance {
     accessKey: string;
     secretKey: string;

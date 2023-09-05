@@ -1,10 +1,10 @@
-/// <reference types="react" />
-import { OakComponentOption as BaseOakComponentOption, DataOption, MethodOption, ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import React from 'react';
+import { OakComponentOption as BaseOakComponentOption, DataOption, MethodOption, ReactComponentProps } from 'oak-frontend-base';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { EntityDict } from '../oak-app-domain';
 import { Aspect } from 'oak-domain/lib/types/Aspect';
-import { Feature } from 'oak-frontend-base/lib/types/Feature';
-import { BasicFeatures } from 'oak-frontend-base/lib/features/index';
+import { Feature } from 'oak-frontend-base';
+import { BasicFeatures } from 'oak-frontend-base';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { GeneralFeatures } from '../features';
 import GeneralAspectDict from '../aspects/AspectDict';

@@ -6,4 +6,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'system', fa
     showBack: boolean;
 }, {
     confirm: () => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

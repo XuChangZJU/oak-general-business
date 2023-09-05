@@ -13,6 +13,8 @@ export declare type OpSchema = EntityShape & {
     name: String<32>;
     default: Boolean;
     remark: Text;
+    entity?: String<32> | null;
+    entityId?: String<64> | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
@@ -22,6 +24,8 @@ export declare type Schema = EntityShape & {
     name: String<32>;
     default: Boolean;
     remark: Text;
+    entity?: String<32> | null;
+    entityId?: String<64> | null;
     area: Area.Schema;
 } & {
     [A in ExpressionKey]?: any;
@@ -38,6 +42,8 @@ declare type AttrFilter = {
     name: Q_StringValue;
     default: Q_BooleanValue;
     remark: Q_StringValue;
+    entity: Q_StringValue;
+    entityId: Q_StringValue;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -54,6 +60,8 @@ export declare type Projection = {
     name?: number;
     default?: number;
     remark?: number;
+    entity?: number;
+    entityId?: number;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type AddressIdProjection = OneOf<{
     id: number;
@@ -84,6 +92,10 @@ export declare type SortAttr = {
 } | {
     remark: number;
 } | {
+    entity: number;
+} | {
+    entityId: number;
+} | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
 export declare type SortNode = {
@@ -94,8 +106,12 @@ export declare type Sorter = SortNode[];
 export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
 export declare type Selection<P extends Object = Projection> = SelectOperation<P>;
 export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "areaId">> & ({
+export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "areaId">> & ({
     areaId: ForeignKey<"area">;
+}) & ({
+    entity?: string;
+    entityId?: string;
+    [K: string]: any;
 });
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
