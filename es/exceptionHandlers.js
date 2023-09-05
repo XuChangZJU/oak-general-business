@@ -1,5 +1,5 @@
 "use strict";
-// import { ExceptionHandlerDict } from "oak-frontend-base/lib/types/ExceptionHandler";
+// import { ExceptionHandlerDict } from "oak-frontend-base/es/types/ExceptionHandler";
 // import { OakUnloggedInException } from "oak-domain/lib/types/Exception";
 // import { EntityDict } from './oak-app-domain';
 // import { GeneralFeatures } from './features/index';

@@ -2,7 +2,7 @@ import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-run
 import { Badge, Table, Typography } from 'antd';
 import dayjs from 'dayjs';
 import Style from './web.module.less';
-import ActionBtnPanel from 'oak-frontend-base/lib/components/actionBtnPanel';
+import ActionBtnPanel from 'oak-frontend-base/es/components/actionBtnPanel';
 const MessageType = {
     adminNotification: '系统通知',
     conversationMessage: '客服消息',

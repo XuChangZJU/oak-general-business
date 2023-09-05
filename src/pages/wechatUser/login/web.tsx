@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 import { LoadingOutlined, WarningOutlined } from '@ant-design/icons';
-import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
+import { isWeiXin } from 'oak-frontend-base/es/utils/utils';
 import Fail from '../../../components/common/result/fail';
 import Success from '../../../components/common/result/success';
 

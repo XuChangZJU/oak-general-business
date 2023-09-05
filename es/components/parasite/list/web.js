@@ -1,7 +1,7 @@
 import { jsxs as _jsxs, jsx as _jsx, Fragment as _Fragment } from "react/jsx-runtime";
 import { Table, Typography, Modal } from 'antd';
 import dayjs from 'dayjs';
-import ActionBtnPanel from 'oak-frontend-base/lib/components/actionBtnPanel';
+import ActionBtnPanel from 'oak-frontend-base/es/components/actionBtnPanel';
 import ParasiteDetail from '../detail';
 import { useState } from 'react';
 export default function render(props) {

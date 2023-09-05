@@ -3,7 +3,7 @@ import { Badge, Table, Typography } from 'antd';
 import dayjs from 'dayjs';
 import Style from './web.module.less';
 import PageHeader from '../../../components/common/pageHeader';
-import ActionBtnPanel from 'oak-frontend-base/lib/components/actionBtnPanel';
+import ActionBtnPanel from 'oak-frontend-base/es/components/actionBtnPanel';
 const MessageType = {
     adminNotification: '系统通知',
     conversationMessage: '客服消息',

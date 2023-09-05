@@ -1,7 +1,7 @@
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
 import { Table, Button, Space, Typography } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
-import ActionBtnPanel from 'oak-frontend-base/lib/components/actionBtnPanel';
+import ActionBtnPanel from 'oak-frontend-base/es/components/actionBtnPanel';
 import Style from './web.module.less';
 import dayjs from 'dayjs';
 export default function Render(props) {

@@ -3,7 +3,7 @@ import { Button, Space, Typography, Result } from 'antd';
 import Style from './web.module.less';
 import { UserAddOutlined, WechatOutlined, MehOutlined } from '@ant-design/icons';
 
-import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
+import { isWeiXin } from 'oak-frontend-base/es/utils/utils';
 
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';

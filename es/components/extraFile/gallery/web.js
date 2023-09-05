@@ -8,7 +8,7 @@ import Style from "./web.module.less";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
-import { isPc } from "oak-frontend-base/lib/utils/utils";
+import { isPc } from "oak-frontend-base/es/utils/utils";
 function getListType(theme) {
     const themeMap = {
         file: "text",

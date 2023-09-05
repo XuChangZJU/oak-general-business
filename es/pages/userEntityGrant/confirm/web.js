@@ -2,7 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Button, Space } from 'antd';
 import Style from './web.module.less';
 import { UserAddOutlined, UserSwitchOutlined, LoadingOutlined, } from '@ant-design/icons';
-import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
+import { isWeiXin } from 'oak-frontend-base/es/utils/utils';
 import Success from '../../../components/common/result/success';
 import Fail from '../../../components/common/result/fail';
 export default function Render(props) {

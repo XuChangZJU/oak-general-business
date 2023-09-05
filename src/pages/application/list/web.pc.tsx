@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Table, Button, Space, Typography, Modal } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
-import ActionBtnPanel from 'oak-frontend-base/lib/components/actionBtnPanel';
+import ActionBtnPanel from 'oak-frontend-base/es/components/actionBtnPanel';
 
 import Style from './web.module.less';
 import { EntityDict } from '../../../oak-app-domain';
