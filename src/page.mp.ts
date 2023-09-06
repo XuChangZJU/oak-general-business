@@ -1,13 +1,13 @@
-import { ComponentPublicThisType, DataOption } from 'oak-frontend-base/lib/types/Page';
+import { ComponentPublicThisType, DataOption } from 'oak-frontend-base';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { EntityDict } from './oak-app-domain';
-import { BasicFeatures } from 'oak-frontend-base/lib/features/index';
+import { BasicFeatures } from 'oak-frontend-base';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { BackendRuntimeContext } from './context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from './context/FrontendRuntimeContext';
-import { createComponent as createBaseComponent } from 'oak-frontend-base/lib/page.mp';
 import { OakMpHaveToSubscribeMessage } from './types/Exception';
 import { GAD, GFD, OakComponentOption } from './types/Page';
+import { createComponent as createBaseComponent } from 'oak-frontend-base/es/page.mp';
 
 /**
  * 这里的逻辑暴露出去，是为了让general可以被其它库重载

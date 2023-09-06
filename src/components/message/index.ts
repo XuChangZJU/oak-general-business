@@ -1,4 +1,4 @@
-import { MessageProps } from 'oak-frontend-base/lib/types/Message';
+import { MessageProps } from 'oak-frontend-base';
 
 export default OakComponent({
     isList: false,

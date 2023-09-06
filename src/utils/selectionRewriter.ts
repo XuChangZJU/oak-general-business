@@ -1,9 +1,9 @@
 
-import { EntityDict } from 'oak-domain/lib/types/Entity';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { judgeRelation } from 'oak-domain/lib/store/relation';
-import { EntityDict as BaseEntityDict } from '../oak-app-domain';
+import { EntityDict } from '../oak-app-domain';
 import { EXPRESSION_PREFIX, StorageSchema } from 'oak-domain/lib/types';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 
 /**
  * 这个修改是不可反复做的，会产生无穷递归

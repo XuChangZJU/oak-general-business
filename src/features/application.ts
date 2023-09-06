@@ -1,7 +1,7 @@
-import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
 import { LOCAL_STORAGE_KEYS } from '../config/constants';
-import { Cache } from 'oak-frontend-base/lib/features/cache';
-import { Feature } from 'oak-frontend-base/lib/types/Feature';
+import { LocalStorage } from 'oak-frontend-base/es/features/localStorage';
+import { Cache } from 'oak-frontend-base/es/features/cache';
+import { Feature } from 'oak-frontend-base';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { merge } from 'oak-domain/lib/utils/lodash';

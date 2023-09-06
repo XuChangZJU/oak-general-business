@@ -25,7 +25,7 @@ export default function render(
     >
 ) {
     const { mobiles, allowRemove, tokenMobileId, showBack = false } = props.data;
-    const { goAddMobile, removeItem, recoverItem, execute, sub } = props.methods;
+    const { goAddMobile, removeItem, recoverItem, execute, subEvent } = props.methods;
     const [open, setOpen] = useState(false);
     const eventLoggedIn = `user:info:login:${Date.now()}`;
 

@@ -1,13 +1,13 @@
 import React from 'react';
-import { DataOption } from 'oak-frontend-base/lib/types/Page';
+import { DataOption } from 'oak-frontend-base';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { EntityDict } from './oak-app-domain';
-import { BasicFeatures } from 'oak-frontend-base/lib/features/index';
+import { BasicFeatures } from 'oak-frontend-base';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { BackendRuntimeContext } from './context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from './context/FrontendRuntimeContext';
 import { GAD, GFD, OakComponentOption } from './types/Page';
-import { createComponent as createBaseComponent } from 'oak-frontend-base/lib/page.web';
+import { createComponent as createBaseComponent } from 'oak-frontend-base/es/page.web';
 
 
 export function createComponent<

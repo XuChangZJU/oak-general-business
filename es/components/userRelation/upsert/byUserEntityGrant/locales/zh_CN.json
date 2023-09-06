@@ -1,0 +1,13 @@
+{
+    "single": "单次",
+    "unlimited": "不限",
+    "restart": "重新生成",
+    "chooseNumber": "请选择分享的目标人数",
+    "chooseExpiresAt": "请选择有效时长",
+    "expiresHelp": "支持分钟、小时选择",
+    "shareCode": "请将二维码发给待分享权限的用户使用微信扫描",
+    "unit": {
+        "hour": "小时",
+        "minute": "分钟"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "navigationBarTitleText": "修改地址",
+    "usingComponents": {
+        "area-upsert": "../../../components/area/upsert/index",
+        "t-input": "@oak-frontend-base/miniprogram_npm/tdesign/input/input",
+        "t-textarea": "@oak-frontend-base/miniprogram_npm/tdesign/textarea/textarea",
+        "t-button": "@oak-frontend-base/miniprogram_npm/tdesign/button/button",
+        "t-button-group": "@oak-frontend-base/miniprogram_npm/tdesign/button-group/button-group"
+    }
+}

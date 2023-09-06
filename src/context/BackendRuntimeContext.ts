@@ -1,7 +1,8 @@
 import { RuntimeContext } from './RuntimeContext';
 import { EntityDict } from '../oak-app-domain';
 import { SerializedData } from './FrontendRuntimeContext';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import {
     OakTokenExpiredException,
     OakUserDisabledException,
@@ -19,9 +20,10 @@ import { getMpUnlimitWxaCode } from '../aspects/wechatQrCode';
 /**
  * general数据结构要求的后台上下文
  */
-export class BackendRuntimeContext<ED extends EntityDict>
+export class BackendRuntimeContext<ED extends EntityDict & BaseEntityDict>
     extends AsyncContext<ED>
-    implements RuntimeContext {
+    implements RuntimeContext
+{
     protected application?: Partial<ED['application']['Schema']>;
     protected token?: Partial<ED['token']['Schema']>;
     protected amIRoot?: boolean;
@@ -39,12 +41,20 @@ export class BackendRuntimeContext<ED extends EntityDict>
                         // todo 小程序码此时去微信服务器获得码数据
                         const wechatQrCodeListObj = d[entity];
                         for (const id in wechatQrCodeListObj) {
-                            const wechatQrCodeData = wechatQrCodeListObj[id] as Partial<EntityDict['wechatQrCode']['OpSchema']>;
-                            if (wechatQrCodeData.hasOwnProperty('buffer') && wechatQrCodeData.type === 'wechatMpWxaCode') {
-                                const buffer = await getMpUnlimitWxaCode<ED, keyof ED, BackendRuntimeContext<ED>>(
-                                    id,
-                                    this,
-                                );
+                            const wechatQrCodeData = wechatQrCodeListObj[
+                                id
+                            ] as Partial<
+                                EntityDict['wechatQrCode']['OpSchema']
+                            >;
+                            if (
+                                wechatQrCodeData.hasOwnProperty('buffer') &&
+                                wechatQrCodeData.type === 'wechatMpWxaCode'
+                            ) {
+                                const buffer = await getMpUnlimitWxaCode<
+                                    ED,
+                                    keyof ED,
+                                    BackendRuntimeContext<ED>
+                                >(id, this);
                                 Object.assign(wechatQrCodeData, {
                                     buffer,
                                 });
@@ -147,8 +157,7 @@ export class BackendRuntimeContext<ED extends EntityDict>
                 }
                 closeRootMode();
                 await this.commit();
-            }
-            catch (err) {
+            } catch (err) {
                 closeRootMode();
                 await this.rollback();
                 throw err;
@@ -176,7 +185,7 @@ export class BackendRuntimeContext<ED extends EntityDict>
             return () => undefined;
         }
         this.rootMode = true;
-        return () => this.rootMode = false;
+        return () => (this.rootMode = false);
     }
 
     getTokenValue(allowUnloggedIn?: boolean) {

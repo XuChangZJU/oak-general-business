@@ -7,7 +7,7 @@ import {
     LoadingOutlined,
     WarningOutlined,
 } from '@ant-design/icons';
-import { isWeiXin } from 'oak-frontend-base/lib/utils/utils';
+import { isWeiXin } from 'oak-frontend-base/es/utils/utils';
 
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';

@@ -43,7 +43,7 @@ export default OakComponent({
         },
         callAreaPicker() {
             const event = 'address:upsert:selectArea';
-            this.sub(event, ({ id }: {id: string}) => {
+            this.subEvent(event, ({ id }: { id: string }) => {
                 this.update({
                     areaId: id,
                 });

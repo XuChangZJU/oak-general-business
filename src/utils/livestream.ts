@@ -1,9 +1,10 @@
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict } from '../oak-app-domain';
 import { Schema as Livestream } from '../oak-app-domain/Livestream/Schema';
 import { Origin, QiniuLiveConfig } from '../types/Config';
 import { getConfig } from './getContextConfig';
 import { QiniuCloudInstance } from 'oak-external-sdk';
-import { assert } from 'oak-domain/lib/utils/assert';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
 /**
@@ -13,7 +14,7 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
  * @param context context
  * @returns Livestream 对象
  */
-export async function getLivestream<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(
+export async function getLivestream<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(
     params: {
         origin: Origin;
         streamTitle: string,
@@ -48,7 +49,7 @@ export async function getLivestream<ED extends EntityDict, Cxt extends BackendRu
  * @param context context
  * @returns livestream对象
  */
-export async function getStreamObj<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(
+export async function getStreamObj<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(
     params: {
         origin: Origin;
         streamTitle: string;
@@ -76,7 +77,7 @@ export async function getStreamObj<ED extends EntityDict, Cxt extends BackendRun
 }
 
 // 生成直播回放
-export async function getPlayBackUrl<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(
+export async function getPlayBackUrl<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(
     params: {
         origin: Origin;
         streamTitle: string;

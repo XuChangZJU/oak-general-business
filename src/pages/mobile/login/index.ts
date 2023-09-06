@@ -86,7 +86,7 @@ export default OakComponent({
                 if (typeof callback === 'function') {
                     callback();
                 } else if (eventLoggedIn) {
-                    this.pub(eventLoggedIn);
+                    this.pubEvent(eventLoggedIn);
                 } else {
                     this.navigateBack();
                 }

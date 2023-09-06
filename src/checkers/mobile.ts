@@ -1,11 +1,11 @@
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { isMobile } from 'oak-domain/lib/utils/validator';
-import { OakInputIllegalException, Checker } from "oak-domain/lib/types";
+import { OakInputIllegalException, Checker } from 'oak-domain/lib/types';
 import { EntityDict } from '../oak-app-domain';
 import { checkAttributesNotNull } from 'oak-domain/lib/utils/validator';
 import { RuntimeCxt } from '../types/RuntimeCxt';
 
-const checkers: Checker<EntityDict, 'mobile', RuntimeCxt> [] = [
+const checkers: Checker<EntityDict, 'mobile', RuntimeCxt>[] = [
     {
         type: 'data',
         action: 'create',
@@ -14,7 +14,11 @@ const checkers: Checker<EntityDict, 'mobile', RuntimeCxt> [] = [
             assert(!(data instanceof Array));
             checkAttributesNotNull('mobile', data, ['mobile']);
             if (!isMobile(data.mobile!)) {
-                throw new OakInputIllegalException('mobile', ['mobile'], '手机号非法');
+                throw new OakInputIllegalException(
+                    'mobile',
+                    ['mobile'],
+                    '手机号非法'
+                );
             }
         },
     },
@@ -35,7 +39,7 @@ const checkers: Checker<EntityDict, 'mobile', RuntimeCxt> [] = [
                 }
             }
         },
-    }
+    },
 ];
 
 export default checkers;

@@ -1,0 +1,9 @@
+{
+    "navigationBarTitleText": "个人中心",
+    "usingComponents": {
+        "oak-icon": "../../../components/icon/index",
+        "l-list": "@oak-frontend-base/miniprogram_npm/lin-ui/list/index",
+        "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index",
+        "l-avatar": "@oak-frontend-base/miniprogram_npm/lin-ui/avatar/index"
+    }
+}

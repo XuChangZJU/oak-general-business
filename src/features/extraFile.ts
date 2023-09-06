@@ -1,16 +1,16 @@
-import { Feature } from 'oak-frontend-base/lib/types/Feature';
-import { Upload } from 'oak-frontend-base/lib/utils/upload';
+import { Feature } from 'oak-frontend-base';
+import { Upload } from 'oak-frontend-base/es/utils/upload';
+import { Cache } from 'oak-frontend-base/es/features/cache';
+import { Locales } from 'oak-frontend-base/es/features/locales';
 import { CommonAspectDict } from 'oak-common-aspect';
 import AspectDict from '../aspects/AspectDict';
 import { EntityDict } from '../oak-app-domain';
 import { Origin } from '../types/Config';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
-import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Application } from './application'
 import { composeFileUrl, bytesToSize } from '../utils/extraFile'
-import assert from 'assert';
-import { Locales } from 'oak-frontend-base/lib/features/locales';
+import { assert } from 'oak-domain/lib/utils/assert';
 
 export class ExtraFile<
     ED extends EntityDict,
