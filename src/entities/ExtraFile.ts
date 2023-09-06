@@ -20,6 +20,7 @@ export interface Schema extends EntityShape {
     fileType?: String<128>;
     isBridge?: Boolean;
     uploaded: Boolean;
+    uploadInfo?: Object;
 };
 
 const entityDesc: EntityDesc<Schema, '', '', {
@@ -47,6 +48,7 @@ const entityDesc: EntityDesc<Schema, '', '', {
                 fileType: '文件类型',
                 isBridge: '是否桥接访问',
                 uploaded: '是否上传成功',
+                uploadInfo: '上传参数',
             },
             v: {
                 origin: {

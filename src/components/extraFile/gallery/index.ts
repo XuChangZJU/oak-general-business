@@ -291,13 +291,17 @@ export default OakComponent({
                     callback(updateData, 'uploading');
                 }
                 try {
-                    const { bucket } = await this.features.extraFile.upload(
-                        updateData
-                    );
-                    Object.assign(updateData, {
-                        bucket,
+                    this.addItem(Object.assign({}, updateData, {
                         extra1: null,
+                        uploaded: false,
+                    }), undefined, async () => {
+                        console.log(updateData);
+
+                        await this.features.extraFile.upload(
+                            updateData
+                        )
                     });
+                    await this.execute();
                     if (callback) {
                         callback(updateData, 'success');
                     }
@@ -310,7 +314,7 @@ export default OakComponent({
                     throw error;
                 }
 
-                this.addItem(updateData);
+
                 await this.execute();
             } else {
                 this.addItem(updateData, async () => {
@@ -324,6 +328,7 @@ export default OakComponent({
                     Object.assign(updateData, {
                         bucket,
                         extra1: null,
+                        uploaded: false,
                     });
                 });
             }

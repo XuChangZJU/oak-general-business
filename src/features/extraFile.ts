@@ -32,7 +32,12 @@ export class ExtraFile<
         this.locales = locales;
     }
 
-    private async getUploadInfo(origin: Origin, key?: string) {
+    async getUploadInfo(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
+        const { origin, extra1, filename, objectId, extension, entity } =
+            extraFile;
+        // 构造文件上传所需的key
+        const key = `${entity ? entity + '/' : ''}${objectId}${extension ? '.' + extension : ''}`;
+        assert(origin && origin !== 'unknown');
         const uploadInfo = await this.cache.exec('getUploadInfo', {
             origin,
             key,
@@ -41,21 +46,18 @@ export class ExtraFile<
     }
 
     async upload(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
-        const { origin, extra1, filename, objectId, extension, entity } =
+        const { origin, extra1, filename, objectId, extension, entity, uploadInfo } =
             extraFile;
         // 构造文件上传所需的key
-        const key = `${entity ? entity + '/' : ''}${objectId}${extension ? '.' + extension : ''}`;
-        assert(origin && origin !== 'unknown');
-        const { result: uploadInfo } = await this.getUploadInfo(origin, key);
 
         if (process.env.OAK_PLATFORM === 'wechatMp') {
             // 微信小程序使用wx.uploadFile, 封装upload，上传源为origin
             const up = new Upload();
-            const result = await up.uploadFile(origin, extra1!, uploadInfo);
+            const result = await up.uploadFile(origin!, extra1!, uploadInfo);
             return result;
         } else {
             const up = new Upload();
-            const result = await up.uploadFile(origin, extra1!, uploadInfo);
+            const result = await up.uploadFile(origin!, extra1!, uploadInfo);
             return result;
         }
     }
@@ -72,8 +74,8 @@ export class ExtraFile<
             application?.system?.config ||
             application?.system?.platform?.config;
         let url;
-        if(extraFile?.isBridge && extraFile?.extra1) {
-            if(typeof extraFile?.extra1 === 'string') {
+        if (extraFile?.isBridge && extraFile?.extra1) {
+            if (typeof extraFile?.extra1 === 'string') {
                 url = this.locales.makeBridgeUrl(extraFile?.extra1);
                 return url;
             }
