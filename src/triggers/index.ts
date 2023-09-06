@@ -9,6 +9,7 @@ import applicationTriggers from './application';
 import articleMenuTriggers from './articleMenu';
 import article from './article';
 import parasiteTriggers from './parasite';
+import extraFileTriggers from './extraFile';
 
 export default [
     ...applicationTriggers,
@@ -22,4 +23,5 @@ export default [
     ...articleMenuTriggers,
     ...article,
     ...parasiteTriggers,
+    ...extraFileTriggers,
 ];

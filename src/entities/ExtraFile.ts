@@ -19,6 +19,7 @@ export interface Schema extends EntityShape {
     sort?: Float<22,10>;
     fileType?: String<128>;
     isBridge?: Boolean;
+    uploadMeta?: Object;
 };
 
 const entityDesc: EntityDesc<Schema, '', '', {
@@ -45,6 +46,7 @@ const entityDesc: EntityDesc<Schema, '', '', {
                 sort: '排序',
                 fileType: '文件类型',
                 isBridge: '是否桥接访问',
+                uploadMeta: '上传需要的metadata',
             },
             v: {
                 origin: {
