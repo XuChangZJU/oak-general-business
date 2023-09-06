@@ -25,6 +25,7 @@ export declare type OpSchema = EntityShape & {
     sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
     isBridge?: Boolean | null;
+    uploadMeta?: Object | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
@@ -44,6 +45,7 @@ export declare type Schema = EntityShape & {
     sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
     isBridge?: Boolean | null;
+    uploadMeta?: Object | null;
     article?: Article.Schema;
     articleMenu?: ArticleMenu.Schema;
     user?: User.Schema;
@@ -71,6 +73,7 @@ declare type AttrFilter = {
     sort: Q_NumberValue;
     fileType: Q_StringValue;
     isBridge: Q_BooleanValue;
+    uploadMeta: Object;
     article: Article.Filter;
     articleMenu: ArticleMenu.Filter;
     user: User.Filter;
@@ -99,6 +102,7 @@ export declare type Projection = {
     sort?: number;
     fileType?: number;
     isBridge?: number;
+    uploadMeta?: number | Object;
     article?: Article.Projection;
     articleMenu?: ArticleMenu.Projection;
     user?: User.Projection;

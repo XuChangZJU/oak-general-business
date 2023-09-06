@@ -93,6 +93,9 @@ export const desc = {
         },
         isBridge: {
             type: "boolean"
+        },
+        uploadMeta: {
+            type: "object"
         }
     },
     actionType: "crud",
