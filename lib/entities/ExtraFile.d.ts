@@ -17,4 +17,5 @@ export interface Schema extends EntityShape {
     sort?: Float<22, 10>;
     fileType?: String<128>;
     isBridge?: Boolean;
+    uploaded: Boolean;
 }
