@@ -12,7 +12,17 @@ export default class Qiniu<ED extends EntityDict & BaseEntityDict, Cxt extends B
         throw new Error('method not implemented');
     }
 
-    async upload(extraFile: OpSchema, confirmUploadFn: () => Promise<void>, uploadFailureFn: (reason: string) => Promise<void>) {
+    getUploadInfo(extraFile: OpSchema) {
+        throw new Error('method not implemented');
+        return {} as any;
+    }
+
+    async checkWhetherSuccess(extraFile: OpSchema, context: Cxt) {
+        throw new Error('method not implemented');
+        return false;
+    }
+
+    async removeFile(extraFile: OpSchema, context: Cxt) {
         throw new Error('method not implemented');
     }
 };
