@@ -1,20 +1,20 @@
-import { Feature } from 'oak-frontend-base/lib/types/Feature';
-import { isIos, isWeiXin, isWeiXinDevTools } from 'oak-frontend-base/lib/utils/utils';
-import { promisify as wxPromisify } from 'oak-frontend-base/lib/utils/promisify';
+import { Feature } from 'oak-frontend-base';
+import { isIos, isWeiXin, isWeiXinDevTools } from 'oak-frontend-base/es/utils/utils';
+import { promisify as wxPromisify } from 'oak-frontend-base/es/utils/promisify';
 
 import { CommonAspectDict } from 'oak-common-aspect';
 import { EntityDict } from '../oak-app-domain';
 import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
-import { Cache } from 'oak-frontend-base/lib/features/cache';
-import { LocalStorage } from 'oak-frontend-base/lib/features/localStorage';
+import { Cache } from 'oak-frontend-base/es/features/cache';
+import { LocalStorage } from 'oak-frontend-base/es/features/localStorage';
+import { Environment } from 'oak-frontend-base/es/features/environment';
 import { WebEnv } from 'oak-domain/lib/types/Environment';
 import { uniq } from 'oak-domain/lib/utils/lodash';
 
 // const weixin = require('weixin-js-sdk');
 import weixin from 'weixin-js-sdk';
-import { Environment } from 'oak-frontend-base/lib/features/environment';
 
 type Options =
     | WeixinJsSdk.CheckJsApiOptions

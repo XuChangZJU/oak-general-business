@@ -67,7 +67,8 @@
     "resolveJsonModule": true, /* Disallow inconsistently-cased references to the same file. */
     "types": [
       "node",
-      "miniprogram-api-typings"
+      "miniprogram-api-typings",
+      "react"
     ]
   },
   "include": [
@@ -79,10 +80,12 @@
   ],
   "exclude": [
     "lib",
+    "es",
     "node_modules",
     "**/*.spec.ts",
     "package.json",
     "tsconfig.json",
+    "tsconfig.es.json",
     "package-lock.json",
     "test",
     "scripts"

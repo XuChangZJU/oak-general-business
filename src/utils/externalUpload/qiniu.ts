@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import { Buffer } from 'buffer';
-import { QiniuUploadInfo } from 'oak-frontend-base/lib/types/Upload';
+import { QiniuUploadInfo } from 'oak-frontend-base';
 
 export default class qiniuInstance {
     accessKey: string;

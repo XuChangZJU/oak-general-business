@@ -1,5 +1,5 @@
-import assert from 'assert';
-import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import { assert } from 'oak-domain/lib/utils/assert';
+import { ReactComponentProps } from 'oak-frontend-base';
 import { WebConfig } from '../../../entities/Application';
 import { EntityDict } from '../../../oak-app-domain';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
@@ -36,7 +36,7 @@ export default OakComponent({
                             entityId: {
                                 $exists: false,
                             },
-                        }
+                        },
                     ],
                 };
                 if (!isRoot) {
@@ -50,8 +50,8 @@ export default OakComponent({
                     };
                 }
                 return filter;
-            }
-        }
+            },
+        },
     ],
     formData({ data }) {
         return {
@@ -101,16 +101,16 @@ export default OakComponent({
             });
         },
     },
-})  as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
+}) as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
     props: ReactComponentProps<
         ED2,
         T2,
         true,
         {
-            entity: keyof ED2,
-            entityId: string,
-            redirectToAfterConfirm: ED2['userEntityGrant']['Schema']['redirectTo'],
-            qrCodeType: string,
+            entity: keyof ED2;
+            entityId: string;
+            redirectToAfterConfirm: ED2['userEntityGrant']['Schema']['redirectTo'];
+            qrCodeType: string;
         }
     >
 ) => React.ReactElement;

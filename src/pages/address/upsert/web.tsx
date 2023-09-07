@@ -4,7 +4,7 @@ import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 import { OakInputIllegalException } from 'oak-domain/lib/types';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { InputRef } from 'antd-mobile/es/components/input';
 import { TextAreaRef } from 'antd-mobile/es/components/text-area';
 

@@ -1,7 +1,7 @@
 import { EntityDict } from '../../../oak-app-domain';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
-import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import { ReactComponentProps } from 'oak-frontend-base';
 
 export default OakComponent({
     entity: 'parasite',

@@ -45,7 +45,7 @@ export default OakComponent({
                     },
                 ]);
             } else if (this.props.itemSelectedEvent){
-                this.pub(this.props.itemSelectedEvent, {
+                this.pubEvent(this.props.itemSelectedEvent, {
                     id: item.id,
                 });
             }

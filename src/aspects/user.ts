@@ -3,9 +3,8 @@ import { generateNewIdAsync } from "oak-domain/lib/utils/uuid";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { EntityDict } from "../oak-app-domain";
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
-import { uniq } from 'oak-domain/lib/utils/lodash';
 import { encryptPasswordSha1 } from '../utils/password';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import dayjs from 'dayjs';
 
 export async function mergeUser<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(params: { from: string, to: string }, context: Cxt, innerLogic?: boolean) {

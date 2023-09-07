@@ -1,12 +1,12 @@
-import { Feature } from 'oak-frontend-base/lib/types/Feature';
+import { Feature } from 'oak-frontend-base';
+import { Cache } from 'oak-frontend-base/es/features/cache';
+import { Locales } from 'oak-frontend-base/es/features/locales';
 import { CommonAspectDict } from 'oak-common-aspect';
 import AspectDict from '../aspects/AspectDict';
 import { EntityDict } from '../oak-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
-import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Application } from './application';
-import { Locales } from 'oak-frontend-base/lib/features/locales';
 export declare class ExtraFile<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>> extends Feature {
     private cache;
     private application;

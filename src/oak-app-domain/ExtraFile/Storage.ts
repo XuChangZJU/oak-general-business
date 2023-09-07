@@ -95,6 +95,13 @@ export const desc: StorageDesc<OpSchema> = {
         },
         isBridge: {
             type: "boolean"
+        },
+        uploaded: {
+            notNull: true,
+            type: "boolean"
+        },
+        uploadInfo: {
+            type: "object"
         }
     },
     actionType: "crud",

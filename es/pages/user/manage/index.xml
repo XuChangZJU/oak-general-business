@@ -1,0 +1,35 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <view class="user-list">
+        <view wx:for="{{userArr}}" wx:key="index">
+            <view class="cell" bind:tap="bindClicked" data-id="{{item.id}}">
+                <block wx:if="{{item.avatar}}">
+                    <l-avatar src="{{item.avatar}}" />
+                </block>
+                <block wx:else>
+                    <l-avatar size="120" icon-size="76" icon="user" />
+                </block>
+                <view class="user-info">
+                    <view class="row">
+                        <view class="nickname">{{item.nickname || '未设置'}}</view>
+                        <l-tag l-class="{{stateColor[item.userState]}}" size="mini" shape="circle">
+                            {{item.userState || '未设置'}}
+                        </l-tag>
+                    </view>
+                    <view class="row2">
+                        <view class="label">姓名：</view>
+                        <view class="value">{{item.name || '未设置'}}</view>
+                    </view>
+                    <view class="row2">
+                        <view class="label">手机号：</view>
+                        <view class="value">{{item.mobile || '未绑定'}}</view>
+                    </view>
+                </view>
+                <l-icon name="right" size="18" color="#888" />
+            </view>
+        </view>
+    </view>
+    <l-button l-class="add" special="{{true}}" bind:lintap="goNewUser">
+        <l-icon name="add" size="80" />
+    </l-button>
+</view>

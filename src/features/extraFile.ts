@@ -1,16 +1,17 @@
-import { Feature } from 'oak-frontend-base/lib/types/Feature';
-import { Upload } from 'oak-frontend-base/lib/utils/upload';
+import { Feature } from 'oak-frontend-base';
+import { Upload } from 'oak-frontend-base/es/utils/upload';
+import { Cache } from 'oak-frontend-base/es/features/cache';
+import { Locales } from 'oak-frontend-base/es/features/locales';
 import { CommonAspectDict } from 'oak-common-aspect';
 import AspectDict from '../aspects/AspectDict';
 import { EntityDict } from '../oak-app-domain';
+import { QiniuUploadInfo } from 'oak-frontend-base';
 import { Origin } from '../types/Config';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
-import { Cache } from 'oak-frontend-base/lib/features/cache';
 import { Application } from './application'
 import { composeFileUrl, bytesToSize } from '../utils/extraFile'
-import assert from 'assert';
-import { Locales } from 'oak-frontend-base/lib/features/locales';
+import { assert } from 'oak-domain/lib/utils/assert';
 
 export class ExtraFile<
     ED extends EntityDict,
@@ -33,14 +34,13 @@ export class ExtraFile<
     }
 
     async getUploadInfo(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
-        const { origin, extra1, filename, objectId, extension, entity } =
-            extraFile;
+        // const { origin, extra1, filename, objectId, extension, entity } =
+        //     extraFile;
         // 构造文件上传所需的key
-        const key = `${entity ? entity + '/' : ''}${objectId}${extension ? '.' + extension : ''}`;
+        // const key = `${entity ? entity + '/' : ''}${objectId}${extension ? '.' + extension : ''}`;
         assert(origin && origin !== 'unknown');
         const uploadInfo = await this.cache.exec('getUploadInfo', {
-            origin,
-            key,
+            extraFile
         });
         return uploadInfo;
     }
@@ -53,11 +53,11 @@ export class ExtraFile<
         if (process.env.OAK_PLATFORM === 'wechatMp') {
             // 微信小程序使用wx.uploadFile, 封装upload，上传源为origin
             const up = new Upload();
-            const result = await up.uploadFile(origin!, extra1!, uploadInfo);
+            const result = await up.uploadFile(origin!, extra1!, uploadInfo as QiniuUploadInfo);
             return result;
         } else {
             const up = new Upload();
-            const result = await up.uploadFile(origin!, extra1!, uploadInfo);
+            const result = await up.uploadFile(origin!, extra1!, uploadInfo as QiniuUploadInfo);
             return result;
         }
     }

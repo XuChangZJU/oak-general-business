@@ -1,8 +1,8 @@
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict } from '../../../../oak-app-domain';
 import { QrCodeType } from '../../../../types/Config';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
-import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import { ReactComponentProps } from 'oak-frontend-base';
 
 type Unit = 'minute' | 'hour' | 'day';
 

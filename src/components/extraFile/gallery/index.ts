@@ -296,7 +296,6 @@ export default OakComponent({
                         uploaded: false,
                     }), undefined, async () => {
                         console.log(updateData);
-
                         await this.features.extraFile.upload(
                             updateData
                         )

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Badge, Table, Space, Typography } from 'antd';
 import dayjs from 'dayjs';
 import Style from './web.module.less';
-import ActionBtnPanel from 'oak-frontend-base/lib/components/actionBtnPanel';
+import ActionBtnPanel from 'oak-frontend-base/es/components/actionBtnPanel';
 
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
