@@ -96,6 +96,9 @@ export const desc: StorageDesc<OpSchema> = {
         isBridge: {
             type: "boolean"
         },
+        uploaded: {
+            type: "boolean"
+        },
         uploadMeta: {
             type: "object"
         }

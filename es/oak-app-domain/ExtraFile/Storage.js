@@ -94,6 +94,10 @@ export const desc = {
         isBridge: {
             type: "boolean"
         },
+        uploaded: {
+            notNull: true,
+            type: "boolean"
+        },
         uploadMeta: {
             type: "object"
         }
