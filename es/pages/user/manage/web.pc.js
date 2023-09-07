@@ -1,17 +1,31 @@
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
-import { Table, Tag, Button, Modal, Space, Avatar } from 'antd';
+import { Table, Tag, Button, Space, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-export default function render() {
-    const { t } = this;
-    const { event } = this.props;
-    const { userArr = [], oakLoading, stateColor, pagination } = this.state;
-    const { pageSize, total, currentPage } = pagination || {};
-    return (_jsxs("div", { style: { padding: 16 }, children: [_jsx(Space, { children: _jsx(Button, { type: "primary", onClick: () => {
-                        this.goNewUser();
-                    }, children: "\u6DFB\u52A0\u7528\u6237" }) }), _jsx(Table, { loading: oakLoading, dataSource: userArr, rowKey: "id", columns: [
+import FilterPanel from 'oak-frontend-base/es/components/filterPanel';
+import Style from './web.module.less';
+export default function Render(props) {
+    const { methods, data } = props;
+    const { t, setPageSize, setCurrentPage, goNewUser, onCellClicked } = methods;
+    const { oakFullpath, oakLoading, oakPagination, userArr = [], stateColor, isRoot, } = data;
+    const { pageSize, total, currentPage } = oakPagination || {};
+    return (_jsxs("div", { className: Style.container, children: [isRoot && (_jsx(Space, { style: { marginBottom: 16 }, children: _jsx(Button, { type: "primary", onClick: () => {
+                        goNewUser();
+                    }, children: "\u6DFB\u52A0\u7528\u6237" }) })), _jsx(FilterPanel, { entity: "user", oakPath: oakFullpath, columns: [
+                    {
+                        attr: 'nickname',
+                        op: '$includes',
+                    },
+                    {
+                        attr: 'name',
+                        op: '$includes',
+                    },
+                    {
+                        attr: 'userState',
+                    },
+                ] }), _jsx(Table, { loading: oakLoading, dataSource: userArr, rowKey: "id", columns: [
                     {
                         dataIndex: 'id',
-                        title: '序号',
+                        title: '#',
                         render: (value, record, index) => {
                             return index + 1;
                         },
@@ -52,30 +66,9 @@ export default function render() {
                         title: '操作',
                         align: 'center',
                         render: (value, record, index) => {
-                            return (_jsxs(_Fragment, { children: [_jsx(Button, { type: "link", onClick: () => {
-                                            this.onCellClicked(record.id, event);
-                                        }, children: "\u8BE6\u60C5" }), _jsx(Button, { type: "link", onClick: () => {
-                                            const modal = Modal.confirm({
-                                                title: '确认删除该用户吗？',
-                                                content: '删除后，用户不可恢复',
-                                                okText: '确定',
-                                                cancelText: '取消',
-                                                onOk: async (e) => {
-                                                    await this.addOperation({
-                                                        action: 'remove',
-                                                        data: {},
-                                                        filter: {
-                                                            id: record.id,
-                                                        },
-                                                    });
-                                                    await this.execute();
-                                                    modal.destroy();
-                                                },
-                                                onCancel: (e) => {
-                                                    modal.destroy();
-                                                },
-                                            });
-                                        }, children: "\u5220\u9664" })] }));
+                            return (_jsx(_Fragment, { children: _jsx(Button, { type: "link", onClick: () => {
+                                        onCellClicked(record.id);
+                                    }, children: "\u8BE6\u60C5" }) }));
                         },
                         fixed: 'right',
                     },
@@ -84,10 +77,10 @@ export default function render() {
                     pageSize: pageSize,
                     current: currentPage,
                     onShowSizeChange: (pageSize) => {
-                        this.setPageSize(pageSize);
+                        setPageSize(pageSize);
                     },
                     onChange: (page) => {
-                        this.setCurrentPage(page);
-                    }
+                        setCurrentPage(page);
+                    },
                 } })] }));
 }

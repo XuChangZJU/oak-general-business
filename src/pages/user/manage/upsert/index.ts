@@ -114,7 +114,7 @@ export default OakComponent({
             const { value } = detail;
             this.update({ [attr]: value });
         },
-        async confirmMp() {
+        async confirm() {
             await this.execute();
             this.navigateBack();
         },

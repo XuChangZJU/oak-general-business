@@ -25,7 +25,7 @@ export declare type OpSchema = EntityShape & {
     sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
     isBridge?: Boolean | null;
-    uploaded: Boolean;
+    uploaded?: Boolean | null;
     uploadMeta?: Object | null;
 };
 export declare type OpAttr = keyof OpSchema;
@@ -46,7 +46,7 @@ export declare type Schema = EntityShape & {
     sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
     isBridge?: Boolean | null;
-    uploaded: Boolean;
+    uploaded?: Boolean | null;
     uploadMeta?: Object | null;
     article?: Article.Schema;
     articleMenu?: ArticleMenu.Schema;

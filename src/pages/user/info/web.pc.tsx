@@ -20,14 +20,12 @@ import MobileLogin from '../../../pages/mobile/login';
 import WechatLoginQrCode from '../../../components/wechatLogin/qrCode';
 import WechatUserList from '../../../components/wechatUser/bindingList';
 import {
-    isMobile,
-    isPassword,
     isCaptcha,
 } from 'oak-domain/lib/utils/validator';
 
 import Style from './web.module.less';
 
-const { confirm } = Modal;
+
 export default function Render(
     props: WebComponentProps<
         EntityDict,
@@ -46,18 +44,28 @@ export default function Render(
             genderOptions: Array<{ label: string; value: string }>;
             wechatUser: EntityDict['wechatUser']['Schema'];
             counter: number;
+            isRoot: boolean;
         },
         {
-            updateMyInfo: () => void;
+            goUserManage: () => void;
             goAddMobile: () => void;
             sendCaptcha: () => void;
             goChangePassword: () => void;
-            unbunding: (captcha?: string) => void;
+            updateMyInfo: () => void;
+            unbindingWechat: (captcha?: string) => void;
         }
     >
 ) {
     const { data, methods } = props;
-    const { t, updateMyInfo, goAddMobile, sendCaptcha, unbunding, goChangePassword } = methods;
+    const {
+        t,
+        updateMyInfo,
+        goAddMobile,
+        sendCaptcha,
+        unbindingWechat,
+        goChangePassword,
+        goUserManage,
+    } = methods;
     const {
         nickname,
         name,
@@ -72,6 +80,7 @@ export default function Render(
         oakDirty,
         wechatUser,
         counter,
+        isRoot,
     } = data;
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
@@ -141,7 +150,7 @@ export default function Render(
                     </Form.Item>
                     <Form.Item
                         label={t('user:attr.gender')}
-                    // rules={[{ required: true }]}
+                        // rules={[{ required: true }]}
                     >
                         <Space direction="vertical">
                             <Radio.Group
@@ -155,11 +164,11 @@ export default function Render(
                     </Form.Item>
                     <Form.Item
                         label={t('user:attr.birth')}
-                    // rules={[
-                    //     {
-                    //         required: true,
-                    //     },
-                    // ]}
+                        // rules={[
+                        //     {
+                        //         required: true,
+                        //     },
+                        // ]}
                     >
                         <>
                             <DatePicker
@@ -205,8 +214,6 @@ export default function Render(
                             </Button>
                         </Space>
                     </Form.Item>
-
-
                 </Form>
             </div>
             <div style={{ marginTop: '10px' }}></div>
@@ -217,48 +224,50 @@ export default function Render(
                     wrapperCol={{ xs: { span: 16 }, md: { span: 12 } }}
                 >
                     <Form.Item label={t('mobile')}>
-                        <>
-                            <Space>
-                                <Typography>{mobile || '未设置'}</Typography>
-                                <Button
-                                    size="small"
-                                    onClick={() => {
-                                        if (mobile) {
-                                            goAddMobile();
-                                            return;
-                                        }
-                                        setOpen(true);
-                                    }}
-                                >
-                                    {mobile ? t('manage') : t('bind')}
-                                </Button>
-                            </Space>
-                        </>
+                        <Space>
+                            <Typography>{mobile || '未设置'}</Typography>
+                            <Button
+                                size="small"
+                                onClick={() => {
+                                    if (mobile) {
+                                        goAddMobile();
+                                        return;
+                                    }
+                                    setOpen(true);
+                                }}
+                            >
+                                {mobile ? t('manage') : t('bind')}
+                            </Button>
+                        </Space>
                     </Form.Item>
                     <Form.Item label={t('user:attr.password')}>
-                        <>
-                            <Space>
-                                <Typography>{'********'}</Typography>
-                                <Button
-                                    size="small"
-                                    onClick={() => {
-                                        goChangePassword();
-                                        return;
-                                    }}
-                                >
-                                    {t('manage')}
-                                </Button>
-                            </Space>
-                        </>
+                        <Space>
+                            <Typography>{'********'}</Typography>
+                            <Button
+                                size="small"
+                                onClick={() => {
+                                    goChangePassword();
+                                    return;
+                                }}
+                            >
+                                {t('manage')}
+                            </Button>
+                        </Space>
                     </Form.Item>
                     {process.env.NODE_ENV === 'development' && (
                         <Form.Item label="微信帐号">
                             <>
                                 {wechatUser ? (
                                     <Space>
-                                        <Typography>{wechatUser.nickname}</Typography>
+                                        <Typography>
+                                            {wechatUser.nickname}
+                                        </Typography>
                                         <WechatUserList
-                                            oakPath={oakFullpath ? `${oakFullpath}.wechatUser$user` : undefined}
+                                            oakPath={
+                                                oakFullpath
+                                                    ? `${oakFullpath}.wechatUser$user`
+                                                    : undefined
+                                            }
                                         />
                                     </Space>
                                 ) : (
@@ -272,6 +281,21 @@ export default function Render(
                                     </Button>
                                 )}
                             </>
+                        </Form.Item>
+                    )}
+                    {isRoot && (
+                        <Form.Item
+                            label={'系统用户'}
+                            tooltip="超级管理员可对系统用户进行管理"
+                        >
+                            <Button
+                                size="small"
+                                onClick={() => {
+                                    goUserManage();
+                                }}
+                            >
+                                {t('manage')}
+                            </Button>
                         </Form.Item>
                     )}
                 </Form>
@@ -322,12 +346,12 @@ export default function Render(
                         type="primary"
                         disabled={!isCaptcha(captcha)}
                         onClick={() => {
-                            unbunding(captcha);
+                            unbindingWechat(captcha);
                             setOpen3(false);
                         }}
                     >
                         {t('unbind')}
-                    </Button>
+                    </Button>,
                 ]}
                 maskClosable={false}
                 onCancel={() => {
@@ -336,7 +360,10 @@ export default function Render(
             >
                 <Space direction="vertical" style={{ width: '100%' }}>
                     <Typography>
-                        请输入{mobile && mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}收到的验证码
+                        请输入
+                        {mobile &&
+                            mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}
+                        收到的验证码
                     </Typography>
                     <Form.Item name="captcha">
                         <Input
@@ -357,7 +384,9 @@ export default function Render(
                                     disabled={counter > 0}
                                     onClick={() => sendCaptcha()}
                                 >
-                                    {counter > 0 ? `${counter}秒后可重发` : t('send')}
+                                    {counter > 0
+                                        ? `${counter}秒后可重发`
+                                        : t('send')}
                                 </Button>
                             }
                         />

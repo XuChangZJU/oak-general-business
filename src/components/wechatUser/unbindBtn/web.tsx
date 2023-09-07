@@ -1,5 +1,4 @@
 import React from 'react';
-import QrCode from '../../../components/common/qrCode';
 import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 

@@ -45,7 +45,7 @@
     </block>
 </view>
 <view style="flex: 1" />
-<l-button type="default" disabled="{{oakExecuting || !oakDirty}}" loading="{{oakExecuting}}" size="long" bind:lintap="confirmMp">
+<l-button type="default" disabled="{{oakExecuting || !oakDirty}}" loading="{{oakExecuting}}" size="long" bind:lintap="confirm">
         {{t('common::action.confirm')}}
 </l-button>
 </view>

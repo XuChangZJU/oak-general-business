@@ -1,12 +1,11 @@
 import { jsx as _jsx } from "react/jsx-runtime";
-import { Button } from 'antd-mobile';
-import Styles from './web.module.less';
+import { Button, Space } from 'antd-mobile';
+import Style from './mobile.module.less';
 export default function Render(props) {
-    const { actionss } = props.data;
-    const { onClick } = props.methods;
+    const { actionss, onActionClick } = props.data;
     // icon方案还未最终确定
     if (actionss) {
-        return (_jsx("div", { className: Styles.container, children: actionss.map(ele => (_jsx("div", { className: "action", children: _jsx(Button, { color: 'primary', fill: 'outline', onClick: () => onClick(ele.action), children: ele.label }) }))) }));
+        return (_jsx(Space, { wrap: true, className: Style.container, children: actionss.map((ele) => (_jsx(Button, { color: "primary", fill: "outline", onClick: () => onActionClick(ele.action), children: ele.label }))) }));
     }
     return null;
 }

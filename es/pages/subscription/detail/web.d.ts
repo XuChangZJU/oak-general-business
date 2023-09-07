@@ -12,5 +12,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'subscriptio
     tabValue: 'detail';
 }, {
     onTabClick: (key: string) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
 export {};

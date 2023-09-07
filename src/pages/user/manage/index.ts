@@ -8,6 +8,7 @@ export default OakComponent({
         nickname: 1,
         name: 1,
         userState: 1,
+        idState: 1,
         extraFile$entity: {
             $entity: 'extraFile',
             data: {
@@ -49,7 +50,6 @@ export default OakComponent({
     ],
     isList: true,
     formData: function ({ data: users, features }) {
-        const pagination = this.getPagination();
         const userArr = users.map((user) => {
             const {
                 id,
@@ -72,9 +72,11 @@ export default OakComponent({
                 userState,
             };
         });
+        const isRoot = features.token.isReallyRoot();
+
         return {
             userArr,
-            pagination,
+            isRoot,
         };
     },
     properties: {
@@ -88,20 +90,21 @@ export default OakComponent({
         },
     },
     methods: {
-        async bindClicked(input: any) {
+        async bindClicked(input: WechatMiniprogram.Input) {
             // resolveInput拿的是target，原来代码拿的是currentTarget
-            const { dataset, event } = this.resolveInput(input);
+            const { dataset } = this.resolveInput(input);
             const { id } = dataset!;
-            this.onCellClicked(id, event);
+            this.onCellClicked(id);
         },
         async onCellClicked(id: string) {
             const { event } = this.props;
             if (event) {
-                this.pub(
+                this.pubEvent(
                     event,
-                    this.state.userArr.find((ele: any) => ele.id === id)
+                    this.state.userArr.find(
+                        (ele) => ele.id === id
+                    )
                 );
-                // this.navigateBack();
             } else {
                 this.navigateTo({
                     url: '/user/manage/detail',
@@ -117,7 +120,7 @@ export default OakComponent({
     },
     lifetimes: {
         detached() {
-            this.unsubAll(this.props.event!);
+            this.unsubAllEvents(this.props.event!);
         },
     },
 });

@@ -9,11 +9,10 @@ import WechatLoginQrCode from '../../../components/wechatLogin/qrCode';
 import WechatUserList from '../../../components/wechatUser/bindingList';
 import { isCaptcha, } from 'oak-domain/lib/utils/validator';
 import Style from './web.module.less';
-const { confirm } = Modal;
 export default function Render(props) {
     const { data, methods } = props;
-    const { t, updateMyInfo, goAddMobile, sendCaptcha, unbunding, goChangePassword } = methods;
-    const { nickname, name, birth, gender, mobile, avatarUrl, showBack, oakExecuting, genderOptions, oakFullpath, oakDirty, wechatUser, counter, } = data;
+    const { t, updateMyInfo, goAddMobile, sendCaptcha, unbindingWechat, goChangePassword, goUserManage, } = methods;
+    const { nickname, name, birth, gender, mobile, avatarUrl, showBack, oakExecuting, genderOptions, oakFullpath, oakDirty, wechatUser, counter, isRoot, } = data;
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
     const [open3, setOpen3] = useState(false);
@@ -51,18 +50,22 @@ export default function Render(props) {
                                     md: { offset: 6 },
                                 }, children: _jsx(Space, { children: _jsx(Button, { disabled: oakExecuting || !oakDirty, type: "primary", onClick: () => {
                                             updateMyInfo();
-                                        }, children: "\u786E\u5B9A" }) }) })] })] }), _jsx("div", { style: { marginTop: '10px' } }), _jsxs("div", { className: Style.container, children: [_jsx(Descriptions, { title: '安全信息' }), _jsxs(Form, { labelCol: { xs: { span: 4 }, md: { span: 6 } }, wrapperCol: { xs: { span: 16 }, md: { span: 12 } }, children: [_jsx(Form.Item, { label: t('mobile'), children: _jsx(_Fragment, { children: _jsxs(Space, { children: [_jsx(Typography, { children: mobile || '未设置' }), _jsx(Button, { size: "small", onClick: () => {
-                                                    if (mobile) {
-                                                        goAddMobile();
-                                                        return;
-                                                    }
-                                                    setOpen(true);
-                                                }, children: mobile ? t('manage') : t('bind') })] }) }) }), _jsx(Form.Item, { label: t('user:attr.password'), children: _jsx(_Fragment, { children: _jsxs(Space, { children: [_jsx(Typography, { children: '********' }), _jsx(Button, { size: "small", onClick: () => {
-                                                    goChangePassword();
+                                        }, children: "\u786E\u5B9A" }) }) })] })] }), _jsx("div", { style: { marginTop: '10px' } }), _jsxs("div", { className: Style.container, children: [_jsx(Descriptions, { title: '安全信息' }), _jsxs(Form, { labelCol: { xs: { span: 4 }, md: { span: 6 } }, wrapperCol: { xs: { span: 16 }, md: { span: 12 } }, children: [_jsx(Form.Item, { label: t('mobile'), children: _jsxs(Space, { children: [_jsx(Typography, { children: mobile || '未设置' }), _jsx(Button, { size: "small", onClick: () => {
+                                                if (mobile) {
+                                                    goAddMobile();
                                                     return;
-                                                }, children: t('manage') })] }) }) }), process.env.NODE_ENV === 'development' && (_jsx(Form.Item, { label: "\u5FAE\u4FE1\u5E10\u53F7", children: _jsx(_Fragment, { children: wechatUser ? (_jsxs(Space, { children: [_jsx(Typography, { children: wechatUser.nickname }), _jsx(WechatUserList, { oakPath: oakFullpath ? `${oakFullpath}.wechatUser$user` : undefined })] })) : (_jsx(Button, { size: "small", onClick: () => {
+                                                }
+                                                setOpen(true);
+                                            }, children: mobile ? t('manage') : t('bind') })] }) }), _jsx(Form.Item, { label: t('user:attr.password'), children: _jsxs(Space, { children: [_jsx(Typography, { children: '********' }), _jsx(Button, { size: "small", onClick: () => {
+                                                goChangePassword();
+                                                return;
+                                            }, children: t('manage') })] }) }), process.env.NODE_ENV === 'development' && (_jsx(Form.Item, { label: "\u5FAE\u4FE1\u5E10\u53F7", children: _jsx(_Fragment, { children: wechatUser ? (_jsxs(Space, { children: [_jsx(Typography, { children: wechatUser.nickname }), _jsx(WechatUserList, { oakPath: oakFullpath
+                                                    ? `${oakFullpath}.wechatUser$user`
+                                                    : undefined })] })) : (_jsx(Button, { size: "small", onClick: () => {
                                             setOpen2(true);
-                                        }, children: "\u7ED1\u5B9A" })) }) }))] })] }), _jsx(Modal, { title: "\u7ED1\u5B9A\u624B\u673A\u53F7", open: open, destroyOnClose: true, footer: null, onCancel: () => {
+                                        }, children: "\u7ED1\u5B9A" })) }) })), isRoot && (_jsx(Form.Item, { label: '系统用户', tooltip: "\u8D85\u7EA7\u7BA1\u7406\u5458\u53EF\u5BF9\u7CFB\u7EDF\u7528\u6237\u8FDB\u884C\u7BA1\u7406", children: _jsx(Button, { size: "small", onClick: () => {
+                                        goUserManage();
+                                    }, children: t('manage') }) }))] })] }), _jsx(Modal, { title: "\u7ED1\u5B9A\u624B\u673A\u53F7", open: open, destroyOnClose: true, footer: null, onCancel: () => {
                     setOpen(false);
                 }, children: _jsx(MobileLogin, { callback: () => {
                         setOpen(false);
@@ -71,14 +74,17 @@ export default function Render(props) {
                 }, children: _jsx(WechatLoginQrCode, { oakPath: "$user/info-wechatLogin/qrCode", oakAutoUnmount: true }) }), _jsx(Modal, { title: t('Mobile-Number-Verification'), open: open3, destroyOnClose: true, footer: [
                     _jsx(Button, { onClick: () => setOpen3(false), children: t('cancel') }, "cancel"),
                     _jsx(Button, { type: "primary", disabled: !isCaptcha(captcha), onClick: () => {
-                            unbunding(captcha);
+                            unbindingWechat(captcha);
                             setOpen3(false);
-                        }, children: t('unbind') }, "send")
+                        }, children: t('unbind') }, "send"),
                 ], maskClosable: false, onCancel: () => {
                     setOpen3(false);
-                }, children: _jsxs(Space, { direction: "vertical", style: { width: '100%' }, children: [_jsxs(Typography, { children: ["\u8BF7\u8F93\u5165", mobile && mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2'), "\u6536\u5230\u7684\u9A8C\u8BC1\u7801"] }), _jsx(Form.Item, { name: "captcha", children: _jsx(Input, { allowClear: true, value: captcha, "data-attr": "captcha", 
+                }, children: _jsxs(Space, { direction: "vertical", style: { width: '100%' }, children: [_jsxs(Typography, { children: ["\u8BF7\u8F93\u5165", mobile &&
+                                    mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2'), "\u6536\u5230\u7684\u9A8C\u8BC1\u7801"] }), _jsx(Form.Item, { name: "captcha", children: _jsx(Input, { allowClear: true, value: captcha, "data-attr": "captcha", 
                                 // type="number"
                                 maxLength: 4, placeholder: t('placeholder.Captcha'), size: "large", onChange: (e) => {
                                     setCaptcha(e.target.value);
-                                }, className: Style['loginbox-input'], suffix: _jsx(Button, { type: "link", disabled: counter > 0, onClick: () => sendCaptcha(), children: counter > 0 ? `${counter}秒后可重发` : t('send') }) }) })] }) })] }));
+                                }, className: Style['loginbox-input'], suffix: _jsx(Button, { type: "link", disabled: counter > 0, onClick: () => sendCaptcha(), children: counter > 0
+                                        ? `${counter}秒后可重发`
+                                        : t('send') }) }) })] }) })] }));
 }

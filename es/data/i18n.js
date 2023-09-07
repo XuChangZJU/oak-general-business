@@ -109,7 +109,8 @@ const i18ns = [
         position: "src/pages/user/manage/detail",
         data: {
             "mobile": "手机号",
-            "unset": "未设置"
+            "unset": "未设置",
+            "avatar": "头像"
         }
     },
     {

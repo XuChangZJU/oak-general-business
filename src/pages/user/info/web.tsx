@@ -75,36 +75,21 @@ export default function render(
 
     return (
         <div className={Style.container}>
-            {/* {isSupportSyncWeChat && (
-                <div className={Style.syncWeChat}>
-                    <Button
-                        disabled={refreshing}
-                        color="primary"
-                        fill="outline"
-                        shape="rounded"
-                        size="small"
-                        onClick={() => {
-                            refreshWechatPublicUserInfo();
-                        }}
-                    >
-                        {t('syncWeChat')}
-                    </Button>
-                </div>
-            )} */}
-
             <List className={Style.list}>
                 <List.Item
                     extra={
-                        <OakAvatar
-                            oakAutoUnmount={true}
-                            oakPath={
-                                oakFullpath
-                                    ? oakFullpath + '.extraFile$entity'
-                                    : undefined
-                            }
-                            entity="user"
-                            entityId={id}
-                        />
+                        <div style={{ marginTop: 5, marginBottom: 5 }}>
+                            <OakAvatar
+                                oakAutoUnmount={true}
+                                oakPath={
+                                    oakFullpath
+                                        ? oakFullpath + '.extraFile$entity'
+                                        : undefined
+                                }
+                                entity="user"
+                                entityId={id}
+                            />
+                        </div>
                     }
                 >
                     头像

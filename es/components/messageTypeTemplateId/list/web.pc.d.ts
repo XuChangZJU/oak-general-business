@@ -5,4 +5,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'messageType
     dirtyIds: string[];
     messageTypes: string[];
     applicationId: string;
-}, {}>): JSX.Element;
+}, {}>): import("react/jsx-runtime").JSX.Element;

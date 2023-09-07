@@ -1,25 +1,77 @@
-import * as React from 'react';
+import React from 'react';
 import { Table, Tag, Button, Modal, Space, Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import { WebComponentProps } from 'oak-frontend-base';
+import FilterPanel from 'oak-frontend-base/es/components/filterPanel';
+import { EntityDict } from '../../../oak-app-domain';
+import Style from './web.module.less';
 
-export default function render(this: any) {
-    const { t } = this;
-    const { event } = this.props;
-    const { userArr = [], oakLoading, stateColor, pagination } = this.state;
-    const { pageSize, total, currentPage } = pagination || {};
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'user',
+        true,
+        {
+            userArr: Array<
+                EntityDict['user']['OpSchema'] & {
+                    avatar: string;
+                    mobile: string;
+                }
+            >;
+            stateColor: Record<string, string>;
+            isRoot: boolean;
+        },
+        {
+            onCellClicked: (id: string, event?: string) => Promise<void>;
+            goNewUser: () => Promise<void>;
+        }
+    >
+) {
+    const { methods, data } = props;
+    const { t, setPageSize, setCurrentPage, goNewUser, onCellClicked } =
+        methods;
+    const {
+        oakFullpath,
+        oakLoading,
+        oakPagination,
+        userArr = [],
+        stateColor,
+        isRoot,
+    } = data;
+    const { pageSize, total, currentPage } = oakPagination || {};
 
     return (
-        <div style={{ padding: 16 }}>
-            <Space>
-                <Button
-                    type="primary"
-                    onClick={() => {
-                        this.goNewUser();
-                    }}
-                >
-                    添加用户
-                </Button>
-            </Space>
+        <div className={Style.container}>
+            {isRoot && (
+                <Space style={{ marginBottom: 16 }}>
+                    <Button
+                        type="primary"
+                        onClick={() => {
+                            goNewUser();
+                        }}
+                    >
+                        添加用户
+                    </Button>
+                </Space>
+            )}
+
+            <FilterPanel
+                entity="user"
+                oakPath={oakFullpath}
+                columns={[
+                    {
+                        attr: 'nickname',
+                        op: '$includes',
+                    },
+                    {
+                        attr: 'name',
+                        op: '$includes',
+                    },
+                    {
+                        attr: 'userState',
+                    },
+                ]}
+            />
 
             <Table
                 loading={oakLoading}
@@ -28,7 +80,7 @@ export default function render(this: any) {
                 columns={[
                     {
                         dataIndex: 'id',
-                        title: '序号',
+                        title: '#',
                         render: (value, record, index) => {
                             return index + 1;
                         },
@@ -80,40 +132,10 @@ export default function render(this: any) {
                                     <Button
                                         type="link"
                                         onClick={() => {
-                                            this.onCellClicked(
-                                                record.id,
-                                                event
-                                            );
+                                            onCellClicked(record.id!);
                                         }}
                                     >
                                         详情
-                                    </Button>
-                                    <Button
-                                        type="link"
-                                        onClick={() => {
-                                            const modal = Modal.confirm!({
-                                                title: '确认删除该用户吗？',
-                                                content: '删除后，用户不可恢复',
-                                                okText: '确定',
-                                                cancelText: '取消',
-                                                onOk: async (e) => {
-                                                    await this.addOperation({
-                                                        action: 'remove',
-                                                        data: {},
-                                                        filter: {
-                                                            id: record.id,
-                                                        },
-                                                    });
-                                                    await this.execute();
-                                                    modal.destroy!();
-                                                },
-                                                onCancel: (e) => {
-                                                    modal.destroy!();
-                                                },
-                                            });
-                                        }}
-                                    >
-                                        删除
                                     </Button>
                                 </>
                             );
@@ -126,11 +148,11 @@ export default function render(this: any) {
                     pageSize: pageSize,
                     current: currentPage,
                     onShowSizeChange: (pageSize: number) => {
-                        this.setPageSize(pageSize);
+                        setPageSize(pageSize);
                     },
                     onChange: (page: number) => {
-                        this.setCurrentPage(page);
-                    }
+                        setCurrentPage(page);
+                    },
                 }}
             />
         </div>

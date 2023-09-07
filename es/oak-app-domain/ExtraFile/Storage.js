@@ -95,7 +95,6 @@ export const desc = {
             type: "boolean"
         },
         uploaded: {
-            notNull: true,
             type: "boolean"
         },
         uploadMeta: {

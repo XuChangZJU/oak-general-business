@@ -1,4 +1,3 @@
-import { OpSchema as ExtraFile } from '../../../oak-app-domain/ExtraFile/Schema';
 
 export default OakComponent({
     isList: false,
@@ -12,7 +11,7 @@ export default OakComponent({
         const userInfo = features.token.getUserInfo();
         if (userInfo) {
             const extraFile = userInfo?.extraFile$entity?.find(
-                (ele: ExtraFile) => ele.tag1 === 'avatar'
+                (ele) => ele.tag1 === 'avatar'
             );
 
             const avatarUrl = extraFile && features.extraFile.getUrl(extraFile);
