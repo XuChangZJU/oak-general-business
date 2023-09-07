@@ -10,4 +10,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'message', f
     setMobile: (value: string) => void;
     sendCaptcha: (mobile: string) => Promise<void>;
     onConfirmByMobile: (mobile: string, captcha: string, newPassword: string) => Promise<void>;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

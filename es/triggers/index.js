@@ -21,4 +21,6 @@ export default [
     ...articleMenuTriggers,
     ...article,
     ...parasiteTriggers,
+    // todo 等实现了再放开
+    // ...extraFileTriggers,
 ];

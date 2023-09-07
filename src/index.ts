@@ -25,3 +25,4 @@ export {
 export { RuntimeContext } from './context/RuntimeContext';
 
 export { registerWechatPublicTags } from './config/constants';
+export { registerUploader } from './utils/uploader';

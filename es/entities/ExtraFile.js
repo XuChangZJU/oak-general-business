@@ -20,6 +20,8 @@ const entityDesc = {
                 sort: '排序',
                 fileType: '文件类型',
                 isBridge: '是否桥接访问',
+                uploaded: '是否上传成功',
+                uploadMeta: '上传需要的metadata',
             },
             v: {
                 origin: {

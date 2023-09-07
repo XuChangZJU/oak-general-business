@@ -18,4 +18,5 @@ export interface Schema extends EntityShape {
     fileType?: String<128>;
     isBridge?: Boolean;
     uploaded: Boolean;
+    uploadMeta?: Object;
 }

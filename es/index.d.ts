@@ -13,3 +13,4 @@ export { BackendRuntimeContext } from './context/BackendRuntimeContext';
 export { FrontendRuntimeContext, SerializedData, } from './context/FrontendRuntimeContext';
 export { RuntimeContext } from './context/RuntimeContext';
 export { registerWechatPublicTags } from './config/constants';
+export { registerUploader } from './utils/uploader';

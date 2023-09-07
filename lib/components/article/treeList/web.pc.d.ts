@@ -19,4 +19,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     setCurrentArticle: (id: string) => void;
 }, {
     createOne: () => Promise<void>;
-}>): import("react/jsx-runtime").JSX.Element | null;
+}>): JSX.Element | null;
