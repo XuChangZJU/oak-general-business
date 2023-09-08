@@ -5,7 +5,6 @@ const entityDesc = {
             name: '消息类型',
             attr: {
                 type: '类型',
-                display: '显示值',
             },
         },
     },

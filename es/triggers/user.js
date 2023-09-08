@@ -31,7 +31,9 @@ const triggers = [
                 ];
             };
             if (data instanceof Array) {
-                data.forEach(async (ele) => await setData(ele));
+                for (const item of data) {
+                    await setData(item);
+                }
             }
             else {
                 await setData(data);
