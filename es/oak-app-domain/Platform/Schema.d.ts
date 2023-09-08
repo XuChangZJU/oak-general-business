@@ -7,6 +7,7 @@ import { String, Text } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import { Config } from "../../types/Config";
 import { Style } from "../../types/Style";
+import * as Message from "../Message/Schema";
 import * as System from "../System/Schema";
 export declare type OpSchema = EntityShape & {
     name: String<32>;
@@ -24,6 +25,8 @@ export declare type Schema = EntityShape & {
     style?: Style | null;
     entity?: String<32> | null;
     entityId?: String<64> | null;
+    message$platform?: Array<Message.Schema>;
+    message$platform$$aggr?: AggregationResult<Message.Schema>;
     system$platform?: Array<System.Schema>;
     system$platform$$aggr?: AggregationResult<System.Schema>;
 } & {
@@ -40,6 +43,7 @@ declare type AttrFilter = {
     style: JsonFilter<Style>;
     entity: Q_StringValue;
     entityId: Q_StringValue;
+    message$platform: Message.Filter & SubQueryPredicateMetadata;
     system$platform: System.Filter & SubQueryPredicateMetadata;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
@@ -56,6 +60,12 @@ export declare type Projection = {
     style?: number | JsonProjection<Style>;
     entity?: number;
     entityId?: number;
+    message$platform?: Message.Selection & {
+        $entity: "message";
+    };
+    message$platform$$aggr?: Message.Aggregation & {
+        $entity: "message";
+    };
     system$platform?: System.Selection & {
         $entity: "system";
     };
@@ -102,6 +112,7 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     entityId?: string;
     [K: string]: any;
 }) & {
+    message$platform?: OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "platform" | "platformId">, Omit<Message.Filter, "platform" | "platformId">> | OakOperation<"create", Omit<Message.CreateOperationData, "platform" | "platformId">[]> | Array<OakOperation<"create", Omit<Message.CreateOperationData, "platform" | "platformId">> | OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "platform" | "platformId">, Omit<Message.Filter, "platform" | "platformId">>>;
     system$platform?: OakOperation<System.UpdateOperation["action"], Omit<System.UpdateOperationData, "platform" | "platformId">, Omit<System.Filter, "platform" | "platformId">> | OakOperation<"create", Omit<System.CreateOperationData, "platform" | "platformId">[]> | Array<OakOperation<"create", Omit<System.CreateOperationData, "platform" | "platformId">> | OakOperation<System.UpdateOperation["action"], Omit<System.UpdateOperationData, "platform" | "platformId">, Omit<System.Filter, "platform" | "platformId">>>;
 };
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
@@ -109,6 +120,7 @@ export declare type CreateMultipleOperation = OakOperation<"create", Array<Creat
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export declare type UpdateOperationData = FormUpdateData<OpSchema> & {
     [k: string]: any;
+    message$platform?: OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "platform" | "platformId">, Omit<Message.Filter, "platform" | "platformId">> | OakOperation<Message.RemoveOperation["action"], Omit<Message.RemoveOperationData, "platform" | "platformId">, Omit<Message.Filter, "platform" | "platformId">> | OakOperation<"create", Omit<Message.CreateOperationData, "platform" | "platformId">[]> | Array<OakOperation<"create", Omit<Message.CreateOperationData, "platform" | "platformId">> | OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "platform" | "platformId">, Omit<Message.Filter, "platform" | "platformId">> | OakOperation<Message.RemoveOperation["action"], Omit<Message.RemoveOperationData, "platform" | "platformId">, Omit<Message.Filter, "platform" | "platformId">>>;
     system$platform?: OakOperation<System.UpdateOperation["action"], Omit<System.UpdateOperationData, "platform" | "platformId">, Omit<System.Filter, "platform" | "platformId">> | OakOperation<System.RemoveOperation["action"], Omit<System.RemoveOperationData, "platform" | "platformId">, Omit<System.Filter, "platform" | "platformId">> | OakOperation<"create", Omit<System.CreateOperationData, "platform" | "platformId">[]> | Array<OakOperation<"create", Omit<System.CreateOperationData, "platform" | "platformId">> | OakOperation<System.UpdateOperation["action"], Omit<System.UpdateOperationData, "platform" | "platformId">, Omit<System.Filter, "platform" | "platformId">> | OakOperation<System.RemoveOperation["action"], Omit<System.RemoveOperationData, "platform" | "platformId">, Omit<System.Filter, "platform" | "platformId">>>;
 };
 export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;

@@ -52,6 +52,10 @@ export const desc = {
         router: {
             type: "object"
         },
+        platformId: {
+            type: "ref",
+            ref: "platform"
+        },
         iState: {
             type: "enum",
             enumeration: ["sending", "success", "failure"]

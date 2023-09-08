@@ -10,7 +10,9 @@ export const users: Array<UserCreate> = [
         name: 'root',
         isRoot: true,
         id: ROOT_USER_ID,
-    }
+        userState: 'shadow',
+        idState: 'unverified',
+    },
 ];
 
 export const mobiles: Array<MobileCreate> = [

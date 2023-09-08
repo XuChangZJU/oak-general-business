@@ -28,6 +28,7 @@ const entityDesc = {
                 visitState: '访问状态',
                 router: '目标路由',
                 data: '透传数据',
+                platform: '平台',
             },
             action: {
                 succeed: '成功',
@@ -51,6 +52,6 @@ const entityDesc = {
                 },
             },
         },
-    }
+    },
 };
 export {};

@@ -278,7 +278,9 @@ export declare type ParasiteIdSubQuery = {
     }) | any;
 };
 export declare type PlatformIdSubQuery = {
-    [K in "$in" | "$nin"]?: (System.PlatformIdSubQuery & {
+    [K in "$in" | "$nin"]?: (Message.PlatformIdSubQuery & {
+        entity: "message";
+    }) | (System.PlatformIdSubQuery & {
         entity: "system";
     }) | (Platform.PlatformIdSubQuery & {
         entity: "platform";

@@ -40,7 +40,7 @@ export default function Render(
                 wrapperCol={{ span: 16 }}
                 style={{ maxWidth: 600 }}
             >
-                <Form.Item label={t('user:attr.nickname')}>
+                <Form.Item label={t('user:attr.nickname')} required>
                     <Input
                         onChange={(e) => update({ nickname: e.target.value })}
                         value={data.nickname || ''}

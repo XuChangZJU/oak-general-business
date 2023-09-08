@@ -45,13 +45,14 @@ export const userProjection: EntityDict['user']['Selection']['data'] = {
 };
 export const tokenProjection: EntityDict['token']['Selection']['data'] = {
     id: 1,
+    applicationId: 1,
     userId: 1,
     user: userProjection,
     ableState: 1,
     playerId: 1,
     player: {
         id: 1,
-        isRoot: 1,        
+        isRoot: 1,
     },
     entity: 1,
     entityId: 1,
@@ -84,6 +85,7 @@ export const applicationProjection: EntityDict['application']['Selection']['data
     type: 1,
     systemId: 1,
     style: 1,
+    description: 1,
     system: {
         id: 1,
         name: 1,

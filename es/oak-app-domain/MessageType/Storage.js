@@ -7,6 +7,12 @@ export const desc = {
             params: {
                 length: 64
             }
+        },
+        display: {
+            type: "varchar",
+            params: {
+                length: 64
+            }
         }
     },
     actionType: "crud",

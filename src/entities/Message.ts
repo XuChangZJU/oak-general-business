@@ -1,10 +1,12 @@
 import { String, Int, Text, Image } from 'oak-domain/lib/types/DataType';
 import { Schema as User } from './User';
-import { Schema as System } from './System';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Index, ActionDef } from 'oak-domain/lib/types';
 import { Channel, Weight } from '../types/Message';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
+import { Schema as System } from './System';
+import { Schema as Platform } from './Platform';
+
 
 type Router = {
     pathname: string;
@@ -29,6 +31,7 @@ export interface Schema extends EntityShape {
     content: Text;
     data?: Object; // 透传到前台的数据（OpRecords）
     router?: Router; // 通知前端需要到达的路由
+    platform?: Platform;
 };
 
 type IAction = 'succeed' | 'fail';
@@ -53,14 +56,16 @@ const VisitActionDef: ActionDef<VisitAction, VisitState> = {
     is: 'unvisited',
 };
 
-const entityDesc: EntityDesc<Schema,
+const entityDesc: EntityDesc<
+    Schema,
     Action,
     '',
     {
-        visitState: VisitState,
+        visitState: VisitState;
         iState: IState;
-        weight: Schema['weight'];
-    }> = {
+        weight: Weight;
+    }
+> = {
     locales: {
         zh_CN: {
             name: '消息',
@@ -77,6 +82,7 @@ const entityDesc: EntityDesc<Schema,
                 visitState: '访问状态',
                 router: '目标路由',
                 data: '透传数据',
+                platform: '平台',
             },
             action: {
                 succeed: '成功',
@@ -100,5 +106,5 @@ const entityDesc: EntityDesc<Schema,
                 },
             },
         },
-    }
+    },
 };

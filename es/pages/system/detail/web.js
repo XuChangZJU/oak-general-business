@@ -19,12 +19,12 @@ export default function Render(props) {
                         {
                             label: '应用管理',
                             key: 'application_list',
-                            children: (_jsx(ApplicationList, { systemId: oakId, variant: "inline", oakPath: "$system/detail-application/list", oakAutoUnmount: true })),
+                            children: (_jsx(ApplicationList, { systemId: oakId, oakPath: "$system/detail-application/list", oakAutoUnmount: true })),
                         },
                         {
                             label: '域名管理',
                             key: 'domain_list',
-                            children: (_jsx(DomainList, { systemId: oakId, variant: "inline", oakPath: "$system/detail-domain/list", oakAutoUnmount: true })),
+                            children: (_jsx(DomainList, { systemId: oakId, oakPath: "$system/detail-domain/list", oakAutoUnmount: true })),
                         },
                     ] }) }) }) }));
 }

@@ -17,7 +17,7 @@ export default function Render(props) {
                         {
                             label: '系统管理',
                             key: 'system_list',
-                            children: (_jsx(SystemList, { platformId: oakId, variant: "inline", oakPath: "$platform/detail/-system/list", oakAutoUnmount: true })),
+                            children: (_jsx(SystemList, { platformId: oakId, oakPath: "$platform/detail/-system/list", oakAutoUnmount: true })),
                         },
                     ] }) }) }) }));
 }

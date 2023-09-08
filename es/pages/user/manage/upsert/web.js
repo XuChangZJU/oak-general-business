@@ -8,7 +8,7 @@ export default function Render(props) {
     const { GenderOptions, IDCardTypeOptions } = data;
     const { t, update, setDisablePulldownRefresh, confirm } = methods;
     const [birthPickerVisible, setBirthPickerVisible] = useState(false);
-    return (_jsxs("div", { className: Style.container, children: [_jsxs(Form, { layout: "horizontal", children: [_jsx(Form.Item, { label: t('user:attr.nickname'), children: _jsx(Input, { onChange: (val) => update({ nickname: val }), value: data.nickname || '' }) }), _jsx(Form.Item, { label: t('user:attr.name'), children: _jsx(Input, { onChange: (val) => update({ name: val }), value: data.name || '' }) }), _jsx(Form.Item, { label: t('user:attr.birth'), onClick: () => {
+    return (_jsxs("div", { className: Style.container, children: [_jsxs(Form, { layout: "horizontal", children: [_jsx(Form.Item, { label: t('user:attr.nickname'), rules: [{ required: true }], children: _jsx(Input, { onChange: (val) => update({ nickname: val }), value: data.nickname || '' }) }), _jsx(Form.Item, { label: t('user:attr.name'), children: _jsx(Input, { onChange: (val) => update({ name: val }), value: data.name || '' }) }), _jsx(Form.Item, { label: t('user:attr.birth'), onClick: () => {
                             setBirthPickerVisible(true);
                             setDisablePulldownRefresh(true);
                         }, children: _jsx(Input, { value: data.birth

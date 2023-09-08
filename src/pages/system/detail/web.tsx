@@ -91,7 +91,6 @@ export default function Render(
                                 children: (
                                     <ApplicationList
                                         systemId={oakId}
-                                        variant="inline"
                                         oakPath="$system/detail-application/list"
                                         oakAutoUnmount={true}
                                     />
@@ -103,7 +102,6 @@ export default function Render(
                                 children: (
                                     <DomainList
                                         systemId={oakId}
-                                        variant="inline"
                                         oakPath="$system/detail-domain/list"
                                         oakAutoUnmount={true}
                                     />

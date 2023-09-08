@@ -115,6 +115,14 @@ export default OakComponent({
             this.update({ [attr]: value });
         },
         async confirm() {
+            const { nickname } = this.state;
+            if (!nickname) {
+                this.setMessage({
+                    type: 'warning',
+                    content: '请输入昵称'
+                })
+                return
+            }
             await this.execute();
             this.navigateBack();
         },

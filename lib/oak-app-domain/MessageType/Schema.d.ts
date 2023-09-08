@@ -6,10 +6,12 @@ import { String } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 export declare type OpSchema = EntityShape & {
     type: String<64>;
+    display?: String<64> | null;
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
     type: String<64>;
+    display?: String<64> | null;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -19,6 +21,7 @@ declare type AttrFilter = {
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
     type: Q_StringValue;
+    display: Q_StringValue;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export declare type Projection = {
@@ -29,6 +32,7 @@ export declare type Projection = {
     $$updateAt$$?: number;
     $$seq$$?: number;
     type?: number;
+    display?: number;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type MessageTypeIdProjection = OneOf<{
     id: number;
@@ -43,6 +47,8 @@ export declare type SortAttr = {
     $$updateAt$$: number;
 } | {
     type: number;
+} | {
+    display: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

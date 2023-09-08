@@ -6,7 +6,9 @@ export const users = [
         name: 'root',
         isRoot: true,
         id: ROOT_USER_ID,
-    }
+        userState: 'shadow',
+        idState: 'unverified',
+    },
 ];
 export const mobiles = [
     {

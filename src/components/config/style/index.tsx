@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Form, Input, Tooltip, Tabs } from 'antd';
+import { Space, Form, Input, Button, Tooltip, Tabs, ColorPicker } from 'antd';
+import { ClearOutlined } from '@ant-design/icons'
 import { Style as StyleType, ColorType } from '../../../types/Style';
 import { set, get } from 'oak-domain/lib/utils/lodash';
 
@@ -21,22 +22,29 @@ function Color(props: { value: StyleType['color'], setValue: (path: string, valu
                     key={ele}
                     label={ele}
                     // required
-                   // name="folder"
                     tooltip={`设置系统【${ele}】颜色`}
-                    // rules={[
-                    //     {
-                    //         required: true,
-                    //     },
-                    // ]}
                 >
-                    <>
-                        <Input
-                            onChange={(e) => {
-                                setValue(ele, e.target.value);
+                    <Space.Compact block>
+                        <ColorPicker
+                            onChangeComplete={(color) => {
+                                setValue(ele, color.toHexString());
                             }}
-                            value={get(value, ele)}
+                        >
+                            <Input
+                                value={get(value, ele)}
+                                readOnly
+                                onChange={(e) => {
+                                    setValue(ele, e.target.value);
+                                }}
+                            />
+                        </ColorPicker>
+                        <Button
+                            icon={<ClearOutlined />}
+                            onClick={(e) => {
+                                setValue(ele, '');
+                            }}
                         />
-                    </>
+                    </Space.Compact>
                 </Form.Item>
             ))}
         </Form>

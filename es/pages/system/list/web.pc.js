@@ -1,28 +1,26 @@
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
 import { Table, Button, Space, Typography, Tag } from 'antd';
-import PageHeader from '../../../components/common/pageHeader';
 import ActionBtnPanel from 'oak-frontend-base/es/components/actionBtnPanel';
-import Style from './web.module.less';
 export default function Render(props) {
-    const { oakPagination, list = [], oakLoading, showBack, variant, oakFullpath, } = props.data;
+    const { oakPagination, list = [], oakLoading, oakFullpath, oakLegalActions, } = props.data;
     const { pageSize, total, currentPage } = oakPagination || {};
     const { t, setPageSize, setCurrentPage, goCreate, goDetail, goSetConfig, goUpdate, } = props.methods;
-    return (_jsxs(Container, { showBack: showBack, variant: variant, children: [_jsx(Space, { children: _jsx(Button, { type: "primary", onClick: () => {
+    return (_jsxs(_Fragment, { children: [oakLegalActions?.includes('create') && (_jsx(Space, { style: { marginBottom: 16 }, children: _jsx(Button, { type: "primary", onClick: () => {
                         goCreate();
-                    }, children: "\u6DFB\u52A0\u7CFB\u7EDF" }) }), _jsx(Table, { loading: oakLoading, dataSource: list, rowKey: "id", columns: [
-                    // {
-                    //     dataIndex: 'id',
-                    //     title: '序号',
-                    //     render: (value, record, index) => {
-                    //         return index + 1;
-                    //     },
-                    // },
+                    }, children: "\u6DFB\u52A0\u7CFB\u7EDF" }) })), _jsx(Table, { loading: oakLoading, dataSource: list, rowKey: "id", columns: [
+                    {
+                        dataIndex: 'id',
+                        title: '#',
+                        render: (value, record, index) => {
+                            return index + 1;
+                        },
+                    },
                     {
                         dataIndex: 'name',
                         title: '系统名称',
                         width: 300,
                         render: (value, record, index) => {
-                            return (_jsx(Typography.Link, { onClick: () => {
+                            return (_jsx(Typography.Link, { disabled: !record?.['#oakLegalActions']?.includes('update'), onClick: () => {
                                     goDetail(record.id);
                                 }, children: value }));
                         },
@@ -54,7 +52,7 @@ export default function Render(props) {
                         title: '配置',
                         align: 'center',
                         render: (value, record, index) => {
-                            return (_jsx(_Fragment, { children: _jsx(Button, { type: "link", onClick: () => {
+                            return (_jsx(_Fragment, { children: _jsx(Button, { type: "link", disabled: !record?.['#oakLegalActions']?.includes('update'), onClick: () => {
                                         goSetConfig(record.id);
                                     }, children: "\u914D\u7F6E" }) }));
                         },
@@ -94,11 +92,4 @@ export default function Render(props) {
                         setCurrentPage(current);
                     },
                 } })] }));
-}
-function Container(props) {
-    const { children, variant = 'alone', showBack } = props;
-    if (['inline', 'dialog'].includes(variant)) {
-        return _jsx(_Fragment, { children: children });
-    }
-    return (_jsx(PageHeader, { showBack: showBack, title: "\u7CFB\u7EDF\u7BA1\u7406", children: _jsx("div", { className: Style.container, children: children }) }));
 }

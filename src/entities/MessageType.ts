@@ -5,7 +5,7 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
 export interface Schema extends EntityShape {
-    type: String<64>
+    type: String<64>;
 };
 
 const entityDesc: EntityDesc<Schema> = {
@@ -16,5 +16,5 @@ const entityDesc: EntityDesc<Schema> = {
                 type: '类型',
             },
         },
-    }
+    },
 };

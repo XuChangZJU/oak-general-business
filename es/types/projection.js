@@ -40,6 +40,7 @@ export const userProjection = {
 };
 export const tokenProjection = {
     id: 1,
+    applicationId: 1,
     userId: 1,
     user: userProjection,
     ableState: 1,
@@ -78,6 +79,7 @@ export const applicationProjection = {
     type: 1,
     systemId: 1,
     style: 1,
+    description: 1,
     system: {
         id: 1,
         name: 1,

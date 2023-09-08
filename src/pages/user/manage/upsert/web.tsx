@@ -35,7 +35,10 @@ export default function Render(
     return (
         <div className={Style.container}>
             <Form layout="horizontal">
-                <Form.Item label={t('user:attr.nickname')}>
+                <Form.Item
+                    label={t('user:attr.nickname')}
+                    rules={[{ required: true }]}
+                >
                     <Input
                         onChange={(val) => update({ nickname: val })}
                         value={data.nickname || ''}

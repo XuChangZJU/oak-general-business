@@ -109,7 +109,7 @@ export default function Render(
     return (
         <PageHeader showBack={true} title="应用概览">
             <div className={Style.container}>
-                <Card title={name} bordered={false} actions={Actions}>
+                <Card title={name} bordered={false} extra={Actions}>
                     <Tabs
                         items={items}
                     />
