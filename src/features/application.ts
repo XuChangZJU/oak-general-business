@@ -12,7 +12,7 @@ import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 
-import { applicationProjection } from '../types/projection';
+import { applicationProjection } from '../types/Projection';
 
 export class Application<
     ED extends EntityDict,

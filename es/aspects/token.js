@@ -5,7 +5,7 @@ import { OakRowInconsistencyException, OakUnloggedInException, OakUserException,
 import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
 import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException, } from '../types/Exception';
 import { encryptPasswordSha1 } from '../utils/password';
-import { tokenProjection } from '../types/projection';
+import { tokenProjection } from '../types/Projection';
 import { sendSms } from '../utils/sms';
 import { mergeUser } from './user';
 import { pick } from 'oak-domain/lib/utils/lodash';

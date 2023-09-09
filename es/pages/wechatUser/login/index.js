@@ -20,11 +20,10 @@ export default OakComponent({
             });
             const { features } = this;
             const token = features.token.getToken(true);
-            // 解析url
             const url = window.location.href;
-            const urlObj = URL.parse(url, true);
+            const urlParse = URL.parse(url, true);
             //格式 xx?code=xx&state=/xx/xx?d=xx
-            const query = urlObj?.query;
+            const query = urlParse?.query;
             const code = query?.code;
             const state = query?.state;
             const wechatLoginId = query?.wechatLoginId;
@@ -56,7 +55,6 @@ export default OakComponent({
                     this.go(state);
                 }
                 catch (err) {
-                    console.warn(err);
                     this.setState({
                         error: '微信登录失败',
                         loading: false,

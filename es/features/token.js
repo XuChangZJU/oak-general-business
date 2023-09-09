@@ -1,6 +1,6 @@
 import { Feature } from 'oak-frontend-base';
 import { OakRowInconsistencyException, OakUnloggedInException, OakUserUnpermittedException, } from 'oak-domain/lib/types/Exception';
-import { tokenProjection } from '../types/projection';
+import { tokenProjection } from '../types/Projection';
 import { OakUserInfoLoadingException } from '../types/Exception';
 import { LOCAL_STORAGE_KEYS } from '../config/constants';
 export class Token extends Feature {

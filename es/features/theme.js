@@ -1,6 +1,6 @@
 import { LOCAL_STORAGE_KEYS } from '../config/constants';
 import { Feature } from 'oak-frontend-base';
-import { ETheme } from '../types/themeState';
+import { ETheme } from '../types/Theme';
 const defaultTheme = ETheme.light;
 const initialThemeState = {
     setting: false,

@@ -13,7 +13,7 @@ import { EntityDict } from '../oak-app-domain';
 import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
-import { tokenProjection } from '../types/projection';
+import { tokenProjection } from '../types/Projection';
 import { OakUserInfoLoadingException } from '../types/Exception';
 import { LOCAL_STORAGE_KEYS } from '../config/constants';
 

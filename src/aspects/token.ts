@@ -32,7 +32,7 @@ import {
 } from '../types/Exception';
 import { encryptPasswordSha1 } from '../utils/password';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
-import { tokenProjection } from '../types/projection';
+import { tokenProjection } from '../types/Projection';
 import { sendSms } from '../utils/sms';
 import { mergeUser } from './user';
 import { pick } from 'oak-domain/lib/utils/lodash';

@@ -6,7 +6,7 @@ import { LocalStorage } from 'oak-frontend-base/es/features/localStorage';
 import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
-import { ETheme, IThemeState } from '../types/themeState';
+import { ETheme, IThemeState } from '../types/Theme';
 export default class Theme<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>> extends Feature {
     private cache;
     private themeState;

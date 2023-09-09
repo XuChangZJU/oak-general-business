@@ -1,7 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.applicationProjection = exports.tokenProjection = exports.userProjection = void 0;
-exports.userProjection = {
+
+
+import { ROOT_ROLE_ID } from '../constants';
+import { EntityDict } from '../oak-app-domain';
+
+export const userProjection: EntityDict['user']['Selection']['data'] = {
     id: 1,
     nickname: 1,
     name: 1,
@@ -41,11 +43,11 @@ exports.userProjection = {
         },
     },
 };
-exports.tokenProjection = {
+export const tokenProjection: EntityDict['token']['Selection']['data'] = {
     id: 1,
     applicationId: 1,
     userId: 1,
-    user: exports.userProjection,
+    user: userProjection,
     ableState: 1,
     playerId: 1,
     player: {
@@ -75,7 +77,8 @@ exports.tokenProjection = {
         },
     },
 };
-exports.applicationProjection = {
+
+export const applicationProjection: EntityDict['application']['Selection']['data'] = {
     id: 1,
     name: 1,
     config: 1,
