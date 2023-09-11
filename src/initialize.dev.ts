@@ -1,19 +1,31 @@
 import { AuthCascadePath, EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
-import { ColorDict } from 'oak-domain/lib/types/Style';
-import { ActionDictOfEntityDict, Aspect, AuthDefDict, CascadeRemoveDefDict, Checker, Exportation, Importation, Routine, StorageSchema, Timer, Trigger, Watcher } from 'oak-domain/lib/types';
+import {
+    ActionDictOfEntityDict,
+    Aspect,
+    AuthDefDict,
+    CascadeRemoveDefDict,
+    Checker,
+    Exportation,
+    Importation,
+    Routine,
+    StorageSchema,
+    Timer,
+    Trigger,
+    Watcher,
+} from 'oak-domain/lib/types';
 import { EntityDict, ActionDefDict as generalActionDefDict } from './oak-app-domain';
 import { CacheStore } from 'oak-frontend-base';
+import { initialize as initDev } from 'oak-frontend-base/es/initialize-dev';
 import { AsyncRowStore } from 'oak-domain/lib/store/AsyncRowStore';
 import { intersection } from 'oak-domain/lib/utils/lodash';
 import { BackendRuntimeContext } from './context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from './context/FrontendRuntimeContext';
 import { GAD, GFD } from './types/Page';
-import { initialize as initDev } from 'oak-frontend-base/es/initialize-dev';
 import generalWatchers from './watchers';
 import generalCheckers from './checkers';
 import generalTriggers from './triggers';
 import generalAspectDict from './aspects';
-import GeneralAspectDict from './aspects/AspectDict';
+import type GeneralAspectDict from './aspects/AspectDict';
 import generalStartRoutines from './routines/start';
 import generalData from './data';
 import { initialize as initGeneralFeatures } from './features';

@@ -1,6 +1,6 @@
 import { ActionDefDict as generalActionDefDict } from './oak-app-domain';
-import { intersection } from 'oak-domain/lib/utils/lodash';
 import { initialize as initDev } from 'oak-frontend-base/es/initialize-dev';
+import { intersection } from 'oak-domain/lib/utils/lodash';
 import generalWatchers from './watchers';
 import generalCheckers from './checkers';
 import generalTriggers from './triggers';
