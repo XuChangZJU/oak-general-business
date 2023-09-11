@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Button, Space, Typography, Result } from 'antd';
 import Style from './web.module.less';
-import { UserAddOutlined, WechatOutlined, MehOutlined } from '@ant-design/icons';
+import { WechatOutlined, MehOutlined } from '@ant-design/icons';
 
 import { isWeiXin } from 'oak-frontend-base/es/utils/utils';
 
@@ -96,10 +96,6 @@ export default function Render(
     else if (type === 'login') {
         V = (
             <Space direction="vertical" align='center' size={16}>
-                {/* <img src={`${process.env.PUBLIC_URL}/assets/svg/logo-simple-circular.svg`} alt="logo" />
-                <Title level={4}>
-                    集创盒子
-                </Title> */}
                 <Button
                     disabled={oakExecuting || oakLoading}
                     type="primary"

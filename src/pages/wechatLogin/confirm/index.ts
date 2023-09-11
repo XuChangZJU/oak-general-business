@@ -1,5 +1,4 @@
-import { EntityDict } from '../../../oak-app-domain';
-import { WebConfig } from "../../../entities/Application";
+import { WebConfig } from "../../../oak-app-domain/Application/Schema";
 
 
 export default OakComponent({
@@ -20,7 +19,7 @@ export default OakComponent({
         const userId = wechatLogin?.userId;
         const type = wechatLogin?.type;
         const application = features.application.getApplication();
-        const appId = (application?.config as WebConfig | undefined)?.wechat
+        const appId = (application?.config as WebConfig)?.wechat
             ?.appId;
         return {
             type,
@@ -35,7 +34,7 @@ export default OakComponent({
     listeners: {},
     methods: {
         getCodeAndRedirect() {
-            const state = encodeURIComponent(`?backUrl=/wechatLogin/confirm?oakId=${this.props.oakId}`);
+            const state = encodeURIComponent(`/wechatLogin/confirm?oakId=${this.props.oakId}`);
             if (process.env.NODE_ENV === 'development') {
                 this.navigateTo(
                     {
@@ -48,7 +47,7 @@ export default OakComponent({
             }
             else {
                 const { appId } = this.state;
-                const redirectUrl = `${window.location.host}/wechaUser/login?wechatLoginId=${this.props.oakId}`;
+                const redirectUrl = `${window.location.host}/wechatUser/login?wechatLoginId=${this.props.oakId}`;
                 window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&state=${state}&redirect_uri=${redirectUrl}&response_type=code&scope=SCOPE#wechat_redirect`
             }
         }

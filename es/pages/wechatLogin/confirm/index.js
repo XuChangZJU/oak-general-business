@@ -31,7 +31,7 @@ export default OakComponent({
     listeners: {},
     methods: {
         getCodeAndRedirect() {
-            const state = encodeURIComponent(`?backUrl=/wechatLogin/confirm?oakId=${this.props.oakId}`);
+            const state = encodeURIComponent(`/wechatLogin/confirm?oakId=${this.props.oakId}`);
             if (process.env.NODE_ENV === 'development') {
                 this.navigateTo({
                     url: '/wechatUser/login',
@@ -42,7 +42,7 @@ export default OakComponent({
             }
             else {
                 const { appId } = this.state;
-                const redirectUrl = `${window.location.host}/wechaUser/login?wechatLoginId=${this.props.oakId}`;
+                const redirectUrl = `${window.location.host}/wechatUser/login?wechatLoginId=${this.props.oakId}`;
                 window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&state=${state}&redirect_uri=${redirectUrl}&response_type=code&scope=SCOPE#wechat_redirect`;
             }
         }

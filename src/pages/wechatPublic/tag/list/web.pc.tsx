@@ -18,7 +18,7 @@ import dayjs from 'dayjs';
 export default function Render(
     props: WebComponentProps<
         EntityDict,
-        'user',
+        'wechatPublicTag',
         true,
         {
             showBack: boolean;
@@ -42,15 +42,10 @@ export default function Render(
         goUpdate,
         goDelete,
     } = methods;
-    const {
-        list,
-        showBack = true,
-        oakLoading,
-        oakPagination,
-    } = data;
+    const { list, showBack = true, oakLoading, oakPagination } = data;
 
     const { pageSize, total, currentPage } = oakPagination || {};
-    
+
     return (
         <PageHeader title="微信公众号标签" showBack={showBack}>
             <div className={Style.container}>

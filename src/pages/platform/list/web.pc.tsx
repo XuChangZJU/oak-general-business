@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Table, Button, Space, Typography } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import ActionBtnPanel from 'oak-frontend-base/es/components/actionBtnPanel';

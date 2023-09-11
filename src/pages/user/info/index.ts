@@ -1,9 +1,5 @@
 import { OakUserInvisibleException } from 'oak-domain/lib/types';
 import dayjs from 'dayjs';
-import {
-    AppType,
-    WechatPublicConfig,
-} from '../../../oak-app-domain/Application/Schema';
 import { LOCAL_STORAGE_KEYS } from '../../../config/constants';
 
 type Attr = 'nickname' | 'gender' | 'birth';

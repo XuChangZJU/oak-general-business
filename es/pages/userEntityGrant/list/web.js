@@ -6,13 +6,13 @@ export default function render(props) {
     const { pageSize, total, currentPage } = oakPagination || {};
     const { t, setPageSize, setCurrentPage } = props.methods;
     return (_jsx(Table, { loading: oakLoading, dataSource: list, rowKey: "id", columns: [
-            // {
-            //     dataIndex: 'id',
-            //     title: '序号',
-            //     render: (value, record, index) => {
-            //         return index + 1;
-            //     },
-            // },
+            {
+                dataIndex: 'id',
+                title: '#',
+                render: (value, record, index) => {
+                    return index + 1;
+                },
+            },
             {
                 dataIndex: 'name',
                 title: '授权人',

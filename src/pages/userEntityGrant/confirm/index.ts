@@ -1,4 +1,3 @@
-import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { EntityDict } from '../../../oak-app-domain';
 
 export default OakComponent({

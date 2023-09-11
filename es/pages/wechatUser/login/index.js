@@ -18,7 +18,7 @@ export default OakComponent({
             this.setState({
                 loading: true,
             });
-            const { features } = this;
+            const { features, t } = this;
             const token = features.token.getToken(true);
             const url = window.location.href;
             const urlParse = URL.parse(url, true);
@@ -29,25 +29,23 @@ export default OakComponent({
             const wechatLoginId = query?.wechatLoginId;
             if (!code) {
                 this.setState({
-                    error: '缺少code参数',
+                    error: t('missingCodeParameter'),
                     loading: false,
                 });
                 return;
             }
-            if (process.env.NODE_ENV === 'production' && token) {
-                //token有效 不调用登录
-                console.log('token有效');
+            if (process.env.NODE_ENV === 'production' &&
+                token?.ableState === 'enabled') {
                 this.setState({
                     loading: false,
                 });
                 this.go(state);
             }
             else {
-                console.log('token不存在或失效');
                 try {
                     // web微信扫码跟公众号授权
                     await features.token.loginWechat(code, {
-                        wechatLoginId: wechatLoginId,
+                        wechatLoginId,
                     });
                     this.setState({
                         loading: false,
@@ -56,7 +54,7 @@ export default OakComponent({
                 }
                 catch (err) {
                     this.setState({
-                        error: '微信登录失败',
+                        error: t('weChatLoginFailed'),
                         loading: false,
                     });
                     throw err;
