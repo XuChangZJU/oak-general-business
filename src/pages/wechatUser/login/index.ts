@@ -1,4 +1,3 @@
-import URL from 'url';
 
 export default OakComponent({
     isList: false,
@@ -22,12 +21,11 @@ export default OakComponent({
             const { features, t } = this;
             const token = features.token.getToken(true);
             const url = window.location.href;
-            const urlParse = URL.parse(url, true);
+            const urlParse = new URL(url);
             //格式 xx?code=xx&state=/xx/xx?d=xx
-            const query = urlParse?.query;
-            const code = query?.code as string;
-            const state = query?.state as string;
-            const wechatLoginId = query?.wechatLoginId as string;
+            const code = urlParse?.searchParams?.get('code') as string;
+            const state = urlParse?.searchParams?.get('state') as string;
+            const wechatLoginId = urlParse?.searchParams?.get('wechatLoginId') as string;
             if (!code) {
                 this.setState({
                     error: t('missingCodeParameter'),

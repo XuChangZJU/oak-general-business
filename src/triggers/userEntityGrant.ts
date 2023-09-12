@@ -1,11 +1,10 @@
-import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import { Trigger, CreateTrigger, UpdateTrigger, SelectTrigger } from 'oak-domain/lib/types/Trigger';
+import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
+import { Trigger, CreateTrigger, UpdateTrigger } from 'oak-domain/lib/types/Trigger';
 import { CreateOperationData as CreateUserEntityGrantData } from '../oak-app-domain/UserEntityGrant/Schema';
 import { EntityDict } from '../oak-app-domain/EntityDict';
 
-import { OakRowInconsistencyException, OakExternalException, SelectOpResult } from 'oak-domain/lib/types';
+import { OakRowInconsistencyException, OakUserException } from 'oak-domain/lib/types';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 import { BRC } from '../types/RuntimeCxt';
 
 const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
@@ -90,7 +89,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
 
             const { number, confirmed } = result[0];
             if (confirmed! >= number!) {
-                throw new OakExternalException(`超出分享上限人数${number}人`);
+                throw new OakUserException(`超出分享上限人数${number}人`);
             }
             Object.assign(data, {
                 confirmed: confirmed! + 1,
@@ -169,10 +168,10 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
                     await context.operate(
                         'userRelation',
                         {
-                            id: generateNewId(),
+                            id: await generateNewIdAsync(),
                             action: 'create',
                             data: {
-                                id: generateNewId(),
+                                id: await generateNewIdAsync(),
                                 userId,
                                 relationId,
                                 entity,

@@ -1,6 +1,8 @@
 import { String, Int, Datetime, Image, Boolean, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as System } from './System';
+import { Schema as Session } from './Session';
+
 import { Style } from '../types/Style';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
@@ -55,6 +57,7 @@ export type WechatPublicConfig = {
         originalId: string; //原始id
     };
     passport?: Passport[];
+    sessions?: Session[];
 };
 
 export interface Schema extends EntityShape {
