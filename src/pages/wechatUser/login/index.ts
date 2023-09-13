@@ -1,4 +1,3 @@
-import URL from 'url';
 
 export default OakComponent({
     isList: false,
@@ -19,46 +18,43 @@ export default OakComponent({
             this.setState({
                 loading: true,
             });
-            const { features } = this;
+            const { features, t } = this;
             const token = features.token.getToken(true);
-            // 解析url
             const url = window.location.href;
-            const urlObj = URL.parse(url, true);
+            const urlParse = new URL(url);
             //格式 xx?code=xx&state=/xx/xx?d=xx
-            const query = urlObj?.query;
-            const code = query?.code;
-            const state = query?.state;
-            const wechatLoginId = query?.wechatLoginId;
+            const code = urlParse?.searchParams?.get('code') as string;
+            const state = urlParse?.searchParams?.get('state') as string;
+            const wechatLoginId = urlParse?.searchParams?.get('wechatLoginId') as string;
             if (!code) {
                 this.setState({
-                    error: '缺少code参数',
+                    error: t('missingCodeParameter'),
                     loading: false,
                 });
                 return;
             }
 
-            if (process.env.NODE_ENV === 'production' && token) {
-                //token有效 不调用登录
-                console.log('token有效');
+            if (
+                process.env.NODE_ENV === 'production' &&
+                token?.ableState === 'enabled'
+            ) {
                 this.setState({
                     loading: false,
                 });
-                this.go(state as string);
+                this.go(state);
             } else {
-                console.log('token不存在或失效');
                 try {
                     // web微信扫码跟公众号授权
-                    await features.token.loginWechat(code as string, {
-                        wechatLoginId: wechatLoginId as string,
+                    await features.token.loginWechat(code, {
+                        wechatLoginId,
                     });
                     this.setState({
                         loading: false,
                     });
-                    this.go(state as string);
+                    this.go(state);
                 } catch (err) {
-                    console.warn(err);
                     this.setState({
-                        error: '微信登录失败',
+                        error: t('weChatLoginFailed'),
                         loading: false,
                     });
                     throw err;
@@ -71,7 +67,7 @@ export default OakComponent({
                 return;
             }
             this.redirectTo({
-                url: state as string,
+                url: state,
             });
         },
     },

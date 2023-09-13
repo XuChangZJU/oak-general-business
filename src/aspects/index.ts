@@ -11,7 +11,7 @@ import {
     loginByWechat,
     wakeupParasite,
 } from './token';
-import { getUploadInfo, getInfoByUrl } from './extraFile';
+import { getInfoByUrl } from './extraFile';
 import { getApplication, signatureJsSDK } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user';
@@ -28,7 +28,6 @@ const aspectDict = {
     loginWechatMp,
     wakeupParasite,
     syncUserInfoWechatMp,
-    getUploadInfo,
     sendCaptcha,
     getApplication,
     updateConfig,

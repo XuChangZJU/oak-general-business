@@ -70,7 +70,6 @@ export default function Render(
                                 children: (
                                     <SystemList
                                         platformId={oakId}
-                                        variant="inline"
                                         oakPath="$platform/detail/-system/list"
                                         oakAutoUnmount={true}
                                     />

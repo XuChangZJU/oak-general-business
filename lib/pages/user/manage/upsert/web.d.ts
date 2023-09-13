@@ -15,4 +15,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
         value: string;
         label: string;
     }>;
-}, {}>): JSX.Element;
+}, {
+    confirm: () => void;
+}>): JSX.Element;

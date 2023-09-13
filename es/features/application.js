@@ -2,7 +2,7 @@ import { LOCAL_STORAGE_KEYS } from '../config/constants';
 import { Feature } from 'oak-frontend-base';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { merge } from 'oak-domain/lib/utils/lodash';
-import { applicationProjection } from '../types/projection';
+import { applicationProjection } from '../types/Projection';
 export class Application extends Feature {
     type;
     domain; //域名

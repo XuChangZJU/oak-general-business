@@ -73,11 +73,6 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<string>;
-    getUploadInfo: (
-        params: { extraFile: EntityDict['extraFile']['CreateSingle']['data'] },
-        context: Cxt
-    ) => Promise<QiniuUploadInfo>;
-
     sendCaptcha: (params: {
         mobile: string;
         env: WechatMpEnv | WebEnv;

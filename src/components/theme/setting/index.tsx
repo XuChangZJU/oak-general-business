@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { ETheme } from '../../../types/themeState';
+import { ETheme } from '../../../types/Theme';
 import useFeatures from '../../../hooks/useFeatures';
 
 

@@ -1,21 +1,10 @@
 import React from 'react';
-import { Tag, Badge } from 'antd';
+import { Badge } from 'antd';
 import dayjs from 'dayjs';
 import Style from './web.module.less';
 
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
-
-const MessageType = {
-    adminNotification: '系统通知',
-    conversationMessage: '客服消息',
-};
-
-// success、 processing、error、default、warning
-const MessageTypeToColor = {
-    adminNotification: 'processing',
-    conversationMessage: 'warning',
-};
 
 
 export default function Render(
@@ -46,7 +35,7 @@ export default function Render(
         type,
         $$createAt$$,
         visitState,
-        oakLegalActions = [],
+        oakLegalActions,
         onItemClicked,
     } = data;
     const { navigateTo, execute } = methods;
@@ -73,7 +62,7 @@ export default function Render(
                     ></Badge>
                 )}
                 <div className={Style.notify_deadline}>{title}</div>
-                {oakLegalActions.includes('visit') && (
+                {oakLegalActions?.includes('visit') && (
                     <div
                         className={Style.notify_mask}
                         onClick={(event) => {
@@ -86,18 +75,6 @@ export default function Render(
                 )}
             </div>
             <div className={Style.list__info}>
-                <div className={Style.tags}>
-                    <Tag
-                        color={
-                            MessageTypeToColor[
-                                type as keyof typeof MessageTypeToColor
-                            ]
-                        }
-                    >
-                        {MessageType[type as keyof typeof MessageType]}
-                    </Tag>
-                </div>
-
                 <div className={Style.create_time}>
                     {dayjs($$createAt$$).format('YYYY-MM-DD HH:mm:ss')}
                 </div>

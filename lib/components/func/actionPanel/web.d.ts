@@ -8,6 +8,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
         label: string;
         action: string;
     }>;
-}, {
-    onClick: (action: string) => void;
+    onActionClick: (action: string) => void;
 }>): JSX.Element | null;

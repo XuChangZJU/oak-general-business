@@ -7,6 +7,7 @@ import { String, Datetime, Image, Boolean } from "oak-domain/lib/types/DataType"
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as User from "../User/Schema";
 import * as Application from "../Application/Schema";
+import * as SessionMessage from "../SessionMessage/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 import * as Token from "../Token/Schema";
@@ -48,6 +49,8 @@ export declare type Schema = EntityShape & {
     avatar?: Image | null;
     user?: User.Schema | null;
     application: Application.Schema;
+    sessionMessage$wechatUser?: Array<SessionMessage.Schema>;
+    sessionMessage$wechatUser$$aggr?: AggregationResult<SessionMessage.Schema>;
     modiEntity$entity?: Array<ModiEntity.Schema>;
     modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;
     operEntity$entity?: Array<OperEntity.Schema>;
@@ -80,6 +83,7 @@ declare type AttrFilter = {
     application: Application.Filter;
     nickname: Q_StringValue;
     avatar: Q_StringValue;
+    sessionMessage$wechatUser: SessionMessage.Filter & SubQueryPredicateMetadata;
     modiEntity$entity: ModiEntity.Filter & SubQueryPredicateMetadata;
     operEntity$entity: OperEntity.Filter & SubQueryPredicateMetadata;
     token$entity: Token.Filter & SubQueryPredicateMetadata;
@@ -110,6 +114,12 @@ export declare type Projection = {
     application?: Application.Projection;
     nickname?: number;
     avatar?: number;
+    sessionMessage$wechatUser?: SessionMessage.Selection & {
+        $entity: "sessionMessage";
+    };
+    sessionMessage$wechatUser$$aggr?: SessionMessage.Aggregation & {
+        $entity: "sessionMessage";
+    };
     modiEntity$entity?: ModiEntity.Selection & {
         $entity: "modiEntity";
     };
@@ -210,6 +220,7 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "userId"
 } | {
     applicationId: ForeignKey<"application">;
 })) & {
+    sessionMessage$wechatUser?: OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "wechatUser" | "wechatUserId">, Omit<SessionMessage.Filter, "wechatUser" | "wechatUserId">> | OakOperation<"create", Omit<SessionMessage.CreateOperationData, "wechatUser" | "wechatUserId">[]> | Array<OakOperation<"create", Omit<SessionMessage.CreateOperationData, "wechatUser" | "wechatUserId">> | OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "wechatUser" | "wechatUserId">, Omit<SessionMessage.Filter, "wechatUser" | "wechatUserId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
     operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     token$entity?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "entity" | "entityId">, Omit<Token.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Token.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "entity" | "entityId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "entity" | "entityId">, Omit<Token.Filter, "entity" | "entityId">>>;
@@ -243,6 +254,7 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId"
     applicationId?: ForeignKey<"application"> | null;
 })) & {
     [k: string]: any;
+    sessionMessage$wechatUser?: OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "wechatUser" | "wechatUserId">, Omit<SessionMessage.Filter, "wechatUser" | "wechatUserId">> | OakOperation<SessionMessage.RemoveOperation["action"], Omit<SessionMessage.RemoveOperationData, "wechatUser" | "wechatUserId">, Omit<SessionMessage.Filter, "wechatUser" | "wechatUserId">> | OakOperation<"create", Omit<SessionMessage.CreateOperationData, "wechatUser" | "wechatUserId">[]> | Array<OakOperation<"create", Omit<SessionMessage.CreateOperationData, "wechatUser" | "wechatUserId">> | OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "wechatUser" | "wechatUserId">, Omit<SessionMessage.Filter, "wechatUser" | "wechatUserId">> | OakOperation<SessionMessage.RemoveOperation["action"], Omit<SessionMessage.RemoveOperationData, "wechatUser" | "wechatUserId">, Omit<SessionMessage.Filter, "wechatUser" | "wechatUserId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
     operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     token$entity?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "entity" | "entityId">, Omit<Token.Filter, "entity" | "entityId">> | OakOperation<Token.RemoveOperation["action"], Omit<Token.RemoveOperationData, "entity" | "entityId">, Omit<Token.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Token.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "entity" | "entityId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "entity" | "entityId">, Omit<Token.Filter, "entity" | "entityId">> | OakOperation<Token.RemoveOperation["action"], Omit<Token.RemoveOperationData, "entity" | "entityId">, Omit<Token.Filter, "entity" | "entityId">>>;

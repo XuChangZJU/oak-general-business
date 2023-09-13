@@ -1,37 +1,44 @@
 import React, { useState } from 'react';
 import { Button, Checkbox, Input, Form, Radio, DatePicker, Space } from 'antd-mobile';
 import dayjs from 'dayjs';
-import Style from './web.module.less';
+import Style from './mobile.module.less';
 import { EntityDict } from '../../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 
 
-export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
-    nickname?: string;
-    name?: string;
-    gender?: string;
-    birth?: string;
-    idCardType?: string;
-    idNumber?: string;
-    GenderOptions: Array<{ value: 'male' | 'female', label: string }>;
-    IDCardTypeOptions: Array<{ value: string; label: string }>;
-}, {
-
-}>) {
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'user',
+        false,
+        {
+            nickname?: string;
+            name?: string;
+            gender?: string;
+            birth?: string;
+            idCardType?: string;
+            idNumber?: string;
+            GenderOptions: Array<{ value: 'male' | 'female'; label: string }>;
+            IDCardTypeOptions: Array<{ value: string; label: string }>;
+        },
+        {
+            confirm: () => void;
+        }
+    >
+) {
     const { data, methods } = props;
     const { GenderOptions, IDCardTypeOptions } = data;
 
-    const { execute, t, update, setDisablePulldownRefresh } = methods;
+    const { t, update, setDisablePulldownRefresh, confirm } = methods;
     const [birthPickerVisible, setBirthPickerVisible] = useState(false);
 
     return (
-        <div
-            className={Style.container}
-        >
-            <Form
-                layout="horizontal"
-            >
-                <Form.Item label={t('user:attr.nickname')}>
+        <div className={Style.container}>
+            <Form layout="horizontal">
+                <Form.Item
+                    label={t('user:attr.nickname')}
+                    rules={[{ required: true }]}
+                >
                     <Input
                         onChange={(val) => update({ nickname: val })}
                         value={data.nickname || ''}
@@ -51,11 +58,11 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                     }}
                 >
                     <Input
-                        value={data.birth
-                            ? dayjs(data.birth).format(
-                                'YYYY-MM-DD'
-                            )
-                            : ''}
+                        value={
+                            data.birth
+                                ? dayjs(data.birth).format('YYYY-MM-DD')
+                                : ''
+                        }
                         readOnly
                     />
                 </Form.Item>
@@ -63,32 +70,45 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                 <Form.Item label={t('user:attr.gender')}>
                     <Radio.Group
                         onChange={(e) => {
-                            update({ gender: e as EntityDict['user']['OpSchema']['gender'] });
+                            update({
+                                gender: e as EntityDict['user']['OpSchema']['gender'],
+                            });
                         }}
                         value={data.gender}
                     >
                         <Space direction="horizontal">
-                            {
-                                GenderOptions.map(
-                                    (ele, idx) => <Radio value={ele.value} key={idx} className={Style.radio}>{ele.label}</Radio>
-                                )
-                            }
+                            {GenderOptions.map((ele, idx) => (
+                                <Radio
+                                    value={ele.value}
+                                    key={idx}
+                                    className={Style.radio}
+                                >
+                                    {ele.label}
+                                </Radio>
+                            ))}
                         </Space>
                     </Radio.Group>
                 </Form.Item>
                 <Form.Item label={t('user:attr.idCardType')}>
                     <Radio.Group
                         onChange={(e) => {
-                            update({ idCardType: e as EntityDict['user']['OpSchema']['idCardType'] })
+                            update({
+                                idCardType:
+                                    e as EntityDict['user']['OpSchema']['idCardType'],
+                            });
                         }}
                         value={data.idCardType}
                     >
-                        <Space direction="vertical" >
-                            {
-                                IDCardTypeOptions.map(
-                                    (ele, idx) => <Radio value={ele.value} key={idx} className={Style.radio}>{ele.label}</Radio>
-                                )
-                            }
+                        <Space direction="vertical">
+                            {IDCardTypeOptions.map((ele, idx) => (
+                                <Radio
+                                    value={ele.value}
+                                    key={idx}
+                                    className={Style.radio}
+                                >
+                                    {ele.label}
+                                </Radio>
+                            ))}
                         </Space>
                     </Radio.Group>
                 </Form.Item>
@@ -113,11 +133,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                 }}
             />
             <div style={{ flex: 1 }} />
-            <Button
-                block
-                color="primary"
-                onClick={() => execute()}
-            >
+            <Button block color="primary" onClick={() => confirm()}>
                 {t('common::action.confirm')}
             </Button>
         </div>

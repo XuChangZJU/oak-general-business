@@ -62,7 +62,7 @@ export default OakComponent({
         },
         goAddMobile() {
             const eventLoggedIn = `mobile:me:login:${Date.now()}`;
-            this.sub(eventLoggedIn, () => {
+            this.subEvent(eventLoggedIn, () => {
                 this.navigateBack();
             });
             this.navigateTo({

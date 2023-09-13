@@ -98,22 +98,8 @@ export default OakComponent({
     },
     data: {
         refreshing: false,
-        showDrawer: false,
     },
     methods: {
-        async onRefresh() {
-            this.setState({
-                refreshing: true,
-            });
-            try {
-                await this.features.token.syncUserInfoWechatMp();
-            } catch (err) {
-                console.error(err);
-            }
-            this.setState({
-                refreshing: false,
-            });
-        },
         async doLogin() {
             this.setState({
                 refreshing: true,
@@ -129,7 +115,7 @@ export default OakComponent({
                     }
                     case 'web': {
                         const eventLoggedIn = `token:me:login:${Date.now()}`;
-                        this.sub(eventLoggedIn, () => {
+                        this.subEvent(eventLoggedIn, () => {
                             this.navigateBack();
                         });
                         this.navigateTo(

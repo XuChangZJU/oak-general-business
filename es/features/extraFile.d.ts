@@ -16,7 +16,9 @@ export declare class ExtraFile<ED extends EntityDict, Cxt extends BackendRuntime
         url: string;
         bucket: ED["extraFile"]["Schema"]["bucket"] | undefined;
     }>;
-    upload(extraFile: EntityDict['extraFile']['CreateSingle']['data'], file: string | File): Promise<Partial<ED["extraFile"]["Schema"]>>;
+    upload(extraFile: EntityDict['extraFile']['CreateSingle']['data'], file: string | File): Promise<Partial<ED["extraFile"]["Schema"]> & {
+        uploadState: string;
+    }>;
     getUrl(extraFile?: EntityDict['extraFile']['OpSchema'] | EntityDict['extraFile']['Schema'] | null, style?: string): string;
     /**
      * 使用该方法，要在使用完url时，通过URL.revokeObjectURL释放缓存

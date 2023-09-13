@@ -1,4 +1,4 @@
-import { generateNewId, generateNewIdAsync } from "oak-domain/lib/utils/uuid";
+import { generateNewIdAsync } from "oak-domain/lib/utils/uuid";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { EntityDict } from "../oak-app-domain";
 
@@ -6,7 +6,11 @@ import {
     WebEnv,
     WechatMpEnv,
 } from 'oak-domain/lib/types/Environment';
-import { OakRowInconsistencyException, OakExternalException, SelectOpResult } from 'oak-domain/lib/types';
+import {
+    OakRowInconsistencyException,
+    OakUserException,
+} from 'oak-domain/lib/types';
+
 export async function confirmUserEntityGrant<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
@@ -44,7 +48,7 @@ export async function confirmUserEntityGrant<
     const { number, confirmed } = userEntityGrant;
     if (confirmed! >= number!) {
         closeRootMode()
-        throw new OakExternalException(`超出分享上限人数${number}人`);
+        throw new OakUserException(`超出分享上限人数${number}人`);
     }
     Object.assign(userEntityGrant, {
         confirmed: confirmed! + 1,
@@ -90,10 +94,10 @@ export async function confirmUserEntityGrant<
             await context.operate(
                 'userRelation',
                 {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     action: 'create',
                     data: {
-                        id: generateNewId(),
+                        id: await generateNewIdAsync(),
                         userId,
                         relationId,
                         entity,

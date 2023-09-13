@@ -4,7 +4,7 @@ export const desc = {
         origin: {
             notNull: true,
             type: "enum",
-            enumeration: ["qiniu", "unknown"]
+            enumeration: ["qiniu", "wechat", "unknown"]
         },
         type: {
             notNull: true,
@@ -53,7 +53,7 @@ export const desc = {
             params: {
                 length: 32
             },
-            ref: ["article", "articleMenu", "user"]
+            ref: ["article", "articleMenu", "sessionMessage", "user"]
         },
         entityId: {
             notNull: true,

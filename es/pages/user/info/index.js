@@ -84,7 +84,6 @@ export default OakComponent({
     },
     isList: false,
     formData({ data: user, features }) {
-        const application = features.application.getApplication();
         const avatar = user?.extraFile$entity && user?.extraFile$entity[0];
         const avatarUrl = features.extraFile.getUrl(avatar);
         const { mobile } = (user?.mobile$user && user?.mobile$user[0]) ||
@@ -95,16 +94,6 @@ export default OakComponent({
             {};
         const genderOption = user?.gender &&
             this.state.genderOptions.find((ele) => ele.value === user?.gender);
-        const appType = application?.type;
-        const config = application?.config;
-        let appId;
-        let isSupportSyncWeChat = false; //是否支持微信公众号授权登录
-        if (appType === 'wechatPublic') {
-            const config2 = config;
-            const isService = config2?.isService; //是否服务号 服务号才能授权登录
-            appId = config2?.appId;
-            isSupportSyncWeChat = !!(isService && appId);
-        }
         const lastSendAt = features.localStorage.load(SEND_KEY);
         const now = Date.now();
         let counter = 0;
@@ -118,6 +107,7 @@ export default OakComponent({
                 this.counterHandler = undefined;
             }
         }
+        const isRoot = features.token.isReallyRoot();
         return {
             id: user?.id,
             name: user?.name,
@@ -132,9 +122,9 @@ export default OakComponent({
             mobile,
             userState: user?.userState,
             idState: user?.idState,
-            isSupportSyncWeChat,
             wechatUser: user?.wechatUser$user?.[0],
             counter,
+            isRoot,
         };
     },
     data: {
@@ -195,6 +185,11 @@ export default OakComponent({
                 });
                 throw err;
             }
+        },
+        goUserManage() {
+            this.navigateTo({
+                url: '/user/manage',
+            });
         },
         goAddMobile() {
             this.navigateTo({
@@ -328,7 +323,7 @@ export default OakComponent({
                 });
             }
         },
-        async unbunding(captcha) {
+        async unbindingWechat(captcha) {
             const { mobile, wechatUser } = this.state;
             try {
                 await this.features.cache.exec('unbindingWechat', {

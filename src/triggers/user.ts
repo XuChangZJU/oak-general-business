@@ -1,4 +1,4 @@
-import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
+import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { CreateTrigger, Trigger } from 'oak-domain/lib/types/Trigger';
 import { EntityDict } from '../oak-app-domain/EntityDict';
 import { CreateOperationData as CreateUserData } from '../oak-app-domain/User/Schema';
@@ -17,46 +17,30 @@ const triggers: Trigger<EntityDict, 'user', RuntimeCxt>[] = [
         fn: async ({ operation }, context) => {
             const { data } = operation;
             const systemId = context.getSystemId();
-            const setDefaultState = (userData: CreateUserData) => {
+            const setData = async (userData: CreateUserData) => {
                 if (!userData.userState) {
                     userData.userState = 'shadow';
                 }
                 if (!userData.nickname) {
                     userData.nickname = randomName('user_', 8);
                 }
+                userData.userSystem$user = [
+                    {
+                        id: await generateNewIdAsync(),
+                        action: 'create',
+                        data: {
+                            id: await generateNewIdAsync(),
+                            systemId,
+                        },
+                    },
+                ];
             };
             if (data instanceof Array) {
-                await Promise.all(
-                    data.map(async (ele) => {
-                        Object.assign(ele, {
-                            userSystem$user: [
-                                {
-                                    id: generateNewId(),
-                                    action: 'create',
-                                    data: {
-                                        id: generateNewId(),
-                                        systemId,
-                                    },
-                                },
-                            ],
-                        });
-                        setDefaultState(ele);
-                    })
-                );
+               for (const item of data) {
+                   await setData(item);
+               }
             } else {
-                Object.assign(data, {
-                    userSystem$user: [
-                        {
-                            id: generateNewId(),
-                            action: 'create',
-                            data: {
-                                id: generateNewId(),
-                                systemId,
-                            },
-                        },
-                    ],
-                });
-                setDefaultState(data);
+                await setData(data);
             }
             return 1;
         },

@@ -1,5 +1,5 @@
 import { assert } from 'oak-domain/lib/utils/assert';
-import { applicationProjection } from '../types/projection';
+import { applicationProjection } from '../types/Projection';
 import { WechatSDK, } from 'oak-external-sdk';
 export async function getApplication(params, context) {
     const { type, domain } = params;

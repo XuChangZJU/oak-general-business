@@ -28,6 +28,8 @@ import { desc as mobileDesc } from "./Mobile/Storage";
 import { desc as notificationDesc } from "./Notification/Storage";
 import { desc as parasiteDesc } from "./Parasite/Storage";
 import { desc as platformDesc } from "./Platform/Storage";
+import { desc as sessionDesc } from "./Session/Storage";
+import { desc as sessionMessageDesc } from "./SessionMessage/Storage";
 import { desc as stationDesc } from "./Station/Storage";
 import { desc as subscriptionDesc } from "./Subscription/Storage";
 import { desc as subwayDesc } from "./Subway/Storage";
@@ -71,6 +73,8 @@ export const storageSchema = {
     notification: notificationDesc,
     parasite: parasiteDesc,
     platform: platformDesc,
+    session: sessionDesc,
+    sessionMessage: sessionMessageDesc,
     station: stationDesc,
     subscription: subscriptionDesc,
     subway: subwayDesc,

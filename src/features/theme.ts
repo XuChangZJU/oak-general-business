@@ -7,7 +7,7 @@ import { LocalStorage } from 'oak-frontend-base/es/features/localStorage';
 import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
-import { ETheme, IThemeState } from '../types/themeState';
+import { ETheme, IThemeState } from '../types/Theme';
 
 const defaultTheme = ETheme.light;
 

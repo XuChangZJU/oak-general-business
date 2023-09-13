@@ -111,7 +111,19 @@ const i18ns: I18n[] = [
         position: "src/pages/user/manage/detail",
         data: {
             "mobile": "手机号",
-            "unset": "未设置"
+            "unset": "未设置",
+            "avatar": "头像"
+        }
+    },
+    {
+        id: "ce120594bf9738e2092b3c7bf4da71e9",
+        namespace: "oak-general-business-p-wechatUser-login",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/pages/wechatUser/login",
+        data: {
+            "missingCodeParameter": "缺少code参数",
+            "weChatLoginFailed": "微信登录失败"
         }
     },
     {

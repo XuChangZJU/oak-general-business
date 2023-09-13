@@ -7,9 +7,10 @@ import { String, Int, Text, Float, Boolean } from "oak-domain/lib/types/DataType
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Article from "../Article/Schema";
 import * as ArticleMenu from "../ArticleMenu/Schema";
+import * as SessionMessage from "../SessionMessage/Schema";
 import * as User from "../User/Schema";
 export declare type OpSchema = EntityShape & {
-    origin: 'qiniu' | 'unknown';
+    origin: 'qiniu' | 'wechat' | 'unknown';
     type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
     objectId: String<64>;
@@ -17,7 +18,7 @@ export declare type OpSchema = EntityShape & {
     tag2?: String<32> | null;
     filename: String<256>;
     md5?: Text | null;
-    entity: "article" | "articleMenu" | "user" | string;
+    entity: "article" | "articleMenu" | "sessionMessage" | "user" | string;
     entityId: String<64>;
     extra1?: Text | null;
     extension?: String<16> | null;
@@ -30,7 +31,7 @@ export declare type OpSchema = EntityShape & {
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
-    origin: 'qiniu' | 'unknown';
+    origin: 'qiniu' | 'wechat' | 'unknown';
     type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
     objectId: String<64>;
@@ -38,7 +39,7 @@ export declare type Schema = EntityShape & {
     tag2?: String<32> | null;
     filename: String<256>;
     md5?: Text | null;
-    entity: "article" | "articleMenu" | "user" | string;
+    entity: "article" | "articleMenu" | "sessionMessage" | "user" | string;
     entityId: String<64>;
     extra1?: Text | null;
     extension?: String<16> | null;
@@ -50,6 +51,7 @@ export declare type Schema = EntityShape & {
     uploadMeta?: Object | null;
     article?: Article.Schema;
     articleMenu?: ArticleMenu.Schema;
+    sessionMessage?: SessionMessage.Schema;
     user?: User.Schema;
 } & {
     [A in ExpressionKey]?: any;
@@ -59,7 +61,7 @@ declare type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    origin: Q_EnumValue<'qiniu' | 'unknown'>;
+    origin: Q_EnumValue<'qiniu' | 'wechat' | 'unknown'>;
     type: Q_EnumValue<'image' | 'video' | 'audio' | 'file'>;
     bucket: Q_StringValue;
     objectId: Q_StringValue;
@@ -67,7 +69,7 @@ declare type AttrFilter = {
     tag2: Q_StringValue;
     filename: Q_StringValue;
     md5: Q_StringValue;
-    entity: Q_EnumValue<"article" | "articleMenu" | "user" | string>;
+    entity: Q_EnumValue<"article" | "articleMenu" | "sessionMessage" | "user" | string>;
     entityId: Q_StringValue;
     extra1: Q_StringValue;
     extension: Q_StringValue;
@@ -79,6 +81,7 @@ declare type AttrFilter = {
     uploadMeta: Object;
     article: Article.Filter;
     articleMenu: ArticleMenu.Filter;
+    sessionMessage: SessionMessage.Filter;
     user: User.Filter;
 };
 export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
@@ -109,6 +112,7 @@ export declare type Projection = {
     uploadMeta?: number | Object;
     article?: Article.Projection;
     articleMenu?: ArticleMenu.Projection;
+    sessionMessage?: SessionMessage.Projection;
     user?: User.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
 declare type ExtraFileIdProjection = OneOf<{
@@ -118,6 +122,9 @@ declare type ArticleIdProjection = OneOf<{
     entityId: number;
 }>;
 declare type ArticleMenuIdProjection = OneOf<{
+    entityId: number;
+}>;
+declare type SessionMessageIdProjection = OneOf<{
     entityId: number;
 }>;
 declare type UserIdProjection = OneOf<{
@@ -170,6 +177,8 @@ export declare type SortAttr = {
 } | {
     articleMenu: ArticleMenu.SortAttr;
 } | {
+    sessionMessage: SessionMessage.SortAttr;
+} | {
     user: User.SortAttr;
 } | {
     [k: string]: any;
@@ -207,6 +216,17 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 } | {
     entity?: never;
     entityId?: never;
+    sessionMessage: SessionMessage.CreateSingleOperation;
+} | {
+    entity: "sessionMessage";
+    entityId: ForeignKey<"SessionMessage">;
+    sessionMessage: SessionMessage.UpdateOperation;
+} | {
+    entity: "sessionMessage";
+    entityId: ForeignKey<"SessionMessage">;
+} | {
+    entity?: never;
+    entityId?: never;
     user: User.CreateSingleOperation;
 } | {
     entity: "user";
@@ -232,12 +252,16 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
     entityId?: never;
     entity?: never;
 } | {
+    sessionMessage?: SessionMessage.CreateSingleOperation | SessionMessage.UpdateOperation | SessionMessage.RemoveOperation;
+    entityId?: never;
+    entity?: never;
+} | {
     user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("article" | "articleMenu" | "user" | string) | null;
-    entityId?: ForeignKey<"Article" | "ArticleMenu" | "User"> | null;
+    entity?: ("article" | "articleMenu" | "sessionMessage" | "user" | string) | null;
+    entityId?: ForeignKey<"Article" | "ArticleMenu" | "SessionMessage" | "User"> | null;
 }) & {
     [k: string]: any;
 };
@@ -247,6 +271,8 @@ export declare type RemoveOperationData = {} & ({
 } | {
     articleMenu?: ArticleMenu.UpdateOperation | ArticleMenu.RemoveOperation;
 } | {
+    sessionMessage?: SessionMessage.UpdateOperation | SessionMessage.RemoveOperation;
+} | {
     user?: User.UpdateOperation | User.RemoveOperation;
 } | {
     [k: string]: any;
@@ -255,6 +281,7 @@ export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export declare type ArticleIdSubQuery = Selection<ArticleIdProjection>;
 export declare type ArticleMenuIdSubQuery = Selection<ArticleMenuIdProjection>;
+export declare type SessionMessageIdSubQuery = Selection<SessionMessageIdProjection>;
 export declare type UserIdSubQuery = Selection<UserIdProjection>;
 export declare type ExtraFileIdSubQuery = Selection<ExtraFileIdProjection>;
 export declare type EntityDef = {

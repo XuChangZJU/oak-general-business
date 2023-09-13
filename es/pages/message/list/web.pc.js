@@ -4,10 +4,6 @@ import dayjs from 'dayjs';
 import Style from './web.module.less';
 import PageHeader from '../../../components/common/pageHeader';
 import ActionBtnPanel from 'oak-frontend-base/es/components/actionBtnPanel';
-const MessageType = {
-    adminNotification: '系统通知',
-    conversationMessage: '客服消息',
-};
 export default function Render(props) {
     const { data, methods } = props;
     const { t, setPageSize, setCurrentPage, goDetailById } = methods;
@@ -16,13 +12,13 @@ export default function Render(props) {
     return (_jsx(PageHeader, { title: "\u6D88\u606F\u901A\u77E5", children: _jsx("div", { className: Style.container, children: _jsx(Table, { loading: oakLoading, dataSource: messages || [], rowKey: "id", 
                 // scroll={{ x: 1200 }}
                 columns: [
-                    // {
-                    //     dataIndex: 'serial-number',
-                    //     title: '序号',
-                    //     render: (value, record, index) => {
-                    //         return index + 1;
-                    //     },
-                    // },
+                    {
+                        dataIndex: 'serial-number',
+                        title: '#',
+                        render: (value, record, index) => {
+                            return index + 1;
+                        },
+                    },
                     {
                         dataIndex: 'title',
                         title: '消息内容',
@@ -41,7 +37,7 @@ export default function Render(props) {
                         dataIndex: 'type',
                         title: '类型',
                         render: (value, record, index) => {
-                            return MessageType[value];
+                            return '';
                         },
                     },
                     {

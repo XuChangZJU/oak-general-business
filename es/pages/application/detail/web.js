@@ -25,5 +25,5 @@ export default function Render(props) {
             children: (_jsx(MessageTypeTemplateIdList, { oakAutoUnmount: true, applicationId: oakId, oakPath: `$application-detail-mttId-${oakId}` })),
         });
     }
-    return (_jsx(PageHeader, { showBack: true, title: "\u5E94\u7528\u6982\u89C8", children: _jsx("div", { className: Style.container, children: _jsx(Card, { title: name, bordered: false, actions: Actions, children: _jsx(Tabs, { items: items }) }) }) }));
+    return (_jsx(PageHeader, { showBack: true, title: "\u5E94\u7528\u6982\u89C8", children: _jsx("div", { className: Style.container, children: _jsx(Card, { title: name, bordered: false, extra: Actions, children: _jsx(Tabs, { items: items }) }) }) }));
 }

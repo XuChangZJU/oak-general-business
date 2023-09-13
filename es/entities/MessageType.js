@@ -7,6 +7,6 @@ const entityDesc = {
                 type: '类型',
             },
         },
-    }
+    },
 };
 export {};

@@ -37,7 +37,7 @@ export class ExtraFile extends Feature {
             application?.system?.platform?.config;
         const { bucket } = result;
         return {
-            url: composeFileUrl(Object.assign({}, extraFile, { extra1: null }), config),
+            url: this.getUrl(Object.assign({}, extraFile, { extra1: null })),
             bucket,
         };
     }
@@ -69,7 +69,6 @@ export class ExtraFile extends Feature {
                 id,
             },
         });
-        console.log(id, extraFileData);
         const up = new Upload();
         try {
             const uploadInfo = UploaderDict[origin].upload(extraFileData, up.uploadFile, file);
@@ -83,7 +82,7 @@ export class ExtraFile extends Feature {
                 },
                 id: generateNewId(),
             });
-            return extraFileData;
+            return Object.assign(extraFileData, { uploadState: 'success' });
         }
         catch (err) {
             await this.cache.operate('extraFile', {

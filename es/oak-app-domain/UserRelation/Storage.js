@@ -16,7 +16,8 @@ export const desc = {
             type: "varchar",
             params: {
                 length: 32
-            }
+            },
+            ref: ["session"]
         },
         entityId: {
             notNull: true,

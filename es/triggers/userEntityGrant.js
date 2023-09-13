@@ -1,5 +1,5 @@
-import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import { OakRowInconsistencyException, OakExternalException } from 'oak-domain/lib/types';
+import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
+import { OakRowInconsistencyException, OakUserException } from 'oak-domain/lib/types';
 import { assert } from 'oak-domain/lib/utils/assert';
 const triggers = [
     {
@@ -76,7 +76,7 @@ const triggers = [
             });
             const { number, confirmed } = result[0];
             if (confirmed >= number) {
-                throw new OakExternalException(`超出分享上限人数${number}人`);
+                throw new OakUserException(`超出分享上限人数${number}人`);
             }
             Object.assign(data, {
                 confirmed: confirmed + 1,
@@ -144,10 +144,10 @@ const triggers = [
             else {
                 try {
                     await context.operate('userRelation', {
-                        id: generateNewId(),
+                        id: await generateNewIdAsync(),
                         action: 'create',
                         data: {
-                            id: generateNewId(),
+                            id: await generateNewIdAsync(),
                             userId,
                             relationId,
                             entity,

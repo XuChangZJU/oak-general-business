@@ -3,7 +3,7 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
 export interface Schema extends EntityShape {
-    origin: 'qiniu' | 'unknown';
+    origin: 'qiniu' | 'wechat' | 'unknown';
     type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
     objectId: String<64>;
@@ -54,6 +54,7 @@ const entityDesc: EntityDesc<Schema, '', '', {
             v: {
                 origin: {
                     qiniu: '七牛云',
+                    wechat: '微信',
                     unknown: '未知',
                 },
                 type: {

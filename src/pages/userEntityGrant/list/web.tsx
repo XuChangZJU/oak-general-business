@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Table, Space, Typography } from 'antd';
 import dayjs from 'dayjs';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -33,13 +33,13 @@ export default function render(
             dataSource={list}
             rowKey="id"
             columns={[
-                // {
-                //     dataIndex: 'id',
-                //     title: '序号',
-                //     render: (value, record, index) => {
-                //         return index + 1;
-                //     },
-                // },
+                {
+                    dataIndex: 'id',
+                    title: '#',
+                    render: (value, record, index) => {
+                        return index + 1;
+                    },
+                },
                 {
                     dataIndex: 'name',
                     title: '授权人',

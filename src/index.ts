@@ -1,5 +1,4 @@
 
-// export * from './exceptionHandlers';
 import { registerMessageNotificationConverters } from './triggers/message';
 import { registerWeChatPublicEventCallback } from './endpoints';
 

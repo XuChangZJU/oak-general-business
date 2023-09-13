@@ -16,10 +16,12 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     }>;
     wechatUser: EntityDict['wechatUser']['Schema'];
     counter: number;
+    isRoot: boolean;
 }, {
-    updateMyInfo: () => void;
+    goUserManage: () => void;
     goAddMobile: () => void;
     sendCaptcha: () => void;
     goChangePassword: () => void;
-    unbunding: (captcha?: string) => void;
+    updateMyInfo: () => void;
+    unbindingWechat: (captcha?: string) => void;
 }>): JSX.Element;

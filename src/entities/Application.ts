@@ -1,6 +1,8 @@
 import { String, Int, Datetime, Image, Boolean, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as System } from './System';
+import { Schema as Session } from './Session';
+
 import { Style } from '../types/Style';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
@@ -64,11 +66,17 @@ export interface Schema extends EntityShape {
     system: System;
     config: WebConfig | WechatMpConfig | WechatPublicConfig;
     style?: Style;
+    sessions?: Session[];
 };
 
-const entityDesc: EntityDesc<Schema, '', '', {
-    type: Schema['type'];
-}> = {
+const entityDesc: EntityDesc<
+    Schema,
+    '',
+    '',
+    {
+        type: Schema['type'];
+    }
+> = {
     locales: {
         zh_CN: {
             name: '应用',
@@ -79,14 +87,15 @@ const entityDesc: EntityDesc<Schema, '', '', {
                 name: '名称',
                 config: '设置',
                 style: '样式',
+                sessions: '会话',
             },
             v: {
                 type: {
                     web: '网站',
                     wechatPublic: '微信公众号',
                     wechatMp: '微信小程序',
-                }
-            }
+                },
+            },
         },
-    }
+    },
 };

@@ -38,6 +38,7 @@ export default OakComponent({
     data: {
         // 根据 size 不同，计算的图片显示大小不同
         itemSizePercentage: '',
+        fileList: {}
     },
     wechatMp: {
         externalClasses: ['oak-class', 'oak-item-class'],
@@ -92,6 +93,10 @@ export default OakComponent({
     },
     methods: {
         getUrl(extraFile) {
+            const { fileList } = this.state;
+            if (fileList[extraFile?.id]) {
+                return this.features.extraFile.getUrl(Object.assign({}, extraFile, { extra1: fileList[extraFile?.id] }));
+            }
             return this.features.extraFile.getUrl(extraFile);
         },
         getFileName(extraFile) {
@@ -229,6 +234,7 @@ export default OakComponent({
             const filename = name.substring(0, name.lastIndexOf('.'));
             assert(entity, '必须传入entity');
             assert(origin === 'qiniu', '目前只支持七牛上传'); // 目前只支持七牛上传
+            const id = generateNewId();
             const updateData = {
                 extra1,
                 origin,
@@ -241,7 +247,7 @@ export default OakComponent({
                 size,
                 extension,
                 fileType,
-                id: generateNewId(),
+                id,
                 entityId,
                 sort
             };
@@ -254,7 +260,6 @@ export default OakComponent({
                     this.addItem(Object.assign({}, updateData, {
                         extra1: null,
                     }), undefined, async () => {
-                        console.log(updateData);
                         await this.features.extraFile.upload(updateData, extra1);
                     });
                     await this.execute();
@@ -274,13 +279,11 @@ export default OakComponent({
             else {
                 this.addItem(Object.assign({}, updateData, {
                     extra1: null,
-                }), async () => {
-                    if (updateData.bucket) {
-                        // 说明本函数已经执行过了
-                        return;
-                    }
-                }, async () => {
+                }), undefined, async () => {
                     await this.features.extraFile.upload(updateData, extra1);
+                });
+                this.setState({
+                    fileList: Object.assign(this.state.fileList, { [id]: extra1 })
                 });
             }
         },

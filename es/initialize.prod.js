@@ -1,6 +1,6 @@
+import { initialize as initProd } from 'oak-frontend-base/es/initialize-prod';
 import { ActionDefDict as generalActionDefDict } from './oak-app-domain';
 import { intersection } from 'oak-domain/lib/utils/lodash';
-import { initialize as initProd } from 'oak-frontend-base/es/initialize-prod';
 import generalCheckers from './checkers';
 import { initialize as initGeneralFeatures } from './features';
 import { rewriteSelection, rewriteOperation } from './utils/selectionRewriter';

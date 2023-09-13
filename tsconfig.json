@@ -72,11 +72,10 @@
     ]
   },
   "include": [
-    "./**/*.ts",
-    "./**/*.tsx",
-    "./**/*.less",
-    "./**/*.wxml",
-    "./**/*.json"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.json",
+    "./typings/*.d.ts"
   ],
   "exclude": [
     "lib",

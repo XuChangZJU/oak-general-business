@@ -44,12 +44,9 @@ export async function tryMakeSmsNotification(message, context) {
     }
 }
 async function createNotification(message, context) {
-    const { restriction, userId, weight, type, entity, entityId } = message;
+    const { restriction, userId, weight, type, entity, entityId, platformId } = message;
     assert(userId);
     // 根据用户所关联的system和定义限制，选择将要发送的system。这里有的应用是到platform级别，有的是到system级别
-    const application = context.getApplication();
-    const platformId = application.system.platformId;
-    const systemId = application.systemId;
     const filter = {
         userId,
     };
@@ -57,10 +54,6 @@ async function createNotification(message, context) {
         filter.system = {
             platformId,
         };
-    }
-    else {
-        assert(systemId);
-        filter.systemId = systemId;
     }
     const userSystems = await context.select('userSystem', {
         data: {

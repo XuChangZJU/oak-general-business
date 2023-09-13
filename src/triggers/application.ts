@@ -1,10 +1,9 @@
-import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import { CreateTrigger, Trigger } from 'oak-domain/lib/types/Trigger';
+import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
+import { Trigger } from 'oak-domain/lib/types/Trigger';
 import { EntityDict } from '../oak-app-domain/EntityDict';
 import { RuntimeCxt } from '../types/RuntimeCxt';
 import {
     AppType,
-    WechatPublicConfig,
 } from '../oak-app-domain/Application/Schema';
 import { set } from 'oak-domain/lib/utils/lodash';
 

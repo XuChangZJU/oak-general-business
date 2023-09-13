@@ -2,33 +2,44 @@ import React from 'react';
 
 import { List, Tag, Avatar } from 'antd-mobile';
 
-import Style from './web.module.less';
+import Style from './mobile.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
 import ActionPanel from '../../../../components/func/actionPanel';
 
 
-export default function render(props: WebComponentProps<EntityDict, 'user', false, {
-    nickname?: string,
-    avatar?: string;
-    name?: string;
-    mobile?: string;
-    userState?: string;
-    birth?: string;
-    idState?: string;
-    gender?: string;
-    stateColor: Record<string, string>;
-    idStateColor: Record<string, string>;
-    mobileCount: number;
-    mobileText: string;
-    actionDescriptions: Record<string, {
-        icon: { name: string; };
-        label: string;
-    }>;
-    executableActions: string[];
-}, {
-    onActionClick: (action: string) => Promise<void>;
-}>) {
+export default function render(
+    props: WebComponentProps<
+        EntityDict,
+        'user',
+        false,
+        {
+            nickname?: string;
+            avatar?: string;
+            name?: string;
+            mobile?: string;
+            userState?: string;
+            birth?: string;
+            idState?: string;
+            gender?: string;
+            stateColor: Record<string, string>;
+            idStateColor: Record<string, string>;
+            mobileCount: number;
+            mobileText: string;
+            actionDescriptions: Record<
+                string,
+                {
+                    icon: { name: string };
+                    label: string;
+                }
+            >;
+            executableActions: string[];
+        },
+        {
+            onActionClick: (action: string) => Promise<void>;
+        }
+    >
+) {
     const {
         nickname,
         avatar,
@@ -48,8 +59,10 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
     return (
         <div className={Style.container}>
             <List className={Style.list}>
-                <List.Item extra={avatar ? <Avatar src={avatar} /> : t('unset')}>
-                    {t('user:attr.avatar')}
+                <List.Item
+                    extra={avatar ? <Avatar src={avatar} /> : t('unset')}
+                >
+                    {t('avatar')}
                 </List.Item>
 
                 <List.Item extra={nickname || t('unset')}>
@@ -60,7 +73,9 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
                     {t('user:attr.name')}
                 </List.Item>
 
-                <List.Item extra={gender ? t(`user:v.gender.${gender}`) : t('unset')}>
+                <List.Item
+                    extra={gender ? t(`user:v.gender.${gender}`) : t('unset')}
+                >
                     {t('user:attr.gender')}
                 </List.Item>
 
@@ -68,9 +83,7 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
                     {t('user:attr.birth')}
                 </List.Item>
 
-                <List.Item extra={mobileText}>
-                    {t('mobile')}
-                </List.Item>
+                <List.Item extra={mobileText}>{t('mobile')}</List.Item>
 
                 <List.Item
                     extra={
@@ -92,7 +105,6 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
                     {t('user:attr.idState')}
                 </List.Item>
             </List>
-            <div style={{ flex: 1 }} />
             <ActionPanel
                 actions={executableActions}
                 actionDescriptions={actionDescriptions}

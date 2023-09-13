@@ -1,7 +1,7 @@
 export default OakComponent({
     isList: true,
     entity: 'application',
-    actions: ['update', 'remove'],
+    actions: ['update', 'remove', 'create'],
     projection: {
         id: 1,
         name: 1,

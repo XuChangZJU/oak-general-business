@@ -1,5 +1,5 @@
-import { generateNewId, generateNewIdAsync } from "oak-domain/lib/utils/uuid";
-import { OakRowInconsistencyException, OakExternalException } from 'oak-domain/lib/types';
+import { generateNewIdAsync } from "oak-domain/lib/utils/uuid";
+import { OakRowInconsistencyException, OakUserException, } from 'oak-domain/lib/types';
 export async function confirmUserEntityGrant(params, context) {
     const { id, env } = params;
     const { userId } = context.getToken();
@@ -24,7 +24,7 @@ export async function confirmUserEntityGrant(params, context) {
     const { number, confirmed } = userEntityGrant;
     if (confirmed >= number) {
         closeRootMode();
-        throw new OakExternalException(`超出分享上限人数${number}人`);
+        throw new OakUserException(`超出分享上限人数${number}人`);
     }
     Object.assign(userEntityGrant, {
         confirmed: confirmed + 1,
@@ -62,10 +62,10 @@ export async function confirmUserEntityGrant(params, context) {
     else {
         try {
             await context.operate('userRelation', {
-                id: generateNewId(),
+                id: await generateNewIdAsync(),
                 action: 'create',
                 data: {
-                    id: generateNewId(),
+                    id: await generateNewIdAsync(),
                     userId,
                     relationId,
                     entity,

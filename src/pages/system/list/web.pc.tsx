@@ -14,11 +14,7 @@ export default function Render(
         'system',
         true,
         {
-            searchValue: string;
             list: RowWithActions<EntityDict, 'system'>[];
-            pagination: any;
-            showBack: boolean;
-            variant?: 'inline' | 'alone' | 'dialog';
         },
         {
             goDetail: (id: string) => void;
@@ -32,9 +28,8 @@ export default function Render(
         oakPagination,
         list = [],
         oakLoading,
-        showBack,
-        variant,
         oakFullpath,
+        oakLegalActions,
     } = props.data;
 
     const { pageSize, total, currentPage } = oakPagination || {};
@@ -50,30 +45,32 @@ export default function Render(
     } = props.methods;
 
     return (
-        <Container showBack={showBack} variant={variant}>
-            <Space>
-                <Button
-                    type="primary"
-                    onClick={() => {
-                        goCreate();
-                    }}
-                >
-                    添加系统
-                </Button>
-            </Space>
+        <>
+            {oakLegalActions?.includes('create') && (
+                <Space style={{ marginBottom: 16 }}>
+                    <Button
+                        type="primary"
+                        onClick={() => {
+                            goCreate();
+                        }}
+                    >
+                        添加系统
+                    </Button>
+                </Space>
+            )}
 
             <Table
                 loading={oakLoading}
                 dataSource={list}
                 rowKey="id"
                 columns={[
-                    // {
-                    //     dataIndex: 'id',
-                    //     title: '序号',
-                    //     render: (value, record, index) => {
-                    //         return index + 1;
-                    //     },
-                    // },
+                    {
+                        dataIndex: 'id',
+                        title: '#',
+                        render: (value, record, index) => {
+                            return index + 1;
+                        },
+                    },
                     {
                         dataIndex: 'name',
                         title: '系统名称',
@@ -81,6 +78,11 @@ export default function Render(
                         render: (value, record, index) => {
                             return (
                                 <Typography.Link
+                                    disabled={
+                                        !record?.['#oakLegalActions']?.includes(
+                                            'update'
+                                        )
+                                    }
                                     onClick={() => {
                                         goDetail(record.id!);
                                     }}
@@ -125,6 +127,11 @@ export default function Render(
                                 <>
                                     <Button
                                         type="link"
+                                        disabled={
+                                            !record?.[
+                                                '#oakLegalActions'
+                                            ]?.includes('update')
+                                        }
                                         onClick={() => {
                                             goSetConfig(record.id!);
                                         }}
@@ -156,7 +163,9 @@ export default function Render(
 
                                             {
                                                 action: 'update',
-                                                show: record?.['#oakLegalActions']?.includes('update'),
+                                                show: record?.[
+                                                    '#oakLegalActions'
+                                                ]?.includes('update'),
                                                 onClick: () => {
                                                     goUpdate(record.id!);
                                                 },
@@ -181,22 +190,6 @@ export default function Render(
                     },
                 }}
             />
-        </Container>
-    );
-}
-
-function Container(props: {
-    children: React.ReactNode;
-    variant?: 'inline' | 'alone' | 'dialog';
-    showBack?: boolean;
-}) {
-    const { children, variant = 'alone', showBack } = props;
-    if (['inline', 'dialog'].includes(variant)) {
-        return <>{children}</>;
-    }
-    return (
-        <PageHeader showBack={showBack} title="系统管理">
-            <div className={Style.container}>{children}</div>
-        </PageHeader>
+        </>
     );
 }

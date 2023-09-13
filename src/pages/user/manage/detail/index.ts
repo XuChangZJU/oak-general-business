@@ -11,6 +11,7 @@ export default OakComponent({
         birth: 1,
         idState: 1,
         gender: 1,
+        isRoot: 1,
         extraFile$entity: {
             $entity: 'extraFile',
             data: {
@@ -38,6 +39,11 @@ export default OakComponent({
                 mobile: 1,
             },
         },
+        ref: {
+            id: 1,
+            userState: 1,
+        },
+        refId: 1,
     },
     isList: false,
 

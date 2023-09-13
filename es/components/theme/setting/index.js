@@ -1,6 +1,6 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from 'react';
-import { ETheme } from '../../../types/themeState';
+import { ETheme } from '../../../types/Theme';
 import useFeatures from '../../../hooks/useFeatures';
 import RadioColor from './RadioColor';
 import RadioRect from './RadioRect';

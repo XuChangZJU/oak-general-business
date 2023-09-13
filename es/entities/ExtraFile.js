@@ -26,6 +26,7 @@ const entityDesc = {
             v: {
                 origin: {
                     qiniu: '七牛云',
+                    wechat: '微信',
                     unknown: '未知',
                 },
                 type: {

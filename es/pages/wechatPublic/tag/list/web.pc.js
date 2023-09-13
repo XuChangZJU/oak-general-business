@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 export default function Render(props) {
     const { data, methods } = props;
     const { t, setPageSize, setCurrentPage, goCreate, goDetail, goUpdate, goDelete, } = methods;
-    const { list, showBack = true, oakLoading, oakPagination, } = data;
+    const { list, showBack = true, oakLoading, oakPagination } = data;
     const { pageSize, total, currentPage } = oakPagination || {};
     return (_jsx(PageHeader, { title: "\u5FAE\u4FE1\u516C\u4F17\u53F7\u6807\u7B7E", showBack: showBack, children: _jsxs("div", { className: Style.container, children: [_jsx(Space, { children: _jsx(Button, { type: "primary", onClick: () => {
                             goCreate();

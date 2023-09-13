@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Button, Badge, Drawer, Space } from 'antd';
 import classNames from 'classnames';
 import { BellOutlined } from '@ant-design/icons';
-import MessageDrawerList from '../../../pages/message/drawerList';
+import MessageList from '../../../components/message/simpleList';
 import Style from './web.module.less';
 export default function Render(props) {
     const { data, methods } = props;
@@ -23,7 +23,7 @@ export default function Render(props) {
                             goMessageList();
                         }, children: "\u67E5\u770B\u66F4\u591A" }) }), bodyStyle: {
                     padding: 0,
-                }, destroyOnClose: true, children: _jsx(MessageDrawerList, { onClose: () => {
+                }, destroyOnClose: true, children: _jsx(MessageList, { onClose: () => {
                         setOpen(false);
-                    }, oakAutoUnmount: true, oakPath: "$my/message-/message/drawerList" }) })] }));
+                    }, oakAutoUnmount: true, oakPath: "$my/message-/message/simpleList" }) })] }));
 }

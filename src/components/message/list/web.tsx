@@ -1,5 +1,4 @@
 import React from 'react';
-import { Tag, Badge } from 'antd';
 import Style from './mobile.module.less';
 import MessageCell from '../../../components/message/cell';
 import Empty from '../../../components/common/empty';

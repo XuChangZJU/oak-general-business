@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import { OpSchema as ExtraFile } from '../oak-app-domain/ExtraFile/Schema';
 import useFeatures from './useFeatures';
 
 export default function useMyInfo() {
@@ -12,7 +11,7 @@ export default function useMyInfo() {
             userInfo?.mobile$user && userInfo?.mobile$user[0]?.mobile || '';
 
         const extraFile = userInfo?.extraFile$entity?.find(
-            (ele: ExtraFile) => ele.tag1 === 'avatar'
+            (ele) => ele.tag1 === 'avatar'
         );
         const avatarUrl = features.extraFile.getUrl(extraFile);
 

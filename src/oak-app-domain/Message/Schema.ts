@@ -10,6 +10,7 @@ import { Index, ActionDef } from "oak-domain/lib/types";
 import { Channel, Weight } from "../../types/Message";
 import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 import * as User from "../User/Schema";
+import * as Platform from "../Platform/Schema";
 import * as MessageSystem from "../MessageSystem/Schema";
 type Router = {
     pathname: string;
@@ -32,6 +33,7 @@ export type OpSchema = EntityShape & {
     content: Text;
     data?: Object | null;
     router?: Router | null;
+    platformId?: ForeignKey<"platform"> | null;
     iState?: IState | null;
     visitState?: VisitState | null;
 };
@@ -47,9 +49,11 @@ export type Schema = EntityShape & {
     content: Text;
     data?: Object | null;
     router?: Router | null;
+    platformId?: ForeignKey<"platform"> | null;
     iState?: IState | null;
     visitState?: VisitState | null;
     user: User.Schema;
+    platform?: Platform.Schema | null;
     messageSystem$message?: Array<MessageSystem.Schema>;
     messageSystem$message$$aggr?: AggregationResult<MessageSystem.Schema>;
 } & {
@@ -71,6 +75,8 @@ type AttrFilter = {
     content: Q_StringValue;
     data: Object;
     router: JsonFilter<Router>;
+    platformId: Q_StringValue;
+    platform: Platform.Filter;
     iState: Q_EnumValue<IState>;
     visitState: Q_EnumValue<VisitState>;
     messageSystem$message: MessageSystem.Filter & SubQueryPredicateMetadata;
@@ -94,6 +100,8 @@ export type Projection = {
     content?: number;
     data?: number | Object;
     router?: number | JsonProjection<Router>;
+    platformId?: number;
+    platform?: Platform.Projection;
     iState?: number;
     visitState?: number;
     messageSystem$message?: MessageSystem.Selection & {
@@ -108,6 +116,9 @@ type MessageIdProjection = OneOf<{
 }>;
 type UserIdProjection = OneOf<{
     userId: number;
+}>;
+type PlatformIdProjection = OneOf<{
+    platformId: number;
 }>;
 export type SortAttr = {
     id: number;
@@ -138,6 +149,10 @@ export type SortAttr = {
 } | {
     router: number;
 } | {
+    platformId: number;
+} | {
+    platform: Platform.SortAttr;
+} | {
     iState: number;
 } | {
     visitState: number;
@@ -152,7 +167,7 @@ export type Sorter = SortNode[];
 export type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
 export type Selection<P extends Object = Projection> = SelectOperation<P>;
 export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "userId">> & (({
+export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "userId" | "platformId">> & (({
     userId?: never;
     user: User.CreateSingleOperation;
 } | {
@@ -160,6 +175,14 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     user?: User.UpdateOperation;
 } | {
     userId: ForeignKey<"user">;
+}) & ({
+    platformId?: never;
+    platform?: Platform.CreateSingleOperation;
+} | {
+    platformId: ForeignKey<"platform">;
+    platform?: Platform.UpdateOperation;
+} | {
+    platformId?: ForeignKey<"platform">;
 })) & ({
     entity?: string;
     entityId?: string;
@@ -170,7 +193,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId">> & (({
+export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId" | "platformId">> & (({
     user: User.CreateSingleOperation;
     userId?: never;
 } | {
@@ -182,6 +205,18 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId">> & (({
 } | {
     user?: never;
     userId?: ForeignKey<"user"> | null;
+}) & ({
+    platform: Platform.CreateSingleOperation;
+    platformId?: never;
+} | {
+    platform: Platform.UpdateOperation;
+    platformId?: never;
+} | {
+    platform: Platform.RemoveOperation;
+    platformId?: never;
+} | {
+    platform?: never;
+    platformId?: ForeignKey<"platform"> | null;
 })) & {
     [k: string]: any;
     messageSystem$message?: OakOperation<MessageSystem.UpdateOperation["action"], Omit<MessageSystem.UpdateOperationData, "message" | "messageId">, Omit<MessageSystem.Filter, "message" | "messageId">> | OakOperation<MessageSystem.RemoveOperation["action"], Omit<MessageSystem.RemoveOperationData, "message" | "messageId">, Omit<MessageSystem.Filter, "message" | "messageId">> | OakOperation<"create", Omit<MessageSystem.CreateOperationData, "message" | "messageId">[]> | Array<OakOperation<"create", Omit<MessageSystem.CreateOperationData, "message" | "messageId">> | OakOperation<MessageSystem.UpdateOperation["action"], Omit<MessageSystem.UpdateOperationData, "message" | "messageId">, Omit<MessageSystem.Filter, "message" | "messageId">> | OakOperation<MessageSystem.RemoveOperation["action"], Omit<MessageSystem.RemoveOperationData, "message" | "messageId">, Omit<MessageSystem.Filter, "message" | "messageId">>>;
@@ -189,10 +224,13 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId">> & (({
 export type UpdateOperation = OakOperation<"update" | ParticularAction | string, UpdateOperationData, Filter, Sorter>;
 export type RemoveOperationData = {} & (({
     user?: User.UpdateOperation | User.RemoveOperation;
+}) & ({
+    platform?: Platform.UpdateOperation | Platform.RemoveOperation;
 }));
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export type UserIdSubQuery = Selection<UserIdProjection>;
+export type PlatformIdSubQuery = Selection<PlatformIdProjection>;
 export type MessageIdSubQuery = Selection<MessageIdProjection>;
 export type EntityDef = {
     Schema: Schema;
