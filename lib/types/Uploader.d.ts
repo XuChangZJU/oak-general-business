@@ -16,11 +16,10 @@ export default interface Uploader<ED extends EntityDict & BaseEntityDict> {
      * @param extraFile
      * @returns
      */
-    upload: (extraFile: EntityDict['extraFile']['OpSchema'], uploadFn: (name: string, // 文件的part name
+    upload: (extraFile: EntityDict['extraFile']['OpSchema'], uploadFn: (file: File | string, name: string, // 文件的part name
     uploadUrl: string, // 上传的url
     formData: Record<string, any>, // 上传的其它part参数
-    autoInform: boolean, // 上传成功是否会自动通知server（若不会则需要前台显式通知）
-    file: string | File) => Promise<any>, file: string | File) => Promise<void>;
+    autoInform?: boolean) => Promise<any>, file: string | File) => Promise<void>;
     /**
      * 后台对upload是否成功不确定的文件，向OSS发起主动确认
      * @param extraFile

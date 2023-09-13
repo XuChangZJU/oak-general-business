@@ -5,7 +5,6 @@ import { Locales } from 'oak-frontend-base/es/features/locales';
 import { CommonAspectDict } from 'oak-common-aspect';
 import AspectDict from '../aspects/AspectDict';
 import { EntityDict } from '../oak-app-domain';
-import { QiniuUploadInfo } from 'oak-frontend-base';
 import { Config, Origin } from '../types/Config';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';

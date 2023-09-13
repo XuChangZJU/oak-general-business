@@ -1,5 +1,4 @@
 import { getConfig } from '../../utils/getContextConfig';
-import { get } from 'oak-domain/lib/utils/lodash';
 const QiniuSearchUrl = 'https://rs.qiniuapi.com/stat/EncodedEntryURI';
 export default class Qiniu {
     name = 'qiniu';
@@ -7,19 +6,19 @@ export default class Qiniu {
         const { origin, objectId, extension, entity, bucket } = extraFile;
         // 构造文件上传所需的key
         const key = `${entity ? entity + '/' : ''}${objectId}${extension ? '.' + extension : ''}`;
-        const { instance, config, } = await getConfig(context, 'Cos', 'qiniu');
+        const { instance, config } = await getConfig(context, 'Cos', 'qiniu');
         const { uploadHost, bucket: bucket2 } = config;
         Object.assign(extraFile, {
             bucket: bucket || bucket2,
-            uploadMeta: instance.getUploadInfo(uploadHost, bucket || bucket2, key)
+            uploadMeta: instance.getUploadInfo(uploadHost, bucket || bucket2, key),
         });
     }
     async upload(extraFile, uploadFn, file) {
         const uploadMeta = extraFile.uploadMeta;
-        const result = await uploadFn('', get(extraFile, 'uploadMeta.uploadHost', ''), {
-            key: uploadMeta?.key,
-            token: uploadMeta?.uploadToken,
-        }, true, file);
+        const result = await uploadFn(file, 'file', uploadMeta.uploadHost, {
+            key: uploadMeta.key,
+            token: uploadMeta.uploadToken,
+        }, true);
         if (result.success === true || result.key) {
             return;
         }
