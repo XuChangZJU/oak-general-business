@@ -18,6 +18,27 @@ export interface Schema extends EntityShape {
     type: Type;
     text?: Text;
     file?: ExtraFile;
-    news?: String<128>;    
+    news?: String<128>;
     aaoe?: Boolean;          // as agent of entity
+};
+const entityDesc: EntityDesc<Schema, '', '', {
+}> = {
+    locales: {
+        zh_CN: {
+            name: '消息',
+            attr: {
+                application: '应用',
+                session: '会话',
+                user: '用户',
+                wechatUser: '微信用户',
+                createTime: '发送时间',
+                type: '消息类型',
+                text: '文字内容',
+                file: '文件',
+                news: '文章',
+                aaoe: '作为实体的发起者',
+            },
+
+        },
+    }
 };
