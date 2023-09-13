@@ -1,12 +1,6 @@
-import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import { Trigger, CreateTrigger, UpdateTrigger, SelectTrigger } from 'oak-domain/lib/types/Trigger';
-// import { CreateOperationData as CreateParasiteData } from '../general-app-domain/Parasite/Schema';
+import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
+import { Trigger } from 'oak-domain/lib/types/Trigger';
 import { EntityDict } from '../oak-app-domain/EntityDict';
-
-import { OakRowInconsistencyException, OakExternalException, SelectOpResult } from 'oak-domain/lib/types';
-import { assert } from 'oak-domain/lib/utils/assert';
-import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
-import { RuntimeCxt } from '../types/RuntimeCxt';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
 const triggers: Trigger<EntityDict, 'parasite', BackendRuntimeContext<EntityDict>>[] = [

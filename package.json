@@ -16,7 +16,7 @@
         "@wangeditor/editor-for-react": "^1.0.4",
         "classnames": "^2.3.1",
         "copy-to-clipboard": "^3.3.3",
-        "dayjs": "^1.11.5",
+        "dayjs": "^1.11.9",
         "node-fetch": "^2.6.7",
         "oak-common-aspect": "file:../oak-common-aspect",
         "oak-domain": "file:../oak-domain",
