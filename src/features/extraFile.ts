@@ -10,7 +10,7 @@ import { Config, Origin } from '../types/Config';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Application } from './application'
-import { composeFileUrl, bytesToSize } from '../utils/extraFile'
+import { composeFileUrl, bytesToSize } from '../utils/extraFile';
 import { assert } from 'oak-domain/lib/utils/assert';
 import UploaderDict from '../utils/uploader';
 import { OpSchema } from '../oak-app-domain/ExtraFile/Schema';
@@ -28,7 +28,7 @@ export class ExtraFile<
     constructor(
         cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>,
         application: Application<ED, Cxt, FrontCxt, AD>,
-        locales: Locales<ED, Cxt, FrontCxt, AD>,
+        locales: Locales<ED, Cxt, FrontCxt, AD>
     ) {
         super();
         this.cache = cache;
@@ -36,38 +36,37 @@ export class ExtraFile<
         this.locales = locales;
     }
 
-    // async getUploadInfo(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
-    //     // const { origin, extra1, filename, objectId, extension, entity } =
-    //     //     extraFile;
-    //     // 构造文件上传所需的key
-    //     // const key = `${entity ? entity + '/' : ''}${objectId}${extension ? '.' + extension : ''}`;
-    //     assert(origin && origin !== 'unknown');
-    //     const uploadInfo = await this.cache.exec('getUploadInfo', {
-    //         extraFile
-    //     });
-    //     return uploadInfo;
-    // }
-    async createAndUpload(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
-        await this.cache.operate(
-            'extraFile',
-            {
-                action: 'create',
-                data: Object.assign({}, extraFile, { extra1: null }),
-                id: generateNewId(),
-            } as EntityDict['extraFile']['Operation']
-        )
-        const result = await this.upload(Object.assign({}, extraFile, { extra1: null }), extraFile.extra1!);
+    async createAndUpload(
+        extraFile: EntityDict['extraFile']['CreateSingle']['data']
+    ) {
+        await this.cache.operate('extraFile', {
+            action: 'create',
+            data: Object.assign({}, extraFile, { extra1: null }),
+            id: generateNewId(),
+        } as EntityDict['extraFile']['Operation']);
+        const result = await this.upload(
+            Object.assign({}, extraFile, { extra1: null }),
+            extraFile.extra1!
+        );
         const application = this.application.getApplication();
         const config =
             application?.system?.config ||
             application?.system?.platform?.config;
         const { bucket } = result;
         return {
-            url: this.getUrl(Object.assign({}, extraFile, { extra1: null }) as EntityDict['extraFile']['OpSchema']),
+            url: this.getUrl(
+                Object.assign({}, extraFile, {
+                    extra1: null,
+                }) as EntityDict['extraFile']['OpSchema']
+            ),
             bucket,
-        }
+        };
     }
-    async upload(extraFile: EntityDict['extraFile']['CreateSingle']['data'], file: string | File) {
+
+    async upload(
+        extraFile: EntityDict['extraFile']['CreateSingle']['data'],
+        file: string | File
+    ) {
         const { id, origin } = extraFile;
         assert(origin, '未设置上传方式');
         const [extraFileData] = this.cache.get('extraFile', {
@@ -97,41 +96,42 @@ export class ExtraFile<
         });
         const up = new Upload();
         try {
-            const uploadInfo = UploaderDict[origin!].upload(extraFileData as OpSchema, up.uploadFile, file);
-            await this.cache.operate(
-                'extraFile',
-                {
-                    action: 'update',
-                    data: {
-                        uploadState: 'success',
-                    },
-                    filter: {
-                        id,
-                    },
-                    id: generateNewId(),
-                } as EntityDict['extraFile']['Operation']
-            )
+            await UploaderDict[origin!].upload(
+                extraFileData as OpSchema,
+                up.uploadFile,
+                file
+            );
+            await this.cache.operate('extraFile', {
+                action: 'update',
+                data: {
+                    uploadState: 'success',
+                },
+                filter: {
+                    id,
+                },
+                id: generateNewId(),
+            } as EntityDict['extraFile']['Operation']);
             return Object.assign(extraFileData, { uploadState: 'success' });
         } catch (err) {
-            await this.cache.operate(
-                'extraFile',
-                {
-                    action: 'update',
-                    data: {
-                        uploadState: 'failed',
-                    },
-                    filter: {
-                        id,
-                    },
-                    id: generateNewId(),
-                } as EntityDict['extraFile']['Operation']
-            );
+            await this.cache.operate('extraFile', {
+                action: 'update',
+                data: {
+                    uploadState: 'failed',
+                },
+                filter: {
+                    id,
+                },
+                id: generateNewId(),
+            } as EntityDict['extraFile']['Operation']);
             throw err;
         }
     }
 
     getUrl(
-        extraFile?: EntityDict['extraFile']['OpSchema'] | EntityDict['extraFile']['Schema'] | null,
+        extraFile?:
+            | EntityDict['extraFile']['OpSchema']
+            | EntityDict['extraFile']['Schema']
+            | null,
         style?: string
     ) {
         if (!extraFile) {
@@ -154,15 +154,17 @@ export class ExtraFile<
 
     /**
      * 使用该方法，要在使用完url时，通过URL.revokeObjectURL释放缓存
-     * 
+     *
      * @param url 需要桥接访问的图片链接
      * @returns 浏览器 img可访问的url
      */
     async getBridgeUrl(url: string) {
         const { result } = await this.cache.exec('crossBridge', {
             url,
-        })
-        const blob = new Blob([result as unknown as BlobPart], { type: 'image/png' });
+        });
+        const blob = new Blob([result as unknown as BlobPart], {
+            type: 'image/png',
+        });
         return URL.createObjectURL(blob);
     }
 

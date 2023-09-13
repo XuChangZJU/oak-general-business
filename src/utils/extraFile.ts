@@ -42,16 +42,6 @@ export function composeFileUrl(
     return '';
 }
 
-export function decomposeFileUrl(url: string): Pick<ExtraFile, 'bucket' | 'filename' | 'origin' | 'type' | 'extra1'> {
-    return {
-        origin: 'unknown',
-        extra1: url,
-        type: 'file',
-        filename: '',
-        bucket: '',
-    };
-}
-
 //获取file文件url
 export function getFileURL(file: File) {
     let getUrl = null;

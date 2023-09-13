@@ -24,7 +24,7 @@ import {
     OakUserException,
     OakUserUnpermittedException,
 } from 'oak-domain/lib/types';
-import { composeFileUrl, decomposeFileUrl } from '../utils/extraFile';
+import { composeFileUrl } from '../utils/extraFile';
 import {
     OakChangeLoginWayException,
     OakDistinguishUserException,
@@ -740,16 +740,18 @@ async function setUserInfoFromWechat<
             {
                 id: await generateNewIdAsync(),
                 action: 'create',
-                data: Object.assign(
-                    {
-                        id: await generateNewIdAsync(),
-                        tag1: 'avatar',
-                        entity: 'user',
-                        entityId: user.id,
-                        objectId: await generateNewIdAsync(),
-                    },
-                    decomposeFileUrl(avatar)
-                ),
+                data: Object.assign({
+                    id: await generateNewIdAsync(),
+                    tag1: 'avatar',
+                    entity: 'user',
+                    entityId: user.id,
+                    objectId: await generateNewIdAsync(),
+                    origin: 'unknown',
+                    extra1: avatar,
+                    type: 'image',
+                    filename: '',
+                    bucket: '',
+                }),
             },
         ];
         if (extraFile$entity!.length > 0) {
