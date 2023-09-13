@@ -25,15 +25,6 @@ export function composeFileUrl(extraFile, config, style //图片样式后缀 比
     }
     return '';
 }
-export function decomposeFileUrl(url) {
-    return {
-        origin: 'unknown',
-        extra1: url,
-        type: 'file',
-        filename: '',
-        bucket: '',
-    };
-}
 //获取file文件url
 export function getFileURL(file) {
     let getUrl = null;
