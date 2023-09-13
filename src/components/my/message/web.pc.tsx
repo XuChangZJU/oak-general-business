@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { BellOutlined } from '@ant-design/icons';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
-import MessageDrawerList from '../../../pages/message/drawerList';
+import MessageList from '../../../components/message/simpleList';
 
 import Style from './web.module.less';
 
@@ -81,12 +81,12 @@ export default function Render(
                 }}
                 destroyOnClose={true}
             >
-                <MessageDrawerList
+                <MessageList
                     onClose={() => {
                         setOpen(false);
                     }}
                     oakAutoUnmount={true}
-                    oakPath="$my/message-/message/drawerList"
+                    oakPath="$my/message-/message/simpleList"
                 />
             </Drawer>
         </>

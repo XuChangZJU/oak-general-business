@@ -10,6 +10,7 @@ import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 import * as System from "../System/Schema";
 import * as MessageTypeTemplateId from "../MessageTypeTemplateId/Schema";
 import * as Notification from "../Notification/Schema";
+import * as SessionMessage from "../SessionMessage/Schema";
 import * as Token from "../Token/Schema";
 import * as WechatPublicTag from "../WechatPublicTag/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
@@ -62,6 +63,7 @@ export type WechatPublicConfig = {
         originalId: string; //原始id
     };
     passport?: Passport[];
+    sessions?: Session[];
 };
 export type OpSchema = EntityShape & {
     name: String<32>;
@@ -84,6 +86,8 @@ export type Schema = EntityShape & {
     messageTypeTemplateId$application$$aggr?: AggregationResult<MessageTypeTemplateId.Schema>;
     notification$application?: Array<Notification.Schema>;
     notification$application$$aggr?: AggregationResult<Notification.Schema>;
+    sessionMessage$application?: Array<SessionMessage.Schema>;
+    sessionMessage$application$$aggr?: AggregationResult<SessionMessage.Schema>;
     token$application?: Array<Token.Schema>;
     token$application$$aggr?: AggregationResult<Token.Schema>;
     wechatPublicTag$application?: Array<WechatPublicTag.Schema>;
@@ -109,6 +113,7 @@ type AttrFilter = {
     style: JsonFilter<Style>;
     messageTypeTemplateId$application: MessageTypeTemplateId.Filter & SubQueryPredicateMetadata;
     notification$application: Notification.Filter & SubQueryPredicateMetadata;
+    sessionMessage$application: SessionMessage.Filter & SubQueryPredicateMetadata;
     token$application: Token.Filter & SubQueryPredicateMetadata;
     wechatPublicTag$application: WechatPublicTag.Filter & SubQueryPredicateMetadata;
     wechatQrCode$application: WechatQrCode.Filter & SubQueryPredicateMetadata;
@@ -140,6 +145,12 @@ export type Projection = {
     };
     notification$application$$aggr?: Notification.Aggregation & {
         $entity: "notification";
+    };
+    sessionMessage$application?: SessionMessage.Selection & {
+        $entity: "sessionMessage";
+    };
+    sessionMessage$application$$aggr?: SessionMessage.Aggregation & {
+        $entity: "sessionMessage";
     };
     token$application?: Token.Selection & {
         $entity: "token";
@@ -214,6 +225,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "systemId">> & (
 })) & {
     messageTypeTemplateId$application?: OakOperation<MessageTypeTemplateId.UpdateOperation["action"], Omit<MessageTypeTemplateId.UpdateOperationData, "application" | "applicationId">, Omit<MessageTypeTemplateId.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<MessageTypeTemplateId.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<MessageTypeTemplateId.CreateOperationData, "application" | "applicationId">> | OakOperation<MessageTypeTemplateId.UpdateOperation["action"], Omit<MessageTypeTemplateId.UpdateOperationData, "application" | "applicationId">, Omit<MessageTypeTemplateId.Filter, "application" | "applicationId">>>;
     notification$application?: OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "application" | "applicationId">, Omit<Notification.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<Notification.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<Notification.CreateOperationData, "application" | "applicationId">> | OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "application" | "applicationId">, Omit<Notification.Filter, "application" | "applicationId">>>;
+    sessionMessage$application?: OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "application" | "applicationId">, Omit<SessionMessage.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<SessionMessage.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<SessionMessage.CreateOperationData, "application" | "applicationId">> | OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "application" | "applicationId">, Omit<SessionMessage.Filter, "application" | "applicationId">>>;
     token$application?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "application" | "applicationId">, Omit<Token.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<Token.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "application" | "applicationId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "application" | "applicationId">, Omit<Token.Filter, "application" | "applicationId">>>;
     wechatPublicTag$application?: OakOperation<WechatPublicTag.UpdateOperation["action"], Omit<WechatPublicTag.UpdateOperationData, "application" | "applicationId">, Omit<WechatPublicTag.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<WechatPublicTag.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatPublicTag.CreateOperationData, "application" | "applicationId">> | OakOperation<WechatPublicTag.UpdateOperation["action"], Omit<WechatPublicTag.UpdateOperationData, "application" | "applicationId">, Omit<WechatPublicTag.Filter, "application" | "applicationId">>>;
     wechatQrCode$application?: OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "application" | "applicationId">, Omit<WechatQrCode.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">> | OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "application" | "applicationId">, Omit<WechatQrCode.Filter, "application" | "applicationId">>>;
@@ -238,6 +250,7 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "systemId">> & (
     [k: string]: any;
     messageTypeTemplateId$application?: OakOperation<MessageTypeTemplateId.UpdateOperation["action"], Omit<MessageTypeTemplateId.UpdateOperationData, "application" | "applicationId">, Omit<MessageTypeTemplateId.Filter, "application" | "applicationId">> | OakOperation<MessageTypeTemplateId.RemoveOperation["action"], Omit<MessageTypeTemplateId.RemoveOperationData, "application" | "applicationId">, Omit<MessageTypeTemplateId.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<MessageTypeTemplateId.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<MessageTypeTemplateId.CreateOperationData, "application" | "applicationId">> | OakOperation<MessageTypeTemplateId.UpdateOperation["action"], Omit<MessageTypeTemplateId.UpdateOperationData, "application" | "applicationId">, Omit<MessageTypeTemplateId.Filter, "application" | "applicationId">> | OakOperation<MessageTypeTemplateId.RemoveOperation["action"], Omit<MessageTypeTemplateId.RemoveOperationData, "application" | "applicationId">, Omit<MessageTypeTemplateId.Filter, "application" | "applicationId">>>;
     notification$application?: OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "application" | "applicationId">, Omit<Notification.Filter, "application" | "applicationId">> | OakOperation<Notification.RemoveOperation["action"], Omit<Notification.RemoveOperationData, "application" | "applicationId">, Omit<Notification.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<Notification.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<Notification.CreateOperationData, "application" | "applicationId">> | OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "application" | "applicationId">, Omit<Notification.Filter, "application" | "applicationId">> | OakOperation<Notification.RemoveOperation["action"], Omit<Notification.RemoveOperationData, "application" | "applicationId">, Omit<Notification.Filter, "application" | "applicationId">>>;
+    sessionMessage$application?: OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "application" | "applicationId">, Omit<SessionMessage.Filter, "application" | "applicationId">> | OakOperation<SessionMessage.RemoveOperation["action"], Omit<SessionMessage.RemoveOperationData, "application" | "applicationId">, Omit<SessionMessage.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<SessionMessage.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<SessionMessage.CreateOperationData, "application" | "applicationId">> | OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "application" | "applicationId">, Omit<SessionMessage.Filter, "application" | "applicationId">> | OakOperation<SessionMessage.RemoveOperation["action"], Omit<SessionMessage.RemoveOperationData, "application" | "applicationId">, Omit<SessionMessage.Filter, "application" | "applicationId">>>;
     token$application?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "application" | "applicationId">, Omit<Token.Filter, "application" | "applicationId">> | OakOperation<Token.RemoveOperation["action"], Omit<Token.RemoveOperationData, "application" | "applicationId">, Omit<Token.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<Token.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "application" | "applicationId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "application" | "applicationId">, Omit<Token.Filter, "application" | "applicationId">> | OakOperation<Token.RemoveOperation["action"], Omit<Token.RemoveOperationData, "application" | "applicationId">, Omit<Token.Filter, "application" | "applicationId">>>;
     wechatPublicTag$application?: OakOperation<WechatPublicTag.UpdateOperation["action"], Omit<WechatPublicTag.UpdateOperationData, "application" | "applicationId">, Omit<WechatPublicTag.Filter, "application" | "applicationId">> | OakOperation<WechatPublicTag.RemoveOperation["action"], Omit<WechatPublicTag.RemoveOperationData, "application" | "applicationId">, Omit<WechatPublicTag.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<WechatPublicTag.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatPublicTag.CreateOperationData, "application" | "applicationId">> | OakOperation<WechatPublicTag.UpdateOperation["action"], Omit<WechatPublicTag.UpdateOperationData, "application" | "applicationId">, Omit<WechatPublicTag.Filter, "application" | "applicationId">> | OakOperation<WechatPublicTag.RemoveOperation["action"], Omit<WechatPublicTag.RemoveOperationData, "application" | "applicationId">, Omit<WechatPublicTag.Filter, "application" | "applicationId">>>;
     wechatQrCode$application?: OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "application" | "applicationId">, Omit<WechatQrCode.Filter, "application" | "applicationId">> | OakOperation<WechatQrCode.RemoveOperation["action"], Omit<WechatQrCode.RemoveOperationData, "application" | "applicationId">, Omit<WechatQrCode.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">> | OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "application" | "applicationId">, Omit<WechatQrCode.Filter, "application" | "applicationId">> | OakOperation<WechatQrCode.RemoveOperation["action"], Omit<WechatQrCode.RemoveOperationData, "application" | "applicationId">, Omit<WechatQrCode.Filter, "application" | "applicationId">>>;

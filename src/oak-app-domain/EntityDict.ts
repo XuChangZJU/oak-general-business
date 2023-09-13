@@ -28,6 +28,8 @@ import { EntityDef as Mobile } from "./Mobile/Schema";
 import { EntityDef as Notification } from "./Notification/Schema";
 import { EntityDef as Parasite } from "./Parasite/Schema";
 import { EntityDef as Platform } from "./Platform/Schema";
+import { EntityDef as Session } from "./Session/Schema";
+import { EntityDef as SessionMessage } from "./SessionMessage/Schema";
 import { EntityDef as Station } from "./Station/Schema";
 import { EntityDef as Subscription } from "./Subscription/Schema";
 import { EntityDef as Subway } from "./Subway/Schema";
@@ -71,6 +73,8 @@ export type EntityDict = {
     notification: Notification;
     parasite: Parasite;
     platform: Platform;
+    session: Session;
+    sessionMessage: SessionMessage;
     station: Station;
     subscription: Subscription;
     subway: Subway;

@@ -8,12 +8,6 @@ import ActionBtnPanel from 'oak-frontend-base/es/components/actionBtnPanel';
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 
-const MessageType = {
-    adminNotification: '系统通知',
-    conversationMessage: '客服消息',
-};
-
-
 export default function Render(
     props: WebComponentProps<
         EntityDict,
@@ -41,13 +35,13 @@ export default function Render(
                     rowKey="id"
                     // scroll={{ x: 1200 }}
                     columns={[
-                        // {
-                        //     dataIndex: 'serial-number',
-                        //     title: '序号',
-                        //     render: (value, record, index) => {
-                        //         return index + 1;
-                        //     },
-                        // },
+                        {
+                            dataIndex: 'serial-number',
+                            title: '#',
+                            render: (value, record, index) => {
+                                return index + 1;
+                            },
+                        },
                         {
                             dataIndex: 'title',
                             title: '消息内容',
@@ -84,9 +78,7 @@ export default function Render(
                             dataIndex: 'type',
                             title: '类型',
                             render: (value, record, index) => {
-                                return MessageType[
-                                    value as keyof typeof MessageType
-                                ];
+                                return '';
                             },
                         },
                         {

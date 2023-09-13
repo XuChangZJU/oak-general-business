@@ -8,6 +8,7 @@ import { EntityShape } from "oak-domain/lib/types/Entity";
 import { QrCodeType } from "../../types/Config";
 import * as Relation from "../Relation/Schema";
 import * as User from "../User/Schema";
+import * as Session from "../Session/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
@@ -18,7 +19,7 @@ export declare type RedirectToProps = {
     isTabBar?: boolean;
 };
 export declare type OpSchema = EntityShape & {
-    entity: String<32>;
+    entity: "session" | string;
     entityId: String<64>;
     relationId: ForeignKey<"relation">;
     type: 'grant' | 'transfer';
@@ -34,7 +35,7 @@ export declare type OpSchema = EntityShape & {
 };
 export declare type OpAttr = keyof OpSchema;
 export declare type Schema = EntityShape & {
-    entity: String<32>;
+    entity: "session" | string;
     entityId: String<64>;
     relationId: ForeignKey<"relation">;
     type: 'grant' | 'transfer';
@@ -50,6 +51,7 @@ export declare type Schema = EntityShape & {
     relation: Relation.Schema;
     granter: User.Schema;
     grantee?: User.Schema | null;
+    session?: Session.Schema;
     modiEntity$entity?: Array<ModiEntity.Schema>;
     modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;
     operEntity$entity?: Array<OperEntity.Schema>;
@@ -64,7 +66,7 @@ declare type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    entity: Q_StringValue;
+    entity: Q_EnumValue<"session" | string>;
     entityId: Q_StringValue;
     relationId: Q_StringValue;
     relation: Relation.Filter;
@@ -80,6 +82,7 @@ declare type AttrFilter = {
     expiresAt: Q_DateValue;
     expired: Q_BooleanValue;
     redirectTo: JsonFilter<RedirectToProps>;
+    session: Session.Filter;
     modiEntity$entity: ModiEntity.Filter & SubQueryPredicateMetadata;
     operEntity$entity: OperEntity.Filter & SubQueryPredicateMetadata;
     wechatQrCode$entity: WechatQrCode.Filter & SubQueryPredicateMetadata;
@@ -108,6 +111,7 @@ export declare type Projection = {
     expiresAt?: number;
     expired?: number;
     redirectTo?: number | JsonProjection<RedirectToProps>;
+    session?: Session.Projection;
     modiEntity$entity?: ModiEntity.Selection & {
         $entity: "modiEntity";
     };
@@ -136,6 +140,9 @@ declare type RelationIdProjection = OneOf<{
 declare type UserIdProjection = OneOf<{
     granterId: number;
     granteeId: number;
+}>;
+declare type SessionIdProjection = OneOf<{
+    entityId: number;
 }>;
 export declare type SortAttr = {
     id: number;
@@ -178,6 +185,8 @@ export declare type SortAttr = {
 } | {
     redirectTo: number;
 } | {
+    session: Session.SortAttr;
+} | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
 export declare type SortNode = {
@@ -213,6 +222,17 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 } | {
     granteeId?: ForeignKey<"grantee">;
 })) & ({
+    entity?: never;
+    entityId?: never;
+    session: Session.CreateSingleOperation;
+} | {
+    entity: "session";
+    entityId: ForeignKey<"Session">;
+    session: Session.UpdateOperation;
+} | {
+    entity: "session";
+    entityId: ForeignKey<"Session">;
+} | {
     entity?: string;
     entityId?: string;
     [K: string]: any;
@@ -224,7 +244,7 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
 export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "relationId" | "granterId" | "granteeId">> & (({
+export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "relationId" | "granterId" | "granteeId">> & (({
     relation: Relation.CreateSingleOperation;
     relationId?: never;
 } | {
@@ -260,7 +280,14 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "relatio
 } | {
     grantee?: never;
     granteeId?: ForeignKey<"grantee"> | null;
-})) & {
+})) & ({
+    session?: Session.CreateSingleOperation | Session.UpdateOperation | Session.RemoveOperation;
+    entityId?: never;
+    entity?: never;
+} | {
+    entity?: ("session" | string) | null;
+    entityId?: ForeignKey<"Session"> | null;
+}) & {
     [k: string]: any;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
     operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
@@ -273,11 +300,16 @@ export declare type RemoveOperationData = {} & (({
     granter?: User.UpdateOperation | User.RemoveOperation;
 }) & ({
     grantee?: User.UpdateOperation | User.RemoveOperation;
-}));
+})) & ({
+    session?: Session.UpdateOperation | Session.RemoveOperation;
+} | {
+    [k: string]: any;
+});
 export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export declare type RelationIdSubQuery = Selection<RelationIdProjection>;
 export declare type UserIdSubQuery = Selection<UserIdProjection>;
+export declare type SessionIdSubQuery = Selection<SessionIdProjection>;
 export declare type UserEntityGrantIdSubQuery = Selection<UserEntityGrantIdProjection>;
 export declare type EntityDef = {
     Schema: Schema;

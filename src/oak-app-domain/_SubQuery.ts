@@ -28,6 +28,8 @@ import * as Mobile from "./Mobile/Schema";
 import * as Notification from "./Notification/Schema";
 import * as Parasite from "./Parasite/Schema";
 import * as Platform from "./Platform/Schema";
+import * as Session from "./Session/Schema";
+import * as SessionMessage from "./SessionMessage/Schema";
 import * as Station from "./Station/Schema";
 import * as Subscription from "./Subscription/Schema";
 import * as Subway from "./Subway/Schema";
@@ -109,6 +111,8 @@ export type UserIdSubQuery = {
         entity: "mobile";
     }) | (Parasite.UserIdSubQuery & {
         entity: "parasite";
+    }) | (SessionMessage.UserIdSubQuery & {
+        entity: "sessionMessage";
     }) | (Token.UserIdSubQuery & {
         entity: "token";
     }) | (UserEntityGrant.UserIdSubQuery & {
@@ -159,6 +163,8 @@ export type ApplicationIdSubQuery = {
         entity: "messageTypeTemplateId";
     }) | (Notification.ApplicationIdSubQuery & {
         entity: "notification";
+    }) | (SessionMessage.ApplicationIdSubQuery & {
+        entity: "sessionMessage";
     }) | (Token.ApplicationIdSubQuery & {
         entity: "token";
     }) | (WechatPublicTag.ApplicationIdSubQuery & {
@@ -286,6 +292,26 @@ export type PlatformIdSubQuery = {
         entity: "platform";
     }) | any;
 };
+export type SessionIdSubQuery = {
+    [K in "$in" | "$nin"]?: (SessionMessage.SessionIdSubQuery & {
+        entity: "sessionMessage";
+    }) | (UserEntityGrant.SessionIdSubQuery & {
+        entity: "userEntityGrant";
+    }) | (Relation.SessionIdSubQuery & {
+        entity: "relation";
+    }) | (UserRelation.SessionIdSubQuery & {
+        entity: "userRelation";
+    }) | (Session.SessionIdSubQuery & {
+        entity: "session";
+    }) | any;
+};
+export type SessionMessageIdSubQuery = {
+    [K in "$in" | "$nin"]?: (ExtraFile.SessionMessageIdSubQuery & {
+        entity: "extraFile";
+    }) | (SessionMessage.SessionMessageIdSubQuery & {
+        entity: "sessionMessage";
+    }) | any;
+};
 export type StationIdSubQuery = {
     [K in "$in" | "$nin"]?: (SubwayStation.StationIdSubQuery & {
         entity: "subwayStation";
@@ -378,7 +404,9 @@ export type WechatQrCodeIdSubQuery = {
     }) | any;
 };
 export type WechatUserIdSubQuery = {
-    [K in "$in" | "$nin"]?: (ModiEntity.WechatUserIdSubQuery & {
+    [K in "$in" | "$nin"]?: (SessionMessage.WechatUserIdSubQuery & {
+        entity: "sessionMessage";
+    }) | (ModiEntity.WechatUserIdSubQuery & {
         entity: "modiEntity";
     }) | (OperEntity.WechatUserIdSubQuery & {
         entity: "operEntity";

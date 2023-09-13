@@ -10,20 +10,22 @@ import { Index } from "oak-domain/lib/types/Storage";
 import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 import * as User from "../User/Schema";
 import * as Relation from "../Relation/Schema";
+import * as Session from "../Session/Schema";
 export type OpSchema = EntityShape & {
     userId: ForeignKey<"user">;
     relationId: ForeignKey<"relation">;
-    entity: String<32>;
+    entity: "session" | string;
     entityId: String<64>;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     userId: ForeignKey<"user">;
     relationId: ForeignKey<"relation">;
-    entity: String<32>;
+    entity: "session" | string;
     entityId: String<64>;
     user: User.Schema;
     relation: Relation.Schema;
+    session?: Session.Schema;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -36,8 +38,9 @@ type AttrFilter = {
     user: User.Filter;
     relationId: Q_StringValue;
     relation: Relation.Filter;
-    entity: Q_StringValue;
+    entity: Q_EnumValue<"session" | string>;
     entityId: Q_StringValue;
+    session: Session.Filter;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export type Projection = {
@@ -53,6 +56,7 @@ export type Projection = {
     relation?: Relation.Projection;
     entity?: number;
     entityId?: number;
+    session?: Session.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
 type UserRelationIdProjection = OneOf<{
     id: number;
@@ -62,6 +66,9 @@ type UserIdProjection = OneOf<{
 }>;
 type RelationIdProjection = OneOf<{
     relationId: number;
+}>;
+type SessionIdProjection = OneOf<{
+    entityId: number;
 }>;
 export type SortAttr = {
     id: number;
@@ -83,6 +90,8 @@ export type SortAttr = {
     entity: number;
 } | {
     entityId: number;
+} | {
+    session: Session.SortAttr;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
@@ -111,6 +120,17 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     relationId: ForeignKey<"relation">;
 })) & ({
+    entity?: never;
+    entityId?: never;
+    session: Session.CreateSingleOperation;
+} | {
+    entity: "session";
+    entityId: ForeignKey<"Session">;
+    session: Session.UpdateOperation;
+} | {
+    entity: "session";
+    entityId: ForeignKey<"Session">;
+} | {
     entity?: string;
     entityId?: string;
     [K: string]: any;
@@ -118,7 +138,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId" | "relationId">> & (({
+export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "userId" | "relationId">> & (({
     user: User.CreateSingleOperation;
     userId?: never;
 } | {
@@ -142,7 +162,14 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId" | "rela
 } | {
     relation?: never;
     relationId?: ForeignKey<"relation"> | null;
-})) & {
+})) & ({
+    session?: Session.CreateSingleOperation | Session.UpdateOperation | Session.RemoveOperation;
+    entityId?: never;
+    entity?: never;
+} | {
+    entity?: ("session" | string) | null;
+    entityId?: ForeignKey<"Session"> | null;
+}) & {
     [k: string]: any;
 };
 export type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
@@ -150,11 +177,16 @@ export type RemoveOperationData = {} & (({
     user?: User.UpdateOperation | User.RemoveOperation;
 }) & ({
     relation?: Relation.UpdateOperation | Relation.RemoveOperation;
-}));
+})) & ({
+    session?: Session.UpdateOperation | Session.RemoveOperation;
+} | {
+    [k: string]: any;
+});
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export type UserIdSubQuery = Selection<UserIdProjection>;
 export type RelationIdSubQuery = Selection<RelationIdProjection>;
+export type SessionIdSubQuery = Selection<SessionIdProjection>;
 export type UserRelationIdSubQuery = Selection<UserRelationIdProjection>;
 export type EntityDef = {
     Schema: Schema;

@@ -1,6 +1,7 @@
 import { String, Text } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as System } from './System';
+import { Schema as Session } from './Session';
 import { Style } from '../types/Style';
 export declare type Passport = 'email' | 'mobile' | 'wechat' | 'wechatPublic';
 export declare type AppType = 'web' | 'wechatMp' | 'wechatPublic';
@@ -49,6 +50,7 @@ export declare type WechatPublicConfig = {
         originalId: string;
     };
     passport?: Passport[];
+    sessions?: Session[];
 };
 export interface Schema extends EntityShape {
     name: String<32>;
