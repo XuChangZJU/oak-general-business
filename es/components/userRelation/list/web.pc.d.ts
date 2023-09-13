@@ -11,4 +11,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', true
     goUpsert: () => void;
     goUpdate: (id: string) => void;
     confirmDelete: (id: string) => Promise<void>;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

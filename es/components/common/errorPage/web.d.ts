@@ -15,5 +15,5 @@ interface IErrorPageProps {
     children?: React.ReactNode;
     icon?: React.ReactNode;
 }
-declare function ErrorPage(props: IErrorPageProps): JSX.Element;
+declare function ErrorPage(props: IErrorPageProps): import("react/jsx-runtime").JSX.Element;
 export default ErrorPage;
