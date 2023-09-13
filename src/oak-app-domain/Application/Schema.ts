@@ -15,6 +15,7 @@ import * as Token from "../Token/Schema";
 import * as WechatPublicTag from "../WechatPublicTag/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
 import * as WechatUser from "../WechatUser/Schema";
+import * as Session from "../Session/Schema";
 export type Passport = 'email' | 'mobile' | 'wechat' | 'wechatPublic';
 export type AppType = 'web' | 'wechatMp' | 'wechatPublic';
 export type WechatMpConfig = {
@@ -63,7 +64,6 @@ export type WechatPublicConfig = {
         originalId: string; //原始id
     };
     passport?: Passport[];
-    sessions?: Session[];
 };
 export type OpSchema = EntityShape & {
     name: String<32>;
@@ -96,6 +96,8 @@ export type Schema = EntityShape & {
     wechatQrCode$application$$aggr?: AggregationResult<WechatQrCode.Schema>;
     wechatUser$application?: Array<WechatUser.Schema>;
     wechatUser$application$$aggr?: AggregationResult<WechatUser.Schema>;
+    session$entity?: Array<Session.Schema>;
+    session$entity$$aggr?: AggregationResult<Session.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -118,6 +120,7 @@ type AttrFilter = {
     wechatPublicTag$application: WechatPublicTag.Filter & SubQueryPredicateMetadata;
     wechatQrCode$application: WechatQrCode.Filter & SubQueryPredicateMetadata;
     wechatUser$application: WechatUser.Filter & SubQueryPredicateMetadata;
+    session$entity: Session.Filter & SubQueryPredicateMetadata;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export type Projection = {
@@ -176,6 +179,12 @@ export type Projection = {
     wechatUser$application$$aggr?: WechatUser.Aggregation & {
         $entity: "wechatUser";
     };
+    session$entity?: Session.Selection & {
+        $entity: "session";
+    };
+    session$entity$$aggr?: Session.Aggregation & {
+        $entity: "session";
+    };
 } & Partial<ExprOp<OpAttr | string>>;
 type ApplicationIdProjection = OneOf<{
     id: number;
@@ -230,6 +239,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "systemId">> & (
     wechatPublicTag$application?: OakOperation<WechatPublicTag.UpdateOperation["action"], Omit<WechatPublicTag.UpdateOperationData, "application" | "applicationId">, Omit<WechatPublicTag.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<WechatPublicTag.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatPublicTag.CreateOperationData, "application" | "applicationId">> | OakOperation<WechatPublicTag.UpdateOperation["action"], Omit<WechatPublicTag.UpdateOperationData, "application" | "applicationId">, Omit<WechatPublicTag.Filter, "application" | "applicationId">>>;
     wechatQrCode$application?: OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "application" | "applicationId">, Omit<WechatQrCode.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">> | OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "application" | "applicationId">, Omit<WechatQrCode.Filter, "application" | "applicationId">>>;
     wechatUser$application?: OakOperation<WechatUser.UpdateOperation["action"], Omit<WechatUser.UpdateOperationData, "application" | "applicationId">, Omit<WechatUser.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<WechatUser.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatUser.CreateOperationData, "application" | "applicationId">> | OakOperation<WechatUser.UpdateOperation["action"], Omit<WechatUser.UpdateOperationData, "application" | "applicationId">, Omit<WechatUser.Filter, "application" | "applicationId">>>;
+    session$entity?: OakOperation<Session.UpdateOperation["action"], Omit<Session.UpdateOperationData, "entity" | "entityId">, Omit<Session.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Session.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Session.CreateOperationData, "entity" | "entityId">> | OakOperation<Session.UpdateOperation["action"], Omit<Session.UpdateOperationData, "entity" | "entityId">, Omit<Session.Filter, "entity" | "entityId">>>;
 };
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -255,6 +265,7 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "systemId">> & (
     wechatPublicTag$application?: OakOperation<WechatPublicTag.UpdateOperation["action"], Omit<WechatPublicTag.UpdateOperationData, "application" | "applicationId">, Omit<WechatPublicTag.Filter, "application" | "applicationId">> | OakOperation<WechatPublicTag.RemoveOperation["action"], Omit<WechatPublicTag.RemoveOperationData, "application" | "applicationId">, Omit<WechatPublicTag.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<WechatPublicTag.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatPublicTag.CreateOperationData, "application" | "applicationId">> | OakOperation<WechatPublicTag.UpdateOperation["action"], Omit<WechatPublicTag.UpdateOperationData, "application" | "applicationId">, Omit<WechatPublicTag.Filter, "application" | "applicationId">> | OakOperation<WechatPublicTag.RemoveOperation["action"], Omit<WechatPublicTag.RemoveOperationData, "application" | "applicationId">, Omit<WechatPublicTag.Filter, "application" | "applicationId">>>;
     wechatQrCode$application?: OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "application" | "applicationId">, Omit<WechatQrCode.Filter, "application" | "applicationId">> | OakOperation<WechatQrCode.RemoveOperation["action"], Omit<WechatQrCode.RemoveOperationData, "application" | "applicationId">, Omit<WechatQrCode.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "application" | "applicationId">> | OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "application" | "applicationId">, Omit<WechatQrCode.Filter, "application" | "applicationId">> | OakOperation<WechatQrCode.RemoveOperation["action"], Omit<WechatQrCode.RemoveOperationData, "application" | "applicationId">, Omit<WechatQrCode.Filter, "application" | "applicationId">>>;
     wechatUser$application?: OakOperation<WechatUser.UpdateOperation["action"], Omit<WechatUser.UpdateOperationData, "application" | "applicationId">, Omit<WechatUser.Filter, "application" | "applicationId">> | OakOperation<WechatUser.RemoveOperation["action"], Omit<WechatUser.RemoveOperationData, "application" | "applicationId">, Omit<WechatUser.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<WechatUser.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatUser.CreateOperationData, "application" | "applicationId">> | OakOperation<WechatUser.UpdateOperation["action"], Omit<WechatUser.UpdateOperationData, "application" | "applicationId">, Omit<WechatUser.Filter, "application" | "applicationId">> | OakOperation<WechatUser.RemoveOperation["action"], Omit<WechatUser.RemoveOperationData, "application" | "applicationId">, Omit<WechatUser.Filter, "application" | "applicationId">>>;
+    session$entity?: OakOperation<Session.UpdateOperation["action"], Omit<Session.UpdateOperationData, "entity" | "entityId">, Omit<Session.Filter, "entity" | "entityId">> | OakOperation<Session.RemoveOperation["action"], Omit<Session.RemoveOperationData, "entity" | "entityId">, Omit<Session.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Session.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Session.CreateOperationData, "entity" | "entityId">> | OakOperation<Session.UpdateOperation["action"], Omit<Session.UpdateOperationData, "entity" | "entityId">, Omit<Session.Filter, "entity" | "entityId">> | OakOperation<Session.RemoveOperation["action"], Omit<Session.RemoveOperationData, "entity" | "entityId">, Omit<Session.Filter, "entity" | "entityId">>>;
 };
 export type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export type RemoveOperationData = {} & (({

@@ -50,7 +50,6 @@ export declare type WechatPublicConfig = {
         originalId: string;
     };
     passport?: Passport[];
-    sessions?: Session[];
 };
 export interface Schema extends EntityShape {
     name: String<32>;
@@ -59,4 +58,5 @@ export interface Schema extends EntityShape {
     system: System;
     config: WebConfig | WechatMpConfig | WechatPublicConfig;
     style?: Style;
+    sessions?: Session[];
 }

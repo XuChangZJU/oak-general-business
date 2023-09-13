@@ -173,6 +173,8 @@ export type ApplicationIdSubQuery = {
         entity: "wechatQrCode";
     }) | (WechatUser.ApplicationIdSubQuery & {
         entity: "wechatUser";
+    }) | (Session.ApplicationIdSubQuery & {
+        entity: "session";
     }) | (Application.ApplicationIdSubQuery & {
         entity: "application";
     }) | any;
