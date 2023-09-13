@@ -14,17 +14,6 @@ export class ExtraFile extends Feature {
         this.application = application;
         this.locales = locales;
     }
-    // async getUploadInfo(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
-    //     // const { origin, extra1, filename, objectId, extension, entity } =
-    //     //     extraFile;
-    //     // 构造文件上传所需的key
-    //     // const key = `${entity ? entity + '/' : ''}${objectId}${extension ? '.' + extension : ''}`;
-    //     assert(origin && origin !== 'unknown');
-    //     const uploadInfo = await this.cache.exec('getUploadInfo', {
-    //         extraFile
-    //     });
-    //     return uploadInfo;
-    // }
     async createAndUpload(extraFile) {
         await this.cache.operate('extraFile', {
             action: 'create',
@@ -37,7 +26,9 @@ export class ExtraFile extends Feature {
             application?.system?.platform?.config;
         const { bucket } = result;
         return {
-            url: this.getUrl(Object.assign({}, extraFile, { extra1: null })),
+            url: this.getUrl(Object.assign({}, extraFile, {
+                extra1: null,
+            })),
             bucket,
         };
     }
@@ -71,7 +62,7 @@ export class ExtraFile extends Feature {
         });
         const up = new Upload();
         try {
-            const uploadInfo = UploaderDict[origin].upload(extraFileData, up.uploadFile, file);
+            await UploaderDict[origin].upload(extraFileData, up.uploadFile, file);
             await this.cache.operate('extraFile', {
                 action: 'update',
                 data: {
@@ -125,7 +116,9 @@ export class ExtraFile extends Feature {
         const { result } = await this.cache.exec('crossBridge', {
             url,
         });
-        const blob = new Blob([result], { type: 'image/png' });
+        const blob = new Blob([result], {
+            type: 'image/png',
+        });
         return URL.createObjectURL(blob);
     }
     getFileName(extraFile) {
