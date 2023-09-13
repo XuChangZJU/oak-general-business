@@ -19,13 +19,14 @@ export interface Schema extends EntityShape {
     sort?: Float<22, 10>;
     fileType?: String<128>;
     isBridge?: Boolean;
-    uploaded: Boolean;
-    uploadInfo?: Object;
+    uploadState: 'success' | 'failed' | 'uploading';
+    uploadMeta?: Object;
 };
 
 const entityDesc: EntityDesc<Schema, '', '', {
     origin: Schema['origin'];
     type: Schema['type'];
+    uploadState: Schema['uploadState'];
 }> = {
     locales: {
         zh_CN: {
@@ -47,8 +48,8 @@ const entityDesc: EntityDesc<Schema, '', '', {
                 sort: '排序',
                 fileType: '文件类型',
                 isBridge: '是否桥接访问',
-                uploaded: '是否上传成功',
-                uploadInfo: '上传参数',
+                uploadState: '上传状态',
+                uploadMeta: '上传需要的metadata',
             },
             v: {
                 origin: {
@@ -60,6 +61,11 @@ const entityDesc: EntityDesc<Schema, '', '', {
                     video: '视频',
                     audio: '音频',
                     file: '文件',
+                },
+                uploadState: {
+                    success: '上传成功',
+                    failed: '上传失败',
+                    uploading: '上传中',
                 },
             },
         },

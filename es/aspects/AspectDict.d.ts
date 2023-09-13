@@ -2,7 +2,7 @@ import { WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
 import { AppType } from '../oak-app-domain/Application/Schema';
 import { EntityDict } from '../oak-app-domain';
 import { QiniuUploadInfo } from 'oak-frontend-base';
-import { Config, Origin } from '../types/Config';
+import { Config } from '../types/Config';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 export declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = {
     mergeUser: (params: {
@@ -42,9 +42,7 @@ export declare type GeneralAspectDict<ED extends EntityDict, Cxt extends Backend
         env: WebEnv | WechatMpEnv;
     }, context: Cxt) => Promise<string>;
     getUploadInfo: (params: {
-        origin: Origin;
-        bucket?: string;
-        key?: string;
+        extraFile: EntityDict['extraFile']['CreateSingle']['data'];
     }, context: Cxt) => Promise<QiniuUploadInfo>;
     sendCaptcha: (params: {
         mobile: string;

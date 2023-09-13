@@ -93,6 +93,14 @@ export const desc = {
         },
         isBridge: {
             type: "boolean"
+        },
+        uploadState: {
+            notNull: true,
+            type: "enum",
+            enumeration: ["success", "failed", "uploading"]
+        },
+        uploadMeta: {
+            type: "object"
         }
     },
     actionType: "crud",

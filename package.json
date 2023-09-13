@@ -84,7 +84,7 @@
     "scripts": {
         "make:locale": "ts-node ./scripts/buildLocale.ts",
         "make:domain": "ts-node ./scripts/make.ts",
-        "clean": "rimraf lib/*",
+        "clean": "rimraf lib/* && rimraf es/*",
         "copy-js": "copyfiles -u 1 src/**/*.js lib/ & copyfiles -u 1 src/**/*.js es/",
         "copy-svg": "copyfiles -u 1 src/**/*.svg lib/ & copyfiles -u 1 src/**/*.png lib/ & copyfiles -u 1 src/**/*.svg es/ & copyfiles -u 1 src/**/*.png es/",
         "copy-less": "copyfiles -u 1 src/**/*.less lib/ & copyfiles -u 1 src/**/*.wxss lib/ & copyfiles -u 1 src/**/*.css lib/ & copyfiles -u 1 src/**/*.less es/ & copyfiles -u 1 src/**/*.wxss es/ & copyfiles -u 1 src/**/*.css es/",
@@ -92,8 +92,7 @@
         "copy-xml": "copyfiles -u 1 src/**/*.xml lib/ & copyfiles -u 1 src/**/*.xml es/",
         "copy-wxml": "copyfiles -u 1 src/**/*.wxml lib/ & copyfiles -u 1 src/**/*.wxml es/",
         "prebuild": "npm run make:locale",
-        "build": "tsc -p tsconfig.json && npm run copy-js && npm run copy-less && npm run copy-wxs && npm run copy-svg && npm run copy-xml && npm run copy-wxml",
-        "build-es": "tsc -p tsconfig.es.json && npm run copy-js && npm run copy-less && npm run copy-wxs && npm run copy-svg && npm run copy-xml && npm run copy-wxml",
+        "build": "tsc -p tsconfig.json && tsc -p tsconfig.es.json && npm run copy-js && npm run copy-less && npm run copy-wxs && npm run copy-svg && npm run copy-xml && npm run copy-wxml",
         "gen:areaDebug": "ts-node ./scripts/generateAreaDebug.ts",
         "gen:subway": "ts-node ./scripts/local/getAmapSubway.ts",
         "clean:dir": "ts-node ./scripts/cleanDtsAndJs",

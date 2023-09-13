@@ -67,7 +67,7 @@ export default function Render(props) {
                                                                 const { url, bucket } = await uploadFile(extraFile);
                                                                 extraFile.bucket = bucket;
                                                                 extraFile.extra1 = null;
-                                                                await addExtraFile(extraFile);
+                                                                // await addExtraFile(extraFile);
                                                                 // 最后插入图片
                                                                 insertFn("http://" + url, extraFile.filename);
                                                             }

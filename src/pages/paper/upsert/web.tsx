@@ -108,9 +108,8 @@ export default function Render(
                                     placeholder={t('placeholder.title')}
                                     size="large"
                                     maxLength={64}
-                                    suffix={`${
-                                        [...(data.title || '')].length
-                                    }/64`}
+                                    suffix={`${[...(data.title || '')].length
+                                        }/64`}
                                     className={Style.titleInput}
                                 />
                             </div>
@@ -160,7 +159,7 @@ export default function Render(
                                                 const extension =
                                                     name.substring(
                                                         name.lastIndexOf('.') +
-                                                            1
+                                                        1
                                                     );
                                                 const filename = name.substring(
                                                     0,
@@ -185,17 +184,17 @@ export default function Render(
                                                         await uploadFile(
                                                             extraFile
                                                         );
-                                                    extraFile.bucket = bucket;
-                                                    extraFile.extra1 = null;
-                                                    await addExtraFile(
-                                                        extraFile
-                                                    );
+                                                    // extraFile.bucket = bucket;
+                                                    // extraFile.extra1 = null;
+                                                    // await addExtraFile(
+                                                    //     extraFile
+                                                    // );
                                                     // 最后插入图片
                                                     insertFn(
                                                         'http://' + url,
                                                         extraFile.filename
                                                     );
-                                                } catch (err) {}
+                                                } catch (err) { }
                                             },
                                         },
                                         uploadVideo: {
@@ -211,7 +210,7 @@ export default function Render(
                                                 const extension =
                                                     name.substring(
                                                         name.lastIndexOf('.') +
-                                                            1
+                                                        1
                                                     );
                                                 const filename = name.substring(
                                                     0,
@@ -245,10 +244,10 @@ export default function Render(
                                                     insertFn(
                                                         'http://' + url,
                                                         'http://' +
-                                                            url +
-                                                            '?vframe/jpg/offset/0'
+                                                        url +
+                                                        '?vframe/jpg/offset/0'
                                                     );
-                                                } catch (err) {}
+                                                } catch (err) { }
                                             },
                                         },
                                     },

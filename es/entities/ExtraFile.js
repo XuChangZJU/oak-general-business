@@ -20,6 +20,8 @@ const entityDesc = {
                 sort: '排序',
                 fileType: '文件类型',
                 isBridge: '是否桥接访问',
+                uploadState: '上传状态',
+                uploadMeta: '上传需要的metadata',
             },
             v: {
                 origin: {
@@ -31,6 +33,11 @@ const entityDesc = {
                     video: '视频',
                     audio: '音频',
                     file: '文件',
+                },
+                uploadState: {
+                    success: '上传成功',
+                    failed: '上传失败',
+                    uploading: '上传中',
                 },
             },
         },

@@ -108,18 +108,24 @@ export default OakComponent({
                 id: generateNewId(),
                 entityId,
             };
-            try {
-                const { bucket } = await this.features.extraFile.upload(updateData);
-                Object.assign(updateData, {
-                    bucket,
-                    extra1: null,
-                });
-            }
-            catch (error) {
-                //todo 保存extraFile失败 需要remove七牛图片
-                throw error;
-            }
-            this.addItem(updateData);
+            // try {
+            //     const { bucket } = await this.features.extraFile.upload(
+            //         updateData
+            //     );
+            //     Object.assign(updateData, {
+            //         bucket,
+            //         extra1: null,
+            //     });
+            // } catch (error) {
+            //     //todo 保存extraFile失败 需要remove七牛图片
+            //     throw error;
+            // }
+            this.addItem(Object.assign({}, updateData, {
+                extra1: null,
+            }), undefined, async () => {
+                console.log(updateData);
+                await this.features.extraFile.upload(updateData, extra1);
+            });
             if (avatar) {
                 this.removeItem(avatar.id);
             }

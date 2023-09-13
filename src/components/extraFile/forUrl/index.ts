@@ -131,7 +131,7 @@ export default OakComponent({
                             let renderUrl: string;
                             const isWechatUrl = this.isWechatUrlFn(imgUrls[i]);
                             if (isWechatUrl) {
-                                renderUrl = this.features.extraFile.getUrl({isBridge: true, extra1: imgUrls[i]} as ExtraFile);
+                                renderUrl = this.features.extraFile.getUrl({ isBridge: true, extra1: imgUrls[i] } as ExtraFile);
                             }
                             else {
                                 renderUrl = imgUrls[i]
@@ -214,20 +214,17 @@ export default OakComponent({
         async myAddItem(createData: EntityDict['extraFile']['CreateSingle']['data']) {
             // 目前只支持七牛上传
             const { methodsType } = this.state;
-            this.addItem(createData, async () => {
+            this.addItem(Object.assign(createData, {
+                extra1: null,
+            }), async () => {
                 if (createData.bucket) {
                     // 说明本函数已经执行过了
                     return;
                 }
-                if (methodsType === 'uploadLocalImg') {
-                    const { bucket } = await this.features.extraFile.upload(
-                        createData
-                    );
-                    Object.assign(createData, {
-                        bucket,
-                        extra1: null,
-                    });
-                }
+            }, async () => {
+                await this.features.extraFile.upload(
+                    createData, createData.extra1!
+                )
             });
         },
         async myUpdateItem(params: File | string) {
@@ -257,7 +254,7 @@ export default OakComponent({
         isWechatUrlFn(url: string) {
             return (url.startsWith('https://mmbiz.qpic.cn') || url.startsWith('http://mmbiz.qpic.cn'));
         },
-        setSelectedId(id :number) {
+        setSelectedId(id: number) {
             this.setState({
                 selectedId: id
             });

@@ -65,9 +65,11 @@ export default function Render(props) {
                                                         try {
                                                             // 自己实现上传，并得到图片 url alt href
                                                             const { url, bucket } = await uploadFile(extraFile);
-                                                            extraFile.bucket = bucket;
-                                                            extraFile.extra1 = null;
-                                                            await addExtraFile(extraFile);
+                                                            // extraFile.bucket = bucket;
+                                                            // extraFile.extra1 = null;
+                                                            // await addExtraFile(
+                                                            //     extraFile
+                                                            // );
                                                             // 最后插入图片
                                                             insertFn('http://' + url, extraFile.filename);
                                                         }

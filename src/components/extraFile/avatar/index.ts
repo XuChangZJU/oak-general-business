@@ -129,21 +129,28 @@ export default OakComponent({
                 entityId,
             } as EntityDict['extraFile']['CreateSingle']['data'];
 
-            try {
-                const { bucket } = await this.features.extraFile.upload(
-                    updateData
-                );
-                Object.assign(updateData, {
-                    bucket,
-                    extra1: null,
-                });
-            } catch (error) {
-                //todo 保存extraFile失败 需要remove七牛图片
+            // try {
+            //     const { bucket } = await this.features.extraFile.upload(
+            //         updateData
+            //     );
+            //     Object.assign(updateData, {
+            //         bucket,
+            //         extra1: null,
+            //     });
+            // } catch (error) {
+            //     //todo 保存extraFile失败 需要remove七牛图片
 
-                throw error;
-            }
+            //     throw error;
+            // }
 
-            this.addItem(updateData);
+            this.addItem(Object.assign({}, updateData, {
+                extra1: null,
+            }), undefined, async () => {
+                console.log(updateData);
+                await this.features.extraFile.upload(
+                    updateData, extra1
+                )
+            });
             if (avatar) {
                 this.removeItem(avatar.id as string);
             }

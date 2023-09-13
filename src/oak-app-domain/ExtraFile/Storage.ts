@@ -96,11 +96,12 @@ export const desc: StorageDesc<OpSchema> = {
         isBridge: {
             type: "boolean"
         },
-        uploaded: {
+        uploadState: {
             notNull: true,
-            type: "boolean"
+            type: "enum",
+            enumeration: ["success", "failed", "uploading"]
         },
-        uploadInfo: {
+        uploadMeta: {
             type: "object"
         }
     },

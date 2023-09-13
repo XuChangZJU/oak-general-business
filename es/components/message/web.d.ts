@@ -3,4 +3,4 @@ export default function render(props: {
     data: {
         data: MessageProps;
     };
-}): import("react/jsx-runtime").JSX.Element;
+}): JSX.Element;

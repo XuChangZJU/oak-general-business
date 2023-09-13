@@ -2,6 +2,8 @@ import { Feature } from 'oak-frontend-base';
 import { Upload } from 'oak-frontend-base/es/utils/upload';
 import { composeFileUrl, bytesToSize } from '../utils/extraFile';
 import { assert } from 'oak-domain/lib/utils/assert';
+import UploaderDict from '../utils/uploader';
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 export class ExtraFile extends Feature {
     cache;
     application;
@@ -12,29 +14,89 @@ export class ExtraFile extends Feature {
         this.application = application;
         this.locales = locales;
     }
-    async getUploadInfo(origin, key) {
-        const uploadInfo = await this.cache.exec('getUploadInfo', {
-            origin,
-            key,
+    // async getUploadInfo(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
+    //     // const { origin, extra1, filename, objectId, extension, entity } =
+    //     //     extraFile;
+    //     // 构造文件上传所需的key
+    //     // const key = `${entity ? entity + '/' : ''}${objectId}${extension ? '.' + extension : ''}`;
+    //     assert(origin && origin !== 'unknown');
+    //     const uploadInfo = await this.cache.exec('getUploadInfo', {
+    //         extraFile
+    //     });
+    //     return uploadInfo;
+    // }
+    async createAndUpload(extraFile) {
+        await this.cache.operate('extraFile', {
+            action: 'create',
+            data: Object.assign({}, extraFile, { extra1: null }),
+            id: generateNewId(),
         });
-        return uploadInfo;
+        const result = await this.upload(Object.assign({}, extraFile, { extra1: null }), extraFile.extra1);
+        const application = this.application.getApplication();
+        const config = application?.system?.config ||
+            application?.system?.platform?.config;
+        const { bucket } = result;
+        return {
+            url: composeFileUrl(Object.assign({}, extraFile, { extra1: null }), config),
+            bucket,
+        };
     }
-    async upload(extraFile) {
-        const { origin, extra1, filename, objectId, extension, entity } = extraFile;
-        // 构造文件上传所需的key
-        const key = `${entity ? entity + '/' : ''}${objectId}${extension ? '.' + extension : ''}`;
-        assert(origin && origin !== 'unknown');
-        const { result: uploadInfo } = await this.getUploadInfo(origin, key);
-        if (process.env.OAK_PLATFORM === 'wechatMp') {
-            // 微信小程序使用wx.uploadFile, 封装upload，上传源为origin
-            const up = new Upload();
-            const result = await up.uploadFile(origin, extra1, uploadInfo);
-            return result;
+    async upload(extraFile, file) {
+        const { id, origin } = extraFile;
+        assert(origin, '未设置上传方式');
+        const [extraFileData] = this.cache.get('extraFile', {
+            data: {
+                origin: 1,
+                type: 1,
+                bucket: 1,
+                objectId: 1,
+                tag1: 1,
+                tag2: 1,
+                filename: 1,
+                md5: 1,
+                entity: 1,
+                entityId: 1,
+                extra1: 1,
+                extension: 1,
+                size: 1,
+                sort: 1,
+                fileType: 1,
+                isBridge: 1,
+                uploadState: 1,
+                uploadMeta: 1,
+            },
+            filter: {
+                id,
+            },
+        });
+        console.log(id, extraFileData);
+        const up = new Upload();
+        try {
+            const uploadInfo = UploaderDict[origin].upload(extraFileData, up.uploadFile, file);
+            await this.cache.operate('extraFile', {
+                action: 'update',
+                data: {
+                    uploadState: 'success',
+                },
+                filter: {
+                    id,
+                },
+                id: generateNewId(),
+            });
+            return extraFileData;
         }
-        else {
-            const up = new Upload();
-            const result = await up.uploadFile(origin, extra1, uploadInfo);
-            return result;
+        catch (err) {
+            await this.cache.operate('extraFile', {
+                action: 'update',
+                data: {
+                    uploadState: 'failed',
+                },
+                filter: {
+                    id,
+                },
+                id: generateNewId(),
+            });
+            throw err;
         }
     }
     getUrl(extraFile, style) {

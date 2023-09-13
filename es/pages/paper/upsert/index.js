@@ -81,7 +81,7 @@ export default OakComponent({
             }
         },
         uploadFile(extraFile) {
-            return this.features.extraFile.upload(extraFile);
+            return this.features.extraFile.createAndUpload(extraFile);
         },
         setEditor(editor) {
             this.setState({

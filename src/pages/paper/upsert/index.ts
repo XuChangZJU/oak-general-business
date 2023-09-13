@@ -38,9 +38,9 @@ export default OakComponent({
     },
     listeners: {
         'editor,content'(prev, next) {
-           if (next.editor && next.content) {
-               next.editor.setHtml(next.content);
-           }
+            if (next.editor && next.content) {
+                next.editor.setHtml(next.content);
+            }
         },
     },
     lifetimes: {
@@ -90,7 +90,7 @@ export default OakComponent({
         },
 
         uploadFile(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
-            return this.features.extraFile.upload(extraFile);
+            return this.features.extraFile.createAndUpload(extraFile);
         },
 
         setEditor(editor: IDomEditor | null) {
@@ -117,7 +117,7 @@ export default OakComponent({
         },
         preview() {
             // const { html, title, author } = this.state;
-            const {html} = this.state;
+            const { html } = this.state;
             this.save(
                 'article_html',
                 JSON.stringify({

@@ -1,4 +1,3 @@
-import { generateNewId } from 'oak-domain/lib/utils/uuid';
 export default OakComponent({
     entity: 'article',
     projection: {
@@ -71,16 +70,18 @@ export default OakComponent({
         },
     },
     methods: {
-        async addExtraFile(extraFile) {
-            const result = await this.features.cache.operate('extraFile', {
-                action: 'create',
-                data: extraFile,
-                id: generateNewId(),
-            });
-            return result;
-        },
+        // async addExtraFile(
+        //     extraFile: EntityDict['extraFile']['CreateSingle']['data']
+        // ) {
+        //     const result = await this.features.cache.operate('extraFile', {
+        //         action: 'create',
+        //         data: extraFile,
+        //         id: generateNewId(),
+        //     });
+        //     return result;
+        // },
         async uploadFile(extraFile) {
-            const result = await this.features.extraFile.upload(extraFile);
+            const result = await this.features.extraFile.createAndUpload(extraFile);
             return result;
         },
         setEditor(editor) {

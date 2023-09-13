@@ -1,6 +1,6 @@
 import { EntityDict } from '../../../oak-app-domain';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
-import { ReactComponentProps } from 'oak-frontend-base';
+import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 declare type SourceType = 'album' | 'camera';
 declare type Theme = 'file' | 'image' | 'image-flow' | 'custom';
 declare type FileType = 'all' | 'video' | 'image' | 'file';

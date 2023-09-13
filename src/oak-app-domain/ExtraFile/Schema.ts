@@ -26,8 +26,8 @@ export type OpSchema = EntityShape & {
     sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
     isBridge?: Boolean | null;
-    uploaded: Boolean;
-    uploadInfo?: Object | null;
+    uploadState: 'success' | 'failed' | 'uploading';
+    uploadMeta?: Object | null;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
@@ -47,14 +47,14 @@ export type Schema = EntityShape & {
     sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
     isBridge?: Boolean | null;
-    uploaded: Boolean;
-    uploadInfo?: Object | null;
+    uploadState: 'success' | 'failed' | 'uploading';
+    uploadMeta?: Object | null;
     article?: Article.Schema;
     articleMenu?: ArticleMenu.Schema;
     user?: User.Schema;
 } & {
-    [A in ExpressionKey]?: any;
-};
+        [A in ExpressionKey]?: any;
+    };
 type AttrFilter = {
     id: Q_StringValue;
     $$createAt$$: Q_DateValue;
@@ -76,8 +76,8 @@ type AttrFilter = {
     sort: Q_NumberValue;
     fileType: Q_StringValue;
     isBridge: Q_BooleanValue;
-    uploaded: Q_BooleanValue;
-    uploadInfo: Object;
+    uploadState: Q_EnumValue<'success' | 'failed' | 'uploading'>;
+    uploadMeta: Object;
     article: Article.Filter;
     articleMenu: ArticleMenu.Filter;
     user: User.Filter;
@@ -106,8 +106,8 @@ export type Projection = {
     sort?: number;
     fileType?: number;
     isBridge?: number;
-    uploaded?: number;
-    uploadInfo?: number | Object;
+    uploadState?: number;
+    uploadMeta?: number | Object;
     article?: Article.Projection;
     articleMenu?: ArticleMenu.Projection;
     user?: User.Projection;
@@ -165,7 +165,7 @@ export type SortAttr = {
 } | {
     isBridge: number;
 } | {
-    uploaded: number;
+    uploadState: number;
 } | {
     article: Article.SortAttr;
 } | {

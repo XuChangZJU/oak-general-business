@@ -106,7 +106,7 @@ export default function Render(
     }, [id]);
     return (
         <div className={Style.container}>
-            <div style={{width: 'calc(100% - 20px)'}}><Toolbar editor={editor} defaultConfig={toolbarConfig} mode="default" /></div>
+            <div style={{ width: 'calc(100% - 20px)' }}><Toolbar editor={editor} defaultConfig={toolbarConfig} mode="default" /></div>
             <Row>
                 <Col flex={4} />
                 <Col flex={16}>
@@ -171,7 +171,7 @@ export default function Render(
                                                         const { url, bucket } = await uploadFile(extraFile);
                                                         extraFile.bucket = bucket;
                                                         extraFile.extra1 = null;
-                                                        await addExtraFile(extraFile);
+                                                        // await addExtraFile(extraFile);
                                                         // 最后插入图片
                                                         insertFn("http://" + url, extraFile.filename);
                                                     } catch (err) {

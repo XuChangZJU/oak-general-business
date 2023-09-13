@@ -52,6 +52,7 @@ export default OakComponent({
     data: {
         // 根据 size 不同，计算的图片显示大小不同
         itemSizePercentage: '',
+        fileList: {} as Record<string, File | string>
     },
     wechatMp: {
         externalClasses: ['oak-class', 'oak-item-class'],
@@ -107,6 +108,10 @@ export default OakComponent({
 
     methods: {
         getUrl(extraFile: EntityDict['extraFile']['OpSchema']) {
+            const { fileList } = this.state;
+            if (fileList[extraFile?.id]) {
+                return this.features.extraFile.getUrl(Object.assign({}, extraFile, { extra1: fileList[extraFile?.id] }));
+            }
             return this.features.extraFile.getUrl(extraFile);
         },
         getFileName(extraFile: EntityDict['extraFile']['OpSchema']) {
@@ -269,6 +274,7 @@ export default OakComponent({
             const filename = name.substring(0, name.lastIndexOf('.'));
             assert(entity, '必须传入entity');
             assert(origin === 'qiniu', '目前只支持七牛上传'); // 目前只支持七牛上传
+            const id = generateNewId();
             const updateData = {
                 extra1,
                 origin,
@@ -281,7 +287,7 @@ export default OakComponent({
                 size,
                 extension,
                 fileType,
-                id: generateNewId(),
+                id,
                 entityId,
                 sort
             } as EntityDict['extraFile']['CreateSingle']['data'];
@@ -293,11 +299,9 @@ export default OakComponent({
                 try {
                     this.addItem(Object.assign({}, updateData, {
                         extra1: null,
-                        uploaded: false,
                     }), undefined, async () => {
-                        console.log(updateData);
                         await this.features.extraFile.upload(
-                            updateData
+                            updateData, extra1
                         )
                     });
                     await this.execute();
@@ -316,20 +320,17 @@ export default OakComponent({
 
                 await this.execute();
             } else {
-                this.addItem(updateData, async () => {
-                    if (updateData.bucket) {
-                        // 说明本函数已经执行过了
-                        return;
-                    }
-                    const { bucket } = await this.features.extraFile.upload(
-                        updateData
-                    );
-                    Object.assign(updateData, {
-                        bucket,
-                        extra1: null,
-                        uploaded: false,
-                    });
+
+                this.addItem(Object.assign({}, updateData, {
+                    extra1: null,
+                }), undefined, async () => {
+                    await this.features.extraFile.upload(
+                        updateData, extra1
+                    )
                 });
+                this.setState({
+                    fileList: Object.assign(this.state.fileList, { [id]: extra1 })
+                })
             }
         },
         async onItemTapped(event: WechatMiniprogram.Touch) {

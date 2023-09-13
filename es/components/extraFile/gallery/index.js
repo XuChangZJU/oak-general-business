@@ -1,5 +1,5 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
-import { assert } from 'oak-domain/lib/utils/assert';
+import assert from 'assert';
 import Dialog from '../../../utils/dialog/index';
 export default OakComponent({
     entity: 'extraFile',
@@ -251,11 +251,13 @@ export default OakComponent({
                     callback(updateData, 'uploading');
                 }
                 try {
-                    const { bucket } = await this.features.extraFile.upload(updateData);
-                    Object.assign(updateData, {
-                        bucket,
+                    this.addItem(Object.assign({}, updateData, {
                         extra1: null,
+                    }), undefined, async () => {
+                        console.log(updateData);
+                        await this.features.extraFile.upload(updateData, extra1);
                     });
+                    await this.execute();
                     if (callback) {
                         callback(updateData, 'success');
                     }
@@ -267,20 +269,18 @@ export default OakComponent({
                     //todo 保存extraFile失败 需要remove七牛图片
                     throw error;
                 }
-                this.addItem(updateData);
                 await this.execute();
             }
             else {
-                this.addItem(updateData, async () => {
+                this.addItem(Object.assign({}, updateData, {
+                    extra1: null,
+                }), async () => {
                     if (updateData.bucket) {
                         // 说明本函数已经执行过了
                         return;
                     }
-                    const { bucket } = await this.features.extraFile.upload(updateData);
-                    Object.assign(updateData, {
-                        bucket,
-                        extra1: null,
-                    });
+                }, async () => {
+                    await this.features.extraFile.upload(updateData, extra1);
                 });
             }
         },

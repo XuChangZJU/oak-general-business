@@ -204,18 +204,15 @@ export default OakComponent({
         async myAddItem(createData) {
             // 目前只支持七牛上传
             const { methodsType } = this.state;
-            this.addItem(createData, async () => {
+            this.addItem(Object.assign(createData, {
+                extra1: null,
+            }), async () => {
                 if (createData.bucket) {
                     // 说明本函数已经执行过了
                     return;
                 }
-                if (methodsType === 'uploadLocalImg') {
-                    const { bucket } = await this.features.extraFile.upload(createData);
-                    Object.assign(createData, {
-                        bucket,
-                        extra1: null,
-                    });
-                }
+            }, async () => {
+                await this.features.extraFile.upload(createData, createData.extra1);
             });
         },
         async myUpdateItem(params) {
