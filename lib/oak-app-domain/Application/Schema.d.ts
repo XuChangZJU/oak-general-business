@@ -15,9 +15,9 @@ import * as WechatPublicTag from "../WechatPublicTag/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
 import * as WechatUser from "../WechatUser/Schema";
 import * as Session from "../Session/Schema";
-export declare type Passport = 'email' | 'mobile' | 'wechat' | 'wechatPublic';
-export declare type AppType = 'web' | 'wechatMp' | 'wechatPublic';
-export declare type WechatMpConfig = {
+export type Passport = 'email' | 'mobile' | 'wechat' | 'wechatPublic';
+export type AppType = 'web' | 'wechatMp' | 'wechatPublic';
+export type WechatMpConfig = {
     type: 'wechatMp';
     appId: string;
     appSecret: string;
@@ -32,7 +32,7 @@ export declare type WechatMpConfig = {
     };
     passport?: Passport[];
 };
-export declare type WebConfig = {
+export type WebConfig = {
     type: 'web';
     wechat?: {
         appId: string;
@@ -42,8 +42,8 @@ export declare type WebConfig = {
     };
     passport?: Passport[];
 };
-export declare type WechatPublicTemplateMsgsConfig = Record<string, string>;
-export declare type WechatPublicConfig = {
+export type WechatPublicTemplateMsgsConfig = Record<string, string>;
+export type WechatPublicConfig = {
     type: 'wechatPublic';
     isService: boolean;
     appId: string;
@@ -63,7 +63,7 @@ export declare type WechatPublicConfig = {
     };
     passport?: Passport[];
 };
-export declare type OpSchema = EntityShape & {
+export type OpSchema = EntityShape & {
     name: String<32>;
     description: Text;
     type: AppType;
@@ -71,8 +71,8 @@ export declare type OpSchema = EntityShape & {
     config: WebConfig | WechatMpConfig | WechatPublicConfig;
     style?: Style | null;
 };
-export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export type OpAttr = keyof OpSchema;
+export type Schema = EntityShape & {
     name: String<32>;
     description: Text;
     type: AppType;
@@ -99,7 +99,7 @@ export declare type Schema = EntityShape & {
 } & {
     [A in ExpressionKey]?: any;
 };
-declare type AttrFilter = {
+type AttrFilter = {
     id: Q_StringValue;
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
@@ -120,8 +120,8 @@ declare type AttrFilter = {
     wechatUser$application: WechatUser.Filter & SubQueryPredicateMetadata;
     session$entity: Session.Filter & SubQueryPredicateMetadata;
 };
-export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
-export declare type Projection = {
+export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
+export type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
     id?: number;
@@ -184,13 +184,13 @@ export declare type Projection = {
         $entity: "session";
     };
 } & Partial<ExprOp<OpAttr | string>>;
-declare type ApplicationIdProjection = OneOf<{
+type ApplicationIdProjection = OneOf<{
     id: number;
 }>;
-declare type SystemIdProjection = OneOf<{
+type SystemIdProjection = OneOf<{
     systemId: number;
 }>;
-export declare type SortAttr = {
+export type SortAttr = {
     id: number;
 } | {
     $$createAt$$: number;
@@ -213,15 +213,15 @@ export declare type SortAttr = {
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
-export declare type SortNode = {
+export type SortNode = {
     $attr: SortAttr;
     $direction?: "asc" | "desc";
 };
-export declare type Sorter = SortNode[];
-export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
-export declare type Selection<P extends Object = Projection> = SelectOperation<P>;
-export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "systemId">> & (({
+export type Sorter = SortNode[];
+export type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
+export type Selection<P extends Object = Projection> = SelectOperation<P>;
+export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
+export type CreateOperationData = FormCreateData<Omit<OpSchema, "systemId">> & (({
     systemId?: never;
     system: System.CreateSingleOperation;
 } | {
@@ -239,10 +239,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "systemI
     wechatUser$application?: OakOperation<WechatUser.UpdateOperation["action"], Omit<WechatUser.UpdateOperationData, "application" | "applicationId">, Omit<WechatUser.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<WechatUser.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatUser.CreateOperationData, "application" | "applicationId">> | OakOperation<WechatUser.UpdateOperation["action"], Omit<WechatUser.UpdateOperationData, "application" | "applicationId">, Omit<WechatUser.Filter, "application" | "applicationId">>>;
     session$entity?: OakOperation<Session.UpdateOperation["action"], Omit<Session.UpdateOperationData, "entity" | "entityId">, Omit<Session.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Session.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Session.CreateOperationData, "entity" | "entityId">> | OakOperation<Session.UpdateOperation["action"], Omit<Session.UpdateOperationData, "entity" | "entityId">, Omit<Session.Filter, "entity" | "entityId">>>;
 };
-export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
-export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
-export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "systemId">> & (({
+export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
+export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
+export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
+export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "systemId">> & (({
     system: System.CreateSingleOperation;
     systemId?: never;
 } | {
@@ -265,15 +265,15 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "systemI
     wechatUser$application?: OakOperation<WechatUser.UpdateOperation["action"], Omit<WechatUser.UpdateOperationData, "application" | "applicationId">, Omit<WechatUser.Filter, "application" | "applicationId">> | OakOperation<WechatUser.RemoveOperation["action"], Omit<WechatUser.RemoveOperationData, "application" | "applicationId">, Omit<WechatUser.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<WechatUser.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<WechatUser.CreateOperationData, "application" | "applicationId">> | OakOperation<WechatUser.UpdateOperation["action"], Omit<WechatUser.UpdateOperationData, "application" | "applicationId">, Omit<WechatUser.Filter, "application" | "applicationId">> | OakOperation<WechatUser.RemoveOperation["action"], Omit<WechatUser.RemoveOperationData, "application" | "applicationId">, Omit<WechatUser.Filter, "application" | "applicationId">>>;
     session$entity?: OakOperation<Session.UpdateOperation["action"], Omit<Session.UpdateOperationData, "entity" | "entityId">, Omit<Session.Filter, "entity" | "entityId">> | OakOperation<Session.RemoveOperation["action"], Omit<Session.RemoveOperationData, "entity" | "entityId">, Omit<Session.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Session.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Session.CreateOperationData, "entity" | "entityId">> | OakOperation<Session.UpdateOperation["action"], Omit<Session.UpdateOperationData, "entity" | "entityId">, Omit<Session.Filter, "entity" | "entityId">> | OakOperation<Session.RemoveOperation["action"], Omit<Session.RemoveOperationData, "entity" | "entityId">, Omit<Session.Filter, "entity" | "entityId">>>;
 };
-export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
-export declare type RemoveOperationData = {} & (({
+export type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
+export type RemoveOperationData = {} & (({
     system?: System.UpdateOperation | System.RemoveOperation;
 }));
-export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
-export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation;
-export declare type SystemIdSubQuery = Selection<SystemIdProjection>;
-export declare type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
-export declare type EntityDef = {
+export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
+export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
+export type SystemIdSubQuery = Selection<SystemIdProjection>;
+export type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
+export type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
     Action: OakMakeAction<GenericAction> | string;

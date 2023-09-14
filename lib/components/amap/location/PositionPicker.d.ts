@@ -1,6 +1,6 @@
 /// <reference types="@uiw/react-amap-types" />
 import React from 'react';
-export declare type PositionProps = {
+export type PositionProps = {
     loadUI: boolean;
     __map__: AMap.Map | undefined;
     onSuccess?: (result: AMapUI.PositionPickerResult) => void;

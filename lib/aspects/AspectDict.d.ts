@@ -3,7 +3,7 @@ import { AppType } from '../oak-app-domain/Application/Schema';
 import { EntityDict } from '../oak-app-domain';
 import { Config } from '../types/Config';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
-export declare type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = {
+export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = {
     mergeUser: (params: {
         from: string;
         to: string;

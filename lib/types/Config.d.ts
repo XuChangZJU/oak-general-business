@@ -1,8 +1,8 @@
-export declare type QiniuCloudConfig = {
+export type QiniuCloudConfig = {
     accessKey: string;
     secretKey: string;
 };
-export declare type QiniuLiveConfig = {
+export type QiniuLiveConfig = {
     accessKey: string;
     liveHost: string;
     publishDomain: string;
@@ -12,17 +12,17 @@ export declare type QiniuLiveConfig = {
     publishKey: string;
     playKey: string;
 };
-export declare type QiniuCosConfig = {
+export type QiniuCosConfig = {
     accessKey: string;
     uploadHost: string;
     bucket: string;
     domain: string;
     protocol: string | string[];
 };
-export declare type AmapMapConfig = {
+export type AmapMapConfig = {
     webApiKey: string;
 };
-export declare type AliCloudConfig = {
+export type AliCloudConfig = {
     accessKeyId: string;
     accessKeySecret: string;
     regionId: string;
@@ -30,17 +30,17 @@ export declare type AliCloudConfig = {
     endpoint: string;
     smsEndpoint: string;
 };
-export declare type TencentCloudConfig = {
+export type TencentCloudConfig = {
     secretId: string;
     secretKey: string;
     region: string;
     endpoint: string;
     smsEndpoint: string;
 };
-export declare type AmapCloudConfig = {
+export type AmapCloudConfig = {
     webApiKey: string;
 };
-export declare type AliSmsConfig = {
+export type AliSmsConfig = {
     accessKeyId: string;
     defaultSignName: string;
     templates: Record<string, {
@@ -48,7 +48,7 @@ export declare type AliSmsConfig = {
         code: string;
     }>;
 };
-export declare type TencentSmsConfig = {
+export type TencentSmsConfig = {
     secretId: string;
     smsSdkAppId: string;
     defaultSignName: string;
@@ -57,8 +57,8 @@ export declare type TencentSmsConfig = {
         code: string;
     }>;
 };
-export declare type QrCodeType = 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp' | 'webForWechatPublic';
-export declare type Config = {
+export type QrCodeType = 'wechatMpDomainUrl' | 'wechatMpWxaCode' | 'wechatPublic' | 'wechatPublicForMp' | 'webForWechatPublic';
+export type Config = {
     Account?: {
         ali?: AliCloudConfig[];
         tencent?: TencentCloudConfig[];
@@ -87,5 +87,5 @@ export declare type Config = {
         mergeUserDirectly?: boolean;
     };
 };
-export declare type Origin = 'ali' | 'tencent' | 'qiniu' | 'amap';
-export declare type Service = 'Map' | 'Cos' | 'Live' | 'Sms';
+export type Origin = 'ali' | 'tencent' | 'qiniu' | 'amap';
+export type Service = 'Map' | 'Cos' | 'Live' | 'Sms';

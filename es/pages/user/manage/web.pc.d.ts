@@ -10,4 +10,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', true
 }, {
     onCellClicked: (id: string, event?: string) => Promise<void>;
     goNewUser: () => Promise<void>;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

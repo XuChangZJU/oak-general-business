@@ -42,41 +42,41 @@ import * as WechatLogin from "./WechatLogin/Schema";
 import * as WechatPublicTag from "./WechatPublicTag/Schema";
 import * as WechatQrCode from "./WechatQrCode/Schema";
 import * as WechatUser from "./WechatUser/Schema";
-export declare type ActionAuthIdSubQuery = {
+export type ActionAuthIdSubQuery = {
     [K in "$in" | "$nin"]?: (ActionAuth.ActionAuthIdSubQuery & {
         entity: "actionAuth";
     }) | any;
 };
-export declare type I18nIdSubQuery = {
+export type I18nIdSubQuery = {
     [K in "$in" | "$nin"]?: (I18n.I18nIdSubQuery & {
         entity: "i18n";
     }) | any;
 };
-export declare type ModiIdSubQuery = {
+export type ModiIdSubQuery = {
     [K in "$in" | "$nin"]?: (ModiEntity.ModiIdSubQuery & {
         entity: "modiEntity";
     }) | (Modi.ModiIdSubQuery & {
         entity: "modi";
     }) | any;
 };
-export declare type ModiEntityIdSubQuery = {
+export type ModiEntityIdSubQuery = {
     [K in "$in" | "$nin"]?: (ModiEntity.ModiEntityIdSubQuery & {
         entity: "modiEntity";
     }) | any;
 };
-export declare type OperIdSubQuery = {
+export type OperIdSubQuery = {
     [K in "$in" | "$nin"]?: (OperEntity.OperIdSubQuery & {
         entity: "operEntity";
     }) | (Oper.OperIdSubQuery & {
         entity: "oper";
     }) | any;
 };
-export declare type OperEntityIdSubQuery = {
+export type OperEntityIdSubQuery = {
     [K in "$in" | "$nin"]?: (OperEntity.OperEntityIdSubQuery & {
         entity: "operEntity";
     }) | any;
 };
-export declare type RelationIdSubQuery = {
+export type RelationIdSubQuery = {
     [K in "$in" | "$nin"]?: (ActionAuth.RelationIdSubQuery & {
         entity: "actionAuth";
     }) | (RelationAuth.RelationIdSubQuery & {
@@ -89,12 +89,12 @@ export declare type RelationIdSubQuery = {
         entity: "relation";
     }) | any;
 };
-export declare type RelationAuthIdSubQuery = {
+export type RelationAuthIdSubQuery = {
     [K in "$in" | "$nin"]?: (RelationAuth.RelationAuthIdSubQuery & {
         entity: "relationAuth";
     }) | any;
 };
-export declare type UserIdSubQuery = {
+export type UserIdSubQuery = {
     [K in "$in" | "$nin"]?: (Oper.UserIdSubQuery & {
         entity: "oper";
     }) | (User.UserIdSubQuery & {
@@ -137,7 +137,7 @@ export declare type UserIdSubQuery = {
         entity: "user";
     }) | any;
 };
-export declare type UserEntityGrantIdSubQuery = {
+export type UserEntityGrantIdSubQuery = {
     [K in "$in" | "$nin"]?: (ModiEntity.UserEntityGrantIdSubQuery & {
         entity: "modiEntity";
     }) | (OperEntity.UserEntityGrantIdSubQuery & {
@@ -148,17 +148,17 @@ export declare type UserEntityGrantIdSubQuery = {
         entity: "userEntityGrant";
     }) | any;
 };
-export declare type UserRelationIdSubQuery = {
+export type UserRelationIdSubQuery = {
     [K in "$in" | "$nin"]?: (UserRelation.UserRelationIdSubQuery & {
         entity: "userRelation";
     }) | any;
 };
-export declare type AddressIdSubQuery = {
+export type AddressIdSubQuery = {
     [K in "$in" | "$nin"]?: (Address.AddressIdSubQuery & {
         entity: "address";
     }) | any;
 };
-export declare type ApplicationIdSubQuery = {
+export type ApplicationIdSubQuery = {
     [K in "$in" | "$nin"]?: (MessageTypeTemplateId.ApplicationIdSubQuery & {
         entity: "messageTypeTemplateId";
     }) | (Notification.ApplicationIdSubQuery & {
@@ -179,7 +179,7 @@ export declare type ApplicationIdSubQuery = {
         entity: "application";
     }) | any;
 };
-export declare type AreaIdSubQuery = {
+export type AreaIdSubQuery = {
     [K in "$in" | "$nin"]?: (Address.AreaIdSubQuery & {
         entity: "address";
     }) | (Area.AreaIdSubQuery & {
@@ -192,14 +192,14 @@ export declare type AreaIdSubQuery = {
         entity: "area";
     }) | any;
 };
-export declare type ArticleIdSubQuery = {
+export type ArticleIdSubQuery = {
     [K in "$in" | "$nin"]?: (ExtraFile.ArticleIdSubQuery & {
         entity: "extraFile";
     }) | (Article.ArticleIdSubQuery & {
         entity: "article";
     }) | any;
 };
-export declare type ArticleMenuIdSubQuery = {
+export type ArticleMenuIdSubQuery = {
     [K in "$in" | "$nin"]?: (Article.ArticleMenuIdSubQuery & {
         entity: "article";
     }) | (ArticleMenu.ArticleMenuIdSubQuery & {
@@ -210,82 +210,82 @@ export declare type ArticleMenuIdSubQuery = {
         entity: "articleMenu";
     }) | any;
 };
-export declare type CaptchaIdSubQuery = {
+export type CaptchaIdSubQuery = {
     [K in "$in" | "$nin"]?: (Captcha.CaptchaIdSubQuery & {
         entity: "captcha";
     }) | any;
 };
-export declare type ChangePasswordTempIdSubQuery = {
+export type ChangePasswordTempIdSubQuery = {
     [K in "$in" | "$nin"]?: (ChangePasswordTemp.ChangePasswordTempIdSubQuery & {
         entity: "changePasswordTemp";
     }) | any;
 };
-export declare type DomainIdSubQuery = {
+export type DomainIdSubQuery = {
     [K in "$in" | "$nin"]?: (Domain.DomainIdSubQuery & {
         entity: "domain";
     }) | any;
 };
-export declare type EmailIdSubQuery = {
+export type EmailIdSubQuery = {
     [K in "$in" | "$nin"]?: (Token.EmailIdSubQuery & {
         entity: "token";
     }) | (Email.EmailIdSubQuery & {
         entity: "email";
     }) | any;
 };
-export declare type ExtraFileIdSubQuery = {
+export type ExtraFileIdSubQuery = {
     [K in "$in" | "$nin"]?: (ExtraFile.ExtraFileIdSubQuery & {
         entity: "extraFile";
     }) | any;
 };
-export declare type LivestreamIdSubQuery = {
+export type LivestreamIdSubQuery = {
     [K in "$in" | "$nin"]?: (Livestream.LivestreamIdSubQuery & {
         entity: "livestream";
     }) | any;
 };
-export declare type MessageIdSubQuery = {
+export type MessageIdSubQuery = {
     [K in "$in" | "$nin"]?: (MessageSystem.MessageIdSubQuery & {
         entity: "messageSystem";
     }) | (Message.MessageIdSubQuery & {
         entity: "message";
     }) | any;
 };
-export declare type MessageSystemIdSubQuery = {
+export type MessageSystemIdSubQuery = {
     [K in "$in" | "$nin"]?: (Notification.MessageSystemIdSubQuery & {
         entity: "notification";
     }) | (MessageSystem.MessageSystemIdSubQuery & {
         entity: "messageSystem";
     }) | any;
 };
-export declare type MessageTypeIdSubQuery = {
+export type MessageTypeIdSubQuery = {
     [K in "$in" | "$nin"]?: (MessageType.MessageTypeIdSubQuery & {
         entity: "messageType";
     }) | any;
 };
-export declare type MessageTypeTemplateIdIdSubQuery = {
+export type MessageTypeTemplateIdIdSubQuery = {
     [K in "$in" | "$nin"]?: (MessageTypeTemplateId.MessageTypeTemplateIdIdSubQuery & {
         entity: "messageTypeTemplateId";
     }) | any;
 };
-export declare type MobileIdSubQuery = {
+export type MobileIdSubQuery = {
     [K in "$in" | "$nin"]?: (Token.MobileIdSubQuery & {
         entity: "token";
     }) | (Mobile.MobileIdSubQuery & {
         entity: "mobile";
     }) | any;
 };
-export declare type NotificationIdSubQuery = {
+export type NotificationIdSubQuery = {
     [K in "$in" | "$nin"]?: (Notification.NotificationIdSubQuery & {
         entity: "notification";
     }) | any;
 };
-export declare type ParasiteIdSubQuery = {
+export type ParasiteIdSubQuery = {
     [K in "$in" | "$nin"]?: (Token.ParasiteIdSubQuery & {
         entity: "token";
     }) | (Parasite.ParasiteIdSubQuery & {
         entity: "parasite";
     }) | any;
 };
-export declare type PlatformIdSubQuery = {
+export type PlatformIdSubQuery = {
     [K in "$in" | "$nin"]?: (Message.PlatformIdSubQuery & {
         entity: "message";
     }) | (System.PlatformIdSubQuery & {
@@ -294,7 +294,7 @@ export declare type PlatformIdSubQuery = {
         entity: "platform";
     }) | any;
 };
-export declare type SessionIdSubQuery = {
+export type SessionIdSubQuery = {
     [K in "$in" | "$nin"]?: (SessionMessage.SessionIdSubQuery & {
         entity: "sessionMessage";
     }) | (UserEntityGrant.SessionIdSubQuery & {
@@ -307,38 +307,38 @@ export declare type SessionIdSubQuery = {
         entity: "session";
     }) | any;
 };
-export declare type SessionMessageIdSubQuery = {
+export type SessionMessageIdSubQuery = {
     [K in "$in" | "$nin"]?: (ExtraFile.SessionMessageIdSubQuery & {
         entity: "extraFile";
     }) | (SessionMessage.SessionMessageIdSubQuery & {
         entity: "sessionMessage";
     }) | any;
 };
-export declare type StationIdSubQuery = {
+export type StationIdSubQuery = {
     [K in "$in" | "$nin"]?: (SubwayStation.StationIdSubQuery & {
         entity: "subwayStation";
     }) | (Station.StationIdSubQuery & {
         entity: "station";
     }) | any;
 };
-export declare type SubscriptionIdSubQuery = {
+export type SubscriptionIdSubQuery = {
     [K in "$in" | "$nin"]?: (Subscription.SubscriptionIdSubQuery & {
         entity: "subscription";
     }) | any;
 };
-export declare type SubwayIdSubQuery = {
+export type SubwayIdSubQuery = {
     [K in "$in" | "$nin"]?: (SubwayStation.SubwayIdSubQuery & {
         entity: "subwayStation";
     }) | (Subway.SubwayIdSubQuery & {
         entity: "subway";
     }) | any;
 };
-export declare type SubwayStationIdSubQuery = {
+export type SubwayStationIdSubQuery = {
     [K in "$in" | "$nin"]?: (SubwayStation.SubwayStationIdSubQuery & {
         entity: "subwayStation";
     }) | any;
 };
-export declare type SystemIdSubQuery = {
+export type SystemIdSubQuery = {
     [K in "$in" | "$nin"]?: (Application.SystemIdSubQuery & {
         entity: "application";
     }) | (Domain.SystemIdSubQuery & {
@@ -351,12 +351,12 @@ export declare type SystemIdSubQuery = {
         entity: "system";
     }) | any;
 };
-export declare type TokenIdSubQuery = {
+export type TokenIdSubQuery = {
     [K in "$in" | "$nin"]?: (Token.TokenIdSubQuery & {
         entity: "token";
     }) | any;
 };
-export declare type UserSystemIdSubQuery = {
+export type UserSystemIdSubQuery = {
     [K in "$in" | "$nin"]?: (ModiEntity.UserSystemIdSubQuery & {
         entity: "modiEntity";
     }) | (OperEntity.UserSystemIdSubQuery & {
@@ -365,7 +365,7 @@ export declare type UserSystemIdSubQuery = {
         entity: "userSystem";
     }) | any;
 };
-export declare type UserWechatPublicTagIdSubQuery = {
+export type UserWechatPublicTagIdSubQuery = {
     [K in "$in" | "$nin"]?: (ModiEntity.UserWechatPublicTagIdSubQuery & {
         entity: "modiEntity";
     }) | (OperEntity.UserWechatPublicTagIdSubQuery & {
@@ -374,7 +374,7 @@ export declare type UserWechatPublicTagIdSubQuery = {
         entity: "userWechatPublicTag";
     }) | any;
 };
-export declare type WechatLoginIdSubQuery = {
+export type WechatLoginIdSubQuery = {
     [K in "$in" | "$nin"]?: (ModiEntity.WechatLoginIdSubQuery & {
         entity: "modiEntity";
     }) | (OperEntity.WechatLoginIdSubQuery & {
@@ -385,7 +385,7 @@ export declare type WechatLoginIdSubQuery = {
         entity: "wechatLogin";
     }) | any;
 };
-export declare type WechatPublicTagIdSubQuery = {
+export type WechatPublicTagIdSubQuery = {
     [K in "$in" | "$nin"]?: (UserWechatPublicTag.WechatPublicTagIdSubQuery & {
         entity: "userWechatPublicTag";
     }) | (ModiEntity.WechatPublicTagIdSubQuery & {
@@ -396,7 +396,7 @@ export declare type WechatPublicTagIdSubQuery = {
         entity: "wechatPublicTag";
     }) | any;
 };
-export declare type WechatQrCodeIdSubQuery = {
+export type WechatQrCodeIdSubQuery = {
     [K in "$in" | "$nin"]?: (ModiEntity.WechatQrCodeIdSubQuery & {
         entity: "modiEntity";
     }) | (OperEntity.WechatQrCodeIdSubQuery & {
@@ -405,7 +405,7 @@ export declare type WechatQrCodeIdSubQuery = {
         entity: "wechatQrCode";
     }) | any;
 };
-export declare type WechatUserIdSubQuery = {
+export type WechatUserIdSubQuery = {
     [K in "$in" | "$nin"]?: (SessionMessage.WechatUserIdSubQuery & {
         entity: "sessionMessage";
     }) | (ModiEntity.WechatUserIdSubQuery & {

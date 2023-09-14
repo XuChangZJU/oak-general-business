@@ -9,4 +9,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', fal
     iconName?: string;
     iconLarger?: string;
     onClick?: () => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

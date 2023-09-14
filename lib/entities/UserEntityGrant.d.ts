@@ -4,7 +4,7 @@ import { Schema as User } from './User';
 import { Schema as WechatQrCode } from './WechatQrCode';
 import { Schema as Relation } from 'oak-domain/lib/entities/Relation';
 import { QrCodeType } from '../types/Config';
-export declare type RedirectToProps = {
+export type RedirectToProps = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;

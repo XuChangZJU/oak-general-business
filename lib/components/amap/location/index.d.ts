@@ -3,7 +3,7 @@ import React from 'react';
 import { ModalProps } from 'antd';
 import { GeolocationProps } from '@uiw/react-amap';
 import './index.less';
-export declare type LocationProps = {
+export type LocationProps = {
     akey: string;
     version?: string;
     visible?: boolean;
@@ -17,7 +17,7 @@ export declare type LocationProps = {
     securityJsCode?: string;
     serviceHost?: string;
 };
-export declare type Poi = {
+export type Poi = {
     id: string;
     name: string;
     type: string;
@@ -37,5 +37,5 @@ export declare type Poi = {
     email?: string;
     businessArea?: string;
 };
-declare const Location: (props: LocationProps) => import("react/jsx-runtime").JSX.Element;
+declare const Location: (props: LocationProps) => JSX.Element;
 export default Location;

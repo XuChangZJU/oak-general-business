@@ -44,20 +44,20 @@ export const desc = {
             name: 'index_name',
             attributes: [
                 {
-                    name: 'name'
+                    name: 'name',
                 },
-            ]
+            ],
         },
         {
             name: 'index_entity',
             attributes: [
                 {
-                    name: 'entity'
+                    name: 'entity',
                 },
                 {
-                    name: 'entityId'
+                    name: 'entityId',
                 }
-            ]
+            ],
         }
     ]
 };

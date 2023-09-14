@@ -3,13 +3,13 @@ import { Schema as User } from './User';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Channel, Weight } from '../types/Message';
 import { Schema as Platform } from './Platform';
-declare type Router = {
+type Router = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
     isTabBar?: boolean;
 };
-declare type MessageRestriction = {
+type MessageRestriction = {
     systemIds?: string[];
     channels?: Array<Channel>;
 };

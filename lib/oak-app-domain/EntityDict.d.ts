@@ -42,7 +42,7 @@ import { EntityDef as WechatLogin } from "./WechatLogin/Schema";
 import { EntityDef as WechatPublicTag } from "./WechatPublicTag/Schema";
 import { EntityDef as WechatQrCode } from "./WechatQrCode/Schema";
 import { EntityDef as WechatUser } from "./WechatUser/Schema";
-export declare type EntityDict = {
+export type EntityDict = {
     actionAuth: ActionAuth;
     i18n: I18n;
     modi: Modi;

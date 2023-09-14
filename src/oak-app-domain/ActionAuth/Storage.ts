@@ -30,12 +30,12 @@ export const desc: StorageDesc<OpSchema> = {
             name: 'index_entity_relation',
             attributes: [
                 {
-                    name: 'destEntity'
+                    name: 'destEntity',
                 },
                 {
-                    name: "relationId"
+                    name: "relationId",
                 },
-            ]
+            ],
         }
     ]
 };

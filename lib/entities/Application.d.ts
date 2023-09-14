@@ -3,9 +3,9 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as System } from './System';
 import { Schema as Session } from './Session';
 import { Style } from '../types/Style';
-export declare type Passport = 'email' | 'mobile' | 'wechat' | 'wechatPublic';
-export declare type AppType = 'web' | 'wechatMp' | 'wechatPublic';
-export declare type WechatMpConfig = {
+export type Passport = 'email' | 'mobile' | 'wechat' | 'wechatPublic';
+export type AppType = 'web' | 'wechatMp' | 'wechatPublic';
+export type WechatMpConfig = {
     type: 'wechatMp';
     appId: string;
     appSecret: string;
@@ -20,7 +20,7 @@ export declare type WechatMpConfig = {
     };
     passport?: Passport[];
 };
-export declare type WebConfig = {
+export type WebConfig = {
     type: 'web';
     wechat?: {
         appId: string;
@@ -30,8 +30,8 @@ export declare type WebConfig = {
     };
     passport?: Passport[];
 };
-export declare type WechatPublicTemplateMsgsConfig = Record<string, string>;
-export declare type WechatPublicConfig = {
+export type WechatPublicTemplateMsgsConfig = Record<string, string>;
+export type WechatPublicConfig = {
     type: 'wechatPublic';
     isService: boolean;
     appId: string;

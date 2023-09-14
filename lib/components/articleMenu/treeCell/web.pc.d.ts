@@ -34,4 +34,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     createSubArticle: (name: string) => Promise<void>;
     createSubArticleMenu: (name: string) => Promise<void>;
     gotoDoc: (articleMenuId: string) => void;
-}>): import("react/jsx-runtime").JSX.Element | null;
+}>): JSX.Element | null;

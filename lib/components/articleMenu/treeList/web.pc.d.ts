@@ -33,4 +33,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     createOne: (name?: string) => Promise<void>;
     getDefaultArticle: (rows: EntityDict['articleMenu']['OpSchema'][]) => void;
     getSearchArticle: () => Promise<string[]>;
-}>): import("react/jsx-runtime").JSX.Element | null;
+}>): JSX.Element | null;

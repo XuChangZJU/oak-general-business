@@ -1,7 +1,7 @@
-export declare type ColorType = 'primary' | 'success' | 'error' | 'warning' | 'info';
-export declare type Color = {
+export type ColorType = 'primary' | 'success' | 'error' | 'warning' | 'info';
+export type Color = {
     [k in ColorType]?: string;
 };
-export declare type Style = {
+export type Style = {
     color?: Color;
 };

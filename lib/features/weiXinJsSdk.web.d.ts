@@ -7,19 +7,14 @@ import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Cache } from 'oak-frontend-base/es/features/cache';
 import { LocalStorage } from 'oak-frontend-base/es/features/localStorage';
 import { Environment } from 'oak-frontend-base/es/features/environment';
-declare type Options = WeixinJsSdk.CheckJsApiOptions | WeixinJsSdk.AddCardOptions | WeixinJsSdk.ChooseCardOptions | WeixinJsSdk.OnMenuShareTimelineOptions | WeixinJsSdk.OnMenuShareAppMessageOptions | WeixinJsSdk.OnMenuShareQQ | WeixinJsSdk.OnMenuShareWeibo | WeixinJsSdk.OnMenuShareQZone | WeixinJsSdk.ChooseImageOptions | WeixinJsSdk.PreviewImageOptions | WeixinJsSdk.UploadImageOptions | WeixinJsSdk.DownloadImageOptions | WeixinJsSdk.GetLocalImgDataOptions | WeixinJsSdk.LocalVoiceOptions | WeixinJsSdk.UploadVoiceOptions | WeixinJsSdk.DownloadVoiceOptions | WeixinJsSdk.OpenLocationOptions | WeixinJsSdk.GetLocationOptions | WeixinJsSdk.ScanQRCodeOptions | WeixinJsSdk.OpenProductSpecificViewOptions | WeixinJsSdk.ChooseCardOptions | WeixinJsSdk.OpenCardOptions | WeixinJsSdk.ChooseWXPayOptions;
+type Options = WeixinJsSdk.CheckJsApiOptions | WeixinJsSdk.AddCardOptions | WeixinJsSdk.ChooseCardOptions | WeixinJsSdk.OnMenuShareTimelineOptions | WeixinJsSdk.OnMenuShareAppMessageOptions | WeixinJsSdk.OnMenuShareQQ | WeixinJsSdk.OnMenuShareWeibo | WeixinJsSdk.OnMenuShareQZone | WeixinJsSdk.ChooseImageOptions | WeixinJsSdk.PreviewImageOptions | WeixinJsSdk.UploadImageOptions | WeixinJsSdk.DownloadImageOptions | WeixinJsSdk.GetLocalImgDataOptions | WeixinJsSdk.LocalVoiceOptions | WeixinJsSdk.UploadVoiceOptions | WeixinJsSdk.DownloadVoiceOptions | WeixinJsSdk.OpenLocationOptions | WeixinJsSdk.GetLocationOptions | WeixinJsSdk.ScanQRCodeOptions | WeixinJsSdk.OpenProductSpecificViewOptions | WeixinJsSdk.ChooseCardOptions | WeixinJsSdk.OpenCardOptions | WeixinJsSdk.ChooseWXPayOptions;
 export declare class WeiXinJsSdk<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>> extends Feature {
     private cache;
     private storage;
     private environment;
     private landingUrl?;
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage, environment: Environment);
-    signatureJsSDK(url: string): Promise<{
-        signature: any;
-        noncestr: string;
-        timestamp: number;
-        appId: string;
-    }>;
+    signatureJsSDK(url: string): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["signatureJsSDK"]>>;
     getConfig(config: WeixinJsSdk.ConfigOptions): Promise<unknown>;
     setLandingUrl(url?: string): void;
     init(options?: {
