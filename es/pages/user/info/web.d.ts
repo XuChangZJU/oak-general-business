@@ -1,6 +1,6 @@
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
-declare type DataProps = {
+type DataProps = {
     visible: boolean;
     nickname: string;
     name: string;
@@ -19,7 +19,7 @@ declare type DataProps = {
     isSupportSyncWeChat: boolean;
     appId: string;
 };
-declare type MethodsProps = {
+type MethodsProps = {
     goAddMobile: () => void;
     goChangePassword: () => void;
     setAvatar: () => void;
@@ -28,5 +28,5 @@ declare type MethodsProps = {
     onConfirm: (attr: string) => Promise<void>;
     refreshWechatPublicUserInfo: () => void;
 };
-export default function render(props: WebComponentProps<EntityDict, 'user', false, DataProps, MethodsProps>): JSX.Element;
+export default function render(props: WebComponentProps<EntityDict, 'user', false, DataProps, MethodsProps>): import("react/jsx-runtime").JSX.Element;
 export {};

@@ -2,7 +2,7 @@ import { EntityDict } from '../../oak-app-domain';
 import { EntityDict as BaseEntityDict } from 'oak-domain';
 import { BackendRuntimeContext } from '../../context/BackendRuntimeContext';
 import Uploader from "../../types/Uploader";
-declare type ED = EntityDict & BaseEntityDict;
+type ED = EntityDict & BaseEntityDict;
 declare const UploaderDict: Record<string, Uploader<ED>>;
 export default UploaderDict;
 /**

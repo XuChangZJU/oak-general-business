@@ -7,8 +7,8 @@ import GeneralAspectDict from '../aspects/AspectDict';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { SyncContext, SyncRowStore } from 'oak-domain/lib/store/SyncRowStore';
 import { BackendRuntimeContext } from './BackendRuntimeContext';
-declare type AspectDict<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>;
-export declare type SerializedData = {
+type AspectDict<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>;
+export type SerializedData = {
     a?: string;
     t?: string;
 };

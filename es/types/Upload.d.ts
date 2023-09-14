@@ -1,10 +1,10 @@
-export declare type QiniuUploadInfo = {
+export type QiniuUploadInfo = {
     key?: string;
     uploadToken: string;
     uploadHost: string;
     bucket: string;
 };
-export declare type AliyunUploadInfo = {
+export type AliyunUploadInfo = {
     key?: string;
     signature: string;
     policy: string;

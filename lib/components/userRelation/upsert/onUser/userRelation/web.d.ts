@@ -8,4 +8,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     }[];
 }, {
     onRelationChange: (relation: EntityDict['relation']['OpSchema'], checked: boolean) => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

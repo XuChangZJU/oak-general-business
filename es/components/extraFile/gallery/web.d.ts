@@ -4,7 +4,7 @@ import { EntityDict } from "../../../oak-app-domain";
 interface NewUploadFile extends UploadFile {
     id?: string;
 }
-declare type Theme = "file" | "image" | "image-flow" | "custom";
+type Theme = "file" | "image" | "image-flow" | "custom";
 export default function render(props: WebComponentProps<EntityDict, "extraFile", true, {
     accept?: string;
     maxNumber?: number;
@@ -33,5 +33,5 @@ export default function render(props: WebComponentProps<EntityDict, "extraFile",
     getUrl: (extraFile: EntityDict['extraFile']['OpSchema']) => string;
     getFileName: (extraFile: EntityDict['extraFile']['OpSchema']) => string;
     eFFormatBytes: (value: number) => string;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;
 export {};

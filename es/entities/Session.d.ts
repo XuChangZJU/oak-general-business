@@ -4,4 +4,4 @@ export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
 }
-export declare type Relation = 'owner';
+export type Relation = 'owner';

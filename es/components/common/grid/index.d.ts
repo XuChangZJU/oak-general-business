@@ -1,11 +1,11 @@
 import React from 'react';
 import './index.less';
-declare type Item = {
+type Item = {
     text?: React.ReactNode;
     image?: React.ReactNode;
     render?: React.ReactNode;
 };
-declare type GridProps = {
+type GridProps = {
     column?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
     gutter?: number;
     style?: React.CSSProperties;
@@ -15,5 +15,5 @@ declare type GridProps = {
     list: Array<Item>;
     onChange?: (index: number, event?: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 };
-declare const _default: React.MemoExoticComponent<(props: GridProps) => JSX.Element>;
+declare const _default: React.MemoExoticComponent<(props: GridProps) => import("react/jsx-runtime").JSX.Element>;
 export default _default;

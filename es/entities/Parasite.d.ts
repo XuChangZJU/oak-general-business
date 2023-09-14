@@ -2,7 +2,7 @@ import { String, Int, Datetime, Boolean } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as User } from './User';
 import { Schema as Token } from './Token';
-declare type RedirectTo = {
+type RedirectTo = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
