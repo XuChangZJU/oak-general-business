@@ -67,7 +67,7 @@
     "resolveJsonModule": true, /* Disallow inconsistently-cased references to the same file. */
     "types": [
       "node",
-      "miniprogram-api-typings",
+      "wechat-miniprogram",
       "react"
     ]
   },

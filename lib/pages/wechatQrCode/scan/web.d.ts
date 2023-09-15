@@ -4,4 +4,4 @@ export default function render(props: WebComponentProps<EntityDict, 'token', fal
     loading: boolean;
     illegal: boolean;
     expired: boolean;
-}, {}>): JSX.Element;
+}, {}>): import("react/jsx-runtime").JSX.Element;

@@ -21,4 +21,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
         url: string;
     }>;
     clearContentTip: () => void;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

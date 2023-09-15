@@ -74,7 +74,7 @@ export default OakComponent({
                 throw error;
             }
         },
-        async onPickMp(event: any) {
+        async onPickMp(event: WechatMiniprogram.Touch) {
             if (process.env.OAK_PLATFORM === 'wechatMp') {
                 const { mediaType } = event.currentTarget.dataset;
                 try {

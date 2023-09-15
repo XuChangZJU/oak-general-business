@@ -78,7 +78,6 @@ export default OakComponent({
     },
     listeners: {
         async imgUrls(prev, next) {
-            // 因为imgUrls是从请求来的， 它有可能比上边的src listener中的getBridgeUrl慢
             // 所以此处增加前后项imgUrls里都有值且不等的条件再去clean
             if (prev?.imgUrls.length && next?.imgUrls.length && !isEqual(prev.imgUrls, next.imgUrls)) {
                 this.clean();
