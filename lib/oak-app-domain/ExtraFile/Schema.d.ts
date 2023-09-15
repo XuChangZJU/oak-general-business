@@ -9,7 +9,7 @@ import * as Article from "../Article/Schema";
 import * as ArticleMenu from "../ArticleMenu/Schema";
 import * as SessionMessage from "../SessionMessage/Schema";
 import * as User from "../User/Schema";
-export declare type OpSchema = EntityShape & {
+export type OpSchema = EntityShape & {
     origin: 'qiniu' | 'wechat' | 'unknown';
     type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
@@ -29,8 +29,8 @@ export declare type OpSchema = EntityShape & {
     uploadState: 'success' | 'failed' | 'uploading';
     uploadMeta?: Object | null;
 };
-export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export type OpAttr = keyof OpSchema;
+export type Schema = EntityShape & {
     origin: 'qiniu' | 'wechat' | 'unknown';
     type: 'image' | 'video' | 'audio' | 'file';
     bucket: String<16>;
@@ -56,7 +56,7 @@ export declare type Schema = EntityShape & {
 } & {
     [A in ExpressionKey]?: any;
 };
-declare type AttrFilter = {
+type AttrFilter = {
     id: Q_StringValue;
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
@@ -84,8 +84,8 @@ declare type AttrFilter = {
     sessionMessage: SessionMessage.Filter;
     user: User.Filter;
 };
-export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
-export declare type Projection = {
+export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
+export type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
     id?: number;
@@ -115,22 +115,22 @@ export declare type Projection = {
     sessionMessage?: SessionMessage.Projection;
     user?: User.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
-declare type ExtraFileIdProjection = OneOf<{
+type ExtraFileIdProjection = OneOf<{
     id: number;
 }>;
-declare type ArticleIdProjection = OneOf<{
+type ArticleIdProjection = OneOf<{
     entityId: number;
 }>;
-declare type ArticleMenuIdProjection = OneOf<{
+type ArticleMenuIdProjection = OneOf<{
     entityId: number;
 }>;
-declare type SessionMessageIdProjection = OneOf<{
+type SessionMessageIdProjection = OneOf<{
     entityId: number;
 }>;
-declare type UserIdProjection = OneOf<{
+type UserIdProjection = OneOf<{
     entityId: number;
 }>;
-export declare type SortAttr = {
+export type SortAttr = {
     id: number;
 } | {
     $$createAt$$: number;
@@ -183,15 +183,15 @@ export declare type SortAttr = {
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
-export declare type SortNode = {
+export type SortNode = {
     $attr: SortAttr;
     $direction?: "asc" | "desc";
 };
-export declare type Sorter = SortNode[];
-export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
-export declare type Selection<P extends Object = Projection> = SelectOperation<P>;
-export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
+export type Sorter = SortNode[];
+export type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
+export type Selection<P extends Object = Projection> = SelectOperation<P>;
+export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
+export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
     entity?: never;
     entityId?: never;
     article: Article.CreateSingleOperation;
@@ -240,10 +240,10 @@ export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "entity"
     entityId?: string;
     [K: string]: any;
 });
-export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
-export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
-export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId">> & ({
+export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
+export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
+export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
+export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId">> & ({
     article?: Article.CreateSingleOperation | Article.UpdateOperation | Article.RemoveOperation;
     entityId?: never;
     entity?: never;
@@ -265,8 +265,8 @@ export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity"
 }) & {
     [k: string]: any;
 };
-export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
-export declare type RemoveOperationData = {} & ({
+export type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
+export type RemoveOperationData = {} & ({
     article?: Article.UpdateOperation | Article.RemoveOperation;
 } | {
     articleMenu?: ArticleMenu.UpdateOperation | ArticleMenu.RemoveOperation;
@@ -277,14 +277,14 @@ export declare type RemoveOperationData = {} & ({
 } | {
     [k: string]: any;
 });
-export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
-export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation;
-export declare type ArticleIdSubQuery = Selection<ArticleIdProjection>;
-export declare type ArticleMenuIdSubQuery = Selection<ArticleMenuIdProjection>;
-export declare type SessionMessageIdSubQuery = Selection<SessionMessageIdProjection>;
-export declare type UserIdSubQuery = Selection<UserIdProjection>;
-export declare type ExtraFileIdSubQuery = Selection<ExtraFileIdProjection>;
-export declare type EntityDef = {
+export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
+export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
+export type ArticleIdSubQuery = Selection<ArticleIdProjection>;
+export type ArticleMenuIdSubQuery = Selection<ArticleMenuIdProjection>;
+export type SessionMessageIdSubQuery = Selection<SessionMessageIdProjection>;
+export type UserIdSubQuery = Selection<UserIdProjection>;
+export type ExtraFileIdSubQuery = Selection<ExtraFileIdProjection>;
+export type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
     Action: OakMakeAction<GenericAction> | string;

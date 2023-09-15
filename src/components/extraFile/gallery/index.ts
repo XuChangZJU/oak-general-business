@@ -31,6 +31,7 @@ export default OakComponent({
         isBridge: 1,
     },
     formData({ data: originalFiles, features }) {
+        console.log(originalFiles);
         let files = (
             originalFiles as Array<EntityDict['extraFile']['OpSchema']>
         )?.filter((ele) => !ele.$$deleteAt$$).sort(
@@ -110,7 +111,8 @@ export default OakComponent({
         getUrl(extraFile: EntityDict['extraFile']['OpSchema']) {
             const { fileList } = this.state;
             if (fileList[extraFile?.id]) {
-                return this.features.extraFile.getUrl(Object.assign({}, extraFile, { extra1: fileList[extraFile?.id] }));
+                const url = this.features.extraFile.getUrl(Object.assign({}, extraFile, { extra1: fileList[extraFile?.id] }));
+                return url;
             }
             return this.features.extraFile.getUrl(extraFile);
         },
@@ -316,11 +318,7 @@ export default OakComponent({
 
                     throw error;
                 }
-
-
-                await this.execute();
             } else {
-
                 this.addItem(Object.assign({}, updateData, {
                     extra1: null,
                 }), undefined, async () => {
@@ -455,7 +453,6 @@ export default OakComponent({
                     });
                 },
                 fail: function (res) {
-                    console.log(res);
                     wx.hideLoading();
                     that.setMessage({
                         type: 'error',

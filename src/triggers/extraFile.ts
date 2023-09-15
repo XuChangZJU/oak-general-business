@@ -3,7 +3,7 @@ import { EntityDict } from '../oak-app-domain/EntityDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
 import UploaderDict from '../utils/uploader';
-import { OakException } from 'oak-domain';
+import { OakException, RemoveTrigger } from 'oak-domain';
 
 const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDict>>[] = [
     {
@@ -37,6 +37,51 @@ const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDic
             return 1;
         }
     } as CreateTrigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDict>>,
+    {
+        name: '删除extraFile时远端也进行删除',
+        when: 'before',
+        entity: 'extraFile',
+        action: 'remove',
+        fn: async ({ operation }, context) => {
+            const { filter } = operation;
+            const extraFileList = await context.select(
+                'extraFile',
+                {
+                    data: {
+                        id: 1,
+                        origin: 1,
+                        type: 1,
+                        bucket: 1,
+                        objectId: 1,
+                        tag1: 1,
+                        tag2: 1,
+                        filename: 1,
+                        md5: 1,
+                        entity: 1,
+                        entityId: 1,
+                        extra1: 1,
+                        extension: 1,
+                        size: 1,
+                        sort: 1,
+                        fileType: 1,
+                        isBridge: 1,
+                        uploadState: 1,
+                        uploadMeta: 1,
+                    },
+                    filter,
+                },
+                {
+                    dontCollect: true,
+                }
+            );
+            for (const extraFile of extraFileList) {
+                const { origin } = extraFile;
+                const uploader = UploaderDict[origin!];
+                await uploader.checkWhetherSuccess(extraFile as EntityDict['extraFile']['OpSchema'], context);
+            }
+            return 1;
+        }
+    } as RemoveTrigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDict>>,
 ];
 
 export default triggers;

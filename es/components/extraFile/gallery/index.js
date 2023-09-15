@@ -22,6 +22,7 @@ export default OakComponent({
         isBridge: 1,
     },
     formData({ data: originalFiles, features }) {
+        console.log(originalFiles);
         let files = originalFiles?.filter((ele) => !ele.$$deleteAt$$).sort((ele1, ele2) => ele1.sort - ele2.sort);
         if (this.props.tag1) {
             files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
@@ -95,7 +96,8 @@ export default OakComponent({
         getUrl(extraFile) {
             const { fileList } = this.state;
             if (fileList[extraFile?.id]) {
-                return this.features.extraFile.getUrl(Object.assign({}, extraFile, { extra1: fileList[extraFile?.id] }));
+                const url = this.features.extraFile.getUrl(Object.assign({}, extraFile, { extra1: fileList[extraFile?.id] }));
+                return url;
             }
             return this.features.extraFile.getUrl(extraFile);
         },
@@ -274,7 +276,6 @@ export default OakComponent({
                     //todo 保存extraFile失败 需要remove七牛图片
                     throw error;
                 }
-                await this.execute();
             }
             else {
                 this.addItem(Object.assign({}, updateData, {
@@ -404,7 +405,6 @@ export default OakComponent({
                     });
                 },
                 fail: function (res) {
-                    console.log(res);
                     wx.hideLoading();
                     that.setMessage({
                         type: 'error',

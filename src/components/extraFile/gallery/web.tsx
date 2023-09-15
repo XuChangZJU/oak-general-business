@@ -140,11 +140,9 @@ export default function render(
         preview = true,
     } = props.data;
     const { onPickByWeb, onDeleteByWeb, updateItem, t, getFileName, getUrl, eFFormatBytes } = props.methods;
-
     const [newFiles, setNewFiles] = useState<
         EntityDict["extraFile"]["OpSchema"][]
     >([]);
-
     const [newUploadFiles, setNewUploadFiles] = useState<NewUploadFile[]>([]);
 
     const listType = getListType(theme);

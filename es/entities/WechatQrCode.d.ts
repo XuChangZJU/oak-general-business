@@ -2,7 +2,7 @@ import { String, Text, Datetime, Boolean } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { QrCodeType } from '../types/Config';
 import { Schema as Application } from './Application';
-export declare type WechatQrCodeProps = {
+export type WechatQrCodeProps = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;

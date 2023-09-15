@@ -14,4 +14,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     searchArticle: (searchValue: string) => void;
     getArticleMenuIdByArticle: (articleId: string, type: string) => void;
     gotoSearchArticleAndArticleMenu: (articleMenuId: string, articleId: string) => void;
-}>): import("react/jsx-runtime").JSX.Element | null;
+}>): JSX.Element | null;

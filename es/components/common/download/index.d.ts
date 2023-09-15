@@ -1,13 +1,13 @@
 /// <reference types="node" />
 import * as React from 'react';
-declare type IDownloadProps = {
+type IDownloadProps = {
     children?: React.ReactNode;
     beforeDownload: () => Promise<ArrayBuffer>;
     className?: string;
     style?: React.CSSProperties;
     filename?: string;
 };
-declare function Download(props: IDownloadProps): import("react/jsx-runtime").JSX.Element;
+declare function Download(props: IDownloadProps): JSX.Element;
 declare namespace Download {
     var onDownload: (arrayBuffer: ArrayBuffer, filename: string) => void;
     var base64ToBlob: (base64String: string) => Blob;

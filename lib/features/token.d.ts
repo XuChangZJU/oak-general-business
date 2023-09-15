@@ -27,7 +27,7 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     getTokenValue(): string | undefined;
     getToken(allowUnloggedIn?: boolean): Partial<ED["token"]["Schema"]> | undefined;
     getUserId(allowUnloggedIn?: boolean): NonNullable<ED["token"]["Schema"]["userId"]> | undefined;
-    getUserInfo(): ED["token"]["Schema"]["user"] | undefined;
+    getUserInfo(): NonNullable<ED["token"]["Schema"]["user"]> | undefined;
     isRoot(): boolean;
     /**
      * 这个是指token的player到底是不是root

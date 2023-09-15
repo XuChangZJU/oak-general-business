@@ -1,6 +1,6 @@
 import { String, Text, Int } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
-export declare type WechatPublicConfig = {
+export type WechatPublicConfig = {
     type: 'wechatPublic';
     appId: string;
     appSecret: string;

@@ -7,12 +7,12 @@ import { String } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Area from "../Area/Schema";
 import * as SubwayStation from "../SubwayStation/Schema";
-export declare type OpSchema = EntityShape & {
+export type OpSchema = EntityShape & {
     name: String<32>;
     areaId: ForeignKey<"area">;
 };
-export declare type OpAttr = keyof OpSchema;
-export declare type Schema = EntityShape & {
+export type OpAttr = keyof OpSchema;
+export type Schema = EntityShape & {
     name: String<32>;
     areaId: ForeignKey<"area">;
     area: Area.Schema;
@@ -21,7 +21,7 @@ export declare type Schema = EntityShape & {
 } & {
     [A in ExpressionKey]?: any;
 };
-declare type AttrFilter = {
+type AttrFilter = {
     id: Q_StringValue;
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
@@ -31,8 +31,8 @@ declare type AttrFilter = {
     area: Area.Filter;
     subwayStation$subway: SubwayStation.Filter & SubQueryPredicateMetadata;
 };
-export declare type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
-export declare type Projection = {
+export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
+export type Projection = {
     "#id"?: NodeId;
     [k: string]: any;
     id?: number;
@@ -49,13 +49,13 @@ export declare type Projection = {
         $entity: "subwayStation";
     };
 } & Partial<ExprOp<OpAttr | string>>;
-declare type SubwayIdProjection = OneOf<{
+type SubwayIdProjection = OneOf<{
     id: number;
 }>;
-declare type AreaIdProjection = OneOf<{
+type AreaIdProjection = OneOf<{
     areaId: number;
 }>;
-export declare type SortAttr = {
+export type SortAttr = {
     id: number;
 } | {
     $$createAt$$: number;
@@ -72,36 +72,36 @@ export declare type SortAttr = {
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
-export declare type SortNode = {
+export type SortNode = {
     $attr: SortAttr;
     $direction?: "asc" | "desc";
 };
-export declare type Sorter = SortNode[];
-export declare type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
-export declare type Selection<P extends Object = Projection> = SelectOperation<P>;
-export declare type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export declare type CreateOperationData = FormCreateData<Omit<OpSchema, "areaId">> & ({
+export type Sorter = SortNode[];
+export type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
+export type Selection<P extends Object = Projection> = SelectOperation<P>;
+export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
+export type CreateOperationData = FormCreateData<Omit<OpSchema, "areaId">> & ({
     areaId: ForeignKey<"area">;
 }) & {
     subwayStation$subway?: OakOperation<SubwayStation.UpdateOperation["action"], Omit<SubwayStation.UpdateOperationData, "subway" | "subwayId">, Omit<SubwayStation.Filter, "subway" | "subwayId">> | OakOperation<"create", Omit<SubwayStation.CreateOperationData, "subway" | "subwayId">[]> | Array<OakOperation<"create", Omit<SubwayStation.CreateOperationData, "subway" | "subwayId">> | OakOperation<SubwayStation.UpdateOperation["action"], Omit<SubwayStation.UpdateOperationData, "subway" | "subwayId">, Omit<SubwayStation.Filter, "subway" | "subwayId">>>;
 };
-export declare type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
-export declare type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
-export declare type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export declare type UpdateOperationData = FormUpdateData<Omit<OpSchema, "areaId">> & ({
+export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
+export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
+export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
+export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "areaId">> & ({
     area?: never;
     areaId?: ForeignKey<"area"> | null;
 }) & {
     [k: string]: any;
     subwayStation$subway?: OakOperation<SubwayStation.UpdateOperation["action"], Omit<SubwayStation.UpdateOperationData, "subway" | "subwayId">, Omit<SubwayStation.Filter, "subway" | "subwayId">> | OakOperation<SubwayStation.RemoveOperation["action"], Omit<SubwayStation.RemoveOperationData, "subway" | "subwayId">, Omit<SubwayStation.Filter, "subway" | "subwayId">> | OakOperation<"create", Omit<SubwayStation.CreateOperationData, "subway" | "subwayId">[]> | Array<OakOperation<"create", Omit<SubwayStation.CreateOperationData, "subway" | "subwayId">> | OakOperation<SubwayStation.UpdateOperation["action"], Omit<SubwayStation.UpdateOperationData, "subway" | "subwayId">, Omit<SubwayStation.Filter, "subway" | "subwayId">> | OakOperation<SubwayStation.RemoveOperation["action"], Omit<SubwayStation.RemoveOperationData, "subway" | "subwayId">, Omit<SubwayStation.Filter, "subway" | "subwayId">>>;
 };
-export declare type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
-export declare type RemoveOperationData = {};
-export declare type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
-export declare type Operation = CreateOperation | UpdateOperation | RemoveOperation;
-export declare type AreaIdSubQuery = Selection<AreaIdProjection>;
-export declare type SubwayIdSubQuery = Selection<SubwayIdProjection>;
-export declare type EntityDef = {
+export type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
+export type RemoveOperationData = {};
+export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
+export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
+export type AreaIdSubQuery = Selection<AreaIdProjection>;
+export type SubwayIdSubQuery = Selection<SubwayIdProjection>;
+export type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
     Action: OakMakeAction<GenericAction> | string;

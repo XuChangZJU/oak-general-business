@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.less';
 import { EntityDict } from '../../../oak-app-domain';
-declare type IQrCodeProps = {
+type IQrCodeProps = {
     filename?: string;
     expiresAt?: number;
     tips?: React.ReactNode;
@@ -14,5 +14,5 @@ declare type IQrCodeProps = {
     successed?: boolean;
     type?: EntityDict['wechatLogin']['Schema']['type'];
 };
-declare function QrCode(props: IQrCodeProps): import("react/jsx-runtime").JSX.Element;
+declare function QrCode(props: IQrCodeProps): JSX.Element;
 export default QrCode;

@@ -1,6 +1,7 @@
 import { EntityDict } from '../oak-app-domain';
 import { EntityDict as BaseEntityDict } from 'oak-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { Config } from '../types/Config';
 export default interface Uploader<ED extends EntityDict & BaseEntityDict> {
     name: string;
     /**
@@ -20,6 +21,7 @@ export default interface Uploader<ED extends EntityDict & BaseEntityDict> {
     uploadUrl: string, // 上传的url
     formData: Record<string, any>, // 上传的其它part参数
     autoInform?: boolean) => Promise<any>, file: string | File) => Promise<void>;
+    composeFileUrl: (extraFile: EntityDict['extraFile']['OpSchema'], config: Config, style?: string) => string;
     /**
      * 后台对upload是否成功不确定的文件，向OSS发起主动确认
      * @param extraFile

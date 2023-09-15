@@ -1,6 +1,6 @@
 import { Feature } from 'oak-frontend-base';
 import { Upload } from 'oak-frontend-base/es/utils/upload';
-import { composeFileUrl, bytesToSize } from '../utils/extraFile';
+import { composeFileUrl, bytesToSize, getFileURL } from '../utils/extraFile';
 import { assert } from 'oak-domain/lib/utils/assert';
 import UploaderDict from '../utils/uploader';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
@@ -102,6 +102,16 @@ export class ExtraFile extends Feature {
                 url = this.locales.makeBridgeUrl(extraFile?.extra1);
                 return url;
             }
+        }
+        if (extraFile?.extra1) {
+            // 有extra1就用extra1 可能File对象 可能外部链接
+            if (typeof extraFile?.extra1 === 'string') {
+                return extraFile?.extra1;
+            }
+            if (extraFile?.extra1 instanceof File) {
+                return getFileURL(extraFile?.extra1) || '';
+            }
+            return extraFile?.extra1 || '';
         }
         url = composeFileUrl(extraFile, config, style);
         return url;

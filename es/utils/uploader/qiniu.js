@@ -1,4 +1,5 @@
 import { getConfig } from '../../utils/getContextConfig';
+import { urlSafeBase64Encode } from '../sign';
 const QiniuSearchUrl = 'https://rs.qiniuapi.com/stat/EncodedEntryURI';
 export default class Qiniu {
     name = 'qiniu';
@@ -24,10 +25,29 @@ export default class Qiniu {
         }
         throw new Error('图片上传失败');
     }
+    composeFileUrl(extraFile, config, style) {
+        const { objectId, extension, entity, } = extraFile || {};
+        if (config && config.Cos) {
+            const { domain, protocol } = config.Cos[origin];
+            let protocol2 = protocol;
+            if (protocol instanceof Array) {
+                // protocol存在https 说明域名有证书
+                const index = protocol.includes('https')
+                    ? protocol.findIndex((ele) => ele === 'https')
+                    : 0;
+                protocol2 = protocol[index];
+            }
+            return `${protocol2}://${domain}/${entity}/${objectId}.${extension}`;
+        }
+        return '';
+    }
     async checkWhetherSuccess(extraFile, context) {
         const { uploadMeta, bucket } = extraFile;
         const { key } = uploadMeta;
-        const qiniuSearchUrl = QiniuSearchUrl.replace('EncodedEntryURI', `${bucket}:${key}`);
+        const entry = `${bucket}:${key}`;
+        const encodedEntryURI = urlSafeBase64Encode(entry);
+        const qiniuSearchUrl = QiniuSearchUrl.replace('EncodedEntryURI', encodedEntryURI);
+        const { instance, config } = await getConfig(context, 'Cos', 'qiniu');
         return false;
     }
     async removeFile(extraFile, context) {

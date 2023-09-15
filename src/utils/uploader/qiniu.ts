@@ -1,7 +1,7 @@
 import { EntityDict } from '../../oak-app-domain';
 import { EntityDict as BaseEntityDict } from 'oak-domain'
 import { BackendRuntimeContext } from '../../context/BackendRuntimeContext';
-
+import { assert } from 'oak-domain/lib/utils/assert';
 import Uploader from "../../types/Uploader";
 import { OpSchema } from '../../oak-app-domain/ExtraFile/Schema';
 
@@ -10,6 +10,8 @@ import { getConfig } from '../../utils/getContextConfig';
 import { QiniuCosConfig } from '../../types/Config';
 import { QiniuCloudInstance } from 'oak-external-sdk';
 import { get } from 'oak-domain/lib/utils/lodash';
+import { Config } from '../../types/Config';
+import { urlSafeBase64Encode } from '../sign';
 
 const QiniuSearchUrl = 'https://rs.qiniuapi.com/stat/EncodedEntryURI';
 
@@ -22,9 +24,8 @@ export default class Qiniu<ED extends EntityDict & BaseEntityDict> implements Up
     ) {
         const { origin, objectId, extension, entity, bucket } = extraFile;
         // 构造文件上传所需的key
-        const key = `${entity ? entity + '/' : ''}${objectId}${
-            extension ? '.' + extension : ''
-        }`;
+        const key = `${entity ? entity + '/' : ''}${objectId}${extension ? '.' + extension : ''
+            }`;
         const { instance, config } = await getConfig<
             ED,
             BackendRuntimeContext<ED>
@@ -69,16 +70,46 @@ export default class Qiniu<ED extends EntityDict & BaseEntityDict> implements Up
         throw new Error('图片上传失败');
     }
 
+    composeFileUrl(
+        extraFile: EntityDict['extraFile']['OpSchema'],
+        config: Config,
+        style?: string,
+    ) {
+        const {
+            objectId,
+            extension,
+            entity,
+        } = extraFile || {};
+        if (config && config.Cos) {
+            const { domain, protocol } =
+                config.Cos[origin as keyof typeof config.Cos]!;
+            let protocol2 = protocol;
+            if (protocol instanceof Array) {
+                // protocol存在https 说明域名有证书
+                const index = (protocol as ['http', 'https']).includes('https')
+                    ? protocol.findIndex((ele) => ele === 'https')
+                    : 0;
+                protocol2 = protocol[index];
+            }
+            return `${protocol2}://${domain}/${entity}/${objectId}.${extension}`;
+        }
+        return '';
+    }
+
     async checkWhetherSuccess(
         extraFile: OpSchema,
         context: BackendRuntimeContext<ED>
     ) {
         const { uploadMeta, bucket } = extraFile;
         const { key } = uploadMeta as { key: string };
-        const qiniuSearchUrl = QiniuSearchUrl.replace(
-            'EncodedEntryURI',
-            `${bucket}:${key}`
-        );
+        const entry = `${bucket}:${key}`;
+        const encodedEntryURI = urlSafeBase64Encode(entry);
+        const qiniuSearchUrl = QiniuSearchUrl.replace('EncodedEntryURI', encodedEntryURI);
+        const { instance, config } = await getConfig<
+            ED,
+            BackendRuntimeContext<ED>
+        >(context, 'Cos', 'qiniu');
+
         return false;
     }
 
