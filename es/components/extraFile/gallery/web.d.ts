@@ -33,5 +33,5 @@ export default function render(props: WebComponentProps<EntityDict, "extraFile",
     getUrl: (extraFile: EntityDict['extraFile']['OpSchema']) => string;
     getFileName: (extraFile: EntityDict['extraFile']['OpSchema']) => string;
     eFFormatBytes: (value: number) => string;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;
 export {};

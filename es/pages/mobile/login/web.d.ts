@@ -17,4 +17,4 @@ export default function render(props: WebComponentProps<EntityDict, 'token', fal
     setMobile: (mobile: string) => void;
     sendCaptcha: () => Promise<void>;
     loginByMobile: () => Promise<void>;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

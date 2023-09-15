@@ -6,4 +6,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'message', f
     oakId: string;
 }, {
     goToMobile: () => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

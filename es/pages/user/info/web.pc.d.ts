@@ -24,4 +24,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     goChangePassword: () => void;
     updateMyInfo: () => void;
     unbindingWechat: (captcha?: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;
