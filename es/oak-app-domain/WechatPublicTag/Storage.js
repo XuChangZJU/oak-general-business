@@ -37,15 +37,15 @@ export const desc = {
             name: 'index_text_application',
             attributes: [
                 {
-                    name: 'text',
+                    name: 'text'
                 },
                 {
-                    name: "applicationId",
+                    name: "applicationId"
                 },
             ],
             config: {
-                unique: true,
-            },
+                unique: true
+            }
         }
     ]
 };

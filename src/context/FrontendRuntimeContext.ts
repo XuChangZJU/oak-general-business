@@ -1,5 +1,6 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { FrontendRuntimeContext as Frc, BackendRuntimeContext as Brc, SerializedData as Fsd, BasicFeatures } from 'oak-frontend-base';
 import { EntityDict } from '../oak-app-domain';
 
 import { RuntimeContext } from './RuntimeContext';
@@ -7,8 +8,8 @@ import { Application } from '../features/application';
 import { Token } from '../features/token';
 import GeneralAspectDict from '../aspects/AspectDict';
 import { CommonAspectDict } from 'oak-common-aspect';
-import { SyncContext, SyncRowStore } from 'oak-domain/lib/store/SyncRowStore';
-import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
+import { SyncRowStore } from 'oak-domain/lib/store/SyncRowStore';
+import { GeneralFeatures } from '../features';
 import { BackendRuntimeContext } from './BackendRuntimeContext';
 import {
     OakTokenExpiredException,
@@ -21,34 +22,46 @@ type AspectDict<
     Cxt extends BackendRuntimeContext<ED>
 > = GeneralAspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>;
 // 上下文被serialize后的数据内容
-export type SerializedData = {
+export interface SerializedData extends Fsd {
     a?: string;
     t?: string;
 };
 
-export class FrontendRuntimeContext<
+export abstract class FrontendRuntimeContext<
         ED extends EntityDict & BaseEntityDict,
         Cxt extends BackendRuntimeContext<ED>,
         AD extends AspectDict<ED, Cxt>
     >
-    extends SyncContext<ED>
+    extends Frc<ED, Cxt, AD>
     implements RuntimeContext
 {
-    private application?: Application<ED, Cxt, any, AD>;
-    private token?: Token<ED, Cxt, any, AD>;
+    private application: Application<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>;
+    private token: Token<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>;
     constructor(
         store: SyncRowStore<ED, FrontendRuntimeContext<ED, Cxt, AD>>,
-        application?: Application<
-            ED,
-            Cxt,
-            FrontendRuntimeContext<ED, Cxt, AD>,
-            AD
-        >,
-        token?: Token<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>
+        features: GeneralFeatures<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD> & BasicFeatures<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>,
     ) {
-        super(store);
-        this.application = application;
-        this.token = token;
+        super(store, features);
+        this.application = features.application;
+        this.token = features.token;
+    }
+
+    protected getSerializedData(): SerializedData {
+        const data = super.getSerializedData();
+        const appId = this.application.getApplicationId();
+        if (appId) {
+            Object.assign(data, {
+                a: appId,
+            });
+        }
+        const tokenValue = this.token.getTokenValue();
+        if (tokenValue) {
+            Object.assign(data, {
+                t: tokenValue,
+            });
+        }
+
+        return data;
     }
 
     getApplicationId() {
@@ -74,23 +87,6 @@ export class FrontendRuntimeContext<
 
     getCurrentUserId(allowUnloggedIn?: boolean): string | undefined {
         return this.token?.getUserId(allowUnloggedIn);
-    }
-
-    toString(): string {
-        const data = {};
-        const a = this.application?.getApplicationId();
-        const t = this.token?.getTokenValue();
-        if (t) {
-            Object.assign(data, {
-                t,
-            });
-        }
-        if (a) {
-            Object.assign(data, {
-                a,
-            });
-        }
-        return JSON.stringify(data);
     }
 
     isRoot() {

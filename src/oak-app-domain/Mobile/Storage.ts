@@ -27,13 +27,13 @@ export const desc: StorageDesc<OpSchema> = {
             attributes: [
                 {
                     name: 'mobile',
-                    direction: 'ASC',
+                    direction: 'ASC'
                 },
                 {
                     name: 'ableState',
-                    direction: 'ASC',
+                    direction: 'ASC'
                 }
-            ],
+            ]
         }
     ]
 };

@@ -2,14 +2,14 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { OakTokenExpiredException, OakUserDisabledException, } from '../types/Exception';
 import { OakUnloggedInException, } from 'oak-domain/lib/types/Exception';
 import { ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
-import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { applicationProjection } from '../types/Projection';
 import { getMpUnlimitWxaCode } from '../aspects/wechatQrCode';
+import { BackendRuntimeContext as BRC } from 'oak-frontend-base';
 /**
  * general数据结构要求的后台上下文
  */
-export class BackendRuntimeContext extends AsyncContext {
+export class BackendRuntimeContext extends BRC {
     application;
     token;
     amIRoot;
@@ -17,6 +17,11 @@ export class BackendRuntimeContext extends AsyncContext {
     rootMode;
     temporaryUserId;
     tokenException;
+    initializedMark;
+    constructor(store, data, headers) {
+        super(store, data, headers);
+        this.initializedMark = this.initialize(data);
+    }
     async refineOpRecords() {
         for (const opRecord of this.opRecords) {
             if (opRecord.a === 's') {
@@ -94,6 +99,13 @@ export class BackendRuntimeContext extends AsyncContext {
         });
         assert(result.length > 0, `构建BackendRuntimeContext对应appId「${appId}」找不到application`);
         this.application = result[0];
+    }
+    /**
+     * 异步等待初始化完成
+     */
+    async initialized() {
+        await super.initialized();
+        await this.initializedMark;
     }
     async initialize(data) {
         if (data) {

@@ -12,16 +12,18 @@ import {
     OakUnloggedInException,
 } from 'oak-domain/lib/types/Exception';
 import { ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
-import { AsyncContext } from 'oak-domain/lib/store/AsyncRowStore';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { SelectOpResult } from 'oak-domain/lib/types';
 import { applicationProjection } from '../types/Projection';
 import { getMpUnlimitWxaCode } from '../aspects/wechatQrCode';
+import { BackendRuntimeContext as BRC } from 'oak-frontend-base';
+import { AsyncRowStore } from 'oak-domain';
+import { IncomingHttpHeaders } from 'http';
 /**
  * general数据结构要求的后台上下文
  */
-export class BackendRuntimeContext<ED extends EntityDict & BaseEntityDict>
-    extends AsyncContext<ED>
+export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDict>
+    extends BRC<ED>
     implements RuntimeContext
 {
     protected application?: Partial<ED['application']['Schema']>;
@@ -31,6 +33,12 @@ export class BackendRuntimeContext<ED extends EntityDict & BaseEntityDict>
     protected rootMode?: boolean;
     private temporaryUserId?: string;
     private tokenException?: OakException<ED>;
+    private initializedMark: Promise<void>;
+
+    constructor(store: AsyncRowStore<ED, BackendRuntimeContext<ED>>, data?: SerializedData, headers?: IncomingHttpHeaders) {
+        super(store, data, headers);
+        this.initializedMark = this.initialize(data);
+    }
 
     async refineOpRecords(): Promise<void> {
         for (const opRecord of this.opRecords) {
@@ -139,7 +147,15 @@ export class BackendRuntimeContext<ED extends EntityDict & BaseEntityDict>
         this.application = result[0];
     }
 
-    protected async initialize(data?: SerializedData) {
+    /**
+     * 异步等待初始化完成
+     */
+    protected async initialized() {
+        await super.initialized();
+        await this.initializedMark;
+    }
+
+    private async initialize(data?: SerializedData) {
         if (data) {
             await this.begin();
             const closeRootMode = this.openRootMode();
