@@ -1,5 +1,10 @@
+/// <reference path="../../typings/weixin-js-sdk.d.ts" />
 import { Feature } from 'oak-frontend-base';
-import { isIos, isWeiXin, isWeiXinDevTools } from 'oak-frontend-base/es/utils/utils';
+import {
+    isIos,
+    isWeiXin,
+    isWeiXinDevTools,
+} from 'oak-frontend-base/es/utils/utils';
 import { promisify as wxPromisify } from 'oak-frontend-base/es/utils/promisify';
 
 import { CommonAspectDict } from 'oak-common-aspect';
@@ -13,7 +18,6 @@ import { Environment } from 'oak-frontend-base/es/features/environment';
 import { WebEnv } from 'oak-domain/lib/types/Environment';
 import { uniq } from 'oak-domain/lib/utils/lodash';
 
-// const weixin = require('weixin-js-sdk');
 import weixin from 'weixin-js-sdk';
 
 type Options =
@@ -41,7 +45,6 @@ type Options =
     | WeixinJsSdk.OpenCardOptions
     | WeixinJsSdk.ChooseWXPayOptions;
 
-
 export class WeiXinJsSdk<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>,
@@ -53,7 +56,11 @@ export class WeiXinJsSdk<
     private environment: Environment;
     private landingUrl?: string; //解决在IOS上，无论路由切换到哪个页面，实际真正有效的的签名URL是【第一次进入应用时的URL】;
 
-    constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage, environment: Environment) {
+    constructor(
+        cache: Cache<ED, Cxt, FrontCxt, AD>,
+        storage: LocalStorage,
+        environment: Environment
+    ) {
         super();
         this.cache = cache;
         this.storage = storage;
