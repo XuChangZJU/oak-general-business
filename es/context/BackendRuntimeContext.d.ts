@@ -16,7 +16,6 @@ export declare abstract class BackendRuntimeContext<ED extends EntityDict & Base
     protected amIReallyRoot?: boolean;
     protected rootMode?: boolean;
     private temporaryUserId?;
-    private tokenException?;
     private initializedMark;
     constructor(store: AsyncRowStore<ED, BackendRuntimeContext<ED>>, data?: SerializedData, headers?: IncomingHttpHeaders);
     refineOpRecords(): Promise<void>;

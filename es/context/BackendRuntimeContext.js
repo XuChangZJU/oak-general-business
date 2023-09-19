@@ -16,7 +16,6 @@ export class BackendRuntimeContext extends BRC {
     amIReallyRoot;
     rootMode;
     temporaryUserId;
-    tokenException;
     initializedMark;
     constructor(store, data, headers) {
         super(store, data, headers);
@@ -72,14 +71,15 @@ export class BackendRuntimeContext extends BRC {
         });
         if (result.length === 0) {
             console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`);
-            // throw new OakTokenExpiredException();
-            this.tokenException = new OakTokenExpiredException();
+            throw new OakTokenExpiredException();
+            // this.tokenException = new OakTokenExpiredException();
             return;
         }
         const token = result[0];
         if (token.ableState === 'disabled') {
             console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}已经被disable`);
-            this.tokenException = new OakTokenExpiredException();
+            throw new OakTokenExpiredException();
+            // this.tokenException = new OakTokenExpiredException();
             return;
         }
         const { user, player } = token;
@@ -157,18 +157,12 @@ export class BackendRuntimeContext extends BRC {
         if (this.rootMode) {
             return ROOT_TOKEN_ID;
         }
-        if (this.tokenException) {
-            throw this.tokenException;
-        }
         if (!this.token && !allowUnloggedIn) {
             throw new OakUnloggedInException();
         }
         return this.token?.id;
     }
     getToken(allowUnloggedIn) {
-        if (this.tokenException) {
-            throw this.tokenException;
-        }
         if (!this.token && !allowUnloggedIn) {
             throw new OakUnloggedInException();
         }
