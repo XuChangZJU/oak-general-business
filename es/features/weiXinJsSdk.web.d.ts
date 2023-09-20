@@ -1,3 +1,4 @@
+/// <reference path="../../typings/weixin-js-sdk.d.ts" />
 import { Feature } from 'oak-frontend-base';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { EntityDict } from '../oak-app-domain';

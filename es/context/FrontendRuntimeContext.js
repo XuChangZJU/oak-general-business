@@ -1,14 +1,31 @@
 import { assert } from 'oak-domain/lib/utils/assert';
-import { SyncContext } from 'oak-domain/lib/store/SyncRowStore';
+import { FrontendRuntimeContext as Frc } from 'oak-frontend-base';
 import { OakTokenExpiredException, OakUserDisabledException, } from '../types/Exception';
 import { OakUnloggedInException } from 'oak-domain/lib/types';
-export class FrontendRuntimeContext extends SyncContext {
+;
+export class FrontendRuntimeContext extends Frc {
     application;
     token;
-    constructor(store, application, token) {
-        super(store);
-        this.application = application;
-        this.token = token;
+    constructor(store, features) {
+        super(store, features);
+        this.application = features.application;
+        this.token = features.token;
+    }
+    getSerializedData() {
+        const data = super.getSerializedData();
+        const appId = this.application.getApplicationId();
+        if (appId) {
+            Object.assign(data, {
+                a: appId,
+            });
+        }
+        const tokenValue = this.token.getTokenValue();
+        if (tokenValue) {
+            Object.assign(data, {
+                t: tokenValue,
+            });
+        }
+        return data;
     }
     getApplicationId() {
         return this.application?.getApplicationId();
@@ -28,22 +45,6 @@ export class FrontendRuntimeContext extends SyncContext {
     }
     getCurrentUserId(allowUnloggedIn) {
         return this.token?.getUserId(allowUnloggedIn);
-    }
-    toString() {
-        const data = {};
-        const a = this.application?.getApplicationId();
-        const t = this.token?.getTokenValue();
-        if (t) {
-            Object.assign(data, {
-                t,
-            });
-        }
-        if (a) {
-            Object.assign(data, {
-                a,
-            });
-        }
-        return JSON.stringify(data);
     }
     isRoot() {
         return this.token?.isRoot() || false;

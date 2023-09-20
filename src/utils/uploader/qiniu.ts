@@ -1,5 +1,5 @@
 import { EntityDict } from '../../oak-app-domain';
-import { EntityDict as BaseEntityDict } from 'oak-domain'
+import { EntityDict as BaseEntityDict } from 'oak-domain';
 import { BackendRuntimeContext } from '../../context/BackendRuntimeContext';
 import { assert } from 'oak-domain/lib/utils/assert';
 import Uploader from "../../types/Uploader";
