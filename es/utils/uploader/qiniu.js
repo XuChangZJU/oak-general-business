@@ -17,23 +17,24 @@ export default class Qiniu {
     }
     async upload(extraFile, uploadFn, file) {
         const uploadMeta = extraFile.uploadMeta;
+        let result;
         try {
-            const result = await uploadFn(file, 'file', uploadMeta.uploadHost, {
+            result = await uploadFn(file, 'file', uploadMeta.uploadHost, {
                 key: uploadMeta.key,
                 token: uploadMeta.uploadToken,
             }, true);
-            console.log(result);
-            // await new Promise(
-            //     () => setTimeout(() => { return Promise.resolve() }, 10000)
-            // )
-            if (result.success === true || result.key) {
-                return;
-            }
         }
         catch (err) {
+            // 网络错误
             throw new OakUploadException('图片上传失败');
         }
-        throw new OakUploadException('图片上传失败');
+        // 解析回调
+        if (result.success === true || result.key) {
+            return;
+        }
+        else {
+            throw new OakUploadException('图片上传失败');
+        }
     }
     composeFileUrl(extraFile, config, style) {
         const { objectId, extension, entity, } = extraFile || {};
