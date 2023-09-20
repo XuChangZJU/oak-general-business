@@ -1,5 +1,6 @@
 import { getConfig } from '../../utils/getContextConfig';
 import { urlSafeBase64Encode } from '../sign';
+import { OakUploadException } from '../../types/Exception';
 const QiniuSearchUrl = 'https://rs.qiniuapi.com/stat/EncodedEntryURI';
 export default class Qiniu {
     name = 'qiniu';
@@ -16,14 +17,23 @@ export default class Qiniu {
     }
     async upload(extraFile, uploadFn, file) {
         const uploadMeta = extraFile.uploadMeta;
-        const result = await uploadFn(file, 'file', uploadMeta.uploadHost, {
-            key: uploadMeta.key,
-            token: uploadMeta.uploadToken,
-        }, true);
-        if (result.success === true || result.key) {
-            return;
+        try {
+            const result = await uploadFn(file, 'file', uploadMeta.uploadHost, {
+                key: uploadMeta.key,
+                token: uploadMeta.uploadToken,
+            }, true);
+            console.log(result);
+            // await new Promise(
+            //     () => setTimeout(() => { return Promise.resolve() }, 10000)
+            // )
+            if (result.success === true || result.key) {
+                return;
+            }
         }
-        throw new Error('图片上传失败');
+        catch (err) {
+            throw new OakUploadException('图片上传失败');
+        }
+        throw new OakUploadException('图片上传失败');
     }
     composeFileUrl(extraFile, config, style) {
         const { objectId, extension, entity, } = extraFile || {};

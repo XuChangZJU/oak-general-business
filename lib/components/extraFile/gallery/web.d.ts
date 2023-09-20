@@ -3,6 +3,7 @@ import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from "../../../oak-app-domain";
 interface NewUploadFile extends UploadFile {
     id?: string;
+    status?: 'done' | 'uploading' | 'error' | 'removed';
 }
 type Theme = "file" | "image" | "image-flow" | "custom";
 export default function render(props: WebComponentProps<EntityDict, "extraFile", true, {

@@ -90,7 +90,7 @@ export default OakComponent({
         },
 
         uploadFile(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
-            return this.features.extraFile.createAndUpload(extraFile);
+            return this.features.extraFile.createAndUpload(extraFile, extraFile.extra1!);
         },
 
         setEditor(editor: IDomEditor | null) {

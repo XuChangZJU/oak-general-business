@@ -40,6 +40,9 @@ export declare class OakMpHaveToSubscribeMessage extends Error {
 export declare class OakUserInfoLoadingException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
     constructor(message?: string);
 }
+export declare class OakUploadException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
+    constructor(message?: string);
+}
 export declare function makeException<ED extends EntityDict & BaseEntityDict>(data: {
     name: string;
     message?: string;

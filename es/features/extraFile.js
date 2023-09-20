@@ -14,22 +14,18 @@ export class ExtraFile extends Feature {
         this.application = application;
         this.locales = locales;
     }
-    async createAndUpload(extraFile) {
+    async createAndUpload(extraFile, file) {
         await this.cache.operate('extraFile', {
             action: 'create',
-            data: Object.assign({}, extraFile, { extra1: null }),
+            data: extraFile,
             id: generateNewId(),
         });
-        const result = await this.upload(Object.assign({}, extraFile, { extra1: null }), extraFile.extra1);
+        await this.upload(extraFile, file);
         const application = this.application.getApplication();
         const config = application?.system?.config ||
             application?.system?.platform?.config;
-        const { bucket } = result;
         return {
-            url: this.getUrl(Object.assign({}, extraFile, {
-                extra1: null,
-            })),
-            bucket,
+            url: this.getUrl(extraFile),
         };
     }
     async upload(extraFile, file) {
@@ -73,7 +69,7 @@ export class ExtraFile extends Feature {
                 },
                 id: generateNewId(),
             });
-            return Object.assign(extraFileData, { uploadState: 'success' });
+            this.publish();
         }
         catch (err) {
             await this.cache.operate('extraFile', {
@@ -86,6 +82,7 @@ export class ExtraFile extends Feature {
                 },
                 id: generateNewId(),
             });
+            this.publish();
             throw err;
         }
     }

@@ -36,29 +36,26 @@ export class ExtraFile<
     }
 
     async createAndUpload(
-        extraFile: EntityDict['extraFile']['CreateSingle']['data']
+        extraFile: EntityDict['extraFile']['CreateSingle']['data'],
+        file: string | File,
     ) {
         await this.cache.operate('extraFile', {
             action: 'create',
-            data: Object.assign({}, extraFile, { extra1: null }),
+            data: extraFile,
             id: generateNewId(),
         } as EntityDict['extraFile']['Operation']);
-        const result = await this.upload(
-            Object.assign({}, extraFile, { extra1: null }),
-            extraFile.extra1!
+        await this.upload(
+            extraFile,
+            file
         );
         const application = this.application.getApplication();
         const config =
             application?.system?.config ||
             application?.system?.platform?.config;
-        const { bucket } = result;
         return {
             url: this.getUrl(
-                Object.assign({}, extraFile, {
-                    extra1: null,
-                }) as EntityDict['extraFile']['OpSchema']
+                extraFile as EntityDict['extraFile']['OpSchema']
             ),
-            bucket,
         };
     }
 
@@ -110,7 +107,7 @@ export class ExtraFile<
                 },
                 id: generateNewId(),
             } as EntityDict['extraFile']['Operation']);
-            return Object.assign(extraFileData, { uploadState: 'success' });
+            this.publish();
         } catch (err) {
             await this.cache.operate('extraFile', {
                 action: 'update',
@@ -122,6 +119,7 @@ export class ExtraFile<
                 },
                 id: generateNewId(),
             } as EntityDict['extraFile']['Operation']);
+            this.publish();
             throw err;
         }
     }
