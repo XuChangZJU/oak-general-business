@@ -44,7 +44,7 @@ export function composeFileUrl(
 
 //获取file文件url
 export function getFileURL(file: File) {
-    let getUrl = null;
+    let getUrl = '';
 
     // @ts-ignore
     if (window.createObjectURL !== undefined) {

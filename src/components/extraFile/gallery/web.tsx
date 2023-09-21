@@ -146,8 +146,8 @@ export default function render(
     >([]);
     const [newUploadFiles, setNewUploadFiles] = useState<NewUploadFile[]>([]);
 
+    
     const listType = getListType(theme);
-
     useEffect(() => {
         if (files && files.length > 0) {
             setNewFiles(files);

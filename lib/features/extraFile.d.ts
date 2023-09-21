@@ -13,10 +13,10 @@ export declare class ExtraFile<ED extends EntityDict, Cxt extends BackendRuntime
     private locales;
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>, application: Application<ED, Cxt, FrontCxt, AD>, locales: Locales<ED, Cxt, FrontCxt, AD>);
     createAndUpload(extraFile: EntityDict['extraFile']['CreateSingle']['data'], file: string | File): Promise<{
-        url: any;
+        url: string;
     }>;
     upload(extraFile: EntityDict['extraFile']['CreateSingle']['data'], file: string | File): Promise<void>;
-    getUrl(extraFile?: EntityDict['extraFile']['OpSchema'] | EntityDict['extraFile']['Schema'] | null, style?: string): any;
+    getUrl(extraFile?: EntityDict['extraFile']['OpSchema'] | EntityDict['extraFile']['Schema'] | null, style?: string): string;
     /**
      * 使用该方法，要在使用完url时，通过URL.revokeObjectURL释放缓存
      *

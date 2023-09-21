@@ -7,16 +7,21 @@ import { EntityDict } from '../oak-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Application } from './application';
-export declare class ExtraFile<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>> extends Feature {
+export type FileState = 'local' | 'uploading' | 'uploaded' | 'failed';
+export declare class ExtraFile2<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>> extends Feature {
     private cache;
     private application;
     private locales;
+    private files;
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>, application: Application<ED, Cxt, FrontCxt, AD>, locales: Locales<ED, Cxt, FrontCxt, AD>);
-    createAndUpload(extraFile: EntityDict['extraFile']['CreateSingle']['data'], file: string | File): Promise<{
-        url: string;
-    }>;
-    upload(extraFile: EntityDict['extraFile']['CreateSingle']['data'], file: string | File): Promise<void>;
+    addLocalFile(id: string, file: File | string): void;
+    removeLocalFiles(ids: string[]): void;
+    upload(id: string): Promise<void>;
     getUrl(extraFile?: EntityDict['extraFile']['OpSchema'] | EntityDict['extraFile']['Schema'] | null, style?: string): string;
+    getFileState(id: string): {
+        state: FileState;
+        percentage?: number;
+    } | undefined;
     /**
      * 使用该方法，要在使用完url时，通过URL.revokeObjectURL释放缓存
      *
