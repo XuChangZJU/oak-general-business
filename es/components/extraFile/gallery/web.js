@@ -63,6 +63,21 @@ export default function render(props) {
         }
     }, [files]);
     const extraFileToUploadFile = (extraFile) => {
+        let status = undefined;
+        switch (extraFile.uploadState) {
+            case 'uploading': {
+                status = 'uploading';
+                break;
+            }
+            case 'failed': {
+                status = 'error';
+                break;
+            }
+            case 'success': {
+                status = 'done';
+                break;
+            }
+        }
         return Object.assign({}, extraFile, {
             id: extraFile.id,
             url: getUrl(extraFile),
@@ -71,8 +86,9 @@ export default function render(props) {
             fileName: getFileName(extraFile),
             size: extraFile.size,
             type: extraFile.fileType,
-            uid: extraFile.id, //upload 组件需要uid来维护fileList
-            // status: 'done',
+            uid: extraFile.id,
+            status,
+            percent: status === 'uploading' ? 50 : undefined,
         });
     };
     const setNewUploadFilesByStatus = (file, status) => {

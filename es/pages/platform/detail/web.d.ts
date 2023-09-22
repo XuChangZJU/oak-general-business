@@ -9,4 +9,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'platform', 
     tabValue: 'detail' | 'system_list';
 }, {
     onTabClick: (key: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

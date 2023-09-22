@@ -27,7 +27,7 @@ export function composeFileUrl(extraFile, config, style //图片样式后缀 比
 }
 //获取file文件url
 export function getFileURL(file) {
-    let getUrl = null;
+    let getUrl = '';
     // @ts-ignore
     if (window.createObjectURL !== undefined) {
         // basic

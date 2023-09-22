@@ -56,3 +56,6 @@ export async function signatureJsSDK({ url, env }, context) {
     const result = await wechatInstance.signatureJsSDK({ url });
     return result;
 }
+export async function uploadWechatMedia(params, context) {
+    throw new Error('method not implemented');
+}

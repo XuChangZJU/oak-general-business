@@ -1,8 +1,8 @@
+/// <reference path="../../typings/weixin-js-sdk.d.ts" />
 import { Feature } from 'oak-frontend-base';
-import { isIos, isWeiXin, isWeiXinDevTools } from 'oak-frontend-base/es/utils/utils';
+import { isIos, isWeiXin, isWeiXinDevTools, } from 'oak-frontend-base/es/utils/utils';
 import { promisify as wxPromisify } from 'oak-frontend-base/es/utils/promisify';
 import { uniq } from 'oak-domain/lib/utils/lodash';
-// const weixin = require('weixin-js-sdk');
 import weixin from 'weixin-js-sdk';
 export class WeiXinJsSdk extends Feature {
     cache;

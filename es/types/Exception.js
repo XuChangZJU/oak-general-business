@@ -88,6 +88,12 @@ export class OakUserInfoLoadingException extends OakUserException {
     }
 }
 ;
+export class OakUploadException extends OakUserException {
+    constructor(message) {
+        super(message || '上传文件失败');
+    }
+}
+;
 export function makeException(data) {
     const exception = makeException2(data);
     if (exception) {
@@ -127,6 +133,11 @@ export function makeException(data) {
         }
         case 'OakUserInfoLoadingException': {
             const e = new OakUserInfoLoadingException(message);
+            e.setOpRecords(opRecords);
+            return e;
+        }
+        case 'OakUploadException': {
+            const e = new OakUploadException(message);
             e.setOpRecords(opRecords);
             return e;
         }

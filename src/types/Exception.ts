@@ -101,6 +101,12 @@ export class OakUserInfoLoadingException<ED extends EntityDict & BaseEntityDict>
     }
 };
 
+export class OakUploadException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
+    constructor(message?: string) {
+        super(message || '上传文件失败');
+    }
+};
+
 export function makeException<ED extends EntityDict & BaseEntityDict>(data: {
     name: string;
     message?: string;
@@ -146,6 +152,11 @@ export function makeException<ED extends EntityDict & BaseEntityDict>(data: {
         }
         case 'OakUserInfoLoadingException': {
             const e = new OakUserInfoLoadingException(message);
+            e.setOpRecords(opRecords);
+            return e;
+        }
+        case 'OakUploadException': {
+            const e = new OakUploadException(message);
             e.setOpRecords(opRecords);
             return e;
         }

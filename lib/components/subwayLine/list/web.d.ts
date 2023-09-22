@@ -16,4 +16,4 @@ export default function render(props: WebComponentProps<EntityDict, 'area', true
     setCheckedList: (station: string, flag: boolean) => void;
     cancel: () => void;
     confirm: () => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

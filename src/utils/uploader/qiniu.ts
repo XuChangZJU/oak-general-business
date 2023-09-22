@@ -12,6 +12,7 @@ import { QiniuCloudInstance } from 'oak-external-sdk';
 import { get } from 'oak-domain/lib/utils/lodash';
 import { Config } from '../../types/Config';
 import { urlSafeBase64Encode } from '../sign';
+import { OakUploadException } from '../../types/Exception';
 
 const QiniuSearchUrl = 'https://rs.qiniuapi.com/stat/EncodedEntryURI';
 
@@ -54,20 +55,28 @@ export default class Qiniu<ED extends EntityDict & BaseEntityDict> implements Up
         file: string | File
     ) {
         const uploadMeta = extraFile.uploadMeta! as QiniuUploadInfo;
-        const result = await uploadFn(
-            file,
-            'file',
-            uploadMeta.uploadHost,
-            {
-                key: uploadMeta.key,
-                token: uploadMeta.uploadToken,
-            },
-            true
-        );
+        let result;
+        try {
+            result = await uploadFn(
+                file,
+                'file',
+                uploadMeta.uploadHost,
+                {
+                    key: uploadMeta.key,
+                    token: uploadMeta.uploadToken,
+                },
+                true
+            );
+        } catch (err) {
+            // 网络错误
+            throw new OakUploadException('图片上传失败');
+        }
+        // 解析回调
         if (result.success === true || result.key) {
             return;
+        } else {
+            throw new OakUploadException('图片上传失败');
         }
-        throw new Error('图片上传失败');
     }
 
     composeFileUrl(
@@ -112,6 +121,7 @@ export default class Qiniu<ED extends EntityDict & BaseEntityDict> implements Up
 
         return false;
     }
+
 
     async removeFile(extraFile: OpSchema, context: BackendRuntimeContext<ED>) {
         const { bucket, uploadMeta } = extraFile;

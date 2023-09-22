@@ -114,10 +114,9 @@ export default OakComponent({
                             bucket: '',
                             id: generateNewId(),
                         } as EntityDict['extraFile']['CreateSingle']['data'];
-                        const { url, bucket } =
-                            await this.features.extraFile.createAndUpload(extraFile);
-                        extraFile.bucket = bucket;
-                        extraFile.extra1 = null;
+                        const { url } =
+                            await this.features.extraFile.createAndUpload(extraFile, extraFile.extra1!);
+
                         // await this.addExtraFile(extraFile);
                         (this as any).editorCtx.insertImage({
                             src: 'http://' + url,

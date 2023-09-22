@@ -1,13 +1,13 @@
 import { CommonAspectDict } from 'oak-common-aspect';
 import { Token } from './token';
 import { ExtraFile } from './extraFile';
+import { ExtraFile2 } from './extraFile2';
 import { Application } from './application';
 import { Config } from './config';
 import { WeiXinJsSdk } from './weiXinJsSdk';
 import { WechatMenu } from './wechatMenu';
 import { BasicFeatures } from 'oak-frontend-base';
 import AspectDict from '../aspects/AspectDict';
-import { AspectWrapper } from 'oak-domain/lib/types';
 import { AppType } from '../oak-app-domain/Application/Schema';
 import { EntityDict } from '../oak-app-domain';
 import Theme from './theme';
@@ -43,6 +43,7 @@ export function initialize<
 
     // 临时代码，合并后再删
     const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application, basicFeatures.locales);
+    const extraFile2 = new ExtraFile2<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application, basicFeatures.locales);
     const config = new Config<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
     const weiXinJsSdk = new WeiXinJsSdk<ED, Cxt, FrontCxt, AD>(
         basicFeatures.cache,
@@ -54,6 +55,7 @@ export function initialize<
     return {
         token,
         extraFile,
+        extraFile2,
         application,
         config,
         weiXinJsSdk,
@@ -70,6 +72,7 @@ export type GeneralFeatures<
 > = {
     token: Token<ED, Cxt, FrontCxt, AD>;
     extraFile: ExtraFile<ED, Cxt, FrontCxt, AD>;
+    extraFile2: ExtraFile2<ED, Cxt, FrontCxt, AD>;
     application: Application<ED, Cxt, FrontCxt, AD>;
     config: Config<ED, Cxt, FrontCxt, AD>;
     weiXinJsSdk: WeiXinJsSdk<ED, Cxt, FrontCxt, AD>;

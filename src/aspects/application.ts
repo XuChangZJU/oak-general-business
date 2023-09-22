@@ -3,6 +3,7 @@ import { EntityDict } from "../oak-app-domain";
 import { AppType, WechatPublicConfig } from "../oak-app-domain/Application/Schema";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { applicationProjection } from '../types/Projection';
+import { MediaType } from '../types/WeChat';
 import {
     WebEnv,
 } from 'oak-domain/lib/types/Environment';
@@ -102,4 +103,82 @@ export async function signatureJsSDK<
     const result = await wechatInstance.signatureJsSDK({ url });
 
     return result;
+}
+
+
+export async function uploadWechatMedia<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(
+    params: {
+        applicationId: string;
+        file: any;
+        type: MediaType;
+        isPermanent?: boolean; //上传临时素材 或永久素材
+        description?: {
+            title: string;
+            introduction: string;
+        };
+    },
+    context: Cxt
+): Promise<{ mediaId: string; }> {
+    const {
+        applicationId,
+        file,
+        type: mediaType,
+        isPermanent,
+        description,
+    } = params;
+
+    const [application] = await context.select(
+        'application',
+        {
+            data: applicationProjection,
+            filter: {
+                id: applicationId,
+            },
+        },
+        {
+            dontCollect: true,
+        }
+    );
+
+    const { type, config } = application!;
+    assert(type === 'wechatPublic' && config!.type === 'wechatPublic');
+    const config2 = config as WechatPublicConfig;
+    const { appId, appSecret } = config2;
+    const wechatInstance = WechatSDK.getInstance(
+        appId,
+        'wechatPublic',
+        appSecret
+    ) as WechatPublicInstance;
+
+    if (isPermanent) {
+        const result = (await wechatInstance.createMaterial({
+            type: mediaType,
+            media: file,
+            description,
+        })) as {
+            media_id: string;
+            url: string;
+        };
+
+        return {
+            mediaId: result.media_id,
+        };
+    }
+
+    const result = (await wechatInstance.createTemporaryMaterial({
+        type: mediaType,
+        media: file,
+    })) as {
+        media_id: string;
+        createdAt: Number;
+        type: MediaType;
+    };
+
+    return {
+        mediaId: result.media_id,
+    };
+
 }

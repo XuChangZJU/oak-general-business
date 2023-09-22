@@ -20,6 +20,7 @@ export default OakComponent({
         fileType: 1,
         sort: 1,
         isBridge: 1,
+        uploadState: 1,
     },
     formData({ data: originalFiles, features }) {
         console.log(originalFiles);
@@ -96,7 +97,9 @@ export default OakComponent({
         getUrl(extraFile) {
             const { fileList } = this.state;
             if (fileList[extraFile?.id]) {
+                console.log(fileList[extraFile?.id]);
                 const url = this.features.extraFile.getUrl(Object.assign({}, extraFile, { extra1: fileList[extraFile?.id] }));
+                console.log(url);
                 return url;
             }
             return this.features.extraFile.getUrl(extraFile);
@@ -238,7 +241,6 @@ export default OakComponent({
             assert(origin === 'qiniu', '目前只支持七牛上传'); // 目前只支持七牛上传
             const id = generateNewId();
             const updateData = {
-                extra1,
                 origin,
                 type: type || 'file',
                 tag1,
@@ -259,9 +261,7 @@ export default OakComponent({
                     callback(updateData, 'uploading');
                 }
                 try {
-                    this.addItem(Object.assign({}, updateData, {
-                        extra1: null,
-                    }), undefined, async () => {
+                    this.addItem(updateData, undefined, async () => {
                         await this.features.extraFile.upload(updateData, extra1);
                     });
                     await this.execute();
@@ -278,9 +278,7 @@ export default OakComponent({
                 }
             }
             else {
-                this.addItem(Object.assign({}, updateData, {
-                    extra1: null,
-                }), undefined, async () => {
+                this.addItem(updateData, undefined, async () => {
                     await this.features.extraFile.upload(updateData, extra1);
                 });
                 this.setState({
@@ -313,10 +311,17 @@ export default OakComponent({
         },
         async onDeleteByMp(event) {
             const { value } = event.currentTarget.dataset;
-            const { id, bucket, origin } = value;
+            const { id, bucket, origin, uploadState } = value;
             const { removeLater } = this.props;
-            if (removeLater || (origin !== 'unknown' && !bucket)) {
+            const { fileList } = this.state;
+            if (removeLater || !uploadState) {
                 this.removeItem(id);
+                Object.assign(fileList, {
+                    [id]: null,
+                });
+                this.setState({
+                    fileList
+                });
             }
             else {
                 const result = await wx.showModal({
@@ -326,16 +331,29 @@ export default OakComponent({
                 const { confirm } = result;
                 if (confirm) {
                     this.removeItem(id);
+                    Object.assign(fileList, {
+                        id: null,
+                    });
+                    this.setState({
+                        fileList
+                    });
                     await this.execute();
                 }
             }
         },
         async onDeleteByWeb(value) {
-            const { id, bucket, origin } = value;
+            const { id, bucket, origin, uploadState } = value;
             const { removeLater = true } = this.props;
+            const { fileList } = this.state;
             // 如果 removeLater为true 或 origin === 'qiniu' 且 bucket不存在
-            if (removeLater || (origin !== 'unknown' && !bucket)) {
+            if (removeLater || !uploadState) {
                 this.removeItem(id);
+                Object.assign(fileList, {
+                    id: null,
+                });
+                this.setState({
+                    fileList
+                });
             }
             else {
                 const confirm = Dialog.confirm({
@@ -345,6 +363,12 @@ export default OakComponent({
                     okText: '确定',
                     onOk: async (e) => {
                         this.removeItem(id);
+                        Object.assign(fileList, {
+                            id: null,
+                        });
+                        this.setState({
+                            fileList
+                        });
                         await this.execute();
                         confirm.destroy();
                     },

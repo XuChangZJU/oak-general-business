@@ -81,7 +81,7 @@ export default OakComponent({
         //     return result;
         // },
         async uploadFile(extraFile) {
-            const result = await this.features.extraFile.createAndUpload(extraFile);
+            const result = await this.features.extraFile.createAndUpload(extraFile, extraFile.extra1);
             return result;
         },
         setEditor(editor) {

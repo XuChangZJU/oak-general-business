@@ -90,7 +90,7 @@ export default OakComponent({
         async uploadFile(
             extraFile: EntityDict['extraFile']['CreateSingle']['data']
         ) {
-            const result = await this.features.extraFile.createAndUpload(extraFile);
+            const result = await this.features.extraFile.createAndUpload(extraFile, extraFile.extra1!);
             return result;
         },
 

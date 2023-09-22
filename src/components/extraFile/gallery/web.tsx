@@ -15,6 +15,7 @@ import { isPc } from "oak-frontend-base/es/utils/utils";
 
 interface NewUploadFile extends UploadFile {
     id?: string;
+    status?: 'done' | 'uploading' | 'error' | 'success' | 'removed';
 }
 
 type Theme = "file" | "image" | "image-flow" | "custom";
@@ -145,8 +146,8 @@ export default function render(
     >([]);
     const [newUploadFiles, setNewUploadFiles] = useState<NewUploadFile[]>([]);
 
+    
     const listType = getListType(theme);
-
     useEffect(() => {
         if (files && files.length > 0) {
             setNewFiles(files);
@@ -158,6 +159,21 @@ export default function render(
     const extraFileToUploadFile = (
         extraFile: EntityDict["extraFile"]["OpSchema"]
     ): NewUploadFile => {
+        let status = undefined as NewUploadFile['status'];
+        switch (extraFile.uploadState) {
+            case 'uploading': {
+                status = 'uploading';
+                break;
+            }
+            case 'failed': {
+                status = 'error';
+                break;
+            }
+            case 'success': {
+                status = 'done';
+                break;
+            }
+        }
         return Object.assign({}, extraFile, {
             id: extraFile.id,
             url: getUrl(extraFile),
@@ -167,7 +183,8 @@ export default function render(
             size: extraFile.size!,
             type: extraFile.fileType!,
             uid: extraFile.id, //upload 组件需要uid来维护fileList
-            // status: 'done',
+            status,
+            percent: status === 'uploading' ? 50 : undefined,
         });
     };
 
