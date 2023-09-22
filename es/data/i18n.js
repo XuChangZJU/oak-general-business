@@ -136,6 +136,18 @@ const i18ns = [
         }
     },
     {
+        id: "d294bc3cfdc260f1bcc6b96b4b9b49b0",
+        namespace: "oak-general-business-c-extraFile-commit",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/extraFile/commit",
+        data: {
+            "executing": "%{text}中...",
+            "upload": "上传",
+            "uploading": "上传中"
+        }
+    },
+    {
         id: "5c2e6feed554bc476664f2a80e09677b",
         namespace: "oak-general-business-c-extraFile-forUrl",
         language: "zh-CN",
@@ -162,11 +174,11 @@ const i18ns = [
         }
     },
     {
-        id: "d30e4a47c1d768d74efae1fade371595",
-        namespace: "oak-general-business-c-extraFile-gallery2",
+        id: "a0e4461f6283d6ecd0b6bba64c0560c2",
+        namespace: "oak-general-business-c-extraFile-upload",
         language: "zh-CN",
         module: "oak-general-business",
-        position: "src/components/extraFile/gallery2",
+        position: "src/components/extraFile/upload",
         data: {
             "choosePicture": "请选择图片",
             "chooseFile": "请选择文件"
