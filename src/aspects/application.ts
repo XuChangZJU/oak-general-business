@@ -3,7 +3,7 @@ import { EntityDict } from "../oak-app-domain";
 import { AppType, WechatPublicConfig } from "../oak-app-domain/Application/Schema";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { applicationProjection } from '../types/Projection';
-import { MediaType } from '../types/WeChat';
+import { MediaType, MediaVideoDescription } from '../types/WeChat';
 import {
     WebEnv,
 } from 'oak-domain/lib/types/Environment';
@@ -11,6 +11,7 @@ import {
     WechatPublicInstance,
     WechatSDK,
 } from 'oak-external-sdk';
+import fs from 'fs';
 
 export async function getApplication<
     ED extends EntityDict,
@@ -114,12 +115,9 @@ export async function uploadWechatMedia<
         applicationId: string;
         file: any;
         type: MediaType;
-        isPermanent?: boolean; //上传临时素材 或永久素材
-        description?: {
-            title: string;
-            introduction: string;
-        };
-    },
+        isPermanent?: string; //上传临时素材 或永久素材
+        description?: string;
+    }, // FormData表单提交 isPermanent 变成 'true' | 'false'
     context: Cxt
 ): Promise<{ mediaId: string; }> {
     const {
@@ -129,6 +127,7 @@ export async function uploadWechatMedia<
         isPermanent,
         description,
     } = params;
+    const file2 = fs.createReadStream(file.filepath)
 
     const [application] = await context.select(
         'application',
@@ -153,11 +152,11 @@ export async function uploadWechatMedia<
         appSecret
     ) as WechatPublicInstance;
 
-    if (isPermanent) {
+    if (isPermanent === 'true') {
         const result = (await wechatInstance.createMaterial({
             type: mediaType,
-            media: file,
-            description,
+            media: file2 as any,
+            description: description ? JSON.parse(description) : null,
         })) as {
             media_id: string;
             url: string;
@@ -170,7 +169,7 @@ export async function uploadWechatMedia<
 
     const result = (await wechatInstance.createTemporaryMaterial({
         type: mediaType,
-        media: file,
+        media: file2 as any,
     })) as {
         media_id: string;
         createdAt: Number;

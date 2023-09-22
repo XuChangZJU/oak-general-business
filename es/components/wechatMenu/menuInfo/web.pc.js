@@ -14,9 +14,10 @@ import TextClick from '../textClick';
 export default function Render(props) {
     const { data, methods } = props;
     const { config, menuIndex, selectedBtn, selectedSubBtn, currentIndex, changeIsPreview, getOpen, menuType, applicationId, menuId } = data;
-    const { setConfig, confirmName, confirmSubName, editMenuName, deleteMenuContent, getMaterialImgAndVoice, getMaterialVideo, decideMenuContentLabel, getArticle, createMenu, deleteConditionalMenu } = methods;
+    const { setConfig, confirmName, confirmSubName, editMenuName, deleteMenuContent, getMaterialImgAndVoice, getMaterialVideo, decideMenuContentLabel, getArticle, createMenu, deleteConditionalMenu, confirmUrl, } = methods;
     const [msgType, setMsgType] = useState('sendMsg');
     const [errorInfo, setErrorInfo] = useState('');
+    const [errorUrlInfo, setErrorUrlInfo] = useState('');
     const [onlyOne, setOnlyOne] = useState(true);
     const [menuName, setMenuName] = useState('');
     const [open, setOpen] = useState(false);
@@ -377,11 +378,14 @@ export default function Render(props) {
                                                 setOpen(false);
                                                 getOpen(false);
                                                 setMenuContent(null);
-                                            }, destroyOnClose: true, width: 960, children: _jsx(WechatMaterialLibrary, { oakAutoUnmount: true, type: type, getMenuContent: getMenuContent, applicationId: applicationId }) })] })) : msgType === 'view' ? (_jsxs(Form.Item, { colon: false, label: _jsx("div", { className: Style.label, children: "\u7F51\u9875\u94FE\u63A5" }), children: [_jsxs("div", { style: { display: 'flex', flexDirection: 'column' }, children: [_jsx(Input, { placeholder: '\u516C\u4F17\u53F7\u94FE\u63A5', style: { width: 340 }, value: url, onChange: (val) => setUrl(val.target.value) }), _jsx("a", { style: { padding: '10px 0' }, onClick: () => { setOpen(true); getOpen(true); }, children: "\u9009\u62E9\u56FE\u6587\u94FE\u63A5" })] }), _jsx(Modal, { open: open, footer: null, title: '选择图文链接', onCancel: () => { setOpen(false); getOpen(false); }, width: 600, children: _jsx(SelectArticle, { oakAutoUnmount: true, changeOpen: changeOpen, getUrl: getUrl, applicationId: applicationId }) })] })) : (_jsxs(Form.Item, { colon: false, label: _jsx("div", { className: Style.label, children: "\u5C0F\u7A0B\u5E8F" }), children: [_jsx(Button, { onClick: () => {
+                                            }, destroyOnClose: true, width: 960, children: _jsx(WechatMaterialLibrary, { oakAutoUnmount: true, type: type, getMenuContent: getMenuContent, applicationId: applicationId }) })] })) : msgType === 'view' ? (_jsxs(Form.Item, { colon: false, label: _jsx("div", { className: Style.label, children: "\u7F51\u9875\u94FE\u63A5" }), help: _jsx(_Fragment, { children: errorUrlInfo && _jsx("div", { style: { color: '#fa5151' }, children: errorUrlInfo }) }), children: [_jsxs("div", { style: { display: 'flex', flexDirection: 'column' }, children: [_jsx(Input, { placeholder: '\u516C\u4F17\u53F7\u94FE\u63A5:\u8BF7\u4EE5https://\u6216http://\u5F00\u5934', style: { width: 340 }, value: url, onChange: (val) => {
+                                                        setUrl(val.target.value);
+                                                        setErrorUrlInfo(confirmUrl(val.target.value));
+                                                    }, status: errorUrlInfo ? 'error' : '' }), _jsx("a", { style: { padding: '10px 0' }, onClick: () => { setOpen(true); getOpen(true); }, children: "\u9009\u62E9\u56FE\u6587\u94FE\u63A5" })] }), _jsx(Modal, { open: open, footer: null, title: '选择图文链接', onCancel: () => { setOpen(false); getOpen(false); }, width: 600, children: _jsx(SelectArticle, { oakAutoUnmount: true, changeOpen: changeOpen, getUrl: getUrl, applicationId: applicationId }) })] })) : (_jsxs(Form.Item, { colon: false, label: _jsx("div", { className: Style.label, children: "\u5C0F\u7A0B\u5E8F" }), children: [_jsx(Button, { onClick: () => {
                                                 setOpen(true);
                                                 getOpen(true);
                                             }, children: "\u9009\u62E9\u5C0F\u7A0B\u5E8F" }), menuContent && menuContent.appid && _jsx("div", { children: menuContent.appid }), _jsx(Modal, { title: '添加小程序', open: open, footer: null, onCancel: () => { setOpen(false); getOpen(false); }, children: _jsx(SelectMiniprogram, { oakAutoUnmount: true, getMenuContent: getMenuContent, changeOpen: changeOpen }) })] }))] })) : (null)] }), _jsx("div", { className: Style.actionBar, children: _jsxs(Space, { children: [_jsxs(Button, { onClick: () => changeIsPreview(true), children: [_jsx(EyeOutlined, {}), "\u9884\u89C8"] }), _jsxs(Button, { type: 'primary', onClick: async () => {
-                                    createMenu();
+                                    createMenu(errorInfo, errorUrlInfo);
                                 }, children: [_jsx(CheckOutlined, {}), "\u53D1\u5E03"] }), menuType === 'conditional' && config && menuId && _jsxs(Button, { type: 'primary', danger: true, onClick: () => {
                                     const modal = confirm({
                                         title: '确定删除该个性化菜单吗？',
@@ -394,6 +398,6 @@ export default function Render(props) {
                                         },
                                     });
                                 }, children: [_jsx(DeleteOutlined, {}), "\u5220\u9664"] })] }) })] })) : (_jsxs("div", { className: Style.empty, children: [_jsx("div", { className: Style.content, children: "\u4F60\u672A\u6DFB\u52A0\u81EA\u5B9A\u4E49\u83DC\u5355\uFF0C\u70B9\u51FB\u5DE6\u4FA7\u6DFB\u52A0\u83DC\u5355\u4E3A\u516C\u4F17\u53F7\u521B\u5EFA\u83DC\u5355\u680F\u3002" }), _jsx("div", { className: Style.actionBar, children: _jsxs(Space, { children: [_jsxs(Button, { onClick: () => changeIsPreview(true), children: [_jsx(EyeOutlined, {}), "\u9884\u89C8"] }), _jsxs(Button, { type: 'primary', onClick: async () => {
-                                    createMenu();
+                                    createMenu(errorInfo, errorUrlInfo);
                                 }, children: [_jsx(CheckOutlined, {}), "\u53D1\u5E03"] })] }) })] })) }));
 }

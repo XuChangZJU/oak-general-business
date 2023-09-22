@@ -22,4 +22,5 @@ export declare class Application<ED extends EntityDict, Cxt extends BackendRunti
     initialize(appId?: string | null, projection?: EntityDict['application']['Selection']['data']): Promise<void>;
     getApplication(): Partial<import("../oak-app-domain/Application/Schema").Schema> | undefined;
     getApplicationId(): string | undefined;
+    uploadWechatMedia(formData: FormData): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["uploadWechatMedia"]>>;
 }

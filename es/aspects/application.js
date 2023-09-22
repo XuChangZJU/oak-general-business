@@ -1,6 +1,7 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { applicationProjection } from '../types/Projection';
 import { WechatSDK, } from 'oak-external-sdk';
+import fs from 'fs';
 export async function getApplication(params, context) {
     const { type, domain } = params;
     const url = context.getHeader('host');
@@ -56,6 +57,38 @@ export async function signatureJsSDK({ url, env }, context) {
     const result = await wechatInstance.signatureJsSDK({ url });
     return result;
 }
-export async function uploadWechatMedia(params, context) {
-    throw new Error('method not implemented');
+export async function uploadWechatMedia(params, // FormData表单提交 isPermanent 变成 'true' | 'false'
+context) {
+    const { applicationId, file, type: mediaType, isPermanent, description, } = params;
+    const file2 = fs.createReadStream(file.filepath);
+    const [application] = await context.select('application', {
+        data: applicationProjection,
+        filter: {
+            id: applicationId,
+        },
+    }, {
+        dontCollect: true,
+    });
+    const { type, config } = application;
+    assert(type === 'wechatPublic' && config.type === 'wechatPublic');
+    const config2 = config;
+    const { appId, appSecret } = config2;
+    const wechatInstance = WechatSDK.getInstance(appId, 'wechatPublic', appSecret);
+    if (isPermanent === 'true') {
+        const result = (await wechatInstance.createMaterial({
+            type: mediaType,
+            media: file2,
+            description: description ? JSON.parse(description) : null,
+        }));
+        return {
+            mediaId: result.media_id,
+        };
+    }
+    const result = (await wechatInstance.createTemporaryMaterial({
+        type: mediaType,
+        media: file2,
+    }));
+    return {
+        mediaId: result.media_id,
+    };
 }

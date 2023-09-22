@@ -5,5 +5,5 @@ type Props = {
     description?: string;
     children?: React.ReactNode;
 };
-declare const _default: React.MemoExoticComponent<(props: Props) => JSX.Element>;
+declare const _default: React.MemoExoticComponent<(props: Props) => import("react/jsx-runtime").JSX.Element>;
 export default _default;

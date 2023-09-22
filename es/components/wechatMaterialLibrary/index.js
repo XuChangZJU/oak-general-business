@@ -11,26 +11,29 @@ export default OakComponent({
             let result;
             if (type === 'news') {
                 result = await this.features.wechatMenu.batchGetArticle({ applicationId: applicationId, offset: 0, count: 10, noContent: 0 });
-                const modifiedResult = await Promise.all(result.item.map(async (ele) => {
-                    const news_item = await Promise.all(ele.content.news_item.map(async (ele2) => {
-                        const coverUrl = await this.getMaterialImg(ele2.thumb_media_id);
+                const news = JSON.parse(result);
+                if (news && news.item.length > 0) {
+                    const modifiedResult = await Promise.all(news.item.map(async (ele) => {
+                        const news_item = await Promise.all(ele.content.news_item.map(async (ele2) => {
+                            const coverUrl = await this.getMaterialImg(ele2.thumb_media_id);
+                            return {
+                                ...ele2,
+                                coverUrl
+                            };
+                        }));
                         return {
-                            ...ele2,
-                            coverUrl
+                            ...ele,
+                            content: {
+                                ...ele.content,
+                                news_item
+                            }
                         };
                     }));
-                    return {
-                        ...ele,
-                        content: {
-                            ...ele.content,
-                            news_item
-                        }
-                    };
-                }));
-                this.setState({
-                    materials: modifiedResult,
-                    total: result.total_count,
-                });
+                    this.setState({
+                        materials: modifiedResult,
+                        total: news.total_count,
+                    });
+                }
             }
             else {
                 result = await this.features.wechatMenu.batchGetMaterialList({ applicationId: applicationId, type: type, offset: 0, count: 10 });
@@ -81,8 +84,8 @@ export default OakComponent({
             const { applicationId } = this.props;
             const { type } = this.props;
             console.log(media);
-            const result = await this.features.wechatMenu.createMaterial({ applicationId: applicationId, type: type, media, description });
-            if (result && result.media_id) {
+            const result = await this.features.wechatMenu.createMaterial({ applicationId: applicationId, type: type, file: media, description, isPermanent: true });
+            if (result && result.mediaId) {
                 this.setMessage({
                     type: 'success',
                     content: '上传成功',

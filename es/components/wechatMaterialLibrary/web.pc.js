@@ -14,7 +14,7 @@ export default function Render(props) {
     const [title, setTitle] = useState('');
     const [introduction, setIntroduction] = useState('');
     const [fileList, setFileList] = useState([]);
-    const [video, setVideo] = useState(new FormData);
+    const [video, setVideo] = useState();
     const checkFileType = (filename) => {
         const fileExtension = filename?.split('.')?.pop()?.toLowerCase();
         let allowedExtensions = [];
@@ -40,10 +40,8 @@ export default function Render(props) {
     };
     const uploadFile = async (file) => {
         if (checkFileType(file.name)) {
-            const formData = new FormData();
-            formData.append('media', file);
-            console.log(file);
-            upload(formData);
+            const newFile = { ...file };
+            upload(file);
         }
         else {
             return;
@@ -54,9 +52,7 @@ export default function Render(props) {
     };
     const uploadVideo = async (file) => {
         if (checkFileType(file.name)) {
-            const formData = new FormData();
-            formData.append('media', file);
-            setVideo(formData);
+            setVideo(file);
             const updataFileList = fileList.map((ele) => {
                 return {
                     ...ele,
@@ -215,8 +211,7 @@ export default function Render(props) {
                                             title,
                                             introduction,
                                         };
-                                        formData.append('description', JSON.stringify(descriptionData));
-                                        if (upload(video, formData)) {
+                                        if (upload(video, descriptionData)) {
                                             setUpsertOpen(false);
                                         }
                                     }, children: "\u4E0A\u4F20" }), _jsx(Button, { onClick: () => setUpsertOpen(false), children: "\u53D6\u6D88" })] }), children: _jsxs("div", { children: [_jsx(Form.Item, { label: _jsx("div", { className: Style.label, children: "\u6807\u9898" }), required: true, labelAlign: 'right', labelCol: { span: 4 }, children: _jsx(Input, { showCount: true, maxLength: 20, value: title, onChange: (val) => setTitle(val.target.value) }) }), _jsx(Form.Item, { label: _jsx("div", { className: Style.label, children: "\u89C6\u9891\u4ECB\u7ECD" }), required: true, children: _jsx(TextArea, { showCount: true, maxLength: 300, value: introduction, autoSize: { minRows: 5 }, onChange: (val) => setIntroduction(val.target.value) }) }), _jsx(Form.Item, { label: _jsx("div", { className: Style.label, children: "\u4E0A\u4F20\u89C6\u9891" }), required: true, children: _jsx(Upload, { customRequest: ({ file }) => uploadVideo(file), maxCount: 1, onChange: fileChange, fileList: fileList, children: _jsxs(Button, { children: [_jsx(DownloadOutlined, {}), fileList.length > 0 ? '重新' : '', "\u4E0A\u4F20"] }) }) })] }) })] }), _jsx("div", { className: Style.list, children: _jsx(Table, { rowKey: type === 'news' ? 'article_id' : 'media_id', dataSource: materials, columns: type === 'news' ? newsColumns : columns, pagination: {

@@ -1,13 +1,13 @@
 import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCaptcha, switchTo, refreshWechatPublicUserInfo, getWechatMpUserPhoneNumber, logout, loginByWechat, wakeupParasite } from './token';
 import { getInfoByUrl } from './extraFile';
-import { getApplication, signatureJsSDK } from './application';
+import { getApplication, signatureJsSDK, uploadWechatMedia } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user';
 import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
 import { getMpUnlimitWxaCode } from './wechatQrCode';
 import { confirmUserEntityGrant } from './userEntityGrant';
-import { getCurrentMenu, getMenu, createMenu, createConditionalMenu, deleteConditionalMenu, batchGetArticle, getArticle, createMaterial, batchGetMaterialList, getMaterial } from './wechatMenu';
+import { getCurrentMenu, getMenu, createMenu, createConditionalMenu, deleteConditionalMenu, batchGetArticle, getArticle, batchGetMaterialList, getMaterial } from './wechatMenu';
 declare const aspectDict: {
     mergeUser: typeof mergeUser;
     switchTo: typeof switchTo;
@@ -32,6 +32,7 @@ declare const aspectDict: {
     updateUserPassword: typeof updateUserPassword;
     getMpUnlimitWxaCode: typeof getMpUnlimitWxaCode;
     confirmUserEntityGrant: typeof confirmUserEntityGrant;
+    uploadWechatMedia: typeof uploadWechatMedia;
     getCurrentMenu: typeof getCurrentMenu;
     getMenu: typeof getMenu;
     createMenu: typeof createMenu;
@@ -39,7 +40,6 @@ declare const aspectDict: {
     deleteConditionalMenu: typeof deleteConditionalMenu;
     batchGetArticle: typeof batchGetArticle;
     getArticle: typeof getArticle;
-    createMaterial: typeof createMaterial;
     batchGetMaterialList: typeof batchGetMaterialList;
     getMaterial: typeof getMaterial;
 };

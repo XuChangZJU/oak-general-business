@@ -6,6 +6,11 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Cache } from 'oak-frontend-base/es/features/cache';
 import { LocalStorage } from 'oak-frontend-base/es/features/localStorage';
+import {
+   MediaType,
+   MediaVideoDescription,
+   MenuType
+} from '../types/WeChat'
 
 
 export class WechatMenu<
@@ -81,17 +86,30 @@ export class WechatMenu<
 
     async createMaterial(params: {
         applicationId: string,
-        type: 'image' | 'voice' | 'video' | 'thumb',
-        media: FormData,
-        description?: FormData
-    },) {
-        const callBack = await this.cache.exec('createMaterial', params);
+        type: MediaType,
+        file: File,
+        description?: MediaVideoDescription,
+        isPermanent?: boolean
+    }) {
+        const { applicationId, type, file, description, isPermanent = false } = params;
+        const formData = new FormData();
+        formData.append('applicationId', applicationId);
+        formData.append('type', type);
+        formData.append('file', file);
+        if (description) {
+            formData.append('description', JSON.stringify(description));
+        }
+        if (isPermanent) {
+            formData.append('isPermanent', `${isPermanent}`);
+        }
+       
+        const callBack = await this.cache.exec('uploadWechatMedia', formData);
         return callBack.result;
     }
 
     async batchGetMaterialList(params: {
         applicationId: string,
-        type: 'image' | 'video' | 'voice' | 'news',
+        type: MenuType,
         offset?: number;
         count: number;
     },) {
@@ -101,7 +119,7 @@ export class WechatMenu<
 
     async getMaterial(params: {
         applicationId: string,
-        type: 'image' | 'video' | 'voice' | 'news',
+        type: MenuType,
         media_id: string,
     },) {
         const callBack = await this.cache.exec('getMaterial', params);

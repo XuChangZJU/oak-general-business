@@ -1,8 +1,9 @@
+import { MenuType, MediaVideoDescription } from '../../types/WeChat'
 
 export default OakComponent({
     isList: false,
     properties: {
-        type: '' as 'image' | 'news' | 'voice' | 'video',
+        type: '' as MenuType,
         getMenuContent: (menuContent: any) => undefined as void,
         applicationId: '',
     },
@@ -82,12 +83,12 @@ export default OakComponent({
                 total: result.total_count,
             });
         },
-        async upload(media: FormData, description?: FormData) {
+        async upload(media: File, description?: MediaVideoDescription) {
             const { applicationId } = this.props;
             const { type } = this.props;
             console.log(media);
-            const result = await this.features.wechatMenu.createMaterial({ applicationId: applicationId!, type: type as 'image' | 'voice' | 'video', media, description });
-            if (result && result.media_id) {
+            const result = await this.features.wechatMenu.createMaterial({ applicationId: applicationId!, type: type as 'image' | 'voice' | 'video', file: media, description, isPermanent: true });
+            if (result && result.mediaId) {
                 this.setMessage({
                     type: 'success',
                     content: '上传成功',

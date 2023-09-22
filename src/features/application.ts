@@ -13,6 +13,7 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 
 import { applicationProjection } from '../types/Projection';
+import { MediaType, MediaVideoDescription } from '../types/WeChat'
 
 export class Application<
     ED extends EntityDict,
@@ -116,5 +117,19 @@ export class Application<
 
     getApplicationId() {
         return this.applicationId;
+    }
+
+    async uploadWechatMedia( 
+    //     params: {
+    //     applicationId: string;
+    //     file: any;
+    //     type: MediaType;
+    //     isPermanent?: boolean; //上传临时素材 或永久素材
+    //     description?: MediaVideoDescription;
+    // }
+    formData: FormData
+    ) {
+        const callBack = await this.cache.exec('uploadWechatMedia', formData);
+        return callBack.result;
     }
 }

@@ -32,6 +32,7 @@ export default function Render(props: WebComponentProps<EntityDict, keyof Entity
     getMaterialVideo: (media_id: string) => void;
     decideMenuContentLabel: (obj: any, type: 'news' | 'image' | 'video' | 'voice' | 'text') => string;
     getArticle: (article_id: string) => void;
-    createMenu: () => void;
+    createMenu: (errorInfo: string, errorUrlInfo: string) => void;
     deleteConditionalMenu: () => void;
+    confirmUrl: (url: string) => string;
 }>): import("react/jsx-runtime").JSX.Element;

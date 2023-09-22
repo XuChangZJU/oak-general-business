@@ -77,4 +77,16 @@ export class Application extends Feature {
     getApplicationId() {
         return this.applicationId;
     }
+    async uploadWechatMedia(
+    //     params: {
+    //     applicationId: string;
+    //     file: any;
+    //     type: MediaType;
+    //     isPermanent?: boolean; //上传临时素材 或永久素材
+    //     description?: MediaVideoDescription;
+    // }
+    formData) {
+        const callBack = await this.cache.exec('uploadWechatMedia', formData);
+        return callBack.result;
+    }
 }

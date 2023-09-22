@@ -2,6 +2,7 @@ import { WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
 import { AppType } from '../oak-app-domain/Application/Schema';
 import { EntityDict } from '../oak-app-domain';
 import { Config } from '../types/Config';
+import { MenuType } from '../types/WeChat';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = {
     mergeUser: (params: {
@@ -105,6 +106,9 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
         result: string;
         times?: number;
     }>;
+    uploadWechatMedia: (params: any, context: Cxt) => Promise<{
+        mediaId: string;
+    }>;
     getCurrentMenu: (params: {
         applicationId: string;
     }, context: Cxt) => Promise<any>;
@@ -133,21 +137,15 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
         applicationId: string;
         article_id: string;
     }, context: Cxt) => Promise<any>;
-    createMaterial: (params: {
-        applicationId: string;
-        type: 'image' | 'voice' | 'video' | 'thumb';
-        media: FormData;
-        description?: FormData;
-    }, context: Cxt) => Promise<any>;
     batchGetMaterialList: (params: {
         applicationId: string;
-        type: 'image' | 'video' | 'voice' | 'news';
+        type: MenuType;
         offset?: number;
         count: number;
     }, context: Cxt) => Promise<any>;
     getMaterial: (params: {
         applicationId: string;
-        type: 'image' | 'video' | 'voice' | 'news';
+        type: MenuType;
         media_id: string;
     }, context: Cxt) => Promise<any>;
 };

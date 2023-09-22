@@ -1,5 +1,6 @@
 import { EntityDict } from '../oak-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { MenuType } from '../types/WeChat';
 export declare function getCurrentMenu<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
 }, context: Cxt): Promise<any>;
@@ -28,20 +29,14 @@ export declare function getArticle<ED extends EntityDict, Cxt extends BackendRun
     applicationId: string;
     article_id: string;
 }, context: Cxt): Promise<any>;
-export declare function createMaterial<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
-    applicationId: string;
-    type: 'image' | 'voice' | 'video' | 'thumb';
-    media: FormData;
-    description?: FormData;
-}, context: Cxt): Promise<any>;
 export declare function batchGetMaterialList<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
-    type: 'image' | 'video' | 'voice' | 'news';
+    type: MenuType;
     offset?: number;
     count: number;
 }, context: Cxt): Promise<any>;
 export declare function getMaterial<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
-    type: 'image' | 'video' | 'voice' | 'news';
+    type: MenuType;
     media_id: string;
 }, context: Cxt): Promise<any>;

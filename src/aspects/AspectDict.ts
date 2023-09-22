@@ -2,8 +2,9 @@ import { WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
 import { AppType } from '../oak-app-domain/Application/Schema';
 import { EntityDict } from '../oak-app-domain';
 import { Config, Origin } from '../types/Config';
-import { MediaType } from '../types/WeChat';
+import { MediaType, MenuType } from '../types/WeChat';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { MediaVideoDescription } from '../types/WeChat'
 
 export type GeneralAspectDict<
     ED extends EntityDict,
@@ -168,16 +169,7 @@ export type GeneralAspectDict<
         context: Cxt
     ) => Promise<{ result: string, times?: number }>;
     uploadWechatMedia: (
-        params: {
-            applicationId: string;
-            file: any;
-            type: MediaType;
-            isPermanent?: boolean; //上传临时素材 或永久素材
-            description?: {
-                title: string;
-                introduction: string;
-            };
-        },
+        params: any,
         context: Cxt
     ) => Promise<{ mediaId: string }>;
     getCurrentMenu: (
@@ -229,19 +221,10 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<any>; 
-    createMaterial: (
-        params: {
-            applicationId: string,
-            type: 'image' | 'voice' | 'video' | 'thumb',
-            media: FormData,
-            description?: FormData
-        },
-        context: Cxt
-    ) => Promise<any>; 
     batchGetMaterialList: (
         params: {
             applicationId: string,
-            type: 'image' | 'video' | 'voice' | 'news',
+            type: MenuType,
             offset?: number;
             count: number;
         },
@@ -250,7 +233,7 @@ export type GeneralAspectDict<
     getMaterial: (
         params: {
             applicationId: string,
-            type: 'image' | 'video' | 'voice' | 'news',
+            type: MenuType,
             media_id: string,
         },
         context: Cxt

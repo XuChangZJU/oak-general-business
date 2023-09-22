@@ -15,7 +15,6 @@ import { isPc } from "oak-frontend-base/es/utils/utils";
 
 interface NewUploadFile extends UploadFile {
     id?: string;
-    status?: 'done' | 'uploading' | 'error' | 'success' | 'removed';
 }
 
 type Theme = "file" | "image" | "image-flow" | "custom";

@@ -47,7 +47,10 @@ export default OakComponent({
             });
         },
         goUpdate(id: string) {
-
+            const { applicationId } = this.props;
+            this.navigateTo({
+                url: '//wechatPublic/tag/upsert'
+            })
         }
     }
 });

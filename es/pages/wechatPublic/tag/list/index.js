@@ -7,6 +7,7 @@ export default OakComponent({
         wechatId: 1,
         sync: 1,
         syncAt: 1,
+        applicationId: 1,
         $$createAt$$: 1,
         $$updateAt$$: 1,
         $$seq$$: 1,
@@ -24,6 +25,16 @@ export default OakComponent({
             list: data,
         };
     },
+    filters: [
+        {
+            filter() {
+                const { applicationId } = this.props;
+                return {
+                    applicationId
+                };
+            }
+        }
+    ],
     properties: {
         applicationId: '',
     },
@@ -36,6 +47,10 @@ export default OakComponent({
             });
         },
         goUpdate(id) {
+            const { applicationId } = this.props;
+            this.navigateTo({
+                url: '//wechatPublic/tag/upsert'
+            });
         }
     }
 });

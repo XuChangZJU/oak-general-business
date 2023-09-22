@@ -36,7 +36,18 @@ export class WechatMenu extends Feature {
         return callBack.result;
     }
     async createMaterial(params) {
-        const callBack = await this.cache.exec('createMaterial', params);
+        const { applicationId, type, file, description, isPermanent = false } = params;
+        const formData = new FormData();
+        formData.append('applicationId', applicationId);
+        formData.append('type', type);
+        formData.append('file', file);
+        if (description) {
+            formData.append('description', JSON.stringify(description));
+        }
+        if (isPermanent) {
+            formData.append('isPermanent', `${isPermanent}`);
+        }
+        const callBack = await this.cache.exec('uploadWechatMedia', formData);
         return callBack.result;
     }
     async batchGetMaterialList(params) {

@@ -1,13 +1,13 @@
 import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCaptcha, switchTo, refreshWechatPublicUserInfo, getWechatMpUserPhoneNumber, logout, loginByWechat, wakeupParasite, } from './token';
 import { getInfoByUrl } from './extraFile';
-import { getApplication, signatureJsSDK } from './application';
+import { getApplication, signatureJsSDK, uploadWechatMedia, } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user';
 import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
 import { getMpUnlimitWxaCode } from './wechatQrCode';
 import { confirmUserEntityGrant } from './userEntityGrant';
-import { getCurrentMenu, getMenu, createMenu, createConditionalMenu, deleteConditionalMenu, batchGetArticle, getArticle, createMaterial, batchGetMaterialList, getMaterial, } from './wechatMenu';
+import { getCurrentMenu, getMenu, createMenu, createConditionalMenu, deleteConditionalMenu, batchGetArticle, getArticle, batchGetMaterialList, getMaterial, } from './wechatMenu';
 const aspectDict = {
     mergeUser,
     switchTo,
@@ -32,6 +32,7 @@ const aspectDict = {
     updateUserPassword,
     getMpUnlimitWxaCode,
     confirmUserEntityGrant,
+    uploadWechatMedia,
     getCurrentMenu,
     getMenu,
     createMenu,
@@ -39,7 +40,6 @@ const aspectDict = {
     deleteConditionalMenu,
     batchGetArticle,
     getArticle,
-    createMaterial,
     batchGetMaterialList,
     getMaterial,
 };

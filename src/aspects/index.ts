@@ -31,7 +31,6 @@ import {
     deleteConditionalMenu,
     batchGetArticle,
     getArticle,
-    createMaterial,
     batchGetMaterialList,
     getMaterial,  
 } from './wechatMenu'
@@ -68,7 +67,6 @@ const aspectDict = {
     deleteConditionalMenu,
     batchGetArticle,
     getArticle,
-    createMaterial,
     batchGetMaterialList,
     getMaterial,
 };

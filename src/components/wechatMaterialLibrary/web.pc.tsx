@@ -11,7 +11,7 @@ import fs from 'fs';
 import { RcFile, UploadChangeParam } from 'antd/lib/upload/interface';
 import type { UploadFile } from 'antd/es/upload/interface';
 import ShowNews from '../wechatMenu/showNews';
-
+import { MediaVideoDescription } from '../../types/WeChat'
 
 export default function Render(
     props: WebComponentProps<
@@ -27,7 +27,7 @@ export default function Render(
         {
             getMaterialList: (page: number) => void;
             getArticleList: (page: number) => void;
-            upload: (media: FormData, description?: FormData) => boolean;
+            upload: (media: File, description?: MediaVideoDescription) => boolean;
         }
     >
 ) {
@@ -38,7 +38,7 @@ export default function Render(
     const [title, setTitle] = useState('');
     const [introduction, setIntroduction] = useState('');
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-    const [video, setVideo] = useState<FormData>(new FormData);
+    const [video, setVideo] = useState<File>();
     const checkFileType = (filename: string) => {
         const fileExtension = filename?.split('.')?.pop()?.toLowerCase();
         let allowedExtensions = [] as string[];
@@ -61,10 +61,8 @@ export default function Render(
     };
     const uploadFile = async (file: RcFile) => {
         if (checkFileType(file.name)) {
-            const formData = new FormData();
-            formData.append('media', file);
-            console.log(file)
-            upload(formData);
+            const newFile = {...file};
+            upload(file);
         } else {
             return;
         }
@@ -74,9 +72,7 @@ export default function Render(
     }
     const uploadVideo = async (file: RcFile) => {
         if (checkFileType(file.name)) {
-            const formData = new FormData();
-            formData.append('media', file);
-            setVideo(formData);
+            setVideo(file);
             const updataFileList = fileList.map((ele) => {
                 return {
                     ...ele,
@@ -299,8 +295,7 @@ export default function Render(
                                         title,
                                         introduction,
                                     };
-                                    formData.append('description', JSON.stringify(descriptionData));
-                                    if (upload(video, formData)) {
+                                    if (upload(video!, descriptionData)) {
                                         setUpsertOpen(false);
                                     }
                                 }}>
