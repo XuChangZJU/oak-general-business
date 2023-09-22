@@ -4,6 +4,7 @@ import { ExtraFile } from './extraFile';
 import { Application } from './application';
 import { Config } from './config';
 import { WeiXinJsSdk } from './weiXinJsSdk';
+import { WechatMenu } from './wechatMenu';
 import { BasicFeatures } from 'oak-frontend-base';
 import AspectDict from '../aspects/AspectDict';
 import { AppType } from '../oak-app-domain/Application/Schema';
@@ -19,4 +20,5 @@ export type GeneralFeatures<ED extends EntityDict, Cxt extends BackendRuntimeCon
     config: Config<ED, Cxt, FrontCxt, AD>;
     weiXinJsSdk: WeiXinJsSdk<ED, Cxt, FrontCxt, AD>;
     theme: Theme<ED, Cxt, FrontCxt, AD>;
+    wechatMenu: WechatMenu<ED, Cxt, FrontCxt, AD>;
 };

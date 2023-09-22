@@ -3,10 +3,12 @@ import { ExtraFile } from './extraFile';
 import { Application } from './application';
 import { Config } from './config';
 import { WeiXinJsSdk } from './weiXinJsSdk';
+import { WechatMenu } from './wechatMenu';
 import Theme from './theme';
 export function initialize(basicFeatures, type, domain) {
     const application = new Application(type, domain, basicFeatures.cache, basicFeatures.localStorage);
     const token = new Token(basicFeatures.cache, basicFeatures.localStorage, basicFeatures.environment);
+    const wechatMenu = new WechatMenu(basicFeatures.cache, basicFeatures.localStorage);
     // 临时代码，合并后再删
     const extraFile = new ExtraFile(basicFeatures.cache, application, basicFeatures.locales);
     const config = new Config(basicFeatures.cache);
@@ -19,5 +21,6 @@ export function initialize(basicFeatures, type, domain) {
         config,
         weiXinJsSdk,
         theme,
+        wechatMenu
     };
 }

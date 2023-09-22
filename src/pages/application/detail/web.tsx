@@ -13,6 +13,7 @@ import {
 import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 import MessageTypeTemplateIdList from '../../../components/messageTypeTemplateId/list';
+import WechatMenu from '../../../components/wechatMenu';
 
 type Config = WebConfig | WechatPublicConfig | WechatMpConfig;
 
@@ -104,6 +105,19 @@ export default function Render(
                 />
             ),
         });
+    }
+    if(['wechatPublic'].includes(type)) {
+        items.push({
+            label: '菜单管理',
+            key: 'menu',
+            children: (
+                <WechatMenu
+                    oakAutoUnmount={true}
+                    applicationId={oakId}
+                    oakPath={`$application-detail-menu-${oakId}`}
+                />
+            )
+        })
     }
 
     return (

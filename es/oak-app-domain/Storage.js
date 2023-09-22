@@ -39,6 +39,7 @@ import { desc as tokenDesc } from "./Token/Storage";
 import { desc as userSystemDesc } from "./UserSystem/Storage";
 import { desc as userWechatPublicTagDesc } from "./UserWechatPublicTag/Storage";
 import { desc as wechatLoginDesc } from "./WechatLogin/Storage";
+import { desc as wechatMenuDesc } from "./WechatMenu/Storage";
 import { desc as wechatPublicTagDesc } from "./WechatPublicTag/Storage";
 import { desc as wechatQrCodeDesc } from "./WechatQrCode/Storage";
 import { desc as wechatUserDesc } from "./WechatUser/Storage";
@@ -84,6 +85,7 @@ export const storageSchema = {
     userSystem: userSystemDesc,
     userWechatPublicTag: userWechatPublicTagDesc,
     wechatLogin: wechatLoginDesc,
+    wechatMenu: wechatMenuDesc,
     wechatPublicTag: wechatPublicTagDesc,
     wechatQrCode: wechatQrCodeDesc,
     wechatUser: wechatUserDesc
