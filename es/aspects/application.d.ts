@@ -15,3 +15,9 @@ export declare function signatureJsSDK<ED extends EntityDict, Cxt extends Backen
     timestamp: number;
     appId: string;
 }>;
+export declare function uploadWechatMedia<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+    applicationId: string;
+    file: any;
+}, context: Cxt): Promise<{
+    mediaId: string;
+}>;

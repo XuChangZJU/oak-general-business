@@ -27,4 +27,4 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
 }, {
     onDeleteByWeb: (file: UploadFile) => void;
     addFileByWeb: (file: UploadFile) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;

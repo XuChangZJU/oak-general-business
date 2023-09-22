@@ -103,3 +103,14 @@ export async function signatureJsSDK<
 
     return result;
 }
+
+
+export async function uploadWechatMedia<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(params: {
+    applicationId: string;
+    file: any;
+}, context: Cxt): Promise<{ mediaId: string }> {
+    throw new Error('method not implemented');
+}

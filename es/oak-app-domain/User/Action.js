@@ -2,9 +2,9 @@ const IdActionDef = {
     stm: {
         verify: ['unverified', 'verifying'],
         accept: [['unverified', 'verifying'], 'verified'],
-        reject: [['verifying', 'verified'], 'unverified']
+        reject: [['verifying', 'verified'], 'unverified'],
     },
-    is: 'unverified'
+    is: 'unverified',
 };
 const UserActionDef = {
     stm: {
@@ -12,8 +12,8 @@ const UserActionDef = {
         disable: [['normal', 'shadow'], 'disabled'],
         enable: ['disabled', 'normal'],
         mergeTo: [['normal', 'shadow'], 'merged'],
-        mergeFrom: ['normal', 'normal']
-    }
+        mergeFrom: ['normal', 'normal'],
+    },
 };
 export const actions = ["count", "stat", "download", "select", "aggregate", "create", "remove", "update", "grant", "revoke", "activate", "disable", "enable", "mergeTo", "mergeFrom", "verify", "accept", "reject"];
 export const ActionDefDict = {

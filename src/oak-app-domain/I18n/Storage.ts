@@ -44,15 +44,15 @@ export const desc: StorageDesc<OpSchema> = {
             name: 'namespace_language',
             attributes: [
                 {
-                    name: 'namespace'
+                    name: 'namespace',
                 },
                 {
-                    name: 'language'
+                    name: 'language',
                 }
             ],
             config: {
-                unique: true
-            }
+                unique: true,
+            },
         }
     ]
 };

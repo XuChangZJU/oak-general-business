@@ -15,4 +15,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
     style: EntityDict['system']['Schema']['style'];
 }, {
     confirm: () => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): JSX.Element;
