@@ -7,6 +7,7 @@ import { String, Datetime, Boolean, Uint } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Application from "../Application/Schema";
 import * as UserWechatPublicTag from "../UserWechatPublicTag/Schema";
+import * as WechatMenu from "../WechatMenu/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 export type OpSchema = EntityShape & {
@@ -26,6 +27,8 @@ export type Schema = EntityShape & {
     application: Application.Schema;
     userWechatPublicTag$wechatPublicTag?: Array<UserWechatPublicTag.Schema>;
     userWechatPublicTag$wechatPublicTag$$aggr?: AggregationResult<UserWechatPublicTag.Schema>;
+    wechatMenu$wechatPublicTag?: Array<WechatMenu.Schema>;
+    wechatMenu$wechatPublicTag$$aggr?: AggregationResult<WechatMenu.Schema>;
     modiEntity$entity?: Array<ModiEntity.Schema>;
     modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;
     operEntity$entity?: Array<OperEntity.Schema>;
@@ -45,6 +48,7 @@ type AttrFilter = {
     sync: Q_BooleanValue;
     syncAt: Q_DateValue;
     userWechatPublicTag$wechatPublicTag: UserWechatPublicTag.Filter & SubQueryPredicateMetadata;
+    wechatMenu$wechatPublicTag: WechatMenu.Filter & SubQueryPredicateMetadata;
     modiEntity$entity: ModiEntity.Filter & SubQueryPredicateMetadata;
     operEntity$entity: OperEntity.Filter & SubQueryPredicateMetadata;
 };
@@ -67,6 +71,12 @@ export type Projection = {
     };
     userWechatPublicTag$wechatPublicTag$$aggr?: UserWechatPublicTag.Aggregation & {
         $entity: "userWechatPublicTag";
+    };
+    wechatMenu$wechatPublicTag?: WechatMenu.Selection & {
+        $entity: "wechatMenu";
+    };
+    wechatMenu$wechatPublicTag$$aggr?: WechatMenu.Aggregation & {
+        $entity: "wechatMenu";
     };
     modiEntity$entity?: ModiEntity.Selection & {
         $entity: "modiEntity";
@@ -128,6 +138,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "applicationId">
     applicationId: ForeignKey<"application">;
 })) & {
     userWechatPublicTag$wechatPublicTag?: OakOperation<UserWechatPublicTag.UpdateOperation["action"], Omit<UserWechatPublicTag.UpdateOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<UserWechatPublicTag.Filter, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">[]> | Array<OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<UserWechatPublicTag.UpdateOperation["action"], Omit<UserWechatPublicTag.UpdateOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<UserWechatPublicTag.Filter, "wechatPublicTag" | "wechatPublicTagId">>>;
+    wechatMenu$wechatPublicTag?: OakOperation<WechatMenu.UpdateOperation["action"], Omit<WechatMenu.UpdateOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<WechatMenu.Filter, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<"create", Omit<WechatMenu.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">[]> | Array<OakOperation<"create", Omit<WechatMenu.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<WechatMenu.UpdateOperation["action"], Omit<WechatMenu.UpdateOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<WechatMenu.Filter, "wechatPublicTag" | "wechatPublicTagId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
     operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
 };
@@ -149,6 +160,7 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "applicationId">
 })) & {
     [k: string]: any;
     userWechatPublicTag$wechatPublicTag?: OakOperation<UserWechatPublicTag.UpdateOperation["action"], Omit<UserWechatPublicTag.UpdateOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<UserWechatPublicTag.Filter, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<UserWechatPublicTag.RemoveOperation["action"], Omit<UserWechatPublicTag.RemoveOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<UserWechatPublicTag.Filter, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">[]> | Array<OakOperation<"create", Omit<UserWechatPublicTag.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<UserWechatPublicTag.UpdateOperation["action"], Omit<UserWechatPublicTag.UpdateOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<UserWechatPublicTag.Filter, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<UserWechatPublicTag.RemoveOperation["action"], Omit<UserWechatPublicTag.RemoveOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<UserWechatPublicTag.Filter, "wechatPublicTag" | "wechatPublicTagId">>>;
+    wechatMenu$wechatPublicTag?: OakOperation<WechatMenu.UpdateOperation["action"], Omit<WechatMenu.UpdateOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<WechatMenu.Filter, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<WechatMenu.RemoveOperation["action"], Omit<WechatMenu.RemoveOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<WechatMenu.Filter, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<"create", Omit<WechatMenu.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">[]> | Array<OakOperation<"create", Omit<WechatMenu.CreateOperationData, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<WechatMenu.UpdateOperation["action"], Omit<WechatMenu.UpdateOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<WechatMenu.Filter, "wechatPublicTag" | "wechatPublicTagId">> | OakOperation<WechatMenu.RemoveOperation["action"], Omit<WechatMenu.RemoveOperationData, "wechatPublicTag" | "wechatPublicTagId">, Omit<WechatMenu.Filter, "wechatPublicTag" | "wechatPublicTagId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
     operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
 };

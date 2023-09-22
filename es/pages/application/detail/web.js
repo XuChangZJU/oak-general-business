@@ -3,6 +3,7 @@ import { Tabs, Card, Descriptions, Typography, Button } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
 import MessageTypeTemplateIdList from '../../../components/messageTypeTemplateId/list';
+import WechatMenu from '../../../components/wechatMenu';
 export default function Render(props) {
     const { oakId, tabValue, config, name, description, type, system } = props.data;
     const { t, navigateBack, onTabClick, goWechatPublicTagList } = props.methods;
@@ -23,6 +24,13 @@ export default function Render(props) {
             label: '模板消息管理',
             key: 'mttId',
             children: (_jsx(MessageTypeTemplateIdList, { oakAutoUnmount: true, applicationId: oakId, oakPath: `$application-detail-mttId-${oakId}` })),
+        });
+    }
+    if (['wechatPublic'].includes(type)) {
+        items.push({
+            label: '菜单管理',
+            key: 'menu',
+            children: (_jsx(WechatMenu, { oakAutoUnmount: true, applicationId: oakId, oakPath: `$application-detail-menu-${oakId}` }))
         });
     }
     return (_jsx(PageHeader, { showBack: true, title: "\u5E94\u7528\u6982\u89C8", children: _jsx("div", { className: Style.container, children: _jsx(Card, { title: name, bordered: false, extra: Actions, children: _jsx(Tabs, { items: items }) }) }) }));

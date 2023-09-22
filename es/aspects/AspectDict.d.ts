@@ -105,5 +105,50 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
         result: string;
         times?: number;
     }>;
+    getCurrentMenu: (params: {
+        applicationId: string;
+    }, context: Cxt) => Promise<any>;
+    getMenu: (params: {
+        applicationId: string;
+    }, context: Cxt) => Promise<any>;
+    createMenu: (params: {
+        applicationId: string;
+        menuConfig: any;
+    }, context: Cxt) => Promise<any>;
+    createConditionalMenu: (params: {
+        applicationId: string;
+        menuConfig: any;
+    }, context: Cxt) => Promise<any>;
+    deleteConditionalMenu: (params: {
+        applicationId: string;
+        menuid: number;
+    }, context: Cxt) => Promise<any>;
+    batchGetArticle: (params: {
+        applicationId: string;
+        offset?: number;
+        count: number;
+        noContent?: 0 | 1;
+    }, context: Cxt) => Promise<any>;
+    getArticle: (params: {
+        applicationId: string;
+        article_id: string;
+    }, context: Cxt) => Promise<any>;
+    createMaterial: (params: {
+        applicationId: string;
+        type: 'image' | 'voice' | 'video' | 'thumb';
+        media: FormData;
+        description?: FormData;
+    }, context: Cxt) => Promise<any>;
+    batchGetMaterialList: (params: {
+        applicationId: string;
+        type: 'image' | 'video' | 'voice' | 'news';
+        offset?: number;
+        count: number;
+    }, context: Cxt) => Promise<any>;
+    getMaterial: (params: {
+        applicationId: string;
+        type: 'image' | 'video' | 'voice' | 'news';
+        media_id: string;
+    }, context: Cxt) => Promise<any>;
 };
 export default GeneralAspectDict;

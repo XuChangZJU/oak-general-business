@@ -1,0 +1,67 @@
+.container {
+    width: 100%;
+    
+    .content {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+
+        .leftBar {
+            width: 300px;
+            margin-right: 25px;
+        }
+
+        .rightBar {
+            flex: 1;
+        }
+    }
+}
+
+.phone {
+    display: flex;
+    flex-direction: column;
+    width: 374px;
+    background: #f0f0f0;
+    border-radius: 8px;
+
+    .topBar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        height: 30px;
+        margin: 8px 16px 12px 16px;
+        align-items: center;
+
+        .time {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .icons {
+            display: flex;
+            flex-direction: row;
+        }
+    }
+
+    .actionBar {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 0 10px;
+    }
+
+    .page {
+        height: 450px;
+    }
+
+    .bottomBar {
+        height: 68px;
+        display: flex;
+        flex-direction: column;
+        background: #fcfcfc;
+        .keyBoard {
+            width: 60px;
+            
+        }
+    }
+}

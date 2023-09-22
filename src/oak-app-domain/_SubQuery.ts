@@ -39,6 +39,7 @@ import * as Token from "./Token/Schema";
 import * as UserSystem from "./UserSystem/Schema";
 import * as UserWechatPublicTag from "./UserWechatPublicTag/Schema";
 import * as WechatLogin from "./WechatLogin/Schema";
+import * as WechatMenu from "./WechatMenu/Schema";
 import * as WechatPublicTag from "./WechatPublicTag/Schema";
 import * as WechatQrCode from "./WechatQrCode/Schema";
 import * as WechatUser from "./WechatUser/Schema";
@@ -167,6 +168,8 @@ export type ApplicationIdSubQuery = {
         entity: "sessionMessage";
     }) | (Token.ApplicationIdSubQuery & {
         entity: "token";
+    }) | (WechatMenu.ApplicationIdSubQuery & {
+        entity: "wechatMenu";
     }) | (WechatPublicTag.ApplicationIdSubQuery & {
         entity: "wechatPublicTag";
     }) | (WechatQrCode.ApplicationIdSubQuery & {
@@ -385,9 +388,20 @@ export type WechatLoginIdSubQuery = {
         entity: "wechatLogin";
     }) | any;
 };
+export type WechatMenuIdSubQuery = {
+    [K in "$in" | "$nin"]?: (ModiEntity.WechatMenuIdSubQuery & {
+        entity: "modiEntity";
+    }) | (OperEntity.WechatMenuIdSubQuery & {
+        entity: "operEntity";
+    }) | (WechatMenu.WechatMenuIdSubQuery & {
+        entity: "wechatMenu";
+    }) | any;
+};
 export type WechatPublicTagIdSubQuery = {
     [K in "$in" | "$nin"]?: (UserWechatPublicTag.WechatPublicTagIdSubQuery & {
         entity: "userWechatPublicTag";
+    }) | (WechatMenu.WechatPublicTagIdSubQuery & {
+        entity: "wechatMenu";
     }) | (ModiEntity.WechatPublicTagIdSubQuery & {
         entity: "modiEntity";
     }) | (OperEntity.WechatPublicTagIdSubQuery & {

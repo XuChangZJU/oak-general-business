@@ -2,6 +2,7 @@ import { WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
 import { AppType } from '../oak-app-domain/Application/Schema';
 import { EntityDict } from '../oak-app-domain';
 import { Config, Origin } from '../types/Config';
+import { MediaType } from '../types/WeChat';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
 export type GeneralAspectDict<
@@ -38,7 +39,7 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<string>;
-    logout: ({ }, context: Cxt) => Promise<void>;
+    logout: ({}, context: Cxt) => Promise<void>;
     loginWechatMp: (
         {
             code,
@@ -72,11 +73,14 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<string>;
-    sendCaptcha: (params: {
-        mobile: string;
-        env: WechatMpEnv | WebEnv;
-        type: 'login' | 'changePassword' | 'confirm';
-    }, context: Cxt) => Promise<string>;
+    sendCaptcha: (
+        params: {
+            mobile: string;
+            env: WechatMpEnv | WebEnv;
+            type: 'login' | 'changePassword' | 'confirm';
+        },
+        context: Cxt
+    ) => Promise<string>;
     getApplication: (
         params: {
             type: AppType;
@@ -154,9 +158,103 @@ export type GeneralAspectDict<
         context: Cxt
     ) => Promise<string[]>;
     updateUserPassword: (
-        params: { userId: string, prevPassword?: string, mobile?: string, captcha?: string, newPassword: string },
+        params: {
+            userId: string;
+            prevPassword?: string;
+            mobile?: string;
+            captcha?: string;
+            newPassword: string;
+        },
         context: Cxt
     ) => Promise<{ result: string, times?: number }>;
+    uploadWechatMedia: (
+        params: {
+            applicationId: string;
+            file: any;
+            type: MediaType;
+            isPermanent?: boolean; //上传临时素材 或永久素材
+            description?: {
+                title: string;
+                introduction: string;
+            };
+        },
+        context: Cxt
+    ) => Promise<{ mediaId: string }>;
+    getCurrentMenu: (
+        params: {
+            applicationId: string,
+        },
+        context: Cxt
+    ) => Promise<any>; 
+    getMenu: (
+        params: {
+            applicationId: string,
+        },
+        context: Cxt
+    ) => Promise<any>;
+    createMenu: (
+        params: {
+            applicationId: string,
+            menuConfig: any
+        },
+        context: Cxt
+    ) => Promise<any>; 
+    createConditionalMenu: (
+        params: {
+            applicationId: string,
+            menuConfig: any
+        },
+        context: Cxt
+    ) => Promise<any>; 
+    deleteConditionalMenu: (
+        params: {
+            applicationId: string,
+            menuid: number,
+        },
+        context: Cxt
+    ) => Promise<any>; 
+    batchGetArticle: (
+        params: {
+            applicationId: string,
+            offset?: number;
+            count: number;
+            noContent?: 0 | 1;
+        },
+        context: Cxt
+    ) => Promise<any>; 
+    getArticle: (
+        params: {
+            applicationId: string,
+            article_id: string
+        },
+        context: Cxt
+    ) => Promise<any>; 
+    createMaterial: (
+        params: {
+            applicationId: string,
+            type: 'image' | 'voice' | 'video' | 'thumb',
+            media: FormData,
+            description?: FormData
+        },
+        context: Cxt
+    ) => Promise<any>; 
+    batchGetMaterialList: (
+        params: {
+            applicationId: string,
+            type: 'image' | 'video' | 'voice' | 'news',
+            offset?: number;
+            count: number;
+        },
+        context: Cxt
+    ) => Promise<any>; 
+    getMaterial: (
+        params: {
+            applicationId: string,
+            type: 'image' | 'video' | 'voice' | 'news',
+            media_id: string,
+        },
+        context: Cxt
+    ) => Promise<any>;
 };
 
 export default GeneralAspectDict;

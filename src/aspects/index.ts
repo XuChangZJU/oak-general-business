@@ -12,13 +12,30 @@ import {
     wakeupParasite,
 } from './token';
 import { getInfoByUrl } from './extraFile';
-import { getApplication, signatureJsSDK } from './application';
+import {
+    getApplication,
+    signatureJsSDK,
+    uploadWechatMedia,
+} from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user';
 import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
 import { getMpUnlimitWxaCode } from './wechatQrCode';
-import { confirmUserEntityGrant } from './userEntityGrant'
+import { confirmUserEntityGrant } from './userEntityGrant';
+import { 
+    getCurrentMenu, 
+    getMenu, 
+    createMenu, 
+    createConditionalMenu, 
+    deleteConditionalMenu,
+    batchGetArticle,
+    getArticle,
+    createMaterial,
+    batchGetMaterialList,
+    getMaterial,  
+} from './wechatMenu'
+
 const aspectDict = {
     mergeUser,
     switchTo,
@@ -43,6 +60,17 @@ const aspectDict = {
     updateUserPassword,
     getMpUnlimitWxaCode,
     confirmUserEntityGrant,
+    uploadWechatMedia,
+    getCurrentMenu, 
+    getMenu, 
+    createMenu, 
+    createConditionalMenu, 
+    deleteConditionalMenu,
+    batchGetArticle,
+    getArticle,
+    createMaterial,
+    batchGetMaterialList,
+    getMaterial,
 };
 
 export default aspectDict;
