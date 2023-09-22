@@ -2,6 +2,7 @@ import { WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
 import { AppType } from '../oak-app-domain/Application/Schema';
 import { EntityDict } from '../oak-app-domain';
 import { Config, Origin } from '../types/Config';
+import { MediaType } from '../types/WeChat';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
 export type GeneralAspectDict<
@@ -38,7 +39,7 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<string>;
-    logout: ({ }, context: Cxt) => Promise<void>;
+    logout: ({}, context: Cxt) => Promise<void>;
     loginWechatMp: (
         {
             code,
@@ -72,11 +73,14 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<string>;
-    sendCaptcha: (params: {
-        mobile: string;
-        env: WechatMpEnv | WebEnv;
-        type: 'login' | 'changePassword' | 'confirm';
-    }, context: Cxt) => Promise<string>;
+    sendCaptcha: (
+        params: {
+            mobile: string;
+            env: WechatMpEnv | WebEnv;
+            type: 'login' | 'changePassword' | 'confirm';
+        },
+        context: Cxt
+    ) => Promise<string>;
     getApplication: (
         params: {
             type: AppType;
@@ -154,9 +158,28 @@ export type GeneralAspectDict<
         context: Cxt
     ) => Promise<string[]>;
     updateUserPassword: (
-        params: { userId: string, prevPassword?: string, mobile?: string, captcha?: string, newPassword: string },
+        params: {
+            userId: string;
+            prevPassword?: string;
+            mobile?: string;
+            captcha?: string;
+            newPassword: string;
+        },
         context: Cxt
-    ) => Promise<{ result: string, times?: number }>;
+    ) => Promise<{ result: string; times?: number }>;
+    uploadWechatMedia: (
+        params: {
+            applicationId: string;
+            file: any;
+            type: MediaType;
+            isPermanent?: boolean; //上传临时素材 或永久素材
+            description?: {
+                title: string;
+                introduction: string;
+            };
+        },
+        context: Cxt
+    ) => Promise<{ mediaId: string }>;
 };
 
 export default GeneralAspectDict;
