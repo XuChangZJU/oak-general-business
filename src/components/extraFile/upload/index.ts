@@ -1,4 +1,5 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
+import { pull } from 'oak-domain/lib/utils/lodash';
 import assert from 'assert';
 import Dialog from '../../../utils/dialog/index';
 import { EntityDict } from '../../../oak-app-domain';
@@ -65,6 +66,7 @@ export default OakComponent({
         },
     ],
     properties: {
+        bucket: '',
         removeLater: true,
         autoUpload: false,
         maxNumber: 20,
@@ -87,7 +89,6 @@ export default OakComponent({
         disableAdd: false,
         // 下按按钮隐藏
         disableDownload: false,
-        disabled: false,
         type: 'file' as ExtraFile['type'],
         origin: 'qiniu' as ExtraFile['origin'],
         tag1: '',
@@ -152,15 +153,16 @@ export default OakComponent({
         };
     },
     methods: {
-        onDeleteByWeb(file: EnhancedExtraFile) {
-            console.log(file);
+        onRemove(file: EnhancedExtraFile) {            
+            this.removeItem(file.id);
+            this.features.extraFile2.removeLocalFiles([file.id]);
         },
         addExtraFileInner(options: {
             name: string;
             fileType: string;
             size: number;
         }, file: File | string) {
-            const { type, origin, tag1, tag2, entity, entityId, autoUpload } = this.props;
+            const { type, origin, tag1, tag2, entity, entityId, bucket } = this.props;
             const { name, fileType, size } = options;
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
@@ -168,6 +170,7 @@ export default OakComponent({
             const sort = files.length * 10000;
             
             const id = this.addItem({
+                bucket,
                 origin,
                 type,
                 tag1,
@@ -198,6 +201,7 @@ export default OakComponent({
         T2,
         true,
         {
+            bucket: string,     // 上传的存储桶位置
             removeLater: boolean,
             autoUpload: boolean,
             maxNumber: number,

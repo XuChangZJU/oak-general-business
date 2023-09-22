@@ -79,7 +79,6 @@ export default function render(props: WebComponentProps<
         theme?: Theme;
         tips?: string;
         beforeUpload?: (file: File) => Promise<boolean>;
-        disabled?: boolean;
         style?: Record<string, string>;
         className?: string;
         directory?: boolean;
@@ -88,12 +87,11 @@ export default function render(props: WebComponentProps<
         showUploadList?: boolean;
         children?: JSX.Element;
         disableInsert?: boolean;
-        disableAdd?: boolean;
         disableDownload?: boolean;
         disableDelete?: boolean;
         preview?: boolean;
     }, {        
-        onDeleteByWeb: (file: UploadFile) => void;
+        onRemove: (file: UploadFile) => void;
         addFileByWeb: (file: UploadFile) => void;
     }>) {
     const {
@@ -104,7 +102,6 @@ export default function render(props: WebComponentProps<
         theme = "image",
         tips,
         beforeUpload,
-        disabled,
         style,
         className,
         directory = false,
@@ -114,13 +111,12 @@ export default function render(props: WebComponentProps<
         showUploadList = true,
         files = [],
         disableInsert = false,
-        disableAdd = false,
         disableDownload = false,
         disableDelete = false,
         preview = true,
     } = props.data;
 
-    const { t, onDeleteByWeb, addFileByWeb } = props.methods;
+    const { t, onRemove, addFileByWeb } = props.methods;
 
     const listType = getListType(theme);
     const getUploadButton = () => {
@@ -211,7 +207,6 @@ export default function render(props: WebComponentProps<
                 <Upload
                     className={classNames(Style["oak-upload__upload"], className)}
                     style={style}
-                    disabled={disabled}
                     directory={directory}
                     showUploadList={
                         showUploadList
@@ -232,14 +227,15 @@ export default function render(props: WebComponentProps<
                         return false;
                     }}
                     multiple={multiple}
-                    maxCount={maxNumber}
                     accept={accept}
                     listType={listType}
                     fileList={transformToUploadFile()}
                     onChange={({ file, fileList, event }) => {
-                        addFileByWeb(file);
+                        if (file instanceof File) {
+                            addFileByWeb(file);
+                        }
                     }}
-                    onRemove={onDeleteByWeb}
+                    onRemove={onRemove}
                     onPreview={onPreview}
                     onDownload={onDownload}
                     itemRender={(originNode, currentFile, currentFileList) => {
@@ -253,7 +249,7 @@ export default function render(props: WebComponentProps<
                         );
                     }}
                 >
-                    {!disableInsert && !disableAdd ? getUploadButton() : null}
+                    {!disableInsert && files.length < maxNumber ? getUploadButton() : null}
                 </Upload>
             </DndProvider>
 
