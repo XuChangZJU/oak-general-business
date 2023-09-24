@@ -3,7 +3,7 @@ import { EntityDict } from "../oak-app-domain";
 import { AppType, WechatPublicConfig } from "../oak-app-domain/Application/Schema";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { applicationProjection } from '../types/Projection';
-import { MediaType, MediaVideoDescription } from '../types/WeChat';
+import { MediaType } from '../types/WeChat';
 import {
     WebEnv,
 } from 'oak-domain/lib/types/Environment';
@@ -12,6 +12,7 @@ import {
     WechatSDK,
 } from 'oak-external-sdk';
 import fs from 'fs';
+import { File } from 'formidable';
 
 export async function getApplication<
     ED extends EntityDict,
@@ -113,13 +114,13 @@ export async function uploadWechatMedia<
 >(
     params: {
         applicationId: string;
-        file: any;
+        file: File;
         type: MediaType;
-        isPermanent?: string; //上传临时素材 或永久素材
-        description?: string;
+        isPermanent?: string; // 上传临时素材或永久素材 默认上传临时
+        description?: string; // { title: string; introduction: string }
     }, // FormData表单提交 isPermanent 变成 'true' | 'false'
     context: Cxt
-): Promise<{ mediaId: string; }> {
+): Promise<{ mediaId: string }> {
     const {
         applicationId,
         file,
@@ -127,7 +128,9 @@ export async function uploadWechatMedia<
         isPermanent,
         description,
     } = params;
-    const file2 = fs.createReadStream(file.filepath)
+    const filename = file.originalFilename!;
+    const filetype = file.mimetype!;
+    const file2 = fs.createReadStream(file.filepath);
 
     const [application] = await context.select(
         'application',
@@ -155,7 +158,9 @@ export async function uploadWechatMedia<
     if (isPermanent === 'true') {
         const result = (await wechatInstance.createMaterial({
             type: mediaType,
-            media: file2 as any,
+            media: file2,
+            filename,
+            filetype,
             description: description ? JSON.parse(description) : null,
         })) as {
             media_id: string;
@@ -169,7 +174,9 @@ export async function uploadWechatMedia<
 
     const result = (await wechatInstance.createTemporaryMaterial({
         type: mediaType,
-        media: file2 as any,
+        media: file2,
+        filename,
+        filetype,
     })) as {
         media_id: string;
         createdAt: Number;
@@ -179,5 +186,4 @@ export async function uploadWechatMedia<
     return {
         mediaId: result.media_id,
     };
-
 }

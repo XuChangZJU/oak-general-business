@@ -163,15 +163,15 @@ export async function deleteConditionalMenu<
     Cxt extends BackendRuntimeContext<ED>
 >(
     params: {
-        applicationId: string,
-        menuid: number,
+        applicationId: string;
+        menuId: number;
     },
-    context: Cxt,
+    context: Cxt
 ): Promise<any> {
-    const application = await getWechatPublicConfig<
-        ED,
-        Cxt
-    >(params.applicationId, context);
+    const application = await getWechatPublicConfig<ED, Cxt>(
+        params.applicationId,
+        context
+    );
     assert(application);
     const { type, config, systemId } = application!;
     assert(type === 'wechatPublic');
@@ -184,7 +184,7 @@ export async function deleteConditionalMenu<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    const result = await wechatInstance.deleteConditionalMenu(params.menuid);
+    const result = await wechatInstance.deleteConditionalMenu(params.menuId);
     return result;
 }
 
@@ -226,7 +226,7 @@ export async function getArticle<
 >(
     params: {
         applicationId: string,
-        article_id: string
+        articleId: string
     },
     context: Cxt,
 ): Promise<any> {
@@ -246,7 +246,9 @@ export async function getArticle<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    const result = await wechatInstance.getArticle(params);
+    const result = await wechatInstance.getArticle({
+        articleId: params.articleId,
+    });
     return result;
 }
 
@@ -291,7 +293,7 @@ export async function getMaterial<
     params: {
         applicationId: string,
         type: MenuType,
-        media_id: string,
+        mediaId: string,
     },
     context: Cxt,
 ): Promise<any> {
@@ -311,7 +313,9 @@ export async function getMaterial<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    const result = await wechatInstance.getMaterial(params);
+    const result = await wechatInstance.getMaterial({
+        mediaId: params.mediaId,
+    });
     return result;
 }
 

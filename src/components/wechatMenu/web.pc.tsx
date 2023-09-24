@@ -4,11 +4,8 @@ import ConditionalMenu from './conditionalMenu';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../oak-app-domain';
 import Style from './web.module.less';
-import { WechatMpInstance, WechatPublicInstance, WechatSDK } from 'oak-external-sdk';
-import { WechatMpConfig, WechatPublicConfig } from '../../oak-app-domain/Application/Schema';
 import { Row, Col, Tabs } from 'antd';
 import type { TabsProps } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
 import TagList from './tagList';
 
 export default function Render(

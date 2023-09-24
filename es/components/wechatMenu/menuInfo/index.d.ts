@@ -4,7 +4,7 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     config: any;
     menuIndex: number;
     changeConfig: (config: any) => void;
-    changePublishState: (publish: "wait" | "success" | "fail") => void;
+    changePublishState: (publish: 'wait' | 'success' | 'fail') => void;
     getErrorIndex: (errorIndex: number[]) => void;
     createMenu: () => Promise<void>;
     selectedBtn: number;

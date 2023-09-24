@@ -50,6 +50,7 @@
         "@babel/preset-typescript": "^7.12.13",
         "@types/assert": "^1.5.6",
         "@types/cross-spawn": "^6.0.2",
+        "@types/formidable": "^3.4.3",
         "@types/fs-extra": "^9.0.13",
         "@types/lodash": "^4.14.168",
         "@types/mocha": "^8.2.0",

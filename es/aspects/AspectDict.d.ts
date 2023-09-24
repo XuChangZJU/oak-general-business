@@ -125,7 +125,7 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
     }, context: Cxt) => Promise<any>;
     deleteConditionalMenu: (params: {
         applicationId: string;
-        menuid: number;
+        menuId: number;
     }, context: Cxt) => Promise<any>;
     batchGetArticle: (params: {
         applicationId: string;
@@ -135,7 +135,7 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
     }, context: Cxt) => Promise<any>;
     getArticle: (params: {
         applicationId: string;
-        article_id: string;
+        articleId: string;
     }, context: Cxt) => Promise<any>;
     batchGetMaterialList: (params: {
         applicationId: string;
@@ -146,7 +146,7 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
     getMaterial: (params: {
         applicationId: string;
         type: MenuType;
-        media_id: string;
+        mediaId: string;
     }, context: Cxt) => Promise<any>;
 };
 export default GeneralAspectDict;

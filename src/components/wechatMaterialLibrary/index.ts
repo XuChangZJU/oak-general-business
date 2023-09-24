@@ -99,9 +99,13 @@ export default OakComponent({
                 return false;
             }
         },
-        async getMaterialImg(media_id: string) {
+        async getMaterialImg(mediaId: string) {
             const { applicationId } = this.props
-            const imgFile = await this.features.wechatMenu.getMaterial({ applicationId: applicationId!, type: 'image', media_id });
+            const imgFile = await this.features.wechatMenu.getMaterial({
+                applicationId: applicationId!,
+                type: 'image',
+                mediaId,
+            });
             return new Promise<string | ArrayBuffer | PromiseLike<string | ArrayBuffer | null> | null | undefined>((resolve) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(imgFile);

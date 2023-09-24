@@ -60,7 +60,7 @@ export class WechatMenu<
 
     async deleteConditionalMenu(params: {
         applicationId: string,
-        menuid: number
+        menuId: number
     },) {
         const callBack = await this.cache.exec('deleteConditionalMenu', params);
         return callBack.result;
@@ -78,7 +78,7 @@ export class WechatMenu<
 
     async getArticle(params: {
         applicationId: string,
-        article_id: string
+        articleId: string
     },) {
         const callBack = await this.cache.exec('getArticle', params);
         return callBack.result;
@@ -120,7 +120,7 @@ export class WechatMenu<
     async getMaterial(params: {
         applicationId: string,
         type: MenuType,
-        media_id: string,
+        mediaId: string,
     },) {
         const callBack = await this.cache.exec('getMaterial', params);
         return callBack.result;

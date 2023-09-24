@@ -28,8 +28,8 @@ export default function Render(props: WebComponentProps<EntityDict, keyof Entity
     toDown: (currentIndex: number, index: number) => void;
     editMenuName: (index: number, name: string, currentIndex?: number) => void;
     deleteMenuContent: (index: number, currentIndex?: number) => void;
-    getMaterialImgAndVoice: (type: string, media_id: string) => Promise<string>;
-    getMaterialVideo: (media_id: string) => void;
+    getMaterialImgAndVoice: (type: string, mediaId: string) => Promise<string>;
+    getMaterialVideo: (mediaId: string) => void;
     decideMenuContentLabel: (obj: any, type: 'news' | 'image' | 'video' | 'voice' | 'text') => string;
     getArticle: (article_id: string) => void;
     createMenu: (errorInfo: string, errorUrlInfo: string) => void;

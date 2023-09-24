@@ -77,7 +77,7 @@ export async function deleteConditionalMenu(params, context) {
     appId = config2.appId;
     appSecret = config2.appSecret;
     const wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
-    const result = await wechatInstance.deleteConditionalMenu(params.menuid);
+    const result = await wechatInstance.deleteConditionalMenu(params.menuId);
     return result;
 }
 export async function batchGetArticle(params, context) {
@@ -103,7 +103,9 @@ export async function getArticle(params, context) {
     appId = config2.appId;
     appSecret = config2.appSecret;
     const wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
-    const result = await wechatInstance.getArticle(params);
+    const result = await wechatInstance.getArticle({
+        articleId: params.articleId,
+    });
     return result;
 }
 export async function batchGetMaterialList(params, context) {
@@ -129,6 +131,8 @@ export async function getMaterial(params, context) {
     appId = config2.appId;
     appSecret = config2.appSecret;
     const wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
-    const result = await wechatInstance.getMaterial(params);
+    const result = await wechatInstance.getMaterial({
+        mediaId: params.mediaId,
+    });
     return result;
 }

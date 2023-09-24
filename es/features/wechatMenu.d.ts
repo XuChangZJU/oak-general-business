@@ -27,7 +27,7 @@ export declare class WechatMenu<ED extends EntityDict, Cxt extends BackendRuntim
     }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["createConditionalMenu"]>>;
     deleteConditionalMenu(params: {
         applicationId: string;
-        menuid: number;
+        menuId: number;
     }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["deleteConditionalMenu"]>>;
     batchGetArticle(params: {
         applicationId: string;
@@ -37,7 +37,7 @@ export declare class WechatMenu<ED extends EntityDict, Cxt extends BackendRuntim
     }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["batchGetArticle"]>>;
     getArticle(params: {
         applicationId: string;
-        article_id: string;
+        articleId: string;
     }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["getArticle"]>>;
     createMaterial(params: {
         applicationId: string;
@@ -55,6 +55,6 @@ export declare class WechatMenu<ED extends EntityDict, Cxt extends BackendRuntim
     getMaterial(params: {
         applicationId: string;
         type: MenuType;
-        media_id: string;
+        mediaId: string;
     }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["getMaterial"]>>;
 }

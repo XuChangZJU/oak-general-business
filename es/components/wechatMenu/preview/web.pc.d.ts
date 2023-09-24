@@ -7,7 +7,7 @@ export default function Render(props: WebComponentProps<EntityDict, keyof Entity
 }, {
     getMaterialImgAndVoice: (type: 'image' | 'voice', media_id: string) => Promise<string>;
     getArticle: (article_id: string) => Promise<any[]>;
-    getMaterialVideo: (media_id: string) => {
+    getMaterialVideo: (mediaId: string) => {
         url: string;
         media_id: string;
     };

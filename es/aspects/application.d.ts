@@ -3,6 +3,7 @@ import { AppType } from "../oak-app-domain/Application/Schema";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { MediaType } from '../types/WeChat';
 import { WebEnv } from 'oak-domain/lib/types/Environment';
+import { File } from 'formidable';
 export declare function getApplication<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     type: AppType;
     domain: string;
@@ -18,7 +19,7 @@ export declare function signatureJsSDK<ED extends EntityDict, Cxt extends Backen
 }>;
 export declare function uploadWechatMedia<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
-    file: any;
+    file: File;
     type: MediaType;
     isPermanent?: string;
     description?: string;

@@ -17,7 +17,7 @@ export declare function createConditionalMenu<ED extends EntityDict, Cxt extends
 }, context: Cxt): Promise<any>;
 export declare function deleteConditionalMenu<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
-    menuid: number;
+    menuId: number;
 }, context: Cxt): Promise<any>;
 export declare function batchGetArticle<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
@@ -27,7 +27,7 @@ export declare function batchGetArticle<ED extends EntityDict, Cxt extends Backe
 }, context: Cxt): Promise<any>;
 export declare function getArticle<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
-    article_id: string;
+    articleId: string;
 }, context: Cxt): Promise<any>;
 export declare function batchGetMaterialList<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
@@ -38,5 +38,5 @@ export declare function batchGetMaterialList<ED extends EntityDict, Cxt extends 
 export declare function getMaterial<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
     type: MenuType;
-    media_id: string;
+    mediaId: string;
 }, context: Cxt): Promise<any>;

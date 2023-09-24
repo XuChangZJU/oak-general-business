@@ -60,6 +60,8 @@ export async function signatureJsSDK({ url, env }, context) {
 export async function uploadWechatMedia(params, // FormData表单提交 isPermanent 变成 'true' | 'false'
 context) {
     const { applicationId, file, type: mediaType, isPermanent, description, } = params;
+    const filename = file.originalFilename;
+    const filetype = file.mimetype;
     const file2 = fs.createReadStream(file.filepath);
     const [application] = await context.select('application', {
         data: applicationProjection,
@@ -78,6 +80,8 @@ context) {
         const result = (await wechatInstance.createMaterial({
             type: mediaType,
             media: file2,
+            filename,
+            filetype,
             description: description ? JSON.parse(description) : null,
         }));
         return {
@@ -87,6 +91,8 @@ context) {
     const result = (await wechatInstance.createTemporaryMaterial({
         type: mediaType,
         media: file2,
+        filename,
+        filetype,
     }));
     return {
         mediaId: result.media_id,

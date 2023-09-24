@@ -24,7 +24,8 @@ export default OakComponent({
         setConfig(index, content, currentIndex) {
             const { config, changeConfig } = this.props;
             if (typeof currentIndex === 'number') {
-                content.name = config.button[currentIndex].sub_button[index].name;
+                content.name =
+                    config.button[currentIndex].sub_button[index].name;
                 config.button[currentIndex].sub_button[index] = content;
                 changeConfig(config);
             }
@@ -36,7 +37,10 @@ export default OakComponent({
             }
         },
         confirmName(menuName) {
-            if (Object.prototype.toString.call(menuName).slice(8, -1).toLowerCase() !== 'string') {
+            if (Object.prototype.toString
+                .call(menuName)
+                .slice(8, -1)
+                .toLowerCase() !== 'string') {
                 throw Error('param str type error ');
             }
             else if (!menuName) {
@@ -45,13 +49,16 @@ export default OakComponent({
             else if (!/^[\u4e00-\u9fa5a-zA-Z0-9]+$/.test(menuName)) {
                 return '字符串中包含除中文、数字、英文以外的字符！';
             }
-            else if (menuName.replace(/[\u4e00-\u9fa5]/g, "**").length > 8) {
+            else if (menuName.replace(/[\u4e00-\u9fa5]/g, '**').length > 8) {
                 return '字符串长度超过限制！';
             }
             return '';
         },
         confirmSubName(menuName) {
-            if (Object.prototype.toString.call(menuName).slice(8, -1).toLowerCase() !== 'string') {
+            if (Object.prototype.toString
+                .call(menuName)
+                .slice(8, -1)
+                .toLowerCase() !== 'string') {
                 throw Error('param str type error ');
             }
             else if (!menuName) {
@@ -60,7 +67,7 @@ export default OakComponent({
             else if (!/^[\u4e00-\u9fa5a-zA-Z0-9]+$/.test(menuName)) {
                 return '字符串中包含除中文、数字、英文以外的字符！';
             }
-            else if (menuName.replace(/[\u4e00-\u9fa5]/g, "**").length > 16) {
+            else if (menuName.replace(/[\u4e00-\u9fa5]/g, '**').length > 16) {
                 return '字符串长度超过限制！';
             }
             return '';
@@ -85,35 +92,49 @@ export default OakComponent({
         deleteMenuContent(index, currentIndex) {
             const { config, changeConfig } = this.props;
             if (typeof currentIndex === 'number') {
-                config.button[currentIndex].sub_button[index] = { name: config.button[currentIndex].sub_button[index].name };
+                config.button[currentIndex].sub_button[index] = {
+                    name: config.button[currentIndex].sub_button[index].name,
+                };
                 changeConfig(config);
             }
             else {
-                config.button[index] = { name: config.button[index].name, sub_button: [...config.button[index].sub_button] };
+                config.button[index] = {
+                    name: config.button[index].name,
+                    sub_button: [...config.button[index].sub_button],
+                };
                 changeConfig(config);
             }
         },
-        async getMaterialImgAndVoice(type, media_id) {
+        async getMaterialImgAndVoice(type, mediaId) {
             const { applicationId } = this.props;
             return new Promise((resolve, reject) => {
-                this.features.wechatMenu.getMaterial({ applicationId: applicationId, type, media_id })
-                    .then(file => {
+                this.features.wechatMenu
+                    .getMaterial({
+                    applicationId: applicationId,
+                    type,
+                    mediaId,
+                })
+                    .then((file) => {
                     let reader = new FileReader();
                     reader.readAsDataURL(file);
                     reader.onload = function (e) {
                         resolve(e.target?.result);
                     };
                 })
-                    .catch(error => {
+                    .catch((error) => {
                     reject(error);
                 });
             });
         },
-        async getMaterialVideo(media_id) {
+        async getMaterialVideo(mediaId) {
             const { applicationId } = this.props;
-            const result = await this.features.wechatMenu.getMaterial({ applicationId: applicationId, type: 'video', media_id });
+            const result = await this.features.wechatMenu.getMaterial({
+                applicationId: applicationId,
+                type: 'video',
+                mediaId,
+            });
             if (result && result.down_url) {
-                return { url: result.down_url, media_id };
+                return { url: result.down_url, media_id: mediaId };
             }
         },
         decideMenuContentLabel(decidedMenuContent, type) {
@@ -138,15 +159,18 @@ export default OakComponent({
                 return '文字'; // 默认值
             }
         },
-        async getArticle(article_id) {
+        async getArticle(articleId) {
             const { applicationId } = this.props;
-            const result = await this.features.wechatMenu.getArticle({ applicationId: applicationId, article_id });
+            const result = await this.features.wechatMenu.getArticle({
+                applicationId: applicationId,
+                articleId,
+            });
             if (result && result.news_item) {
                 const modifiedResult = await Promise.all(result.news_item.map(async (ele) => {
                     const coverUrl = await this.getMaterialImgAndVoice('image', ele.thumb_media_id);
                     return {
                         ...ele,
-                        coverUrl
+                        coverUrl,
                     };
                 }));
                 return modifiedResult;
@@ -158,13 +182,15 @@ export default OakComponent({
             arr.map((ele, index) => {
                 if (ele.sub_button && ele.sub_button.length > 0) {
                     ele.sub_button.map((ele, index2) => {
-                        if (Object.keys(ele).length === 1 && ele.hasOwnProperty('name')) {
+                        if (Object.keys(ele).length === 1 &&
+                            ele.hasOwnProperty('name')) {
                             errorIndex.push((index + 1) * 10 + index2);
                         }
                     });
                 }
                 else {
-                    if (Object.keys(ele).length === 2 && ele.hasOwnProperty('name')) {
+                    if (Object.keys(ele).length === 2 &&
+                        ele.hasOwnProperty('name')) {
                         console.log(index);
                         errorIndex.push(index);
                     }
@@ -180,19 +206,20 @@ export default OakComponent({
             if (errorInfo) {
                 this.setMessage({
                     type: 'warning',
-                    content: '菜单名称有误'
+                    content: '菜单名称有误',
                 });
                 return;
             }
             if (errorUrlInfo) {
                 this.setMessage({
                     type: 'warning',
-                    content: '公众号链接有误'
+                    content: '公众号链接有误',
                 });
                 return;
             }
-            const { applicationId, config, changeConfig, changePublishState, createMenu, menuType, changeMenuId } = this.props;
-            if (this.checkError(config.button).length === 0 && config.button.length > 0) {
+            const { applicationId, config, changeConfig, changePublishState, createMenu, menuType, changeMenuId, } = this.props;
+            if (this.checkError(config.button).length === 0 &&
+                config.button.length > 0) {
                 changeConfig(config);
                 const removeSubTypeAndContent = (obj) => {
                     const { subType, content, ...newObj } = obj;
@@ -208,7 +235,10 @@ export default OakComponent({
                     }
                 });
                 if (menuType === 'common') {
-                    const result = await this.features.wechatMenu.createMenu({ applicationId: applicationId, menuConfig: { button: menuConfig } });
+                    const result = await this.features.wechatMenu.createMenu({
+                        applicationId: applicationId,
+                        menuConfig: { button: menuConfig },
+                    });
                     if (result.success) {
                         changePublishState('success');
                     }
@@ -218,8 +248,14 @@ export default OakComponent({
                     await createMenu();
                 }
                 else {
-                    const button = { button: menuConfig, matchrule: config.matchrule };
-                    const result = await this.features.wechatMenu.createConditionalMenu({ applicationId: applicationId, menuConfig: button });
+                    const button = {
+                        button: menuConfig,
+                        matchrule: config.matchrule,
+                    };
+                    const result = await this.features.wechatMenu.createConditionalMenu({
+                        applicationId: applicationId,
+                        menuConfig: button,
+                    });
                     if (result.success) {
                         changeMenuId(result.menuid);
                         changePublishState('success');
@@ -234,14 +270,14 @@ export default OakComponent({
                 if (config.button.length === 0) {
                     this.setMessage({
                         content: '请添加自定义菜单',
-                        type: 'warning'
+                        type: 'warning',
                     });
                     return;
                 }
-                if ((this.checkError(config.button).length > 0)) {
+                if (this.checkError(config.button).length > 0) {
                     this.setMessage({
                         content: '请添加菜单消息',
-                        type: 'warning'
+                        type: 'warning',
                     });
                     return;
                 }
@@ -249,7 +285,7 @@ export default OakComponent({
         },
         async deleteConditionalMenu() {
             const { applicationId, deleteMenu, menuIndex, menuId, createMenu } = this.props;
-            const result = await this.features.wechatMenu.deleteConditionalMenu({ applicationId: applicationId, menuid: menuId });
+            const result = await this.features.wechatMenu.deleteConditionalMenu({ applicationId: applicationId, menuId: menuId });
             if (result.success) {
                 deleteMenu();
                 await createMenu();
@@ -257,9 +293,9 @@ export default OakComponent({
             else {
                 this.setMessage({
                     type: 'error',
-                    content: result.errmsg
+                    content: result.errmsg,
                 });
             }
-        }
-    }
+        },
+    },
 });
