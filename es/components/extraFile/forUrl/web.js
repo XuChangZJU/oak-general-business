@@ -2,7 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
 import { Space, Modal, Form, Input, Empty, Row, Col } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Style from "./web.module.less";
-import ImgBox from "oak-frontend-base/src/components/imgBox";
+import ImgBox from "oak-frontend-base/es/components/imgBox";
 export default function render(props) {
     const { isModalOpen, isModalOpen1, renderImgs, src, bridgeUrl, selectedId, } = props.data;
     const { t, onModalConfirm, chooseMethod, closeModal1, closeModal, onModal1Confirm, setSelectedId } = props.methods;

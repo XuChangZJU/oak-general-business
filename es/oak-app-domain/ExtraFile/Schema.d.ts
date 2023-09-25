@@ -12,8 +12,8 @@ import * as User from "../User/Schema";
 export type OpSchema = EntityShape & {
     origin: 'qiniu' | 'wechat' | 'unknown';
     type: 'image' | 'video' | 'audio' | 'file';
-    bucket: String<16>;
-    objectId: String<64>;
+    bucket?: String<32> | null;
+    objectId?: String<64> | null;
     tag1?: String<32> | null;
     tag2?: String<32> | null;
     filename: String<256>;
@@ -21,6 +21,7 @@ export type OpSchema = EntityShape & {
     entity: "article" | "articleMenu" | "sessionMessage" | "user" | string;
     entityId: String<64>;
     extra1?: Text | null;
+    extra2?: Object | null;
     extension?: String<16> | null;
     size?: Int<4> | null;
     sort?: Float<22, 10> | null;
@@ -33,8 +34,8 @@ export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     origin: 'qiniu' | 'wechat' | 'unknown';
     type: 'image' | 'video' | 'audio' | 'file';
-    bucket: String<16>;
-    objectId: String<64>;
+    bucket?: String<32> | null;
+    objectId?: String<64> | null;
     tag1?: String<32> | null;
     tag2?: String<32> | null;
     filename: String<256>;
@@ -42,6 +43,7 @@ export type Schema = EntityShape & {
     entity: "article" | "articleMenu" | "sessionMessage" | "user" | string;
     entityId: String<64>;
     extra1?: Text | null;
+    extra2?: Object | null;
     extension?: String<16> | null;
     size?: Int<4> | null;
     sort?: Float<22, 10> | null;
@@ -72,6 +74,7 @@ type AttrFilter = {
     entity: Q_EnumValue<"article" | "articleMenu" | "sessionMessage" | "user" | string>;
     entityId: Q_StringValue;
     extra1: Q_StringValue;
+    extra2: Object;
     extension: Q_StringValue;
     size: Q_NumberValue;
     sort: Q_NumberValue;
@@ -103,6 +106,7 @@ export type Projection = {
     entity?: number;
     entityId?: number;
     extra1?: number;
+    extra2?: number | Object;
     extension?: number;
     size?: number;
     sort?: number;

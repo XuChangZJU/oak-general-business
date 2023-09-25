@@ -1,6 +1,4 @@
 import assert from 'assert';
-import { ButtonProps } from 'antd';
-import { ButtonProps as MobileButtonProps } from 'antd-mobile';
 import { EntityDict } from '../../../oak-app-domain';
 import { FileState } from '../../../features/extraFile2';
 
@@ -29,9 +27,9 @@ export default OakComponent({
     },
     properties: {
         efPaths: [] as string[],
-        size: 'middle' as ButtonProps['size'] | MobileButtonProps['size'],
-        block: false as ButtonProps['block'] | MobileButtonProps['block'],
-        type: 'primary' as ButtonProps['type'] | MobileButtonProps['type'],
+        size: 'middle',
+        block: false,
+        type: 'primary',
         executeText: '',
     },
     methods: {

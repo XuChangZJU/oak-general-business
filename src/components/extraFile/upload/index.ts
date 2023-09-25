@@ -182,7 +182,8 @@ export default OakComponent({
                 extension,
                 fileType,
                 entityId,
-                sort
+                sort,
+                uploadState: 'uploading',
             });
             this.features.extraFile2.addLocalFile(id, file);
         },

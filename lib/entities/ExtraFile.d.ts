@@ -3,8 +3,8 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 export interface Schema extends EntityShape {
     origin: 'qiniu' | 'wechat' | 'unknown';
     type: 'image' | 'video' | 'audio' | 'file';
-    bucket: String<16>;
-    objectId: String<64>;
+    bucket?: String<32>;
+    objectId?: String<64>;
     tag1?: String<32>;
     tag2?: String<32>;
     filename: String<256>;
@@ -12,6 +12,7 @@ export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
     extra1?: Text;
+    extra2?: Object;
     extension?: String<16>;
     size?: Int<4>;
     sort?: Float<22, 10>;

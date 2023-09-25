@@ -17,7 +17,7 @@ export default function render(props: WebComponentProps<EntityDict, any, true, {
         size, block, type, executeText } = props.data;
     const { t, upload, execute } = props.methods;
     
-    const disabled = oakExecuting || ['uploading'].includes(state) || (oakExecutable === false && ['uploaded'].includes(state));
+    const disabled = oakExecuting || ['uploading'].includes(state) || (oakExecutable !== true && ['uploaded'].includes(state));
     let text = executeText || t('common::action.confirm');
     if (oakExecuting) {
         text = t('executing', { text });
