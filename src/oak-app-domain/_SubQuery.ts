@@ -120,8 +120,6 @@ export type UserIdSubQuery = {
         entity: "userEntityGrant";
     }) | (UserSystem.UserIdSubQuery & {
         entity: "userSystem";
-    }) | (UserWechatPublicTag.UserIdSubQuery & {
-        entity: "userWechatPublicTag";
     }) | (WechatLogin.UserIdSubQuery & {
         entity: "wechatLogin";
     }) | (WechatUser.UserIdSubQuery & {
@@ -422,6 +420,8 @@ export type WechatQrCodeIdSubQuery = {
 export type WechatUserIdSubQuery = {
     [K in "$in" | "$nin"]?: (SessionMessage.WechatUserIdSubQuery & {
         entity: "sessionMessage";
+    }) | (UserWechatPublicTag.WechatUserIdSubQuery & {
+        entity: "userWechatPublicTag";
     }) | (ModiEntity.WechatUserIdSubQuery & {
         entity: "modiEntity";
     }) | (OperEntity.WechatUserIdSubQuery & {

@@ -7,7 +7,7 @@ import { CommonAspectDict } from 'oak-common-aspect';
 import { SyncRowStore } from 'oak-domain/lib/store/SyncRowStore';
 import { GeneralFeatures } from '../features';
 import { BackendRuntimeContext } from './BackendRuntimeContext';
-type AspectDict<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>;
+export type AspectDict<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>> = GeneralAspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>;
 export interface SerializedData extends Fsd {
     a?: string;
     t?: string;
@@ -27,4 +27,3 @@ export declare abstract class FrontendRuntimeContext<ED extends EntityDict & Bas
     isReallyRoot(): boolean;
     allowUserUpdate(): boolean;
 }
-export {};

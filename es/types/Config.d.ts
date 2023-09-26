@@ -15,9 +15,12 @@ export type QiniuLiveConfig = {
 export type QiniuCosConfig = {
     accessKey: string;
     uploadHost: string;
-    bucket: string;
-    domain: string;
-    protocol: string | string[];
+    buckets: {
+        name: string;
+        domain: string;
+        protocol: string | string[];
+    }[];
+    defaultBucket: string;
 };
 export type AmapMapConfig = {
     webApiKey: string;

@@ -2,7 +2,7 @@ import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { WechatSDK, } from 'oak-external-sdk';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { OakRowInconsistencyException, OakUnloggedInException, OakUserException, OakUserUnpermittedException, } from 'oak-domain/lib/types';
-import { composeFileUrl } from '../utils/extraFile';
+import { composeFileUrl } from '../utils/cos';
 import { OakChangeLoginWayException, OakDistinguishUserException, OakUserDisabledException, } from '../types/Exception';
 import { encryptPasswordSha1 } from '../utils/password';
 import { tokenProjection } from '../types/Projection';
@@ -519,7 +519,7 @@ async function setUserInfoFromWechat(user, userInfo, context) {
     }
     if (avatar &&
         (extraFile$entity?.length === 0 ||
-            composeFileUrl(extraFile$entity[0], config) !== avatar)) {
+            composeFileUrl(extraFile$entity[0], context) !== avatar)) {
         // 需要更新新的avatar extra file
         const extraFileOperations = [
             {

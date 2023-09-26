@@ -17,9 +17,12 @@ export type QiniuLiveConfig = {
 export type QiniuCosConfig = {
     accessKey: string;
     uploadHost: string; // 七牛上传域名
-    bucket: string;
-    domain: string; // 域名
-    protocol: string | string[];
+    buckets: {      // 七牛配置的桶信息
+        name: string;
+        domain: string;
+        protocol: string | string[];
+    }[];
+    defaultBucket: string;      // 默认上传桶
 }
 
 export type AmapMapConfig = {

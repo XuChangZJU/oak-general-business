@@ -10,7 +10,7 @@ import { getConfig } from './getContextConfig';
 export async function getLivestream(params, context) {
     const { streamTitle, expireAt, origin } = params;
     // 获取七牛直播云信息
-    const { instance, config, } = await getConfig(context, 'Live', origin);
+    const { instance, config, } = getConfig(context, 'Live', origin);
     assert(origin === 'qiniu');
     const { hub, liveHost, publishDomain, playDomain, playKey, publishKey } = config;
     return instance.getLiveStream(hub, 'POST', streamTitle, liveHost, publishDomain, playDomain, publishKey, playKey, expireAt);
@@ -25,7 +25,7 @@ export async function getLivestream(params, context) {
  */
 export async function getStreamObj(params, context) {
     const { streamTitle, expireAt, origin } = params;
-    const { instance, config, } = await getConfig(context, 'Live', origin);
+    const { instance, config, } = getConfig(context, 'Live', origin);
     assert(origin === 'qiniu');
     const { publishDomain: publishDomain, publishKey: publishKey, playDomain, playKey, hub } = config;
     return instance.getStreamObj(publishDomain, playDomain, hub, publishKey, playKey, streamTitle, expireAt);
@@ -34,7 +34,7 @@ export async function getStreamObj(params, context) {
 export async function getPlayBackUrl(params, context) {
     const { streamTitle, start, end, origin } = params;
     // 获取七牛直播云信息
-    const { config, instance } = await getConfig(context, 'Live', origin);
+    const { config, instance } = getConfig(context, 'Live', origin);
     const { hub, playBackDomain, liveHost } = config;
     return instance.getPlayBackUrl(hub, playBackDomain, streamTitle, start, end, 'POST', liveHost);
 }

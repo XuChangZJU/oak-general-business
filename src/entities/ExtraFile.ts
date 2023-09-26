@@ -5,8 +5,8 @@ import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 export interface Schema extends EntityShape {
     origin: 'qiniu' | 'wechat' | 'unknown';
     type: 'image' | 'video' | 'audio' | 'file';
-    bucket?: String<32>;
-    objectId?: String<64>;
+    bucket?: String<32>;                // 七牛用，其它cos可忽略
+    objectId?: String<64>;              // 七牛用，其它cos可忽略
     tag1?: String<32>;
     tag2?: String<32>;
     filename: String<256>;

@@ -1,20 +1,28 @@
 import { EntityDict } from '../oak-app-domain';
 import { EntityDict as BaseEntityDict } from 'oak-domain'
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
-import { Config } from '../types/Config';
+import { FrontendRuntimeContext, AspectDict } from '../context/FrontendRuntimeContext';
 
-export default interface Uploader<ED extends EntityDict & BaseEntityDict> {
+/**
+ * Complicated Object Storage
+ * 用于定义在extraFile对象上对文件进行操作的目标类
+ * 根据不同的cos服务提供方法实现，如七牛、阿里等
+ */
+export default interface Cos<
+    ED extends EntityDict & BaseEntityDict,
+    Cxt extends BackendRuntimeContext<ED>,
+    FrontCxt extends FrontendRuntimeContext<ED, Cxt, AspectDict<ED, Cxt>>> {
     name: string;
 
     /**
-     * 注入在后台extrafile生成之前
+     * 注入在后台extrafile生成之前，将上传所需要的token等信息生成并存放在uploadMeta属性中
      * @param extraFile，要生成的extraFile数据
      * @param context 后台上下文
      * @returns
      */
     formUploadMeta: (
         extraFile: EntityDict['extraFile']['OpSchema'],
-        context: BackendRuntimeContext<ED>
+        context: Cxt
     ) => Promise<void>;
 
     /**
@@ -37,10 +45,9 @@ export default interface Uploader<ED extends EntityDict & BaseEntityDict> {
     ) => Promise<void>;
 
     // 前端上传时对回调的处理
-
     composeFileUrl: (
         extraFile: EntityDict['extraFile']['OpSchema'],
-        config: Config,
+        context: FrontCxt,
         style?: string,
     ) => string;
 
@@ -51,7 +58,7 @@ export default interface Uploader<ED extends EntityDict & BaseEntityDict> {
      */
     checkWhetherSuccess: (
         extraFile: EntityDict['extraFile']['OpSchema'],
-        context: BackendRuntimeContext<ED>
+        context: Cxt
     ) => Promise<boolean>;
 
     /**
@@ -62,6 +69,6 @@ export default interface Uploader<ED extends EntityDict & BaseEntityDict> {
      */
     removeFile: (
         extraFile: EntityDict['extraFile']['OpSchema'],
-        context: BackendRuntimeContext<ED>
+        context: Cxt
     ) => Promise<void>;
 }

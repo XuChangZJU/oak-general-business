@@ -1,38 +1,34 @@
-import { EntityDict } from '../../oak-app-domain';
-import { EntityDict as BaseEntityDict } from 'oak-domain';
-import { BackendRuntimeContext } from '../../context/BackendRuntimeContext';
+import { ED, BRC, FRC } from '../../types/RuntimeCxt';
 import { assert } from 'oak-domain/lib/utils/assert';
-import Uploader from "../../types/Uploader";
+import Cos from "../../types/Cos";
 import { OpSchema } from '../../oak-app-domain/ExtraFile/Schema';
 
 import { QiniuUploadInfo } from '../../types/Upload';
-import { getConfig } from '../../utils/getContextConfig';
+import { getConfig } from '../getContextConfig';
 import { QiniuCosConfig } from '../../types/Config';
 import { QiniuCloudInstance } from 'oak-external-sdk';
-import { get } from 'oak-domain/lib/utils/lodash';
-import { Config } from '../../types/Config';
 import { urlSafeBase64Encode } from '../sign';
 import { OakUploadException } from '../../types/Exception';
 
 const QiniuSearchUrl = 'https://rs.qiniuapi.com/stat/EncodedEntryURI';
 
-export default class Qiniu<ED extends EntityDict & BaseEntityDict> implements Uploader<ED> {
+export default class Qiniu implements Cos<ED, BRC, FRC> {
     name = 'qiniu';
 
     async formUploadMeta(
         extraFile: OpSchema,
-        context: BackendRuntimeContext<ED>
+        context: BRC
     ) {
         const { origin, objectId, extension, entity, bucket } = extraFile;
         // 构造文件上传所需的key
         const key = `${entity ? entity + '/' : ''}${objectId}${extension ? '.' + extension : ''
             }`;
-        const { instance, config } = await getConfig<
-            ED,
-            BackendRuntimeContext<ED>
-        >(context, 'Cos', 'qiniu');
+        const { instance, config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
 
-        const { uploadHost, bucket: bucket2 } = config as QiniuCosConfig;
+        const { uploadHost, defaultBucket: bucket2, buckets } = config as QiniuCosConfig;
+        if (bucket) {
+            assert(buckets.hasOwnProperty(bucket), `${bucket}不是一个有效的桶配置`);
+        }
         Object.assign(extraFile, {
             bucket: bucket || bucket2,
             uploadMeta: (instance as QiniuCloudInstance).getUploadInfo(
@@ -80,18 +76,21 @@ export default class Qiniu<ED extends EntityDict & BaseEntityDict> implements Up
     }
 
     composeFileUrl(
-        extraFile: EntityDict['extraFile']['OpSchema'],
-        config: Config,
+        extraFile: ED['extraFile']['OpSchema'],
+        context: FRC,
         style?: string,
     ) {
         const {
             objectId,
             extension,
             entity,
+            bucket
         } = extraFile || {};
+        const { config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
+
         if (config && config.Cos) {
             const { domain, protocol } =
-                config.Cos[origin as keyof typeof config.Cos]!;
+                config.Cos[origin as keyof typeof config.Cos]!.buckets[bucket as any];
             let protocol2 = protocol;
             if (protocol instanceof Array) {
                 // protocol存在https 说明域名有证书
@@ -107,23 +106,20 @@ export default class Qiniu<ED extends EntityDict & BaseEntityDict> implements Up
 
     async checkWhetherSuccess(
         extraFile: OpSchema,
-        context: BackendRuntimeContext<ED>
+        context: BRC
     ) {
         const { uploadMeta, bucket } = extraFile;
         const { key } = uploadMeta as { key: string };
         const entry = `${bucket}:${key}`;
         const encodedEntryURI = urlSafeBase64Encode(entry);
         const qiniuSearchUrl = QiniuSearchUrl.replace('EncodedEntryURI', encodedEntryURI);
-        const { instance, config } = await getConfig<
-            ED,
-            BackendRuntimeContext<ED>
-        >(context, 'Cos', 'qiniu');
+        const { instance, config } = getConfig(context, 'Cos', 'qiniu');
 
         return false;
     }
 
 
-    async removeFile(extraFile: OpSchema, context: BackendRuntimeContext<ED>) {
+    async removeFile(extraFile: OpSchema, context: BRC) {
         const { bucket, uploadMeta } = extraFile;
     }
 };
