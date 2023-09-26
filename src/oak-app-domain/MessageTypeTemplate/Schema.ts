@@ -6,18 +6,16 @@ import { GenericAction, AppendOnlyAction, ReadOnlyAction, ExcludeUpdateAction, E
 import { String, Float, Int, Boolean, Datetime, } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
-import * as Application from "../Application/Schema";
+import * as WechatPublicTemplate from "../WechatPublicTemplate/Schema";
 export type OpSchema = EntityShape & {
     type: String<64>;
-    templateId: String<128>;
-    applicationId: ForeignKey<"application">;
+    templateId: ForeignKey<"wechatPublicTemplate">;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     type: String<64>;
-    templateId: String<128>;
-    applicationId: ForeignKey<"application">;
-    application: Application.Schema;
+    templateId: ForeignKey<"wechatPublicTemplate">;
+    template: WechatPublicTemplate.Schema;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -28,8 +26,7 @@ type AttrFilter = {
     $$updateAt$$: Q_DateValue;
     type: Q_StringValue;
     templateId: Q_StringValue;
-    applicationId: Q_StringValue;
-    application: Application.Filter;
+    template: WechatPublicTemplate.Filter;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export type Projection = {
@@ -41,14 +38,13 @@ export type Projection = {
     $$seq$$?: number;
     type?: number;
     templateId?: number;
-    applicationId?: number;
-    application?: Application.Projection;
+    template?: WechatPublicTemplate.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
-type MessageTypeTemplateIdIdProjection = OneOf<{
+type MessageTypeTemplateIdProjection = OneOf<{
     id: number;
 }>;
-type ApplicationIdProjection = OneOf<{
-    applicationId: number;
+type WechatPublicTemplateIdProjection = OneOf<{
+    templateId: number;
 }>;
 export type SortAttr = {
     id: number;
@@ -63,9 +59,7 @@ export type SortAttr = {
 } | {
     templateId: number;
 } | {
-    applicationId: number;
-} | {
-    application: Application.SortAttr;
+    template: WechatPublicTemplate.SortAttr;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
@@ -77,41 +71,41 @@ export type Sorter = SortNode[];
 export type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
 export type Selection<P extends Object = Projection> = SelectOperation<P>;
 export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export type CreateOperationData = FormCreateData<Omit<OpSchema, "applicationId">> & (({
-    applicationId?: never;
-    application: Application.CreateSingleOperation;
+export type CreateOperationData = FormCreateData<Omit<OpSchema, "templateId">> & (({
+    templateId?: never;
+    template: WechatPublicTemplate.CreateSingleOperation;
 } | {
-    applicationId: ForeignKey<"application">;
-    application?: Application.UpdateOperation;
+    templateId: ForeignKey<"template">;
+    template?: WechatPublicTemplate.UpdateOperation;
 } | {
-    applicationId: ForeignKey<"application">;
+    templateId: ForeignKey<"template">;
 }));
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "applicationId">> & (({
-    application: Application.CreateSingleOperation;
-    applicationId?: never;
+export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "templateId">> & (({
+    template: WechatPublicTemplate.CreateSingleOperation;
+    templateId?: never;
 } | {
-    application: Application.UpdateOperation;
-    applicationId?: never;
+    template: WechatPublicTemplate.UpdateOperation;
+    templateId?: never;
 } | {
-    application: Application.RemoveOperation;
-    applicationId?: never;
+    template: WechatPublicTemplate.RemoveOperation;
+    templateId?: never;
 } | {
-    application?: never;
-    applicationId?: ForeignKey<"application"> | null;
+    template?: never;
+    templateId?: ForeignKey<"template"> | null;
 })) & {
     [k: string]: any;
 };
 export type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export type RemoveOperationData = {} & (({
-    application?: Application.UpdateOperation | Application.RemoveOperation;
+    template?: WechatPublicTemplate.UpdateOperation | WechatPublicTemplate.RemoveOperation;
 }));
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
-export type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
-export type MessageTypeTemplateIdIdSubQuery = Selection<MessageTypeTemplateIdIdProjection>;
+export type WechatPublicTemplateIdSubQuery = Selection<WechatPublicTemplateIdProjection>;
+export type MessageTypeTemplateIdSubQuery = Selection<MessageTypeTemplateIdProjection>;
 export type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

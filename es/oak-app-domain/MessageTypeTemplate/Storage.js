@@ -1,7 +1,5 @@
-import { StorageDesc } from "oak-domain/lib/types/Storage";
-import { OpSchema } from "./Schema";
 import { genericActions as actions } from "oak-domain/lib/actions/action";
-export const desc: StorageDesc<OpSchema> = {
+export const desc = {
     attributes: {
         type: {
             notNull: true,
@@ -12,15 +10,8 @@ export const desc: StorageDesc<OpSchema> = {
         },
         templateId: {
             notNull: true,
-            type: "varchar",
-            params: {
-                length: 128
-            }
-        },
-        applicationId: {
-            notNull: true,
             type: "ref",
-            ref: "application"
+            ref: "wechatPublicTemplate"
         }
     },
     actionType: "crud",

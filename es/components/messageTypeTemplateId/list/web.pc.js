@@ -2,16 +2,16 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
 import { Table, Button, Space, Typography, Input, Select } from 'antd';
 import Styles from './web.module.less';
 export default function Render(props) {
-    const { oakPagination, mttIds = [], dirtyIds = [], oakLoading, messageTypes, applicationId, } = props.data;
+    const { oakPagination, mtt = [], dirtyIds = [], oakLoading, messageTypes, applicationId, } = props.data;
     const { setCurrentPage, setPageSize, t, addItem, removeItem, updateItem, recoverItem, resetItem, execute } = props.methods;
     const { pageSize, total, currentPage } = oakPagination || {};
     return (_jsxs("div", { className: Styles.container, children: [_jsxs(Space, { children: [_jsx(Button, { type: "default", onClick: () => {
-                            addItem({
+                            /* addItem({
                                 applicationId,
-                            });
+                            }); */
                         }, children: t('common::action.create') }), dirtyIds.length > 0 && (_jsx(Button, { type: "primary", onClick: () => {
                             execute();
-                        }, children: t('common::action.confirm') }))] }), _jsx(Table, { loading: oakLoading, dataSource: mttIds, rowKey: "id", columns: [
+                        }, children: t('common::action.confirm') }))] }), _jsx(Table, { loading: oakLoading, dataSource: mtt, rowKey: "id", columns: [
                     {
                         dataIndex: 'type',
                         title: '消息类型',

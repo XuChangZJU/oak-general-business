@@ -1,11 +1,10 @@
 import { EntityDict } from '../../../oak-app-domain';
 
 export default OakComponent({
-    entity: 'messageTypeTemplateId',
+    entity: 'messageTypeTemplate',
     isList: true,
     projection: {
         id: 1,
-        applicationId: 1,
         templateId: 1,
         type: 1,
     },
@@ -20,7 +19,7 @@ export default OakComponent({
                       (ele) =>
                           (
                               ele.operation
-                                  .data as EntityDict['messageTypeTemplateId']['CreateSingle']['data']
+                                  .data as EntityDict['messageTypeTemplate']['CreateSingle']['data']
                           )?.id || ele.operation.filter?.id
                   )
                   .filter((ele) => !!ele)
@@ -49,7 +48,9 @@ export default OakComponent({
                 const { applicationId } = this.props;
                 if (applicationId) {
                     return {
-                        applicationId,
+                        template: {
+                            applicationId,
+                        }
                     };
                 }
                 return {};

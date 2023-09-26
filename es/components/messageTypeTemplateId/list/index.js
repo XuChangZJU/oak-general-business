@@ -1,9 +1,8 @@
 export default OakComponent({
-    entity: 'messageTypeTemplateId',
+    entity: 'messageTypeTemplate',
     isList: true,
     projection: {
         id: 1,
-        applicationId: 1,
         templateId: 1,
         type: 1,
     },
@@ -40,7 +39,9 @@ export default OakComponent({
                 const { applicationId } = this.props;
                 if (applicationId) {
                     return {
-                        applicationId,
+                        template: {
+                            applicationId,
+                        }
                     };
                 }
                 return {};

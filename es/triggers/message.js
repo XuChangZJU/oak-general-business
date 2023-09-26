@@ -84,18 +84,24 @@ async function createNotification(message, context) {
         console.warn(`类型为${type}的消息在生成时，尝试为之生成通知，找不到可推送的system`);
         return 0;
     }
-    const messageTypeTemplateIds = await context.select('messageTypeTemplateId', {
+    const messageTypeTemplates = await context.select('messageTypeTemplate', {
         data: {
             id: 1,
             templateId: 1,
-            applicationId: 1,
+            template: {
+                id: 1,
+                wechatId: 1,
+                applicationId: 1,
+            },
             type: 1,
         },
         filter: {
             type,
-            application: {
-                systemId: {
-                    $in: systems.map(ele => ele.id),
+            template: {
+                application: {
+                    systemId: {
+                        $in: systems.map(ele => ele.id),
+                    },
                 },
             },
         },
@@ -137,7 +143,7 @@ async function createNotification(message, context) {
                     for (const app of apps) {
                         // 如果是wechatMp或者wechat，还要保证用户已经有openId
                         const wechatUser = wechatUsers.find(ele => ele.applicationId === app.id);
-                        const messageTypeTemplateId = messageTypeTemplateIds.find(ele => ele.applicationId === app.id && ele.type === type);
+                        const messageTypeTemplateId = messageTypeTemplates.find(ele => ele.template.applicationId === app.id && ele.type === type);
                         if (messageTypeTemplateId && wechatUser) {
                             const converter = ConverterDict[type] && ConverterDict[type].toWechatMp;
                             const dispersedData = converter && await converter(entity, entityId, apps, app, context);
@@ -147,7 +153,7 @@ async function createNotification(message, context) {
                                     data: dispersedData,
                                     channel,
                                     applicationId: app.id,
-                                    templateId: messageTypeTemplateId.templateId,
+                                    templateId: messageTypeTemplateId.template.wechatId,
                                     data1: {
                                         openId: wechatUser.openId,
                                     }
@@ -175,7 +181,7 @@ async function createNotification(message, context) {
                     for (const app of apps) {
                         // 如果是wechatMp或者wechat，还要保证用户已经有openId
                         const wechatUser = wechatUsers.find(ele => ele.applicationId === app.id);
-                        const messageTypeTemplateId = messageTypeTemplateIds.find(ele => ele.applicationId === app.id && ele.type === type);
+                        const messageTypeTemplateId = messageTypeTemplates.find(ele => ele.template.applicationId === app.id && ele.type === type);
                         if (messageTypeTemplateId && wechatUser) {
                             const converter = ConverterDict[type] && ConverterDict[type].toWechatPublic;
                             const disperseResult = converter && await converter(entity, entityId, apps, app, context);
@@ -186,7 +192,7 @@ async function createNotification(message, context) {
                                     data,
                                     channel,
                                     applicationId: app.id,
-                                    templateId: messageTypeTemplateId.templateId,
+                                    templateId: messageTypeTemplateId.template.wechatId,
                                     data1: {
                                         openId: wechatUser.openId,
                                         wechatMpAppId,
