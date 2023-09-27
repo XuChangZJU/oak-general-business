@@ -10,4 +10,4 @@ export default function render(props: WebComponentProps<EntityDict, any, true, {
     executeText?: string;
 }, {
     upload: () => Promise<void>;
-}>): JSX.Element;
+}>): import("react/jsx-runtime").JSX.Element;

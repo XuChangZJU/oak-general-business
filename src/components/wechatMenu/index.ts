@@ -4,6 +4,7 @@ export default OakComponent({
     isList: true,
     properties: {
         applicationId: '',
+        isPlatform: false,
     },
     lifetimes: {
         async ready() {
@@ -16,10 +17,13 @@ export default OakComponent({
                         data: {
                             id: 1,
                             applicationId: 1,
+                            wechatPublicTagId: 1,
                         },
                         filter: {
                             applicationId,
-
+                            wechatPublicTagId: {
+                                $exists: false
+                            }
                         }
                     }
                 );

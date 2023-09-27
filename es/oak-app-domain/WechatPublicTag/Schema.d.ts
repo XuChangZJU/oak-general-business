@@ -2,7 +2,7 @@ import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
-import { GenericAction } from "oak-domain/lib/actions/action";
+import { Action, ParticularAction } from "./Action";
 import { String, Datetime, Boolean, Uint } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Application from "../Application/Schema";
@@ -13,17 +13,17 @@ import * as OperEntity from "../OperEntity/Schema";
 export type OpSchema = EntityShape & {
     text: String<32>;
     applicationId: ForeignKey<"application">;
-    wechatId: Uint<4>;
-    sync: Boolean;
-    syncAt: Datetime;
+    wechatId?: Uint<4> | null;
+    sync?: Boolean | null;
+    syncAt?: Datetime | null;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     text: String<32>;
     applicationId: ForeignKey<"application">;
-    wechatId: Uint<4>;
-    sync: Boolean;
-    syncAt: Datetime;
+    wechatId?: Uint<4> | null;
+    sync?: Boolean | null;
+    syncAt?: Datetime | null;
     application: Application.Schema;
     userWechatPublicTag$wechatPublicTag?: Array<UserWechatPublicTag.Schema>;
     userWechatPublicTag$wechatPublicTag$$aggr?: AggregationResult<UserWechatPublicTag.Schema>;
@@ -164,7 +164,7 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "applicationId">
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
     operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
 };
-export type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
+export type UpdateOperation = OakOperation<"update" | ParticularAction | string, UpdateOperationData, Filter, Sorter>;
 export type RemoveOperationData = {} & (({
     application?: Application.UpdateOperation | Application.RemoveOperation;
 }));
@@ -175,7 +175,7 @@ export type WechatPublicTagIdSubQuery = Selection<WechatPublicTagIdProjection>;
 export type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: OakMakeAction<GenericAction> | string;
+    Action: OakMakeAction<Action> | string;
     Selection: Selection;
     Aggregation: Aggregation;
     Operation: Operation;
@@ -184,5 +184,6 @@ export type EntityDef = {
     Remove: RemoveOperation;
     CreateSingle: CreateSingleOperation;
     CreateMulti: CreateMultipleOperation;
+    ParticularAction: ParticularAction;
 };
 export {};

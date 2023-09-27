@@ -188,6 +188,35 @@ export async function deleteConditionalMenu<
     return result;
 }
 
+export async function deleteMenu<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(
+    params: {
+        applicationId: string;
+    },
+    context: Cxt
+): Promise<any> {
+    const application = await getWechatPublicConfig<ED, Cxt>(
+        params.applicationId,
+        context
+    );
+    assert(application);
+    const { type, config, systemId } = application!;
+    assert(type === 'wechatPublic');
+    let appId: string, appSecret: string;
+    const config2 = config as WechatPublicConfig;
+    appId = config2.appId;
+    appSecret = config2.appSecret;
+    const wechatInstance = WechatSDK.getInstance(
+        appId!,
+        type!,
+        appSecret!
+    ) as WechatPublicInstance;
+    const result = await wechatInstance.deleteMenu();
+    return result;
+}
+
 export async function batchGetArticle<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>

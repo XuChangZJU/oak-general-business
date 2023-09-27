@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import ShowNews from '../wechatMenu/showNews';
 export default function Render(props) {
     const { type, materials, total, getMenuContent } = props.data;
-    const { getMaterialList, setMessage, upload, getArticleList } = props.methods;
+    const { getMaterialList, setMessage, upload, getArticleList, getImg } = props.methods;
     const [currentPage, setCurrentPage] = useState(1);
     const [upsertOpen, setUpsertOpen] = useState(false);
     const [title, setTitle] = useState('');
@@ -95,7 +95,7 @@ export default function Render(props) {
             dataIndex: 'update_time',
             title: '更新时间',
             render: (value, record, index) => {
-                return _jsx(_Fragment, { children: dayjs(value).format('YYYY-MM-DD HH:mm') });
+                return _jsx(_Fragment, { children: dayjs(value * 1000).format('YYYY-MM-DD HH:mm') });
             }
         },
     ];
@@ -140,7 +140,7 @@ export default function Render(props) {
             dataIndex: 'update_time',
             title: '更新时间',
             render: (value, record, index) => {
-                return _jsx(_Fragment, { children: dayjs(value).format('YYYY-MM-DD HH:mm') });
+                return _jsx(_Fragment, { children: dayjs(value * 1000).format('YYYY-MM-DD HH:mm') });
             }
         },
         {
@@ -156,7 +156,7 @@ export default function Render(props) {
             dataIndex: 'url',
             title: '图片',
             render: (value, record, index) => {
-                return _jsx("img", { style: { width: 120, height: 70 }, src: value });
+                return _jsx("img", { style: { width: 120, height: 70 }, src: getImg(value) });
             },
         });
     }
@@ -165,7 +165,7 @@ export default function Render(props) {
             dataIndex: 'url',
             title: '音频',
             render: (value, record, index) => {
-                return _jsxs("a", { href: value, download: true, style: { color: '#1677FF', cursor: 'pointer' }, children: [_jsx(DownloadOutlined, {}), record.media_id] });
+                return _jsxs("a", { href: getImg(value), download: true, style: { color: '#1677FF', cursor: 'pointer' }, children: [_jsx(DownloadOutlined, {}), record.media_id] });
             },
         });
     }
@@ -174,7 +174,7 @@ export default function Render(props) {
             dataIndex: 'url',
             title: '视频',
             render: (value, record, index) => {
-                return _jsxs("a", { href: value, download: true, style: { color: '#1677FF', cursor: 'pointer' }, children: [_jsx(DownloadOutlined, {}), record.media_id] });
+                return _jsxs("a", { href: getImg(value), download: true, style: { color: '#1677FF', cursor: 'pointer' }, children: [_jsx(DownloadOutlined, {}), record.media_id] });
             },
         });
     }

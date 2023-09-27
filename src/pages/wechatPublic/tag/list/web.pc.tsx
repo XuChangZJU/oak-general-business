@@ -29,6 +29,7 @@ export default function Render(
             goCreate: () => void;
             goUpdate: (id: string) => void;
             goDelete: (id: string) => void;
+            sync: (id: string) => void;
         }
     >
 ) {
@@ -41,6 +42,7 @@ export default function Render(
         goDetail,
         goUpdate,
         goDelete,
+        sync,
     } = methods;
     const { list, showBack = true, oakLoading, oakPagination } = data;
 
@@ -137,6 +139,17 @@ export default function Render(
                                         >
                                             更新
                                         </Button>
+                                        {
+                                            !record.sync && <Button
+                                                type="link"
+                                                onClick={() => {
+                                                    sync(record.id!);
+                                                }}
+                                            >
+                                                同步
+                                            </Button>
+                                        }
+
                                     </>
                                 );
                             },

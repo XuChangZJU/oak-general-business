@@ -4,7 +4,7 @@ import { Schema as Application } from './Application';
 export interface Schema extends EntityShape {
     text: String<32>;
     application: Application;
-    wechatId: Uint<4>;
-    sync: Boolean;
-    syncAt: Datetime;
+    wechatId?: Uint<4>;
+    sync?: Boolean;
+    syncAt?: Datetime;
 }

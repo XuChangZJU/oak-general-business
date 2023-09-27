@@ -19,6 +19,9 @@ export declare function deleteConditionalMenu<ED extends EntityDict, Cxt extends
     applicationId: string;
     menuId: number;
 }, context: Cxt): Promise<any>;
+export declare function deleteMenu<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+    applicationId: string;
+}, context: Cxt): Promise<any>;
 export declare function batchGetArticle<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
     offset?: number;

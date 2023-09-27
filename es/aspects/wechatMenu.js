@@ -80,6 +80,19 @@ export async function deleteConditionalMenu(params, context) {
     const result = await wechatInstance.deleteConditionalMenu(params.menuId);
     return result;
 }
+export async function deleteMenu(params, context) {
+    const application = await getWechatPublicConfig(params.applicationId, context);
+    assert(application);
+    const { type, config, systemId } = application;
+    assert(type === 'wechatPublic');
+    let appId, appSecret;
+    const config2 = config;
+    appId = config2.appId;
+    appSecret = config2.appSecret;
+    const wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
+    const result = await wechatInstance.deleteMenu();
+    return result;
+}
 export async function batchGetArticle(params, context) {
     const application = await getWechatPublicConfig(params.applicationId, context);
     assert(application);

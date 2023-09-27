@@ -27,6 +27,10 @@ export class WechatMenu extends Feature {
         const callBack = await this.cache.exec('deleteConditionalMenu', params);
         return callBack.result;
     }
+    async deleteMenu(params) {
+        const callBack = await this.cache.exec('deleteMenu', params);
+        return callBack.result;
+    }
     async batchGetArticle(params) {
         const callBack = await this.cache.exec('batchGetArticle', params);
         return callBack.result;

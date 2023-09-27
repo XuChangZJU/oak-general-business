@@ -1,6 +1,6 @@
 import { StorageDesc } from "oak-domain/lib/types/Storage";
 import { OpSchema } from "./Schema";
-import { genericActions as actions } from "oak-domain/lib/actions/action";
+import { actions } from "./Action";
 export const desc: StorageDesc<OpSchema> = {
     attributes: {
         text: {
@@ -16,7 +16,6 @@ export const desc: StorageDesc<OpSchema> = {
             ref: "application"
         },
         wechatId: {
-            notNull: true,
             type: "int",
             params: {
                 width: 4,
@@ -24,11 +23,9 @@ export const desc: StorageDesc<OpSchema> = {
             }
         },
         sync: {
-            notNull: true,
             type: "boolean"
         },
         syncAt: {
-            notNull: true,
             type: "datetime"
         }
     },

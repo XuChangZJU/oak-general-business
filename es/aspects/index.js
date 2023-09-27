@@ -7,7 +7,8 @@ import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
 import { getMpUnlimitWxaCode } from './wechatQrCode';
 import { confirmUserEntityGrant } from './userEntityGrant';
-import { getCurrentMenu, getMenu, createMenu, createConditionalMenu, deleteConditionalMenu, batchGetArticle, getArticle, batchGetMaterialList, getMaterial, } from './wechatMenu';
+import { getCurrentMenu, getMenu, createMenu, createConditionalMenu, deleteConditionalMenu, deleteMenu, batchGetArticle, getArticle, batchGetMaterialList, getMaterial, } from './wechatMenu';
+import { createTag, getTags, editTag, deleteTag, } from './wechatPublicTag';
 const aspectDict = {
     mergeUser,
     switchTo,
@@ -38,9 +39,14 @@ const aspectDict = {
     createMenu,
     createConditionalMenu,
     deleteConditionalMenu,
+    deleteMenu,
     batchGetArticle,
     getArticle,
     batchGetMaterialList,
     getMaterial,
+    createTag,
+    getTags,
+    editTag,
+    deleteTag,
 };
 export default aspectDict;

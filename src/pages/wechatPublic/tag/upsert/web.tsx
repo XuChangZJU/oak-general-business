@@ -5,30 +5,40 @@ import PageHeader from '../../../../components/common/pageHeader';
 import Style from './web.module.less';
 
 import { EntityDict } from '../../../../oak-app-domain';
-import { WebComponentProps } from 'oak-frontend-base';
+import { RowWithActions, WebComponentProps } from 'oak-frontend-base';
 import { getWechatPublicTags } from '../../../../config/constants';
 
 export default function Render(
     props: WebComponentProps<
         EntityDict,
-        'system',
+        'wechatPublicTag',
         false,
         {
-            text: string;
             variant: 'inline' | 'alone' | 'dialog';
             showBack: boolean;
+            text: string;
+            wechatId: number;
+            sync: boolean;
+            oakId: string,
         },
         {
             confirm: () => void;
+            createTag: (name: string) => void;
+            editTag: (id: number, name: string) => void;
         }
     >
 ) {
     const {
-        text,
         variant,
         showBack = true,
+        text,
+        wechatId,
+        sync,
+        oakDirty,
+        oakExecuting,
+        oakId,
     } = props.data;
-    const { t, update, navigateBack, confirm } = props.methods;
+    const { t, update, navigateBack, confirm, createTag, editTag } = props.methods;
 
     const WechatPublicTags = getWechatPublicTags();
     const TagOptions = Object.keys(WechatPublicTags).map(
@@ -37,7 +47,6 @@ export default function Render(
             value: WechatPublicTags[ele],
         })
     );
-
     return (
         <PageHeader showBack={true} title="微信公众号TAG信息">
             <Row>
@@ -50,7 +59,6 @@ export default function Render(
                         <Form.Item
                             label="TAG名称"
                             required
-                            name="text"
                             rules={[
                                 {
                                     required: true,
@@ -58,10 +66,11 @@ export default function Render(
                             ]}
                         >
                             <>
-                                <Select
+                                <Input
                                     value={text}
-                                    onChange={(v) => update({ text: v })}
-                                    options={TagOptions}
+                                    onChange={(v) => update({ text: v.target.value })}
+                                    placeholder='标签名称'
+                                    maxLength={30}
                                 />
                             </>
                         </Form.Item>
@@ -72,8 +81,15 @@ export default function Render(
                                     <Button
                                         type="primary"
                                         onClick={() => {
-                                            confirm();
+                                            if (oakId) {
+                                                editTag(wechatId, text);
+                                                console
+                                            } else {
+                                                createTag(text);
+                                            }
+
                                         }}
+                                        disabled={!oakDirty || oakExecuting}
                                     >
                                         确定
                                     </Button>

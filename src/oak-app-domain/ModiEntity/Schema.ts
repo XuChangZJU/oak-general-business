@@ -13,18 +13,19 @@ import * as UserSystem from "../UserSystem/Schema";
 import * as UserWechatPublicTag from "../UserWechatPublicTag/Schema";
 import * as WechatLogin from "../WechatLogin/Schema";
 import * as WechatMenu from "../WechatMenu/Schema";
+import * as wechatPublicAutoReply from "../wechatPublicAutoReply/Schema";
 import * as WechatPublicTag from "../WechatPublicTag/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
 import * as WechatUser from "../WechatUser/Schema";
 export type OpSchema = EntityShape & {
     modiId: ForeignKey<"modi">;
-    entity: "user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatLogin" | "wechatMenu" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string;
+    entity: "user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatLogin" | "wechatMenu" | "wechatPublicAutoReply" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string;
     entityId: String<64>;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     modiId: ForeignKey<"modi">;
-    entity: "user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatLogin" | "wechatMenu" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string;
+    entity: "user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatLogin" | "wechatMenu" | "wechatPublicAutoReply" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string;
     entityId: String<64>;
     modi: Modi.Schema;
     user?: User.Schema;
@@ -33,6 +34,7 @@ export type Schema = EntityShape & {
     userWechatPublicTag?: UserWechatPublicTag.Schema;
     wechatLogin?: WechatLogin.Schema;
     wechatMenu?: WechatMenu.Schema;
+    wechatPublicAutoReply?: wechatPublicAutoReply.Schema;
     wechatPublicTag?: WechatPublicTag.Schema;
     wechatQrCode?: WechatQrCode.Schema;
     wechatUser?: WechatUser.Schema;
@@ -46,7 +48,7 @@ type AttrFilter = {
     $$updateAt$$: Q_DateValue;
     modiId: Q_StringValue;
     modi: Modi.Filter;
-    entity: Q_EnumValue<"user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatLogin" | "wechatMenu" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string>;
+    entity: Q_EnumValue<"user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatLogin" | "wechatMenu" | "wechatPublicAutoReply" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string>;
     entityId: Q_StringValue;
     user: User.Filter;
     userEntityGrant: UserEntityGrant.Filter;
@@ -54,6 +56,7 @@ type AttrFilter = {
     userWechatPublicTag: UserWechatPublicTag.Filter;
     wechatLogin: WechatLogin.Filter;
     wechatMenu: WechatMenu.Filter;
+    wechatPublicAutoReply: wechatPublicAutoReply.Filter;
     wechatPublicTag: WechatPublicTag.Filter;
     wechatQrCode: WechatQrCode.Filter;
     wechatUser: WechatUser.Filter;
@@ -76,6 +79,7 @@ export type Projection = {
     userWechatPublicTag?: UserWechatPublicTag.Projection;
     wechatLogin?: WechatLogin.Projection;
     wechatMenu?: WechatMenu.Projection;
+    wechatPublicAutoReply?: wechatPublicAutoReply.Projection;
     wechatPublicTag?: WechatPublicTag.Projection;
     wechatQrCode?: WechatQrCode.Projection;
     wechatUser?: WechatUser.Projection;
@@ -102,6 +106,9 @@ type WechatLoginIdProjection = OneOf<{
     entityId: number;
 }>;
 type WechatMenuIdProjection = OneOf<{
+    entityId: number;
+}>;
+type wechatPublicAutoReplyIdProjection = OneOf<{
     entityId: number;
 }>;
 type WechatPublicTagIdProjection = OneOf<{
@@ -141,6 +148,8 @@ export type SortAttr = {
     wechatLogin: WechatLogin.SortAttr;
 } | {
     wechatMenu: WechatMenu.SortAttr;
+} | {
+    wechatPublicAutoReply: wechatPublicAutoReply.SortAttr;
 } | {
     wechatPublicTag: WechatPublicTag.SortAttr;
 } | {
@@ -235,6 +244,17 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity?: never;
     entityId?: never;
+    wechatPublicAutoReply: wechatPublicAutoReply.CreateSingleOperation;
+} | {
+    entity: "wechatPublicAutoReply";
+    entityId: ForeignKey<"wechatPublicAutoReply">;
+    wechatPublicAutoReply: wechatPublicAutoReply.UpdateOperation;
+} | {
+    entity: "wechatPublicAutoReply";
+    entityId: ForeignKey<"wechatPublicAutoReply">;
+} | {
+    entity?: never;
+    entityId?: never;
     wechatPublicTag: WechatPublicTag.CreateSingleOperation;
 } | {
     entity: "wechatPublicTag";
@@ -310,6 +330,10 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
     entityId?: never;
     entity?: never;
 } | {
+    wechatPublicAutoReply?: wechatPublicAutoReply.CreateSingleOperation | wechatPublicAutoReply.UpdateOperation | wechatPublicAutoReply.RemoveOperation;
+    entityId?: never;
+    entity?: never;
+} | {
     wechatPublicTag?: WechatPublicTag.CreateSingleOperation | WechatPublicTag.UpdateOperation | WechatPublicTag.RemoveOperation;
     entityId?: never;
     entity?: never;
@@ -322,8 +346,8 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatLogin" | "wechatMenu" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string) | null;
-    entityId?: ForeignKey<"User" | "UserEntityGrant" | "UserSystem" | "UserWechatPublicTag" | "WechatLogin" | "WechatMenu" | "WechatPublicTag" | "WechatQrCode" | "WechatUser"> | null;
+    entity?: ("user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatLogin" | "wechatMenu" | "wechatPublicAutoReply" | "wechatPublicTag" | "wechatQrCode" | "wechatUser" | string) | null;
+    entityId?: ForeignKey<"User" | "UserEntityGrant" | "UserSystem" | "UserWechatPublicTag" | "WechatLogin" | "WechatMenu" | "wechatPublicAutoReply" | "WechatPublicTag" | "WechatQrCode" | "WechatUser"> | null;
 }) & {
     [k: string]: any;
 };
@@ -343,6 +367,8 @@ export type RemoveOperationData = {} & (({
 } | {
     wechatMenu?: WechatMenu.UpdateOperation | WechatMenu.RemoveOperation;
 } | {
+    wechatPublicAutoReply?: wechatPublicAutoReply.UpdateOperation | wechatPublicAutoReply.RemoveOperation;
+} | {
     wechatPublicTag?: WechatPublicTag.UpdateOperation | WechatPublicTag.RemoveOperation;
 } | {
     wechatQrCode?: WechatQrCode.UpdateOperation | WechatQrCode.RemoveOperation;
@@ -360,6 +386,7 @@ export type UserSystemIdSubQuery = Selection<UserSystemIdProjection>;
 export type UserWechatPublicTagIdSubQuery = Selection<UserWechatPublicTagIdProjection>;
 export type WechatLoginIdSubQuery = Selection<WechatLoginIdProjection>;
 export type WechatMenuIdSubQuery = Selection<WechatMenuIdProjection>;
+export type wechatPublicAutoReplyIdSubQuery = Selection<wechatPublicAutoReplyIdProjection>;
 export type WechatPublicTagIdSubQuery = Selection<WechatPublicTagIdProjection>;
 export type WechatQrCodeIdSubQuery = Selection<WechatQrCodeIdProjection>;
 export type WechatUserIdSubQuery = Selection<WechatUserIdProjection>;

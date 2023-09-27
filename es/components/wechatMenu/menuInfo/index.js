@@ -5,7 +5,7 @@ export default OakComponent({
         config: null,
         menuIndex: 0,
         changeConfig: (config) => undefined,
-        changePublishState: (publish) => undefined,
+        publish: (iState) => undefined,
         getErrorIndex: (errorIndex) => undefined,
         createMenu: async () => undefined,
         selectedBtn: 0,
@@ -18,6 +18,9 @@ export default OakComponent({
         changeMenuId: (menuId) => undefined,
         deleteMenu: () => undefined,
         menuId: null,
+        actions: [],
+        wechatId: '',
+        iState: '',
     },
     data: {},
     methods: {
@@ -191,7 +194,6 @@ export default OakComponent({
                 else {
                     if (Object.keys(ele).length === 2 &&
                         ele.hasOwnProperty('name')) {
-                        console.log(index);
                         errorIndex.push(index);
                     }
                 }
@@ -217,54 +219,11 @@ export default OakComponent({
                 });
                 return;
             }
-            const { applicationId, config, changeConfig, changePublishState, createMenu, menuType, changeMenuId, } = this.props;
+            const { applicationId, config, changeConfig, publish, createMenu, menuType, changeMenuId, } = this.props;
             if (this.checkError(config.button).length === 0 &&
                 config.button.length > 0) {
                 changeConfig(config);
-                const removeSubTypeAndContent = (obj) => {
-                    const { subType, content, ...newObj } = obj;
-                    return newObj;
-                };
-                const menuConfig = config.button.map((item) => {
-                    if (item.sub_button && item.sub_button.length > 0) {
-                        const sub_button = item.sub_button.map(removeSubTypeAndContent);
-                        return { ...removeSubTypeAndContent(item), sub_button };
-                    }
-                    else {
-                        return removeSubTypeAndContent(item);
-                    }
-                });
-                if (menuType === 'common') {
-                    const result = await this.features.wechatMenu.createMenu({
-                        applicationId: applicationId,
-                        menuConfig: { button: menuConfig },
-                    });
-                    if (result.success) {
-                        changePublishState('success');
-                    }
-                    else {
-                        changePublishState('fail');
-                    }
-                    await createMenu();
-                }
-                else {
-                    const button = {
-                        button: menuConfig,
-                        matchrule: config.matchrule,
-                    };
-                    const result = await this.features.wechatMenu.createConditionalMenu({
-                        applicationId: applicationId,
-                        menuConfig: button,
-                    });
-                    if (result.success) {
-                        changeMenuId(result.menuid);
-                        changePublishState('success');
-                    }
-                    else {
-                        changePublishState('fail');
-                    }
-                    await createMenu();
-                }
+                await createMenu();
             }
             else {
                 if (config.button.length === 0) {

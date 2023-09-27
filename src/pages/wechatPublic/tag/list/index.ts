@@ -25,6 +25,7 @@ export default OakComponent({
             list: data,
         };
     },
+    actions: ['sync'],
     filters: [
         {
             filter() {
@@ -46,11 +47,17 @@ export default OakComponent({
                 applicationId,
             });
         },
-        goUpdate(id: string) {
+        goUpdate(oakId: string) {
             const { applicationId } = this.props;
             this.navigateTo({
-                url: '//wechatPublic/tag/upsert'
+                url: '/wechatPublic/tag/upsert',
+                oakId,
+                applicationId,
             })
+        },
+        async sync(id: string) {
+            this.updateItem({}, id, 'sync');
+            await this.execute();
         }
     }
 });

@@ -22,6 +22,8 @@ export default function Render(
             applicationId: string;
             menuType: string;
             menuId: number;
+            wechatId: string;
+            iState: string;
         },
         {
         }
@@ -36,6 +38,8 @@ export default function Render(
         applicationId,
         menuType,
         menuId,
+        wechatId,
+        iState,
     } = data;
     const {
         updateItem,
@@ -52,11 +56,6 @@ export default function Render(
     const changeConfig = (config: any) => {
         updateItem({
             menuConfig: config
-        }, id)
-    };
-    const changePublishState = (publishState: "wait" | "success" | "fail") => {
-        updateItem({
-            publishState,
         }, id)
     };
     const changeMenuId = (menuId: number) => {
@@ -88,7 +87,6 @@ export default function Render(
     const getOpen = (open: boolean) => {
         setOpen(open);
     }
-
     if (oakFullpath) {
         return (
             <div className={Style.container}>
@@ -114,7 +112,6 @@ export default function Render(
                             config={config}
                             menuIndex={menuIndex}
                             changeConfig={changeConfig}
-                            changePublishState={changePublishState}
                             selectedBtn={selectedBtn}
                             selectedSubBtn={selectedSubBtn}
                             currentIndex={currentIndex}
@@ -127,6 +124,8 @@ export default function Render(
                             changeMenuId={changeMenuId}
                             deleteMenu={deleteMenu}
                             menuId={menuId}
+                            wechatId={wechatId}
+                            iState={iState}
                         />
                     </div>
                     <Modal

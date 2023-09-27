@@ -11,7 +11,7 @@ export default function Render(
         true,
         {
             rows: EntityDict['wechatPublicTag']['Schema'][];
-            getTag: (data: {id: string, name: string}) => void;
+            getTag: (data: {id: string, name: string, wechatId: string}) => void;
         },
         {
         }
@@ -34,7 +34,7 @@ export default function Render(
                 rowSelection={{
                     type: 'radio',
                     onSelect: (record) => {
-                        getTag({id: `${record.wechatId}`, name: record.text})
+                        getTag({id: record.id, name: record.text, wechatId: `${record.wechatId}`})
                     },
                     selectedRowKeys: selectedRowKeys,
                     onChange: (selectedRowKeys: any[]) => {
@@ -45,7 +45,7 @@ export default function Render(
                     return {
                         onClick: () => {
                             setSelectedRowKeys([record.id]);
-                            getTag({id: `${record.wechatId}`, name: record.text});
+                            getTag({id: record.id, name: record.text, wechatId: `${record.wechatId}`})
                         }
                     }
                 }}

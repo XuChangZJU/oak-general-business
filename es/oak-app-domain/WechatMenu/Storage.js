@@ -1,4 +1,4 @@
-import { genericActions as actions } from "oak-domain/lib/actions/action";
+import { actions } from "./Action";
 export const desc = {
     attributes: {
         menuId: {
@@ -17,14 +17,13 @@ export const desc = {
             type: "ref",
             ref: "application"
         },
-        publishState: {
-            notNull: true,
-            type: "enum",
-            enumeration: ["wait", "success", "fail"]
-        },
         wechatPublicTagId: {
             type: "ref",
             ref: "wechatPublicTag"
+        },
+        iState: {
+            type: "enum",
+            enumeration: ["wait", "success", "fail"]
         }
     },
     actionType: "crud",

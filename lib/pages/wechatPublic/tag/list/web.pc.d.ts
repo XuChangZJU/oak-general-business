@@ -8,4 +8,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'wechatPubli
     goCreate: () => void;
     goUpdate: (id: string) => void;
     goDelete: (id: string) => void;
+    sync: (id: string) => void;
 }>): import("react/jsx-runtime").JSX.Element;

@@ -4,6 +4,7 @@ export default OakComponent({
     isList: false,
     properties: {
         applicationId: '',
+        oakId: '',
     },
     projection: {
         id: 1,
@@ -15,8 +16,13 @@ export default OakComponent({
         $$updateAt$$: 1,
         $$seq$$: 1,
     },
-    formData({ data }) {
-        return data || {};
+    formData({ data: tag }) {
+        console.log(tag);
+        return {
+            text: tag?.text,
+            wechatId: tag?.wechatId,
+            sync: tag?.sync,
+        };
     },
     lifetimes: {
         ready() {
@@ -33,6 +39,28 @@ export default OakComponent({
         async confirm() {
             await this.execute();
             this.navigateBack();
+        },
+        async createTag(name) {
+            if (!name) {
+                this.setMessage({
+                    type: 'warning',
+                    content: '请输入标签名称'
+                });
+                return;
+            }
+            const { applicationId } = this.props;
+            await this.confirm();
+        },
+        async editTag(id, name) {
+            if (!name) {
+                this.setMessage({
+                    type: 'warning',
+                    content: '请输入标签名称'
+                });
+                return;
+            }
+            const { applicationId } = this.props;
+            await this.confirm();
         }
     }
 });

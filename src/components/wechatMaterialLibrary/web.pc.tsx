@@ -28,11 +28,12 @@ export default function Render(
             getMaterialList: (page: number) => void;
             getArticleList: (page: number) => void;
             upload: (media: File, description?: MediaVideoDescription) => boolean;
+            getImg: (url: string) => string;
         }
     >
 ) {
     const { type, materials, total, getMenuContent } = props.data;
-    const { getMaterialList, setMessage, upload, getArticleList } = props.methods
+    const { getMaterialList, setMessage, upload, getArticleList, getImg } = props.methods
     const [currentPage, setCurrentPage] = useState(1);
     const [upsertOpen, setUpsertOpen] = useState(false);
     const [title, setTitle] = useState('');
@@ -114,7 +115,7 @@ export default function Render(
             dataIndex: 'update_time',
             title: '更新时间',
             render: (value, record, index) => {
-                return <>{dayjs(value).format('YYYY-MM-DD HH:mm')}</>
+                return <>{dayjs(value * 1000).format('YYYY-MM-DD HH:mm')}</>
             }
         },
     ];
@@ -191,7 +192,7 @@ export default function Render(
             dataIndex: 'update_time',
             title: '更新时间',
             render: (value, record, index) => {
-                return <>{dayjs(value).format('YYYY-MM-DD HH:mm')}</>
+                return <>{dayjs(value * 1000).format('YYYY-MM-DD HH:mm')}</>
             }
         },
         {
@@ -211,7 +212,7 @@ export default function Render(
             dataIndex: 'url',
             title: '图片',
             render: (value, record, index) => {
-                return <img style={{ width: 120, height: 70 }} src={value} />
+                return <img style={{ width: 120, height: 70 }} src={getImg(value)} />
             },
         },);
     } else if (type === 'voice') {
@@ -219,7 +220,7 @@ export default function Render(
             dataIndex: 'url',
             title: '音频',
             render: (value, record, index) => {
-                return <a href={value} download={true} style={{ color: '#1677FF', cursor: 'pointer' }}><DownloadOutlined />{record.media_id}</a>
+                return <a href={getImg(value)} download={true} style={{ color: '#1677FF', cursor: 'pointer' }}><DownloadOutlined />{record.media_id}</a>
             },
         },);
     } else if (type === 'video') {
@@ -227,7 +228,7 @@ export default function Render(
             dataIndex: 'url',
             title: '视频',
             render: (value, record, index) => {
-                return <a href={value} download={true} style={{ color: '#1677FF', cursor: 'pointer' }}><DownloadOutlined />{record.media_id}</a>
+                return <a href={getImg(value)} download={true} style={{ color: '#1677FF', cursor: 'pointer' }}><DownloadOutlined />{record.media_id}</a>
             },
         },);
     } else {
