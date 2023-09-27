@@ -43,8 +43,8 @@ export default class Qiniu {
     composeFileUrl(extraFile, context, style) {
         const { objectId, extension, entity, bucket } = extraFile || {};
         const { config } = getConfig(context, 'Cos', 'qiniu');
-        if (config && config.Cos) {
-            const { domain, protocol } = config.Cos[origin].buckets[bucket];
+        if (config) {
+            const { domain, protocol } = config[origin].buckets[bucket];
             let protocol2 = protocol;
             if (protocol instanceof Array) {
                 // protocol存在https 说明域名有证书

@@ -88,9 +88,9 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
         } = extraFile || {};
         const { config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
 
-        if (config && config.Cos) {
+        if (config) {
             const { domain, protocol } =
-                config.Cos[origin as keyof typeof config.Cos]!.buckets[bucket as any];
+                config[origin]!.buckets[bucket!];
             let protocol2 = protocol;
             if (protocol instanceof Array) {
                 // protocol存在https 说明域名有证书
