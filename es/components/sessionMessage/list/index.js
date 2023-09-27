@@ -1,4 +1,5 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
+import { DATA_SUBSCRIBER_KEYS } from '../../../config/constants';
 export default OakComponent({
     entity: 'sessionMessage',
     projection: {
@@ -42,6 +43,15 @@ export default OakComponent({
     lifetimes: {
         async ready() {
             const { sessionId } = this.props;
+            this.subData([
+                {
+                    entity: 'sessionMessage',
+                    filter: {
+                        sessionId: sessionId,
+                    },
+                    id: `${DATA_SUBSCRIBER_KEYS.sessionMessageList}-${sessionId}`,
+                }
+            ]);
             // const userId = this.features.token.getUserId(true);
             // const applicationId = this.features.application.getApplicationId();
             // if (!sessionId) {
@@ -73,6 +83,10 @@ export default OakComponent({
             if (this.timer) {
                 clearInterval(this.timer);
             }
+            const { sessionId } = this.props;
+            this.unSubData([
+                `${DATA_SUBSCRIBER_KEYS.sessionMessageList}-${sessionId}`
+            ]);
         },
     },
     listeners: {
