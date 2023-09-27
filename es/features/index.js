@@ -24,6 +24,6 @@ export function initialize(basicFeatures, type, domain) {
         config,
         weiXinJsSdk,
         theme,
-        wechatMenu
+        wechatMenu,
     };
 }

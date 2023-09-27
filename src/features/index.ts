@@ -60,7 +60,7 @@ export function initialize<
         config,
         weiXinJsSdk,
         theme,
-        wechatMenu
+        wechatMenu,
     };
 }
 

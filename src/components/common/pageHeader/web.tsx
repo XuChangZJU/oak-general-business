@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
-// @ts-ignore
-import { useNavigate } from 'react-router-dom';
 import { Row, Col, Button } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../oak-app-domain';
 
 import './index.less';
 
@@ -25,7 +25,17 @@ type PageHeaderProps = {
     showHeader?: boolean; //默认true 显示头部
 };
 
-export default memo((props: PageHeaderProps) => {
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        keyof EntityDict,
+        false,
+        PageHeaderProps,
+        {
+            goBack: (delta?: number) => void;
+        }
+    >
+) {
     const {
         style,
         className,
@@ -42,9 +52,9 @@ export default memo((props: PageHeaderProps) => {
         contentClassName,
         tags,
         showHeader = true,
-    } = props;
+    } = props.data;
+    const { t, goBack } = props.methods;
     const prefixCls = 'oak';
-    const navigate = useNavigate();
 
     return (
         <div
@@ -67,7 +77,7 @@ export default memo((props: PageHeaderProps) => {
                                             onBack();
                                             return;
                                         }
-                                        navigate(delta || -1);
+                                        goBack(delta);
                                     }}
                                 >
                                     {backIcon || (
@@ -113,4 +123,4 @@ export default memo((props: PageHeaderProps) => {
             </div>
         </div>
     );
-});
+}

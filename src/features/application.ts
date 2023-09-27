@@ -119,16 +119,30 @@ export class Application<
         return this.applicationId;
     }
 
-    async uploadWechatMedia( 
-    //     params: {
-    //     applicationId: string;
-    //     file: any;
-    //     type: MediaType;
-    //     isPermanent?: boolean; //上传临时素材 或永久素材
-    //     description?: MediaVideoDescription;
-    // }
-    formData: FormData
-    ) {
+    async uploadWechatMedia(params: {
+        applicationId: string;
+        file: File;
+        type: MediaType;
+        isPermanent?: boolean; //上传临时素材 或永久素材
+        description?: MediaVideoDescription;
+    }) {
+        const {
+            applicationId,
+            type,
+            file,
+            description,
+            isPermanent = false,
+        } = params;
+        const formData = new FormData();
+        formData.append('applicationId', applicationId);
+        formData.append('type', type);
+        formData.append('file', file);
+        if (description) {
+            formData.append('description', JSON.stringify(description));
+        }
+        if (isPermanent) {
+            formData.append('isPermanent', `${isPermanent}`);
+        }
         const callBack = await this.cache.exec('uploadWechatMedia', formData);
         return callBack.result;
     }

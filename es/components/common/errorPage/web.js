@@ -1,7 +1,6 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Button } from 'antd';
-// @ts-ignore
-import { useNavigate } from 'react-router-dom';
+import { ECode } from '../../../types/ErrorPage';
 import { ReactComponent as Light403Icon } from './assets/svg/assets-result-403.svg';
 import { ReactComponent as Light404Icon } from './assets/svg/assets-result-404.svg';
 import { ReactComponent as Light500Icon } from './assets/svg/assets-result-500.svg';
@@ -9,15 +8,6 @@ import { ReactComponent as LightMaintenanceIcon } from './assets/svg/assets-resu
 import { ReactComponent as LightBrowserIncompatibleIcon } from './assets/svg/assets-result-browser-incompatible.svg';
 import { ReactComponent as LightNetworkErrorIcon } from './assets/svg/assets-result-network-error.svg';
 import './web.less';
-export var ECode;
-(function (ECode) {
-    ECode["forbidden"] = "403";
-    ECode["notFound"] = "404";
-    ECode["error"] = "500";
-    ECode["networkError"] = "network-error";
-    ECode["browserIncompatible"] = "browser-incompatible";
-    ECode["maintenance"] = "maintenance";
-})(ECode || (ECode = {}));
 const errorInfo = {
     [ECode.forbidden]: {
         title: '403 Forbidden',
@@ -50,13 +40,12 @@ const errorInfo = {
         icon: _jsx(LightMaintenanceIcon, {}),
     },
 };
-function ErrorPage(props) {
-    const navigate = useNavigate();
-    const { code } = props;
+export default function Render(props) {
+    const { code, icon, title, desc, children } = props.data;
+    const { t, goBack } = props.methods;
     const info = errorInfo[code];
     const prefixCls = 'oak';
-    return (_jsxs("div", { className: `${prefixCls}-errorBox`, children: [props.icon || info?.icon, _jsx("div", { className: `${prefixCls}-errorBox__title`, children: props.title || info?.title }), _jsx("div", { className: `${prefixCls}-errorBox__description`, children: props.desc || info?.desc }), props.children || (_jsx(Button, { type: "primary", onClick: () => {
-                    navigate(-1);
+    return (_jsxs("div", { className: `${prefixCls}-errorBox`, children: [icon || info?.icon, _jsx("div", { className: `${prefixCls}-errorBox__title`, children: title || info?.title }), _jsx("div", { className: `${prefixCls}-errorBox__description`, children: desc || info?.desc }), children || (_jsx(Button, { type: "primary", onClick: () => {
+                    goBack();
                 }, children: "\u8FD4\u56DE" }))] }));
 }
-export default ErrorPage;
