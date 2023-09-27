@@ -9,6 +9,8 @@ import { ActionDefDict as Token } from "./Token/Action";
 import { ActionDefDict as User } from "./User/Action";
 import { ActionDefDict as UserEntityGrant } from "./UserEntityGrant/Action";
 import { ActionDefDict as WechatLogin } from "./WechatLogin/Action";
+import { ActionDefDict as WechatMenu } from "./WechatMenu/Action";
+import { ActionDefDict as WechatPublicTag } from "./WechatPublicTag/Action";
 export const ActionDefDict = {
     modi: Modi,
     captcha: Captcha,
@@ -20,5 +22,7 @@ export const ActionDefDict = {
     token: Token,
     user: User,
     userEntityGrant: UserEntityGrant,
-    wechatLogin: WechatLogin
+    wechatLogin: WechatLogin,
+    wechatMenu: WechatMenu,
+    wechatPublicTag: WechatPublicTag
 };

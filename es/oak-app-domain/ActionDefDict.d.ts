@@ -28,4 +28,8 @@ export declare const ActionDefDict: {
     };
     userEntityGrant: {};
     wechatLogin: {};
+    wechatMenu: {
+        iState: import("oak-domain").ActionDef<string, string>;
+    };
+    wechatPublicTag: {};
 };

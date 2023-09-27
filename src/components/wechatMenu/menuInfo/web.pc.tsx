@@ -42,6 +42,9 @@ export default function Render(
             getOpen: (open: boolean) => void;
             applicationId: string;
             menuId: number;
+            actions: string[];
+            wechatId: string;
+            iState: string;
         },
         {
             setConfig: (
@@ -89,6 +92,9 @@ export default function Render(
         menuType,
         applicationId,
         menuId,
+        actions,
+        wechatId,
+        iState,
     } = data;
     const {
         setConfig,
@@ -152,7 +158,7 @@ export default function Render(
         if (selectedBtn > 0) {
             setConfig(selectedBtn - 1, {
                 type: 'click',
-                key: await generateNewIdAsync(),
+                key: menuType === 'conditional' ? `${wechatId}$${await generateNewIdAsync()}` : await generateNewIdAsync(),
                 subType: 'text',
                 content: menuContent,
             });
@@ -161,7 +167,7 @@ export default function Render(
                 selectedSubBtn - 1,
                 {
                     type: 'click',
-                    key: await generateNewIdAsync(),
+                    key: menuType === 'conditional' ? `${wechatId}$${await generateNewIdAsync()}` : await generateNewIdAsync(),
                     subType: 'text',
                     content: menuContent,
                 },
@@ -311,7 +317,7 @@ export default function Render(
         }
     }, [url]);
     return (
-        <div className={Style.container}>
+        <div className={Style.container} style={iState === 'fail' ? {border: '1px solid #FF5557'} : {}}>
             {config &&
             config.button &&
             config.button.length > 0 &&
@@ -1166,7 +1172,7 @@ export default function Render(
                                 }}
                             >
                                 <CheckOutlined />
-                                发布
+                                {iState !== 'fail' ? '保存并发布' : '重新发布'}
                             </Button>
                             {menuType === 'conditional' && config && menuId && (
                                 <Button
@@ -1210,7 +1216,7 @@ export default function Render(
                                 }}
                             >
                                 <CheckOutlined />
-                                发布
+                                保存并发布
                             </Button>
                         </Space>
                     </div>

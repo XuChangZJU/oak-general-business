@@ -13,15 +13,17 @@ export default OakComponent({
             type: 1,
             config: 1,
         },
-        publishState: 1,
+        iState: 1,
         wechatPublicTagId: 1,
         menuId: 1,
     },
+    actions: ['publish'],
     formData({ data: rows }) {
         return {
             id: rows?.[0]?.id,
             config: rows?.[0]?.menuConfig,
             totalConfig: rows?.[0]?.menuConfig,
+            iState: rows?.[0]?.iState,
         };
     },
     filters: [
@@ -35,7 +37,7 @@ export default OakComponent({
                     }
                 }
             },
-        }
+        },
     ],
     properties: {
         applicationId: '',
@@ -47,11 +49,10 @@ export default OakComponent({
             const { menuId, applicationId } = this.props;
             if (!menuId) {
                 const menuConfig = await this.features.wechatMenu.getMenu({ applicationId: applicationId! });
-                console.log(menuConfig);
                 this.addItem({
-                    menuConfig: {button: menuConfig.menu.button},
+                    menuConfig: { button: menuConfig.menu.button },
                     applicationId,
-                    publishState: 'wait',
+                    iState: 'wait',
                     menuId: menuConfig.menu.menuid
                 });
             }

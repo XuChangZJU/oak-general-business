@@ -1,13 +1,7 @@
-
-enum ECode {
-    forbidden = '403',
-    notFound = '404',
-    error = '500',
-
-    networkError = 'network-error',
-    maintenance = 'maintenance',
-};
-
+import { EntityDict } from '../../../oak-app-domain';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { ReactComponentProps } from 'oak-frontend-base';
+import { ECode } from '../../../types/ErrorPage';
 
 const DefaultErrorInfo = {
     [ECode.forbidden]: {
@@ -35,37 +29,60 @@ const DefaultErrorInfo = {
         desc: '系统维护中，请稍后再试。',
         imagePath: './assets/svg/assets-result-maintenance.svg',
     },
+    [ECode.browserIncompatible]: {
+        title: '浏览器版本低',
+        desc: '抱歉，您正在使用的浏览器版本过低，无法打开当前网页。',
+        imagePath: './assets/svg/assets-result-browser-incompatible.svg',
+    },
 };
 
-export default Component({
+export default OakComponent({
+    isList: false,
     properties: {
-        code: String,
-        title: String,
-        desc: String,
-        icon: String,
-        imagePath: String,
+        code: '',
+        title: '',
+        desc: '',
+        icon: '', //web独有
+        imagePath: '', //小程序独有
     },
     lifetimes: {
         ready() {
-            const { title, desc, code, imagePath } = this.data;
-            let title2 = title;
-            if (code) {
-                this.setData({
-                    desc: desc || DefaultErrorInfo[code as ECode].desc,
-                    imagePath: imagePath || DefaultErrorInfo[code as ECode].imagePath,
-                });
-                if (!title2) {
-                    title2 = DefaultErrorInfo[code as ECode].title;
+            if (process.env.OAK_PLATFORM === 'wechatMp') {
+                const { title, desc, code, imagePath } = this.props;
+                let title2 = title;
+                if (code) {
+                    this.setState({
+                        desc: desc || DefaultErrorInfo[code as ECode].desc,
+                        imagePath:
+                            imagePath ||
+                            DefaultErrorInfo[code as ECode].imagePath,
+                    });
+                    if (!title2) {
+                        title2 = DefaultErrorInfo[code as ECode].title;
+                    }
+                    wx.setNavigationBarTitle({
+                        title: title2,
+                    });
                 }
-                wx.setNavigationBarTitle({
-                    title: title2,
-                });
             }
-        }
+        },
     },
     methods: {
-        goBack() {
-            wx.navigateBack();
+        goBack(delta?: number) {
+            this.navigateBack(delta);
+        },
+    },
+}) as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
+    props: ReactComponentProps<
+        ED2,
+        T2,
+        false,
+        {
+            code: ECode;
+            title?: string;
+            desc?: string;
+            children?: React.ReactNode;
+            icon?: React.ReactNode;
         }
-    }
-});
+    >
+) => React.ReactElement;

@@ -22,13 +22,15 @@ export default function Render(
             oakId: string;
             menuType: string;
             applicationId: string;
+            actions: string[];
+            iState: string;
         },
         {
         }
     >
 ) {
     const { data, methods } = props;
-    const { id, oakFullpath, config, wechatInstance, totalConfig, menuType, applicationId } = data;
+    const { id, oakFullpath, config, wechatInstance, totalConfig, menuType, applicationId, actions, iState } = data;
     const {
         updateItem,
         execute
@@ -41,14 +43,9 @@ export default function Render(
     const [errorIndex, setErrorIndex] = useState([] as number[]);
     const changeConfig = (config: any) => {
         updateItem({
-            menuConfig: config
+            menuConfig: config,
         }, id)
     };
-    const changePublishState = (publishState: "wait" | "success" | "fail") => {
-        updateItem({
-            publishState,
-        }, id)
-    }
     const getSelectedBtn = (selectedBtn: number) => {
         setSelectedBtn(selectedBtn);
     };
@@ -61,7 +58,7 @@ export default function Render(
     const getErrorIndex = (errorIndex: number[]) => {
         setErrorIndex(errorIndex);
     };
-    const createMenu = async() => {
+    const createMenu = async () => {
         await execute();
     };
     const changeIsPreview = (isPreview: boolean) => {
@@ -93,7 +90,6 @@ export default function Render(
                             oakAutoUnmount={true}
                             config={config}
                             changeConfig={changeConfig}
-                            changePublishState={changePublishState}
                             selectedBtn={selectedBtn}
                             selectedSubBtn={selectedSubBtn}
                             currentIndex={currentIndex}
@@ -103,6 +99,8 @@ export default function Render(
                             getOpen={getOpen}
                             menuType={menuType}
                             applicationId={applicationId}
+                            actions={actions}
+                            iState={iState}
                         />
                     </div>
                     <Modal

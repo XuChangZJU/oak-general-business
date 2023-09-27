@@ -1,4 +1,4 @@
-import { genericActions as actions } from "oak-domain/lib/actions/action";
+import { actions } from "./Action";
 export const desc = {
     attributes: {
         text: {
@@ -14,7 +14,6 @@ export const desc = {
             ref: "application"
         },
         wechatId: {
-            notNull: true,
             type: "int",
             params: {
                 width: 4,
@@ -22,11 +21,9 @@ export const desc = {
             }
         },
         sync: {
-            notNull: true,
             type: "boolean"
         },
         syncAt: {
-            notNull: true,
             type: "datetime"
         }
     },

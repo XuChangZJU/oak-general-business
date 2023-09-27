@@ -1,6 +1,6 @@
 import { StorageDesc } from "oak-domain/lib/types/Storage";
 import { OpSchema } from "./Schema";
-import { genericActions as actions } from "oak-domain/lib/actions/action";
+import { actions } from "./Action";
 export const desc: StorageDesc<OpSchema> = {
     attributes: {
         menuId: {
@@ -19,14 +19,13 @@ export const desc: StorageDesc<OpSchema> = {
             type: "ref",
             ref: "application"
         },
-        publishState: {
-            notNull: true,
-            type: "enum",
-            enumeration: ["wait", "success", "fail"]
-        },
         wechatPublicTagId: {
             type: "ref",
             ref: "wechatPublicTag"
+        },
+        iState: {
+            type: "enum",
+            enumeration: ["wait", "success", "fail"]
         }
     },
     actionType: "crud",

@@ -24,7 +24,7 @@ import {
     OakUserException,
     OakUserUnpermittedException,
 } from 'oak-domain/lib/types';
-import { composeFileUrl } from '../utils/extraFile';
+import { composeFileUrl } from '../utils/cos';
 import {
     OakChangeLoginWayException,
     OakDistinguishUserException,
@@ -733,7 +733,7 @@ async function setUserInfoFromWechat<
     if (
         avatar &&
         (extraFile$entity?.length === 0 ||
-            composeFileUrl(extraFile$entity![0], config) !== avatar)
+            composeFileUrl<ED, Cxt, any>(extraFile$entity![0], context) !== avatar)
     ) {
         // 需要更新新的avatar extra file
         const extraFileOperations: ExtraFileOperation['data'][] = [

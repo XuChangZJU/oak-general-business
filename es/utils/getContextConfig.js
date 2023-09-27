@@ -1,24 +1,15 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { OakDataException } from 'oak-domain/lib/types/Exception';
 import { AmapSDK, QiniuSDK } from 'oak-external-sdk';
-export async function getConfig(context, service, origin) {
-    const systemId = context.getSystemId();
-    assert(systemId);
-    const [system] = await context.select('system', {
-        data: {
-            id: 1,
-            config: 1,
-            platform: {
-                id: 1,
-                config: 1,
-            },
-        },
-        filter: {
-            id: systemId,
-        },
-    }, {
-        dontCollect: true,
-    });
+/**
+ * 目前虽然数据结构上config也可能在platform上，但是实际中暂时还没有
+ * @param context
+ * @param service
+ * @param origin
+ * @returns
+ */
+export function getConfig(context, service, origin) {
+    const { system } = context.getApplication();
     const { config: systemConfig, platform } = system;
     let originConfig = systemConfig[service] && systemConfig[service][origin];
     let originCloudAccounts = originConfig && systemConfig.Account && systemConfig.Account[origin];

@@ -4,3 +4,4 @@ export type MediaVideoDescription = {
     introduction: string;
 };
 export type MenuType = 'image' | 'video' | 'voice' | 'news';
+export type ReplyType = 'text' | 'image' | 'video' | 'voice';

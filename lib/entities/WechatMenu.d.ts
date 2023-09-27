@@ -12,7 +12,6 @@ export interface Schema extends EntityShape {
     menuId?: Int<4>;
     menuConfig: Config;
     application: Application;
-    publishState: 'wait' | 'success' | 'fail';
     wechatPublicTag?: WechatPublicTag;
 }
 export {};

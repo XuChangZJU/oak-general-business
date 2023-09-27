@@ -487,6 +487,115 @@ async function setUserSubscribed(
     return;
 }
 
+async function setClickEventKey(openId: string, EventKey: string, context: BRC) {
+    const application = context.getApplication();
+    const { type, config, systemId, id: applicationId } = application!;
+    assert(type === 'wechatPublic');
+    const { appId, appSecret } = config as WechatPublicConfig;
+
+    const wechatInstance = WechatSDK.getInstance(
+        appId,
+        'wechatPublic',
+        appSecret
+    ) as WechatPublicInstance;
+    if (EventKey) {
+        var indexOfDollarSign = EventKey.indexOf('$');
+        var resultString = EventKey.substring(0, indexOfDollarSign);
+        const [wechatMenu] = await context.select(
+            'wechatMenu',
+            {
+                data: {
+                    id: 1,
+                    applicationId: 1,
+                    menuConfig: 1,
+                    wechatPublicTagId: 1,
+                    wechatPublicTag: {
+                        wechatId: 1
+                    },
+                },
+                filter: indexOfDollarSign !== -1 ? {
+                    applicationId,
+                    wechatPublicTag: {
+                        wechatId: Number(resultString)
+                    }
+                } : {
+                    applicationId,
+                    wechatPublicTagId: {
+                        $exists: false
+                    }
+                },
+            },
+            { dontCollect: true }
+        );
+        if (wechatMenu) {
+            let content = null;
+            wechatMenu.menuConfig?.button.map((ele) => {
+                if (ele.key === EventKey) {
+                    content = ele.content;
+                } else if (ele.sub_button && ele.sub_button.length > 0) {
+                    var subEle = ele.sub_button.find((sub: { key: string; }) => {
+                        return sub.key === EventKey;
+                    });
+                    if (subEle) {
+                        content = subEle.content;
+                    }
+                }
+            });
+            if (content) {
+                wechatInstance.sendServeMessage({
+                    openId,
+                    type: 'text',
+                    content,
+                });
+                return;
+            }
+        }
+    }
+}
+
+async function setSubscribedEventKey(openId: string, EventKey: string, context: BRC) {
+    const application = context.getApplication();
+    const { type, config, systemId, id: applicationId } = application!;
+    assert(type === 'wechatPublic');
+    const { appId, appSecret } = config as WechatPublicConfig;
+    const wechatInstance = WechatSDK.getInstance(
+        appId,
+        'wechatPublic',
+        appSecret
+    ) as WechatPublicInstance;
+    if (EventKey) {
+        const [wechatPublicAutoReply] = await context.select(
+            'wechatPublicAutoReply',
+            {
+                data: {
+                    id: 1,
+                    applicationId: 1,
+                    content: 1,
+                    event: 1,
+                    type: 1,
+                },
+                filter: {
+                    applicationId,
+                    event: 'subscribe',
+                }
+            },
+            { dontCollect: true }
+        );
+        if (wechatPublicAutoReply) {
+            let content = null;
+            if(wechatPublicAutoReply.type === 'text' && wechatPublicAutoReply.content && wechatPublicAutoReply.content.text) {
+                content = wechatPublicAutoReply.content.text;
+                wechatInstance.sendServeMessage({
+                    openId,
+                    type: 'text',
+                    content,
+                });
+                return;
+            }
+        }
+    }
+}
+
 function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
     const {
         ToUserName,
@@ -526,6 +635,7 @@ function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
                 break;
             }
             case 'click': {
+                setClickEventKey(FromUserName, EventKey, context);
                 evt = `用户${FromUserName}点击菜单【${EventKey}】`;
                 break;
             }

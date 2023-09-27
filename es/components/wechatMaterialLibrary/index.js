@@ -83,7 +83,6 @@ export default OakComponent({
         async upload(media, description) {
             const { applicationId } = this.props;
             const { type } = this.props;
-            console.log(media);
             const result = await this.features.wechatMenu.createMaterial({ applicationId: applicationId, type: type, file: media, description, isPermanent: true });
             if (result && result.mediaId) {
                 this.setMessage({
@@ -111,6 +110,9 @@ export default OakComponent({
                     resolve(e.target?.result);
                 };
             });
+        },
+        getImg(url) {
+            return this.features.locales.makeBridgeUrl(url);
         }
     }
 });

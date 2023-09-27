@@ -5,7 +5,7 @@ import Style from './web.module.less';
 import dayjs from 'dayjs';
 export default function Render(props) {
     const { data, methods } = props;
-    const { t, setPageSize, setCurrentPage, goCreate, goDetail, goUpdate, goDelete, } = methods;
+    const { t, setPageSize, setCurrentPage, goCreate, goDetail, goUpdate, goDelete, sync, } = methods;
     const { list, showBack = true, oakLoading, oakPagination } = data;
     const { pageSize, total, currentPage } = oakPagination || {};
     return (_jsx(PageHeader, { title: "\u5FAE\u4FE1\u516C\u4F17\u53F7\u6807\u7B7E", showBack: showBack, children: _jsxs("div", { className: Style.container, children: [_jsx(Space, { children: _jsx(Button, { type: "primary", onClick: () => {
@@ -69,7 +69,9 @@ export default function Render(props) {
                                                 goDetail(record.id);
                                             }, children: "\u8BE6\u60C5" }), _jsx(Button, { type: "link", onClick: () => {
                                                 goUpdate(record.id);
-                                            }, children: "\u66F4\u65B0" })] }));
+                                            }, children: "\u66F4\u65B0" }), !record.sync && _jsx(Button, { type: "link", onClick: () => {
+                                                sync(record.id);
+                                            }, children: "\u540C\u6B65" })] }));
                             },
                             fixed: 'right',
                         },

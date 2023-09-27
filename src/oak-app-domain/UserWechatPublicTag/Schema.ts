@@ -7,23 +7,23 @@ import { String, Text, Datetime, Boolean, Uint } from "oak-domain/lib/types/Data
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 import * as WechatPublicTag from "../WechatPublicTag/Schema";
-import * as User from "../User/Schema";
+import * as WechatUser from "../WechatUser/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 export type OpSchema = EntityShape & {
     wechatPublicTagId: ForeignKey<"wechatPublicTag">;
-    userId: ForeignKey<"user">;
+    wechatUserId: ForeignKey<"wechatUser">;
     sync: Boolean;
     syncAt: Datetime;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     wechatPublicTagId: ForeignKey<"wechatPublicTag">;
-    userId: ForeignKey<"user">;
+    wechatUserId: ForeignKey<"wechatUser">;
     sync: Boolean;
     syncAt: Datetime;
     wechatPublicTag: WechatPublicTag.Schema;
-    user: User.Schema;
+    wechatUser: WechatUser.Schema;
     modiEntity$entity?: Array<ModiEntity.Schema>;
     modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;
     operEntity$entity?: Array<OperEntity.Schema>;
@@ -38,8 +38,8 @@ type AttrFilter = {
     $$updateAt$$: Q_DateValue;
     wechatPublicTagId: Q_StringValue;
     wechatPublicTag: WechatPublicTag.Filter;
-    userId: Q_StringValue;
-    user: User.Filter;
+    wechatUserId: Q_StringValue;
+    wechatUser: WechatUser.Filter;
     sync: Q_BooleanValue;
     syncAt: Q_DateValue;
     modiEntity$entity: ModiEntity.Filter & SubQueryPredicateMetadata;
@@ -55,8 +55,8 @@ export type Projection = {
     $$seq$$?: number;
     wechatPublicTagId?: number;
     wechatPublicTag?: WechatPublicTag.Projection;
-    userId?: number;
-    user?: User.Projection;
+    wechatUserId?: number;
+    wechatUser?: WechatUser.Projection;
     sync?: number;
     syncAt?: number;
     modiEntity$entity?: ModiEntity.Selection & {
@@ -78,8 +78,8 @@ type UserWechatPublicTagIdProjection = OneOf<{
 type WechatPublicTagIdProjection = OneOf<{
     wechatPublicTagId: number;
 }>;
-type UserIdProjection = OneOf<{
-    userId: number;
+type WechatUserIdProjection = OneOf<{
+    wechatUserId: number;
 }>;
 export type SortAttr = {
     id: number;
@@ -94,9 +94,9 @@ export type SortAttr = {
 } | {
     wechatPublicTag: WechatPublicTag.SortAttr;
 } | {
-    userId: number;
+    wechatUserId: number;
 } | {
-    user: User.SortAttr;
+    wechatUser: WechatUser.SortAttr;
 } | {
     sync: number;
 } | {
@@ -112,7 +112,7 @@ export type Sorter = SortNode[];
 export type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
 export type Selection<P extends Object = Projection> = SelectOperation<P>;
 export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export type CreateOperationData = FormCreateData<Omit<OpSchema, "wechatPublicTagId" | "userId">> & (({
+export type CreateOperationData = FormCreateData<Omit<OpSchema, "wechatPublicTagId" | "wechatUserId">> & (({
     wechatPublicTagId?: never;
     wechatPublicTag: WechatPublicTag.CreateSingleOperation;
 } | {
@@ -121,13 +121,13 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "wechatPublicTag
 } | {
     wechatPublicTagId: ForeignKey<"wechatPublicTag">;
 }) & ({
-    userId?: never;
-    user: User.CreateSingleOperation;
+    wechatUserId?: never;
+    wechatUser: WechatUser.CreateSingleOperation;
 } | {
-    userId: ForeignKey<"user">;
-    user?: User.UpdateOperation;
+    wechatUserId: ForeignKey<"wechatUser">;
+    wechatUser?: WechatUser.UpdateOperation;
 } | {
-    userId: ForeignKey<"user">;
+    wechatUserId: ForeignKey<"wechatUser">;
 })) & {
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
     operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
@@ -135,7 +135,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "wechatPublicTag
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "wechatPublicTagId" | "userId">> & (({
+export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "wechatPublicTagId" | "wechatUserId">> & (({
     wechatPublicTag: WechatPublicTag.CreateSingleOperation;
     wechatPublicTagId?: never;
 } | {
@@ -148,17 +148,17 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "wechatPublicTag
     wechatPublicTag?: never;
     wechatPublicTagId?: ForeignKey<"wechatPublicTag"> | null;
 }) & ({
-    user: User.CreateSingleOperation;
-    userId?: never;
+    wechatUser: WechatUser.CreateSingleOperation;
+    wechatUserId?: never;
 } | {
-    user: User.UpdateOperation;
-    userId?: never;
+    wechatUser: WechatUser.UpdateOperation;
+    wechatUserId?: never;
 } | {
-    user: User.RemoveOperation;
-    userId?: never;
+    wechatUser: WechatUser.RemoveOperation;
+    wechatUserId?: never;
 } | {
-    user?: never;
-    userId?: ForeignKey<"user"> | null;
+    wechatUser?: never;
+    wechatUserId?: ForeignKey<"wechatUser"> | null;
 })) & {
     [k: string]: any;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
@@ -168,12 +168,12 @@ export type UpdateOperation = OakOperation<"update" | string, UpdateOperationDat
 export type RemoveOperationData = {} & (({
     wechatPublicTag?: WechatPublicTag.UpdateOperation | WechatPublicTag.RemoveOperation;
 }) & ({
-    user?: User.UpdateOperation | User.RemoveOperation;
+    wechatUser?: WechatUser.UpdateOperation | WechatUser.RemoveOperation;
 }));
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export type WechatPublicTagIdSubQuery = Selection<WechatPublicTagIdProjection>;
-export type UserIdSubQuery = Selection<UserIdProjection>;
+export type WechatUserIdSubQuery = Selection<WechatUserIdProjection>;
 export type UserWechatPublicTagIdSubQuery = Selection<UserWechatPublicTagIdProjection>;
 export type EntityDef = {
     Schema: Schema;

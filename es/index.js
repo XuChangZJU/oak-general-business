@@ -9,4 +9,4 @@ export { getLivestream, getPlayBackUrl, getStreamObj } from './utils/livestream'
 export { BackendRuntimeContext } from './context/BackendRuntimeContext';
 export { FrontendRuntimeContext, } from './context/FrontendRuntimeContext';
 export { registerWechatPublicTags } from './config/constants';
-export { registerUploader } from './utils/uploader';
+export { registerCos as registerUploader } from './utils/cos';

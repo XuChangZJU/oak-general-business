@@ -10,6 +10,9 @@ const entityDesc = {
                 sync: '同步状态',
                 syncAt: '同步时间',
             },
+            action: {
+                sync: '同步'
+            }
         },
     },
     indexes: [

@@ -136,7 +136,7 @@ export class Token<
     }
 
     async logout() {
-        // await this.cache.exec('logout', {});
+        await this.cache.exec('logout', {});
         this.removeToken();
     }
 

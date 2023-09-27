@@ -13,7 +13,7 @@ export default function Render(props) {
             ], rowSelection: {
                 type: 'radio',
                 onSelect: (record) => {
-                    getTag({ id: `${record.wechatId}`, name: record.text });
+                    getTag({ id: record.id, name: record.text, wechatId: `${record.wechatId}` });
                 },
                 selectedRowKeys: selectedRowKeys,
                 onChange: (selectedRowKeys) => {
@@ -23,7 +23,7 @@ export default function Render(props) {
                 return {
                     onClick: () => {
                         setSelectedRowKeys([record.id]);
-                        getTag({ id: `${record.wechatId}`, name: record.text });
+                        getTag({ id: record.id, name: record.text, wechatId: `${record.wechatId}` });
                     }
                 };
             }, pagination: false }) }));

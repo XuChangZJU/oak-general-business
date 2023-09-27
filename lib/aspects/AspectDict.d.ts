@@ -26,7 +26,7 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
         env: WebEnv;
         wechatLoginId?: string;
     }, context: Cxt) => Promise<string>;
-    logout: ({}: {}, context: Cxt) => Promise<void>;
+    logout: ({ }: {}, context: Cxt) => Promise<void>;
     loginWechatMp: ({ code, env, }: {
         code: string;
         env: WechatMpEnv;
@@ -128,6 +128,9 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
         applicationId: string;
         menuId: number;
     }, context: Cxt) => Promise<any>;
+    deleteMenu: (params: {
+        applicationId: string;
+    }, context: Cxt) => Promise<any>;
     batchGetArticle: (params: {
         applicationId: string;
         offset?: number;
@@ -155,5 +158,21 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
         entity?: string;
         entityId?: string;
     }, context: Cxt) => Promise<string>;
+    createTag: (params: {
+        applicationId: string;
+        name: string;
+    }, context: Cxt) => Promise<any>;
+    getTags: (params: {
+        applicationId: string;
+    }, context: Cxt) => Promise<any>;
+    editTag: (params: {
+        applicationId: string;
+        id: number;
+        name: string;
+    }, context: Cxt) => Promise<any>;
+    deleteTag: (params: {
+        applicationId: string;
+        id: number;
+    }, context: Cxt) => Promise<any>;
 };
 export default GeneralAspectDict;

@@ -61,7 +61,7 @@ const triggers: Trigger<
         entity: 'articleMenu',
         action: 'create',
         when: 'after',
-        fn: async (event: any, context: any) => {
+        fn: async (event, context) => {
             const {
                 operation: { data, filter },
             } = event;
@@ -100,7 +100,7 @@ const triggers: Trigger<
                             isLeaf: true,
                         },
                         filter: {
-                            id: articleMenu.parentId,
+                            id: articleMenu.parentId!,
                         },
                     },
                     {
@@ -111,7 +111,7 @@ const triggers: Trigger<
 
             return 0;
         },
-    },
+    } as CreateTrigger<EntityDict, 'articleMenu', RuntimeCxt>,
     {
         name: '在删除文章分类前，将文章分类的父节点的【isLeaf】置为【false】,同时删除extraFile',
         entity: 'articleMenu',

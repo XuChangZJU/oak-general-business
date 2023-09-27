@@ -30,11 +30,18 @@ import {
     createMenu,
     createConditionalMenu,
     deleteConditionalMenu,
+    deleteMenu,
     batchGetArticle,
     getArticle,
     batchGetMaterialList,
     getMaterial,
-} from './wechatMenu'
+} from './wechatMenu';
+import {
+    createTag,
+    getTags,
+    editTag,
+    deleteTag,
+} from './wechatPublicTag';
 
 const aspectDict = {
     mergeUser,
@@ -66,11 +73,16 @@ const aspectDict = {
     createMenu,
     createConditionalMenu,
     deleteConditionalMenu,
+    deleteMenu,
     batchGetArticle,
     getArticle,
     batchGetMaterialList,
     getMaterial,
     createSession,
+    createTag,
+    getTags,
+    editTag,
+    deleteTag,
 };
 
 export default aspectDict;

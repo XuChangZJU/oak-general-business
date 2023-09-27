@@ -33,7 +33,7 @@ export default OakComponent({
     properties: {
         news: [] as any[],
         applicationId: '',
-        getTag: (data: {id: string, name: string}) => undefined as void,
+        getTag: (data: {id: string, name: string, wechatId: string}) => undefined as void,
     },
     data: {
     },

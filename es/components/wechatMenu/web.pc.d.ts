@@ -4,4 +4,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'wechatMenu'
     is_menu_open: boolean;
     applicationId: string;
     menuId: string;
+    isPlatform: boolean;
 }, {}>): import("react/jsx-runtime").JSX.Element | null;

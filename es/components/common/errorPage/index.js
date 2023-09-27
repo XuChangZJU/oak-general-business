@@ -1,12 +1,4 @@
-var ECode;
-(function (ECode) {
-    ECode["forbidden"] = "403";
-    ECode["notFound"] = "404";
-    ECode["error"] = "500";
-    ECode["networkError"] = "network-error";
-    ECode["maintenance"] = "maintenance";
-})(ECode || (ECode = {}));
-;
+import { ECode } from '../../../types/ErrorPage';
 const DefaultErrorInfo = {
     [ECode.forbidden]: {
         title: '403 Forbidden',
@@ -33,36 +25,45 @@ const DefaultErrorInfo = {
         desc: '系统维护中，请稍后再试。',
         imagePath: './assets/svg/assets-result-maintenance.svg',
     },
+    [ECode.browserIncompatible]: {
+        title: '浏览器版本低',
+        desc: '抱歉，您正在使用的浏览器版本过低，无法打开当前网页。',
+        imagePath: './assets/svg/assets-result-browser-incompatible.svg',
+    },
 };
-export default Component({
+export default OakComponent({
+    isList: false,
     properties: {
-        code: String,
-        title: String,
-        desc: String,
-        icon: String,
-        imagePath: String,
+        code: '',
+        title: '',
+        desc: '',
+        icon: '',
+        imagePath: '', //小程序独有
     },
     lifetimes: {
         ready() {
-            const { title, desc, code, imagePath } = this.data;
-            let title2 = title;
-            if (code) {
-                this.setData({
-                    desc: desc || DefaultErrorInfo[code].desc,
-                    imagePath: imagePath || DefaultErrorInfo[code].imagePath,
-                });
-                if (!title2) {
-                    title2 = DefaultErrorInfo[code].title;
+            if (process.env.OAK_PLATFORM === 'wechatMp') {
+                const { title, desc, code, imagePath } = this.props;
+                let title2 = title;
+                if (code) {
+                    this.setState({
+                        desc: desc || DefaultErrorInfo[code].desc,
+                        imagePath: imagePath ||
+                            DefaultErrorInfo[code].imagePath,
+                    });
+                    if (!title2) {
+                        title2 = DefaultErrorInfo[code].title;
+                    }
+                    wx.setNavigationBarTitle({
+                        title: title2,
+                    });
                 }
-                wx.setNavigationBarTitle({
-                    title: title2,
-                });
             }
-        }
+        },
     },
     methods: {
-        goBack() {
-            wx.navigateBack();
-        }
-    }
+        goBack(delta) {
+            this.navigateBack(delta);
+        },
+    },
 });

@@ -205,6 +205,12 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<any>;
+    deleteMenu: (
+        params: {
+            applicationId: string;
+        },
+        context: Cxt
+    ) => Promise<any>;
     batchGetArticle: (
         params: {
             applicationId: string;
@@ -247,6 +253,34 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<string>;
+    createTag: (
+        params: {
+            applicationId: string;
+            name: string;
+        },
+        context: Cxt
+    ) => Promise<any>;
+    getTags: (
+        params: {
+            applicationId: string;
+        },
+        context: Cxt
+    ) => Promise<any>;
+    editTag: (
+        params: {
+            applicationId: string;
+            id: number;
+            name: string;
+        },
+        context: Cxt
+    ) => Promise<any>;
+    deleteTag: (
+        params: {
+            applicationId: string;
+            id: number;
+        },
+        context: Cxt
+    ) => Promise<any>;
 };
 
 export default GeneralAspectDict;

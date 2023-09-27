@@ -7,12 +7,14 @@ import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 export interface Schema extends EntityShape {
     text: String<32>;
     application: Application;
-    wechatId: Uint<4>;
-    sync: Boolean;
-    syncAt: Datetime;
+    wechatId?: Uint<4>;
+    sync?: Boolean;
+    syncAt?: Datetime;
 };
 
-const entityDesc: EntityDesc<Schema> = {
+type Action = 'sync';
+
+const entityDesc: EntityDesc<Schema, Action, ''> = {
     locales: {
         zh_CN: {
             name: '公众号标签',
@@ -23,6 +25,9 @@ const entityDesc: EntityDesc<Schema> = {
                 sync: '同步状态',
                 syncAt: '同步时间',
             },
+            action: {
+                sync: '同步'
+            }
         },
      },
      indexes: [

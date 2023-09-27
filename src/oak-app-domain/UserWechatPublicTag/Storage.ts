@@ -8,10 +8,10 @@ export const desc: StorageDesc<OpSchema> = {
             type: "ref",
             ref: "wechatPublicTag"
         },
-        userId: {
+        wechatUserId: {
             notNull: true,
             type: "ref",
-            ref: "user"
+            ref: "wechatUser"
         },
         sync: {
             notNull: true,

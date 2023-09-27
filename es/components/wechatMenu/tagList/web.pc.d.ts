@@ -5,5 +5,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'wechatPubli
     getTag: (data: {
         id: string;
         name: string;
+        wechatId: string;
     }) => void;
 }, {}>): import("react/jsx-runtime").JSX.Element;

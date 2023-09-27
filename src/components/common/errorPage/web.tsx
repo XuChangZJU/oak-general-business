@@ -1,8 +1,9 @@
 import React from 'react';
 
 import { Button } from 'antd';
-// @ts-ignore
-import { useNavigate } from 'react-router-dom';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../oak-app-domain';
+import { ECode } from '../../../types/ErrorPage';
 
 import { ReactComponent as Light403Icon } from './assets/svg/assets-result-403.svg';
 import { ReactComponent as Light404Icon } from './assets/svg/assets-result-404.svg';
@@ -11,16 +12,6 @@ import { ReactComponent as LightMaintenanceIcon } from './assets/svg/assets-resu
 import { ReactComponent as LightBrowserIncompatibleIcon } from './assets/svg/assets-result-browser-incompatible.svg';
 import { ReactComponent as LightNetworkErrorIcon } from './assets/svg/assets-result-network-error.svg';
 import './web.less';
-
-export enum ECode {
-    forbidden = '403',
-    notFound = '404',
-    error = '500',
-
-    networkError = 'network-error',
-    browserIncompatible = 'browser-incompatible',
-    maintenance = 'maintenance',
-}
 
 interface IErrorPageProps {
     code: ECode;
@@ -63,28 +54,36 @@ const errorInfo = {
     },
 };
 
-
-function ErrorPage(props: IErrorPageProps) {
-    const navigate = useNavigate();
-    const { code } = props;
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        keyof EntityDict,
+        false,
+        IErrorPageProps,
+        {
+            goBack: (delta?: number) => void;
+        }
+    >
+) {
+    const { code, icon, title, desc, children } = props.data;
+    const { t, goBack } = props.methods;
     const info = errorInfo[code];
     const prefixCls = 'oak';
 
-
     return (
         <div className={`${prefixCls}-errorBox`}>
-            {props.icon || info?.icon}
+            {icon || info?.icon}
             <div className={`${prefixCls}-errorBox__title`}>
-                {props.title || info?.title}
+                {title || info?.title}
             </div>
             <div className={`${prefixCls}-errorBox__description`}>
-                {props.desc || info?.desc}
+                {desc || info?.desc}
             </div>
-            {props.children || (
+            {children || (
                 <Button
                     type="primary"
                     onClick={() => {
-                        navigate(-1);
+                        goBack();
                     }}
                 >
                     返回
@@ -93,5 +92,3 @@ function ErrorPage(props: IErrorPageProps) {
         </div>
     );
 }
-
-export default ErrorPage;

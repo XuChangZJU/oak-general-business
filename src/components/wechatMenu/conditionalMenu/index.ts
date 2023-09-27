@@ -7,12 +7,7 @@ export default OakComponent({
         id: 1,
         menuConfig: 1,
         applicationId: 1,
-        application: {
-            id: 1,
-            type: 1,
-            config: 1,
-        },
-        publishState: 1,
+        iState: 1,
         wechatPublicTagId: 1,
         menuId: 1,
     },
@@ -21,17 +16,19 @@ export default OakComponent({
             id: rows?.[0]?.id,
             config: rows?.[0]?.menuConfig,
             menuId: rows?.[0]?.menuId,
+            iState: rows?.[0]?.iState,
         };
     },
     properties: {
         applicationId: '',
         tagId: '',
+        wechatId: '',
         menuType: '',
     },
     lifetimes: {
         async ready() {
-            const { applicationId, tagId } = this.props;
-            const [ conditionalmenu ] = this.features.cache.get(
+            const { applicationId, tagId, wechatId } = this.props;
+            const { data: conditionalmenu } = await this.features.cache.refresh(
                 'wechatMenu',
                 {
                     data: {
@@ -40,7 +37,7 @@ export default OakComponent({
                         menuId: 1,
                         wechatPublicTagId: 1,
                         applicationId: 1,
-                        publishState: 1,
+                        iState: 1,
                     },
                     filter: {
                         applicationId,
@@ -48,10 +45,11 @@ export default OakComponent({
                     }
                 }
             );
-            if(!conditionalmenu) {
+            if(!conditionalmenu[0]) {
                 this.addItem({
                     wechatPublicTagId: tagId,
-                    menuConfig: {button: [], matchrule: {tag_id: tagId}}
+                    menuConfig: {button: [], matchrule: {tag_id: wechatId}},
+                    applicationId,
                 })
             }
         }
@@ -69,5 +67,4 @@ export default OakComponent({
     ],
     methods: {
     },
-
 });

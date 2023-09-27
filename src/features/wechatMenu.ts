@@ -66,6 +66,14 @@ export class WechatMenu<
         return callBack.result;
     }
 
+    
+    async deleteMenu(params: {
+        applicationId: string,
+    },) {
+        const callBack = await this.cache.exec('deleteMenu', params);
+        return callBack.result;
+    }
+
     async batchGetArticle(params: {
         applicationId: string,
         offset?: number;

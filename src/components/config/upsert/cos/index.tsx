@@ -56,7 +56,7 @@ function QiniuCos(props: {
                                         />
                                     </>
                                 </Form.Item>
-                                <Form.Item
+                                {/* <Form.Item
                                     label="bucket"
                                     //name="bucket"
                                 >
@@ -73,7 +73,7 @@ function QiniuCos(props: {
                                             }
                                         />
                                     </>
-                                </Form.Item>
+                                </Form.Item> */}
                                 <Form.Item
                                     label="uploadHost"
                                     //name="uploadHost"
@@ -92,7 +92,7 @@ function QiniuCos(props: {
                                         />
                                     </>
                                 </Form.Item>
-                                <Form.Item
+                                {/* <Form.Item
                                     label="domain"
                                     // name="domain"
                                 >
@@ -109,8 +109,8 @@ function QiniuCos(props: {
                                             }
                                         />
                                     </>
-                                </Form.Item>
-                                <Form.Item
+                                </Form.Item> */}
+                                {/* <Form.Item
                                     label="protocol"
                                     //name="protocol"
                                 >
@@ -136,7 +136,7 @@ function QiniuCos(props: {
                                             ]}
                                         />
                                     </>
-                                </Form.Item>
+                                </Form.Item> */}
                             </Form>
                         ),
                     },

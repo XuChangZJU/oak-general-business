@@ -13,7 +13,7 @@ import SelectArticle from '../selectArticle';
 import TextClick from '../textClick';
 export default function Render(props) {
     const { data, methods } = props;
-    const { config, menuIndex, selectedBtn, selectedSubBtn, currentIndex, changeIsPreview, getOpen, menuType, applicationId, menuId, } = data;
+    const { config, menuIndex, selectedBtn, selectedSubBtn, currentIndex, changeIsPreview, getOpen, menuType, applicationId, menuId, actions, wechatId, iState, } = data;
     const { setConfig, confirmName, confirmSubName, editMenuName, deleteMenuContent, getMaterialImgAndVoice, getMaterialVideo, decideMenuContentLabel, getArticle, createMenu, deleteConditionalMenu, confirmUrl, } = methods;
     const [msgType, setMsgType] = useState('sendMsg');
     const [errorInfo, setErrorInfo] = useState('');
@@ -58,7 +58,7 @@ export default function Render(props) {
         if (selectedBtn > 0) {
             setConfig(selectedBtn - 1, {
                 type: 'click',
-                key: await generateNewIdAsync(),
+                key: menuType === 'conditional' ? `${wechatId}$${await generateNewIdAsync()}` : await generateNewIdAsync(),
                 subType: 'text',
                 content: menuContent,
             });
@@ -66,7 +66,7 @@ export default function Render(props) {
         else {
             setConfig(selectedSubBtn - 1, {
                 type: 'click',
-                key: await generateNewIdAsync(),
+                key: menuType === 'conditional' ? `${wechatId}$${await generateNewIdAsync()}` : await generateNewIdAsync(),
                 subType: 'text',
                 content: menuContent,
             }, currentIndex);
@@ -219,7 +219,7 @@ export default function Render(props) {
             }
         }
     }, [url]);
-    return (_jsx("div", { className: Style.container, children: config &&
+    return (_jsx("div", { className: Style.container, style: iState === 'fail' ? { border: '1px solid #FF5557' } : {}, children: config &&
             config.button &&
             config.button.length > 0 &&
             (selectedBtn !== 0 || selectedSubBtn !== 0) ? (_jsxs("div", { className: Style.upsertMenu, children: [_jsxs("div", { className: Style.content, children: [_jsx("div", { className: Style.title, children: selectedSubBtn !== 0 ? '子菜单信息' : '菜单信息' }), _jsx("div", { style: { marginBottom: 32 }, children: _jsx(Form.Item, { label: _jsx("div", { className: Style.label, children: "\u540D\u79F0" }), colon: false, help: _jsxs("div", { children: [_jsx("div", { children: `仅支持中英文和数字，字数不超过${selectedSubBtn !== 0 ? 8 : 4}个汉字或${selectedSubBtn !== 0 ? 16 : 8}个字母。` }), errorInfo && (_jsx("div", { style: { color: '#fa5151' }, children: errorInfo }))] }), children: _jsx(Input, { style: { width: 340 }, onChange: (val) => {
@@ -497,7 +497,7 @@ export default function Render(props) {
                                                 getOpen(false);
                                             }, children: _jsx(SelectMiniprogram, { oakAutoUnmount: true, getMenuContent: getMenuContent, changeOpen: changeOpen }) })] }))] })) : null] }), _jsx("div", { className: Style.actionBar, children: _jsxs(Space, { children: [_jsxs(Button, { onClick: () => changeIsPreview(true), children: [_jsx(EyeOutlined, {}), "\u9884\u89C8"] }), _jsxs(Button, { type: "primary", onClick: async () => {
                                     createMenu(errorInfo, errorUrlInfo);
-                                }, children: [_jsx(CheckOutlined, {}), "\u53D1\u5E03"] }), menuType === 'conditional' && config && menuId && (_jsxs(Button, { type: "primary", danger: true, onClick: () => {
+                                }, children: [_jsx(CheckOutlined, {}), iState !== 'fail' ? '保存并发布' : '重新发布'] }), menuType === 'conditional' && config && menuId && (_jsxs(Button, { type: "primary", danger: true, onClick: () => {
                                     const modal = confirm({
                                         title: '确定删除该个性化菜单吗？',
                                         content: '删除后不可恢复',
@@ -510,5 +510,5 @@ export default function Render(props) {
                                     });
                                 }, children: [_jsx(DeleteOutlined, {}), "\u5220\u9664"] }))] }) })] })) : (_jsxs("div", { className: Style.empty, children: [_jsx("div", { className: Style.content, children: "\u4F60\u672A\u6DFB\u52A0\u81EA\u5B9A\u4E49\u83DC\u5355\uFF0C\u70B9\u51FB\u5DE6\u4FA7\u6DFB\u52A0\u83DC\u5355\u4E3A\u516C\u4F17\u53F7\u521B\u5EFA\u83DC\u5355\u680F\u3002" }), _jsx("div", { className: Style.actionBar, children: _jsxs(Space, { children: [_jsxs(Button, { onClick: () => changeIsPreview(true), children: [_jsx(EyeOutlined, {}), "\u9884\u89C8"] }), _jsxs(Button, { type: "primary", onClick: async () => {
                                     createMenu(errorInfo, errorUrlInfo);
-                                }, children: [_jsx(CheckOutlined, {}), "\u53D1\u5E03"] })] }) })] })) }));
+                                }, children: [_jsx(CheckOutlined, {}), "\u4FDD\u5B58\u5E76\u53D1\u5E03"] })] }) })] })) }));
 }

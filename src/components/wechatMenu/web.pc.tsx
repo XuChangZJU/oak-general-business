@@ -17,17 +17,18 @@ export default function Render(
             is_menu_open: boolean;
             applicationId: string;
             menuId: string;
+            isPlatform: boolean;
         },
         {
         }
     >
 ) {
-    const { menuId, oakFullpath, is_menu_open, applicationId } = props.data;
+    const { menuId, oakFullpath, is_menu_open, applicationId, isPlatform } = props.data;
     const { } = props.methods;
     const [menuType, setMenuType] = useState('common');
-    const [tag, setTag] = useState({} as { id: string, name: string });
+    const [tag, setTag] = useState({} as { id: string, name: string, wechatId: string });
 
-    const getTag = (tag: { id: string, name: string }) => {
+    const getTag = (tag: { id: string, name: string, wechatId: string }) => {
         setTag(tag);
     }
 
@@ -59,10 +60,11 @@ export default function Render(
                     {
                         tag.id ? (
                             <ConditionalMenu
-                                oakPath={'$conditionalMenu'}
+                                oakPath={`$conditionalMenu-${tag.id}`}
                                 applicationId={applicationId}
                                 oakAutoUnmount={true}
                                 tagId={tag.id}
+                                wechatId={tag.wechatId}
                                 menuType={menuType}
                             />
                         ) : (
@@ -79,17 +81,25 @@ export default function Render(
                 {
                     is_menu_open ? (
                         <div className={Style.tabs}>
-                            <Tabs
-                                defaultActiveKey='1'
-                                items={items}
-                                onChange={(key: string) => {
-                                    if (key === '1') {
-                                        setMenuType('common');
-                                    } else {
-                                        setMenuType('conditional');
-                                    }
-                                }}
-                            />
+                            {
+                                isPlatform ? <WechatMenu
+                                    menuId={menuId ? menuId : undefined}
+                                    oakPath={'$wechatMenu'}
+                                    applicationId={applicationId}
+                                    oakAutoUnmount={true}
+                                    menuType={menuType}
+                                /> : <Tabs
+                                    defaultActiveKey='1'
+                                    items={items}
+                                    onChange={(key: string) => {
+                                        if (key === '1') {
+                                            setMenuType('common');
+                                        } else {
+                                            setMenuType('conditional');
+                                        }
+                                    }}
+                                />
+                            }
                         </div>
                     ) : (
                         <div className={Style.container}>

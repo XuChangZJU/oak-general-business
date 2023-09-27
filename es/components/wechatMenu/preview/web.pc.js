@@ -7,7 +7,7 @@ import { Editor } from '@wangeditor/editor-for-react';
 import ShowNews from '../showNews';
 export default function Render(props) {
     const { button } = props.data;
-    const { getMaterialImgAndVoice, getArticle, getMaterialVideo } = props.methods;
+    const { getMaterialImgAndVoice, getArticle, getMaterialVideo, setMessage } = props.methods;
     const [sendMsg, setSendMsg] = useState([]);
     const editorConfig = {
         readOnly: true,
@@ -19,9 +19,21 @@ export default function Render(props) {
         const index2 = Number(key) % 10;
         menuAction(button[index].sub_button[index2]);
     };
+    const isValidUrl = (url) => {
+        const urlPattern = /^(https?:\/\/)([\w-]+\.)+[a-z]{2,6}(\S*)$/;
+        return urlPattern.test(url);
+    };
     const menuAction = async (menu) => {
         if (menu.type === 'view' && menu.url) {
-            window.open(menu.url);
+            if (isValidUrl(menu.url)) {
+                window.open(menu.url);
+            }
+            else {
+                setMessage({
+                    type: 'warning',
+                    content: 'URL无效'
+                });
+            }
             return;
         }
         if (menu.type === 'miniprogram' && menu.url) {

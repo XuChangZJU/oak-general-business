@@ -1,8 +1,8 @@
 import { Feature } from 'oak-frontend-base';
 import { Upload } from 'oak-frontend-base/es/utils/upload';
-import { composeFileUrl, bytesToSize, getFileURL } from '../utils/extraFile';
+import { bytesToSize, getFileURL } from '../utils/extraFile';
 import { assert } from 'oak-domain/lib/utils/assert';
-import UploaderDict from '../utils/uploader';
+import { getCos } from '../utils/cos';
 import { unset } from 'oak-domain/lib/utils/lodash';
 export class ExtraFile2 extends Feature {
     cache;
@@ -62,8 +62,9 @@ export class ExtraFile2 extends Feature {
         item.state = 'uploading';
         item.percentage = 0;
         const up = new Upload();
+        const cos = getCos(origin);
         try {
-            await UploaderDict[origin].upload(extraFile, up.uploadFile, file);
+            await cos.upload(extraFile, up.uploadFile, file);
             item.state = 'uploaded';
             item.percentage = undefined;
             this.publish();
@@ -78,9 +79,6 @@ export class ExtraFile2 extends Feature {
         if (!extraFile) {
             return '';
         }
-        const application = this.application.getApplication();
-        const config = application?.system?.config ||
-            application?.system?.platform?.config;
         if (extraFile?.isBridge && extraFile?.extra1) {
             return this.locales.makeBridgeUrl(extraFile?.extra1);
         }
@@ -94,7 +92,11 @@ export class ExtraFile2 extends Feature {
                 return file;
             }
         }
-        return composeFileUrl(extraFile, config, style);
+        const { origin } = extraFile;
+        const cos = getCos(origin);
+        const context = this.cache.begin();
+        this.cache.commit();
+        return cos.composeFileUrl(extraFile, context, style);
     }
     getFileState(id) {
         if (this.files[id]) {

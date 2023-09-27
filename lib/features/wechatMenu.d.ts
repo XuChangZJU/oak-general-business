@@ -29,6 +29,9 @@ export declare class WechatMenu<ED extends EntityDict, Cxt extends BackendRuntim
         applicationId: string;
         menuId: number;
     }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["deleteConditionalMenu"]>>;
+    deleteMenu(params: {
+        applicationId: string;
+    }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["deleteMenu"]>>;
     batchGetArticle(params: {
         applicationId: string;
         offset?: number;

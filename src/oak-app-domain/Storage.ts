@@ -25,7 +25,7 @@ import { desc as livestreamDesc } from "./Livestream/Storage";
 import { desc as messageDesc } from "./Message/Storage";
 import { desc as messageSystemDesc } from "./MessageSystem/Storage";
 import { desc as messageTypeDesc } from "./MessageType/Storage";
-import { desc as messageTypeTemplateIdDesc } from "./MessageTypeTemplateId/Storage";
+import { desc as messageTypeTemplateDesc } from "./MessageTypeTemplate/Storage";
 import { desc as mobileDesc } from "./Mobile/Storage";
 import { desc as notificationDesc } from "./Notification/Storage";
 import { desc as parasiteDesc } from "./Parasite/Storage";
@@ -43,7 +43,9 @@ import { desc as userSystemDesc } from "./UserSystem/Storage";
 import { desc as userWechatPublicTagDesc } from "./UserWechatPublicTag/Storage";
 import { desc as wechatLoginDesc } from "./WechatLogin/Storage";
 import { desc as wechatMenuDesc } from "./WechatMenu/Storage";
+import { desc as wechatPublicAutoReplyDesc } from "./wechatPublicAutoReply/Storage";
 import { desc as wechatPublicTagDesc } from "./WechatPublicTag/Storage";
+import { desc as wechatPublicTemplateDesc } from "./WechatPublicTemplate/Storage";
 import { desc as wechatQrCodeDesc } from "./WechatQrCode/Storage";
 import { desc as wechatUserDesc } from "./WechatUser/Storage";
 export const storageSchema: StorageSchema<EntityDict> = {
@@ -72,7 +74,7 @@ export const storageSchema: StorageSchema<EntityDict> = {
     message: messageDesc,
     messageSystem: messageSystemDesc,
     messageType: messageTypeDesc,
-    messageTypeTemplateId: messageTypeTemplateIdDesc,
+    messageTypeTemplate: messageTypeTemplateDesc,
     mobile: mobileDesc,
     notification: notificationDesc,
     parasite: parasiteDesc,
@@ -90,7 +92,9 @@ export const storageSchema: StorageSchema<EntityDict> = {
     userWechatPublicTag: userWechatPublicTagDesc,
     wechatLogin: wechatLoginDesc,
     wechatMenu: wechatMenuDesc,
+    wechatPublicAutoReply: wechatPublicAutoReplyDesc,
     wechatPublicTag: wechatPublicTagDesc,
+    wechatPublicTemplate: wechatPublicTemplateDesc,
     wechatQrCode: wechatQrCodeDesc,
     wechatUser: wechatUserDesc
 };

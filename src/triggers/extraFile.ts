@@ -2,7 +2,7 @@ import { CreateTrigger, Trigger } from 'oak-domain/lib/types/Trigger';
 import { EntityDict } from '../oak-app-domain/EntityDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
-import UploaderDict from '../utils/uploader';
+import { getCos } from '../utils/cos';
 import { OakException, RemoveTrigger } from 'oak-domain';
 
 const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDict>>[] = [
@@ -16,11 +16,11 @@ const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDic
 
             const formMeta = async (data: EntityDict['extraFile']['OpSchema']): Promise<void> => {
                 const { origin } = data;
-                const uploader = UploaderDict[origin];
-                if (!uploader) {
-                    throw new OakException(`origin为${origin}的extraFile没有定义上传类，请调用registerUploader注入`);
+                const cos = getCos(origin!);
+                if (!cos) {
+                    throw new OakException(`origin为${origin}的extraFile没有定义Cos类，请调用registerCos注入`);
                 }
-                await uploader.formUploadMeta(data, context);
+                await cos.formUploadMeta(data, context);
                 Object.assign(
                     data, {
                     uploadState: 'uploading',
@@ -76,7 +76,7 @@ const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDic
             );
             for (const extraFile of extraFileList) {
                 const { origin } = extraFile;
-                const uploader = UploaderDict[origin!];
+                const uploader = getCos(origin!);
                 await uploader.checkWhetherSuccess(extraFile as EntityDict['extraFile']['OpSchema'], context);
             }
             return 1;

@@ -201,6 +201,19 @@ const i18ns: I18n[] = [
         }
     },
     {
+        id: "77647c7511d1f7f9eb5c04bb30981753",
+        namespace: "oak-general-business-c-system-panel",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/system/panel",
+        data: {
+            "detail": "系统详情",
+            "domain-list": "域名管理",
+            "config": "配置管理",
+            "style": "样式管理"
+        }
+    },
+    {
         id: "31967b6cdd8488887e7d2f39fe166458",
         namespace: "oak-general-business-c-user-login",
         language: "zh-CN",

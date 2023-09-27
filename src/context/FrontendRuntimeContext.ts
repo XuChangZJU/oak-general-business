@@ -17,7 +17,7 @@ import {
 } from '../types/Exception';
 import { OakUnloggedInException } from 'oak-domain/lib/types';
 
-type AspectDict<
+export type AspectDict<
     ED extends EntityDict & BaseEntityDict,
     Cxt extends BackendRuntimeContext<ED>
 > = GeneralAspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>;
@@ -100,7 +100,7 @@ export abstract class FrontendRuntimeContext<
     allowUserUpdate(): boolean {
         const userInfo = this.token?.getUserInfo();
         if (userInfo) {
-            const { userState } = userInfo;
+            const { userState } = userInfo!;
             if (userState === 'disabled') {
                 throw new OakUserDisabledException(
                     '您的帐号已经被禁用，请联系客服'

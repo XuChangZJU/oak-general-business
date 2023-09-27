@@ -26,7 +26,7 @@ export default function Render(
     >
 ) {
     const { button } = props.data;
-    const { getMaterialImgAndVoice, getArticle, getMaterialVideo } = props.methods;
+    const { getMaterialImgAndVoice, getArticle, getMaterialVideo, setMessage } = props.methods;
     const [sendMsg, setSendMsg] = useState([] as { type: string, content: string | any[] | { url: string, media_id: string } }[]);
     const editorConfig: Partial<IEditorConfig> = {
         readOnly: true,
@@ -38,9 +38,20 @@ export default function Render(
         const index2 = Number(key) % 10;
         menuAction(button[index].sub_button[index2]);
     };
+    const isValidUrl = (url: string) => {
+        const urlPattern = /^(https?:\/\/)([\w-]+\.)+[a-z]{2,6}(\S*)$/;
+        return urlPattern.test(url);
+    }
     const menuAction = async (menu: any) => {
         if (menu.type === 'view' && menu.url) {
-            window.open(menu.url);
+            if(isValidUrl(menu.url)) {
+                window.open(menu.url);
+            } else {
+                setMessage({
+                    type: 'warning',
+                    content: 'URL无效'
+                })
+            }
             return;
         }
         if (menu.type === 'miniprogram' && menu.url) {

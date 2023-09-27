@@ -10,4 +10,5 @@ export default function Render(props: WebComponentProps<EntityDict, keyof Entity
     getMaterialList: (page: number) => void;
     getArticleList: (page: number) => void;
     upload: (media: File, description?: MediaVideoDescription) => boolean;
+    getImg: (url: string) => string;
 }>): import("react/jsx-runtime").JSX.Element;

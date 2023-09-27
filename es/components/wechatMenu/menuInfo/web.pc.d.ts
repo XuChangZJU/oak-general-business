@@ -18,6 +18,9 @@ export default function Render(props: WebComponentProps<EntityDict, keyof Entity
     getOpen: (open: boolean) => void;
     applicationId: string;
     menuId: number;
+    actions: string[];
+    wechatId: string;
+    iState: string;
 }, {
     setConfig: (index: number, content: any, currentIndex?: number) => void;
     confirmName: (menuName: string) => string;
