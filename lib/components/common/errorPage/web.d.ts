@@ -1,13 +1,8 @@
 import React from 'react';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../oak-app-domain';
+import { ECode } from '../../../types/ErrorPage';
 import './web.less';
-export declare enum ECode {
-    forbidden = "403",
-    notFound = "404",
-    error = "500",
-    networkError = "network-error",
-    browserIncompatible = "browser-incompatible",
-    maintenance = "maintenance"
-}
 interface IErrorPageProps {
     code: ECode;
     title?: string;
@@ -15,5 +10,7 @@ interface IErrorPageProps {
     children?: React.ReactNode;
     icon?: React.ReactNode;
 }
-declare function ErrorPage(props: IErrorPageProps): import("react/jsx-runtime").JSX.Element;
-export default ErrorPage;
+export default function Render(props: WebComponentProps<EntityDict, keyof EntityDict, false, IErrorPageProps, {
+    goBack: (delta?: number) => void;
+}>): import("react/jsx-runtime").JSX.Element;
+export {};

@@ -5,7 +5,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import Style from "./web.module.less";
 import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from "../../../oak-app-domain";
-import ImgBox from "oak-frontend-base/src/components/imgBox"
+import ImgBox from "oak-frontend-base/es/components/imgBox";
 
 type MethodsType = 'original' | 'url' | 'uploadLocalImg';
 

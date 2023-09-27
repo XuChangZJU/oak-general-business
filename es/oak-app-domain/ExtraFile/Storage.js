@@ -12,14 +12,12 @@ export const desc = {
             enumeration: ["image", "video", "audio", "file"]
         },
         bucket: {
-            notNull: true,
             type: "varchar",
             params: {
-                length: 16
+                length: 32
             }
         },
         objectId: {
-            notNull: true,
             type: "varchar",
             params: {
                 length: 64
@@ -64,6 +62,9 @@ export const desc = {
         },
         extra1: {
             type: "text"
+        },
+        extra2: {
+            type: "object"
         },
         extension: {
             type: "varchar",

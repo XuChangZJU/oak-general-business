@@ -5,8 +5,8 @@ import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 export interface Schema extends EntityShape {
     origin: 'qiniu' | 'wechat' | 'unknown';
     type: 'image' | 'video' | 'audio' | 'file';
-    bucket: String<16>;
-    objectId: String<64>;
+    bucket?: String<32>;                // 七牛用，其它cos可忽略
+    objectId?: String<64>;              // 七牛用，其它cos可忽略
     tag1?: String<32>;
     tag2?: String<32>;
     filename: String<256>;
@@ -14,6 +14,7 @@ export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
     extra1?: Text;
+    extra2?: Object;
     extension?: String<16>;
     size?: Int<4>;
     sort?: Float<22, 10>;
@@ -43,6 +44,7 @@ const entityDesc: EntityDesc<Schema, '', '', {
                 entity: '关联对象',
                 entityId: '关联对象id',
                 extra1: '额外信息',
+                extra2: '非结构化额外信息',
                 extension: '后缀名',
                 size: '文件大小',
                 sort: '排序',

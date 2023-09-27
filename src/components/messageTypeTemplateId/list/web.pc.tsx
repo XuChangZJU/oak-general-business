@@ -6,10 +6,10 @@ import Styles from './web.module.less';
 
 export default function Render(props: WebComponentProps<
     EntityDict,
-    'messageTypeTemplateId',
+    'messageTypeTemplate',
     true,
     {
-        mttIds: EntityDict['messageTypeTemplateId']['OpSchema'][];
+        mtt: EntityDict['messageTypeTemplate']['OpSchema'][];
         dirtyIds: string[];
         messageTypes: string[];
         applicationId: string;
@@ -20,7 +20,7 @@ export default function Render(props: WebComponentProps<
 
     const {
         oakPagination,
-        mttIds = [],
+        mtt = [],
         dirtyIds = [],
         oakLoading,
         messageTypes,
@@ -37,9 +37,9 @@ export default function Render(props: WebComponentProps<
                 <Button
                     type="default"
                     onClick={() => {
-                        addItem({
+                        /* addItem({
                             applicationId,
-                        });
+                        }); */
                     }}
                 >
                     {t('common::action.create')}
@@ -59,7 +59,7 @@ export default function Render(props: WebComponentProps<
             </Space>
             <Table
                 loading={oakLoading}
-                dataSource={mttIds}
+                dataSource={mtt}
                 rowKey="id"
                 columns={[
                     {

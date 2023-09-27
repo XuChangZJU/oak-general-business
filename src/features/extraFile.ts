@@ -9,9 +9,9 @@ import { Config, Origin } from '../types/Config';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Application } from './application'
-import { composeFileUrl, bytesToSize, getFileURL } from '../utils/extraFile';
+import { bytesToSize, getFileURL } from '../utils/extraFile';
 import { assert } from 'oak-domain/lib/utils/assert';
-import UploaderDict from '../utils/uploader';
+import { getCos } from '../utils/cos';
 import { OpSchema } from '../oak-app-domain/ExtraFile/Schema';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 
@@ -49,9 +49,6 @@ export class ExtraFile<
             file
         );
         const application = this.application.getApplication();
-        const config =
-            application?.system?.config ||
-            application?.system?.platform?.config;
         return {
             url: this.getUrl(
                 extraFile as EntityDict['extraFile']['OpSchema']
@@ -92,7 +89,8 @@ export class ExtraFile<
         });
         const up = new Upload();
         try {
-            await UploaderDict[origin!].upload(
+            const cos = getCos<ED, Cxt, FrontCxt>(origin);
+            await cos.upload(
                 extraFileData as OpSchema,
                 up.uploadFile,
                 file
@@ -134,10 +132,6 @@ export class ExtraFile<
         if (!extraFile) {
             return '';
         }
-        const application = this.application.getApplication();
-        const config =
-            application?.system?.config ||
-            application?.system?.platform?.config;
         let url;
         if (extraFile?.isBridge && extraFile?.extra1) {
             if (typeof extraFile?.extra1 === 'string') {
@@ -155,7 +149,11 @@ export class ExtraFile<
             }
             return extraFile?.extra1 || '';
         }
-        url = composeFileUrl(extraFile, config, style);
+        const { origin } = extraFile;
+        const cos = getCos<ED, Cxt, FrontCxt>(origin);
+        const context = this.cache.begin();
+        this.cache.commit();
+        url = cos.composeFileUrl(extraFile, context, style);
         return url;
     }
 

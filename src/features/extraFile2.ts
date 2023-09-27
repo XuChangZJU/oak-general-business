@@ -8,9 +8,9 @@ import { EntityDict } from '../oak-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Application } from './application'
-import { composeFileUrl, bytesToSize, getFileURL } from '../utils/extraFile';
+import { bytesToSize, getFileURL } from '../utils/extraFile';
 import { assert } from 'oak-domain/lib/utils/assert';
-import UploaderDict from '../utils/uploader';
+import { getCos } from '../utils/cos';
 import { OpSchema } from '../oak-app-domain/ExtraFile/Schema';
 import { unset } from 'oak-domain/lib/utils/lodash';
 
@@ -94,8 +94,9 @@ export class ExtraFile2<
         item.percentage = 0;
         
         const up = new Upload();
+        const cos = getCos<ED, Cxt, FrontCxt>(origin);
         try {
-            await UploaderDict[origin!].upload(
+            await cos.upload(
                 extraFile as OpSchema,
                 up.uploadFile,
                 file
@@ -120,11 +121,7 @@ export class ExtraFile2<
         if (!extraFile) {
             return '';
         }
-        const application = this.application.getApplication();
-        const config =
-            application?.system?.config ||
-            application?.system?.platform?.config;
-        
+
         if (extraFile?.isBridge && extraFile?.extra1) {
             return this.locales.makeBridgeUrl(extraFile?.extra1);
         }
@@ -138,7 +135,11 @@ export class ExtraFile2<
                 return file;
             }
         }
-        return composeFileUrl(extraFile, config, style);
+        const { origin } = extraFile;
+        const cos = getCos<ED, Cxt, FrontCxt>(origin);
+        const context = this.cache.begin();
+        this.cache.commit();
+        return cos.composeFileUrl(extraFile, context, style);
     }
 
     getFileState(id: string): {

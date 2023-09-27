@@ -7,6 +7,7 @@ import { AppType } from '../oak-app-domain/Application/Schema';
 import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
+import { MediaType, MediaVideoDescription } from '../types/WeChat';
 export declare class Application<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>> extends Feature {
     private type;
     private domain;
@@ -22,5 +23,11 @@ export declare class Application<ED extends EntityDict, Cxt extends BackendRunti
     initialize(appId?: string | null, projection?: EntityDict['application']['Selection']['data']): Promise<void>;
     getApplication(): Partial<import("../oak-app-domain/Application/Schema").Schema> | undefined;
     getApplicationId(): string | undefined;
-    uploadWechatMedia(formData: FormData): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["uploadWechatMedia"]>>;
+    uploadWechatMedia(params: {
+        applicationId: string;
+        file: File;
+        type: MediaType;
+        isPermanent?: boolean;
+        description?: MediaVideoDescription;
+    }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["uploadWechatMedia"]>>;
 }

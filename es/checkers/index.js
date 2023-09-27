@@ -7,7 +7,6 @@ import applicationCheckers from './application';
 import mobileChecker from './mobile';
 import wechatPublicTagChecker from './wechatPublicTag';
 import messageChecker from './message';
-import messageTypeTemplateId from './messageTypeTemplateId';
 import parasite from './parasite';
 const checkers = [
     ...mobileChecker,
@@ -19,7 +18,6 @@ const checkers = [
     ...applicationCheckers,
     ...wechatPublicTagChecker,
     ...messageChecker,
-    ...messageTypeTemplateId,
     ...parasite,
 ];
 export default checkers;

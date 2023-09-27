@@ -35,7 +35,7 @@ export async function getLivestream<ED extends EntityDict & BaseEntityDict, Cxt 
     const {
         instance,
         config,
-    } = await getConfig<ED, Cxt>(context, 'Live', origin);
+    } = getConfig<ED, Cxt, any>(context, 'Live', origin);
     assert(origin === 'qiniu');
     const { hub, liveHost, publishDomain, playDomain, playKey, publishKey } = config as QiniuLiveConfig;
     return (instance as QiniuCloudInstance).getLiveStream(hub, 'POST', streamTitle, liveHost, publishDomain, playDomain, publishKey, playKey, expireAt);
@@ -69,7 +69,7 @@ export async function getStreamObj<ED extends EntityDict & BaseEntityDict, Cxt e
     const {
         instance,
         config,
-    } = await getConfig<ED, Cxt>(context, 'Live', origin);
+    } = getConfig<ED, Cxt, any>(context, 'Live', origin);
 
     assert(origin === 'qiniu');
     const { publishDomain: publishDomain, publishKey: publishKey, playDomain, playKey, hub } = config as QiniuLiveConfig;
@@ -91,7 +91,7 @@ export async function getPlayBackUrl<ED extends EntityDict & BaseEntityDict, Cxt
     const {
         config,
         instance
-    } = await getConfig<ED, Cxt>(context, 'Live', origin);
+    } = getConfig<ED, Cxt, any>(context, 'Live', origin);
     const { hub, playBackDomain, liveHost } = config as QiniuLiveConfig;
     return (instance as QiniuCloudInstance).getPlayBackUrl(hub, playBackDomain, streamTitle, start, end, 'POST', liveHost);
 }

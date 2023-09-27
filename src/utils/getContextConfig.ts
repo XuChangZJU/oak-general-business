@@ -1,7 +1,6 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { OakDataException } from 'oak-domain/lib/types/Exception';
 import { AmapSDK, QiniuSDK } from 'oak-external-sdk';
-import { EntityDict } from '../oak-app-domain';
 import {
     AliCloudConfig,
     AmapCloudConfig,
@@ -12,32 +11,22 @@ import {
     TencentCloudConfig,
 } from '../types/Config';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { FrontendRuntimeContext, AspectDict } from '../context/FrontendRuntimeContext';
+import { ED as EntityDict } from '../types/RuntimeCxt';
 
-export async function getConfig<
+/**
+ * 目前虽然数据结构上config也可能在platform上，但是实际中暂时还没有
+ * @param context 
+ * @param service 
+ * @param origin 
+ * @returns 
+ */
+export function getConfig<
     ED extends EntityDict,
-    Cxt extends BackendRuntimeContext<ED>
->(context: Cxt, service: Service, origin: Origin) {
-    const systemId = context.getSystemId();
-    assert(systemId);
-    const [system] = await context.select(
-        'system',
-        {
-            data: {
-                id: 1,
-                config: 1,
-                platform: {
-                    id: 1,
-                    config: 1,
-                },
-            },
-            filter: {
-                id: systemId!,
-            },
-        },
-        {
-            dontCollect: true,
-        }
-    );
+    Cxt extends BackendRuntimeContext<ED>,
+    FrontCxt extends FrontendRuntimeContext<ED, Cxt, AspectDict<ED, Cxt>>
+>(context: Cxt | FrontCxt, service: Service, origin: Origin) {
+    const { system } = context.getApplication()!;
 
     const { config: systemConfig, platform } =
         system as EntityDict['system']['Schema'];

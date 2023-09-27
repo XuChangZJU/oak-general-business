@@ -100,7 +100,7 @@ export class Token extends Feature {
         this.publish();
     }
     async logout() {
-        // await this.cache.exec('logout', {});
+        await this.cache.exec('logout', {});
         this.removeToken();
     }
     removeToken() {

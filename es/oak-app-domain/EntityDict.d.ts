@@ -23,7 +23,7 @@ import { EntityDef as Livestream } from "./Livestream/Schema";
 import { EntityDef as Message } from "./Message/Schema";
 import { EntityDef as MessageSystem } from "./MessageSystem/Schema";
 import { EntityDef as MessageType } from "./MessageType/Schema";
-import { EntityDef as MessageTypeTemplateId } from "./MessageTypeTemplateId/Schema";
+import { EntityDef as MessageTypeTemplate } from "./MessageTypeTemplate/Schema";
 import { EntityDef as Mobile } from "./Mobile/Schema";
 import { EntityDef as Notification } from "./Notification/Schema";
 import { EntityDef as Parasite } from "./Parasite/Schema";
@@ -42,6 +42,7 @@ import { EntityDef as WechatLogin } from "./WechatLogin/Schema";
 import { EntityDef as WechatMenu } from "./WechatMenu/Schema";
 import { EntityDef as wechatPublicAutoReply } from "./wechatPublicAutoReply/Schema";
 import { EntityDef as WechatPublicTag } from "./WechatPublicTag/Schema";
+import { EntityDef as WechatPublicTemplate } from "./WechatPublicTemplate/Schema";
 import { EntityDef as WechatQrCode } from "./WechatQrCode/Schema";
 import { EntityDef as WechatUser } from "./WechatUser/Schema";
 export type EntityDict = {
@@ -70,7 +71,7 @@ export type EntityDict = {
     message: Message;
     messageSystem: MessageSystem;
     messageType: MessageType;
-    messageTypeTemplateId: MessageTypeTemplateId;
+    messageTypeTemplate: MessageTypeTemplate;
     mobile: Mobile;
     notification: Notification;
     parasite: Parasite;
@@ -89,6 +90,7 @@ export type EntityDict = {
     wechatMenu: WechatMenu;
     wechatPublicAutoReply: wechatPublicAutoReply;
     wechatPublicTag: WechatPublicTag;
+    wechatPublicTemplate: WechatPublicTemplate;
     wechatQrCode: WechatQrCode;
     wechatUser: WechatUser;
 };

@@ -1,8 +1,8 @@
 import { Feature } from 'oak-frontend-base';
 import { Upload } from 'oak-frontend-base/es/utils/upload';
-import { composeFileUrl, bytesToSize, getFileURL } from '../utils/extraFile';
+import { bytesToSize, getFileURL } from '../utils/extraFile';
 import { assert } from 'oak-domain/lib/utils/assert';
-import UploaderDict from '../utils/uploader';
+import { getCos } from '../utils/cos';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 export class ExtraFile extends Feature {
     cache;
@@ -22,8 +22,6 @@ export class ExtraFile extends Feature {
         });
         await this.upload(extraFile, file);
         const application = this.application.getApplication();
-        const config = application?.system?.config ||
-            application?.system?.platform?.config;
         return {
             url: this.getUrl(extraFile),
         };
@@ -58,7 +56,8 @@ export class ExtraFile extends Feature {
         });
         const up = new Upload();
         try {
-            await UploaderDict[origin].upload(extraFileData, up.uploadFile, file);
+            const cos = getCos(origin);
+            await cos.upload(extraFileData, up.uploadFile, file);
             await this.cache.operate('extraFile', {
                 action: 'update',
                 data: {
@@ -90,9 +89,6 @@ export class ExtraFile extends Feature {
         if (!extraFile) {
             return '';
         }
-        const application = this.application.getApplication();
-        const config = application?.system?.config ||
-            application?.system?.platform?.config;
         let url;
         if (extraFile?.isBridge && extraFile?.extra1) {
             if (typeof extraFile?.extra1 === 'string') {
@@ -110,7 +106,11 @@ export class ExtraFile extends Feature {
             }
             return extraFile?.extra1 || '';
         }
-        url = composeFileUrl(extraFile, config, style);
+        const { origin } = extraFile;
+        const cos = getCos(origin);
+        const context = this.cache.begin();
+        this.cache.commit();
+        url = cos.composeFileUrl(extraFile, context, style);
         return url;
     }
     /**
