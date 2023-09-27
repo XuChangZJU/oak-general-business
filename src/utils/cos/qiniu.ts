@@ -89,8 +89,11 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
         const { config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
 
         if (config) {
-            const { domain, protocol } =
-                config[origin]!.buckets[bucket!];
+            let bucket = (config.buckets as QiniuCosConfig['buckets']).find((ele) => ele.name === config.defaultBucket);
+            if (!bucket) {
+                bucket = config.buckets[0]
+            }
+            const { domain, protocol } = bucket!;
             let protocol2 = protocol;
             if (protocol instanceof Array) {
                 // protocol存在https 说明域名有证书
