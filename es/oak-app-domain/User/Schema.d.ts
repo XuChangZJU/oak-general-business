@@ -13,6 +13,8 @@ import * as Email from "../Email/Schema";
 import * as Message from "../Message/Schema";
 import * as Mobile from "../Mobile/Schema";
 import * as Parasite from "../Parasite/Schema";
+import * as ReadRemark from "../ReadRemark/Schema";
+import * as Session from "../Session/Schema";
 import * as SessionMessage from "../SessionMessage/Schema";
 import * as Token from "../Token/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
@@ -69,6 +71,10 @@ export type Schema = EntityShape & {
     mobile$user$$aggr?: AggregationResult<Mobile.Schema>;
     parasite$user?: Array<Parasite.Schema>;
     parasite$user$$aggr?: AggregationResult<Parasite.Schema>;
+    readRemark$user?: Array<ReadRemark.Schema>;
+    readRemark$user$$aggr?: AggregationResult<ReadRemark.Schema>;
+    session$user?: Array<Session.Schema>;
+    session$user$$aggr?: AggregationResult<Session.Schema>;
     sessionMessage$user?: Array<SessionMessage.Schema>;
     sessionMessage$user$$aggr?: AggregationResult<SessionMessage.Schema>;
     token$user?: Array<Token.Schema>;
@@ -124,6 +130,8 @@ type AttrFilter = {
     message$user: Message.Filter & SubQueryPredicateMetadata;
     mobile$user: Mobile.Filter & SubQueryPredicateMetadata;
     parasite$user: Parasite.Filter & SubQueryPredicateMetadata;
+    readRemark$user: ReadRemark.Filter & SubQueryPredicateMetadata;
+    session$user: Session.Filter & SubQueryPredicateMetadata;
     sessionMessage$user: SessionMessage.Filter & SubQueryPredicateMetadata;
     token$user: Token.Filter & SubQueryPredicateMetadata;
     token$player: Token.Filter & SubQueryPredicateMetadata;
@@ -206,6 +214,18 @@ export type Projection = {
     };
     parasite$user$$aggr?: Parasite.Aggregation & {
         $entity: "parasite";
+    };
+    readRemark$user?: ReadRemark.Selection & {
+        $entity: "readRemark";
+    };
+    readRemark$user$$aggr?: ReadRemark.Aggregation & {
+        $entity: "readRemark";
+    };
+    session$user?: Session.Selection & {
+        $entity: "session";
+    };
+    session$user$$aggr?: Session.Aggregation & {
+        $entity: "session";
     };
     sessionMessage$user?: SessionMessage.Selection & {
         $entity: "sessionMessage";
@@ -352,6 +372,8 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "refId">> & (({
     message$user?: OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "user" | "userId">, Omit<Message.Filter, "user" | "userId">> | OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">> | OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "user" | "userId">, Omit<Message.Filter, "user" | "userId">>>;
     mobile$user?: OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Omit<Mobile.Filter, "user" | "userId">> | OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">> | OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Omit<Mobile.Filter, "user" | "userId">>>;
     parasite$user?: OakOperation<Parasite.UpdateOperation["action"], Omit<Parasite.UpdateOperationData, "user" | "userId">, Omit<Parasite.Filter, "user" | "userId">> | OakOperation<"create", Omit<Parasite.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Parasite.CreateOperationData, "user" | "userId">> | OakOperation<Parasite.UpdateOperation["action"], Omit<Parasite.UpdateOperationData, "user" | "userId">, Omit<Parasite.Filter, "user" | "userId">>>;
+    readRemark$user?: OakOperation<ReadRemark.UpdateOperation["action"], Omit<ReadRemark.UpdateOperationData, "user" | "userId">, Omit<ReadRemark.Filter, "user" | "userId">> | OakOperation<"create", Omit<ReadRemark.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<ReadRemark.CreateOperationData, "user" | "userId">> | OakOperation<ReadRemark.UpdateOperation["action"], Omit<ReadRemark.UpdateOperationData, "user" | "userId">, Omit<ReadRemark.Filter, "user" | "userId">>>;
+    session$user?: OakOperation<Session.UpdateOperation["action"], Omit<Session.UpdateOperationData, "user" | "userId">, Omit<Session.Filter, "user" | "userId">> | OakOperation<"create", Omit<Session.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Session.CreateOperationData, "user" | "userId">> | OakOperation<Session.UpdateOperation["action"], Omit<Session.UpdateOperationData, "user" | "userId">, Omit<Session.Filter, "user" | "userId">>>;
     sessionMessage$user?: OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "user" | "userId">, Omit<SessionMessage.Filter, "user" | "userId">> | OakOperation<"create", Omit<SessionMessage.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<SessionMessage.CreateOperationData, "user" | "userId">> | OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "user" | "userId">, Omit<SessionMessage.Filter, "user" | "userId">>>;
     token$user?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "user" | "userId">, Omit<Token.Filter, "user" | "userId">> | OakOperation<"create", Omit<Token.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "user" | "userId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "user" | "userId">, Omit<Token.Filter, "user" | "userId">>>;
     token$player?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "player" | "playerId">, Omit<Token.Filter, "player" | "playerId">> | OakOperation<"create", Omit<Token.CreateOperationData, "player" | "playerId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "player" | "playerId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "player" | "playerId">, Omit<Token.Filter, "player" | "playerId">>>;
@@ -391,6 +413,8 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "refId">> & (({
     message$user?: OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "user" | "userId">, Omit<Message.Filter, "user" | "userId">> | OakOperation<Message.RemoveOperation["action"], Omit<Message.RemoveOperationData, "user" | "userId">, Omit<Message.Filter, "user" | "userId">> | OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Message.CreateOperationData, "user" | "userId">> | OakOperation<Message.UpdateOperation["action"], Omit<Message.UpdateOperationData, "user" | "userId">, Omit<Message.Filter, "user" | "userId">> | OakOperation<Message.RemoveOperation["action"], Omit<Message.RemoveOperationData, "user" | "userId">, Omit<Message.Filter, "user" | "userId">>>;
     mobile$user?: OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Omit<Mobile.Filter, "user" | "userId">> | OakOperation<Mobile.RemoveOperation["action"], Omit<Mobile.RemoveOperationData, "user" | "userId">, Omit<Mobile.Filter, "user" | "userId">> | OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Mobile.CreateOperationData, "user" | "userId">> | OakOperation<Mobile.UpdateOperation["action"], Omit<Mobile.UpdateOperationData, "user" | "userId">, Omit<Mobile.Filter, "user" | "userId">> | OakOperation<Mobile.RemoveOperation["action"], Omit<Mobile.RemoveOperationData, "user" | "userId">, Omit<Mobile.Filter, "user" | "userId">>>;
     parasite$user?: OakOperation<Parasite.UpdateOperation["action"], Omit<Parasite.UpdateOperationData, "user" | "userId">, Omit<Parasite.Filter, "user" | "userId">> | OakOperation<Parasite.RemoveOperation["action"], Omit<Parasite.RemoveOperationData, "user" | "userId">, Omit<Parasite.Filter, "user" | "userId">> | OakOperation<"create", Omit<Parasite.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Parasite.CreateOperationData, "user" | "userId">> | OakOperation<Parasite.UpdateOperation["action"], Omit<Parasite.UpdateOperationData, "user" | "userId">, Omit<Parasite.Filter, "user" | "userId">> | OakOperation<Parasite.RemoveOperation["action"], Omit<Parasite.RemoveOperationData, "user" | "userId">, Omit<Parasite.Filter, "user" | "userId">>>;
+    readRemark$user?: OakOperation<ReadRemark.UpdateOperation["action"], Omit<ReadRemark.UpdateOperationData, "user" | "userId">, Omit<ReadRemark.Filter, "user" | "userId">> | OakOperation<ReadRemark.RemoveOperation["action"], Omit<ReadRemark.RemoveOperationData, "user" | "userId">, Omit<ReadRemark.Filter, "user" | "userId">> | OakOperation<"create", Omit<ReadRemark.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<ReadRemark.CreateOperationData, "user" | "userId">> | OakOperation<ReadRemark.UpdateOperation["action"], Omit<ReadRemark.UpdateOperationData, "user" | "userId">, Omit<ReadRemark.Filter, "user" | "userId">> | OakOperation<ReadRemark.RemoveOperation["action"], Omit<ReadRemark.RemoveOperationData, "user" | "userId">, Omit<ReadRemark.Filter, "user" | "userId">>>;
+    session$user?: OakOperation<Session.UpdateOperation["action"], Omit<Session.UpdateOperationData, "user" | "userId">, Omit<Session.Filter, "user" | "userId">> | OakOperation<Session.RemoveOperation["action"], Omit<Session.RemoveOperationData, "user" | "userId">, Omit<Session.Filter, "user" | "userId">> | OakOperation<"create", Omit<Session.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Session.CreateOperationData, "user" | "userId">> | OakOperation<Session.UpdateOperation["action"], Omit<Session.UpdateOperationData, "user" | "userId">, Omit<Session.Filter, "user" | "userId">> | OakOperation<Session.RemoveOperation["action"], Omit<Session.RemoveOperationData, "user" | "userId">, Omit<Session.Filter, "user" | "userId">>>;
     sessionMessage$user?: OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "user" | "userId">, Omit<SessionMessage.Filter, "user" | "userId">> | OakOperation<SessionMessage.RemoveOperation["action"], Omit<SessionMessage.RemoveOperationData, "user" | "userId">, Omit<SessionMessage.Filter, "user" | "userId">> | OakOperation<"create", Omit<SessionMessage.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<SessionMessage.CreateOperationData, "user" | "userId">> | OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "user" | "userId">, Omit<SessionMessage.Filter, "user" | "userId">> | OakOperation<SessionMessage.RemoveOperation["action"], Omit<SessionMessage.RemoveOperationData, "user" | "userId">, Omit<SessionMessage.Filter, "user" | "userId">>>;
     token$user?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "user" | "userId">, Omit<Token.Filter, "user" | "userId">> | OakOperation<Token.RemoveOperation["action"], Omit<Token.RemoveOperationData, "user" | "userId">, Omit<Token.Filter, "user" | "userId">> | OakOperation<"create", Omit<Token.CreateOperationData, "user" | "userId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "user" | "userId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "user" | "userId">, Omit<Token.Filter, "user" | "userId">> | OakOperation<Token.RemoveOperation["action"], Omit<Token.RemoveOperationData, "user" | "userId">, Omit<Token.Filter, "user" | "userId">>>;
     token$player?: OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "player" | "playerId">, Omit<Token.Filter, "player" | "playerId">> | OakOperation<Token.RemoveOperation["action"], Omit<Token.RemoveOperationData, "player" | "playerId">, Omit<Token.Filter, "player" | "playerId">> | OakOperation<"create", Omit<Token.CreateOperationData, "player" | "playerId">[]> | Array<OakOperation<"create", Omit<Token.CreateOperationData, "player" | "playerId">> | OakOperation<Token.UpdateOperation["action"], Omit<Token.UpdateOperationData, "player" | "playerId">, Omit<Token.Filter, "player" | "playerId">> | OakOperation<Token.RemoveOperation["action"], Omit<Token.RemoveOperationData, "player" | "playerId">, Omit<Token.Filter, "player" | "playerId">>>;

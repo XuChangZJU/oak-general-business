@@ -23,16 +23,17 @@ import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
 import { getMpUnlimitWxaCode } from './wechatQrCode';
 import { confirmUserEntityGrant } from './userEntityGrant';
-import { 
-    getCurrentMenu, 
-    getMenu, 
-    createMenu, 
-    createConditionalMenu, 
+import { createSession } from './session';
+import {
+    getCurrentMenu,
+    getMenu,
+    createMenu,
+    createConditionalMenu,
     deleteConditionalMenu,
     batchGetArticle,
     getArticle,
     batchGetMaterialList,
-    getMaterial,  
+    getMaterial,
 } from './wechatMenu'
 
 const aspectDict = {
@@ -60,15 +61,16 @@ const aspectDict = {
     getMpUnlimitWxaCode,
     confirmUserEntityGrant,
     uploadWechatMedia,
-    getCurrentMenu, 
-    getMenu, 
-    createMenu, 
-    createConditionalMenu, 
+    getCurrentMenu,
+    getMenu,
+    createMenu,
+    createConditionalMenu,
     deleteConditionalMenu,
     batchGetArticle,
     getArticle,
     batchGetMaterialList,
     getMaterial,
+    createSession,
 };
 
 export default aspectDict;

@@ -7,6 +7,7 @@ import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
 import { getMpUnlimitWxaCode } from './wechatQrCode';
 import { confirmUserEntityGrant } from './userEntityGrant';
+import { createSession } from './session';
 import { getCurrentMenu, getMenu, createMenu, createConditionalMenu, deleteConditionalMenu, batchGetArticle, getArticle, batchGetMaterialList, getMaterial } from './wechatMenu';
 declare const aspectDict: {
     mergeUser: typeof mergeUser;
@@ -42,5 +43,6 @@ declare const aspectDict: {
     getArticle: typeof getArticle;
     batchGetMaterialList: typeof batchGetMaterialList;
     getMaterial: typeof getMaterial;
+    createSession: typeof createSession;
 };
 export default aspectDict;

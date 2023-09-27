@@ -75,34 +75,34 @@ export const desc = {
             name: 'index_entity_entityId_tag',
             attributes: [
                 {
-                    name: 'entity',
+                    name: 'entity'
                 },
                 {
-                    name: 'entityId',
+                    name: 'entityId'
                 },
                 {
-                    name: 'tag',
+                    name: 'tag'
                 }
-            ],
+            ]
         },
         {
             name: 'index_expired_expiresAt',
             attributes: [
                 {
-                    name: 'expired',
+                    name: 'expired'
                 },
                 {
-                    name: 'expiresAt',
+                    name: 'expiresAt'
                 },
-            ],
+            ]
         },
         {
             name: 'index_url',
             attributes: [
                 {
-                    name: 'url',
+                    name: 'url'
                 },
-            ],
+            ]
         }
     ]
 };

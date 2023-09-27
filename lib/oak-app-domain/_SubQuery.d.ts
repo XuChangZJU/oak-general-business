@@ -28,6 +28,7 @@ import * as Mobile from "./Mobile/Schema";
 import * as Notification from "./Notification/Schema";
 import * as Parasite from "./Parasite/Schema";
 import * as Platform from "./Platform/Schema";
+import * as ReadRemark from "./ReadRemark/Schema";
 import * as Session from "./Session/Schema";
 import * as SessionMessage from "./SessionMessage/Schema";
 import * as Station from "./Station/Schema";
@@ -112,6 +113,10 @@ export type UserIdSubQuery = {
         entity: "mobile";
     }) | (Parasite.UserIdSubQuery & {
         entity: "parasite";
+    }) | (ReadRemark.UserIdSubQuery & {
+        entity: "readRemark";
+    }) | (Session.UserIdSubQuery & {
+        entity: "session";
     }) | (SessionMessage.UserIdSubQuery & {
         entity: "sessionMessage";
     }) | (Token.UserIdSubQuery & {
@@ -297,8 +302,15 @@ export type PlatformIdSubQuery = {
         entity: "platform";
     }) | any;
 };
+export type ReadRemarkIdSubQuery = {
+    [K in "$in" | "$nin"]?: (ReadRemark.ReadRemarkIdSubQuery & {
+        entity: "readRemark";
+    }) | any;
+};
 export type SessionIdSubQuery = {
-    [K in "$in" | "$nin"]?: (SessionMessage.SessionIdSubQuery & {
+    [K in "$in" | "$nin"]?: (ReadRemark.SessionIdSubQuery & {
+        entity: "readRemark";
+    }) | (SessionMessage.SessionIdSubQuery & {
         entity: "sessionMessage";
     }) | (UserEntityGrant.SessionIdSubQuery & {
         entity: "userEntityGrant";

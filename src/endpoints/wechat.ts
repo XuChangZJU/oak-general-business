@@ -11,14 +11,11 @@ import {
 import { EntityDict } from '../oak-app-domain';
 import { BRC } from '../types/RuntimeCxt';
 import { WechatMpConfig, WechatPublicConfig } from '../entities/Application';
-import { WechatPublicEventData } from 'oak-external-sdk';
-import {
-    expandUuidTo36Bytes,
-    generateNewIdAsync,
-} from 'oak-domain/lib/utils/uuid';
+import { WechatPublicEventData, WechatMpEventData } from 'oak-external-sdk';
+import { expandUuidTo36Bytes, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { composeDomainUrl } from '../utils/domain';
 import { composeUrl } from 'oak-domain/lib/utils/url';
-
+import { createSession } from '../aspects/session'
 type VerifyQuery = {
     signature: string;
     nonce: string;
@@ -27,7 +24,7 @@ type VerifyQuery = {
 
 const X2Js = new x2js();
 
-function assertFromWeChat(query: VerifyQuery, config: WechatPublicConfig) {
+function assertFromWeChat(query: VerifyQuery, config: WechatPublicConfig | WechatMpConfig) {
     const { signature, nonce, timestamp } = query;
     const token = config.server?.token as string;
     const stringArray = [nonce, timestamp, token];
@@ -599,6 +596,13 @@ function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
     };
 }
 
+function onWeChatMpEvent(data: WechatMpEventData, context: BRC) {
+    const content = createSession({ data, type: 'wechatMp' }, context)
+    return {
+        content: 'success'
+    }
+}
+
 const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
     wechatPublicEvent: [
         {
@@ -670,6 +674,76 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
             },
         },
     ],
+    wechatMpEvent: [{
+        name: '微信小程序回调接口',
+        method: 'post',
+        params: ['appId'],
+        fn: async (context, params, headers, req, body) => {
+            const { appId } = params;
+            if (!appId || appId === '20230210') {
+                console.error('applicationId参数不存在');
+                console.log(JSON.stringify(body));
+                return '';
+            }
+            await context.setApplication(appId);
+            const application = context.getApplication();
+            const { config } = application!;
+            const { server } = config as WechatMpConfig;
+            if (!server) {
+                throw new Error(`请配置：“微信小程序-服务器配置”`);
+            }
+            if (server?.dataFormat === 'json') {
+                const { content } = onWeChatMpEvent(body, context);
+                return content;
+            } else {
+                const { xml: data } = X2Js.xml2js<{ xml: WechatMpEventData }>(body);
+                const { content } = onWeChatMpEvent(data, context);
+                return content;
+            }
+
+        },
+    }, {
+        name: '微信小程序验证接口',
+        method: 'get',
+        params: ['appId'],
+        fn: async (context, params, body, req, headers) => {
+            const { searchParams } = new URL.URL(`http://${req.headers.host!}${req.url}`);
+            const { appId } = params;
+
+            if (!appId || appId === '20230210') {
+                console.error('applicationId参数不存在');
+                const echostr = searchParams.get('echostr')!;
+                return echostr;
+            }
+            const [application] = await context.select(
+                'application',
+                {
+                    data: {
+                        id: 1,
+                        config: 1,
+                    },
+                    filter: {
+                        id: appId,
+                    },
+                },
+                {}
+            );
+            if (!application) {
+                throw new Error(`未找到${appId}对应的app`);
+            }
+            const signature = searchParams.get('signature')!;
+            const timestamp = searchParams.get('timestamp')!;
+            const nonce = searchParams.get('nonce')!;
+            const isWeChat = assertFromWeChat({ signature, timestamp, nonce }, application.config as WechatMpConfig);
+            if (isWeChat) {
+                const echostr = searchParams.get('echostr')!;
+                return echostr;
+            }
+            else {
+                throw new Error('Verify Failed');
+            }
+        },
+    }],
 };
 
 export default endpoints;

@@ -4,14 +4,19 @@ export default function useMyInfo() {
     const features = useFeatures();
     const getMyInfo = () => {
         const userInfo = features.token.getUserInfo();
-        const mobile = userInfo?.mobile$user && userInfo?.mobile$user[0]?.mobile || '';
+        const { mobile } = (userInfo?.mobile$user && userInfo?.mobile$user[0]) ||
+            (userInfo?.user$ref &&
+                userInfo?.user$ref[0] &&
+                userInfo?.user$ref[0].mobile$user &&
+                userInfo?.user$ref[0].mobile$user[0]) ||
+            {};
         const extraFile = userInfo?.extraFile$entity?.find((ele) => ele.tag1 === 'avatar');
         const avatarUrl = features.extraFile.getUrl(extraFile);
         return {
             avatarUrl,
             name: userInfo?.name || '',
             nickname: userInfo?.nickname || '',
-            mobile,
+            mobile: mobile || '',
         };
     };
     const myInfo = getMyInfo();

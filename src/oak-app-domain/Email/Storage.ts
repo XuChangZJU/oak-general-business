@@ -28,13 +28,13 @@ export const desc: StorageDesc<OpSchema> = {
             attributes: [
                 {
                     name: 'email',
-                    direction: 'ASC',
+                    direction: 'ASC'
                 },
                 {
                     name: 'ableState',
-                    direction: 'ASC',
+                    direction: 'ASC'
                 }
-            ],
+            ]
         }
     ]
 };

@@ -78,23 +78,23 @@ export const desc: StorageDesc<OpSchema> = {
             name: 'index_entity_entityId',
             attributes: [
                 {
-                    name: 'entity',
+                    name: 'entity'
                 },
                 {
-                    name: 'entityId',
+                    name: 'entityId'
                 },
-            ],
+            ]
         },
         {
             name: 'index_uuid',
             attributes: [
                 {
-                    name: 'expired',
+                    name: 'expired'
                 },
                 {
-                    name: 'expiresAt',
+                    name: 'expiresAt'
                 }
-            ],
+            ]
         }
     ]
 };

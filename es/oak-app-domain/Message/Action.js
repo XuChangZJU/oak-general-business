@@ -2,14 +2,14 @@ export const actions = ["count", "stat", "download", "select", "aggregate", "cre
 const IActionDef = {
     stm: {
         succeed: ['sending', 'success'],
-        fail: ['sending', 'failure'],
-    },
+        fail: ['sending', 'failure']
+    }
 };
 const VisitActionDef = {
     stm: {
-        visit: ['unvisited', 'visited'],
+        visit: ['unvisited', 'visited']
     },
-    is: 'unvisited',
+    is: 'unvisited'
 };
 export const ActionDefDict = {
     iState: IActionDef,

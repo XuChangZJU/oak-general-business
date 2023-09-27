@@ -42,6 +42,24 @@ export const userProjection: EntityDict['user']['Selection']['data'] = {
             userId: 1,
         },
     },
+    user$ref: {
+        $entity: 'user',
+        data: {
+            mobile$user: {
+                $entity: 'mobile',
+                data: {
+                    id: 1,
+                    mobile: 1,
+                    userId: 1,
+                    user: {
+                        id: 1,
+                        userState: 1,
+                        refId: 1,
+                    },
+                },
+            },
+        },
+    },
 };
 export const tokenProjection: EntityDict['token']['Selection']['data'] = {
     id: 1,

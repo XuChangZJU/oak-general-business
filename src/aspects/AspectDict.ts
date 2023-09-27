@@ -5,7 +5,7 @@ import { Config, Origin } from '../types/Config';
 import { MediaType, MenuType } from '../types/WeChat';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { MediaVideoDescription } from '../types/WeChat'
-
+import { WechatPublicEventData, WechatMpEventData } from 'oak-external-sdk';
 export type GeneralAspectDict<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
@@ -40,7 +40,7 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<string>;
-    logout: ({}, context: Cxt) => Promise<void>;
+    logout: ({ }, context: Cxt) => Promise<void>;
     loginWechatMp: (
         {
             code,
@@ -238,6 +238,15 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<any>;
+    createSession: (
+        params: {
+            data?: WechatPublicEventData | WechatMpEventData;
+            type: AppType;
+            entity?: string,
+            entityId?: string,
+        },
+        context: Cxt
+    ) => Promise<string>;
 };
 
 export default GeneralAspectDict;

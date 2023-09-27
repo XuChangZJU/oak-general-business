@@ -1,0 +1,77 @@
+/**  index.wxss  **/
+.container {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    // width: 100%;
+    flex-direction: column;
+    position: relative;
+    background: var(--oak-bg-color-page);
+
+    .inner {
+        display: flex;
+        overflow: scroll;
+        flex-direction: column;
+        // margin-top: 50px;
+        overflow-x: hidden;
+        height: 100%;
+    }
+
+    .bottomSku {
+        width: calc(100% - 16px);
+        // position: fixed;
+        bottom: 176px;
+        z-index: 1000;
+        position: absolute;
+    }
+
+    .bottom {
+        border-top: 1px solid var(--oak-border-color);
+        background: var(--oak-bg-color-container);
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        position: fixed;
+        bottom: 0;
+        margin: 0px;
+        position: absolute;
+        z-index: 100;
+
+        .toolbar {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: 30px;
+
+            .icon {
+                margin: 0 6px;
+                font-size: 20px;
+                color: var(--oak-text-color-secondary);
+            }
+        }
+
+        .textareaBox {
+            display: flex;
+            flex-direction: column;
+
+            padding: 0 10px;
+
+            .textarea {
+                border: none;
+                outline: none;
+            }
+
+            .textarea:focus {
+                border: none;
+                box-shadow: none;
+            }
+
+            .btn {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                margin: 5px 0;
+            }
+        }
+    }
+}

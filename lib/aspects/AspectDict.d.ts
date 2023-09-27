@@ -4,6 +4,7 @@ import { EntityDict } from '../oak-app-domain';
 import { Config } from '../types/Config';
 import { MenuType } from '../types/WeChat';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { WechatPublicEventData, WechatMpEventData } from 'oak-external-sdk';
 export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = {
     mergeUser: (params: {
         from: string;
@@ -148,5 +149,11 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
         type: MenuType;
         mediaId: string;
     }, context: Cxt) => Promise<any>;
+    createSession: (params: {
+        data?: WechatPublicEventData | WechatMpEventData;
+        type: AppType;
+        entity?: string;
+        entityId?: string;
+    }, context: Cxt) => Promise<string>;
 };
 export default GeneralAspectDict;
