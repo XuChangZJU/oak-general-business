@@ -13,3 +13,6 @@ export const LOCAL_STORAGE_KEYS = {
     appId: 'ogb:f-application-id',
     token: 'ogb:f-token-token',
 };
+export const DATA_SUBSCRIBER_KEYS = {
+    sessionMessageList: 'sessionM-l',
+};

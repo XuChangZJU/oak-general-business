@@ -15,9 +15,16 @@ export const desc = {
             params: {
                 length: 64
             }
+        },
+        userId: {
+            type: "ref",
+            ref: "user"
+        },
+        lmts: {
+            type: "datetime"
         }
     },
     actionType: "crud",
     actions,
-    relation: ['owner']
+    relation: ['partner']
 };

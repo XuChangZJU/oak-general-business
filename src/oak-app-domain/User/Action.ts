@@ -6,9 +6,9 @@ const IdActionDef: ActionDef<IdAction, IdState> = {
     stm: {
         verify: ['unverified', 'verifying'],
         accept: [['unverified', 'verifying'], 'verified'],
-        reject: [['verifying', 'verified'], 'unverified'],
+        reject: [['verifying', 'verified'], 'unverified']
     },
-    is: 'unverified',
+    is: 'unverified'
 };
 export type UserAction = 'activate' | 'disable' | 'enable' | 'mergeTo' | 'mergeFrom' | string;
 export type UserState = 'shadow' | 'normal' | 'disabled' | 'merged' | string;
@@ -18,8 +18,8 @@ const UserActionDef: ActionDef<UserAction, UserState> = {
         disable: [['normal', 'shadow'], 'disabled'],
         enable: ['disabled', 'normal'],
         mergeTo: [['normal', 'shadow'], 'merged'],
-        mergeFrom: ['normal', 'normal'],
-    },
+        mergeFrom: ['normal', 'normal']
+    }
 };
 export type ParticularAction = UserAction | IdAction;
 export const actions = ["count", "stat", "download", "select", "aggregate", "create", "remove", "update", "grant", "revoke", "activate", "disable", "enable", "mergeTo", "mergeFrom", "verify", "accept", "reject"];
