@@ -1709,18 +1709,26 @@ export async function logout<
 >({ }, context: Cxt) {
     const tokenId = context.getTokenValue();
     if (tokenId) {
-        await context.operate(
-            'token',
-            {
-                id: await generateNewIdAsync(),
-                action: 'disable',
-                data: {},
-                filter: {
-                    id: tokenId,
+        const closeRootMode = context.openRootMode();
+
+        try {
+            await context.operate(
+                'token',
+                {
+                    id: await generateNewIdAsync(),
+                    action: 'disable',
+                    data: {},
+                    filter: {
+                        id: tokenId,
+                    },
                 },
-            },
-            { dontCollect: true }
-        );
+                { dontCollect: true }
+            );
+        } catch (err) {
+            closeRootMode();
+            throw err;
+        }
+        closeRootMode();
     }
 }
 

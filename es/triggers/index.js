@@ -10,6 +10,7 @@ import articleMenuTriggers from './articleMenu';
 import article from './article';
 import parasiteTriggers from './parasite';
 import extraFileTriggers from './extraFile';
+import sessionMessageTriggers from './sessionMessage';
 import wechatMenuTriggers from './wechatMenu';
 import wechatPublicTag from './wechatPublicTag';
 export default [
@@ -25,6 +26,7 @@ export default [
     ...article,
     ...parasiteTriggers,
     ...extraFileTriggers,
+    ...sessionMessageTriggers,
     ...wechatMenuTriggers,
     ...wechatPublicTag,
 ];

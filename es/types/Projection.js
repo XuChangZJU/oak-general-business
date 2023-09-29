@@ -37,6 +37,24 @@ export const userProjection = {
             userId: 1,
         },
     },
+    user$ref: {
+        $entity: 'user',
+        data: {
+            mobile$user: {
+                $entity: 'mobile',
+                data: {
+                    id: 1,
+                    mobile: 1,
+                    userId: 1,
+                    user: {
+                        id: 1,
+                        userState: 1,
+                        refId: 1,
+                    },
+                },
+            },
+        },
+    },
 };
 export const tokenProjection = {
     id: 1,

@@ -7,6 +7,7 @@ import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
 import { getMpUnlimitWxaCode } from './wechatQrCode';
 import { confirmUserEntityGrant } from './userEntityGrant';
+import { createSession } from './session';
 import { getCurrentMenu, getMenu, createMenu, createConditionalMenu, deleteConditionalMenu, deleteMenu, batchGetArticle, getArticle, batchGetMaterialList, getMaterial } from './wechatMenu';
 import { createTag, getTags, editTag, deleteTag } from './wechatPublicTag';
 declare const aspectDict: {
@@ -44,6 +45,7 @@ declare const aspectDict: {
     getArticle: typeof getArticle;
     batchGetMaterialList: typeof batchGetMaterialList;
     getMaterial: typeof getMaterial;
+    createSession: typeof createSession;
     createTag: typeof createTag;
     getTags: typeof getTags;
     editTag: typeof editTag;

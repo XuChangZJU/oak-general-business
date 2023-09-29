@@ -7,6 +7,7 @@ import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
 import { getMpUnlimitWxaCode } from './wechatQrCode';
 import { confirmUserEntityGrant } from './userEntityGrant';
+import { createSession } from './session';
 import { getCurrentMenu, getMenu, createMenu, createConditionalMenu, deleteConditionalMenu, deleteMenu, batchGetArticle, getArticle, batchGetMaterialList, getMaterial, } from './wechatMenu';
 import { createTag, getTags, editTag, deleteTag, } from './wechatPublicTag';
 const aspectDict = {
@@ -44,6 +45,7 @@ const aspectDict = {
     getArticle,
     batchGetMaterialList,
     getMaterial,
+    createSession,
     createTag,
     getTags,
     editTag,

@@ -28,6 +28,7 @@ import { EntityDef as Mobile } from "./Mobile/Schema";
 import { EntityDef as Notification } from "./Notification/Schema";
 import { EntityDef as Parasite } from "./Parasite/Schema";
 import { EntityDef as Platform } from "./Platform/Schema";
+import { EntityDef as ReadRemark } from "./ReadRemark/Schema";
 import { EntityDef as Session } from "./Session/Schema";
 import { EntityDef as SessionMessage } from "./SessionMessage/Schema";
 import { EntityDef as Station } from "./Station/Schema";
@@ -76,6 +77,7 @@ export type EntityDict = {
     notification: Notification;
     parasite: Parasite;
     platform: Platform;
+    readRemark: ReadRemark;
     session: Session;
     sessionMessage: SessionMessage;
     station: Station;

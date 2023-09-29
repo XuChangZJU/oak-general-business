@@ -7,9 +7,9 @@ export const actions = ["count", "stat", "download", "select", "aggregate", "cre
 const IActionDef: ActionDef<IAction, IState> = {
     stm: {
         succeed: ['sending', 'success'],
-        fail: ['sending', 'failure'],
+        fail: ['sending', 'failure']
     },
-    is: 'sending',
+    is: 'sending'
 };
 export type Action = GenericAction | ParticularAction | string;
 export const ActionDefDict = {

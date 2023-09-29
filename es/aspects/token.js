@@ -1189,14 +1189,22 @@ export async function getWechatMpUserPhoneNumber({ code, env }, context) {
 export async function logout({}, context) {
     const tokenId = context.getTokenValue();
     if (tokenId) {
-        await context.operate('token', {
-            id: await generateNewIdAsync(),
-            action: 'disable',
-            data: {},
-            filter: {
-                id: tokenId,
-            },
-        }, { dontCollect: true });
+        const closeRootMode = context.openRootMode();
+        try {
+            await context.operate('token', {
+                id: await generateNewIdAsync(),
+                action: 'disable',
+                data: {},
+                filter: {
+                    id: tokenId,
+                },
+            }, { dontCollect: true });
+        }
+        catch (err) {
+            closeRootMode();
+            throw err;
+        }
+        closeRootMode();
     }
 }
 /**

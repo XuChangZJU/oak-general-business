@@ -9,3 +9,6 @@ export declare const LOCAL_STORAGE_KEYS: {
     appId: string;
     token: string;
 };
+export declare const DATA_SUBSCRIBER_KEYS: {
+    sessionMessageList: string;
+};

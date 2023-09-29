@@ -1,0 +1,28 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    background: var(--oak-color-primary);
+    align-items: center;
+    height: 100px;
+
+    .avatar {
+        width: 50px;
+        height: 50px;
+        line-height: 60px;
+        background-color: var(--oak-bg-color-page);
+        margin: 0 20px;
+
+
+        .icon {
+            color: var(--oak-text-color-placeholder);
+            font-size: 30px;
+        }
+    }
+
+    .nickname {
+        color: #fff;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow:hidden;
+    }
+}

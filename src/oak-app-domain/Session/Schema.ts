@@ -6,7 +6,9 @@ import { GenericAction, AppendOnlyAction, ReadOnlyAction, ExcludeUpdateAction, E
 import { String, Int, Datetime, Image, Boolean, Text } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
+import * as User from "../User/Schema";
 import * as Application from "../Application/Schema";
+import * as ReadRemark from "../ReadRemark/Schema";
 import * as SessionMessage from "../SessionMessage/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
 import * as Relation from "../Relation/Schema";
@@ -14,12 +16,19 @@ import * as UserRelation from "../UserRelation/Schema";
 export type OpSchema = EntityShape & {
     entity: "application" | string;
     entityId: String<64>;
+    userId?: ForeignKey<"user"> | null;
+    lmts?: Datetime | null;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     entity: "application" | string;
     entityId: String<64>;
+    userId?: ForeignKey<"user"> | null;
+    lmts?: Datetime | null;
+    user?: User.Schema | null;
     application?: Application.Schema;
+    readRemark$session?: Array<ReadRemark.Schema>;
+    readRemark$session$$aggr?: AggregationResult<ReadRemark.Schema>;
     sessionMessage$session?: Array<SessionMessage.Schema>;
     sessionMessage$session$$aggr?: AggregationResult<SessionMessage.Schema>;
     userEntityGrant$entity?: Array<UserEntityGrant.Schema>;
@@ -38,7 +47,11 @@ type AttrFilter = {
     $$updateAt$$: Q_DateValue;
     entity: Q_EnumValue<"application" | string>;
     entityId: Q_StringValue;
+    userId: Q_StringValue;
+    user: User.Filter;
+    lmts: Q_DateValue;
     application: Application.Filter;
+    readRemark$session: ReadRemark.Filter & SubQueryPredicateMetadata;
     sessionMessage$session: SessionMessage.Filter & SubQueryPredicateMetadata;
     userEntityGrant$entity: UserEntityGrant.Filter & SubQueryPredicateMetadata;
     relation$entity: Relation.Filter & SubQueryPredicateMetadata;
@@ -54,7 +67,16 @@ export type Projection = {
     $$seq$$?: number;
     entity?: number;
     entityId?: number;
+    userId?: number;
+    user?: User.Projection;
+    lmts?: number;
     application?: Application.Projection;
+    readRemark$session?: ReadRemark.Selection & {
+        $entity: "readRemark";
+    };
+    readRemark$session$$aggr?: ReadRemark.Aggregation & {
+        $entity: "readRemark";
+    };
     sessionMessage$session?: SessionMessage.Selection & {
         $entity: "sessionMessage";
     };
@@ -83,6 +105,9 @@ export type Projection = {
 type SessionIdProjection = OneOf<{
     id: number;
 }>;
+type UserIdProjection = OneOf<{
+    userId: number;
+}>;
 type ApplicationIdProjection = OneOf<{
     entityId: number;
 }>;
@@ -99,6 +124,12 @@ export type SortAttr = {
 } | {
     entityId: number;
 } | {
+    userId: number;
+} | {
+    user: User.SortAttr;
+} | {
+    lmts: number;
+} | {
     application: Application.SortAttr;
 } | {
     [k: string]: any;
@@ -111,7 +142,15 @@ export type Sorter = SortNode[];
 export type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
 export type Selection<P extends Object = Projection> = SelectOperation<P>;
 export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
+export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "userId">> & (({
+    userId?: never;
+    user?: User.CreateSingleOperation;
+} | {
+    userId: ForeignKey<"user">;
+    user?: User.UpdateOperation;
+} | {
+    userId?: ForeignKey<"user">;
+})) & ({
     entity?: never;
     entityId?: never;
     application: Application.CreateSingleOperation;
@@ -127,6 +166,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     entityId?: string;
     [K: string]: any;
 }) & {
+    readRemark$session?: OakOperation<ReadRemark.UpdateOperation["action"], Omit<ReadRemark.UpdateOperationData, "session" | "sessionId">, Omit<ReadRemark.Filter, "session" | "sessionId">> | OakOperation<"create", Omit<ReadRemark.CreateOperationData, "session" | "sessionId">[]> | Array<OakOperation<"create", Omit<ReadRemark.CreateOperationData, "session" | "sessionId">> | OakOperation<ReadRemark.UpdateOperation["action"], Omit<ReadRemark.UpdateOperationData, "session" | "sessionId">, Omit<ReadRemark.Filter, "session" | "sessionId">>>;
     sessionMessage$session?: OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "session" | "sessionId">, Omit<SessionMessage.Filter, "session" | "sessionId">> | OakOperation<"create", Omit<SessionMessage.CreateOperationData, "session" | "sessionId">[]> | Array<OakOperation<"create", Omit<SessionMessage.CreateOperationData, "session" | "sessionId">> | OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "session" | "sessionId">, Omit<SessionMessage.Filter, "session" | "sessionId">>>;
     userEntityGrant$entity?: OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "entity" | "entityId">, Omit<UserEntityGrant.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "entity" | "entityId">> | OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "entity" | "entityId">, Omit<UserEntityGrant.Filter, "entity" | "entityId">>>;
     relation$entity?: OakOperation<Relation.UpdateOperation["action"], Omit<Relation.UpdateOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Relation.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Relation.CreateOperationData, "entity" | "entityId">> | OakOperation<Relation.UpdateOperation["action"], Omit<Relation.UpdateOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">>>;
@@ -135,7 +175,19 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId">> & ({
+export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "userId">> & (({
+    user: User.CreateSingleOperation;
+    userId?: never;
+} | {
+    user: User.UpdateOperation;
+    userId?: never;
+} | {
+    user: User.RemoveOperation;
+    userId?: never;
+} | {
+    user?: never;
+    userId?: ForeignKey<"user"> | null;
+})) & ({
     application?: Application.CreateSingleOperation | Application.UpdateOperation | Application.RemoveOperation;
     entityId?: never;
     entity?: never;
@@ -144,19 +196,23 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
     entityId?: ForeignKey<"Application"> | null;
 }) & {
     [k: string]: any;
+    readRemark$session?: OakOperation<ReadRemark.UpdateOperation["action"], Omit<ReadRemark.UpdateOperationData, "session" | "sessionId">, Omit<ReadRemark.Filter, "session" | "sessionId">> | OakOperation<ReadRemark.RemoveOperation["action"], Omit<ReadRemark.RemoveOperationData, "session" | "sessionId">, Omit<ReadRemark.Filter, "session" | "sessionId">> | OakOperation<"create", Omit<ReadRemark.CreateOperationData, "session" | "sessionId">[]> | Array<OakOperation<"create", Omit<ReadRemark.CreateOperationData, "session" | "sessionId">> | OakOperation<ReadRemark.UpdateOperation["action"], Omit<ReadRemark.UpdateOperationData, "session" | "sessionId">, Omit<ReadRemark.Filter, "session" | "sessionId">> | OakOperation<ReadRemark.RemoveOperation["action"], Omit<ReadRemark.RemoveOperationData, "session" | "sessionId">, Omit<ReadRemark.Filter, "session" | "sessionId">>>;
     sessionMessage$session?: OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "session" | "sessionId">, Omit<SessionMessage.Filter, "session" | "sessionId">> | OakOperation<SessionMessage.RemoveOperation["action"], Omit<SessionMessage.RemoveOperationData, "session" | "sessionId">, Omit<SessionMessage.Filter, "session" | "sessionId">> | OakOperation<"create", Omit<SessionMessage.CreateOperationData, "session" | "sessionId">[]> | Array<OakOperation<"create", Omit<SessionMessage.CreateOperationData, "session" | "sessionId">> | OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "session" | "sessionId">, Omit<SessionMessage.Filter, "session" | "sessionId">> | OakOperation<SessionMessage.RemoveOperation["action"], Omit<SessionMessage.RemoveOperationData, "session" | "sessionId">, Omit<SessionMessage.Filter, "session" | "sessionId">>>;
     userEntityGrant$entity?: OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "entity" | "entityId">, Omit<UserEntityGrant.Filter, "entity" | "entityId">> | OakOperation<UserEntityGrant.RemoveOperation["action"], Omit<UserEntityGrant.RemoveOperationData, "entity" | "entityId">, Omit<UserEntityGrant.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "entity" | "entityId">> | OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "entity" | "entityId">, Omit<UserEntityGrant.Filter, "entity" | "entityId">> | OakOperation<UserEntityGrant.RemoveOperation["action"], Omit<UserEntityGrant.RemoveOperationData, "entity" | "entityId">, Omit<UserEntityGrant.Filter, "entity" | "entityId">>>;
     relation$entity?: OakOperation<Relation.UpdateOperation["action"], Omit<Relation.UpdateOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">> | OakOperation<Relation.RemoveOperation["action"], Omit<Relation.RemoveOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Relation.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Relation.CreateOperationData, "entity" | "entityId">> | OakOperation<Relation.UpdateOperation["action"], Omit<Relation.UpdateOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">> | OakOperation<Relation.RemoveOperation["action"], Omit<Relation.RemoveOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">>>;
     userRelation$entity?: OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "entity" | "entityId">, Omit<UserRelation.Filter, "entity" | "entityId">> | OakOperation<UserRelation.RemoveOperation["action"], Omit<UserRelation.RemoveOperationData, "entity" | "entityId">, Omit<UserRelation.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<UserRelation.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<UserRelation.CreateOperationData, "entity" | "entityId">> | OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "entity" | "entityId">, Omit<UserRelation.Filter, "entity" | "entityId">> | OakOperation<UserRelation.RemoveOperation["action"], Omit<UserRelation.RemoveOperationData, "entity" | "entityId">, Omit<UserRelation.Filter, "entity" | "entityId">>>;
 };
 export type UpdateOperation = OakOperation<"update" | RelationAction | string, UpdateOperationData, Filter, Sorter>;
-export type RemoveOperationData = {} & ({
+export type RemoveOperationData = {} & (({
+    user?: User.UpdateOperation | User.RemoveOperation;
+})) & ({
     application?: Application.UpdateOperation | Application.RemoveOperation;
 } | {
     [k: string]: any;
 });
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
+export type UserIdSubQuery = Selection<UserIdProjection>;
 export type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
 export type SessionIdSubQuery = Selection<SessionIdProjection>;
 export type EntityDef = {

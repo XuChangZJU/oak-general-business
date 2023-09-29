@@ -20,6 +20,7 @@ export interface Schema extends EntityShape {
     files?: ExtraFile[];
     news?: String<128>;
     aaoe?: Boolean;          // as agent of entity
+    // isRead?: Boolean;
 };
 const entityDesc: EntityDesc<Schema, '', '', {
 }> = {
@@ -37,6 +38,7 @@ const entityDesc: EntityDesc<Schema, '', '', {
                 files: '文件',
                 news: '文章',
                 aaoe: '作为实体的发起者',
+                // isRead: '是否已读'
             },
             v: {
                 type: {
