@@ -7,7 +7,7 @@ const IActionDef: ActionDef<IAction, IState> = {
         success: [['wait', 'fail'], 'success'],
         fail: [['wait', 'success'], 'fail']
     },
-    is: 'wait',
+    is: 'wait'
 };
 export type ParticularAction = IAction | 'publish';
 export const actions = ["count", "stat", "download", "select", "aggregate", "create", "remove", "update", "success", "fail", "publish"];

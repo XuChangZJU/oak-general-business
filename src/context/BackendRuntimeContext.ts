@@ -19,6 +19,7 @@ import { getMpUnlimitWxaCode } from '../aspects/wechatQrCode';
 import { BackendRuntimeContext as BRC } from 'oak-frontend-base';
 import { AsyncRowStore } from 'oak-domain';
 import { IncomingHttpHeaders } from 'http';
+import { cloneDeep } from 'oak-domain/lib/utils/lodash';
 /**
  * general数据结构要求的后台上下文
  */
@@ -130,7 +131,7 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         const result = await this.select(
             'application',
             {
-                data: applicationProjection,
+                data: cloneDeep(applicationProjection),
                 filter: {
                     id: appId,
                 },

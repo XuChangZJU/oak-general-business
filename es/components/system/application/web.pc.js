@@ -19,9 +19,10 @@ export default function render(props) {
                         clean();
                         setRemoveId('');
                     }, footer: _jsx(Button, { type: 'primary', onClick: async () => {
+                            removeItem(removeId);
                             await execute();
                             setRemoveId('');
-                        }, disabled: oakExecutable !== true || oakExecuting, children: t('common::action.confirm') }), children: t('confirmToRemove') }), _jsx(Tabs, { type: "editable-card", onEdit: (key, action) => {
+                        }, children: t('common::action.confirm') }), children: t('confirmToRemove') }), _jsx(Tabs, { type: "editable-card", onEdit: (key, action) => {
                         if (action === 'add') {
                             const id = addItem({ systemId });
                             setCreateId(id);
