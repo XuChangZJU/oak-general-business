@@ -145,31 +145,20 @@ export default function render(
                 />
             </Affix>
             <div className={Style.container}>
-                <Tabs
-                    tabPosition="left"
-                    items={[
-                        {
-                            key: '参数设置',
-                            label: '参数设置',
-                            children: (
-                                <AppView
-                                    isService={isService}
-                                    type={type}
-                                    config={currentConfig || {}}
-                                    setValue={(path, value) =>
-                                        setValue(path, value)
-                                    }
-                                    removeItem={(path, index) =>
-                                        removeItem(path, index)
-                                    }
-                                    cleanKey={(path, key) =>
-                                        cleanKey(path, key)
-                                    }
-                                />
-                            ),
-                        },
-                    ]}
-                ></Tabs>
+                <AppView
+                    isService={isService}
+                    type={type}
+                    config={currentConfig || {}}
+                    setValue={(path, value) =>
+                        setValue(path, value)
+                    }
+                    removeItem={(path, index) =>
+                        removeItem(path, index)
+                    }
+                    cleanKey={(path, key) =>
+                        cleanKey(path, key)
+                    }
+                />
             </div>
         </>
     );

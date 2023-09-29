@@ -8,11 +8,11 @@ import Live from './live/index';
 import Sms from './sms/index';
 export default function Render(props) {
     const { entity, name, currentConfig, dirty } = props.data;
-    const { resetConfig, updateConfig, setValue, removeItem, cleanKey } = props.methods;
+    const { resetConfig, updateConfig, setValue, removeItem, cleanKey, t } = props.methods;
     const { Account: account, Cos: cos, Map: map, Live: live, Sms: sms, } = currentConfig || {};
     return (_jsxs(_Fragment, { children: [_jsx(Affix, { offsetTop: 64, children: _jsx(Alert, { message: _jsx("div", { children: _jsxs("text", { children: ["\u60A8\u6B63\u5728\u66F4\u65B0", _jsx(Typography.Text, { keyboard: true, className: Style.weight, children: entity }), "\u5BF9\u8C61", _jsx(Typography.Text, { keyboard: true, className: Style.weight, children: name }), "\u7684\u914D\u7F6E\uFF0C\u8BF7\u8C28\u614E\u64CD\u4F5C"] }) }), type: "info", showIcon: true, action: _jsxs(Space, { children: [_jsx(Button, { disabled: !dirty, type: "primary", danger: true, onClick: () => resetConfig(), style: {
                                     marginRight: 10,
-                                }, children: "\u91CD\u7F6E" }), _jsx(Button, { disabled: !dirty, type: "primary", onClick: () => updateConfig(), children: "\u786E\u5B9A" })] }) }) }), _jsx("div", { className: Style.container, children: _jsx(Tabs, { tabPosition: "left", items: [
+                                }, children: t('common::reset') }), _jsx(Button, { disabled: !dirty, type: "primary", onClick: () => updateConfig(), children: t('common::action.confirm') })] }) }) }), _jsx("div", { className: Style.container, children: _jsx(Tabs, { tabPosition: "left", items: [
                         {
                             key: '云平台帐号',
                             label: '云平台帐号',
@@ -21,7 +21,7 @@ export default function Render(props) {
                         {
                             key: '云存储设置',
                             label: '云存储设置',
-                            children: (_jsx(Cos, { cos: cos || {}, setValue: (path, value) => setValue(`Cos.${path}`, value) })),
+                            children: (_jsx(Cos, { cos: cos || {}, setValue: (path, value) => setValue(`Cos.${path}`, value), removeItem: (path, index) => removeItem(`Cos.${path}`, index) })),
                         },
                         {
                             key: '直播api设置',

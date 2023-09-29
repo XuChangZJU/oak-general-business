@@ -36,6 +36,16 @@ export default OakComponent({
             }
         },
     },
+    lifetimes: {
+        ready() {
+            const { config } = this.props;            
+            this.setState({
+                initialConfig: config,
+                dirty: false,
+                currentConfig: cloneDeep(config),
+            });
+        }
+    },
     methods: {
         setValue(path: string, value: any) {
             const { currentConfig } = this.state;
