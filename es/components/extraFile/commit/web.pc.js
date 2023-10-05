@@ -1,7 +1,7 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { Button } from 'antd';
 export default function render(props) {
-    const { state, oakExecutable, oakExecuting, oakDirty, size, block, type, executeText } = props.data;
+    const { state, oakExecutable, oakExecuting, oakDirty, size, block, type, executeText, buttonProps = {} } = props.data;
     const { t, upload, execute } = props.methods;
     const disabled = oakExecuting || ['uploading'].includes(state) || (oakExecutable !== true && ['uploaded'].includes(state));
     let text = executeText || t('common::action.confirm');
@@ -24,5 +24,5 @@ export default function render(props) {
             else {
                 await upload();
             }
-        }, children: text }));
+        }, ...buttonProps, children: text }));
 }

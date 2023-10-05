@@ -4,6 +4,7 @@ import { bytesToSize, getFileURL } from '../utils/extraFile';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { getCos } from '../utils/cos';
 import { unset } from 'oak-domain/lib/utils/lodash';
+import { generateNewIdAsync } from 'oak-domain';
 export class ExtraFile2 extends Feature {
     cache;
     application;
@@ -62,9 +63,19 @@ export class ExtraFile2 extends Feature {
         item.state = 'uploading';
         item.percentage = 0;
         const up = new Upload();
-        const cos = getCos(origin);
         try {
+            const cos = getCos(extraFile.origin);
             await cos.upload(extraFile, up.uploadFile, file);
+            await this.cache.exec('operate', {
+                entity: 'extraFile',
+                operation: {
+                    id: await generateNewIdAsync(),
+                    action: 'update',
+                    data: {
+                        uploadState: 'success',
+                    },
+                },
+            });
             item.state = 'uploaded';
             item.percentage = undefined;
             this.publish();

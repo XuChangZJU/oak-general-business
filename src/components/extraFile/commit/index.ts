@@ -31,6 +31,7 @@ export default OakComponent({
         block: false,
         type: 'primary',
         executeText: '',
+        buttonProps: {},
     },
     methods: {
         getEfIds() {
@@ -40,7 +41,7 @@ export default OakComponent({
             if (oakFullpath) {
                 const ids = efPaths.map(
                     (path) => {
-                        const path2 = path ? `${oakFullpath}.path` : oakFullpath;
+                        const path2 = path ? `${oakFullpath}.${path}` : oakFullpath;
                         const data = this.features.runningTree.getFreshValue(path2);
                         if (data) {
                             return (data as EntityDict['extraFile']['OpSchema'][]).map(
@@ -55,8 +56,26 @@ export default OakComponent({
             }
             return [];
         },
-        upload() {
+        async upload() {
+            const ids = this.getEfIds();
+
+            const promises: Promise<void>[] = [];
+            ids.forEach(
+                (id) => {
+                    const fileState = this.features.extraFile2.getFileState(id);
+                    if (fileState) {
+                        const { state } = fileState;
+                        if (['local', 'failed'].includes(state)) {
+                            promises.push(this.features.extraFile2.upload(id));
+                        }
+                    }
+                }
+            );
             
+            if (promises.length > 0) {
+                await Promise.all(promises);
+            }
         }
-    }
+    },
+    features: ['extraFile2'],
 });
