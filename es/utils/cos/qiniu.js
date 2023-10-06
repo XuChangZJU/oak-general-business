@@ -5,6 +5,9 @@ import { OakUploadException } from '../../types/Exception';
 const QiniuSearchUrl = 'https://rs.qiniuapi.com/stat/EncodedEntryURI';
 export default class Qiniu {
     name = 'qiniu';
+    autoInform() {
+        return false;
+    }
     async formUploadMeta(extraFile, context) {
         const { origin, objectId, extension, entity, bucket } = extraFile;
         // 构造文件上传所需的key

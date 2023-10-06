@@ -102,16 +102,18 @@ export class ExtraFile2<
                 up.uploadFile,
                 file
             );
-            await this.cache.exec('operate', {
-                entity: 'extraFile',
-                operation: {
-                    id: await generateNewIdAsync(),
-                    action: 'update',
-                    data: {
-                        uploadState: 'success',
-                    },
-                } as ED['extraFile']['Operation'],
-            });
+            if (!cos.autoInform()) {
+                await this.cache.exec('operate', {
+                    entity: 'extraFile',
+                    operation: {
+                        id: await generateNewIdAsync(),
+                        action: 'update',
+                        data: {
+                            uploadState: 'success',
+                        },
+                    } as ED['extraFile']['Operation'],
+                });
+            }
             item.state = 'uploaded';
             item.percentage = undefined;
             this.publish();

@@ -14,6 +14,10 @@ const QiniuSearchUrl = 'https://rs.qiniuapi.com/stat/EncodedEntryURI';
 
 export default class Qiniu implements Cos<ED, BRC, FRC> {
     name = 'qiniu';
+    
+    autoInform(): boolean {
+        return false;
+    }
 
     async formUploadMeta(
         extraFile: OpSchema,
