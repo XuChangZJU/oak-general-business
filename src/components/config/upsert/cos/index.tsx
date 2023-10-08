@@ -93,6 +93,9 @@ function QiniuCos(props: {
                                         />
                                     </>
                                 </Form.Item>
+                                <Divider orientation="left" className={Styles.title}>
+                                    bucket配置
+                                </Divider>
                                 <Tabs
                                     tabPosition={'top'}
                                     size={'middle'}
@@ -100,13 +103,13 @@ function QiniuCos(props: {
                                     // hideAdd={!(sms.length > 0)}
                                     onEdit={(targetKey: any, action: 'add' | 'remove') => {
                                         if (action === 'add') {
-                                            setValue(`buckets.${cos.buckets.length}`, {});
+                                            setValue(`buckets.${cos?.buckets?.length || 0}`, {});
                                         } else {
                                             removeItem('buckets', parseInt(targetKey, 10));
                                         }
                                     }}
                                     items={
-                                        cos?.buckets.length > 0
+                                        cos?.buckets?.length > 0
                                             ? cos.buckets.map((ele, idx) => ({
                                                 key: `${idx}`,
                                                 label: `bucket:${idx + 1}`,
@@ -186,6 +189,7 @@ function QiniuCos(props: {
                                             : []
                                     }
                                 />
+
                                 <Form.Item
                                     label="defaultBucket"
                                 //name="uploadHost"
@@ -195,11 +199,11 @@ function QiniuCos(props: {
                                             allowClear
                                             style={{ width: '100%' }}
                                             placeholder="请选择默认bucket"
-                                            value={cos.defaultBucket}
+                                            value={cos?.defaultBucket}
                                             onChange={(value: string) => {
                                                 setValue(`defaultBucket`, value);
                                             }}
-                                            options={cos.buckets.map(
+                                            options={cos?.buckets?.map(
                                                 ele => ({
                                                     label: ele.name,
                                                     value: ele.name

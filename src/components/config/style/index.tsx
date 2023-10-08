@@ -1,5 +1,5 @@
 import React from 'react';
-import { Space, Form, Input, Button, Tooltip, Tabs, ColorPicker } from 'antd';
+import { Space, Form, Input, Button, Tooltip, Tabs, ColorPicker, Affix, Alert, Typography } from 'antd';
 import { ClearOutlined } from '@ant-design/icons'
 import { Style as StyleType, ColorType } from '../../../types/Style';
 import { set, get } from 'oak-domain/lib/utils/lodash';
@@ -62,7 +62,7 @@ export default function Render(props: StyleProps) {
     return (
         <div>
             <Tabs
-                onChange={() => {}}
+                onChange={() => { }}
                 type="card"
                 items={[
                     {

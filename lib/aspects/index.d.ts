@@ -2,6 +2,7 @@ import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCa
 import { getInfoByUrl } from './extraFile';
 import { getApplication, signatureJsSDK, uploadWechatMedia } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
+import { updateStyle } from './style2';
 import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user';
 import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
@@ -22,6 +23,7 @@ declare const aspectDict: {
     sendCaptcha: typeof sendCaptcha;
     getApplication: typeof getApplication;
     updateConfig: typeof updateConfig;
+    updateStyle: typeof updateStyle;
     updateApplicationConfig: typeof updateApplicationConfig;
     getWechatMpUserPhoneNumber: typeof getWechatMpUserPhoneNumber;
     logout: typeof logout;

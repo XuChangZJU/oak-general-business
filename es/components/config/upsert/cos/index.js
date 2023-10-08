@@ -7,16 +7,16 @@ function QiniuCos(props) {
                     {
                         key: '0',
                         label: '配置项',
-                        children: (_jsxs(Form, { colon: true, labelAlign: "left", layout: "vertical", style: { marginTop: 10 }, children: [_jsx(Form.Item, { label: "accessKey", children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "\u8BF7\u8F93\u5165accessKey", type: "text", value: cos?.accessKey, onChange: (e) => setValue(`accessKey`, e.target.value) }) }) }), _jsx(Form.Item, { label: "uploadHost", children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "\u8BF7\u8F93\u5165uploadHost", type: "text", value: cos?.uploadHost, onChange: (e) => setValue(`uploadHost`, e.target.value) }) }) }), _jsx(Tabs, { tabPosition: 'top', size: 'middle', type: "editable-card", 
+                        children: (_jsxs(Form, { colon: true, labelAlign: "left", layout: "vertical", style: { marginTop: 10 }, children: [_jsx(Form.Item, { label: "accessKey", children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "\u8BF7\u8F93\u5165accessKey", type: "text", value: cos?.accessKey, onChange: (e) => setValue(`accessKey`, e.target.value) }) }) }), _jsx(Form.Item, { label: "uploadHost", children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "\u8BF7\u8F93\u5165uploadHost", type: "text", value: cos?.uploadHost, onChange: (e) => setValue(`uploadHost`, e.target.value) }) }) }), _jsx(Divider, { orientation: "left", className: Styles.title, children: "bucket\u914D\u7F6E" }), _jsx(Tabs, { tabPosition: 'top', size: 'middle', type: "editable-card", 
                                     // hideAdd={!(sms.length > 0)}
                                     onEdit: (targetKey, action) => {
                                         if (action === 'add') {
-                                            setValue(`buckets.${cos.buckets.length}`, {});
+                                            setValue(`buckets.${cos?.buckets?.length || 0}`, {});
                                         }
                                         else {
                                             removeItem('buckets', parseInt(targetKey, 10));
                                         }
-                                    }, items: cos?.buckets.length > 0
+                                    }, items: cos?.buckets?.length > 0
                                         ? cos.buckets.map((ele, idx) => ({
                                             key: `${idx}`,
                                             label: `bucket:${idx + 1}`,
@@ -33,9 +33,9 @@ function QiniuCos(props) {
                                                                     },
                                                                 ] }) }) })] })),
                                         }))
-                                        : [] }), _jsx(Form.Item, { label: "defaultBucket", children: _jsx(_Fragment, { children: _jsx(Select, { allowClear: true, style: { width: '100%' }, placeholder: "\u8BF7\u9009\u62E9\u9ED8\u8BA4bucket", value: cos.defaultBucket, onChange: (value) => {
+                                        : [] }), _jsx(Form.Item, { label: "defaultBucket", children: _jsx(_Fragment, { children: _jsx(Select, { allowClear: true, style: { width: '100%' }, placeholder: "\u8BF7\u9009\u62E9\u9ED8\u8BA4bucket", value: cos?.defaultBucket, onChange: (value) => {
                                                 setValue(`defaultBucket`, value);
-                                            }, options: cos.buckets.map(ele => ({
+                                            }, options: cos?.buckets?.map(ele => ({
                                                 label: ele.name,
                                                 value: ele.name
                                             })) }) }) })] })),
