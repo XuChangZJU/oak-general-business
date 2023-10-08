@@ -102,6 +102,11 @@ export const desc = {
         },
         uploadMeta: {
             type: "object"
+        },
+        applicationId: {
+            notNull: true,
+            type: "ref",
+            ref: "application"
         }
     },
     actionType: "crud",

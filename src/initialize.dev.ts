@@ -53,7 +53,7 @@ export function initialize<
     initialData: {
         [T in keyof ED]?: Array<ED[T]['OpSchema']>;
     },
-    option: InitializeOptions<ED>
+    option: InitializeOptions<ED, Cxt>
 ) {
     
     let intersected = intersection(Object.keys(generalAspectDict), Object.keys(aspectDict));

@@ -1,6 +1,7 @@
 import { String, Int, Text, Image, Float, Boolean } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
+import { Schema as Application } from './Application';
 
 export interface Schema extends EntityShape {
     origin: 'qiniu' | 'wechat' | 'unknown';
@@ -22,6 +23,7 @@ export interface Schema extends EntityShape {
     isBridge?: Boolean;
     uploadState: 'success' | 'failed' | 'uploading';
     uploadMeta?: Object;
+    application: Application;
 };
 
 const entityDesc: EntityDesc<Schema, '', '', {
@@ -52,6 +54,7 @@ const entityDesc: EntityDesc<Schema, '', '', {
                 isBridge: '是否桥接访问',
                 uploadState: '上传状态',
                 uploadMeta: '上传需要的metadata',
+                application: '来源应用',
             },
             v: {
                 origin: {

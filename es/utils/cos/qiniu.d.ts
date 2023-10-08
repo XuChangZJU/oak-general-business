@@ -4,6 +4,7 @@ import { OpSchema } from '../../oak-app-domain/ExtraFile/Schema';
 export default class Qiniu implements Cos<ED, BRC, FRC> {
     name: string;
     autoInform(): boolean;
+    private formKey;
     formUploadMeta(extraFile: OpSchema, context: BRC): Promise<void>;
     upload(extraFile: OpSchema, uploadFn: (file: File | string, name: string, // 文件的part name
     uploadUrl: string, // 上传的url

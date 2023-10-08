@@ -11,4 +11,5 @@ export default function render(props: WebComponentProps<EntityDict, any, true, {
     buttonProps?: ButtonProps;
 }, {
     upload: () => Promise<void>;
+    afterCommit?: () => void;
 }>): import("react/jsx-runtime").JSX.Element;

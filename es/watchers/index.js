@@ -1,2 +1,3 @@
 import token from './token';
-export default [...token];
+import extraFile from './extraFile';
+export default [...token, ...extraFile];

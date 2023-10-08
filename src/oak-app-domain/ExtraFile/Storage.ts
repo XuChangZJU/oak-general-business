@@ -104,6 +104,11 @@ export const desc: StorageDesc<OpSchema> = {
         },
         uploadMeta: {
             type: "object"
+        },
+        applicationId: {
+            notNull: true,
+            type: "ref",
+            ref: "application"
         }
     },
     actionType: "crud",

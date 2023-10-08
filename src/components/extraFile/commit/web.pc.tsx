@@ -11,10 +11,11 @@ export default function render(props: WebComponentProps<EntityDict, any, true, {
     type?: ButtonProps['type'];
     executeText?: string;
     buttonProps?: ButtonProps;
+    afterCommit?: () => void;
 }, {
-    upload: () => Promise<void>
+    upload: () => Promise<void>;
 }>) {
-    const { state, oakExecutable, oakExecuting, oakDirty,
+    const { state, oakExecutable, oakExecuting, afterCommit,
         size, block, type, executeText, buttonProps = {} } = props.data;
     const { t, upload, execute } = props.methods;
     
@@ -42,9 +43,15 @@ export default function render(props: WebComponentProps<EntityDict, any, true, {
                 if (oakExecutable) {
                     await execute();
                     await upload();
+                    if (afterCommit) {
+                        afterCommit();
+                    }
                 }
                 else {
                     await upload();
+                    if (afterCommit) {
+                        afterCommit();
+                    }
                 }
             }}
             {...buttonProps}

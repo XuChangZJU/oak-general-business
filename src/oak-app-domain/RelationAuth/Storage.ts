@@ -28,18 +28,18 @@ export const desc: StorageDesc<OpSchema> = {
             name: 'index_entity_relation_path',
             attributes: [
                 {
-                    name: "sourceRelationId"
+                    name: "sourceRelationId",
                 },
                 {
-                    name: 'path'
+                    name: 'path',
                 },
                 {
-                    name: "destRelationId"
+                    name: "destRelationId",
                 },
             ],
             config: {
-                unique: true
-            }
+                unique: true,
+            },
         }
     ]
 };
