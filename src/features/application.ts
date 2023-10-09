@@ -4,7 +4,7 @@ import { Cache } from 'oak-frontend-base/es/features/cache';
 import { Feature } from 'oak-frontend-base';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { merge } from 'oak-domain/lib/utils/lodash';
+import { cloneDeep, merge } from 'oak-domain/lib/utils/lodash';
 
 import { EntityDict } from '../oak-app-domain';
 import { AppType } from '../oak-app-domain/Application/Schema';
@@ -42,7 +42,7 @@ export class Application<
         this.applicationId = applicationId;
         this.type = type;
         this.domain = domain;
-        this.projection = applicationProjection;
+        this.projection = cloneDeep(applicationProjection);
     }
 
     private async refresh() {

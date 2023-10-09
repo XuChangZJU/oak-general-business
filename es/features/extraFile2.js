@@ -62,9 +62,21 @@ export class ExtraFile2 extends Feature {
         item.state = 'uploading';
         item.percentage = 0;
         const up = new Upload();
-        const cos = getCos(origin);
         try {
+            const cos = getCos(extraFile.origin);
             await cos.upload(extraFile, up.uploadFile, file);
+            if (!cos.autoInform()) {
+                /* await this.cache.exec('operate', {
+                    entity: 'extraFile',
+                    operation: {
+                        id: await generateNewIdAsync(),
+                        action: 'update',
+                        data: {
+                            uploadState: 'success',
+                        },
+                    } as ED['extraFile']['Operation'],
+                }); */
+            }
             item.state = 'uploaded';
             item.percentage = undefined;
             this.publish();

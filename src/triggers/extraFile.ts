@@ -21,11 +21,9 @@ const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDic
                     throw new OakException(`origin为${origin}的extraFile没有定义Cos类，请调用registerCos注入`);
                 }
                 await cos.formUploadMeta(data, context);
-                Object.assign(
-                    data, {
+                Object.assign(data, {
                     uploadState: 'uploading',
-                }
-                )
+                });
             }
             if (data instanceof Array) {
                 await Promise.all(

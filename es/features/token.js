@@ -3,6 +3,7 @@ import { OakRowInconsistencyException, OakUnloggedInException, OakUserUnpermitte
 import { tokenProjection } from '../types/Projection';
 import { OakUserInfoLoadingException } from '../types/Exception';
 import { LOCAL_STORAGE_KEYS } from '../config/constants';
+import { cloneDeep } from 'oak-domain/lib/utils/lodash';
 export class Token extends Feature {
     tokenValue;
     environment;
@@ -32,7 +33,7 @@ export class Token extends Feature {
         if (this.tokenValue && !this.isLoading) {
             this.isLoading = true;
             await this.cache.refresh('token', {
-                data: tokenProjection,
+                data: cloneDeep(tokenProjection),
                 filter: {
                     id: this.tokenValue,
                 },
@@ -114,7 +115,7 @@ export class Token extends Feature {
     getToken(allowUnloggedIn) {
         if (this.tokenValue) {
             const token = this.cache.get('token', {
-                data: tokenProjection,
+                data: cloneDeep(tokenProjection),
                 filter: {
                     id: this.tokenValue,
                 },

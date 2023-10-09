@@ -15,6 +15,10 @@ export default interface Cos<
     name: string;
 
     /**
+     * 是否自动通知服务器（不需要主动更新extraFile的uploadState)
+     */
+    autoInform(): boolean;
+    /**
      * 注入在后台extrafile生成之前，将上传所需要的token等信息生成并存放在uploadMeta属性中
      * @param extraFile，要生成的extraFile数据
      * @param context 后台上下文
@@ -31,7 +35,6 @@ export default interface Cos<
      * @param extraFile
      * @returns
      */
-
     upload: (
         extraFile: EntityDict['extraFile']['OpSchema'],
         uploadFn: (
@@ -44,7 +47,6 @@ export default interface Cos<
         file: string | File
     ) => Promise<void>;
 
-    // 前端上传时对回调的处理
     composeFileUrl: (
         extraFile: EntityDict['extraFile']['OpSchema'],
         context: FrontCxt,

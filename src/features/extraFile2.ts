@@ -13,6 +13,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { getCos } from '../utils/cos';
 import { OpSchema } from '../oak-app-domain/ExtraFile/Schema';
 import { unset } from 'oak-domain/lib/utils/lodash';
+import { generateNewIdAsync } from 'oak-domain';
 
 export type FileState = 'local' | 'uploading' | 'uploaded' | 'failed';
 
@@ -94,13 +95,25 @@ export class ExtraFile2<
         item.percentage = 0;
         
         const up = new Upload();
-        const cos = getCos<ED, Cxt, FrontCxt>(origin);
         try {
+            const cos = getCos<ED, Cxt, FrontCxt>(extraFile.origin!);
             await cos.upload(
                 extraFile as OpSchema,
                 up.uploadFile,
                 file
             );
+            if (!cos.autoInform()) {
+                /* await this.cache.exec('operate', {
+                    entity: 'extraFile',
+                    operation: {
+                        id: await generateNewIdAsync(),
+                        action: 'update',
+                        data: {
+                            uploadState: 'success',
+                        },
+                    } as ED['extraFile']['Operation'],
+                }); */
+            }
             item.state = 'uploaded';
             item.percentage = undefined;
             this.publish();
