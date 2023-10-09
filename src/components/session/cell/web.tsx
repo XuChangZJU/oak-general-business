@@ -19,6 +19,7 @@ export default function render(
             userType: string;
             selectedId: string;
             onSelect: (id: string) => void;
+            name: string;
         },
         {
             getName: () => string;
@@ -34,6 +35,7 @@ export default function render(
         id,
         unreadLength,
         sessiontMessages = [],
+        name,
     } = data;
     const { t, getName, getAvatarUrl } = methods;
     const sessiontMessage = sessiontMessages && sessiontMessages[0];
@@ -67,7 +69,7 @@ export default function render(
             </Badge>
             <div className={Style.inner}>
                 <div className={Style.top}>
-                    <div className={Style.title}>{getName()}</div>
+                    <div className={Style.title}>{name || getName()}</div>
                     <div className={Style.date}>
                         {sessiontMessage &&
                             (today === createAt2

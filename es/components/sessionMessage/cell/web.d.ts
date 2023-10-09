@@ -2,6 +2,7 @@ import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'sessionMessage', false, {
     isEntity: boolean;
+    isUser: boolean;
     $$createAt$$: number;
     text: string;
     type: string;
@@ -10,5 +11,5 @@ export default function render(props: WebComponentProps<EntityDict, 'sessionMess
     sessionId: string;
     id: string;
 }, {
-    getAvatarUrl: (type: string) => string;
+    getAvatarUrl: (aaoe: boolean) => string;
 }>): import("react/jsx-runtime").JSX.Element;

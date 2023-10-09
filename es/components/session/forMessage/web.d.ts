@@ -4,4 +4,8 @@ export default function render(props: WebComponentProps<EntityDict, 'session', f
     avatarUrl: string;
     nickname: string;
     name: string;
-}, {}>): import("react/jsx-runtime").JSX.Element;
+    showBack: boolean;
+    sessionId: string;
+}, {
+    getName: () => string;
+}>): import("react/jsx-runtime").JSX.Element;

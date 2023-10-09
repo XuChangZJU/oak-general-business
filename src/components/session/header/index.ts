@@ -11,7 +11,6 @@ export default OakComponent({
             (ele: ExtraFile) => ele.tag1 === 'avatar'
         );
         const avatarUrl = features.extraFile.getUrl(extraFile);
-
         return {
             mobile,
             avatarUrl,

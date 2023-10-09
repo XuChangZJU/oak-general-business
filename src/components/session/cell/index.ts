@@ -134,6 +134,7 @@ export default OakComponent({
         onSelect: (id: string) => { },
         key: '' as string,
         entityFilter: {},
+        name: undefined,
     },
     methods: {
         getAvatarUrl() {
@@ -163,6 +164,7 @@ export default OakComponent({
                 if (userMobile) {
                     return '用户' + userMobile;
                 }
+
 
                 return userNickname;
             } else {

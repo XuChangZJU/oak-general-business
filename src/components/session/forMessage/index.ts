@@ -1,3 +1,5 @@
+import { OpSchema as ExtraFile } from '../../../oak-app-domain/ExtraFile/Schema';
+
 export default OakComponent({
     // entity: 'session',
     // projection: {
@@ -47,6 +49,7 @@ export default OakComponent({
     //         data
     //     ) as any;
     //     console.log(session)
+
     //     Object.assign(session, {
     //         userUrl: features.extraFile.getUrl(
     //             session?.user?.extraFile$entity &&
@@ -71,6 +74,7 @@ export default OakComponent({
     //                 return {
     //                     id: sessionId,
     //                 };
+
     //             }
     //         },
     //     },
@@ -79,7 +83,7 @@ export default OakComponent({
         ready() {
             const { sessionId } = this.props;
             if (sessionId) {
-                this.getSession(sessionId);
+                this.getSession(sessionId)
             }
         },
     },
@@ -91,62 +95,65 @@ export default OakComponent({
         },
     },
     properties: {
-        sessionId: '',
+        sessionId: '' as string,
         isEntity: false,
     },
     methods: {
-        getSession(sessionId) {
-            const [session] = this.features.cache.get('session', {
-                data: {
-                    id: 1,
-                    user: {
+        getSession(sessionId: string) {
+            const [session] = this.features.cache.get(
+                'session',
+                {
+                    data: {
                         id: 1,
-                        name: 1,
-                        nickname: 1,
-                        mobile$user: {
-                            $entity: 'mobile',
-                            data: {
-                                id: 1,
-                                mobile: 1,
-                                userId: 1,
+                        user: {
+                            id: 1,
+                            name: 1,
+                            nickname: 1,
+                            mobile$user: {
+                                $entity: 'mobile',
+                                data: {
+                                    id: 1,
+                                    mobile: 1,
+                                    userId: 1,
+                                },
                             },
-                        },
-                        extraFile$entity: {
-                            $entity: 'extraFile',
-                            data: {
-                                id: 1,
-                                tag1: 1,
-                                origin: 1,
-                                bucket: 1,
-                                objectId: 1,
-                                filename: 1,
-                                extra1: 1,
-                                extension: 1,
-                                type: 1,
-                                entity: 1,
-                            },
-                            filter: {
-                                tag1: {
-                                    $in: ['avatar'],
+                            extraFile$entity: {
+                                $entity: 'extraFile',
+                                data: {
+                                    id: 1,
+                                    tag1: 1,
+                                    origin: 1,
+                                    bucket: 1,
+                                    objectId: 1,
+                                    filename: 1,
+                                    extra1: 1,
+                                    extension: 1,
+                                    type: 1,
+                                    entity: 1,
+                                },
+                                filter: {
+                                    tag1: {
+                                        $in: ['avatar'],
+                                    },
                                 },
                             },
                         },
                     },
-                },
-                filter: {
-                    id: sessionId
+                    filter: {
+                        id: sessionId
+                    }
                 }
-            });
-            this.setState({ session });
+            );
+            this.setState({ session })
         },
         getAvatarUrl() {
             const { userUrl, entity } = this.state;
             const { isEntity } = this.props;
-            const defaultUrl = 'http://qiniu.gecomebox.com/static/defaultAvatar.png';
+            const defaultUrl =
+                'http://qiniu.gecomebox.com/static/defaultAvatar.png';
             if (isEntity) {
                 return userUrl || defaultUrl;
-            }
-            else {
+            } else {
                 return defaultUrl;
             }
         },
@@ -156,7 +163,8 @@ export default OakComponent({
             if (isEntity) {
                 const userName = session?.user?.name;
                 const userNickname = session?.user?.name || session?.user?.nickname;
-                const userMobile = session?.user?.mobile$user &&
+                const userMobile =
+                    session?.user?.mobile$user &&
                     session?.user?.mobile$user[0]?.mobile;
                 if (userName) {
                     return userName;
@@ -164,11 +172,12 @@ export default OakComponent({
                 if (userMobile) {
                     return '用户' + userMobile;
                 }
+
                 return userNickname;
-            }
-            else {
+            } else {
                 return '未知';
             }
         },
     },
 });
+

@@ -12,6 +12,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'sessionMess
     buttonHidden: boolean;
     sessionId: string;
     isEntity: boolean;
+    isUser: boolean;
     employerId: string;
 }, {
     setButtonHidden: (isHidden: boolean) => void;
