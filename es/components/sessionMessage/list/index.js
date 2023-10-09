@@ -43,7 +43,7 @@ export default OakComponent({
     lifetimes: {
         async ready() {
             const { sessionId } = this.props;
-            this.subData([
+            await this.subData([
                 {
                     entity: 'sessionMessage',
                     filter: {
@@ -51,7 +51,7 @@ export default OakComponent({
                     },
                     id: `${DATA_SUBSCRIBER_KEYS.sessionMessageList}-${sessionId}`,
                 }
-            ]);
+            ], async () => { await this.pageScroll('comment'); });
             // const userId = this.features.token.getUserId(true);
             // const applicationId = this.features.application.getApplicationId();
             // if (!sessionId) {
@@ -118,6 +118,7 @@ export default OakComponent({
     properties: {
         sessionId: '',
         isEntity: false,
+        isUser: false,
         dialog: false,
         entity: '',
         entityId: '',
@@ -266,7 +267,7 @@ export default OakComponent({
                 fileType: type,
                 size,
                 extension,
-                entity: 'wechatMessage',
+                entity: 'sessionMessage',
                 bucket: '',
                 id: generateNewId(),
             };

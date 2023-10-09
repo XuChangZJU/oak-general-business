@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image } from 'antd';
+import { Image, Typography } from 'antd';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -13,6 +13,7 @@ export default function render(
         false,
         {
             isEntity: boolean;
+            isUser: boolean;
             $$createAt$$: number;
             text: string;
             type: string;
@@ -22,7 +23,7 @@ export default function render(
             id: string;
         },
         {
-            getAvatarUrl: (type: string) => string;
+            getAvatarUrl: (aaoe: boolean) => string;
         }
     >
 ) {
@@ -33,6 +34,7 @@ export default function render(
         type,
         picUrl,
         isEntity,
+        isUser,
         aaoe,
         sessionId,
     } = data;
@@ -41,18 +43,18 @@ export default function render(
         <ICell time={$$createAt$$}>
             <div
                 className={classNames(Style.myMessage, {
-                    [Style.notMyMessage]: isEntity !== aaoe,
+                    [Style.notMyMessage]: (isEntity && !aaoe) || (isUser && aaoe),
                 })}
             >
                 <Image
                     preview={false}
                     className={Style.avatar}
-                    src={getAvatarUrl(type)}
+                    src={getAvatarUrl(aaoe)}
                 />
                 <div
                     className={classNames({
                         [Style.messageType_text]: type === 'text',
-                        [Style.messageType_text_no]: isEntity !== aaoe,
+                        [Style.messageType_text_no]: (isEntity && !aaoe) || (isUser && aaoe),
                     })}
                 >
 
@@ -91,7 +93,12 @@ type ITextProps = {
 
 function IText(props: ITextProps) {
     const { value } = props;
-    return <div>{value}</div>;
+    return <div style={{ whiteSpace: 'pre-wrap' }}>{value}</div>;
+    // return <div>
+    //     <Typography.Paragraph>
+    //         {value}
+    //     </Typography.Paragraph>
+    // </div>;
 }
 
 type IImageProps = {

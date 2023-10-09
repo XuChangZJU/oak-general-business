@@ -122,6 +122,7 @@ export default OakComponent({
         onSelect: (id) => { },
         key: '',
         entityFilter: {},
+        name: undefined,
     },
     methods: {
         getAvatarUrl() {

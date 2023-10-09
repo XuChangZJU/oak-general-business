@@ -28,12 +28,12 @@ export const desc = {
             name: 'index_entity_relation',
             attributes: [
                 {
-                    name: 'destEntity'
+                    name: 'destEntity',
                 },
                 {
-                    name: "relationId"
+                    name: "relationId",
                 },
-            ]
+            ],
         }
     ]
 };

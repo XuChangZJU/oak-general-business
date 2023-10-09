@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import Style from './web.module.less';
 export default function render(props) {
     const { methods, data } = props;
-    const { selectedId, onSelect, userType, id, unreadLength, sessiontMessages = [], } = data;
+    const { selectedId, onSelect, userType, id, unreadLength, sessiontMessages = [], name, } = data;
     const { t, getName, getAvatarUrl } = methods;
     const sessiontMessage = sessiontMessages && sessiontMessages[0];
     const createAt = sessiontMessage?.$$createAt$$;
@@ -17,7 +17,7 @@ export default function render(props) {
             [Style.cell_selected]: id === selectedId,
         }), onClick: () => {
             onSelect(id);
-        }, children: [_jsx(Badge, { dot: id === selectedId ? false : true, count: unreadLength || 0, children: _jsx(Image, { className: Style.avatar, src: getAvatarUrl(), preview: false }) }), _jsxs("div", { className: Style.inner, children: [_jsxs("div", { className: Style.top, children: [_jsx("div", { className: Style.title, children: getName() }), _jsx("div", { className: Style.date, children: sessiontMessage &&
+        }, children: [_jsx(Badge, { dot: id === selectedId ? false : true, count: unreadLength || 0, children: _jsx(Image, { className: Style.avatar, src: getAvatarUrl(), preview: false }) }), _jsxs("div", { className: Style.inner, children: [_jsxs("div", { className: Style.top, children: [_jsx("div", { className: Style.title, children: name || getName() }), _jsx("div", { className: Style.date, children: sessiontMessage &&
                                     (today === createAt2
                                         ? dayjs(createAt).format('HH:mm')
                                         : dayjs(createAt).format('YYYY-MM-DD')) })] }), _jsx("div", { className: Style.message, children: type &&
