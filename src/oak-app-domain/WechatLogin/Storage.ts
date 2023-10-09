@@ -38,12 +38,12 @@ export const desc: StorageDesc<OpSchema> = {
             name: 'index_uuid',
             attributes: [
                 {
-                    name: 'expired'
+                    name: 'expired',
                 },
                 {
-                    name: 'expiresAt'
+                    name: 'expiresAt',
                 },
-            ]
+            ],
         }
     ]
 };

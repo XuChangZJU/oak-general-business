@@ -23,6 +23,7 @@ const entityDesc = {
                 isBridge: '是否桥接访问',
                 uploadState: '上传状态',
                 uploadMeta: '上传需要的metadata',
+                application: '来源应用',
             },
             v: {
                 origin: {

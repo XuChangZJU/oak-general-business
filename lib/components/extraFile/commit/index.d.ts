@@ -7,5 +7,6 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     type: string;
     executeText: string;
     buttonProps: {};
+    afterCommit: () => undefined;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

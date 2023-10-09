@@ -33,12 +33,12 @@ function QiniuCos(props) {
                                                                     },
                                                                 ] }) }) })] })),
                                         }))
-                                        : [] }), _jsx(Form.Item, { label: "defaultBucket", children: _jsx(_Fragment, { children: _jsx(Select, { allowClear: true, style: { width: '100%' }, placeholder: "\u8BF7\u9009\u62E9\u9ED8\u8BA4bucket", value: cos?.defaultBucket, onChange: (value) => {
+                                        : [] }), cos?.buckets?.length > 0 && (_jsx(Form.Item, { label: "defaultBucket", children: _jsx(_Fragment, { children: _jsx(Select, { allowClear: true, style: { width: '100%' }, placeholder: "\u8BF7\u9009\u62E9\u9ED8\u8BA4bucket", value: cos.defaultBucket, onChange: (value) => {
                                                 setValue(`defaultBucket`, value);
-                                            }, options: cos?.buckets?.map(ele => ({
+                                            }, options: cos.buckets.map(ele => ({
                                                 label: ele.name,
                                                 value: ele.name
-                                            })) }) }) })] })),
+                                            })) }) }) }))] })),
                     },
                 ] })] }));
 }

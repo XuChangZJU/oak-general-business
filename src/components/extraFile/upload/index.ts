@@ -6,6 +6,8 @@ import { EntityDict } from '../../../oak-app-domain';
 import { FileState } from '../../../features/extraFile2';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import { getConfig } from '../../../utils/getContextConfig';
+import { QiniuCosConfig } from '../../../types/Config';
 
 type ExtraFile = EntityDict['extraFile']['OpSchema'];
 export interface EnhancedExtraFile extends ExtraFile {
@@ -168,14 +170,25 @@ export default OakComponent({
             const filename = name.substring(0, name.lastIndexOf('.'));
             const { files } = this.state;
             const sort = files.length * 10000;
+            let bucket2 = bucket;
+            if (!bucket2) {
+                const context = this.features.cache.begin();
+                const { config } = getConfig(context, 'Cos', 'qiniu');
+                this.features.cache.commit();
+                
+                const { defaultBucket } = config as QiniuCosConfig;
+                bucket2 = defaultBucket!;
+            }
             
+            const applicationId = this.features.application.getApplicationId();
             const id = this.addItem({
-                bucket,
+                applicationId,
+                bucket: bucket2,
                 origin,
                 type,
                 tag1,
                 tag2,
-                objectId: generateNewId(),
+                // objectId: generateNewId(),           // 这个域弃用了，如果有cos需要用就自己注入
                 entity,
                 filename,
                 size,

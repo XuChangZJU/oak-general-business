@@ -54,17 +54,17 @@ export const desc: StorageDesc<OpSchema> = {
             attributes: [
                 {
                     name: 'mobile',
-                    direction: 'ASC'
+                    direction: 'ASC',
                 },
                 {
                     name: 'code',
-                    direction: 'ASC'
+                    direction: 'ASC',
                 },
                 {
                     name: '$$createAt$$',
-                    direction: 'DESC'
+                    direction: 'DESC',
                 }
-            ]
+            ],
         }
     ]
 };

@@ -1,5 +1,6 @@
 import { String, Int, Text, Float, Boolean } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
+import { Schema as Application } from './Application';
 export interface Schema extends EntityShape {
     origin: 'qiniu' | 'wechat' | 'unknown';
     type: 'image' | 'video' | 'audio' | 'file';
@@ -20,4 +21,5 @@ export interface Schema extends EntityShape {
     isBridge?: Boolean;
     uploadState: 'success' | 'failed' | 'uploading';
     uploadMeta?: Object;
+    application: Application;
 }

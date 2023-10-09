@@ -54,9 +54,9 @@ export const desc: StorageDesc<OpSchema> = {
             attributes: [
                 {
                     name: 'iState',
-                    direction: 'ASC'
+                    direction: 'ASC',
                 }
-            ]
+            ],
         }
     ]
 };

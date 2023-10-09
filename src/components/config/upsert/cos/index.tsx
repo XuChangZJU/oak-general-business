@@ -189,29 +189,31 @@ function QiniuCos(props: {
                                             : []
                                     }
                                 />
-
-                                <Form.Item
-                                    label="defaultBucket"
-                                //name="uploadHost"
-                                >
-                                    <>
-                                        <Select
-                                            allowClear
-                                            style={{ width: '100%' }}
-                                            placeholder="请选择默认bucket"
-                                            value={cos?.defaultBucket}
-                                            onChange={(value: string) => {
-                                                setValue(`defaultBucket`, value);
-                                            }}
-                                            options={cos?.buckets?.map(
-                                                ele => ({
-                                                    label: ele.name,
-                                                    value: ele.name
-                                                })
-                                            )}
-                                        />
-                                    </>
-                                </Form.Item>
+                                {
+                                    cos?.buckets?.length > 0 && (
+                                        <Form.Item
+                                            label="defaultBucket"
+                                        //name="uploadHost"
+                                        >
+                                            <>
+                                                <Select
+                                                    allowClear
+                                                    style={{ width: '100%' }}
+                                                    placeholder="请选择默认bucket"
+                                                    value={cos.defaultBucket}
+                                                    onChange={(value: string) => {
+                                                        setValue(`defaultBucket`, value);
+                                                    }}
+                                                    options={cos.buckets.map(
+                                                        ele => ({
+                                                            label: ele.name,
+                                                            value: ele.name
+                                                        })
+                                                    )}
+                                                />
+                                            </>
+                                        </Form.Item>
+                                    )}
                             </Form>
                         ),
                     },

@@ -31,7 +31,7 @@ export function initialize<
     frontendContextBuilder: () => (store: CacheStore<ED, FrontCxt>) => FrontCxt,
     connector: Connector<ED, FrontCxt>,
     checkers: Array<Checker<ED, keyof ED, FrontCxt | Cxt>>,
-    option: InitializeOptions<ED>
+    option: InitializeOptions<ED, Cxt>
 ) {
     const checkers2 = (generalCheckers as Array<Checker<ED, keyof ED, FrontCxt | Cxt>>).concat(checkers || []);
     let intersected: string[];

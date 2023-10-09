@@ -25,6 +25,7 @@ export default OakComponent({
         type: 'primary',
         executeText: '',
         buttonProps: {},
+        afterCommit: () => undefined,
     },
     methods: {
         getEfIds() {
