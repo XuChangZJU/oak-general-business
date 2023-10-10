@@ -161,7 +161,7 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
             await this.begin();
             const closeRootMode = this.openRootMode();
             try {
-                const { a: appId, t: tokenValue } = data;
+                const { a: appId, t: tokenValue, rm } = data;
                 const promises: Promise<void>[] = [];
                 if (appId) {
                     promises.push(this.setApplication(appId));
@@ -172,7 +172,9 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
                 if (promises.length > 0) {
                     await Promise.all(promises);
                 }
-                closeRootMode();
+                if (!rm) {
+                    closeRootMode();
+                }
                 await this.commit();
             } catch (err) {
                 closeRootMode();

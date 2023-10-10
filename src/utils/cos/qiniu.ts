@@ -9,6 +9,7 @@ import { QiniuCosConfig } from '../../types/Config';
 import { QiniuCloudInstance } from 'oak-external-sdk';
 import { urlSafeBase64Encode } from '../sign';
 import { OakUploadException } from '../../types/Exception';
+import { OakExternalException } from 'oak-domain';
 
 const QiniuSearchUrl = 'https://rs.qiniuapi.com/stat/EncodedEntryURI';
 
@@ -120,10 +121,23 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
         
         // web环境下访问不了七牛接口，用mockData过
         const mockData = process.env.OAK_PLATFORM === 'web' ? { fsize: 100 } : undefined;
-        const result = await (instance as QiniuCloudInstance).getKodoFileStat(extraFile.bucket!, key, mockData);
 
-        const { fsize } = result;
-        return fsize > 0;
+        try {
+            const result = await (instance as QiniuCloudInstance).getKodoFileStat(extraFile.bucket!, key, mockData);
+    
+            const { fsize } = result;
+            return fsize > 0;
+        }
+        catch (err: any) {
+            // 七牛如果文件不存在会抛出status ＝ 612的异常
+            if (err instanceof OakExternalException) {
+                const data = err.data;
+                if (data && data.status === 612) {
+                    return false;
+                }
+            }
+            throw err;
+        }
     }
 
 

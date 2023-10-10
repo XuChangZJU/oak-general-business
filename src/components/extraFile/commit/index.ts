@@ -38,17 +38,16 @@ export default OakComponent({
         getEfIds() {
             const { efPaths } = this.props;
             const { oakFullpath } = this.state;
-            assert(efPaths);
+            assert(efPaths && efPaths.length > 0);
             if (oakFullpath) {
                 const ids = efPaths.map(
                     (path) => {
                         const path2 = path ? `${oakFullpath}.${path}` : oakFullpath;
                         const data = this.features.runningTree.getFreshValue(path2);
-                        if (data) {
-                            return (data as EntityDict['extraFile']['OpSchema'][]).map(
-                                ele => ele.id
-                            );
-                        }
+                        assert(data, `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`);
+                        return (data as EntityDict['extraFile']['OpSchema'][]).map(
+                            ele => ele.id
+                        );
                     }
                 ).flat().filter(
                     ele => !!ele
@@ -59,6 +58,7 @@ export default OakComponent({
         },
         async upload() {
             const ids = this.getEfIds();
+            assert(ids.length > 0);
 
             const promises: Promise<void>[] = [];
             ids.forEach(
