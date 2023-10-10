@@ -89,7 +89,7 @@ export default function render(props: WebComponentProps<
         disableInsert?: boolean;
         disableDownload?: boolean;
         disableDelete?: boolean;
-        preview?: boolean;
+        disablePreview?: boolean;
     }, {        
         onRemove: (file: UploadFile) => void;
         addFileByWeb: (file: UploadFile) => void;
@@ -113,7 +113,7 @@ export default function render(props: WebComponentProps<
         disableInsert = false,
         disableDownload = false,
         disableDelete = false,
-        preview = true,
+        disablePreview = false,
     } = props.data;
 
     const { t, onRemove, addFileByWeb } = props.methods;
@@ -200,25 +200,28 @@ export default function render(props: WebComponentProps<
     return (
         <Space
             direction="vertical"
-            className={Style["oak-upload"]}
-            style={{ width: "100%" }}
+            className={Style['oak-upload']}
+            style={{ width: '100%' }}
         >
             <DndProvider backend={isPc ? HTML5Backend : TouchBackend}>
                 <Upload
-                    className={classNames(Style["oak-upload__upload"], className)}
+                    className={classNames(
+                        Style['oak-upload__upload'],
+                        className
+                    )}
                     style={style}
                     directory={directory}
                     showUploadList={
                         showUploadList
                             ? {
-                                showPreviewIcon: preview,
-                                showRemoveIcon: !disableDelete,
-                                showDownloadIcon: !disableDownload,
-                            }
+                                  showPreviewIcon: !disablePreview,
+                                  showRemoveIcon: !disableDelete,
+                                  showDownloadIcon: !disableDownload,
+                              }
                             : false
                     }
                     beforeUpload={async (file) => {
-                        if (typeof beforeUpload === "function") {
+                        if (typeof beforeUpload === 'function') {
                             const result = await beforeUpload(file);
                             if (result) {
                                 return false;
@@ -249,11 +252,15 @@ export default function render(props: WebComponentProps<
                         );
                     }}
                 >
-                    {!disableInsert && files.length < maxNumber ? getUploadButton() : null}
+                    {!disableInsert && files.length < maxNumber
+                        ? getUploadButton()
+                        : null}
                 </Upload>
             </DndProvider>
 
-            {tips && <small className={Style["oak-upload__tips"]}>{tips}</small>}
+            {tips && (
+                <small className={Style['oak-upload__tips']}>{tips}</small>
+            )}
         </Space>
     );
 }

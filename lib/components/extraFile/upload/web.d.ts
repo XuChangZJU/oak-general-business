@@ -21,7 +21,7 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
     disableInsert?: boolean;
     disableDownload?: boolean;
     disableDelete?: boolean;
-    preview?: boolean;
+    disablePreview?: boolean;
 }, {
     onRemove: (file: UploadFile) => void;
     addFileByWeb: (file: UploadFile) => void;

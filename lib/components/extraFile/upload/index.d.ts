@@ -12,7 +12,6 @@ export interface EnhancedExtraFile extends ExtraFile {
 }
 type SourceType = 'album' | 'camera';
 export type Theme = 'file' | 'image' | 'image-flow' | 'custom';
-type FileType = 'all' | 'video' | 'image' | 'file';
 type ImgMode = 'scaleToFill' | 'aspectFit' | 'aspectFill' | 'widthFix' | "heightFix" | 'top' | 'bottom' | 'left' | 'right' | 'center' | 'top left' | 'top right' | 'bottom left' | 'bottom right';
 declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(props: ReactComponentProps<ED2, T2, true, {
     bucket: string;
@@ -20,15 +19,15 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     autoUpload: boolean;
     maxNumber: number;
     extension: string[];
-    fileType: FileType;
     selectCount: number;
     sourceType: SourceType[];
     mediaType: ('image' | 'video')[];
     mode: ImgMode;
     size: number;
     showUploadList: boolean;
+    showUploadProgress: boolean;
     accept: string;
-    preview: boolean;
+    disablePreview: boolean;
     disableDelete: boolean;
     disableAdd: boolean;
     disableDownload: boolean;
@@ -40,7 +39,6 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     entity: keyof ED2;
     entityId: string;
     theme: Theme;
-    showUploadProgress: boolean;
     children?: React.ReactNode;
 }>) => React.ReactElement;
 export default _default;

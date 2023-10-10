@@ -26,7 +26,7 @@ export default OakComponent({
         itemSizePercentage: '',
     },
     wechatMp: {
-        externalClasses: ['oak-class', 'oak-item-class'],
+        externalClasses: ['oak-class', 'oak-item-class', 'oak-item-add-class'],
     },
     filters: [
         {
@@ -49,32 +49,25 @@ export default OakComponent({
         autoUpload: false,
         maxNumber: 20,
         extension: [],
-        fileType: 'all',
         selectCount: 1,
         sourceType: ['album', 'camera'],
         mediaType: ['image'],
-        // 图片显示模式
         mode: 'aspectFit',
-        // 每行可显示的个数
         size: 3,
         showUploadList: true,
+        showUploadProgress: false,
         accept: 'image/*',
-        // 图片是否可预览
-        preview: true,
-        // 图片是否可删除
+        disablePreview: false,
         disableDelete: false,
-        // 上传按钮隐藏
         disableAdd: false,
-        // 下按按钮隐藏
         disableDownload: false,
-        type: 'file',
+        type: 'image',
         origin: 'qiniu',
         tag1: '',
         tag2: '',
         entity: '',
         entityId: '',
         theme: 'image',
-        showUploadProgress: false,
     },
     listeners: {
         maxNumber(prev, next) {
@@ -104,7 +97,7 @@ export default OakComponent({
     },
     features: ['extraFile2'],
     formData({ data, features }) {
-        const files = data.map(ele => {
+        const files = data.map((ele) => {
             const url = features.extraFile2.getUrl(ele);
             const thumbUrl = features.extraFile2.getUrl(ele, 'thumbnail');
             const fileState = features.extraFile2.getFileState(ele.id);
@@ -128,16 +121,17 @@ export default OakComponent({
             this.features.extraFile2.removeLocalFiles([file.id]);
         },
         addExtraFileInner(options, file) {
-            const { type, origin, tag1, tag2, entity, entityId, bucket } = this.props;
+            const { type, origin = 'qiniu', // 默认qiniu
+            tag1, tag2, entity, entityId, bucket, } = this.props;
             const { name, fileType, size } = options;
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
             const { files } = this.state;
             const sort = files.length * 10000;
             let bucket2 = bucket;
-            if (!bucket2) {
+            if (origin === 'qiniu' && !bucket2) {
                 const context = this.features.cache.begin();
-                const { config } = getConfig(context, 'Cos', 'qiniu');
+                const { config } = getConfig(context, 'Cos', origin);
                 this.features.cache.commit();
                 const { defaultBucket } = config;
                 bucket2 = defaultBucket;
@@ -169,6 +163,112 @@ export default OakComponent({
                 fileType: type,
                 size,
             }, file);
-        }
-    }
+        },
+        // 小程序端
+        async chooseMediaByMp() {
+            //图片和视频使用
+            const { selectCount, mediaType, sourceType } = this.props;
+            try {
+                const { errMsg, tempFiles } = await wx.chooseMedia({
+                    count: selectCount,
+                    mediaType,
+                    sourceType,
+                });
+                if (errMsg !== 'chooseMedia:ok') {
+                    this.triggerEvent('onError', {
+                        level: 'warning',
+                        msg: errMsg,
+                    });
+                }
+                else {
+                    tempFiles.map((tempExtraFile) => {
+                        const { tempFilePath, thumbTempFilePath, fileType, size, } = tempExtraFile;
+                        const filePath = tempFilePath || thumbTempFilePath;
+                        const fileFullName = filePath.match(/[^/]+(?!.*\/)/g)[0];
+                        this.addExtraFileInner({
+                            name: fileFullName,
+                            fileType,
+                            size,
+                        }, filePath);
+                    });
+                }
+            }
+            catch (err) {
+                if (err.errMsg !== 'chooseMedia:fail cancel') {
+                    this.triggerEvent('onError', {
+                        level: 'error',
+                        msg: err.errMsg,
+                    });
+                }
+            }
+        },
+        async chooseMessageFileByMp() {
+            const { selectCount, extension } = this.props;
+            try {
+                const { errMsg, tempFiles } = await wx.chooseMessageFile({
+                    count: selectCount,
+                    type: 'all',
+                    extension,
+                });
+                if (errMsg !== 'chooseMessageFile:ok') {
+                    this.triggerEvent('onError', {
+                        level: 'warning',
+                        msg: errMsg,
+                    });
+                }
+                else {
+                    tempFiles.map((tempExtraFile) => {
+                        const { path, type, size, name } = tempExtraFile;
+                        this.addExtraFileInner({
+                            name,
+                            fileType: type,
+                            size,
+                        }, path);
+                    });
+                }
+            }
+            catch (err) {
+                if (err.errMsg !== 'chooseMessageFile:fail cancel') {
+                    this.triggerEvent('onError', {
+                        level: 'error',
+                        msg: err.errMsg,
+                    });
+                }
+            }
+        },
+        async addFileByMp(evt) {
+            const { type } = this.props;
+            //小程序 根据type类型调用api
+            if (['image', 'video'].includes(type)) {
+                this.chooseMediaByMp();
+            }
+            else {
+                this.chooseMessageFileByMp();
+            }
+        },
+        onRemoveByMp(event) {
+            const { value } = event.currentTarget.dataset;
+            this.onRemove(value);
+        },
+        async onPreviewByMp(event) {
+            const files = this.state.files;
+            const { index } = event.currentTarget.dataset;
+            const imageUrl = files[index].url;
+            const urls = files?.filter((ele) => !!ele).map((ele) => ele.url);
+            const detail = {
+                all: files,
+                index,
+                urls,
+                current: imageUrl,
+            };
+            // 预览图片
+            if (!this.props.disablePreview) {
+                const result = await wx.previewImage({
+                    urls: urls,
+                    current: imageUrl,
+                });
+                this.triggerEvent('onPreview', detail);
+            }
+        },
+    },
 });
