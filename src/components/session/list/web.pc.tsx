@@ -21,7 +21,7 @@ export default function Render(
             className: string;
             dialog: boolean;
             entityFilter: object;
-            entityDisplay: () => void;
+            entityDisplay: (data: any) => any[];
             entityProjection: object;
         },
         {

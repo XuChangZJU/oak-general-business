@@ -111,7 +111,6 @@ export default function Render(
             pageScroll('comment');
         }
     };
-    // console.log(isWeChat);
     return (
         <div className={Style.container}>
             <Header

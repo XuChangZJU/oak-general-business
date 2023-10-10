@@ -62,7 +62,6 @@ export default OakComponent({
 
             this.createItem();
             this.getConversationInfo();
-            this.getUserLastMessage();
         },
         detached() {
             if (this.timer) {
@@ -106,6 +105,7 @@ export default OakComponent({
         const sessionMessageType = sessionMessageList?.find(
             (ele) => ele.$$createAt$$ === 1
         )?.type;
+        this.getUserLastMessage();
         return {
             sessionMessageList,
             num: sessionMessageList?.length,
