@@ -1,4 +1,4 @@
-import { Schema as ExtraFile } from '../../../oak-app-domain';
+
 
 export default OakComponent({
     entity: 'sessionMessage',
@@ -97,11 +97,12 @@ export default OakComponent({
         };
 
         if (type === 'image') {
-            const extraFile$entity =
-                sessionMessage?.extraFile$entity as ExtraFile[];
+            const extraFile$entity = sessionMessage?.extraFile$entity;
 
             Object.assign(newSessionMessage, {
-                picUrl: features.extraFile.getUrl(extraFile$entity[0]),
+                picUrl: features.extraFile.getUrl(
+                    extraFile$entity && extraFile$entity[0]
+                ),
             });
         }
 

@@ -8,5 +8,6 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     executeText: string;
     buttonProps: {};
     afterCommit: () => void;
+    beforeCommit: () => true;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

@@ -17,8 +17,8 @@ function getListType(theme) {
     };
     return themeMap[theme];
 }
-const type = "DragableUploadList";
-const DragableUploadListItem = ({ originNode, moveRow, file, fileList, }) => {
+const type = "DraggableUploadList";
+const DraggableUploadListItem = ({ originNode, moveRow, file, fileList, }) => {
     const ref = React.useRef(null);
     const index = fileList.indexOf(file);
     const [{ isOver, dropClassName }, drop] = useDrop({
@@ -107,9 +107,10 @@ export default function render(props) {
             return {
                 ...file,
                 status,
-                name: file.filename,
+                name: file.fileName,
                 uid: file.id,
                 size: file.size,
+                fileName: file.fileName,
             };
         });
     };
@@ -164,7 +165,7 @@ export default function render(props) {
                             addFileByWeb(file);
                         }
                     }, onRemove: onRemove, onPreview: onPreview, onDownload: onDownload, itemRender: (originNode, currentFile, currentFileList) => {
-                        return (_jsx(DragableUploadListItem, { originNode: originNode, file: currentFile, fileList: currentFileList, moveRow: moveRow }));
+                        return (_jsx(DraggableUploadListItem, { originNode: originNode, file: currentFile, fileList: currentFileList, moveRow: moveRow }));
                     }, children: !disableInsert && files.length < maxNumber
                         ? getUploadButton()
                         : null }) }), tips && (_jsx("small", { className: Style['oak-upload__tips'], children: tips }))] }));

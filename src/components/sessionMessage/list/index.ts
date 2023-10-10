@@ -48,17 +48,20 @@ export default OakComponent({
         async ready() {
             const { sessionId } = this.props;
 
-            this.subData([
-                {
-                    entity: 'sessionMessage',
-                    filter: {
-                        sessionId: sessionId,
+            this.subData(
+                [
+                    {
+                        entity: 'sessionMessage',
+                        filter: {
+                            sessionId: sessionId,
+                        },
+                        id: `${DATA_SUBSCRIBER_KEYS.sessionMessageList}-${sessionId}`,
                     },
-                    id: `${DATA_SUBSCRIBER_KEYS.sessionMessageList}-${sessionId}`,
+                ],
+                async () => {
+                    await this.pageScroll('comment');
                 }
-            ],
-                async () => { await this.pageScroll('comment') }
-            )
+            );
 
             this.createItem();
             this.getConversationInfo();
@@ -69,8 +72,8 @@ export default OakComponent({
             }
             const { sessionId } = this.props;
             this.unSubData([
-                `${DATA_SUBSCRIBER_KEYS.sessionMessageList}-${sessionId}`
-            ])
+                `${DATA_SUBSCRIBER_KEYS.sessionMessageList}-${sessionId}`,
+            ]);
         },
     },
     listeners: {
@@ -82,7 +85,6 @@ export default OakComponent({
 
         sessionId(prev, next) {
             if (this.state.oakFullpath) {
-
                 if (prev.sessionId !== next.sessionId) {
                     if (next.sessionId) {
                         const { sessionMessageId } = this.state;
@@ -119,6 +121,8 @@ export default OakComponent({
         dialog: false as boolean,
         entity: '',
         entityId: '',
+        entityDisplay: (data: any) => [] as Array<any>, // user端，指示如何显示entity对象名称
+        entityProjection: {} as any, // user端，指示需要取哪些entity的属性来显示entityDisplay
     },
     filters: [
         {
@@ -145,56 +149,54 @@ export default OakComponent({
         buttonHidden: true,
         selectedTradeId: '',
         newSessionId: '',
-        entityDisplay: (data: any) => [] as Array<any>,        // user端，指示如何显示entity对象名称
-        entityProjection: {} as any,    // user端，指示需要取哪些entity的属性来显示entityDisplay
     },
     methods: {
         getUserLastMessage() {
             const { sessionId } = this.props;
-            const [lastMessage] = this.features.cache.get(
-                'sessionMessage',
-                {
-                    data: {
-                        id: 1,
-                        sessionId: 1,
-                        text: 1,
-                        type: 1,
-                        userId: 1,
-                        wechatUserId: 1,
-                        applicationId: 1,
-                        createTime: 1,
-                        $$createAt$$: 1,
-                        aaoe: 1,
-                    },
-                    filter: {
-                        sessionId,
-                        aaoe: false,
-                    },
-                    sorter: [
-                        {
-                            $attr: {
-                                $$createAt$$: 1,
-                            },
-                            $direction: 'desc',
+            const [lastMessage] = this.features.cache.get('sessionMessage', {
+                data: {
+                    id: 1,
+                    sessionId: 1,
+                    text: 1,
+                    type: 1,
+                    userId: 1,
+                    wechatUserId: 1,
+                    applicationId: 1,
+                    createTime: 1,
+                    $$createAt$$: 1,
+                    aaoe: 1,
+                },
+                filter: {
+                    sessionId,
+                    aaoe: false,
+                },
+                sorter: [
+                    {
+                        $attr: {
+                            $$createAt$$: 1,
                         },
-                    ],
-                    count: 1,
-                }
-            );
+                        $direction: 'desc',
+                    },
+                ],
+                count: 1,
+            });
             const isWeChat = !!lastMessage?.wechatUserId;
-            console.log(lastMessage)
-            this.setState({ isWeChat })
+            console.log(lastMessage);
+            this.setState({ isWeChat });
         },
         setContent(text: string) {
             const { sessionMessageId } = this.state;
-            console.log(sessionMessageId)
+            console.log(sessionMessageId);
             this.setState({
                 text,
             });
-            this.updateItem({
-                text,
-                type: 'text',
-            }, sessionMessageId)
+            this.updateItem(
+                {
+                    text,
+                    type: 'text',
+                },
+                sessionMessageId
+            );
         },
         setButtonHidden(isHidden: boolean) {
             this.setState({
@@ -274,14 +276,15 @@ export default OakComponent({
                 wechatUserId,
                 sessionId: sessionId,
                 aaoe: isEntity,
-            })
+            });
             this.setState({
                 sessionMessageId,
-            })
+            });
         },
 
         async createMessage() {
-            const { text, wechatUserId, newSessionId, sessionMessageId } = this.state;
+            const { text, wechatUserId, newSessionId, sessionMessageId } =
+                this.state;
             const { sessionId, isEntity } = this.props;
             const userId = this.features.token.getUserId();
             const applicationId = this.features.application.getApplicationId();
@@ -302,9 +305,12 @@ export default OakComponent({
             //     createTime: Date.now(),
             //     aaoe: isEntity,
             // } as EntityDict['sessionMessage']['CreateSingle']['data']);
-            this.updateItem({
-                createTime: Date.now(),
-            }, sessionMessageId)
+            this.updateItem(
+                {
+                    createTime: Date.now(),
+                },
+                sessionMessageId
+            );
             await this.execute(undefined, false);
             this.setState({
                 text: '',
@@ -312,7 +318,6 @@ export default OakComponent({
             this.pageScroll('comment');
             this.createItem();
         },
-
 
         async customUpload(file: {
             name: string;
@@ -372,7 +377,10 @@ export default OakComponent({
                         },
                     ],
                 } as EntityDict['sessionMessage']['CreateSingle']['data']);
-                this.features.extraFile2.addLocalFile(extraFile?.id, originFileObj);
+                this.features.extraFile2.addLocalFile(
+                    extraFile?.id,
+                    originFileObj
+                );
                 await this.execute(undefined, false);
                 this.features.extraFile2.upload(extraFile?.id);
             } catch (err) {

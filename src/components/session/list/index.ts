@@ -92,7 +92,9 @@ export default OakComponent({
 
         //排序待框架实现
         return {
-            sessions: sessions?.sort((a, b) => b?.lmts - a?.lmts),
+            sessions: sessions?.sort(
+                (a, b) => (b!.lmts as number) - (a!.lmts as number)
+            ),
         };
     },
     lifetimes: {

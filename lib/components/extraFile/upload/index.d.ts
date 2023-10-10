@@ -6,7 +6,7 @@ type ExtraFile = EntityDict['extraFile']['OpSchema'];
 export interface EnhancedExtraFile extends ExtraFile {
     url: string;
     thumbUrl: string;
-    filename: string;
+    fileName: string;
     fileState?: FileState;
     percentage?: number;
 }

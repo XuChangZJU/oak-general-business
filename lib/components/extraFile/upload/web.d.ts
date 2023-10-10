@@ -10,7 +10,7 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
     draggable?: boolean;
     theme?: Theme;
     tips?: string;
-    beforeUpload?: (file: File) => Promise<boolean>;
+    beforeUpload?: (file: File) => Promise<boolean> | boolean;
     style?: Record<string, string>;
     className?: string;
     directory?: boolean;

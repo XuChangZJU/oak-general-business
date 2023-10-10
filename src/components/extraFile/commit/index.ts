@@ -5,22 +5,17 @@ import { FileState } from '../../../features/extraFile2';
 export default OakComponent({
     formData({ features }) {
         const ids: string[] = this.getEfIds();
-        const states = ids.map(
-            id => features.extraFile2.getFileState(id)
-        );
+        const states = ids.map((id) => features.extraFile2.getFileState(id));
         let state: FileState = 'uploaded';
-        states.forEach(
-            (ele) => {
-                if (ele) {
-                    if (['failed', 'local'].includes(ele.state)) {
-                        state = ele.state;
-                    }
-                    else if (ele.state === 'uploading' && state === 'uploaded') {
-                        state = 'uploading';
-                    }
+        states.forEach((ele) => {
+            if (ele) {
+                if (['failed', 'local'].includes(ele.state)) {
+                    state = ele.state;
+                } else if (ele.state === 'uploading' && state === 'uploaded') {
+                    state = 'uploading';
                 }
             }
-        );
+        });
         return {
             state,
         };
@@ -33,6 +28,7 @@ export default OakComponent({
         executeText: '',
         buttonProps: {},
         afterCommit: () => {},
+        beforeCommit: () => true,
     },
     methods: {
         getEfIds() {
@@ -40,19 +36,21 @@ export default OakComponent({
             const { oakFullpath } = this.state;
             assert(efPaths);
             if (oakFullpath) {
-                const ids = efPaths.map(
-                    (path) => {
-                        const path2 = path ? `${oakFullpath}.${path}` : oakFullpath;
-                        const data = this.features.runningTree.getFreshValue(path2);
+                const ids = efPaths
+                    .map((path) => {
+                        const path2 = path
+                            ? `${oakFullpath}.${path}`
+                            : oakFullpath;
+                        const data =
+                            this.features.runningTree.getFreshValue(path2);
                         if (data) {
-                            return (data as EntityDict['extraFile']['OpSchema'][]).map(
-                                ele => ele.id
-                            );
+                            return (
+                                data as EntityDict['extraFile']['OpSchema'][]
+                            ).map((ele) => ele.id);
                         }
-                    }
-                ).flat().filter(
-                    ele => !!ele
-                ) as string[];
+                    })
+                    .flat()
+                    .filter((ele) => !!ele) as string[];
                 return ids;
             }
             return [];
@@ -61,22 +59,20 @@ export default OakComponent({
             const ids = this.getEfIds();
 
             const promises: Promise<void>[] = [];
-            ids.forEach(
-                (id) => {
-                    const fileState = this.features.extraFile2.getFileState(id);
-                    if (fileState) {
-                        const { state } = fileState;
-                        if (['local', 'failed'].includes(state)) {
-                            promises.push(this.features.extraFile2.upload(id));
-                        }
+            ids.forEach((id) => {
+                const fileState = this.features.extraFile2.getFileState(id);
+                if (fileState) {
+                    const { state } = fileState;
+                    if (['local', 'failed'].includes(state)) {
+                        promises.push(this.features.extraFile2.upload(id));
                     }
                 }
-            );
-            
+            });
+
             if (promises.length > 0) {
                 await Promise.all(promises);
             }
-        }
+        },
     },
     features: ['extraFile2'],
 });

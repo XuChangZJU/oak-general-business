@@ -10,7 +10,7 @@ type ExtraFile = EntityDict['extraFile']['OpSchema'];
 export interface EnhancedExtraFile extends ExtraFile {
     url: string;
     thumbUrl: string;
-    filename: string;
+    fileName: string;
     fileState?: FileState;
     percentage?: number;
 };
@@ -123,29 +123,33 @@ export default OakComponent({
     },
     features: ['extraFile2'],
     formData({ data, features }) {
-        const files = data
-            ?.sort((ele1, ele2) => ele1.sort! - ele2.sort!)
-            .map((ele) => {
-                const url = features.extraFile2.getUrl(ele as ExtraFile);
-                const thumbUrl = features.extraFile2.getUrl(
-                    ele as ExtraFile,
-                    'thumbnail'
-                );
-                const fileState = features.extraFile2.getFileState(ele.id!);
-                const filename = features.extraFile2.getFileName(
-                    ele as ExtraFile
-                );
-                return {
-                    url,
-                    thumbUrl,
-                    filename,
-                    fileState: fileState?.state,
-                    percentage: fileState?.percentage,
-                    ...ele,
-                } as EnhancedExtraFile;
-            });
+        let files = data?.sort((ele1, ele2) => ele1.sort! - ele2.sort!);
+        if (this.props.tag1) {
+            files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
+        }
+        if (this.props.tag2) {
+            files = files?.filter((ele) => ele?.tag2 === this.props.tag2);
+        }
+
+        const files2 = files.map((ele) => {
+            const url = features.extraFile2.getUrl(ele as ExtraFile);
+            const thumbUrl = features.extraFile2.getUrl(
+                ele as ExtraFile,
+                'thumbnail'
+            );
+            const fileState = features.extraFile2.getFileState(ele.id!);
+            const fileName = features.extraFile2.getFileName(ele as ExtraFile);
+            return {
+                url,
+                thumbUrl,
+                fileName,
+                fileState: fileState?.state,
+                percentage: fileState?.percentage,
+                ...ele,
+            } as EnhancedExtraFile;
+        });
         return {
-            files,
+            files: files2,
         };
     },
     methods: {

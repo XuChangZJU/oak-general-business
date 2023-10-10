@@ -30,8 +30,8 @@ function getListType(theme: Theme): ListType {
     return themeMap[theme];
 }
 
-const type = "DragableUploadList";
-const DragableUploadListItem = ({
+const type = 'DraggableUploadList';
+const DraggableUploadListItem = ({
     originNode,
     moveRow,
     file,
@@ -49,7 +49,9 @@ const DragableUploadListItem = ({
             return {
                 isOver: monitor.isOver(),
                 dropClassName:
-                    dragIndex < index ? " drop-over-downward" : " drop-over-upward",
+                    dragIndex < index
+                        ? ' drop-over-downward'
+                        : ' drop-over-upward',
             };
         },
         drop: (item: any) => {
@@ -67,9 +69,10 @@ const DragableUploadListItem = ({
     return (
         <div
             ref={ref}
-            className={`ant-upload-draggable-list-item ${isOver ? dropClassName : ""
-                }`}
-            style={{ cursor: "move", height: "100%" }}
+            className={`ant-upload-draggable-list-item ${
+                isOver ? dropClassName : ''
+            }`}
+            style={{ cursor: 'move', height: '100%' }}
         >
             {originNode}
         </div>
@@ -88,7 +91,7 @@ export default function render(
             draggable?: boolean;
             theme?: Theme;
             tips?: string;
-            beforeUpload?: (file: File) => Promise<boolean>;
+            beforeUpload?: (file: File) => Promise<boolean> | boolean;
             disabled?: boolean;
             style?: Record<string, string>;
             className?: string;
@@ -329,7 +332,7 @@ export default function render(
                     onDownload={onDownload}
                     itemRender={(originNode, currentFile, currentFileList) => {
                         return (
-                            <DragableUploadListItem
+                            <DraggableUploadListItem
                                 originNode={originNode}
                                 file={currentFile}
                                 fileList={currentFileList}

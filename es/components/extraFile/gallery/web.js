@@ -18,8 +18,8 @@ function getListType(theme) {
     };
     return themeMap[theme];
 }
-const type = "DragableUploadList";
-const DragableUploadListItem = ({ originNode, moveRow, file, fileList, }) => {
+const type = 'DraggableUploadList';
+const DraggableUploadListItem = ({ originNode, moveRow, file, fileList, }) => {
     const ref = React.useRef(null);
     const index = fileList.indexOf(file);
     const [{ isOver, dropClassName }, drop] = useDrop({
@@ -31,7 +31,9 @@ const DragableUploadListItem = ({ originNode, moveRow, file, fileList, }) => {
             }
             return {
                 isOver: monitor.isOver(),
-                dropClassName: dragIndex < index ? " drop-over-downward" : " drop-over-upward",
+                dropClassName: dragIndex < index
+                    ? ' drop-over-downward'
+                    : ' drop-over-upward',
             };
         },
         drop: (item) => {
@@ -46,7 +48,7 @@ const DragableUploadListItem = ({ originNode, moveRow, file, fileList, }) => {
         }),
     });
     drop(drag(ref));
-    return (_jsx("div", { ref: ref, className: `ant-upload-draggable-list-item ${isOver ? dropClassName : ""}`, style: { cursor: "move", height: "100%" }, children: originNode }));
+    return (_jsx("div", { ref: ref, className: `ant-upload-draggable-list-item ${isOver ? dropClassName : ''}`, style: { cursor: 'move', height: '100%' }, children: originNode }));
 };
 export default function render(props) {
     const { accept = 'image/*', maxNumber = 20, multiple = maxNumber !== 1, draggable = false, theme = 'image', tips, beforeUpload, disabled, style, className, directory = false, onPreview, onDownload, children, showUploadList = true, files, disableInsert = false, disableAdd = false, disableDownload = false, disableDelete = false, disablePreview = false, } = props.data;
@@ -181,7 +183,7 @@ export default function render(props) {
                             }
                         }
                     }, onRemove: onDeleteByWeb, onPreview: onPreview, onDownload: onDownload, itemRender: (originNode, currentFile, currentFileList) => {
-                        return (_jsx(DragableUploadListItem, { originNode: originNode, file: currentFile, fileList: currentFileList, moveRow: moveRow }));
+                        return (_jsx(DraggableUploadListItem, { originNode: originNode, file: currentFile, fileList: currentFileList, moveRow: moveRow }));
                     }, children: !disableInsert && !disableAdd ? getUploadButton() : null }) }), tips && (_jsx("small", { className: Style['oak-upload__tips'], children: tips })), theme === 'custom' && (_jsxs(_Fragment, { children: [_jsx(Table, { dataSource: newUploadFiles || [], rowKey: "id", columns: [
                             {
                                 align: 'center',

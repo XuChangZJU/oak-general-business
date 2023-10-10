@@ -3,7 +3,7 @@
         <block wx:for="{{files}}" wx:key="index">
             <block wx:if="{{item}}">
                 <view class="file-list__item  file-list__item--{{size}} oak-item-class" style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:'xxx'}}">
-                    <image data-index="{{index}}" bind:tap="onPreviewByMp"  src="{{item.url}}" mode="{{mode}}" class="file-list__item--image"/>
+                    <image data-index="{{index}}" bind:tap="onPreviewByMp"  src="{{item.url}}" mode="{{mode}}" class="file-list__image"/>
 
                     <view wx:if="{{!disableDelete}}" mut-bind:tap="onRemoveByMp" class="file-list__remove" data-value="{{item}}">
                         <l-icon name="close" color="#ffffff" size="18" />
@@ -30,7 +30,7 @@
         <block wx:if="{{item}}">
              <view class="file-list-flow__item oak-item-class">
                <view class="file-list-flow__item--name" mut-bind:tap="onOpenByMp" data-value="{{item}}">
-                   {{ item.filename }}
+                   {{ item.fileName }}
                </view>
                <view class="file-list-flow__item--btns">
                <!-- <view wx:if="{{!disableDownload}}" mut-bind:tap="onDownloadByMp" class="file-list-flow__download" data-value="{{item}}">

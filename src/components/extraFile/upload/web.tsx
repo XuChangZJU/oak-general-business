@@ -23,8 +23,8 @@ function getListType(theme: Theme): UploadListType {
 }
 
 
-const type = "DragableUploadList";
-const DragableUploadListItem = ({
+const type = "DraggableUploadList";
+const DraggableUploadListItem = ({
     originNode,
     moveRow,
     file,
@@ -60,8 +60,7 @@ const DragableUploadListItem = ({
     return (
         <div
             ref={ref}
-            className={`ant-upload-draggable-list-item ${isOver ? dropClassName : ""
-                }`}
+            className={`ant-upload-draggable-list-item ${isOver ? dropClassName : ""}`}
             style={{ cursor: "move", height: "100%" }}
         >
             {originNode}
@@ -82,7 +81,7 @@ export default function render(
             draggable?: boolean;
             theme?: Theme;
             tips?: string;
-            beforeUpload?: (file: File) => Promise<boolean>;
+            beforeUpload?: (file: File) => Promise<boolean> | boolean;
             style?: Record<string, string>;
             className?: string;
             directory?: boolean;
@@ -188,9 +187,10 @@ export default function render(
             return {
                 ...file,
                 status,
-                name: file.filename,
+                name: file.fileName,
                 uid: file.id,
                 size: file.size!,
+                fileName: file.fileName,
             };
         });
     };
@@ -273,7 +273,7 @@ export default function render(
                     onDownload={onDownload}
                     itemRender={(originNode, currentFile, currentFileList) => {
                         return (
-                            <DragableUploadListItem
+                            <DraggableUploadListItem
                                 originNode={originNode}
                                 file={currentFile}
                                 fileList={currentFileList}

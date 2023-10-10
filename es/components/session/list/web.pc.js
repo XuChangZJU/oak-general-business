@@ -8,7 +8,7 @@ export default function Render(props) {
     const { data, methods } = props;
     const { sessions, selectedSessionId, oakFullpath, 
     // unReadConversation = 0,
-    entityFilter, dialog = false, className, } = data;
+    entityFilter, dialog = false, className, entityDisplay, entityProjection, } = data;
     const { setSelectedSessionId } = methods;
     return (_jsx("div", { className: Style.container, children: _jsxs("div", { className: classNames(Style.bothContainer, className, {
                 [Style.dialogContainer]: dialog,
@@ -20,7 +20,7 @@ export default function Render(props) {
                                         : '' }, session.id));
                             }) })] }), selectedSessionId && (_jsx(MessageList, { sessionId: selectedSessionId, 
                     // isCombine={true}
-                    isEntity: entityFilter ? true : false, isUser: entityFilter ? false : true, oakAutoUnmount: true, oakPath: oakFullpath
+                    isEntity: entityFilter ? true : false, isUser: entityFilter ? false : true, oakAutoUnmount: true, entityDisplay: entityDisplay, entityProjection: entityProjection, oakPath: oakFullpath
                         ? `$$sessionMessage/list`
                         : undefined }))] }) }));
 }
