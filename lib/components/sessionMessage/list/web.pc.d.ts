@@ -14,6 +14,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'sessionMess
     isEntity: boolean;
     isUser: boolean;
     employerId: string;
+    sessionMessageType: string;
+    sessionMessageId: string;
 }, {
     setButtonHidden: (isHidden: boolean) => void;
     customUpload: (file: customFile) => void;

@@ -20,6 +20,7 @@ export default function render(
             selectedId: string;
             onSelect: (id: string) => void;
             name: string;
+            lmts: number;
         },
         {
             getName: () => string;
@@ -36,14 +37,14 @@ export default function render(
         unreadLength,
         sessiontMessages = [],
         name,
+        lmts,
     } = data;
     const { t, getName, getAvatarUrl } = methods;
     const sessiontMessage = sessiontMessages && sessiontMessages[0];
-    const createAt = sessiontMessage?.$$createAt$$;
     const type = sessiontMessage?.type;
     const text = sessiontMessage?.text;
     const today = dayjs().startOf('day').valueOf();
-    const createAt2 = createAt && dayjs(createAt).startOf('day').valueOf();
+    const createAt2 = lmts && dayjs(lmts).startOf('day').valueOf();
     return (
         <div
             className={classNames(Style.cell, {
@@ -71,10 +72,10 @@ export default function render(
                 <div className={Style.top}>
                     <div className={Style.title}>{name || getName()}</div>
                     <div className={Style.date}>
-                        {sessiontMessage &&
+                        {lmts &&
                             (today === createAt2
-                                ? dayjs(createAt).format('HH:mm')
-                                : dayjs(createAt).format('YYYY-MM-DD'))}
+                                ? dayjs(lmts).format('HH:mm')
+                                : dayjs(lmts).format('YYYY-MM-DD'))}
                     </div>
                 </div>
                 <div className={Style.message}>

@@ -7,7 +7,7 @@ import Header from '../../../components/session/forMessage';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
-import ExtraFileUpload from "@oak-general-business/components/extraFile/upload";
+import ExtraFileUpload from "../../../components/extraFile/upload";
 interface customFile {
     name: string;
     size: number;
@@ -29,6 +29,10 @@ export default function Render(
             isUser: boolean;
             employerId: string;
             sessionMessageType: string;
+            sessionMessageId: string;
+            entityDisplay: (data: any) => any[];
+            entityProjection: object;
+            isWeChat: boolean;
         },
         {
             setButtonHidden: (isHidden: boolean) => void;
@@ -49,6 +53,10 @@ export default function Render(
         text,
         buttonHidden,
         sessionMessageType,
+        sessionMessageId,
+        entityDisplay,
+        entityProjection,
+        isWeChat,
     } = data;
     const {
         setButtonHidden,
@@ -103,7 +111,7 @@ export default function Render(
             pageScroll('comment');
         }
     };
-    console.log(sessionMessageType);
+    // console.log(isWeChat);
     return (
         <div className={Style.container}>
             <Header
@@ -115,6 +123,8 @@ export default function Render(
                     'session:header1'
                 }
                 oakAutoUnmount={true}
+                entityDisplay={entityDisplay}
+                entityProjection={entityProjection}
             />
             <div
                 className={Style.inner}
@@ -149,33 +159,38 @@ export default function Render(
 
             <div className={Style.bottom} id="bottom">
                 <div className={Style.toolbar}>
-                    <ExtraFileUpload
-                        oakPath={
-                            data.oakFullpath
-                                ? `${data.oakFullpath}.extraFile$entity`
-                                : undefined
-                        }
-                        showUploadList={false}
-                        type="image"
-                        origin="qiniu"
-                        tag1="image"
-                        maxNumber={1}
-                        entity="sessionMessage"
-                        accept="image/*"
-                    >
-                        <PictureOutlined className={Style.icon} />
-                    </ExtraFileUpload>
-                    {/* <Upload
+                    {/* {
+                        sessionMessageId && (
+                            <ExtraFileUpload
+                                oakPath={
+                                    data.oakFullpath
+                                        ? `${data.oakFullpath}.${sessionMessageId}.extraFile$entity`
+                                        : undefined
+                                }
+                                showUploadList={false}
+                                type="image"
+                                origin="qiniu"
+                                tag1="image"
+                                // maxNumber={1}
+                                entity="sessionMessage"
+                                accept="image/*"
+                                theme="file"
+                            >
+                                <PictureOutlined className={Style.icon} />
+                            </ExtraFileUpload>
+                        )
+                    } */}
+                    <Upload
                         accept={'image/*'}
                         multiple={false}
                         showUploadList={false}
-                    // customRequest={() => { }}
-                    // onChange={({ file }) => {
-                    //     customUpload(file as customFile);
-                    // }}
+                        customRequest={() => { }}
+                        onChange={({ file }) => {
+                            customUpload(file as customFile);
+                        }}
                     >
                         <PictureOutlined className={Style.icon} />
-                    </Upload> */}
+                    </Upload>
                 </div>
 
                 <div className={Style.textareaBox}>

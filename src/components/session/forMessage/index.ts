@@ -97,9 +97,12 @@ export default OakComponent({
     properties: {
         sessionId: '' as string,
         isEntity: false,
+        entityDisplay: (data: any) => [] as Array<any>,        // user端，指示如何显示entity对象名称
+        entityProjection: {} as any,    // user端，指示需要取哪些entity的属性来显示entityDisplay
     },
     methods: {
         getSession(sessionId: string) {
+            const { entityProjection } = this.props;
             const [session] = this.features.cache.get(
                 'session',
                 {
@@ -138,6 +141,7 @@ export default OakComponent({
                                 },
                             },
                         },
+                        ...entityProjection,
                     },
                     filter: {
                         id: sessionId
@@ -159,7 +163,7 @@ export default OakComponent({
         },
         getName() {
             const { session, entity } = this.state;
-            const { isEntity } = this.props;
+            const { isEntity, entityDisplay } = this.props;
             if (isEntity) {
                 const userName = session?.user?.name;
                 const userNickname = session?.user?.name || session?.user?.nickname;
@@ -175,6 +179,12 @@ export default OakComponent({
 
                 return userNickname;
             } else {
+                if (entityDisplay && session) {
+                    const sessions = entityDisplay([session])
+                    return sessions[0]?.name
+                }
+
+
                 return '未知';
             }
         },

@@ -19,4 +19,5 @@ export const LOCAL_STORAGE_KEYS = {
 
 export const DATA_SUBSCRIBER_KEYS = {
     sessionMessageList: 'sessionM-l',
+    sessionList: 'session-l',
 };

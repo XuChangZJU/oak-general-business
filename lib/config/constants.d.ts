@@ -11,4 +11,5 @@ export declare const LOCAL_STORAGE_KEYS: {
 };
 export declare const DATA_SUBSCRIBER_KEYS: {
     sessionMessageList: string;
+    sessionList: string;
 };
