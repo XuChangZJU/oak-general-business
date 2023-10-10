@@ -3,7 +3,7 @@ import { Tabs } from 'antd';
 import { WebComponentProps } from 'oak-frontend-base';
 import ApplicationDetail from '../detail';
 import ConfigUpsert from '../../config/application';
-import StyleUpsert from '../../config/style';
+import StyleUpsert from '../../config/style/platform';
 import { EntityDict } from '../../../oak-app-domain';
 import { Style } from '../../../types/Style';
 import Styles from './web.pc.module.less';
@@ -51,10 +51,10 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
                             key: 'style',
                             children: (
                                 <StyleUpsert
-                                    value={style}
-                                    onChange={(s) => {
-                                        update({ style: s });
-                                    }}
+                                    style={style}
+                                    entity={'platform'}
+                                    entityId={id}
+                                    name={name}
                                 />
                             ),
                         },

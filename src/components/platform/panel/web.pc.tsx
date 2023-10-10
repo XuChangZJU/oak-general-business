@@ -4,7 +4,7 @@ import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 import Styles from './web.pc.module.less';
 import ConfigUpsert from '../../config/upsert';
-import StyleUpsert from '../../config/style';
+import StyleUpsert from '../../config/style/platform';
 import PlatformDetail from '../detail';
 import PlatformSystem from '../system';
 import { Style } from '../../../types/Style';
@@ -52,10 +52,10 @@ export default function render(props: WebComponentProps<EntityDict, 'platform', 
                             key: 'style',
                             children: (
                                 <StyleUpsert
-                                    value={style}
-                                    onChange={(s) => {
-                                        update({ style: s });
-                                    }}
+                                    style={style}
+                                    entity={'platform'}
+                                    entityId={id}
+                                    name={name}
                                 />
                             ),
                         },

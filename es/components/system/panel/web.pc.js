@@ -2,7 +2,7 @@ import { jsx as _jsx } from "react/jsx-runtime";
 import { Tabs } from 'antd';
 import SystemDetail from '../detail';
 import ConfigUpsert from '../../config/upsert';
-import StyleUpsert from '../../config/style';
+import StyleUpsert from '../../config/style/platform';
 import DomainList from '../../domain/list';
 import ApplicationList from '../application';
 import Styles from './web.pc.module.less';
@@ -24,9 +24,7 @@ export default function Render(props) {
                     {
                         label: _jsx("div", { className: Styles.tabLabel, children: t('style') }),
                         key: 'style',
-                        children: (_jsx(StyleUpsert, { value: style, onChange: (s) => {
-                                update({ style: s });
-                            } })),
+                        children: (_jsx(StyleUpsert, { style: style, entity: 'system', entityId: id, name: name })),
                     },
                     {
                         label: _jsx("div", { className: Styles.tabLabel, children: t('application-list') }),

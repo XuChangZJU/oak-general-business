@@ -18,6 +18,7 @@ import {
     uploadWechatMedia,
 } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
+import { updateStyle } from './style2';
 import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user';
 import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
@@ -55,6 +56,7 @@ const aspectDict = {
     sendCaptcha,
     getApplication,
     updateConfig,
+    updateStyle,
     updateApplicationConfig,
     getWechatMpUserPhoneNumber,
     logout,

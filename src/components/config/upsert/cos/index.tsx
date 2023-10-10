@@ -93,6 +93,9 @@ function QiniuCos(props: {
                                         />
                                     </>
                                 </Form.Item>
+                                <Divider orientation="left" className={Styles.title}>
+                                    bucket配置
+                                </Divider>
                                 <Tabs
                                     tabPosition={'top'}
                                     size={'middle'}
@@ -100,7 +103,7 @@ function QiniuCos(props: {
                                     // hideAdd={!(sms.length > 0)}
                                     onEdit={(targetKey: any, action: 'add' | 'remove') => {
                                         if (action === 'add') {
-                                            setValue(`buckets.${cos.buckets.length}`, {});
+                                            setValue(`buckets.${cos?.buckets?.length || 0}`, {});
                                         } else {
                                             removeItem('buckets', parseInt(targetKey, 10));
                                         }
