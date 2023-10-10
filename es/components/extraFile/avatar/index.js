@@ -123,7 +123,6 @@ export default OakComponent({
             this.addItem(Object.assign({}, updateData, {
                 extra1: null,
             }), undefined, async () => {
-                console.log(updateData);
                 await this.features.extraFile.upload(updateData, extra1);
             });
             if (avatar) {

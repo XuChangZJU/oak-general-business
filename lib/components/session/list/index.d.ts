@@ -2,7 +2,7 @@
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<import("../../../oak-app-domain").EntityDict, "session", true, {
     entity: string;
     entityFilter: any;
-    entityDisplay: (entity: string, entityId: string) => "";
+    entityDisplay: (data: any) => "";
     entityProjection: any;
     sessionId: string;
     dialog: boolean;

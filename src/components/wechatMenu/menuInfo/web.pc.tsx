@@ -176,7 +176,6 @@ export default function Render(
         }
     };
     useEffect(() => {
-        console.log(config);
         if (config && config.button && config.button[0] && onlyOne) {
             setMenuName(config.button[0].name);
             setOnlyOne(false);
@@ -317,11 +316,11 @@ export default function Render(
         }
     }, [url]);
     return (
-        <div className={Style.container} style={iState === 'fail' ? {border: '1px solid #FF5557'} : {}}>
+        <div className={Style.container} style={iState === 'fail' ? { border: '1px solid #FF5557' } : {}}>
             {config &&
-            config.button &&
-            config.button.length > 0 &&
-            (selectedBtn !== 0 || selectedSubBtn !== 0) ? (
+                config.button &&
+                config.button.length > 0 &&
+                (selectedBtn !== 0 || selectedSubBtn !== 0) ? (
                 <div className={Style.upsertMenu}>
                     <div className={Style.content}>
                         <div className={Style.title}>
@@ -333,11 +332,9 @@ export default function Render(
                                 colon={false}
                                 help={
                                     <div>
-                                        <div>{`仅支持中英文和数字，字数不超过${
-                                            selectedSubBtn !== 0 ? 8 : 4
-                                        }个汉字或${
-                                            selectedSubBtn !== 0 ? 16 : 8
-                                        }个字母。`}</div>
+                                        <div>{`仅支持中英文和数字，字数不超过${selectedSubBtn !== 0 ? 8 : 4
+                                            }个汉字或${selectedSubBtn !== 0 ? 16 : 8
+                                            }个字母。`}</div>
                                         {errorInfo && (
                                             <div style={{ color: '#fa5151' }}>
                                                 {errorInfo}
@@ -387,7 +384,7 @@ export default function Render(
                         {(config.button[currentIndex]?.sub_button?.length ===
                             0 &&
                             selectedSubBtn === 0) ||
-                        selectedSubBtn > 0 ? (
+                            selectedSubBtn > 0 ? (
                             <>
                                 <Form.Item
                                     colon={false}
@@ -421,17 +418,17 @@ export default function Render(
                                                     {decideMenuContentLabel(
                                                         decidedMenuContent,
                                                         type as
-                                                            | 'video'
-                                                            | 'image'
-                                                            | 'text'
-                                                            | 'news'
-                                                            | 'voice'
+                                                        | 'video'
+                                                        | 'image'
+                                                        | 'text'
+                                                        | 'news'
+                                                        | 'voice'
                                                     )}
                                                 </div>
                                             }
                                         >
                                             {!decidedMenuContent &&
-                                            type !== 'text' ? (
+                                                type !== 'text' ? (
                                                 <div
                                                     className={
                                                         Style.menuContent
@@ -530,12 +527,12 @@ export default function Render(
                                                                             ) {
                                                                                 deleteMenuContent(
                                                                                     selectedBtn -
-                                                                                        1
+                                                                                    1
                                                                                 );
                                                                             } else {
                                                                                 deleteMenuContent(
                                                                                     selectedSubBtn -
-                                                                                        1,
+                                                                                    1,
                                                                                     currentIndex
                                                                                 );
                                                                             }
@@ -608,12 +605,12 @@ export default function Render(
                                                                             ) {
                                                                                 deleteMenuContent(
                                                                                     selectedBtn -
-                                                                                        1
+                                                                                    1
                                                                                 );
                                                                             } else {
                                                                                 deleteMenuContent(
                                                                                     selectedSubBtn -
-                                                                                        1,
+                                                                                    1,
                                                                                     currentIndex
                                                                                 );
                                                                             }
@@ -686,12 +683,12 @@ export default function Render(
                                                                             ) {
                                                                                 deleteMenuContent(
                                                                                     selectedBtn -
-                                                                                        1
+                                                                                    1
                                                                                 );
                                                                             } else {
                                                                                 deleteMenuContent(
                                                                                     selectedSubBtn -
-                                                                                        1,
+                                                                                    1,
                                                                                     currentIndex
                                                                                 );
                                                                             }
@@ -758,12 +755,12 @@ export default function Render(
                                                                             ) {
                                                                                 deleteMenuContent(
                                                                                     selectedBtn -
-                                                                                        1
+                                                                                    1
                                                                                 );
                                                                             } else {
                                                                                 deleteMenuContent(
                                                                                     selectedSubBtn -
-                                                                                        1,
+                                                                                    1,
                                                                                     currentIndex
                                                                                 );
                                                                             }
@@ -838,12 +835,12 @@ export default function Render(
                                                                             ) {
                                                                                 deleteMenuContent(
                                                                                     selectedBtn -
-                                                                                        1
+                                                                                    1
                                                                                 );
                                                                             } else {
                                                                                 deleteMenuContent(
                                                                                     selectedSubBtn -
-                                                                                        1,
+                                                                                    1,
                                                                                     currentIndex
                                                                                 );
                                                                             }
@@ -885,7 +882,7 @@ export default function Render(
                                                                     ) {
                                                                         setConfig(
                                                                             selectedBtn -
-                                                                                1,
+                                                                            1,
                                                                             {
                                                                                 type: 'media_id',
                                                                                 media_id:
@@ -901,7 +898,7 @@ export default function Render(
                                                                     ) {
                                                                         setConfig(
                                                                             selectedBtn -
-                                                                                1,
+                                                                            1,
                                                                             {
                                                                                 type: 'media_id',
                                                                                 media_id:
@@ -917,7 +914,7 @@ export default function Render(
                                                                     ) {
                                                                         setConfig(
                                                                             selectedBtn -
-                                                                                1,
+                                                                            1,
                                                                             {
                                                                                 type: 'media_id',
                                                                                 media_id:
@@ -930,7 +927,7 @@ export default function Render(
                                                                 } else {
                                                                     setConfig(
                                                                         selectedBtn -
-                                                                            1,
+                                                                        1,
                                                                         {
                                                                             type: 'article_id',
                                                                             article_id:
@@ -949,7 +946,7 @@ export default function Render(
                                                                     ) {
                                                                         setConfig(
                                                                             selectedSubBtn -
-                                                                                1,
+                                                                            1,
                                                                             {
                                                                                 type: 'media_id',
                                                                                 media_id:
@@ -966,7 +963,7 @@ export default function Render(
                                                                     ) {
                                                                         setConfig(
                                                                             selectedSubBtn -
-                                                                                1,
+                                                                            1,
                                                                             {
                                                                                 type: 'media_id',
                                                                                 media_id:
@@ -983,7 +980,7 @@ export default function Render(
                                                                     ) {
                                                                         setConfig(
                                                                             selectedSubBtn -
-                                                                                1,
+                                                                            1,
                                                                             {
                                                                                 type: 'media_id',
                                                                                 media_id:
@@ -997,7 +994,7 @@ export default function Render(
                                                                 } else {
                                                                     setConfig(
                                                                         selectedSubBtn -
-                                                                            1,
+                                                                        1,
                                                                         {
                                                                             type: 'article_id',
                                                                             article_id:
@@ -1037,10 +1034,10 @@ export default function Render(
                                                 oakAutoUnmount={true}
                                                 type={
                                                     type as
-                                                        | 'news'
-                                                        | 'image'
-                                                        | 'video'
-                                                        | 'voice'
+                                                    | 'news'
+                                                    | 'image'
+                                                    | 'video'
+                                                    | 'voice'
                                                 }
                                                 getMenuContent={getMenuContent}
                                                 applicationId={applicationId}

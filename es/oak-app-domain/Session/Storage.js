@@ -22,6 +22,12 @@ export const desc = {
         },
         lmts: {
             type: "datetime"
+        },
+        openId: {
+            type: "varchar",
+            params: {
+                length: 64
+            }
         }
     },
     actionType: "crud",

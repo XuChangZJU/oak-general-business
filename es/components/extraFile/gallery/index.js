@@ -23,7 +23,6 @@ export default OakComponent({
         uploadState: 1,
     },
     formData({ data: originalFiles, features }) {
-        console.log(originalFiles);
         let files = originalFiles?.filter((ele) => !ele.$$deleteAt$$).sort((ele1, ele2) => ele1.sort - ele2.sort);
         if (this.props.tag1) {
             files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
@@ -97,9 +96,7 @@ export default OakComponent({
         getUrl(extraFile) {
             const { fileList } = this.state;
             if (fileList[extraFile?.id]) {
-                console.log(fileList[extraFile?.id]);
                 const url = this.features.extraFile.getUrl(Object.assign({}, extraFile, { extra1: fileList[extraFile?.id] }));
-                console.log(url);
                 return url;
             }
             return this.features.extraFile.getUrl(extraFile);

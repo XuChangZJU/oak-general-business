@@ -15,7 +15,7 @@ export default function Render(
         'session',
         false,
         {
-            sessions: EntityDict['session']['Schema'][];
+            sessions: any;
             selectedSessionId: string;
             // unReadConversation: number;
             className: string;
@@ -52,10 +52,11 @@ export default function Render(
                         // clear={clearUnRead}
                     /> */}
                     <div className={Style.inner}>
-                        {sessions?.map((session, index: number) => {
+                        {sessions?.map((session: any, index: number) => {
                             return (
                                 <SessionCell
                                     entityFilter={entityFilter}
+                                    name={session?.name}
                                     selectedId={selectedSessionId}
                                     onSelect={(id: string) => {
                                         setSelectedSessionId(id);
@@ -76,7 +77,8 @@ export default function Render(
                     <MessageList
                         sessionId={selectedSessionId}
                         // isCombine={true}
-                        isEntity={!!entityFilter}
+                        isEntity={entityFilter ? true : false}
+                        isUser={entityFilter ? false : true}
                         oakAutoUnmount={true}
                         oakPath={
                             oakFullpath

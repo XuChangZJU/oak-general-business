@@ -2,7 +2,7 @@ import { jsx as _jsx } from "react/jsx-runtime";
 import { Tabs } from 'antd';
 import ApplicationDetail from '../detail';
 import ConfigUpsert from '../../config/application';
-import StyleUpsert from '../../config/style';
+import StyleUpsert from '../../config/style/platform';
 import Styles from './web.pc.module.less';
 export default function Render(props) {
     const { id, config, oakFullpath, name, style } = props.data;
@@ -22,9 +22,7 @@ export default function Render(props) {
                     {
                         label: _jsx("div", { className: Styles.tabLabel, children: t('style') }),
                         key: 'style',
-                        children: (_jsx(StyleUpsert, { value: style, onChange: (s) => {
-                                update({ style: s });
-                            } })),
+                        children: (_jsx(StyleUpsert, { style: style, entity: 'platform', entityId: id, name: name })),
                     },
                 ] }) }));
     }

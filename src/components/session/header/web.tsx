@@ -13,13 +13,14 @@ export default function render(props: WebComponentProps<
     {
         avatarUrl: string,
         nickname: string,
+        name: string,
     },
     {
 
     }
 >) {
     const { methods, data } = props;
-    const { nickname, avatarUrl } = data;
+    const { nickname, avatarUrl, name } = data;
     const defaultUrl = 'http://qiniu.gecomebox.com/static/defaultAvatar.png'
 
     return (
@@ -43,7 +44,7 @@ export default function render(props: WebComponentProps<
                 src={avatarUrl || defaultUrl}
             />
 
-            <div className={Style.nickname}>{nickname}</div>
+            <div className={Style.nickname}>{nickname || name}</div>
         </div>
     );
 }

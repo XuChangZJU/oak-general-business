@@ -7,6 +7,7 @@ export interface Schema extends EntityShape {
     entityId: String<64>;
     user?: User; //发送者
     lmts?: Datetime;//最后一条消息的发送时间
+    openId?: String<64>;
 };
 
 
@@ -21,6 +22,7 @@ const entityDesc: EntityDesc<Schema, '', Relation, {
                 entityId: '关联对象id',
                 user: '发送者',
                 lmts: '最后一条消息的发送时间',
+                openId: 'openId'
             },
             r: {
                 partner: '所有者',
