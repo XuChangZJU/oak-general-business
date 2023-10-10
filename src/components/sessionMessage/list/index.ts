@@ -1,6 +1,8 @@
 import { EntityDict } from '../../../oak-app-domain';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
-import { DATA_SUBSCRIBER_KEYS } from '../../../config/constants'
+import { DATA_SUBSCRIBER_KEYS } from '../../../config/constants';
+import { getConfig } from '../../../utils/getContextConfig';
+import { QiniuCosConfig } from '../../../types/Config';
 export default OakComponent({
     entity: 'sessionMessage',
     projection: {
@@ -44,6 +46,7 @@ export default OakComponent({
     lifetimes: {
         async ready() {
             const { sessionId } = this.props;
+
             await this.subData([
                 {
                     entity: 'sessionMessage',
@@ -55,31 +58,8 @@ export default OakComponent({
             ],
                 async () => { await this.pageScroll('comment') }
             )
-            // const userId = this.features.token.getUserId(true);
-            // const applicationId = this.features.application.getApplicationId();
-            // if (!sessionId) {
-            //     const entity = 'application';
-            //     const entityId = applicationId;
-            //     const type = 'web';
-            //     const { result: newSessionId } = await this.features.cache.exec('createSession', { type, entity, entityId });
-            //     this.setState({
-            //         newSessionId,
-            //     })
-            // }
-            // if (!userId) {
-            //     this.redirectTo(
-            //         {
-            //             url: '/login',
-            //             backUrl: encodeURIComponent(window.location.href),
-            //         },
-            //         undefined,
-            //         true
-            //     );
-            //     return;
-            // }
-            // (this as any).timer = setInterval(() => {
-            //     this.refresh();
-            // }, 2000);
+
+            this.createItem();
             this.getConversationInfo();
         },
         detached() {
@@ -103,21 +83,33 @@ export default OakComponent({
 
         sessionId(prev, next) {
             if (this.state.oakFullpath) {
+
                 if (prev.sessionId !== next.sessionId) {
                     if (next.sessionId) {
+                        const { sessionMessageId } = this.state;
                         this.getConversationInfo();
 
                         // 如果sessionId变了需要重新刷新下
                         this.refresh();
+                        this.removeItem(sessionMessageId);
+                        this.setState({
+                            text: '',
+                        });
+                        this.createItem();
+                        this.pageScroll('comment');
                     }
                 }
             }
         },
     },
     formData({ data: sessionMessageList = [], features }) {
+        const sessionMessageType = sessionMessageList?.find(
+            (ele) => ele.$$createAt$$ === 1
+        )?.type;
         return {
             sessionMessageList,
             num: sessionMessageList?.length,
+            sessionMessageType,
         };
     },
     properties: {
@@ -134,9 +126,6 @@ export default OakComponent({
                 const { sessionId } = this.props;
                 return {
                     sessionId,
-                    // type: {
-                    //     $exists: true,
-                    // },
                 };
             },
         },
@@ -159,9 +148,17 @@ export default OakComponent({
     },
     methods: {
         setContent(text: string) {
+            const { sessionMessageId } = this.state;
+
+            console.log(sessionMessageId, text)
+
             this.setState({
                 text,
             });
+            this.updateItem({
+                text,
+                type: 'text',
+            }, sessionMessageId)
         },
         setButtonHidden(isHidden: boolean) {
             this.setState({
@@ -230,8 +227,25 @@ export default OakComponent({
             setTimeout(() => doc.scrollTo(0, 10000), 500);
         },
 
+        async createItem() {
+            const { text, wechatUserId } = this.state;
+            const { sessionId, isEntity } = this.props;
+            const userId = this.features.token.getUserId();
+            const applicationId = this.features.application.getApplicationId();
+            const sessionMessageId = this.addItem({
+                applicationId,
+                userId,
+                wechatUserId,
+                sessionId: sessionId,
+                aaoe: isEntity,
+            })
+            this.setState({
+                sessionMessageId,
+            })
+        },
+
         async createMessage() {
-            const { text, wechatUserId, newSessionId } = this.state;
+            const { text, wechatUserId, newSessionId, sessionMessageId } = this.state;
             const { sessionId, isEntity } = this.props;
             const userId = this.features.token.getUserId();
             const applicationId = this.features.application.getApplicationId();
@@ -242,21 +256,25 @@ export default OakComponent({
                 });
                 return;
             }
-            this.addItem({
-                applicationId,
-                text,
-                userId,
-                wechatUserId,
-                sessionId: sessionId || newSessionId,
-                type: 'text',
+            // this.addItem({
+            //     applicationId,
+            //     text,
+            //     userId,
+            //     wechatUserId,
+            //     sessionId: sessionId || newSessionId,
+            //     type: 'text',
+            //     createTime: Date.now(),
+            //     aaoe: isEntity,
+            // } as EntityDict['sessionMessage']['CreateSingle']['data']);
+            this.updateItem({
                 createTime: Date.now(),
-                aaoe: isEntity,
-            } as EntityDict['sessionMessage']['CreateSingle']['data']);
+            }, sessionMessageId)
             await this.execute(undefined, false);
             this.setState({
                 text: '',
             });
             this.pageScroll('comment');
+            this.createItem();
         },
 
 
@@ -266,53 +284,64 @@ export default OakComponent({
             type: string;
             originFileObj: File;
         }) {
-            const { sessionId } = this.props;
+            const { sessionId, isEntity } = this.props;
 
             // TS 语法
             // file 即选中的文件
             const { name, size, type, originFileObj } = file;
-
+            const applicationId = this.features.application.getApplicationId();
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
+            let bucket2 = '';
+            if (!bucket2) {
+                const context = this.features.cache.begin();
+                const { config } = getConfig(context, 'Cos', 'qiniu');
+                this.features.cache.commit();
+
+                const { defaultBucket } = config as QiniuCosConfig;
+                bucket2 = defaultBucket!;
+            }
             const extraFile = {
-                extra1: originFileObj as any,
+                applicationId,
+                bucket: bucket2,
                 origin: 'qiniu',
                 type: 'image',
                 tag1: 'image',
-                objectId: generateNewId(),
                 filename,
                 fileType: type,
                 size,
                 extension,
                 entity: 'sessionMessage',
-                bucket: '',
                 id: generateNewId(),
             } as EntityDict['extraFile']['CreateSingle']['data'];
 
-            // try {
-            //     // 自己实现上传，并得到图片 url alt href
-            //     const { url, bucket } = await this.features.extraFile.upload(
-            //         extraFile
-            //     );
-            //     extraFile.bucket = bucket;
-            //     extraFile.extra1 = null;
-            //     const userId = this.features.token.getUserId();
-            //     this.addItem({
-            //         id: generateNewId(),
-            //         sessionId,
-            //         type: 'image',
-            //         extraFile$entity: [
-            //             {
-            //                 id: generateNewId(),
-            //                 action: 'create',
-            //                 data: extraFile,
-            //             },
-            //         ],
-            //     } as EntityDict['sessionMessage']['CreateSingle']['data']);
-            //     await this.execute(undefined, false);
-            // } catch (err) {
-            //     throw err;
-            // }
+            try {
+                // await this.features.extraFile.upload(
+                //     extraFile,
+                //     originFileObj
+                // );
+                const userId = this.features.token.getUserId();
+                this.addItem({
+                    id: generateNewId(),
+                    applicationId,
+                    sessionId,
+                    createTime: Date.now(),
+                    aaoe: isEntity,
+                    type: 'image',
+                    extraFile$entity: [
+                        {
+                            id: generateNewId(),
+                            action: 'create',
+                            data: extraFile,
+                        },
+                    ],
+                } as EntityDict['sessionMessage']['CreateSingle']['data']);
+                this.features.extraFile2.addLocalFile(extraFile?.id, originFileObj);
+
+                await this.execute(undefined, false);
+            } catch (err) {
+                throw err;
+            }
         },
     },
 });

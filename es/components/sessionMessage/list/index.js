@@ -258,43 +258,36 @@ export default OakComponent({
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
             const extraFile = {
-                extra1: originFileObj,
                 origin: 'qiniu',
                 type: 'image',
                 tag1: 'image',
-                objectId: generateNewId(),
                 filename,
                 fileType: type,
                 size,
                 extension,
                 entity: 'sessionMessage',
-                bucket: '',
                 id: generateNewId(),
             };
-            // try {
-            //     // 自己实现上传，并得到图片 url alt href
-            //     const { url, bucket } = await this.features.extraFile.upload(
-            //         extraFile
-            //     );
-            //     extraFile.bucket = bucket;
-            //     extraFile.extra1 = null;
-            //     const userId = this.features.token.getUserId();
-            //     this.addItem({
-            //         id: generateNewId(),
-            //         sessionId,
-            //         type: 'image',
-            //         extraFile$entity: [
-            //             {
-            //                 id: generateNewId(),
-            //                 action: 'create',
-            //                 data: extraFile,
-            //             },
-            //         ],
-            //     } as EntityDict['sessionMessage']['CreateSingle']['data']);
-            //     await this.execute(undefined, false);
-            // } catch (err) {
-            //     throw err;
-            // }
+            try {
+                await this.features.extraFile.upload(extraFile, originFileObj);
+                const userId = this.features.token.getUserId();
+                this.addItem({
+                    id: generateNewId(),
+                    sessionId,
+                    type: 'image',
+                    extraFile$entity: [
+                        {
+                            id: generateNewId(),
+                            action: 'create',
+                            data: extraFile,
+                        },
+                    ],
+                });
+                await this.execute(undefined, false);
+            }
+            catch (err) {
+                throw err;
+            }
         },
     },
 });

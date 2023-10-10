@@ -8,6 +8,7 @@ export default OakComponent({
             id: 1,
             entity: 1,
             entityId: 1,
+            openId: 1,
             userId: 1,
             user: {
                 id: 1,

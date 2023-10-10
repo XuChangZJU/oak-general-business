@@ -7,6 +7,7 @@ import Header from '../../../components/session/forMessage';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
+import ExtraFileUpload from "@oak-general-business/components/extraFile/upload";
 interface customFile {
     name: string;
     size: number;
@@ -27,6 +28,7 @@ export default function Render(
             isEntity: boolean;
             isUser: boolean;
             employerId: string;
+            sessionMessageType: string;
         },
         {
             setButtonHidden: (isHidden: boolean) => void;
@@ -45,8 +47,8 @@ export default function Render(
         sessionMessageList,
         oakFullpath,
         text,
-        employerId,
         buttonHidden,
+        sessionMessageType,
     } = data;
     const {
         setButtonHidden,
@@ -101,6 +103,7 @@ export default function Render(
             pageScroll('comment');
         }
     };
+    console.log(sessionMessageType);
     return (
         <div className={Style.container}>
             <Header
@@ -146,18 +149,35 @@ export default function Render(
 
             <div className={Style.bottom} id="bottom">
                 <div className={Style.toolbar}>
-                    <Upload
+                    <ExtraFileUpload
+                        oakPath={
+                            data.oakFullpath
+                                ? `${data.oakFullpath}.extraFile$entity`
+                                : undefined
+                        }
+                        showUploadList={false}
+                        type="image"
+                        origin="qiniu"
+                        tag1="image"
+                        maxNumber={1}
+                        entity="sessionMessage"
+                        accept="image/*"
+                    >
+                        <PictureOutlined className={Style.icon} />
+                    </ExtraFileUpload>
+                    {/* <Upload
                         accept={'image/*'}
                         multiple={false}
                         showUploadList={false}
-                        customRequest={() => { }}
-                        onChange={({ file }) => {
-                            customUpload(file as customFile);
-                        }}
+                    // customRequest={() => { }}
+                    // onChange={({ file }) => {
+                    //     customUpload(file as customFile);
+                    // }}
                     >
                         <PictureOutlined className={Style.icon} />
-                    </Upload>
+                    </Upload> */}
                 </div>
+
                 <div className={Style.textareaBox}>
                     <Input.TextArea
                         ref={textareaRef}

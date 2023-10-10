@@ -82,7 +82,8 @@ export async function createSession(params, context) {
         }
         case 'wechatMp':
         case 'wechatPublic': {
-            assert(data, '');
+            assert(data);
+            assert(entity === 'application');
             const { ToUserName, FromUserName, CreateTime, MsgType, 
             // Event,
             Content,
@@ -98,6 +99,22 @@ export async function createSession(params, context) {
                     openId: FromUserName,
                 }
             }, {});
+            const result = await context.select('session', {
+                data: {
+                    id: 1,
+                    entity: 1,
+                    entityId: 1,
+                    userId: 1,
+                    lmts: 1,
+                    openId: 1,
+                },
+                filter: {
+                    entity: entity,
+                    entityId: entityId,
+                    openId: FromUserName,
+                }
+            }, {});
+            session = result[0];
             sessionMessage$session = [
                 {
                     id: await generateNewIdAsync(),
@@ -105,8 +122,7 @@ export async function createSession(params, context) {
                     data: {
                         id: await generateNewIdAsync(),
                         applicationId: wechatUser?.applicationId,
-                        // sessionId: session[0]?.id,
-                        wechatUser: wechatUser?.id,
+                        wechatUserId: wechatUser?.id,
                         createTime: CreateTime,
                         type: MsgType,
                         text: Content,
@@ -148,6 +164,7 @@ export async function createSession(params, context) {
                 entityId,
                 userId,
                 lmts: Date.now(),
+                openId: data?.FromUserName,
             }, sessionMessage$session && { sessionMessage$session }),
         }, {
             dontCollect: true,

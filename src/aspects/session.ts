@@ -102,7 +102,8 @@ export async function createSession<
         }
         case 'wechatMp':
         case 'wechatPublic': {
-            assert(data, '')
+            assert(data);
+            assert(entity === 'application');
             const {
                 ToUserName,
                 FromUserName,
@@ -122,6 +123,22 @@ export async function createSession<
                     openId: FromUserName,
                 }
             }, {});
+            const result = await context.select('session', {
+                data: {
+                    id: 1,
+                    entity: 1,
+                    entityId: 1,
+                    userId: 1,
+                    lmts: 1,
+                    openId: 1,
+                },
+                filter: {
+                    entity: entity,
+                    entityId: entityId,
+                    openId: FromUserName,
+                }
+            }, {});
+            session = result[0]
             sessionMessage$session = [
                 {
                     id: await generateNewIdAsync(),
@@ -129,8 +146,7 @@ export async function createSession<
                     data: {
                         id: await generateNewIdAsync(),
                         applicationId: wechatUser?.applicationId,
-                        // sessionId: session[0]?.id,
-                        wechatUser: wechatUser?.id,
+                        wechatUserId: wechatUser?.id,
                         createTime: CreateTime,
                         type: MsgType,
                         text: Content,
@@ -166,6 +182,7 @@ export async function createSession<
         return session.id
     }
     else {
+
         await context.operate('session', {
             id: await generateNewIdAsync(),
             action: 'create',
@@ -175,6 +192,7 @@ export async function createSession<
                 entityId,
                 userId,
                 lmts: Date.now(),
+                openId: data?.FromUserName,
             }, sessionMessage$session && { sessionMessage$session }),
         }, {
             dontCollect: true,
