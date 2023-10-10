@@ -37,7 +37,8 @@ const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDic
     } as CreateTrigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDict>>,
     {
         name: '删除extraFile时远端也进行删除',
-        when: 'before',
+        when: 'commit',
+        strict: 'makeSure',
         entity: 'extraFile',
         action: 'remove',
         fn: async ({ operation }, context) => {
@@ -69,13 +70,14 @@ const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDic
                     filter,
                 },
                 {
+                    includedDeleted: true,
                     dontCollect: true,
                 }
             );
             for (const extraFile of extraFileList) {
                 const { origin } = extraFile;
                 const uploader = getCos(origin!);
-                await uploader.checkWhetherSuccess(extraFile as EntityDict['extraFile']['OpSchema'], context);
+                await uploader.removeFile(extraFile as EntityDict['extraFile']['OpSchema'], context);
             }
             return 1;
         }

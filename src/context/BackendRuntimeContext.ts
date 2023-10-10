@@ -156,7 +156,7 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         await this.initializedMark;
     }
 
-    private async initialize(data?: SerializedData) {
+    protected async initialize(data?: SerializedData) {
         if (data) {
             await this.begin();
             const closeRootMode = this.openRootMode();
@@ -246,11 +246,14 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         this.temporaryUserId = userId;
     }
 
-    toString() {
-        if (this.rootMode) {
-            return JSON.stringify({ rootMode: true });
-        }
-        return JSON.stringify({ a: this.application?.id, t: this.token?.id });
+    protected getSerializedData(): SerializedData {
+        const data = super.getSerializedData();
+        return {
+            ...data,
+            a: this.application?.id,
+            t: this.token?.id,
+            rm: this.rootMode,
+        };
     }
 
     isRoot() {

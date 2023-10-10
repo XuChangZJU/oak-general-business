@@ -29,7 +29,8 @@ const triggers = [
     },
     {
         name: '删除extraFile时远端也进行删除',
-        when: 'before',
+        when: 'commit',
+        strict: 'makeSure',
         entity: 'extraFile',
         action: 'remove',
         fn: async ({ operation }, context) => {
@@ -58,12 +59,13 @@ const triggers = [
                 },
                 filter,
             }, {
+                includedDeleted: true,
                 dontCollect: true,
             });
             for (const extraFile of extraFileList) {
                 const { origin } = extraFile;
                 const uploader = getCos(origin);
-                await uploader.checkWhetherSuccess(extraFile, context);
+                await uploader.removeFile(extraFile, context);
             }
             return 1;
         }
