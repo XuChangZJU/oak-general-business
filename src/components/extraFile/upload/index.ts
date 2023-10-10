@@ -123,23 +123,27 @@ export default OakComponent({
     },
     features: ['extraFile2'],
     formData({ data, features }) {
-        const files = data.map((ele) => {
-            const url = features.extraFile2.getUrl(ele as ExtraFile);
-            const thumbUrl = features.extraFile2.getUrl(
-                ele as ExtraFile,
-                'thumbnail'
-            );
-            const fileState = features.extraFile2.getFileState(ele.id!);
-            const filename = features.extraFile2.getFileName(ele as ExtraFile);
-            return {
-                url,
-                thumbUrl,
-                filename,
-                fileState: fileState?.state,
-                percentage: fileState?.percentage,
-                ...ele,
-            } as EnhancedExtraFile;
-        });
+        const files = data
+            ?.sort((ele1, ele2) => ele1.sort! - ele2.sort!)
+            .map((ele) => {
+                const url = features.extraFile2.getUrl(ele as ExtraFile);
+                const thumbUrl = features.extraFile2.getUrl(
+                    ele as ExtraFile,
+                    'thumbnail'
+                );
+                const fileState = features.extraFile2.getFileState(ele.id!);
+                const filename = features.extraFile2.getFileName(
+                    ele as ExtraFile
+                );
+                return {
+                    url,
+                    thumbUrl,
+                    filename,
+                    fileState: fileState?.state,
+                    percentage: fileState?.percentage,
+                    ...ele,
+                } as EnhancedExtraFile;
+            });
         return {
             files,
         };
@@ -325,6 +329,19 @@ export default OakComponent({
                 });
                 this.triggerEvent('onPreview', detail);
             }
+        },
+
+        //检查排序是否超过上限
+        checkSort(sort: number) {
+            const reg = /^\d+\.(?:9+)$/;
+            if (reg.test(sort.toString())) {
+                this.setMessage({
+                    type: 'warning',
+                    content: this.t('dragSort'),
+                });
+                return false;
+            }
+            return true;
         },
     },
 }) as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(

@@ -97,7 +97,9 @@ export default OakComponent({
     },
     features: ['extraFile2'],
     formData({ data, features }) {
-        const files = data.map((ele) => {
+        const files = data
+            ?.sort((ele1, ele2) => ele1.sort - ele2.sort)
+            .map((ele) => {
             const url = features.extraFile2.getUrl(ele);
             const thumbUrl = features.extraFile2.getUrl(ele, 'thumbnail');
             const fileState = features.extraFile2.getFileState(ele.id);
@@ -269,6 +271,18 @@ export default OakComponent({
                 });
                 this.triggerEvent('onPreview', detail);
             }
+        },
+        //检查排序是否超过上限
+        checkSort(sort) {
+            const reg = /^\d+\.(?:9+)$/;
+            if (reg.test(sort.toString())) {
+                this.setMessage({
+                    type: 'warning',
+                    content: this.t('dragSort'),
+                });
+                return false;
+            }
+            return true;
         },
     },
 });

@@ -25,4 +25,5 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
 }, {
     onRemove: (file: UploadFile) => void;
     addFileByWeb: (file: UploadFile) => void;
+    checkSort: (sort: number) => boolean;
 }>): import("react/jsx-runtime").JSX.Element;

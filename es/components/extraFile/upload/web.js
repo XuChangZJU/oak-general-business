@@ -48,14 +48,14 @@ const DragableUploadListItem = ({ originNode, moveRow, file, fileList, }) => {
     return (_jsx("div", { ref: ref, className: `ant-upload-draggable-list-item ${isOver ? dropClassName : ""}`, style: { cursor: "move", height: "100%" }, children: originNode }));
 };
 export default function render(props) {
-    const { accept = "image/*", maxNumber = 20, multiple = maxNumber !== 1, draggable = false, theme = "image", tips, beforeUpload, style, className, directory = false, onPreview, onDownload, children, showUploadList = true, files = [], disableInsert = false, disableDownload = false, disableDelete = false, disablePreview = false, } = props.data;
-    const { t, onRemove, addFileByWeb } = props.methods;
+    const { accept = 'image/*', maxNumber = 20, multiple = maxNumber !== 1, draggable = false, theme = 'image', tips, beforeUpload, style, className, directory = false, onPreview, onDownload, children, showUploadList = true, files = [], disableInsert = false, disableDownload = false, disableDelete = false, disablePreview = false, } = props.data;
+    const { t, updateItem, onRemove, addFileByWeb, checkSort } = props.methods;
     const listType = getListType(theme);
     const getUploadButton = () => {
         if (children) {
             return children;
         }
-        if (listType === "picture-card") {
+        if (listType === 'picture-card') {
             return (_jsxs("div", { children: [_jsx(PlusOutlined, {}), _jsx("div", { style: { marginTop: 8 }, children: t('choosePicture') })] }));
         }
         return _jsx(Button, { type: "default", children: t('chooseFile') });
@@ -114,7 +114,36 @@ export default function render(props) {
         });
     };
     const moveRow = useCallback((dragIndex, hoverIndex) => {
-        console.log('dragIndex', dragIndex, 'hoverIndex', hoverIndex);
+        const dragRow = files[dragIndex];
+        let sort;
+        if (hoverIndex === dragIndex) {
+            return;
+        }
+        else if (hoverIndex > dragIndex) {
+            if (hoverIndex === files.length - 1) {
+                sort = files[hoverIndex].sort + 100;
+            }
+            else {
+                sort =
+                    (files[hoverIndex].sort +
+                        files[hoverIndex + 1].sort) /
+                        2;
+            }
+        }
+        else {
+            if (hoverIndex === 0) {
+                sort = files[hoverIndex].sort / 2;
+            }
+            else {
+                sort =
+                    (files[hoverIndex].sort +
+                        files[hoverIndex - 1].sort) /
+                        2;
+            }
+        }
+        if (checkSort(sort)) {
+            updateItem({ sort }, dragRow.id);
+        }
     }, [files]);
     return (_jsxs(Space, { direction: "vertical", className: Style['oak-upload'], style: { width: '100%' }, children: [_jsx(DndProvider, { backend: isPc ? HTML5Backend : TouchBackend, children: _jsx(Upload, { className: classNames(Style['oak-upload__upload'], className), style: style, directory: directory, showUploadList: showUploadList
                         ? {
