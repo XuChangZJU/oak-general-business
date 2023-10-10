@@ -12,7 +12,7 @@ import { sendSms } from '../utils/sms';
 import { tryMakeSmsNotification } from './message';
 import { composeDomainUrl } from '../utils/domain';
 
-async function sendNotification(notification: CreateNotificationData, context: BackendRuntimeContext<EntityDict>) {
+async function sendNotification(notification: EntityDict['notification']['OpSchema'], context: BackendRuntimeContext<EntityDict>) {
     const { data, templateId, channel, messageSystemId, data1, id } = notification;
     const [messageSystem] = await context.select('messageSystem', {
         data: {
@@ -281,16 +281,11 @@ const triggers: Trigger<EntityDict, 'notification', BackendRuntimeContext<Entity
         action: 'create',
         when: 'commit',
         strict: 'takeEasy',
-        fn: async ({ operation }, context) => {
-            const { data } = operation;
+        fn: async ({ rows }, context) => {
             const closeRootMode = context.openRootMode();
             try {
-                if (data instanceof Array) {
-                    for (const d of data) {
-                        await sendNotification(d, context);
-                    }
-                } else {
-                    await sendNotification(data, context);
+                for (const row of rows) {
+                    await sendNotification(row, context);
                 }
             } catch (err) {
                 closeRootMode();

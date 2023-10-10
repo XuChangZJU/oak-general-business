@@ -189,11 +189,14 @@ export class BackendRuntimeContext extends BRC {
     setTemporaryUserId(userId) {
         this.temporaryUserId = userId;
     }
-    toString() {
-        if (this.rootMode) {
-            return JSON.stringify({ rootMode: true });
-        }
-        return JSON.stringify({ a: this.application?.id, t: this.token?.id });
+    getSerializedData() {
+        const data = super.getSerializedData();
+        return {
+            ...data,
+            a: this.application?.id,
+            t: this.token?.id,
+            rm: this.rootMode,
+        };
     }
     isRoot() {
         if (this.rootMode) {

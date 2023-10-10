@@ -25,7 +25,7 @@ export declare abstract class BackendRuntimeContext<ED extends EntityDict & Base
      * 异步等待初始化完成
      */
     protected initialized(): Promise<void>;
-    private initialize;
+    protected initialize(data?: SerializedData): Promise<void>;
     getApplicationId(): ED["application"]["Schema"]["id"] | undefined;
     getSystemId(): ED["application"]["Schema"]["systemId"] | undefined;
     getApplication(): Partial<ED["application"]["Schema"]> | undefined;
@@ -34,7 +34,7 @@ export declare abstract class BackendRuntimeContext<ED extends EntityDict & Base
     getToken(allowUnloggedIn?: boolean): Partial<ED["token"]["Schema"]> | undefined;
     getCurrentUserId(allowUnloggedIn?: boolean): string;
     setTemporaryUserId(userId: string | undefined): void;
-    toString(): string;
+    protected getSerializedData(): SerializedData;
     isRoot(): boolean;
     isReallyRoot(): boolean;
     sendMessage(data: ED['message']['CreateSingle']['data']): Promise<import("oak-domain").OperationResult<ED>>;
