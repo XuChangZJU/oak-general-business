@@ -172,7 +172,6 @@ export default OakComponent({
                 type: 'image',
                 tag1,
                 tag2,
-                objectId: generateNewId(),
                 bucket: '',
                 id: generateNewId(),
             } as EntityDict['extraFile']['CreateSingle']['data'];

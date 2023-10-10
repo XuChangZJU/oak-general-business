@@ -7,7 +7,7 @@ import Header from '../../../components/session/forMessage';
 import Style from './web.module.less';
 export default function Render(props) {
     const { data, methods } = props;
-    const { sessionId, isEntity, isUser, sessionMessageList, oakFullpath, text, employerId, buttonHidden, } = data;
+    const { sessionId, isEntity, isUser, sessionMessageList, oakFullpath, text, buttonHidden, sessionMessageType, sessionMessageId, entityDisplay, entityProjection, isWeChat, } = data;
     const { setButtonHidden, customUpload, setContent, pageScroll, createMessage, } = methods;
     const [bottomHeight, setBottomHeight] = useState(0);
     const textareaRef = useRef(null);
@@ -58,7 +58,7 @@ export default function Render(props) {
                 // showBack={false}
                 sessionId: sessionId, isEntity: isEntity, 
                 // userId={employerId}
-                oakPath: 'session:header1', oakAutoUnmount: true }), _jsx("div", { className: Style.inner, style: {
+                oakPath: 'session:header1', oakAutoUnmount: true, entityDisplay: entityDisplay, entityProjection: entityProjection }), _jsx("div", { className: Style.inner, style: {
                     marginBottom: bottomHeight ? `${bottomHeight}px` : '168px',
                 }, id: "comment", onClick: () => setButtonHidden(true), children: sessionMessageList
                     ?.sort((a, b) => a.$$createAt$$ -

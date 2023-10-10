@@ -17,11 +17,6 @@ export class BackendRuntimeContext extends BRC {
     amIReallyRoot;
     rootMode;
     temporaryUserId;
-    initializedMark;
-    constructor(store, data, headers) {
-        super(store, data, headers);
-        this.initializedMark = this.initialize(data);
-    }
     async refineOpRecords() {
         for (const opRecord of this.opRecords) {
             if (opRecord.a === 's') {
@@ -101,19 +96,12 @@ export class BackendRuntimeContext extends BRC {
         assert(result.length > 0, `构建BackendRuntimeContext对应appId「${appId}」找不到application`);
         this.application = result[0];
     }
-    /**
-     * 异步等待初始化完成
-     */
-    async initialized() {
-        await super.initialized();
-        await this.initializedMark;
-    }
     async initialize(data) {
+        await super.initialize(data);
         if (data) {
-            await this.begin();
             const closeRootMode = this.openRootMode();
             try {
-                const { a: appId, t: tokenValue } = data;
+                const { a: appId, t: tokenValue, rm } = data;
                 const promises = [];
                 if (appId) {
                     promises.push(this.setApplication(appId));
@@ -124,12 +112,12 @@ export class BackendRuntimeContext extends BRC {
                 if (promises.length > 0) {
                     await Promise.all(promises);
                 }
-                closeRootMode();
-                await this.commit();
+                if (!rm) {
+                    closeRootMode();
+                }
             }
             catch (err) {
                 closeRootMode();
-                await this.rollback();
                 throw err;
             }
         }

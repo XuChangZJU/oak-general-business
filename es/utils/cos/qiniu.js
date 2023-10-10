@@ -1,6 +1,7 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { getConfig } from '../getContextConfig';
 import { OakUploadException } from '../../types/Exception';
+import { OakExternalException } from 'oak-domain';
 const QiniuSearchUrl = 'https://rs.qiniuapi.com/stat/EncodedEntryURI';
 export default class Qiniu {
     name = 'qiniu';
@@ -72,16 +73,40 @@ export default class Qiniu {
         const { instance, config } = getConfig(context, 'Cos', 'qiniu');
         // web环境下访问不了七牛接口，用mockData过
         const mockData = process.env.OAK_PLATFORM === 'web' ? { fsize: 100 } : undefined;
-        const result = await instance.getKodoFileStat(extraFile.bucket, key, mockData);
-        const { fsize } = result;
-        return fsize > 0;
+        try {
+            const result = await instance.getKodoFileStat(extraFile.bucket, key, mockData);
+            const { fsize } = result;
+            return fsize > 0;
+        }
+        catch (err) {
+            // 七牛如果文件不存在会抛出status ＝ 612的异常
+            if (err instanceof OakExternalException) {
+                const data = err.data;
+                if (data && data.status === 612) {
+                    return false;
+                }
+            }
+            throw err;
+        }
     }
     async removeFile(extraFile, context) {
         const key = this.formKey(extraFile);
         const { instance, config } = getConfig(context, 'Cos', 'qiniu');
         // web环境下访问不了七牛接口，用mockData过
         const mockData = process.env.OAK_PLATFORM === 'web' ? true : undefined;
-        await instance.removeKodoFile(extraFile.bucket, key, mockData);
+        try {
+            await instance.removeKodoFile(extraFile.bucket, key, mockData);
+        }
+        catch (err) {
+            // 七牛如果文件不存在会抛出status ＝ 612的异常
+            if (err instanceof OakExternalException) {
+                const data = err.data;
+                if (data && data.status === 612) {
+                    return;
+                }
+            }
+            throw err;
+        }
     }
 }
 ;

@@ -1,5 +1,5 @@
 import assert from "assert";
-
+import { DATA_SUBSCRIBER_KEYS } from '../../../config/constants';
 export default OakComponent({
     entity: 'session',
     projection() {
@@ -8,6 +8,8 @@ export default OakComponent({
             id: 1,
             entity: 1,
             entityId: 1,
+            lmts: 1,
+            openId: 1,
             userId: 1,
             user: {
                 id: 1,
@@ -87,8 +89,12 @@ export default OakComponent({
         // const unReadLength = wechatSessions?.filter(
         //     (ele) => ele.isRead
         // )
+
+        //排序待框架实现
         return {
-            sessions,
+            sessions: sessions?.sort(
+                (a, b) => (b!.lmts as number) - (a!.lmts as number)
+            ),
         };
     },
     lifetimes: {
@@ -111,6 +117,27 @@ export default OakComponent({
                 this.setSelectedSessionId(sessionId);
             }
         },
+        async ready() {
+            const { entityFilter } = this.props;
+            const userId = this.features.token.getUserId();
+
+            await this.subData([
+                {
+                    entity: 'session',
+                    filter: entityFilter ? { ...entityFilter } : { userId },
+                    id: `${DATA_SUBSCRIBER_KEYS.sessionList}`,
+                }
+            ],
+                () => { console.log(123) }
+            )
+
+
+        },
+        detached() {
+            this.unSubData([
+                `${DATA_SUBSCRIBER_KEYS.sessionList}`
+            ])
+        },
     },
     data: {
         unReadLength: 0,
@@ -119,7 +146,7 @@ export default OakComponent({
     properties: {
         entity: '' as string,           // entity端，指示相应的entity
         entityFilter: undefined as any,        // entity端，指示相应的entity查询条件
-        entityDisplay: (data: any) => '',        // user端，指示如何显示entity对象名称
+        entityDisplay: (data: any) => [] as Array<any>,        // user端，指示如何显示entity对象名称
         entityProjection: {} as any,    // user端，指示需要取哪些entity的属性来显示entityDisplay
         sessionId: '' as string,        // 指示需要打开的默认session
         dialog: false as boolean,

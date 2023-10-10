@@ -1,5 +1,5 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import Dialog from '../../../utils/dialog/index';
 import { EntityDict } from '../../../oak-app-domain';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
@@ -7,9 +7,9 @@ import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 
 type SourceType = 'album' | 'camera';
 type Theme = 'file' | 'image' | 'image-flow' | 'custom';
-type FileType = 'all' | 'video' | 'image' | 'file';
 type ImgMode = 'scaleToFill' | 'aspectFit' | 'aspectFill' | 'widthFix' | "heightFix" | 'top' | 'bottom' | 'left'
     | 'right' | 'center' | 'top left' | 'top right' | 'bottom left' | 'bottom right';
+
 export default OakComponent({
     entity: 'extraFile',
     isList: true,
@@ -34,9 +34,9 @@ export default OakComponent({
     formData({ data: originalFiles, features }) {
         let files = (
             originalFiles as Array<EntityDict['extraFile']['OpSchema']>
-        )?.filter((ele) => !ele.$$deleteAt$$).sort(
-            (ele1, ele2) => ele1.sort! - ele2.sort!
-        );
+        )
+            ?.filter((ele) => !ele.$$deleteAt$$)
+            .sort((ele1, ele2) => ele1.sort! - ele2.sort!);
         if (this.props.tag1) {
             files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
         }
@@ -53,7 +53,7 @@ export default OakComponent({
     data: {
         // 根据 size 不同，计算的图片显示大小不同
         itemSizePercentage: '',
-        fileList: {} as Record<string, File | string>
+        fileList: {} as Record<string, File | string>,
     },
     wechatMp: {
         externalClasses: ['oak-class', 'oak-item-class'],
@@ -77,25 +77,19 @@ export default OakComponent({
         removeLater: true,
         autoUpload: false,
         maxNumber: 20,
-        extension: [] as string[],
-        fileType: 'all' as FileType,
-        selectCount: 1,
-        sourceType: ['album', 'camera'] as SourceType[],
-        mediaType: ['image'] as ('image' | 'video')[],
-        // 图片显示模式
-        mode: 'aspectFit' as ImgMode,
-        // 每行可显示的个数
-        size: 3,
-        showUploadList: true,
-        accept: 'image/*',
-        // 图片是否可预览
-        preview: true,
-        // 图片是否可删除
-        disableDelete: false,
-        // 上传按钮隐藏
-        disableAdd: false,
-        // 下按按钮隐藏
-        disableDownload: false,
+        extension: [] as string[], //小程序独有 chooseMessageFile
+        selectCount: 1, // 每次打开图片时，可选中的数量 小程序独有
+        sourceType: ['album', 'camera'] as SourceType[], // 小程序独有 chooseMedia
+        mediaType: ['image'] as ('image' | 'video')[], // 小程序独有 chooseMedia
+        mode: 'aspectFit' as ImgMode, // 图片显示模式
+        size: 3, // 每行可显示的个数 小程序独有
+        showUploadList: true, //web独有
+        showUploadProgress: false, // web独有
+        accept: 'image/*', // web独有
+        disablePreview: false, // 图片是否可预览
+        disableDelete: false, // 图片是否可删除
+        disableAdd: false, // 上传按钮隐藏
+        disableDownload: false, // 下载按钮隐藏
         disabled: false,
         type: '',
         origin: '',
@@ -104,14 +98,17 @@ export default OakComponent({
         entity: '' as keyof EntityDict,
         entityId: '',
         theme: 'image' as Theme,
-        showUploadProgress: false,
     },
 
     methods: {
         getUrl(extraFile: EntityDict['extraFile']['OpSchema']) {
             const { fileList } = this.state;
             if (fileList[extraFile?.id]) {
-                const url = this.features.extraFile.getUrl(Object.assign({}, extraFile, { extra1: fileList[extraFile?.id] }));
+                const url = this.features.extraFile.getUrl(
+                    Object.assign({}, extraFile, {
+                        extra1: fileList[extraFile?.id],
+                    })
+                );
                 return url;
             }
             return this.features.extraFile.getUrl(extraFile);
@@ -119,7 +116,7 @@ export default OakComponent({
         getFileName(extraFile: EntityDict['extraFile']['OpSchema']) {
             return this.features.extraFile.getFileName(extraFile);
         },
-        eFFormatBytes(value: number) {
+        formatBytes(value: number) {
             return this.features.extraFile.formatBytes(value);
         },
         /**
@@ -192,12 +189,12 @@ export default OakComponent({
             }
         },
         async chooseFileByMp() {
-            const { selectCount, extension, fileType } = this.props;
+            const { selectCount, extension } = this.props;
             try {
                 const { errMsg, tempFiles } = await wx.chooseMessageFile({
                     count: selectCount!,
                     type: 'all',
-                    ...(fileType === 'file' ? { extension } : {}),
+                    extension,
                 });
                 if (errMsg !== 'chooseMessageFile:ok') {
                     this.triggerEvent('error', {
@@ -239,8 +236,10 @@ export default OakComponent({
             uploadFiles: any[],
             callback?: (file: any, status: string) => void
         ) {
-            const { files } = this.state
-            const currentSort = files?.length ? files[files.length - 1].sort : 0;
+            const { files } = this.state;
+            const currentSort = files?.length
+                ? files[files.length - 1].sort
+                : 0;
             await Promise.all(
                 uploadFiles.map(async (uploadFile, index) => {
                     const { name, type, size, originFileObj } = uploadFile;
@@ -250,12 +249,10 @@ export default OakComponent({
                             fileType: type,
                             size,
                             extra1: originFileObj,
-                            sort: currentSort + (index + 1) * 100
+                            sort: currentSort + (index + 1) * 100,
                         },
                         callback
                     );
-
-
                 })
             );
         },
@@ -276,7 +273,6 @@ export default OakComponent({
             const filename = name.substring(0, name.lastIndexOf('.'));
             assert(entity, '必须传入entity');
             assert(origin === 'qiniu', '目前只支持七牛上传'); // 目前只支持七牛上传
-            const id = generateNewId();
             const updateData = {
                 origin,
                 type: type || 'file',
@@ -288,9 +284,8 @@ export default OakComponent({
                 size,
                 extension,
                 fileType,
-                id,
                 entityId,
-                sort
+                sort,
             } as EntityDict['extraFile']['CreateSingle']['data'];
             // autoUpload为true, 选择直接上传七牛，再提交extraFile
             if (autoUpload) {
@@ -300,8 +295,9 @@ export default OakComponent({
                 try {
                     this.addItem(updateData, undefined, async () => {
                         await this.features.extraFile.upload(
-                            updateData, extra1
-                        )
+                            updateData,
+                            extra1
+                        );
                     });
                     await this.execute();
                     if (callback) {
@@ -311,19 +307,17 @@ export default OakComponent({
                     if (callback) {
                         callback(updateData, 'failed');
                     }
-                    //todo 保存extraFile失败 需要remove七牛图片
-
                     throw error;
                 }
             } else {
-                this.addItem(updateData, undefined, async () => {
-                    await this.features.extraFile.upload(
-                        updateData, extra1
-                    )
+                const id = this.addItem(updateData, undefined, async () => {
+                    await this.features.extraFile.upload(updateData, extra1);
                 });
                 this.setState({
-                    fileList: Object.assign(this.state.fileList, { [id]: extra1 })
-                })
+                    fileList: Object.assign(this.state.fileList, {
+                        [id]: extra1,
+                    }),
+                });
             }
         },
         async onItemTapped(event: WechatMiniprogram.Touch) {
@@ -344,7 +338,7 @@ export default OakComponent({
             };
             this.triggerEvent('tap', detail);
             // 预览图片
-            if (this.props.preview) {
+            if (!this.props.disablePreview) {
                 const result = await wx.previewImage({
                     urls: urls,
                     current: imageUrl,
@@ -359,13 +353,11 @@ export default OakComponent({
             const { fileList } = this.state;
             if (removeLater || !uploadState) {
                 this.removeItem(id);
-                Object.assign(
-                    fileList, {
+                Object.assign(fileList, {
                     [id]: null,
-                }
-                );
+                });
                 this.setState({
-                    fileList
+                    fileList,
                 });
             } else {
                 const result = await wx.showModal({
@@ -375,13 +367,11 @@ export default OakComponent({
                 const { confirm } = result;
                 if (confirm) {
                     this.removeItem(id);
-                    Object.assign(
-                        fileList, {
+                    Object.assign(fileList, {
                         id: null,
-                    }
-                    );
+                    });
                     this.setState({
-                        fileList
+                        fileList,
                     });
                     await this.execute();
                 }
@@ -394,13 +384,11 @@ export default OakComponent({
             // 如果 removeLater为true 或 origin === 'qiniu' 且 bucket不存在
             if (removeLater || !uploadState) {
                 this.removeItem(id);
-                Object.assign(
-                    fileList, {
+                Object.assign(fileList, {
                     id: null,
-                }
-                );
+                });
                 this.setState({
-                    fileList
+                    fileList,
                 });
             } else {
                 const confirm = Dialog.confirm({
@@ -410,13 +398,11 @@ export default OakComponent({
                     okText: '确定',
                     onOk: async (e: any) => {
                         this.removeItem(id);
-                        Object.assign(
-                            fileList, {
+                        Object.assign(fileList, {
                             id: null,
-                        }
-                        );
+                        });
                         this.setState({
-                            fileList
+                            fileList,
                         });
                         await this.execute();
                         confirm.destroy();
@@ -488,7 +474,7 @@ export default OakComponent({
                         content: '下载文件失败',
                     });
                 },
-                complete: function (res) { },
+                complete: function (res) {},
             });
         },
         async onOpenByMp(event: WechatMiniprogram.Touch) {
@@ -554,7 +540,7 @@ export default OakComponent({
                         content: '下载文件失败',
                     });
                 },
-                complete: function (res) { },
+                complete: function (res) {},
             });
         },
     },
@@ -596,38 +582,37 @@ export default OakComponent({
         T2,
         true,
         {
-            removeLater: boolean,
-            autoUpload: boolean,
-            maxNumber: number,
-            extension: string[],
-            fileType: FileType,
-            selectCount: number,
-            sourceType: SourceType[],
-            mediaType: ('image' | 'video')[],
+            removeLater: boolean;
+            autoUpload: boolean;
+            maxNumber: number;
+            extension: string[];
+            selectCount: number;
+            sourceType: SourceType[];
+            mediaType: ('image' | 'video')[];
             // 图片显示模式
-            mode: ImgMode,
+            mode: ImgMode;
             // 每行可显示的个数
-            size: number,
-            showUploadList: boolean,
-            accept: string,
+            size: number;
+            showUploadList: boolean;
+            accept: string;
             // 图片是否可预览
-            preview: boolean,
+            disablePreview: boolean;
             // 图片是否可删除
-            disableDelete: boolean,
+            disableDelete: boolean;
             // 上传按钮隐藏
-            disableAdd: boolean,
+            disableAdd: boolean;
             // 下按按钮隐藏
-            disableDownload: boolean,
-            disabled: boolean,
-            type: string,
-            origin: string,
-            tag1: string,
-            tag2: string,
-            entity: keyof ED2,
-            entityId: string,
-            theme: Theme,
-            showUploadProgress: boolean,
-            children?: React.ReactNode,
+            disableDownload: boolean;
+            disabled: boolean;
+            type: string;
+            origin: string;
+            tag1: string;
+            tag2: string;
+            entity: keyof ED2;
+            entityId: string;
+            theme: Theme;
+            showUploadProgress: boolean;
+            children?: React.ReactNode;
         }
     >
 ) => React.ReactElement;

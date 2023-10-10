@@ -1,4 +1,4 @@
-// import { Schema as ExtraFile } from '../../../
+
 
 export default OakComponent({
     entity: 'sessionMessage',
@@ -96,14 +96,15 @@ export default OakComponent({
             ),
         };
 
-        // if (type === 'image') {
-        //     const extraFile$entity =
-        //         wechatMessage?.extraFile$entity as ExtraFile[];
+        if (type === 'image') {
+            const extraFile$entity = sessionMessage?.extraFile$entity;
 
-        //     Object.assign(newWechatMessage, {
-        //         picUrl: features.extraFile.getUrl(extraFile$entity[0]),
-        //     });
-        // }
+            Object.assign(newSessionMessage, {
+                picUrl: features.extraFile.getUrl(
+                    extraFile$entity && extraFile$entity[0]
+                ),
+            });
+        }
 
         return newSessionMessage;
     },

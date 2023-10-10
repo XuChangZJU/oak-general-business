@@ -33,12 +33,6 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
     protected amIReallyRoot?: boolean;
     protected rootMode?: boolean;
     private temporaryUserId?: string;
-    private initializedMark: Promise<void>;
-
-    constructor(store: AsyncRowStore<ED, BackendRuntimeContext<ED>>, data?: SerializedData, headers?: IncomingHttpHeaders) {
-        super(store, data, headers);
-        this.initializedMark = this.initialize(data);
-    }
 
     async refineOpRecords(): Promise<void> {
         for (const opRecord of this.opRecords) {
@@ -148,17 +142,9 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         this.application = result[0];
     }
 
-    /**
-     * 异步等待初始化完成
-     */
-    protected async initialized() {
-        await super.initialized();
-        await this.initializedMark;
-    }
-
-    protected async initialize(data?: SerializedData) {
+    async initialize(data?: SerializedData) {
+        await super.initialize(data);
         if (data) {
-            await this.begin();
             const closeRootMode = this.openRootMode();
             try {
                 const { a: appId, t: tokenValue, rm } = data;
@@ -175,10 +161,8 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
                 if (!rm) {
                     closeRootMode();
                 }
-                await this.commit();
             } catch (err) {
                 closeRootMode();
-                await this.rollback();
                 throw err;
             }
         } else {

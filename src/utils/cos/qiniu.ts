@@ -147,6 +147,18 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
         
         // web环境下访问不了七牛接口，用mockData过
         const mockData = process.env.OAK_PLATFORM === 'web' ? true : undefined;
-        await (instance as QiniuCloudInstance).removeKodoFile(extraFile.bucket!, key, mockData);
+        try {
+            await (instance as QiniuCloudInstance).removeKodoFile(extraFile.bucket!, key, mockData);
+        }
+        catch (err: any) {
+            // 七牛如果文件不存在会抛出status ＝ 612的异常
+            if (err instanceof OakExternalException) {
+                const data = err.data;
+                if (data && data.status === 612) {
+                    return;
+                }
+            }
+            throw err;
+        }
     }
 };

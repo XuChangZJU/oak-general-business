@@ -32,7 +32,7 @@ async function checkWhetherSuccess(context, applicationId, rows) {
             }
         }, {});
     }
-    else {
+    if (failedIds.length > 0) {
         await context.operate('extraFile', {
             id: await generateNewIdAsync(),
             action: 'update',

@@ -1,5 +1,5 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import Dialog from '../../../utils/dialog/index';
 export default OakComponent({
     entity: 'extraFile',
@@ -23,7 +23,9 @@ export default OakComponent({
         uploadState: 1,
     },
     formData({ data: originalFiles, features }) {
-        let files = originalFiles?.filter((ele) => !ele.$$deleteAt$$).sort((ele1, ele2) => ele1.sort - ele2.sort);
+        let files = originalFiles
+            ?.filter((ele) => !ele.$$deleteAt$$)
+            .sort((ele1, ele2) => ele1.sort - ele2.sort);
         if (this.props.tag1) {
             files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
         }
@@ -39,7 +41,7 @@ export default OakComponent({
     data: {
         // 根据 size 不同，计算的图片显示大小不同
         itemSizePercentage: '',
-        fileList: {}
+        fileList: {},
     },
     wechatMp: {
         externalClasses: ['oak-class', 'oak-item-class'],
@@ -64,23 +66,17 @@ export default OakComponent({
         autoUpload: false,
         maxNumber: 20,
         extension: [],
-        fileType: 'all',
         selectCount: 1,
         sourceType: ['album', 'camera'],
         mediaType: ['image'],
-        // 图片显示模式
         mode: 'aspectFit',
-        // 每行可显示的个数
         size: 3,
         showUploadList: true,
+        showUploadProgress: false,
         accept: 'image/*',
-        // 图片是否可预览
-        preview: true,
-        // 图片是否可删除
+        disablePreview: false,
         disableDelete: false,
-        // 上传按钮隐藏
         disableAdd: false,
-        // 下按按钮隐藏
         disableDownload: false,
         disabled: false,
         type: '',
@@ -90,13 +86,14 @@ export default OakComponent({
         entity: '',
         entityId: '',
         theme: 'image',
-        showUploadProgress: false,
     },
     methods: {
         getUrl(extraFile) {
             const { fileList } = this.state;
             if (fileList[extraFile?.id]) {
-                const url = this.features.extraFile.getUrl(Object.assign({}, extraFile, { extra1: fileList[extraFile?.id] }));
+                const url = this.features.extraFile.getUrl(Object.assign({}, extraFile, {
+                    extra1: fileList[extraFile?.id],
+                }));
                 return url;
             }
             return this.features.extraFile.getUrl(extraFile);
@@ -104,7 +101,7 @@ export default OakComponent({
         getFileName(extraFile) {
             return this.features.extraFile.getFileName(extraFile);
         },
-        eFFormatBytes(value) {
+        formatBytes(value) {
             return this.features.extraFile.formatBytes(value);
         },
         /**
@@ -171,12 +168,12 @@ export default OakComponent({
             }
         },
         async chooseFileByMp() {
-            const { selectCount, extension, fileType } = this.props;
+            const { selectCount, extension } = this.props;
             try {
                 const { errMsg, tempFiles } = await wx.chooseMessageFile({
                     count: selectCount,
                     type: 'all',
-                    ...(fileType === 'file' ? { extension } : {}),
+                    extension,
                 });
                 if (errMsg !== 'chooseMessageFile:ok') {
                     this.triggerEvent('error', {
@@ -217,7 +214,9 @@ export default OakComponent({
         },
         async onPickByWeb(uploadFiles, callback) {
             const { files } = this.state;
-            const currentSort = files?.length ? files[files.length - 1].sort : 0;
+            const currentSort = files?.length
+                ? files[files.length - 1].sort
+                : 0;
             await Promise.all(uploadFiles.map(async (uploadFile, index) => {
                 const { name, type, size, originFileObj } = uploadFile;
                 await this.pushExtraFile({
@@ -225,7 +224,7 @@ export default OakComponent({
                     fileType: type,
                     size,
                     extra1: originFileObj,
-                    sort: currentSort + (index + 1) * 100
+                    sort: currentSort + (index + 1) * 100,
                 }, callback);
             }));
         },
@@ -236,7 +235,6 @@ export default OakComponent({
             const filename = name.substring(0, name.lastIndexOf('.'));
             assert(entity, '必须传入entity');
             assert(origin === 'qiniu', '目前只支持七牛上传'); // 目前只支持七牛上传
-            const id = generateNewId();
             const updateData = {
                 origin,
                 type: type || 'file',
@@ -248,9 +246,8 @@ export default OakComponent({
                 size,
                 extension,
                 fileType,
-                id,
                 entityId,
-                sort
+                sort,
             };
             // autoUpload为true, 选择直接上传七牛，再提交extraFile
             if (autoUpload) {
@@ -270,16 +267,17 @@ export default OakComponent({
                     if (callback) {
                         callback(updateData, 'failed');
                     }
-                    //todo 保存extraFile失败 需要remove七牛图片
                     throw error;
                 }
             }
             else {
-                this.addItem(updateData, undefined, async () => {
+                const id = this.addItem(updateData, undefined, async () => {
                     await this.features.extraFile.upload(updateData, extra1);
                 });
                 this.setState({
-                    fileList: Object.assign(this.state.fileList, { [id]: extra1 })
+                    fileList: Object.assign(this.state.fileList, {
+                        [id]: extra1,
+                    }),
                 });
             }
         },
@@ -298,7 +296,7 @@ export default OakComponent({
             };
             this.triggerEvent('tap', detail);
             // 预览图片
-            if (this.props.preview) {
+            if (!this.props.disablePreview) {
                 const result = await wx.previewImage({
                     urls: urls,
                     current: imageUrl,
@@ -317,7 +315,7 @@ export default OakComponent({
                     [id]: null,
                 });
                 this.setState({
-                    fileList
+                    fileList,
                 });
             }
             else {
@@ -332,7 +330,7 @@ export default OakComponent({
                         id: null,
                     });
                     this.setState({
-                        fileList
+                        fileList,
                     });
                     await this.execute();
                 }
@@ -349,7 +347,7 @@ export default OakComponent({
                     id: null,
                 });
                 this.setState({
-                    fileList
+                    fileList,
                 });
             }
             else {
@@ -364,7 +362,7 @@ export default OakComponent({
                             id: null,
                         });
                         this.setState({
-                            fileList
+                            fileList,
                         });
                         await this.execute();
                         confirm.destroy();
