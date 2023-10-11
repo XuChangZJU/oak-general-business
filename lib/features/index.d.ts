@@ -7,6 +7,7 @@ import { Config } from './config';
 import { WeiXinJsSdk } from './weiXinJsSdk';
 import { WechatMenu } from './wechatMenu';
 import { WechatPublicTag } from './wechatPublicTag';
+import { UserWechatPublicTag } from './userWechatPublicTag';
 import { BasicFeatures } from 'oak-frontend-base';
 import AspectDict from '../aspects/AspectDict';
 import { AppType } from '../oak-app-domain/Application/Schema';
@@ -25,4 +26,5 @@ export type GeneralFeatures<ED extends EntityDict, Cxt extends BackendRuntimeCon
     theme: Theme<ED, Cxt, FrontCxt, AD>;
     wechatMenu: WechatMenu<ED, Cxt, FrontCxt, AD>;
     wechatPublicTag: WechatPublicTag<ED, Cxt, FrontCxt, AD>;
+    userWechatPublicTag: UserWechatPublicTag<ED, Cxt, FrontCxt, AD>;
 };

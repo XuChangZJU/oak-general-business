@@ -44,7 +44,8 @@ export class WechatMenu<
 
     async createMenu(params: {
         applicationId: string,
-        menuConfig: any
+        menuConfig: any,
+        id: string,
     }) {
         const callBack = await this.cache.exec('createMenu', params);
         return callBack.result;
@@ -52,7 +53,8 @@ export class WechatMenu<
 
     async createConditionalMenu(params: {
         applicationId: string,
-        menuConfig: any
+        menuConfig: any,
+        id: string,
     },) {
         const callBack = await this.cache.exec('createConditionalMenu', params);
         return callBack.result;

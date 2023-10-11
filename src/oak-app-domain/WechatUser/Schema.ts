@@ -30,6 +30,8 @@ export type OpSchema = EntityShape & {
     applicationId: ForeignKey<"application">;
     nickname?: String<128> | null;
     avatar?: Image | null;
+    remark?: String<32> | null;
+    language: 'zh_CN' | 'zh_TW' | 'en';
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
@@ -49,6 +51,8 @@ export type Schema = EntityShape & {
     applicationId: ForeignKey<"application">;
     nickname?: String<128> | null;
     avatar?: Image | null;
+    remark?: String<32> | null;
+    language: 'zh_CN' | 'zh_TW' | 'en';
     user?: User.Schema | null;
     application: Application.Schema;
     sessionMessage$wechatUser?: Array<SessionMessage.Schema>;
@@ -87,6 +91,8 @@ type AttrFilter = {
     application: Application.Filter;
     nickname: Q_StringValue;
     avatar: Q_StringValue;
+    remark: Q_StringValue;
+    language: Q_EnumValue<'zh_CN' | 'zh_TW' | 'en'>;
     sessionMessage$wechatUser: SessionMessage.Filter & SubQueryPredicateMetadata;
     userWechatPublicTag$wechatUser: UserWechatPublicTag.Filter & SubQueryPredicateMetadata;
     modiEntity$entity: ModiEntity.Filter & SubQueryPredicateMetadata;
@@ -119,6 +125,8 @@ export type Projection = {
     application?: Application.Projection;
     nickname?: number;
     avatar?: number;
+    remark?: number;
+    language?: number;
     sessionMessage$wechatUser?: SessionMessage.Selection & {
         $entity: "sessionMessage";
     };
@@ -203,6 +211,10 @@ export type SortAttr = {
     nickname: number;
 } | {
     avatar: number;
+} | {
+    remark: number;
+} | {
+    language: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

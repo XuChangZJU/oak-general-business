@@ -4,5 +4,6 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     tagId: string;
     wechatId: string;
     menuType: string;
+    tabKey: string;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

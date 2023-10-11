@@ -17,8 +17,10 @@ export default function Render(
         }
     >
 ) {
-    const { rows, oakLoading, getTag } = props.data;
+    const { rows, oakLoading, getTag, oakPagination } = props.data;
+    const { setPageSize, setCurrentPage } = props.methods;
     const [selectedRowKeys, setSelectedRowKeys] = useState([] as string[]);
+    const { pageSize, total, currentPage } = oakPagination || {};
     return (
         <div className={Style.container}>
             <Table
@@ -49,7 +51,17 @@ export default function Render(
                         }
                     }
                 }}
-                pagination={false}
+                pagination={{
+                    total,
+                    pageSize,
+                    current: currentPage,
+                    onShowSizeChange: (pageSize: number) => {
+                        setPageSize(pageSize);
+                    },
+                    onChange: (current: number) => {
+                        setCurrentPage(current);
+                    },
+                }}
             />
         </div>
     );

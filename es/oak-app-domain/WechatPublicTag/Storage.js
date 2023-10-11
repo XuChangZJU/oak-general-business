@@ -25,24 +25,12 @@ export const desc = {
         },
         syncAt: {
             type: "datetime"
+        },
+        iState: {
+            type: "enum",
+            enumeration: ["wait", "success", "fail"]
         }
     },
     actionType: "crud",
-    actions,
-    indexes: [
-        {
-            name: 'index_text_application',
-            attributes: [
-                {
-                    name: 'text'
-                },
-                {
-                    name: "applicationId"
-                },
-            ],
-            config: {
-                unique: true
-            }
-        }
-    ]
+    actions
 };

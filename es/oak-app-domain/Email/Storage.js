@@ -26,13 +26,13 @@ export const desc = {
             attributes: [
                 {
                     name: 'email',
-                    direction: 'ASC'
+                    direction: 'ASC',
                 },
                 {
                     name: 'ableState',
-                    direction: 'ASC'
+                    direction: 'ASC',
                 }
-            ]
+            ],
         }
     ]
 };

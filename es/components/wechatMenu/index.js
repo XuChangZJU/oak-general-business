@@ -3,6 +3,7 @@ export default OakComponent({
     properties: {
         applicationId: '',
         isPlatform: false,
+        tabKey: '',
     },
     lifetimes: {
         async ready() {

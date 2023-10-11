@@ -188,6 +188,7 @@ export type GeneralAspectDict<
         params: {
             applicationId: string;
             menuConfig: any;
+            id: string;
         },
         context: Cxt
     ) => Promise<any>;
@@ -195,6 +196,7 @@ export type GeneralAspectDict<
         params: {
             applicationId: string;
             menuConfig: any;
+            id: string;
         },
         context: Cxt
     ) => Promise<any>;
@@ -277,10 +279,84 @@ export type GeneralAspectDict<
     deleteTag: (
         params: {
             applicationId: string;
-            id: number;
+            id: string;
+            wechatId: number
         },
         context: Cxt
     ) => Promise<any>;
+    syncTag: (
+        params: {
+            applicationId: string;
+            id: string;
+        },
+        context: Cxt
+    ) => Promise<any>;
+    oneKeySync: (
+        params: {
+            applicationId: string;
+        },
+        context: Cxt
+    ) => Promise<any>;
+    getTagUsers: (
+        params: {
+            applicationId: string;
+            tagId: number;
+        },
+        context: Cxt
+    ) => Promise<any>;
+    batchtagging: (
+        params: {
+            applicationId: string;
+            openIdList: string[];
+            tagId: number;
+        },
+        context: Cxt
+    ) => Promise<any>;
+    batchuntagging: (
+        params: {
+            applicationId: string;
+            openIdList: string[];
+            tagId: number;
+        },
+        context: Cxt
+    ) => Promise<any>;
+    getUserTags: (
+        params: {
+            applicationId: string;
+            openId: string;
+        },
+        context: Cxt
+    ) => Promise<any>;
+    getUsers: (
+        params: {
+            applicationId: string;
+            nextOpenId: string;
+        },
+        context: Cxt
+    ) => Promise<any>;
+    tagging: (
+        params: {
+            applicationId: string,
+            openId: string,
+            tagIdList: number[],
+        },
+        context: Cxt
+    ) => Promise<any>
+    syncToLocale: (
+        params: {
+            applicationId: string,
+            openId: string,
+        },
+        context: Cxt
+    ) => Promise<any>
+    syncToWechat: (
+        params: {
+            applicationId: string,
+            id: string,
+            openId: string,
+        },
+        context: Cxt
+    ) => Promise<any>
 };
 
 export default GeneralAspectDict;

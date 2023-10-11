@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Tabs, Card, Descriptions, Typography, Button, TabsProps } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
@@ -14,6 +14,9 @@ import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 import MessageTypeTemplateIdList from '../../../components/messageTypeTemplateId/list';
 import WechatMenu from '../../../components/wechatMenu';
+import UserWechatPublicTag from '../../../components/userWechatPublicTag';
+import WechatPublicTag from '../../../components/wechatPublicTag/list';
+import WechatPublicAutoReply from '../../../components/wechatPublicAutoReply';
 
 type Config = WebConfig | WechatPublicConfig | WechatMpConfig;
 
@@ -41,18 +44,9 @@ export default function Render(
     const { oakId, tabValue, config, name, description, type, system } =
         props.data;
     const { t, navigateBack, onTabClick, goWechatPublicTagList } = props.methods;
-
+    const [tabKey, setTabKey] = useState('');
     const Actions: ReactNode[] = [];
-    if (type === 'wechatPublic') {
-        Actions.push(
-            <Button
-                onClick={() => goWechatPublicTagList()}
-            >
-                公众号Tag管理
-            </Button>
-        );
-    }
-    const items: TabsProps['items'] = [        
+    const items: TabsProps['items'] = [
         {
             label: '应用概览',
             key: 'detail',
@@ -106,18 +100,54 @@ export default function Render(
             ),
         });
     }
-    if(['wechatPublic'].includes(type)) {
-        items.push({
-            label: '菜单管理',
-            key: 'menu',
-            children: (
-                <WechatMenu
-                    oakAutoUnmount={true}
-                    applicationId={oakId}
-                    oakPath={`$application-detail-menu-${oakId}`}
-                />
-            )
-        })
+    if (['wechatPublic'].includes(type)) {
+        items.push(
+            {
+                label: '菜单管理',
+                key: 'menu',
+                children: (
+                    <WechatMenu
+                        oakAutoUnmount={true}
+                        applicationId={oakId}
+                        oakPath={`$application-detail-menu-${oakId}`}
+                        tabKey={tabKey}
+                    />
+                )
+            },
+            {
+                label: '被关注回复管理',
+                key: 'autoReply',
+                children: (
+                    <WechatPublicAutoReply
+                        oakAutoUnmount={true}
+                        applicationId={oakId}
+                        oakPath={`$application-detial-autoReply-${oakId}`}
+                    />
+                )
+            },
+            {
+                label: '标签管理',
+                key: 'tag',
+                children: (
+                    <WechatPublicTag
+                        oakAutoUnmount={true}
+                        applicationId={oakId}
+                        oakPath={`$application-detail-tag-${oakId}`}
+                    />
+                )
+            },
+            {
+                label: '用户管理',
+                key: 'user',
+                children: (
+                    <UserWechatPublicTag
+                        oakAutoUnmount={true}
+                        applicationId={oakId}
+                        oakPath={`$application-detail-user-${oakId}`}
+                    />
+                )
+            }
+        )
     }
 
     return (
@@ -126,6 +156,9 @@ export default function Render(
                 <Card title={name} bordered={false} extra={Actions}>
                     <Tabs
                         items={items}
+                        onChange={(key) => {
+                            setTabKey(key);
+                        }}
                     />
                 </Card>
             </div>

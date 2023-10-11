@@ -1,5 +1,6 @@
 import { WechatSDK, } from 'oak-external-sdk';
 import { assert } from 'oak-domain/lib/utils/assert';
+import { generateNewIdAsync } from "oak-domain/lib/utils/uuid";
 async function getWechatPublicConfig(applicationId, context) {
     const [application] = await context.select('application', {
         data: {
@@ -51,8 +52,32 @@ export async function createMenu(params, context) {
     appId = config2.appId;
     appSecret = config2.appSecret;
     const wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
-    const result = await wechatInstance.createMenu(params.menuConfig);
-    return result;
+    try {
+        const result = await wechatInstance.createMenu(params.menuConfig);
+        await context.operate('wechatMenu', {
+            id: await generateNewIdAsync(),
+            action: 'update',
+            data: {
+                iState: 'success',
+            },
+            filter: {
+                id: params.id,
+            }
+        }, {});
+    }
+    catch (e) {
+        await context.operate('wechatMenu', {
+            id: await generateNewIdAsync(),
+            action: 'update',
+            data: {
+                iState: 'fail',
+            },
+            filter: {
+                id: params.id,
+            }
+        }, {});
+        throw e;
+    }
 }
 export async function createConditionalMenu(params, context) {
     const application = await getWechatPublicConfig(params.applicationId, context);
@@ -64,8 +89,33 @@ export async function createConditionalMenu(params, context) {
     appId = config2.appId;
     appSecret = config2.appSecret;
     const wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
-    const result = await wechatInstance.createConditionalMenu(params.menuConfig);
-    return result;
+    try {
+        const result = await wechatInstance.createConditionalMenu(params.menuConfig);
+        await context.operate('wechatMenu', {
+            id: await generateNewIdAsync(),
+            action: 'update',
+            data: {
+                iState: 'success',
+                menuId: result.menuid
+            },
+            filter: {
+                id: params.id,
+            }
+        }, {});
+    }
+    catch (e) {
+        await context.operate('wechatMenu', {
+            id: await generateNewIdAsync(),
+            action: 'update',
+            data: {
+                iState: 'fail',
+            },
+            filter: {
+                id: params.id,
+            }
+        }, {});
+        throw e;
+    }
 }
 export async function deleteConditionalMenu(params, context) {
     const application = await getWechatPublicConfig(params.applicationId, context);
@@ -78,7 +128,6 @@ export async function deleteConditionalMenu(params, context) {
     appSecret = config2.appSecret;
     const wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
     const result = await wechatInstance.deleteConditionalMenu(params.menuId);
-    return result;
 }
 export async function deleteMenu(params, context) {
     const application = await getWechatPublicConfig(params.applicationId, context);

@@ -2,11 +2,12 @@ import { PrimaryKey, ForeignKey, JsonProjection } from "oak-domain/lib/types/Dat
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf, ValueOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
-import { Action, ParticularAction } from "./Action";
+import { Action, ParticularAction, IState } from "./Action";
 import { RelationAction } from "oak-domain/lib/actions/action";
 import { String, Text, Datetime, Boolean, Uint } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
+import { ActionDef } from "oak-domain/lib/types/Action";
 import * as Application from "../Application/Schema";
 import * as UserWechatPublicTag from "../UserWechatPublicTag/Schema";
 import * as WechatMenu from "../WechatMenu/Schema";
@@ -18,6 +19,7 @@ export type OpSchema = EntityShape & {
     wechatId?: Uint<4> | null;
     sync?: Boolean | null;
     syncAt?: Datetime | null;
+    iState?: IState | null;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
@@ -26,6 +28,7 @@ export type Schema = EntityShape & {
     wechatId?: Uint<4> | null;
     sync?: Boolean | null;
     syncAt?: Datetime | null;
+    iState?: IState | null;
     application: Application.Schema;
     userWechatPublicTag$wechatPublicTag?: Array<UserWechatPublicTag.Schema>;
     userWechatPublicTag$wechatPublicTag$$aggr?: AggregationResult<UserWechatPublicTag.Schema>;
@@ -49,6 +52,7 @@ type AttrFilter = {
     wechatId: Q_NumberValue;
     sync: Q_BooleanValue;
     syncAt: Q_DateValue;
+    iState: Q_EnumValue<IState>;
     userWechatPublicTag$wechatPublicTag: UserWechatPublicTag.Filter & SubQueryPredicateMetadata;
     wechatMenu$wechatPublicTag: WechatMenu.Filter & SubQueryPredicateMetadata;
     modiEntity$entity: ModiEntity.Filter & SubQueryPredicateMetadata;
@@ -68,6 +72,7 @@ export type Projection = {
     wechatId?: number;
     sync?: number;
     syncAt?: number;
+    iState?: number;
     userWechatPublicTag$wechatPublicTag?: UserWechatPublicTag.Selection & {
         $entity: "userWechatPublicTag";
     };
@@ -119,6 +124,8 @@ export type SortAttr = {
     sync: number;
 } | {
     syncAt: number;
+} | {
+    iState: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

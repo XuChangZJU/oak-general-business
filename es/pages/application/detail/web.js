@@ -1,16 +1,18 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { Tabs, Card, Descriptions, Typography, Button } from 'antd';
+import { useState } from 'react';
+import { Tabs, Card, Descriptions, Typography } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
 import MessageTypeTemplateIdList from '../../../components/messageTypeTemplateId/list';
 import WechatMenu from '../../../components/wechatMenu';
+import UserWechatPublicTag from '../../../components/userWechatPublicTag';
+import WechatPublicTag from '../../../components/wechatPublicTag/list';
+import WechatPublicAutoReply from '../../../components/wechatPublicAutoReply';
 export default function Render(props) {
     const { oakId, tabValue, config, name, description, type, system } = props.data;
     const { t, navigateBack, onTabClick, goWechatPublicTagList } = props.methods;
+    const [tabKey, setTabKey] = useState('');
     const Actions = [];
-    if (type === 'wechatPublic') {
-        Actions.push(_jsx(Button, { onClick: () => goWechatPublicTagList(), children: "\u516C\u4F17\u53F7Tag\u7BA1\u7406" }));
-    }
     const items = [
         {
             label: '应用概览',
@@ -30,8 +32,22 @@ export default function Render(props) {
         items.push({
             label: '菜单管理',
             key: 'menu',
-            children: (_jsx(WechatMenu, { oakAutoUnmount: true, applicationId: oakId, oakPath: `$application-detail-menu-${oakId}` }))
+            children: (_jsx(WechatMenu, { oakAutoUnmount: true, applicationId: oakId, oakPath: `$application-detail-menu-${oakId}`, tabKey: tabKey }))
+        }, {
+            label: '被关注回复管理',
+            key: 'autoReply',
+            children: (_jsx(WechatPublicAutoReply, { oakAutoUnmount: true, applicationId: oakId, oakPath: `$application-detial-autoReply-${oakId}` }))
+        }, {
+            label: '标签管理',
+            key: 'tag',
+            children: (_jsx(WechatPublicTag, { oakAutoUnmount: true, applicationId: oakId, oakPath: `$application-detail-tag-${oakId}` }))
+        }, {
+            label: '用户管理',
+            key: 'user',
+            children: (_jsx(UserWechatPublicTag, { oakAutoUnmount: true, applicationId: oakId, oakPath: `$application-detail-user-${oakId}` }))
         });
     }
-    return (_jsx(PageHeader, { showBack: true, title: "\u5E94\u7528\u6982\u89C8", children: _jsx("div", { className: Style.container, children: _jsx(Card, { title: name, bordered: false, extra: Actions, children: _jsx(Tabs, { items: items }) }) }) }));
+    return (_jsx(PageHeader, { showBack: true, title: "\u5E94\u7528\u6982\u89C8", children: _jsx("div", { className: Style.container, children: _jsx(Card, { title: name, bordered: false, extra: Actions, children: _jsx(Tabs, { items: items, onChange: (key) => {
+                        setTabKey(key);
+                    } }) }) }) }));
 }

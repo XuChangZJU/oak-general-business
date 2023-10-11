@@ -24,8 +24,11 @@ export default function Render(
             menuId: number;
             wechatId: string;
             iState: string;
+            tabKey: string;
         },
         {
+            create: () => void;
+            remove: () => void;
         }
     >
 ) {
@@ -40,11 +43,14 @@ export default function Render(
         menuId,
         wechatId,
         iState,
+        tabKey,
     } = data;
     const {
         updateItem,
         removeItem,
         execute,
+        create,
+        remove,
     } = methods
     const [isPreview, setIsPreview] = useState(false);
     const [selectedBtn, setSelectedBtn] = useState(0);
@@ -64,7 +70,7 @@ export default function Render(
         }, id)
     };
     const deleteMenu = () => {
-        removeItem(id);
+        remove();
     }
     const getSelectedBtn = (selectedBtn: number) => {
         setSelectedBtn(selectedBtn);
@@ -78,8 +84,8 @@ export default function Render(
     const getErrorIndex = (errorIndex: number[]) => {
         setErrorIndex(errorIndex);
     };
-    const createMenu = async () => {
-        await execute();
+    const createMenu = () => {
+        create();
     };
     const changeIsPreview = (isPreview: boolean) => {
         setIsPreview(isPreview);
@@ -104,6 +110,7 @@ export default function Render(
                             errorIndex={errorIndex}
                             isPreview={isPreview}
                             open={open}
+                            tabKey={tabKey}
                         />
                     </div>
                     <div className={Style.rightBar}>

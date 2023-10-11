@@ -7,7 +7,7 @@ export default OakComponent({
         changeConfig: (config) => undefined,
         publish: (iState) => undefined,
         getErrorIndex: (errorIndex) => undefined,
-        createMenu: async () => undefined,
+        createMenu: () => undefined,
         selectedBtn: 0,
         selectedSubBtn: 0,
         currentIndex: 1,
@@ -223,7 +223,7 @@ export default OakComponent({
             if (this.checkError(config.button).length === 0 &&
                 config.button.length > 0) {
                 changeConfig(config);
-                await createMenu();
+                createMenu();
             }
             else {
                 if (config.button.length === 0) {
@@ -243,18 +243,8 @@ export default OakComponent({
             }
         },
         async deleteConditionalMenu() {
-            const { applicationId, deleteMenu, menuIndex, menuId, createMenu } = this.props;
-            const result = await this.features.wechatMenu.deleteConditionalMenu({ applicationId: applicationId, menuId: menuId });
-            if (result.success) {
-                deleteMenu();
-                await createMenu();
-            }
-            else {
-                this.setMessage({
-                    type: 'error',
-                    content: result.errmsg,
-                });
-            }
-        },
+            const { deleteMenu } = this.props;
+            deleteMenu();
+        }
     },
 });

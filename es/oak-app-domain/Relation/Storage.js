@@ -35,18 +35,18 @@ export const desc = {
             name: 'index_targetEntity_entityId_name',
             attributes: [
                 {
-                    name: 'entity'
+                    name: 'entity',
                 },
                 {
-                    name: 'entityId'
+                    name: 'entityId',
                 },
                 {
-                    name: 'name'
+                    name: 'name',
                 }
             ],
             config: {
-                unique: true
-            }
+                unique: true,
+            },
         }
     ]
 };

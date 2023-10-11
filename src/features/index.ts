@@ -6,7 +6,8 @@ import { Application } from './application';
 import { Config } from './config';
 import { WeiXinJsSdk } from './weiXinJsSdk';
 import { WechatMenu } from './wechatMenu';
-import { WechatPublicTag } from './wechatPublicTag'
+import { WechatPublicTag } from './wechatPublicTag';
+import { UserWechatPublicTag } from './userWechatPublicTag';
 import { BasicFeatures } from 'oak-frontend-base';
 import AspectDict from '../aspects/AspectDict';
 import { AppType } from '../oak-app-domain/Application/Schema';
@@ -47,6 +48,11 @@ export function initialize<
         basicFeatures.localStorage,
     )
 
+    const userWechatPublicTag = new UserWechatPublicTag<ED, Cxt, FrontCxt, AD>(
+        basicFeatures.cache,
+        basicFeatures.localStorage,
+    ) 
+
     // 临时代码，合并后再删
     const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application, basicFeatures.locales);
     const extraFile2 = new ExtraFile2<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application, basicFeatures.locales);
@@ -68,6 +74,7 @@ export function initialize<
         theme,
         wechatMenu,
         wechatPublicTag,
+        userWechatPublicTag,
     };
 }
 
@@ -86,4 +93,5 @@ export type GeneralFeatures<
     theme: Theme<ED, Cxt, FrontCxt, AD>;
     wechatMenu: WechatMenu<ED, Cxt, FrontCxt, AD>;
     wechatPublicTag: WechatPublicTag<ED, Cxt, FrontCxt, AD>;
+    userWechatPublicTag: UserWechatPublicTag<ED, Cxt, FrontCxt, AD>;
 };

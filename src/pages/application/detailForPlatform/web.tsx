@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Tabs, Card, Descriptions, Typography, Button, TabsProps } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import Style from './web.module.less';
@@ -15,6 +15,7 @@ import { WebComponentProps } from 'oak-frontend-base';
 import MessageTypeTemplateIdList from '../../../components/messageTypeTemplateId/list';
 import WechatMenu from '../../../components/wechatMenu';
 import WechatPublicAutoReply from '../../../components/wechatPublicAutoReply';
+import UserWechatPublicTag from '../../../components/userWechatPublicTag';
 
 type Config = WebConfig | WechatPublicConfig | WechatMpConfig;
 
@@ -42,6 +43,7 @@ export default function Render(
     const { oakId, tabValue, config, name, description, type, system } =
         props.data;
     const { t, navigateBack, onTabClick, goWechatPublicTagList } = props.methods;
+    const [tabKey, setTabKey] = useState('');
 
     const Actions: ReactNode[] = [];
     const items: TabsProps['items'] = [
@@ -54,6 +56,7 @@ export default function Render(
                     applicationId={oakId}
                     oakPath={`$application-detail-menu-${oakId}`}
                     isPlatform={true}
+                    tabKey={tabKey}
                 />
             )
         },
@@ -67,6 +70,17 @@ export default function Render(
                     oakPath={`$application-detial-autoReply-${oakId}`}
                 />
             )
+        },
+        {
+            label: '用户管理',
+            key: 'user',
+            children: (
+                <UserWechatPublicTag
+                    oakAutoUnmount={true}
+                    applicationId={oakId}
+                    oakPath={`$application-detail-user-${oakId}`}
+                />
+            )
         }
     ]
 
@@ -76,6 +90,9 @@ export default function Render(
                 <Card title={name} bordered={false} extra={Actions}>
                     <Tabs
                         items={items}
+                        onChange={(key) => {
+                            setTabKey(key);
+                        }}
                     />
                 </Card>
             </div>

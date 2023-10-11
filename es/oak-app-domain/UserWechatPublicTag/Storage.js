@@ -1,4 +1,4 @@
-import { genericActions as actions } from "oak-domain/lib/actions/action";
+import { actions } from "./Action";
 export const desc = {
     attributes: {
         wechatPublicTagId: {
@@ -18,6 +18,10 @@ export const desc = {
         syncAt: {
             notNull: true,
             type: "datetime"
+        },
+        iState: {
+            type: "enum",
+            enumeration: ["wait", "success", "fail"]
         }
     },
     actionType: "crud",

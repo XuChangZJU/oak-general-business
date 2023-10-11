@@ -10,10 +10,12 @@ export declare function getMenu<ED extends EntityDict, Cxt extends BackendRuntim
 export declare function createMenu<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
     menuConfig: any;
+    id: string;
 }, context: Cxt): Promise<any>;
 export declare function createConditionalMenu<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
     menuConfig: any;
+    id: string;
 }, context: Cxt): Promise<any>;
 export declare function deleteConditionalMenu<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
