@@ -5,11 +5,15 @@ import { ED, BRC, FRC } from '../../types/RuntimeCxt';
 
 import Cos from "../../types/Cos";
 import Qiniu from "./qiniu";
+import Wechat from './wechat';
+
 
 const qiniu = new Qiniu();
+const wechat = new Wechat();
 
 const CosDict: Record<string, any> = {
     [qiniu.name]: qiniu,
+    [wechat.name]: wechat,
 };
 
 /**
