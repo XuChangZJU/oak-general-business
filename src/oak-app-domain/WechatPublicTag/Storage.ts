@@ -34,9 +34,6 @@ export const desc: StorageDesc<OpSchema> = {
         }
     },
     actionType: "crud",
-<<<<<<< HEAD
-    actions
-=======
     actions,
     indexes: [
         {
@@ -54,5 +51,4 @@ export const desc: StorageDesc<OpSchema> = {
             },
         }
     ]
->>>>>>> 4903b992bd0929b343603c9b7d376080bd069a75
 };
