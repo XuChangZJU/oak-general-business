@@ -4,5 +4,6 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     onSelect: (id: string) => void;
     key: string;
     entityFilter: {};
+    name: undefined;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

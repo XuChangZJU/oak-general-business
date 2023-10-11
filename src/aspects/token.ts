@@ -35,7 +35,7 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { tokenProjection } from '../types/Projection';
 import { sendSms } from '../utils/sms';
 import { mergeUser } from './user';
-import { pick } from 'oak-domain/lib/utils/lodash';
+import { cloneDeep, pick } from 'oak-domain/lib/utils/lodash';
 
 async function makeDistinguishException<
     ED extends EntityDict,
@@ -572,7 +572,7 @@ async function loadTokenInfo<
     return await context.select(
         'token',
         {
-            data: tokenProjection,
+            data: cloneDeep(tokenProjection),
             filter: {
                 id: tokenId,
             },

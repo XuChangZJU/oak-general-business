@@ -6,6 +6,7 @@ export default OakComponent({
         entity: 1,
         entityId: 1,
         lmts: 1,
+        openId: 1,
         user: {
             id: 1,
             name: 1,
@@ -134,6 +135,7 @@ export default OakComponent({
         onSelect: (id: string) => { },
         key: '' as string,
         entityFilter: {},
+        name: undefined,
     },
     methods: {
         getAvatarUrl() {
@@ -148,7 +150,7 @@ export default OakComponent({
             }
         },
         getName() {
-            const { user, entity } = this.state;
+            const { user, entity, openId } = this.state;
             const { entityFilter } = this.props;
 
             if (entityFilter) {
@@ -163,6 +165,10 @@ export default OakComponent({
                 if (userMobile) {
                     return '用户' + userMobile;
                 }
+                if (openId) {
+                    return '微信用户' + openId;
+                }
+
 
                 return userNickname;
             } else {

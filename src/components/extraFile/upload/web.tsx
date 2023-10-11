@@ -23,8 +23,8 @@ function getListType(theme: Theme): UploadListType {
 }
 
 
-const type = "DragableUploadList";
-const DragableUploadListItem = ({
+const type = "DraggableUploadList";
+const DraggableUploadListItem = ({
     originNode,
     moveRow,
     file,
@@ -60,8 +60,7 @@ const DragableUploadListItem = ({
     return (
         <div
             ref={ref}
-            className={`ant-upload-draggable-list-item ${isOver ? dropClassName : ""
-                }`}
+            className={`ant-upload-draggable-list-item ${isOver ? dropClassName : ""}`}
             style={{ cursor: "move", height: "100%" }}
         >
             {originNode}
@@ -69,37 +68,45 @@ const DragableUploadListItem = ({
     );
 };
 
-export default function render(props: WebComponentProps<
-    EntityDict, 'extraFile', true, {
-        files: EnhancedExtraFile[];
-        accept?: string;
-        maxNumber?: number;
-        multiple?: boolean;
-        draggable?: boolean;
-        theme?: Theme;
-        tips?: string;
-        beforeUpload?: (file: File) => Promise<boolean>;
-        style?: Record<string, string>;
-        className?: string;
-        directory?: boolean;
-        onPreview?: (file: UploadFile<any>) => void;
-        onDownload?: (file: UploadFile<any>) => void;
-        showUploadList?: boolean;
-        children?: JSX.Element;
-        disableInsert?: boolean;
-        disableDownload?: boolean;
-        disableDelete?: boolean;
-        preview?: boolean;
-    }, {        
-        onRemove: (file: UploadFile) => void;
-        addFileByWeb: (file: UploadFile) => void;
-    }>) {
+export default function render(
+    props: WebComponentProps<
+        EntityDict,
+        'extraFile',
+        true,
+        {
+            files: EnhancedExtraFile[];
+            accept?: string;
+            maxNumber?: number;
+            multiple?: boolean;
+            draggable?: boolean;
+            theme?: Theme;
+            tips?: string;
+            beforeUpload?: (file: File) => Promise<boolean> | boolean;
+            style?: Record<string, string>;
+            className?: string;
+            directory?: boolean;
+            onPreview?: (file: UploadFile<any>) => void;
+            onDownload?: (file: UploadFile<any>) => void;
+            showUploadList?: boolean;
+            children?: JSX.Element;
+            disableInsert?: boolean;
+            disableDownload?: boolean;
+            disableDelete?: boolean;
+            disablePreview?: boolean;
+        },
+        {
+            onRemove: (file: UploadFile) => void;
+            addFileByWeb: (file: UploadFile) => void;
+            checkSort: (sort: number) => boolean;
+        }
+    >
+) {
     const {
-        accept = "image/*",
+        accept = 'image/*',
         maxNumber = 20,
         multiple = maxNumber !== 1,
         draggable = false,
-        theme = "image",
+        theme = 'image',
         tips,
         beforeUpload,
         style,
@@ -113,17 +120,17 @@ export default function render(props: WebComponentProps<
         disableInsert = false,
         disableDownload = false,
         disableDelete = false,
-        preview = true,
+        disablePreview = false,
     } = props.data;
 
-    const { t, onRemove, addFileByWeb } = props.methods;
+    const { t, updateItem, onRemove, addFileByWeb, checkSort } = props.methods;
 
     const listType = getListType(theme);
     const getUploadButton = () => {
         if (children) {
             return children;
         }
-        if (listType === "picture-card") {
+        if (listType === 'picture-card') {
             return (
                 <div>
                     <PlusOutlined />
@@ -134,65 +141,88 @@ export default function render(props: WebComponentProps<
         return <Button type="default">{t('chooseFile')}</Button>;
     };
 
-    const transformToUploadFile: () => (EnhancedExtraFile & UploadFile)[] = () => {
-        return files.map(
-            (file) => {
-                let status = undefined as UploadFile['status'];
-                if (file.$$deleteAt$$) {
-                    status = 'removed';
-                }
-                else if (file.fileState) {
-                    switch (file.fileState) {
-                        case 'failed': {
-                            status = 'error';
-                            break;
-                        }
-                        case 'local': {
-                            break;
-                        }
-                        case 'uploaded': {
-                            status = 'done';
-                            break;
-                        }
-                        case 'uploading': {
-                            status = 'uploading';
-                            break;
-                        }
-                        default: {
-                            break;
-                        }
+    const transformToUploadFile: () => (EnhancedExtraFile &
+        UploadFile)[] = () => {
+        return files.map((file) => {
+            let status = undefined as UploadFile['status'];
+            if (file.$$deleteAt$$) {
+                status = 'removed';
+            } else if (file.fileState) {
+                switch (file.fileState) {
+                    case 'failed': {
+                        status = 'error';
+                        break;
+                    }
+                    case 'local': {
+                        break;
+                    }
+                    case 'uploaded': {
+                        status = 'done';
+                        break;
+                    }
+                    case 'uploading': {
+                        status = 'uploading';
+                        break;
+                    }
+                    default: {
+                        break;
                     }
                 }
-                else {
-                    switch (file.uploadState) {
-                        case 'uploading': {
-                            status = 'uploading';
-                            break;
-                        }
-                        case 'failed': {
-                            status = 'error';
-                            break;
-                        }
-                        case 'success': {
-                            status = 'done';
-                            break;
-                        }
+            } else {
+                switch (file.uploadState) {
+                    case 'uploading': {
+                        status = 'uploading';
+                        break;
+                    }
+                    case 'failed': {
+                        status = 'error';
+                        break;
+                    }
+                    case 'success': {
+                        status = 'done';
+                        break;
                     }
                 }
-                return {
-                    ...file,
-                    status,
-                    name: file.filename,
-                    uid: file.id,
-                    size: file.size!,
-                };
             }
-        );
+            return {
+                ...file,
+                status,
+                name: file.fileName,
+                uid: file.id,
+                size: file.size!,
+                fileName: file.fileName,
+            };
+        });
     };
 
     const moveRow = useCallback(
         (dragIndex: number, hoverIndex: number) => {
-            console.log('dragIndex', dragIndex, 'hoverIndex', hoverIndex);
+            const dragRow = files[dragIndex];
+            let sort;
+            if (hoverIndex === dragIndex) {
+                return;
+            } else if (hoverIndex > dragIndex) {
+                if (hoverIndex === files.length - 1) {
+                    sort = files[hoverIndex]!.sort! + 100;
+                } else {
+                    sort =
+                        (files[hoverIndex]!.sort! +
+                            files[hoverIndex + 1]!.sort!) /
+                        2;
+                }
+            } else {
+                if (hoverIndex === 0) {
+                    sort = files[hoverIndex]!.sort! / 2;
+                } else {
+                    sort =
+                        (files[hoverIndex]!.sort! +
+                            files[hoverIndex - 1]!.sort!) /
+                        2;
+                }
+            }
+            if (checkSort(sort)) {
+                updateItem({ sort }, dragRow.id);
+            }
         },
         [files]
     );
@@ -200,25 +230,28 @@ export default function render(props: WebComponentProps<
     return (
         <Space
             direction="vertical"
-            className={Style["oak-upload"]}
-            style={{ width: "100%" }}
+            className={Style['oak-upload']}
+            style={{ width: '100%' }}
         >
             <DndProvider backend={isPc ? HTML5Backend : TouchBackend}>
                 <Upload
-                    className={classNames(Style["oak-upload__upload"], className)}
+                    className={classNames(
+                        Style['oak-upload__upload'],
+                        className
+                    )}
                     style={style}
                     directory={directory}
                     showUploadList={
                         showUploadList
                             ? {
-                                showPreviewIcon: preview,
-                                showRemoveIcon: !disableDelete,
-                                showDownloadIcon: !disableDownload,
-                            }
+                                  showPreviewIcon: !disablePreview,
+                                  showRemoveIcon: !disableDelete,
+                                  showDownloadIcon: !disableDownload,
+                              }
                             : false
                     }
                     beforeUpload={async (file) => {
-                        if (typeof beforeUpload === "function") {
+                        if (typeof beforeUpload === 'function') {
                             const result = await beforeUpload(file);
                             if (result) {
                                 return false;
@@ -240,7 +273,7 @@ export default function render(props: WebComponentProps<
                     onDownload={onDownload}
                     itemRender={(originNode, currentFile, currentFileList) => {
                         return (
-                            <DragableUploadListItem
+                            <DraggableUploadListItem
                                 originNode={originNode}
                                 file={currentFile}
                                 fileList={currentFileList}
@@ -249,11 +282,15 @@ export default function render(props: WebComponentProps<
                         );
                     }}
                 >
-                    {!disableInsert && files.length < maxNumber ? getUploadButton() : null}
+                    {!disableInsert && files.length < maxNumber
+                        ? getUploadButton()
+                        : null}
                 </Upload>
             </DndProvider>
 
-            {tips && <small className={Style["oak-upload__tips"]}>{tips}</small>}
+            {tips && (
+                <small className={Style['oak-upload__tips']}>{tips}</small>
+            )}
         </Space>
     );
 }

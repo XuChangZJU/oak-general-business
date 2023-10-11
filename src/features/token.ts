@@ -16,6 +16,7 @@ import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { tokenProjection } from '../types/Projection';
 import { OakUserInfoLoadingException } from '../types/Exception';
 import { LOCAL_STORAGE_KEYS } from '../config/constants';
+import { cloneDeep } from 'oak-domain/lib/utils/lodash';
 
 export class Token<
     ED extends EntityDict,
@@ -54,7 +55,7 @@ export class Token<
         if (this.tokenValue && !this.isLoading) {
             this.isLoading = true;
             await this.cache.refresh('token', {
-                data: tokenProjection,
+                data: cloneDeep(tokenProjection),
                 filter: {
                     id: this.tokenValue!,
                 },
@@ -155,7 +156,7 @@ export class Token<
             const token = this.cache.get(
                 'token',
                 {
-                    data: tokenProjection,
+                    data: cloneDeep(tokenProjection),
                     filter: {
                         id: this.tokenValue!,
                     },

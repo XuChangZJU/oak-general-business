@@ -13,6 +13,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { getCos } from '../utils/cos';
 import { OpSchema } from '../oak-app-domain/ExtraFile/Schema';
 import { unset } from 'oak-domain/lib/utils/lodash';
+import { generateNewIdAsync } from 'oak-domain';
 
 export type FileState = 'local' | 'uploading' | 'uploaded' | 'failed';
 
@@ -94,13 +95,25 @@ export class ExtraFile2<
         item.percentage = 0;
         
         const up = new Upload();
-        const cos = getCos<ED, Cxt, FrontCxt>(origin);
         try {
+            const cos = getCos<ED, Cxt, FrontCxt>(extraFile.origin!);
             await cos.upload(
                 extraFile as OpSchema,
                 up.uploadFile,
                 file
             );
+            if (!cos.autoInform()) {
+                /* await this.cache.exec('operate', {
+                    entity: 'extraFile',
+                    operation: {
+                        id: await generateNewIdAsync(),
+                        action: 'update',
+                        data: {
+                            uploadState: 'success',
+                        },
+                    } as ED['extraFile']['Operation'],
+                }); */
+            }
             item.state = 'uploaded';
             item.percentage = undefined;
             this.publish();
@@ -149,22 +162,6 @@ export class ExtraFile2<
         if (this.files[id]) {
             return this.files[id];
         }
-    }
-
-    /**
-     * 使用该方法，要在使用完url时，通过URL.revokeObjectURL释放缓存
-     *
-     * @param url 需要桥接访问的图片链接
-     * @returns 浏览器 img可访问的url
-     */
-    async getBridgeUrl(url: string) {
-        const { result } = await this.cache.exec('crossBridge', {
-            url,
-        });
-        const blob = new Blob([result as unknown as BlobPart], {
-            type: 'image/png',
-        });
-        return URL.createObjectURL(blob);
     }
 
     getFileName(extraFile: EntityDict['extraFile']['OpSchema']) {

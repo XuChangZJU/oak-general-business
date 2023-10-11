@@ -33,7 +33,7 @@ export default function Render(
     >
 ) {
     const { entity, name, currentConfig, dirty } = props.data;
-    const { resetConfig, updateConfig, setValue, removeItem, cleanKey } =
+    const { resetConfig, updateConfig, setValue, removeItem, cleanKey, t } =
         props.methods;
     const {
         Account: account,
@@ -80,14 +80,14 @@ export default function Render(
                                     marginRight: 10,
                                 }}
                             >
-                                重置
+                                {t('common::reset')}
                             </Button>
                             <Button
                                 disabled={!dirty}
                                 type="primary"
                                 onClick={() => updateConfig()}
                             >
-                                确定
+                                {t('common::action.confirm')}
                             </Button>
                         </Space>
                     }
@@ -120,6 +120,9 @@ export default function Render(
                                     cos={cos || {}}
                                     setValue={(path, value) =>
                                         setValue(`Cos.${path}`, value)
+                                    }
+                                    removeItem={(path, index) =>
+                                        removeItem(`Cos.${path}`, index)
                                     }
                                 />
                             ),

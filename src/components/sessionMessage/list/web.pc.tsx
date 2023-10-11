@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Image, Input, Upload, Modal } from 'antd';
 import { PictureOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 import MessageCell from '../../../components/sessionMessage/cell';
@@ -7,6 +7,7 @@ import Header from '../../../components/session/forMessage';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
+import ExtraFileUpload from "../../../components/extraFile/upload";
 interface customFile {
     name: string;
     size: number;
@@ -25,7 +26,13 @@ export default function Render(
             buttonHidden: boolean;
             sessionId: string;
             isEntity: boolean;
+            isUser: boolean;
             employerId: string;
+            sessionMessageType: string;
+            sessionMessageId: string;
+            entityDisplay: (data: any) => any[];
+            entityProjection: object;
+            isWeChat: boolean;
         },
         {
             setButtonHidden: (isHidden: boolean) => void;
@@ -40,11 +47,16 @@ export default function Render(
     const {
         sessionId,
         isEntity,
+        isUser,
         sessionMessageList,
         oakFullpath,
         text,
-        employerId,
         buttonHidden,
+        sessionMessageType,
+        sessionMessageId,
+        entityDisplay,
+        entityProjection,
+        isWeChat,
     } = data;
     const {
         setButtonHidden,
@@ -54,6 +66,10 @@ export default function Render(
         createMessage,
     } = methods;
     const [bottomHeight, setBottomHeight] = useState(0);
+    const textareaRef = useRef(null);
+    // const [text1, setText1] = useState("");
+    // const newBottomHeight =
+    //     window.document.getElementById('bottom')?.offsetHeight!;
     useEffect(() => {
         if (buttonHidden) {
             const newBottomHeight =
@@ -63,14 +79,52 @@ export default function Render(
             setBottomHeight(0);
         }
     }, [buttonHidden]);
+    const handleKeyDown = (event: any) => {
+        // if (event.key === "Enter" && event.shiftKey) {
+        // event.preventDefault(); // 阻止默认的换行行为
+        // 执行你的换行逻辑
+        // setContent(text + "\n");
+        // if (textareaRef && textareaRef.current && textareaRef.current!.resizableTextArea) {
+        //     const textArea = textareaRef.current.resizableTextArea.textAreaRef; // 获取 Input.TextArea 的原生 textarea 元素
+        //     console.log(textArea)
+        //     if (textArea) {
+        //         console.log(textArea)
+        //         const selectionStart = textArea?.selectionStart;
+        //         const value = textArea?.value;
 
+        //         const newValue =
+        //             value?.substring(0, selectionStart) +
+        //             "\n" +
+        //             value?.substring(selectionStart);
+        //         textArea.value = newValue;
+        //         textArea.selectionStart = textArea.selectionEnd = selectionStart + 1;
+
+        //         // 触发 onChange 事件，更新 Input.TextArea 的值
+        //         textArea.dispatchEvent(new Event("input"));
+        //     }
+
+        // }
+        // }
+        if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
+            createMessage();
+            pageScroll('comment');
+        }
+    };
     return (
         <div className={Style.container}>
-            {/* <Header
-                showBack={false}
+            <Header
+                // showBack={false}
                 sessionId={sessionId}
-                userId={employerId}
-            /> */}
+                isEntity={isEntity}
+                // userId={employerId}
+                oakPath={
+                    'session:header1'
+                }
+                oakAutoUnmount={true}
+                entityDisplay={entityDisplay}
+                entityProjection={entityProjection}
+            />
             <div
                 className={Style.inner}
                 style={{
@@ -96,6 +150,7 @@ export default function Render(
                                         : ''
                                 }
                                 isEntity={isEntity}
+                                isUser={isUser}
                             />
                         );
                     })}
@@ -103,6 +158,27 @@ export default function Render(
 
             <div className={Style.bottom} id="bottom">
                 <div className={Style.toolbar}>
+                    {/* {
+                        sessionMessageId && (
+                            <ExtraFileUpload
+                                oakPath={
+                                    data.oakFullpath
+                                        ? `${data.oakFullpath}.${sessionMessageId}.extraFile$entity`
+                                        : undefined
+                                }
+                                showUploadList={false}
+                                type="image"
+                                origin="qiniu"
+                                tag1="image"
+                                // maxNumber={1}
+                                entity="sessionMessage"
+                                accept="image/*"
+                                theme="file"
+                            >
+                                <PictureOutlined className={Style.icon} />
+                            </ExtraFileUpload>
+                        )
+                    } */}
                     <Upload
                         accept={'image/*'}
                         multiple={false}
@@ -115,9 +191,14 @@ export default function Render(
                         <PictureOutlined className={Style.icon} />
                     </Upload>
                 </div>
+
                 <div className={Style.textareaBox}>
                     <Input.TextArea
+                        ref={textareaRef}
                         className={Style.textarea}
+                        // autoSize={{ minRows: 2, maxRows: 15 }}
+                        maxLength={500}
+                        placeholder="Enter 发送，Shift + Enter换行"
                         rows={5}
                         onChange={(e) => {
                             setContent(e.target.value);
@@ -125,11 +206,12 @@ export default function Render(
                         onFocus={() => {
                             setButtonHidden(true);
                         }}
-                        onPressEnter={(e) => {
-                            e.preventDefault();
-                            createMessage();
-                            pageScroll('comment');
-                        }}
+                        // onPressEnter={(e) => {
+                        //     e.preventDefault();
+                        //     createMessage();
+                        //     pageScroll('comment');
+                        // }}
+                        onKeyDown={handleKeyDown}
                         value={text}
                     />
                     <div className={Style.btn}>

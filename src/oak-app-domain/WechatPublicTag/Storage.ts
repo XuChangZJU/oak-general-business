@@ -34,5 +34,25 @@ export const desc: StorageDesc<OpSchema> = {
         }
     },
     actionType: "crud",
+<<<<<<< HEAD
     actions
+=======
+    actions,
+    indexes: [
+        {
+            name: 'index_text_application',
+            attributes: [
+                {
+                    name: 'text',
+                },
+                {
+                    name: "applicationId",
+                },
+            ],
+            config: {
+                unique: true,
+            },
+        }
+    ]
+>>>>>>> 4903b992bd0929b343603c9b7d376080bd069a75
 };

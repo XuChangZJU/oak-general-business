@@ -73,7 +73,6 @@ export default function Render(props) {
         }
     };
     useEffect(() => {
-        console.log(config);
         if (config && config.button && config.button[0] && onlyOne) {
             setMenuName(config.button[0].name);
             setOnlyOne(false);

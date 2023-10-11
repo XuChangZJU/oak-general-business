@@ -32,5 +32,21 @@ export const desc = {
         }
     },
     actionType: "crud",
-    actions
+    actions,
+    indexes: [
+        {
+            name: 'index_text_application',
+            attributes: [
+                {
+                    name: 'text',
+                },
+                {
+                    name: "applicationId",
+                },
+            ],
+            config: {
+                unique: true,
+            },
+        }
+    ]
 };

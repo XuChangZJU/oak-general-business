@@ -11,6 +11,7 @@ export type AspectDict<ED extends EntityDict & BaseEntityDict, Cxt extends Backe
 export interface SerializedData extends Fsd {
     a?: string;
     t?: string;
+    rm?: boolean;
 }
 export declare abstract class FrontendRuntimeContext<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Frc<ED, Cxt, AD> implements RuntimeContext {
     private application;

@@ -62,9 +62,21 @@ export class ExtraFile2 extends Feature {
         item.state = 'uploading';
         item.percentage = 0;
         const up = new Upload();
-        const cos = getCos(origin);
         try {
+            const cos = getCos(extraFile.origin);
             await cos.upload(extraFile, up.uploadFile, file);
+            if (!cos.autoInform()) {
+                /* await this.cache.exec('operate', {
+                    entity: 'extraFile',
+                    operation: {
+                        id: await generateNewIdAsync(),
+                        action: 'update',
+                        data: {
+                            uploadState: 'success',
+                        },
+                    } as ED['extraFile']['Operation'],
+                }); */
+            }
             item.state = 'uploaded';
             item.percentage = undefined;
             this.publish();
@@ -102,21 +114,6 @@ export class ExtraFile2 extends Feature {
         if (this.files[id]) {
             return this.files[id];
         }
-    }
-    /**
-     * 使用该方法，要在使用完url时，通过URL.revokeObjectURL释放缓存
-     *
-     * @param url 需要桥接访问的图片链接
-     * @returns 浏览器 img可访问的url
-     */
-    async getBridgeUrl(url) {
-        const { result } = await this.cache.exec('crossBridge', {
-            url,
-        });
-        const blob = new Blob([result], {
-            type: 'image/png',
-        });
-        return URL.createObjectURL(blob);
     }
     getFileName(extraFile) {
         const name = extraFile.filename +

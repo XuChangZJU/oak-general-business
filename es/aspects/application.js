@@ -2,12 +2,13 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { applicationProjection } from '../types/Projection';
 import { WechatSDK, } from 'oak-external-sdk';
 import fs from 'fs';
+import { cloneDeep } from 'oak-domain/lib/utils/lodash';
 export async function getApplication(params, context) {
     const { type, domain } = params;
     const url = context.getHeader('host');
     console.log('url is', url);
     const [application] = await context.select('application', {
-        data: applicationProjection,
+        data: cloneDeep(applicationProjection),
         filter: {
             type,
             system: {
@@ -27,7 +28,7 @@ export async function getApplication(params, context) {
             // 如果微信公众号环境下 application不存在公众号配置，但又在公众号访问，这时可以使用web的application
             if (!application) {
                 const [application2] = await context.select('application', {
-                    data: applicationProjection,
+                    data: cloneDeep(applicationProjection),
                     filter: {
                         type: 'web',
                         system: {
@@ -64,7 +65,7 @@ context) {
     const filetype = file.mimetype;
     const file2 = fs.createReadStream(file.filepath);
     const [application] = await context.select('application', {
-        data: applicationProjection,
+        data: cloneDeep(applicationProjection),
         filter: {
             id: applicationId,
         },

@@ -18,6 +18,7 @@ export type OpSchema = EntityShape & {
     entityId: String<64>;
     userId?: ForeignKey<"user"> | null;
     lmts?: Datetime | null;
+    openId?: String<64> | null;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
@@ -25,6 +26,7 @@ export type Schema = EntityShape & {
     entityId: String<64>;
     userId?: ForeignKey<"user"> | null;
     lmts?: Datetime | null;
+    openId?: String<64> | null;
     user?: User.Schema | null;
     application?: Application.Schema;
     readRemark$session?: Array<ReadRemark.Schema>;
@@ -50,6 +52,7 @@ type AttrFilter = {
     userId: Q_StringValue;
     user: User.Filter;
     lmts: Q_DateValue;
+    openId: Q_StringValue;
     application: Application.Filter;
     readRemark$session: ReadRemark.Filter & SubQueryPredicateMetadata;
     sessionMessage$session: SessionMessage.Filter & SubQueryPredicateMetadata;
@@ -70,6 +73,7 @@ export type Projection = {
     userId?: number;
     user?: User.Projection;
     lmts?: number;
+    openId?: number;
     application?: Application.Projection;
     readRemark$session?: ReadRemark.Selection & {
         $entity: "readRemark";
@@ -129,6 +133,8 @@ export type SortAttr = {
     user: User.SortAttr;
 } | {
     lmts: number;
+} | {
+    openId: number;
 } | {
     application: Application.SortAttr;
 } | {

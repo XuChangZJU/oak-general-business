@@ -8,6 +8,7 @@ const entityDesc = {
                 entityId: '关联对象id',
                 user: '发送者',
                 lmts: '最后一条消息的发送时间',
+                openId: 'openId'
             },
             r: {
                 partner: '所有者',

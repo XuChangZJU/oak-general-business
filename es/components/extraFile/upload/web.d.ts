@@ -10,7 +10,7 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
     draggable?: boolean;
     theme?: Theme;
     tips?: string;
-    beforeUpload?: (file: File) => Promise<boolean>;
+    beforeUpload?: (file: File) => Promise<boolean> | boolean;
     style?: Record<string, string>;
     className?: string;
     directory?: boolean;
@@ -21,8 +21,9 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
     disableInsert?: boolean;
     disableDownload?: boolean;
     disableDelete?: boolean;
-    preview?: boolean;
+    disablePreview?: boolean;
 }, {
     onRemove: (file: UploadFile) => void;
     addFileByWeb: (file: UploadFile) => void;
+    checkSort: (sort: number) => boolean;
 }>): import("react/jsx-runtime").JSX.Element;

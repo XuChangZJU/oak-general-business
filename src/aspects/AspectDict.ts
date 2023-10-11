@@ -2,6 +2,7 @@ import { WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
 import { AppType } from '../oak-app-domain/Application/Schema';
 import { EntityDict } from '../oak-app-domain';
 import { Config, Origin } from '../types/Config';
+import { Style } from '../types/Style';
 import { MediaType, MenuType } from '../types/WeChat';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { MediaVideoDescription } from '../types/WeChat'
@@ -106,6 +107,14 @@ export type GeneralAspectDict<
             entity: 'platform' | 'system';
             entityId: string;
             config: Config;
+        },
+        context: Cxt
+    ) => Promise<void>;
+    updateStyle: (
+        params: {
+            entity: 'platform' | 'system' | 'application';
+            entityId: string;
+            style: Style;
         },
         context: Cxt
     ) => Promise<void>;

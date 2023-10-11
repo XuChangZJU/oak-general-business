@@ -7,4 +7,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'system', fa
     config: Config;
     name: string;
     style: Style;
+    application$system: EntityDict['application']['OpSchema'][];
 }>): import("react/jsx-runtime").JSX.Element | undefined;

@@ -24,6 +24,12 @@ export const desc: StorageDesc<OpSchema> = {
         },
         lmts: {
             type: "datetime"
+        },
+        openId: {
+            type: "varchar",
+            params: {
+                length: 64
+            }
         }
     },
     actionType: "crud",

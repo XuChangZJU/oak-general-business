@@ -1,4 +1,4 @@
-// import { Schema as ExtraFile } from '../../../
+
 
 export default OakComponent({
     entity: 'sessionMessage',
@@ -17,6 +17,38 @@ export default OakComponent({
             id: 1,
             entity: 1,
             entityId: 1,
+            userId: 1,
+            user: {
+                id: 1,
+                name: 1,
+                mobile$user: {
+                    $entity: 'mobile',
+                    data: {
+                        id: 1,
+                        mobile: 1,
+                    },
+                },
+                extraFile$entity: {
+                    $entity: 'extraFile',
+                    data: {
+                        id: 1,
+                        tag1: 1,
+                        origin: 1,
+                        bucket: 1,
+                        objectId: 1,
+                        filename: 1,
+                        extra1: 1,
+                        extension: 1,
+                        type: 1,
+                        entity: 1,
+                    },
+                    filter: {
+                        tag1: {
+                            $in: ['avatar'],
+                        },
+                    },
+                },
+            },
         },
         aaoe: 1,
         extraFile$entity: {
@@ -44,7 +76,7 @@ export default OakComponent({
     formData({ data: sessionMessage, features }) {
         const type = sessionMessage?.type;
         // const data = wechatMessage?.data;
-        // const session = sessionMessage?.session;
+        const session = sessionMessage?.session;
         const newSessionMessage = {
             type,
             aaoe: sessionMessage?.aaoe,
@@ -53,51 +85,62 @@ export default OakComponent({
             id: sessionMessage?.id,
             $$createAt$$: sessionMessage?.$$createAt$$,
             sessionId: sessionMessage?.sessionId,
-            // employerId: conversation?.employerId,
-            // employerMobile:
-            //     conversation?.employer?.mobile$user &&
-            //     conversation?.employer?.mobile$user[0]?.mobile,
+            userId: session?.userId,
+            userMobile:
+                session?.user?.mobile$user &&
+                session?.user?.mobile$user[0]?.mobile,
             // companyName: conversation?.company?.name,
-            // employerAvatar: this.features.extraFile.getUrl(
-            //     conversation?.employer?.extraFile$entity &&
-            //     conversation?.employer?.extraFile$entity[0]
-            // ),
+            userAvatar: this.features.extraFile.getUrl(
+                session?.user?.extraFile$entity &&
+                session?.user?.extraFile$entity[0]
+            ),
         };
 
-        // if (type === 'image') {
-        //     const extraFile$entity =
-        //         wechatMessage?.extraFile$entity as ExtraFile[];
+        if (type === 'image') {
+            const extraFile$entity = sessionMessage?.extraFile$entity;
 
-        //     Object.assign(newWechatMessage, {
-        //         picUrl: features.extraFile.getUrl(extraFile$entity[0]),
-        //     });
-        // }
+            Object.assign(newSessionMessage, {
+                picUrl: features.extraFile.getUrl(
+                    extraFile$entity && extraFile$entity[0]
+                ),
+            });
+        }
 
         return newSessionMessage;
     },
     properties: {
         key: '' as string,
         isEntity: false,
+        isUser: false,
     },
     methods: {
-        getAvatarUrl(type: string) {
+        getAvatarUrl(aaoe: boolean) {
             const defaultUrl =
                 'http://qiniu.gecomebox.com/static/defaultAvatar.png';
-            const { companyLogoUrl, employerAvatar, parkLogoUrl } = this.state;
-            switch (type) {
-                case 'company': {
-                    return companyLogoUrl || defaultUrl;
-                }
-                case 'employer': {
-                    return employerAvatar || defaultUrl;
-                }
-                case 'platformProvider': {
-                    return process.env.PUBLIC_URL + '/logo192.png';
-                }
-                case 'park': {
-                    return parkLogoUrl || defaultUrl;
-                }
+            const { companyLogoUrl, userAvatar, parkLogoUrl } = this.state;
+            if (aaoe) {
+                return defaultUrl
             }
+            else {
+                return userAvatar || defaultUrl;
+            }
+            // switch (type) {
+            //     case 'company': {
+            //         return companyLogoUrl || defaultUrl;
+            //     }
+            //     case 'user': {
+            //         return userAvatar || defaultUrl;
+            //     }
+            //     case 'platformProvider': {
+            //         return process.env.PUBLIC_URL + '/logo192.png';
+            //     }
+            //     case 'park': {
+            //         return parkLogoUrl || defaultUrl;
+            //     }
+            //     default: {
+            //         return defaultUrl
+            //     }
+            // }
         },
     },
 });

@@ -19,6 +19,7 @@ import { getMpUnlimitWxaCode } from '../aspects/wechatQrCode';
 import { BackendRuntimeContext as BRC } from 'oak-frontend-base';
 import { AsyncRowStore } from 'oak-domain';
 import { IncomingHttpHeaders } from 'http';
+import { cloneDeep } from 'oak-domain/lib/utils/lodash';
 /**
  * general数据结构要求的后台上下文
  */
@@ -32,12 +33,6 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
     protected amIReallyRoot?: boolean;
     protected rootMode?: boolean;
     private temporaryUserId?: string;
-    private initializedMark: Promise<void>;
-
-    constructor(store: AsyncRowStore<ED, BackendRuntimeContext<ED>>, data?: SerializedData, headers?: IncomingHttpHeaders) {
-        super(store, data, headers);
-        this.initializedMark = this.initialize(data);
-    }
 
     async refineOpRecords(): Promise<void> {
         for (const opRecord of this.opRecords) {
@@ -130,7 +125,7 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         const result = await this.select(
             'application',
             {
-                data: applicationProjection,
+                data: cloneDeep(applicationProjection),
                 filter: {
                     id: appId,
                 },
@@ -147,20 +142,12 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         this.application = result[0];
     }
 
-    /**
-     * 异步等待初始化完成
-     */
-    protected async initialized() {
-        await super.initialized();
-        await this.initializedMark;
-    }
-
-    private async initialize(data?: SerializedData) {
+    async initialize(data?: SerializedData) {
+        await super.initialize(data);
         if (data) {
-            await this.begin();
             const closeRootMode = this.openRootMode();
             try {
-                const { a: appId, t: tokenValue } = data;
+                const { a: appId, t: tokenValue, rm } = data;
                 const promises: Promise<void>[] = [];
                 if (appId) {
                     promises.push(this.setApplication(appId));
@@ -171,11 +158,11 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
                 if (promises.length > 0) {
                     await Promise.all(promises);
                 }
-                closeRootMode();
-                await this.commit();
+                if (!rm) {
+                    closeRootMode();
+                }
             } catch (err) {
                 closeRootMode();
-                await this.rollback();
                 throw err;
             }
         } else {
@@ -245,11 +232,14 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         this.temporaryUserId = userId;
     }
 
-    toString() {
-        if (this.rootMode) {
-            return JSON.stringify({ rootMode: true });
-        }
-        return JSON.stringify({ a: this.application?.id, t: this.token?.id });
+    protected getSerializedData(): SerializedData {
+        const data = super.getSerializedData();
+        return {
+            ...data,
+            a: this.application?.id,
+            t: this.token?.id,
+            rm: this.rootMode,
+        };
     }
 
     isRoot() {

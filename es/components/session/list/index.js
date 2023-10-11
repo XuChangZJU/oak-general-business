@@ -1,76 +1,94 @@
+import { DATA_SUBSCRIBER_KEYS } from '../../../config/constants';
 export default OakComponent({
     entity: 'session',
-    projection: {
-        id: 1,
-        entity: 1,
-        entityId: 1,
-        userId: 1,
-        user: {
+    projection() {
+        const { entityProjection } = this.props;
+        const proj = {
             id: 1,
-            name: 1,
-            nickname: 1,
-            mobile$user: {
-                $entity: 'mobile',
-                data: {
-                    id: 1,
-                    mobile: 1,
-                    userId: 1,
-                },
-            },
-            extraFile$entity: {
-                $entity: 'extraFile',
-                data: {
-                    id: 1,
-                    tag1: 1,
-                    origin: 1,
-                    bucket: 1,
-                    objectId: 1,
-                    filename: 1,
-                    extra1: 1,
-                    extension: 1,
-                    type: 1,
-                    entity: 1,
-                    entityId: 1,
-                },
-                filter: {
-                    tag1: {
-                        $in: ['avatar'],
-                    },
-                },
-            },
-        },
-        sessionMessage$session: {
-            $entity: 'sessionMessage',
-            data: {
+            entity: 1,
+            entityId: 1,
+            lmts: 1,
+            openId: 1,
+            userId: 1,
+            user: {
                 id: 1,
-                text: 1,
-                type: 1,
-                userId: 1,
-                wechatUserId: 1,
-                createTime: 1,
-                $$createAt$$: 1,
-                aaoe: 1,
-            },
-            sorter: [
-                {
-                    $attr: {
-                        $$createAt$$: 1,
+                name: 1,
+                nickname: 1,
+                mobile$user: {
+                    $entity: 'mobile',
+                    data: {
+                        id: 1,
+                        mobile: 1,
+                        userId: 1,
                     },
-                    $direction: 'desc',
                 },
-            ],
-            indexFrom: 0,
-            count: 1,
-        },
-        $$createAt$$: 1,
+                extraFile$entity: {
+                    $entity: 'extraFile',
+                    data: {
+                        id: 1,
+                        tag1: 1,
+                        origin: 1,
+                        bucket: 1,
+                        objectId: 1,
+                        filename: 1,
+                        extra1: 1,
+                        extension: 1,
+                        type: 1,
+                        entity: 1,
+                        entityId: 1,
+                    },
+                    filter: {
+                        tag1: {
+                            $in: ['avatar'],
+                        },
+                    },
+                },
+            },
+            sessionMessage$session: {
+                $entity: 'sessionMessage',
+                data: {
+                    id: 1,
+                    text: 1,
+                    type: 1,
+                    userId: 1,
+                    wechatUserId: 1,
+                    createTime: 1,
+                    $$createAt$$: 1,
+                    aaoe: 1,
+                },
+                sorter: [
+                    {
+                        $attr: {
+                            $$createAt$$: 1,
+                        },
+                        $direction: 'desc',
+                    },
+                ],
+                indexFrom: 0,
+                count: 1,
+            },
+            $$createAt$$: 1,
+        };
+        if (entityProjection) {
+            Object.assign(proj, { ...entityProjection });
+        }
+        return proj;
     },
     isList: true,
     formData: function ({ data: sessions, features, props }) {
+        const { entityDisplay, entityProjection } = this.props;
+        if (entityProjection && entityDisplay && sessions && sessions.length > 0) {
+            const sessions1 = entityDisplay(sessions);
+            return {
+                sessions: sessions1,
+            };
+        }
         // const unReadLength = wechatSessions?.filter(
         //     (ele) => ele.isRead
         // )
+        //排序待框架实现
         return {
-            sessions,
+            sessions: sessions?.sort((a, b) => b.lmts - a.lmts),
         };
     },
     lifetimes: {
@@ -93,6 +111,22 @@ export default OakComponent({
                 this.setSelectedSessionId(sessionId);
             }
         },
+        async ready() {
+            const { entityFilter } = this.props;
+            const userId = this.features.token.getUserId();
+            await this.subData([
+                {
+                    entity: 'session',
+                    filter: entityFilter ? { ...entityFilter } : { userId },
+                    id: `${DATA_SUBSCRIBER_KEYS.sessionList}`,
+                }
+            ], () => { console.log(123); });
+        },
+        detached() {
+            this.unSubData([
+                `${DATA_SUBSCRIBER_KEYS.sessionList}`
+            ]);
+        },
     },
     data: {
         unReadLength: 0,
@@ -100,8 +134,8 @@ export default OakComponent({
     },
     properties: {
         entity: '',
-        entityFilter: {},
-        entityDisplay: (entity, entityId) => '',
+        entityFilter: undefined,
+        entityDisplay: (data) => [],
         entityProjection: {},
         sessionId: '',
         dialog: false,
@@ -165,7 +199,7 @@ export default OakComponent({
         {
             sorter: {
                 $attr: {
-                    $$updateAt$$: 1,
+                    lmts: 1,
                 },
                 $direction: 'desc',
             },

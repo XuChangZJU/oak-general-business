@@ -13,6 +13,7 @@ import {
 } from 'oak-external-sdk';
 import fs from 'fs';
 import { File } from 'formidable';
+import { cloneDeep } from 'oak-domain/lib/utils/lodash';
 
 export async function getApplication<
     ED extends EntityDict,
@@ -31,7 +32,7 @@ export async function getApplication<
     const [application] = await context.select(
         'application',
         {
-            data: applicationProjection,
+            data: cloneDeep(applicationProjection),
             filter: {
                 type,
                 system: {
@@ -58,7 +59,7 @@ export async function getApplication<
                 const [application2] = await context.select(
                     'application',
                     {
-                        data: applicationProjection,
+                        data: cloneDeep(applicationProjection),
                         filter: {
                             type: 'web',
                             system: {
@@ -135,7 +136,7 @@ export async function uploadWechatMedia<
     const [application] = await context.select(
         'application',
         {
-            data: applicationProjection,
+            data: cloneDeep(applicationProjection),
             filter: {
                 id: applicationId,
             },

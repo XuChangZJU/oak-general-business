@@ -9,31 +9,44 @@ import { QiniuCosConfig } from '../../types/Config';
 import { QiniuCloudInstance } from 'oak-external-sdk';
 import { urlSafeBase64Encode } from '../sign';
 import { OakUploadException } from '../../types/Exception';
+import { OakExternalException } from 'oak-domain';
 
 const QiniuSearchUrl = 'https://rs.qiniuapi.com/stat/EncodedEntryURI';
 
 export default class Qiniu implements Cos<ED, BRC, FRC> {
     name = 'qiniu';
+    
+    autoInform(): boolean {
+        return false;
+    }
+
+    private formKey(extraFile: OpSchema) {
+        const { id, extension, entity, objectId } = extraFile;
+        
+        // 这里是为了兼容旧的代码使用objectId来生成key的数据，现在objectId已经废弃
+        if (objectId) {
+            return `${entity}/${objectId}${extension ? '.' + extension : ''}`;
+        }
+        return `extraFile/${id}${extension ? '.' + extension : ''}`;
+    }
 
     async formUploadMeta(
         extraFile: OpSchema,
         context: BRC
     ) {
-        const { origin, objectId, extension, entity, bucket } = extraFile;
+        const { bucket } = extraFile;
         // 构造文件上传所需的key
-        const key = `${entity ? entity + '/' : ''}${objectId}${extension ? '.' + extension : ''
-            }`;
+        const key = this.formKey(extraFile);
         const { instance, config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
 
-        const { uploadHost, defaultBucket: bucket2, buckets } = config as QiniuCosConfig;
-        if (bucket) {
-            assert(buckets.hasOwnProperty(bucket), `${bucket}不是一个有效的桶配置`);
-        }
+        const { uploadHost, buckets } = config as QiniuCosConfig;
+        assert(bucket);
+        assert(buckets.find(ele => ele.name === bucket), `${bucket}不是一个有效的桶配置`);
         Object.assign(extraFile, {
-            bucket: bucket || bucket2,
-            uploadMeta: (instance as QiniuCloudInstance).getUploadInfo(
+            bucket,
+            uploadMeta: (instance as QiniuCloudInstance).getKodoUploadInfo(
                 uploadHost,
-                bucket || bucket2,
+                bucket,
                 key
             ),
         });
@@ -80,19 +93,11 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
         context: FRC,
         style?: string,
     ) {
-        const {
-            objectId,
-            extension,
-            entity,
-            bucket
-        } = extraFile || {};
         const { config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
 
         if (config) {
-            let bucket = (config.buckets as QiniuCosConfig['buckets']).find((ele) => ele.name === config.defaultBucket);
-            if (!bucket) {
-                bucket = config.buckets[0]
-            }
+            let bucket = (config.buckets as QiniuCosConfig['buckets']).find((ele) => ele.name === extraFile.bucket!);
+            assert(bucket);
             const { domain, protocol } = bucket!;
             let protocol2 = protocol;
             if (protocol instanceof Array) {
@@ -102,7 +107,7 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
                     : 0;
                 protocol2 = protocol[index];
             }
-            return `${protocol2}://${domain}/${entity}/${objectId}.${extension}`;
+            return `${protocol2}://${domain}/${this.formKey(extraFile)}`;
         }
         return '';
     }
@@ -111,18 +116,49 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
         extraFile: OpSchema,
         context: BRC
     ) {
-        const { uploadMeta, bucket } = extraFile;
-        const { key } = uploadMeta as { key: string };
-        const entry = `${bucket}:${key}`;
-        const encodedEntryURI = urlSafeBase64Encode(entry);
-        const qiniuSearchUrl = QiniuSearchUrl.replace('EncodedEntryURI', encodedEntryURI);
-        const { instance, config } = getConfig(context, 'Cos', 'qiniu');
+        const key = this.formKey(extraFile);
+        const { instance, config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
+        
+        // web环境下访问不了七牛接口，用mockData过
+        const mockData = process.env.OAK_PLATFORM === 'web' ? { fsize: 100 } : undefined;
 
-        return false;
+        try {
+            const result = await (instance as QiniuCloudInstance).getKodoFileStat(extraFile.bucket!, key, mockData);
+    
+            const { fsize } = result;
+            return fsize > 0;
+        }
+        catch (err: any) {
+            // 七牛如果文件不存在会抛出status ＝ 612的异常
+            if (err instanceof OakExternalException) {
+                const data = err.data;
+                if (data && data.status === 612) {
+                    return false;
+                }
+            }
+            throw err;
+        }
     }
 
 
     async removeFile(extraFile: OpSchema, context: BRC) {
-        const { bucket, uploadMeta } = extraFile;
+        const key = this.formKey(extraFile);
+        const { instance, config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
+        
+        // web环境下访问不了七牛接口，用mockData过
+        const mockData = process.env.OAK_PLATFORM === 'web' ? true : undefined;
+        try {
+            await (instance as QiniuCloudInstance).removeKodoFile(extraFile.bucket!, key, mockData);
+        }
+        catch (err: any) {
+            // 七牛如果文件不存在会抛出status ＝ 612的异常
+            if (err instanceof OakExternalException) {
+                const data = err.data;
+                if (data && data.status === 612) {
+                    return;
+                }
+            }
+            throw err;
+        }
     }
 };

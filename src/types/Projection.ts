@@ -3,7 +3,7 @@
 import { ROOT_ROLE_ID } from '../constants';
 import { EntityDict } from '../oak-app-domain';
 
-export const userProjection: EntityDict['user']['Selection']['data'] = {
+const userProjection: EntityDict['user']['Selection']['data'] = {
     id: 1,
     nickname: 1,
     name: 1,

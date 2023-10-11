@@ -1,4 +1,4 @@
-export const userProjection = {
+const userProjection = {
     id: 1,
     nickname: 1,
     name: 1,

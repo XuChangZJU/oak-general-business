@@ -1,30 +1,18 @@
-import { UploadFile } from "antd";
-import { WebComponentProps } from "oak-frontend-base";
-import { EntityDict } from "../../../oak-app-domain";
-import { EnhancedExtraFile, Theme } from './index';
+import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../oak-app-domain';
+type ExtraFile = EntityDict['extraFile']['OpSchema'];
+interface EnhancedExtraFile extends ExtraFile {
+    url: string;
+    thumbUrl: string;
+    fileFullName: string;
+}
 export default function render(props: WebComponentProps<EntityDict, 'extraFile', true, {
     files: EnhancedExtraFile[];
-    accept?: string;
-    maxNumber?: number;
-    multiple?: boolean;
-    draggable?: boolean;
-    theme?: Theme;
-    tips?: string;
-    beforeUpload?: (file: File) => Promise<boolean>;
-    disabled?: boolean;
     style?: Record<string, string>;
     className?: string;
-    directory?: boolean;
-    onPreview?: (file: UploadFile<any>) => void;
-    onDownload?: (file: UploadFile<any>) => void;
+    onDownload?: (file: EnhancedExtraFile) => void;
     showUploadList?: boolean;
-    children?: JSX.Element;
-    disableInsert?: boolean;
-    disableAdd?: boolean;
     disableDownload?: boolean;
-    disableDelete?: boolean;
-    preview?: boolean;
-}, {
-    onDeleteByWeb: (file: UploadFile) => void;
-    addFileByWeb: (file: UploadFile) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+    disablePreview?: boolean;
+}, {}>): import("react/jsx-runtime").JSX.Element;
+export {};

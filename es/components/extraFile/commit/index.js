@@ -2,7 +2,7 @@ import assert from 'assert';
 export default OakComponent({
     formData({ features }) {
         const ids = this.getEfIds();
-        const states = ids.map(id => features.extraFile2.getFileState(id));
+        const states = ids.map((id) => features.extraFile2.getFileState(id));
         let state = 'uploaded';
         states.forEach((ele) => {
             if (ele) {
@@ -24,25 +24,43 @@ export default OakComponent({
         block: false,
         type: 'primary',
         executeText: '',
+        buttonProps: {},
+        afterCommit: () => { },
+        beforeCommit: () => true,
     },
     methods: {
         getEfIds() {
             const { efPaths } = this.props;
             const { oakFullpath } = this.state;
-            assert(efPaths);
+            assert(efPaths && efPaths.length > 0);
             if (oakFullpath) {
                 const ids = efPaths.map((path) => {
-                    const path2 = path ? `${oakFullpath}.path` : oakFullpath;
+                    const path2 = path ? `${oakFullpath}.${path}` : oakFullpath;
                     const data = this.features.runningTree.getFreshValue(path2);
-                    if (data) {
-                        return data.map(ele => ele.id);
-                    }
+                    assert(data, `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`);
+                    return data.map(ele => ele.id);
                 }).flat().filter(ele => !!ele);
                 return ids;
             }
             return [];
         },
-        upload() {
-        }
-    }
+        async upload() {
+            const ids = this.getEfIds();
+            assert(ids.length > 0);
+            const promises = [];
+            ids.forEach((id) => {
+                const fileState = this.features.extraFile2.getFileState(id);
+                if (fileState) {
+                    const { state } = fileState;
+                    if (['local', 'failed'].includes(state)) {
+                        promises.push(this.features.extraFile2.upload(id));
+                    }
+                }
+            });
+            if (promises.length > 0) {
+                await Promise.all(promises);
+            }
+        },
+    },
+    features: ['extraFile2'],
 });

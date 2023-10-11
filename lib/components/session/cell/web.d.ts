@@ -7,6 +7,8 @@ export default function render(props: WebComponentProps<EntityDict, 'session', f
     userType: string;
     selectedId: string;
     onSelect: (id: string) => void;
+    name: string;
+    lmts: number;
 }, {
     getName: () => string;
     getAvatarUrl: () => string;

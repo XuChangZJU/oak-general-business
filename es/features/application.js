@@ -1,7 +1,7 @@
 import { LOCAL_STORAGE_KEYS } from '../config/constants';
 import { Feature } from 'oak-frontend-base';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { merge } from 'oak-domain/lib/utils/lodash';
+import { cloneDeep, merge } from 'oak-domain/lib/utils/lodash';
 import { applicationProjection } from '../types/Projection';
 export class Application extends Feature {
     type;
@@ -19,7 +19,7 @@ export class Application extends Feature {
         this.applicationId = applicationId;
         this.type = type;
         this.domain = domain;
-        this.projection = applicationProjection;
+        this.projection = cloneDeep(applicationProjection);
     }
     async refresh() {
         const { data } = await this.cache.refresh('application', {

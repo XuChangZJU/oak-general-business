@@ -127,6 +127,18 @@ const i18ns: I18n[] = [
         }
     },
     {
+        id: "2ebe552614a81e57fa1a1c21b5dc84f8",
+        namespace: "oak-general-business-c-application-panel",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/application/panel",
+        data: {
+            "detail": "应用详情",
+            "config": "配置管理",
+            "style": "样式管理"
+        }
+    },
+    {
         id: "d790bd454c420a031bbde799c83bbe71",
         namespace: "oak-general-business-c-common-qrCode",
         language: "zh-CN",
@@ -135,6 +147,16 @@ const i18ns: I18n[] = [
         data: {
             "weChat-account-successfully-bound": "微信账号绑定成功",
             "weChat-authorization-login-successful": "微信授权登录成功"
+        }
+    },
+    {
+        id: "b1441674d37d696b24feee3921a339a4",
+        namespace: "oak-general-business-c-domain-list",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/domain/list",
+        data: {
+            "confirmRemove": "确认要删除吗？"
         }
     },
     {
@@ -176,6 +198,14 @@ const i18ns: I18n[] = [
         }
     },
     {
+        id: "d30e4a47c1d768d74efae1fade371595",
+        namespace: "oak-general-business-c-extraFile-gallery2",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/extraFile/gallery2",
+        data: {}
+    },
+    {
         id: "a0e4461f6283d6ecd0b6bba64c0560c2",
         namespace: "oak-general-business-c-extraFile-upload",
         language: "zh-CN",
@@ -183,7 +213,8 @@ const i18ns: I18n[] = [
         position: "src/components/extraFile/upload",
         data: {
             "choosePicture": "请选择图片",
-            "chooseFile": "请选择文件"
+            "chooseFile": "请选择文件",
+            "dragSort": "当前拖拽排序值超过上限范围"
         }
     },
     {
@@ -201,6 +232,39 @@ const i18ns: I18n[] = [
         }
     },
     {
+        id: "be4a42e798e981b6ef0c0877904dbb11",
+        namespace: "oak-general-business-c-platform-panel",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/platform/panel",
+        data: {
+            "detail": "平台详情",
+            "config": "配置管理",
+            "style": "样式管理",
+            "system-list": "系统管理"
+        }
+    },
+    {
+        id: "3e68972b48453b60d8c83cdc9ace9657",
+        namespace: "oak-general-business-c-platform-system",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/platform/system",
+        data: {
+            "confirmToRemove": "您确定要删除系统吗？"
+        }
+    },
+    {
+        id: "ded171ed67640a148a4a2cc51470cf69",
+        namespace: "oak-general-business-c-system-application",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/system/application",
+        data: {
+            "confirmToRemove": "您确定要删除应用吗？"
+        }
+    },
+    {
         id: "77647c7511d1f7f9eb5c04bb30981753",
         namespace: "oak-general-business-c-system-panel",
         language: "zh-CN",
@@ -210,7 +274,8 @@ const i18ns: I18n[] = [
             "detail": "系统详情",
             "domain-list": "域名管理",
             "config": "配置管理",
-            "style": "样式管理"
+            "style": "样式管理",
+            "application-list": "应用管理"
         }
     },
     {

@@ -1,31 +1,29 @@
-import { generateNewId } from 'oak-domain/lib/utils/uuid';
-import { pull } from 'oak-domain/lib/utils/lodash';
-import assert from 'assert';
 import Dialog from '../../../utils/dialog/index';
 import { EntityDict } from '../../../oak-app-domain';
 import { FileState } from '../../../features/extraFile2';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import { getConfig } from '../../../utils/getContextConfig';
+import { QiniuCosConfig } from '../../../types/Config';
 
 type ExtraFile = EntityDict['extraFile']['OpSchema'];
 export interface EnhancedExtraFile extends ExtraFile {
     url: string;
     thumbUrl: string;
-    filename: string;
+    fileName: string;
     fileState?: FileState;
     percentage?: number;
 };
 
 type SourceType = 'album' | 'camera';
 export type Theme = 'file' | 'image' | 'image-flow' | 'custom';
-type FileType = 'all' | 'video' | 'image' | 'file';
 type ImgMode = 'scaleToFill' | 'aspectFit' | 'aspectFill' | 'widthFix' | "heightFix" | 'top' | 'bottom' | 'left'
     | 'right' | 'center' | 'top left' | 'top right' | 'bottom left' | 'bottom right';
 
 export default OakComponent({
     entity: 'extraFile',
     isList: true,
-    projection: {        
+    projection: {
         id: 1,
         tag1: 1,
         tag2: 1,
@@ -42,14 +40,14 @@ export default OakComponent({
         sort: 1,
         isBridge: 1,
         uploadState: 1,
-    },    
+    },
     data: {
         // 根据 size 不同，计算的图片显示大小不同
         itemSizePercentage: '',
-    },    
+    },
     wechatMp: {
-        externalClasses: ['oak-class', 'oak-item-class'],
-    },    
+        externalClasses: ['oak-class', 'oak-item-class', 'oak-item-add-class'],
+    },
     filters: [
         {
             filter() {
@@ -70,33 +68,26 @@ export default OakComponent({
         removeLater: true,
         autoUpload: false,
         maxNumber: 20,
-        extension: [] as string[],
-        fileType: 'all' as FileType,
-        selectCount: 1,
-        sourceType: ['album', 'camera'] as SourceType[],
-        mediaType: ['image'] as ('image' | 'video')[],
-        // 图片显示模式
-        mode: 'aspectFit' as ImgMode,
-        // 每行可显示的个数
-        size: 3,
-        showUploadList: true,
-        accept: 'image/*',
-        // 图片是否可预览
-        preview: true,
-        // 图片是否可删除
-        disableDelete: false,
-        // 上传按钮隐藏
-        disableAdd: false,
-        // 下按按钮隐藏
-        disableDownload: false,
-        type: 'file' as ExtraFile['type'],
+        extension: [] as string[], //小程序独有 chooseMessageFile
+        selectCount: 1, // 每次打开图片时，可选中的数量 小程序独有
+        sourceType: ['album', 'camera'] as SourceType[], // 小程序独有 chooseMedia
+        mediaType: ['image'] as ('image' | 'video')[], // 小程序独有 chooseMedia
+        mode: 'aspectFit' as ImgMode, // 图片显示模式
+        size: 3, // 每行可显示的个数 小程序独有
+        showUploadList: true, //web独有
+        showUploadProgress: false, // web独有
+        accept: 'image/*', // web独有
+        disablePreview: false, // 图片是否可预览
+        disableDelete: false, // 图片是否可删除
+        disableAdd: false, // 上传按钮隐藏
+        disableDownload: false, // 下载按钮隐藏
+        type: 'image' as ExtraFile['type'],
         origin: 'qiniu' as ExtraFile['origin'],
         tag1: '',
         tag2: '',
         entity: '' as keyof EntityDict,
         entityId: '',
         theme: 'image' as Theme,
-        showUploadProgress: false,
     },
     listeners: {
         maxNumber(prev, next) {
@@ -132,50 +123,81 @@ export default OakComponent({
     },
     features: ['extraFile2'],
     formData({ data, features }) {
-        const files = data.map(
-            ele => {
-                const url = features.extraFile2.getUrl(ele as ExtraFile);
-                const thumbUrl = features.extraFile2.getUrl(ele as ExtraFile, 'thumbnail');
-                const fileState = features.extraFile2.getFileState(ele.id!);
-                const filename = features.extraFile2.getFileName(ele as ExtraFile);
-                return {
-                    url,
-                    thumbUrl,
-                    filename,
-                    fileState: fileState?.state,
-                    percentage: fileState?.percentage,
-                    ...ele,
-                } as EnhancedExtraFile;
-            }
-        );
+        let files = data?.sort((ele1, ele2) => ele1.sort! - ele2.sort!);
+        if (this.props.tag1) {
+            files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
+        }
+        if (this.props.tag2) {
+            files = files?.filter((ele) => ele?.tag2 === this.props.tag2);
+        }
+
+        const files2 = files.map((ele) => {
+            const url = features.extraFile2.getUrl(ele as ExtraFile);
+            const thumbUrl = features.extraFile2.getUrl(
+                ele as ExtraFile,
+                'thumbnail'
+            );
+            const fileState = features.extraFile2.getFileState(ele.id!);
+            const fileName = features.extraFile2.getFileName(ele as ExtraFile);
+            return {
+                url,
+                thumbUrl,
+                fileName,
+                fileState: fileState?.state,
+                percentage: fileState?.percentage,
+                ...ele,
+            } as EnhancedExtraFile;
+        });
         return {
-            files,
+            files: files2,
         };
     },
     methods: {
-        onRemove(file: EnhancedExtraFile) {            
+        onRemove(file: EnhancedExtraFile) {
             this.removeItem(file.id);
             this.features.extraFile2.removeLocalFiles([file.id]);
         },
-        addExtraFileInner(options: {
-            name: string;
-            fileType: string;
-            size: number;
-        }, file: File | string) {
-            const { type, origin, tag1, tag2, entity, entityId, bucket } = this.props;
+        addExtraFileInner(
+            options: {
+                name: string;
+                fileType: string;
+                size: number;
+            },
+            file: File | string
+        ) {
+            const {
+                type,
+                origin = 'qiniu', // 默认qiniu
+                tag1,
+                tag2,
+                entity,
+                entityId,
+                bucket,
+            } = this.props;
             const { name, fileType, size } = options;
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
             const { files } = this.state;
             const sort = files.length * 10000;
-            
+            let bucket2 = bucket;
+            if (origin === 'qiniu' && !bucket2) {
+                const context = this.features.cache.begin();
+                const { config } = getConfig(context, 'Cos', origin);
+                this.features.cache.commit();
+
+                const { defaultBucket } = config as QiniuCosConfig;
+                bucket2 = defaultBucket!;
+            }
+
+            const applicationId = this.features.application.getApplicationId();
             const id = this.addItem({
-                bucket,
+                applicationId,
+                bucket: bucket2,
                 origin,
                 type,
                 tag1,
                 tag2,
-                objectId: generateNewId(),
+                // objectId: generateNewId(),           // 这个域弃用了，如果有cos需要用就自己注入
                 entity,
                 filename,
                 size,
@@ -189,52 +211,181 @@ export default OakComponent({
         },
         addFileByWeb(file: File) {
             const { size, type, name } = file;
-            this.addExtraFileInner({
-                name,
-                fileType: type,
-                size,
-            }, file);
-        }
-    }
+            this.addExtraFileInner(
+                {
+                    name,
+                    fileType: type,
+                    size,
+                },
+                file
+            );
+        },
+        // 小程序端
+        async chooseMediaByMp() {
+            //图片和视频使用
+            const { selectCount, mediaType, sourceType } = this.props;
+            try {
+                const { errMsg, tempFiles } = await wx.chooseMedia({
+                    count: selectCount,
+                    mediaType,
+                    sourceType,
+                });
+                if (errMsg !== 'chooseMedia:ok') {
+                    this.triggerEvent('onError', {
+                        level: 'warning',
+                        msg: errMsg,
+                    });
+                } else {
+                    tempFiles.map((tempExtraFile) => {
+                        const {
+                            tempFilePath,
+                            thumbTempFilePath,
+                            fileType,
+                            size,
+                        } = tempExtraFile;
+                        const filePath = tempFilePath || thumbTempFilePath;
+                        const fileFullName =
+                            filePath.match(/[^/]+(?!.*\/)/g)![0];
+                        this.addExtraFileInner(
+                            {
+                                name: fileFullName,
+                                fileType,
+                                size,
+                            },
+                            filePath
+                        );
+                    });
+                }
+            } catch (err: any) {
+                if (err.errMsg !== 'chooseMedia:fail cancel') {
+                    this.triggerEvent('onError', {
+                        level: 'error',
+                        msg: err.errMsg,
+                    });
+                }
+            }
+        },
+        async chooseMessageFileByMp() {
+            const { selectCount, extension } = this.props;
+            try {
+                const { errMsg, tempFiles } = await wx.chooseMessageFile({
+                    count: selectCount!,
+                    type: 'all',
+                    extension,
+                });
+                if (errMsg !== 'chooseMessageFile:ok') {
+                    this.triggerEvent('onError', {
+                        level: 'warning',
+                        msg: errMsg,
+                    });
+                } else {
+                    tempFiles.map((tempExtraFile) => {
+                        const { path, type, size, name } = tempExtraFile;
+                        this.addExtraFileInner(
+                            {
+                                name,
+                                fileType: type,
+                                size,
+                            },
+                            path
+                        );
+                    });
+                }
+            } catch (err: any) {
+                if (err.errMsg !== 'chooseMessageFile:fail cancel') {
+                    this.triggerEvent('onError', {
+                        level: 'error',
+                        msg: err.errMsg,
+                    });
+                }
+            }
+        },
+        async addFileByMp(evt: WechatMiniprogram.Touch) {
+            const { type } = this.props;
+            //小程序 根据type类型调用api
+            if (['image', 'video'].includes(type!)) {
+                this.chooseMediaByMp();
+            } else {
+                this.chooseMessageFileByMp();
+            }
+        },
+        onRemoveByMp(event: WechatMiniprogram.Touch) {
+            const { value } = event.currentTarget.dataset;
+            this.onRemove(value as EnhancedExtraFile);
+        },
+        async onPreviewByMp(event: WechatMiniprogram.Touch) {
+            const files = this.state.files as EnhancedExtraFile[];
+            const { index } = event.currentTarget.dataset;
+            const imageUrl = files[index].url;
+            const urls = files?.filter((ele) => !!ele).map((ele) => ele.url);
+
+            const detail = {
+                all: files,
+                index,
+                urls,
+                current: imageUrl,
+            };
+            // 预览图片
+            if (!this.props.disablePreview) {
+                const result = await wx.previewImage({
+                    urls: urls,
+                    current: imageUrl,
+                });
+                this.triggerEvent('onPreview', detail);
+            }
+        },
+
+        //检查排序是否超过上限
+        checkSort(sort: number) {
+            const reg = /^\d+\.(?:9+)$/;
+            if (reg.test(sort.toString())) {
+                this.setMessage({
+                    type: 'warning',
+                    content: this.t('dragSort'),
+                });
+                return false;
+            }
+            return true;
+        },
+    },
 }) as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
     props: ReactComponentProps<
         ED2,
         T2,
         true,
         {
-            bucket: string,     // 上传的存储桶位置
-            removeLater: boolean,
-            autoUpload: boolean,
-            maxNumber: number,
-            extension: string[],
-            fileType: FileType,
-            selectCount: number,
-            sourceType: SourceType[],
-            mediaType: ('image' | 'video')[],
+            bucket: string; // 上传的存储桶位置
+            removeLater: boolean;
+            autoUpload: boolean;
+            maxNumber: number;
+            extension: string[];
+            selectCount: number;
+            sourceType: SourceType[];
+            mediaType: ('image' | 'video')[];
             // 图片显示模式
-            mode: ImgMode,
+            mode: ImgMode;
             // 每行可显示的个数
-            size: number,
-            showUploadList: boolean,
-            accept: string,
+            size: number;
+            showUploadList: boolean;
+            showUploadProgress: boolean;
+            accept: string;
             // 图片是否可预览
-            preview: boolean,
+            disablePreview: boolean;
             // 图片是否可删除
-            disableDelete: boolean,
+            disableDelete: boolean;
             // 上传按钮隐藏
-            disableAdd: boolean,
-            // 下按按钮隐藏
-            disableDownload: boolean,
-            disabled: boolean,
-            type: string,
-            origin: string,
-            tag1: string,
-            tag2: string,
-            entity: keyof ED2,
-            entityId: string,
-            theme: Theme,
-            showUploadProgress: boolean,
-            children?: React.ReactNode,
+            disableAdd: boolean;
+            // 下载按钮隐藏
+            disableDownload: boolean;
+            disabled: boolean;
+            type: string;
+            origin: string;
+            tag1: string;
+            tag2: string;
+            entity: keyof ED2;
+            entityId: string;
+            theme: Theme;
+            children?: React.ReactNode;
         }
     >
 ) => React.ReactElement;

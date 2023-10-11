@@ -6,6 +6,7 @@ import { GenericAction, AppendOnlyAction, ReadOnlyAction, ExcludeUpdateAction, E
 import { String, Int, Text, Image, Float, Boolean } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
+import * as Application from "../Application/Schema";
 import * as Article from "../Article/Schema";
 import * as ArticleMenu from "../ArticleMenu/Schema";
 import * as SessionMessage from "../SessionMessage/Schema";
@@ -30,6 +31,7 @@ export type OpSchema = EntityShape & {
     isBridge?: Boolean | null;
     uploadState: 'success' | 'failed' | 'uploading';
     uploadMeta?: Object | null;
+    applicationId: ForeignKey<"application">;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
@@ -52,6 +54,8 @@ export type Schema = EntityShape & {
     isBridge?: Boolean | null;
     uploadState: 'success' | 'failed' | 'uploading';
     uploadMeta?: Object | null;
+    applicationId: ForeignKey<"application">;
+    application: Application.Schema;
     article?: Article.Schema;
     articleMenu?: ArticleMenu.Schema;
     sessionMessage?: SessionMessage.Schema;
@@ -83,6 +87,8 @@ type AttrFilter = {
     isBridge: Q_BooleanValue;
     uploadState: Q_EnumValue<'success' | 'failed' | 'uploading'>;
     uploadMeta: Object;
+    applicationId: Q_StringValue;
+    application: Application.Filter;
     article: Article.Filter;
     articleMenu: ArticleMenu.Filter;
     sessionMessage: SessionMessage.Filter;
@@ -115,6 +121,8 @@ export type Projection = {
     isBridge?: number;
     uploadState?: number;
     uploadMeta?: number | Object;
+    applicationId?: number;
+    application?: Application.Projection;
     article?: Article.Projection;
     articleMenu?: ArticleMenu.Projection;
     sessionMessage?: SessionMessage.Projection;
@@ -122,6 +130,9 @@ export type Projection = {
 } & Partial<ExprOp<OpAttr | string>>;
 type ExtraFileIdProjection = OneOf<{
     id: number;
+}>;
+type ApplicationIdProjection = OneOf<{
+    applicationId: number;
 }>;
 type ArticleIdProjection = OneOf<{
     entityId: number;
@@ -178,6 +189,10 @@ export type SortAttr = {
 } | {
     uploadState: number;
 } | {
+    applicationId: number;
+} | {
+    application: Application.SortAttr;
+} | {
     article: Article.SortAttr;
 } | {
     articleMenu: ArticleMenu.SortAttr;
@@ -196,7 +211,15 @@ export type Sorter = SortNode[];
 export type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
 export type Selection<P extends Object = Projection> = SelectOperation<P>;
 export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
+export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "applicationId">> & (({
+    applicationId?: never;
+    application: Application.CreateSingleOperation;
+} | {
+    applicationId: ForeignKey<"application">;
+    application?: Application.UpdateOperation;
+} | {
+    applicationId: ForeignKey<"application">;
+})) & ({
     entity?: never;
     entityId?: never;
     article: Article.CreateSingleOperation;
@@ -248,7 +271,19 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId">> & ({
+export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "applicationId">> & (({
+    application: Application.CreateSingleOperation;
+    applicationId?: never;
+} | {
+    application: Application.UpdateOperation;
+    applicationId?: never;
+} | {
+    application: Application.RemoveOperation;
+    applicationId?: never;
+} | {
+    application?: never;
+    applicationId?: ForeignKey<"application"> | null;
+})) & ({
     article?: Article.CreateSingleOperation | Article.UpdateOperation | Article.RemoveOperation;
     entityId?: never;
     entity?: never;
@@ -271,7 +306,9 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
     [k: string]: any;
 };
 export type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
-export type RemoveOperationData = {} & ({
+export type RemoveOperationData = {} & (({
+    application?: Application.UpdateOperation | Application.RemoveOperation;
+})) & ({
     article?: Article.UpdateOperation | Article.RemoveOperation;
 } | {
     articleMenu?: ArticleMenu.UpdateOperation | ArticleMenu.RemoveOperation;
@@ -284,6 +321,7 @@ export type RemoveOperationData = {} & ({
 });
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
+export type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
 export type ArticleIdSubQuery = Selection<ArticleIdProjection>;
 export type ArticleMenuIdSubQuery = Selection<ArticleMenuIdProjection>;
 export type SessionMessageIdSubQuery = Selection<SessionMessageIdProjection>;
