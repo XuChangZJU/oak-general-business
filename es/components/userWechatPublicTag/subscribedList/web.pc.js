@@ -5,8 +5,9 @@ const { confirm } = Modal;
 import Style from './web.module.less';
 import dayjs from 'dayjs';
 import UserWechatPublicTagList from '../list';
+import FilterPanel from 'oak-frontend-base/es/components/filterPanel';
 export default function Render(props) {
-    const { wechatUsers, oakLoading, oakPagination, tags, applicationId } = props.data;
+    const { wechatUsers, oakLoading, oakPagination, tags, applicationId, oakFullpath } = props.data;
     const { setPageSize, setCurrentPage, getTags, tagging, syncToLocale } = props.methods;
     const { pageSize, total, currentPage } = oakPagination || {};
     const [open, setOpen] = useState(false);
@@ -23,7 +24,12 @@ export default function Render(props) {
                                 setOpenId('');
                             }, children: "\u786E\u5B9A" })] }), children: _jsx(Form.Item, { label: '\u9009\u62E9\u6807\u7B7E', required: true, children: _jsx(Checkbox.Group, { options: tags, onChange: (values) => {
                             setEditTags(values);
-                        }, value: editTags }) }) }), _jsx(Modal, { open: syncOpen, onCancel: () => { setSyncOpen(false); setOpenId(''); }, footer: null, title: "\u540C\u6B65\u6807\u7B7E", width: 800, children: _jsx(UserWechatPublicTagList, { oakAutoUnmount: true, oakPath: `$wechatUser-userWechatPublcTag-list-${openId}`, openId: openId, applicationId: applicationId }) }), _jsx(Table, { loading: oakLoading, dataSource: wechatUsers || [], rowKey: "openId", columns: [
+                        }, value: editTags }) }) }), _jsx(Modal, { open: syncOpen, onCancel: () => { setSyncOpen(false); setOpenId(''); }, footer: null, title: "\u540C\u6B65\u6807\u7B7E", width: 800, children: _jsx(UserWechatPublicTagList, { oakAutoUnmount: true, oakPath: `$wechatUser-userWechatPublcTag-list-${openId}`, openId: openId, applicationId: applicationId }) }), _jsx(FilterPanel, { entity: "wechatUser", oakPath: oakFullpath, columns: [
+                    {
+                        attr: 'nickname',
+                        op: '$includes',
+                    },
+                ] }), _jsx(Table, { loading: oakLoading, dataSource: wechatUsers || [], rowKey: "openId", columns: [
                     {
                         dataIndex: 'openId',
                         title: '用户标识',

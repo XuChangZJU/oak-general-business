@@ -96,7 +96,11 @@ export default OakComponent({
     },
     formData({ data: sessionMessageList = [], features }) {
         const sessionMessageType = sessionMessageList?.find((ele) => ele.$$createAt$$ === 1)?.type;
+        // const url = sessionMessageList?.find(
+        //     (ele) => ele.$$createAt$$ === 1
+        // )?.extraFile$entity?.filter((ele) => ['image'].includes(ele.tag1!))?.map((ele) => features.extraFile.getUrl(ele));
         this.getUserLastMessage();
+        // console.log(url);
         return {
             sessionMessageList,
             num: sessionMessageList?.length,
@@ -170,7 +174,6 @@ export default OakComponent({
                 count: 1,
             });
             const isWeChat = !!lastMessage?.wechatUserId;
-            console.log(lastMessage);
             this.setState({ isWeChat });
         },
         setContent(text) {

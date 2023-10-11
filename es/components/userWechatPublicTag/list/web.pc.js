@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 export default function Render(props) {
     const { data, methods } = props;
     const { t, setPageSize, setCurrentPage, sync, } = methods;
-    const { userWechatPublicTags, showBack = true, oakLoading, oakPagination, applicationId } = data;
+    const { userWechatPublicTags, showBack = true, oakLoading, oakPagination, applicationId, oakFullpath } = data;
     const { pageSize, total, currentPage } = oakPagination || {};
     return (_jsx("div", { className: Style.container, children: _jsx(Table, { loading: oakLoading, dataSource: userWechatPublicTags, rowKey: "id", columns: [
                 {

@@ -98,7 +98,7 @@ export default function Render(
             setCurrentMenuType(2);
             return;
         }
-    }, [menuType])
+    }, [menuType]);
     return (
         <div className={Style.container}>
             <div className={Style.phone}>

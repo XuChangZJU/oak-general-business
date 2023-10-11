@@ -43,8 +43,7 @@ export default function Render(
     const { oakId, tabValue, config, name, description, type, system } =
         props.data;
     const { t, navigateBack, onTabClick, goWechatPublicTagList } = props.methods;
-    const [tabKey, setTabKey] = useState('');
-
+    const [tabKey, setTabKey] = useState('menu');
     const Actions: ReactNode[] = [];
     const items: TabsProps['items'] = [
         {
@@ -85,7 +84,6 @@ export default function Render(
     ]
 
     return (
-        <PageHeader showBack={true} title="应用概览">
             <div className={Style.container}>
                 <Card title={name} bordered={false} extra={Actions}>
                     <Tabs
@@ -96,6 +94,5 @@ export default function Render(
                     />
                 </Card>
             </div>
-        </PageHeader>
     );
 }
