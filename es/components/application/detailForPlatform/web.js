@@ -1,7 +1,6 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { useState } from 'react';
 import { Tabs, Card } from 'antd';
-import PageHeader from '../../common/pageHeader';
 import Style from './web.module.less';
 import WechatMenu from '../../wechatMenu';
 import WechatPublicAutoReply from '../../wechatPublicAutoReply';
@@ -28,7 +27,7 @@ export default function Render(props) {
             children: (_jsx(UserWechatPublicTag, { oakAutoUnmount: true, applicationId: oakId, oakPath: `$application-detail-user-${oakId}` }))
         }
     ];
-    return (_jsx(PageHeader, { showBack: true, title: "\u5E94\u7528\u6982\u89C8", children: _jsx("div", { className: Style.container, children: _jsx(Card, { title: name, bordered: false, extra: Actions, children: _jsx(Tabs, { items: items, onChange: (key) => {
-                        setTabKey(key);
-                    } }) }) }) }));
+    return (_jsx("div", { className: Style.container, children: _jsx(Card, { title: name, bordered: false, extra: Actions, children: _jsx(Tabs, { items: items, onChange: (key) => {
+                    setTabKey(key);
+                } }) }) }));
 }
