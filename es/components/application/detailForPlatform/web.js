@@ -1,11 +1,11 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { useState } from 'react';
 import { Tabs, Card } from 'antd';
-import PageHeader from '../../../components/common/pageHeader';
+import PageHeader from '../../common/pageHeader';
 import Style from './web.module.less';
-import WechatMenu from '../../../components/wechatMenu';
-import WechatPublicAutoReply from '../../../components/wechatPublicAutoReply';
-import UserWechatPublicTag from '../../../components/userWechatPublicTag';
+import WechatMenu from '../../wechatMenu';
+import WechatPublicAutoReply from '../../wechatPublicAutoReply';
+import UserWechatPublicTag from '../../userWechatPublicTag';
 export default function Render(props) {
     const { oakId, tabValue, config, name, description, type, system } = props.data;
     const { t, navigateBack, onTabClick, goWechatPublicTagList } = props.methods;

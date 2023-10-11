@@ -6,6 +6,7 @@ export default function render(props: WebComponentProps<EntityDict, 'session', f
     name: string;
     showBack: boolean;
     sessionId: string;
+    session: EntityDict['session']['Schema'];
 }, {
     getName: () => string;
 }>): import("react/jsx-runtime").JSX.Element;

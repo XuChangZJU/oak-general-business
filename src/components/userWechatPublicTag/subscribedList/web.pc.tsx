@@ -7,7 +7,7 @@ const { confirm } = Modal;
 import Style from './web.module.less';
 import dayjs from 'dayjs';
 import UserWechatPublicTagList from '../list';
-import FilterPanel from 'oak-frontend-base/src/components/filterPanel';
+import FilterPanel from 'oak-frontend-base/es/components/filterPanel';
 
 export default function Render(
     props: WebComponentProps<
