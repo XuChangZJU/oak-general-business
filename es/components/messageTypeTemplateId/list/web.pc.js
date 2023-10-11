@@ -3,13 +3,15 @@ import { Table, Button, Space, Typography, Input, Select } from 'antd';
 import Styles from './web.module.less';
 export default function Render(props) {
     const { oakPagination, mtt = [], dirtyIds = [], oakLoading, messageTypes, applicationId, } = props.data;
-    const { setCurrentPage, setPageSize, t, addItem, removeItem, updateItem, recoverItem, resetItem, execute } = props.methods;
+    const { setCurrentPage, setPageSize, t, addItem, syncTemplate, removeItem, updateItem, recoverItem, resetItem, execute } = props.methods;
     const { pageSize, total, currentPage } = oakPagination || {};
     return (_jsxs("div", { className: Styles.container, children: [_jsxs(Space, { children: [_jsx(Button, { type: "default", onClick: () => {
                             /* addItem({
                                 applicationId,
                             }); */
-                        }, children: t('common::action.create') }), dirtyIds.length > 0 && (_jsx(Button, { type: "primary", onClick: () => {
+                        }, children: t('common::action.create') }), _jsx(Button, { type: "default", onClick: async () => {
+                            await syncTemplate();
+                        }, children: '同步模板' }), dirtyIds.length > 0 && (_jsx(Button, { type: "primary", onClick: () => {
                             execute();
                         }, children: t('common::action.confirm') }))] }), _jsx(Table, { loading: oakLoading, dataSource: mtt, rowKey: "id", columns: [
                     {

@@ -6,4 +6,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
     config: EntityDict['application']['OpSchema']['config'];
     name: string;
     style: Style;
+    type: 'web' | 'wechatMp' | 'wechatPublic';
 }>): import("react/jsx-runtime").JSX.Element | undefined;

@@ -180,5 +180,8 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
         applicationId: string;
         id: number;
     }, context: Cxt) => Promise<any>;
+    syncMessageTemplate: (params: {
+        applicationId: string;
+    }, context: Cxt) => Promise<any>;
 };
 export default GeneralAspectDict;

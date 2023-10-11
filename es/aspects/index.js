@@ -3,6 +3,7 @@ import { getInfoByUrl } from './extraFile';
 import { getApplication, signatureJsSDK, uploadWechatMedia, } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { updateStyle } from './style2';
+import { syncMessageTemplate } from './template';
 import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user';
 import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
@@ -52,5 +53,6 @@ const aspectDict = {
     getTags,
     editTag,
     deleteTag,
+    syncMessageTemplate
 };
 export default aspectDict;

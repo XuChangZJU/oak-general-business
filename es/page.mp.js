@@ -10,7 +10,7 @@ import { createComponent as createBaseComponent } from 'oak-frontend-base/es/pag
  * @returns
  */
 export async function subscribeMpMessage(messageTypes, haveToAccept, tip) {
-    const mttIds = this.features.cache.get('messageTypeTemplateId', {
+    const mttIds = this.features.cache.get('messageTypeTemplate', {
         data: {
             id: 1,
             templateId: 1,

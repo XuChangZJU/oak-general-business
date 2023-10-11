@@ -290,6 +290,12 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<any>;
+    syncMessageTemplate: (
+        params: {
+            applicationId: string;
+        },
+        context: Cxt
+    ) => Promise<any>;
 };
 
 export default GeneralAspectDict;

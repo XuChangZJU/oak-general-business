@@ -58,4 +58,14 @@ export default OakComponent({
             });
         },
     },
+    methods: {
+        async syncTemplate() {
+            const applicationId = this.props.applicationId;
+            await this.features.template.syncMessageTemplate(applicationId);
+            this.setMessage({
+                content: '操作成功',
+                type: 'success',
+            });
+        }
+    }
 });

@@ -135,7 +135,8 @@ const i18ns: I18n[] = [
         data: {
             "detail": "应用详情",
             "config": "配置管理",
-            "style": "样式管理"
+            "style": "样式管理",
+            "template": "模板消息管理"
         }
     },
     {
