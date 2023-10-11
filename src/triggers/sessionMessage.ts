@@ -32,6 +32,61 @@ const triggers: Trigger<EntityDict, 'sessionMessage', BackendRuntimeContext<Enti
                     },
                     {}
                 );
+                const [sessionMessage] = await context.select(
+                    'sessionMessage',
+                    {
+                        data: {
+                            id: 1,
+                            sessionId: 1,
+                            text: 1,
+                            type: 1,
+                            userId: 1,
+                            wechatUserId: 1,
+                            applicationId: 1,
+                            createTime: 1,
+                            $$createAt$$: 1,
+                            aaoe: 1,
+                        },
+                        filter: {
+                            id: sessionId,
+                            aaoe: false,
+                            createTime: {
+                                $gt: Date.now() - (48 * 60 * 60 * 1000 - 5 * 60 * 1000)
+                            }
+                        },
+                        sorter: [
+                            {
+                                $attr: {
+                                    $$createAt$$: 1,
+                                },
+                                $direction: 'desc',
+                            },
+                        ],
+                        count: 1,
+                    },
+                    {}
+                );
+                if (sessionMessage && sessionMessage.wechatUserId) {
+                    const [session] = await context.select(
+                        'session',
+                        {
+                            data: {
+                                id: 1,
+                                entity: 1,
+                                entityId: 1,
+                                userId: 1,
+                                openId: 1,
+                            },
+                            filter: {
+                                id: sessionId,
+                            },
+                        },
+                        {}
+                    );
+                }
+
+
+
             } catch (err) {
                 closeRootMode();
                 throw err;

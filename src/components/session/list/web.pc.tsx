@@ -25,7 +25,7 @@ export default function Render(
             entityProjection: object;
         },
         {
-            setSelectedSessionId: (conversationId: string) => void;
+            setSelectedSessionId: (sessionId: string) => void;
         }
     >
 ) {

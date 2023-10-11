@@ -19,17 +19,19 @@ export default function render(props: WebComponentProps<
         name: string,
         showBack: boolean;
         sessionId: string;
+        session: EntityDict['session']['Schema'];
     },
     {
         getName: () => string;
     }
 >) {
     const { methods, data } = props;
-    const { nickname, avatarUrl, name, showBack } = data;
+    const { nickname, avatarUrl, name, showBack, sessionId, session } = data;
     const { getName } = methods;
     const defaultUrl = 'http://qiniu.gecomebox.com/static/defaultAvatar.png'
     const features = useFeatures();
     const width = useWidth();
+    console.log(session)
 
     return (
         <div className={classNames(Style.header, {
@@ -47,7 +49,11 @@ export default function render(props: WebComponentProps<
             )}
             <div className={Style.middle}>
                 {/* <Image src={url} className={Style.icon} preview={false} /> */}
-                <div className={Style.name}>{getName()}</div>
+                {
+                    session && (
+                        <div className={Style.name}>{getName()}</div>
+                    )
+                }
             </div>
         </div>
     );
