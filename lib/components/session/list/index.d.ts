@@ -6,5 +6,6 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     entityProjection: any;
     sessionId: string;
     dialog: boolean;
+    onItemClick: ((sessionId: string) => {}) | null | undefined;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

@@ -1,17 +1,17 @@
 import React from 'react';
 import Style from './mobile.module.less';
-import MessageList from '../../sessionMessage/list';
 import Header from '../../../components/session/header';
 import SessionCell from '../../../components/session/cell';
 import MessageNumber from '../../../components/session/messageNumber';
 import classNames from 'classnames';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
+
 export default function Render(
     props: WebComponentProps<
         EntityDict,
         'session',
-        false,
+        true,
         {
             sessions: EntityDict['session']['Schema'][];
             selectedSessionId: string;
@@ -30,10 +30,7 @@ export default function Render(
         oakFullpath,
         entityFilter,
     } = data;
-    const {
-        setSelectedSessionId,
-        navigateToMessage,
-    } = methods;
+    const { navigateToMessage, setSelectedSessionId } = methods;
 
     return (
         <div className={Style.container}>

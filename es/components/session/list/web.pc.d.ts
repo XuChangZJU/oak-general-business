@@ -1,6 +1,6 @@
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
-export default function Render(props: WebComponentProps<EntityDict, 'session', false, {
+export default function Render(props: WebComponentProps<EntityDict, 'session', true, {
     sessions: any;
     selectedSessionId: string;
     className: string;

@@ -6,9 +6,7 @@ import classNames from 'classnames';
 import Style from './web.module.less';
 export default function Render(props) {
     const { data, methods } = props;
-    const { sessions, selectedSessionId, oakFullpath, 
-    // unReadConversation = 0,
-    entityFilter, dialog = false, className, entityDisplay, entityProjection, } = data;
+    const { sessions, selectedSessionId, oakFullpath, entityFilter, dialog = false, className, entityDisplay, entityProjection, } = data;
     const { setSelectedSessionId } = methods;
     return (_jsx("div", { className: Style.container, children: _jsxs("div", { className: classNames(Style.bothContainer, className, {
                 [Style.dialogContainer]: dialog,
