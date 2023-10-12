@@ -183,6 +183,9 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
         id: string;
         wechatId: number;
     }, context: Cxt) => Promise<any>;
+    syncMessageTemplate: (params: {
+        applicationId: string;
+    }, context: Cxt) => Promise<any>;
     syncTag: (params: {
         applicationId: string;
         id: string;

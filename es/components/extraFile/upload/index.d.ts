@@ -10,9 +10,9 @@ export interface EnhancedExtraFile extends ExtraFile {
     fileState?: FileState;
     percentage?: number;
 }
-type SourceType = 'album' | 'camera';
 export type Theme = 'file' | 'image' | 'image-flow' | 'custom';
-type ImgMode = 'scaleToFill' | 'aspectFit' | 'aspectFill' | 'widthFix' | "heightFix" | 'top' | 'bottom' | 'left' | 'right' | 'center' | 'top left' | 'top right' | 'bottom left' | 'bottom right';
+type SourceType = 'album' | 'camera';
+type ImageMode = 'scaleToFill' | 'aspectFit' | 'aspectFill' | 'widthFix' | 'heightFix' | 'top' | 'bottom' | 'left' | 'right' | 'center' | 'top left' | 'top right' | 'bottom left' | 'bottom right';
 declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(props: ReactComponentProps<ED2, T2, true, {
     bucket: string;
     removeLater: boolean;
@@ -22,7 +22,7 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     selectCount: number;
     sourceType: SourceType[];
     mediaType: ('image' | 'video')[];
-    mode: ImgMode;
+    mode: ImageMode;
     size: number;
     showUploadList: boolean;
     showUploadProgress: boolean;

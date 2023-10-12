@@ -293,6 +293,12 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<any>;
+    syncMessageTemplate: (
+        params: {
+            applicationId: string;
+        },
+        context: Cxt
+    ) => Promise<any>;
     syncTag: (
         params: {
             applicationId: string;

@@ -4,6 +4,7 @@ import { WebComponentProps } from 'oak-frontend-base';
 import ApplicationDetail from '../detail';
 import ConfigUpsert from '../../config/application';
 import StyleUpsert from '../../config/style/platform';
+import TemplateList from '../../messageTypeTemplateId/list';
 import { EntityDict } from '../../../oak-app-domain';
 import { Style } from '../../../types/Style';
 import Styles from './web.pc.module.less';
@@ -59,7 +60,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
             ),
         },
     ];
-    if(type === 'wechatPublic') {
+    if (type === 'wechatPublic') {
         items.push(
             {
                 label: <div className={Styles.tabLabel}>{t('menu')}</div>,
@@ -105,7 +106,18 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
                         oakPath={`$application-panel-user-${id}`}
                     />
                 )
-            }
+            },
+            {
+                label: <div className={Styles.tabLabel}>{t('template')}</div>,
+                key: 'template',
+                children: (
+                    <TemplateList
+                        oakAutoUnmount={true}
+                        oakPath={`templateUpsert-ApplicationId:${id}`}
+                        applicationId={id}
+                    />
+                ),
+            },
         )
     }
     if (id && oakFullpath) {

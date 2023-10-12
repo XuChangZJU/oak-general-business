@@ -14,11 +14,24 @@ export interface EnhancedExtraFile extends ExtraFile {
     fileState?: FileState;
     percentage?: number;
 };
+export type Theme = 'file' | 'image' | 'image-flow' | 'custom';
 
 type SourceType = 'album' | 'camera';
-export type Theme = 'file' | 'image' | 'image-flow' | 'custom';
-type ImgMode = 'scaleToFill' | 'aspectFit' | 'aspectFill' | 'widthFix' | "heightFix" | 'top' | 'bottom' | 'left'
-    | 'right' | 'center' | 'top left' | 'top right' | 'bottom left' | 'bottom right';
+type ImageMode =
+    | 'scaleToFill'
+    | 'aspectFit'
+    | 'aspectFill'
+    | 'widthFix'
+    | 'heightFix'
+    | 'top'
+    | 'bottom'
+    | 'left'
+    | 'right'
+    | 'center'
+    | 'top left'
+    | 'top right'
+    | 'bottom left'
+    | 'bottom right';
 
 export default OakComponent({
     entity: 'extraFile',
@@ -72,7 +85,7 @@ export default OakComponent({
         selectCount: 1, // 每次打开图片时，可选中的数量 小程序独有
         sourceType: ['album', 'camera'] as SourceType[], // 小程序独有 chooseMedia
         mediaType: ['image'] as ('image' | 'video')[], // 小程序独有 chooseMedia
-        mode: 'aspectFit' as ImgMode, // 图片显示模式
+        mode: 'aspectFit' as ImageMode, // 图片显示模式
         size: 3, // 每行可显示的个数 小程序独有
         showUploadList: true, //web独有
         showUploadProgress: false, // web独有
@@ -123,7 +136,9 @@ export default OakComponent({
     },
     features: ['extraFile2'],
     formData({ data, features }) {
-        let files = data?.sort((ele1, ele2) => ele1.sort! - ele2.sort!);
+        let files = data
+            ?.filter((ele) => !ele.$$deleteAt$$)
+            .sort((ele1, ele2) => ele1.sort! - ele2.sort!);
         if (this.props.tag1) {
             files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
         }
@@ -162,6 +177,7 @@ export default OakComponent({
                 name: string;
                 fileType: string;
                 size: number;
+                sort: number;
             },
             file: File | string
         ) {
@@ -174,11 +190,10 @@ export default OakComponent({
                 entityId,
                 bucket,
             } = this.props;
-            const { name, fileType, size } = options;
+            const { name, fileType, size, sort } = options;
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
             const { files } = this.state;
-            const sort = files.length * 10000;
             let bucket2 = bucket;
             if (origin === 'qiniu' && !bucket2) {
                 const context = this.features.cache.begin();
@@ -216,6 +231,7 @@ export default OakComponent({
                     name,
                     fileType: type,
                     size,
+                    sort: this.getSort(),
                 },
                 file
             );
@@ -236,7 +252,7 @@ export default OakComponent({
                         msg: errMsg,
                     });
                 } else {
-                    tempFiles.map((tempExtraFile) => {
+                    tempFiles.map((tempExtraFile, index) => {
                         const {
                             tempFilePath,
                             thumbTempFilePath,
@@ -251,6 +267,7 @@ export default OakComponent({
                                 name: fileFullName,
                                 fileType,
                                 size,
+                                sort: this.getSort(index),
                             },
                             filePath
                         );
@@ -279,13 +296,14 @@ export default OakComponent({
                         msg: errMsg,
                     });
                 } else {
-                    tempFiles.map((tempExtraFile) => {
+                    tempFiles.map((tempExtraFile, index) => {
                         const { path, type, size, name } = tempExtraFile;
                         this.addExtraFileInner(
                             {
                                 name,
                                 fileType: type,
                                 size,
+                                sort: this.getSort(index),
                             },
                             path
                         );
@@ -334,6 +352,14 @@ export default OakComponent({
                 this.triggerEvent('onPreview', detail);
             }
         },
+        getSort(index: number = 0) {
+            const { files } = this.state;
+            const currentSort = files?.length
+                ? files[files.length - 1].sort || 0
+                : 0;
+            const sort = currentSort + (index + 1) * 1000;
+            return sort;
+        },
 
         //检查排序是否超过上限
         checkSort(sort: number) {
@@ -363,7 +389,7 @@ export default OakComponent({
             sourceType: SourceType[];
             mediaType: ('image' | 'video')[];
             // 图片显示模式
-            mode: ImgMode;
+            mode: ImageMode;
             // 每行可显示的个数
             size: number;
             showUploadList: boolean;

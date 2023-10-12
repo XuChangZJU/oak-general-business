@@ -80,7 +80,6 @@ export default function render(
             multiple?: boolean;
             draggable?: boolean;
             theme?: Theme;
-            tips?: string;
             beforeUpload?: (file: File) => Promise<boolean> | boolean;
             style?: Record<string, string>;
             className?: string;
@@ -107,7 +106,6 @@ export default function render(
         multiple = maxNumber !== 1,
         draggable = false,
         theme = 'image',
-        tips,
         beforeUpload,
         style,
         className,
@@ -199,11 +197,13 @@ export default function render(
         (dragIndex: number, hoverIndex: number) => {
             const dragRow = files[dragIndex];
             let sort;
+            // 拖拽物下标和覆盖物下标一致 
             if (hoverIndex === dragIndex) {
                 return;
             } else if (hoverIndex > dragIndex) {
+                // 放置最后覆盖物上
                 if (hoverIndex === files.length - 1) {
-                    sort = files[hoverIndex]!.sort! + 100;
+                    sort = files[hoverIndex]!.sort! * 2;
                 } else {
                     sort =
                         (files[hoverIndex]!.sort! +
@@ -211,6 +211,7 @@ export default function render(
                         2;
                 }
             } else {
+                // 放置最前覆盖物上
                 if (hoverIndex === 0) {
                     sort = files[hoverIndex]!.sort! / 2;
                 } else {
@@ -287,10 +288,6 @@ export default function render(
                         : null}
                 </Upload>
             </DndProvider>
-
-            {tips && (
-                <small className={Style['oak-upload__tips']}>{tips}</small>
-            )}
         </Space>
     );
 }

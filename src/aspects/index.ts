@@ -19,6 +19,7 @@ import {
 } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { updateStyle } from './style2';
+import { syncMessageTemplate } from './template';
 import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user';
 import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
@@ -46,9 +47,9 @@ import {
     oneKeySync,
 } from './wechatPublicTag';
 import {
-    getTagUsers, 
-    batchtagging, 
-    batchuntagging, 
+    getTagUsers,
+    batchtagging,
+    batchuntagging,
     getUserTags,
     getUsers,
     tagging,
@@ -97,11 +98,12 @@ const aspectDict = {
     getTags,
     editTag,
     deleteTag,
+    syncMessageTemplate,
     syncTag,
     oneKeySync,
-    getTagUsers, 
-    batchtagging, 
-    batchuntagging, 
+    getTagUsers,
+    batchtagging,
+    batchuntagging,
     getUserTags,
     getUsers,
     tagging,

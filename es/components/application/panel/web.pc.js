@@ -4,6 +4,7 @@ import { Tabs } from 'antd';
 import ApplicationDetail from '../detail';
 import ConfigUpsert from '../../config/application';
 import StyleUpsert from '../../config/style/platform';
+import TemplateList from '../../messageTypeTemplateId/list';
 import Styles from './web.pc.module.less';
 import WechatMenu from '../../wechatMenu';
 import UserWechatPublicTag from '../../userWechatPublicTag';
@@ -47,6 +48,10 @@ export default function Render(props) {
             label: _jsx("div", { className: Styles.tabLabel, children: t('user') }),
             key: 'user',
             children: (_jsx(UserWechatPublicTag, { oakAutoUnmount: true, applicationId: id, oakPath: `$application-panel-user-${id}` }))
+        }, {
+            label: _jsx("div", { className: Styles.tabLabel, children: t('template') }),
+            key: 'template',
+            children: (_jsx(TemplateList, { oakAutoUnmount: true, oakPath: `templateUpsert-ApplicationId:${id}`, applicationId: id })),
         });
     }
     if (id && oakFullpath) {

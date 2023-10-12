@@ -113,7 +113,9 @@ export default OakComponent({
         this.getUserLastMessage();
         // console.log(url);
         return {
-            sessionMessageList,
+            sessionMessageList: sessionMessageList?.filter(
+                (ele) => ele.$$createAt$$ !== 1
+            ),
             num: sessionMessageList?.length,
             sessionMessageType,
         };

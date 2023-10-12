@@ -136,6 +136,7 @@ const i18ns: I18n[] = [
             "detail": "应用详情",
             "config": "配置管理",
             "style": "样式管理",
+            "template": "模板消息管理",
             "menu": "菜单管理",
             "autoReply": "被关注回复管理",
             "tag": "标签管理",
@@ -396,6 +397,7 @@ const i18ns: I18n[] = [
                 "newAdd": "新增",
                 "add": "添加"
             },
+            "submit": "提交",
             "reset": "重置",
             "select": "查询",
             "expand": "展开",

@@ -1,7 +1,7 @@
 import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from '../../../oak-app-domain';
-import * as React from 'react';
-import { Table, Button, Space, Typography, Input, Select } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Table, Button, Space, Typography, Input, Select, Modal } from 'antd';
 import Styles from './web.module.less';
 
 export default function Render(props: WebComponentProps<
@@ -9,13 +9,14 @@ export default function Render(props: WebComponentProps<
     'messageTypeTemplate',
     true,
     {
-        mtt: EntityDict['messageTypeTemplate']['OpSchema'][];
+        mtt: EntityDict['messageTypeTemplate']['Schema'][];
+        wechatPublicTemplates: EntityDict['wechatPublicTemplate']['Schema'][];
         dirtyIds: string[];
         messageTypes: string[];
         applicationId: string;
     },
     {
-
+        syncTemplate: () => Promise<void>;
     }>) {
 
     const {
@@ -23,26 +24,41 @@ export default function Render(props: WebComponentProps<
         mtt = [],
         dirtyIds = [],
         oakLoading,
-        messageTypes,
+        messageTypes = [],
         applicationId,
+        wechatPublicTemplates = [],
     } = props.data;
-    const { setCurrentPage, setPageSize, t, addItem,
+    const { setCurrentPage, setPageSize, t, addItem, syncTemplate,
         removeItem, updateItem, recoverItem, resetItem, execute } = props.methods;
+    const [syncDisable, setSyncDisable] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const { pageSize, total, currentPage } = oakPagination || {};
-
+    console.log(messageTypes, wechatPublicTemplates);
     return (
         <div className={Styles.container}>
             <Space>
                 <Button
                     type="default"
+                    disabled={!(messageTypes.length > 0 && wechatPublicTemplates.length > 0)}
                     onClick={() => {
-                        /* addItem({
-                            applicationId,
-                        }); */
+                        addItem({
+                            templateId: wechatPublicTemplates[0].id,
+                        });
                     }}
                 >
                     {t('common::action.create')}
+                </Button>
+                <Button
+                    type="default"
+                    disabled={syncDisable}
+                    onClick={async () => {
+                        setSyncDisable(true);
+                        await syncTemplate();
+                        setSyncDisable(false);
+                    }}
+                >
+                    {'同步模板'}
                 </Button>
                 {
                     dirtyIds.length > 0 && (
@@ -98,16 +114,25 @@ export default function Render(props: WebComponentProps<
                     },
                     {
                         dataIndex: 'templateId',
-                        title: '模板消息Id',
+                        title: '模板消息标题',
                         width: 300,
                         render: (value, record, index) => {
                             if (dirtyIds.includes(record.id) && !record.$$deleteAt$$) {
                                 return (
-                                    <Input
+                                    <Select
+                                        style={{
+                                            width: '100%',
+                                        }}
                                         value={value}
                                         onChange={(e) => updateItem({
-                                            templateId: e.target.value,
+                                            type: e,
                                         }, record.id)}
+                                        options={wechatPublicTemplates.map(
+                                            ele => ({
+                                                value: ele.id,
+                                                label: ele.title
+                                            })
+                                        )}
                                     />
                                 );
                             }
@@ -116,7 +141,7 @@ export default function Render(props: WebComponentProps<
                                     type={!!record.$$deleteAt$$ ? 'danger' : undefined}
                                     delete={!!record.$$deleteAt$$}
                                 >
-                                    {value}
+                                    {record?.template?.title}
                                 </Typography.Text>
                             );
                         },

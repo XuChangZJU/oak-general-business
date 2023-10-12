@@ -9,6 +9,7 @@ import * as RelationAuth from "./RelationAuth/Schema";
 import * as User from "./User/Schema";
 import * as UserEntityGrant from "./UserEntityGrant/Schema";
 import * as UserRelation from "./UserRelation/Schema";
+import * as Account from "./Account/Schema";
 import * as Address from "./Address/Schema";
 import * as Application from "./Application/Schema";
 import * as Area from "./Area/Schema";
@@ -157,6 +158,17 @@ export type UserEntityGrantIdSubQuery = {
 export type UserRelationIdSubQuery = {
     [K in "$in" | "$nin"]?: (UserRelation.UserRelationIdSubQuery & {
         entity: "userRelation";
+    }) | any;
+};
+export type AccountIdSubQuery = {
+    [K in "$in" | "$nin"]?: (UserEntityGrant.AccountIdSubQuery & {
+        entity: "userEntityGrant";
+    }) | (Relation.AccountIdSubQuery & {
+        entity: "relation";
+    }) | (UserRelation.AccountIdSubQuery & {
+        entity: "userRelation";
+    }) | (Account.AccountIdSubQuery & {
+        entity: "account";
     }) | any;
 };
 export type AddressIdSubQuery = {

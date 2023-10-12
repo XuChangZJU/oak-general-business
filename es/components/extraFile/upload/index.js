@@ -97,7 +97,9 @@ export default OakComponent({
     },
     features: ['extraFile2'],
     formData({ data, features }) {
-        let files = data?.sort((ele1, ele2) => ele1.sort - ele2.sort);
+        let files = data
+            ?.filter((ele) => !ele.$$deleteAt$$)
+            .sort((ele1, ele2) => ele1.sort - ele2.sort);
         if (this.props.tag1) {
             files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
         }
@@ -130,11 +132,10 @@ export default OakComponent({
         addExtraFileInner(options, file) {
             const { type, origin = 'qiniu', // 默认qiniu
             tag1, tag2, entity, entityId, bucket, } = this.props;
-            const { name, fileType, size } = options;
+            const { name, fileType, size, sort } = options;
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
             const { files } = this.state;
-            const sort = files.length * 10000;
             let bucket2 = bucket;
             if (origin === 'qiniu' && !bucket2) {
                 const context = this.features.cache.begin();
@@ -169,6 +170,7 @@ export default OakComponent({
                 name,
                 fileType: type,
                 size,
+                sort: this.getSort(),
             }, file);
         },
         // 小程序端
@@ -188,7 +190,7 @@ export default OakComponent({
                     });
                 }
                 else {
-                    tempFiles.map((tempExtraFile) => {
+                    tempFiles.map((tempExtraFile, index) => {
                         const { tempFilePath, thumbTempFilePath, fileType, size, } = tempExtraFile;
                         const filePath = tempFilePath || thumbTempFilePath;
                         const fileFullName = filePath.match(/[^/]+(?!.*\/)/g)[0];
@@ -196,6 +198,7 @@ export default OakComponent({
                             name: fileFullName,
                             fileType,
                             size,
+                            sort: this.getSort(index),
                         }, filePath);
                     });
                 }
@@ -224,12 +227,13 @@ export default OakComponent({
                     });
                 }
                 else {
-                    tempFiles.map((tempExtraFile) => {
+                    tempFiles.map((tempExtraFile, index) => {
                         const { path, type, size, name } = tempExtraFile;
                         this.addExtraFileInner({
                             name,
                             fileType: type,
                             size,
+                            sort: this.getSort(index),
                         }, path);
                     });
                 }
@@ -276,6 +280,14 @@ export default OakComponent({
                 });
                 this.triggerEvent('onPreview', detail);
             }
+        },
+        getSort(index = 0) {
+            const { files } = this.state;
+            const currentSort = files?.length
+                ? files[files.length - 1].sort || 0
+                : 0;
+            const sort = currentSort + (index + 1) * 1000;
+            return sort;
         },
         //检查排序是否超过上限
         checkSort(sort) {
