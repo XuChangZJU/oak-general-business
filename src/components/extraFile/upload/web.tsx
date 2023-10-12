@@ -80,7 +80,6 @@ export default function render(
             multiple?: boolean;
             draggable?: boolean;
             theme?: Theme;
-            tips?: string;
             beforeUpload?: (file: File) => Promise<boolean> | boolean;
             style?: Record<string, string>;
             className?: string;
@@ -107,7 +106,6 @@ export default function render(
         multiple = maxNumber !== 1,
         draggable = false,
         theme = 'image',
-        tips,
         beforeUpload,
         style,
         className,
@@ -287,10 +285,6 @@ export default function render(
                         : null}
                 </Upload>
             </DndProvider>
-
-            {tips && (
-                <small className={Style['oak-upload__tips']}>{tips}</small>
-            )}
         </Space>
     );
 }

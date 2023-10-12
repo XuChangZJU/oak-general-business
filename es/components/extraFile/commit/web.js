@@ -6,7 +6,7 @@ export default function render(props) {
     const disabled = oakExecuting ||
         ['uploading'].includes(state) ||
         (oakExecutable === false && ['uploaded'].includes(state));
-    let text = executeText || t('common::action.confirm');
+    let text = executeText || t('common:submit');
     if (oakExecuting) {
         text = t('executing', { text });
     }
