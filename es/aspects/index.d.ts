@@ -11,7 +11,8 @@ import { getMpUnlimitWxaCode } from './wechatQrCode';
 import { confirmUserEntityGrant } from './userEntityGrant';
 import { createSession } from './session';
 import { getCurrentMenu, getMenu, createMenu, createConditionalMenu, deleteConditionalMenu, deleteMenu, batchGetArticle, getArticle, batchGetMaterialList, getMaterial } from './wechatMenu';
-import { createTag, getTags, editTag, deleteTag } from './wechatPublicTag';
+import { createTag, getTags, editTag, deleteTag, syncTag, oneKeySync } from './wechatPublicTag';
+import { getTagUsers, batchtagging, batchuntagging, getUserTags, getUsers, tagging, syncToLocale, syncToWechat } from './userWechatPublicTag';
 declare const aspectDict: {
     mergeUser: typeof mergeUser;
     switchTo: typeof switchTo;
@@ -54,5 +55,15 @@ declare const aspectDict: {
     editTag: typeof editTag;
     deleteTag: typeof deleteTag;
     syncMessageTemplate: typeof syncMessageTemplate;
+    syncTag: typeof syncTag;
+    oneKeySync: typeof oneKeySync;
+    getTagUsers: typeof getTagUsers;
+    batchtagging: typeof batchtagging;
+    batchuntagging: typeof batchuntagging;
+    getUserTags: typeof getUserTags;
+    getUsers: typeof getUsers;
+    tagging: typeof tagging;
+    syncToLocale: typeof syncToLocale;
+    syncToWechat: typeof syncToWechat;
 };
 export default aspectDict;

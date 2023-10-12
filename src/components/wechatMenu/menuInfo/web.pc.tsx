@@ -1169,7 +1169,7 @@ export default function Render(
                                 }}
                             >
                                 <CheckOutlined />
-                                {iState !== 'fail' ? '保存并发布' : '重新发布'}
+                                {iState !== 'fail' ? '保存并发布' : '同步'}
                             </Button>
                             {menuType === 'conditional' && config && menuId && (
                                 <Button

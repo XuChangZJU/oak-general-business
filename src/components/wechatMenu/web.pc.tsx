@@ -18,12 +18,13 @@ export default function Render(
             applicationId: string;
             menuId: string;
             isPlatform: boolean;
+            tabKey: string;
         },
         {
         }
     >
 ) {
-    const { menuId, oakFullpath, is_menu_open, applicationId, isPlatform } = props.data;
+    const { menuId, oakFullpath, is_menu_open, applicationId, isPlatform, tabKey } = props.data;
     const { } = props.methods;
     const [menuType, setMenuType] = useState('common');
     const [tag, setTag] = useState({} as { id: string, name: string, wechatId: string });
@@ -42,6 +43,7 @@ export default function Render(
                 applicationId={applicationId}
                 oakAutoUnmount={true}
                 menuType={menuType}
+                tabKey={tabKey}
             />,
         },
         {
@@ -66,6 +68,7 @@ export default function Render(
                                 tagId={tag.id}
                                 wechatId={tag.wechatId}
                                 menuType={menuType}
+                                tabKey={tabKey}
                             />
                         ) : (
                             <div className={Style.tagHelp}>请选择一个标签</div>
@@ -88,6 +91,7 @@ export default function Render(
                                     applicationId={applicationId}
                                     oakAutoUnmount={true}
                                     menuType={menuType}
+                                    tabKey={tabKey}
                                 /> : <Tabs
                                     defaultActiveKey='1'
                                     items={items}

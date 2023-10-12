@@ -17,7 +17,6 @@ export default OakComponent({
         $$seq$$: 1,
     },
     formData({ data: tag }) {
-        console.log(tag);
         return {
             text: tag?.text,
             wechatId: tag?.wechatId,
@@ -31,13 +30,13 @@ export default OakComponent({
                 assert(applicationId);
                 this.update({
                     applicationId,
+                    iState: 'wait',
                 });
             }
         }
     },
     methods: {
         async confirm() {
-            await this.execute();
             this.navigateBack();
         },
         async createTag(name) {
@@ -49,6 +48,12 @@ export default OakComponent({
                 return;
             }
             const { applicationId } = this.props;
+            const { text } = this.state;
+            await this.features.wechatPublicTag.createTag({ applicationId: applicationId, name: text });
+            this.setMessage({
+                type: 'success',
+                content: '操作成功',
+            });
             await this.confirm();
         },
         async editTag(id, name) {
@@ -60,6 +65,12 @@ export default OakComponent({
                 return;
             }
             const { applicationId } = this.props;
+            const { wechatId, text } = this.state;
+            await this.features.wechatPublicTag.editTag({ applicationId: applicationId, id: wechatId, name: text });
+            this.setMessage({
+                type: 'success',
+                content: '操作成功',
+            });
             await this.confirm();
         }
     }

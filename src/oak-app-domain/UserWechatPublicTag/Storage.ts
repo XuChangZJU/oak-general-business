@@ -1,6 +1,6 @@
 import { StorageDesc } from "oak-domain/lib/types/Storage";
 import { OpSchema } from "./Schema";
-import { genericActions as actions } from "oak-domain/lib/actions/action";
+import { actions } from "./Action";
 export const desc: StorageDesc<OpSchema> = {
     attributes: {
         wechatPublicTagId: {
@@ -20,6 +20,10 @@ export const desc: StorageDesc<OpSchema> = {
         syncAt: {
             notNull: true,
             type: "datetime"
+        },
+        iState: {
+            type: "enum",
+            enumeration: ["wait", "success", "fail"]
         }
     },
     actionType: "crud",

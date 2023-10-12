@@ -1,0 +1,152 @@
+@import "../../../config/styles/mp/index.less";
+@import "../../../config/styles/mp/mixins.less";
+
+.file-list__container {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.file-list__item {
+  position: relative;
+  width: 220rpx;
+  padding-bottom: 220rpx;
+  height: 0;
+}
+
+// size 不同时，对应的图片间距设置
+// size 仅支持 1-10
+each(range(2, 10), {
+  @valuePlusOne : @value+1;
+
+  .file-list__item--@{value}:nth-of-type(n+@{valuePlusOne}) {
+    margin-top : 20rpx;
+  }
+
+  .file-list__item--@{value}:not(:nth-of-type(@{value}n+1)) {
+    margin-left : 20rpx;
+  }
+}) // 当 size 为 null，每行会显示 3 张图片
+
+.file-list__item--null:nth-of-type(n+4) {
+  margin-top: 20rpx;
+}
+
+.file-list__item--null:not(:nth-of-type(3n+1)) {
+  margin-left: 20rpx;
+}
+
+.file-list__image {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border: 1rpx solid #eee;
+  border-radius: 4rpx;
+}
+
+.file-list__item--selected {
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  background-color: #000;
+  filter: Alpha(Opacity=50);
+  opacity: 0.5;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.file-list__remove {
+  position: absolute;
+  right: 10rpx;
+  top: 10rpx;
+  height: 40rpx;
+  width: 40rpx;
+  border-radius: 50%;
+  background: rgb(0 0 0 / 40%);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.file-list__item--add {
+  border: 1rpx solid #eee;
+  border-radius: 4rpx;
+  background-color: white;
+}
+
+.file-list__image--add {
+  visibility: hidden;
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.file-list__item-slot-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.file-list__item-slot-wrapper:empty+.file-list__image--add {
+  visibility: visible;
+}
+
+
+.file-list-flow__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.file-list-flow__item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10rpx 10rpx 10rpx 0;
+}
+.file-list-flow__item--name {
+  display: flex;
+  flex-direction: row;
+  fleX: 1;
+  font-size: 28rpx;
+}
+
+.file-list-flow__item--btns {
+  display: flex;
+  flex-direction: row;
+}
+
+.file-list-flow__download {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-list-flow__remove {
+  width: 48rpx;
+  height: 48rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

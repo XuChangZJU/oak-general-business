@@ -25,6 +25,7 @@ export type AspectDict<
 export interface SerializedData extends Fsd {
     a?: string;
     t?: string;
+    rm?: boolean;
 };
 
 export abstract class FrontendRuntimeContext<

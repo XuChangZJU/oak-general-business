@@ -157,22 +157,6 @@ export class ExtraFile<
         return url;
     }
 
-    /**
-     * 使用该方法，要在使用完url时，通过URL.revokeObjectURL释放缓存
-     *
-     * @param url 需要桥接访问的图片链接
-     * @returns 浏览器 img可访问的url
-     */
-    async getBridgeUrl(url: string) {
-        const { result } = await this.cache.exec('crossBridge', {
-            url,
-        });
-        const blob = new Blob([result as unknown as BlobPart], {
-            type: 'image/png',
-        });
-        return URL.createObjectURL(blob);
-    }
-
     getFileName(extraFile: EntityDict['extraFile']['OpSchema']) {
         const name =
             extraFile.filename +

@@ -1,7 +1,8 @@
 import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from '../../../oak-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'messageTypeTemplate', true, {
-    mtt: EntityDict['messageTypeTemplate']['OpSchema'][];
+    mtt: EntityDict['messageTypeTemplate']['Schema'][];
+    wechatPublicTemplates: EntityDict['wechatPublicTemplate']['Schema'][];
     dirtyIds: string[];
     messageTypes: string[];
     applicationId: string;

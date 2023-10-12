@@ -7,11 +7,10 @@ import Header from '../../../components/session/forMessage';
 import Style from './web.module.less';
 export default function Render(props) {
     const { data, methods } = props;
-    const { sessionId, isEntity, isUser, sessionMessageList, oakFullpath, text, employerId, buttonHidden, } = data;
+    const { sessionId, isEntity, isUser, sessionMessageList, oakFullpath, text, buttonHidden, sessionMessageType, sessionMessageId, entityDisplay, entityProjection, isWeChat, } = data;
     const { setButtonHidden, customUpload, setContent, pageScroll, createMessage, } = methods;
     const [bottomHeight, setBottomHeight] = useState(0);
     const textareaRef = useRef(null);
-    // const [text1, setText1] = useState("");
     // const newBottomHeight =
     //     window.document.getElementById('bottom')?.offsetHeight!;
     useEffect(() => {
@@ -52,13 +51,14 @@ export default function Render(props) {
             pageScroll('comment');
         }
     };
+    console.log(isWeChat);
     return (_jsxs("div", { className: Style.container, children: [_jsx(Header
             // showBack={false}
             , { 
                 // showBack={false}
                 sessionId: sessionId, isEntity: isEntity, 
                 // userId={employerId}
-                oakPath: 'session:header1', oakAutoUnmount: true }), _jsx("div", { className: Style.inner, style: {
+                oakPath: 'session:header1', oakAutoUnmount: true, entityDisplay: entityDisplay, entityProjection: entityProjection }), _jsx("div", { className: Style.inner, style: {
                     marginBottom: bottomHeight ? `${bottomHeight}px` : '168px',
                 }, id: "comment", onClick: () => setButtonHidden(true), children: sessionMessageList
                     ?.sort((a, b) => a.$$createAt$$ -
@@ -67,9 +67,11 @@ export default function Render(props) {
                     return (_jsx(MessageCell, { oakId: sessionMessage.id, oakPath: oakFullpath
                             ? `${oakFullpath}.${sessionMessage.id}`
                             : '', isEntity: isEntity, isUser: isUser }, sessionMessage.id));
-                }) }), _jsxs("div", { className: Style.bottom, id: "bottom", children: [_jsx("div", { className: Style.toolbar, children: _jsx(Upload, { accept: 'image/*', multiple: false, showUploadList: false, customRequest: () => { }, onChange: ({ file }) => {
+                }) }), _jsxs("div", { className: Style.bottom, id: "bottom", children: [_jsx("div", { className: Style.toolbar, children: isWeChat ? (
+                        //微信资源库
+                        _jsx(PictureOutlined, { className: Style.icon })) : (_jsx(Upload, { accept: 'image/*', multiple: false, showUploadList: false, customRequest: () => { }, onChange: ({ file }) => {
                                 customUpload(file);
-                            }, children: _jsx(PictureOutlined, { className: Style.icon }) }) }), _jsxs("div", { className: Style.textareaBox, children: [_jsx(Input.TextArea, { ref: textareaRef, className: Style.textarea, 
+                            }, children: _jsx(PictureOutlined, { className: Style.icon }) })) }), _jsxs("div", { className: Style.textareaBox, children: [_jsx(Input.TextArea, { ref: textareaRef, className: Style.textarea, 
                                 // autoSize={{ minRows: 2, maxRows: 15 }}
                                 maxLength: 500, placeholder: "Enter \u53D1\u9001\uFF0CShift + Enter\u6362\u884C", rows: 5, onChange: (e) => {
                                     setContent(e.target.value);

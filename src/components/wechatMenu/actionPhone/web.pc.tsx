@@ -26,6 +26,7 @@ export default function Render(
             getCurrentIndex: (currentIndex: number) => void;
             isPreview: boolean;
             open: boolean;
+            tabKey: string;
         },
         {
             setConfig: (index: number, content: any, currentIndex?: number) => void;
@@ -49,6 +50,7 @@ export default function Render(
         getCurrentIndex,
         isPreview,
         open,
+        tabKey,
     } = props.data;
     const {
         deleteMenuItem,
@@ -96,7 +98,7 @@ export default function Render(
             setCurrentMenuType(2);
             return;
         }
-    }, [menuType])
+    }, [menuType]);
     return (
         <div className={Style.container}>
             <div className={Style.phone}>
@@ -120,7 +122,7 @@ export default function Render(
                                 {
                                     config.button.map((ele: any, index: number) => (
                                         <Popover
-                                            open={!open && !isPreview && currentIndex === index && ((menuType === 'common' && currentMenuType === 1) || (menuType === 'conditional' && currentMenuType === 2))}
+                                            open={!open && !isPreview && currentIndex === index && ((menuType === 'common' && currentMenuType === 1) || (menuType === 'conditional' && currentMenuType === 2)) && tabKey === 'menu'}
                                             trigger={'click'}
                                             content={
                                                 <div className={Style.subMenu}>

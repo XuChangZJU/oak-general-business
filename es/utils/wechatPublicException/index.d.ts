@@ -1,0 +1,1 @@
+export declare function handleException(e: string): "标签名非法，请注意不能和其他标签重名" | "标签名长度超过30个字节" | "创建的标签数过多，请注意不能超过100个" | "不能修改0/1/2这三个系统默认保留的标签" | "非法的标签" | "有粉丝身上的标签数已经超过限制，即超过20个" | "传入非法的openid" | "传入的openid不属于此AppID" | "每次传入的openid列表个数不能超过50个" | "无效的AppID" | undefined;

@@ -41,28 +41,13 @@ export default OakComponent({
     //     },
     // },
     isList: false,
-    // formData({ data, features }) {
-    //     const session = Object.assign(
-    //         {},
-    //         data
-    //     ) as any;
-    //     console.log(session)
-    //     Object.assign(session, {
-    //         userUrl: features.extraFile.getUrl(
-    //             session?.user?.extraFile$entity &&
-    //             session?.user?.extraFile$entity[0]
-    //         ),
-    //     });
-    //     // if (session?.sessionMessage$session) {
-    //     //     Object.assign(session, {
-    //     //         wechatMessages: session?.sessionMessage$session,
-    //     //         // unreadLength: session?.sessionMessage$session?.filter(
-    //     //         //     (ele: any) => ele.isRead === false
-    //     //         // )?.length,
-    //     //     });
-    //     // }
-    //     return session;
-    // },
+    formData({ data, features }) {
+        const { sessionId } = this.props;
+        if (sessionId) {
+            this.getSession(sessionId);
+        }
+        return {};
+    },
     // filters: [
     //     {
     //         filter() {
@@ -78,9 +63,9 @@ export default OakComponent({
     lifetimes: {
         ready() {
             const { sessionId } = this.props;
-            if (sessionId) {
-                this.getSession(sessionId);
-            }
+            // if (sessionId) {
+            //     this.getSession(sessionId)
+            // }
         },
     },
     listeners: {
@@ -93,9 +78,12 @@ export default OakComponent({
     properties: {
         sessionId: '',
         isEntity: false,
+        entityDisplay: (data) => [],
+        entityProjection: {}, // user端，指示需要取哪些entity的属性来显示entityDisplay
     },
     methods: {
         getSession(sessionId) {
+            const { entityProjection } = this.props;
             const [session] = this.features.cache.get('session', {
                 data: {
                     id: 1,
@@ -132,6 +120,7 @@ export default OakComponent({
                             },
                         },
                     },
+                    ...entityProjection,
                 },
                 filter: {
                     id: sessionId
@@ -152,7 +141,7 @@ export default OakComponent({
         },
         getName() {
             const { session, entity } = this.state;
-            const { isEntity } = this.props;
+            const { isEntity, entityDisplay } = this.props;
             if (isEntity) {
                 const userName = session?.user?.name;
                 const userNickname = session?.user?.name || session?.user?.nickname;
@@ -167,6 +156,10 @@ export default OakComponent({
                 return userNickname;
             }
             else {
+                if (entityDisplay && session) {
+                    const sessions = entityDisplay([session]);
+                    return sessions[0]?.name;
+                }
                 return '未知';
             }
         },

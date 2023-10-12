@@ -48,9 +48,25 @@ export class WechatPublicTag<
 
     async deleteTag(params: {
         applicationId: string,
-        id: number,
+        id: string,
+        wechatId: number,
     }) {
         const callBack = await this.cache.exec('deleteTag', params);
+        return callBack.result;
+    }
+
+    async syncTag(params: {
+        applicationId: string,
+        id: string,
+    }) {
+        const callBack = await this.cache.exec('syncTag', params);
+        return callBack.result;
+    }
+
+    async oneKeySync(params: {
+        applicationId: string,
+    }) {
+        const callBack = await this.cache.exec('oneKeySync', params);
         return callBack.result;
     }
 }

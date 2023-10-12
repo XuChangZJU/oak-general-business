@@ -278,6 +278,7 @@ export default function Render(
                                             getContent(mediaUrl);
                                             setOpen(false);
                                         }}
+                                        disabled={mediaUrl ? false : true}
                                     >
                                         确定
                                     </Button>

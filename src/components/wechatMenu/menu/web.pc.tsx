@@ -24,16 +24,19 @@ export default function Render(
             applicationId: string;
             actions: string[];
             iState: string;
+            tabKey: string;
         },
         {
+            create: () => void;
         }
     >
 ) {
     const { data, methods } = props;
-    const { id, oakFullpath, config, wechatInstance, totalConfig, menuType, applicationId, actions, iState } = data;
+    const { id, oakFullpath, config, wechatInstance, totalConfig, menuType, applicationId, actions, iState, tabKey } = data;
     const {
         updateItem,
-        execute
+        execute,
+        create,
     } = methods;
     const [open, setOpen] = useState(false);
     const [isPreview, setIsPreview] = useState(false);
@@ -58,8 +61,8 @@ export default function Render(
     const getErrorIndex = (errorIndex: number[]) => {
         setErrorIndex(errorIndex);
     };
-    const createMenu = async () => {
-        await execute();
+    const createMenu = () => {
+        create();
     };
     const changeIsPreview = (isPreview: boolean) => {
         setIsPreview(isPreview);
@@ -83,6 +86,7 @@ export default function Render(
                             errorIndex={errorIndex}
                             isPreview={isPreview}
                             open={open}
+                            tabKey={tabKey}
                         />
                     </div>
                     <div className={Style.rightBar}>

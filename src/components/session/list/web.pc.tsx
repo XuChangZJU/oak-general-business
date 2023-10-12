@@ -21,9 +21,11 @@ export default function Render(
             className: string;
             dialog: boolean;
             entityFilter: object;
+            entityDisplay: (data: any) => any[];
+            entityProjection: object;
         },
         {
-            setSelectedSessionId: (conversationId: string) => void;
+            setSelectedSessionId: (sessionId: string) => void;
         }
     >
 ) {
@@ -36,6 +38,8 @@ export default function Render(
         entityFilter,
         dialog = false,
         className,
+        entityDisplay,
+        entityProjection,
     } = data;
     const { setSelectedSessionId } = methods;
     return (
@@ -80,6 +84,8 @@ export default function Render(
                         isEntity={entityFilter ? true : false}
                         isUser={entityFilter ? false : true}
                         oakAutoUnmount={true}
+                        entityDisplay={entityDisplay}
+                        entityProjection={entityProjection}
                         oakPath={
                             oakFullpath
                                 ? `$$sessionMessage/list`

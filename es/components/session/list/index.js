@@ -1,3 +1,4 @@
+import { DATA_SUBSCRIBER_KEYS } from '../../../config/constants';
 export default OakComponent({
     entity: 'session',
     projection() {
@@ -6,6 +7,8 @@ export default OakComponent({
             id: 1,
             entity: 1,
             entityId: 1,
+            lmts: 1,
+            openId: 1,
             userId: 1,
             user: {
                 id: 1,
@@ -83,8 +86,9 @@ export default OakComponent({
         // const unReadLength = wechatSessions?.filter(
         //     (ele) => ele.isRead
         // )
+        //排序待框架实现
         return {
-            sessions,
+            sessions: sessions?.sort((a, b) => b.lmts - a.lmts),
         };
     },
     lifetimes: {
@@ -102,10 +106,26 @@ export default OakComponent({
             //     return;
             // }
             const { sessionId } = this.props;
-            // 父层传入conversationId 默认聊天
+            // 父层传入sessionId 默认聊天
             if (sessionId) {
                 this.setSelectedSessionId(sessionId);
             }
+        },
+        async ready() {
+            const { entityFilter } = this.props;
+            const userId = this.features.token.getUserId();
+            await this.subData([
+                {
+                    entity: 'session',
+                    filter: entityFilter ? { ...entityFilter } : { userId },
+                    id: `${DATA_SUBSCRIBER_KEYS.sessionList}`,
+                }
+            ]);
+        },
+        detached() {
+            this.unSubData([
+                `${DATA_SUBSCRIBER_KEYS.sessionList}`
+            ]);
         },
     },
     data: {
@@ -115,7 +135,7 @@ export default OakComponent({
     properties: {
         entity: '',
         entityFilter: undefined,
-        entityDisplay: (data) => '',
+        entityDisplay: (data) => [],
         entityProjection: {},
         sessionId: '',
         dialog: false,
@@ -222,7 +242,7 @@ export default OakComponent({
         // mobile独有
         navigateToMessage(sessionId) {
             this.navigateTo({
-                url: '/sessionMessage/list',
+                url: '/session/sessionMessage',
                 sessionId,
             }, undefined, true);
         },

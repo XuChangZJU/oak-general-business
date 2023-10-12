@@ -30,8 +30,8 @@ function getListType(theme: Theme): ListType {
     return themeMap[theme];
 }
 
-const type = "DragableUploadList";
-const DragableUploadListItem = ({
+const type = 'DraggableUploadList';
+const DraggableUploadListItem = ({
     originNode,
     moveRow,
     file,
@@ -49,7 +49,9 @@ const DragableUploadListItem = ({
             return {
                 isOver: monitor.isOver(),
                 dropClassName:
-                    dragIndex < index ? " drop-over-downward" : " drop-over-upward",
+                    dragIndex < index
+                        ? ' drop-over-downward'
+                        : ' drop-over-upward',
             };
         },
         drop: (item: any) => {
@@ -67,9 +69,10 @@ const DragableUploadListItem = ({
     return (
         <div
             ref={ref}
-            className={`ant-upload-draggable-list-item ${isOver ? dropClassName : ""
-                }`}
-            style={{ cursor: "move", height: "100%" }}
+            className={`ant-upload-draggable-list-item ${
+                isOver ? dropClassName : ''
+            }`}
+            style={{ cursor: 'move', height: '100%' }}
         >
             {originNode}
         </div>
@@ -79,7 +82,7 @@ const DragableUploadListItem = ({
 export default function render(
     props: WebComponentProps<
         EntityDict,
-        "extraFile",
+        'extraFile',
         true,
         {
             accept?: string;
@@ -88,7 +91,7 @@ export default function render(
             draggable?: boolean;
             theme?: Theme;
             tips?: string;
-            beforeUpload?: (file: File) => Promise<boolean>;
+            beforeUpload?: (file: File) => Promise<boolean> | boolean;
             disabled?: boolean;
             style?: Record<string, string>;
             className?: string;
@@ -97,12 +100,12 @@ export default function render(
             onDownload?: (file: UploadFile<any>) => void;
             showUploadList?: boolean;
             children?: JSX.Element;
-            files?: EntityDict["extraFile"]["OpSchema"][];
+            files?: EntityDict['extraFile']['OpSchema'][];
             disableInsert?: boolean;
             disableAdd?: boolean;
             disableDownload?: boolean;
             disableDelete?: boolean;
-            preview?: boolean;
+            disablePreview?: boolean;
         },
         {
             onPickByWeb: (
@@ -111,17 +114,19 @@ export default function render(
             ) => void;
             onDeleteByWeb: (file: UploadFile) => void;
             getUrl: (extraFile: EntityDict['extraFile']['OpSchema']) => string;
-            getFileName: (extraFile: EntityDict['extraFile']['OpSchema']) => string;
-            eFFormatBytes: (value: number) => string;
+            getFileName: (
+                extraFile: EntityDict['extraFile']['OpSchema']
+            ) => string;
+            formatBytes: (value: number) => string;
         }
     >
 ) {
     const {
-        accept = "image/*",
+        accept = 'image/*',
         maxNumber = 20,
         multiple = maxNumber !== 1,
         draggable = false,
-        theme = "image",
+        theme = 'image',
         tips,
         beforeUpload,
         disabled,
@@ -137,15 +142,22 @@ export default function render(
         disableAdd = false,
         disableDownload = false,
         disableDelete = false,
-        preview = true,
+        disablePreview = false,
     } = props.data;
-    const { onPickByWeb, onDeleteByWeb, updateItem, t, getFileName, getUrl, eFFormatBytes } = props.methods;
+    const {
+        onPickByWeb,
+        onDeleteByWeb,
+        updateItem,
+        t,
+        getFileName,
+        getUrl,
+        formatBytes,
+    } = props.methods;
     const [newFiles, setNewFiles] = useState<
-        EntityDict["extraFile"]["OpSchema"][]
+        EntityDict['extraFile']['OpSchema'][]
     >([]);
     const [newUploadFiles, setNewUploadFiles] = useState<NewUploadFile[]>([]);
 
-    
     const listType = getListType(theme);
     useEffect(() => {
         if (files && files.length > 0) {
@@ -156,7 +168,7 @@ export default function render(
     }, [files]);
 
     const extraFileToUploadFile = (
-        extraFile: EntityDict["extraFile"]["OpSchema"]
+        extraFile: EntityDict['extraFile']['OpSchema']
     ): NewUploadFile => {
         let status = undefined as NewUploadFile['status'];
         switch (extraFile.uploadState) {
@@ -187,13 +199,11 @@ export default function render(
         });
     };
 
-    const setNewUploadFilesByStatus = (
-        file: NewUploadFile,
-        status: string
-    ) => {
+    const setNewUploadFilesByStatus = (file: NewUploadFile, status: string) => {
         const { fileName, size, id } = file;
         const file2 = newUploadFiles.find(
-            (ele: NewUploadFile) => ele.name?.includes(fileName!) && ele.size === size
+            (ele: NewUploadFile) =>
+                ele.name?.includes(fileName!) && ele.size === size
         );
         if (file2) {
             Object.assign(file2, {
@@ -215,7 +225,7 @@ export default function render(
         if (children) {
             return children;
         }
-        if (listType === "picture-card") {
+        if (listType === 'picture-card') {
             return (
                 <div>
                     <PlusOutlined />
@@ -241,17 +251,23 @@ export default function render(
                 if (hoverIndex === newFiles.length - 1) {
                     sort = newFiles[hoverIndex]!.sort! + 100;
                 } else {
-                    sort = (newFiles[hoverIndex]!.sort! + newFiles[hoverIndex + 1]!.sort!) / 2;
+                    sort =
+                        (newFiles[hoverIndex]!.sort! +
+                            newFiles[hoverIndex + 1]!.sort!) /
+                        2;
                 }
             } else {
                 if (hoverIndex === 0) {
                     sort = newFiles[hoverIndex]!.sort! / 2;
                 } else {
-                    sort = (newFiles[hoverIndex]!.sort! + newFiles[hoverIndex - 1]!.sort!) / 2;
+                    sort =
+                        (newFiles[hoverIndex]!.sort! +
+                            newFiles[hoverIndex - 1]!.sort!) /
+                        2;
                 }
             }
             if (checkLimit(sort)) {
-                alert("当前的sort值为:" + sort);
+                alert('当前的sort值为:' + sort);
                 return;
             }
             updateItem({ sort }, dragRow.id);
@@ -262,26 +278,29 @@ export default function render(
     return (
         <Space
             direction="vertical"
-            className={Style["oak-upload"]}
-            style={{ width: "100%" }}
+            className={Style['oak-upload']}
+            style={{ width: '100%' }}
         >
             <DndProvider backend={isPc ? HTML5Backend : TouchBackend}>
                 <Upload
-                    className={classNames(Style["oak-upload__upload"], className)}
+                    className={classNames(
+                        Style['oak-upload__upload'],
+                        className
+                    )}
                     style={style}
                     disabled={disabled}
                     directory={directory}
                     showUploadList={
                         showUploadList
                             ? {
-                                showPreviewIcon: preview,
-                                showRemoveIcon: !disableDelete,
-                                showDownloadIcon: !disableDownload,
-                            }
+                                  showPreviewIcon: !disablePreview,
+                                  showRemoveIcon: !disableDelete,
+                                  showDownloadIcon: !disableDownload,
+                              }
                             : false
                     }
                     beforeUpload={async (file) => {
-                        if (typeof beforeUpload === "function") {
+                        if (typeof beforeUpload === 'function') {
                             const result = await beforeUpload(file);
                             if (result) {
                                 return false;
@@ -294,14 +313,14 @@ export default function render(
                     accept={accept}
                     listType={listType}
                     fileList={
-                        theme === "custom"
+                        theme === 'custom'
                             ? []
                             : newFiles?.map((ele) => extraFileToUploadFile(ele))
                     }
                     onChange={({ file, fileList, event }) => {
                         // id不存在就是file对象
                         if (!(file as NewUploadFile).id) {
-                            if (theme !== "custom") {
+                            if (theme !== 'custom') {
                                 onPickByWeb([file2Obj(file as RcFile)]);
                             } else {
                                 setNewUploadFiles(fileList);
@@ -313,7 +332,7 @@ export default function render(
                     onDownload={onDownload}
                     itemRender={(originNode, currentFile, currentFileList) => {
                         return (
-                            <DragableUploadListItem
+                            <DraggableUploadListItem
                                 originNode={originNode}
                                 file={currentFile}
                                 fileList={currentFileList}
@@ -326,50 +345,64 @@ export default function render(
                 </Upload>
             </DndProvider>
 
-            {tips && <small className={Style["oak-upload__tips"]}>{tips}</small>}
-            {theme === "custom" && (
+            {tips && (
+                <small className={Style['oak-upload__tips']}>{tips}</small>
+            )}
+            {theme === 'custom' && (
                 <>
                     <Table
                         dataSource={newUploadFiles || []}
                         rowKey="id"
                         columns={[
                             {
-                                align: "center",
-                                dataIndex: "tableIndex",
-                                title: "#",
+                                align: 'center',
+                                dataIndex: 'tableIndex',
+                                title: '#',
                                 render: (value, record, index) => index + 1,
                                 width: 50,
                             },
                             {
-                                dataIndex: "name",
-                                title: "文件名",
+                                dataIndex: 'name',
+                                title: '文件名',
                             },
                             {
-                                dataIndex: "size",
-                                title: "文件大小",
+                                dataIndex: 'size',
+                                title: '文件大小',
                                 render: (value, record, index) => {
-                                    return eFFormatBytes(value as number);
+                                    return formatBytes(value as number);
                                 },
                             },
                             {
-                                dataIndex: "status",
-                                title: "状态",
+                                dataIndex: 'status',
+                                title: '状态',
                                 render: (value, record, index) => {
                                     switch (value) {
-                                        case "success":
-                                            return <Tag color="success">{t("success")}</Tag>;
-                                        case "uploading":
-                                            return <Tag color="processing">{t("uploading")}</Tag>;
+                                        case 'success':
+                                            return (
+                                                <Tag color="success">
+                                                    {t('success')}
+                                                </Tag>
+                                            );
+                                        case 'uploading':
+                                            return (
+                                                <Tag color="processing">
+                                                    {t('uploading')}
+                                                </Tag>
+                                            );
                                         default:
-                                            return <Tag color="warning">{t("waiting")}</Tag>;
+                                            return (
+                                                <Tag color="warning">
+                                                    {t('waiting')}
+                                                </Tag>
+                                            );
                                     }
                                 },
                             },
                             {
-                                dataIndex: "op",
+                                dataIndex: 'op',
                                 width: 300,
-                                title: "操作",
-                                align: "center",
+                                title: '操作',
+                                align: 'center',
                                 render: (value, record, index) => {
                                     // 只处理state的文件 这时候可以直接删除
                                     return (
@@ -387,11 +420,13 @@ export default function render(
                                         </>
                                     );
                                 },
-                                fixed: "right",
+                                fixed: 'right',
                             },
                         ]}
                     />
-                    <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <div
+                        style={{ display: 'flex', justifyContent: 'flex-end' }}
+                    >
                         <Space>
                             <Button
                                 danger
@@ -403,9 +438,18 @@ export default function render(
                             <Button
                                 type="primary"
                                 onClick={() => {
-                                    onPickByWeb(newUploadFiles, (file: NewUploadFile, status: string) => {
-                                        setNewUploadFilesByStatus(file, status);
-                                    });
+                                    onPickByWeb(
+                                        newUploadFiles,
+                                        (
+                                            file: NewUploadFile,
+                                            status: string
+                                        ) => {
+                                            setNewUploadFilesByStatus(
+                                                file,
+                                                status
+                                            );
+                                        }
+                                    );
                                 }}
                             >
                                 上传

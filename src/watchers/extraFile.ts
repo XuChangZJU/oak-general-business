@@ -38,7 +38,7 @@ async function checkWhetherSuccess(context: BackendRuntimeContext<EntityDict>, a
             }
         }, {});
     }
-    else {
+    if (failedIds.length > 0) {
         await context.operate('extraFile', {
             id: await generateNewIdAsync(),
             action: 'update',

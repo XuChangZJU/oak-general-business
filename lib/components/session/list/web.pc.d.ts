@@ -6,6 +6,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'session', f
     className: string;
     dialog: boolean;
     entityFilter: object;
+    entityDisplay: (data: any) => any[];
+    entityProjection: object;
 }, {
-    setSelectedSessionId: (conversationId: string) => void;
+    setSelectedSessionId: (sessionId: string) => void;
 }>): import("react/jsx-runtime").JSX.Element;

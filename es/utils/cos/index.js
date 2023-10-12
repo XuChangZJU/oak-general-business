@@ -1,8 +1,11 @@
 import assert from 'assert';
 import Qiniu from "./qiniu";
+import Wechat from './wechat';
 const qiniu = new Qiniu();
+const wechat = new Wechat();
 const CosDict = {
     [qiniu.name]: qiniu,
+    [wechat.name]: wechat,
 };
 /**
  * 注入一个其它OSS上实现的uploader类

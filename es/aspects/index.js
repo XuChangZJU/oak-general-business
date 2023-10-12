@@ -11,7 +11,8 @@ import { getMpUnlimitWxaCode } from './wechatQrCode';
 import { confirmUserEntityGrant } from './userEntityGrant';
 import { createSession } from './session';
 import { getCurrentMenu, getMenu, createMenu, createConditionalMenu, deleteConditionalMenu, deleteMenu, batchGetArticle, getArticle, batchGetMaterialList, getMaterial, } from './wechatMenu';
-import { createTag, getTags, editTag, deleteTag, } from './wechatPublicTag';
+import { createTag, getTags, editTag, deleteTag, syncTag, oneKeySync, } from './wechatPublicTag';
+import { getTagUsers, batchtagging, batchuntagging, getUserTags, getUsers, tagging, syncToLocale, syncToWechat, } from './userWechatPublicTag';
 const aspectDict = {
     mergeUser,
     switchTo,
@@ -53,6 +54,16 @@ const aspectDict = {
     getTags,
     editTag,
     deleteTag,
-    syncMessageTemplate
+    syncMessageTemplate,
+    syncTag,
+    oneKeySync,
+    getTagUsers,
+    batchtagging,
+    batchuntagging,
+    getUserTags,
+    getUsers,
+    tagging,
+    syncToLocale,
+    syncToWechat,
 };
 export default aspectDict;

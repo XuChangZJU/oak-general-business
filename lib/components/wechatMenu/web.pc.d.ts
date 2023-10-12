@@ -5,4 +5,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'wechatMenu'
     applicationId: string;
     menuId: string;
     isPlatform: boolean;
+    tabKey: string;
 }, {}>): import("react/jsx-runtime").JSX.Element | null;

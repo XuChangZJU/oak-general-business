@@ -43,7 +43,19 @@ import {
     getTags,
     editTag,
     deleteTag,
+    syncTag,
+    oneKeySync,
 } from './wechatPublicTag';
+import {
+    getTagUsers,
+    batchtagging,
+    batchuntagging,
+    getUserTags,
+    getUsers,
+    tagging,
+    syncToLocale,
+    syncToWechat,
+} from './userWechatPublicTag';
 
 const aspectDict = {
     mergeUser,
@@ -86,7 +98,17 @@ const aspectDict = {
     getTags,
     editTag,
     deleteTag,
-    syncMessageTemplate
+    syncMessageTemplate,
+    syncTag,
+    oneKeySync,
+    getTagUsers,
+    batchtagging,
+    batchuntagging,
+    getUserTags,
+    getUsers,
+    tagging,
+    syncToLocale,
+    syncToWechat,
 };
 
 export default aspectDict;
