@@ -21,6 +21,4 @@ export interface Schema extends EntityShape {
     tokens: Array<Token>;
     nickname?: String<128>;
     avatar?: Image;
-    remark?: String<32>;
-    language: 'zh_CN' | 'zh_TW' | 'en';
 }

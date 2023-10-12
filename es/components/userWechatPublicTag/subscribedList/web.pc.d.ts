@@ -4,7 +4,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'wechatUser'
     wechatUsers: {
         nickname: string;
         avatar: string;
-        remark: string;
         openId: string;
         sync: boolean;
         syncAt: number;

@@ -21,8 +21,6 @@ const entityDesc = {
                 application: '应用',
                 nickname: '昵称',
                 avatar: '头像',
-                remark: '备注',
-                language: '语言',
             },
             v: {
                 origin: {
@@ -30,11 +28,6 @@ const entityDesc = {
                     public: '公众号',
                     web: '网站',
                 },
-                language: {
-                    zh_CN: '简体',
-                    zh_TW: '繁体',
-                    en: '英语'
-                }
             }
         },
     }

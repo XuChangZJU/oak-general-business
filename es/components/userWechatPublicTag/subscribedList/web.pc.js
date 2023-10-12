@@ -16,7 +16,6 @@ export default function Render(props) {
     const [openId, setOpenId] = useState('');
     const [syncOpen, setSyncOpen] = useState(false);
     const [user, setUser] = useState({});
-    console.log(editTags);
     return (_jsxs("div", { className: Style.container, children: [_jsx(Modal, { title: '\u7ED9\u7528\u6237\u6253\u6807\u7B7E', open: editOpen, onCancel: () => { setEditOpen(false); setEditTags([]); setOpenId(''); }, footer: _jsxs(Space, { style: { display: 'flex', justifyContent: 'center' }, children: [_jsx(Button, { onClick: () => { setEditOpen(false); setEditTags([]); setOpenId(''); }, children: "\u53D6\u6D88" }), _jsx(Button, { type: 'primary', onClick: () => {
                                 setEditOpen(false);
                                 setEditTags([]);
@@ -98,7 +97,7 @@ export default function Render(props) {
                     },
                 } }), _jsx(Modal, { title: '\u7528\u6237\u8BE6\u60C5', open: open, onCancel: () => {
                     setOpen(false);
-                }, footer: null, width: 750, children: _jsxs(Descriptions, { bordered: true, column: 3, children: [_jsx(Descriptions.Item, { label: '\u6635\u79F0', children: user.nickname ? user.nickname : '--' }), _jsx(Descriptions.Item, { label: '\u5934\u50CF', children: user.avatar ? _jsx(Image, { src: user.avatar }) : '--' }), _jsx(Descriptions.Item, { label: '\u5907\u6CE8', children: user.remark ? user.remark : '--' }), _jsx(Descriptions.Item, { label: '\u7528\u6237\u6807\u8BC6', children: user.openId ? user.openId : '--' }), _jsx(Descriptions.Item, { label: '\u540C\u6B65\u72B6\u6001', children: user.sync ? '同步' : '未同步' }), _jsx(Descriptions.Item, { label: '\u540C\u6B65\u65F6\u95F4', children: user.syncAt ? dayjs(user.syncAt).format('YYYY-MM-DD HH:mm') : '--' }), _jsx(Descriptions.Item, { label: '\u5173\u6CE8\u65F6\u95F4', children: user.subscribedAt ? dayjs(user.subscribedAt * 1000).format('YYYY-MM-DD HH:mm') : '--' }), _jsx(Descriptions.Item, { label: '\u7528\u6237\u6807\u7B7E', children: user.tags && user.tags.length > 0 ?
+                }, footer: null, width: 750, children: _jsxs(Descriptions, { bordered: true, column: 3, children: [_jsx(Descriptions.Item, { label: '\u6635\u79F0', children: user.nickname ? user.nickname : '--' }), _jsx(Descriptions.Item, { label: '\u5934\u50CF', children: user.avatar ? _jsx(Image, { src: user.avatar }) : '--' }), _jsx(Descriptions.Item, { label: '\u7528\u6237\u6807\u8BC6', children: user.openId ? user.openId : '--' }), _jsx(Descriptions.Item, { label: '\u540C\u6B65\u72B6\u6001', children: user.sync ? '同步' : '未同步' }), _jsx(Descriptions.Item, { label: '\u540C\u6B65\u65F6\u95F4', children: user.syncAt ? dayjs(user.syncAt).format('YYYY-MM-DD HH:mm') : '--' }), _jsx(Descriptions.Item, { label: '\u5173\u6CE8\u65F6\u95F4', children: user.subscribedAt ? dayjs(user.subscribedAt * 1000).format('YYYY-MM-DD HH:mm') : '--' }), _jsx(Descriptions.Item, { label: '\u7528\u6237\u6807\u7B7E', children: user.tags && user.tags.length > 0 ?
                                 user.tags.map((tag) => {
                                     return _jsx(Tag, { children: tag.text });
                                 }) : '暂无标签' })] }) })] }));

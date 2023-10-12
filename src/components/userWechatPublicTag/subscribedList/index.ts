@@ -17,8 +17,6 @@ export default OakComponent({
         subscribedAt: 1,
         applicationId: 1,
         userId: 1,
-        remark: 1,
-        language: 1,
         nickname: 1,
         avatar: 1,
         userWechatPublicTag$wechatUser: {
@@ -60,8 +58,6 @@ export default OakComponent({
                 nickname: ele?.nickname,
                 avatar: ele?.avatar,
                 subscribedAt: ele?.subscribedAt,
-                remark: ele?.remark,
-                language: ele?.language,
             }
         })
         return {

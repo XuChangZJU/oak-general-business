@@ -18,7 +18,6 @@ export default function Render(
             wechatUsers: {
                 nickname: string,
                 avatar: string,
-                remark: string,
                 openId: string,
                 sync: boolean,
                 syncAt: number,
@@ -46,14 +45,12 @@ export default function Render(
     const [user, setUser] = useState({} as {
         nickname: string,
         avatar: string,
-        remark: string,
         openId: string,
         sync: boolean,
         syncAt: number,
         subscribedAt: number,
         tags: { id: string, text: string }[],
     });
-    console.log(editTags);
     return (
         <div className={Style.container}>
             <Modal
@@ -243,11 +240,6 @@ export default function Render(
                         {
                             user.avatar ? <Image src={user.avatar} /> : '--'
                         }
-                    </Descriptions.Item>
-                    <Descriptions.Item
-                        label='备注'
-                    >
-                        {user.remark ? user.remark : '--'}
                     </Descriptions.Item>
                     <Descriptions.Item
                         label='用户标识'
