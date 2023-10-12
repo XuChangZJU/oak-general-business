@@ -7,7 +7,7 @@ export const desc = {
             params: {
                 length: 32
             },
-            ref: ["session"]
+            ref: ["account", "session"]
         },
         entityId: {
             notNull: true,

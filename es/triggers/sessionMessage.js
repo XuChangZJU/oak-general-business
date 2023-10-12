@@ -41,11 +41,12 @@ const triggers = [
                         aaoe: 1,
                     },
                     filter: {
-                        id: sessionId,
+                        sessionId,
                         aaoe: false,
                         createTime: {
-                            $gt: Date.now() - (48 * 60 * 60 * 1000 - 5 * 60 * 1000)
-                        }
+                            $gt: Date.now() -
+                                (48 * 60 * 60 * 1000 - 5 * 60 * 1000),
+                        },
                     },
                     sorter: [
                         {
@@ -82,35 +83,39 @@ const triggers = [
                             id: session.entityId,
                         },
                     }, {});
-                    const { type, config, systemId } = application;
-                    assert(type === 'wechatPublic');
-                    const { appId, appSecret } = config;
-                    const wechatInstance = WechatSDK.getInstance(appId, 'wechatPublic', appSecret);
-                    function sendMessage() {
-                        switch (messageType) {
-                            case 'text': {
-                                wechatInstance.sendServeMessage({
-                                    openId: sessionMessage.wechatUser?.openId,
-                                    type: messageType,
-                                    content: text,
-                                });
-                                break;
-                            }
-                            default: {
-                                assert(false, '你所发送的消息类型不支持');
-                            }
-                            //todo
-                            // case 'image' :{
-                            //     wechatInstance.sendServeMessage({
-                            //         openId: sessionMessage.wechatUser?.openId!,
-                            //         type: messageType,
-                            //         mediaId: '',
-                            //     });
-                            //     break;
-                            // }
+                    const { type, config } = application;
+                    assert(type === 'wechatPublic' || type === 'wechatMp');
+                    let wechatInstance;
+                    if (type === 'wechatMp') {
+                        const { appId, appSecret } = config;
+                        wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
+                    }
+                    else {
+                        const { appId, appSecret } = config;
+                        wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
+                    }
+                    //微信发送客服消息
+                    switch (messageType) {
+                        case 'text': {
+                            wechatInstance.sendServeMessage({
+                                openId: sessionMessage.wechatUser?.openId,
+                                type: messageType,
+                                content: text,
+                            });
+                            break;
+                        }
+                        // case 'image' :{
+                        //     wechatInstance.sendServeMessage({
+                        //         openId: sessionMessage.wechatUser?.openId!,
+                        //         type: messageType,
+                        //         mediaId: '',
+                        //     });
+                        //     break;
+                        // }
+                        default: {
+                            assert(false, `消息类型「${messageType}」尚未支持`);
                         }
                     }
-                    sendMessage();
                 }
             }
             catch (err) {

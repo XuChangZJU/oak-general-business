@@ -197,11 +197,13 @@ export default function render(
         (dragIndex: number, hoverIndex: number) => {
             const dragRow = files[dragIndex];
             let sort;
+            // 拖拽物下标和覆盖物下标一致 
             if (hoverIndex === dragIndex) {
                 return;
             } else if (hoverIndex > dragIndex) {
+                // 放置最后覆盖物上
                 if (hoverIndex === files.length - 1) {
-                    sort = files[hoverIndex]!.sort! + 100;
+                    sort = files[hoverIndex]!.sort! * 2;
                 } else {
                     sort =
                         (files[hoverIndex]!.sort! +
@@ -209,6 +211,7 @@ export default function render(
                         2;
                 }
             } else {
+                // 放置最前覆盖物上
                 if (hoverIndex === 0) {
                     sort = files[hoverIndex]!.sort! / 2;
                 } else {
