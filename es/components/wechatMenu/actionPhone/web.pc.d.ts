@@ -14,6 +14,7 @@ export default function Render(props: WebComponentProps<EntityDict, keyof Entity
     getCurrentIndex: (currentIndex: number) => void;
     isPreview: boolean;
     open: boolean;
+    tabKey: string;
 }, {
     setConfig: (index: number, content: any, currentIndex?: number) => void;
     deleteMenuItem: (index: number) => void;

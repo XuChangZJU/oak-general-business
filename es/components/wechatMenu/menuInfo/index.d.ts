@@ -6,7 +6,7 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     changeConfig: (config: any) => void;
     publish: (iState: 'wait' | 'fail') => void;
     getErrorIndex: (errorIndex: number[]) => void;
-    createMenu: () => Promise<void>;
+    createMenu: () => void;
     selectedBtn: number;
     selectedSubBtn: number;
     currentIndex: number;

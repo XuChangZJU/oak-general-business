@@ -22,6 +22,7 @@ export default OakComponent({
         tagId: '',
         wechatId: '',
         menuType: '',
+        tabKey: '',
     },
     lifetimes: {
         async ready() {
@@ -60,5 +61,18 @@ export default OakComponent({
             }
         },
     ],
-    methods: {},
+    methods: {
+        async create() {
+            const { applicationId } = this.props;
+            const { id, config } = this.state;
+            await this.execute();
+            await this.features.wechatMenu.createConditionalMenu({ applicationId: applicationId, id: id, menuConfig: config });
+            await this.refresh();
+        },
+        async remove() {
+            const { id } = this.state;
+            this.removeItem(id);
+            await this.execute();
+        }
+    },
 });

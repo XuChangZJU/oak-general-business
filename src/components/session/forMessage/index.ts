@@ -43,29 +43,13 @@ export default OakComponent({
     //     },
     // },
     isList: false,
-    // formData({ data, features }) {
-    //     const session = Object.assign(
-    //         {},
-    //         data
-    //     ) as any;
-    //     console.log(session)
-
-    //     Object.assign(session, {
-    //         userUrl: features.extraFile.getUrl(
-    //             session?.user?.extraFile$entity &&
-    //             session?.user?.extraFile$entity[0]
-    //         ),
-    //     });
-    //     // if (session?.sessionMessage$session) {
-    //     //     Object.assign(session, {
-    //     //         wechatMessages: session?.sessionMessage$session,
-    //     //         // unreadLength: session?.sessionMessage$session?.filter(
-    //     //         //     (ele: any) => ele.isRead === false
-    //     //         // )?.length,
-    //     //     });
-    //     // }
-    //     return session;
-    // },
+    formData({ data, features }) {
+        const { sessionId } = this.props;
+        if (sessionId) {
+            this.getSession(sessionId)
+        }
+        return {}
+    },
     // filters: [
     //     {
     //         filter() {
@@ -82,9 +66,9 @@ export default OakComponent({
     lifetimes: {
         ready() {
             const { sessionId } = this.props;
-            if (sessionId) {
-                this.getSession(sessionId)
-            }
+            // if (sessionId) {
+            //     this.getSession(sessionId)
+            // }
         },
     },
     listeners: {

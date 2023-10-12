@@ -496,7 +496,7 @@ export default function Render(props) {
                                                 getOpen(false);
                                             }, children: _jsx(SelectMiniprogram, { oakAutoUnmount: true, getMenuContent: getMenuContent, changeOpen: changeOpen }) })] }))] })) : null] }), _jsx("div", { className: Style.actionBar, children: _jsxs(Space, { children: [_jsxs(Button, { onClick: () => changeIsPreview(true), children: [_jsx(EyeOutlined, {}), "\u9884\u89C8"] }), _jsxs(Button, { type: "primary", onClick: async () => {
                                     createMenu(errorInfo, errorUrlInfo);
-                                }, children: [_jsx(CheckOutlined, {}), iState !== 'fail' ? '保存并发布' : '重新发布'] }), menuType === 'conditional' && config && menuId && (_jsxs(Button, { type: "primary", danger: true, onClick: () => {
+                                }, children: [_jsx(CheckOutlined, {}), iState !== 'fail' ? '保存并发布' : '同步'] }), menuType === 'conditional' && config && menuId && (_jsxs(Button, { type: "primary", danger: true, onClick: () => {
                                     const modal = confirm({
                                         title: '确定删除该个性化菜单吗？',
                                         content: '删除后不可恢复',

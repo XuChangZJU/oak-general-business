@@ -12,6 +12,7 @@ export default OakComponent({
         errorIndex: [],
         isPreview: false,
         open: false,
+        tabKey: '',
     },
     data: {},
     methods: {

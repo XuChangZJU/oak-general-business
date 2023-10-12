@@ -43,6 +43,7 @@ export default OakComponent({
         applicationId: '',
         menuId: '',
         menuType: '',
+        tabKey: '',
     },
     lifetimes: {
         async ready() {
@@ -59,5 +60,12 @@ export default OakComponent({
         }
     },
     methods: {
+        async create() {
+            const { applicationId } = this.props;
+            const { id, config } = this.state;
+            await this.execute();
+            await this.features.wechatMenu.createMenu({applicationId: applicationId!, id: id!, menuConfig: config!});
+            await this.refresh();
+        }
     },
 });

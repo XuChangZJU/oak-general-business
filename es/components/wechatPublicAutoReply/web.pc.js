@@ -152,7 +152,7 @@ export default function Render(props) {
                         }, children: _jsxs("div", { className: Style.replyContent, children: [_jsx("div", { style: { display: 'flex', justifyContent: 'center' }, children: _jsx(PlusOutlined, { style: { fontSize: 36 } }) }), _jsx("div", { children: "\u4ECE\u7D20\u6750\u5E93\u4E2D\u9009\u62E9" })] }) })), _jsx(Modal, { open: open, footer: _jsxs(Space, { children: [_jsx(Button, { type: 'primary', onClick: () => {
                                         getContent(mediaUrl);
                                         setOpen(false);
-                                    }, children: "\u786E\u5B9A" }), _jsx(Button, { type: 'default', onClick: () => {
+                                    }, disabled: mediaUrl ? false : true, children: "\u786E\u5B9A" }), _jsx(Button, { type: 'default', onClick: () => {
                                         setOpen(false);
                                     }, children: "\u53D6\u6D88" })] }), onCancel: () => {
                             setOpen(false);

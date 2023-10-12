@@ -112,7 +112,7 @@ export default OakComponent({
             //     return;
             // }
             const { sessionId } = this.props;
-            // 父层传入conversationId 默认聊天
+            // 父层传入sessionId 默认聊天
             if (sessionId) {
                 this.setSelectedSessionId(sessionId);
             }
@@ -120,16 +120,13 @@ export default OakComponent({
         async ready() {
             const { entityFilter } = this.props;
             const userId = this.features.token.getUserId();
-
             await this.subData([
                 {
                     entity: 'session',
                     filter: entityFilter ? { ...entityFilter } : { userId },
                     id: `${DATA_SUBSCRIBER_KEYS.sessionList}`,
                 }
-            ],
-                () => { console.log(123) }
-            )
+            ])
 
 
         },
@@ -256,7 +253,7 @@ export default OakComponent({
         navigateToMessage(sessionId: string) {
             this.navigateTo(
                 {
-                    url: '/sessionMessage/list',
+                    url: '/session/sessionMessage',
                     sessionId,
                 },
                 undefined,

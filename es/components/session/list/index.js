@@ -106,7 +106,7 @@ export default OakComponent({
             //     return;
             // }
             const { sessionId } = this.props;
-            // 父层传入conversationId 默认聊天
+            // 父层传入sessionId 默认聊天
             if (sessionId) {
                 this.setSelectedSessionId(sessionId);
             }
@@ -120,7 +120,7 @@ export default OakComponent({
                     filter: entityFilter ? { ...entityFilter } : { userId },
                     id: `${DATA_SUBSCRIBER_KEYS.sessionList}`,
                 }
-            ], () => { console.log(123); });
+            ]);
         },
         detached() {
             this.unSubData([
@@ -242,7 +242,7 @@ export default OakComponent({
         // mobile独有
         navigateToMessage(sessionId) {
             this.navigateTo({
-                url: '/sessionMessage/list',
+                url: '/session/sessionMessage',
                 sessionId,
             }, undefined, true);
         },

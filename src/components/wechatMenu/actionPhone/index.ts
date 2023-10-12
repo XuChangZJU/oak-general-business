@@ -13,6 +13,7 @@ export default OakComponent({
         errorIndex: [] as number[],
         isPreview: false,
         open: false,
+        tabKey: '',
     },
     data: {
 

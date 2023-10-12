@@ -13,6 +13,7 @@ import {
 } from '../oak-app-domain/Application/Schema';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { MenuType } from '../types/WeChat';
+import { generateNewIdAsync } from "oak-domain/lib/utils/uuid";
 
 async function getWechatPublicConfig<
     ED extends EntityDict,
@@ -65,8 +66,12 @@ export async function getCurrentMenu<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    const result = await wechatInstance.getCurrentMenu();
-    return result;
+    try {
+        const result = await wechatInstance.getCurrentMenu();
+        return result;
+    } catch (e) {
+        throw e;
+    }
 }
 
 export async function getMenu<
@@ -94,8 +99,12 @@ export async function getMenu<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    const result = await wechatInstance.getMenu();
-    return result;
+    try {
+        const result = await wechatInstance.getMenu();
+        return result;
+    } catch (e) {
+        throw (e);
+    }
 }
 
 export async function createMenu<
@@ -104,7 +113,8 @@ export async function createMenu<
 >(
     params: {
         applicationId: string,
-        menuConfig: any
+        menuConfig: any,
+        id: string,
     },
     context: Cxt,
 ): Promise<any> {
@@ -124,8 +134,39 @@ export async function createMenu<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    const result = await wechatInstance.createMenu(params.menuConfig);
-    return result;
+    try {
+        const result = await wechatInstance.createMenu(params.menuConfig);
+        await context.operate(
+            'wechatMenu',
+            {
+                id: await generateNewIdAsync(),
+                action: 'update',
+                data: {
+                    iState: 'success',
+                },
+                filter: {
+                    id: params.id,
+                }
+            },
+            {}
+        )
+    } catch (e) {
+        await context.operate(
+            'wechatMenu',
+            {
+                id: await generateNewIdAsync(),
+                action: 'update',
+                data: {
+                    iState: 'fail',
+                },
+                filter: {
+                    id: params.id,
+                }
+            },
+            {}
+        )
+        throw e
+    }
 }
 
 export async function createConditionalMenu<
@@ -134,7 +175,8 @@ export async function createConditionalMenu<
 >(
     params: {
         applicationId: string,
-        menuConfig: any
+        menuConfig: any,
+        id: string,
     },
     context: Cxt,
 ): Promise<any> {
@@ -154,8 +196,40 @@ export async function createConditionalMenu<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    const result = await wechatInstance.createConditionalMenu(params.menuConfig);
-    return result;
+    try {
+        const result = await wechatInstance.createConditionalMenu(params.menuConfig);
+        await context.operate(
+            'wechatMenu',
+            {
+                id: await generateNewIdAsync(),
+                action: 'update',
+                data: {
+                    iState: 'success',
+                    menuId: result.menuid
+                },
+                filter: {
+                    id: params.id,
+                }
+            },
+            {}
+        )
+    } catch (e) {
+        await context.operate(
+            'wechatMenu',
+            {
+                id: await generateNewIdAsync(),
+                action: 'update',
+                data: {
+                    iState: 'fail',
+                },
+                filter: {
+                    id: params.id,
+                }
+            },
+            {}
+        )
+        throw e
+    }
 }
 
 export async function deleteConditionalMenu<
@@ -184,8 +258,11 @@ export async function deleteConditionalMenu<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    const result = await wechatInstance.deleteConditionalMenu(params.menuId);
-    return result;
+    try {
+        const result = await wechatInstance.deleteConditionalMenu(params.menuId);
+    } catch (e) {
+        throw e;
+    }
 }
 
 export async function deleteMenu<
@@ -213,8 +290,12 @@ export async function deleteMenu<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    const result = await wechatInstance.deleteMenu();
-    return result;
+    try {
+        const result = await wechatInstance.deleteMenu();
+        return result;
+    } catch (e) {
+        throw e;
+    }
 }
 
 export async function batchGetArticle<
@@ -245,8 +326,12 @@ export async function batchGetArticle<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    const result = await wechatInstance.batchGetArticle(params);
-    return result;
+    try {
+        const result = await wechatInstance.batchGetArticle(params);
+        return result;
+    } catch (e) {
+        throw e;
+    }
 }
 
 export async function getArticle<
@@ -275,10 +360,14 @@ export async function getArticle<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    const result = await wechatInstance.getArticle({
-        articleId: params.articleId,
-    });
-    return result;
+    try {
+        const result = await wechatInstance.getArticle({
+            articleId: params.articleId,
+        });
+        return result;
+    } catch (e) {
+        throw e;
+    }
 }
 
 
@@ -311,8 +400,12 @@ export async function batchGetMaterialList<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    const result = await wechatInstance.batchGetMaterialList(params);
-    return result;
+    try {
+        const result = await wechatInstance.batchGetMaterialList(params);
+        return result;
+    } catch (e) {
+        throw e;
+    }
 }
 
 export async function getMaterial<
@@ -342,10 +435,14 @@ export async function getMaterial<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    const result = await wechatInstance.getMaterial({
-        mediaId: params.mediaId,
-    });
-    return result;
+    try {
+        const result = await wechatInstance.getMaterial({
+            mediaId: params.mediaId,
+        });
+        return result;
+    } catch(e) {
+        throw e;
+    }
 }
 
 

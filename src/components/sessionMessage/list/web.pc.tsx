@@ -67,7 +67,6 @@ export default function Render(
     } = methods;
     const [bottomHeight, setBottomHeight] = useState(0);
     const textareaRef = useRef(null);
-    // const [text1, setText1] = useState("");
     // const newBottomHeight =
     //     window.document.getElementById('bottom')?.offsetHeight!;
     useEffect(() => {
@@ -111,6 +110,7 @@ export default function Render(
             pageScroll('comment');
         }
     };
+    console.log(isWeChat)
     return (
         <div className={Style.container}>
             <Header
@@ -179,17 +179,25 @@ export default function Render(
                             </ExtraFileUpload>
                         )
                     } */}
-                    <Upload
-                        accept={'image/*'}
-                        multiple={false}
-                        showUploadList={false}
-                        customRequest={() => { }}
-                        onChange={({ file }) => {
-                            customUpload(file as customFile);
-                        }}
-                    >
-                        <PictureOutlined className={Style.icon} />
-                    </Upload>
+                    {
+                        isWeChat ? (
+                            //微信资源库
+                            <PictureOutlined className={Style.icon} />
+                        ) : (
+                            <Upload
+                                accept={'image/*'}
+                                multiple={false}
+                                showUploadList={false}
+                                customRequest={() => { }}
+                                onChange={({ file }) => {
+                                    customUpload(file as customFile);
+                                }}
+                            >
+                                <PictureOutlined className={Style.icon} />
+                            </Upload>
+                        )
+                    }
+
                 </div>
 
                 <div className={Style.textareaBox}>

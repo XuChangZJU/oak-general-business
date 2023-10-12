@@ -14,5 +14,13 @@ export declare function editTag<ED extends EntityDict, Cxt extends BackendRuntim
 }, context: Cxt): Promise<any>;
 export declare function deleteTag<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
-    id: number;
+    id: string;
+    wechatId: number;
+}, context: Cxt): Promise<any>;
+export declare function syncTag<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+    applicationId: string;
+    id: string;
+}, context: Cxt): Promise<any>;
+export declare function oneKeySync<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+    applicationId: string;
 }, context: Cxt): Promise<any>;

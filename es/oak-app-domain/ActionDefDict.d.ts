@@ -27,9 +27,14 @@ export declare const ActionDefDict: {
         userState: import("oak-domain").ActionDef<string, string>;
     };
     userEntityGrant: {};
+    userWechatPublicTag: {
+        iState: import("oak-domain").ActionDef<string, string>;
+    };
     wechatLogin: {};
     wechatMenu: {
         iState: import("oak-domain").ActionDef<string, string>;
     };
-    wechatPublicTag: {};
+    wechatPublicTag: {
+        iState: import("oak-domain").ActionDef<string, string>;
+    };
 };

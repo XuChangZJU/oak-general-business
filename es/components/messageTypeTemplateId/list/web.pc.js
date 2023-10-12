@@ -1,15 +1,23 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import { Table, Button, Space, Typography, Input, Select } from 'antd';
+import { useState } from 'react';
+import { Table, Button, Space, Typography, Select } from 'antd';
 import Styles from './web.module.less';
 export default function Render(props) {
-    const { oakPagination, mtt = [], dirtyIds = [], oakLoading, messageTypes, applicationId, } = props.data;
-    const { setCurrentPage, setPageSize, t, addItem, removeItem, updateItem, recoverItem, resetItem, execute } = props.methods;
+    const { oakPagination, mtt = [], dirtyIds = [], oakLoading, messageTypes = [], applicationId, wechatPublicTemplates = [], } = props.data;
+    const { setCurrentPage, setPageSize, t, addItem, syncTemplate, removeItem, updateItem, recoverItem, resetItem, execute } = props.methods;
+    const [syncDisable, setSyncDisable] = useState(false);
+    const [open, setOpen] = useState(false);
     const { pageSize, total, currentPage } = oakPagination || {};
-    return (_jsxs("div", { className: Styles.container, children: [_jsxs(Space, { children: [_jsx(Button, { type: "default", onClick: () => {
-                            /* addItem({
-                                applicationId,
-                            }); */
-                        }, children: t('common::action.create') }), dirtyIds.length > 0 && (_jsx(Button, { type: "primary", onClick: () => {
+    console.log(messageTypes, wechatPublicTemplates);
+    return (_jsxs("div", { className: Styles.container, children: [_jsxs(Space, { children: [_jsx(Button, { type: "default", disabled: !(messageTypes.length > 0 && wechatPublicTemplates.length > 0), onClick: () => {
+                            addItem({
+                                templateId: wechatPublicTemplates[0].id,
+                            });
+                        }, children: t('common::action.create') }), _jsx(Button, { type: "default", disabled: syncDisable, onClick: async () => {
+                            setSyncDisable(true);
+                            await syncTemplate();
+                            setSyncDisable(false);
+                        }, children: '同步模板' }), dirtyIds.length > 0 && (_jsx(Button, { type: "primary", onClick: () => {
                             execute();
                         }, children: t('common::action.confirm') }))] }), _jsx(Table, { loading: oakLoading, dataSource: mtt, rowKey: "id", columns: [
                     {
@@ -32,15 +40,20 @@ export default function Render(props) {
                     },
                     {
                         dataIndex: 'templateId',
-                        title: '模板消息Id',
+                        title: '模板消息标题',
                         width: 300,
                         render: (value, record, index) => {
                             if (dirtyIds.includes(record.id) && !record.$$deleteAt$$) {
-                                return (_jsx(Input, { value: value, onChange: (e) => updateItem({
-                                        templateId: e.target.value,
-                                    }, record.id) }));
+                                return (_jsx(Select, { style: {
+                                        width: '100%',
+                                    }, value: value, onChange: (e) => updateItem({
+                                        type: e,
+                                    }, record.id), options: wechatPublicTemplates.map(ele => ({
+                                        value: ele.id,
+                                        label: ele.title
+                                    })) }));
                             }
-                            return (_jsx(Typography.Text, { type: !!record.$$deleteAt$$ ? 'danger' : undefined, delete: !!record.$$deleteAt$$, children: value }));
+                            return (_jsx(Typography.Text, { type: !!record.$$deleteAt$$ ? 'danger' : undefined, delete: !!record.$$deleteAt$$, children: record?.template?.title }));
                         },
                     },
                     {

@@ -7,8 +7,8 @@ import ActionPhone from '../actionPhone';
 import MenuInfo from '../menuInfo';
 export default function Render(props) {
     const { data, methods } = props;
-    const { id, oakFullpath, config, wechatInstance, totalConfig, menuType, applicationId, actions, iState } = data;
-    const { updateItem, execute } = methods;
+    const { id, oakFullpath, config, wechatInstance, totalConfig, menuType, applicationId, actions, iState, tabKey } = data;
+    const { updateItem, execute, create, } = methods;
     const [open, setOpen] = useState(false);
     const [isPreview, setIsPreview] = useState(false);
     const [selectedBtn, setSelectedBtn] = useState(0);
@@ -32,8 +32,8 @@ export default function Render(props) {
     const getErrorIndex = (errorIndex) => {
         setErrorIndex(errorIndex);
     };
-    const createMenu = async () => {
-        await execute();
+    const createMenu = () => {
+        create();
     };
     const changeIsPreview = (isPreview) => {
         setIsPreview(isPreview);
@@ -42,7 +42,7 @@ export default function Render(props) {
         setOpen(open);
     };
     if (oakFullpath) {
-        return (_jsx("div", { className: Style.container, children: _jsxs("div", { className: Style.content, children: [_jsx("div", { className: Style.leftBar, children: _jsx(ActionPhone, { oakAutoUnmount: true, config: config, changeConfig: changeConfig, menuType: menuType, getSelectedBtn: getSelectedBtn, getSelectedSubBtn: getSelectedSubBtn, getCurrentIndex: getCurrentIndex, errorIndex: errorIndex, isPreview: isPreview, open: open }) }), _jsx("div", { className: Style.rightBar, children: _jsx(MenuInfo, { oakAutoUnmount: true, config: config, changeConfig: changeConfig, selectedBtn: selectedBtn, selectedSubBtn: selectedSubBtn, currentIndex: currentIndex, getErrorIndex: getErrorIndex, createMenu: createMenu, changeIsPreview: changeIsPreview, getOpen: getOpen, menuType: menuType, applicationId: applicationId, actions: actions, iState: iState }) }), _jsx(Modal, { title: '\u83DC\u5355\u9884\u89C8', open: isPreview, onCancel: () => setIsPreview(false), footer: null, width: 424, children: _jsx(Preview, { button: config?.button, applicationId: applicationId }) })] }) }));
+        return (_jsx("div", { className: Style.container, children: _jsxs("div", { className: Style.content, children: [_jsx("div", { className: Style.leftBar, children: _jsx(ActionPhone, { oakAutoUnmount: true, config: config, changeConfig: changeConfig, menuType: menuType, getSelectedBtn: getSelectedBtn, getSelectedSubBtn: getSelectedSubBtn, getCurrentIndex: getCurrentIndex, errorIndex: errorIndex, isPreview: isPreview, open: open, tabKey: tabKey }) }), _jsx("div", { className: Style.rightBar, children: _jsx(MenuInfo, { oakAutoUnmount: true, config: config, changeConfig: changeConfig, selectedBtn: selectedBtn, selectedSubBtn: selectedSubBtn, currentIndex: currentIndex, getErrorIndex: getErrorIndex, createMenu: createMenu, changeIsPreview: changeIsPreview, getOpen: getOpen, menuType: menuType, applicationId: applicationId, actions: actions, iState: iState }) }), _jsx(Modal, { title: '\u83DC\u5355\u9884\u89C8', open: isPreview, onCancel: () => setIsPreview(false), footer: null, width: 424, children: _jsx(Preview, { button: config?.button, applicationId: applicationId }) })] }) }));
     }
     return null;
 }

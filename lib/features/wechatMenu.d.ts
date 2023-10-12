@@ -20,10 +20,12 @@ export declare class WechatMenu<ED extends EntityDict, Cxt extends BackendRuntim
     createMenu(params: {
         applicationId: string;
         menuConfig: any;
+        id: string;
     }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["createMenu"]>>;
     createConditionalMenu(params: {
         applicationId: string;
         menuConfig: any;
+        id: string;
     }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["createConditionalMenu"]>>;
     deleteConditionalMenu(params: {
         applicationId: string;

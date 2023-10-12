@@ -13,9 +13,9 @@ export default OakComponent({
         };
     },
     pagination: {
-        pageSize: 20,
+        pageSize: 10,
         currentPage: 1,
-        more: false,
+        more: true,
     },
     lifetimes: {},
     filters: [

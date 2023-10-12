@@ -42,7 +42,7 @@ export async function subscribeMpMessage<
         TProperty,
         TMethod
     >, messageTypes: string[], haveToAccept?: boolean, tip?: string) {
-    const mttIds = this.features.cache.get('messageTypeTemplateId', {
+    const mttIds = this.features.cache.get('messageTypeTemplate', {
         data: {
             id: 1,
             templateId: 1,
@@ -50,6 +50,7 @@ export async function subscribeMpMessage<
         },
         filter: {
             type: {
+
                 $in: messageTypes,
             },
         },
@@ -171,7 +172,7 @@ export function createComponent<
                                 },
                                 applicationId,
                             },
-                        });                        
+                        });
                     }
                 }
                 ready && ready.call(this);

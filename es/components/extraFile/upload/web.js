@@ -48,7 +48,7 @@ const DraggableUploadListItem = ({ originNode, moveRow, file, fileList, }) => {
     return (_jsx("div", { ref: ref, className: `ant-upload-draggable-list-item ${isOver ? dropClassName : ""}`, style: { cursor: "move", height: "100%" }, children: originNode }));
 };
 export default function render(props) {
-    const { accept = 'image/*', maxNumber = 20, multiple = maxNumber !== 1, draggable = false, theme = 'image', tips, beforeUpload, style, className, directory = false, onPreview, onDownload, children, showUploadList = true, files = [], disableInsert = false, disableDownload = false, disableDelete = false, disablePreview = false, } = props.data;
+    const { accept = 'image/*', maxNumber = 20, multiple = maxNumber !== 1, draggable = false, theme = 'image', beforeUpload, style, className, directory = false, onPreview, onDownload, children, showUploadList = true, files = [], disableInsert = false, disableDownload = false, disableDelete = false, disablePreview = false, } = props.data;
     const { t, updateItem, onRemove, addFileByWeb, checkSort } = props.methods;
     const listType = getListType(theme);
     const getUploadButton = () => {
@@ -146,27 +146,27 @@ export default function render(props) {
             updateItem({ sort }, dragRow.id);
         }
     }, [files]);
-    return (_jsxs(Space, { direction: "vertical", className: Style['oak-upload'], style: { width: '100%' }, children: [_jsx(DndProvider, { backend: isPc ? HTML5Backend : TouchBackend, children: _jsx(Upload, { className: classNames(Style['oak-upload__upload'], className), style: style, directory: directory, showUploadList: showUploadList
-                        ? {
-                            showPreviewIcon: !disablePreview,
-                            showRemoveIcon: !disableDelete,
-                            showDownloadIcon: !disableDownload,
+    return (_jsx(Space, { direction: "vertical", className: Style['oak-upload'], style: { width: '100%' }, children: _jsx(DndProvider, { backend: isPc ? HTML5Backend : TouchBackend, children: _jsx(Upload, { className: classNames(Style['oak-upload__upload'], className), style: style, directory: directory, showUploadList: showUploadList
+                    ? {
+                        showPreviewIcon: !disablePreview,
+                        showRemoveIcon: !disableDelete,
+                        showDownloadIcon: !disableDownload,
+                    }
+                    : false, beforeUpload: async (file) => {
+                    if (typeof beforeUpload === 'function') {
+                        const result = await beforeUpload(file);
+                        if (result) {
+                            return false;
                         }
-                        : false, beforeUpload: async (file) => {
-                        if (typeof beforeUpload === 'function') {
-                            const result = await beforeUpload(file);
-                            if (result) {
-                                return false;
-                            }
-                        }
-                        return false;
-                    }, multiple: multiple, accept: accept, listType: listType, fileList: transformToUploadFile(), onChange: ({ file, fileList, event }) => {
-                        if (file instanceof File) {
-                            addFileByWeb(file);
-                        }
-                    }, onRemove: onRemove, onPreview: onPreview, onDownload: onDownload, itemRender: (originNode, currentFile, currentFileList) => {
-                        return (_jsx(DraggableUploadListItem, { originNode: originNode, file: currentFile, fileList: currentFileList, moveRow: moveRow }));
-                    }, children: !disableInsert && files.length < maxNumber
-                        ? getUploadButton()
-                        : null }) }), tips && (_jsx("small", { className: Style['oak-upload__tips'], children: tips }))] }));
+                    }
+                    return false;
+                }, multiple: multiple, accept: accept, listType: listType, fileList: transformToUploadFile(), onChange: ({ file, fileList, event }) => {
+                    if (file instanceof File) {
+                        addFileByWeb(file);
+                    }
+                }, onRemove: onRemove, onPreview: onPreview, onDownload: onDownload, itemRender: (originNode, currentFile, currentFileList) => {
+                    return (_jsx(DraggableUploadListItem, { originNode: originNode, file: currentFile, fileList: currentFileList, moveRow: moveRow }));
+                }, children: !disableInsert && files.length < maxNumber
+                    ? getUploadButton()
+                    : null }) }) }));
 }

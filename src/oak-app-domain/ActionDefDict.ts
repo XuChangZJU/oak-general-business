@@ -9,6 +9,7 @@ import { ActionDefDict as Parasite } from "./Parasite/Action";
 import { ActionDefDict as Token } from "./Token/Action";
 import { ActionDefDict as User } from "./User/Action";
 import { ActionDefDict as UserEntityGrant } from "./UserEntityGrant/Action";
+import { ActionDefDict as UserWechatPublicTag } from "./UserWechatPublicTag/Action";
 import { ActionDefDict as WechatLogin } from "./WechatLogin/Action";
 import { ActionDefDict as WechatMenu } from "./WechatMenu/Action";
 import { ActionDefDict as WechatPublicTag } from "./WechatPublicTag/Action";
@@ -24,6 +25,7 @@ export const ActionDefDict = {
     token: Token,
     user: User,
     userEntityGrant: UserEntityGrant,
+    userWechatPublicTag: UserWechatPublicTag,
     wechatLogin: WechatLogin,
     wechatMenu: WechatMenu,
     wechatPublicTag: WechatPublicTag

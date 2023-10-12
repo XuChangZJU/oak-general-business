@@ -23,4 +23,12 @@ export class WechatPublicTag extends Feature {
         const callBack = await this.cache.exec('deleteTag', params);
         return callBack.result;
     }
+    async syncTag(params) {
+        const callBack = await this.cache.exec('syncTag', params);
+        return callBack.result;
+    }
+    async oneKeySync(params) {
+        const callBack = await this.cache.exec('oneKeySync', params);
+        return callBack.result;
+    }
 }

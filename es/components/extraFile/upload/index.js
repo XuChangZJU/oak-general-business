@@ -97,7 +97,9 @@ export default OakComponent({
     },
     features: ['extraFile2'],
     formData({ data, features }) {
-        let files = data?.sort((ele1, ele2) => ele1.sort - ele2.sort);
+        let files = data
+            ?.filter((ele) => !ele.$$deleteAt$$)
+            .sort((ele1, ele2) => ele1.sort - ele2.sort);
         if (this.props.tag1) {
             files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
         }

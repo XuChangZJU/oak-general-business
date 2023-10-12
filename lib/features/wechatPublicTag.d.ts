@@ -24,6 +24,14 @@ export declare class WechatPublicTag<ED extends EntityDict, Cxt extends BackendR
     }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["editTag"]>>;
     deleteTag(params: {
         applicationId: string;
-        id: number;
+        id: string;
+        wechatId: number;
     }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["deleteTag"]>>;
+    syncTag(params: {
+        applicationId: string;
+        id: string;
+    }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["syncTag"]>>;
+    oneKeySync(params: {
+        applicationId: string;
+    }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["oneKeySync"]>>;
 }
