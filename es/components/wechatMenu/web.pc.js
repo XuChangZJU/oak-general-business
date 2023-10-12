@@ -26,14 +26,14 @@ export default function Render(props) {
         },
     ];
     if (oakFullpath) {
-        return (_jsx("div", { children: is_menu_open ? (_jsx("div", { className: Style.tabs, children: isPlatform ? _jsx(WechatMenu, { menuId: menuId ? menuId : undefined, oakPath: '$wechatMenu', applicationId: applicationId, oakAutoUnmount: true, menuType: menuType, tabKey: tabKey }) : _jsx(Tabs, { defaultActiveKey: '1', items: items, onChange: (key) => {
+        return (_jsx("div", { children: is_menu_open && (_jsx("div", { className: Style.tabs, children: isPlatform ? _jsx(WechatMenu, { menuId: menuId ? menuId : undefined, oakPath: '$wechatMenu', applicationId: applicationId, oakAutoUnmount: true, menuType: menuType, tabKey: tabKey }) : _jsx(Tabs, { defaultActiveKey: '1', items: items, onChange: (key) => {
                         if (key === '1') {
                             setMenuType('common');
                         }
                         else {
                             setMenuType('conditional');
                         }
-                    } }) })) : (_jsx("div", { className: Style.container, children: _jsx("div", { className: Style.warn, children: "\u5C1A\u672A\u5F00\u542F\u83DC\u5355\uFF0C\u8BF7\u5148\u524D\u5F80\u5FAE\u4FE1\u516C\u4F17\u5E73\u53F0\u5F00\u542F\u3002" }) })) }));
+                    } }) })) }));
     }
     return null;
 }

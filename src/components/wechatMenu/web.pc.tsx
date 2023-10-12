@@ -82,7 +82,7 @@ export default function Render(
         return (
             <div>
                 {
-                    is_menu_open ? (
+                    is_menu_open && (
                         <div className={Style.tabs}>
                             {
                                 isPlatform ? <WechatMenu
@@ -105,11 +105,12 @@ export default function Render(
                                 />
                             }
                         </div>
-                    ) : (
-                        <div className={Style.container}>
-                            <div className={Style.warn}>尚未开启菜单，请先前往微信公众平台开启。</div>
-                        </div>
                     )
+                    //  : (
+                    //     <div className={Style.container}>
+                    //         <div className={Style.warn}>尚未开启菜单，请先前往微信公众平台开启。</div>
+                    //     </div>
+                    // )
                 }
             </div>
         )
