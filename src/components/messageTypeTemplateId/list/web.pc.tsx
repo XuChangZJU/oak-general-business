@@ -60,6 +60,14 @@ export default function Render(props: WebComponentProps<
                 >
                     {'同步模板'}
                 </Button>
+                <Button
+                    type="default"
+                    onClick={async () => {
+                        setOpen(true);
+                    }}
+                >
+                    {'查看现有模板'}
+                </Button>
                 {
                     dirtyIds.length > 0 && (
                         <Button
@@ -215,5 +223,32 @@ export default function Render(props: WebComponentProps<
                     },
                 }}
             />
+            <Modal
+                title='模板列表'
+                open={open}
+                destroyOnClose={true}
+                onCancel={() => {
+                    setOpen(false)
+                }}
+                width={'80%'}
+                footer={null}
+            >
+                <Table
+                    dataSource={wechatPublicTemplates}
+                    rowKey="id"
+                    columns={[
+                        {
+                            dataIndex: 'title',
+                            title: '消息标题',
+                            width: 200,
+                        },
+                        {
+                            dataIndex: 'wechatId',
+                            title: '微信模板Id',
+                            width: 300,
+                        },
+                    ]}
+                />
+            </Modal>
         </div>);
 }

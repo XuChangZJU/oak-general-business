@@ -1,6 +1,6 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import { useState } from 'react';
-import { Table, Button, Space, Typography, Select } from 'antd';
+import { Table, Button, Space, Typography, Select, Modal } from 'antd';
 import Styles from './web.module.less';
 export default function Render(props) {
     const { oakPagination, mtt = [], dirtyIds = [], oakLoading, messageTypes = [], applicationId, wechatPublicTemplates = [], } = props.data;
@@ -17,7 +17,9 @@ export default function Render(props) {
                             setSyncDisable(true);
                             await syncTemplate();
                             setSyncDisable(false);
-                        }, children: '同步模板' }), dirtyIds.length > 0 && (_jsx(Button, { type: "primary", onClick: () => {
+                        }, children: '同步模板' }), _jsx(Button, { type: "default", onClick: async () => {
+                            setOpen(true);
+                        }, children: '查看现有模板' }), dirtyIds.length > 0 && (_jsx(Button, { type: "primary", onClick: () => {
                             execute();
                         }, children: t('common::action.confirm') }))] }), _jsx(Table, { loading: oakLoading, dataSource: mtt, rowKey: "id", columns: [
                     {
@@ -84,5 +86,18 @@ export default function Render(props) {
                     onChange: (current) => {
                         setCurrentPage(current);
                     },
-                } })] }));
+                } }), _jsx(Modal, { title: '\u6A21\u677F\u5217\u8868', open: open, destroyOnClose: true, onCancel: () => {
+                    setOpen(false);
+                }, width: '80%', footer: null, children: _jsx(Table, { dataSource: wechatPublicTemplates, rowKey: "id", columns: [
+                        {
+                            dataIndex: 'title',
+                            title: '消息标题',
+                            width: 200,
+                        },
+                        {
+                            dataIndex: 'wechatId',
+                            title: '微信模板Id',
+                            width: 300,
+                        },
+                    ] }) })] }));
 }
