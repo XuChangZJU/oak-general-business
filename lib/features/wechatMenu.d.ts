@@ -45,6 +45,7 @@ export declare class WechatMenu<ED extends EntityDict, Cxt extends BackendRuntim
         articleId: string;
     }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["getArticle"]>>;
     createMaterial(params: {
+        appType: string;
         applicationId: string;
         type: MediaType;
         file: File;

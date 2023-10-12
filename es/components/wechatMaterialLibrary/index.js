@@ -83,7 +83,7 @@ export default OakComponent({
         async upload(media, description) {
             const { applicationId } = this.props;
             const { type } = this.props;
-            const result = await this.features.wechatMenu.createMaterial({ applicationId: applicationId, type: type, file: media, description, isPermanent: true });
+            const result = await this.features.wechatMenu.createMaterial({ appType: 'wechatPublic', applicationId: applicationId, type: type, file: media, description, isPermanent: true });
             if (result && result.mediaId) {
                 this.setMessage({
                     type: 'success',
