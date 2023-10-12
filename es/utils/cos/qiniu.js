@@ -9,24 +9,22 @@ export default class Qiniu {
         return false;
     }
     formKey(extraFile) {
-        const { id, extension, entity, objectId } = extraFile;
-        // 这里是为了兼容旧的代码使用objectId来生成key的数据，现在objectId已经废弃
-        if (objectId) {
-            return `${entity}/${objectId}${extension ? '.' + extension : ''}`;
-        }
-        return `extraFile/${id}${extension ? '.' + extension : ''}`;
+        const { id, extension, objectId } = extraFile;
+        assert(objectId);
+        return `extraFile/${objectId}${extension ? '.' + extension : ''}`;
     }
     async formUploadMeta(extraFile, context) {
         const { bucket } = extraFile;
         // 构造文件上传所需的key
         const key = this.formKey(extraFile);
         const { instance, config } = getConfig(context, 'Cos', 'qiniu');
-        const { uploadHost, buckets } = config;
+        const { buckets } = config;
         assert(bucket);
-        assert(buckets.find(ele => ele.name === bucket), `${bucket}不是一个有效的桶配置`);
+        const b = buckets.find(ele => ele.name === bucket);
+        assert(b, `${bucket}不是一个有效的桶配置`);
         Object.assign(extraFile, {
             bucket,
-            uploadMeta: instance.getKodoUploadInfo(uploadHost, bucket, key),
+            uploadMeta: instance.getKodoUploadInfo(bucket, b.zone, key),
         });
     }
     async upload(extraFile, uploadFn, file) {
@@ -73,8 +71,10 @@ export default class Qiniu {
         const { instance, config } = getConfig(context, 'Cos', 'qiniu');
         // web环境下访问不了七牛接口，用mockData过
         const mockData = process.env.OAK_PLATFORM === 'web' ? { fsize: 100 } : undefined;
+        const b = config.buckets.find(ele => ele.name === extraFile.bucket);
+        assert(b, `extrafile中的bucket名称在七牛配置中找不到「${extraFile.bucket}」`);
         try {
-            const result = await instance.getKodoFileStat(extraFile.bucket, key, mockData);
+            const result = await instance.getKodoFileStat(extraFile.bucket, b.zone, key, mockData);
             const { fsize } = result;
             return fsize > 0;
         }
@@ -94,8 +94,10 @@ export default class Qiniu {
         const { instance, config } = getConfig(context, 'Cos', 'qiniu');
         // web环境下访问不了七牛接口，用mockData过
         const mockData = process.env.OAK_PLATFORM === 'web' ? true : undefined;
+        const b = config.buckets.find(ele => ele.name === extraFile.bucket);
+        assert(b, `extrafile中的bucket名称在七牛配置中找不到「${extraFile.bucket}」`);
         try {
-            await instance.removeKodoFile(extraFile.bucket, key, mockData);
+            await instance.removeKodoFile(extraFile.bucket, b.zone, key, mockData);
         }
         catch (err) {
             // 七牛如果文件不存在会抛出status ＝ 612的异常

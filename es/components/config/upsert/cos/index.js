@@ -1,13 +1,40 @@
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
 import { Tabs, Row, Col, Card, Divider, Input, Form, Space, Select, } from 'antd';
 import Styles from './web.module.less';
+// https://developer.qiniu.com/kodo/1671/region-endpoint-fq
+const QiniuZoneArray = [
+    {
+        label: '华东-浙江',
+        value: 'z0',
+    },
+    {
+        label: '华东-浙江2',
+        value: 'cn-east-2',
+    },
+    {
+        label: '华北-河北',
+        value: 'z1',
+    },
+    {
+        label: '华南-广东',
+        value: 'z2',
+    },
+    {
+        label: '北美-洛杉矶',
+        value: 'na0',
+    },
+    {
+        label: '亚太-新加坡',
+        value: 'as0',
+    }
+];
 function QiniuCos(props) {
     const { cos, setValue, removeItem } = props;
     return (_jsxs(Col, { flex: "auto", children: [_jsx(Divider, { orientation: "left", className: Styles.title, children: "\u4E03\u725B\u4E91\u914D\u7F6E" }), _jsx(Tabs, { tabPosition: 'top', size: 'middle', type: "card", items: [
                     {
                         key: '0',
                         label: '配置项',
-                        children: (_jsxs(Form, { colon: true, labelAlign: "left", layout: "vertical", style: { marginTop: 10 }, children: [_jsx(Form.Item, { label: "accessKey", children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "\u8BF7\u8F93\u5165accessKey", type: "text", value: cos?.accessKey, onChange: (e) => setValue(`accessKey`, e.target.value) }) }) }), _jsx(Form.Item, { label: "uploadHost", children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "\u8BF7\u8F93\u5165uploadHost", type: "text", value: cos?.uploadHost, onChange: (e) => setValue(`uploadHost`, e.target.value) }) }) }), _jsx(Divider, { orientation: "left", className: Styles.title, children: "bucket\u914D\u7F6E" }), _jsx(Tabs, { tabPosition: 'top', size: 'middle', type: "editable-card", 
+                        children: (_jsxs(Form, { colon: true, labelAlign: "left", layout: "vertical", style: { marginTop: 10 }, children: [_jsx(Form.Item, { label: "accessKey", children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "\u8BF7\u8F93\u5165accessKey", type: "text", value: cos?.accessKey, onChange: (e) => setValue(`accessKey`, e.target.value) }) }) }), _jsx(Divider, { orientation: "left", className: Styles.title, children: "bucket\u914D\u7F6E" }), _jsx(Tabs, { tabPosition: 'top', size: 'middle', type: "editable-card", 
                                     // hideAdd={!(sms.length > 0)}
                                     onEdit: (targetKey, action) => {
                                         if (action === 'add') {
@@ -20,7 +47,9 @@ function QiniuCos(props) {
                                         ? cos.buckets.map((ele, idx) => ({
                                             key: `${idx}`,
                                             label: `bucket:${idx + 1}`,
-                                            children: (_jsxs(Form, { colon: false, labelAlign: "left", layout: "vertical", style: { marginTop: 10 }, children: [_jsx(Form.Item, { label: "name", children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "\u8BF7\u8F93\u5165name", type: "text", value: ele.name, onChange: (e) => setValue(`buckets.${idx}.name`, e.target.value) }) }) }), _jsx(Form.Item, { label: "domain", children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "\u8BF7\u8F93\u5165domain", type: "text", value: ele.domain, onChange: (e) => setValue(`buckets.${idx}.domain`, e.target.value) }) }) }), _jsx(Form.Item, { label: "protocol", children: _jsx(_Fragment, { children: _jsx(Select, { mode: "multiple", allowClear: true, style: { width: '100%' }, placeholder: "\u8BF7\u9009\u62E9\u534F\u8BAE", value: ele?.protocol, onChange: (value) => {
+                                            children: (_jsxs(Form, { colon: false, labelAlign: "left", layout: "vertical", style: { marginTop: 10 }, children: [_jsx(Form.Item, { label: "name", children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "\u8BF7\u8F93\u5165name", type: "text", value: ele.name, onChange: (e) => setValue(`buckets.${idx}.name`, e.target.value) }) }) }), _jsx(Form.Item, { label: "zone", children: _jsx(_Fragment, { children: _jsx(Select, { style: { width: '100%' }, placeholder: "\u8BF7\u9009\u62E9\u5B58\u50A8\u533A\u57DF", value: ele.zone, onChange: (value) => {
+                                                                    setValue(`buckets.${idx}.zone`, value);
+                                                                }, options: QiniuZoneArray }) }) }), _jsx(Form.Item, { label: "domain", children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "\u8BF7\u8F93\u5165domain", type: "text", value: ele.domain, onChange: (e) => setValue(`buckets.${idx}.domain`, e.target.value) }) }) }), _jsx(Form.Item, { label: "protocol", children: _jsx(_Fragment, { children: _jsx(Select, { mode: "multiple", allowClear: true, style: { width: '100%' }, placeholder: "\u8BF7\u9009\u62E9\u534F\u8BAE", value: ele?.protocol, onChange: (value) => {
                                                                     setValue(`buckets.${idx}.protocol`, value);
                                                                 }, options: [
                                                                     {

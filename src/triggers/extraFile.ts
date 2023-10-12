@@ -42,12 +42,22 @@ const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDic
         entity: 'extraFile',
         action: 'remove',
         fn: async ({ rows }, context) => {
+            let number = 0;
             for (const extraFile of rows) {
-                const { origin } = extraFile;
-                const uploader = getCos(origin!);
-                await uploader.removeFile(extraFile as EntityDict['extraFile']['OpSchema'], context);
+                const { origin, objectId } = extraFile;
+
+                const count = await context.count('extraFile', {
+                    filter: {
+                        objectId: objectId!,
+                    },
+                }, {});
+                if (count === 0) {
+                    const uploader = getCos(origin!);
+                    await uploader.removeFile(extraFile as EntityDict['extraFile']['OpSchema'], context);
+                    number ++;
+                }
             }
-            return 1;
+            return number;
         }
     } as RemoveTrigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDict>>,
 ];

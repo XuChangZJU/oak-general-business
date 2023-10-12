@@ -1,4 +1,5 @@
 import { getConfig } from '../../../utils/getContextConfig';
+import { generateNewId } from 'oak-domain';
 ;
 export default OakComponent({
     entity: 'extraFile',
@@ -153,7 +154,7 @@ export default OakComponent({
                 type,
                 tag1,
                 tag2,
-                // objectId: generateNewId(),           // 这个域弃用了，如果有cos需要用就自己注入
+                objectId: generateNewId(),
                 entity,
                 filename,
                 size,

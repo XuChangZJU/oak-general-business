@@ -1,3 +1,4 @@
+import { QiniuZone } from 'oak-external-sdk';
 export type QiniuCloudConfig = {
     accessKey: string;
     secretKey: string;
@@ -14,8 +15,8 @@ export type QiniuLiveConfig = {
 };
 export type QiniuCosConfig = {
     accessKey: string;
-    uploadHost: string;
     buckets: {
+        zone: QiniuZone;
         name: string;
         domain: string;
         protocol: string | string[];
