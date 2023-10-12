@@ -69,12 +69,13 @@ const triggers: Trigger<EntityDict, 'sessionMessage', BackendRuntimeContext<Enti
                         sorter: [
                             {
                                 $attr: {
-                                    $$createAt$$: 1,
+                                    createTime: 1,
                                 },
                                 $direction: 'desc',
                             },
                         ],
                         count: 1,
+                        indexFrom: 0,
                     },
                     {}
                 );

@@ -43,7 +43,7 @@ export default function render(
         oakExecuting ||
         ['uploading'].includes(state) ||
         (oakExecutable === false && ['uploaded'].includes(state));
-    let text = executeText || t('common::action.confirm');
+    let text = executeText || t('common:submit');
     if (oakExecuting) {
         text = t('executing', { text });
     } else if (oakExecutable === false) {

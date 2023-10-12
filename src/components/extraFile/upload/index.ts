@@ -14,11 +14,24 @@ export interface EnhancedExtraFile extends ExtraFile {
     fileState?: FileState;
     percentage?: number;
 };
+export type Theme = 'file' | 'image' | 'image-flow' | 'custom';
 
 type SourceType = 'album' | 'camera';
-export type Theme = 'file' | 'image' | 'image-flow' | 'custom';
-type ImgMode = 'scaleToFill' | 'aspectFit' | 'aspectFill' | 'widthFix' | "heightFix" | 'top' | 'bottom' | 'left'
-    | 'right' | 'center' | 'top left' | 'top right' | 'bottom left' | 'bottom right';
+type ImageMode =
+    | 'scaleToFill'
+    | 'aspectFit'
+    | 'aspectFill'
+    | 'widthFix'
+    | 'heightFix'
+    | 'top'
+    | 'bottom'
+    | 'left'
+    | 'right'
+    | 'center'
+    | 'top left'
+    | 'top right'
+    | 'bottom left'
+    | 'bottom right';
 
 export default OakComponent({
     entity: 'extraFile',
@@ -72,7 +85,7 @@ export default OakComponent({
         selectCount: 1, // 每次打开图片时，可选中的数量 小程序独有
         sourceType: ['album', 'camera'] as SourceType[], // 小程序独有 chooseMedia
         mediaType: ['image'] as ('image' | 'video')[], // 小程序独有 chooseMedia
-        mode: 'aspectFit' as ImgMode, // 图片显示模式
+        mode: 'aspectFit' as ImageMode, // 图片显示模式
         size: 3, // 每行可显示的个数 小程序独有
         showUploadList: true, //web独有
         showUploadProgress: false, // web独有
@@ -123,7 +136,9 @@ export default OakComponent({
     },
     features: ['extraFile2'],
     formData({ data, features }) {
-        let files = data?.sort((ele1, ele2) => ele1.sort! - ele2.sort!);
+        let files = data
+            ?.filter((ele) => !ele.$$deleteAt$$)
+            .sort((ele1, ele2) => ele1.sort! - ele2.sort!);
         if (this.props.tag1) {
             files = files?.filter((ele) => ele?.tag1 === this.props.tag1);
         }
@@ -363,7 +378,7 @@ export default OakComponent({
             sourceType: SourceType[];
             mediaType: ('image' | 'video')[];
             // 图片显示模式
-            mode: ImgMode;
+            mode: ImageMode;
             // 每行可显示的个数
             size: number;
             showUploadList: boolean;

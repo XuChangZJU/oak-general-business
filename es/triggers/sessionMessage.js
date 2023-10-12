@@ -50,12 +50,13 @@ const triggers = [
                     sorter: [
                         {
                             $attr: {
-                                $$createAt$$: 1,
+                                createTime: 1,
                             },
                             $direction: 'desc',
                         },
                     ],
                     count: 1,
+                    indexFrom: 0,
                 }, {});
                 if (sessionMessage && sessionMessage.wechatUserId) {
                     const [session] = await context.select('session', {
