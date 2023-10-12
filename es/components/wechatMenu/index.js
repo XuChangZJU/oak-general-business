@@ -8,36 +8,29 @@ export default OakComponent({
     lifetimes: {
         async ready() {
             const { applicationId } = this.props;
-            const result = await this.features.wechatMenu.getCurrentMenu({ applicationId: applicationId });
-            if (result.is_menu_open === 1) {
-                const { data: wechatMenu } = await this.features.cache.refresh('wechatMenu', {
-                    data: {
-                        id: 1,
-                        applicationId: 1,
-                        wechatPublicTagId: 1,
-                    },
-                    filter: {
-                        applicationId,
-                        wechatPublicTagId: {
-                            $exists: false
-                        }
-                    }
-                });
-                if (wechatMenu && wechatMenu[0]) {
-                    this.setState({
-                        menuId: wechatMenu[0].id,
-                    });
-                }
-                this.setState({
-                    is_menu_open: true,
+            // const result = await this.features.wechatMenu.getCurrentMenu({ applicationId: applicationId! });
+            const { data: wechatMenu } = await this.features.cache.refresh('wechatMenu', {
+                data: {
+                    id: 1,
+                    applicationId: 1,
+                    wechatPublicTagId: 1,
+                },
+                filter: {
                     applicationId,
-                });
-            }
-            else {
+                    wechatPublicTagId: {
+                        $exists: false
+                    }
+                }
+            });
+            if (wechatMenu && wechatMenu[0]) {
                 this.setState({
-                    is_menu_open: false,
+                    menuId: wechatMenu[0].id,
                 });
             }
+            this.setState({
+                is_menu_open: true,
+                applicationId,
+            });
         }
     },
     methods: {},
