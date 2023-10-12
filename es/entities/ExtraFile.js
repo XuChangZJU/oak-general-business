@@ -44,6 +44,19 @@ const entityDesc = {
                 },
             },
         },
-    }
+    },
+    indexes: [
+        {
+            name: 'objectId_deleteAt',
+            attributes: [
+                {
+                    name: 'objectId',
+                },
+                {
+                    name: '$$deleteAt$$',
+                }
+            ]
+        }
+    ]
 };
 export {};

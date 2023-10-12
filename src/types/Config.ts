@@ -1,3 +1,5 @@
+import { QiniuZone } from 'oak-external-sdk';
+
 export type QiniuCloudConfig = {
     accessKey: string;
     secretKey: string;
@@ -16,8 +18,8 @@ export type QiniuLiveConfig = {
 
 export type QiniuCosConfig = {
     accessKey: string;
-    uploadHost: string; // 七牛上传域名
-    buckets: {      // 七牛配置的桶信息
+    buckets: {                  // 七牛配置的桶信息
+        zone: QiniuZone;        // 七牛存储区域(https://developer.qiniu.com/kodo/1671/region-endpoint-fq)
         name: string;
         domain: string;
         protocol: string | string[];

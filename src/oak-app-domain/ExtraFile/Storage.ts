@@ -112,5 +112,18 @@ export const desc: StorageDesc<OpSchema> = {
         }
     },
     actionType: "crud",
-    actions
+    actions,
+    indexes: [
+        {
+            name: 'objectId_deleteAt',
+            attributes: [
+                {
+                    name: 'objectId',
+                },
+                {
+                    name: '$$deleteAt$$',
+                }
+            ]
+        }
+    ]
 };

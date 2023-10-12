@@ -80,7 +80,7 @@ export function getConfig<
             );
             const qiniuInstance = QiniuSDK.getInstance(
                 qiniuAccount!.accessKey,
-                qiniuAccount!.secretKey
+                qiniuAccount!.secretKey,
             );
             return {
                 instance: qiniuInstance,

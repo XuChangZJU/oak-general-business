@@ -110,5 +110,18 @@ export const desc = {
         }
     },
     actionType: "crud",
-    actions
+    actions,
+    indexes: [
+        {
+            name: 'objectId_deleteAt',
+            attributes: [
+                {
+                    name: 'objectId',
+                },
+                {
+                    name: '$$deleteAt$$',
+                }
+            ]
+        }
+    ]
 };

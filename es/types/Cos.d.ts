@@ -30,6 +30,9 @@ export default interface Cos<ED extends EntityDict & BaseEntityDict, Cxt extends
     uploadUrl: string, // 上传的url
     formData: Record<string, any>, // 上传的其它part参数
     autoInform?: boolean) => Promise<any>, file: string | File) => Promise<void>;
+    /**
+     * 构建出访问图片的url，注意这个url应当和objectId一对一映射，这样才可以实现多个extraFile之间共享cos上的路径
+     */
     composeFileUrl: (extraFile: EntityDict['extraFile']['OpSchema'], context: FrontCxt, style?: string) => string;
     /**
      * 后台对upload是否成功不确定的文件，向OSS发起主动确认

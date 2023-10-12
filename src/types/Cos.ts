@@ -47,6 +47,9 @@ export default interface Cos<
         file: string | File
     ) => Promise<void>;
 
+    /**
+     * 构建出访问图片的url，注意这个url应当和objectId一对一映射，这样才可以实现多个extraFile之间共享cos上的路径
+     */
     composeFileUrl: (
         extraFile: EntityDict['extraFile']['OpSchema'],
         context: FrontCxt,

@@ -11,7 +11,36 @@ import {
     Select,
 } from 'antd';
 import Styles from './web.module.less';
+import { QiniuZone } from 'oak-external-sdk';
 import { Config, QiniuCosConfig } from '../../../../types/Config';
+
+// https://developer.qiniu.com/kodo/1671/region-endpoint-fq
+const QiniuZoneArray: Array<{ label: string; value: QiniuZone }> = [
+    {
+        label: '华东-浙江',
+        value: 'z0',
+    },
+    {
+        label: '华东-浙江2',
+        value: 'cn-east-2',
+    },
+    {
+        label: '华北-河北',
+        value: 'z1',
+    },
+    {
+        label: '华南-广东',
+        value: 'z2',
+    },
+    {
+        label: '北美-洛杉矶',
+        value: 'na0',
+    },
+    {
+        label: '亚太-新加坡',
+        value: 'as0',
+    }
+];
 
 function QiniuCos(props: {
     cos: QiniuCosConfig;
@@ -75,24 +104,6 @@ function QiniuCos(props: {
                                         />
                                     </>
                                 </Form.Item> */}
-                                <Form.Item
-                                    label="uploadHost"
-                                //name="uploadHost"
-                                >
-                                    <>
-                                        <Input
-                                            placeholder="请输入uploadHost"
-                                            type="text"
-                                            value={cos?.uploadHost}
-                                            onChange={(e) =>
-                                                setValue(
-                                                    `uploadHost`,
-                                                    e.target.value
-                                                )
-                                            }
-                                        />
-                                    </>
-                                </Form.Item>
                                 <Divider orientation="left" className={Styles.title}>
                                     bucket配置
                                 </Divider>
@@ -135,6 +146,22 @@ function QiniuCos(props: {
                                                                             e.target.value
                                                                         )
                                                                     }
+                                                                />
+                                                            </>
+                                                        </Form.Item>
+                                                        <Form.Item
+                                                            label="zone"
+                                                        //name="uploadHost"
+                                                        >
+                                                            <>
+                                                                <Select
+                                                                    style={{ width: '100%' }}
+                                                                    placeholder="请选择存储区域"
+                                                                    value={ele.zone}
+                                                                    onChange={(value: string) => {
+                                                                        setValue(`buckets.${idx}.zone`, value);
+                                                                    }}
+                                                                    options={QiniuZoneArray}
                                                                 />
                                                             </>
                                                         </Form.Item>

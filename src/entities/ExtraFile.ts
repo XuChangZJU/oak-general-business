@@ -75,5 +75,18 @@ const entityDesc: EntityDesc<Schema, '', '', {
                 },
             },
         },
-    }
+    },
+    indexes: [
+        {
+            name: 'objectId_deleteAt',
+            attributes: [
+                {
+                    name: 'objectId',                    
+                },
+                {
+                    name: '$$deleteAt$$',
+                }
+            ]
+        }
+    ]
 };

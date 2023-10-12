@@ -5,6 +5,7 @@ import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 import { getConfig } from '../../../utils/getContextConfig';
 import { QiniuCosConfig } from '../../../types/Config';
+import { generateNewId } from 'oak-domain';
 
 type ExtraFile = EntityDict['extraFile']['OpSchema'];
 export interface EnhancedExtraFile extends ExtraFile {
@@ -212,7 +213,7 @@ export default OakComponent({
                 type,
                 tag1,
                 tag2,
-                // objectId: generateNewId(),           // 这个域弃用了，如果有cos需要用就自己注入
+                objectId: generateNewId(),           // 这个域用来标识唯一性
                 entity,
                 filename,
                 size,
