@@ -1,5 +1,5 @@
-import assert from "assert";
 import { DATA_SUBSCRIBER_KEYS } from '../../../config/constants';
+
 export default OakComponent({
     entity: 'session',
     projection() {
@@ -71,20 +71,24 @@ export default OakComponent({
             $$createAt$$: 1,
         };
         if (entityProjection) {
-            Object.assign(proj, { ...entityProjection })
+            Object.assign(proj, { ...entityProjection });
         }
         return proj;
     },
     isList: true,
     formData: function ({ data: sessions, features, props }) {
         const { entityDisplay, entityProjection } = this.props;
-        if (entityProjection && entityDisplay && sessions && sessions.length > 0) {
-
-            const sessions1 = entityDisplay(sessions)
+        if (
+            entityProjection &&
+            entityDisplay &&
+            sessions &&
+            sessions.length > 0
+        ) {
+            const sessions1 = entityDisplay(sessions);
 
             return {
                 sessions: sessions1,
-            }
+            };
         }
         // const unReadLength = wechatSessions?.filter(
         //     (ele) => ele.isRead
@@ -99,18 +103,18 @@ export default OakComponent({
     },
     lifetimes: {
         async attached() {
-            const userId = this.features.token.getUserId(true);
-            // if (!userId) {
-            //     this.redirectTo(
-            //         {
-            //             url: '/login',
-            //             backUrl: encodeURIComponent(window.location.href),
-            //         },
-            //         undefined,
-            //         true
-            //     );
-            //     return;
-            // }
+            const token = this.features.token.getTokenValue();
+            if (!token) {
+                this.redirectTo(
+                    {
+                        url: '/login',
+                        backUrl: encodeURIComponent(window.location.href),
+                    },
+                    undefined,
+                    true
+                );
+                return;
+            }
             const { sessionId } = this.props;
             // 父层传入sessionId 默认聊天
             if (sessionId) {
@@ -125,15 +129,11 @@ export default OakComponent({
                     entity: 'session',
                     filter: entityFilter ? { ...entityFilter } : { userId },
                     id: `${DATA_SUBSCRIBER_KEYS.sessionList}`,
-                }
-            ])
-
-
+                },
+            ]);
         },
         detached() {
-            this.unSubData([
-                `${DATA_SUBSCRIBER_KEYS.sessionList}`
-            ])
+            this.unSubData([`${DATA_SUBSCRIBER_KEYS.sessionList}`]);
         },
     },
     data: {
@@ -141,12 +141,13 @@ export default OakComponent({
         selectedSessionId: '' as string,
     },
     properties: {
-        entity: '' as string,           // entity端，指示相应的entity
-        entityFilter: undefined as any,        // entity端，指示相应的entity查询条件
-        entityDisplay: (data: any) => [] as Array<any>,        // user端，指示如何显示entity对象名称
-        entityProjection: {} as any,    // user端，指示需要取哪些entity的属性来显示entityDisplay
-        sessionId: '' as string,        // 指示需要打开的默认session
+        entity: '' as string, // entity端，指示相应的entity
+        entityFilter: undefined as any, // entity端，指示相应的entity查询条件
+        entityDisplay: (data: any) => [] as Array<any>, // user端，指示如何显示entity对象名称
+        entityProjection: {} as any, // user端，指示需要取哪些entity的属性来显示entityDisplay
+        sessionId: '' as string, // 指示需要打开的默认session
         dialog: false as boolean,
+        onItemClick: null as ((sessionId: string) => {}) | undefined | null,
     },
     filters: [
         {
@@ -199,7 +200,6 @@ export default OakComponent({
                 return {
                     userId,
                 };
-
             },
             '#name': 'propsQuery',
         },
@@ -230,7 +230,6 @@ export default OakComponent({
             }
             // bypark,byCompany,byplatform走这里
             const userId = this.features.token.getUserId();
-
         },
         async clearUnRead() {
             //  =框架支持
@@ -251,6 +250,10 @@ export default OakComponent({
         },
         // mobile独有
         navigateToMessage(sessionId: string) {
+            if (typeof this.props.onItemClick === 'function') {
+                this.props.onItemClick(sessionId);
+                return;
+            }
             this.navigateTo(
                 {
                     url: '/session/sessionMessage',

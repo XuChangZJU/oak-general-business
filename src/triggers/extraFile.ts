@@ -46,6 +46,7 @@ const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDic
             for (const extraFile of rows) {
                 const { origin, objectId } = extraFile;
 
+                // 用objectId来去重，只有当没有还有效的objectId方可删除
                 const count = await context.count('extraFile', {
                     filter: {
                         objectId: objectId!,

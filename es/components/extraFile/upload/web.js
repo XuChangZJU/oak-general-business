@@ -117,12 +117,14 @@ export default function render(props) {
     const moveRow = useCallback((dragIndex, hoverIndex) => {
         const dragRow = files[dragIndex];
         let sort;
+        // 拖拽物下标和覆盖物下标一致 
         if (hoverIndex === dragIndex) {
             return;
         }
         else if (hoverIndex > dragIndex) {
+            // 放置最后覆盖物上
             if (hoverIndex === files.length - 1) {
-                sort = files[hoverIndex].sort + 100;
+                sort = files[hoverIndex].sort * 2;
             }
             else {
                 sort =
@@ -132,6 +134,7 @@ export default function render(props) {
             }
         }
         else {
+            // 放置最前覆盖物上
             if (hoverIndex === 0) {
                 sort = files[hoverIndex].sort / 2;
             }

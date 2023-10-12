@@ -11,6 +11,7 @@ import {
     WechatMpInstance,
     WechatPublicInstance,
 } from 'oak-external-sdk';
+
 const triggers: Trigger<EntityDict, 'sessionMessage', BackendRuntimeContext<EntityDict>>[] = [
     {
         name: '当sessionMessage创建时时，使其相关session更新lmts',
@@ -60,11 +61,13 @@ const triggers: Trigger<EntityDict, 'sessionMessage', BackendRuntimeContext<Enti
                             aaoe: 1,
                         },
                         filter: {
-                            id: sessionId,
+                            sessionId,
                             aaoe: false,
                             createTime: {
-                                $gt: Date.now() - (48 * 60 * 60 * 1000 - 5 * 60 * 1000)
-                            }
+                                $gt:
+                                    Date.now() -
+                                    (48 * 60 * 60 * 1000 - 5 * 60 * 1000),
+                            },
                         },
                         sorter: [
                             {
@@ -111,42 +114,48 @@ const triggers: Trigger<EntityDict, 'sessionMessage', BackendRuntimeContext<Enti
                         },
                         {}
                     );
-                    const { type, config, systemId } = application!;
-                    assert(type === 'wechatPublic');
-                    const { appId, appSecret } = config as WechatPublicConfig;
+                    const { type, config } = application!;
+                    assert(type === 'wechatPublic' || type === 'wechatMp');
 
-                    const wechatInstance = WechatSDK.getInstance(
-                        appId,
-                        'wechatPublic',
-                        appSecret
-                    ) as WechatPublicInstance;
-
-                    function sendMessage() {
-                        switch (messageType) {
-                            case 'text': {
-                                wechatInstance.sendServeMessage({
-                                    openId: sessionMessage.wechatUser?.openId!,
-                                    type: messageType,
-                                    content: text!,
-                                });
-                                break;
-                            }
-                            default: {
-                                assert(false, '你所发送的消息类型不支持')
-                            }
-                            //todo
-                            // case 'image' :{
-                            //     wechatInstance.sendServeMessage({
-                            //         openId: sessionMessage.wechatUser?.openId!,
-                            //         type: messageType,
-                            //         mediaId: '',
-                            //     });
-                            //     break;
-                            // }
-                        }
-
+                    let wechatInstance: WechatPublicInstance | WechatMpInstance;
+                    if (type === 'wechatMp') {
+                        const { appId, appSecret } = config as WechatMpConfig;
+                        wechatInstance = WechatSDK.getInstance(
+                            appId,
+                            type,
+                            appSecret
+                        ) as WechatMpInstance;
+                    } else {
+                        const { appId, appSecret } = config as WechatPublicConfig;
+                        wechatInstance = WechatSDK.getInstance(
+                            appId,
+                            type,
+                            appSecret
+                        ) as WechatPublicInstance;
                     }
-                    sendMessage();
+
+                    //微信发送客服消息
+                     switch (messageType) {
+                         case 'text': {
+                             wechatInstance.sendServeMessage({
+                                 openId: sessionMessage.wechatUser?.openId!,
+                                 type: messageType,
+                                 content: text!,
+                             });
+                             break;
+                         }
+                         // case 'image' :{
+                         //     wechatInstance.sendServeMessage({
+                         //         openId: sessionMessage.wechatUser?.openId!,
+                         //         type: messageType,
+                         //         mediaId: '',
+                         //     });
+                         //     break;
+                         // }
+                         default: {
+                             assert(false, `消息类型「${messageType}」尚未支持`);
+                         }
+                     }
                 }
 
             } catch (err) {

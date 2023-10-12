@@ -77,7 +77,10 @@ export default OakComponent({
     isList: true,
     formData: function ({ data: sessions, features, props }) {
         const { entityDisplay, entityProjection } = this.props;
-        if (entityProjection && entityDisplay && sessions && sessions.length > 0) {
+        if (entityProjection &&
+            entityDisplay &&
+            sessions &&
+            sessions.length > 0) {
             const sessions1 = entityDisplay(sessions);
             return {
                 sessions: sessions1,
@@ -93,18 +96,14 @@ export default OakComponent({
     },
     lifetimes: {
         async attached() {
-            const userId = this.features.token.getUserId(true);
-            // if (!userId) {
-            //     this.redirectTo(
-            //         {
-            //             url: '/login',
-            //             backUrl: encodeURIComponent(window.location.href),
-            //         },
-            //         undefined,
-            //         true
-            //     );
-            //     return;
-            // }
+            const token = this.features.token.getTokenValue();
+            if (!token) {
+                this.redirectTo({
+                    url: '/login',
+                    backUrl: encodeURIComponent(window.location.href),
+                }, undefined, true);
+                return;
+            }
             const { sessionId } = this.props;
             // 父层传入sessionId 默认聊天
             if (sessionId) {
@@ -119,13 +118,11 @@ export default OakComponent({
                     entity: 'session',
                     filter: entityFilter ? { ...entityFilter } : { userId },
                     id: `${DATA_SUBSCRIBER_KEYS.sessionList}`,
-                }
+                },
             ]);
         },
         detached() {
-            this.unSubData([
-                `${DATA_SUBSCRIBER_KEYS.sessionList}`
-            ]);
+            this.unSubData([`${DATA_SUBSCRIBER_KEYS.sessionList}`]);
         },
     },
     data: {
@@ -139,6 +136,7 @@ export default OakComponent({
         entityProjection: {},
         sessionId: '',
         dialog: false,
+        onItemClick: null,
     },
     filters: [
         {
@@ -241,6 +239,10 @@ export default OakComponent({
         },
         // mobile独有
         navigateToMessage(sessionId) {
+            if (typeof this.props.onItemClick === 'function') {
+                this.props.onItemClick(sessionId);
+                return;
+            }
             this.navigateTo({
                 url: '/session/sessionMessage',
                 sessionId,

@@ -178,6 +178,7 @@ export default OakComponent({
                 name: string;
                 fileType: string;
                 size: number;
+                sort: number;
             },
             file: File | string
         ) {
@@ -190,11 +191,10 @@ export default OakComponent({
                 entityId,
                 bucket,
             } = this.props;
-            const { name, fileType, size } = options;
+            const { name, fileType, size, sort } = options;
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
             const { files } = this.state;
-            const sort = files.length * 10000;
             let bucket2 = bucket;
             if (origin === 'qiniu' && !bucket2) {
                 const context = this.features.cache.begin();
@@ -232,6 +232,7 @@ export default OakComponent({
                     name,
                     fileType: type,
                     size,
+                    sort: this.getSort(),
                 },
                 file
             );
@@ -252,7 +253,7 @@ export default OakComponent({
                         msg: errMsg,
                     });
                 } else {
-                    tempFiles.map((tempExtraFile) => {
+                    tempFiles.map((tempExtraFile, index) => {
                         const {
                             tempFilePath,
                             thumbTempFilePath,
@@ -267,6 +268,7 @@ export default OakComponent({
                                 name: fileFullName,
                                 fileType,
                                 size,
+                                sort: this.getSort(index),
                             },
                             filePath
                         );
@@ -295,13 +297,14 @@ export default OakComponent({
                         msg: errMsg,
                     });
                 } else {
-                    tempFiles.map((tempExtraFile) => {
+                    tempFiles.map((tempExtraFile, index) => {
                         const { path, type, size, name } = tempExtraFile;
                         this.addExtraFileInner(
                             {
                                 name,
                                 fileType: type,
                                 size,
+                                sort: this.getSort(index),
                             },
                             path
                         );
@@ -349,6 +352,14 @@ export default OakComponent({
                 });
                 this.triggerEvent('onPreview', detail);
             }
+        },
+        getSort(index: number = 0) {
+            const { files } = this.state;
+            const currentSort = files?.length
+                ? files[files.length - 1].sort || 0
+                : 0;
+            const sort = currentSort + (index + 1) * 1000;
+            return sort;
         },
 
         //检查排序是否超过上限

@@ -74,17 +74,6 @@ export const desc = {
         },
         avatar: {
             type: "text"
-        },
-        remark: {
-            type: "varchar",
-            params: {
-                length: 32
-            }
-        },
-        language: {
-            notNull: true,
-            type: "enum",
-            enumeration: ["zh_CN", "zh_TW", "en"]
         }
     },
     actionType: "crud",

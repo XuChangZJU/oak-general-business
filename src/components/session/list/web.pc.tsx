@@ -13,11 +13,10 @@ export default function Render(
     props: WebComponentProps<
         EntityDict,
         'session',
-        false,
+        true,
         {
             sessions: any;
             selectedSessionId: string;
-            // unReadConversation: number;
             className: string;
             dialog: boolean;
             entityFilter: object;
@@ -34,7 +33,6 @@ export default function Render(
         sessions,
         selectedSessionId,
         oakFullpath,
-        // unReadConversation = 0,
         entityFilter,
         dialog = false,
         className,

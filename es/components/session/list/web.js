@@ -5,7 +5,7 @@ import SessionCell from '../../../components/session/cell';
 export default function Render(props) {
     const { data, methods } = props;
     const { sessions, selectedSessionId, oakFullpath, entityFilter, } = data;
-    const { setSelectedSessionId, navigateToMessage, } = methods;
+    const { navigateToMessage, setSelectedSessionId } = methods;
     return (_jsx("div", { className: Style.container, children: _jsxs("div", { className: Style.conversationContainer, children: [_jsx(Header, {}), sessions?.map((session, index) => {
                     return (_jsx(SessionCell, { entityFilter: entityFilter, selectedId: selectedSessionId, name: session?.name, onSelect: (id) => {
                             navigateToMessage(id);
