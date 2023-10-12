@@ -78,9 +78,7 @@ export default function Render(
                 {selectedSessionId && (
                     <MessageList
                         sessionId={selectedSessionId}
-                        // isCombine={true}
                         isEntity={entityFilter ? true : false}
-                        isUser={entityFilter ? false : true}
                         oakAutoUnmount={true}
                         entityDisplay={entityDisplay}
                         entityProjection={entityProjection}

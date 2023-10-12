@@ -34,7 +34,6 @@ export default function Render(props: WebComponentProps<
     const [open, setOpen] = useState(false);
 
     const { pageSize, total, currentPage } = oakPagination || {};
-    console.log(messageTypes, wechatPublicTemplates);
     return (
         <div className={Styles.container}>
             <Space>

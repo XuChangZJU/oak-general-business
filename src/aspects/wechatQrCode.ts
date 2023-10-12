@@ -223,7 +223,6 @@ export async function createWechatQrCode<ED extends EntityDict, T extends keyof 
 
     const { type: applicationType, config } = application;
 
-    // console.log(process.env.OAK_PLATFORM, process.env.NODE_ENV);
     switch (type) {
         case 'wechatMpWxaCode': {
             assert(

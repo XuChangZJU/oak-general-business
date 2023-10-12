@@ -47,7 +47,6 @@ export default function Render(
     const {
         sessionId,
         isEntity,
-        isUser,
         sessionMessageList,
         oakFullpath,
         text,
@@ -67,8 +66,7 @@ export default function Render(
     } = methods;
     const [bottomHeight, setBottomHeight] = useState(0);
     const textareaRef = useRef(null);
-    // const newBottomHeight =
-    //     window.document.getElementById('bottom')?.offsetHeight!;
+
     useEffect(() => {
         if (buttonHidden) {
             const newBottomHeight =
@@ -79,45 +77,17 @@ export default function Render(
         }
     }, [buttonHidden]);
     const handleKeyDown = (event: any) => {
-        // if (event.key === "Enter" && event.shiftKey) {
-        // event.preventDefault(); // 阻止默认的换行行为
-        // 执行你的换行逻辑
-        // setContent(text + "\n");
-        // if (textareaRef && textareaRef.current && textareaRef.current!.resizableTextArea) {
-        //     const textArea = textareaRef.current.resizableTextArea.textAreaRef; // 获取 Input.TextArea 的原生 textarea 元素
-        //     console.log(textArea)
-        //     if (textArea) {
-        //         console.log(textArea)
-        //         const selectionStart = textArea?.selectionStart;
-        //         const value = textArea?.value;
-
-        //         const newValue =
-        //             value?.substring(0, selectionStart) +
-        //             "\n" +
-        //             value?.substring(selectionStart);
-        //         textArea.value = newValue;
-        //         textArea.selectionStart = textArea.selectionEnd = selectionStart + 1;
-
-        //         // 触发 onChange 事件，更新 Input.TextArea 的值
-        //         textArea.dispatchEvent(new Event("input"));
-        //     }
-
-        // }
-        // }
         if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
             createMessage();
             pageScroll('comment');
         }
     };
-    console.log(isWeChat)
     return (
         <div className={Style.container}>
             <Header
-                // showBack={false}
                 sessionId={sessionId}
                 isEntity={isEntity}
-                // userId={employerId}
                 oakPath={
                     'session:header1'
                 }
@@ -150,7 +120,6 @@ export default function Render(
                                         : ''
                                 }
                                 isEntity={isEntity}
-                                isUser={isUser}
                             />
                         );
                     })}
@@ -204,7 +173,6 @@ export default function Render(
                     <Input.TextArea
                         ref={textareaRef}
                         className={Style.textarea}
-                        // autoSize={{ minRows: 2, maxRows: 15 }}
                         maxLength={500}
                         placeholder="Enter 发送，Shift + Enter换行"
                         rows={5}
@@ -225,7 +193,7 @@ export default function Render(
                     <div className={Style.btn}>
                         <Button
                             type="primary"
-                            disabled={text ? false : true}
+                            disabled={!text}
                             onClick={() => {
                                 createMessage();
                                 pageScroll('comment');

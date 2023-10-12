@@ -31,7 +31,6 @@ export default function render(props: WebComponentProps<
     const defaultUrl = 'http://qiniu.gecomebox.com/static/defaultAvatar.png'
     const features = useFeatures();
     const width = useWidth();
-    console.log(session)
 
     return (
         <div className={classNames(Style.header, {

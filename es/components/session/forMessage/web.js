@@ -13,7 +13,6 @@ export default function render(props) {
     const defaultUrl = 'http://qiniu.gecomebox.com/static/defaultAvatar.png';
     const features = useFeatures();
     const width = useWidth();
-    console.log(session);
     return (_jsxs("div", { className: classNames(Style.header, {
             [Style.header_mobile]: width === 'xs'
         }), children: [showBack && (_jsx(Button, { type: "text", onClick: () => {

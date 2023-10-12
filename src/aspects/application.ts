@@ -1,6 +1,6 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict } from "../oak-app-domain";
-import { AppType, WechatPublicConfig } from "../oak-app-domain/Application/Schema";
+import { AppType, WechatPublicConfig, WechatMpConfig } from "../oak-app-domain/Application/Schema";
 import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { applicationProjection } from '../types/Projection';
 import { MediaType } from '../types/WeChat';
@@ -9,6 +9,7 @@ import {
 } from 'oak-domain/lib/types/Environment';
 import {
     WechatPublicInstance,
+    WechatMpInstance,
     WechatSDK,
 } from 'oak-external-sdk';
 import fs from 'fs';
@@ -114,6 +115,7 @@ export async function uploadWechatMedia<
     Cxt extends BackendRuntimeContext<ED>
 >(
     params: {
+        appType: AppType;
         applicationId: string;
         file: File;
         type: MediaType;
@@ -128,10 +130,12 @@ export async function uploadWechatMedia<
         type: mediaType,
         isPermanent,
         description,
+        appType,
     } = params;
     const filename = file.originalFilename!;
     const filetype = file.mimetype!;
     const file2 = fs.createReadStream(file.filepath);
+    assert(appType === 'wechatPublic' || appType === 'wechatMp');
 
     const [application] = await context.select(
         'application',
@@ -145,19 +149,33 @@ export async function uploadWechatMedia<
             dontCollect: true,
         }
     );
-
     const { type, config } = application!;
-    assert(type === 'wechatPublic' && config!.type === 'wechatPublic');
-    const config2 = config as WechatPublicConfig;
-    const { appId, appSecret } = config2;
-    const wechatInstance = WechatSDK.getInstance(
-        appId,
-        'wechatPublic',
-        appSecret
-    ) as WechatPublicInstance;
+
+    let wechatInstance: WechatPublicInstance | WechatMpInstance;
+    if (appType === 'wechatPublic') {
+        assert(type === 'wechatPublic' && config!.type === 'wechatPublic');
+        const config2 = config as WechatPublicConfig;
+        const { appId, appSecret } = config2;
+        wechatInstance = WechatSDK.getInstance(
+            appId,
+            'wechatPublic',
+            appSecret
+        ) as WechatPublicInstance;
+    } else {
+        assert(type === 'wechatMp' && config!.type === 'wechatMp');
+        const config2 = config as WechatMpConfig;
+        const { appId, appSecret } = config2;
+        wechatInstance = WechatSDK.getInstance(
+            appId,
+            'wechatPublic',
+            appSecret
+        ) as WechatMpInstance;
+    }
 
     if (isPermanent === 'true') {
-        const result = (await wechatInstance.createMaterial({
+        // 只有公众号才能上传永久素材
+        assert(appType === 'wechatPublic');
+        const result = (await (wechatInstance as WechatPublicInstance).createMaterial({
             type: mediaType,
             media: file2,
             filename,

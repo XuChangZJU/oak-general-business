@@ -8,7 +8,6 @@ export default function Render(props) {
     const [syncDisable, setSyncDisable] = useState(false);
     const [open, setOpen] = useState(false);
     const { pageSize, total, currentPage } = oakPagination || {};
-    console.log(messageTypes, wechatPublicTemplates);
     return (_jsxs("div", { className: Styles.container, children: [_jsxs(Space, { children: [_jsx(Button, { type: "default", disabled: !(messageTypes.length > 0 && wechatPublicTemplates.length > 0), onClick: () => {
                             addItem({
                                 templateId: wechatPublicTemplates[0].id,

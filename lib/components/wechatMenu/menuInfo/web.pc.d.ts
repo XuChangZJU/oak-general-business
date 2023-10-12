@@ -38,4 +38,5 @@ export default function Render(props: WebComponentProps<EntityDict, keyof Entity
     createMenu: (errorInfo: string, errorUrlInfo: string) => void;
     deleteConditionalMenu: () => void;
     confirmUrl: (url: string) => string;
+    getImg: (url: string) => string;
 }>): import("react/jsx-runtime").JSX.Element;

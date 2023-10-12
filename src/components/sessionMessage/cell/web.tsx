@@ -34,7 +34,6 @@ export default function render(
         type,
         picUrl,
         isEntity,
-        isUser,
         aaoe,
         sessionId,
     } = data;
@@ -43,7 +42,10 @@ export default function render(
         <ICell time={$$createAt$$}>
             <div
                 className={classNames(Style.myMessage, {
-                    [Style.notMyMessage]: (isEntity && !aaoe) || (isUser && aaoe),
+                    [Style.notMyMessage]: !(
+                        (isEntity && aaoe) ||
+                        (!isEntity && !aaoe)
+                    ),
                 })}
             >
                 <Image
@@ -54,10 +56,12 @@ export default function render(
                 <div
                     className={classNames({
                         [Style.messageType_text]: type === 'text',
-                        [Style.messageType_text_no]: (isEntity && !aaoe) || (isUser && aaoe),
+                        [Style.messageType_text_no]: !(
+                            (isEntity && aaoe) ||
+                            (!isEntity && !aaoe)
+                        ),
                     })}
                 >
-
                     {type === 'text' && <IText value={text} />}
                     {type === 'image' && <IImage url={picUrl} />}
                 </div>

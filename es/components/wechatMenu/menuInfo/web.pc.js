@@ -14,7 +14,7 @@ import TextClick from '../textClick';
 export default function Render(props) {
     const { data, methods } = props;
     const { config, menuIndex, selectedBtn, selectedSubBtn, currentIndex, changeIsPreview, getOpen, menuType, applicationId, menuId, actions, wechatId, iState, } = data;
-    const { setConfig, confirmName, confirmSubName, editMenuName, deleteMenuContent, getMaterialImgAndVoice, getMaterialVideo, decideMenuContentLabel, getArticle, createMenu, deleteConditionalMenu, confirmUrl, } = methods;
+    const { setConfig, confirmName, confirmSubName, editMenuName, deleteMenuContent, getMaterialImgAndVoice, getMaterialVideo, decideMenuContentLabel, getArticle, createMenu, deleteConditionalMenu, confirmUrl, getImg, } = methods;
     const [msgType, setMsgType] = useState('sendMsg');
     const [errorInfo, setErrorInfo] = useState('');
     const [errorUrlInfo, setErrorUrlInfo] = useState('');
@@ -58,7 +58,9 @@ export default function Render(props) {
         if (selectedBtn > 0) {
             setConfig(selectedBtn - 1, {
                 type: 'click',
-                key: menuType === 'conditional' ? `${wechatId}$${await generateNewIdAsync()}` : await generateNewIdAsync(),
+                key: menuType === 'conditional'
+                    ? `${wechatId}$${await generateNewIdAsync()}`
+                    : await generateNewIdAsync(),
                 subType: 'text',
                 content: menuContent,
             });
@@ -66,7 +68,9 @@ export default function Render(props) {
         else {
             setConfig(selectedSubBtn - 1, {
                 type: 'click',
-                key: menuType === 'conditional' ? `${wechatId}$${await generateNewIdAsync()}` : await generateNewIdAsync(),
+                key: menuType === 'conditional'
+                    ? `${wechatId}$${await generateNewIdAsync()}`
+                    : await generateNewIdAsync(),
                 subType: 'text',
                 content: menuContent,
             }, currentIndex);
@@ -257,7 +261,7 @@ export default function Render(props) {
                                                                 setOpen(true);
                                                                 getOpen(true);
                                                                 setType('video');
-                                                            }, children: "\u89C6\u9891" })] })) : type === 'image' ? (_jsxs("div", { className: Style.coverImage, children: [_jsx("img", { className: Style.img, src: decidedMenuContent.url }), _jsxs("div", { className: Style.buttonGroup, children: [_jsx("div", { className: Style.buttonItem, onClick: () => {
+                                                            }, children: "\u89C6\u9891" })] })) : type === 'image' ? (_jsxs("div", { className: Style.coverImage, children: [_jsx("img", { className: Style.img, src: getImg(decidedMenuContent.url) }), _jsxs("div", { className: Style.buttonGroup, children: [_jsx("div", { className: Style.buttonItem, onClick: () => {
                                                                         const modal = confirm({
                                                                             title: '确定删除该图片吗？',
                                                                             content: '删除后不可恢复',

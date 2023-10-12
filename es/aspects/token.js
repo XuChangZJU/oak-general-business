@@ -1009,15 +1009,12 @@ export async function syncUserInfoWechatMp({ nickname, avatarUrl, encryptedData,
     }, {
         dontCollect: true,
     });
-    // console.log(avatarUrl);
     const { type, config: config2 } = application;
     assert(type === 'wechatMp' || config2.type === 'wechatMp');
-    // const config2 = config as WechatMpConfig;
     const { appId, appSecret } = config2;
     const wechatInstance = WechatSDK.getInstance(appId, 'wechatMp', appSecret);
     const result = wechatInstance.decryptData(sessionKey, encryptedData, iv, signature);
     // 实测发现解密出来的和userInfo完全一致……
-    console.log(result);
     await setUserInfoFromWechat(user, { nickname, avatar: avatarUrl }, context);
 }
 export async function sendCaptcha({ mobile, env, type: type2 }, context) {

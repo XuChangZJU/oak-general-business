@@ -16,9 +16,7 @@ export default function Render(props) {
                                     }, oakId: session.id, oakPath: oakFullpath
                                         ? `${oakFullpath}.${session.id}`
                                         : '' }, session.id));
-                            }) })] }), selectedSessionId && (_jsx(MessageList, { sessionId: selectedSessionId, 
-                    // isCombine={true}
-                    isEntity: entityFilter ? true : false, isUser: entityFilter ? false : true, oakAutoUnmount: true, entityDisplay: entityDisplay, entityProjection: entityProjection, oakPath: oakFullpath
+                            }) })] }), selectedSessionId && (_jsx(MessageList, { sessionId: selectedSessionId, isEntity: entityFilter ? true : false, oakAutoUnmount: true, entityDisplay: entityDisplay, entityProjection: entityProjection, oakPath: oakFullpath
                         ? `$$sessionMessage/list`
                         : undefined }))] }) }));
 }

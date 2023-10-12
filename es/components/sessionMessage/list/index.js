@@ -96,11 +96,7 @@ export default OakComponent({
     },
     formData({ data: sessionMessageList = [], features }) {
         const sessionMessageType = sessionMessageList?.find((ele) => ele.$$createAt$$ === 1)?.type;
-        // const url = sessionMessageList?.find(
-        //     (ele) => ele.$$createAt$$ === 1
-        // )?.extraFile$entity?.filter((ele) => ['image'].includes(ele.tag1!))?.map((ele) => features.extraFile.getUrl(ele));
         this.getUserLastMessage();
-        // console.log(url);
         return {
             sessionMessageList: sessionMessageList?.filter((ele) => ele.$$createAt$$ !== 1),
             num: sessionMessageList?.length,
@@ -110,7 +106,6 @@ export default OakComponent({
     properties: {
         sessionId: '',
         isEntity: false,
-        isUser: false,
         dialog: false,
         entity: '',
         entityId: '',
@@ -178,7 +173,6 @@ export default OakComponent({
         },
         setContent(text) {
             const { sessionMessageId } = this.state;
-            console.log(sessionMessageId);
             this.setState({
                 text,
             });
@@ -329,10 +323,6 @@ export default OakComponent({
                 id: generateNewId(),
             };
             try {
-                // await this.features.extraFile.upload(
-                //     extraFile,
-                //     originFileObj
-                // );
                 const userId = this.features.token.getUserId();
                 this.addItem({
                     id: generateNewId(),

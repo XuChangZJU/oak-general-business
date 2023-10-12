@@ -167,7 +167,6 @@ export async function createWechatQrCode(options, context) {
     const application = applications.find((ele) => ele.id === data.applicationId);
     assert(application);
     const { type: applicationType, config } = application;
-    // console.log(process.env.OAK_PLATFORM, process.env.NODE_ENV);
     switch (type) {
         case 'wechatMpWxaCode': {
             assert(applicationType === 'wechatMp' && config.type === 'wechatMp');

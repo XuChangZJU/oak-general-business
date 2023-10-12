@@ -10,7 +10,6 @@ export default OakComponent({
         createTime: 1,
         userId: 1,
         wechatUserId: 1,
-        // isRead: 1,
         $$createAt$$: 1,
         sessionId: 1,
         session: {
@@ -89,7 +88,6 @@ export default OakComponent({
             userMobile:
                 session?.user?.mobile$user &&
                 session?.user?.mobile$user[0]?.mobile,
-            // companyName: conversation?.company?.name,
             userAvatar: this.features.extraFile.getUrl(
                 session?.user?.extraFile$entity &&
                 session?.user?.extraFile$entity[0]
@@ -109,9 +107,7 @@ export default OakComponent({
         return newSessionMessage;
     },
     properties: {
-        key: '' as string,
         isEntity: false,
-        isUser: false,
     },
     methods: {
         getAvatarUrl(aaoe: boolean) {
@@ -124,23 +120,6 @@ export default OakComponent({
             else {
                 return userAvatar || defaultUrl;
             }
-            // switch (type) {
-            //     case 'company': {
-            //         return companyLogoUrl || defaultUrl;
-            //     }
-            //     case 'user': {
-            //         return userAvatar || defaultUrl;
-            //     }
-            //     case 'platformProvider': {
-            //         return process.env.PUBLIC_URL + '/logo192.png';
-            //     }
-            //     case 'park': {
-            //         return parkLogoUrl || defaultUrl;
-            //     }
-            //     default: {
-            //         return defaultUrl
-            //     }
-            // }
         },
     },
 });

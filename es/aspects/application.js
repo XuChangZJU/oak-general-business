@@ -60,10 +60,11 @@ export async function signatureJsSDK({ url, env }, context) {
 }
 export async function uploadWechatMedia(params, // FormData表单提交 isPermanent 变成 'true' | 'false'
 context) {
-    const { applicationId, file, type: mediaType, isPermanent, description, } = params;
+    const { applicationId, file, type: mediaType, isPermanent, description, appType, } = params;
     const filename = file.originalFilename;
     const filetype = file.mimetype;
     const file2 = fs.createReadStream(file.filepath);
+    assert(appType === 'wechatPublic' || appType === 'wechatMp');
     const [application] = await context.select('application', {
         data: cloneDeep(applicationProjection),
         filter: {
@@ -73,11 +74,22 @@ context) {
         dontCollect: true,
     });
     const { type, config } = application;
-    assert(type === 'wechatPublic' && config.type === 'wechatPublic');
-    const config2 = config;
-    const { appId, appSecret } = config2;
-    const wechatInstance = WechatSDK.getInstance(appId, 'wechatPublic', appSecret);
+    let wechatInstance;
+    if (appType === 'wechatPublic') {
+        assert(type === 'wechatPublic' && config.type === 'wechatPublic');
+        const config2 = config;
+        const { appId, appSecret } = config2;
+        wechatInstance = WechatSDK.getInstance(appId, 'wechatPublic', appSecret);
+    }
+    else {
+        assert(type === 'wechatMp' && config.type === 'wechatMp');
+        const config2 = config;
+        const { appId, appSecret } = config2;
+        wechatInstance = WechatSDK.getInstance(appId, 'wechatPublic', appSecret);
+    }
     if (isPermanent === 'true') {
+        // 只有公众号才能上传永久素材
+        assert(appType === 'wechatPublic');
         const result = (await wechatInstance.createMaterial({
             type: mediaType,
             media: file2,

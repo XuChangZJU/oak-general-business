@@ -3,6 +3,7 @@ import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { DATA_SUBSCRIBER_KEYS } from '../../../config/constants';
 import { getConfig } from '../../../utils/getContextConfig';
 import { QiniuCosConfig } from '../../../types/Config';
+
 export default OakComponent({
     entity: 'sessionMessage',
     projection: {
@@ -107,11 +108,7 @@ export default OakComponent({
         const sessionMessageType = sessionMessageList?.find(
             (ele) => ele.$$createAt$$ === 1
         )?.type;
-        // const url = sessionMessageList?.find(
-        //     (ele) => ele.$$createAt$$ === 1
-        // )?.extraFile$entity?.filter((ele) => ['image'].includes(ele.tag1!))?.map((ele) => features.extraFile.getUrl(ele));
         this.getUserLastMessage();
-        // console.log(url);
         return {
             sessionMessageList: sessionMessageList?.filter(
                 (ele) => ele.$$createAt$$ !== 1
@@ -123,7 +120,6 @@ export default OakComponent({
     properties: {
         sessionId: '' as string,
         isEntity: false as boolean,
-        isUser: false as boolean,
         dialog: false as boolean,
         entity: '',
         entityId: '',
@@ -191,7 +187,6 @@ export default OakComponent({
         },
         setContent(text: string) {
             const { sessionMessageId } = this.state;
-            console.log(sessionMessageId);
             this.setState({
                 text,
             });
@@ -362,10 +357,6 @@ export default OakComponent({
             } as EntityDict['extraFile']['CreateSingle']['data'];
 
             try {
-                // await this.features.extraFile.upload(
-                //     extraFile,
-                //     originFileObj
-                // );
                 const userId = this.features.token.getUserId();
                 this.addItem({
                     id: generateNewId(),

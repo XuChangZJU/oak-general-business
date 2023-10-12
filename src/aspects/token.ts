@@ -1459,13 +1459,11 @@ export async function syncUserInfoWechatMp<
         }
     );
 
-    // console.log(avatarUrl);
     const { type, config: config2 } = application as Partial<
         EntityDict['application']['Schema']
     >;
 
     assert(type === 'wechatMp' || config2!.type === 'wechatMp');
-    // const config2 = config as WechatMpConfig;
     const { appId, appSecret } = config2 as WechatMpConfig;
     const wechatInstance = WechatSDK.getInstance(appId, 'wechatMp', appSecret);
     const result = wechatInstance.decryptData(
@@ -1475,7 +1473,6 @@ export async function syncUserInfoWechatMp<
         signature
     );
     // 实测发现解密出来的和userInfo完全一致……
-    console.log(result);
     await setUserInfoFromWechat<ED, Cxt>(
         user!,
         { nickname, avatar: avatarUrl },

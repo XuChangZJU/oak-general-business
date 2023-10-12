@@ -25,7 +25,6 @@ export class Template<
         const result = await this.cache.exec('syncMessageTemplate', {
             applicationId
         });
-        console.log(result);
         this.publish();
     }
 }

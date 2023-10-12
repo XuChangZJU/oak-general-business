@@ -6,8 +6,7 @@ export default OakComponent({
         config: null as any,
         menuIndex: 0,
         changeConfig: (config: any) => undefined as void,
-        publish: (iState: 'wait' | 'fail') =>
-            undefined as void,
+        publish: (iState: 'wait' | 'fail') => undefined as void,
         getErrorIndex: (errorIndex: number[]) => undefined as void,
         createMenu: () => undefined as void,
         selectedBtn: 0,
@@ -266,6 +265,9 @@ export default OakComponent({
         async deleteConditionalMenu() {
             const { deleteMenu } = this.props;
             deleteMenu!();
-        }
+        },
+        getImg(url: string) {
+            return this.features.locales.makeBridgeUrl(url);
+        },
     },
 });

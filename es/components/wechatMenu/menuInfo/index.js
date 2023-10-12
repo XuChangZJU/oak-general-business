@@ -245,6 +245,9 @@ export default OakComponent({
         async deleteConditionalMenu() {
             const { deleteMenu } = this.props;
             deleteMenu();
-        }
+        },
+        getImg(url) {
+            return this.features.locales.makeBridgeUrl(url);
+        },
     },
 });

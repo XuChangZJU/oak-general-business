@@ -5,13 +5,15 @@ import classNames from 'classnames';
 import Style from './web.module.less';
 export default function render(props) {
     const { data, methods } = props;
-    const { $$createAt$$, text, type, picUrl, isEntity, isUser, aaoe, sessionId, } = data;
+    const { $$createAt$$, text, type, picUrl, isEntity, aaoe, sessionId, } = data;
     const { t, getAvatarUrl } = methods;
     return (_jsx(ICell, { time: $$createAt$$, children: _jsxs("div", { className: classNames(Style.myMessage, {
-                [Style.notMyMessage]: (isEntity && !aaoe) || (isUser && aaoe),
+                [Style.notMyMessage]: !((isEntity && aaoe) ||
+                    (!isEntity && !aaoe)),
             }), children: [_jsx(Image, { preview: false, className: Style.avatar, src: getAvatarUrl(aaoe) }), _jsxs("div", { className: classNames({
                         [Style.messageType_text]: type === 'text',
-                        [Style.messageType_text_no]: (isEntity && !aaoe) || (isUser && aaoe),
+                        [Style.messageType_text_no]: !((isEntity && aaoe) ||
+                            (!isEntity && !aaoe)),
                     }), children: [type === 'text' && _jsx(IText, { value: text }), type === 'image' && _jsx(IImage, { url: picUrl })] })] }) }));
 }
 function ICell(props) {

@@ -9,7 +9,6 @@ export class Template extends Feature {
         const result = await this.cache.exec('syncMessageTemplate', {
             applicationId
         });
-        console.log(result);
         this.publish();
     }
 }

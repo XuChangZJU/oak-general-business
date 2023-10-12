@@ -1,49 +1,5 @@
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import assert from "assert";
-// export async function transformData<
-//     ED extends EntityDict,
-//     Cxt extends BackendRuntimeContext<ED>
-// >(
-//     params: {
-//         data: WechatPublicEventData | WechatMpEventData;
-//         type: AppType,
-//         entity: string,
-//         entityId: string,
-//     },
-//     context: Cxt
-// ) {
-//     const { data, type, entity, entityId } = params;
-//     const {
-//         ToUserName,
-//         FromUserName,
-//         CreateTime,
-//         MsgType,
-//         // Event,
-//         Content,
-//         // EventKey,
-//     } = data;
-//     if (entity !== 'web') {
-//         const sessionMessageData = {
-//             createTime: CreateTime,
-//             type: MsgType,
-//             text: Content,
-//             // news: ,
-//             aaoe: false,
-//             isRead: false,
-//         }
-//         return sessionMessageData
-//     } else {
-//         const sessionMessageData = {
-//             createTime: CreateTime,
-//             type: MsgType,
-//             text: Content,
-//             // news: ,
-//             aaoe: false,
-//             isRead: false,
-//         }
-//         return sessionMessageData
-//     }
-// }
+import { assert } from 'oak-domain/lib/utils/assert';
 export async function createSession(params, context) {
     const { data, type, entity, entityId } = params;
     const userId = context.getCurrentUserId(true);
@@ -52,17 +8,25 @@ export async function createSession(params, context) {
     switch (type) {
         case 'web': {
             const systemId = context.getSystemId();
-            const [application] = await context.select('application', {
-                data: {
-                    id: 1,
-                    systemId: 1,
-                    type: 1,
-                },
-                filter: {
-                    systemId,
-                    type: 'web'
-                }
-            }, {});
+            let entity2 = entity;
+            let entityId2 = entityId;
+            if (!entity) {
+                // 默认
+                const [application] = await context.select('application', {
+                    data: {
+                        id: 1,
+                        systemId: 1,
+                        type: 1,
+                    },
+                    filter: {
+                        systemId,
+                        type: 'web',
+                    },
+                }, {});
+                entity2 = 'application';
+                entityId2 = application?.id;
+            }
+            assert(entity2 && entityId2);
             const result = await context.select('session', {
                 data: {
                     id: 1,
@@ -72,10 +36,10 @@ export async function createSession(params, context) {
                     lmts: 1,
                 },
                 filter: {
-                    entity: entity || 'application',
-                    entityId: entityId || application?.id,
+                    entity: entity2,
+                    entityId: entityId2,
                     userId,
-                }
+                },
             }, {});
             session = result[0];
             break;
@@ -83,7 +47,7 @@ export async function createSession(params, context) {
         case 'wechatMp':
         case 'wechatPublic': {
             assert(data);
-            assert(entity === 'application');
+            assert(entity === 'application' && entityId);
             const { ToUserName, FromUserName, CreateTime, MsgType, 
             // Event,
             Content,
@@ -123,38 +87,39 @@ export async function createSession(params, context) {
                         id: await generateNewIdAsync(),
                         applicationId: wechatUser?.applicationId,
                         wechatUserId: wechatUser?.id,
-                        createTime: CreateTime,
+                        createTime: Number(CreateTime) * 1000,
                         type: MsgType,
                         text: Content,
-                        // news: ,
                         aaoe: false,
                     },
-                }
+                },
             ];
             break;
         }
         default: {
-            assert(false, '');
+            assert(false, `传入不支持的type: ${type}`);
         }
     }
-    const sessionId = await generateNewIdAsync();
     if (session) {
-        if (!data) {
+        if (!sessionMessage$session) {
             return session.id;
         }
         await context.operate('session', {
             id: await generateNewIdAsync(),
             action: 'update',
-            data: Object.assign({}, sessionMessage$session && { sessionMessage$session }),
+            data: {
+                sessionMessage$session,
+            },
             filter: {
                 id: session.id,
-            }
+            },
         }, {
             dontCollect: true,
         });
         return session.id;
     }
     else {
+        const sessionId = await generateNewIdAsync();
         await context.operate('session', {
             id: await generateNewIdAsync(),
             action: 'create',

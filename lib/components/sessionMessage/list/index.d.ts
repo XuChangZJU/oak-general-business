@@ -3,7 +3,6 @@ import { EntityDict } from '../../../oak-app-domain';
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "sessionMessage", true, {
     sessionId: string;
     isEntity: boolean;
-    isUser: boolean;
     dialog: boolean;
     entity: string;
     entityId: string;

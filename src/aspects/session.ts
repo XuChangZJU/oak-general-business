@@ -4,52 +4,8 @@ import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { OakUserException } from 'oak-domain/lib/types';
 import { WechatPublicEventData, WechatMpEventData } from 'oak-external-sdk';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import assert from "assert";
-// export async function transformData<
-//     ED extends EntityDict,
-//     Cxt extends BackendRuntimeContext<ED>
-// >(
-//     params: {
-//         data: WechatPublicEventData | WechatMpEventData;
-//         type: AppType,
-//         entity: string,
-//         entityId: string,
-//     },
-//     context: Cxt
-// ) {
-//     const { data, type, entity, entityId } = params;
-//     const {
-//         ToUserName,
-//         FromUserName,
-//         CreateTime,
-//         MsgType,
-//         // Event,
-//         Content,
-//         // EventKey,
-//     } = data;
-//     if (entity !== 'web') {
-//         const sessionMessageData = {
-//             createTime: CreateTime,
-//             type: MsgType,
-//             text: Content,
-//             // news: ,
-//             aaoe: false,
-//             isRead: false,
-//         }
-//         return sessionMessageData
-//     } else {
-//         const sessionMessageData = {
-//             createTime: CreateTime,
-//             type: MsgType,
-//             text: Content,
-//             // news: ,
-//             aaoe: false,
-//             isRead: false,
-//         }
-//         return sessionMessageData
-//     }
+import { assert } from 'oak-domain/lib/utils/assert';
 
-// }
 export async function createSession<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
@@ -72,38 +28,54 @@ export async function createSession<
         case 'web': {
             const systemId = context.getSystemId();
 
-            const [application] = await context.select('application', {
-                data: {
-                    id: 1,
-                    systemId: 1,
-                    type: 1,
+            let entity2 = entity;
+            let entityId2 = entityId;
+            if (!entity) {
+                // 默认
+                const [application] = await context.select(
+                    'application',
+                    {
+                        data: {
+                            id: 1,
+                            systemId: 1,
+                            type: 1,
+                        },
+                        filter: {
+                            systemId,
+                            type: 'web',
+                        },
+                    },
+                    {}
+                );
+                entity2 = 'application';
+                entityId2 = application?.id;
+            }
+            assert(entity2 && entityId2);
+            const result = await context.select(
+                'session',
+                {
+                    data: {
+                        id: 1,
+                        entity: 1,
+                        entityId: 1,
+                        userId: 1,
+                        lmts: 1,
+                    },
+                    filter: {
+                        entity: entity2!,
+                        entityId: entityId2!,
+                        userId,
+                    },
                 },
-                filter: {
-                    systemId,
-                    type: 'web'
-                }
-            }, {});
-            const result = await context.select('session', {
-                data: {
-                    id: 1,
-                    entity: 1,
-                    entityId: 1,
-                    userId: 1,
-                    lmts: 1,
-                },
-                filter: {
-                    entity: entity || 'application',
-                    entityId: entityId || application?.id,
-                    userId,
-                }
-            }, {});
+                {}
+            );
             session = result[0]
             break;
         }
         case 'wechatMp':
         case 'wechatPublic': {
             assert(data);
-            assert(entity === 'application');
+            assert(entity === 'application' && entityId);
             const {
                 ToUserName,
                 FromUserName,
@@ -147,56 +119,64 @@ export async function createSession<
                         id: await generateNewIdAsync(),
                         applicationId: wechatUser?.applicationId,
                         wechatUserId: wechatUser?.id,
-                        createTime: CreateTime,
+                        createTime: Number(CreateTime) * 1000,
                         type: MsgType,
                         text: Content,
-                        // news: ,
                         aaoe: false,
                     },
-                }
-
-            ]
+                },
+            ];
             break;
         }
         default: {
-            assert(false, '')
+            assert(false, `传入不支持的type: ${type}`)
         }
 
     }
-    const sessionId = await generateNewIdAsync();
     if (session) {
-        if (!data) {
-            return session.id
+        if (!sessionMessage$session) {
+            return session.id;
         }
-        await context.operate('session', {
-            id: await generateNewIdAsync(),
-            action: 'update',
-            data: Object.assign({
-            }, sessionMessage$session && { sessionMessage$session }),
-            filter: {
-                id: session.id,
+        await context.operate(
+            'session',
+            {
+                id: await generateNewIdAsync(),
+                action: 'update',
+                data: {
+                    sessionMessage$session,
+                },
+                filter: {
+                    id: session.id,
+                },
+            },
+            {
+                dontCollect: true,
             }
-        }, {
-            dontCollect: true,
-        });
-        return session.id
-    }
-    else {
-
-        await context.operate('session', {
-            id: await generateNewIdAsync(),
-            action: 'create',
-            data: Object.assign({
-                id: sessionId,
-                entity,
-                entityId,
-                userId,
-                lmts: Date.now(),
-                openId: data?.FromUserName,
-            }, sessionMessage$session && { sessionMessage$session }),
-        }, {
-            dontCollect: true,
-        });
-        return sessionId
+        );
+        return session.id;
+    } else {
+        const sessionId = await generateNewIdAsync();
+        await context.operate(
+            'session',
+            {
+                id: await generateNewIdAsync(),
+                action: 'create',
+                data: Object.assign(
+                    {
+                        id: sessionId,
+                        entity,
+                        entityId,
+                        userId,
+                        lmts: Date.now(),
+                        openId: data?.FromUserName,
+                    },
+                    sessionMessage$session && { sessionMessage$session }
+                ),
+            },
+            {
+                dontCollect: true,
+            }
+        );
+        return sessionId;
     }
 }

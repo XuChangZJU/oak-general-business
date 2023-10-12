@@ -34,7 +34,6 @@ export default OakComponent({
         }
     ],
     formData({ data: rows }) {
-        console.log(rows);
         const userWechatPublicTags = rows?.map((ele) => {
             return {
                 id: ele?.id,
