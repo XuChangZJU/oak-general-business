@@ -9,6 +9,7 @@ import { EntityDef as RelationAuth } from "./RelationAuth/Schema";
 import { EntityDef as User } from "./User/Schema";
 import { EntityDef as UserEntityGrant } from "./UserEntityGrant/Schema";
 import { EntityDef as UserRelation } from "./UserRelation/Schema";
+import { EntityDef as Account } from "./Account/Schema";
 import { EntityDef as Address } from "./Address/Schema";
 import { EntityDef as Application } from "./Application/Schema";
 import { EntityDef as Area } from "./Area/Schema";
@@ -58,6 +59,7 @@ export type EntityDict = {
     user: User;
     userEntityGrant: UserEntityGrant;
     userRelation: UserRelation;
+    account: Account;
     address: Address;
     application: Application;
     area: Area;

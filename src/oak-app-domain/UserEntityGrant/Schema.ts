@@ -12,6 +12,7 @@ import { QrCodeType } from "../../types/Config";
 import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 import * as Relation from "../Relation/Schema";
 import * as User from "../User/Schema";
+import * as Account from "../Account/Schema";
 import * as Session from "../Session/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
@@ -23,7 +24,7 @@ export type RedirectToProps = {
     isTabBar?: boolean; //小程序独有 小程序跳回tabBar的话 必须使用 wx.switchTab
 };
 export type OpSchema = EntityShape & {
-    entity: "session" | string;
+    entity: "account" | "session" | string;
     entityId: String<64>;
     relationId: ForeignKey<"relation">;
     type: 'grant' | 'transfer';
@@ -39,7 +40,7 @@ export type OpSchema = EntityShape & {
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
-    entity: "session" | string;
+    entity: "account" | "session" | string;
     entityId: String<64>;
     relationId: ForeignKey<"relation">;
     type: 'grant' | 'transfer';
@@ -55,6 +56,7 @@ export type Schema = EntityShape & {
     relation: Relation.Schema;
     granter: User.Schema;
     grantee?: User.Schema | null;
+    account?: Account.Schema;
     session?: Session.Schema;
     modiEntity$entity?: Array<ModiEntity.Schema>;
     modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;
@@ -70,7 +72,7 @@ type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    entity: Q_EnumValue<"session" | string>;
+    entity: Q_EnumValue<"account" | "session" | string>;
     entityId: Q_StringValue;
     relationId: Q_StringValue;
     relation: Relation.Filter;
@@ -86,6 +88,7 @@ type AttrFilter = {
     expiresAt: Q_DateValue;
     expired: Q_BooleanValue;
     redirectTo: JsonFilter<RedirectToProps>;
+    account: Account.Filter;
     session: Session.Filter;
     modiEntity$entity: ModiEntity.Filter & SubQueryPredicateMetadata;
     operEntity$entity: OperEntity.Filter & SubQueryPredicateMetadata;
@@ -115,6 +118,7 @@ export type Projection = {
     expiresAt?: number;
     expired?: number;
     redirectTo?: number | JsonProjection<RedirectToProps>;
+    account?: Account.Projection;
     session?: Session.Projection;
     modiEntity$entity?: ModiEntity.Selection & {
         $entity: "modiEntity";
@@ -144,6 +148,9 @@ type RelationIdProjection = OneOf<{
 type UserIdProjection = OneOf<{
     granterId: number;
     granteeId: number;
+}>;
+type AccountIdProjection = OneOf<{
+    entityId: number;
 }>;
 type SessionIdProjection = OneOf<{
     entityId: number;
@@ -189,6 +196,8 @@ export type SortAttr = {
 } | {
     redirectTo: number;
 } | {
+    account: Account.SortAttr;
+} | {
     session: Session.SortAttr;
 } | {
     [k: string]: any;
@@ -226,6 +235,17 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     granteeId?: ForeignKey<"grantee">;
 })) & ({
+    entity?: never;
+    entityId?: never;
+    account: Account.CreateSingleOperation;
+} | {
+    entity: "account";
+    entityId: ForeignKey<"Account">;
+    account: Account.UpdateOperation;
+} | {
+    entity: "account";
+    entityId: ForeignKey<"Account">;
+} | {
     entity?: never;
     entityId?: never;
     session: Session.CreateSingleOperation;
@@ -285,12 +305,16 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
     grantee?: never;
     granteeId?: ForeignKey<"grantee"> | null;
 })) & ({
+    account?: Account.CreateSingleOperation | Account.UpdateOperation | Account.RemoveOperation;
+    entityId?: never;
+    entity?: never;
+} | {
     session?: Session.CreateSingleOperation | Session.UpdateOperation | Session.RemoveOperation;
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("session" | string) | null;
-    entityId?: ForeignKey<"Session"> | null;
+    entity?: ("account" | "session" | string) | null;
+    entityId?: ForeignKey<"Account" | "Session"> | null;
 }) & {
     [k: string]: any;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
@@ -305,6 +329,8 @@ export type RemoveOperationData = {} & (({
 }) & ({
     grantee?: User.UpdateOperation | User.RemoveOperation;
 })) & ({
+    account?: Account.UpdateOperation | Account.RemoveOperation;
+} | {
     session?: Session.UpdateOperation | Session.RemoveOperation;
 } | {
     [k: string]: any;
@@ -313,6 +339,7 @@ export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export type RelationIdSubQuery = Selection<RelationIdProjection>;
 export type UserIdSubQuery = Selection<UserIdProjection>;
+export type AccountIdSubQuery = Selection<AccountIdProjection>;
 export type SessionIdSubQuery = Selection<SessionIdProjection>;
 export type UserEntityGrantIdSubQuery = Selection<UserEntityGrantIdProjection>;
 export type EntityDef = {

@@ -9,7 +9,7 @@ export const desc: StorageDesc<OpSchema> = {
             params: {
                 length: 32
             },
-            ref: ["session"]
+            ref: ["account", "session"]
         },
         entityId: {
             type: "varchar",

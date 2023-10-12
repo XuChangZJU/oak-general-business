@@ -11,6 +11,7 @@ import { desc as relationAuthDesc } from "./RelationAuth/Storage";
 import { desc as userDesc } from "./User/Storage";
 import { desc as userEntityGrantDesc } from "./UserEntityGrant/Storage";
 import { desc as userRelationDesc } from "./UserRelation/Storage";
+import { desc as accountDesc } from "./Account/Storage";
 import { desc as addressDesc } from "./Address/Storage";
 import { desc as applicationDesc } from "./Application/Storage";
 import { desc as areaDesc } from "./Area/Storage";
@@ -60,6 +61,7 @@ export const storageSchema: StorageSchema<EntityDict> = {
     user: userDesc,
     userEntityGrant: userEntityGrantDesc,
     userRelation: userRelationDesc,
+    account: accountDesc,
     address: addressDesc,
     application: applicationDesc,
     area: areaDesc,
