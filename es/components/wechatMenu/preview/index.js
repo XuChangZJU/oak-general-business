@@ -9,18 +9,12 @@ export default OakComponent({
     methods: {
         async getMaterialImgAndVoice(type, mediaId) {
             const { applicationId } = this.props;
-            const imgFile = await this.features.wechatMenu.getMaterial({
+            const result = await this.features.wechatMenu.getMaterial({
                 applicationId: applicationId,
-                type,
                 mediaId,
+                isPermanent: true,
             });
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(imgFile);
-                reader.onload = function (e) {
-                    resolve(e.target?.result);
-                };
-            });
+            return `data:image/png;base64,${result}`;
         },
         async getArticle(articleId) {
             const { applicationId } = this.props;
@@ -43,12 +37,21 @@ export default OakComponent({
             const { applicationId } = this.props;
             const result = await this.features.wechatMenu.getMaterial({
                 applicationId: applicationId,
-                type: 'video',
                 mediaId,
+                isPermanent: true,
             });
             if (result && result.down_url) {
                 return { url: result.down_url, media_id: mediaId };
             }
+        },
+        getImg(str) {
+            if (!str) {
+                return '';
+            }
+            if (str.includes('data:image/png;')) {
+                return str;
+            }
+            return this.features.locales.makeBridgeUrl(str);
         },
     },
 });

@@ -1,4 +1,3 @@
-
 import { EntityDict } from '../oak-app-domain';
 import {
     WechatMpInstance,
@@ -12,16 +11,12 @@ import {
     WebConfig,
 } from '../oak-app-domain/Application/Schema';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
-import { MenuType } from '../types/WeChat';
-import { generateNewIdAsync } from "oak-domain/lib/utils/uuid";
+import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 
 async function getWechatPublicConfig<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
->(
-    applicationId: string,
-    context: Cxt
-) {
+>(applicationId: string, context: Cxt) {
     const [application] = await context.select(
         'application',
         {
@@ -35,7 +30,7 @@ async function getWechatPublicConfig<
             },
         },
         {
-            dontCollect: true
+            dontCollect: true,
         }
     );
     return application;
@@ -46,17 +41,17 @@ export async function getCurrentMenu<
     Cxt extends BackendRuntimeContext<ED>
 >(
     params: {
-        applicationId: string,
+        applicationId: string;
     },
-    context: Cxt,
+    context: Cxt
 ): Promise<any> {
-    const application = await getWechatPublicConfig<
-        ED,
-        Cxt
-    >(params.applicationId, context);
+    const application = await getWechatPublicConfig<ED, Cxt>(
+        params.applicationId,
+        context
+    );
     assert(application);
-    const { type, config, systemId } = application!;
-    assert(type === 'wechatPublic')
+    const { type, config } = application!;
+    assert(type === 'wechatPublic');
     let appId: string, appSecret: string;
     const config2 = config as WechatPublicConfig;
     appId = config2.appId;
@@ -79,17 +74,17 @@ export async function getMenu<
     Cxt extends BackendRuntimeContext<ED>
 >(
     params: {
-        applicationId: string
+        applicationId: string;
     },
-    context: Cxt,
+    context: Cxt
 ): Promise<any> {
-    const application = await getWechatPublicConfig<
-        ED,
-        Cxt
-    >(params.applicationId, context);
+    const application = await getWechatPublicConfig<ED, Cxt>(
+        params.applicationId,
+        context
+    );
     assert(application);
-    const { type, config, systemId } = application!;
-    assert(type === 'wechatPublic')
+    const { type, config } = application!;
+    assert(type === 'wechatPublic');
     let appId: string, appSecret: string;
     const config2 = config as WechatPublicConfig;
     appId = config2.appId;
@@ -103,7 +98,7 @@ export async function getMenu<
         const result = await wechatInstance.getMenu();
         return result;
     } catch (e) {
-        throw (e);
+        throw e;
     }
 }
 
@@ -112,18 +107,18 @@ export async function createMenu<
     Cxt extends BackendRuntimeContext<ED>
 >(
     params: {
-        applicationId: string,
-        menuConfig: any,
-        id: string,
+        applicationId: string;
+        menuConfig: any;
+        id: string;
     },
-    context: Cxt,
+    context: Cxt
 ): Promise<any> {
-    const application = await getWechatPublicConfig<
-        ED,
-        Cxt
-    >(params.applicationId, context);
+    const application = await getWechatPublicConfig<ED, Cxt>(
+        params.applicationId,
+        context
+    );
     assert(application);
-    const { type, config, systemId } = application!;
+    const { type, config } = application!;
     assert(type === 'wechatPublic');
     let appId: string, appSecret: string;
     const config2 = config as WechatPublicConfig;
@@ -146,10 +141,10 @@ export async function createMenu<
                 },
                 filter: {
                     id: params.id,
-                }
+                },
             },
             {}
-        )
+        );
     } catch (e) {
         await context.operate(
             'wechatMenu',
@@ -161,11 +156,11 @@ export async function createMenu<
                 },
                 filter: {
                     id: params.id,
-                }
+                },
             },
             {}
-        )
-        throw e
+        );
+        throw e;
     }
 }
 
@@ -174,18 +169,18 @@ export async function createConditionalMenu<
     Cxt extends BackendRuntimeContext<ED>
 >(
     params: {
-        applicationId: string,
-        menuConfig: any,
-        id: string,
+        applicationId: string;
+        menuConfig: any;
+        id: string;
     },
-    context: Cxt,
+    context: Cxt
 ): Promise<any> {
-    const application = await getWechatPublicConfig<
-        ED,
-        Cxt
-    >(params.applicationId, context);
+    const application = await getWechatPublicConfig<ED, Cxt>(
+        params.applicationId,
+        context
+    );
     assert(application);
-    const { type, config, systemId } = application!;
+    const { type, config } = application!;
     assert(type === 'wechatPublic');
     let appId: string, appSecret: string;
     const config2 = config as WechatPublicConfig;
@@ -197,7 +192,9 @@ export async function createConditionalMenu<
         appSecret!
     ) as WechatPublicInstance;
     try {
-        const result = await wechatInstance.createConditionalMenu(params.menuConfig);
+        const result = await wechatInstance.createConditionalMenu(
+            params.menuConfig
+        );
         await context.operate(
             'wechatMenu',
             {
@@ -205,14 +202,14 @@ export async function createConditionalMenu<
                 action: 'update',
                 data: {
                     iState: 'success',
-                    menuId: result.menuid
+                    menuId: result.menuid,
                 },
                 filter: {
                     id: params.id,
-                }
+                },
             },
             {}
-        )
+        );
     } catch (e) {
         await context.operate(
             'wechatMenu',
@@ -224,11 +221,11 @@ export async function createConditionalMenu<
                 },
                 filter: {
                     id: params.id,
-                }
+                },
             },
             {}
-        )
-        throw e
+        );
+        throw e;
     }
 }
 
@@ -247,7 +244,7 @@ export async function deleteConditionalMenu<
         context
     );
     assert(application);
-    const { type, config, systemId } = application!;
+    const { type, config } = application!;
     assert(type === 'wechatPublic');
     let appId: string, appSecret: string;
     const config2 = config as WechatPublicConfig;
@@ -258,11 +255,9 @@ export async function deleteConditionalMenu<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    try {
-        const result = await wechatInstance.deleteConditionalMenu(params.menuId);
-    } catch (e) {
-        throw e;
-    }
+    const result = await wechatInstance.deleteConditionalMenu(params.menuId);
+
+    return result;
 }
 
 export async function deleteMenu<
@@ -279,7 +274,7 @@ export async function deleteMenu<
         context
     );
     assert(application);
-    const { type, config, systemId } = application!;
+    const { type, config } = application!;
     assert(type === 'wechatPublic');
     let appId: string, appSecret: string;
     const config2 = config as WechatPublicConfig;
@@ -290,162 +285,6 @@ export async function deleteMenu<
         type!,
         appSecret!
     ) as WechatPublicInstance;
-    try {
-        const result = await wechatInstance.deleteMenu();
-        return result;
-    } catch (e) {
-        throw e;
-    }
+    const result = await wechatInstance.deleteMenu();
+    return result;
 }
-
-export async function batchGetArticle<
-    ED extends EntityDict,
-    Cxt extends BackendRuntimeContext<ED>
->(
-    params: {
-        applicationId: string,
-        offset?: number;
-        count: number;
-        noContent?: 0 | 1;
-    },
-    context: Cxt,
-): Promise<any> {
-    const application = await getWechatPublicConfig<
-        ED,
-        Cxt
-    >(params.applicationId, context);
-    assert(application);
-    const { type, config, systemId } = application!;
-    assert(type === 'wechatPublic');
-    let appId: string, appSecret: string;
-    const config2 = config as WechatPublicConfig;
-    appId = config2.appId;
-    appSecret = config2.appSecret;
-    const wechatInstance = WechatSDK.getInstance(
-        appId!,
-        type!,
-        appSecret!
-    ) as WechatPublicInstance;
-    try {
-        const result = await wechatInstance.batchGetArticle(params);
-        return result;
-    } catch (e) {
-        throw e;
-    }
-}
-
-export async function getArticle<
-    ED extends EntityDict,
-    Cxt extends BackendRuntimeContext<ED>
->(
-    params: {
-        applicationId: string,
-        articleId: string
-    },
-    context: Cxt,
-): Promise<any> {
-    const application = await getWechatPublicConfig<
-        ED,
-        Cxt
-    >(params.applicationId, context);
-    assert(application);
-    const { type, config, systemId } = application!;
-    assert(type === 'wechatPublic');
-    let appId: string, appSecret: string;
-    const config2 = config as WechatPublicConfig;
-    appId = config2.appId;
-    appSecret = config2.appSecret;
-    const wechatInstance = WechatSDK.getInstance(
-        appId!,
-        type!,
-        appSecret!
-    ) as WechatPublicInstance;
-    try {
-        const result = await wechatInstance.getArticle({
-            articleId: params.articleId,
-        });
-        return result;
-    } catch (e) {
-        throw e;
-    }
-}
-
-
-
-export async function batchGetMaterialList<
-    ED extends EntityDict,
-    Cxt extends BackendRuntimeContext<ED>
->(
-    params: {
-        applicationId: string,
-        type: MenuType,
-        offset?: number;
-        count: number;
-    },
-    context: Cxt,
-): Promise<any> {
-    const application = await getWechatPublicConfig<
-        ED,
-        Cxt
-    >(params.applicationId, context);
-    assert(application);
-    const { type, config, systemId } = application!;
-    assert(type === 'wechatPublic');
-    let appId: string, appSecret: string;
-    const config2 = config as WechatPublicConfig;
-    appId = config2.appId;
-    appSecret = config2.appSecret;
-    const wechatInstance = WechatSDK.getInstance(
-        appId!,
-        type!,
-        appSecret!
-    ) as WechatPublicInstance;
-    try {
-        const result = await wechatInstance.batchGetMaterialList(params);
-        return result;
-    } catch (e) {
-        throw e;
-    }
-}
-
-export async function getMaterial<
-    ED extends EntityDict,
-    Cxt extends BackendRuntimeContext<ED>
->(
-    params: {
-        applicationId: string,
-        type: MenuType,
-        mediaId: string,
-    },
-    context: Cxt,
-): Promise<any> {
-    const application = await getWechatPublicConfig<
-        ED,
-        Cxt
-    >(params.applicationId, context);
-    assert(application);
-    const { type, config, systemId } = application!;
-    assert(type === 'wechatPublic');
-    let appId: string, appSecret: string;
-    const config2 = config as WechatPublicConfig;
-    appId = config2.appId;
-    appSecret = config2.appSecret;
-    const wechatInstance = WechatSDK.getInstance(
-        appId!,
-        type!,
-        appSecret!
-    ) as WechatPublicInstance;
-    try {
-        const result = await wechatInstance.getMaterial({
-            mediaId: params.mediaId,
-        });
-        return result;
-    } catch(e) {
-        throw e;
-    }
-}
-
-
-
-
-

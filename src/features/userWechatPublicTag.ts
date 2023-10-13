@@ -6,11 +6,6 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Cache } from 'oak-frontend-base/es/features/cache';
 import { LocalStorage } from 'oak-frontend-base/es/features/localStorage';
-import {
-   MediaType,
-   MediaVideoDescription,
-   MenuType
-} from '../types/WeChat'
 
 
 export class UserWechatPublicTag<

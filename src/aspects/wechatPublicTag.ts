@@ -12,7 +12,6 @@ import {
     WebConfig,
 } from '../oak-app-domain/Application/Schema';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
-import { MenuType } from '../types/WeChat';
 import { OakPreConditionUnsetException } from 'oak-domain/lib/types';
 import { generateNewIdAsync } from "oak-domain/lib/utils/uuid";
 import { Tag } from '../types/WeChat';

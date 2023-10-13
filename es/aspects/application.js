@@ -14,7 +14,7 @@ export async function getApplication(params, context) {
             system: {
                 domain$system: {
                     url: domain,
-                }
+                },
             },
         },
     }, {});
@@ -34,7 +34,7 @@ export async function getApplication(params, context) {
                         system: {
                             domain$system: {
                                 url: domain,
-                            }
+                            },
                         },
                     },
                 }, {});
@@ -60,11 +60,11 @@ export async function signatureJsSDK({ url, env }, context) {
 }
 export async function uploadWechatMedia(params, // FormData表单提交 isPermanent 变成 'true' | 'false'
 context) {
-    const { applicationId, file, type: mediaType, isPermanent, description, appType, } = params;
+    const { applicationId, file, type: mediaType, description, } = params;
+    const isPermanent = params.isPermanent === 'true';
     const filename = file.originalFilename;
     const filetype = file.mimetype;
     const file2 = fs.createReadStream(file.filepath);
-    assert(appType === 'wechatPublic' || appType === 'wechatMp');
     const [application] = await context.select('application', {
         data: cloneDeep(applicationProjection),
         filter: {
@@ -74,29 +74,30 @@ context) {
         dontCollect: true,
     });
     const { type, config } = application;
+    assert(type === 'wechatPublic' || type === 'wechatMp');
     let wechatInstance;
-    if (appType === 'wechatPublic') {
-        assert(type === 'wechatPublic' && config.type === 'wechatPublic');
+    if (type === 'wechatPublic') {
+        assert(config.type === 'wechatPublic');
         const config2 = config;
         const { appId, appSecret } = config2;
         wechatInstance = WechatSDK.getInstance(appId, 'wechatPublic', appSecret);
     }
     else {
-        assert(type === 'wechatMp' && config.type === 'wechatMp');
+        assert(config.type === 'wechatMp');
         const config2 = config;
         const { appId, appSecret } = config2;
         wechatInstance = WechatSDK.getInstance(appId, 'wechatPublic', appSecret);
     }
-    if (isPermanent === 'true') {
+    if (isPermanent) {
         // 只有公众号才能上传永久素材
-        assert(appType === 'wechatPublic');
-        const result = (await wechatInstance.createMaterial({
+        assert(type === 'wechatPublic');
+        const result = await wechatInstance.createMaterial({
             type: mediaType,
             media: file2,
             filename,
             filetype,
             description: description ? JSON.parse(description) : null,
-        }));
+        });
         return {
             mediaId: result.media_id,
         };
@@ -110,4 +111,109 @@ context) {
     return {
         mediaId: result.media_id,
     };
+}
+export async function getMaterial(params, context) {
+    const { mediaId, applicationId, isPermanent = false } = params;
+    const [application] = await context.select('application', {
+        data: cloneDeep(applicationProjection),
+        filter: {
+            id: applicationId,
+        },
+    }, {
+        dontCollect: true,
+    });
+    assert(application);
+    const { type, config } = application;
+    assert(type === 'wechatPublic' || type === 'wechatMp');
+    let wechatInstance;
+    if (type === 'wechatPublic') {
+        const config2 = config;
+        const { appId, appSecret } = config2;
+        wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
+    }
+    else {
+        const config2 = config;
+        const { appId, appSecret } = config2;
+        wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
+    }
+    if (isPermanent) {
+        // 只有公众号才能获取永久素材
+        assert(type === 'wechatPublic');
+        const result = await wechatInstance.getMaterial({
+            mediaId,
+        });
+    }
+    const result = await wechatInstance.getTemporaryMaterial({
+        mediaId,
+    });
+    return result;
+}
+export async function batchGetArticle(params, context) {
+    const { applicationId, offset, count, noContent } = params;
+    const [application] = await context.select('application', {
+        data: cloneDeep(applicationProjection),
+        filter: {
+            id: applicationId,
+        },
+    }, {
+        dontCollect: true,
+    });
+    assert(application);
+    const { type, config, systemId } = application;
+    assert(type === 'wechatPublic');
+    let appId, appSecret;
+    const config2 = config;
+    appId = config2.appId;
+    appSecret = config2.appSecret;
+    const wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
+    const result = await wechatInstance.batchGetArticle({
+        offset,
+        count,
+        noContent,
+    });
+    return result;
+}
+export async function getArticle(params, context) {
+    const { applicationId, articleId } = params;
+    const [application] = await context.select('application', {
+        data: cloneDeep(applicationProjection),
+        filter: {
+            id: applicationId,
+        },
+    }, {
+        dontCollect: true,
+    });
+    assert(application);
+    const { type, config, systemId } = application;
+    assert(type === 'wechatPublic');
+    let appId, appSecret;
+    const config2 = config;
+    appId = config2.appId;
+    appSecret = config2.appSecret;
+    const wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
+    const result = await wechatInstance.getArticle({
+        articleId,
+    });
+    return result;
+}
+export async function batchGetMaterialList(params, context) {
+    const { applicationId } = params;
+    const [application] = await context.select('application', {
+        data: cloneDeep(applicationProjection),
+        filter: {
+            id: applicationId,
+        },
+    }, {
+        dontCollect: true,
+    });
+    assert(application);
+    const { type, config, systemId } = application;
+    assert(type === 'wechatPublic');
+    let appId, appSecret;
+    const config2 = config;
+    appId = config2.appId;
+    appSecret = config2.appSecret;
+    const wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
+    const result = await wechatInstance.batchGetMaterialList(params);
+    return result;
 }

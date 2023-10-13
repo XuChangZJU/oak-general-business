@@ -3,10 +3,11 @@ import { AppType } from '../oak-app-domain/Application/Schema';
 import { EntityDict } from '../oak-app-domain';
 import { Config, Origin } from '../types/Config';
 import { Style } from '../types/Style';
-import { MediaType, MenuType } from '../types/WeChat';
+import { MediaType, MaterialType } from '../types/WeChat';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { MediaVideoDescription } from '../types/WeChat'
 import { WechatPublicEventData, WechatMpEventData } from 'oak-external-sdk';
+
 export type GeneralAspectDict<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
@@ -41,7 +42,7 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<string>;
-    logout: ({ }, context: Cxt) => Promise<void>;
+    logout: ({}, context: Cxt) => Promise<void>;
     loginWechatMp: (
         {
             code,
@@ -241,7 +242,7 @@ export type GeneralAspectDict<
     batchGetMaterialList: (
         params: {
             applicationId: string;
-            type: MenuType;
+            type: MaterialType;
             offset?: number;
             count: number;
         },
@@ -250,8 +251,8 @@ export type GeneralAspectDict<
     getMaterial: (
         params: {
             applicationId: string;
-            type: MenuType;
             mediaId: string;
+            isPermanent?: boolean; // 获取临时素材或永久素材 默认获取临时
         },
         context: Cxt
     ) => Promise<any>;
@@ -259,8 +260,8 @@ export type GeneralAspectDict<
         params: {
             data?: WechatPublicEventData | WechatMpEventData;
             type: AppType;
-            entity?: string,
-            entityId?: string,
+            entity?: string;
+            entityId?: string;
         },
         context: Cxt
     ) => Promise<string>;
@@ -289,7 +290,7 @@ export type GeneralAspectDict<
         params: {
             applicationId: string;
             id: string;
-            wechatId: number
+            wechatId: number;
         },
         context: Cxt
     ) => Promise<any>;
@@ -351,27 +352,27 @@ export type GeneralAspectDict<
     ) => Promise<any>;
     tagging: (
         params: {
-            applicationId: string,
-            openId: string,
-            tagIdList: number[],
+            applicationId: string;
+            openId: string;
+            tagIdList: number[];
         },
         context: Cxt
-    ) => Promise<any>
+    ) => Promise<any>;
     syncToLocale: (
         params: {
-            applicationId: string,
-            openId: string,
+            applicationId: string;
+            openId: string;
         },
         context: Cxt
-    ) => Promise<any>
+    ) => Promise<any>;
     syncToWechat: (
         params: {
-            applicationId: string,
-            id: string,
-            openId: string,
+            applicationId: string;
+            id: string;
+            openId: string;
         },
         context: Cxt
-    ) => Promise<any>
+    ) => Promise<any>;
 };
 
 export default GeneralAspectDict;

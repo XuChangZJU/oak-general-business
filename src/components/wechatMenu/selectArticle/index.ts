@@ -53,24 +53,21 @@ export default OakComponent({
         },
         async getMaterialImg(mediaId: string) {
             const { applicationId } = this.props;
-            const imgFile = await this.features.wechatMenu.getMaterial({
+            const result = await this.features.wechatMenu.getMaterial({
                 applicationId: applicationId!,
-                type: 'image',
                 mediaId,
+                isPermanent: true,
             });
-            return new Promise<
-                | string
-                | ArrayBuffer
-                | PromiseLike<string | ArrayBuffer | null>
-                | null
-                | undefined
-            >((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(imgFile);
-                reader.onload = function (e) {
-                    resolve(e.target?.result);
-                };
-            });
+            return `data:image/png;base64,${result}`;
+        },
+        getImg(str: string) {
+            if (!str) {
+                return '';
+            }
+            if (str.includes('data:image/png;')) {
+                return str;
+            }
+            return this.features.locales.makeBridgeUrl(str);
         },
     },
 });

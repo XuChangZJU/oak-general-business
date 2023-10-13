@@ -3,7 +3,7 @@ import { AppType } from '../oak-app-domain/Application/Schema';
 import { EntityDict } from '../oak-app-domain';
 import { Config } from '../types/Config';
 import { Style } from '../types/Style';
-import { MenuType } from '../types/WeChat';
+import { MaterialType } from '../types/WeChat';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { WechatPublicEventData, WechatMpEventData } from 'oak-external-sdk';
 export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> = {
@@ -151,14 +151,14 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
     }, context: Cxt) => Promise<any>;
     batchGetMaterialList: (params: {
         applicationId: string;
-        type: MenuType;
+        type: MaterialType;
         offset?: number;
         count: number;
     }, context: Cxt) => Promise<any>;
     getMaterial: (params: {
         applicationId: string;
-        type: MenuType;
         mediaId: string;
+        isPermanent?: boolean;
     }, context: Cxt) => Promise<any>;
     createSession: (params: {
         data?: WechatPublicEventData | WechatMpEventData;

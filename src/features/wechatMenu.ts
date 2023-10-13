@@ -7,10 +7,10 @@ import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Cache } from 'oak-frontend-base/es/features/cache';
 import { LocalStorage } from 'oak-frontend-base/es/features/localStorage';
 import {
-   MediaType,
-   MediaVideoDescription,
-   MenuType
-} from '../types/WeChat'
+    MediaType,
+    MediaVideoDescription,
+    MaterialType,
+} from '../types/WeChat';
 
 
 export class WechatMenu<
@@ -28,81 +28,83 @@ export class WechatMenu<
         this.storage = storage;
     }
 
-    async getCurrentMenu(params: {
-        applicationId: string,
-    },) {
-        const callBack = await this.cache.exec('getCurrentMenu', params);
-        return callBack.result;
+    async getCurrentMenu(params: { applicationId: string }) {
+        const { result } = await this.cache.exec('getCurrentMenu', params);
+        return result;
     }
 
-    async getMenu(params: {
-        applicationId: string,
-    },) {
-        const callBack = await this.cache.exec('getMenu', params);
-        return callBack.result;
+    async getMenu(params: { applicationId: string }) {
+        const { result } = await this.cache.exec('getMenu', params);
+        return result;
     }
 
     async createMenu(params: {
-        applicationId: string,
-        menuConfig: any,
-        id: string,
+        applicationId: string;
+        menuConfig: any;
+        id: string;
     }) {
-        const callBack = await this.cache.exec('createMenu', params);
-        return callBack.result;
+        const { result } = await this.cache.exec('createMenu', params);
+        return result;
     }
 
     async createConditionalMenu(params: {
-        applicationId: string,
-        menuConfig: any,
-        id: string,
-    },) {
-        const callBack = await this.cache.exec('createConditionalMenu', params);
-        return callBack.result;
+        applicationId: string;
+        menuConfig: any;
+        id: string;
+    }) {
+        const { result } = await this.cache.exec(
+            'createConditionalMenu',
+            params
+        );
+        return result;
     }
 
     async deleteConditionalMenu(params: {
-        applicationId: string,
-        menuId: number
-    },) {
-        const callBack = await this.cache.exec('deleteConditionalMenu', params);
-        return callBack.result;
+        applicationId: string;
+        menuId: number;
+    }) {
+        const { result } = await this.cache.exec(
+            'deleteConditionalMenu',
+            params
+        );
+        return result;
     }
 
-    
-    async deleteMenu(params: {
-        applicationId: string,
-    },) {
-        const callBack = await this.cache.exec('deleteMenu', params);
-        return callBack.result;
+    async deleteMenu(params: { applicationId: string }) {
+        const { result } = await this.cache.exec('deleteMenu', params);
+        return result;
     }
 
     async batchGetArticle(params: {
-        applicationId: string,
+        applicationId: string;
         offset?: number;
         count: number;
         noContent?: 0 | 1;
-    },) {
-        const callBack = await this.cache.exec('batchGetArticle', params);
-        return callBack.result;
+    }) {
+        const { result } = await this.cache.exec('batchGetArticle', params);
+        return result;
     }
 
-    async getArticle(params: {
-        applicationId: string,
-        articleId: string
-    },) {
-        const callBack = await this.cache.exec('getArticle', params);
-        return callBack.result;
+    async getArticle(params: { applicationId: string; articleId: string }) {
+        const { result } = await this.cache.exec('getArticle', params);
+        return result;
     }
 
     async createMaterial(params: {
-        appType: string,
-        applicationId: string,
-        type: MediaType,
-        file: File,
-        description?: MediaVideoDescription,
-        isPermanent?: boolean
+        appType: string;
+        applicationId: string;
+        type: MediaType;
+        file: File;
+        description?: MediaVideoDescription;
+        isPermanent?: boolean;
     }) {
-        const { applicationId, type, file, description, isPermanent = false } = params;
+        const {
+            applicationId,
+            type,
+            file,
+            description,
+            isPermanent = false,
+        } = params;
         const formData = new FormData();
         formData.append('applicationId', applicationId);
         formData.append('type', type);
@@ -113,27 +115,40 @@ export class WechatMenu<
         if (isPermanent) {
             formData.append('isPermanent', `${isPermanent}`);
         }
-       
-        const callBack = await this.cache.exec('uploadWechatMedia', formData);
-        return callBack.result;
+
+        const { result } = await this.cache.exec('uploadWechatMedia', formData);
+        return result;
     }
 
     async batchGetMaterialList(params: {
-        applicationId: string,
-        type: MenuType,
+        applicationId: string;
+        type: MaterialType;
         offset?: number;
         count: number;
-    },) {
-        const callBack = await this.cache.exec('batchGetMaterialList', params);
-        return callBack.result;
+    }) {
+        const { result } = await this.cache.exec(
+            'batchGetMaterialList',
+            params
+        );
+        return result;
     }
 
+    /**
+     * 获取素材详情
+     * @param params
+     * @returns
+     */
     async getMaterial(params: {
-        applicationId: string,
-        type: MenuType,
-        mediaId: string,
-    },) {
-        const callBack = await this.cache.exec('getMaterial', params);
-        return callBack.result;
+        applicationId: string;
+        mediaId: string;
+        isPermanent?: boolean;
+    }) {
+        const { result } = await this.cache.exec('getMaterial', params);
+
+        if ((result as any) instanceof ArrayBuffer) {
+            return Buffer.from(result).toString('base64');
+        }
+
+        return result;
     }
 }

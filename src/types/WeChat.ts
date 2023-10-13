@@ -5,7 +5,7 @@ export type MediaVideoDescription = {
     introduction: string;
 }
 
-export type MenuType = 'image' | 'video' | 'voice' | 'news';
+export type MaterialType = 'image' | 'video' | 'voice' | 'news'; //素材的类型，图片（image）、视频（video）、语音 （voice）、图文（news）
 
 export type ReplyType = 'text' | 'image' | 'video' | 'voice';
 

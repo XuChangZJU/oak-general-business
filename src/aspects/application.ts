@@ -1,12 +1,14 @@
 import { assert } from 'oak-domain/lib/utils/assert';
-import { EntityDict } from "../oak-app-domain";
-import { AppType, WechatPublicConfig, WechatMpConfig } from "../oak-app-domain/Application/Schema";
-import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
-import { applicationProjection } from '../types/Projection';
-import { MediaType } from '../types/WeChat';
+import { EntityDict } from '../oak-app-domain';
 import {
-    WebEnv,
-} from 'oak-domain/lib/types/Environment';
+    AppType,
+    WechatPublicConfig,
+    WechatMpConfig,
+} from '../oak-app-domain/Application/Schema';
+import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { applicationProjection } from '../types/Projection';
+import { MediaType, MaterialType } from '../types/WeChat';
+import { WebEnv } from 'oak-domain/lib/types/Environment';
 import {
     WechatPublicInstance,
     WechatMpInstance,
@@ -39,7 +41,7 @@ export async function getApplication<
                 system: {
                     domain$system: {
                         url: domain,
-                    }
+                    },
                 },
             },
         },
@@ -66,7 +68,7 @@ export async function getApplication<
                             system: {
                                 domain$system: {
                                     url: domain,
-                                }
+                                },
                             },
                         },
                     },
@@ -88,7 +90,6 @@ export async function getApplication<
     return application.id as string;
 }
 
-
 export async function signatureJsSDK<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
@@ -109,13 +110,11 @@ export async function signatureJsSDK<
     return result;
 }
 
-
 export async function uploadWechatMedia<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
 >(
     params: {
-        appType: AppType;
         applicationId: string;
         file: File;
         type: MediaType;
@@ -128,14 +127,12 @@ export async function uploadWechatMedia<
         applicationId,
         file,
         type: mediaType,
-        isPermanent,
         description,
-        appType,
     } = params;
+    const isPermanent = params.isPermanent === 'true';
     const filename = file.originalFilename!;
     const filetype = file.mimetype!;
     const file2 = fs.createReadStream(file.filepath);
-    assert(appType === 'wechatPublic' || appType === 'wechatMp');
 
     const [application] = await context.select(
         'application',
@@ -150,10 +147,11 @@ export async function uploadWechatMedia<
         }
     );
     const { type, config } = application!;
+    assert(type === 'wechatPublic' || type === 'wechatMp');
 
     let wechatInstance: WechatPublicInstance | WechatMpInstance;
-    if (appType === 'wechatPublic') {
-        assert(type === 'wechatPublic' && config!.type === 'wechatPublic');
+    if (type === 'wechatPublic') {
+        assert(config!.type === 'wechatPublic');
         const config2 = config as WechatPublicConfig;
         const { appId, appSecret } = config2;
         wechatInstance = WechatSDK.getInstance(
@@ -162,7 +160,7 @@ export async function uploadWechatMedia<
             appSecret
         ) as WechatPublicInstance;
     } else {
-        assert(type === 'wechatMp' && config!.type === 'wechatMp');
+        assert(config!.type === 'wechatMp');
         const config2 = config as WechatMpConfig;
         const { appId, appSecret } = config2;
         wechatInstance = WechatSDK.getInstance(
@@ -172,16 +170,18 @@ export async function uploadWechatMedia<
         ) as WechatMpInstance;
     }
 
-    if (isPermanent === 'true') {
+    if (isPermanent) {
         // 只有公众号才能上传永久素材
-        assert(appType === 'wechatPublic');
-        const result = (await (wechatInstance as WechatPublicInstance).createMaterial({
+        assert(type === 'wechatPublic');
+        const result = await (
+            wechatInstance as WechatPublicInstance
+        ).createMaterial({
             type: mediaType,
             media: file2,
             filename,
             filetype,
             description: description ? JSON.parse(description) : null,
-        })) as {
+        }) as {
             media_id: string;
             url: string;
         };
@@ -205,4 +205,196 @@ export async function uploadWechatMedia<
     return {
         mediaId: result.media_id,
     };
+}
+
+export async function getMaterial<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(
+    params: {
+        applicationId: string;
+        mediaId: string;
+        isPermanent?: boolean; // 获取临时素材或永久素材 默认获取临时
+    },
+    context: Cxt
+): Promise<any> {
+    const { mediaId, applicationId, isPermanent = false } = params;
+    const [application] = await context.select(
+        'application',
+        {
+            data: cloneDeep(applicationProjection),
+            filter: {
+                id: applicationId,
+            },
+        },
+        {
+            dontCollect: true,
+        }
+    );
+    assert(application);
+    const { type, config } = application!;
+    assert(type === 'wechatPublic' || type === 'wechatMp');
+
+    let wechatInstance: WechatPublicInstance | WechatMpInstance;
+    if (type === 'wechatPublic') {
+        const config2 = config as WechatPublicConfig;
+        const { appId, appSecret } = config2;
+
+        wechatInstance = WechatSDK.getInstance(
+            appId!,
+            type!,
+            appSecret!
+        ) as WechatPublicInstance;
+    } else {
+        const config2 = config as WechatMpConfig;
+        const { appId, appSecret } = config2;
+
+        wechatInstance = WechatSDK.getInstance(
+            appId!,
+            type!,
+            appSecret!
+        ) as WechatMpInstance;
+    }
+
+    if (isPermanent) {
+        // 只有公众号才能获取永久素材
+        assert(type === 'wechatPublic');
+        const result = await(
+            wechatInstance as WechatPublicInstance
+        ).getMaterial({
+            mediaId,
+        });
+    }
+
+    const result = await wechatInstance.getTemporaryMaterial({
+        mediaId,
+    });
+    return result;
+}
+
+export async function batchGetArticle<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(
+    params: {
+        applicationId: string;
+        offset?: number;
+        count: number;
+        noContent?: 0 | 1;
+    },
+    context: Cxt
+): Promise<any> {
+    const { applicationId, offset, count, noContent } = params;
+    const [application] = await context.select(
+        'application',
+        {
+            data: cloneDeep(applicationProjection),
+            filter: {
+                id: applicationId,
+            },
+        },
+        {
+            dontCollect: true,
+        }
+    );
+    assert(application);
+    const { type, config, systemId } = application!;
+    assert(type === 'wechatPublic');
+    let appId: string, appSecret: string;
+    const config2 = config as WechatPublicConfig;
+    appId = config2.appId;
+    appSecret = config2.appSecret;
+    const wechatInstance = WechatSDK.getInstance(
+        appId!,
+        type!,
+        appSecret!
+    ) as WechatPublicInstance;
+    const result = await wechatInstance.batchGetArticle({
+        offset,
+        count,
+        noContent,
+    });
+    return result;
+}
+
+export async function getArticle<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(
+    params: {
+        applicationId: string;
+        articleId: string;
+    },
+    context: Cxt
+): Promise<any> {
+    const { applicationId, articleId } = params;
+    const [application] = await context.select(
+        'application',
+        {
+            data: cloneDeep(applicationProjection),
+            filter: {
+                id: applicationId,
+            },
+        },
+        {
+            dontCollect: true,
+        }
+    );
+    assert(application);
+    const { type, config, systemId } = application!;
+    assert(type === 'wechatPublic');
+    let appId: string, appSecret: string;
+    const config2 = config as WechatPublicConfig;
+    appId = config2.appId;
+    appSecret = config2.appSecret;
+    const wechatInstance = WechatSDK.getInstance(
+        appId!,
+        type!,
+        appSecret!
+    ) as WechatPublicInstance;
+    const result = await wechatInstance.getArticle({
+        articleId,
+    });
+    return result;
+}
+
+export async function batchGetMaterialList<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(
+    params: {
+        applicationId: string;
+        type: MaterialType;
+        offset?: number;
+        count: number;
+    },
+    context: Cxt
+): Promise<any> {
+    const { applicationId } = params;
+    const [application] = await context.select(
+        'application',
+        {
+            data: cloneDeep(applicationProjection),
+            filter: {
+                id: applicationId,
+            },
+        },
+        {
+            dontCollect: true,
+        }
+    );
+    assert(application);
+    const { type, config, systemId } = application!;
+    assert(type === 'wechatPublic');
+    let appId: string, appSecret: string;
+    const config2 = config as WechatPublicConfig;
+    appId = config2.appId;
+    appSecret = config2.appSecret;
+    const wechatInstance = WechatSDK.getInstance(
+        appId!,
+        type!,
+        appSecret!
+    ) as WechatPublicInstance;
+    const result = await wechatInstance.batchGetMaterialList(params);
+    return result;
 }
