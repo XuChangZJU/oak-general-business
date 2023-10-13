@@ -15,14 +15,14 @@ const QiniuSearchUrl = 'https://rs.qiniuapi.com/stat/EncodedEntryURI';
 
 export default class Qiniu implements Cos<ED, BRC, FRC> {
     name = 'qiniu';
-    
+
     autoInform(): boolean {
         return false;
     }
 
     private formKey(extraFile: OpSchema) {
         const { id, extension, objectId } = extraFile;
-        
+
         assert(objectId);
         return `extraFile/${objectId}${extension ? '.' + extension : ''}`;
     }
@@ -37,13 +37,18 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
         const { instance, config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
 
         const { buckets } = config as QiniuCosConfig;
-        assert(bucket);
-        const b = buckets.find(ele => ele.name === bucket);
-        assert(b, `${bucket}不是一个有效的桶配置`);
+        let bucket2 = bucket;
+        if (!bucket2) {
+            const { defaultBucket } = config as QiniuCosConfig;
+            bucket2 = defaultBucket!;
+        }
+        assert(bucket2);
+        const b = buckets.find(ele => ele.name === bucket2);
+        assert(b, `${bucket2}不是一个有效的桶配置`);
         Object.assign(extraFile, {
-            bucket,
+            bucket: bucket2,
             uploadMeta: (instance as QiniuCloudInstance).getKodoUploadInfo(
-                bucket,
+                bucket2,
                 b.zone,
                 key
             ),
@@ -116,7 +121,7 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
     ) {
         const key = this.formKey(extraFile);
         const { instance, config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
-        
+
         // web环境下访问不了七牛接口，用mockData过
         const mockData = process.env.OAK_PLATFORM === 'web' ? { fsize: 100 } : undefined;
 
@@ -125,7 +130,7 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
 
         try {
             const result = await (instance as QiniuCloudInstance).getKodoFileStat(extraFile.bucket!, b.zone, key, mockData);
-    
+
             const { fsize } = result;
             return fsize > 0;
         }
@@ -145,7 +150,7 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
     async removeFile(extraFile: OpSchema, context: BRC) {
         const key = this.formKey(extraFile);
         const { instance, config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
-        
+
         // web环境下访问不了七牛接口，用mockData过
         const mockData = process.env.OAK_PLATFORM === 'web' ? true : undefined;
         const b = (config as QiniuCosConfig).buckets.find(ele => ele.name === extraFile.bucket);

@@ -4,6 +4,7 @@ import { bytesToSize, getFileURL } from '../utils/extraFile';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { getCos } from '../utils/cos';
 import { unset } from 'oak-domain/lib/utils/lodash';
+import { generateNewId, generateNewIdAsync } from 'oak-domain';
 export class ExtraFile2 extends Feature {
     cache;
     application;
@@ -122,5 +123,57 @@ export class ExtraFile2 extends Feature {
     }
     formatBytes(size) {
         return bytesToSize(size);
+    }
+    async autoUpload(extraFile, file) {
+        const extraFileId = extraFile.id || generateNewId();
+        await this.cache.operate('extraFile', {
+            action: 'create',
+            data: Object.assign(extraFile, { id: extraFileId, applicationId: this.application.getApplicationId() }),
+            id: await generateNewIdAsync(),
+        });
+        const [newExtraFile] = this.cache.get('extraFile', {
+            data: {
+                id: 1,
+                origin: 1,
+                type: 1,
+                bucket: 1,
+                objectId: 1,
+                tag1: 1,
+                tag2: 1,
+                filename: 1,
+                md5: 1,
+                entity: 1,
+                entityId: 1,
+                extra1: 1,
+                extension: 1,
+                size: 1,
+                sort: 1,
+                fileType: 1,
+                isBridge: 1,
+                uploadState: 1,
+                uploadMeta: 1,
+            },
+            filter: {
+                id: extraFileId
+            }
+        });
+        console.log(newExtraFile);
+        const up = new Upload();
+        try {
+            const cos = getCos(newExtraFile.origin);
+            await cos.upload(newExtraFile, up.uploadFile, file);
+            return this.getUrl(newExtraFile);
+        }
+        catch (err) {
+            await this.cache.operate('extraFile', {
+                action: 'remove',
+                data: {},
+                filter: {
+                    id: extraFileId
+                },
+                id: await generateNewIdAsync(),
+            });
+            throw err;
+        }
     }
 }

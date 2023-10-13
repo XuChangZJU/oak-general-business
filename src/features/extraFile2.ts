@@ -13,7 +13,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { getCos } from '../utils/cos';
 import { OpSchema } from '../oak-app-domain/ExtraFile/Schema';
 import { unset } from 'oak-domain/lib/utils/lodash';
-import { generateNewIdAsync } from 'oak-domain';
+import { generateNewId, generateNewIdAsync } from 'oak-domain';
 
 export type FileState = 'local' | 'uploading' | 'uploaded' | 'failed';
 
@@ -22,7 +22,7 @@ export class ExtraFile2<
     Cxt extends BackendRuntimeContext<ED>,
     FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>,
     AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>
-> extends Feature {    
+> extends Feature {
     private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
     private application: Application<ED, Cxt, FrontCxt, AD>;
     private locales: Locales<ED, Cxt, FrontCxt, AD>;
@@ -93,7 +93,7 @@ export class ExtraFile2<
         assert(['local', 'failed'].includes(state));
         item.state = 'uploading';
         item.percentage = 0;
-        
+
         const up = new Upload();
         try {
             const cos = getCos<ED, Cxt, FrontCxt>(extraFile.origin!);
@@ -174,5 +174,64 @@ export class ExtraFile2<
 
     formatBytes(size: number) {
         return bytesToSize(size);
+    }
+
+    async autoUpload(extraFile: EntityDict['extraFile']['OpSchema'], file: File | string) {
+        const extraFileId = extraFile.id || generateNewId();
+        await this.cache.operate('extraFile', {
+            action: 'create',
+            data: Object.assign(extraFile, { id: extraFileId, applicationId: this.application.getApplicationId() }),
+            id: await generateNewIdAsync(),
+        } as EntityDict['extraFile']['Operation']);
+        const [newExtraFile] = this.cache.get(
+            'extraFile',
+            {
+                data: {
+                    id: 1,
+                    origin: 1,
+                    type: 1,
+                    bucket: 1,
+                    objectId: 1,
+                    tag1: 1,
+                    tag2: 1,
+                    filename: 1,
+                    md5: 1,
+                    entity: 1,
+                    entityId: 1,
+                    extra1: 1,
+                    extension: 1,
+                    size: 1,
+                    sort: 1,
+                    fileType: 1,
+                    isBridge: 1,
+                    uploadState: 1,
+                    uploadMeta: 1,
+                },
+                filter: {
+                    id: extraFileId
+                }
+            }
+        );
+        console.log(newExtraFile);
+        const up = new Upload();
+        try {
+            const cos = getCos<ED, Cxt, FrontCxt>(newExtraFile.origin!);
+            await cos.upload(
+                newExtraFile as OpSchema,
+                up.uploadFile,
+                file
+            );
+            return this.getUrl(newExtraFile as EntityDict['extraFile']['Schema']);
+        } catch (err) {
+            await this.cache.operate('extraFile', {
+                action: 'remove',
+                data: {},
+                filter: {
+                    id: extraFileId
+                },
+                id: await generateNewIdAsync(),
+            } as EntityDict['extraFile']['Operation']);
+            throw err;
+        }
     }
 }

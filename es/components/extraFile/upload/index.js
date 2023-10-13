@@ -1,4 +1,3 @@
-import { getConfig } from '../../../utils/getContextConfig';
 import { generateNewId } from 'oak-domain';
 ;
 export default OakComponent({
@@ -137,18 +136,10 @@ export default OakComponent({
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
             const { files } = this.state;
-            let bucket2 = bucket;
-            if (origin === 'qiniu' && !bucket2) {
-                const context = this.features.cache.begin();
-                const { config } = getConfig(context, 'Cos', origin);
-                this.features.cache.commit();
-                const { defaultBucket } = config;
-                bucket2 = defaultBucket;
-            }
             const applicationId = this.features.application.getApplicationId();
             const id = this.addItem({
                 applicationId,
-                bucket: bucket2,
+                bucket,
                 origin,
                 type,
                 tag1,

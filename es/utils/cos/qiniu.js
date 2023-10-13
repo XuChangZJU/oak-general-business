@@ -19,12 +19,17 @@ export default class Qiniu {
         const key = this.formKey(extraFile);
         const { instance, config } = getConfig(context, 'Cos', 'qiniu');
         const { buckets } = config;
-        assert(bucket);
-        const b = buckets.find(ele => ele.name === bucket);
-        assert(b, `${bucket}不是一个有效的桶配置`);
+        let bucket2 = bucket;
+        if (!bucket2) {
+            const { defaultBucket } = config;
+            bucket2 = defaultBucket;
+        }
+        assert(bucket2);
+        const b = buckets.find(ele => ele.name === bucket2);
+        assert(b, `${bucket2}不是一个有效的桶配置`);
         Object.assign(extraFile, {
-            bucket,
-            uploadMeta: instance.getKodoUploadInfo(bucket, b.zone, key),
+            bucket: bucket2,
+            uploadMeta: instance.getKodoUploadInfo(bucket2, b.zone, key),
         });
     }
     async upload(extraFile, uploadFn, file) {

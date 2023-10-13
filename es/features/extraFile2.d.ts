@@ -24,4 +24,5 @@ export declare class ExtraFile2<ED extends EntityDict, Cxt extends BackendRuntim
     } | undefined;
     getFileName(extraFile: EntityDict['extraFile']['OpSchema']): string;
     formatBytes(size: number): string;
+    autoUpload(extraFile: EntityDict['extraFile']['OpSchema'], file: File | string): Promise<string>;
 }
