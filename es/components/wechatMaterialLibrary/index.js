@@ -103,7 +103,6 @@ export default OakComponent({
             const { applicationId } = this.props;
             const { type } = this.props;
             const result = await this.features.wechatMenu.createMaterial({
-                appType: 'wechatPublic',
                 applicationId: applicationId,
                 type: type,
                 file: media,

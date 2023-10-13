@@ -91,7 +91,6 @@ export class WechatMenu<
     }
 
     async createMaterial(params: {
-        appType: string;
         applicationId: string;
         type: MediaType;
         file: File;
