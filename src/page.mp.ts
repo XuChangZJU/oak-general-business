@@ -46,18 +46,21 @@ export async function subscribeMpMessage<
         data: {
             id: 1,
             templateId: 1,
+            template: {
+                id: 1,
+                wechatId: 1,
+            },
             type: 1,
         },
         filter: {
             type: {
-
                 $in: messageTypes,
             },
         },
     });
     if (mttIds.length > 0) {
         const tmplIds = mttIds.map(
-            ele => ele.templateId!
+            ele => ele.template?.wechatId!
         );
         const result = await wx.requestSubscribeMessage({
             tmplIds

@@ -14,6 +14,10 @@ export async function subscribeMpMessage(messageTypes, haveToAccept, tip) {
         data: {
             id: 1,
             templateId: 1,
+            template: {
+                id: 1,
+                wechatId: 1,
+            },
             type: 1,
         },
         filter: {
@@ -23,7 +27,7 @@ export async function subscribeMpMessage(messageTypes, haveToAccept, tip) {
         },
     });
     if (mttIds.length > 0) {
-        const tmplIds = mttIds.map(ele => ele.templateId);
+        const tmplIds = mttIds.map(ele => ele.template?.wechatId);
         const result = await wx.requestSubscribeMessage({
             tmplIds
         });

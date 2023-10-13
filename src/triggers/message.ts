@@ -182,10 +182,10 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                                         const wechatUser = wechatUsers.find(
                                             ele => ele.applicationId === app.id
                                         );
-                                        const messageTypeTemplateId = messageTypeTemplates.find(
+                                        const messageTypeTemplate = messageTypeTemplates.find(
                                             ele => ele.template!.applicationId === app.id && ele.type === type
                                         );
-                                        if (messageTypeTemplateId && wechatUser) {
+                                        if (messageTypeTemplate && wechatUser) {
                                             const converter = ConverterDict[type!] && ConverterDict[type!]!.toWechatMp;
                                             const dispersedData = converter && await converter(entity!, entityId!, apps, app, context);
                                             if (dispersedData) {
@@ -194,7 +194,7 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                                                     data: dispersedData,
                                                     channel,
                                                     applicationId: app.id,
-                                                    templateId: messageTypeTemplateId.template!.wechatId!,
+                                                    templateId: messageTypeTemplate.template!.wechatId!,
                                                     data1: {
                                                         openId: wechatUser.openId!,
                                                     }
@@ -226,10 +226,10 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                                         const wechatUser = wechatUsers.find(
                                             ele => ele.applicationId === app.id
                                         );
-                                        const messageTypeTemplateId = messageTypeTemplates.find(
+                                        const messageTypeTemplate = messageTypeTemplates.find(
                                             ele => ele.template!.applicationId === app.id && ele.type === type
                                         );
-                                        if (messageTypeTemplateId && wechatUser) {
+                                        if (messageTypeTemplate && wechatUser) {
                                             const converter = ConverterDict[type!] && ConverterDict[type!]!.toWechatPublic;
                                             const disperseResult = converter && await converter(entity!, entityId!, apps, app, context);
                                             if (disperseResult) {
@@ -239,7 +239,7 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                                                     data,
                                                     channel,
                                                     applicationId: app.id,
-                                                    templateId: messageTypeTemplateId.template!.wechatId!,
+                                                    templateId: messageTypeTemplate.template!.wechatId!,
                                                     data1: {
                                                         openId: wechatUser.openId!,
                                                         wechatMpAppId,
