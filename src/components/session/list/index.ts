@@ -1,4 +1,11 @@
 import { DATA_SUBSCRIBER_KEYS } from '../../../config/constants';
+import { EntityDict } from '../../../oak-app-domain';
+import { RowWithActions } from 'oak-frontend-base';
+
+interface BaseAttrDict {
+    [E: string]: any;
+}
+
 
 export default OakComponent({
     entity: 'session',
@@ -84,15 +91,12 @@ export default OakComponent({
             sessions &&
             sessions.length > 0
         ) {
-            const sessions1 = entityDisplay(sessions);
+            const newSessions = entityDisplay(sessions);
 
             return {
-                sessions: sessions1,
+                sessions: newSessions,
             };
         }
-        // const unReadLength = wechatSessions?.filter(
-        //     (ele) => ele.isRead
-        // )
 
         //排序待框架实现
         return {
@@ -142,9 +146,13 @@ export default OakComponent({
     },
     properties: {
         entity: '' as string, // entity端，指示相应的entity
-        entityFilter: undefined as any, // entity端，指示相应的entity查询条件
-        entityDisplay: (data: any) => [] as Array<any>, // user端，指示如何显示entity对象名称
-        entityProjection: {} as any, // user端，指示需要取哪些entity的属性来显示entityDisplay
+        entityFilter: null as any, // entity端，指示相应的entity查询条件
+        entityDisplay: (
+            data:
+                | EntityDict['session']['Schema'][]
+                | RowWithActions<EntityDict, 'session'>[]
+        ) => [] as Array<any>, // user端，指示如何显示entity对象名称
+        entityProjection: null as any, // user端，指示需要取哪些entity的属性来显示entityDisplay
         sessionId: '' as string, // 指示需要打开的默认session
         dialog: false as boolean,
         onItemClick: null as ((sessionId: string) => {}) | undefined | null,

@@ -5,22 +5,22 @@ import classNames from 'classnames';
 import Style from './web.module.less';
 export default function render(props) {
     const { methods, data } = props;
-    const { selectedId, onSelect, userType, id, unreadLength, sessiontMessages = [], name, lmts, } = data;
+    const { selectedId, onSelect, id, unreadLength, sessionMessages = [], name, lmts, } = data;
     const { t, getName, getAvatarUrl } = methods;
-    const sessiontMessage = sessiontMessages && sessiontMessages[0];
-    const type = sessiontMessage?.type;
-    const text = sessiontMessage?.text;
+    const sessionMessage = sessionMessages && sessionMessages[0];
+    const type = sessionMessage?.type;
+    const text = sessionMessage?.text;
     const today = dayjs().startOf('day').valueOf();
-    const createAt2 = lmts && dayjs(lmts).startOf('day').valueOf();
+    const lastCreateAt = lmts && dayjs(lmts).startOf('day').valueOf();
     return (_jsxs("div", { className: classNames(Style.cell, {
             [Style.cell_selected]: id === selectedId,
         }), onClick: () => {
             onSelect(id);
-        }, children: [_jsx(Badge, { dot: id === selectedId ? false : true, count: unreadLength || 0, children: _jsx(Image, { className: Style.avatar, src: getAvatarUrl(), preview: false }) }), _jsxs("div", { className: Style.inner, children: [_jsxs("div", { className: Style.top, children: [_jsx("div", { className: Style.title, children: name || getName() }), _jsx("div", { className: Style.date, children: lmts &&
-                                    (today === createAt2
+        }, children: [_jsx(Badge, { dot: id !== selectedId, count: unreadLength || 0, children: _jsx(Image, { className: Style.avatar, src: getAvatarUrl(), preview: false }) }), _jsxs("div", { className: Style.inner, children: [_jsxs("div", { className: Style.top, children: [_jsx("div", { className: Style.title, children: name || getName() }), _jsx("div", { className: Style.date, children: lmts &&
+                                    (today === lastCreateAt
                                         ? dayjs(lmts).format('HH:mm')
                                         : dayjs(lmts).format('YYYY-MM-DD')) })] }), _jsx("div", { className: Style.message, children: type &&
                             (type === 'text'
                                 ? `${text}`
-                                : `[${t(`sessiontMessage:v.type.${type}`)}消息]`) })] })] }));
+                                : `[${t(`sessionMessage:v.type.${type}`)}消息]`) })] })] }));
 }

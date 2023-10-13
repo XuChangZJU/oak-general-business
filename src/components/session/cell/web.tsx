@@ -15,7 +15,7 @@ export default function render(
         {
             id: string;
             unreadLength: number;
-            sessiontMessages: EntityDict['sessionMessage']['Schema'][];
+            sessionMessages: EntityDict['sessionMessage']['Schema'][];
             userType: string;
             selectedId: string;
             onSelect: (id: string) => void;
@@ -32,19 +32,19 @@ export default function render(
     const {
         selectedId,
         onSelect,
-        userType,
         id,
         unreadLength,
-        sessiontMessages = [],
+        sessionMessages = [],
         name,
         lmts,
     } = data;
     const { t, getName, getAvatarUrl } = methods;
-    const sessiontMessage = sessiontMessages && sessiontMessages[0];
-    const type = sessiontMessage?.type;
-    const text = sessiontMessage?.text;
+    const sessionMessage = sessionMessages && sessionMessages[0];
+    const type = sessionMessage?.type;
+    const text = sessionMessage?.text;
     const today = dayjs().startOf('day').valueOf();
-    const createAt2 = lmts && dayjs(lmts).startOf('day').valueOf();
+    const lastCreateAt = lmts && dayjs(lmts).startOf('day').valueOf();
+    
     return (
         <div
             className={classNames(Style.cell, {
@@ -54,14 +54,7 @@ export default function render(
                 onSelect(id);
             }}
         >
-            <Badge
-                dot={
-                    id === selectedId ? false : true
-                }
-                count={
-                    unreadLength || 0
-                }
-            >
+            <Badge dot={id !== selectedId} count={unreadLength || 0}>
                 <Image
                     className={Style.avatar}
                     src={getAvatarUrl()}
@@ -73,7 +66,7 @@ export default function render(
                     <div className={Style.title}>{name || getName()}</div>
                     <div className={Style.date}>
                         {lmts &&
-                            (today === createAt2
+                            (today === lastCreateAt
                                 ? dayjs(lmts).format('HH:mm')
                                 : dayjs(lmts).format('YYYY-MM-DD'))}
                     </div>
@@ -82,9 +75,7 @@ export default function render(
                     {type &&
                         (type === 'text'
                             ? `${text}`
-                            : `[${t(
-                                `sessiontMessage:v.type.${type}`
-                            )}消息]`)}
+                            : `[${t(`sessionMessage:v.type.${type}`)}消息]`)}
                 </div>
             </div>
         </div>

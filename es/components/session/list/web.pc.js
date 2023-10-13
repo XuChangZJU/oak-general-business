@@ -1,5 +1,5 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import MessageList from '../../sessionMessage/list';
+import SessionMessageList from '../../sessionMessage/list';
 import Header from '../../../components/session/header';
 import SessionCell from '../../../components/session/cell';
 import classNames from 'classnames';
@@ -11,12 +11,10 @@ export default function Render(props) {
     return (_jsx("div", { className: Style.container, children: _jsxs("div", { className: classNames(Style.bothContainer, className, {
                 [Style.dialogContainer]: dialog,
             }), children: [_jsxs("div", { className: Style.conversationContainer, children: [_jsx(Header, {}), _jsx("div", { className: Style.inner, children: sessions?.map((session, index) => {
-                                return (_jsx(SessionCell, { entityFilter: entityFilter, name: session?.name, selectedId: selectedSessionId, onSelect: (id) => {
+                                return (_jsx(SessionCell, { isEntity: entityFilter ? true : false, name: session?.name, selectedId: selectedSessionId, onSelect: (id) => {
                                         setSelectedSessionId(id);
                                     }, oakId: session.id, oakPath: oakFullpath
                                         ? `${oakFullpath}.${session.id}`
                                         : '' }, session.id));
-                            }) })] }), selectedSessionId && (_jsx(MessageList, { sessionId: selectedSessionId, isEntity: entityFilter ? true : false, oakAutoUnmount: true, entityDisplay: entityDisplay, entityProjection: entityProjection, oakPath: oakFullpath
-                        ? `$$sessionMessage/list`
-                        : undefined }))] }) }));
+                            }) })] }), selectedSessionId && (_jsx(SessionMessageList, { sessionId: selectedSessionId, isEntity: entityFilter ? true : false, oakAutoUnmount: true, entityDisplay: entityDisplay, entityProjection: entityProjection, oakPath: oakFullpath ? `$$sessionMessage/list` : undefined }))] }) }));
 }

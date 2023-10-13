@@ -1,8 +1,10 @@
 /// <reference types="react" />
-declare const _default: (props: import("oak-frontend-base").ReactComponentProps<import("../../../oak-app-domain").EntityDict, "session", true, {
+import { EntityDict } from '../../../oak-app-domain';
+import { RowWithActions } from 'oak-frontend-base';
+declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "session", true, {
     entity: string;
     entityFilter: any;
-    entityDisplay: (data: any) => any[];
+    entityDisplay: (data: EntityDict['session']['Schema'][] | RowWithActions<EntityDict, 'session'>[]) => any[];
     entityProjection: any;
     sessionId: string;
     dialog: boolean;

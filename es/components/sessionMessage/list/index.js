@@ -57,7 +57,7 @@ export default OakComponent({
                 await this.pageScroll('comment');
             });
             this.createItem();
-            this.getConversationInfo();
+            this.getSessionInfo();
         },
         detached() {
             if (this.timer) {
@@ -80,7 +80,7 @@ export default OakComponent({
                 if (prev.sessionId !== next.sessionId) {
                     if (next.sessionId) {
                         const { sessionMessageId } = this.state;
-                        this.getConversationInfo();
+                        this.getSessionInfo();
                         // 如果sessionId变了需要重新刷新下
                         this.refresh();
                         this.removeItem(sessionMessageId);
@@ -110,7 +110,7 @@ export default OakComponent({
         entity: '',
         entityId: '',
         entityDisplay: (data) => [],
-        entityProjection: {}, // user端，指示需要取哪些entity的属性来显示entityDisplay
+        entityProjection: null, // user端，指示需要取哪些entity的属性来显示entityDisplay
     },
     filters: [
         {
@@ -135,7 +135,6 @@ export default OakComponent({
     data: {
         content: '',
         buttonHidden: true,
-        selectedTradeId: '',
         newSessionId: '',
     },
     methods: {
@@ -173,20 +172,12 @@ export default OakComponent({
         },
         setContent(text) {
             const { sessionMessageId } = this.state;
-            this.setState({
-                text,
-            });
             this.updateItem({
                 text,
                 type: 'text',
             }, sessionMessageId);
         },
-        setButtonHidden(isHidden) {
-            this.setState({
-                buttonHidden: isHidden,
-            });
-        },
-        async getConversationInfo() {
+        async getSessionInfo() {
             const { sessionId } = this.props;
             if (!sessionId) {
                 return;
@@ -236,10 +227,6 @@ export default OakComponent({
                     id: sessionId,
                 },
             });
-            this.setState({
-                entity: session?.entity,
-                entityId: session?.entityId,
-            });
         },
         pageScroll(id) {
             const doc = window.document.getElementById(id);
@@ -262,23 +249,16 @@ export default OakComponent({
             });
         },
         async createMessage() {
-            const { text, wechatUserId, newSessionId, sessionMessageId } = this.state;
+            const { text, wechatUserId, sessionMessageId } = this.state;
             const { sessionId, isEntity } = this.props;
             const userId = this.features.token.getUserId();
             const applicationId = this.features.application.getApplicationId();
-            if (!this.state.text) {
-                this.setMessage({
-                    type: 'warning',
-                    content: '请输入内容',
-                });
-                return;
-            }
             // this.addItem({
             //     applicationId,
             //     text,
             //     userId,
             //     wechatUserId,
-            //     sessionId: sessionId || newSessionId,
+            //     sessionId: sessionId,
             //     type: 'text',
             //     createTime: Date.now(),
             //     aaoe: isEntity,
@@ -287,9 +267,6 @@ export default OakComponent({
                 createTime: Date.now(),
             }, sessionMessageId);
             await this.execute(undefined, false);
-            this.setState({
-                text: '',
-            });
             this.pageScroll('comment');
             this.createItem();
         },

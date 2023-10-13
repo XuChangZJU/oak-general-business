@@ -1,4 +1,4 @@
-import { WebComponentProps } from 'oak-frontend-base';
+import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 interface customFile {
     name: string;
@@ -12,15 +12,11 @@ export default function Render(props: WebComponentProps<EntityDict, 'sessionMess
     buttonHidden: boolean;
     sessionId: string;
     isEntity: boolean;
-    isUser: boolean;
-    employerId: string;
-    sessionMessageType: string;
     sessionMessageId: string;
-    entityDisplay: (data: any) => any[];
+    entityDisplay: (data: EntityDict['session']['Schema'][] | RowWithActions<EntityDict, 'session'>[]) => any[];
     entityProjection: object;
     isWeChat: boolean;
 }, {
-    setButtonHidden: (isHidden: boolean) => void;
     customUpload: (file: customFile) => void;
     setContent: (text: string) => void;
     pageScroll: (id: string) => void;

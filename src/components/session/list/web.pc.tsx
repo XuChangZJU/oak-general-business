@@ -1,13 +1,15 @@
 import React from 'react';
-import MessageList from '../../sessionMessage/list';
+import SessionMessageList from '../../sessionMessage/list';
 import Header from '../../../components/session/header';
 import SessionCell from '../../../components/session/cell';
 import MessageNumber from '../../../components/session/messageNumber';
 import classNames from 'classnames';
 
 import Style from './web.module.less';
-import { WebComponentProps } from 'oak-frontend-base';
+import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
+
+type Session = EntityDict['session']['Schema'];
 
 export default function Render(
     props: WebComponentProps<
@@ -15,12 +17,16 @@ export default function Render(
         'session',
         true,
         {
-            sessions: any;
+            sessions: Partial<Session & { name: string }>[];
             selectedSessionId: string;
             className: string;
             dialog: boolean;
             entityFilter: object;
-            entityDisplay: (data: any) => any[];
+            entityDisplay: (
+                data:
+                    | EntityDict['session']['Schema'][]
+                    | RowWithActions<EntityDict, 'session'>[]
+            ) => any[];
             entityProjection: object;
         },
         {
@@ -54,10 +60,10 @@ export default function Render(
                         // clear={clearUnRead}
                     /> */}
                     <div className={Style.inner}>
-                        {sessions?.map((session: any, index: number) => {
+                        {sessions?.map((session, index: number) => {
                             return (
                                 <SessionCell
-                                    entityFilter={entityFilter}
+                                    isEntity={entityFilter ? true : false}
                                     name={session?.name}
                                     selectedId={selectedSessionId}
                                     onSelect={(id: string) => {
@@ -76,16 +82,14 @@ export default function Render(
                     </div>
                 </div>
                 {selectedSessionId && (
-                    <MessageList
+                    <SessionMessageList
                         sessionId={selectedSessionId}
                         isEntity={entityFilter ? true : false}
                         oakAutoUnmount={true}
                         entityDisplay={entityDisplay}
                         entityProjection={entityProjection}
                         oakPath={
-                            oakFullpath
-                                ? `$$sessionMessage/list`
-                                : undefined
+                            oakFullpath ? `$$sessionMessage/list` : undefined
                         }
                     />
                 )}

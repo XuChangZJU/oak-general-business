@@ -81,14 +81,11 @@ export default OakComponent({
             entityDisplay &&
             sessions &&
             sessions.length > 0) {
-            const sessions1 = entityDisplay(sessions);
+            const newSessions = entityDisplay(sessions);
             return {
-                sessions: sessions1,
+                sessions: newSessions,
             };
         }
-        // const unReadLength = wechatSessions?.filter(
-        //     (ele) => ele.isRead
-        // )
         //排序待框架实现
         return {
             sessions: sessions?.sort((a, b) => b.lmts - a.lmts),
@@ -131,9 +128,9 @@ export default OakComponent({
     },
     properties: {
         entity: '',
-        entityFilter: undefined,
+        entityFilter: null,
         entityDisplay: (data) => [],
-        entityProjection: {},
+        entityProjection: null,
         sessionId: '',
         dialog: false,
         onItemClick: null,

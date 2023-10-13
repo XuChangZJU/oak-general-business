@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Image, Input, Upload, Modal } from 'antd';
-import { PictureOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import MessageCell from '../../../components/sessionMessage/cell';
+import { Button, Input, Upload } from 'antd';
+import { PictureOutlined } from '@ant-design/icons';
+import SessionMessageCell from '../../../components/sessionMessage/cell';
+import MessageUpsert from '../../../components/sessionMessage/upsert';
 import Header from '../../../components/session/forMessage';
 
 import Style from './web.module.less';
-import { WebComponentProps } from 'oak-frontend-base';
+import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
-import ExtraFileUpload from "../../../components/extraFile/upload";
+
 interface customFile {
     name: string;
     size: number;
@@ -26,16 +27,16 @@ export default function Render(
             buttonHidden: boolean;
             sessionId: string;
             isEntity: boolean;
-            isUser: boolean;
-            employerId: string;
-            sessionMessageType: string;
             sessionMessageId: string;
-            entityDisplay: (data: any) => any[];
+            entityDisplay: (
+                data:
+                    | EntityDict['session']['Schema'][]
+                    | RowWithActions<EntityDict, 'session'>[]
+            ) => any[];
             entityProjection: object;
             isWeChat: boolean;
         },
         {
-            setButtonHidden: (isHidden: boolean) => void;
             customUpload: (file: customFile) => void;
             setContent: (text: string) => void;
             pageScroll: (id: string) => void;
@@ -51,58 +52,29 @@ export default function Render(
         oakFullpath,
         text,
         buttonHidden,
-        sessionMessageType,
         sessionMessageId,
         entityDisplay,
         entityProjection,
         isWeChat,
     } = data;
     const {
-        setButtonHidden,
         customUpload,
         setContent,
         pageScroll,
         createMessage,
     } = methods;
-    const [bottomHeight, setBottomHeight] = useState(0);
-    const textareaRef = useRef(null);
 
-    useEffect(() => {
-        if (buttonHidden) {
-            const newBottomHeight =
-                window.document.getElementById('bottom')?.offsetHeight!;
-            setBottomHeight(newBottomHeight);
-        } else {
-            setBottomHeight(0);
-        }
-    }, [buttonHidden]);
-    const handleKeyDown = (event: any) => {
-        if (event.key === "Enter" && !event.shiftKey) {
-            event.preventDefault();
-            createMessage();
-            pageScroll('comment');
-        }
-    };
     return (
         <div className={Style.container}>
             <Header
                 sessionId={sessionId}
                 isEntity={isEntity}
-                oakPath={
-                    'session:header1'
-                }
+                oakPath={'$$sessionMessage/list-session/header'}
                 oakAutoUnmount={true}
                 entityDisplay={entityDisplay}
                 entityProjection={entityProjection}
             />
-            <div
-                className={Style.inner}
-                style={{
-                    marginBottom: bottomHeight ? `${bottomHeight}px` : '168px',
-                }}
-                id="comment"
-                onClick={() => setButtonHidden(true)}
-            >
+            <div className={Style.inner} id="comment">
                 {sessionMessageList
                     ?.sort(
                         (a, b) =>
@@ -111,7 +83,7 @@ export default function Render(
                     )
                     .map((sessionMessage, index: number) => {
                         return (
-                            <MessageCell
+                            <SessionMessageCell
                                 key={sessionMessage.id}
                                 oakId={sessionMessage.id}
                                 oakPath={
@@ -126,84 +98,29 @@ export default function Render(
             </div>
 
             <div className={Style.bottom} id="bottom">
-                <div className={Style.toolbar}>
-                    {/* {
-                        sessionMessageId && (
-                            <ExtraFileUpload
-                                oakPath={
-                                    data.oakFullpath
-                                        ? `${data.oakFullpath}.${sessionMessageId}.extraFile$entity`
-                                        : undefined
-                                }
-                                showUploadList={false}
-                                type="image"
-                                origin="qiniu"
-                                tag1="image"
-                                // maxNumber={1}
-                                entity="sessionMessage"
-                                accept="image/*"
-                                theme="file"
-                            >
-                                <PictureOutlined className={Style.icon} />
-                            </ExtraFileUpload>
-                        )
-                    } */}
-                    {
-                        isWeChat ? (
-                            //微信资源库
-                            <PictureOutlined className={Style.icon} />
-                        ) : (
-                            <Upload
-                                accept={'image/*'}
-                                multiple={false}
-                                showUploadList={false}
-                                customRequest={() => { }}
-                                onChange={({ file }) => {
-                                    customUpload(file as customFile);
-                                }}
-                            >
-                                <PictureOutlined className={Style.icon} />
-                            </Upload>
-                        )
-                    }
-
-                </div>
-
-                <div className={Style.textareaBox}>
-                    <Input.TextArea
-                        ref={textareaRef}
-                        className={Style.textarea}
-                        maxLength={500}
-                        placeholder="Enter 发送，Shift + Enter换行"
-                        rows={5}
-                        onChange={(e) => {
-                            setContent(e.target.value);
+                {sessionMessageId && (
+                    <MessageUpsert
+                        key={`MessageUpsert_${sessionMessageId}`}
+                        isEntity={isEntity}
+                        oakId={sessionMessageId}
+                        oakPath={
+                            oakFullpath
+                                ? `${oakFullpath}.${sessionMessageId}`
+                                : ''
+                        }
+                        oakAutoUnmount={true}
+                        send={() => {
+                            createMessage();
                         }}
-                        onFocus={() => {
-                            setButtonHidden(true);
+                        setText={(text) => {
+                            setContent(text);
                         }}
-                        // onPressEnter={(e) => {
-                        //     e.preventDefault();
-                        //     createMessage();
-                        //     pageScroll('comment');
-                        // }}
-                        onKeyDown={handleKeyDown}
-                        value={text}
+                        customUpload={(file) => {
+
+                        }}
                     />
-                    <div className={Style.btn}>
-                        <Button
-                            type="primary"
-                            disabled={!text}
-                            onClick={() => {
-                                createMessage();
-                                pageScroll('comment');
-                            }}
-                        >
-                            发送
-                        </Button>
-                    </div>
-                </div>
+                )}
             </div>
         </div>
-    )
+    );
 }

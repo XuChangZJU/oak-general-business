@@ -260,6 +260,18 @@ const i18ns: I18n[] = [
         }
     },
     {
+        id: "7c6300b665cdc65858a529c9d4c46d24",
+        namespace: "oak-general-business-c-sessionMessage-upsert",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/sessionMessage/upsert",
+        data: {
+            "placeholder": "Enter 发送，Shift + Enter换行",
+            "send": "发送",
+            "enterContent": "请输入内容"
+        }
+    },
+    {
         id: "ded171ed67640a148a4a2cc51470cf69",
         namespace: "oak-general-business-c-system-application",
         language: "zh-CN",

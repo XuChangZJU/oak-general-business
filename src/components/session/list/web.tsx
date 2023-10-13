@@ -7,13 +7,16 @@ import classNames from 'classnames';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 
+
+type Session = EntityDict['session']['Schema'];
+
 export default function Render(
     props: WebComponentProps<
         EntityDict,
         'session',
         true,
         {
-            sessions: EntityDict['session']['Schema'][];
+            sessions: Partial<Session & { name: string }>[];
             selectedSessionId: string;
             entityFilter: object;
         },
@@ -24,12 +27,7 @@ export default function Render(
     >
 ) {
     const { data, methods } = props;
-    const {
-        sessions,
-        selectedSessionId,
-        oakFullpath,
-        entityFilter,
-    } = data;
+    const { sessions, selectedSessionId, oakFullpath, entityFilter } = data;
     const { navigateToMessage, setSelectedSessionId } = methods;
 
     return (
@@ -40,10 +38,10 @@ export default function Render(
                     number={unReadConversation}
                     clear={clearUnRead}
                 /> */}
-                {sessions?.map((session: any, index: number) => {
+                {sessions?.map((session, index: number) => {
                     return (
                         <SessionCell
-                            entityFilter={entityFilter}
+                            isEntity={entityFilter ? true : false}
                             selectedId={selectedSessionId}
                             name={session?.name}
                             onSelect={(id: string) => {
