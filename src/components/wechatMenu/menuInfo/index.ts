@@ -106,37 +106,20 @@ export default OakComponent({
         },
         async getMaterialImgAndVoice(type: 'image' | 'voice', mediaId: string) {
             const { applicationId } = this.props;
-            return new Promise<
-                | string
-                | ArrayBuffer
-                | PromiseLike<string | ArrayBuffer | null>
-                | null
-                | undefined
-            >((resolve, reject) => {
-                this.features.wechatMenu
-                    .getMaterial({
-                        applicationId: applicationId!,
-                        type,
-                        mediaId,
-                    })
-                    .then((file) => {
-                        let reader = new FileReader();
-                        reader.readAsDataURL(file as unknown as Blob);
-                        reader.onload = function (e) {
-                            resolve(e.target?.result);
-                        };
-                    })
-                    .catch((error) => {
-                        reject(error);
-                    });
+            const result = await this.features.wechatMenu.getMaterial({
+                applicationId: applicationId!,
+                mediaId,
+                isPermanent: true,
             });
+
+            return `data:image/png;base64,${result}`;
         },
         async getMaterialVideo(mediaId: string) {
             const { applicationId } = this.props;
             const result = await this.features.wechatMenu.getMaterial({
                 applicationId: applicationId!,
-                type: 'video',
                 mediaId,
+                isPermanent: true,
             });
             if (result && result.down_url) {
                 return { url: result.down_url, media_id: mediaId };
@@ -266,8 +249,14 @@ export default OakComponent({
             const { deleteMenu } = this.props;
             deleteMenu!();
         },
-        getImg(url: string) {
-            return this.features.locales.makeBridgeUrl(url);
+        getImg(str: string) {
+            if (!str) {
+                return '';
+            }
+            if (str.includes('data:image/png;')) {
+                return str;
+            }
+            return this.features.locales.makeBridgeUrl(str);
         },
     },
 });

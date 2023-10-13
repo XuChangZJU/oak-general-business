@@ -3,7 +3,7 @@ export type MediaVideoDescription = {
     title: string;
     introduction: string;
 };
-export type MenuType = 'image' | 'video' | 'voice' | 'news';
+export type MaterialType = 'image' | 'video' | 'voice' | 'news';
 export type ReplyType = 'text' | 'image' | 'video' | 'voice';
 export type Tag = {
     id: number;

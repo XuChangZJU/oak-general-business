@@ -39,7 +39,8 @@ export const desc = {
             type: "varchar",
             params: {
                 length: 32
-            }
+            },
+            ref: ["user"]
         },
         entityId: {
             type: "varchar",

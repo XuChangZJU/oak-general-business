@@ -20,10 +20,10 @@ export default OakComponent({
             filter() {
                 const { applicationId } = this.props;
                 return {
-                    applicationId
+                    applicationId,
                 };
             },
-        }
+        },
     ],
     properties: {
         applicationId: '',
@@ -41,7 +41,7 @@ export default OakComponent({
                 },
                 filter: {
                     applicationId,
-                }
+                },
             });
             if (wechatPublicAutoReply.length < 1) {
                 this.addItem({
@@ -64,34 +64,27 @@ export default OakComponent({
         },
         async getMaterialImgAndVoice(type, mediaId) {
             const { applicationId } = this.props;
-            return new Promise((resolve, reject) => {
-                this.features.wechatMenu
-                    .getMaterial({
-                    applicationId: applicationId,
-                    type,
-                    mediaId,
-                })
-                    .then((file) => {
-                    let reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = function (e) {
-                        resolve(e.target?.result);
-                    };
-                })
-                    .catch((error) => {
-                    reject(error);
-                });
+            const result = await this.features.wechatMenu.getMaterial({
+                applicationId: applicationId,
+                mediaId,
+                isPermanent: true,
             });
+            return `data:image/png;base64,${result}`;
         },
         async getMaterialVideo(mediaId) {
             const { applicationId } = this.props;
             const result = await this.features.wechatMenu.getMaterial({
                 applicationId: applicationId,
-                type: 'video',
                 mediaId,
+                isPermanent: true,
             });
             if (result && result.down_url) {
-                return { title: result.title, description: result.title, mediaId: mediaId, url: result.down_url };
+                return {
+                    title: result.title,
+                    description: result.title,
+                    mediaId: mediaId,
+                    url: result.down_url,
+                };
             }
         },
     },

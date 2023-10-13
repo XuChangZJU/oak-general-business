@@ -1,5 +1,6 @@
 export const ActionCascadePathGraph = [
     ["account", "", "account", true],
+    ["address", "user", "address", false],
     ["changePasswordTemp", "user", "changePasswordTemp", false],
     ["email", "user", "email", false],
     ["extraFile", "user", "extraFile", false],

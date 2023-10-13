@@ -16,6 +16,10 @@ import {
     getApplication,
     signatureJsSDK,
     uploadWechatMedia,
+    batchGetArticle,
+    getArticle,
+    batchGetMaterialList,
+    getMaterial,
 } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { updateStyle } from './style2';
@@ -33,10 +37,6 @@ import {
     createConditionalMenu,
     deleteConditionalMenu,
     deleteMenu,
-    batchGetArticle,
-    getArticle,
-    batchGetMaterialList,
-    getMaterial,
 } from './wechatMenu';
 import {
     createTag,

@@ -21,12 +21,12 @@ export default OakComponent({
     filters: [
         {
             filter() {
-                const { applicationId } = this.props
+                const { applicationId } = this.props;
                 return {
-                    applicationId
-                }
+                    applicationId,
+                };
             },
-        }
+        },
     ],
     properties: {
         applicationId: '',
@@ -37,73 +37,61 @@ export default OakComponent({
     lifetimes: {
         async ready() {
             const { applicationId } = this.props;
-            const { data: wechatPublicAutoReply } = await this.features.cache.refresh(
-                'wechatPublicAutoReply',
-                {
+            const { data: wechatPublicAutoReply } =
+                await this.features.cache.refresh('wechatPublicAutoReply', {
                     data: {
                         id: 1,
                         applicationId: 1,
                     },
                     filter: {
                         applicationId,
-                    }
-                }
-            );
+                    },
+                });
             if (wechatPublicAutoReply.length < 1) {
                 this.addItem({
                     applicationId: applicationId!,
                     type: 'text',
                     event: 'subscribe',
-                })
+                });
             }
         },
     },
     methods: {
         changeType(type: ReplyType) {
             const { id } = this.state;
-            this.updateItem({
-                type,
-            }, id);
+            this.updateItem(
+                {
+                    type,
+                },
+                id
+            );
         },
         async save() {
             await this.execute();
         },
         async getMaterialImgAndVoice(type: 'image' | 'voice', mediaId: string) {
             const { applicationId } = this.props;
-            return new Promise<
-                | string
-                | ArrayBuffer
-                | PromiseLike<string | ArrayBuffer | null>
-                | null
-                | undefined
-            >((resolve, reject) => {
-                this.features.wechatMenu
-                    .getMaterial({
-                        applicationId: applicationId!,
-                        type,
-                        mediaId,
-                    })
-                    .then((file) => {
-                        let reader = new FileReader();
-                        reader.readAsDataURL(file as unknown as Blob);
-                        reader.onload = function (e) {
-                            resolve(e.target?.result);
-                        };
-                    })
-                    .catch((error) => {
-                        reject(error);
-                    });
+            const result = await this.features.wechatMenu.getMaterial({
+                applicationId: applicationId!,
+                mediaId,
+                isPermanent: true,
             });
+            return `data:image/png;base64,${result}`;
         },
         async getMaterialVideo(mediaId: string) {
             const { applicationId } = this.props;
             const result = await this.features.wechatMenu.getMaterial({
                 applicationId: applicationId!,
-                type: 'video',
                 mediaId,
+                isPermanent: true,
             });
             if (result && result.down_url) {
-                return { title: result.title, description: result.title, mediaId: mediaId , url: result.down_url };
+                return {
+                    title: result.title,
+                    description: result.title,
+                    mediaId: mediaId,
+                    url: result.down_url,
+                };
             }
         },
     },

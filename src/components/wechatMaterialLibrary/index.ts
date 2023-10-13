@@ -1,9 +1,12 @@
-import { MenuType, MediaVideoDescription } from '../../types/WeChat';
+import {
+    MediaVideoDescription,
+    MaterialType,
+} from '../../types/WeChat';
 
 export default OakComponent({
     isList: false,
     properties: {
-        type: '' as MenuType,
+        type: '' as MaterialType,
         getMenuContent: (menuContent: any) => undefined as void,
         applicationId: '',
     },
@@ -118,7 +121,6 @@ export default OakComponent({
             const { applicationId } = this.props;
             const { type } = this.props;
             const result = await this.features.wechatMenu.createMaterial({
-                appType: 'wechatPublic',
                 applicationId: applicationId!,
                 type: type as 'image' | 'voice' | 'video',
                 file: media,
@@ -138,27 +140,22 @@ export default OakComponent({
         },
         async getMaterialImg(mediaId: string) {
             const { applicationId } = this.props;
-            const imgFile = await this.features.wechatMenu.getMaterial({
+            const result = await this.features.wechatMenu.getMaterial({
                 applicationId: applicationId!,
-                type: 'image',
                 mediaId,
+                isPermanent: true,
             });
-            return new Promise<
-                | string
-                | ArrayBuffer
-                | PromiseLike<string | ArrayBuffer | null>
-                | null
-                | undefined
-            >((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(imgFile);
-                reader.onload = function (e) {
-                    resolve(e.target?.result);
-                };
-            });
+
+            return `data:image/png;base64,${result}`;
         },
-        getImg(url: string) {
-            return this.features.locales.makeBridgeUrl(url);
+        getImg(str: string) {
+            if (!str) {
+                return '';
+            }
+            if (str.includes('data:image/png;')) {
+                return str;
+            }
+            return this.features.locales.makeBridgeUrl(str);
         },
     },
 });

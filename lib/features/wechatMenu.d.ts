@@ -6,7 +6,7 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { Cache } from 'oak-frontend-base/es/features/cache';
 import { LocalStorage } from 'oak-frontend-base/es/features/localStorage';
-import { MediaType, MediaVideoDescription, MenuType } from '../types/WeChat';
+import { MediaType, MediaVideoDescription, MaterialType } from '../types/WeChat';
 export declare class WechatMenu<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>> extends Feature {
     private cache;
     private storage;
@@ -45,7 +45,6 @@ export declare class WechatMenu<ED extends EntityDict, Cxt extends BackendRuntim
         articleId: string;
     }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["getArticle"]>>;
     createMaterial(params: {
-        appType: string;
         applicationId: string;
         type: MediaType;
         file: File;
@@ -54,13 +53,18 @@ export declare class WechatMenu<ED extends EntityDict, Cxt extends BackendRuntim
     }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["uploadWechatMedia"]>>;
     batchGetMaterialList(params: {
         applicationId: string;
-        type: MenuType;
+        type: MaterialType;
         offset?: number;
         count: number;
     }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["batchGetMaterialList"]>>;
+    /**
+     * 获取素材详情
+     * @param params
+     * @returns
+     */
     getMaterial(params: {
         applicationId: string;
-        type: MenuType;
         mediaId: string;
-    }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["getMaterial"]>>;
+        isPermanent?: boolean;
+    }): Promise<string | ReturnType<(AD & CommonAspectDict<ED, Cxt>)["getMaterial"]>>;
 }
