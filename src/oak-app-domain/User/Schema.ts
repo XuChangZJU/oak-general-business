@@ -27,6 +27,7 @@ import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 import * as ExtraFile from "../ExtraFile/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
+import * as Address from "../Address/Schema";
 export type OpSchema = EntityShape & {
     name?: String<16> | null;
     nickname?: String<64> | null;
@@ -100,6 +101,8 @@ export type Schema = EntityShape & {
     extraFile$entity$$aggr?: AggregationResult<ExtraFile.Schema>;
     wechatQrCode$entity?: Array<WechatQrCode.Schema>;
     wechatQrCode$entity$$aggr?: AggregationResult<WechatQrCode.Schema>;
+    address$entity?: Array<Address.Schema>;
+    address$entity$$aggr?: AggregationResult<Address.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -143,6 +146,7 @@ type AttrFilter = {
     operEntity$entity: OperEntity.Filter & SubQueryPredicateMetadata;
     extraFile$entity: ExtraFile.Filter & SubQueryPredicateMetadata;
     wechatQrCode$entity: WechatQrCode.Filter & SubQueryPredicateMetadata;
+    address$entity: Address.Filter & SubQueryPredicateMetadata;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string> & FulltextFilter>;
 export type Projection = {
@@ -297,6 +301,12 @@ export type Projection = {
     wechatQrCode$entity$$aggr?: WechatQrCode.Aggregation & {
         $entity: "wechatQrCode";
     };
+    address$entity?: Address.Selection & {
+        $entity: "address";
+    };
+    address$entity$$aggr?: Address.Aggregation & {
+        $entity: "address";
+    };
 } & Partial<ExprOp<OpAttr | string>>;
 type UserIdProjection = OneOf<{
     id: number;
@@ -378,6 +388,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "refId">> & (({
     operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     extraFile$entity?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">>>;
     wechatQrCode$entity?: OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, Omit<WechatQrCode.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">> | OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, Omit<WechatQrCode.Filter, "entity" | "entityId">>>;
+    address$entity?: OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "entity" | "entityId">, Omit<Address.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Address.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Address.CreateOperationData, "entity" | "entityId">> | OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "entity" | "entityId">, Omit<Address.Filter, "entity" | "entityId">>>;
 };
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -418,6 +429,7 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "refId">> & (({
     operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     extraFile$entity?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">> | OakOperation<ExtraFile.RemoveOperation["action"], Omit<ExtraFile.RemoveOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">> | OakOperation<ExtraFile.RemoveOperation["action"], Omit<ExtraFile.RemoveOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">>>;
     wechatQrCode$entity?: OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, Omit<WechatQrCode.Filter, "entity" | "entityId">> | OakOperation<WechatQrCode.RemoveOperation["action"], Omit<WechatQrCode.RemoveOperationData, "entity" | "entityId">, Omit<WechatQrCode.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">> | OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, Omit<WechatQrCode.Filter, "entity" | "entityId">> | OakOperation<WechatQrCode.RemoveOperation["action"], Omit<WechatQrCode.RemoveOperationData, "entity" | "entityId">, Omit<WechatQrCode.Filter, "entity" | "entityId">>>;
+    address$entity?: OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "entity" | "entityId">, Omit<Address.Filter, "entity" | "entityId">> | OakOperation<Address.RemoveOperation["action"], Omit<Address.RemoveOperationData, "entity" | "entityId">, Omit<Address.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Address.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Address.CreateOperationData, "entity" | "entityId">> | OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "entity" | "entityId">, Omit<Address.Filter, "entity" | "entityId">> | OakOperation<Address.RemoveOperation["action"], Omit<Address.RemoveOperationData, "entity" | "entityId">, Omit<Address.Filter, "entity" | "entityId">>>;
 };
 export type UpdateOperation = OakOperation<"update" | ParticularAction | RelationAction | string, UpdateOperationData, Filter, Sorter>;
 export type RemoveOperationData = {} & (({

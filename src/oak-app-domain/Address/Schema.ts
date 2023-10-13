@@ -7,6 +7,7 @@ import { String, Int, Datetime, Image, Boolean, Text } from "oak-domain/lib/type
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 import * as Area from "../Area/Schema";
+import * as User from "../User/Schema";
 export type OpSchema = EntityShape & {
     detail: String<32>;
     areaId: ForeignKey<"area">;
@@ -14,7 +15,7 @@ export type OpSchema = EntityShape & {
     name: String<32>;
     default: Boolean;
     remark: Text;
-    entity?: String<32> | null;
+    entity?: ("user" | string) | null;
     entityId?: String<64> | null;
 };
 export type OpAttr = keyof OpSchema;
@@ -25,9 +26,10 @@ export type Schema = EntityShape & {
     name: String<32>;
     default: Boolean;
     remark: Text;
-    entity?: String<32> | null;
+    entity?: ("user" | string) | null;
     entityId?: String<64> | null;
     area: Area.Schema;
+    user?: User.Schema;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -43,8 +45,9 @@ type AttrFilter = {
     name: Q_StringValue;
     default: Q_BooleanValue;
     remark: Q_StringValue;
-    entity: Q_StringValue;
+    entity: Q_EnumValue<"user" | string>;
     entityId: Q_StringValue;
+    user: User.Filter;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export type Projection = {
@@ -63,12 +66,16 @@ export type Projection = {
     remark?: number;
     entity?: number;
     entityId?: number;
+    user?: User.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
 type AddressIdProjection = OneOf<{
     id: number;
 }>;
 type AreaIdProjection = OneOf<{
     areaId: number;
+}>;
+type UserIdProjection = OneOf<{
+    entityId: number;
 }>;
 export type SortAttr = {
     id: number;
@@ -97,6 +104,8 @@ export type SortAttr = {
 } | {
     entityId: number;
 } | {
+    user: User.SortAttr;
+} | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
 export type SortNode = {
@@ -110,6 +119,17 @@ export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "areaId">> & ({
     areaId: ForeignKey<"area">;
 }) & ({
+    entity?: never;
+    entityId?: never;
+    user: User.CreateSingleOperation;
+} | {
+    entity: "user";
+    entityId: ForeignKey<"User">;
+    user: User.UpdateOperation;
+} | {
+    entity?: "user";
+    entityId?: ForeignKey<"User">;
+} | {
     entity?: string;
     entityId?: string;
     [K: string]: any;
@@ -117,17 +137,29 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "areaId">> & ({
+export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "areaId">> & ({
     area?: never;
     areaId?: ForeignKey<"area"> | null;
+}) & ({
+    user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
+    entityId?: never;
+    entity?: never;
+} | {
+    entity?: ("user" | string) | null;
+    entityId?: ForeignKey<"User"> | null;
 }) & {
     [k: string]: any;
 };
 export type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
-export type RemoveOperationData = {};
+export type RemoveOperationData = {} & ({
+    user?: User.UpdateOperation | User.RemoveOperation;
+} | {
+    [k: string]: any;
+});
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export type AreaIdSubQuery = Selection<AreaIdProjection>;
+export type UserIdSubQuery = Selection<UserIdProjection>;
 export type AddressIdSubQuery = Selection<AddressIdProjection>;
 export type EntityDef = {
     Schema: Schema;

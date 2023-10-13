@@ -4,6 +4,7 @@ import { Schema as ExtraFile } from './ExtraFile';
 import { Schema as WechatQrCode } from './WechatQrCode';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
+import { Schema as Address } from './Address';
 
 export interface Schema extends EntityShape {
     name?: String<16>;
@@ -18,6 +19,7 @@ export interface Schema extends EntityShape {
     files: Array<ExtraFile>;
     codes: Array<WechatQrCode>;
     isRoot?: Boolean;
+    addresses?: Address[];
 };
 
 type IdAction = 'verify' | 'accept' | 'reject';
@@ -69,6 +71,7 @@ const entityDesc: EntityDesc<Schema, Action, '', {
                 idState: '身份验证状态',
                 codes: '微信分享二维码',
                 isRoot: '是否超级用户',
+                addresses: '收货地址',
             },
             action: {
                 activate: '激活',
