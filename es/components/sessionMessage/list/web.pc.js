@@ -5,9 +5,9 @@ import Header from '../../../components/session/forMessage';
 import Style from './web.module.less';
 export default function Render(props) {
     const { data, methods } = props;
-    const { sessionId, isEntity, sessionMessageList, oakFullpath, text, buttonHidden, sessionMessageId, entityDisplay, entityProjection, isWeChat, } = data;
-    const { customUpload, setContent, pageScroll, createMessage, } = methods;
-    return (_jsxs("div", { className: Style.container, children: [_jsx(Header, { sessionId: sessionId, isEntity: isEntity, oakPath: '$$sessionMessage/list-session/header', oakAutoUnmount: true, entityDisplay: entityDisplay, entityProjection: entityProjection }), _jsx("div", { className: Style.inner, id: "comment", children: sessionMessageList
+    const { sessionId, isEntity, sessionMessages, oakFullpath, sessionMessageId, entityDisplay, entityProjection, } = data;
+    const { customUpload, setContent, pageScroll, sendMessage } = methods;
+    return (_jsxs("div", { className: Style.container, children: [_jsx(Header, { sessionId: sessionId, isEntity: isEntity, oakPath: '$$sessionMessage/list-session/header', oakAutoUnmount: true, entityDisplay: entityDisplay, entityProjection: entityProjection }), _jsx("div", { className: Style.inner, id: "comment", children: sessionMessages
                     ?.sort((a, b) => a.$$createAt$$ -
                     b.$$createAt$$)
                     .map((sessionMessage, index) => {
@@ -17,9 +17,10 @@ export default function Render(props) {
                 }) }), _jsx("div", { className: Style.bottom, id: "bottom", children: sessionMessageId && (_jsx(MessageUpsert, { isEntity: isEntity, oakId: sessionMessageId, oakPath: oakFullpath
                         ? `${oakFullpath}.${sessionMessageId}`
                         : '', oakAutoUnmount: true, send: () => {
-                        createMessage();
+                        sendMessage();
                     }, setText: (text) => {
                         setContent(text);
                     }, customUpload: (file) => {
+                        customUpload(file);
                     } }, `MessageUpsert_${sessionMessageId}`)) })] }));
 }

@@ -2,11 +2,6 @@ import { DATA_SUBSCRIBER_KEYS } from '../../../config/constants';
 import { EntityDict } from '../../../oak-app-domain';
 import { RowWithActions } from 'oak-frontend-base';
 
-interface BaseAttrDict {
-    [E: string]: any;
-}
-
-
 export default OakComponent({
     entity: 'session',
     projection() {

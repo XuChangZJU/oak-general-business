@@ -113,7 +113,7 @@ export default OakComponent({
                 customUpload(file);
             }
         },
-        async sendData() {
+        async sendMessage() {
             const { send } = this.props;
             const { text } = this.state;
             if (!text) {

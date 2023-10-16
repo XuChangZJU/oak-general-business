@@ -11,8 +11,6 @@ import { urlSafeBase64Encode } from '../sign';
 import { OakUploadException } from '../../types/Exception';
 import { OakExternalException } from 'oak-domain';
 
-const QiniuSearchUrl = 'https://rs.qiniuapi.com/stat/EncodedEntryURI';
-
 export default class Qiniu implements Cos<ED, BRC, FRC> {
     name = 'qiniu';
 

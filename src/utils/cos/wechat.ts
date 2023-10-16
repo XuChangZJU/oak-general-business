@@ -29,24 +29,6 @@ export default class Wechat implements Cos<ED, BRC, FRC> {
         //微信上传素材库 不需要
     }
 
-    private getServerUrl() {
-        const hostname = window.location.hostname;
-        const protocol = window.location.protocol;
-
-        const port = process.env.NODE_ENV === 'development' ? 3001 : undefined;
-        const apiPath =
-            process.env.NODE_ENV === 'development' ? undefined : '/oak-api';
-        let serverUrl = `${protocol}//${hostname}`;
-        if (typeof port === 'number') {
-            serverUrl += `:${port}`;
-        }
-        if (apiPath) {
-            assert(apiPath.startsWith('/'), 'apiPath前缀必须存在/');
-            serverUrl += apiPath;
-        }
-        return serverUrl;
-    }
-
     async upload(
         extraFile: OpSchema,
         uploadFn: (
@@ -59,13 +41,16 @@ export default class Wechat implements Cos<ED, BRC, FRC> {
         file: string | File
     ) {
         let result: response;
+        const { applicationId } = extraFile;
         try {
-            const url = this.getServerUrl();
+            const url = '/uploadWechatMedia';
             result = (await uploadFn(
                 file,
                 'file',
-                `${url}/uploadWechatMedia`,
-                {},
+                url,
+                {
+                    applicationId,
+                },
                 true
             )) as response;
         } catch (err) {

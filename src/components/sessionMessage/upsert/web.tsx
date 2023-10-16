@@ -26,7 +26,7 @@ export default function render(
         },
         {
             setContent: (str: string) => void;
-            sendData: () => void;
+            sendMessage: () => void;
             upload: (file: UploadFile) => void;
         }
     >
@@ -42,13 +42,13 @@ export default function render(
         sessionId,
         isWeChat,
     } = data;
-    const { t, setContent, sendData, upload } = methods;
+    const { t, setContent, sendMessage, upload } = methods;
     const textareaRef = useRef(null);
 
     const handleKeyDown = (event: any) => {
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
-            sendData();
+            sendMessage();
         }
     };
 
@@ -87,7 +87,7 @@ export default function render(
                         type="primary"
                         disabled={!text}
                         onClick={() => {
-                            sendData();
+                            sendMessage();
                         }}
                     >
                         {t('send')}

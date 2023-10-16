@@ -89,7 +89,9 @@ export default function Render(
                         entityDisplay={entityDisplay}
                         entityProjection={entityProjection}
                         oakPath={
-                            oakFullpath ? `$$sessionMessage/list` : undefined
+                            oakFullpath
+                                ? `$$session/list-SessionMessageList`
+                                : undefined
                         }
                     />
                 )}

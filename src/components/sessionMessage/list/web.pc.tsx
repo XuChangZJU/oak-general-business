@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Input, Upload } from 'antd';
-import { PictureOutlined } from '@ant-design/icons';
+import { UploadFile } from 'antd/es/upload/interface';
+
 import SessionMessageCell from '../../../components/sessionMessage/cell';
 import MessageUpsert from '../../../components/sessionMessage/upsert';
 import Header from '../../../components/session/forMessage';
@@ -22,7 +23,7 @@ export default function Render(
         'sessionMessage',
         true,
         {
-            sessionMessageList: EntityDict['sessionMessage']['Schema'][];
+            sessionMessages: EntityDict['sessionMessage']['Schema'][];
             text: string;
             buttonHidden: boolean;
             sessionId: string;
@@ -37,10 +38,10 @@ export default function Render(
             isWeChat: boolean;
         },
         {
-            customUpload: (file: customFile) => void;
+            customUpload: (file: UploadFile) => void;
             setContent: (text: string) => void;
             pageScroll: (id: string) => void;
-            createMessage: () => void;
+            sendMessage: () => void;
         }
     >
 ) {
@@ -48,21 +49,13 @@ export default function Render(
     const {
         sessionId,
         isEntity,
-        sessionMessageList,
+        sessionMessages,
         oakFullpath,
-        text,
-        buttonHidden,
         sessionMessageId,
         entityDisplay,
         entityProjection,
-        isWeChat,
     } = data;
-    const {
-        customUpload,
-        setContent,
-        pageScroll,
-        createMessage,
-    } = methods;
+    const { customUpload, setContent, pageScroll, sendMessage } = methods;
 
     return (
         <div className={Style.container}>
@@ -75,7 +68,7 @@ export default function Render(
                 entityProjection={entityProjection}
             />
             <div className={Style.inner} id="comment">
-                {sessionMessageList
+                {sessionMessages
                     ?.sort(
                         (a, b) =>
                             (a.$$createAt$$ as number) -
@@ -110,13 +103,13 @@ export default function Render(
                         }
                         oakAutoUnmount={true}
                         send={() => {
-                            createMessage();
+                            sendMessage();
                         }}
                         setText={(text) => {
                             setContent(text);
                         }}
                         customUpload={(file) => {
-
+                            customUpload(file);
                         }}
                     />
                 )}

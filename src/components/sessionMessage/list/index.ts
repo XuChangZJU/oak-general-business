@@ -1,8 +1,6 @@
 import { EntityDict } from '../../../oak-app-domain';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { DATA_SUBSCRIBER_KEYS } from '../../../config/constants';
-import { getConfig } from '../../../utils/getContextConfig';
-import { QiniuCosConfig } from '../../../types/Config';
 import { RowWithActions } from 'oak-frontend-base';
 
 export default OakComponent({
@@ -69,9 +67,6 @@ export default OakComponent({
             this.getSessionInfo();
         },
         detached() {
-            if (this.timer) {
-                clearInterval((this as any).timer);
-            }
             const { sessionId } = this.props;
             this.unSubData([
                 `${DATA_SUBSCRIBER_KEYS.sessionMessageList}-${sessionId}`,
@@ -95,9 +90,6 @@ export default OakComponent({
                         // 如果sessionId变了需要重新刷新下
                         this.refresh();
                         this.removeItem(sessionMessageId);
-                        this.setState({
-                            text: '',
-                        });
                         this.createItem();
                         this.pageScroll('comment');
                     }
@@ -105,17 +97,20 @@ export default OakComponent({
             }
         },
     },
-    formData({ data: sessionMessageList = [], features }) {
-        const sessionMessageType = sessionMessageList?.find(
-            (ele) => ele.$$createAt$$ === 1
-        )?.type;
-        this.getUserLastMessage();
-        return {
-            sessionMessageList: sessionMessageList?.filter(
+    formData({ data, features }) {
+        const sessionMessages = data?.filter(
                 (ele) => ele.$$createAt$$ !== 1
-            ),
-            num: sessionMessageList?.length,
-            sessionMessageType,
+            )
+ 
+        // 获取用户最后一条sessionMessage
+        const userLastMessage = this.getUserLastMessage() as RowWithActions<
+            EntityDict,
+            'session'
+        >[];
+        return {
+            sessionMessages,
+            num: data?.length,
+            userLastMessage,
         };
     },
     properties: {
@@ -186,8 +181,7 @@ export default OakComponent({
                 ],
                 count: 1,
             });
-            const isWeChat = !!lastMessage?.wechatUserId;
-            this.setState({ isWeChat });
+            return lastMessage;
         },
         setContent(text: string) {
             const { sessionMessageId } = this.state;
@@ -276,25 +270,16 @@ export default OakComponent({
             });
         },
 
-        async createMessage() {
+        async sendMessage() {
             const { text, wechatUserId, sessionMessageId } = this.state;
             const { sessionId, isEntity } = this.props;
             const userId = this.features.token.getUserId();
             const applicationId = this.features.application.getApplicationId();
-   
-            // this.addItem({
-            //     applicationId,
-            //     text,
-            //     userId,
-            //     wechatUserId,
-            //     sessionId: sessionId,
-            //     type: 'text',
-            //     createTime: Date.now(),
-            //     aaoe: isEntity,
-            // } as EntityDict['sessionMessage']['CreateSingle']['data']);
+
             this.updateItem(
                 {
                     createTime: Date.now(),
+                    type: 'text',
                 },
                 sessionMessageId
             );
@@ -309,27 +294,25 @@ export default OakComponent({
             type: string;
             originFileObj: File;
         }) {
+            const { sessionMessageId, userLastMessage } = this.state;
             const { sessionId, isEntity } = this.props;
 
-            // TS 语法
-            // file 即选中的文件
             const { name, size, type, originFileObj } = file;
-            const applicationId = this.features.application.getApplicationId();
+            let applicationId = this.features.application.getApplicationId();
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
-            let bucket2 = '';
-            if (!bucket2) {
-                const context = this.features.cache.begin();
-                const { config } = getConfig(context, 'Cos', 'qiniu');
-                this.features.cache.commit();
 
-                const { defaultBucket } = config as QiniuCosConfig;
-                bucket2 = defaultBucket!;
+            let origin = 'qiniu';
+            //需要获取用户方回复的applicationId
+            if (isEntity && userLastMessage?.wechatUserId) {
+                applicationId = userLastMessage?.applicationId;
+
+                origin = 'wechat';
             }
+
             const extraFile = {
                 applicationId,
-                bucket: bucket2,
-                origin: 'qiniu',
+                origin,
                 type: 'image',
                 tag1: 'image',
                 filename,
@@ -337,26 +320,25 @@ export default OakComponent({
                 size,
                 extension,
                 entity: 'sessionMessage',
+                objectId: generateNewId(),
                 id: generateNewId(),
             } as EntityDict['extraFile']['CreateSingle']['data'];
 
             try {
-                const userId = this.features.token.getUserId();
-                this.addItem({
-                    id: generateNewId(),
-                    applicationId,
-                    sessionId,
-                    createTime: Date.now(),
-                    aaoe: isEntity,
-                    type: 'image',
-                    extraFile$entity: [
-                        {
-                            id: generateNewId(),
-                            action: 'create',
-                            data: extraFile,
-                        },
-                    ],
-                } as EntityDict['sessionMessage']['CreateSingle']['data']);
+                this.updateItem(
+                    {
+                        createTime: Date.now(),
+                        type: 'image',
+                        extraFile$entity: [
+                            {
+                                id: generateNewId(),
+                                action: 'create',
+                                data: extraFile,
+                            },
+                        ],
+                    },
+                    sessionMessageId
+                );
                 this.features.extraFile2.addLocalFile(
                     extraFile?.id,
                     originFileObj
@@ -367,5 +349,79 @@ export default OakComponent({
                 throw err;
             }
         },
+
+        async createMessage() {
+            const { text, wechatUserId } = this.state;
+            const { sessionId, isEntity } = this.props;
+            const userId = this.features.token.getUserId();
+            const applicationId = this.features.application.getApplicationId();
+
+            this.addItem({
+                applicationId,
+                text,
+                userId,
+                wechatUserId,
+                sessionId: sessionId,
+                type: 'text',
+                createTime: Date.now(),
+                aaoe: isEntity,
+            } as EntityDict['sessionMessage']['CreateSingle']['data']);
+            await this.execute(undefined, false);
+            this.pageScroll('comment');
+        },
+
+        // async customUpload(file: {
+        //     name: string;
+        //     size: number;
+        //     type: string;
+        //     originFileObj: File;
+        // }) {
+        //     const { sessionId, isEntity } = this.props;
+
+        //     const { name, size, type, originFileObj } = file;
+        //     const applicationId = this.features.application.getApplicationId();
+        //     const extension = name.substring(name.lastIndexOf('.') + 1);
+        //     const filename = name.substring(0, name.lastIndexOf('.'));
+
+        //     //需要获取用户方回复的applicationId
+
+        //     const extraFile = {
+        //         applicationId,
+        //         origin: 'qiniu',
+        //         type: 'image',
+        //         tag1: 'image',
+        //         filename,
+        //         fileType: type,
+        //         size,
+        //         extension,
+        //         entity: 'sessionMessage',
+        //         id: generateNewId(),
+        //     } as EntityDict['extraFile']['CreateSingle']['data'];
+
+        //     try {
+        //         this.addItem({
+        //             applicationId,
+        //             sessionId,
+        //             createTime: Date.now(),
+        //             aaoe: isEntity,
+        //             type: 'image',
+        //             extraFile$entity: [
+        //                 {
+        //                     id: generateNewId(),
+        //                     action: 'create',
+        //                     data: extraFile,
+        //                 },
+        //             ],
+        //         } as EntityDict['sessionMessage']['CreateSingle']['data']);
+        //         this.features.extraFile2.addLocalFile(
+        //             extraFile?.id,
+        //             originFileObj
+        //         );
+        //         await this.execute(undefined, false);
+        //         this.features.extraFile2.upload(extraFile?.id);
+        //     } catch (err) {
+        //         throw err;
+        //     }
+        // },
     },
 });

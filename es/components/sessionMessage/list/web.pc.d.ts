@@ -1,13 +1,8 @@
+import { UploadFile } from 'antd/es/upload/interface';
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
-interface customFile {
-    name: string;
-    size: number;
-    type: string;
-    originFileObj: File;
-}
 export default function Render(props: WebComponentProps<EntityDict, 'sessionMessage', true, {
-    sessionMessageList: EntityDict['sessionMessage']['Schema'][];
+    sessionMessages: EntityDict['sessionMessage']['Schema'][];
     text: string;
     buttonHidden: boolean;
     sessionId: string;
@@ -17,9 +12,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'sessionMess
     entityProjection: object;
     isWeChat: boolean;
 }, {
-    customUpload: (file: customFile) => void;
+    customUpload: (file: UploadFile) => void;
     setContent: (text: string) => void;
     pageScroll: (id: string) => void;
-    createMessage: () => void;
+    sendMessage: () => void;
 }>): import("react/jsx-runtime").JSX.Element;
-export {};

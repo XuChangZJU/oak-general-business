@@ -176,7 +176,7 @@ const triggers: Trigger<
                             //微信发送客服消息
                             switch (msgType) {
                                 case 'text': {
-                                    wechatInstance.sendServeMessage({
+                                    await wechatInstance.sendServeMessage({
                                         openId: sessionMessage.wechatUser
                                             ?.openId!,
                                         type: msgType,

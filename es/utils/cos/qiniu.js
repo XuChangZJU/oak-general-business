@@ -2,7 +2,6 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { getConfig } from '../getContextConfig';
 import { OakUploadException } from '../../types/Exception';
 import { OakExternalException } from 'oak-domain';
-const QiniuSearchUrl = 'https://rs.qiniuapi.com/stat/EncodedEntryURI';
 export default class Qiniu {
     name = 'qiniu';
     autoInform() {

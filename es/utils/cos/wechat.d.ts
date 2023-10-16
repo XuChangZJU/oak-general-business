@@ -6,7 +6,6 @@ export default class Wechat implements Cos<ED, BRC, FRC> {
     autoInform(): boolean;
     private formKey;
     formUploadMeta(extraFile: OpSchema, context: BRC): Promise<void>;
-    private getServerUrl;
     upload(extraFile: OpSchema, uploadFn: (file: File | string, name: string, // 文件的part name
     uploadUrl: string, // 上传的url
     formData: Record<string, any>, // 上传的其它part参数

@@ -14,6 +14,6 @@ export default function render(props: WebComponentProps<EntityDict, 'sessionMess
     isWeChat: string;
 }, {
     setContent: (str: string) => void;
-    sendData: () => void;
+    sendMessage: () => void;
     upload: (file: UploadFile) => void;
 }>): import("react/jsx-runtime").JSX.Element;

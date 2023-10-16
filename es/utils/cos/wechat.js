@@ -1,4 +1,3 @@
-import { assert } from 'oak-domain/lib/utils/assert';
 import { OakUploadException } from '../../types/Exception';
 export default class Wechat {
     name = 'wechat';
@@ -13,26 +12,14 @@ export default class Wechat {
     async formUploadMeta(extraFile, context) {
         //微信上传素材库 不需要
     }
-    getServerUrl() {
-        const hostname = window.location.hostname;
-        const protocol = window.location.protocol;
-        const port = process.env.NODE_ENV === 'development' ? 3001 : undefined;
-        const apiPath = process.env.NODE_ENV === 'development' ? undefined : '/oak-api';
-        let serverUrl = `${protocol}//${hostname}`;
-        if (typeof port === 'number') {
-            serverUrl += `:${port}`;
-        }
-        if (apiPath) {
-            assert(apiPath.startsWith('/'), 'apiPath前缀必须存在/');
-            serverUrl += apiPath;
-        }
-        return serverUrl;
-    }
     async upload(extraFile, uploadFn, file) {
         let result;
+        const { applicationId } = extraFile;
         try {
-            const url = this.getServerUrl();
-            result = (await uploadFn(file, 'file', `${url}/uploadWechatMedia`, {}, true));
+            const url = '/uploadWechatMedia';
+            result = (await uploadFn(file, 'file', url, {
+                applicationId,
+            }, true));
         }
         catch (err) {
             // 网络错误

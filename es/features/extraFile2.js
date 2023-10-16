@@ -50,6 +50,7 @@ export class ExtraFile2 extends Feature {
                 isBridge: 1,
                 uploadState: 1,
                 uploadMeta: 1,
+                applicationId: 1,
             },
             filter: {
                 id,
