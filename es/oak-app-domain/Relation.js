@@ -1,5 +1,6 @@
 export const ActionCascadePathGraph = [
     ["account", "", "account", true],
+    ["account", "user", "account", false],
     ["address", "user", "address", false],
     ["changePasswordTemp", "user", "changePasswordTemp", false],
     ["email", "user", "email", false],
@@ -29,6 +30,7 @@ export const ActionCascadePathGraph = [
     ["token", "player", "token", false],
     ["token", "wechatUser.user", "wechatUser", false],
     ["userEntityGrant", "account", "account", true],
+    ["userEntityGrant", "account.user", "account", false],
     ["userEntityGrant", "session", "session", true],
     ["userEntityGrant", "session.user", "session", false],
     ["userEntityGrant", "granter", "userEntityGrant", false],
@@ -37,6 +39,7 @@ export const ActionCascadePathGraph = [
     ["userWechatPublicTag", "wechatUser.user", "wechatUser", false],
     ["wechatLogin", "user", "wechatLogin", false],
     ["wechatQrCode", "userEntityGrant.account", "account", true],
+    ["wechatQrCode", "userEntityGrant.account.user", "account", false],
     ["wechatQrCode", "userEntityGrant.session", "session", true],
     ["wechatQrCode", "userEntityGrant.session.user", "session", false],
     ["wechatQrCode", "userEntityGrant.granter", "userEntityGrant", false],
@@ -47,6 +50,7 @@ export const ActionCascadePathGraph = [
 ];
 export const RelationCascadePathGraph = [
     ["session", "user", "session", false],
+    ["account", "user", "account", false],
     ["account", "", "account", true],
     ["session", "", "session", true]
 ];

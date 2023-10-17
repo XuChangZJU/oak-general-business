@@ -3,6 +3,7 @@ import { Schema as ExtraFile } from './ExtraFile';
 import { Schema as WechatQrCode } from './WechatQrCode';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as Address } from './Address';
+import { Schema as Account } from './Account';
 export interface Schema extends EntityShape {
     name?: String<16>;
     nickname?: String<64>;
@@ -17,4 +18,5 @@ export interface Schema extends EntityShape {
     codes: Array<WechatQrCode>;
     isRoot?: Boolean;
     addresses?: Address[];
+    accounts: Account[];
 }

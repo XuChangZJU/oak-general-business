@@ -16,7 +16,8 @@ export const desc: StorageDesc<OpSchema> = {
             type: "varchar",
             params: {
                 length: 32
-            }
+            },
+            ref: ["user"]
         },
         entityId: {
             type: "varchar",

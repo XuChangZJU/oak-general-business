@@ -36,6 +36,7 @@ const entityDesc = {
                 codes: '微信分享二维码',
                 isRoot: '是否超级用户',
                 addresses: '收货地址',
+                accounts: '账户',
             },
             action: {
                 activate: '激活',
