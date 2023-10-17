@@ -26,7 +26,7 @@ export default OakComponent({
         executeText: '',
         buttonProps: {},
         afterCommit: () => { },
-        beforeCommit: () => true,
+        beforeCommit: (() => true),
     },
     methods: {
         getEfIds() {
@@ -34,12 +34,17 @@ export default OakComponent({
             const { oakFullpath } = this.state;
             assert(efPaths && efPaths.length > 0);
             if (oakFullpath) {
-                const ids = efPaths.map((path) => {
-                    const path2 = path ? `${oakFullpath}.${path}` : oakFullpath;
+                const ids = efPaths
+                    .map((path) => {
+                    const path2 = path
+                        ? `${oakFullpath}.${path}`
+                        : oakFullpath;
                     const data = this.features.runningTree.getFreshValue(path2);
                     assert(data, `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`);
-                    return data.map(ele => ele.id);
-                }).flat().filter(ele => !!ele);
+                    return data.map((ele) => ele.id);
+                })
+                    .flat()
+                    .filter((ele) => !!ele);
                 return ids;
             }
             return [];

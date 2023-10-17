@@ -207,13 +207,18 @@ export async function batchGetMaterialList(params, context) {
         dontCollect: true,
     });
     assert(application);
-    const { type, config, systemId } = application;
+    const { type, config } = application;
     assert(type === 'wechatPublic');
     let appId, appSecret;
     const config2 = config;
     appId = config2.appId;
     appSecret = config2.appSecret;
     const wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
-    const result = await wechatInstance.batchGetMaterialList(params);
+    const { type: materialType, offset, count } = params;
+    const result = await wechatInstance.batchGetMaterialList({
+        type: materialType,
+        offset,
+        count,
+    });
     return result;
 }

@@ -10,13 +10,6 @@ import Style from './web.module.less';
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 
-interface customFile {
-    name: string;
-    size: number;
-    type: string;
-    originFileObj: File;
-}
-
 export default function Render(
     props: WebComponentProps<
         EntityDict,
@@ -24,8 +17,6 @@ export default function Render(
         true,
         {
             sessionMessages: EntityDict['sessionMessage']['Schema'][];
-            text: string;
-            buttonHidden: boolean;
             sessionId: string;
             isEntity: boolean;
             sessionMessageId: string;
@@ -35,7 +26,6 @@ export default function Render(
                     | RowWithActions<EntityDict, 'session'>[]
             ) => any[];
             entityProjection: object;
-            isWeChat: boolean;
         },
         {
             customUpload: (file: UploadFile) => void;

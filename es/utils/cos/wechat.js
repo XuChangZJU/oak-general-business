@@ -19,6 +19,7 @@ export default class Wechat {
             const url = '/uploadWechatMedia';
             result = (await uploadFn(file, 'file', url, {
                 applicationId,
+                type: 'image'
             }, true));
         }
         catch (err) {

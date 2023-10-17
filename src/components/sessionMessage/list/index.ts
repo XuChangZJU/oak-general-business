@@ -271,10 +271,7 @@ export default OakComponent({
         },
 
         async sendMessage() {
-            const { text, wechatUserId, sessionMessageId } = this.state;
-            const { sessionId, isEntity } = this.props;
-            const userId = this.features.token.getUserId();
-            const applicationId = this.features.application.getApplicationId();
+            const { sessionMessageId } = this.state;
 
             this.updateItem(
                 {
@@ -302,11 +299,10 @@ export default OakComponent({
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
 
-            let origin = 'qiniu';
-            //需要获取用户方回复的applicationId
+            let origin: EntityDict['extraFile']['Schema']['origin'] = 'qiniu';
+            //需要获取用户方回复的applicationId，判断用户是否从微信公众号或小程序发起客服消息
             if (isEntity && userLastMessage?.wechatUserId) {
                 applicationId = userLastMessage?.applicationId;
-
                 origin = 'wechat';
             }
 
@@ -322,6 +318,8 @@ export default OakComponent({
                 entity: 'sessionMessage',
                 objectId: generateNewId(),
                 id: generateNewId(),
+                uploadState: 'uploading',
+                sort: 1000,
             } as EntityDict['extraFile']['CreateSingle']['data'];
 
             try {
@@ -350,25 +348,25 @@ export default OakComponent({
             }
         },
 
-        async createMessage() {
-            const { text, wechatUserId } = this.state;
-            const { sessionId, isEntity } = this.props;
-            const userId = this.features.token.getUserId();
-            const applicationId = this.features.application.getApplicationId();
+        // async createMessage() {
+        //     const { text, wechatUserId } = this.state;
+        //     const { sessionId, isEntity } = this.props;
+        //     const userId = this.features.token.getUserId();
+        //     const applicationId = this.features.application.getApplicationId();
 
-            this.addItem({
-                applicationId,
-                text,
-                userId,
-                wechatUserId,
-                sessionId: sessionId,
-                type: 'text',
-                createTime: Date.now(),
-                aaoe: isEntity,
-            } as EntityDict['sessionMessage']['CreateSingle']['data']);
-            await this.execute(undefined, false);
-            this.pageScroll('comment');
-        },
+        //     this.addItem({
+        //         applicationId,
+        //         text,
+        //         userId,
+        //         wechatUserId,
+        //         sessionId: sessionId,
+        //         type: 'text',
+        //         createTime: Date.now(),
+        //         aaoe: isEntity,
+        //     } as EntityDict['sessionMessage']['CreateSingle']['data']);
+        //     await this.execute(undefined, false);
+        //     this.pageScroll('comment');
+        // },
 
         // async customUpload(file: {
         //     name: string;

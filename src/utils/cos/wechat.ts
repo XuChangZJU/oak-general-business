@@ -50,6 +50,7 @@ export default class Wechat implements Cos<ED, BRC, FRC> {
                 url,
                 {
                     applicationId,
+                    type: 'image'
                 },
                 true
             )) as response;

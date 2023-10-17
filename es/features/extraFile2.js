@@ -129,7 +129,10 @@ export class ExtraFile2 extends Feature {
         const extraFileId = extraFile.id || generateNewId();
         await this.cache.operate('extraFile', {
             action: 'create',
-            data: Object.assign(extraFile, { id: extraFileId, applicationId: this.application.getApplicationId() }),
+            data: Object.assign(extraFile, {
+                id: extraFileId,
+                applicationId: this.application.getApplicationId(),
+            }),
             id: await generateNewIdAsync(),
         });
         const [newExtraFile] = this.cache.get('extraFile', {
@@ -153,12 +156,12 @@ export class ExtraFile2 extends Feature {
                 isBridge: 1,
                 uploadState: 1,
                 uploadMeta: 1,
+                applicationId: 1,
             },
             filter: {
-                id: extraFileId
-            }
+                id: extraFileId,
+            },
         });
-        console.log(newExtraFile);
         const up = new Upload();
         try {
             const cos = getCos(newExtraFile.origin);
@@ -170,7 +173,7 @@ export class ExtraFile2 extends Feature {
                 action: 'remove',
                 data: {},
                 filter: {
-                    id: extraFileId
+                    id: extraFileId,
                 },
                 id: await generateNewIdAsync(),
             });
