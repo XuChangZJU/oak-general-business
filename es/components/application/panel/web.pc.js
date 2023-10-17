@@ -4,7 +4,7 @@ import { Tabs } from 'antd';
 import ApplicationDetail from '../detail';
 import ConfigUpsert from '../../config/application';
 import StyleUpsert from '../../config/style/platform';
-import TemplateList from '../../messageTypeTemplateId/list';
+import TemplateList from '../../messageTypeTemplate/list';
 import Styles from './web.pc.module.less';
 import WechatMenu from '../../wechatMenu';
 import UserWechatPublicTag from '../../userWechatPublicTag';

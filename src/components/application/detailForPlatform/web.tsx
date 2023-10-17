@@ -12,7 +12,7 @@ import {
 
 import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
-import MessageTypeTemplateIdList from '../../messageTypeTemplateId/list';
+import MessageTypeTemplateIdList from '../../messageTypeTemplate/list';
 import WechatMenu from '../../wechatMenu';
 import WechatPublicAutoReply from '../../wechatPublicAutoReply';
 import UserWechatPublicTag from '../../userWechatPublicTag';

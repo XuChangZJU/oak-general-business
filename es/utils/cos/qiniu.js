@@ -56,17 +56,18 @@ export default class Qiniu {
         const { config } = getConfig(context, 'Cos', 'qiniu');
         if (config) {
             let bucket = config.buckets.find((ele) => ele.name === extraFile.bucket);
-            assert(bucket);
-            const { domain, protocol } = bucket;
-            let protocol2 = protocol;
-            if (protocol instanceof Array) {
-                // protocol存在https 说明域名有证书
-                const index = protocol.includes('https')
-                    ? protocol.findIndex((ele) => ele === 'https')
-                    : 0;
-                protocol2 = protocol[index];
+            if (bucket) {
+                const { domain, protocol } = bucket;
+                let protocol2 = protocol;
+                if (protocol instanceof Array) {
+                    // protocol存在https 说明域名有证书
+                    const index = protocol.includes('https')
+                        ? protocol.findIndex((ele) => ele === 'https')
+                        : 0;
+                    protocol2 = protocol[index];
+                }
+                return `${protocol2}://${domain}/${this.formKey(extraFile)}`;
             }
-            return `${protocol2}://${domain}/${this.formKey(extraFile)}`;
         }
         return '';
     }

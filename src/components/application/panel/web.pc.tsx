@@ -4,7 +4,7 @@ import { WebComponentProps } from 'oak-frontend-base';
 import ApplicationDetail from '../detail';
 import ConfigUpsert from '../../config/application';
 import StyleUpsert from '../../config/style/platform';
-import TemplateList from '../../messageTypeTemplateId/list';
+import TemplateList from '../../messageTypeTemplate/list';
 import { EntityDict } from '../../../oak-app-domain';
 import { Style } from '../../../types/Style';
 import Styles from './web.pc.module.less';

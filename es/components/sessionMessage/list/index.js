@@ -127,9 +127,7 @@ export default OakComponent({
         },
     ],
     data: {
-        content: '',
         buttonHidden: true,
-        newSessionId: '',
     },
     methods: {
         getUserLastMessage() {
@@ -294,6 +292,8 @@ export default OakComponent({
                 this.features.extraFile2.addLocalFile(extraFile?.id, originFileObj);
                 await this.execute(undefined, false);
                 this.features.extraFile2.upload(extraFile?.id);
+                this.pageScroll('comment');
+                this.createItem();
             }
             catch (err) {
                 throw err;

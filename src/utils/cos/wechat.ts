@@ -2,10 +2,12 @@ import { ED, BRC, FRC } from '../../types/RuntimeCxt';
 import { assert } from 'oak-domain/lib/utils/assert';
 import Cos from "../../types/Cos";
 import { OpSchema } from '../../oak-app-domain/ExtraFile/Schema';
+import { Schema as DomainSchema } from '../../oak-app-domain/Domain/Schema';
 
 
 import { WechatPublicInstance } from 'oak-external-sdk';
 import { OakUploadException } from '../../types/Exception';
+import { composeDomainUrl } from '../../utils/domain';
 
 type response = {
     mediaId: string;
@@ -26,7 +28,41 @@ export default class Wechat implements Cos<ED, BRC, FRC> {
     }
 
     async formUploadMeta(extraFile: OpSchema, context: BRC) {
-        //微信上传素材库 不需要
+        const pathname = '/uploadWechatMedia';
+
+        const applicationId = context.getApplicationId();
+
+        const [domain] = await context.select(
+            'domain',
+            {
+                data: {
+                    id: 1,
+                    url: 1,
+                    apiPath: 1,
+                    protocol: 1,
+                    port: 1,
+                },
+                filter: Object.assign(
+                    {
+                        system: {
+                            application$system: {
+                                id: applicationId,
+                            },
+                        },
+                    },
+                    process.env.NODE_ENV === 'development' && {
+                        url: 'localhost',
+                    }
+                ),
+            },
+            { dontCollect: true }
+        );
+        const url = composeDomainUrl(domain as DomainSchema, pathname);
+        Object.assign(extraFile, {
+            uploadMeta: {
+                uploadHost: url,
+            },
+        });
     }
 
     async upload(
@@ -41,16 +77,16 @@ export default class Wechat implements Cos<ED, BRC, FRC> {
         file: string | File
     ) {
         let result: response;
-        const { applicationId } = extraFile;
+        const { applicationId, type, uploadMeta } = extraFile;
+        assert(type === 'image');
         try {
-            const url = '/uploadWechatMedia';
             result = (await uploadFn(
                 file,
                 'file',
-                url,
+                (uploadMeta as { uploadHost: string})!.uploadHost,
                 {
                     applicationId,
-                    type: 'image'
+                    type,
                 },
                 true
             )) as response;

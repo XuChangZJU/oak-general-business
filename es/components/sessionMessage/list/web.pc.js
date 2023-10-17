@@ -6,7 +6,7 @@ import Style from './web.module.less';
 export default function Render(props) {
     const { data, methods } = props;
     const { sessionId, isEntity, sessionMessages, oakFullpath, sessionMessageId, entityDisplay, entityProjection, } = data;
-    const { customUpload, setContent, pageScroll, sendMessage } = methods;
+    const { customUpload, setContent, sendMessage } = methods;
     return (_jsxs("div", { className: Style.container, children: [_jsx(Header, { sessionId: sessionId, isEntity: isEntity, oakPath: '$$sessionMessage/list-session/header', oakAutoUnmount: true, entityDisplay: entityDisplay, entityProjection: entityProjection }), _jsx("div", { className: Style.inner, id: "comment", children: sessionMessages
                     ?.sort((a, b) => a.$$createAt$$ -
                     b.$$createAt$$)

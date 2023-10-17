@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Button, Input, Upload } from 'antd';
+import { Button } from 'antd';
 import { UploadFile } from 'antd/es/upload/interface';
 
 import SessionMessageCell from '../../../components/sessionMessage/cell';
@@ -30,7 +30,6 @@ export default function Render(
         {
             customUpload: (file: UploadFile) => void;
             setContent: (text: string) => void;
-            pageScroll: (id: string) => void;
             sendMessage: () => void;
         }
     >
@@ -45,7 +44,7 @@ export default function Render(
         entityDisplay,
         entityProjection,
     } = data;
-    const { customUpload, setContent, pageScroll, sendMessage } = methods;
+    const { customUpload, setContent, sendMessage } = methods;
 
     return (
         <div className={Style.container}>

@@ -11,6 +11,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'sessionMess
 }, {
     customUpload: (file: UploadFile) => void;
     setContent: (text: string) => void;
-    pageScroll: (id: string) => void;
     sendMessage: () => void;
 }>): import("react/jsx-runtime").JSX.Element;
