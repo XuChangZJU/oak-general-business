@@ -44,7 +44,14 @@ export default interface Cos<
             formData: Record<string, any>, // 上传的其它part参数
             autoInform?: boolean // 上传成功是否会自动通知server（若不会则需要前台显式通知）
         ) => Promise<any>,
-        file: string | File
+        file: string | File,
+        uploadToAspect: (
+            file: File | string,
+            name: string, // 文件的part name
+            aspectName: string, // 上传的aspect名
+            formData: Record<string, any>, // 上传的其它part参数
+            autoInform?: boolean // 上传成功是否会自动通知server（若不会则需要前台显式通知）
+        ) => Promise<any>,
     ) => Promise<void>;
 
     /**

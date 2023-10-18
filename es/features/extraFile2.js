@@ -66,7 +66,9 @@ export class ExtraFile2 extends Feature {
         const up = new Upload();
         try {
             const cos = getCos(extraFile.origin);
-            await cos.upload(extraFile, up.uploadFile, file);
+            await cos.upload(extraFile, up.uploadFile, file, async (file, name, aspectName, formData, autoInform) => {
+                // todo
+            });
             if (!cos.autoInform()) {
                 /* await this.cache.exec('operate', {
                     entity: 'extraFile',
@@ -165,7 +167,9 @@ export class ExtraFile2 extends Feature {
         const up = new Upload();
         try {
             const cos = getCos(newExtraFile.origin);
-            await cos.upload(newExtraFile, up.uploadFile, file);
+            await cos.upload(newExtraFile, up.uploadFile, file, async (file, name, aspectName, formData, autoInform) => {
+                // todo
+            });
             return this.getUrl(newExtraFile);
         }
         catch (err) {

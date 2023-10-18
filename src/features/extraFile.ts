@@ -93,7 +93,8 @@ export class ExtraFile<
             await cos.upload(
                 extraFileData as OpSchema,
                 up.uploadFile,
-                file
+                file,
+                async () => undefined
             );
             await this.cache.operate('extraFile', {
                 action: 'update',

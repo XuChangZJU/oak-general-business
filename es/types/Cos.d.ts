@@ -29,7 +29,10 @@ export default interface Cos<ED extends EntityDict & BaseEntityDict, Cxt extends
     upload: (extraFile: EntityDict['extraFile']['OpSchema'], uploadFn: (file: File | string, name: string, // 文件的part name
     uploadUrl: string, // 上传的url
     formData: Record<string, any>, // 上传的其它part参数
-    autoInform?: boolean) => Promise<any>, file: string | File) => Promise<void>;
+    autoInform?: boolean) => Promise<any>, file: string | File, uploadToAspect: (file: File | string, name: string, // 文件的part name
+    aspectName: string, // 上传的aspect名
+    formData: Record<string, any>, // 上传的其它part参数
+    autoInform?: boolean) => Promise<any>) => Promise<void>;
     /**
      * 构建出访问图片的url，注意这个url应当和objectId一对一映射，这样才可以实现多个extraFile之间共享cos上的路径
      */

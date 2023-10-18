@@ -57,7 +57,7 @@ export class ExtraFile extends Feature {
         const up = new Upload();
         try {
             const cos = getCos(origin);
-            await cos.upload(extraFileData, up.uploadFile, file);
+            await cos.upload(extraFileData, up.uploadFile, file, async () => undefined);
             await this.cache.operate('extraFile', {
                 action: 'update',
                 data: {
