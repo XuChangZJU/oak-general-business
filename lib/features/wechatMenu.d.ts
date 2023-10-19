@@ -66,5 +66,5 @@ export declare class WechatMenu<ED extends EntityDict, Cxt extends BackendRuntim
         applicationId: string;
         mediaId: string;
         isPermanent?: boolean;
-    }): Promise<string | ReturnType<(AD & CommonAspectDict<ED, Cxt>)["getMaterial"]>>;
+    }): Promise<ReturnType<(AD & CommonAspectDict<ED, Cxt>)["getMaterial"]>>;
 }

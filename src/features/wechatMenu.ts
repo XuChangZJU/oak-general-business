@@ -144,10 +144,6 @@ export class WechatMenu<
     }) {
         const { result } = await this.cache.exec('getMaterial', params);
 
-        if ((result as any) instanceof ArrayBuffer) {
-            return Buffer.from(result).toString('base64');
-        }
-
         return result;
     }
 }

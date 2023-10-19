@@ -283,21 +283,22 @@ export async function getMaterial<
         ) as WechatMpInstance;
     }
 
+    let result;
     if (isPermanent) {
         // 只有公众号才能获取永久素材
         assert(type === 'wechatPublic');
-        const result = await (
-            wechatInstance as WechatPublicInstance
-        ).getMaterial({
+        result = await(wechatInstance as WechatPublicInstance).getMaterial({
             mediaId,
         });
-
-        return result;
+    } else {
+        result = await wechatInstance.getTemporaryMaterial({
+            mediaId,
+        });
     }
 
-    const result = await wechatInstance.getTemporaryMaterial({
-        mediaId,
-    });
+    if (result instanceof ArrayBuffer) {
+        return Buffer.from(result).toString('base64');
+    }
     return result;
 }
 

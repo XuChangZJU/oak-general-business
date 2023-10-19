@@ -164,17 +164,22 @@ export async function getMaterial(params, context) {
         const { appId, appSecret } = config2;
         wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
     }
+    let result;
     if (isPermanent) {
         // 只有公众号才能获取永久素材
         assert(type === 'wechatPublic');
-        const result = await wechatInstance.getMaterial({
+        result = await wechatInstance.getMaterial({
             mediaId,
         });
-        return result;
     }
-    const result = await wechatInstance.getTemporaryMaterial({
-        mediaId,
-    });
+    else {
+        result = await wechatInstance.getTemporaryMaterial({
+            mediaId,
+        });
+    }
+    if (result instanceof ArrayBuffer) {
+        return Buffer.from(result).toString('base64');
+    }
     return result;
 }
 export async function batchGetArticle(params, context) {

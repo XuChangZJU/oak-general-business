@@ -65,9 +65,6 @@ export class WechatMenu extends Feature {
      */
     async getMaterial(params) {
         const { result } = await this.cache.exec('getMaterial', params);
-        if (result instanceof ArrayBuffer) {
-            return Buffer.from(result).toString('base64');
-        }
         return result;
     }
 }
