@@ -51,7 +51,7 @@ export async function getApplication(params, context) {
 }
 export async function signatureJsSDK({ url, env }, context) {
     const application = context.getApplication();
-    const { type, config, systemId } = application;
+    const { type, config } = application;
     assert(type === 'wechatPublic' && config.type === 'wechatPublic');
     const config2 = config;
     const { appId, appSecret } = config2;
@@ -170,6 +170,7 @@ export async function getMaterial(params, context) {
         const result = await wechatInstance.getMaterial({
             mediaId,
         });
+        return result;
     }
     const result = await wechatInstance.getTemporaryMaterial({
         mediaId,
@@ -187,7 +188,7 @@ export async function batchGetArticle(params, context) {
         dontCollect: true,
     });
     assert(application);
-    const { type, config, systemId } = application;
+    const { type, config } = application;
     assert(type === 'wechatPublic');
     let appId, appSecret;
     const config2 = config;
@@ -212,7 +213,7 @@ export async function getArticle(params, context) {
         dontCollect: true,
     });
     assert(application);
-    const { type, config, systemId } = application;
+    const { type, config } = application;
     assert(type === 'wechatPublic');
     let appId, appSecret;
     const config2 = config;

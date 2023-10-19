@@ -96,7 +96,7 @@ export async function signatureJsSDK<
     Cxt extends BackendRuntimeContext<ED>
 >({ url, env }: { url: string; env: WebEnv }, context: Cxt) {
     const application = context.getApplication();
-    const { type, config, systemId } = application!;
+    const { type, config } = application!;
     assert(type === 'wechatPublic' && config!.type === 'wechatPublic');
     const config2 = config as WechatPublicConfig;
     const { appId, appSecret } = config2;
@@ -286,11 +286,13 @@ export async function getMaterial<
     if (isPermanent) {
         // 只有公众号才能获取永久素材
         assert(type === 'wechatPublic');
-        const result = await(
+        const result = await (
             wechatInstance as WechatPublicInstance
         ).getMaterial({
             mediaId,
         });
+
+        return result;
     }
 
     const result = await wechatInstance.getTemporaryMaterial({
@@ -325,7 +327,7 @@ export async function batchGetArticle<
         }
     );
     assert(application);
-    const { type, config, systemId } = application!;
+    const { type, config } = application!;
     assert(type === 'wechatPublic');
     let appId: string, appSecret: string;
     const config2 = config as WechatPublicConfig;
@@ -368,7 +370,7 @@ export async function getArticle<
         }
     );
     assert(application);
-    const { type, config, systemId } = application!;
+    const { type, config } = application!;
     assert(type === 'wechatPublic');
     let appId: string, appSecret: string;
     const config2 = config as WechatPublicConfig;
