@@ -1,7 +1,7 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { OakTokenExpiredException, OakUserDisabledException, } from '../types/Exception';
 import { OakUnloggedInException, } from 'oak-domain/lib/types/Exception';
-import { ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
+import { ROOT_TOKEN_ID } from '../constants';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { applicationProjection } from '../types/Projection';
 import { getMpUnlimitWxaCode } from '../aspects/wechatQrCode';
@@ -16,7 +16,6 @@ export class BackendRuntimeContext extends BRC {
     amIRoot;
     amIReallyRoot;
     rootMode;
-    temporaryUserId;
     async refineOpRecords() {
         for (const opRecord of this.opRecords) {
             if (opRecord.a === 's') {
@@ -165,17 +164,8 @@ export class BackendRuntimeContext extends BRC {
         return this.token;
     }
     getCurrentUserId(allowUnloggedIn) {
-        if (this.rootMode) {
-            return ROOT_USER_ID;
-        }
-        if (this.temporaryUserId) {
-            return this.temporaryUserId;
-        }
         const token = this.getToken(allowUnloggedIn);
         return token?.userId;
-    }
-    setTemporaryUserId(userId) {
-        this.temporaryUserId = userId;
     }
     getSerializedData() {
         const data = super.getSerializedData();

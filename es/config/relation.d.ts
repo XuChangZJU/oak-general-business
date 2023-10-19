@@ -1,13 +1,5 @@
-export declare const IgnoredForeignKeyMap: {
-    messageSystem: string[];
-    notification: string[];
-};
-export declare const IgnoredRelationPathMap: {
-    token: string[];
-};
-export declare const DeducedRelationMap: {
-    extraFile: string;
-    message: string;
-    wechatQrCode: string;
-};
-export declare const SelectFreeEntities: string[];
+import { AuthDeduceRelationMap, SelectFreeEntities, UpdateFreeDict } from 'oak-domain/lib/types/Entity';
+import { EntityDict } from '../oak-app-domain';
+export declare const authDeduceRelationMap: AuthDeduceRelationMap<EntityDict>;
+export declare const selectFreeEntities: SelectFreeEntities<EntityDict>;
+export declare const updateFreeDict: UpdateFreeDict<EntityDict>;

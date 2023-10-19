@@ -24,3 +24,4 @@ export { RuntimeContext } from './context/RuntimeContext';
 
 export { registerWechatPublicTags } from './config/constants';
 export { registerCos as registerUploader } from './utils/cos';
+export { selectFreeEntities, authDeduceRelationMap, updateFreeDict } from './config/relation';

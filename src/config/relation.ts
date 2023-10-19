@@ -1,24 +1,15 @@
-
-// 此对象所标识的外键关系不参与relation的路径判定，以减少relation的路径数量
-export const IgnoredForeignKeyMap = {
-    //system: ['park'],
-    messageSystem: ['message'],
-    notification: ['messsageSystem'],
-};
-
-// 此对象所标识的路径不参与relation的路径判定，以减少relation的路径数量
-export const IgnoredRelationPathMap = {
-    token: ['wechatUser.application'],
-};
+import { AuthDeduceRelationMap, SelectFreeEntities, UpdateFreeDict } from 'oak-domain/lib/types/Entity';
+import { EntityDict } from '../oak-app-domain';
 
 // 此对象所标识的entity的权限由其外键指向的父对象判定
-export const DeducedRelationMap = {
+export const authDeduceRelationMap: AuthDeduceRelationMap<EntityDict>  = {
     extraFile: 'entity',
     message: 'entity',
     wechatQrCode: 'entity',
 };
 
-export const SelectFreeEntities = [
+// 可以自由选择的对象
+export const selectFreeEntities: SelectFreeEntities<EntityDict> = [
     'application',
     'domain',
     'area',
@@ -29,3 +20,6 @@ export const SelectFreeEntities = [
     'articleMenu',
     'article',
 ];
+
+// 可以自由更新的对象
+export const updateFreeDict: UpdateFreeDict<EntityDict> = {};

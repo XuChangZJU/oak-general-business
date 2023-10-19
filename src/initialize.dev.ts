@@ -1,12 +1,7 @@
-import { AuthCascadePath, EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import {
-    ActionDictOfEntityDict,
     Aspect,
-    AuthDefDict,
-    CascadeRemoveDefDict,
     Checker,
-    Exportation,
-    Importation,
     Routine,
     StorageSchema,
     Timer,
