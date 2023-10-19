@@ -9,7 +9,7 @@ import { QiniuCosConfig } from '../../types/Config';
 import { QiniuCloudInstance } from 'oak-external-sdk';
 import { urlSafeBase64Encode } from '../sign';
 import { OakUploadException } from '../../types/Exception';
-import { OakExternalException } from 'oak-domain';
+import { OakExternalException, OakNetworkException } from 'oak-domain';
 
 export default class Qiniu implements Cos<ED, BRC, FRC> {
     name = 'qiniu';
@@ -79,13 +79,13 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
             );
         } catch (err) {
             // 网络错误
-            throw new OakUploadException('图片上传失败');
+            throw new OakNetworkException('网络异常，请求失败');
         }
         // 解析回调
         if (result.success === true || result.key) {
             return;
         } else {
-            throw new OakUploadException('图片上传失败');
+            throw new OakUploadException('图片上传七牛失败');
         }
     }
 
@@ -127,7 +127,7 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
         const mockData = process.env.OAK_PLATFORM === 'web' ? { fsize: 100 } : undefined;
 
         const b = (config as QiniuCosConfig).buckets.find(ele => ele.name === extraFile.bucket);
-        assert(b, `extrafile中的bucket名称在七牛配置中找不到「${extraFile.bucket}」`);
+        assert(b, `extraFile中的bucket名称在七牛配置中找不到「${extraFile.bucket}」`);
 
         try {
             const result = await (instance as QiniuCloudInstance).getKodoFileStat(extraFile.bucket!, b.zone, key, mockData);
@@ -155,7 +155,7 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
         // web环境下访问不了七牛接口，用mockData过
         const mockData = process.env.OAK_PLATFORM === 'web' ? true : undefined;
         const b = (config as QiniuCosConfig).buckets.find(ele => ele.name === extraFile.bucket);
-        assert(b, `extrafile中的bucket名称在七牛配置中找不到「${extraFile.bucket}」`);
+        assert(b, `extraFile中的bucket名称在七牛配置中找不到「${extraFile.bucket}」`);
         try {
             await (instance as QiniuCloudInstance).removeKodoFile(extraFile.bucket!, b.zone, key, mockData);
         }

@@ -17,6 +17,7 @@ import {
 import fs from 'fs';
 import { File } from 'formidable';
 import { cloneDeep } from 'oak-domain/lib/utils/lodash';
+import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 
 export async function getApplication<
     ED extends EntityDict,
@@ -120,19 +121,16 @@ export async function uploadWechatMedia<
         type: MediaType;
         isPermanent?: string; // 上传临时素材或永久素材 默认上传临时
         description?: string; // { title: string; introduction: string }
+        extraFileId?: string; // extraFile的id 为了缓存微信mediaId
     }, // FormData表单提交 isPermanent 变成 'true' | 'false'
     context: Cxt
 ): Promise<{ mediaId: string }> {
-    const {
-        applicationId,
-        file,
-        type: mediaType,
-        description,
-    } = params;
+    const { applicationId, file, type: mediaType, description, extraFileId } = params;
     const isPermanent = params.isPermanent === 'true';
     const filename = file.originalFilename!;
     const filetype = file.mimetype!;
-    const file2 = fs.createReadStream(file.filepath);
+    const fileLength = file.size!;
+    const fileStream = fs.createReadStream(file.filepath);
 
     const [application] = await context.select(
         'application',
@@ -170,40 +168,69 @@ export async function uploadWechatMedia<
         ) as WechatMpInstance;
     }
 
+    let mediaId: string;
     if (isPermanent) {
         // 只有公众号才能上传永久素材
         assert(type === 'wechatPublic');
-        const result = await (
+        const result = await(
             wechatInstance as WechatPublicInstance
         ).createMaterial({
             type: mediaType,
-            media: file2,
+            media: fileStream,
             filename,
             filetype,
+            fileLength,
             description: description ? JSON.parse(description) : null,
         }) as {
             media_id: string;
             url: string;
         };
 
-        return {
-            mediaId: result.media_id,
+        mediaId = result.media_id;
+    } else {
+        const result = (await wechatInstance.createTemporaryMaterial({
+            type: mediaType,
+            media: fileStream,
+            filename,
+            filetype,
+            fileLength,
+        })) as {
+            media_id: string;
+            createdAt: Number;
+            type: MediaType;
         };
+        mediaId = result.media_id;
     }
 
-    const result = (await wechatInstance.createTemporaryMaterial({
-        type: mediaType,
-        media: file2,
-        filename,
-        filetype,
-    })) as {
-        media_id: string;
-        createdAt: Number;
-        type: MediaType;
-    };
+    if (extraFileId) {
+        const closeRootMode = context.openRootMode();
+        try {
+            await context.operate(
+                'extraFile',
+                {
+                    id: await generateNewIdAsync(),
+                    action: 'update',
+                    data: {
+                        extra1: mediaId,
+                    },
+                    filter: {
+                        id: extraFileId,
+                    },
+                },
+                {
+                    dontCollect: true,
+                }
+            );
+            closeRootMode();
+        } catch (err) {
+            closeRootMode();
+            throw err;
+        }
+    }
+
 
     return {
-        mediaId: result.media_id,
+        mediaId,
     };
 }
 

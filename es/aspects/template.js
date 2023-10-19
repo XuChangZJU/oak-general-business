@@ -1,6 +1,6 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import { WechatSDK, } from 'oak-external-sdk';
+import { WechatSDK } from 'oak-external-sdk';
 function analyseContent(content) {
     let content2 = content;
     let result = {};
@@ -9,7 +9,9 @@ function analyseContent(content) {
         let prefix = content2.slice(0, pos1);
         let suffix = content2.slice(pos1 + 1);
         let keyNameStart = prefix.lastIndexOf('}}');
-        let keyName = (prefix.slice(keyNameStart === -1 ? 0 : keyNameStart + 2)).trim();
+        let keyName = prefix
+            .slice(keyNameStart === -1 ? 0 : keyNameStart + 2)
+            .trim();
         let valueNameStart = suffix.indexOf('{{');
         let valueNameEnd = suffix.indexOf('.');
         let valueName = suffix.slice(valueNameStart + 2, valueNameEnd).trim();
@@ -33,7 +35,7 @@ export async function syncMessageTemplate(params, context) {
         },
         filter: {
             id: applicationId,
-        }
+        },
     }, {});
     const { type, config } = application;
     assert(type === 'wechatPublic', '当前只支持微信公众号的消息配置');
@@ -42,8 +44,7 @@ export async function syncMessageTemplate(params, context) {
     appId = config2.appId;
     appSecret = config2.appSecret;
     const wechatInstance = WechatSDK.getInstance(appId, 'wechatPublic', appSecret);
-    const callbackData = await wechatInstance.getAllPrivateTemplate();
-    const { template_list } = callbackData;
+    const { template_list } = await wechatInstance.getAllPrivateTemplate();
     const WechatPublicTemplateList = await context.select('wechatPublicTemplate', {
         data: {
             id: 1,
@@ -51,12 +52,12 @@ export async function syncMessageTemplate(params, context) {
         },
         filter: {
             applicationId,
-        }
+        },
     }, {});
     const existsTemplateIds = WechatPublicTemplateList.map((ele) => ele.wechatId);
     const newTemplateList = template_list.filter((ele) => !existsTemplateIds.includes(ele.template_id));
-    const newTemplateIds = template_list.map(ele => ele.template_id);
-    const removeTemplateList = WechatPublicTemplateList.filter(ele => !newTemplateIds.includes(ele.wechatId));
+    const newTemplateIds = template_list.map((ele) => ele.template_id);
+    const removeTemplateList = WechatPublicTemplateList.filter((ele) => !newTemplateIds.includes(ele.wechatId));
     for (const template of newTemplateList) {
         await context.operate('wechatPublicTemplate', {
             id: await generateNewIdAsync(),
@@ -71,8 +72,8 @@ export async function syncMessageTemplate(params, context) {
                 content: template.content,
                 example: template.example,
                 syncAt: Date.now(),
-                param: analyseContent(template.content)
-            }
+                param: analyseContent(template.content),
+            },
         }, {});
     }
     if (removeTemplateList.length > 0) {
@@ -82,9 +83,9 @@ export async function syncMessageTemplate(params, context) {
             data: {},
             filter: {
                 id: {
-                    $in: removeTemplateList.map((ele) => ele.id)
-                }
-            }
+                    $in: removeTemplateList.map((ele) => ele.id),
+                },
+            },
         }, {});
     }
     return template_list;

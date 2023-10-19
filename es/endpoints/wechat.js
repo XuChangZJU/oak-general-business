@@ -363,15 +363,15 @@ async function setUserSubscribed(openId, eventKey, context) {
     await doUpdate();
     return;
 }
-async function setClickEventKey(openId, EventKey, context) {
+async function setClickEventKey(openId, eventKey, context) {
     const application = context.getApplication();
     const { type, config, systemId, id: applicationId } = application;
     assert(type === 'wechatPublic');
     const { appId, appSecret } = config;
     const wechatInstance = WechatSDK.getInstance(appId, 'wechatPublic', appSecret);
-    if (EventKey) {
-        var indexOfDollarSign = EventKey.indexOf('$');
-        var resultString = EventKey.substring(0, indexOfDollarSign);
+    if (eventKey) {
+        var indexOfDollarSign = eventKey.indexOf('$');
+        var resultString = eventKey.substring(0, indexOfDollarSign);
         const [wechatMenu] = await context.select('wechatMenu', {
             data: {
                 id: 1,
@@ -379,30 +379,32 @@ async function setClickEventKey(openId, EventKey, context) {
                 menuConfig: 1,
                 wechatPublicTagId: 1,
                 wechatPublicTag: {
-                    wechatId: 1
+                    wechatId: 1,
                 },
             },
-            filter: indexOfDollarSign !== -1 ? {
-                applicationId,
-                wechatPublicTag: {
-                    wechatId: Number(resultString)
+            filter: indexOfDollarSign !== -1
+                ? {
+                    applicationId,
+                    wechatPublicTag: {
+                        wechatId: Number(resultString),
+                    },
                 }
-            } : {
-                applicationId,
-                wechatPublicTagId: {
-                    $exists: false
-                }
-            },
+                : {
+                    applicationId,
+                    wechatPublicTagId: {
+                        $exists: false,
+                    },
+                },
         }, { dontCollect: true });
         if (wechatMenu) {
             let content = null;
             wechatMenu.menuConfig?.button.map((ele) => {
-                if (ele.key === EventKey) {
+                if (ele.key === eventKey) {
                     content = ele.content;
                 }
                 else if (ele.sub_button && ele.sub_button.length > 0) {
                     var subEle = ele.sub_button.find((sub) => {
-                        return sub.key === EventKey;
+                        return sub.key === eventKey;
                     });
                     if (subEle) {
                         content = subEle.content;
@@ -420,13 +422,13 @@ async function setClickEventKey(openId, EventKey, context) {
         }
     }
 }
-async function setSubscribedEventKey(openId, EventKey, context) {
+async function setSubscribedEventKey(openId, eventKey, context) {
     const application = context.getApplication();
     const { type, config, systemId, id: applicationId } = application;
     assert(type === 'wechatPublic');
     const { appId, appSecret } = config;
     const wechatInstance = WechatSDK.getInstance(appId, 'wechatPublic', appSecret);
-    if (EventKey) {
+    if (eventKey) {
         const [wechatPublicAutoReply] = await context.select('wechatPublicAutoReply', {
             data: {
                 id: 1,
@@ -438,11 +440,13 @@ async function setSubscribedEventKey(openId, EventKey, context) {
             filter: {
                 applicationId,
                 event: 'subscribe',
-            }
+            },
         }, { dontCollect: true });
         if (wechatPublicAutoReply) {
             let content = null;
-            if (wechatPublicAutoReply.type === 'text' && wechatPublicAutoReply.content && wechatPublicAutoReply.content.text) {
+            if (wechatPublicAutoReply.type === 'text' &&
+                wechatPublicAutoReply.content &&
+                wechatPublicAutoReply.content.text) {
                 content = wechatPublicAutoReply.content.text;
                 wechatInstance.sendServeMessage({
                     openId,
@@ -455,7 +459,7 @@ async function setSubscribedEventKey(openId, EventKey, context) {
     }
 }
 function onWeChatPublicEvent(data, context) {
-    const { ToUserName, FromUserName, CreateTime, MsgType, Event, Content, EventKey, } = data;
+    const { ToUserName, FromUserName, CreateTime, MsgType, Event, EventKey, } = data;
     const appId = context.getApplicationId();
     let evt;
     // 如果有应用注入的事件回调则处理之，不依赖其返回
@@ -518,18 +522,22 @@ function onWeChatPublicEvent(data, context) {
         `<CreateTime>${CreateTime}</CreateTime>` +
         '<MsgType>transfer_customer_service</MsgType>' +
         '</xml>';
+    const { Content, Title, Description, Url, PicUrl } = data;
     switch (MsgType) {
-        case 'text':
+        case 'text': {
+            evt = `接收到来自用户「${MsgType}」消息：「${Content}」`;
+            break;
+        }
         case 'link': {
-            evt = `接收到来自用户的文字消息：${Content}`;
+            evt = `接收到来自用户「${MsgType}」消息：Title =>「${Title}」, Description =>「${Description}」, Url =>「${Url}」`;
             break;
         }
         case 'image': {
-            evt = `接收到来自用户的图片消息：${Content}`;
+            evt = `接收到来自用户「${MsgType}」消息：「${PicUrl}」`;
             break;
         }
         default: {
-            evt = `接收到来自用户的${MsgType}型消息`;
+            evt = `接收到来自用户「${MsgType}」消息`;
             break;
         }
     }

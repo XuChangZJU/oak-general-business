@@ -92,6 +92,8 @@ export async function createSession(params, context) {
                         },
                     },
                 ];
+                if (MsgType === 'image') {
+                }
                 break;
             }
             default: {

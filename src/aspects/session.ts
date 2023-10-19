@@ -136,6 +136,9 @@ export async function createSession<
                         },
                     },
                 ];
+                if (MsgType === 'image') {
+
+                }
                 break;
             }
             default: {

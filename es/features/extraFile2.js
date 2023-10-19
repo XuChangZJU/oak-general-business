@@ -66,9 +66,7 @@ export class ExtraFile2 extends Feature {
         const up = new Upload();
         try {
             const cos = getCos(extraFile.origin);
-            await cos.upload(extraFile, up.uploadFile, file, async (file, name, aspectName, formData, autoInform) => {
-                // todo
-            });
+            await cos.upload(extraFile, up.uploadFile, file, this.uploadToAspect.bind(this));
             if (!cos.autoInform()) {
                 /* await this.cache.exec('operate', {
                     entity: 'extraFile',
@@ -167,9 +165,7 @@ export class ExtraFile2 extends Feature {
         const up = new Upload();
         try {
             const cos = getCos(newExtraFile.origin);
-            await cos.upload(newExtraFile, up.uploadFile, file, async (file, name, aspectName, formData, autoInform) => {
-                // todo
-            });
+            await cos.upload(newExtraFile, up.uploadFile, file, this.uploadToAspect.bind(this));
             return this.getUrl(newExtraFile);
         }
         catch (err) {
@@ -183,5 +179,19 @@ export class ExtraFile2 extends Feature {
             });
             throw err;
         }
+    }
+    // 私有
+    async uploadToAspect(file, name, // 文件的part name
+    aspectName, // 上传的aspect名
+    formData, // 上传的其它part参数
+    autoInform // 上传成功是否会自动通知server（若不会则需要前台显式通知）
+    ) {
+        const formData2 = new FormData();
+        for (const key of Object.keys(formData)) {
+            formData2.append(key, formData[key]);
+        }
+        formData2.append(name || 'file', file);
+        const { result } = await this.cache.exec(aspectName, formData2);
+        return result;
     }
 }

@@ -23,6 +23,7 @@ export declare function uploadWechatMedia<ED extends EntityDict, Cxt extends Bac
     type: MediaType;
     isPermanent?: string;
     description?: string;
+    extraFileId?: string;
 }, // FormData表单提交 isPermanent 变成 'true' | 'false'
 context: Cxt): Promise<{
     mediaId: string;

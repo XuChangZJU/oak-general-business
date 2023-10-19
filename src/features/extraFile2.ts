@@ -99,9 +99,12 @@ export class ExtraFile2<
         const up = new Upload();
         try {
             const cos = getCos<ED, Cxt, FrontCxt>(extraFile.origin!);
-            await cos.upload(extraFile as OpSchema, up.uploadFile, file, async (file, name, aspectName, formData, autoInform) => {
-                // todo
-            });
+            await cos.upload(
+                extraFile as OpSchema,
+                up.uploadFile,
+                file,
+                this.uploadToAspect.bind(this)
+            );
             if (!cos.autoInform()) {
                 /* await this.cache.exec('operate', {
                     entity: 'extraFile',
@@ -220,9 +223,12 @@ export class ExtraFile2<
         const up = new Upload();
         try {
             const cos = getCos<ED, Cxt, FrontCxt>(newExtraFile.origin!);
-            await cos.upload(newExtraFile as OpSchema, up.uploadFile, file, async (file, name, aspectName, formData, autoInform) => {
-                // todo
-            });
+            await cos.upload(
+                newExtraFile as OpSchema,
+                up.uploadFile,
+                file,
+                this.uploadToAspect.bind(this)
+            );
             return this.getUrl(
                 newExtraFile as EntityDict['extraFile']['Schema']
             );
@@ -237,5 +243,26 @@ export class ExtraFile2<
             } as EntityDict['extraFile']['Operation']);
             throw err;
         }
+    }
+
+    // 私有
+    private async uploadToAspect(
+        file: File | string,
+        name: string, // 文件的part name
+        aspectName: string, // 上传的aspect名
+        formData: Record<string, any>, // 上传的其它part参数
+        autoInform?: boolean // 上传成功是否会自动通知server（若不会则需要前台显式通知）
+    ) {
+        const formData2 = new FormData();
+        for (const key of Object.keys(formData)) {
+            formData2.append(key, formData[key]);
+        }
+        formData2.append(name || 'file', file as File);
+
+        const { result } = await this.cache.exec(
+            aspectName as keyof CommonAspectDict<ED, Cxt>,
+            formData2
+        );
+        return result;
     }
 }

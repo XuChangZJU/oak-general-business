@@ -1,52 +1,27 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { OakUploadException } from '../../types/Exception';
-import { composeDomainUrl } from '../../utils/domain';
 export default class Wechat {
     name = 'wechat';
     autoInform() {
         return false;
     }
     formKey(extraFile) {
-        //微信上传素材库 不需要
+        // 微信上传素材库不需要
         const { id, extension, entity, objectId } = extraFile;
         return '';
     }
     async formUploadMeta(extraFile, context) {
-        const pathname = '/uploadWechatMedia';
-        const applicationId = context.getApplicationId();
-        const [domain] = await context.select('domain', {
-            data: {
-                id: 1,
-                url: 1,
-                apiPath: 1,
-                protocol: 1,
-                port: 1,
-            },
-            filter: Object.assign({
-                system: {
-                    application$system: {
-                        id: applicationId,
-                    },
-                },
-            }, process.env.NODE_ENV === 'development' && {
-                url: 'localhost',
-            }),
-        }, { dontCollect: true });
-        const url = composeDomainUrl(domain, pathname);
-        Object.assign(extraFile, {
-            uploadMeta: {
-                uploadHost: url,
-            },
-        });
+        // 微信上传素材库
     }
-    async upload(extraFile, uploadFn, file) {
+    async upload(extraFile, uploadFn, file, uploadToAspect) {
         let result;
-        const { applicationId, type, uploadMeta } = extraFile;
+        const { applicationId, type, uploadMeta, id } = extraFile;
         assert(type === 'image');
         try {
-            result = (await uploadFn(file, 'file', uploadMeta.uploadHost, {
+            result = (await uploadToAspect(file, 'file', 'uploadWechatMedia', {
                 applicationId,
                 type,
+                extraFileId: id,
             }, true));
         }
         catch (err) {
@@ -58,7 +33,7 @@ export default class Wechat {
             return;
         }
         else {
-            throw new OakUploadException('图片上传失败');
+            throw new OakUploadException('图片上传微信失败');
         }
     }
     composeFileUrl(extraFile, context, style) {

@@ -21,48 +21,14 @@ export default class Wechat implements Cos<ED, BRC, FRC> {
     }
 
     private formKey(extraFile: OpSchema) {
-        //微信上传素材库 不需要
+        // 微信上传素材库不需要
         const { id, extension, entity, objectId } = extraFile;
 
         return '';
     }
 
     async formUploadMeta(extraFile: OpSchema, context: BRC) {
-        const pathname = '/uploadWechatMedia';
-
-        const applicationId = context.getApplicationId();
-
-        const [domain] = await context.select(
-            'domain',
-            {
-                data: {
-                    id: 1,
-                    url: 1,
-                    apiPath: 1,
-                    protocol: 1,
-                    port: 1,
-                },
-                filter: Object.assign(
-                    {
-                        system: {
-                            application$system: {
-                                id: applicationId,
-                            },
-                        },
-                    },
-                    process.env.NODE_ENV === 'development' && {
-                        url: 'localhost',
-                    }
-                ),
-            },
-            { dontCollect: true }
-        );
-        const url = composeDomainUrl(domain as DomainSchema, pathname);
-        Object.assign(extraFile, {
-            uploadMeta: {
-                uploadHost: url,
-            },
-        });
+        // 微信上传素材库
     }
 
     async upload(
@@ -74,19 +40,27 @@ export default class Wechat implements Cos<ED, BRC, FRC> {
             formData: Record<string, any>, // 上传的其它part参数
             autoInform?: boolean // 上传成功是否会自动通知server（若不会则需要前台显式通知）
         ) => Promise<any>,
-        file: string | File
+        file: string | File,
+        uploadToAspect: (
+            file: File | string,
+            name: string, // 文件的part name
+            aspectName: string, // 上传的aspect名
+            formData: Record<string, any>, // 上传的其它part参数
+            autoInform?: boolean // 上传成功是否会自动通知server（若不会则需要前台显式通知）
+        ) => Promise<any>
     ) {
         let result: response;
-        const { applicationId, type, uploadMeta } = extraFile;
+        const { applicationId, type, uploadMeta, id } = extraFile;
         assert(type === 'image');
         try {
-            result = (await uploadFn(
+            result = (await uploadToAspect(
                 file,
                 'file',
-                (uploadMeta as { uploadHost: string})!.uploadHost,
+                'uploadWechatMedia',
                 {
                     applicationId,
                     type,
+                    extraFileId: id,
                 },
                 true
             )) as response;
@@ -98,7 +72,7 @@ export default class Wechat implements Cos<ED, BRC, FRC> {
         if (result.mediaId) {
             return;
         } else {
-            throw new OakUploadException('图片上传失败');
+            throw new OakUploadException('图片上传微信失败');
         }
     }
 
