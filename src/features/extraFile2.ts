@@ -1,6 +1,7 @@
 import { Feature } from 'oak-frontend-base';
 import { Upload } from 'oak-frontend-base/es/utils/upload';
 import { Cache } from 'oak-frontend-base/es/features/cache';
+import { RunningTree } from 'oak-frontend-base/es/features/runningTree';
 import { Locales } from 'oak-frontend-base/es/features/locales';
 import { CommonAspectDict } from 'oak-common-aspect';
 import AspectDict from '../aspects/AspectDict';
@@ -34,17 +35,20 @@ export class ExtraFile2<
             percentage?: number;
         }
     >;
+    private runningTree: RunningTree<ED, Cxt, FrontCxt, AD>;
 
     constructor(
         cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>,
         application: Application<ED, Cxt, FrontCxt, AD>,
-        locales: Locales<ED, Cxt, FrontCxt, AD>
+        locales: Locales<ED, Cxt, FrontCxt, AD>,
+        runningTree: RunningTree<ED, Cxt, FrontCxt, AD>,
     ) {
         super();
         this.cache = cache;
         this.application = application;
         this.locales = locales;
         this.files = {};
+        this.runningTree = runningTree;
     }
 
     addLocalFile(id: string, file: File | string) {
@@ -127,6 +131,46 @@ export class ExtraFile2<
         }
     }
 
+    async uploadCommit(efPaths: string[], oakFullpath: string) {
+        assert(efPaths && efPaths.length > 0);
+        let ids = [] as string[];
+        if (oakFullpath) {
+            ids = efPaths
+                .map((path) => {
+                    const path2 = path
+                        ? `${oakFullpath}.${path}`
+                        : oakFullpath;
+                    const data =
+                        this.runningTree.getFreshValue(path2);
+                    assert(
+                        data,
+                        `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`
+                    );
+                    return (
+                        data as Partial<EntityDict['extraFile']['OpSchema']>[]
+                    ).map((ele) => ele.id);
+                })
+                .flat()
+                .filter((ele) => !!ele) as string[];
+        }
+        assert(ids.length > 0);
+
+        const promises: Promise<void>[] = [];
+        ids.forEach((id) => {
+            const fileState = this.getFileState(id);
+            if (fileState) {
+                const { state } = fileState;
+                if (['local', 'failed'].includes(state)) {
+                    promises.push(this.upload(id));
+                }
+            }
+        });
+
+        if (promises.length > 0) {
+            await Promise.all(promises);
+        }
+    }
+
     getUrl(
         extraFile?:
             | EntityDict['extraFile']['OpSchema']
@@ -159,9 +203,9 @@ export class ExtraFile2<
 
     getFileState(id: string):
         | {
-              state: FileState;
-              percentage?: number;
-          }
+            state: FileState;
+            percentage?: number;
+        }
         | undefined {
         if (this.files[id]) {
             return this.files[id];

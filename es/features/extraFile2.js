@@ -10,12 +10,14 @@ export class ExtraFile2 extends Feature {
     application;
     locales;
     files;
-    constructor(cache, application, locales) {
+    runningTree;
+    constructor(cache, application, locales, runningTree) {
         super();
         this.cache = cache;
         this.application = application;
         this.locales = locales;
         this.files = {};
+        this.runningTree = runningTree;
     }
     addLocalFile(id, file) {
         assert(!this.files[id]);
@@ -87,6 +89,37 @@ export class ExtraFile2 extends Feature {
             item.state = 'failed';
             item.percentage = undefined;
             this.publish();
+        }
+    }
+    async uploadCommit(efPaths, oakFullpath) {
+        assert(efPaths && efPaths.length > 0);
+        let ids = [];
+        if (oakFullpath) {
+            ids = efPaths
+                .map((path) => {
+                const path2 = path
+                    ? `${oakFullpath}.${path}`
+                    : oakFullpath;
+                const data = this.runningTree.getFreshValue(path2);
+                assert(data, `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`);
+                return data.map((ele) => ele.id);
+            })
+                .flat()
+                .filter((ele) => !!ele);
+        }
+        assert(ids.length > 0);
+        const promises = [];
+        ids.forEach((id) => {
+            const fileState = this.getFileState(id);
+            if (fileState) {
+                const { state } = fileState;
+                if (['local', 'failed'].includes(state)) {
+                    promises.push(this.upload(id));
+                }
+            }
+        });
+        if (promises.length > 0) {
+            await Promise.all(promises);
         }
     }
     getUrl(extraFile, style) {
