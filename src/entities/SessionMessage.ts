@@ -7,7 +7,15 @@ import { Schema as WechatUser } from './WechatUser';
 import { Schema as Application } from './Application';
 import { Schema as ExtraFile } from './ExtraFile';
 
-type Type = 'text' | 'image' | 'audio' | 'video' | 'news';
+type Type =
+    | 'text'
+    | 'image'
+    | 'voice'
+    | 'video'
+    | 'location'
+    | 'link'
+    | 'event'
+    | 'miniprogrampage';
 
 export interface Schema extends EntityShape {
     application: Application;
@@ -19,11 +27,11 @@ export interface Schema extends EntityShape {
     text?: Text;
     files?: ExtraFile[];
     news?: String<128>;
-    aaoe?: Boolean;          // as agent of entity
-    // isRead?: Boolean;
+    aaoe?: Boolean; // as agent of entity
+    extra?: Object;
 };
-const entityDesc: EntityDesc<Schema, '', '', {
-}> = {
+
+const entityDesc: EntityDesc<Schema, '', '', {}> = {
     locales: {
         zh_CN: {
             name: '消息',
@@ -38,17 +46,20 @@ const entityDesc: EntityDesc<Schema, '', '', {
                 files: '文件',
                 news: '文章',
                 aaoe: '作为实体的发起者',
-                // isRead: '是否已读'
+                extra: '构额外信息',
             },
             v: {
                 type: {
                     text: '文字',
                     image: '图片',
-                    audio: '音频',
+                    voice: '音频',
                     video: '视频',
-                    news: '图文',
-                }
-            }
+                    link: '图文',
+                    location: '位置',
+                    event: '事件',
+                    miniprogrampage: '小程序',
+                },
+            },
         },
-    }
+    },
 };

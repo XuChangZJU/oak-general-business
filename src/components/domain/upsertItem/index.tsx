@@ -34,7 +34,7 @@ export default function Render(props: {
             </Form.Item>
             <Form.Item
                 label="请求路径"
-                required
+                // required
                 //name="apiPath"
             >
                 <>

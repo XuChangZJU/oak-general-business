@@ -9,7 +9,7 @@ export default function Render(props) {
                                         update({
                                             url: e.target.value,
                                         });
-                                    }, value: url }) }) }), _jsx(Form.Item, { label: "\u8BF7\u6C42\u8DEF\u5F84", required: true, children: _jsx(_Fragment, { children: _jsx(Input, { onChange: (e) => {
+                                    }, value: url }) }) }), _jsx(Form.Item, { label: "\u8BF7\u6C42\u8DEF\u5F84", children: _jsx(_Fragment, { children: _jsx(Input, { onChange: (e) => {
                                         update({
                                             apiPath: e.target.value,
                                         });

@@ -121,5 +121,40 @@ export const applicationProjection: EntityDict['application']['Selection']['data
             entity: 1,
             entityId: 1,
         },
+        domain$system: {
+            $entity: 'domain',
+            data: {
+                id: 1,
+                systemId: 1,
+                url: 1,
+                apiPath: 1,
+                protocol: 1,
+                port: 1,
+            }
+        }
     },
+};
+
+export const extraFileProjection: EntityDict['extraFile']['Selection']['data'] = {
+    id: 1,
+    origin: 1,
+    type: 1,
+    bucket: 1,
+    objectId: 1,
+    tag1: 1,
+    tag2: 1,
+    filename: 1,
+    md5: 1,
+    entity: 1,
+    entityId: 1,
+    extra1: 1,
+    extra2: 1,
+    extension: 1,
+    size: 1,
+    sort: 1,
+    fileType: 1,
+    isBridge: 1,
+    uploadState: 1,
+    uploadMeta: 1,
+    applicationId: 1,
 };

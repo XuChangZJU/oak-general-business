@@ -27,7 +27,7 @@ export const desc: StorageDesc<OpSchema> = {
         type: {
             notNull: true,
             type: "enum",
-            enumeration: ["text", "image", "audio", "video", "news"]
+            enumeration: ["text", "image", "voice", "video", "location", "link", "event", "miniprogrampage"]
         },
         text: {
             type: "text"
@@ -40,6 +40,9 @@ export const desc: StorageDesc<OpSchema> = {
         },
         aaoe: {
             type: "boolean"
+        },
+        extra: {
+            type: "object"
         }
     },
     actionType: "crud",

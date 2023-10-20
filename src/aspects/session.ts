@@ -137,8 +137,10 @@ export async function createSession<
                     },
                 ];
                 if (MsgType === 'image') {
-
+                } else if (MsgType === 'video') {
+                } else if (MsgType === 'voice') {
                 }
+                
                 break;
             }
             default: {

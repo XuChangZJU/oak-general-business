@@ -5,7 +5,7 @@ import { Schema as User } from './User';
 import { Schema as WechatUser } from './WechatUser';
 import { Schema as Application } from './Application';
 import { Schema as ExtraFile } from './ExtraFile';
-type Type = 'text' | 'image' | 'audio' | 'video' | 'news';
+type Type = 'text' | 'image' | 'voice' | 'video' | 'location' | 'link' | 'event' | 'miniprogrampage';
 export interface Schema extends EntityShape {
     application: Application;
     session: Session;
@@ -17,5 +17,6 @@ export interface Schema extends EntityShape {
     files?: ExtraFile[];
     news?: String<128>;
     aaoe?: Boolean;
+    extra?: Object;
 }
 export {};

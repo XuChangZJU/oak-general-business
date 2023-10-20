@@ -22,10 +22,14 @@ export default OakComponent({
                 objectId: 1,
                 filename: 1,
                 extra1: 1,
+                extra2: 1,
                 extension: 1,
                 type: 1,
                 entity: 1,
                 entityId: 1,
+                applicationId: 1,
+                uploadState: 1,
+                sort: 1,
             },
             // filter: {
             //     tag1: {
@@ -276,6 +280,9 @@ export default OakComponent({
                 id: generateNewId(),
                 uploadState: 'uploading',
                 sort: 1000,
+                extra2: {
+                    isPermanent: false,
+                },
             };
             try {
                 this.updateItem({

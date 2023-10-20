@@ -126,6 +126,7 @@ export async function uploadWechatMedia<
     context: Cxt
 ): Promise<{ mediaId: string }> {
     const { applicationId, file, type: mediaType, description, extraFileId } = params;
+    assert(applicationId);
     const isPermanent = params.isPermanent === 'true';
     const filename = file.originalFilename!;
     const filetype = file.mimetype!;
@@ -246,6 +247,8 @@ export async function getMaterial<
     context: Cxt
 ): Promise<any> {
     const { mediaId, applicationId, isPermanent = false } = params;
+    assert(applicationId);
+    assert(mediaId);
     const [application] = await context.select(
         'application',
         {
@@ -302,6 +305,50 @@ export async function getMaterial<
     return result;
 }
 
+export async function deleteMaterial<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(
+    params: {
+        applicationId: string;
+        mediaId: string;
+    },
+    context: Cxt
+): Promise<any> {
+    const { mediaId, applicationId } = params;
+    assert(applicationId);
+    assert(mediaId);
+    const [application] = await context.select(
+        'application',
+        {
+            data: cloneDeep(applicationProjection),
+            filter: {
+                id: applicationId,
+            },
+        },
+        {
+            dontCollect: true,
+        }
+    );
+    assert(application);
+    const { type, config } = application!;
+    assert(type === 'wechatPublic');
+
+    const config2 = config as WechatPublicConfig;
+    const { appId, appSecret } = config2;
+
+    const wechatInstance = WechatSDK.getInstance(
+        appId!,
+        type!,
+        appSecret!
+    ) as WechatPublicInstance;
+
+    const result = await wechatInstance.deleteMaterial({
+        mediaId,
+    });
+    return result;
+}
+
 export async function batchGetArticle<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
@@ -315,6 +362,7 @@ export async function batchGetArticle<
     context: Cxt
 ): Promise<any> {
     const { applicationId, offset, count, noContent } = params;
+    assert(applicationId);
     const [application] = await context.select(
         'application',
         {
@@ -358,6 +406,7 @@ export async function getArticle<
     context: Cxt
 ): Promise<any> {
     const { applicationId, articleId } = params;
+    assert(applicationId);
     const [application] = await context.select(
         'application',
         {
@@ -401,6 +450,7 @@ export async function batchGetMaterialList<
     context: Cxt
 ): Promise<any> {
     const { applicationId } = params;
+    assert(applicationId);
     const [application] = await context.select(
         'application',
         {

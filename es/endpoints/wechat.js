@@ -7,6 +7,7 @@ import { expandUuidTo36Bytes, generateNewIdAsync } from 'oak-domain/lib/utils/uu
 import { composeDomainUrl } from '../utils/domain';
 import { composeUrl } from 'oak-domain/lib/utils/url';
 import { createSession } from '../aspects/session';
+import { getMaterial } from '../aspects/application';
 const X2Js = new x2js();
 function assertFromWeChat(query, config) {
     const { signature, nonce, timestamp } = query;
@@ -612,7 +613,8 @@ const endpoints = {
             },
         },
     ],
-    wechatMpEvent: [{
+    wechatMpEvent: [
+        {
             name: '微信小程序回调接口',
             method: 'post',
             params: ['appId'],
@@ -640,7 +642,8 @@ const endpoints = {
                     return content;
                 }
             },
-        }, {
+        },
+        {
             name: '微信小程序验证接口',
             method: 'get',
             params: ['appId'],
@@ -676,6 +679,28 @@ const endpoints = {
                     throw new Error('Verify Failed');
                 }
             },
-        }],
+        },
+    ],
+    wechatMaterial: [
+        {
+            name: '获取微信素材',
+            method: 'get',
+            fn: async (context, params, headers, req, body) => {
+                const { searchParams } = new URL.URL(`http://${req.headers.host}${req.url}`);
+                const applicationId = searchParams.get('applicationId');
+                const mediaId = searchParams.get('mediaId');
+                const isPermanent = searchParams.get('isPermanent');
+                const base64 = await getMaterial({
+                    applicationId: applicationId,
+                    mediaId: mediaId,
+                    isPermanent: isPermanent === 'true',
+                }, context);
+                // 微信临时素材 公众号只支持image和video，小程序只支持image
+                // 现只支持image 
+                const af = Buffer.from(base64, 'base64');
+                return af;
+            },
+        },
+    ],
 };
 export default endpoints;

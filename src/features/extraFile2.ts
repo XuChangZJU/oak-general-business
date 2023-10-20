@@ -15,6 +15,7 @@ import { getCos } from '../utils/cos';
 import { OpSchema } from '../oak-app-domain/ExtraFile/Schema';
 import { unset } from 'oak-domain/lib/utils/lodash';
 import { generateNewId, generateNewIdAsync } from 'oak-domain';
+import { extraFileProjection } from '../types/Projection';
 
 export type FileState = 'local' | 'uploading' | 'uploaded' | 'failed';
 
@@ -67,27 +68,7 @@ export class ExtraFile2<
 
     async upload(id: string) {
         const [extraFile] = this.cache.get('extraFile', {
-            data: {
-                origin: 1,
-                type: 1,
-                bucket: 1,
-                objectId: 1,
-                tag1: 1,
-                tag2: 1,
-                filename: 1,
-                md5: 1,
-                entity: 1,
-                entityId: 1,
-                extra1: 1,
-                extension: 1,
-                size: 1,
-                sort: 1,
-                fileType: 1,
-                isBridge: 1,
-                uploadState: 1,
-                uploadMeta: 1,
-                applicationId: 1,
-            },
+            data: extraFileProjection,
             filter: {
                 id,
             },
@@ -238,28 +219,7 @@ export class ExtraFile2<
             id: await generateNewIdAsync(),
         } as EntityDict['extraFile']['Operation']);
         const [newExtraFile] = this.cache.get('extraFile', {
-            data: {
-                id: 1,
-                origin: 1,
-                type: 1,
-                bucket: 1,
-                objectId: 1,
-                tag1: 1,
-                tag2: 1,
-                filename: 1,
-                md5: 1,
-                entity: 1,
-                entityId: 1,
-                extra1: 1,
-                extension: 1,
-                size: 1,
-                sort: 1,
-                fileType: 1,
-                isBridge: 1,
-                uploadState: 1,
-                uploadMeta: 1,
-                applicationId: 1,
-            },
+            data: extraFileProjection,
             filter: {
                 id: extraFileId,
             },

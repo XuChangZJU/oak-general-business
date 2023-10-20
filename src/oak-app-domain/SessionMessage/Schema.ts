@@ -11,7 +11,7 @@ import * as Session from "../Session/Schema";
 import * as User from "../User/Schema";
 import * as WechatUser from "../WechatUser/Schema";
 import * as ExtraFile from "../ExtraFile/Schema";
-type Type = 'text' | 'image' | 'audio' | 'video' | 'news';
+type Type = 'text' | 'image' | 'voice' | 'video' | 'location' | 'link' | 'event' | 'miniprogrampage';
 export type OpSchema = EntityShape & {
     applicationId: ForeignKey<"application">;
     sessionId: ForeignKey<"session">;
@@ -22,6 +22,7 @@ export type OpSchema = EntityShape & {
     text?: Text | null;
     news?: String<128> | null;
     aaoe?: Boolean | null;
+    extra?: Object | null;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
@@ -34,6 +35,7 @@ export type Schema = EntityShape & {
     text?: Text | null;
     news?: String<128> | null;
     aaoe?: Boolean | null;
+    extra?: Object | null;
     application: Application.Schema;
     session: Session.Schema;
     user?: User.Schema | null;
@@ -61,6 +63,7 @@ type AttrFilter = {
     text: Q_StringValue;
     news: Q_StringValue;
     aaoe: Q_BooleanValue;
+    extra: Object;
     extraFile$entity: ExtraFile.Filter & SubQueryPredicateMetadata;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
@@ -84,6 +87,7 @@ export type Projection = {
     text?: number;
     news?: number;
     aaoe?: number;
+    extra?: number | Object;
     extraFile$entity?: ExtraFile.Selection & {
         $entity: "extraFile";
     };

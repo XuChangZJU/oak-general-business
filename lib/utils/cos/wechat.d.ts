@@ -15,5 +15,5 @@ export default class Wechat implements Cos<ED, BRC, FRC> {
     autoInform?: boolean) => Promise<any>): Promise<void>;
     composeFileUrl(extraFile: ED['extraFile']['OpSchema'], context: FRC, style?: string): string;
     checkWhetherSuccess(extraFile: OpSchema, context: BRC): Promise<boolean>;
-    removeFile(extraFile: OpSchema, context: BRC): Promise<void>;
+    removeFile(extraFile: OpSchema, context: BRC): Promise<any>;
 }

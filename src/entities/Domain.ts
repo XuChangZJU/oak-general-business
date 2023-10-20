@@ -7,7 +7,7 @@ export interface Schema extends EntityShape {
     url: String<64>;
     apiPath?: String<32>; //默认nginx代理 可以不配置
     protocol: 'http' | 'https';
-    port: Int<2>; // 默认80端口 可以不配置
+    port: Int<2>;
     system: System;
 };
 
