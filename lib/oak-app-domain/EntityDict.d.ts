@@ -37,6 +37,7 @@ import { EntityDef as Subscription } from "./Subscription/Schema";
 import { EntityDef as Subway } from "./Subway/Schema";
 import { EntityDef as SubwayStation } from "./SubwayStation/Schema";
 import { EntityDef as System } from "./System/Schema";
+import { EntityDef as ToDo } from "./ToDo/Schema";
 import { EntityDef as Token } from "./Token/Schema";
 import { EntityDef as UserSystem } from "./UserSystem/Schema";
 import { EntityDef as UserWechatPublicTag } from "./UserWechatPublicTag/Schema";
@@ -87,6 +88,7 @@ export type EntityDict = {
     subway: Subway;
     subwayStation: SubwayStation;
     system: System;
+    toDo: ToDo;
     token: Token;
     userSystem: UserSystem;
     userWechatPublicTag: UserWechatPublicTag;

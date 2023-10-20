@@ -11,7 +11,6 @@ export const desc: StorageDesc<OpSchema> = {
             }
         },
         apiPath: {
-            notNull: true,
             type: "varchar",
             params: {
                 length: 32

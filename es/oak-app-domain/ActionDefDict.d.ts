@@ -22,6 +22,9 @@ export declare const ActionDefDict: {
         iState: import("oak-domain").ActionDef<string, string>;
     };
     parasite: {};
+    toDo: {
+        iState: import("oak-domain").ActionDef<string, string>;
+    };
     token: {
         ableState: import("oak-domain").ActionDef<import("oak-domain").AbleAction, import("oak-domain").AbleState>;
     };

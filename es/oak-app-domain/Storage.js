@@ -37,6 +37,7 @@ import { desc as subscriptionDesc } from "./Subscription/Storage";
 import { desc as subwayDesc } from "./Subway/Storage";
 import { desc as subwayStationDesc } from "./SubwayStation/Storage";
 import { desc as systemDesc } from "./System/Storage";
+import { desc as toDoDesc } from "./ToDo/Storage";
 import { desc as tokenDesc } from "./Token/Storage";
 import { desc as userSystemDesc } from "./UserSystem/Storage";
 import { desc as userWechatPublicTagDesc } from "./UserWechatPublicTag/Storage";
@@ -87,6 +88,7 @@ export const storageSchema = {
     subway: subwayDesc,
     subwayStation: subwayStationDesc,
     system: systemDesc,
+    toDo: toDoDesc,
     token: tokenDesc,
     userSystem: userSystemDesc,
     userWechatPublicTag: userWechatPublicTagDesc,

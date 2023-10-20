@@ -3,13 +3,13 @@ import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue,
 import { OneOf, ValueOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction, AppendOnlyAction, ReadOnlyAction, ExcludeUpdateAction, ExcludeRemoveAction, RelationAction } from "oak-domain/lib/actions/action";
-import { String, Int, Datetime, Image, Boolean, Text } from "oak-domain/lib/types/DataType";
+import { String, Int } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 import * as System from "../System/Schema";
 export type OpSchema = EntityShape & {
     url: String<64>;
-    apiPath: String<32>;
+    apiPath?: String<32> | null;
     protocol: 'http' | 'https';
     port: Int<2>;
     systemId: ForeignKey<"system">;
@@ -17,7 +17,7 @@ export type OpSchema = EntityShape & {
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     url: String<64>;
-    apiPath: String<32>;
+    apiPath?: String<32> | null;
     protocol: 'http' | 'https';
     port: Int<2>;
     systemId: ForeignKey<"system">;

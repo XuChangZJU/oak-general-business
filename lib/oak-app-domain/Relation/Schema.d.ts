@@ -7,24 +7,26 @@ import { String } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Account from "../Account/Schema";
 import * as Session from "../Session/Schema";
+import * as ToDo from "../ToDo/Schema";
 import * as ActionAuth from "../ActionAuth/Schema";
 import * as RelationAuth from "../RelationAuth/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
 import * as UserRelation from "../UserRelation/Schema";
 export type OpSchema = EntityShape & {
-    entity: "account" | "session" | string;
+    entity: "account" | "session" | "toDo" | string;
     entityId?: String<64> | null;
     name?: String<32> | null;
     display?: String<32> | null;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
-    entity: "account" | "session" | string;
+    entity: "account" | "session" | "toDo" | string;
     entityId?: String<64> | null;
     name?: String<32> | null;
     display?: String<32> | null;
     account?: Account.Schema;
     session?: Session.Schema;
+    toDo?: ToDo.Schema;
     actionAuth$relation?: Array<ActionAuth.Schema>;
     actionAuth$relation$$aggr?: AggregationResult<ActionAuth.Schema>;
     relationAuth$sourceRelation?: Array<RelationAuth.Schema>;
@@ -43,12 +45,13 @@ type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    entity: Q_EnumValue<"account" | "session" | string>;
+    entity: Q_EnumValue<"account" | "session" | "toDo" | string>;
     entityId: Q_StringValue;
     name: Q_StringValue;
     display: Q_StringValue;
     account: Account.Filter;
     session: Session.Filter;
+    toDo: ToDo.Filter;
     actionAuth$relation: ActionAuth.Filter & SubQueryPredicateMetadata;
     relationAuth$sourceRelation: RelationAuth.Filter & SubQueryPredicateMetadata;
     relationAuth$destRelation: RelationAuth.Filter & SubQueryPredicateMetadata;
@@ -69,6 +72,7 @@ export type Projection = {
     display?: number;
     account?: Account.Projection;
     session?: Session.Projection;
+    toDo?: ToDo.Projection;
     actionAuth$relation?: ActionAuth.Selection & {
         $entity: "actionAuth";
     };
@@ -109,6 +113,9 @@ type AccountIdProjection = OneOf<{
 type SessionIdProjection = OneOf<{
     entityId: number;
 }>;
+type ToDoIdProjection = OneOf<{
+    entityId: number;
+}>;
 export type SortAttr = {
     id: number;
 } | {
@@ -129,6 +136,8 @@ export type SortAttr = {
     account: Account.SortAttr;
 } | {
     session: Session.SortAttr;
+} | {
+    toDo: ToDo.SortAttr;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
@@ -163,6 +172,17 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     entity: "session";
     entityId?: ForeignKey<"Session">;
 } | {
+    entity?: never;
+    entityId?: never;
+    toDo: ToDo.CreateSingleOperation;
+} | {
+    entity: "toDo";
+    entityId: ForeignKey<"ToDo">;
+    toDo: ToDo.UpdateOperation;
+} | {
+    entity: "toDo";
+    entityId?: ForeignKey<"ToDo">;
+} | {
     entity?: string;
     entityId?: string;
     [K: string]: any;
@@ -185,8 +205,12 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("account" | "session" | string) | null;
-    entityId?: ForeignKey<"Account" | "Session"> | null;
+    toDo?: ToDo.CreateSingleOperation | ToDo.UpdateOperation | ToDo.RemoveOperation;
+    entityId?: never;
+    entity?: never;
+} | {
+    entity?: ("account" | "session" | "toDo" | string) | null;
+    entityId?: ForeignKey<"Account" | "Session" | "ToDo"> | null;
 }) & {
     [k: string]: any;
     actionAuth$relation?: OakOperation<ActionAuth.UpdateOperation["action"], Omit<ActionAuth.UpdateOperationData, "relation" | "relationId">, Omit<ActionAuth.Filter, "relation" | "relationId">> | OakOperation<ActionAuth.RemoveOperation["action"], Omit<ActionAuth.RemoveOperationData, "relation" | "relationId">, Omit<ActionAuth.Filter, "relation" | "relationId">> | OakOperation<"create", Omit<ActionAuth.CreateOperationData, "relation" | "relationId">[]> | Array<OakOperation<"create", Omit<ActionAuth.CreateOperationData, "relation" | "relationId">> | OakOperation<ActionAuth.UpdateOperation["action"], Omit<ActionAuth.UpdateOperationData, "relation" | "relationId">, Omit<ActionAuth.Filter, "relation" | "relationId">> | OakOperation<ActionAuth.RemoveOperation["action"], Omit<ActionAuth.RemoveOperationData, "relation" | "relationId">, Omit<ActionAuth.Filter, "relation" | "relationId">>>;
@@ -201,12 +225,15 @@ export type RemoveOperationData = {} & ({
 } | {
     session?: Session.UpdateOperation | Session.RemoveOperation;
 } | {
+    toDo?: ToDo.UpdateOperation | ToDo.RemoveOperation;
+} | {
     [k: string]: any;
 });
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export type AccountIdSubQuery = Selection<AccountIdProjection>;
 export type SessionIdSubQuery = Selection<SessionIdProjection>;
+export type ToDoIdSubQuery = Selection<ToDoIdProjection>;
 export type RelationIdSubQuery = Selection<RelationIdProjection>;
 export type EntityDef = {
     Schema: Schema;

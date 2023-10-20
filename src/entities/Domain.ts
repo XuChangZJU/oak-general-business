@@ -1,13 +1,13 @@
-import { String, Int, Datetime, Image, Boolean, Text } from 'oak-domain/lib/types/DataType';
+import { String, Int } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as System } from './System';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
 export interface Schema extends EntityShape {
     url: String<64>;
-    apiPath: String<32>;
+    apiPath?: String<32>; //默认nginx代理 可以不配置
     protocol: 'http' | 'https';
-    port: Int<2>;
+    port: Int<2>; // 默认80端口 可以不配置
     system: System;
 };
 

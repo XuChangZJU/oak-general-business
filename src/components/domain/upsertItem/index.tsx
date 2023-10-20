@@ -4,24 +4,23 @@ import { EntityDict } from '../../../oak-app-domain';
 
 export default function Render(props: {
     data: EntityDict['domain']['OpSchema'];
-    update: <T extends keyof EntityDict['domain']['OpSchema']>(attr: T, value: EntityDict['domain']['OpSchema'][T] | undefined) => void;
+    update: <T extends keyof EntityDict['domain']['OpSchema']>(
+        attr: T,
+        value: EntityDict['domain']['OpSchema'][T] | undefined
+    ) => void;
 }) {
     const { update, data } = props;
     return (
-        <Form
-            colon={true}
-            labelCol={{ span: 6 }}
-            wrapperCol={{ span: 16 }}
-        >
+        <Form colon={true} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
             <Form.Item
                 label="访问域名"
                 required
-            // name="url"
-            // rules={[
-            //     {
-            //         required: true,
-            //     },
-            // ]}
+                // name="url"
+                // rules={[
+                //     {
+                //         required: true,
+                //     },
+                // ]}
             >
                 <>
                     <Input
@@ -36,21 +35,21 @@ export default function Render(props: {
             <Form.Item
                 label="请求路径"
                 required
-            //name="apiPath"
+                //name="apiPath"
             >
                 <>
                     <Input
                         onChange={(e) => {
                             update('apiPath', e.target.value);
                         }}
-                        value={data.apiPath}
+                        value={data.apiPath || undefined}
                     />
                 </>
             </Form.Item>
             <Form.Item
                 label="端口"
                 required
-            //name="port"
+                //name="port"
             >
                 <>
                     <Input
@@ -75,7 +74,10 @@ export default function Render(props: {
                         placeholder="请选择协议"
                         value={data.protocol}
                         onChange={(value: string) => {
-                            update('protocol', value as EntityDict['domain']['Schema']['protocol']);
+                            update(
+                                'protocol',
+                                value as EntityDict['domain']['Schema']['protocol']
+                            );
                         }}
                         options={[
                             {
@@ -91,5 +93,5 @@ export default function Render(props: {
                 </>
             </Form.Item>
         </Form>
-    )
+    );
 }

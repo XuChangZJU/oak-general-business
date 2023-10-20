@@ -8,7 +8,7 @@ import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as System from "../System/Schema";
 export type OpSchema = EntityShape & {
     url: String<64>;
-    apiPath: String<32>;
+    apiPath?: String<32> | null;
     protocol: 'http' | 'https';
     port: Int<2>;
     systemId: ForeignKey<"system">;
@@ -16,7 +16,7 @@ export type OpSchema = EntityShape & {
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     url: String<64>;
-    apiPath: String<32>;
+    apiPath?: String<32> | null;
     protocol: 'http' | 'https';
     port: Int<2>;
     systemId: ForeignKey<"system">;

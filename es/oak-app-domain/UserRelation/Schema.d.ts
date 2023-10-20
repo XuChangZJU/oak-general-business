@@ -9,22 +9,24 @@ import * as User from "../User/Schema";
 import * as Relation from "../Relation/Schema";
 import * as Account from "../Account/Schema";
 import * as Session from "../Session/Schema";
+import * as ToDo from "../ToDo/Schema";
 export type OpSchema = EntityShape & {
     userId: ForeignKey<"user">;
     relationId: ForeignKey<"relation">;
-    entity: "account" | "session" | string;
+    entity: "account" | "session" | "toDo" | string;
     entityId: String<64>;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     userId: ForeignKey<"user">;
     relationId: ForeignKey<"relation">;
-    entity: "account" | "session" | string;
+    entity: "account" | "session" | "toDo" | string;
     entityId: String<64>;
     user: User.Schema;
     relation: Relation.Schema;
     account?: Account.Schema;
     session?: Session.Schema;
+    toDo?: ToDo.Schema;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -37,10 +39,11 @@ type AttrFilter = {
     user: User.Filter;
     relationId: Q_StringValue;
     relation: Relation.Filter;
-    entity: Q_EnumValue<"account" | "session" | string>;
+    entity: Q_EnumValue<"account" | "session" | "toDo" | string>;
     entityId: Q_StringValue;
     account: Account.Filter;
     session: Session.Filter;
+    toDo: ToDo.Filter;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export type Projection = {
@@ -58,6 +61,7 @@ export type Projection = {
     entityId?: number;
     account?: Account.Projection;
     session?: Session.Projection;
+    toDo?: ToDo.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
 type UserRelationIdProjection = OneOf<{
     id: number;
@@ -72,6 +76,9 @@ type AccountIdProjection = OneOf<{
     entityId: number;
 }>;
 type SessionIdProjection = OneOf<{
+    entityId: number;
+}>;
+type ToDoIdProjection = OneOf<{
     entityId: number;
 }>;
 export type SortAttr = {
@@ -98,6 +105,8 @@ export type SortAttr = {
     account: Account.SortAttr;
 } | {
     session: Session.SortAttr;
+} | {
+    toDo: ToDo.SortAttr;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
@@ -148,6 +157,17 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     entity: "session";
     entityId: ForeignKey<"Session">;
 } | {
+    entity?: never;
+    entityId?: never;
+    toDo: ToDo.CreateSingleOperation;
+} | {
+    entity: "toDo";
+    entityId: ForeignKey<"ToDo">;
+    toDo: ToDo.UpdateOperation;
+} | {
+    entity: "toDo";
+    entityId: ForeignKey<"ToDo">;
+} | {
     entity?: string;
     entityId?: string;
     [K: string]: any;
@@ -188,8 +208,12 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("account" | "session" | string) | null;
-    entityId?: ForeignKey<"Account" | "Session"> | null;
+    toDo?: ToDo.CreateSingleOperation | ToDo.UpdateOperation | ToDo.RemoveOperation;
+    entityId?: never;
+    entity?: never;
+} | {
+    entity?: ("account" | "session" | "toDo" | string) | null;
+    entityId?: ForeignKey<"Account" | "Session" | "ToDo"> | null;
 }) & {
     [k: string]: any;
 };
@@ -203,6 +227,8 @@ export type RemoveOperationData = {} & (({
 } | {
     session?: Session.UpdateOperation | Session.RemoveOperation;
 } | {
+    toDo?: ToDo.UpdateOperation | ToDo.RemoveOperation;
+} | {
     [k: string]: any;
 });
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
@@ -211,6 +237,7 @@ export type UserIdSubQuery = Selection<UserIdProjection>;
 export type RelationIdSubQuery = Selection<RelationIdProjection>;
 export type AccountIdSubQuery = Selection<AccountIdProjection>;
 export type SessionIdSubQuery = Selection<SessionIdProjection>;
+export type ToDoIdSubQuery = Selection<ToDoIdProjection>;
 export type UserRelationIdSubQuery = Selection<UserRelationIdProjection>;
 export type EntityDef = {
     Schema: Schema;

@@ -37,6 +37,7 @@ import * as Subscription from "./Subscription/Schema";
 import * as Subway from "./Subway/Schema";
 import * as SubwayStation from "./SubwayStation/Schema";
 import * as System from "./System/Schema";
+import * as ToDo from "./ToDo/Schema";
 import * as Token from "./Token/Schema";
 import * as UserSystem from "./UserSystem/Schema";
 import * as UserWechatPublicTag from "./UserWechatPublicTag/Schema";
@@ -384,6 +385,17 @@ export type SystemIdSubQuery = {
         entity: "userSystem";
     }) | (System.SystemIdSubQuery & {
         entity: "system";
+    }) | any;
+};
+export type ToDoIdSubQuery = {
+    [K in "$in" | "$nin"]?: (UserEntityGrant.ToDoIdSubQuery & {
+        entity: "userEntityGrant";
+    }) | (Relation.ToDoIdSubQuery & {
+        entity: "relation";
+    }) | (UserRelation.ToDoIdSubQuery & {
+        entity: "userRelation";
+    }) | (ToDo.ToDoIdSubQuery & {
+        entity: "toDo";
     }) | any;
 };
 export type TokenIdSubQuery = {

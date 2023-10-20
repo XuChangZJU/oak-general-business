@@ -255,9 +255,7 @@ export default OakComponent({
                     callback(updateData, 'uploading');
                 }
                 try {
-                    this.addItem(updateData, undefined, async () => {
-                        await this.features.extraFile.upload(updateData, extra1);
-                    });
+                    this.addItem(updateData);
                     await this.execute();
                     if (callback) {
                         callback(updateData, 'success');
@@ -271,9 +269,7 @@ export default OakComponent({
                 }
             }
             else {
-                const id = this.addItem(updateData, undefined, async () => {
-                    await this.features.extraFile.upload(updateData, extra1);
-                });
+                const id = this.addItem(updateData);
                 this.setState({
                     fileList: Object.assign(this.state.fileList, {
                         [id]: extra1,

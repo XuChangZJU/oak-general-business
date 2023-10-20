@@ -6,7 +6,7 @@ export default function Render(props) {
                             update('url', e.target.value);
                         }, value: data.url }) }) }), _jsx(Form.Item, { label: "\u8BF7\u6C42\u8DEF\u5F84", required: true, children: _jsx(_Fragment, { children: _jsx(Input, { onChange: (e) => {
                             update('apiPath', e.target.value);
-                        }, value: data.apiPath }) }) }), _jsx(Form.Item, { label: "\u7AEF\u53E3", required: true, children: _jsx(_Fragment, { children: _jsx(Input, { onChange: (e) => {
+                        }, value: data.apiPath || undefined }) }) }), _jsx(Form.Item, { label: "\u7AEF\u53E3", required: true, children: _jsx(_Fragment, { children: _jsx(Input, { onChange: (e) => {
                             const v = e.target.value;
                             update('port', v ? Number(v) : undefined);
                         }, value: data.port }) }) }), _jsx(Form.Item

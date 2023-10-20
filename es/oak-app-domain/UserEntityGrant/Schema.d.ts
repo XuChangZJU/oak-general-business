@@ -10,6 +10,7 @@ import * as Relation from "../Relation/Schema";
 import * as User from "../User/Schema";
 import * as Account from "../Account/Schema";
 import * as Session from "../Session/Schema";
+import * as ToDo from "../ToDo/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
@@ -20,7 +21,7 @@ export type RedirectToProps = {
     isTabBar?: boolean;
 };
 export type OpSchema = EntityShape & {
-    entity: "account" | "session" | string;
+    entity: "account" | "session" | "toDo" | string;
     entityId: String<64>;
     relationId: ForeignKey<"relation">;
     type: 'grant' | 'transfer';
@@ -36,7 +37,7 @@ export type OpSchema = EntityShape & {
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
-    entity: "account" | "session" | string;
+    entity: "account" | "session" | "toDo" | string;
     entityId: String<64>;
     relationId: ForeignKey<"relation">;
     type: 'grant' | 'transfer';
@@ -54,6 +55,7 @@ export type Schema = EntityShape & {
     grantee?: User.Schema | null;
     account?: Account.Schema;
     session?: Session.Schema;
+    toDo?: ToDo.Schema;
     modiEntity$entity?: Array<ModiEntity.Schema>;
     modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;
     operEntity$entity?: Array<OperEntity.Schema>;
@@ -68,7 +70,7 @@ type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    entity: Q_EnumValue<"account" | "session" | string>;
+    entity: Q_EnumValue<"account" | "session" | "toDo" | string>;
     entityId: Q_StringValue;
     relationId: Q_StringValue;
     relation: Relation.Filter;
@@ -86,6 +88,7 @@ type AttrFilter = {
     redirectTo: JsonFilter<RedirectToProps>;
     account: Account.Filter;
     session: Session.Filter;
+    toDo: ToDo.Filter;
     modiEntity$entity: ModiEntity.Filter & SubQueryPredicateMetadata;
     operEntity$entity: OperEntity.Filter & SubQueryPredicateMetadata;
     wechatQrCode$entity: WechatQrCode.Filter & SubQueryPredicateMetadata;
@@ -116,6 +119,7 @@ export type Projection = {
     redirectTo?: number | JsonProjection<RedirectToProps>;
     account?: Account.Projection;
     session?: Session.Projection;
+    toDo?: ToDo.Projection;
     modiEntity$entity?: ModiEntity.Selection & {
         $entity: "modiEntity";
     };
@@ -149,6 +153,9 @@ type AccountIdProjection = OneOf<{
     entityId: number;
 }>;
 type SessionIdProjection = OneOf<{
+    entityId: number;
+}>;
+type ToDoIdProjection = OneOf<{
     entityId: number;
 }>;
 export type SortAttr = {
@@ -195,6 +202,8 @@ export type SortAttr = {
     account: Account.SortAttr;
 } | {
     session: Session.SortAttr;
+} | {
+    toDo: ToDo.SortAttr;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
@@ -253,6 +262,17 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     entity: "session";
     entityId: ForeignKey<"Session">;
 } | {
+    entity?: never;
+    entityId?: never;
+    toDo: ToDo.CreateSingleOperation;
+} | {
+    entity: "toDo";
+    entityId: ForeignKey<"ToDo">;
+    toDo: ToDo.UpdateOperation;
+} | {
+    entity: "toDo";
+    entityId: ForeignKey<"ToDo">;
+} | {
     entity?: string;
     entityId?: string;
     [K: string]: any;
@@ -309,8 +329,12 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("account" | "session" | string) | null;
-    entityId?: ForeignKey<"Account" | "Session"> | null;
+    toDo?: ToDo.CreateSingleOperation | ToDo.UpdateOperation | ToDo.RemoveOperation;
+    entityId?: never;
+    entity?: never;
+} | {
+    entity?: ("account" | "session" | "toDo" | string) | null;
+    entityId?: ForeignKey<"Account" | "Session" | "ToDo"> | null;
 }) & {
     [k: string]: any;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
@@ -329,6 +353,8 @@ export type RemoveOperationData = {} & (({
 } | {
     session?: Session.UpdateOperation | Session.RemoveOperation;
 } | {
+    toDo?: ToDo.UpdateOperation | ToDo.RemoveOperation;
+} | {
     [k: string]: any;
 });
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
@@ -337,6 +363,7 @@ export type RelationIdSubQuery = Selection<RelationIdProjection>;
 export type UserIdSubQuery = Selection<UserIdProjection>;
 export type AccountIdSubQuery = Selection<AccountIdProjection>;
 export type SessionIdSubQuery = Selection<SessionIdProjection>;
+export type ToDoIdSubQuery = Selection<ToDoIdProjection>;
 export type UserEntityGrantIdSubQuery = Selection<UserEntityGrantIdProjection>;
 export type EntityDef = {
     Schema: Schema;

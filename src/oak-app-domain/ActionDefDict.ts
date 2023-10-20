@@ -6,6 +6,7 @@ import { ActionDefDict as Message } from "./Message/Action";
 import { ActionDefDict as Mobile } from "./Mobile/Action";
 import { ActionDefDict as Notification } from "./Notification/Action";
 import { ActionDefDict as Parasite } from "./Parasite/Action";
+import { ActionDefDict as ToDo } from "./ToDo/Action";
 import { ActionDefDict as Token } from "./Token/Action";
 import { ActionDefDict as User } from "./User/Action";
 import { ActionDefDict as UserEntityGrant } from "./UserEntityGrant/Action";
@@ -22,6 +23,7 @@ export const ActionDefDict = {
     mobile: Mobile,
     notification: Notification,
     parasite: Parasite,
+    toDo: ToDo,
     token: Token,
     user: User,
     userEntityGrant: UserEntityGrant,

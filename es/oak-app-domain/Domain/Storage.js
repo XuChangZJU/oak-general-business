@@ -9,7 +9,6 @@ export const desc = {
             }
         },
         apiPath: {
-            notNull: true,
             type: "varchar",
             params: {
                 length: 32

@@ -13,5 +13,10 @@ export const relations = [
         id: "session-partner",
         entity: "session",
         name: "partner"
+    },
+    {
+        id: "toDo-collaborator",
+        entity: "toDo",
+        name: "collaborator"
     }
 ];
