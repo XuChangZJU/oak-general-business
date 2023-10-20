@@ -20,6 +20,7 @@ import {
     getArticle,
     batchGetMaterialList,
     getMaterial,
+    deleteMaterial,
 } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { updateStyle } from './style2';
@@ -82,6 +83,7 @@ const aspectDict = {
     updateUserPassword,
     getMpUnlimitWxaCode,
     confirmUserEntityGrant,
+    createSession,
     uploadWechatMedia,
     getCurrentMenu,
     getMenu,
@@ -93,7 +95,7 @@ const aspectDict = {
     getArticle,
     batchGetMaterialList,
     getMaterial,
-    createSession,
+    deleteMaterial,
     createTag,
     getTags,
     editTag,

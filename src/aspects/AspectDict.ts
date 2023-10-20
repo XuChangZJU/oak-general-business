@@ -178,6 +178,15 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<{ result: string; times?: number }>;
+    createSession: (
+        params: {
+            data?: WechatPublicEventData | WechatMpEventData;
+            type: AppType;
+            entity?: string;
+            entityId?: string;
+        },
+        context: Cxt
+    ) => Promise<string>;
     uploadWechatMedia: (
         params: any,
         context: Cxt
@@ -256,15 +265,13 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<any>;
-    createSession: (
+    deleteMaterial: (
         params: {
-            data?: WechatPublicEventData | WechatMpEventData;
-            type: AppType;
-            entity?: string;
-            entityId?: string;
+            applicationId: string;
+            mediaId: string;
         },
         context: Cxt
-    ) => Promise<string>;
+    ) => Promise<any>;
     createTag: (
         params: {
             applicationId: string;
