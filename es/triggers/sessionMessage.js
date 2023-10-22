@@ -1,6 +1,7 @@
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { WechatSDK, } from 'oak-external-sdk';
+import { extraFileProjection } from '../types/Projection';
 const triggers = [
     {
         name: '当sessionMessage创建时时，使其相关session更新lmts',
@@ -41,7 +42,35 @@ const triggers = [
             const closeRootMode = context.openRootMode();
             try {
                 for (const row of rows) {
-                    const { sessionId, aaoe, type, text } = row;
+                    const { id } = row;
+                    const [currentSessionMessage] = await context.select('sessionMessage', {
+                        data: {
+                            id: 1,
+                            sessionId: 1,
+                            text: 1,
+                            type: 1,
+                            userId: 1,
+                            wechatUserId: 1,
+                            wechatUser: {
+                                id: 1,
+                                openId: 1,
+                            },
+                            applicationId: 1,
+                            createTime: 1,
+                            $$createAt$$: 1,
+                            aaoe: 1,
+                            extraFile$entity: {
+                                $entity: 'extraFile',
+                                data: extraFileProjection,
+                            },
+                        },
+                        filter: {
+                            id,
+                        },
+                        count: 1,
+                        indexFrom: 0,
+                    }, {});
+                    const { sessionId, aaoe, type, text, extraFile$entity } = currentSessionMessage;
                     if (aaoe) {
                         const msgType = type;
                         const [sessionMessage] = await context.select('sessionMessage', {
@@ -127,14 +156,19 @@ const triggers = [
                                     });
                                     break;
                                 }
-                                // case 'image' :{
-                                //     wechatInstance.sendServeMessage({
-                                //         openId: sessionMessage.wechatUser?.openId!,
-                                //         type: msgType,
-                                //         mediaId: '',
-                                //     });
-                                //     break;
-                                // }
+                                case 'image': {
+                                    const extraFile = extraFile$entity && extraFile$entity[0];
+                                    if (extraFile) {
+                                        const mediaId = extraFile.extra1;
+                                        wechatInstance.sendServeMessage({
+                                            openId: sessionMessage.wechatUser
+                                                ?.openId,
+                                            type: msgType,
+                                            mediaId,
+                                        });
+                                    }
+                                    break;
+                                }
                                 default: {
                                     assert(false, `消息类型「${msgType}」尚未支持`);
                                 }

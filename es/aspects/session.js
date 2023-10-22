@@ -59,6 +59,7 @@ export async function createSession(params, context) {
                     },
                     filter: {
                         openId: FromUserName,
+                        applicationId: entityId,
                     },
                 }, {});
                 const result = await context.select('session', {
@@ -76,28 +77,95 @@ export async function createSession(params, context) {
                         openId: FromUserName,
                     },
                 }, {});
+                const sessionMessage = {
+                    id: await generateNewIdAsync(),
+                    applicationId: entityId,
+                    wechatUserId: wechatUser?.id,
+                    createTime: Number(CreateTime) * 1000,
+                    type: MsgType,
+                    aaoe: false,
+                    extra: data,
+                    userId,
+                };
+                if (MsgType === 'text') {
+                    Object.assign(sessionMessage, {
+                        text: Content,
+                    });
+                }
+                else if (MsgType === 'image') {
+                    Object.assign(sessionMessage, {
+                        extraFile$entity: [
+                            {
+                                id: await generateNewIdAsync(),
+                                action: 'create',
+                                data: {
+                                    id: await generateNewIdAsync(),
+                                    applicationId: entityId,
+                                    origin: 'wechat',
+                                    type: 'image',
+                                    tag1: 'image',
+                                    objectId: generateNewIdAsync(),
+                                    sort: 1000,
+                                    uploadState: 'success',
+                                    extra1: data.MediaId,
+                                    extra2: {
+                                        isPermanent: false,
+                                    },
+                                },
+                            },
+                        ],
+                    });
+                }
+                else if (MsgType === 'video') {
+                    Object.assign(sessionMessage, {
+                        extraFile$entity: [
+                            {
+                                id: await generateNewIdAsync(),
+                                action: 'create',
+                                data: {
+                                    id: await generateNewIdAsync(),
+                                    applicationId: entityId,
+                                    origin: 'wechat',
+                                    type: 'video',
+                                    tag1: 'video',
+                                    objectId: generateNewIdAsync(),
+                                    sort: 1000,
+                                    uploadState: 'success',
+                                    extra1: data.MediaId,
+                                },
+                            },
+                        ],
+                    });
+                }
+                else if (MsgType === 'voice') {
+                    Object.assign(sessionMessage, {
+                        extraFile$entity: [
+                            {
+                                id: await generateNewIdAsync(),
+                                action: 'create',
+                                data: {
+                                    id: await generateNewIdAsync(),
+                                    applicationId: entityId,
+                                    origin: 'wechat',
+                                    type: 'audio',
+                                    tag1: 'audio',
+                                    objectId: generateNewIdAsync(),
+                                    sort: 1000,
+                                    uploadState: 'success',
+                                    extra1: data.MediaId,
+                                },
+                            },
+                        ],
+                    });
+                }
                 session = result[0];
                 sessionMessage$session = [
                     {
                         id: await generateNewIdAsync(),
                         action: 'create',
-                        data: {
-                            id: await generateNewIdAsync(),
-                            applicationId: wechatUser?.applicationId,
-                            wechatUserId: wechatUser?.id,
-                            createTime: Number(CreateTime) * 1000,
-                            type: MsgType,
-                            text: Content,
-                            aaoe: false,
-                        },
+                        data: sessionMessage,
                     },
                 ];
-                if (MsgType === 'image') {
-                }
-                else if (MsgType === 'video') {
-                }
-                else if (MsgType === 'voice') {
-                }
                 break;
             }
             default: {

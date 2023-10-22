@@ -210,11 +210,13 @@ export class ExtraFile2<
         file: File | string
     ) {
         const extraFileId = extraFile.id || generateNewId();
+        const applicationId =
+            extraFile.applicationId || this.application.getApplicationId();
         await this.cache.operate('extraFile', {
             action: 'create',
             data: Object.assign(extraFile, {
                 id: extraFileId,
-                applicationId: this.application.getApplicationId(),
+                applicationId,
             }),
             id: await generateNewIdAsync(),
         } as EntityDict['extraFile']['Operation']);

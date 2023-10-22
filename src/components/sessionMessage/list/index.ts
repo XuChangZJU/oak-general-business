@@ -317,7 +317,6 @@ export default OakComponent({
                 fileType: type,
                 size,
                 extension,
-                entity: 'sessionMessage',
                 objectId: generateNewId(),
                 id: generateNewId(),
                 uploadState: 'uploading',
@@ -325,29 +324,36 @@ export default OakComponent({
                 extra2: {
                     isPermanent: false,
                 },
+                entity: 'sessionMessage',
+                entityId: sessionMessageId,
             } as EntityDict['extraFile']['CreateSingle']['data'];
+
+            await this.features.extraFile2.autoUpload(
+                extraFile as EntityDict['extraFile']['OpSchema'],
+                originFileObj
+            );
 
             try {
                 this.updateItem(
                     {
                         createTime: Date.now(),
                         type: 'image',
-                        extraFile$entity: [
-                            {
-                                id: generateNewId(),
-                                action: 'create',
-                                data: extraFile,
-                            },
-                        ],
+                        // extraFile$entity: [
+                        //     {
+                        //         id: generateNewId(),
+                        //         action: 'create',
+                        //         data: extraFile,
+                        //     },
+                        // ],
                     },
                     sessionMessageId
                 );
-                this.features.extraFile2.addLocalFile(
-                    extraFile?.id,
-                    originFileObj
-                );
+                // this.features.extraFile2.addLocalFile(
+                //     extraFile?.id,
+                //     originFileObj
+                // );
                 await this.execute(undefined, false);
-                this.features.extraFile2.upload(extraFile?.id);
+                // this.features.extraFile2.upload(extraFile?.id);
                 this.pageScroll('comment');
                 this.createItem();
             } catch (err) {

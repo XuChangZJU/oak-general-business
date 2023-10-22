@@ -10,11 +10,11 @@ const entityDesc = {
                 wechatUser: '微信用户',
                 createTime: '发送时间',
                 type: '消息类型',
-                text: '文字内容',
+                text: '文本内容',
                 files: '文件',
-                news: '文章',
+                link: '图文',
                 aaoe: '作为实体的发起者',
-                extra: '构额外信息',
+                extra: '额外信息',
             },
             v: {
                 type: {

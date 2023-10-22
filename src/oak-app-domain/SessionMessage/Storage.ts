@@ -32,7 +32,7 @@ export const desc: StorageDesc<OpSchema> = {
         text: {
             type: "text"
         },
-        news: {
+        link: {
             type: "varchar",
             params: {
                 length: 128

@@ -19,7 +19,7 @@ export type OpSchema = EntityShape & {
     createTime?: Datetime | null;
     type: Type;
     text?: Text | null;
-    news?: String<128> | null;
+    link?: String<128> | null;
     aaoe?: Boolean | null;
     extra?: Object | null;
 };
@@ -32,7 +32,7 @@ export type Schema = EntityShape & {
     createTime?: Datetime | null;
     type: Type;
     text?: Text | null;
-    news?: String<128> | null;
+    link?: String<128> | null;
     aaoe?: Boolean | null;
     extra?: Object | null;
     application: Application.Schema;
@@ -60,7 +60,7 @@ type AttrFilter = {
     createTime: Q_DateValue;
     type: Q_EnumValue<Type>;
     text: Q_StringValue;
-    news: Q_StringValue;
+    link: Q_StringValue;
     aaoe: Q_BooleanValue;
     extra: Object;
     extraFile$entity: ExtraFile.Filter & SubQueryPredicateMetadata;
@@ -84,7 +84,7 @@ export type Projection = {
     createTime?: number;
     type?: number;
     text?: number;
-    news?: number;
+    link?: number;
     aaoe?: number;
     extra?: number | Object;
     extraFile$entity?: ExtraFile.Selection & {
@@ -140,7 +140,7 @@ export type SortAttr = {
 } | {
     text: number;
 } | {
-    news: number;
+    link: number;
 } | {
     aaoe: number;
 } | {

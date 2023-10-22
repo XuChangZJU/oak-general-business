@@ -16,7 +16,10 @@ export default function render(
             type?: ButtonProps['type'];
             executeText?: string;
             buttonProps?: ButtonProps;
-            beforeCommit?: () => Promise<boolean> | boolean;
+            beforeCommit?: () =>
+                | Promise<boolean | undefined>
+                | boolean
+                | undefined;
             afterCommit?: () => void;
         },
         {

@@ -30,7 +30,7 @@ export const desc = {
         text: {
             type: "text"
         },
-        news: {
+        link: {
             type: "varchar",
             params: {
                 length: 128

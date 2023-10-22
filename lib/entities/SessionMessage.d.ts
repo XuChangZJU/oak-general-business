@@ -15,7 +15,7 @@ export interface Schema extends EntityShape {
     type: Type;
     text?: Text;
     files?: ExtraFile[];
-    news?: String<128>;
+    link?: String<128>;
     aaoe?: Boolean;
     extra?: Object;
 }

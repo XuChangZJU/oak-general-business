@@ -2,6 +2,7 @@ import assert from 'assert';
 import { EntityDict } from '../../../oak-app-domain';
 import { FileState } from '../../../features/extraFile2';
 
+
 export default OakComponent({
     formData({ features }) {
         const ids: string[] = this.getEfIds();
@@ -28,7 +29,7 @@ export default OakComponent({
         executeText: '',
         buttonProps: {},
         afterCommit: () => {},
-        beforeCommit: (() => true) as () => boolean | undefined,
+        beforeCommit: (() => true) as () => boolean | undefined | Promise<boolean | undefined>,
     },
     methods: {
         getEfIds() {

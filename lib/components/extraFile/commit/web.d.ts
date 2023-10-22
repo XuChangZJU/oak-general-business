@@ -9,7 +9,7 @@ export default function render(props: WebComponentProps<EntityDict, any, true, {
     type?: ButtonProps['type'];
     executeText?: string;
     buttonProps?: ButtonProps;
-    beforeCommit?: () => Promise<boolean> | boolean;
+    beforeCommit?: () => Promise<boolean | undefined> | boolean | undefined;
     afterCommit?: () => void;
 }, {
     upload: () => Promise<void>;
