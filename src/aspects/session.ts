@@ -148,13 +148,14 @@ export async function createSession<
                                     origin: 'wechat',
                                     type: 'image',
                                     tag1: 'image',
-                                    objectId: generateNewIdAsync(), // 这个域用来标识唯一性
+                                    objectId: await generateNewIdAsync(), // 这个域用来标识唯一性
                                     sort: 1000,
                                     uploadState: 'success',
                                     extra1: data.MediaId,
                                     extra2: {
                                         isPermanent: false,
                                     },
+                                    filename: data.MediaId,
                                 },
                             },
                         ],
@@ -171,10 +172,11 @@ export async function createSession<
                                     origin: 'wechat',
                                     type: 'video',
                                     tag1: 'video',
-                                    objectId: generateNewIdAsync(), // 这个域用来标识唯一性
+                                    objectId: await generateNewIdAsync(), // 这个域用来标识唯一性
                                     sort: 1000,
                                     uploadState: 'success',
                                     extra1: data.MediaId,
+                                    filename: data.MediaId,
                                 },
                             },
                         ],
@@ -191,10 +193,11 @@ export async function createSession<
                                     origin: 'wechat',
                                     type: 'audio',
                                     tag1: 'audio',
-                                    objectId: generateNewIdAsync(), // 这个域用来标识唯一性
+                                    objectId: await generateNewIdAsync(), // 这个域用来标识唯一性
                                     sort: 1000,
                                     uploadState: 'success',
                                     extra1: data.MediaId,
+                                    filename: data.MediaId,
                                 },
                             },
                         ],

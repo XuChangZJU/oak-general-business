@@ -609,7 +609,7 @@ async function setSubscribedEventKey(
     }
 }
 
-function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
+async function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
     const {
         ToUserName,
         FromUserName,
@@ -714,6 +714,12 @@ function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
         }
     }
 
+    createSession(
+        { data, type: 'wechatPublic', entity: 'application', entityId: appId },
+        context
+    );
+
+
     if (process.env.NODE_ENV === 'development') {
         console.log(evt);
     }
@@ -723,8 +729,17 @@ function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
     };
 }
 
-function onWeChatMpEvent(data: WechatMpEventData, context: BRC) {
-    const content = createSession({ data, type: 'wechatMp' }, context)
+async function onWeChatMpEvent(data: WechatMpEventData, context: BRC) {
+    const appId = context.getApplicationId();
+    createSession(
+        {
+            data,
+            type: 'wechatMp',
+            entity: 'application',
+            entityId: appId,
+        },
+        context
+    );
     return {
         content: 'success'
     }
@@ -747,7 +762,7 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
                 const { xml: data } = X2Js.xml2js<{
                     xml: WechatPublicEventData;
                 }>(body);
-                const { content, contentType } = onWeChatPublicEvent(
+                const { content, contentType } = await onWeChatPublicEvent(
                     data,
                     context
                 );
@@ -821,13 +836,13 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
                     throw new Error(`请配置：“微信小程序-服务器配置”`);
                 }
                 if (server?.dataFormat === 'json') {
-                    const { content } = onWeChatMpEvent(body, context);
+                    const { content } = await onWeChatMpEvent(body, context);
                     return content;
                 } else {
                     const { xml: data } = X2Js.xml2js<{
                         xml: WechatMpEventData;
                     }>(body);
-                    const { content } = onWeChatMpEvent(data, context);
+                    const { content } = await onWeChatMpEvent(data, context);
                     return content;
                 }
             },
