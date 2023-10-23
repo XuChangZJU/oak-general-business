@@ -459,7 +459,7 @@ async function setSubscribedEventKey(openId, eventKey, context) {
         }
     }
 }
-function onWeChatPublicEvent(data, context) {
+async function onWeChatPublicEvent(data, context) {
     const { ToUserName, FromUserName, CreateTime, MsgType, Event, EventKey, } = data;
     const appId = context.getApplicationId();
     let evt;
@@ -542,6 +542,7 @@ function onWeChatPublicEvent(data, context) {
             break;
         }
     }
+    createSession({ data, type: 'wechatPublic', entity: 'application', entityId: appId }, context);
     if (process.env.NODE_ENV === 'development') {
         console.log(evt);
     }
@@ -550,8 +551,14 @@ function onWeChatPublicEvent(data, context) {
         contentType: 'application/xml',
     };
 }
-function onWeChatMpEvent(data, context) {
-    const content = createSession({ data, type: 'wechatMp' }, context);
+async function onWeChatMpEvent(data, context) {
+    const appId = context.getApplicationId();
+    createSession({
+        data,
+        type: 'wechatMp',
+        entity: 'application',
+        entityId: appId,
+    }, context);
     return {
         content: 'success'
     };
@@ -571,7 +578,7 @@ const endpoints = {
                 }
                 await context.setApplication(appId);
                 const { xml: data } = X2Js.xml2js(body);
-                const { content, contentType } = onWeChatPublicEvent(data, context);
+                const { content, contentType } = await onWeChatPublicEvent(data, context);
                 return content;
             },
         },
@@ -633,12 +640,12 @@ const endpoints = {
                     throw new Error(`请配置：“微信小程序-服务器配置”`);
                 }
                 if (server?.dataFormat === 'json') {
-                    const { content } = onWeChatMpEvent(body, context);
+                    const { content } = await onWeChatMpEvent(body, context);
                     return content;
                 }
                 else {
                     const { xml: data } = X2Js.xml2js(body);
-                    const { content } = onWeChatMpEvent(data, context);
+                    const { content } = await onWeChatMpEvent(data, context);
                     return content;
                 }
             },
