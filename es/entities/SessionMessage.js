@@ -15,6 +15,7 @@ const entityDesc = {
                 link: '图文',
                 aaoe: '作为实体的发起者',
                 extra: '额外信息',
+                openId: '微信用户openId',
             },
             v: {
                 type: {

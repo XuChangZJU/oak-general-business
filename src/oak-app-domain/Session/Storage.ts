@@ -28,7 +28,7 @@ export const desc: StorageDesc<OpSchema> = {
         openId: {
             type: "varchar",
             params: {
-                length: 64
+                length: 32
             }
         }
     },

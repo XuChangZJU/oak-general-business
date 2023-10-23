@@ -9,6 +9,7 @@ export default OakComponent({
         id: 1,
         text: 1,
         type: 1,
+        openId: 1,
         userId: 1,
         wechatUserId: 1,
         applicationId: 1,
@@ -168,6 +169,7 @@ export default OakComponent({
                     createTime: 1,
                     $$createAt$$: 1,
                     aaoe: 1,
+                    openId: 1,
                 },
                 filter: {
                     sessionId,
@@ -303,7 +305,7 @@ export default OakComponent({
 
             let origin: EntityDict['extraFile']['Schema']['origin'] = 'qiniu';
             //需要获取用户方回复的applicationId，判断用户是否从微信公众号或小程序发起客服消息
-            if (isEntity && userLastMessage?.wechatUserId) {
+            if (isEntity && userLastMessage?.openId) {
                 applicationId = userLastMessage?.applicationId;
                 origin = 'wechat';
             }

@@ -6,6 +6,6 @@ export interface Schema extends EntityShape {
     entityId: String<64>;
     user?: User;
     lmts?: Datetime;
-    openId?: String<64>;
+    openId?: String<32>;
 }
 export type Relation = 'partner';

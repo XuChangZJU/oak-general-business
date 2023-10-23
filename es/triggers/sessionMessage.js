@@ -89,6 +89,7 @@ const triggers = [
                                 createTime: 1,
                                 $$createAt$$: 1,
                                 aaoe: 1,
+                                openId: 1,
                             },
                             filter: {
                                 sessionId,
@@ -110,7 +111,7 @@ const triggers = [
                             count: 1,
                             indexFrom: 0,
                         }, {});
-                        if (sessionMessage && sessionMessage.wechatUserId) {
+                        if (sessionMessage && sessionMessage.openId) {
                             const [session] = await context.select('session', {
                                 data: {
                                     id: 1,
@@ -149,8 +150,7 @@ const triggers = [
                             switch (msgType) {
                                 case 'text': {
                                     await wechatInstance.sendServeMessage({
-                                        openId: sessionMessage.wechatUser
-                                            ?.openId,
+                                        openId: sessionMessage.openId,
                                         type: msgType,
                                         content: text,
                                     });
@@ -161,8 +161,7 @@ const triggers = [
                                     if (extraFile) {
                                         const mediaId = extraFile.extra1;
                                         wechatInstance.sendServeMessage({
-                                            openId: sessionMessage.wechatUser
-                                                ?.openId,
+                                            openId: sessionMessage.openId,
                                             type: msgType,
                                             mediaId,
                                         });

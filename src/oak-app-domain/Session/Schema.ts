@@ -18,7 +18,7 @@ export type OpSchema = EntityShape & {
     entityId: String<64>;
     userId?: ForeignKey<"user"> | null;
     lmts?: Datetime | null;
-    openId?: String<64> | null;
+    openId?: String<32> | null;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
@@ -26,7 +26,7 @@ export type Schema = EntityShape & {
     entityId: String<64>;
     userId?: ForeignKey<"user"> | null;
     lmts?: Datetime | null;
-    openId?: String<64> | null;
+    openId?: String<32> | null;
     user?: User.Schema | null;
     application?: Application.Schema;
     readRemark$session?: Array<ReadRemark.Schema>;

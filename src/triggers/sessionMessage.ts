@@ -126,6 +126,7 @@ const triggers: Trigger<
                                     createTime: 1,
                                     $$createAt$$: 1,
                                     aaoe: 1,
+                                    openId: 1,
                                 },
                                 filter: {
                                     sessionId,
@@ -150,7 +151,7 @@ const triggers: Trigger<
                             },
                             {}
                         );
-                        if (sessionMessage && sessionMessage.wechatUserId) {
+                        if (sessionMessage && sessionMessage.openId) {
                             const [session] = await context.select(
                                 'session',
                                 {
@@ -212,25 +213,24 @@ const triggers: Trigger<
                             switch (msgType) {
                                 case 'text': {
                                     await wechatInstance.sendServeMessage({
-                                        openId: sessionMessage.wechatUser
-                                            ?.openId!,
+                                        openId: sessionMessage.openId!,
                                         type: msgType,
                                         content: text!,
                                     });
                                     break;
                                 }
                                 case 'image': {
-                                    const extraFile = extraFile$entity && extraFile$entity[0];
+                                    const extraFile =
+                                        extraFile$entity && extraFile$entity[0];
                                     if (extraFile) {
                                         const mediaId = extraFile.extra1!;
                                         wechatInstance.sendServeMessage({
-                                            openId: sessionMessage.wechatUser
-                                                ?.openId!,
+                                            openId: sessionMessage.openId!,
                                             type: msgType,
                                             mediaId,
                                         });
                                     }
-                                   
+
                                     break;
                                 }
                                 default: {

@@ -18,5 +18,6 @@ export interface Schema extends EntityShape {
     link?: String<128>;
     aaoe?: Boolean;
     extra?: Object;
+    openId?: String<32>;
 }
 export {};

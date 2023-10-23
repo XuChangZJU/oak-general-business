@@ -131,6 +131,7 @@ export async function createSession<
                     aaoe: false,
                     extra: data,
                     userId,
+                    openId: FromUserName,
                 };
                 if (MsgType === 'text') {
                     Object.assign(sessionMessage, {
