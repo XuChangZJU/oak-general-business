@@ -19,6 +19,7 @@ export default OakComponent({
         };
     },
     properties: {
+        action: '',
         efPaths: [],
         size: 'middle',
         block: false,

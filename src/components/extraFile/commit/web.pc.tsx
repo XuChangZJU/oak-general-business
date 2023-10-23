@@ -15,6 +15,7 @@ export default function render(
             block?: ButtonProps['block'];
             type?: ButtonProps['type'];
             executeText?: string;
+            action?: string;
             buttonProps?: ButtonProps;
             afterCommit?: () => void;
             beforeCommit?: () => Promise<boolean> | boolean;
@@ -33,6 +34,7 @@ export default function render(
         type,
         executeText,
         buttonProps = {},
+        action,
         afterCommit,
         beforeCommit,
     } = props.data;
@@ -67,7 +69,7 @@ export default function render(
                             return;
                         }
                     }
-                    await execute();
+                    await execute(action || undefined);
                     await upload();
                     if (afterCommit) {
                         afterCommit();

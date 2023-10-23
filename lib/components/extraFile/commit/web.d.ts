@@ -8,6 +8,7 @@ export default function render(props: WebComponentProps<EntityDict, any, true, {
     block?: ButtonProps['block'];
     type?: ButtonProps['type'];
     executeText?: string;
+    action?: string;
     buttonProps?: ButtonProps;
     beforeCommit?: () => Promise<boolean | undefined> | boolean | undefined;
     afterCommit?: () => void;

@@ -1,7 +1,7 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { Button } from 'antd-mobile';
 export default function render(props) {
-    const { state, oakExecutable, oakExecuting, oakDirty, size, block, type, executeText, buttonProps, beforeCommit, afterCommit, } = props.data;
+    const { state, oakExecutable, oakExecuting, oakDirty, size, block, type, executeText, buttonProps, action, beforeCommit, afterCommit, } = props.data;
     const { t, upload, execute } = props.methods;
     const disabled = oakExecuting ||
         ['uploading'].includes(state) ||
@@ -26,7 +26,7 @@ export default function render(props) {
                         return;
                     }
                 }
-                await execute();
+                await execute(action || undefined);
                 await upload();
                 if (afterCommit) {
                     afterCommit();

@@ -22,6 +22,7 @@ export default OakComponent({
         };
     },
     properties: {
+        action: '' as (string | undefined),
         efPaths: [] as string[],
         size: 'middle',
         block: false,
