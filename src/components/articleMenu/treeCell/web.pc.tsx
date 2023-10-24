@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Input, Button, MenuProps, Dropdown, Divider, Modal, InputRef, Form, Image } from 'antd';
+import { Input, Button, MenuProps, Dropdown, Divider, Modal, InputRef, Form, Image, Space } from 'antd';
 import { EditOutlined, DownOutlined, UpOutlined, RightOutlined, LeftOutlined, MinusOutlined, PlusOutlined, EyeOutlined } from '@ant-design/icons';
 import { WebComponentProps } from "oak-frontend-base";
 import ArticleMenuTreeList from '../treeList';
 import ArticleTreeList from '../../article/treeList';
 import { EntityDict } from "../../../oak-app-domain";
 import Styles from './web.pc.module.less';
-import OakGallery from "../../../components/extraFile/gallery";
+import ExtraFileUpload from '../../extraFile/upload';
+import ExtraFileCommit from '../../extraFile/commit';
 
 export default function Render(props: WebComponentProps<EntityDict, 'articleMenu', false, {
     row: EntityDict['articleMenu']['OpSchema'];
@@ -219,7 +220,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                                         size="small"
                                         onClick={() => {
                                             setNameEditing(true);
-                                            modal.confirm({
+                                            const modalInstance = modal.confirm({
                                                 title: '编辑分类',
                                                 cancelText: '取消',
                                                 okText: '提交',
@@ -231,6 +232,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                                                             <Input
                                                                 ref={menuNameRef}
                                                                 defaultValue={row.name}
+                                                                onChange={(val) => update({ name: val.target.value })}
                                                             />
                                                         </Form.Item>
                                                         <Form.Item
@@ -245,7 +247,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                                                             }
                                                         >
                                                             <>
-                                                                <OakGallery
+                                                                <ExtraFileUpload
                                                                     oakPath={
                                                                         oakFullpath
                                                                             ? `${oakFullpath}.extraFile$entity$1`
@@ -262,17 +264,37 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                                                         </Form.Item>
                                                     </div>
                                                 ),
-                                                onOk: async () => {
-                                                    if (menuNameRef.current!.input!.value) {
-                                                        await onUpdateName(menuNameRef.current!.input!.value);
-                                                    } else {
-                                                        setMessage({
-                                                            type: 'warning',
-                                                            content: '请输入分类标题',
-                                                        });
-                                                    }
-
-                                                }
+                                                // onOk: async () => {
+                                                //     if (menuNameRef.current!.input!.value) {
+                                                //         await onUpdateName(menuNameRef.current!.input!.value);
+                                                //     } else {
+                                                //         setMessage({
+                                                //             type: 'warning',
+                                                //             content: '请输入分类标题',
+                                                //         });
+                                                //     }
+                                                // }
+                                                footer: () => <Space>
+                                                    <ExtraFileCommit
+                                                        oakPath={oakFullpath}
+                                                        efPaths={[
+                                                            'extraFile$entity$1',
+                                                        ]}
+                                                        afterCommit={() => {
+                                                            modalInstance!.destroy()
+                                                        }}
+                                                        beforeCommit={() => {
+                                                            if (menuNameRef.current!.input!.value) {
+                                                                return true
+                                                            } else {
+                                                                return false
+                                                            }
+                                                        }}
+                                                    />
+                                                    <Button onClick={() => modalInstance!.destroy()}>
+                                                        取消
+                                                    </Button>
+                                                </Space>
                                             });
                                         }}
                                         style={{ marginRight: 4 }}
