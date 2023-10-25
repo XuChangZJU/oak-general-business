@@ -610,14 +610,8 @@ async function setSubscribedEventKey(
 }
 
 async function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
-    const {
-        ToUserName,
-        FromUserName,
-        CreateTime,
-        MsgType,
-        Event,
-        EventKey,
-    } = data;
+    const { ToUserName, FromUserName, CreateTime, MsgType, Event, EventKey } =
+        data;
 
     const appId = context.getApplicationId()!;
     let evt: string;
@@ -626,65 +620,72 @@ async function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
     if (CALLBACK[appId]) {
         CALLBACK[appId](data, context);
     }
-    if (Event) {
-        const event = Event.toLowerCase();
-        switch (event) {
-            case 'subscribe':
-                setUserSubscribed(FromUserName, EventKey!, context);
-                evt = `用户${FromUserName}关注公众号`;
-                break;
-            case 'scan':
-                setUserSubscribed(FromUserName, EventKey!, context);
-                evt = `用户${FromUserName}再次扫描带${EventKey}键值的二维码`;
-                break;
-            case 'unsubscribe': {
-                setUserUnsubscribed(FromUserName, context);
-                evt = `用户${FromUserName}取关`;
-                break;
+
+
+    // 接收事件推送
+    if (MsgType === 'event') {
+        if (Event) {
+            const event = Event.toLowerCase();
+            switch (event) {
+                case 'subscribe':
+                    setUserSubscribed(FromUserName, EventKey!, context);
+                    evt = `用户${FromUserName}关注公众号`;
+                    break;
+                case 'scan':
+                    setUserSubscribed(FromUserName, EventKey!, context);
+                    evt = `用户${FromUserName}再次扫描带${EventKey}键值的二维码`;
+                    break;
+                case 'unsubscribe': {
+                    setUserUnsubscribed(FromUserName, context);
+                    evt = `用户${FromUserName}取关`;
+                    break;
+                }
+                case 'location': {
+                    evt = `用户${FromUserName}上传了地理位置信息`;
+                    break;
+                }
+                case 'click': {
+                    setClickEventKey(FromUserName, EventKey!, context);
+                    evt = `用户${FromUserName}点击菜单【${EventKey}】`;
+                    break;
+                }
+                case 'view': {
+                    evt = `用户${FromUserName}点击菜单跳转链接【${EventKey}】`;
+                    break;
+                }
+                case 'templatesendjobfinish': {
+                    // 模板消息发送完成，去更新对应的messageSent对象
+                    // 这个在线上测试没法通过，返回的msgId不符合，不知道为什么
+                    const {
+                        MsgID: msgId,
+                        Status: status,
+                        FromUserName: openId,
+                    } = data;
+                    evt = `应用${appId}的用户${FromUserName}发来了${Event}事件，内容是${JSON.stringify(
+                        data
+                    )}`;
+                    break;
+                }
+                default: {
+                    evt = `应用${appId}的用户${FromUserName}发来了${Event}事件，内容是${JSON.stringify(
+                        data
+                    )}`;
+                    break;
+                }
             }
-            case 'location': {
-                evt = `用户${FromUserName}上传了地理位置信息`;
-                break;
+            if (process.env.NODE_ENV === 'development') {
+                console.log(evt);
             }
-            case 'click': {
-                setClickEventKey(FromUserName, EventKey!, context);
-                evt = `用户${FromUserName}点击菜单【${EventKey}】`;
-                break;
-            }
-            case 'view': {
-                evt = `用户${FromUserName}点击菜单跳转链接【${EventKey}】`;
-                break;
-            }
-            case 'templatesendjobfinish': {
-                // 模板消息发送完成，去更新对应的messageSent对象
-                // 这个在线上测试没法通过，返回的msgId不符合，不知道为什么
-                const {
-                    MsgID: msgId,
-                    Status: status,
-                    FromUserName: openId,
-                } = data;
-                evt = `应用${appId}的用户${FromUserName}发来了${Event}事件，内容是${JSON.stringify(
-                    data
-                )}`;
-                break;
-            }
-            default: {
-                evt = `应用${appId}的用户${FromUserName}发来了${Event}事件，内容是${JSON.stringify(
-                    data
-                )}`;
-                break;
-            }
+            return {
+                content: '',
+                contentType: 'application/text',
+            };
         }
-        if (process.env.NODE_ENV === 'development') {
-            console.log(evt);
-        }
-        return {
-            content: '',
-            contentType: 'application/text',
-        };
     }
 
     assert(MsgType);
+    // 接收普通消息
+
     const content =
         '<xml>' +
         `<ToUserName>${FromUserName}</ToUserName>` +
@@ -692,8 +693,8 @@ async function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
         `<CreateTime>${CreateTime}</CreateTime>` +
         '<MsgType>transfer_customer_service</MsgType>' +
         '</xml>';
-    
-    const { Content, Title, Description, Url, PicUrl } = data;    
+
+    const { Content, Title, Description, Url, PicUrl } = data;
 
     switch (MsgType) {
         case 'text': {
@@ -713,15 +714,25 @@ async function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
             break;
         }
     }
-
-    createSession(
-        { data, type: 'wechatPublic', entity: 'application', entityId: appId },
-        context
-    );
-
-
-    if (process.env.NODE_ENV === 'development') {
-        console.log(evt);
+   if (process.env.NODE_ENV === 'development') {
+       console.log(evt);
+   }
+    try {
+        await createSession(
+            {
+                data,
+                type: 'wechatPublic',
+                entity: 'application',
+                entityId: appId,
+            },
+            context
+        );
+    } catch (err) {
+        // todo 出错的话怎么处理 by wkj
+        return {
+            content,
+            contentType: 'application/xml',
+        };
     }
     return {
         content,
@@ -731,18 +742,25 @@ async function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
 
 async function onWeChatMpEvent(data: WechatMpEventData, context: BRC) {
     const appId = context.getApplicationId();
-    createSession(
-        {
-            data,
-            type: 'wechatMp',
-            entity: 'application',
-            entityId: appId,
-        },
-        context
-    );
-    return {
-        content: 'success'
+    try {
+        await createSession(
+            {
+                data,
+                type: 'wechatMp',
+                entity: 'application',
+                entityId: appId,
+            },
+            context
+        );
+    } catch (err) {
+        // todo 出错的话怎么处理 by wkj
+        return {
+            content: 'success',
+        };
     }
+    return {
+        content: 'success',
+    };
 }
 
 const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
@@ -753,7 +771,7 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
             params: ['appId'],
             fn: async (context, params, headers, req, body) => {
                 const { appId } = params;
-                if (!appId || appId === '20230210') {
+                if (!appId) {
                     console.error('applicationId参数不存在');
                     console.log(JSON.stringify(body));
                     return '';
@@ -779,7 +797,7 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
                 );
                 const { appId } = params;
 
-                if (!appId || appId === '20230210') {
+                if (!appId) {
                     console.error('applicationId参数不存在');
                     const echostr = searchParams.get('echostr')!;
                     return echostr;
@@ -823,7 +841,7 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
             params: ['appId'],
             fn: async (context, params, headers, req, body) => {
                 const { appId } = params;
-                if (!appId || appId === '20230210') {
+                if (!appId) {
                     console.error('applicationId参数不存在');
                     console.log(JSON.stringify(body));
                     return '';
@@ -857,7 +875,7 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
                 );
                 const { appId } = params;
 
-                if (!appId || appId === '20230210') {
+                if (!appId) {
                     console.error('applicationId参数不存在');
                     const echostr = searchParams.get('echostr')!;
                     return echostr;

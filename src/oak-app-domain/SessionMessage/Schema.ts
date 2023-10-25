@@ -23,7 +23,6 @@ export type OpSchema = EntityShape & {
     link?: String<128> | null;
     aaoe?: Boolean | null;
     extra?: Object | null;
-    openId?: String<32> | null;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
@@ -37,7 +36,6 @@ export type Schema = EntityShape & {
     link?: String<128> | null;
     aaoe?: Boolean | null;
     extra?: Object | null;
-    openId?: String<32> | null;
     application: Application.Schema;
     session: Session.Schema;
     user?: User.Schema | null;
@@ -66,7 +64,6 @@ type AttrFilter = {
     link: Q_StringValue;
     aaoe: Q_BooleanValue;
     extra: Object;
-    openId: Q_StringValue;
     extraFile$entity: ExtraFile.Filter & SubQueryPredicateMetadata;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
@@ -91,7 +88,6 @@ export type Projection = {
     link?: number;
     aaoe?: number;
     extra?: number | Object;
-    openId?: number;
     extraFile$entity?: ExtraFile.Selection & {
         $entity: "extraFile";
     };
@@ -148,8 +144,6 @@ export type SortAttr = {
     link: number;
 } | {
     aaoe: number;
-} | {
-    openId: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;

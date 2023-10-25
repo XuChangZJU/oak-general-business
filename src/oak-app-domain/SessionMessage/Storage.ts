@@ -43,12 +43,6 @@ export const desc: StorageDesc<OpSchema> = {
         },
         extra: {
             type: "object"
-        },
-        openId: {
-            type: "varchar",
-            params: {
-                length: 32
-            }
         }
     },
     actionType: "crud",
