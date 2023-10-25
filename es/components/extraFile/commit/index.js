@@ -30,7 +30,7 @@ export default OakComponent({
         beforeCommit: (() => true),
     },
     methods: {
-        getEfIds() {
+        getEfIds(strict) {
             const { efPaths } = this.props;
             const { oakFullpath } = this.state;
             assert(efPaths && efPaths.length > 0);
@@ -41,8 +41,10 @@ export default OakComponent({
                         ? `${oakFullpath}.${path}`
                         : oakFullpath;
                     const data = this.features.runningTree.getFreshValue(path2);
-                    assert(data, `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`);
-                    return data.map((ele) => ele.id);
+                    if (strict) {
+                        assert(data, `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`);
+                    }
+                    return data?.map((ele) => ele.id);
                 })
                     .flat()
                     .filter((ele) => !!ele);
@@ -51,8 +53,10 @@ export default OakComponent({
             return [];
         },
         async upload() {
-            const ids = this.getEfIds();
-            assert(ids.length > 0);
+            const ids = this.getEfIds(true);
+            if (ids.length === 0) {
+                return;
+            }
             const promises = [];
             ids.forEach((id) => {
                 const fileState = this.features.extraFile2.getFileState(id);
