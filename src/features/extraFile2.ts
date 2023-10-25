@@ -170,12 +170,12 @@ export class ExtraFile2<
         if (this.files[id]) {
             const { file } = this.files[id];
             if (typeof file === 'string') {
-                return file;
+                return file
             }
             if (file instanceof File) {
                 return getFileURL(file);
             }
-            return file;
+            assert(false, 'the incoming file is not supported');
         }
         const { origin } = extraFile;
         const cos = getCos<ED, Cxt, FrontCxt>(origin);

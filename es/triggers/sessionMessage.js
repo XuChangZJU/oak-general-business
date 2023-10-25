@@ -89,7 +89,6 @@ const triggers = [
                                 createTime: 1,
                                 $$createAt$$: 1,
                                 aaoe: 1,
-                                openId: 1,
                             },
                             filter: {
                                 sessionId,
@@ -111,7 +110,7 @@ const triggers = [
                             count: 1,
                             indexFrom: 0,
                         }, {});
-                        if (sessionMessage && sessionMessage.openId) {
+                        if (sessionMessage && sessionMessage.wechatUserId) {
                             const [session] = await context.select('session', {
                                 data: {
                                     id: 1,
@@ -146,11 +145,12 @@ const triggers = [
                                 const { appId, appSecret } = config;
                                 wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
                             }
+                            const openId = sessionMessage.wechatUser.openId;
                             //微信发送客服消息
                             switch (msgType) {
                                 case 'text': {
                                     await wechatInstance.sendServeMessage({
-                                        openId: sessionMessage.openId,
+                                        openId,
                                         type: msgType,
                                         content: text,
                                     });
@@ -161,7 +161,7 @@ const triggers = [
                                     if (extraFile) {
                                         const mediaId = extraFile.extra1;
                                         wechatInstance.sendServeMessage({
-                                            openId: sessionMessage.openId,
+                                            openId,
                                             type: msgType,
                                             mediaId,
                                         });

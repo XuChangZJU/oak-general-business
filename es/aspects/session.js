@@ -86,7 +86,6 @@ export async function createSession(params, context) {
                     aaoe: false,
                     extra: data,
                     userId,
-                    openId: FromUserName,
                 };
                 if (MsgType === 'text') {
                     Object.assign(sessionMessage, {

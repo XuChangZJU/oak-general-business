@@ -119,7 +119,7 @@ export class ExtraFile2 extends Feature {
             if (file instanceof File) {
                 return getFileURL(file);
             }
-            return file;
+            assert(false, 'the incoming file is not supported');
         }
         const { origin } = extraFile;
         const cos = getCos(origin);

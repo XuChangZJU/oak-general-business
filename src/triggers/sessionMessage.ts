@@ -126,7 +126,6 @@ const triggers: Trigger<
                                     createTime: 1,
                                     $$createAt$$: 1,
                                     aaoe: 1,
-                                    openId: 1,
                                 },
                                 filter: {
                                     sessionId,
@@ -151,7 +150,7 @@ const triggers: Trigger<
                             },
                             {}
                         );
-                        if (sessionMessage && sessionMessage.openId) {
+                        if (sessionMessage && sessionMessage.wechatUserId) {
                             const [session] = await context.select(
                                 'session',
                                 {
@@ -208,12 +207,13 @@ const triggers: Trigger<
                                     appSecret
                                 ) as WechatPublicInstance;
                             }
+                            const openId = sessionMessage.wechatUser!.openId!;
 
                             //微信发送客服消息
                             switch (msgType) {
                                 case 'text': {
                                     await wechatInstance.sendServeMessage({
-                                        openId: sessionMessage.openId!,
+                                        openId,
                                         type: msgType,
                                         content: text!,
                                     });
@@ -225,12 +225,11 @@ const triggers: Trigger<
                                     if (extraFile) {
                                         const mediaId = extraFile.extra1!;
                                         wechatInstance.sendServeMessage({
-                                            openId: sessionMessage.openId!,
+                                            openId,
                                             type: msgType,
                                             mediaId,
                                         });
                                     }
-
                                     break;
                                 }
                                 default: {
