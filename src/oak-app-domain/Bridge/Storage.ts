@@ -1,20 +1,14 @@
 import { StorageDesc } from "oak-domain/lib/types/Storage";
 import { OpSchema } from "./Schema";
-import { appendOnlyActions as actions } from "oak-domain/lib/actions/action";
+import { actions } from "./Action";
 export const desc: StorageDesc<OpSchema> = {
     attributes: {
-        operId: {
-            notNull: true,
-            type: "ref",
-            ref: "oper"
-        },
         entity: {
             notNull: true,
             type: "varchar",
             params: {
                 length: 32
-            },
-            ref: ["user", "userEntityGrant", "userSystem", "userWechatPublicTag", "wechatLogin", "wechatMenu", "wechatPublicAutoReply", "wechatPublicTag", "wechatPublicTemplate", "wechatQrCode", "wechatUser"]
+            }
         },
         entityId: {
             notNull: true,
@@ -22,8 +16,20 @@ export const desc: StorageDesc<OpSchema> = {
             params: {
                 length: 64
             }
+        },
+        expiresAt: {
+            notNull: true,
+            type: "datetime"
+        },
+        expired: {
+            notNull: true,
+            type: "boolean"
+        },
+        redirectTo: {
+            notNull: true,
+            type: "object"
         }
     },
-    actionType: "appendOnly",
+    actionType: "crud",
     actions
 };

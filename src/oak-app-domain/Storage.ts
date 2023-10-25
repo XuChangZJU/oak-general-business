@@ -17,6 +17,7 @@ import { desc as applicationDesc } from "./Application/Storage";
 import { desc as areaDesc } from "./Area/Storage";
 import { desc as articleDesc } from "./Article/Storage";
 import { desc as articleMenuDesc } from "./ArticleMenu/Storage";
+import { desc as bridgeDesc } from "./Bridge/Storage";
 import { desc as captchaDesc } from "./Captcha/Storage";
 import { desc as changePasswordTempDesc } from "./ChangePasswordTemp/Storage";
 import { desc as domainDesc } from "./Domain/Storage";
@@ -45,11 +46,11 @@ import { desc as userSystemDesc } from "./UserSystem/Storage";
 import { desc as userWechatPublicTagDesc } from "./UserWechatPublicTag/Storage";
 import { desc as wechatLoginDesc } from "./WechatLogin/Storage";
 import { desc as wechatMenuDesc } from "./WechatMenu/Storage";
+import { desc as wechatPublicAutoReplyDesc } from "./wechatPublicAutoReply/Storage";
 import { desc as wechatPublicTagDesc } from "./WechatPublicTag/Storage";
 import { desc as wechatPublicTemplateDesc } from "./WechatPublicTemplate/Storage";
 import { desc as wechatQrCodeDesc } from "./WechatQrCode/Storage";
 import { desc as wechatUserDesc } from "./WechatUser/Storage";
-import { desc as wechatPublicAutoReplyDesc } from "./wechatPublicAutoReply/Storage";
 export const storageSchema: StorageSchema<EntityDict> = {
     actionAuth: actionAuthDesc,
     i18n: i18nDesc,
@@ -68,6 +69,7 @@ export const storageSchema: StorageSchema<EntityDict> = {
     area: areaDesc,
     article: articleDesc,
     articleMenu: articleMenuDesc,
+    bridge: bridgeDesc,
     captcha: captchaDesc,
     changePasswordTemp: changePasswordTempDesc,
     domain: domainDesc,
@@ -96,9 +98,9 @@ export const storageSchema: StorageSchema<EntityDict> = {
     userWechatPublicTag: userWechatPublicTagDesc,
     wechatLogin: wechatLoginDesc,
     wechatMenu: wechatMenuDesc,
+    wechatPublicAutoReply: wechatPublicAutoReplyDesc,
     wechatPublicTag: wechatPublicTagDesc,
     wechatPublicTemplate: wechatPublicTemplateDesc,
     wechatQrCode: wechatQrCodeDesc,
-    wechatUser: wechatUserDesc,
-    wechatPublicAutoReply: wechatPublicAutoReplyDesc
+    wechatUser: wechatUserDesc
 };
