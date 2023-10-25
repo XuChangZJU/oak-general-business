@@ -138,7 +138,7 @@ export default function Render(props) {
                                                     //         });
                                                     //     }
                                                     // }
-                                                    footer: () => _jsxs(Space, { children: [_jsx(ExtraFileCommit, { oakPath: oakFullpath, efPaths: [
+                                                    footer: _jsxs(Space, { children: [_jsx(ExtraFileCommit, { oakPath: oakFullpath, efPaths: [
                                                                     'extraFile$entity$1',
                                                                 ], afterCommit: () => {
                                                                     modalInstance.destroy();
