@@ -280,7 +280,6 @@ export default OakComponent({
                 const { errMsg, tempFiles } = await wx.chooseMessageFile({
                     count: selectCount!,
                     type: 'all',
-                    extension,
                 });
                 if (errMsg !== 'chooseMessageFile:ok') {
                     this.triggerEvent('onError', {
