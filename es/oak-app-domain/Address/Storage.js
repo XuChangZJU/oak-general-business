@@ -32,7 +32,6 @@ export const desc = {
             type: "boolean"
         },
         remark: {
-            notNull: true,
             type: "text"
         },
         entity: {

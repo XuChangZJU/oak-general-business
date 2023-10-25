@@ -34,7 +34,6 @@ export const desc: StorageDesc<OpSchema> = {
             type: "boolean"
         },
         remark: {
-            notNull: true,
             type: "text"
         },
         entity: {

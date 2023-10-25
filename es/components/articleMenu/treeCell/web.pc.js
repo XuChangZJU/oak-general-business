@@ -138,7 +138,7 @@ export default function Render(props) {
                                                     //         });
                                                     //     }
                                                     // }
-                                                    footer: () => (_jsxs(Space, { children: [_jsx(ExtraFileCommit, { oakPath: oakFullpath, efPaths: [
+                                                    footer: _jsxs(Space, { children: [_jsx(ExtraFileCommit, { oakPath: oakFullpath, efPaths: [
                                                                     'extraFile$entity$1',
                                                                 ], afterCommit: () => {
                                                                     modalInstance.destroy();
@@ -149,7 +149,7 @@ export default function Render(props) {
                                                                     else {
                                                                         return false;
                                                                     }
-                                                                } }), _jsx(Button, { onClick: () => modalInstance.destroy(), children: "\u53D6\u6D88" })] }))
+                                                                } }), _jsx(Button, { onClick: () => modalInstance.destroy(), children: "\u53D6\u6D88" })] })
                                                 });
                                             }, style: { marginRight: 4 } }), _jsxs("div", { className: Styles.name, children: [logo ? (_jsx(Image, { height: 26, width: 26, src: logo, preview: false })) : null, _jsx("div", { style: { marginLeft: 4, overflow: 'hidden', width: '100px', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }, children: row?.name })] })] }) }), _jsx(Divider, { type: "vertical", style: { height: '100%', marginTop: 4, marginBottom: 4 } }), _jsxs("div", { className: Styles.control, children: [!row.parentId && _jsx(Button, { type: "text", onClick: () => {
                                             gotoDoc(row?.id);
