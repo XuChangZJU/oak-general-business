@@ -18,8 +18,7 @@ export default function render(props) {
             text = t('upload');
         }
     }
-    return (_jsx(Button, {
-        type: type, size: size, block: block, disabled: disabled, onClick: async () => {
+    return (_jsx(Button, { type: type, size: size, block: block, disabled: disabled, onClick: async () => {
             if (oakExecutable) {
                 if (beforeCommit) {
                     const beforeCommitResult = await beforeCommit();
@@ -39,6 +38,5 @@ export default function render(props) {
                     afterCommit();
                 }
             }
-        }, ...buttonProps, children: text
-    }));
+        }, ...buttonProps, children: text }));
 }
