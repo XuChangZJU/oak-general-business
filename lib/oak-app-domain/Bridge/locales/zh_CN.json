@@ -1,0 +1,1 @@
+{ "name": "二维码链接", "attr": { "expired": "已过期", "expiresAt": "过期时间", "redirectTo": "重定向页面", "entity": "关联对象", "entityId": "关联对象Id" }, "action": { "cancel": "作废", "qrcode": "二维码" } }
