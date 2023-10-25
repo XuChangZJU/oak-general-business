@@ -10,8 +10,6 @@ export default function render(props: WebComponentProps<EntityDict, any, true, {
     executeText?: string;
     action?: string;
     buttonProps?: ButtonProps;
-    beforeCommit?: () => Promise<boolean | undefined> | boolean | undefined;
-    afterCommit?: () => void;
 }, {
-    upload: () => Promise<void>;
+    onSubmit: () => Promise<void>;
 }>): import("react/jsx-runtime").JSX.Element;

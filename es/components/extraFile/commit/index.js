@@ -71,6 +71,29 @@ export default OakComponent({
                 await Promise.all(promises);
             }
         },
+        async onSubmit() {
+            const { oakExecutable } = this.state;
+            const { beforeCommit, afterCommit, action } = this.props;
+            if (oakExecutable) {
+                if (beforeCommit) {
+                    const beforeCommitResult = await beforeCommit();
+                    if (beforeCommitResult === false) {
+                        return;
+                    }
+                }
+                await this.execute(action || undefined);
+                await this.upload();
+                if (afterCommit) {
+                    afterCommit();
+                }
+            }
+            else {
+                await this.upload();
+                if (afterCommit) {
+                    afterCommit();
+                }
+            }
+        },
     },
     features: ['extraFile2'],
 });
