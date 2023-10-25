@@ -17,11 +17,9 @@ export default function render(
             executeText?: string;
             action?: string;
             buttonProps?: ButtonProps;
-            afterCommit?: () => void;
-            beforeCommit?: () => Promise<boolean> | boolean;
         },
         {
-            upload: () => Promise<void>;
+            onSubmit: () => Promise<void>;
         }
     >
 ) {
@@ -34,11 +32,8 @@ export default function render(
         type,
         executeText,
         buttonProps = {},
-        action,
-        afterCommit,
-        beforeCommit,
     } = props.data;
-    const { t, upload, execute } = props.methods;
+    const { t, onSubmit } = props.methods;
 
     const disabled =
         oakExecuting ||
@@ -61,26 +56,7 @@ export default function render(
             size={size}
             block={block}
             disabled={disabled}
-            onClick={async () => {
-                if (oakExecutable) {
-                    if (beforeCommit) {
-                        const beforeCommitResult = await beforeCommit();
-                        if (beforeCommitResult === false) {
-                            return;
-                        }
-                    }
-                    await execute(action || undefined);
-                    await upload();
-                    if (afterCommit) {
-                        afterCommit();
-                    }
-                } else {
-                    await upload();
-                    if (afterCommit) {
-                        afterCommit();
-                    }
-                }
-            }}
+            onClick={onSubmit}
             {...buttonProps}
         >
             {text}

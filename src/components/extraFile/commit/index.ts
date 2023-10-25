@@ -22,7 +22,7 @@ export default OakComponent({
         };
     },
     properties: {
-        action: '' as (string | undefined),
+        action: '' as string | undefined,
         efPaths: [] as string[],
         size: 'middle',
         block: false,
@@ -30,7 +30,10 @@ export default OakComponent({
         executeText: '',
         buttonProps: {},
         afterCommit: () => {},
-        beforeCommit: (() => true) as () => boolean | undefined | Promise<boolean | undefined>,
+        beforeCommit: (() => true) as () =>
+            | boolean
+            | undefined
+            | Promise<boolean | undefined>,
     },
     methods: {
         getEfIds() {
@@ -76,6 +79,28 @@ export default OakComponent({
 
             if (promises.length > 0) {
                 await Promise.all(promises);
+            }
+        },
+        async onSubmit() {
+            const { oakExecutable } = this.state;
+            const { beforeCommit, afterCommit, action } = this.props;
+            if (oakExecutable) {
+                if (beforeCommit) {
+                    const beforeCommitResult = await beforeCommit();
+                    if (beforeCommitResult === false) {
+                        return;
+                    }
+                }
+                await this.execute(action || undefined);
+                await this.upload();
+                if (afterCommit) {
+                    afterCommit();
+                }
+            } else {
+                await this.upload();
+                if (afterCommit) {
+                    afterCommit();
+                }
             }
         },
     },
