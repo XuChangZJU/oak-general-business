@@ -29,14 +29,11 @@ export default OakComponent({
         type: 'primary',
         executeText: '',
         buttonProps: {},
-        afterCommit: () => {},
-        beforeCommit: (() => true) as () =>
-            | boolean
-            | undefined
-            | Promise<boolean | undefined>,
+        afterCommit: () => { },
+        beforeCommit: (() => true) as () => boolean | undefined | Promise<boolean | undefined>,
     },
     methods: {
-        getEfIds() {
+        getEfIds(strict?: boolean) {
             const { efPaths } = this.props;
             const { oakFullpath } = this.state;
             assert(efPaths && efPaths.length > 0);
@@ -48,13 +45,15 @@ export default OakComponent({
                             : oakFullpath;
                         const data =
                             this.features.runningTree.getFreshValue(path2);
-                        assert(
-                            data,
-                            `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`
-                        );
+                        if (strict) {
+                            assert(
+                                data,
+                                `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`
+                            );
+                        }
                         return (
                             data as EntityDict['extraFile']['OpSchema'][]
-                        ).map((ele) => ele.id);
+                        )?.map((ele) => ele.id);
                     })
                     .flat()
                     .filter((ele) => !!ele) as string[];
@@ -63,8 +62,10 @@ export default OakComponent({
             return [];
         },
         async upload() {
-            const ids = this.getEfIds();
-            assert(ids.length > 0);
+            const ids = this.getEfIds(true);
+            if (ids.length === 0) {
+                return;
+            }
 
             const promises: Promise<void>[] = [];
             ids.forEach((id) => {

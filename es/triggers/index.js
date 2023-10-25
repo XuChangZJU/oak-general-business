@@ -13,7 +13,9 @@ import extraFileTriggers from './extraFile';
 import sessionMessageTriggers from './sessionMessage';
 import wechatMenuTriggers from './wechatMenu';
 import wechatPublicTag from './wechatPublicTag';
+import accountTriggers from './account';
 export default [
+    ...accountTriggers,
     ...applicationTriggers,
     ...addressTriggers,
     ...userTriggers,
