@@ -41,12 +41,6 @@ export const desc = {
         },
         extra: {
             type: "object"
-        },
-        openId: {
-            type: "varchar",
-            params: {
-                length: 32
-            }
         }
     },
     actionType: "crud",

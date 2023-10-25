@@ -21,7 +21,7 @@ export interface Schema extends EntityShape {
     application: Application;
     session: Session;
     user?: User;
-    wechatUser?: WechatUser;
+    wechatUser?: WechatUser; //表示微信客服消息回调服务器传过来
     createTime?: Datetime;
     type: Type;
     text?: Text;
@@ -29,7 +29,6 @@ export interface Schema extends EntityShape {
     link?: String<128>;
     aaoe?: Boolean; // as agent of entity
     extra?: Object;
-    openId?: String<32>; //openId存在 表示微信客服消息回调服务器传过来的
 };
 
 const entityDesc: EntityDesc<Schema, '', '', {}> = {
@@ -48,7 +47,6 @@ const entityDesc: EntityDesc<Schema, '', '', {}> = {
                 link: '图文',
                 aaoe: '作为实体的发起者',
                 extra: '额外信息',
-                openId: '微信用户openId',
             },
             v: {
                 type: {
