@@ -113,12 +113,13 @@ export class ExtraFile2 extends Feature {
         const { id } = extraFile;
         if (this.files[id]) {
             const { file } = this.files[id];
+            if (typeof file === 'string') {
+                return file;
+            }
             if (file instanceof File) {
                 return getFileURL(file);
             }
-            else {
-                return file;
-            }
+            return file;
         }
         const { origin } = extraFile;
         const cos = getCos(origin);

@@ -169,11 +169,13 @@ export class ExtraFile2<
         const { id } = extraFile;
         if (this.files[id]) {
             const { file } = this.files[id];
-            if (file instanceof File) {
-                return getFileURL(file);
-            } else {
+            if (typeof file === 'string') {
                 return file;
             }
+            if (file instanceof File) {
+                return getFileURL(file);
+            }
+            return file;
         }
         const { origin } = extraFile;
         const cos = getCos<ED, Cxt, FrontCxt>(origin);

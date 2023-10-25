@@ -45,11 +45,11 @@ import { desc as userSystemDesc } from "./UserSystem/Storage";
 import { desc as userWechatPublicTagDesc } from "./UserWechatPublicTag/Storage";
 import { desc as wechatLoginDesc } from "./WechatLogin/Storage";
 import { desc as wechatMenuDesc } from "./WechatMenu/Storage";
+import { desc as wechatPublicAutoReplyDesc } from "./wechatPublicAutoReply/Storage";
 import { desc as wechatPublicTagDesc } from "./WechatPublicTag/Storage";
 import { desc as wechatPublicTemplateDesc } from "./WechatPublicTemplate/Storage";
 import { desc as wechatQrCodeDesc } from "./WechatQrCode/Storage";
 import { desc as wechatUserDesc } from "./WechatUser/Storage";
-import { desc as wechatPublicAutoReplyDesc } from "./wechatPublicAutoReply/Storage";
 export const storageSchema: StorageSchema<EntityDict> = {
     actionAuth: actionAuthDesc,
     i18n: i18nDesc,
@@ -96,9 +96,9 @@ export const storageSchema: StorageSchema<EntityDict> = {
     userWechatPublicTag: userWechatPublicTagDesc,
     wechatLogin: wechatLoginDesc,
     wechatMenu: wechatMenuDesc,
+    wechatPublicAutoReply: wechatPublicAutoReplyDesc,
     wechatPublicTag: wechatPublicTagDesc,
     wechatPublicTemplate: wechatPublicTemplateDesc,
     wechatQrCode: wechatQrCodeDesc,
-    wechatUser: wechatUserDesc,
-    wechatPublicAutoReply: wechatPublicAutoReplyDesc
+    wechatUser: wechatUserDesc
 };

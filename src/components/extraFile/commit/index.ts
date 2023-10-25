@@ -85,6 +85,7 @@ export default OakComponent({
         async onSubmit() {
             const { oakExecutable } = this.state;
             const { beforeCommit, afterCommit, action } = this.props;
+            console.log(beforeCommit, afterCommit, action);
             if (oakExecutable) {
                 if (beforeCommit) {
                     const beforeCommitResult = await beforeCommit();

@@ -43,11 +43,11 @@ import * as UserSystem from "./UserSystem/Schema";
 import * as UserWechatPublicTag from "./UserWechatPublicTag/Schema";
 import * as WechatLogin from "./WechatLogin/Schema";
 import * as WechatMenu from "./WechatMenu/Schema";
+import * as wechatPublicAutoReply from "./wechatPublicAutoReply/Schema";
 import * as WechatPublicTag from "./WechatPublicTag/Schema";
 import * as WechatPublicTemplate from "./WechatPublicTemplate/Schema";
 import * as WechatQrCode from "./WechatQrCode/Schema";
 import * as WechatUser from "./WechatUser/Schema";
-import * as wechatPublicAutoReply from "./wechatPublicAutoReply/Schema";
 export type ActionAuthIdSubQuery = {
     [K in "$in" | "$nin"]?: (ActionAuth.ActionAuthIdSubQuery & {
         entity: "actionAuth";
@@ -192,6 +192,8 @@ export type ApplicationIdSubQuery = {
         entity: "token";
     }) | (WechatMenu.ApplicationIdSubQuery & {
         entity: "wechatMenu";
+    }) | (wechatPublicAutoReply.ApplicationIdSubQuery & {
+        entity: "wechatPublicAutoReply";
     }) | (WechatPublicTag.ApplicationIdSubQuery & {
         entity: "wechatPublicTag";
     }) | (WechatPublicTemplate.ApplicationIdSubQuery & {
@@ -200,8 +202,6 @@ export type ApplicationIdSubQuery = {
         entity: "wechatQrCode";
     }) | (WechatUser.ApplicationIdSubQuery & {
         entity: "wechatUser";
-    }) | (wechatPublicAutoReply.ApplicationIdSubQuery & {
-        entity: "wechatPublicAutoReply";
     }) | (Session.ApplicationIdSubQuery & {
         entity: "session";
     }) | (Application.ApplicationIdSubQuery & {
@@ -441,6 +441,15 @@ export type WechatMenuIdSubQuery = {
         entity: "wechatMenu";
     }) | any;
 };
+export type wechatPublicAutoReplyIdSubQuery = {
+    [K in "$in" | "$nin"]?: (ModiEntity.wechatPublicAutoReplyIdSubQuery & {
+        entity: "modiEntity";
+    }) | (OperEntity.wechatPublicAutoReplyIdSubQuery & {
+        entity: "operEntity";
+    }) | (wechatPublicAutoReply.wechatPublicAutoReplyIdSubQuery & {
+        entity: "wechatPublicAutoReply";
+    }) | any;
+};
 export type WechatPublicTagIdSubQuery = {
     [K in "$in" | "$nin"]?: (UserWechatPublicTag.WechatPublicTagIdSubQuery & {
         entity: "userWechatPublicTag";
@@ -487,14 +496,5 @@ export type WechatUserIdSubQuery = {
         entity: "token";
     }) | (WechatUser.WechatUserIdSubQuery & {
         entity: "wechatUser";
-    }) | any;
-};
-export type wechatPublicAutoReplyIdSubQuery = {
-    [K in "$in" | "$nin"]?: (ModiEntity.wechatPublicAutoReplyIdSubQuery & {
-        entity: "modiEntity";
-    }) | (OperEntity.wechatPublicAutoReplyIdSubQuery & {
-        entity: "operEntity";
-    }) | (wechatPublicAutoReply.wechatPublicAutoReplyIdSubQuery & {
-        entity: "wechatPublicAutoReply";
     }) | any;
 };
