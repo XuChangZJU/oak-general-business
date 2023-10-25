@@ -274,7 +274,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                                                 //         });
                                                 //     }
                                                 // }
-                                                footer: () => <Space>
+                                                footer: <Space>
                                                     <ExtraFileCommit
                                                         oakPath={oakFullpath}
                                                         efPaths={[
