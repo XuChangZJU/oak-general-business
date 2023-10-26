@@ -4,6 +4,7 @@ import { desc as modiDesc } from "./Modi/Storage";
 import { desc as modiEntityDesc } from "./ModiEntity/Storage";
 import { desc as operDesc } from "./Oper/Storage";
 import { desc as operEntityDesc } from "./OperEntity/Storage";
+import { desc as pathDesc } from "./Path/Storage";
 import { desc as relationDesc } from "./Relation/Storage";
 import { desc as relationAuthDesc } from "./RelationAuth/Storage";
 import { desc as userDesc } from "./User/Storage";
@@ -55,6 +56,7 @@ export const storageSchema = {
     modiEntity: modiEntityDesc,
     oper: operDesc,
     operEntity: operEntityDesc,
+    path: pathDesc,
     relation: relationDesc,
     relationAuth: relationAuthDesc,
     user: userDesc,

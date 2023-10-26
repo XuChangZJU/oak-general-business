@@ -3,36 +3,46 @@ import { OpSchema } from "./Schema";
 import { genericActions as actions } from "oak-domain/lib/actions/action";
 export const desc: StorageDesc<OpSchema> = {
     attributes: {
-        sourceRelationId: {
+        destEntity: {
             notNull: true,
-            type: "ref",
-            ref: "relation"
+            type: "varchar",
+            params: {
+                length: 32
+            }
         },
-        pathId: {
+        value: {
             notNull: true,
-            type: "ref",
-            ref: "path"
+            type: "varchar",
+            params: {
+                length: 256
+            }
         },
-        destRelationId: {
+        recursive: {
             notNull: true,
-            type: "ref",
-            ref: "relation"
+            type: "boolean"
+        },
+        sourceEntity: {
+            notNull: true,
+            type: "varchar",
+            params: {
+                length: 32
+            }
         }
     },
     actionType: "crud",
     actions,
     indexes: [
         {
-            name: 'index_entity_relation_path',
+            name: 'index_source_dest_path',
             attributes: [
                 {
-                    name: "sourceRelationId",
+                    name: 'sourceEntity',
                 },
                 {
-                    name: "pathId",
+                    name: 'value',
                 },
                 {
-                    name: "destRelationId",
+                    name: 'destEntity',
                 },
             ],
             config: {
