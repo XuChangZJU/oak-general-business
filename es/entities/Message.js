@@ -29,6 +29,7 @@ const entityDesc = {
                 router: '目标路由',
                 data: '透传数据',
                 platform: '平台',
+                channels: '渠道',
             },
             action: {
                 succeed: '成功',

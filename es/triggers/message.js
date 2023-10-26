@@ -44,7 +44,7 @@ export async function tryMakeSmsNotification(message, context) {
     }
 }
 async function createNotification(message, context) {
-    const { restriction, userId, weight, type, entity, entityId, platformId } = message;
+    const { restriction, userId, weight, type, entity, entityId, platformId, channels } = message;
     assert(userId);
     // 根据用户所关联的system和定义限制，选择将要发送的system。这里有的应用是到platform级别，有的是到system级别
     const filter = {
@@ -107,7 +107,7 @@ async function createNotification(message, context) {
         },
     }, { dontCollect: true });
     // 根据定义所限制的渠道和weight，计算出相应的推送渠道
-    const channels = InitialChannalByWeightMatrix[weight].filter(ele => {
+    const channels2 = ((channels && channels.length > 0) ? channels : InitialChannalByWeightMatrix[weight]).filter(ele => {
         if (restriction && restriction.channels) {
             return restriction.channels.includes(ele);
         }
@@ -123,7 +123,7 @@ async function createNotification(message, context) {
     await Promise.all(systems.map(async (system) => {
         const { application$system: applications, config } = system;
         const notificationDatas = [];
-        await Promise.all(channels.map(async (channel) => {
+        await Promise.all(channels2.map(async (channel) => {
             switch (channel) {
                 case 'wechatMp': {
                     const apps = applications.filter(ele => ele.type === 'wechatMp');
@@ -209,7 +209,7 @@ async function createNotification(message, context) {
                 }
             }
         }));
-        if (channels.includes('sms')) {
+        if (channels2.includes('sms')) {
             const smsNotification = await tryMakeSmsNotification(message, context);
             if (smsNotification) {
                 notificationDatas.push(smsNotification);

@@ -13,6 +13,7 @@ type MessageRestriction = {
     systemIds?: string[];
     channels?: Array<Channel>;
 };
+type Chaanels = Channel[];
 export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
@@ -25,5 +26,6 @@ export interface Schema extends EntityShape {
     data?: Object;
     router?: Router;
     platform?: Platform;
+    channels?: Chaanels;
 }
 export {};

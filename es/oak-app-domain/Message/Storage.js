@@ -56,6 +56,9 @@ export const desc = {
             type: "ref",
             ref: "platform"
         },
+        channels: {
+            type: "object"
+        },
         iState: {
             type: "enum",
             enumeration: ["sending", "success", "failure"]

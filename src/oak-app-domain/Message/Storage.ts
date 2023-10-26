@@ -58,6 +58,9 @@ export const desc: StorageDesc<OpSchema> = {
             type: "ref",
             ref: "platform"
         },
+        channels: {
+            type: "object"
+        },
         iState: {
             type: "enum",
             enumeration: ["sending", "success", "failure"]
