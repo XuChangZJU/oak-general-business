@@ -7,6 +7,7 @@ import { expandUuidTo36Bytes, generateNewIdAsync } from 'oak-domain/lib/utils/uu
 import { composeDomainUrl } from '../utils/domain';
 import { composeUrl } from 'oak-domain/lib/utils/url';
 import { createSession } from '../aspects/session';
+import { getMaterial } from '../aspects/application';
 const X2Js = new x2js();
 function assertFromWeChat(query, config) {
     const { signature, nonce, timestamp } = query;
@@ -458,64 +459,68 @@ async function setSubscribedEventKey(openId, eventKey, context) {
         }
     }
 }
-function onWeChatPublicEvent(data, context) {
-    const { ToUserName, FromUserName, CreateTime, MsgType, Event, EventKey, } = data;
+async function onWeChatPublicEvent(data, context) {
+    const { ToUserName, FromUserName, CreateTime, MsgType, Event, EventKey } = data;
     const appId = context.getApplicationId();
     let evt;
     // 如果有应用注入的事件回调则处理之，不依赖其返回
     if (CALLBACK[appId]) {
         CALLBACK[appId](data, context);
     }
-    if (Event) {
-        const event = Event.toLowerCase();
-        switch (event) {
-            case 'subscribe':
-                setUserSubscribed(FromUserName, EventKey, context);
-                evt = `用户${FromUserName}关注公众号`;
-                break;
-            case 'scan':
-                setUserSubscribed(FromUserName, EventKey, context);
-                evt = `用户${FromUserName}再次扫描带${EventKey}键值的二维码`;
-                break;
-            case 'unsubscribe': {
-                setUserUnsubscribed(FromUserName, context);
-                evt = `用户${FromUserName}取关`;
-                break;
+    // 接收事件推送
+    if (MsgType === 'event') {
+        if (Event) {
+            const event = Event.toLowerCase();
+            switch (event) {
+                case 'subscribe':
+                    setUserSubscribed(FromUserName, EventKey, context);
+                    evt = `用户${FromUserName}关注公众号`;
+                    break;
+                case 'scan':
+                    setUserSubscribed(FromUserName, EventKey, context);
+                    evt = `用户${FromUserName}再次扫描带${EventKey}键值的二维码`;
+                    break;
+                case 'unsubscribe': {
+                    setUserUnsubscribed(FromUserName, context);
+                    evt = `用户${FromUserName}取关`;
+                    break;
+                }
+                case 'location': {
+                    evt = `用户${FromUserName}上传了地理位置信息`;
+                    break;
+                }
+                case 'click': {
+                    setClickEventKey(FromUserName, EventKey, context);
+                    evt = `用户${FromUserName}点击菜单【${EventKey}】`;
+                    break;
+                }
+                case 'view': {
+                    evt = `用户${FromUserName}点击菜单跳转链接【${EventKey}】`;
+                    break;
+                }
+                case 'templatesendjobfinish': {
+                    // 模板消息发送完成，去更新对应的messageSent对象
+                    // 这个在线上测试没法通过，返回的msgId不符合，不知道为什么
+                    const { MsgID: msgId, Status: status, FromUserName: openId, } = data;
+                    evt = `应用${appId}的用户${FromUserName}发来了${Event}事件，内容是${JSON.stringify(data)}`;
+                    break;
+                }
+                default: {
+                    evt = `应用${appId}的用户${FromUserName}发来了${Event}事件，内容是${JSON.stringify(data)}`;
+                    break;
+                }
             }
-            case 'location': {
-                evt = `用户${FromUserName}上传了地理位置信息`;
-                break;
+            if (process.env.NODE_ENV === 'development') {
+                console.log(evt);
             }
-            case 'click': {
-                setClickEventKey(FromUserName, EventKey, context);
-                evt = `用户${FromUserName}点击菜单【${EventKey}】`;
-                break;
-            }
-            case 'view': {
-                evt = `用户${FromUserName}点击菜单跳转链接【${EventKey}】`;
-                break;
-            }
-            case 'templatesendjobfinish': {
-                // 模板消息发送完成，去更新对应的messageSent对象
-                // 这个在线上测试没法通过，返回的msgId不符合，不知道为什么
-                const { MsgID: msgId, Status: status, FromUserName: openId, } = data;
-                evt = `应用${appId}的用户${FromUserName}发来了${Event}事件，内容是${JSON.stringify(data)}`;
-                break;
-            }
-            default: {
-                evt = `应用${appId}的用户${FromUserName}发来了${Event}事件，内容是${JSON.stringify(data)}`;
-                break;
-            }
+            return {
+                content: '',
+                contentType: 'application/text',
+            };
         }
-        if (process.env.NODE_ENV === 'development') {
-            console.log(evt);
-        }
-        return {
-            content: '',
-            contentType: 'application/text',
-        };
     }
     assert(MsgType);
+    // 接收普通消息
     const content = '<xml>' +
         `<ToUserName>${FromUserName}</ToUserName>` +
         `<FromUserName>${ToUserName}</FromUserName>` +
@@ -544,15 +549,44 @@ function onWeChatPublicEvent(data, context) {
     if (process.env.NODE_ENV === 'development') {
         console.log(evt);
     }
+    try {
+        await createSession({
+            data,
+            type: 'wechatPublic',
+            entity: 'application',
+            entityId: appId,
+        }, context);
+    }
+    catch (err) {
+        // todo 出错的话怎么处理 by wkj
+        return {
+            content,
+            contentType: 'application/xml',
+        };
+    }
     return {
         content,
         contentType: 'application/xml',
     };
 }
-function onWeChatMpEvent(data, context) {
-    const content = createSession({ data, type: 'wechatMp' }, context);
+async function onWeChatMpEvent(data, context) {
+    const appId = context.getApplicationId();
+    try {
+        await createSession({
+            data,
+            type: 'wechatMp',
+            entity: 'application',
+            entityId: appId,
+        }, context);
+    }
+    catch (err) {
+        // todo 出错的话怎么处理 by wkj
+        return {
+            content: 'success',
+        };
+    }
     return {
-        content: 'success'
+        content: 'success',
     };
 }
 const endpoints = {
@@ -563,14 +597,14 @@ const endpoints = {
             params: ['appId'],
             fn: async (context, params, headers, req, body) => {
                 const { appId } = params;
-                if (!appId || appId === '20230210') {
+                if (!appId) {
                     console.error('applicationId参数不存在');
                     console.log(JSON.stringify(body));
                     return '';
                 }
                 await context.setApplication(appId);
                 const { xml: data } = X2Js.xml2js(body);
-                const { content, contentType } = onWeChatPublicEvent(data, context);
+                const { content, contentType } = await onWeChatPublicEvent(data, context);
                 return content;
             },
         },
@@ -581,7 +615,7 @@ const endpoints = {
             fn: async (context, params, body, req, headers) => {
                 const { searchParams } = new URL.URL(`http://${req.headers.host}${req.url}`);
                 const { appId } = params;
-                if (!appId || appId === '20230210') {
+                if (!appId) {
                     console.error('applicationId参数不存在');
                     const echostr = searchParams.get('echostr');
                     return echostr;
@@ -612,13 +646,14 @@ const endpoints = {
             },
         },
     ],
-    wechatMpEvent: [{
+    wechatMpEvent: [
+        {
             name: '微信小程序回调接口',
             method: 'post',
             params: ['appId'],
             fn: async (context, params, headers, req, body) => {
                 const { appId } = params;
-                if (!appId || appId === '20230210') {
+                if (!appId) {
                     console.error('applicationId参数不存在');
                     console.log(JSON.stringify(body));
                     return '';
@@ -631,23 +666,24 @@ const endpoints = {
                     throw new Error(`请配置：“微信小程序-服务器配置”`);
                 }
                 if (server?.dataFormat === 'json') {
-                    const { content } = onWeChatMpEvent(body, context);
+                    const { content } = await onWeChatMpEvent(body, context);
                     return content;
                 }
                 else {
                     const { xml: data } = X2Js.xml2js(body);
-                    const { content } = onWeChatMpEvent(data, context);
+                    const { content } = await onWeChatMpEvent(data, context);
                     return content;
                 }
             },
-        }, {
+        },
+        {
             name: '微信小程序验证接口',
             method: 'get',
             params: ['appId'],
             fn: async (context, params, body, req, headers) => {
                 const { searchParams } = new URL.URL(`http://${req.headers.host}${req.url}`);
                 const { appId } = params;
-                if (!appId || appId === '20230210') {
+                if (!appId) {
                     console.error('applicationId参数不存在');
                     const echostr = searchParams.get('echostr');
                     return echostr;
@@ -676,6 +712,28 @@ const endpoints = {
                     throw new Error('Verify Failed');
                 }
             },
-        }],
+        },
+    ],
+    wechatMaterial: [
+        {
+            name: '获取微信素材',
+            method: 'get',
+            fn: async (context, params, headers, req, body) => {
+                const { searchParams } = new URL.URL(`http://${req.headers.host}${req.url}`);
+                const applicationId = searchParams.get('applicationId');
+                const mediaId = searchParams.get('mediaId');
+                const isPermanent = searchParams.get('isPermanent');
+                const base64 = await getMaterial({
+                    applicationId: applicationId,
+                    mediaId: mediaId,
+                    isPermanent: isPermanent === 'true',
+                }, context);
+                // 微信临时素材 公众号只支持image和video，小程序只支持image
+                // 现只支持image 
+                const af = Buffer.from(base64, 'base64');
+                return af;
+            },
+        },
+    ],
 };
 export default endpoints;

@@ -19,6 +19,7 @@ export default OakComponent({
         };
     },
     properties: {
+        action: '',
         efPaths: [],
         size: 'middle',
         block: false,
@@ -29,7 +30,7 @@ export default OakComponent({
         beforeCommit: (() => true),
     },
     methods: {
-        getEfIds() {
+        getEfIds(strict) {
             const { efPaths } = this.props;
             const { oakFullpath } = this.state;
             assert(efPaths && efPaths.length > 0);
@@ -40,8 +41,10 @@ export default OakComponent({
                         ? `${oakFullpath}.${path}`
                         : oakFullpath;
                     const data = this.features.runningTree.getFreshValue(path2);
-                    assert(data, `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`);
-                    return data.map((ele) => ele.id);
+                    if (strict) {
+                        assert(data, `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`);
+                    }
+                    return data?.map((ele) => ele.id);
                 })
                     .flat()
                     .filter((ele) => !!ele);
@@ -50,8 +53,10 @@ export default OakComponent({
             return [];
         },
         async upload() {
-            const ids = this.getEfIds();
-            assert(ids.length > 0);
+            const ids = this.getEfIds(true);
+            if (ids.length === 0) {
+                return;
+            }
             const promises = [];
             ids.forEach((id) => {
                 const fileState = this.features.extraFile2.getFileState(id);
@@ -64,6 +69,30 @@ export default OakComponent({
             });
             if (promises.length > 0) {
                 await Promise.all(promises);
+            }
+        },
+        async onSubmit() {
+            const { oakExecutable } = this.state;
+            const { beforeCommit, afterCommit, action } = this.props;
+            console.log(beforeCommit, afterCommit, action);
+            if (oakExecutable) {
+                if (beforeCommit) {
+                    const beforeCommitResult = await beforeCommit();
+                    if (beforeCommitResult === false) {
+                        return;
+                    }
+                }
+                await this.execute(action || undefined);
+                await this.upload();
+                if (afterCommit) {
+                    afterCommit();
+                }
+            }
+            else {
+                await this.upload();
+                if (afterCommit) {
+                    afterCommit();
+                }
             }
         },
     },

@@ -33,6 +33,10 @@ export declare function getMaterial<ED extends EntityDict, Cxt extends BackendRu
     mediaId: string;
     isPermanent?: boolean;
 }, context: Cxt): Promise<any>;
+export declare function deleteMaterial<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+    applicationId: string;
+    mediaId: string;
+}, context: Cxt): Promise<any>;
 export declare function batchGetArticle<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     applicationId: string;
     offset?: number;

@@ -62,6 +62,7 @@ export async function signatureJsSDK({ url, env }, context) {
 export async function uploadWechatMedia(params, // FormData表单提交 isPermanent 变成 'true' | 'false'
 context) {
     const { applicationId, file, type: mediaType, description, extraFileId } = params;
+    assert(applicationId);
     const isPermanent = params.isPermanent === 'true';
     const filename = file.originalFilename;
     const filetype = file.mimetype;
@@ -142,6 +143,8 @@ context) {
 }
 export async function getMaterial(params, context) {
     const { mediaId, applicationId, isPermanent = false } = params;
+    assert(applicationId);
+    assert(mediaId);
     const [application] = await context.select('application', {
         data: cloneDeep(applicationProjection),
         filter: {
@@ -182,8 +185,32 @@ export async function getMaterial(params, context) {
     }
     return result;
 }
+export async function deleteMaterial(params, context) {
+    const { mediaId, applicationId } = params;
+    assert(applicationId);
+    assert(mediaId);
+    const [application] = await context.select('application', {
+        data: cloneDeep(applicationProjection),
+        filter: {
+            id: applicationId,
+        },
+    }, {
+        dontCollect: true,
+    });
+    assert(application);
+    const { type, config } = application;
+    assert(type === 'wechatPublic');
+    const config2 = config;
+    const { appId, appSecret } = config2;
+    const wechatInstance = WechatSDK.getInstance(appId, type, appSecret);
+    const result = await wechatInstance.deleteMaterial({
+        mediaId,
+    });
+    return result;
+}
 export async function batchGetArticle(params, context) {
     const { applicationId, offset, count, noContent } = params;
+    assert(applicationId);
     const [application] = await context.select('application', {
         data: cloneDeep(applicationProjection),
         filter: {
@@ -209,6 +236,7 @@ export async function batchGetArticle(params, context) {
 }
 export async function getArticle(params, context) {
     const { applicationId, articleId } = params;
+    assert(applicationId);
     const [application] = await context.select('application', {
         data: cloneDeep(applicationProjection),
         filter: {
@@ -232,6 +260,7 @@ export async function getArticle(params, context) {
 }
 export async function batchGetMaterialList(params, context) {
     const { applicationId } = params;
+    assert(applicationId);
     const [application] = await context.select('application', {
         data: cloneDeep(applicationProjection),
         filter: {

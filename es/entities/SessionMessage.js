@@ -10,22 +10,25 @@ const entityDesc = {
                 wechatUser: '微信用户',
                 createTime: '发送时间',
                 type: '消息类型',
-                text: '文字内容',
+                text: '文本内容',
                 files: '文件',
-                news: '文章',
+                link: '图文',
                 aaoe: '作为实体的发起者',
-                // isRead: '是否已读'
+                extra: '额外信息',
             },
             v: {
                 type: {
                     text: '文字',
                     image: '图片',
-                    audio: '音频',
+                    voice: '音频',
                     video: '视频',
-                    news: '图文',
-                }
-            }
+                    link: '图文',
+                    location: '位置',
+                    event: '事件',
+                    miniprogrampage: '小程序',
+                },
+            },
         },
-    }
+    },
 };
 export {};

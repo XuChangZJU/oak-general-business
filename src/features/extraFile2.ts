@@ -1,6 +1,7 @@
 import { Feature } from 'oak-frontend-base';
 import { Upload } from 'oak-frontend-base/es/utils/upload';
 import { Cache } from 'oak-frontend-base/es/features/cache';
+import { RunningTree } from 'oak-frontend-base/es/features/runningTree';
 import { Locales } from 'oak-frontend-base/es/features/locales';
 import { CommonAspectDict } from 'oak-common-aspect';
 import AspectDict from '../aspects/AspectDict';
@@ -14,6 +15,7 @@ import { getCos } from '../utils/cos';
 import { OpSchema } from '../oak-app-domain/ExtraFile/Schema';
 import { unset } from 'oak-domain/lib/utils/lodash';
 import { generateNewId, generateNewIdAsync } from 'oak-domain';
+import { extraFileProjection } from '../types/Projection';
 
 export type FileState = 'local' | 'uploading' | 'uploaded' | 'failed';
 
@@ -34,17 +36,20 @@ export class ExtraFile2<
             percentage?: number;
         }
     >;
+    private runningTree: RunningTree<ED, Cxt, FrontCxt, AD>;
 
     constructor(
         cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>,
         application: Application<ED, Cxt, FrontCxt, AD>,
-        locales: Locales<ED, Cxt, FrontCxt, AD>
+        locales: Locales<ED, Cxt, FrontCxt, AD>,
+        runningTree: RunningTree<ED, Cxt, FrontCxt, AD>,
     ) {
         super();
         this.cache = cache;
         this.application = application;
         this.locales = locales;
         this.files = {};
+        this.runningTree = runningTree;
     }
 
     addLocalFile(id: string, file: File | string) {
@@ -63,27 +68,7 @@ export class ExtraFile2<
 
     async upload(id: string) {
         const [extraFile] = this.cache.get('extraFile', {
-            data: {
-                origin: 1,
-                type: 1,
-                bucket: 1,
-                objectId: 1,
-                tag1: 1,
-                tag2: 1,
-                filename: 1,
-                md5: 1,
-                entity: 1,
-                entityId: 1,
-                extra1: 1,
-                extension: 1,
-                size: 1,
-                sort: 1,
-                fileType: 1,
-                isBridge: 1,
-                uploadState: 1,
-                uploadMeta: 1,
-                applicationId: 1,
-            },
+            data: extraFileProjection,
             filter: {
                 id,
             },
@@ -106,7 +91,7 @@ export class ExtraFile2<
                 this.uploadToAspect.bind(this)
             );
             if (!cos.autoInform()) {
-                /* await this.cache.exec('operate', {
+                await this.cache.exec('operate', {
                     entity: 'extraFile',
                     operation: {
                         id: await generateNewIdAsync(),
@@ -115,7 +100,7 @@ export class ExtraFile2<
                             uploadState: 'success',
                         },
                     } as ED['extraFile']['Operation'],
-                }); */
+                });
             }
             item.state = 'uploaded';
             item.percentage = undefined;
@@ -124,6 +109,46 @@ export class ExtraFile2<
             item.state = 'failed';
             item.percentage = undefined;
             this.publish();
+        }
+    }
+
+    async uploadCommit(efPaths: string[], oakFullpath: string) {
+        assert(efPaths && efPaths.length > 0);
+        let ids = [] as string[];
+        if (oakFullpath) {
+            ids = efPaths
+                .map((path) => {
+                    const path2 = path
+                        ? `${oakFullpath}.${path}`
+                        : oakFullpath;
+                    const data =
+                        this.runningTree.getFreshValue(path2);
+                    assert(
+                        data,
+                        `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`
+                    );
+                    return (
+                        data as Partial<EntityDict['extraFile']['OpSchema']>[]
+                    ).map((ele) => ele.id);
+                })
+                .flat()
+                .filter((ele) => !!ele) as string[];
+        }
+        assert(ids.length > 0);
+
+        const promises: Promise<void>[] = [];
+        ids.forEach((id) => {
+            const fileState = this.getFileState(id);
+            if (fileState) {
+                const { state } = fileState;
+                if (['local', 'failed'].includes(state)) {
+                    promises.push(this.upload(id));
+                }
+            }
+        });
+
+        if (promises.length > 0) {
+            await Promise.all(promises);
         }
     }
 
@@ -144,11 +169,13 @@ export class ExtraFile2<
         const { id } = extraFile;
         if (this.files[id]) {
             const { file } = this.files[id];
+            if (typeof file === 'string') {
+                return file
+            }
             if (file instanceof File) {
                 return getFileURL(file);
-            } else {
-                return file;
             }
+            assert(false, 'the incoming file is not supported');
         }
         const { origin } = extraFile;
         const cos = getCos<ED, Cxt, FrontCxt>(origin);
@@ -159,9 +186,9 @@ export class ExtraFile2<
 
     getFileState(id: string):
         | {
-              state: FileState;
-              percentage?: number;
-          }
+            state: FileState;
+            percentage?: number;
+        }
         | undefined {
         if (this.files[id]) {
             return this.files[id];
@@ -185,37 +212,18 @@ export class ExtraFile2<
         file: File | string
     ) {
         const extraFileId = extraFile.id || generateNewId();
+        const applicationId =
+            extraFile.applicationId || this.application.getApplicationId();
         await this.cache.operate('extraFile', {
             action: 'create',
             data: Object.assign(extraFile, {
                 id: extraFileId,
-                applicationId: this.application.getApplicationId(),
+                applicationId,
             }),
             id: await generateNewIdAsync(),
         } as EntityDict['extraFile']['Operation']);
         const [newExtraFile] = this.cache.get('extraFile', {
-            data: {
-                id: 1,
-                origin: 1,
-                type: 1,
-                bucket: 1,
-                objectId: 1,
-                tag1: 1,
-                tag2: 1,
-                filename: 1,
-                md5: 1,
-                entity: 1,
-                entityId: 1,
-                extra1: 1,
-                extension: 1,
-                size: 1,
-                sort: 1,
-                fileType: 1,
-                isBridge: 1,
-                uploadState: 1,
-                uploadMeta: 1,
-                applicationId: 1,
-            },
+            data: extraFileProjection,
             filter: {
                 id: extraFileId,
             },

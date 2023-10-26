@@ -18,7 +18,7 @@ export function initialize(basicFeatures, type, domain) {
     const userWechatPublicTag = new UserWechatPublicTag(basicFeatures.cache, basicFeatures.localStorage);
     // 临时代码，合并后再删
     const extraFile = new ExtraFile(basicFeatures.cache, application, basicFeatures.locales);
-    const extraFile2 = new ExtraFile2(basicFeatures.cache, application, basicFeatures.locales);
+    const extraFile2 = new ExtraFile2(basicFeatures.cache, application, basicFeatures.locales, basicFeatures.runningTree);
     const config = new Config(basicFeatures.cache);
     const style2 = new Style2(basicFeatures.cache);
     const template = new Template(basicFeatures.cache);

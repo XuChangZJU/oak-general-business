@@ -16,6 +16,7 @@ import { EntityDef as Application } from "./Application/Schema";
 import { EntityDef as Area } from "./Area/Schema";
 import { EntityDef as Article } from "./Article/Schema";
 import { EntityDef as ArticleMenu } from "./ArticleMenu/Schema";
+import { EntityDef as Bridge } from "./Bridge/Schema";
 import { EntityDef as Captcha } from "./Captcha/Schema";
 import { EntityDef as ChangePasswordTemp } from "./ChangePasswordTemp/Schema";
 import { EntityDef as Domain } from "./Domain/Schema";
@@ -68,6 +69,7 @@ export type EntityDict = {
     area: Area;
     article: Article;
     articleMenu: ArticleMenu;
+    bridge: Bridge;
     captcha: Captcha;
     changePasswordTemp: ChangePasswordTemp;
     domain: Domain;

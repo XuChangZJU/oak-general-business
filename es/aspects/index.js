@@ -1,6 +1,6 @@
 import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCaptcha, switchTo, refreshWechatPublicUserInfo, getWechatMpUserPhoneNumber, logout, loginByWechat, wakeupParasite, } from './token';
 import { getInfoByUrl } from './extraFile';
-import { getApplication, signatureJsSDK, uploadWechatMedia, batchGetArticle, getArticle, batchGetMaterialList, getMaterial, } from './application';
+import { getApplication, signatureJsSDK, uploadWechatMedia, batchGetArticle, getArticle, batchGetMaterialList, getMaterial, deleteMaterial, } from './application';
 import { updateConfig, updateApplicationConfig } from './config';
 import { updateStyle } from './style2';
 import { syncMessageTemplate } from './template';
@@ -38,6 +38,7 @@ const aspectDict = {
     updateUserPassword,
     getMpUnlimitWxaCode,
     confirmUserEntityGrant,
+    createSession,
     uploadWechatMedia,
     getCurrentMenu,
     getMenu,
@@ -49,7 +50,7 @@ const aspectDict = {
     getArticle,
     batchGetMaterialList,
     getMaterial,
-    createSession,
+    deleteMaterial,
     createTag,
     getTags,
     editTag,

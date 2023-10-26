@@ -16,6 +16,7 @@ import * as Application from "./Application/Schema";
 import * as Area from "./Area/Schema";
 import * as Article from "./Article/Schema";
 import * as ArticleMenu from "./ArticleMenu/Schema";
+import * as Bridge from "./Bridge/Schema";
 import * as Captcha from "./Captcha/Schema";
 import * as ChangePasswordTemp from "./ChangePasswordTemp/Schema";
 import * as Domain from "./Domain/Schema";
@@ -247,6 +248,11 @@ export type ArticleMenuIdSubQuery = {
         entity: "extraFile";
     }) | (ArticleMenu.ArticleMenuIdSubQuery & {
         entity: "articleMenu";
+    }) | any;
+};
+export type BridgeIdSubQuery = {
+    [K in "$in" | "$nin"]?: (Bridge.BridgeIdSubQuery & {
+        entity: "bridge";
     }) | any;
 };
 export type CaptchaIdSubQuery = {

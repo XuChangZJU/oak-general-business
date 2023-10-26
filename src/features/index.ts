@@ -53,11 +53,11 @@ export function initialize<
     const userWechatPublicTag = new UserWechatPublicTag<ED, Cxt, FrontCxt, AD>(
         basicFeatures.cache,
         basicFeatures.localStorage,
-    ) 
+    )
 
     // 临时代码，合并后再删
     const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application, basicFeatures.locales);
-    const extraFile2 = new ExtraFile2<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application, basicFeatures.locales);
+    const extraFile2 = new ExtraFile2<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application, basicFeatures.locales, basicFeatures.runningTree);
     const config = new Config<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
     const style2 = new Style2<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
     const template = new Template<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);

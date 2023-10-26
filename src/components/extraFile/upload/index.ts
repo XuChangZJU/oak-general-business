@@ -280,7 +280,7 @@ export default OakComponent({
                 const { errMsg, tempFiles } = await wx.chooseMessageFile({
                     count: selectCount!,
                     type: 'all',
-                    extension,
+                    ...(extension && extension.length > 0 ? { extension } : {}),
                 });
                 if (errMsg !== 'chooseMessageFile:ok') {
                     this.triggerEvent('onError', {
@@ -329,19 +329,12 @@ export default OakComponent({
             const imageUrl = files[index].url;
             const urls = files?.filter((ele) => !!ele).map((ele) => ele.url);
 
-            const detail = {
-                all: files,
-                index,
-                urls,
-                current: imageUrl,
-            };
             // 预览图片
             if (!this.props.disablePreview) {
                 const result = await wx.previewImage({
                     urls: urls,
                     current: imageUrl,
                 });
-                this.triggerEvent('onPreview', detail);
             }
         },
         getSort(index: number = 0) {

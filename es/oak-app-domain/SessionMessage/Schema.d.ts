@@ -10,7 +10,7 @@ import * as Session from "../Session/Schema";
 import * as User from "../User/Schema";
 import * as WechatUser from "../WechatUser/Schema";
 import * as ExtraFile from "../ExtraFile/Schema";
-type Type = 'text' | 'image' | 'audio' | 'video' | 'news';
+type Type = 'text' | 'image' | 'voice' | 'video' | 'location' | 'link' | 'event' | 'miniprogrampage';
 export type OpSchema = EntityShape & {
     applicationId: ForeignKey<"application">;
     sessionId: ForeignKey<"session">;
@@ -19,8 +19,9 @@ export type OpSchema = EntityShape & {
     createTime?: Datetime | null;
     type: Type;
     text?: Text | null;
-    news?: String<128> | null;
+    link?: String<128> | null;
     aaoe?: Boolean | null;
+    extra?: Object | null;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
@@ -31,8 +32,9 @@ export type Schema = EntityShape & {
     createTime?: Datetime | null;
     type: Type;
     text?: Text | null;
-    news?: String<128> | null;
+    link?: String<128> | null;
     aaoe?: Boolean | null;
+    extra?: Object | null;
     application: Application.Schema;
     session: Session.Schema;
     user?: User.Schema | null;
@@ -58,8 +60,9 @@ type AttrFilter = {
     createTime: Q_DateValue;
     type: Q_EnumValue<Type>;
     text: Q_StringValue;
-    news: Q_StringValue;
+    link: Q_StringValue;
     aaoe: Q_BooleanValue;
+    extra: Object;
     extraFile$entity: ExtraFile.Filter & SubQueryPredicateMetadata;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
@@ -81,8 +84,9 @@ export type Projection = {
     createTime?: number;
     type?: number;
     text?: number;
-    news?: number;
+    link?: number;
     aaoe?: number;
+    extra?: number | Object;
     extraFile$entity?: ExtraFile.Selection & {
         $entity: "extraFile";
     };
@@ -136,7 +140,7 @@ export type SortAttr = {
 } | {
     text: number;
 } | {
-    news: number;
+    link: number;
 } | {
     aaoe: number;
 } | {

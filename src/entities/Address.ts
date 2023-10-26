@@ -9,7 +9,7 @@ export interface Schema extends EntityShape {
     phone: String<12>;
     name: String<32>;
     default: Boolean;
-    remark: Text;
+    remark?: Text;
     entity?: String<32>;
     entityId?: String<64>;
 };

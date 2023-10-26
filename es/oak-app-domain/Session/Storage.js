@@ -26,7 +26,7 @@ export const desc = {
         openId: {
             type: "varchar",
             params: {
-                length: 64
+                length: 32
             }
         }
     },

@@ -5,17 +5,20 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { getCos } from '../utils/cos';
 import { unset } from 'oak-domain/lib/utils/lodash';
 import { generateNewId, generateNewIdAsync } from 'oak-domain';
+import { extraFileProjection } from '../types/Projection';
 export class ExtraFile2 extends Feature {
     cache;
     application;
     locales;
     files;
-    constructor(cache, application, locales) {
+    runningTree;
+    constructor(cache, application, locales, runningTree) {
         super();
         this.cache = cache;
         this.application = application;
         this.locales = locales;
         this.files = {};
+        this.runningTree = runningTree;
     }
     addLocalFile(id, file) {
         assert(!this.files[id]);
@@ -31,27 +34,7 @@ export class ExtraFile2 extends Feature {
     }
     async upload(id) {
         const [extraFile] = this.cache.get('extraFile', {
-            data: {
-                origin: 1,
-                type: 1,
-                bucket: 1,
-                objectId: 1,
-                tag1: 1,
-                tag2: 1,
-                filename: 1,
-                md5: 1,
-                entity: 1,
-                entityId: 1,
-                extra1: 1,
-                extension: 1,
-                size: 1,
-                sort: 1,
-                fileType: 1,
-                isBridge: 1,
-                uploadState: 1,
-                uploadMeta: 1,
-                applicationId: 1,
-            },
+            data: extraFileProjection,
             filter: {
                 id,
             },
@@ -89,6 +72,37 @@ export class ExtraFile2 extends Feature {
             this.publish();
         }
     }
+    async uploadCommit(efPaths, oakFullpath) {
+        assert(efPaths && efPaths.length > 0);
+        let ids = [];
+        if (oakFullpath) {
+            ids = efPaths
+                .map((path) => {
+                const path2 = path
+                    ? `${oakFullpath}.${path}`
+                    : oakFullpath;
+                const data = this.runningTree.getFreshValue(path2);
+                assert(data, `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`);
+                return data.map((ele) => ele.id);
+            })
+                .flat()
+                .filter((ele) => !!ele);
+        }
+        assert(ids.length > 0);
+        const promises = [];
+        ids.forEach((id) => {
+            const fileState = this.getFileState(id);
+            if (fileState) {
+                const { state } = fileState;
+                if (['local', 'failed'].includes(state)) {
+                    promises.push(this.upload(id));
+                }
+            }
+        });
+        if (promises.length > 0) {
+            await Promise.all(promises);
+        }
+    }
     getUrl(extraFile, style) {
         if (!extraFile) {
             return '';
@@ -99,12 +113,13 @@ export class ExtraFile2 extends Feature {
         const { id } = extraFile;
         if (this.files[id]) {
             const { file } = this.files[id];
+            if (typeof file === 'string') {
+                return file;
+            }
             if (file instanceof File) {
                 return getFileURL(file);
             }
-            else {
-                return file;
-            }
+            assert(false, 'the incoming file is not supported');
         }
         const { origin } = extraFile;
         const cos = getCos(origin);
@@ -127,37 +142,17 @@ export class ExtraFile2 extends Feature {
     }
     async autoUpload(extraFile, file) {
         const extraFileId = extraFile.id || generateNewId();
+        const applicationId = extraFile.applicationId || this.application.getApplicationId();
         await this.cache.operate('extraFile', {
             action: 'create',
             data: Object.assign(extraFile, {
                 id: extraFileId,
-                applicationId: this.application.getApplicationId(),
+                applicationId,
             }),
             id: await generateNewIdAsync(),
         });
         const [newExtraFile] = this.cache.get('extraFile', {
-            data: {
-                id: 1,
-                origin: 1,
-                type: 1,
-                bucket: 1,
-                objectId: 1,
-                tag1: 1,
-                tag2: 1,
-                filename: 1,
-                md5: 1,
-                entity: 1,
-                entityId: 1,
-                extra1: 1,
-                extension: 1,
-                size: 1,
-                sort: 1,
-                fileType: 1,
-                isBridge: 1,
-                uploadState: 1,
-                uploadMeta: 1,
-                applicationId: 1,
-            },
+            data: extraFileProjection,
             filter: {
                 id: extraFileId,
             },

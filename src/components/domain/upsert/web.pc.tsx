@@ -73,7 +73,7 @@ export default function Render(
                         </Form.Item>
                         <Form.Item
                             label="请求路径"
-                            required
+                            // required
                             //name="apiPath"
                         >
                             <>

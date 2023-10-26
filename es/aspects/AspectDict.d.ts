@@ -113,6 +113,12 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
         result: string;
         times?: number;
     }>;
+    createSession: (params: {
+        data?: WechatPublicEventData | WechatMpEventData;
+        type: AppType;
+        entity?: string;
+        entityId?: string;
+    }, context: Cxt) => Promise<string>;
     uploadWechatMedia: (params: any, context: Cxt) => Promise<{
         mediaId: string;
     }>;
@@ -160,12 +166,10 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
         mediaId: string;
         isPermanent?: boolean;
     }, context: Cxt) => Promise<any>;
-    createSession: (params: {
-        data?: WechatPublicEventData | WechatMpEventData;
-        type: AppType;
-        entity?: string;
-        entityId?: string;
-    }, context: Cxt) => Promise<string>;
+    deleteMaterial: (params: {
+        applicationId: string;
+        mediaId: string;
+    }, context: Cxt) => Promise<any>;
     createTag: (params: {
         applicationId: string;
         name: string;

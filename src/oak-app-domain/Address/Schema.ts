@@ -14,7 +14,7 @@ export type OpSchema = EntityShape & {
     phone: String<12>;
     name: String<32>;
     default: Boolean;
-    remark: Text;
+    remark?: Text | null;
     entity?: ("user" | string) | null;
     entityId?: String<64> | null;
 };
@@ -25,7 +25,7 @@ export type Schema = EntityShape & {
     phone: String<12>;
     name: String<32>;
     default: Boolean;
-    remark: Text;
+    remark?: Text | null;
     entity?: ("user" | string) | null;
     entityId?: String<64> | null;
     area: Area.Schema;
