@@ -2,7 +2,7 @@
     <view class="col">
         <l-list title="头像">
             <view slot="right-section" class="avatar">
-                <oak-extraFile-avatar oakAutoUnmount="{{true}}" oakPath="{{ oakFullpath ? oakFullpath + '.extraFile$entity' : undefined }}" entity="user" entityId="{{id}}"/>
+                <oak-extraFile-avatar oakAutoUnmount="{{true}}" oakPath="{{ oakFullpath ? oakFullpath + '.extraFile$entity' : undefined }}" entity="user" entityId="{{id}}" autoUpload="{{true}}"/>
             </view>
         </l-list>
         <l-list title="昵称" data-attr="nickname" bind:lintap="setVisibleMp">

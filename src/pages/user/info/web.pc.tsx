@@ -16,6 +16,7 @@ import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 import PageHeader from '../../../components/common/pageHeader';
 import OakAvatar from '../../../components/extraFile/avatar';
+import ExtraFileCommit from '../../../components/extraFile/commit';
 import MobileLogin from '../../../pages/mobile/login';
 import WechatLoginQrCode from '../../../components/wechatLogin/qrCode';
 import WechatUserList from '../../../components/wechatUser/bindingList';
@@ -203,7 +204,7 @@ export default function Render(
                         }}
                     >
                         <Space>
-                            <Button
+                            {/* <Button
                                 disabled={oakExecuting || !oakDirty}
                                 type="primary"
                                 onClick={() => {
@@ -211,7 +212,13 @@ export default function Render(
                                 }}
                             >
                                 确定
-                            </Button>
+                            </Button> */}
+                            <ExtraFileCommit
+                                oakPath={oakFullpath}
+                                efPaths={[
+                                    'extraFile$entity',
+                                ]}
+                            />
                         </Space>
                     </Form.Item>
                 </Form>

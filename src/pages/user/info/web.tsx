@@ -88,6 +88,7 @@ export default function render(
                                 }
                                 entity="user"
                                 entityId={id}
+                                autoUpload={true}
                             />
                         </div>
                     }
