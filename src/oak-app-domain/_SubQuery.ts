@@ -25,6 +25,7 @@ import * as Livestream from "./Livestream/Schema";
 import * as Message from "./Message/Schema";
 import * as MessageSystem from "./MessageSystem/Schema";
 import * as MessageType from "./MessageType/Schema";
+import * as MessageTypeSmsTemplate from "./MessageTypeSmsTemplate/Schema";
 import * as MessageTypeTemplate from "./MessageTypeTemplate/Schema";
 import * as Mobile from "./Mobile/Schema";
 import * as Notification from "./Notification/Schema";
@@ -33,6 +34,7 @@ import * as Platform from "./Platform/Schema";
 import * as ReadRemark from "./ReadRemark/Schema";
 import * as Session from "./Session/Schema";
 import * as SessionMessage from "./SessionMessage/Schema";
+import * as SmsTemplate from "./SmsTemplate/Schema";
 import * as Station from "./Station/Schema";
 import * as Subscription from "./Subscription/Schema";
 import * as Subway from "./Subway/Schema";
@@ -296,6 +298,11 @@ export type MessageTypeIdSubQuery = {
         entity: "messageType";
     }) | any;
 };
+export type MessageTypeSmsTemplateIdSubQuery = {
+    [K in "$in" | "$nin"]?: (MessageTypeSmsTemplate.MessageTypeSmsTemplateIdSubQuery & {
+        entity: "messageTypeSmsTemplate";
+    }) | any;
+};
 export type MessageTypeTemplateIdSubQuery = {
     [K in "$in" | "$nin"]?: (MessageTypeTemplate.MessageTypeTemplateIdSubQuery & {
         entity: "messageTypeTemplate";
@@ -356,6 +363,13 @@ export type SessionMessageIdSubQuery = {
         entity: "sessionMessage";
     }) | any;
 };
+export type SmsTemplateIdSubQuery = {
+    [K in "$in" | "$nin"]?: (MessageTypeSmsTemplate.SmsTemplateIdSubQuery & {
+        entity: "messageTypeSmsTemplate";
+    }) | (SmsTemplate.SmsTemplateIdSubQuery & {
+        entity: "smsTemplate";
+    }) | any;
+};
 export type StationIdSubQuery = {
     [K in "$in" | "$nin"]?: (SubwayStation.StationIdSubQuery & {
         entity: "subwayStation";
@@ -387,6 +401,8 @@ export type SystemIdSubQuery = {
         entity: "domain";
     }) | (MessageSystem.SystemIdSubQuery & {
         entity: "messageSystem";
+    }) | (SmsTemplate.SystemIdSubQuery & {
+        entity: "smsTemplate";
     }) | (UserSystem.SystemIdSubQuery & {
         entity: "userSystem";
     }) | (System.SystemIdSubQuery & {

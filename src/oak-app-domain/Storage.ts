@@ -27,6 +27,7 @@ import { desc as livestreamDesc } from "./Livestream/Storage";
 import { desc as messageDesc } from "./Message/Storage";
 import { desc as messageSystemDesc } from "./MessageSystem/Storage";
 import { desc as messageTypeDesc } from "./MessageType/Storage";
+import { desc as messageTypeSmsTemplateDesc } from "./MessageTypeSmsTemplate/Storage";
 import { desc as messageTypeTemplateDesc } from "./MessageTypeTemplate/Storage";
 import { desc as mobileDesc } from "./Mobile/Storage";
 import { desc as notificationDesc } from "./Notification/Storage";
@@ -35,6 +36,7 @@ import { desc as platformDesc } from "./Platform/Storage";
 import { desc as readRemarkDesc } from "./ReadRemark/Storage";
 import { desc as sessionDesc } from "./Session/Storage";
 import { desc as sessionMessageDesc } from "./SessionMessage/Storage";
+import { desc as smsTemplateDesc } from "./SmsTemplate/Storage";
 import { desc as stationDesc } from "./Station/Storage";
 import { desc as subscriptionDesc } from "./Subscription/Storage";
 import { desc as subwayDesc } from "./Subway/Storage";
@@ -79,6 +81,7 @@ export const storageSchema: StorageSchema<EntityDict> = {
     message: messageDesc,
     messageSystem: messageSystemDesc,
     messageType: messageTypeDesc,
+    messageTypeSmsTemplate: messageTypeSmsTemplateDesc,
     messageTypeTemplate: messageTypeTemplateDesc,
     mobile: mobileDesc,
     notification: notificationDesc,
@@ -87,6 +90,7 @@ export const storageSchema: StorageSchema<EntityDict> = {
     readRemark: readRemarkDesc,
     session: sessionDesc,
     sessionMessage: sessionMessageDesc,
+    smsTemplate: smsTemplateDesc,
     station: stationDesc,
     subscription: subscriptionDesc,
     subway: subwayDesc,

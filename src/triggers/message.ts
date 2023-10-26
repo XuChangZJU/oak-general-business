@@ -58,7 +58,7 @@ export async function tryMakeSmsNotification(message: EntityDict['message']['Sch
 }
 
 async function createNotification(message: CreateMessageData, context: BRC) {
-    const { restriction, userId, weight, type, entity, entityId, platformId } = message;
+    const { restriction, userId, weight, type, entity, entityId, platformId, channels } = message;
     assert(userId);
 
     // 根据用户所关联的system和定义限制，选择将要发送的system。这里有的应用是到platform级别，有的是到system级别
@@ -133,7 +133,7 @@ async function createNotification(message: CreateMessageData, context: BRC) {
     }, { dontCollect: true });
 
     // 根据定义所限制的渠道和weight，计算出相应的推送渠道
-    const channels = InitialChannalByWeightMatrix[weight!].filter(
+    const channels2 = ((channels && channels.length > 0) ? channels : InitialChannalByWeightMatrix[weight!]).filter(
         ele => {
             if (restriction && restriction.channels) {
                 return restriction.channels.includes(ele);
@@ -157,7 +157,7 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                 const notificationDatas: Omit<EntityDict['notification']['CreateSingle']['data'], 'messageSystemId'>[] = [];
 
                 await Promise.all(
-                    channels.map(
+                    channels2.map(
                         async (channel) => {
                             switch (channel) {
                                 case 'wechatMp': {
@@ -258,7 +258,7 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                         }
                     )
                 );
-                if (channels.includes('sms')) {
+                if (channels2.includes('sms')) {
                     const smsNotification = await tryMakeSmsNotification(message as EntityDict['message']['Schema'], context);
                     if (smsNotification) {
                         notificationDatas.push(smsNotification);
