@@ -3,38 +3,32 @@ import { CreateOperationData as ActionAuth } from '../oak-app-domain/ActionAuth/
 const actionAuths: ActionAuth[] = [
     {
         id: 'message-user',
-        paths: ['user'],
-        destEntity: 'message',
+        pathId: 'msg-user',
         deActions: ['select', 'remove', 'update'],
     },
     {
         id: 'mobile-user',
-        paths: ['user'],
-        destEntity: 'mobile',
+        pathId: 'mobile-user',
         deActions: ['create', 'update', 'remove', 'select'],
     },
     {
         id: 'token-user',
-        paths: ['user'],
-        destEntity: 'token',
+        pathId: 'token-user',
         deActions: ['create', 'update', 'remove', 'select'],
     },
     {
         id: 'wechatLogin-user',
-        paths: ['user'],
-        destEntity: 'wechatLogin',
+        pathId: 'wchL-user',
         deActions: ['create', 'update', 'select'],
     },
     {
         id: 'wechatUser-user',
-        paths: ['user'],
-        destEntity: 'wechatUser',
+        pathId: 'wchU-user',
         deActions: ['create', 'update', 'select'],
     },
     {
         id: 'passwordChangeTemp-user',
-        paths: ['user'],
-        destEntity: 'passwordChangeTemp',
+        pathId: 'pwdCT-user',
         deActions: ['create', 'select'],
     },
 ];

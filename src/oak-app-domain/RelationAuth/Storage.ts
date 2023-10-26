@@ -8,12 +8,10 @@ export const desc: StorageDesc<OpSchema> = {
             type: "ref",
             ref: "relation"
         },
-        path: {
+        pathId: {
             notNull: true,
-            type: "varchar",
-            params: {
-                length: 256
-            }
+            type: "ref",
+            ref: "path"
         },
         destRelationId: {
             notNull: true,
@@ -31,7 +29,7 @@ export const desc: StorageDesc<OpSchema> = {
                     name: "sourceRelationId",
                 },
                 {
-                    name: 'path',
+                    name: "pathId",
                 },
                 {
                     name: "destRelationId",

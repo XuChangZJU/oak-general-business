@@ -6,12 +6,10 @@ export const desc = {
             type: "ref",
             ref: "relation"
         },
-        path: {
+        pathId: {
             notNull: true,
-            type: "varchar",
-            params: {
-                length: 256
-            }
+            type: "ref",
+            ref: "path"
         },
         destRelationId: {
             notNull: true,
@@ -29,7 +27,7 @@ export const desc = {
                     name: "sourceRelationId",
                 },
                 {
-                    name: 'path',
+                    name: "pathId",
                 },
                 {
                     name: "destRelationId",

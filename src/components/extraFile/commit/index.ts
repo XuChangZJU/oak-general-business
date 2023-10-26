@@ -22,8 +22,7 @@ export default OakComponent({
         };
     },
     properties: {
-        action: '' as string | undefined,
-        efPaths: [] as string[],
+        action: undefined as string | undefined,
         size: 'middle',
         block: false,
         type: 'primary',
@@ -33,36 +32,59 @@ export default OakComponent({
         beforeCommit: (() => true) as () => boolean | undefined | Promise<boolean | undefined>,
     },
     methods: {
-        getEfIds(strict?: boolean) {
-            const { efPaths } = this.props;
-            const { oakFullpath } = this.state;
-            assert(efPaths && efPaths.length > 0);
-            if (oakFullpath) {
-                const ids = efPaths
-                    .map((path) => {
-                        const path2 = path
-                            ? `${oakFullpath}.${path}`
-                            : oakFullpath;
-                        const data =
-                            this.features.runningTree.getFreshValue(path2);
-                        if (strict) {
-                            assert(
-                                data,
-                                `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`
+        getEfIds() {
+            const entity = this.features.runningTree.getEntity(this.state.oakFullpath);
+            const value = this.features.runningTree.getFreshValue(this.state.oakFullpath);
+            const efIds = [] as string[];
+
+            const getRecursive = (e: string, v: Record<string, any>) => {
+                for (const attr in v) {
+                    const rel = this.features.cache.judgeRelation(e as keyof EntityDict, attr);
+                    if (rel === 2) {
+                        assert(typeof v[attr] === 'object');
+                        if (attr === 'extraFile') {
+                            assert(v[attr].id);
+                            efIds.push(v[attr].id);
+                        }
+                        else {
+                            getRecursive(attr, v[attr]);
+                        }
+                    }
+                    else if (typeof rel === 'string') {
+                        assert(typeof v[attr] === 'object');
+                        if (rel === 'extraFile') {
+                            assert(v[attr].id);
+                            efIds.push(v[attr].id);
+                        }
+                        else {
+                            getRecursive(rel, v[attr]);
+                        }
+                    }
+                    else if (rel instanceof Array) {
+                        assert(v[attr] instanceof Array);
+                        const [e2, fk2] = rel;
+                        if (e2 === 'extraFile') {
+                            efIds.push(...(v[attr].map((ele: { id: string }) => ele.id)));
+                        }
+                        else {
+                            v[attr].forEach(
+                                (ele: any) => getRecursive(e2, ele)
                             );
                         }
-                        return (
-                            data as EntityDict['extraFile']['OpSchema'][]
-                        )?.map((ele) => ele.id);
-                    })
-                    .flat()
-                    .filter((ele) => !!ele) as string[];
-                return ids;
+                    }
+                }
+            };
+
+            if (value instanceof Array) {
+                value.forEach(
+                    ele => getRecursive(entity, ele)
+                );
             }
-            return [];
+            getRecursive(entity, value as any);
+            return efIds;
         },
         async upload() {
-            const ids = this.getEfIds(true);
+            const ids = this.getEfIds();
             if (ids.length === 0) {
                 return;
             }
@@ -85,7 +107,6 @@ export default OakComponent({
         async onSubmit() {
             const { oakExecutable } = this.state;
             const { beforeCommit, afterCommit, action } = this.props;
-            console.log(beforeCommit, afterCommit, action);
             if (oakExecutable) {
                 if (beforeCommit) {
                     const beforeCommitResult = await beforeCommit();

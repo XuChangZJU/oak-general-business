@@ -3,24 +3,22 @@ import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, 
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
-import { String } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Relation from "../Relation/Schema";
+import * as Path from "../Path/Schema";
 type Actions = string[];
-type Paths = string[];
 export type OpSchema = EntityShape & {
     relationId?: ForeignKey<"relation"> | null;
-    paths: Paths;
-    destEntity: String<32>;
+    pathId: ForeignKey<"path">;
     deActions: Actions;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     relationId?: ForeignKey<"relation"> | null;
-    paths: Paths;
-    destEntity: String<32>;
+    pathId: ForeignKey<"path">;
     deActions: Actions;
     relation?: Relation.Schema | null;
+    path: Path.Schema;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -31,8 +29,8 @@ type AttrFilter = {
     $$updateAt$$: Q_DateValue;
     relationId: Q_StringValue;
     relation: Relation.Filter;
-    paths: JsonFilter<Paths>;
-    destEntity: Q_StringValue;
+    pathId: Q_StringValue;
+    path: Path.Filter;
     deActions: JsonFilter<Actions>;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
@@ -45,8 +43,8 @@ export type Projection = {
     $$seq$$?: number;
     relationId?: number;
     relation?: Relation.Projection;
-    paths?: number | JsonProjection<Paths>;
-    destEntity?: number;
+    pathId?: number;
+    path?: Path.Projection;
     deActions?: number | JsonProjection<Actions>;
 } & Partial<ExprOp<OpAttr | string>>;
 type ActionAuthIdProjection = OneOf<{
@@ -54,6 +52,9 @@ type ActionAuthIdProjection = OneOf<{
 }>;
 type RelationIdProjection = OneOf<{
     relationId: number;
+}>;
+type PathIdProjection = OneOf<{
+    pathId: number;
 }>;
 export type SortAttr = {
     id: number;
@@ -68,9 +69,9 @@ export type SortAttr = {
 } | {
     relation: Relation.SortAttr;
 } | {
-    paths: number;
+    pathId: number;
 } | {
-    destEntity: number;
+    path: Path.SortAttr;
 } | {
     deActions: number;
 } | {
@@ -84,7 +85,7 @@ export type Sorter = SortNode[];
 export type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
 export type Selection<P extends Object = Projection> = SelectOperation<P>;
 export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export type CreateOperationData = FormCreateData<Omit<OpSchema, "relationId">> & (({
+export type CreateOperationData = FormCreateData<Omit<OpSchema, "relationId" | "pathId">> & (({
     relationId?: never;
     relation?: Relation.CreateSingleOperation;
 } | {
@@ -92,11 +93,19 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "relationId">> &
     relation?: Relation.UpdateOperation;
 } | {
     relationId?: ForeignKey<"relation">;
+}) & ({
+    pathId?: never;
+    path: Path.CreateSingleOperation;
+} | {
+    pathId: ForeignKey<"path">;
+    path?: Path.UpdateOperation;
+} | {
+    pathId: ForeignKey<"path">;
 }));
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "relationId">> & (({
+export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "relationId" | "pathId">> & (({
     relation: Relation.CreateSingleOperation;
     relationId?: never;
 } | {
@@ -108,16 +117,31 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "relationId">> &
 } | {
     relation?: never;
     relationId?: ForeignKey<"relation"> | null;
+}) & ({
+    path: Path.CreateSingleOperation;
+    pathId?: never;
+} | {
+    path: Path.UpdateOperation;
+    pathId?: never;
+} | {
+    path: Path.RemoveOperation;
+    pathId?: never;
+} | {
+    path?: never;
+    pathId?: ForeignKey<"path"> | null;
 })) & {
     [k: string]: any;
 };
 export type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export type RemoveOperationData = {} & (({
     relation?: Relation.UpdateOperation | Relation.RemoveOperation;
+}) & ({
+    path?: Path.UpdateOperation | Path.RemoveOperation;
 }));
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export type RelationIdSubQuery = Selection<RelationIdProjection>;
+export type PathIdSubQuery = Selection<PathIdProjection>;
 export type ActionAuthIdSubQuery = Selection<ActionAuthIdProjection>;
 export type EntityDef = {
     Schema: Schema;

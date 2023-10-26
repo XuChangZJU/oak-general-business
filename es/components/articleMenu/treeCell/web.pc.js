@@ -138,9 +138,7 @@ export default function Render(props) {
                                                     //         });
                                                     //     }
                                                     // }
-                                                    footer: _jsxs(Space, { children: [_jsx(ExtraFileCommit, { oakPath: oakFullpath, efPaths: [
-                                                                    'extraFile$entity$1',
-                                                                ], afterCommit: () => {
+                                                    footer: _jsxs(Space, { children: [_jsx(ExtraFileCommit, { oakPath: oakFullpath, afterCommit: () => {
                                                                     modalInstance.destroy();
                                                                 }, beforeCommit: () => {
                                                                     if (menuNameRef.current.input.value) {
