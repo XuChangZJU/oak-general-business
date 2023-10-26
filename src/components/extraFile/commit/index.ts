@@ -37,9 +37,9 @@ export default OakComponent({
             const value = this.features.runningTree.getFreshValue(this.state.oakFullpath);
             const efIds = [] as string[];
 
-            const getRecursive = (e: string, v: Record<string,any>) => {
+            const getRecursive = (e: string, v: Record<string, any>) => {
                 for (const attr in v) {
-                    const rel = this.features.cache.judgeRelation(e, attr);
+                    const rel = this.features.cache.judgeRelation(e as keyof EntityDict, attr);
                     if (rel === 2) {
                         assert(typeof v[attr] === 'object');
                         if (attr === 'extraFile') {
@@ -64,11 +64,11 @@ export default OakComponent({
                         assert(v[attr] instanceof Array);
                         const [e2, fk2] = rel;
                         if (e2 === 'extraFile') {
-                            efIds.push(...(v[attr].map((ele : { id: string }) => ele.id)));
+                            efIds.push(...(v[attr].map((ele: { id: string }) => ele.id)));
                         }
                         else {
                             v[attr].forEach(
-                                (ele: any) => getRecursive(rel, ele)
+                                (ele: any) => getRecursive(e2, ele)
                             );
                         }
                     }

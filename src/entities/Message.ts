@@ -20,6 +20,8 @@ type MessageRestriction = {
     channels?: Array<Channel>;        // 允许推送的渠道
 }
 
+type Chaanels = Channel[];
+
 export interface Schema extends EntityShape {
     entity: String<32>;
     entityId: String<64>;
@@ -32,6 +34,7 @@ export interface Schema extends EntityShape {
     data?: Object; // 透传到前台的数据（OpRecords）
     router?: Router; // 通知前端需要到达的路由
     platform?: Platform;
+    channels?: Chaanels;
 };
 
 type IAction = 'succeed' | 'fail';
@@ -83,6 +86,7 @@ const entityDesc: EntityDesc<
                 router: '目标路由',
                 data: '透传数据',
                 platform: '平台',
+                channels: '渠道',
             },
             action: {
                 succeed: '成功',

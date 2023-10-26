@@ -28,6 +28,7 @@ import { desc as livestreamDesc } from "./Livestream/Storage";
 import { desc as messageDesc } from "./Message/Storage";
 import { desc as messageSystemDesc } from "./MessageSystem/Storage";
 import { desc as messageTypeDesc } from "./MessageType/Storage";
+import { desc as messageTypeSmsTemplateDesc } from "./MessageTypeSmsTemplate/Storage";
 import { desc as messageTypeTemplateDesc } from "./MessageTypeTemplate/Storage";
 import { desc as mobileDesc } from "./Mobile/Storage";
 import { desc as notificationDesc } from "./Notification/Storage";
@@ -36,6 +37,7 @@ import { desc as platformDesc } from "./Platform/Storage";
 import { desc as readRemarkDesc } from "./ReadRemark/Storage";
 import { desc as sessionDesc } from "./Session/Storage";
 import { desc as sessionMessageDesc } from "./SessionMessage/Storage";
+import { desc as smsTemplateDesc } from "./SmsTemplate/Storage";
 import { desc as stationDesc } from "./Station/Storage";
 import { desc as subscriptionDesc } from "./Subscription/Storage";
 import { desc as subwayDesc } from "./Subway/Storage";
@@ -47,11 +49,11 @@ import { desc as userSystemDesc } from "./UserSystem/Storage";
 import { desc as userWechatPublicTagDesc } from "./UserWechatPublicTag/Storage";
 import { desc as wechatLoginDesc } from "./WechatLogin/Storage";
 import { desc as wechatMenuDesc } from "./WechatMenu/Storage";
+import { desc as wechatPublicAutoReplyDesc } from "./wechatPublicAutoReply/Storage";
 import { desc as wechatPublicTagDesc } from "./WechatPublicTag/Storage";
 import { desc as wechatPublicTemplateDesc } from "./WechatPublicTemplate/Storage";
 import { desc as wechatQrCodeDesc } from "./WechatQrCode/Storage";
 import { desc as wechatUserDesc } from "./WechatUser/Storage";
-import { desc as wechatPublicAutoReplyDesc } from "./wechatPublicAutoReply/Storage";
 export const storageSchema: StorageSchema<EntityDict> = {
     actionAuth: actionAuthDesc,
     i18n: i18nDesc,
@@ -81,6 +83,7 @@ export const storageSchema: StorageSchema<EntityDict> = {
     message: messageDesc,
     messageSystem: messageSystemDesc,
     messageType: messageTypeDesc,
+    messageTypeSmsTemplate: messageTypeSmsTemplateDesc,
     messageTypeTemplate: messageTypeTemplateDesc,
     mobile: mobileDesc,
     notification: notificationDesc,
@@ -89,6 +92,7 @@ export const storageSchema: StorageSchema<EntityDict> = {
     readRemark: readRemarkDesc,
     session: sessionDesc,
     sessionMessage: sessionMessageDesc,
+    smsTemplate: smsTemplateDesc,
     station: stationDesc,
     subscription: subscriptionDesc,
     subway: subwayDesc,
@@ -100,9 +104,9 @@ export const storageSchema: StorageSchema<EntityDict> = {
     userWechatPublicTag: userWechatPublicTagDesc,
     wechatLogin: wechatLoginDesc,
     wechatMenu: wechatMenuDesc,
+    wechatPublicAutoReply: wechatPublicAutoReplyDesc,
     wechatPublicTag: wechatPublicTagDesc,
     wechatPublicTemplate: wechatPublicTemplateDesc,
     wechatQrCode: wechatQrCodeDesc,
-    wechatUser: wechatUserDesc,
-    wechatPublicAutoReply: wechatPublicAutoReplyDesc
+    wechatUser: wechatUserDesc
 };

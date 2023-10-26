@@ -2,7 +2,6 @@
 import { EntityDict } from '../../../oak-app-domain';
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, keyof EntityDict, boolean, {
     action: string | undefined;
-    efPaths: string[];
     size: string;
     block: boolean;
     type: string;

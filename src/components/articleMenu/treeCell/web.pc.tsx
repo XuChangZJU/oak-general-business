@@ -277,9 +277,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                                                 footer: <Space>
                                                     <ExtraFileCommit
                                                         oakPath={oakFullpath}
-                                                        efPaths={[
-                                                            'extraFile$entity$1',
-                                                        ]}
                                                         afterCommit={() => {
                                                             modalInstance!.destroy()
                                                         }}

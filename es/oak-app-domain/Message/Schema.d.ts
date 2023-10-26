@@ -19,6 +19,7 @@ type MessageRestriction = {
     systemIds?: string[];
     channels?: Array<Channel>;
 };
+type Chaanels = Channel[];
 export type OpSchema = EntityShape & {
     entity: String<32>;
     entityId: String<64>;
@@ -31,6 +32,7 @@ export type OpSchema = EntityShape & {
     data?: Object | null;
     router?: Router | null;
     platformId?: ForeignKey<"platform"> | null;
+    channels?: Chaanels | null;
     iState?: IState | null;
     visitState?: VisitState | null;
 };
@@ -47,6 +49,7 @@ export type Schema = EntityShape & {
     data?: Object | null;
     router?: Router | null;
     platformId?: ForeignKey<"platform"> | null;
+    channels?: Chaanels | null;
     iState?: IState | null;
     visitState?: VisitState | null;
     user: User.Schema;
@@ -74,6 +77,7 @@ type AttrFilter = {
     router: JsonFilter<Router>;
     platformId: Q_StringValue;
     platform: Platform.Filter;
+    channels: JsonFilter<Chaanels>;
     iState: Q_EnumValue<IState>;
     visitState: Q_EnumValue<VisitState>;
     messageSystem$message: MessageSystem.Filter & SubQueryPredicateMetadata;
@@ -99,6 +103,7 @@ export type Projection = {
     router?: number | JsonProjection<Router>;
     platformId?: number;
     platform?: Platform.Projection;
+    channels?: number | JsonProjection<Chaanels>;
     iState?: number;
     visitState?: number;
     messageSystem$message?: MessageSystem.Selection & {
@@ -149,6 +154,8 @@ export type SortAttr = {
     platformId: number;
 } | {
     platform: Platform.SortAttr;
+} | {
+    channels: number;
 } | {
     iState: number;
 } | {
