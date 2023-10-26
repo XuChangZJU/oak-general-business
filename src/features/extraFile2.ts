@@ -113,6 +113,7 @@ export class ExtraFile2<
     }
 
     async uploadCommit(efPaths: string[], oakFullpath: string) {
+        assert(false, '方法已经废弃');
         assert(efPaths && efPaths.length > 0);
         let ids = [] as string[];
         if (oakFullpath) {
