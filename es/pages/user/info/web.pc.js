@@ -4,6 +4,7 @@ import { Space, Button, Input, Radio, DatePicker, Form, Typography, Modal, Descr
 import dayjs from 'dayjs';
 import PageHeader from '../../../components/common/pageHeader';
 import OakAvatar from '../../../components/extraFile/avatar';
+import ExtraFileCommit from '../../../components/extraFile/commit';
 import MobileLogin from '../../../pages/mobile/login';
 import WechatLoginQrCode from '../../../components/wechatLogin/qrCode';
 import WechatUserList from '../../../components/wechatUser/bindingList';
@@ -48,9 +49,7 @@ export default function Render(props) {
                                         } }) }) }), _jsx(Form.Item, { wrapperCol: {
                                     xs: { offset: 4 },
                                     md: { offset: 6 },
-                                }, children: _jsx(Space, { children: _jsx(Button, { disabled: oakExecuting || !oakDirty, type: "primary", onClick: () => {
-                                            updateMyInfo();
-                                        }, children: "\u786E\u5B9A" }) }) })] })] }), _jsx("div", { style: { marginTop: '10px' } }), _jsxs("div", { className: Style.container, children: [_jsx(Descriptions, { title: '安全信息' }), _jsxs(Form, { labelCol: { xs: { span: 4 }, md: { span: 6 } }, wrapperCol: { xs: { span: 16 }, md: { span: 12 } }, children: [_jsx(Form.Item, { label: t('mobile'), children: _jsxs(Space, { children: [_jsx(Typography, { children: mobile || '未设置' }), _jsx(Button, { size: "small", onClick: () => {
+                                }, children: _jsx(Space, { children: _jsx(ExtraFileCommit, { oakPath: oakFullpath }) }) })] })] }), _jsx("div", { style: { marginTop: '10px' } }), _jsxs("div", { className: Style.container, children: [_jsx(Descriptions, { title: '安全信息' }), _jsxs(Form, { labelCol: { xs: { span: 4 }, md: { span: 6 } }, wrapperCol: { xs: { span: 16 }, md: { span: 12 } }, children: [_jsx(Form.Item, { label: t('mobile'), children: _jsxs(Space, { children: [_jsx(Typography, { children: mobile || '未设置' }), _jsx(Button, { size: "small", onClick: () => {
                                                 if (mobile) {
                                                     goAddMobile();
                                                     return;

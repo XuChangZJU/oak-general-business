@@ -151,7 +151,7 @@ export default function Render(
                     </Form.Item>
                     <Form.Item
                         label={t('user:attr.gender')}
-                        // rules={[{ required: true }]}
+                    // rules={[{ required: true }]}
                     >
                         <Space direction="vertical">
                             <Radio.Group
@@ -165,11 +165,11 @@ export default function Render(
                     </Form.Item>
                     <Form.Item
                         label={t('user:attr.birth')}
-                        // rules={[
-                        //     {
-                        //         required: true,
-                        //     },
-                        // ]}
+                    // rules={[
+                    //     {
+                    //         required: true,
+                    //     },
+                    // ]}
                     >
                         <>
                             <DatePicker
@@ -215,9 +215,6 @@ export default function Render(
                             </Button> */}
                             <ExtraFileCommit
                                 oakPath={oakFullpath}
-                                efPaths={[
-                                    'extraFile$entity',
-                                ]}
                             />
                         </Space>
                     </Form.Item>

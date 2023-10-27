@@ -9,7 +9,7 @@ export default function render(props) {
     const { oakFullpath, visible, nickname, name, birth, gender, mobile, avatarUrl, attr, id, isSupportSyncWeChat, refreshing, } = data;
     return (_jsxs("div", { className: Style.container, children: [_jsxs(List, { className: Style.list, children: [_jsx(List.Item, { extra: _jsx("div", { style: { marginTop: 5, marginBottom: 5 }, children: _jsx(OakAvatar, { oakAutoUnmount: true, oakPath: oakFullpath
                                     ? oakFullpath + '.extraFile$entity'
-                                    : undefined, entity: "user", entityId: id }) }), children: "\u5934\u50CF" }), _jsx(List.Item, { extra: nickname ? nickname : '未设置', onClick: () => {
+                                    : undefined, entity: "user", entityId: id, autoUpload: true }) }), children: "\u5934\u50CF" }), _jsx(List.Item, { extra: nickname ? nickname : '未设置', onClick: () => {
                             setVisible(true, 'nickname');
                         }, children: t('user:attr.nickname') }), _jsx(List.Item, { extra: gender ? t(`user:v.gender.${gender}`) : '未设置', onClick: () => {
                             setVisible(true, 'gender');

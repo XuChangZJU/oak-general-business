@@ -12,14 +12,18 @@ export default OakComponent({
         objectId: 1,
         filename: 1,
         extra1: 1,
+        extra2: 1,
         extension: 1,
         type: 1,
         entity: 1,
         entityId: 1,
+        sort: 1,
+        applicationId: 1,
     },
+    features: ['extraFile2'],
     formData({ data: extraFiles, features }) {
         const avatar = extraFiles?.filter((ele) => !ele.$$deleteAt$$ && ele.tag1 === 'avatar')[0];
-        const avatarUrl = features.extraFile.getUrl(avatar);
+        const avatarUrl = features.extraFile2.getUrl(avatar);
         return {
             avatar,
             avatarUrl,
@@ -38,6 +42,7 @@ export default OakComponent({
         preview: true,
         entity: '',
         entityId: '',
+        autoUpload: false,
     },
     methods: {
         async onPickByMp() {
@@ -89,13 +94,14 @@ export default OakComponent({
         },
         async pushExtraFile(options) {
             const { origin, type, tag1, avatar } = this.state;
-            const { entityId, entity } = this.props;
+            const { entityId, entity, autoUpload = false } = this.props;
             const { name, extra1, fileType, size } = options;
             const extension = name.substring(name.lastIndexOf('.') + 1);
             const filename = name.substring(0, name.lastIndexOf('.'));
+            const applicationId = this.features.application.getApplicationId();
             assert(entity, '必须传入entity');
             const updateData = {
-                extra1,
+                applicationId,
                 origin,
                 type,
                 tag1,
@@ -107,30 +113,22 @@ export default OakComponent({
                 fileType,
                 id: generateNewId(),
                 entityId,
+                sort: 1000,
             };
-            // try {
-            //     const { bucket } = await this.features.extraFile.upload(
-            //         updateData
-            //     );
-            //     Object.assign(updateData, {
-            //         bucket,
-            //         extra1: null,
-            //     });
-            // } catch (error) {
-            //     //todo 保存extraFile失败 需要remove七牛图片
-            //     throw error;
-            // }
-            this.addItem(Object.assign({}, updateData, {
-                extra1: null,
-            }), undefined, async () => {
-                await this.features.extraFile.upload(updateData, extra1);
-            });
-            if (avatar) {
-                this.removeItem(avatar.id);
+            // 如果autoUpload
+            if (autoUpload) {
+                await this.features.extraFile2.autoUpload(updateData, extra1);
+                if (avatar) {
+                    this.removeItem(avatar.id);
+                    this.execute();
+                }
             }
-            // 如果entityId不存在, 说明是级联创建
-            if (entityId) {
-                await this.execute();
+            else {
+                const id = this.addItem(updateData);
+                if (avatar) {
+                    this.removeItem(avatar.id);
+                }
+                this.features.extraFile2.addLocalFile(id, extra1);
             }
         },
     },
