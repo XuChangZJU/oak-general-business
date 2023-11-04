@@ -1,9 +1,0 @@
-<view class="file-list__container oak-class">
-    <block wx:for="{{files}}" wx:key="index">
-        <block wx:if="{{item}}">
-            <view class="file-list__item  file-list__item--{{size}} oak-item-class" style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:'xxx'}}">
-                <image data-index="{{index}}" bind:tap="onPreviewByMp" src="{{item.thumbUrl}}" mode="{{mode}}" class="file-list__image"/>
-            </view>
-        </block>
-    </block>
-</view>

@@ -1,5 +1,6 @@
 import { WebComponentProps } from 'oak-frontend-base';
 import { NoticeBar, Space, List, Button } from 'antd-mobile';
+import UbPicker from './ubPicker';
 import { EntityDict } from '../../../oak-app-domain';
 import Styles from './web.module.less';
 
@@ -17,7 +18,7 @@ export default function Render(
             hideTip: boolean;
             pickedRowIds?: string[],
             pickedRelationIds?: string[],
-            content: (props: {
+            picker?: (props: {
                 disabled?: boolean,
                 entity: keyof EntityDict,
                 entityFilter: object,
@@ -34,19 +35,21 @@ export default function Render(
         {
             onPickRelations: (ids: string[]) => void,
             onPickRows: (ids: string[]) => void,
+            claim: () => void,
         }
     >
 ) {
-    const { userEntityGrant, content: Con, isGranter, hasClaimed, counterStr, hideInfo, 
+    const { userEntityGrant, picker: Picker, isGranter, hasClaimed, counterStr, hideInfo, 
         pickedRowIds, pickedRelationIds, oakExecutable, hideTip } = props.data;
-    const { t, onPickRelations, onPickRows } = props.methods;
+    const { t, onPickRelations, onPickRows, claim } = props.methods;
 
     if (userEntityGrant) {
         const { relationEntity, relationEntityFilter, rule, ruleOnRow, relationIds, expired } = userEntityGrant;
 
+        const Picker2 = Picker || UbPicker;
         return (
             <div className={Styles.container}>
-                {(!hideTip && !isGranter) && <NoticeBar content={t('tip')} color='info' />}
+                {(!hideTip && !isGranter && !hasClaimed) && <NoticeBar content={t('tip')} color='info' />}
                 {isGranter && <NoticeBar content={t('isGranter')} color='error' />}
                 {hasClaimed && <NoticeBar content={t('hasClaimed')} color='error' />}
                 {!hideInfo && <div className={Styles.info}>
@@ -62,7 +65,7 @@ export default function Render(
                         </List.Item>
                     </List>
                 </div>}
-                <Con
+                <Picker2
                     disabled={!!expired || hasClaimed || isGranter}
                     entity={relationEntity as keyof EntityDict}
                     entityFilter={relationEntityFilter}
@@ -78,8 +81,9 @@ export default function Render(
                 <div style={{ flex: 1 }} />
                 <Button
                     block
-                    color={isGranter ? 'danger' : (!expired || hasClaimed ? 'primary' : 'warning')}
-                    disabled={oakExecutable !== true || !!expired || isGranter}
+                    color={isGranter || hasClaimed ? 'danger' : (!expired ? 'primary' : 'warning')}
+                    disabled={oakExecutable !== true || !!expired || isGranter || hasClaimed}
+                    onClick={() => claim()}
                 >
                     {isGranter ? t('isGranter') : ( hasClaimed ? t('hasClaimed') : (!expired ? t('userEntityGrant:action.claim') : t('expired')))}
                 </Button>

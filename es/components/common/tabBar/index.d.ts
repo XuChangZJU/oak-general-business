@@ -1,13 +1,17 @@
 /// <reference types="react" />
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<import("../../../oak-app-domain").EntityDict, keyof import("../../../oak-app-domain").EntityDict, false, {
     bgColor: string;
-    bgImg: string;
+    bgImgUrl: string;
     selectedIndex: number;
     list: {
         redDot: boolean;
         text: string;
-        iconName: string;
         pagePath: string;
+        iconName?: string | undefined;
+        selectedIconName?: string | undefined;
+        iconPath?: string | undefined;
+        selectedIconPath?: string | undefined;
+        iconSize?: string | undefined;
     }[];
     color: string;
     selectedColor: string;

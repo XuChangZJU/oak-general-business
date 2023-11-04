@@ -1,7 +1,8 @@
 /// <reference types="react" />
 import { EntityDict } from '../../../oak-app-domain';
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "userEntityGrant", false, {
-    content: (props: {
+    picker: (props: {
+        disabled?: boolean | undefined;
         entity: keyof EntityDict;
         entityFilter: object;
         relationIds: string[];
@@ -14,5 +15,7 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
         oakPath: string;
     }) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
     hideInfo: boolean;
+    hideTip: boolean;
+    afterClaim: (ueg: EntityDict['userEntityGrant']['OpSchema']) => void;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

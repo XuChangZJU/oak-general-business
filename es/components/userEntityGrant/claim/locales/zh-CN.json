@@ -4,5 +4,7 @@
     "granterName": "授权者",
     "isExpired": "状态",
     "expired": "已失效",
-    "counter": "过期时间"
+    "counter": "过期时间",
+    "hasClaimed": "您已经领取过此权限",
+    "isGranter": "您不能领取自己的授权"
 }

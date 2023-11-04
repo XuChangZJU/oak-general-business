@@ -3,10 +3,12 @@ export default OakComponent({
     entity: 'userEntityGrant',
     isList: false,
     properties: {
-        content: (props) => {
+        picker: (props) => {
             return {};
         },
         hideInfo: false,
+        hideTip: false,
+        afterClaim: (ueg) => undefined,
     },
     projection() {
         const userId = this.features.token.getUserId();
@@ -46,13 +48,13 @@ export default OakComponent({
     },
     formData({ data }) {
         const userId = this.features.token.getUserId();
-        const isGrantee = userId === data?.granterId;
-        const hasClaimed = !!data?.userEntityClaim$ueg?.find((ele) => ele.userId === userId);
+        const isGranter = userId === data?.granterId;
+        const hasClaimed = !!data?.userEntityClaim$ueg?.find((ele) => ele.userId === userId && ele.$$createAt$$ > 1);
         const { expiresAt } = data || {};
         let counter = expiresAt ? expiresAt - Date.now() : 0;
         const result = {
             userEntityGrant: data,
-            isGrantee,
+            isGranter,
             hasClaimed,
             counterStr: '',
         };
@@ -104,6 +106,28 @@ export default OakComponent({
             this.setState({
                 pickedRelationIds: ids,
             }, () => this.setClaim());
+        },
+        async claim() {
+            const { afterClaim } = this.props;
+            const { userEntityGrant } = this.state;
+            const { redirectTo } = userEntityGrant;
+            await this.execute();
+            if (afterClaim) {
+                return afterClaim(userEntityGrant);
+            }
+            else if (redirectTo) {
+                const { pathname, props, state } = redirectTo;
+                if (pathname) {
+                    this.navigateTo({
+                        url: pathname,
+                        ...props,
+                    }, state);
+                    return;
+                }
+            }
+            this.navigateTo({
+                url: '/',
+            });
         }
     }
 });

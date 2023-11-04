@@ -3,13 +3,15 @@ import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'userEntityGrant', false, {
     userEntityGrant: EntityDict['userEntityGrant']['Schema'];
-    isGrantee: boolean;
+    isGranter: boolean;
     hasClaimed: boolean;
     counterStr: string;
     hideInfo: boolean;
+    hideTip: boolean;
     pickedRowIds?: string[];
     pickedRelationIds?: string[];
-    content: (props: {
+    picker?: (props: {
+        disabled?: boolean;
         entity: keyof EntityDict;
         entityFilter: object;
         relationIds: string[];
@@ -24,4 +26,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'userEntityG
 }, {
     onPickRelations: (ids: string[]) => void;
     onPickRows: (ids: string[]) => void;
+    claim: () => void;
 }>): import("react/jsx-runtime").JSX.Element | null;

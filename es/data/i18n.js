@@ -315,23 +315,6 @@ const i18ns = [
         }
     },
     {
-        id: "756ce7356f6b98193a48d9cf347f4e86",
-        namespace: "oak-general-business-c-userEntityGrant-claim-content",
-        language: "zh-CN",
-        module: "oak-general-business",
-        position: "src/components/userEntityGrant/claim/content",
-        data: {
-            "pickRow": "选择%{entity}",
-            "pickRelation": {
-                "single": "选择权限领取（单选）",
-                "singleFixed": "领取单个权限",
-                "free": "选择权限领取（多选）",
-                "all": "领取以下权限"
-            },
-            "relation": "授予权限"
-        }
-    },
-    {
         id: "5bf96a3e054b8d73c76d7bb45ea90a80",
         namespace: "oak-general-business-c-userEntityGrant-claim",
         language: "zh-CN",
@@ -343,7 +326,26 @@ const i18ns = [
             "granterName": "授权者",
             "isExpired": "状态",
             "expired": "已失效",
-            "counter": "过期时间"
+            "counter": "过期时间",
+            "hasClaimed": "您已经领取过此权限",
+            "isGranter": "您不能领取自己的授权"
+        }
+    },
+    {
+        id: "056b31e189ca54f43defe7d4ab45d2af",
+        namespace: "oak-general-business-c-userEntityGrant-claim-ubPicker",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/userEntityGrant/claim/ubPicker",
+        data: {
+            "pickRow": "选择%{entity}",
+            "pickRelation": {
+                "single": "选择权限领取（单选）",
+                "singleFixed": "领取单个权限",
+                "free": "选择权限领取（多选）",
+                "all": "领取以下权限"
+            },
+            "relation": "授予权限"
         }
     },
     {
