@@ -19,10 +19,13 @@ export default function Render(
             grantByMobile: boolean;
             grantMethodCount: number;
             redirectToAfterConfirm: EntityDict['userEntityGrant']['Schema']['redirectTo'];
+            claimUrl: string;
             entity: keyof EntityDict;
             entityId: string;
             relations: EntityDict['relation']['OpSchema'][];
             qrCodeType?: QrCodeType;
+            rule: EntityDict['userEntityGrant']['OpSchema']['rule'];
+            ruleOnRow: EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'];
         },
         {}
     >
@@ -38,6 +41,9 @@ export default function Render(
         oakFullpath,
         redirectToAfterConfirm,
         qrCodeType,
+        claimUrl,
+        rule,
+        ruleOnRow,
     } = props.data;
     let SubPart: JSX.Element = <></>;
     if (grantMethodCount === 0) {
@@ -55,7 +61,7 @@ export default function Render(
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
-                    oakPath={oakFullpath ? `$${oakFullpath}-mobile` : undefined}
+                    oakPath="$userRelation-upsert-by-mobile"
                     oakAutoUnmount={true}
                 />
             );
@@ -67,13 +73,10 @@ export default function Render(
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
-                    oakPath={
-                        oakFullpath
-                            ? `$${oakFullpath}-userEntityGrant`
-                            : undefined
-                    }
+                    oakPath="$userRelation-upsert-by-userEntityGrant"
                     oakAutoUnmount={true}
                     redirectToAfterConfirm={redirectToAfterConfirm}
+                    claimUrl={claimUrl}
                 />
             );
         }
@@ -92,9 +95,7 @@ export default function Render(
                         entity={entity}
                         entityId={entityId}
                         relations={relations}
-                        oakPath={
-                            oakFullpath ? `$${oakFullpath}-mobile` : undefined
-                        }
+                        oakPath="$userRelation-upsert-by-mobile"
                         oakAutoUnmount={true}
                     />
                 ),
@@ -108,13 +109,12 @@ export default function Render(
                         entityId={entityId}
                         relations={relations}
                         qrCodeType={qrCodeType}
-                        oakPath={
-                            oakFullpath
-                                ? `$${oakFullpath}-userEntityGrant`
-                                : undefined
-                        }
+                        oakPath="$userRelation-upsert-by-userEntityGrant"
                         oakAutoUnmount={true}
                         redirectToAfterConfirm={redirectToAfterConfirm}
+                        claimUrl={claimUrl}
+                        rule={rule}
+                        ruleOnRow={ruleOnRow}
                     />
                 ),
             },
@@ -130,16 +130,21 @@ export default function Render(
             items2.push(items[2]);
         }
         SubPart = (
-            <Tabs>
+            <Tabs className={Style.tab}>
                 {
                     items2.map(
-                        ele => <Tabs.Tab title={ele.label} key={ele.key}>
-                            {ele.children}
-                        </Tabs.Tab>
+                        ele => (
+                            <Tabs.Tab
+                                title={ele.label}
+                                key={ele.key}
+                            >
+                                {ele.children}
+                            </Tabs.Tab>
+                        )
                     )
                 }
             </Tabs>
-            );
+        );
     }
     return SubPart;
 }

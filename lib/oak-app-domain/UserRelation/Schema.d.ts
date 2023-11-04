@@ -1,7 +1,7 @@
 import { ForeignKey } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import { String } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
@@ -10,6 +10,7 @@ import * as Relation from "../Relation/Schema";
 import * as Account from "../Account/Schema";
 import * as Session from "../Session/Schema";
 import * as ToDo from "../ToDo/Schema";
+import * as UserEntityClaim from "../UserEntityClaim/Schema";
 export type OpSchema = EntityShape & {
     userId: ForeignKey<"user">;
     relationId: ForeignKey<"relation">;
@@ -27,6 +28,8 @@ export type Schema = EntityShape & {
     account?: Account.Schema;
     session?: Session.Schema;
     toDo?: ToDo.Schema;
+    userEntityClaim$userRelation?: Array<UserEntityClaim.Schema>;
+    userEntityClaim$userRelation$$aggr?: AggregationResult<UserEntityClaim.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -44,6 +47,7 @@ type AttrFilter = {
     account: Account.Filter;
     session: Session.Filter;
     toDo: ToDo.Filter;
+    userEntityClaim$userRelation: UserEntityClaim.Filter & SubQueryPredicateMetadata;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export type Projection = {
@@ -62,6 +66,12 @@ export type Projection = {
     account?: Account.Projection;
     session?: Session.Projection;
     toDo?: ToDo.Projection;
+    userEntityClaim$userRelation?: UserEntityClaim.Selection & {
+        $entity: "userEntityClaim";
+    };
+    userEntityClaim$userRelation$$aggr?: UserEntityClaim.Aggregation & {
+        $entity: "userEntityClaim";
+    };
 } & Partial<ExprOp<OpAttr | string>>;
 type UserRelationIdProjection = OneOf<{
     id: number;
@@ -171,7 +181,9 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     entity?: string;
     entityId?: string;
     [K: string]: any;
-});
+}) & {
+    userEntityClaim$userRelation?: OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "userRelation" | "userRelationId">, Omit<UserEntityClaim.Filter, "userRelation" | "userRelationId">> | OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "userRelation" | "userRelationId">[]> | Array<OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "userRelation" | "userRelationId">> | OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "userRelation" | "userRelationId">, Omit<UserEntityClaim.Filter, "userRelation" | "userRelationId">>>;
+};
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
@@ -216,6 +228,7 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
     entityId?: ForeignKey<"Account" | "Session" | "ToDo"> | null;
 }) & {
     [k: string]: any;
+    userEntityClaim$userRelation?: OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "userRelation" | "userRelationId">, Omit<UserEntityClaim.Filter, "userRelation" | "userRelationId">> | OakOperation<UserEntityClaim.RemoveOperation["action"], Omit<UserEntityClaim.RemoveOperationData, "userRelation" | "userRelationId">, Omit<UserEntityClaim.Filter, "userRelation" | "userRelationId">> | OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "userRelation" | "userRelationId">[]> | Array<OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "userRelation" | "userRelationId">> | OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "userRelation" | "userRelationId">, Omit<UserEntityClaim.Filter, "userRelation" | "userRelationId">> | OakOperation<UserEntityClaim.RemoveOperation["action"], Omit<UserEntityClaim.RemoveOperationData, "userRelation" | "userRelationId">, Omit<UserEntityClaim.Filter, "userRelation" | "userRelationId">>>;
 };
 export type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export type RemoveOperationData = {} & (({

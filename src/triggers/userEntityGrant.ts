@@ -56,7 +56,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
             return 0;
         },
     } as CreateTrigger<EntityDict, 'userEntityGrant', BRC>,
-    {
+    /* {
         name: '当userEntityGrant准备确认时，附上被授权者id',
         entity: 'userEntityGrant',
         action: 'confirm',
@@ -207,7 +207,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
                 return 1;
             }
         },
-    } as UpdateTrigger<EntityDict, 'userEntityGrant', BRC>,
+    } as UpdateTrigger<EntityDict, 'userEntityGrant', BRC>, */
     {
         name: '当userEntityGrant过期时，使其相关的wechatQrCode也过期',
         entity: 'userEntityGrant',

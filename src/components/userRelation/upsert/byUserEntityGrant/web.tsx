@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import {
     Form,
     Radio,
+    Checkbox,
     Button,
     Input,
     Space,
     NoticeBar,
     Selector,
+    Switch,
 } from 'antd-mobile';
-import UserEntityGrantDetail from '../../../../pages/userEntityGrant/detail';
+import UserEntityGrantShare from '../../../userEntityGrant/share';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
 
@@ -28,6 +30,7 @@ export default function render(
             userEntityGrantId: string;
             unit: Unit;
             maxes: Record<Unit, number>;
+            rules: EntityDict['userEntityGrant']['OpSchema']['rule'][];
         },
         {
             confirm: () => Promise<void>;
@@ -45,21 +48,21 @@ export default function render(
         period,
         unit,
         maxes,
+        rules,
         oakExecutable,
     } = props.data;
-    const { relationId, type, number, entity } = userEntityGrant || {};
+    const { relationIds, type, multiple, relationEntity, rule } = userEntityGrant || {};
     const { update, t, onBack, confirm, setInit, setPeriod, setUnit } =
         props.methods;
 
     const P = !!userEntityGrantId ? (
         <>
             <NoticeBar content={t('shareCode')} color='info' />
-            <UserEntityGrantDetail
-                showBack={false}
+            <UserEntityGrantShare
                 oakId={userEntityGrantId}
                 oakAutoUnmount={true}
                 oakPath="$userRelation/upsert/byUserEntityGrant-userEntityGrant/detail"
-            ></UserEntityGrantDetail>
+            ></UserEntityGrantShare>
             <div
                 style={{
                     width: '100%',
@@ -75,53 +78,58 @@ export default function render(
     ) : (
         <Form>
             <Form.Item
-                label={t('userEntityGrant:attr.relation')}
-                name="relation"
-                rules={[
-                    {
-                        required: true,
-                    },
-                ]}
+                label={t('userEntityGrant:attr.relationIds')}
+                required
             >
-                <>
-                    <Radio.Group
-                        value={relationId}
-                        onChange={(value) => {
-                            update({ relationId: value as string });
-                        }}
-                    >
+                <Checkbox.Group
+                    value={relationIds || []}
+                    onChange={(val) => {
+                        update({ relationIds: val as string[] });
+                    }}
+                >
+                    <Space direction='vertical'>
                         {
-                            relations.map(
-                                (ele) => <Radio value={ele.id} style={{ marginRight: 20 }}>
-                                    {ele.display || t(`${entity as string}:r.${ele.name}`)}
-                                </Radio>
+                            relations?.map(
+                                (ele) => (
+                                    <Checkbox value={ele.id}>
+                                        {ele.display || t(`${relationEntity as string}:r.${ele.name}`)}
+                                    </Checkbox>
+                                )
                             )
                         }
-                    </Radio.Group>
-                </>
+                    </Space>
+                </Checkbox.Group>
             </Form.Item>
+            {relationIds?.length > 1 && (
+                <Form.Item
+                    label={t('userEntityGrant:attr.rule')}
+                    required
+                    help={t('helpRule')}
+                >
+                    <Radio.Group
+                        value={rule as EntityDict['userEntityGrant']['OpSchema']['rule']}
+                        onChange={(val) => update({ rule: val as EntityDict['userEntityGrant']['OpSchema']['rule'] })}
+                    >
+                        <Space direction='vertical'>
+                            {
+                                rules.map(
+                                    (ele) => <Radio value={ele}>{t(`userEntityGrant:v.rule.${ele}`)}</Radio>
+                                )
+                            }
+                        </Space>
+                    </Radio.Group>
+                </Form.Item>
+            )}
             {type === 'grant' && (
                 <Form.Item
-                    label={t('userEntityGrant:attr.number')}
-                    name="number"
-                    rules={[
-                        {
-                            required: true,
-                            message: t('chooseNumber'),
-                        },
-                    ]}
+                    label={t('multiple')}
+                    required
+                    help={t('helpMutiple')}
                 >
-                    <>
-                        <Radio.Group
-                            value={number}
-                            onChange={(value) => {
-                                update({ number: value as number });
-                            }}
-                        >
-                            <Radio value={1} style={{ marginRight: 20 }}>{t('single')}</Radio>
-                            <Radio value={10000}>{t('unlimited')}</Radio>
-                        </Radio.Group>
-                    </>
+                    <Switch
+                        checked={multiple || false}
+                        onChange={(val) => update({ multiple: val })}
+                    />
                 </Form.Item>
             )}
             <Form.Item
@@ -166,16 +174,22 @@ export default function render(
                     />
                 </>
             </Form.Item>
-            <Form.Item>
-                <Space>
-                    <Button color="primary" onClick={() => confirm()} disabled={oakExecutable !== true}>
-                        {t('common::action.confirm')}
-                    </Button>
-                    <Button onClick={() => onBack()}>
-                        {t('common::back')}
-                    </Button>
-                </Space>
-            </Form.Item>
+            <div className={Style['btn-container']}>
+                <Button
+                    color="primary"
+                    onClick={() => confirm()}
+                    disabled={oakExecutable !== true}
+                    style={{ flex: 2 }}
+                >
+                    {t('common::action.confirm')}
+                </Button>
+                <Button
+                    onClick={() => onBack()}
+                    style={{ flex: 1 }}
+                >
+                    {t('common::back')}
+                </Button>
+            </div>
         </Form>
     );
     return <div className={Style.container}>{P}</div>;

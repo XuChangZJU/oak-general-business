@@ -10,14 +10,15 @@ export default OakComponent({
     entity: 'userEntityGrant',
     projection: {
         id: 1,
-        entity: 1,
-        entityId: 1,
-        relationId: 1,
+        relationEntity: 1,
+        relationEntityFilter: 1,
+        relationIds: 1,
         type: 1,
-        number: 1,
+        multiple: 1,
+        rule: 1,
+        ruleOnRow: 1,
         remark: 1,
         granterId: 1,
-        granteeId: 1,
         qrCodeType: 1,
     },
     isList: false,
@@ -31,7 +32,11 @@ export default OakComponent({
         type: 'grant' as EntityDict['userEntityGrant']['Schema']['type'],
         redirectToAfterConfirm:
             {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
+        claimUrl: '',
         qrCodeType: '' as QrCodeType,
+        multiple: false,
+        rule: 'single' as EntityDict['userEntityGrant']['OpSchema']['rule'],
+        ruleOnRow: 'single' as EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'],
     },
     data: {
         period: 15,
@@ -58,6 +63,7 @@ export default OakComponent({
             },
         ],
         unitIndex: 0,
+        rules: ['single', 'all', 'free'],
     },
     lifetimes: {
         ready() {
@@ -70,11 +76,12 @@ export default OakComponent({
             const { config, system } = app!;
             const { config: systemConfig } = system!;
             const { userEntityGrantId } = this.state;
+            const { claimUrl } = this.props;
             const imageUrl =
                 (systemConfig && systemConfig?.App?.mpShareImageUrl) || '';
             return {
                 title: '',
-                path: `/pages/userEntityGrant/confirm/index?oakId=${userEntityGrantId}`,
+                path: `/pages${claimUrl}/index?oakId=${userEntityGrantId}`,
                 imageUrl,
             };
         },
@@ -86,29 +93,41 @@ export default OakComponent({
                 type,
                 redirectToAfterConfirm,
                 qrCodeType,
+                claimUrl,
+                multiple,
+                rule,
+                ruleOnRow,
             } = this.props;
-            this.update({
-                confirmed: 0,
-                entity,
-                entityId,
-                type: type || 'grant',
-                number: 1,
-                granterId: userId,
-                redirectTo:
-                    redirectToAfterConfirm as EntityDict['userEntityGrant']['Schema']['redirectTo'],
-                qrCodeType: qrCodeType as QrCodeType,
-            });
-
-            this.setState({
-                userEntityGrantId: '',
-            });
-            if (process.env.OAK_PLATFORM === 'wechatMp') {
-                wx.hideShareMenu();
+            if (this.isCreation()) {
+                this.update({
+                    entity,
+                    entityId,
+                    relationEntity: entity,
+                    relationEntityFilter: {
+                        id: entityId,
+                    },
+                    type: type || 'grant',
+                    multiple,
+                    rule: rule || 'single',
+                    ruleOnRow: ruleOnRow || 'single',
+                    granterId: userId,
+                    redirectTo:
+                        redirectToAfterConfirm as EntityDict['userEntityGrant']['Schema']['redirectTo'],
+                    qrCodeType: qrCodeType as QrCodeType,
+                    claimUrl,
+                });
+    
+                this.setState({
+                    userEntityGrantId: '',
+                });
+                if (process.env.OAK_PLATFORM === 'wechatMp') {
+                    wx.hideShareMenu();
+                }
             }
         },
         setRelation(value: any) {
             this.update({
-                relationId: value,
+                relationIds: [value],
             });
         },
         setRelationMp(e: any) {
@@ -150,13 +169,6 @@ export default OakComponent({
         },
         async confirm() {
             const { period, unit, userEntityGrant } = this.state;
-            if (!userEntityGrant?.relationId) {
-                this.setMessage({
-                    type: 'error',
-                    content: '请选择角色权限',
-                });
-                return;
-            }
             let time = 0;
             switch (unit) {
                 case 'hour': {
@@ -210,6 +222,10 @@ export default OakComponent({
             qrCodeType: QrCodeType;
             type: EntityDict['userEntityGrant']['Schema']['type'];
             relations: EntityDict['relation']['OpSchema'][];
+            claimUrl: string,
+            multiple: boolean;
+            rule: EntityDict['userEntityGrant']['Schema']['rule'];
+            ruleOnRow: EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'],
         }
     >
 ) => React.ReactElement;

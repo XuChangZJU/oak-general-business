@@ -1,7 +1,10 @@
 import assert from 'assert';
 import { EntityDict } from '../../../oak-app-domain';
 import { FileState } from '../../../features/extraFile2';
-
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
+import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import { ButtonProps } from 'antd';
+import { ButtonProps as AmButtonProps } from 'antd-mobile';
 
 export default OakComponent({
     formData({ features }) {
@@ -128,4 +131,20 @@ export default OakComponent({
         },
     },
     features: ['extraFile2'],
-});
+}) as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
+        props: ReactComponentProps<
+            ED2,
+            T2,
+            true,
+            {
+                action?: string;
+                size?: ButtonProps['size'] | AmButtonProps['size'],
+                block?: boolean,
+                type?: ButtonProps['type'] | AmButtonProps['type'],
+                executeText?: string,
+                buttonProps?: ButtonProps & AmButtonProps,
+                afterCommit?: () => any,
+                beforeCommit?: () => boolean | undefined | Promise<boolean | undefined>,
+            }
+        >
+    ) => React.ReactElement;

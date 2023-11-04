@@ -1,0 +1,8 @@
+{
+    "tip": "您正在领取权限",
+    "source": "授权来源",
+    "granterName": "授权者",
+    "isExpired": "状态",
+    "expired": "已失效",
+    "counter": "过期时间"
+}

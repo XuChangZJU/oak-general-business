@@ -43,6 +43,13 @@ const paths: Path[] = [
         value: 'user',
         recursive: false,
     },
+    {
+        id: 'uec-user',
+        sourceEntity: 'user',
+        destEntity: 'userEntityClaim',
+        value: 'user',
+        recursive: false,
+    },
 ];
 
 export default paths;

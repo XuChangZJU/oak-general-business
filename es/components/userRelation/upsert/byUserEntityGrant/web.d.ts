@@ -8,6 +8,7 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
     userEntityGrantId: string;
     unit: Unit;
     maxes: Record<Unit, number>;
+    rules: EntityDict['userEntityGrant']['OpSchema']['rule'][];
 }, {
     confirm: () => Promise<void>;
     onBack: () => void;

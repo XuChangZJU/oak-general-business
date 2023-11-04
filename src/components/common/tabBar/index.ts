@@ -8,7 +8,7 @@ export default OakComponent({
         // 当前选中索引
         selectedIndex: 0,
         // tab 项
-        list: [] as { redDot: boolean; text: string; pagePath: string }[],
+        list: [] as { redDot: boolean; text: string; iconName: string; pagePath: string }[],
         color: '#666',
         selectedColor: '',
     },

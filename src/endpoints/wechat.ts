@@ -280,7 +280,7 @@ async function setUserSubscribed(
                                     nickname: 1,
                                 },
                                 expired: 1,
-                                entity: 1,
+                                relationalEntity: 1,
                             },
                             filter: {
                                 id: entityId,
@@ -292,7 +292,7 @@ async function setUserSubscribed(
                         id,
                         granter,
                         expired,
-                        entity: entity2,
+                        relationEntity: entity2,
                         qrCodeType,
                     } = userEntityGrant!;
 

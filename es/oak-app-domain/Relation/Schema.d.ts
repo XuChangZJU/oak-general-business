@@ -10,7 +10,7 @@ import * as Session from "../Session/Schema";
 import * as ToDo from "../ToDo/Schema";
 import * as ActionAuth from "../ActionAuth/Schema";
 import * as RelationAuth from "../RelationAuth/Schema";
-import * as UserEntityGrant from "../UserEntityGrant/Schema";
+import * as UserEntityClaim from "../UserEntityClaim/Schema";
 import * as UserRelation from "../UserRelation/Schema";
 export type OpSchema = EntityShape & {
     entity: "account" | "session" | "toDo" | string;
@@ -33,8 +33,8 @@ export type Schema = EntityShape & {
     relationAuth$sourceRelation$$aggr?: AggregationResult<RelationAuth.Schema>;
     relationAuth$destRelation?: Array<RelationAuth.Schema>;
     relationAuth$destRelation$$aggr?: AggregationResult<RelationAuth.Schema>;
-    userEntityGrant$relation?: Array<UserEntityGrant.Schema>;
-    userEntityGrant$relation$$aggr?: AggregationResult<UserEntityGrant.Schema>;
+    userEntityClaim$relation?: Array<UserEntityClaim.Schema>;
+    userEntityClaim$relation$$aggr?: AggregationResult<UserEntityClaim.Schema>;
     userRelation$relation?: Array<UserRelation.Schema>;
     userRelation$relation$$aggr?: AggregationResult<UserRelation.Schema>;
 } & {
@@ -55,7 +55,7 @@ type AttrFilter = {
     actionAuth$relation: ActionAuth.Filter & SubQueryPredicateMetadata;
     relationAuth$sourceRelation: RelationAuth.Filter & SubQueryPredicateMetadata;
     relationAuth$destRelation: RelationAuth.Filter & SubQueryPredicateMetadata;
-    userEntityGrant$relation: UserEntityGrant.Filter & SubQueryPredicateMetadata;
+    userEntityClaim$relation: UserEntityClaim.Filter & SubQueryPredicateMetadata;
     userRelation$relation: UserRelation.Filter & SubQueryPredicateMetadata;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
@@ -91,11 +91,11 @@ export type Projection = {
     relationAuth$destRelation$$aggr?: RelationAuth.Aggregation & {
         $entity: "relationAuth";
     };
-    userEntityGrant$relation?: UserEntityGrant.Selection & {
-        $entity: "userEntityGrant";
+    userEntityClaim$relation?: UserEntityClaim.Selection & {
+        $entity: "userEntityClaim";
     };
-    userEntityGrant$relation$$aggr?: UserEntityGrant.Aggregation & {
-        $entity: "userEntityGrant";
+    userEntityClaim$relation$$aggr?: UserEntityClaim.Aggregation & {
+        $entity: "userEntityClaim";
     };
     userRelation$relation?: UserRelation.Selection & {
         $entity: "userRelation";
@@ -190,7 +190,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     actionAuth$relation?: OakOperation<ActionAuth.UpdateOperation["action"], Omit<ActionAuth.UpdateOperationData, "relation" | "relationId">, Omit<ActionAuth.Filter, "relation" | "relationId">> | OakOperation<"create", Omit<ActionAuth.CreateOperationData, "relation" | "relationId">[]> | Array<OakOperation<"create", Omit<ActionAuth.CreateOperationData, "relation" | "relationId">> | OakOperation<ActionAuth.UpdateOperation["action"], Omit<ActionAuth.UpdateOperationData, "relation" | "relationId">, Omit<ActionAuth.Filter, "relation" | "relationId">>>;
     relationAuth$sourceRelation?: OakOperation<RelationAuth.UpdateOperation["action"], Omit<RelationAuth.UpdateOperationData, "sourceRelation" | "sourceRelationId">, Omit<RelationAuth.Filter, "sourceRelation" | "sourceRelationId">> | OakOperation<"create", Omit<RelationAuth.CreateOperationData, "sourceRelation" | "sourceRelationId">[]> | Array<OakOperation<"create", Omit<RelationAuth.CreateOperationData, "sourceRelation" | "sourceRelationId">> | OakOperation<RelationAuth.UpdateOperation["action"], Omit<RelationAuth.UpdateOperationData, "sourceRelation" | "sourceRelationId">, Omit<RelationAuth.Filter, "sourceRelation" | "sourceRelationId">>>;
     relationAuth$destRelation?: OakOperation<RelationAuth.UpdateOperation["action"], Omit<RelationAuth.UpdateOperationData, "destRelation" | "destRelationId">, Omit<RelationAuth.Filter, "destRelation" | "destRelationId">> | OakOperation<"create", Omit<RelationAuth.CreateOperationData, "destRelation" | "destRelationId">[]> | Array<OakOperation<"create", Omit<RelationAuth.CreateOperationData, "destRelation" | "destRelationId">> | OakOperation<RelationAuth.UpdateOperation["action"], Omit<RelationAuth.UpdateOperationData, "destRelation" | "destRelationId">, Omit<RelationAuth.Filter, "destRelation" | "destRelationId">>>;
-    userEntityGrant$relation?: OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "relation" | "relationId">, Omit<UserEntityGrant.Filter, "relation" | "relationId">> | OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "relation" | "relationId">[]> | Array<OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "relation" | "relationId">> | OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "relation" | "relationId">, Omit<UserEntityGrant.Filter, "relation" | "relationId">>>;
+    userEntityClaim$relation?: OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "relation" | "relationId">, Omit<UserEntityClaim.Filter, "relation" | "relationId">> | OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "relation" | "relationId">[]> | Array<OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "relation" | "relationId">> | OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "relation" | "relationId">, Omit<UserEntityClaim.Filter, "relation" | "relationId">>>;
     userRelation$relation?: OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "relation" | "relationId">, Omit<UserRelation.Filter, "relation" | "relationId">> | OakOperation<"create", Omit<UserRelation.CreateOperationData, "relation" | "relationId">[]> | Array<OakOperation<"create", Omit<UserRelation.CreateOperationData, "relation" | "relationId">> | OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "relation" | "relationId">, Omit<UserRelation.Filter, "relation" | "relationId">>>;
 };
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
@@ -216,7 +216,7 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
     actionAuth$relation?: OakOperation<ActionAuth.UpdateOperation["action"], Omit<ActionAuth.UpdateOperationData, "relation" | "relationId">, Omit<ActionAuth.Filter, "relation" | "relationId">> | OakOperation<ActionAuth.RemoveOperation["action"], Omit<ActionAuth.RemoveOperationData, "relation" | "relationId">, Omit<ActionAuth.Filter, "relation" | "relationId">> | OakOperation<"create", Omit<ActionAuth.CreateOperationData, "relation" | "relationId">[]> | Array<OakOperation<"create", Omit<ActionAuth.CreateOperationData, "relation" | "relationId">> | OakOperation<ActionAuth.UpdateOperation["action"], Omit<ActionAuth.UpdateOperationData, "relation" | "relationId">, Omit<ActionAuth.Filter, "relation" | "relationId">> | OakOperation<ActionAuth.RemoveOperation["action"], Omit<ActionAuth.RemoveOperationData, "relation" | "relationId">, Omit<ActionAuth.Filter, "relation" | "relationId">>>;
     relationAuth$sourceRelation?: OakOperation<RelationAuth.UpdateOperation["action"], Omit<RelationAuth.UpdateOperationData, "sourceRelation" | "sourceRelationId">, Omit<RelationAuth.Filter, "sourceRelation" | "sourceRelationId">> | OakOperation<RelationAuth.RemoveOperation["action"], Omit<RelationAuth.RemoveOperationData, "sourceRelation" | "sourceRelationId">, Omit<RelationAuth.Filter, "sourceRelation" | "sourceRelationId">> | OakOperation<"create", Omit<RelationAuth.CreateOperationData, "sourceRelation" | "sourceRelationId">[]> | Array<OakOperation<"create", Omit<RelationAuth.CreateOperationData, "sourceRelation" | "sourceRelationId">> | OakOperation<RelationAuth.UpdateOperation["action"], Omit<RelationAuth.UpdateOperationData, "sourceRelation" | "sourceRelationId">, Omit<RelationAuth.Filter, "sourceRelation" | "sourceRelationId">> | OakOperation<RelationAuth.RemoveOperation["action"], Omit<RelationAuth.RemoveOperationData, "sourceRelation" | "sourceRelationId">, Omit<RelationAuth.Filter, "sourceRelation" | "sourceRelationId">>>;
     relationAuth$destRelation?: OakOperation<RelationAuth.UpdateOperation["action"], Omit<RelationAuth.UpdateOperationData, "destRelation" | "destRelationId">, Omit<RelationAuth.Filter, "destRelation" | "destRelationId">> | OakOperation<RelationAuth.RemoveOperation["action"], Omit<RelationAuth.RemoveOperationData, "destRelation" | "destRelationId">, Omit<RelationAuth.Filter, "destRelation" | "destRelationId">> | OakOperation<"create", Omit<RelationAuth.CreateOperationData, "destRelation" | "destRelationId">[]> | Array<OakOperation<"create", Omit<RelationAuth.CreateOperationData, "destRelation" | "destRelationId">> | OakOperation<RelationAuth.UpdateOperation["action"], Omit<RelationAuth.UpdateOperationData, "destRelation" | "destRelationId">, Omit<RelationAuth.Filter, "destRelation" | "destRelationId">> | OakOperation<RelationAuth.RemoveOperation["action"], Omit<RelationAuth.RemoveOperationData, "destRelation" | "destRelationId">, Omit<RelationAuth.Filter, "destRelation" | "destRelationId">>>;
-    userEntityGrant$relation?: OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "relation" | "relationId">, Omit<UserEntityGrant.Filter, "relation" | "relationId">> | OakOperation<UserEntityGrant.RemoveOperation["action"], Omit<UserEntityGrant.RemoveOperationData, "relation" | "relationId">, Omit<UserEntityGrant.Filter, "relation" | "relationId">> | OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "relation" | "relationId">[]> | Array<OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "relation" | "relationId">> | OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "relation" | "relationId">, Omit<UserEntityGrant.Filter, "relation" | "relationId">> | OakOperation<UserEntityGrant.RemoveOperation["action"], Omit<UserEntityGrant.RemoveOperationData, "relation" | "relationId">, Omit<UserEntityGrant.Filter, "relation" | "relationId">>>;
+    userEntityClaim$relation?: OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "relation" | "relationId">, Omit<UserEntityClaim.Filter, "relation" | "relationId">> | OakOperation<UserEntityClaim.RemoveOperation["action"], Omit<UserEntityClaim.RemoveOperationData, "relation" | "relationId">, Omit<UserEntityClaim.Filter, "relation" | "relationId">> | OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "relation" | "relationId">[]> | Array<OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "relation" | "relationId">> | OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "relation" | "relationId">, Omit<UserEntityClaim.Filter, "relation" | "relationId">> | OakOperation<UserEntityClaim.RemoveOperation["action"], Omit<UserEntityClaim.RemoveOperationData, "relation" | "relationId">, Omit<UserEntityClaim.Filter, "relation" | "relationId">>>;
     userRelation$relation?: OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "relation" | "relationId">, Omit<UserRelation.Filter, "relation" | "relationId">> | OakOperation<UserRelation.RemoveOperation["action"], Omit<UserRelation.RemoveOperationData, "relation" | "relationId">, Omit<UserRelation.Filter, "relation" | "relationId">> | OakOperation<"create", Omit<UserRelation.CreateOperationData, "relation" | "relationId">[]> | Array<OakOperation<"create", Omit<UserRelation.CreateOperationData, "relation" | "relationId">> | OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "relation" | "relationId">, Omit<UserRelation.Filter, "relation" | "relationId">> | OakOperation<UserRelation.RemoveOperation["action"], Omit<UserRelation.RemoveOperationData, "relation" | "relationId">, Omit<UserRelation.Filter, "relation" | "relationId">>>;
 };
 export type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;

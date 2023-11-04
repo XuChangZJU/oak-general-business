@@ -8,6 +8,7 @@ import * as Path from "./Path/Schema";
 import * as Relation from "./Relation/Schema";
 import * as RelationAuth from "./RelationAuth/Schema";
 import * as User from "./User/Schema";
+import * as UserEntityClaim from "./UserEntityClaim/Schema";
 import * as UserEntityGrant from "./UserEntityGrant/Schema";
 import * as UserRelation from "./UserRelation/Schema";
 import * as Account from "./Account/Schema";
@@ -47,11 +48,11 @@ import * as UserSystem from "./UserSystem/Schema";
 import * as UserWechatPublicTag from "./UserWechatPublicTag/Schema";
 import * as WechatLogin from "./WechatLogin/Schema";
 import * as WechatMenu from "./WechatMenu/Schema";
-import * as wechatPublicAutoReply from "./wechatPublicAutoReply/Schema";
 import * as WechatPublicTag from "./WechatPublicTag/Schema";
 import * as WechatPublicTemplate from "./WechatPublicTemplate/Schema";
 import * as WechatQrCode from "./WechatQrCode/Schema";
 import * as WechatUser from "./WechatUser/Schema";
+import * as wechatPublicAutoReply from "./wechatPublicAutoReply/Schema";
 export type ActionAuthIdSubQuery = {
     [K in "$in" | "$nin"]?: (ActionAuth.ActionAuthIdSubQuery & {
         entity: "actionAuth";
@@ -100,8 +101,8 @@ export type RelationIdSubQuery = {
         entity: "actionAuth";
     }) | (RelationAuth.RelationIdSubQuery & {
         entity: "relationAuth";
-    }) | (UserEntityGrant.RelationIdSubQuery & {
-        entity: "userEntityGrant";
+    }) | (UserEntityClaim.RelationIdSubQuery & {
+        entity: "userEntityClaim";
     }) | (UserRelation.RelationIdSubQuery & {
         entity: "userRelation";
     }) | (Relation.RelationIdSubQuery & {
@@ -118,6 +119,8 @@ export type UserIdSubQuery = {
         entity: "oper";
     }) | (User.UserIdSubQuery & {
         entity: "user";
+    }) | (UserEntityClaim.UserIdSubQuery & {
+        entity: "userEntityClaim";
     }) | (UserRelation.UserIdSubQuery & {
         entity: "userRelation";
     }) | (ChangePasswordTemp.UserIdSubQuery & {
@@ -162,8 +165,15 @@ export type UserIdSubQuery = {
         entity: "user";
     }) | any;
 };
+export type UserEntityClaimIdSubQuery = {
+    [K in "$in" | "$nin"]?: (UserEntityClaim.UserEntityClaimIdSubQuery & {
+        entity: "userEntityClaim";
+    }) | any;
+};
 export type UserEntityGrantIdSubQuery = {
-    [K in "$in" | "$nin"]?: (ModiEntity.UserEntityGrantIdSubQuery & {
+    [K in "$in" | "$nin"]?: (UserEntityClaim.UserEntityGrantIdSubQuery & {
+        entity: "userEntityClaim";
+    }) | (ModiEntity.UserEntityGrantIdSubQuery & {
         entity: "modiEntity";
     }) | (OperEntity.UserEntityGrantIdSubQuery & {
         entity: "operEntity";
@@ -174,14 +184,14 @@ export type UserEntityGrantIdSubQuery = {
     }) | any;
 };
 export type UserRelationIdSubQuery = {
-    [K in "$in" | "$nin"]?: (UserRelation.UserRelationIdSubQuery & {
+    [K in "$in" | "$nin"]?: (UserEntityClaim.UserRelationIdSubQuery & {
+        entity: "userEntityClaim";
+    }) | (UserRelation.UserRelationIdSubQuery & {
         entity: "userRelation";
     }) | any;
 };
 export type AccountIdSubQuery = {
-    [K in "$in" | "$nin"]?: (UserEntityGrant.AccountIdSubQuery & {
-        entity: "userEntityGrant";
-    }) | (Relation.AccountIdSubQuery & {
+    [K in "$in" | "$nin"]?: (Relation.AccountIdSubQuery & {
         entity: "relation";
     }) | (UserRelation.AccountIdSubQuery & {
         entity: "userRelation";
@@ -205,8 +215,6 @@ export type ApplicationIdSubQuery = {
         entity: "token";
     }) | (WechatMenu.ApplicationIdSubQuery & {
         entity: "wechatMenu";
-    }) | (wechatPublicAutoReply.ApplicationIdSubQuery & {
-        entity: "wechatPublicAutoReply";
     }) | (WechatPublicTag.ApplicationIdSubQuery & {
         entity: "wechatPublicTag";
     }) | (WechatPublicTemplate.ApplicationIdSubQuery & {
@@ -215,6 +223,8 @@ export type ApplicationIdSubQuery = {
         entity: "wechatQrCode";
     }) | (WechatUser.ApplicationIdSubQuery & {
         entity: "wechatUser";
+    }) | (wechatPublicAutoReply.ApplicationIdSubQuery & {
+        entity: "wechatPublicAutoReply";
     }) | (Session.ApplicationIdSubQuery & {
         entity: "session";
     }) | (Application.ApplicationIdSubQuery & {
@@ -356,8 +366,6 @@ export type SessionIdSubQuery = {
         entity: "readRemark";
     }) | (SessionMessage.SessionIdSubQuery & {
         entity: "sessionMessage";
-    }) | (UserEntityGrant.SessionIdSubQuery & {
-        entity: "userEntityGrant";
     }) | (Relation.SessionIdSubQuery & {
         entity: "relation";
     }) | (UserRelation.SessionIdSubQuery & {
@@ -420,9 +428,7 @@ export type SystemIdSubQuery = {
     }) | any;
 };
 export type ToDoIdSubQuery = {
-    [K in "$in" | "$nin"]?: (UserEntityGrant.ToDoIdSubQuery & {
-        entity: "userEntityGrant";
-    }) | (Relation.ToDoIdSubQuery & {
+    [K in "$in" | "$nin"]?: (Relation.ToDoIdSubQuery & {
         entity: "relation";
     }) | (UserRelation.ToDoIdSubQuery & {
         entity: "userRelation";
@@ -473,15 +479,6 @@ export type WechatMenuIdSubQuery = {
         entity: "wechatMenu";
     }) | any;
 };
-export type wechatPublicAutoReplyIdSubQuery = {
-    [K in "$in" | "$nin"]?: (ModiEntity.wechatPublicAutoReplyIdSubQuery & {
-        entity: "modiEntity";
-    }) | (OperEntity.wechatPublicAutoReplyIdSubQuery & {
-        entity: "operEntity";
-    }) | (wechatPublicAutoReply.wechatPublicAutoReplyIdSubQuery & {
-        entity: "wechatPublicAutoReply";
-    }) | any;
-};
 export type WechatPublicTagIdSubQuery = {
     [K in "$in" | "$nin"]?: (UserWechatPublicTag.WechatPublicTagIdSubQuery & {
         entity: "userWechatPublicTag";
@@ -528,5 +525,14 @@ export type WechatUserIdSubQuery = {
         entity: "token";
     }) | (WechatUser.WechatUserIdSubQuery & {
         entity: "wechatUser";
+    }) | any;
+};
+export type wechatPublicAutoReplyIdSubQuery = {
+    [K in "$in" | "$nin"]?: (ModiEntity.wechatPublicAutoReplyIdSubQuery & {
+        entity: "modiEntity";
+    }) | (OperEntity.wechatPublicAutoReplyIdSubQuery & {
+        entity: "operEntity";
+    }) | (wechatPublicAutoReply.wechatPublicAutoReplyIdSubQuery & {
+        entity: "wechatPublicAutoReply";
     }) | any;
 };

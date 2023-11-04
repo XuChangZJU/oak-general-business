@@ -6,6 +6,7 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     list: {
         redDot: boolean;
         text: string;
+        iconName: string;
         pagePath: string;
     }[];
     color: string;

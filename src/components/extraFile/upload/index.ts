@@ -1,10 +1,7 @@
-import Dialog from '../../../utils/dialog/index';
 import { EntityDict } from '../../../oak-app-domain';
 import { FileState } from '../../../features/extraFile2';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
-import { getConfig } from '../../../utils/getContextConfig';
-import { QiniuCosConfig } from '../../../types/Config';
 import { generateNewId } from 'oak-domain';
 
 type ExtraFile = EntityDict['extraFile']['OpSchema'];
