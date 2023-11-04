@@ -1,9 +1,8 @@
-/// <reference path="../../typings/weixin-js-sdk.d.ts" />
 import { Feature } from 'oak-frontend-base';
 import { isIos, isWeiXin, isWeiXinDevTools, } from 'oak-frontend-base/es/utils/utils';
 import { promisify as wxPromisify } from 'oak-frontend-base/es/utils/promisify';
 import { uniq } from 'oak-domain/lib/utils/lodash';
-import weixin from 'weixin-js-sdk';
+import wx from 'weixin-js-sdk';
 export class WeiXinJsSdk extends Feature {
     cache;
     storage;
@@ -26,12 +25,12 @@ export class WeiXinJsSdk extends Feature {
     }
     async getConfig(config) {
         return new Promise((resolve, reject) => {
-            weixin.config(config);
-            weixin.ready(() => {
+            wx.config(config);
+            wx.ready(() => {
                 console.log('调用wx.config通过');
                 resolve('');
             });
-            weixin.error((err) => {
+            wx.error((err) => {
                 const error = `调用wx.config出错: ${JSON.stringify(err)}，请重新尝试`;
                 reject(error);
             });
@@ -85,7 +84,6 @@ export class WeiXinJsSdk extends Feature {
             nonceStr: result.noncestr,
             signature: result.signature,
             jsApiList: jsApiList2,
-            beta: false,
             openTagList: openTagList2,
         });
     }
@@ -94,7 +92,7 @@ export class WeiXinJsSdk extends Feature {
      */
     async loadWxAPi(name, options, jsApiList, openTagList) {
         await this.init({ jsApiList, openTagList });
-        const wxFn = wxPromisify(weixin[name]);
+        const wxFn = wxPromisify(wx[name]);
         const result = await wxFn(options);
         return result;
     }

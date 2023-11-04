@@ -1,4 +1,3 @@
-/// <reference path="../../typings/weixin-js-sdk.d.ts" />
 import { Feature } from 'oak-frontend-base';
 import {
     isIos,
@@ -18,32 +17,41 @@ import { Environment } from 'oak-frontend-base/es/features/environment';
 import { WebEnv } from 'oak-domain/lib/types/Environment';
 import { uniq } from 'oak-domain/lib/utils/lodash';
 
-import weixin from 'weixin-js-sdk';
+import wx from 'weixin-js-sdk';
 
-type Options =
-    | WeixinJsSdk.CheckJsApiOptions
-    | WeixinJsSdk.AddCardOptions
-    | WeixinJsSdk.ChooseCardOptions
-    | WeixinJsSdk.OnMenuShareTimelineOptions
-    | WeixinJsSdk.OnMenuShareAppMessageOptions
-    | WeixinJsSdk.OnMenuShareQQ
-    | WeixinJsSdk.OnMenuShareWeibo
-    | WeixinJsSdk.OnMenuShareQZone
-    | WeixinJsSdk.ChooseImageOptions
-    | WeixinJsSdk.PreviewImageOptions
-    | WeixinJsSdk.UploadImageOptions
-    | WeixinJsSdk.DownloadImageOptions
-    | WeixinJsSdk.GetLocalImgDataOptions
-    | WeixinJsSdk.LocalVoiceOptions
-    | WeixinJsSdk.UploadVoiceOptions
-    | WeixinJsSdk.DownloadVoiceOptions
-    | WeixinJsSdk.OpenLocationOptions
-    | WeixinJsSdk.GetLocationOptions
-    | WeixinJsSdk.ScanQRCodeOptions
-    | WeixinJsSdk.OpenProductSpecificViewOptions
-    | WeixinJsSdk.ChooseCardOptions
-    | WeixinJsSdk.OpenCardOptions
-    | WeixinJsSdk.ChooseWXPayOptions;
+type ConfigOptions = {
+    debug?: boolean; // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+    appId: string; // 必填，公众号的唯一标识
+    timestamp: number; // 必填，生成签名的时间戳
+    nonceStr: string; // 必填，生成签名的随机串
+    signature: string; // 必填，签名，见附录1
+    jsApiList?: wx.jsApiList; // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    openTagList?: wx.openTagList;
+};
+
+type ParamOptions =
+    | wx.IcheckJsApi
+    | wx.IaddCard
+    | wx.IchooseCard
+    | wx.IonMenuShareTimeline
+    | wx.IonMenuShareAppMessage
+    | wx.IonMenuShareQQ
+    | wx.IonMenuShareWeibo
+    | wx.IonMenuShareQZone
+    | wx.IchooseImage
+    | wx.IpreviewImage
+    | wx.IuploadImage
+    | wx.IdownloadImage
+    | wx.IgetLocalImgData
+    | wx.IplaypausestopVoice
+    | wx.IupdownloadVoice
+    | wx.IopenLocation
+    | wx.IgetLocation
+    | wx.IscanQRCode
+    | wx.IopenProductSpecificView
+    | wx.IchooseCard
+    | wx.IopenCard
+    | wx.IchooseWXPay;
 
 export class WeiXinJsSdk<
     ED extends EntityDict,
@@ -78,15 +86,15 @@ export class WeiXinJsSdk<
         return result;
     }
 
-    async getConfig(config: WeixinJsSdk.ConfigOptions) {
+    async getConfig(config: ConfigOptions) {
         return new Promise((resolve, reject) => {
-            weixin.config(config);
+            wx.config(config);
 
-            weixin.ready(() => {
+            wx.ready(() => {
                 console.log('调用wx.config通过');
                 resolve('');
             });
-            weixin.error((err: any) => {
+            wx.error((err: any) => {
                 const error = `调用wx.config出错: ${JSON.stringify(
                     err
                 )}，请重新尝试`;
@@ -102,8 +110,8 @@ export class WeiXinJsSdk<
     }
 
     async init(options?: {
-        jsApiList?: WeixinJsSdk.JSApis[];
-        openTagList?: string[];
+        jsApiList?: wx.jsApiList;
+        openTagList?: wx.openTagList;
     }) {
         if (!isWeiXin) {
             console.warn('只能在微信客户端初始化JSSDK');
@@ -119,7 +127,7 @@ export class WeiXinJsSdk<
         const splitUrl = url.split('#')[0];
         const result = await this.signatureJsSDK(splitUrl); // 接口回来的是noncestr 不是nonceStr
 
-        let jsApiList2: WeixinJsSdk.JSApis[] = [
+        let jsApiList2: wx.jsApiList = [
             'updateAppMessageShareData',
             'updateTimelineShareData',
             'onMenuShareTimeline',
@@ -139,7 +147,7 @@ export class WeiXinJsSdk<
             jsApiList2 = uniq(jsApiList2.concat(jsApiList));
         }
 
-        let openTagList2 = ['wx-open-launch-weapp'];
+        let openTagList2: wx.openTagList = ['wx-open-launch-weapp'];
         if (openTagList && openTagList instanceof Array) {
             openTagList2 = uniq(openTagList2.concat(openTagList));
         }
@@ -151,7 +159,6 @@ export class WeiXinJsSdk<
             nonceStr: result.noncestr,
             signature: result.signature,
             jsApiList: jsApiList2,
-            beta: false,
             openTagList: openTagList2,
         });
     }
@@ -160,13 +167,13 @@ export class WeiXinJsSdk<
      * 微信jssdk 传入方法名
      */
     async loadWxAPi(
-        name: WeixinJsSdk.JSApis,
-        options?: Options,
-        jsApiList?: WeixinJsSdk.JSApis[],
-        openTagList?: string[]
+        name: wx.ApiMethod,
+        options?: ParamOptions,
+        jsApiList?: wx.jsApiList,
+        openTagList?: wx.openTagList
     ) {
         await this.init({ jsApiList, openTagList });
-        const wxFn = wxPromisify((weixin as any)[name as any]);
+        const wxFn = wxPromisify(wx[name]);
         const result = await wxFn(options);
         return result;
     }
