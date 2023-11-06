@@ -1,5 +1,5 @@
 import { EntityDict } from '../../../oak-app-domain';
-import { FileState } from '../../../features/extraFile2';
+import { FileState } from '../../../features/extraFile';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 import { generateNewId } from 'oak-domain';
@@ -132,7 +132,7 @@ export default OakComponent({
             }
         },
     },
-    features: ['extraFile2'],
+    features: ['extraFile'],
     formData({ data, features }) {
         let files = data
             ?.filter((ele) => !ele.$$deleteAt$$)
@@ -145,13 +145,13 @@ export default OakComponent({
         }
 
         const files2 = files.map((ele) => {
-            const url = features.extraFile2.getUrl(ele as ExtraFile);
-            const thumbUrl = features.extraFile2.getUrl(
+            const url = features.extraFile.getUrl(ele as ExtraFile);
+            const thumbUrl = features.extraFile.getUrl(
                 ele as ExtraFile,
                 'thumbnail'
             );
-            const fileState = features.extraFile2.getFileState(ele.id!);
-            const fileName = features.extraFile2.getFileName(ele as ExtraFile);
+            const fileState = features.extraFile.getFileState(ele.id!);
+            const fileName = features.extraFile.getFileName(ele as ExtraFile);
             return {
                 url,
                 thumbUrl,
@@ -168,7 +168,7 @@ export default OakComponent({
     methods: {
         onRemove(file: EnhancedExtraFile) {
             this.removeItem(file.id);
-            this.features.extraFile2.removeLocalFiles([file.id]);
+            this.features.extraFile.removeLocalFiles([file.id]);
         },
         addExtraFileInner(
             options: {
@@ -201,7 +201,7 @@ export default OakComponent({
                 type,
                 tag1,
                 tag2,
-                objectId: generateNewId(),           // 这个域用来标识唯一性
+                objectId: generateNewId(), // 这个域用来标识唯一性
                 entity,
                 filename,
                 size,
@@ -211,7 +211,7 @@ export default OakComponent({
                 sort,
                 uploadState: 'uploading',
             });
-            this.features.extraFile2.addLocalFile(id, file);
+            this.features.extraFile.addLocalFile(id, file);
         },
         addFileByWeb(file: File) {
             const { size, type, name } = file;

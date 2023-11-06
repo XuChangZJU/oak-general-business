@@ -209,7 +209,7 @@ export default OakComponent({
                 extra1: null,
                 uploadState: 'uploading',
             }));
-            this.features.extraFile2.addLocalFile(id, file);
+            this.features.extraFile.addLocalFile(id, file);
         },
         async myUpdateItem(params) {
             const { file } = this.state;

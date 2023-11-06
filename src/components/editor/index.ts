@@ -51,29 +51,7 @@ export default OakComponent({
                 this.triggerEvent('statuschange', e);
             }
         },
-        async addExtraFile(
-            extraFile: EntityDict['extraFile']['CreateSingle']['data']
-        ) {
-            try {
-                const result = await this.features.cache.operate('extraFile', {
-                    action: 'create',
-                    data: extraFile,
-                    id: generateNewId(),
-                });
-                return result;
-            } catch (error) {
-                if (
-                    (error as OakException<EntityDict>).constructor.name ===
-                    OakUnloggedInException.name
-                ) {
-                    this.navigateTo({
-                        url: '/login',
-                    });
-                    return;
-                }
-                throw error;
-            }
-        },
+
         async onPickMp(event: WechatMiniprogram.Touch) {
             if (process.env.OAK_PLATFORM === 'wechatMp') {
                 const { mediaType } = event.currentTarget.dataset;
@@ -99,7 +77,6 @@ export default OakComponent({
                             tempFilePath.lastIndexOf('.')
                         );
                         const extraFile = {
-                            extra1: tempFilePath,
                             origin: 'qiniu',
                             type: 'image',
                             tag1: this.props.tag1 || 'editorImg',
@@ -113,13 +90,15 @@ export default OakComponent({
                             entityId: this.props.entityId,
                             bucket: '',
                             id: generateNewId(),
+                            uploadState: 'uploading'
                         } as EntityDict['extraFile']['CreateSingle']['data'];
-                        const { url } =
-                            await this.features.extraFile.createAndUpload(extraFile, extraFile.extra1!);
+                        const url = await this.features.extraFile.autoUpload(
+                            extraFile as EntityDict['extraFile']['OpSchema'],
+                            tempFilePath!
+                        );
 
-                        // await this.addExtraFile(extraFile);
                         (this as any).editorCtx.insertImage({
-                            src: 'http://' + url,
+                            src: url,
                         });
                     }
                 } catch (err: any) {

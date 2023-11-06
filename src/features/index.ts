@@ -1,7 +1,6 @@
 import { CommonAspectDict } from 'oak-common-aspect';
 import { Token } from './token';
 import { ExtraFile } from './extraFile';
-import { ExtraFile2 } from './extraFile2';
 import { Application } from './application';
 import { Config } from './config';
 import { Template } from './template';
@@ -54,9 +53,12 @@ export function initialize<
         basicFeatures.localStorage,
     )
 
-    // 临时代码，合并后再删
-    const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application, basicFeatures.locales);
-    const extraFile2 = new ExtraFile2<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application, basicFeatures.locales, basicFeatures.runningTree);
+    const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(
+        basicFeatures.cache,
+        application,
+        basicFeatures.locales,
+        basicFeatures.runningTree
+    );
     const config = new Config<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
     const template = new Template<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
     const weiXinJsSdk = new WeiXinJsSdk<ED, Cxt, FrontCxt, AD>(
@@ -69,7 +71,6 @@ export function initialize<
     return {
         token,
         extraFile,
-        extraFile2,
         application,
         config,
         template,
@@ -89,7 +90,6 @@ export type GeneralFeatures<
 > = {
     token: Token<ED, Cxt, FrontCxt, AD>;
     extraFile: ExtraFile<ED, Cxt, FrontCxt, AD>;
-    extraFile2: ExtraFile2<ED, Cxt, FrontCxt, AD>;
     application: Application<ED, Cxt, FrontCxt, AD>;
     config: Config<ED, Cxt, FrontCxt, AD>;
     template: Template<ED, Cxt, FrontCxt, AD>;
