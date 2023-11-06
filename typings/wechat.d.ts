@@ -1,4 +1,3 @@
-declare let WeixinJSBridge: any;
 
 
 declare namespace WechatMiniprogram {

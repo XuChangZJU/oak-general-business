@@ -8,8 +8,7 @@ export const desc: StorageDesc<OpSchema> = {
             type: "varchar",
             params: {
                 length: 32
-            },
-            ref: ["account", "session", "toDo"]
+            }
         },
         entityId: {
             notNull: true,
@@ -18,41 +17,44 @@ export const desc: StorageDesc<OpSchema> = {
                 length: 64
             }
         },
-        relationId: {
+        relationEntity: {
             notNull: true,
-            type: "ref",
-            ref: "relation"
+            type: "varchar",
+            params: {
+                length: 32
+            }
+        },
+        relationEntityFilter: {
+            notNull: true,
+            type: "object"
+        },
+        relationIds: {
+            notNull: true,
+            type: "object"
         },
         type: {
             notNull: true,
             type: "enum",
             enumeration: ["grant", "transfer"]
         },
-        number: {
+        rule: {
             notNull: true,
-            type: "int",
-            params: {
-                width: 2,
-                signed: true
-            }
+            type: "enum",
+            enumeration: ["single", "all", "free"]
         },
-        confirmed: {
+        ruleOnRow: {
             notNull: true,
-            type: "int",
-            params: {
-                width: 2,
-                signed: true
-            }
+            type: "enum",
+            enumeration: ["single", "all", "free"]
+        },
+        multiple: {
+            type: "boolean"
         },
         remark: {
             type: "text"
         },
         granterId: {
             notNull: true,
-            type: "ref",
-            ref: "user"
-        },
-        granteeId: {
             type: "ref",
             ref: "user"
         },
@@ -69,24 +71,20 @@ export const desc: StorageDesc<OpSchema> = {
         },
         redirectTo: {
             type: "object"
+        },
+        claimUrl: {
+            notNull: true,
+            type: "varchar",
+            params: {
+                length: 128
+            }
         }
     },
     actionType: "crud",
     actions,
     indexes: [
         {
-            name: 'index_entity_entityId',
-            attributes: [
-                {
-                    name: 'entity',
-                },
-                {
-                    name: 'entityId',
-                },
-            ],
-        },
-        {
-            name: 'index_uuid',
+            name: 'index_expired_expiredAt',
             attributes: [
                 {
                     name: 'expired',

@@ -29,5 +29,10 @@ const actionAuths = [
         pathId: 'pwdCT-user',
         deActions: ['create', 'select'],
     },
+    {
+        id: 'userEntityClaim-user',
+        pathId: 'uec-user',
+        deActions: ['create', 'select'],
+    },
 ];
 export default actionAuths;

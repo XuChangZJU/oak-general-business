@@ -1,14 +1,24 @@
+
 export default OakComponent({
     isList: false,
     properties: {
         // 背景色
         bgColor: '',
         // 背景图
-        bgImg: '',
+        bgImgUrl: '',
         // 当前选中索引
         selectedIndex: 0,
         // tab 项
-        list: [] as { redDot: boolean; text: string; pagePath: string }[],
+        list: [] as {
+            redDot: boolean;
+            text: string;
+            pagePath: string;
+            iconName?: string;
+            selectedIconName?: string;
+            iconPath?: string;
+            selectedIconPath?: string;
+            iconSize?: string;
+        }[],
         color: '#666',
         selectedColor: '',
     },

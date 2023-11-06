@@ -1,9 +1,0 @@
-{
-    "navigationBarTitleText": "地址列表",
-    "usingComponents": {
-        "t-icon": "@oak-frontend-base/miniprogram_npm/tdesign/icon/icon",
-        "t-button": "@oak-frontend-base/miniprogram_npm/tdesign/button/button",
-        "t-empty": "@oak-frontend-base/miniprogram_npm/tdesign/empty/empty",
-        "t-cell": "@oak-frontend-base/miniprogram_npm/tdesign/cell/cell"
-    }
-}

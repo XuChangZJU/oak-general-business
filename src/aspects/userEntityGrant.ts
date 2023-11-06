@@ -21,7 +21,7 @@ export async function confirmUserEntityGrant<
     },
     context: Cxt
 ) {
-    const { id, env } = params;
+    /* const { id, env } = params;
     const { userId } = context.getToken()!;
     const [userEntityGrant] = await context.select(
         'userEntityGrant',
@@ -135,5 +135,5 @@ export async function confirmUserEntityGrant<
 
         closeRootMode();
         return 1;
-    }
+    } */
 }

@@ -8,7 +8,6 @@ import { String, Price } from "oak-domain/lib/types/DataType";
 import { AbleState } from "oak-domain/lib/actions/action";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as User from "../User/Schema";
-import * as UserEntityGrant from "../UserEntityGrant/Schema";
 import * as Relation from "../Relation/Schema";
 import * as UserRelation from "../UserRelation/Schema";
 export type OpSchema = EntityShape & {
@@ -26,8 +25,6 @@ export type Schema = EntityShape & {
     entityId?: String<64> | null;
     ableState?: AbleState | null;
     user?: User.Schema;
-    userEntityGrant$entity?: Array<UserEntityGrant.Schema>;
-    userEntityGrant$entity$$aggr?: AggregationResult<UserEntityGrant.Schema>;
     relation$entity?: Array<Relation.Schema>;
     relation$entity$$aggr?: AggregationResult<Relation.Schema>;
     userRelation$entity?: Array<UserRelation.Schema>;
@@ -46,7 +43,6 @@ type AttrFilter = {
     entityId: Q_StringValue;
     ableState: Q_EnumValue<AbleState>;
     user: User.Filter;
-    userEntityGrant$entity: UserEntityGrant.Filter & SubQueryPredicateMetadata;
     relation$entity: Relation.Filter & SubQueryPredicateMetadata;
     userRelation$entity: UserRelation.Filter & SubQueryPredicateMetadata;
 };
@@ -64,12 +60,6 @@ export type Projection = {
     entityId?: number;
     ableState?: number;
     user?: User.Projection;
-    userEntityGrant$entity?: UserEntityGrant.Selection & {
-        $entity: "userEntityGrant";
-    };
-    userEntityGrant$entity$$aggr?: UserEntityGrant.Aggregation & {
-        $entity: "userEntityGrant";
-    };
     relation$entity?: Relation.Selection & {
         $entity: "relation";
     };
@@ -136,7 +126,6 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     entityId?: string;
     [K: string]: any;
 }) & {
-    userEntityGrant$entity?: OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "entity" | "entityId">, Omit<UserEntityGrant.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "entity" | "entityId">> | OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "entity" | "entityId">, Omit<UserEntityGrant.Filter, "entity" | "entityId">>>;
     relation$entity?: OakOperation<Relation.UpdateOperation["action"], Omit<Relation.UpdateOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Relation.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Relation.CreateOperationData, "entity" | "entityId">> | OakOperation<Relation.UpdateOperation["action"], Omit<Relation.UpdateOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">>>;
     userRelation$entity?: OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "entity" | "entityId">, Omit<UserRelation.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<UserRelation.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<UserRelation.CreateOperationData, "entity" | "entityId">> | OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "entity" | "entityId">, Omit<UserRelation.Filter, "entity" | "entityId">>>;
 };
@@ -152,7 +141,6 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
     entityId?: ForeignKey<"User"> | null;
 }) & {
     [k: string]: any;
-    userEntityGrant$entity?: OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "entity" | "entityId">, Omit<UserEntityGrant.Filter, "entity" | "entityId">> | OakOperation<UserEntityGrant.RemoveOperation["action"], Omit<UserEntityGrant.RemoveOperationData, "entity" | "entityId">, Omit<UserEntityGrant.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<UserEntityGrant.CreateOperationData, "entity" | "entityId">> | OakOperation<UserEntityGrant.UpdateOperation["action"], Omit<UserEntityGrant.UpdateOperationData, "entity" | "entityId">, Omit<UserEntityGrant.Filter, "entity" | "entityId">> | OakOperation<UserEntityGrant.RemoveOperation["action"], Omit<UserEntityGrant.RemoveOperationData, "entity" | "entityId">, Omit<UserEntityGrant.Filter, "entity" | "entityId">>>;
     relation$entity?: OakOperation<Relation.UpdateOperation["action"], Omit<Relation.UpdateOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">> | OakOperation<Relation.RemoveOperation["action"], Omit<Relation.RemoveOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Relation.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Relation.CreateOperationData, "entity" | "entityId">> | OakOperation<Relation.UpdateOperation["action"], Omit<Relation.UpdateOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">> | OakOperation<Relation.RemoveOperation["action"], Omit<Relation.RemoveOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">>>;
     userRelation$entity?: OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "entity" | "entityId">, Omit<UserRelation.Filter, "entity" | "entityId">> | OakOperation<UserRelation.RemoveOperation["action"], Omit<UserRelation.RemoveOperationData, "entity" | "entityId">, Omit<UserRelation.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<UserRelation.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<UserRelation.CreateOperationData, "entity" | "entityId">> | OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "entity" | "entityId">, Omit<UserRelation.Filter, "entity" | "entityId">> | OakOperation<UserRelation.RemoveOperation["action"], Omit<UserRelation.RemoveOperationData, "entity" | "entityId">, Omit<UserRelation.Filter, "entity" | "entityId">>>;
 };

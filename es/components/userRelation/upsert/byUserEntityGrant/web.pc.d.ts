@@ -12,6 +12,7 @@ export default function render(props: WebComponentProps<EntityDict, 'userEntityG
         label: string;
         value: Unit;
     }>;
+    rules: EntityDict['userEntityGrant']['OpSchema']['rule'][];
 }, {
     confirm: () => Promise<void>;
     onBack: () => void;

@@ -178,6 +178,7 @@ export default OakComponent({
         entity: '' as keyof EntityDict,
         entityId: '',
         redirectToAfterConfirm: {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
+        claimUrl: '',
         qrCodeType: '' as string,
         onUpdate: (id: string) => {},
         onCreate: () => {},
@@ -221,6 +222,7 @@ export default OakComponent({
                 entityId,
                 redirectToAfterConfirm,
                 qrCodeType,
+                claimUrl,
                 onCreate,
             } = this.props;
             if (onCreate) {
@@ -239,6 +241,7 @@ export default OakComponent({
                     {
                         redirectToAfterConfirm,
                         qrCodeType,
+                        claimUrl,
                     }
                 );
             }

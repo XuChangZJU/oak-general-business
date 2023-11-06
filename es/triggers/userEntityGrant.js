@@ -1,5 +1,4 @@
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import { OakRowInconsistencyException, OakUserException } from 'oak-domain/lib/types';
 import { assert } from 'oak-domain/lib/utils/assert';
 const triggers = [
     {
@@ -48,38 +47,43 @@ const triggers = [
             return 0;
         },
     },
-    {
+    /* {
         name: '当userEntityGrant准备确认时，附上被授权者id',
         entity: 'userEntityGrant',
         action: 'confirm',
         when: 'before',
         fn: async ({ operation }, context, params) => {
             const { data, filter } = operation;
-            const { userId } = context.getToken();
+            const { userId } = context.getToken()!;
             const closeRootMode = context.openRootMode();
-            const result = await context.select('userEntityGrant', {
-                data: {
-                    id: 1,
-                    entity: 1,
-                    entityId: 1,
-                    relationId: 1,
-                    number: 1,
-                    confirmed: 1,
+            const result = await context.select(
+                'userEntityGrant',
+                {
+                    data: {
+                        id: 1,
+                        entity: 1,
+                        entityId: 1,
+                        relationId: 1,
+                        number: 1,
+                        confirmed: 1,
+                    },
+                    filter: {
+                        id: filter!.id,
+                    },
+                    indexFrom: 0,
+                    count: 1,
                 },
-                filter: {
-                    id: filter.id,
-                },
-                indexFrom: 0,
-                count: 1,
-            }, {
-                dontCollect: true,
-            });
+                {
+                    dontCollect: true,
+                }
+            );
+
             const { number, confirmed } = result[0];
-            if (confirmed >= number) {
+            if (confirmed! >= number!) {
                 throw new OakUserException(`超出分享上限人数${number}人`);
             }
             Object.assign(data, {
-                confirmed: confirmed + 1,
+                confirmed: confirmed! + 1,
             });
             if (number === 1) {
                 // 单次分享 附上接收者id
@@ -90,7 +94,7 @@ const triggers = [
             closeRootMode();
             return 0;
         },
-    },
+    } as UpdateTrigger<EntityDict, 'userEntityGrant', BRC>,
     {
         name: '当userEntityGrant被确认时，生成user和entity关系',
         entity: 'userEntityGrant',
@@ -98,86 +102,103 @@ const triggers = [
         when: 'after',
         fn: async ({ operation }, context, option) => {
             const { data, filter } = operation;
-            const { userId } = context.getToken();
+            const { userId } = context.getToken()!;
             const closeRootMode = context.openRootMode();
-            const [userEntityGrant] = await context.select('userEntityGrant', {
-                data: {
-                    id: 1,
-                    entity: 1,
-                    entityId: 1,
-                    relationId: 1,
-                    granterId: 1,
-                    type: 1,
+            const [userEntityGrant] = await context.select(
+                'userEntityGrant',
+                {
+                    data: {
+                        id: 1,
+                        entity: 1,
+                        entityId: 1,
+                        relationId: 1,
+                        granterId: 1,
+                        type: 1,
+                    },
+                    filter: {
+                        id: filter!.id,
+                    },
+                    indexFrom: 0,
+                    count: 1,
                 },
-                filter: {
-                    id: filter.id,
+                {
+                    dontCollect: true,
+                }
+            );
+            const { entity, entityId, relationId, granterId, type } =
+                userEntityGrant;
+
+            const result2 = await context.select(
+                'userRelation',
+                {
+                    data: {
+                        id: 1,
+                        userId: 1,
+                        relationId: 1,
+                    },
+                    filter: {
+                        userId: userId!,
+                        relationId,
+                        entity,
+                        entityId,
+                    },
+                    indexFrom: 0,
+                    count: 1,
                 },
-                indexFrom: 0,
-                count: 1,
-            }, {
-                dontCollect: true,
-            });
-            const { entity, entityId, relationId, granterId, type } = userEntityGrant;
-            const result2 = await context.select('userRelation', {
-                data: {
-                    id: 1,
-                    userId: 1,
-                    relationId: 1,
-                },
-                filter: {
-                    userId: userId,
-                    relationId,
-                    entity,
-                    entityId,
-                },
-                indexFrom: 0,
-                count: 1,
-            }, {
-                dontCollect: true,
-            });
+                {
+                    dontCollect: true,
+                }
+            );
             if (result2.length) {
-                const e = new OakRowInconsistencyException(undefined, '已领取该权限');
+                const e = new OakRowInconsistencyException<EntityDict>(undefined, '已领取该权限');
                 e.addData('userRelation', result2);
                 closeRootMode();
                 throw e;
-            }
-            else {
+            } else {
                 try {
-                    await context.operate('userRelation', {
-                        id: await generateNewIdAsync(),
-                        action: 'create',
-                        data: {
+                    await context.operate(
+                        'userRelation',
+                        {
                             id: await generateNewIdAsync(),
-                            userId,
-                            relationId,
-                            entity,
-                            entityId,
-                        },
-                    }, option);
-                    // todo type是转让的话 需要回收授权者的关系
-                    if (type === 'transfer') {
-                        await context.operate('userRelation', {
-                            id: await generateNewIdAsync(),
-                            action: 'remove',
-                            data: {},
-                            filter: {
+                            action: 'create',
+                            data: {
+                                id: await generateNewIdAsync(),
+                                userId,
                                 relationId,
-                                userId: granterId,
                                 entity,
                                 entityId,
                             },
-                        }, option);
+                        },
+                        option
+                    );
+                    // todo type是转让的话 需要回收授权者的关系
+                    if (type === 'transfer') {
+                        await context.operate(
+                            'userRelation',
+                            {
+                                id: await generateNewIdAsync(),
+                                action: 'remove',
+                                data: {},
+                                filter: {
+                                    relationId,
+                                    userId: granterId,
+                                    entity,
+                                    entityId,
+                                },
+                            },
+                            option
+                        );
                     }
-                }
-                catch (err) {
+                } catch (err) {
                     closeRootMode();
                     throw err;
                 }
+
                 closeRootMode();
                 return 1;
             }
         },
-    },
+    } as UpdateTrigger<EntityDict, 'userEntityGrant', BRC>, */
     {
         name: '当userEntityGrant过期时，使其相关的wechatQrCode也过期',
         entity: 'userEntityGrant',

@@ -1,6 +1,0 @@
-{
-    "component": true,
-    "usingComponents": {
-        "l-avatar": "@oak-frontend-base/miniprogram_npm/lin-ui/avatar/index"
-    }
-}

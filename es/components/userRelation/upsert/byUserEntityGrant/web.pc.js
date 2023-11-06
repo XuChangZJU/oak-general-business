@@ -1,29 +1,25 @@
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
-import { Form, Radio, Button, Alert, InputNumber, Space, Select, } from 'antd';
-import UserEntityGrantDetail from '../../../../pages/userEntityGrant/detail';
+import { Form, Radio, Button, Alert, InputNumber, Space, Checkbox, Select, Switch, } from 'antd';
+import UserEntityGrantShare from '../../../userEntityGrant/share';
 import Style from './web.module.less';
 export default function render(props) {
-    const { relations, userEntityGrant, userEntityGrantId, period, unit, maxes, oakExecutable, } = props.data;
-    const { relationId, type, number, entity } = userEntityGrant || {};
+    const { relations, userEntityGrant, userEntityGrantId, period, unit, maxes, oakExecutable, rules, } = props.data;
+    const { relationIds, type, rule, multiple, relationEntity } = userEntityGrant || {};
     const { update, t, onBack, confirm, setInit, setPeriod, setUnit } = props.methods;
-    const P = !!userEntityGrantId ? (_jsxs(_Fragment, { children: [_jsx(Alert, { showIcon: true, message: t('shareCode'), type: "info", style: { marginBottom: 16 } }), _jsx(UserEntityGrantDetail, { showBack: false, oakId: userEntityGrantId, oakAutoUnmount: true, oakPath: "$userRelation/upsert/byUserEntityGrant-userEntityGrant/detail" }), _jsx("div", { style: {
+    const P = !!userEntityGrantId ? (_jsxs(_Fragment, { children: [_jsx(Alert, { showIcon: true, message: t('shareCode'), type: "info", style: { marginBottom: 16 } }), _jsx(UserEntityGrantShare, { showBack: false, oakId: userEntityGrantId, oakAutoUnmount: true, oakPath: "$userRelation/upsert/byUserEntityGrant-userEntityGrant/detail" }), _jsx("div", { style: {
                     width: '100%',
                     display: 'flex',
                     justifyContent: 'flex-end',
-                }, children: _jsx(Button, { type: "primary", onClick: () => setInit(), children: t('restart') }) })] })) : (_jsxs(Form, { labelCol: { span: 4 }, wrapperCol: { span: 8 }, children: [_jsx(Form.Item, { label: t('userEntityGrant:attr.relation'), required: true, children: _jsx(Radio.Group, { value: relationId, onChange: ({ target }) => {
-                        const { value } = target;
-                        update({ relationId: value });
+                }, children: _jsx(Button, { type: "primary", onClick: () => setInit(), children: t('restart') }) })] })) : (_jsxs(Form, { labelCol: { span: 4 }, wrapperCol: { span: 8 }, children: [_jsx(Form.Item, { label: t('userEntityGrant:attr.relationIds'), required: true, children: _jsx(Checkbox.Group, { value: relationIds || [], onChange: (val) => {
+                        update({ relationIds: val });
                     }, options: relations?.map((ele) => ({
                         value: ele.id,
                         label: ele.display ||
-                            t(`${entity}:r.${ele.name}`),
-                    })) }) }), type === 'grant' && (_jsx(Form.Item, { label: t('userEntityGrant:attr.number'), required: true, children: _jsx(Radio.Group, { value: number, onChange: ({ target }) => {
-                        const { value } = target;
-                        update({ number: value });
-                    }, options: [
-                        { value: 1, label: t('single') },
-                        { value: 10000, label: t('unlimited') },
-                    ] }) })), _jsx(Form.Item, { label: t('userEntityGrant:attr.expiresAt'), required: true, 
+                            t(`${relationEntity}:r.${ele.name}`),
+                    })) }) }), relationIds?.length > 1 && (_jsx(Form.Item, { label: t('userEntityGrant:attr.rule'), help: t('helpRule'), children: _jsx(Radio.Group, { value: rule, onChange: ({ target }) => update({ rule: target.value }), options: rules.map((ele) => ({
+                        value: ele,
+                        label: t(`userEntityGrant:v.rule.${ele}`)
+                    })) }) })), type === 'grant' && (_jsx(Form.Item, { label: t('multiple'), required: true, help: t('helpMutiple'), children: _jsx(Switch, { checked: multiple || false, onChange: (val) => update({ multiple: val }) }) })), _jsx(Form.Item, { label: t('userEntityGrant:attr.expiresAt'), required: true, 
                 // name="period"
                 // rules={[
                 //     {

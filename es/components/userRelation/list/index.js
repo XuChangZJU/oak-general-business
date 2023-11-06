@@ -170,6 +170,7 @@ export default OakComponent({
         entity: '',
         entityId: '',
         redirectToAfterConfirm: {},
+        claimUrl: '',
         qrCodeType: '',
         onUpdate: (id) => { },
         onCreate: () => { },
@@ -208,7 +209,7 @@ export default OakComponent({
     },
     methods: {
         goUpsert() {
-            const { entity, entityId, redirectToAfterConfirm, qrCodeType, onCreate, } = this.props;
+            const { entity, entityId, redirectToAfterConfirm, qrCodeType, claimUrl, onCreate, } = this.props;
             if (onCreate) {
                 onCreate();
             }
@@ -223,6 +224,7 @@ export default OakComponent({
                 }, {
                     redirectToAfterConfirm,
                     qrCodeType,
+                    claimUrl,
                 });
             }
         },

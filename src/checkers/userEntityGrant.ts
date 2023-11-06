@@ -4,6 +4,8 @@ import {
 import { EntityDict } from '../oak-app-domain';
 import { checkAttributesNotNull } from 'oak-domain/lib/utils/validator';
 import { RuntimeCxt } from '../types/RuntimeCxt';
+import assert from 'assert';
+import { generateNewId } from 'oak-domain';
 
 const checkers: Checker<
     EntityDict,
@@ -17,38 +19,75 @@ const checkers: Checker<
         checker: (data) => {
             if (data instanceof Array) {
                 data.forEach((ele) => {
-                    if (ele.type === 'grant') {
-                        if (ele.number! <= 0) {
-                            throw new OakInputIllegalException(
-                                'userEntityGrant',
-                                ['number', '分享的权限数量必须大于0']
-                            );
-                        }
+                    if (!ele.relationIds || ele.relationIds!.length === 0) {
+                        throw new OakInputIllegalException(
+                            'userEntityGrant',
+                            ['relationIds'],
+                            '至少应选择一个关系'
+                        );
                     }
                 });
             } else {
-                if (data.type === 'grant') {
-                    if (data.number! <= 0 ) {
-                        throw new OakInputIllegalException('userEntityGrant', ['number', '分享的权限数量必须大于0']);
-                    }
+                if (!data.relationIds || data.relationIds!.length === 0) {
+                    throw new OakInputIllegalException(
+                        'userEntityGrant',
+                        ['relationIds'],
+                        '至少应选择一个关系'
+                    );
                 }
             }
         },
     },
     {
-        type: 'row',
-        action: 'confirm',
-        entity: 'userEntityGrant',
-        filter: {
-            $expr: {
-                $gt: [{
-                    "#attr": 'number',
-                }, {
-                    "#attr": 'confirmed',
-                }]
+        type: 'logical',        
+        entity:'userEntityGrant',
+        action: 'claim',
+        checker: (operation, context, option) => {
+            const { data, filter } = operation as EntityDict['userEntityGrant']['Update'];
+            assert(Object.keys(data).length === 1 && data.hasOwnProperty('userEntityClaim$ueg'));
+            const { userEntityClaim$ueg } = data;
+            assert(filter!.id);
+            assert(userEntityClaim$ueg instanceof Array);
+
+            const result = context.select('userEntityGrant', {
+                data: {
+                    id: 1,
+                    relationEntity: 1,
+                },
+                filter,
+            }, option);
+            const createUserRelations = (userEntityGrant: Partial<EntityDict['userEntityGrant']['OpSchema']>) => {
+                const { relationEntity } = userEntityGrant;
+                userEntityClaim$ueg.forEach(
+                    (uec) => {
+                        const { action, data } = uec as EntityDict['userEntityClaim']['CreateSingle'];
+                        assert(action === 'create');
+                        const { userId, relationId, claimEntityId } = data;
+                        Object.assign(data, {
+                            userRelation: {
+                                id: generateNewId(),
+                                action: 'create',
+                                data: {
+                                    id: generateNewId(),
+                                    userId,
+                                    relationId,
+                                    entityId: claimEntityId,
+                                    entity: relationEntity,
+                                }
+                            }
+                        });
+                    }
+                );
+
+                return userEntityClaim$ueg.length;
             }
-        },
-        errMsg: '该授权已经被认领完毕',
+            if (result instanceof Promise) {
+                return result.then(
+                    ([ueg]) => createUserRelations(ueg)
+                );
+            }
+            return createUserRelations(result[0]);
+        }
     }
 ];
 

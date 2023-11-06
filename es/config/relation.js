@@ -15,7 +15,9 @@ export const selectFreeEntities = [
     'messageTypeTemplate',
     'articleMenu',
     'article',
-    'bridge',
+    'userEntityGrant',
 ];
 // 可以自由更新的对象
-export const updateFreeDict = {};
+export const updateFreeDict = {
+    userEntityGrant: ['claim'],
+};

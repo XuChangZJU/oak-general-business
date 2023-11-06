@@ -63,7 +63,10 @@ export default OakComponent({
         entityId: '',
         redirectToAfterConfirm:
             {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
+        claimUrl: '',
         qrCodeType: '' as QrCodeType,
+        rule: 'single' as EntityDict['userEntityGrant']['OpSchema']['rule'],
+        ruleOnRow: 'single' as EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'],
     },
     lifetimes: {
         ready() {
@@ -110,6 +113,7 @@ export default OakComponent({
             entity: keyof ED2;
             entityId: string;
             redirectToAfterConfirm: ED2['userEntityGrant']['Schema']['redirectTo'];
+            claimUrl: string,
             qrCodeType: string;
         }
     >

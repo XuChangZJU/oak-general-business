@@ -2,14 +2,9 @@ export default OakComponent({
     entity: 'userEntityGrant',
     projection: {
         id: 1,
-        entity: 1,
-        entityId: 1,
-        relationId: 1,
-        relation: {
-            id: 1,
-            name: 1,
-            display: 1,
-        },
+        relationEntity: 1,
+        relationEntityFilter: 1,
+        relationIds: 1,
         type: 1,
         qrCodeType: 1,
         remark: 1,
@@ -66,8 +61,8 @@ export default OakComponent({
             }
         }
         return {
-            relation: userEntityGrant?.relation,
-            entity: userEntityGrant?.entity,
+            relationIds: userEntityGrant?.relationIds,
+            entity: userEntityGrant?.relationEntity,
             url: qrCodeUrl,
             expired: userEntityGrant?.expired,
             expiresAt: userEntityGrant?.expiresAt,

@@ -1,9 +1,0 @@
-{
-    "navigationBarTitleText": "用户管理",
-    "usingComponents": {
-        "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index",
-        "l-icon": "@oak-frontend-base/miniprogram_npm/lin-ui/icon/index",
-        "l-tag": "@oak-frontend-base/miniprogram_npm/lin-ui/tag/index",
-        "l-avatar": "@oak-frontend-base/miniprogram_npm/lin-ui/avatar/index"
-    }
-}

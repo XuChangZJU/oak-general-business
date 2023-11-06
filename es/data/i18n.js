@@ -315,6 +315,40 @@ const i18ns = [
         }
     },
     {
+        id: "5bf96a3e054b8d73c76d7bb45ea90a80",
+        namespace: "oak-general-business-c-userEntityGrant-claim",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/userEntityGrant/claim",
+        data: {
+            "tip": "您正在领取权限",
+            "source": "授权来源",
+            "granterName": "授权者",
+            "isExpired": "状态",
+            "expired": "已失效",
+            "counter": "过期时间",
+            "hasClaimed": "您已经领取过此权限",
+            "isGranter": "您不能领取自己的授权"
+        }
+    },
+    {
+        id: "056b31e189ca54f43defe7d4ab45d2af",
+        namespace: "oak-general-business-c-userEntityGrant-claim-ubPicker",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/userEntityGrant/claim/ubPicker",
+        data: {
+            "pickRow": "选择%{entity}",
+            "pickRelation": {
+                "single": "选择权限领取（单选）",
+                "singleFixed": "领取单个权限",
+                "free": "选择权限领取（多选）",
+                "all": "领取以下权限"
+            },
+            "relation": "授予权限"
+        }
+    },
+    {
         id: "24dd3b76e3461bdc74adc6e6d40c5091",
         namespace: "oak-general-business-c-userRelation-list",
         language: "zh-CN",
@@ -342,12 +376,13 @@ const i18ns = [
         module: "oak-general-business",
         position: "src/components/userRelation/upsert/byUserEntityGrant",
         data: {
-            "single": "单次",
+            "multiple": "多人领取",
             "unlimited": "不限",
             "restart": "重新生成",
-            "chooseNumber": "请选择分享的目标人数",
             "chooseExpiresAt": "请选择有效时长",
             "expiresHelp": "支持分钟、小时选择",
+            "helpRule": "当一次分享多个权限时，可规定单个用户（对多个权限）的认领规则",
+            "helpMutiple": "是否允许多个用户来认领",
             "shareCode": "请将二维码发给待分享权限的用户使用微信扫描",
             "unit": {
                 "hour": "小时",

@@ -44,7 +44,7 @@ const entityDesc: EntityDesc<
 > = {
     locales: {
         zh_CN: {
-            name: '地址',
+            name: '待办',
             attr: {
                 iState: '状态',
                 title: '标题',

@@ -1,8 +1,0 @@
-<view class="avatar-box oak-class" bind:tap="onPickByMp">
-    <block wx:if="{{avatarUrl}}">
-        <l-avatar src="{{avatarUrl}}" size="120" />
-    </block>
-    <block wx:else>
-     <l-avatar icon="user" size="120" icon-size="60" />
-    </block>
-</view>

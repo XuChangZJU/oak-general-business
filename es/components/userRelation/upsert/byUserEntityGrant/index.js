@@ -3,14 +3,15 @@ export default OakComponent({
     entity: 'userEntityGrant',
     projection: {
         id: 1,
-        entity: 1,
-        entityId: 1,
-        relationId: 1,
+        relationEntity: 1,
+        relationEntityFilter: 1,
+        relationIds: 1,
         type: 1,
-        number: 1,
+        multiple: 1,
+        rule: 1,
+        ruleOnRow: 1,
         remark: 1,
         granterId: 1,
-        granteeId: 1,
         qrCodeType: 1,
     },
     isList: false,
@@ -23,7 +24,11 @@ export default OakComponent({
         relations: [],
         type: 'grant',
         redirectToAfterConfirm: {},
+        claimUrl: '',
         qrCodeType: '',
+        multiple: false,
+        rule: 'single',
+        ruleOnRow: 'single',
     },
     data: {
         period: 15,
@@ -50,6 +55,7 @@ export default OakComponent({
             },
         ],
         unitIndex: 0,
+        rules: ['single', 'all', 'free'],
     },
     lifetimes: {
         ready() {
@@ -62,36 +68,45 @@ export default OakComponent({
             const { config, system } = app;
             const { config: systemConfig } = system;
             const { userEntityGrantId } = this.state;
+            const { claimUrl } = this.props;
             const imageUrl = (systemConfig && systemConfig?.App?.mpShareImageUrl) || '';
             return {
                 title: '',
-                path: `/pages/userEntityGrant/confirm/index?oakId=${userEntityGrantId}`,
+                path: `/pages${claimUrl}/index?oakId=${userEntityGrantId}`,
                 imageUrl,
             };
         },
         setInit() {
             const userId = this.features.token.getUserId();
-            const { entity, entityId, type, redirectToAfterConfirm, qrCodeType, } = this.props;
-            this.update({
-                confirmed: 0,
-                entity,
-                entityId,
-                type: type || 'grant',
-                number: 1,
-                granterId: userId,
-                redirectTo: redirectToAfterConfirm,
-                qrCodeType: qrCodeType,
-            });
-            this.setState({
-                userEntityGrantId: '',
-            });
-            if (process.env.OAK_PLATFORM === 'wechatMp') {
-                wx.hideShareMenu();
+            const { entity, entityId, type, redirectToAfterConfirm, qrCodeType, claimUrl, multiple, rule, ruleOnRow, } = this.props;
+            if (this.isCreation()) {
+                this.update({
+                    entity,
+                    entityId,
+                    relationEntity: entity,
+                    relationEntityFilter: {
+                        id: entityId,
+                    },
+                    type: type || 'grant',
+                    multiple,
+                    rule: rule || 'single',
+                    ruleOnRow: ruleOnRow || 'single',
+                    granterId: userId,
+                    redirectTo: redirectToAfterConfirm,
+                    qrCodeType: qrCodeType,
+                    claimUrl,
+                });
+                this.setState({
+                    userEntityGrantId: '',
+                });
+                if (process.env.OAK_PLATFORM === 'wechatMp') {
+                    wx.hideShareMenu();
+                }
             }
         },
         setRelation(value) {
             this.update({
-                relationId: value,
+                relationIds: [value],
             });
         },
         setRelationMp(e) {
@@ -133,13 +148,6 @@ export default OakComponent({
         },
         async confirm() {
             const { period, unit, userEntityGrant } = this.state;
-            if (!userEntityGrant?.relationId) {
-                this.setMessage({
-                    type: 'error',
-                    content: '请选择角色权限',
-                });
-                return;
-            }
             let time = 0;
             switch (unit) {
                 case 'hour': {

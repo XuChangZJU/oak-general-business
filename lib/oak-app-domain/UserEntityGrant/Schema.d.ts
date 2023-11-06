@@ -1,61 +1,63 @@
 import { ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction } from "./Action";
-import { String, Text, Datetime, Int } from "oak-domain/lib/types/DataType";
+import { String, Text, Datetime, Boolean } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import { QrCodeType } from "../../types/Config";
-import * as Relation from "../Relation/Schema";
 import * as User from "../User/Schema";
-import * as Account from "../Account/Schema";
-import * as Session from "../Session/Schema";
-import * as ToDo from "../ToDo/Schema";
+import * as UserEntityClaim from "../UserEntityClaim/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
+type RelationIds = string[];
 export type RedirectToProps = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
     isTabBar?: boolean;
 };
+type Rule = 'single' | 'all' | 'free';
 export type OpSchema = EntityShape & {
-    entity: "account" | "session" | "toDo" | string;
+    entity: String<32>;
     entityId: String<64>;
-    relationId: ForeignKey<"relation">;
+    relationEntity: String<32>;
+    relationEntityFilter: Object;
+    relationIds: RelationIds;
     type: 'grant' | 'transfer';
-    number: Int<2>;
-    confirmed: Int<2>;
+    rule: Rule;
+    ruleOnRow: Rule;
+    multiple?: Boolean | null;
     remark?: Text | null;
     granterId: ForeignKey<"user">;
-    granteeId?: ForeignKey<"user"> | null;
     qrCodeType: QrCodeType;
     expiresAt?: Datetime | null;
     expired?: Boolean | null;
     redirectTo?: RedirectToProps | null;
+    claimUrl: String<128>;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
-    entity: "account" | "session" | "toDo" | string;
+    entity: String<32>;
     entityId: String<64>;
-    relationId: ForeignKey<"relation">;
+    relationEntity: String<32>;
+    relationEntityFilter: Object;
+    relationIds: RelationIds;
     type: 'grant' | 'transfer';
-    number: Int<2>;
-    confirmed: Int<2>;
+    rule: Rule;
+    ruleOnRow: Rule;
+    multiple?: Boolean | null;
     remark?: Text | null;
     granterId: ForeignKey<"user">;
-    granteeId?: ForeignKey<"user"> | null;
     qrCodeType: QrCodeType;
     expiresAt?: Datetime | null;
     expired?: Boolean | null;
     redirectTo?: RedirectToProps | null;
-    relation: Relation.Schema;
+    claimUrl: String<128>;
     granter: User.Schema;
-    grantee?: User.Schema | null;
-    account?: Account.Schema;
-    session?: Session.Schema;
-    toDo?: ToDo.Schema;
+    userEntityClaim$ueg?: Array<UserEntityClaim.Schema>;
+    userEntityClaim$ueg$$aggr?: AggregationResult<UserEntityClaim.Schema>;
     modiEntity$entity?: Array<ModiEntity.Schema>;
     modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;
     operEntity$entity?: Array<OperEntity.Schema>;
@@ -70,25 +72,24 @@ type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    entity: Q_EnumValue<"account" | "session" | "toDo" | string>;
+    entity: Q_StringValue;
     entityId: Q_StringValue;
-    relationId: Q_StringValue;
-    relation: Relation.Filter;
+    relationEntity: Q_StringValue;
+    relationEntityFilter: Object;
+    relationIds: JsonFilter<RelationIds>;
     type: Q_EnumValue<'grant' | 'transfer'>;
-    number: Q_NumberValue;
-    confirmed: Q_NumberValue;
+    rule: Q_EnumValue<Rule>;
+    ruleOnRow: Q_EnumValue<Rule>;
+    multiple: Q_BooleanValue;
     remark: Q_StringValue;
     granterId: Q_StringValue;
     granter: User.Filter;
-    granteeId: Q_StringValue;
-    grantee: User.Filter;
     qrCodeType: Q_EnumValue<QrCodeType>;
     expiresAt: Q_DateValue;
     expired: Q_BooleanValue;
     redirectTo: JsonFilter<RedirectToProps>;
-    account: Account.Filter;
-    session: Session.Filter;
-    toDo: ToDo.Filter;
+    claimUrl: Q_StringValue;
+    userEntityClaim$ueg: UserEntityClaim.Filter & SubQueryPredicateMetadata;
     modiEntity$entity: ModiEntity.Filter & SubQueryPredicateMetadata;
     operEntity$entity: OperEntity.Filter & SubQueryPredicateMetadata;
     wechatQrCode$entity: WechatQrCode.Filter & SubQueryPredicateMetadata;
@@ -103,23 +104,27 @@ export type Projection = {
     $$seq$$?: number;
     entity?: number;
     entityId?: number;
-    relationId?: number;
-    relation?: Relation.Projection;
+    relationEntity?: number;
+    relationEntityFilter?: number | Object;
+    relationIds?: number | JsonProjection<RelationIds>;
     type?: number;
-    number?: number;
-    confirmed?: number;
+    rule?: number;
+    ruleOnRow?: number;
+    multiple?: number;
     remark?: number;
     granterId?: number;
     granter?: User.Projection;
-    granteeId?: number;
-    grantee?: User.Projection;
     qrCodeType?: number;
     expiresAt?: number;
     expired?: number;
     redirectTo?: number | JsonProjection<RedirectToProps>;
-    account?: Account.Projection;
-    session?: Session.Projection;
-    toDo?: ToDo.Projection;
+    claimUrl?: number;
+    userEntityClaim$ueg?: UserEntityClaim.Selection & {
+        $entity: "userEntityClaim";
+    };
+    userEntityClaim$ueg$$aggr?: UserEntityClaim.Aggregation & {
+        $entity: "userEntityClaim";
+    };
     modiEntity$entity?: ModiEntity.Selection & {
         $entity: "modiEntity";
     };
@@ -142,21 +147,8 @@ export type Projection = {
 type UserEntityGrantIdProjection = OneOf<{
     id: number;
 }>;
-type RelationIdProjection = OneOf<{
-    relationId: number;
-}>;
 type UserIdProjection = OneOf<{
     granterId: number;
-    granteeId: number;
-}>;
-type AccountIdProjection = OneOf<{
-    entityId: number;
-}>;
-type SessionIdProjection = OneOf<{
-    entityId: number;
-}>;
-type ToDoIdProjection = OneOf<{
-    entityId: number;
 }>;
 export type SortAttr = {
     id: number;
@@ -171,25 +163,23 @@ export type SortAttr = {
 } | {
     entityId: number;
 } | {
-    relationId: number;
+    relationEntity: number;
 } | {
-    relation: Relation.SortAttr;
+    relationIds: number;
 } | {
     type: number;
 } | {
-    number: number;
+    rule: number;
 } | {
-    confirmed: number;
+    ruleOnRow: number;
+} | {
+    multiple: number;
 } | {
     remark: number;
 } | {
     granterId: number;
 } | {
     granter: User.SortAttr;
-} | {
-    granteeId: number;
-} | {
-    grantee: User.SortAttr;
 } | {
     qrCodeType: number;
 } | {
@@ -199,11 +189,7 @@ export type SortAttr = {
 } | {
     redirectTo: number;
 } | {
-    account: Account.SortAttr;
-} | {
-    session: Session.SortAttr;
-} | {
-    toDo: ToDo.SortAttr;
+    claimUrl: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
@@ -215,15 +201,7 @@ export type Sorter = SortNode[];
 export type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
 export type Selection<P extends Object = Projection> = SelectOperation<P>;
 export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "relationId" | "granterId" | "granteeId">> & (({
-    relationId?: never;
-    relation: Relation.CreateSingleOperation;
-} | {
-    relationId: ForeignKey<"relation">;
-    relation?: Relation.UpdateOperation;
-} | {
-    relationId: ForeignKey<"relation">;
-}) & ({
+export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "granterId">> & (({
     granterId?: never;
     granter: User.CreateSingleOperation;
 } | {
@@ -231,52 +209,12 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     granter?: User.UpdateOperation;
 } | {
     granterId: ForeignKey<"granter">;
-}) & ({
-    granteeId?: never;
-    grantee?: User.CreateSingleOperation;
-} | {
-    granteeId: ForeignKey<"grantee">;
-    grantee?: User.UpdateOperation;
-} | {
-    granteeId?: ForeignKey<"grantee">;
 })) & ({
-    entity?: never;
-    entityId?: never;
-    account: Account.CreateSingleOperation;
-} | {
-    entity: "account";
-    entityId: ForeignKey<"Account">;
-    account: Account.UpdateOperation;
-} | {
-    entity: "account";
-    entityId: ForeignKey<"Account">;
-} | {
-    entity?: never;
-    entityId?: never;
-    session: Session.CreateSingleOperation;
-} | {
-    entity: "session";
-    entityId: ForeignKey<"Session">;
-    session: Session.UpdateOperation;
-} | {
-    entity: "session";
-    entityId: ForeignKey<"Session">;
-} | {
-    entity?: never;
-    entityId?: never;
-    toDo: ToDo.CreateSingleOperation;
-} | {
-    entity: "toDo";
-    entityId: ForeignKey<"ToDo">;
-    toDo: ToDo.UpdateOperation;
-} | {
-    entity: "toDo";
-    entityId: ForeignKey<"ToDo">;
-} | {
     entity?: string;
     entityId?: string;
     [K: string]: any;
 }) & {
+    userEntityClaim$ueg?: OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "ueg" | "uegId">, Omit<UserEntityClaim.Filter, "ueg" | "uegId">> | OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "ueg" | "uegId">[]> | Array<OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "ueg" | "uegId">> | OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "ueg" | "uegId">, Omit<UserEntityClaim.Filter, "ueg" | "uegId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
     operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     wechatQrCode$entity?: OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, Omit<WechatQrCode.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">> | OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, Omit<WechatQrCode.Filter, "entity" | "entityId">>>;
@@ -284,19 +222,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
-export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "relationId" | "granterId" | "granteeId">> & (({
-    relation: Relation.CreateSingleOperation;
-    relationId?: never;
-} | {
-    relation: Relation.UpdateOperation;
-    relationId?: never;
-} | {
-    relation: Relation.RemoveOperation;
-    relationId?: never;
-} | {
-    relation?: never;
-    relationId?: ForeignKey<"relation"> | null;
-}) & ({
+export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "granterId">> & (({
     granter: User.CreateSingleOperation;
     granterId?: never;
 } | {
@@ -308,62 +234,20 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
 } | {
     granter?: never;
     granterId?: ForeignKey<"granter"> | null;
-}) & ({
-    grantee: User.CreateSingleOperation;
-    granteeId?: never;
-} | {
-    grantee: User.UpdateOperation;
-    granteeId?: never;
-} | {
-    grantee: User.RemoveOperation;
-    granteeId?: never;
-} | {
-    grantee?: never;
-    granteeId?: ForeignKey<"grantee"> | null;
-})) & ({
-    account?: Account.CreateSingleOperation | Account.UpdateOperation | Account.RemoveOperation;
-    entityId?: never;
-    entity?: never;
-} | {
-    session?: Session.CreateSingleOperation | Session.UpdateOperation | Session.RemoveOperation;
-    entityId?: never;
-    entity?: never;
-} | {
-    toDo?: ToDo.CreateSingleOperation | ToDo.UpdateOperation | ToDo.RemoveOperation;
-    entityId?: never;
-    entity?: never;
-} | {
-    entity?: ("account" | "session" | "toDo" | string) | null;
-    entityId?: ForeignKey<"Account" | "Session" | "ToDo"> | null;
-}) & {
+})) & {
     [k: string]: any;
+    userEntityClaim$ueg?: OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "ueg" | "uegId">, Omit<UserEntityClaim.Filter, "ueg" | "uegId">> | OakOperation<UserEntityClaim.RemoveOperation["action"], Omit<UserEntityClaim.RemoveOperationData, "ueg" | "uegId">, Omit<UserEntityClaim.Filter, "ueg" | "uegId">> | OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "ueg" | "uegId">[]> | Array<OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "ueg" | "uegId">> | OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "ueg" | "uegId">, Omit<UserEntityClaim.Filter, "ueg" | "uegId">> | OakOperation<UserEntityClaim.RemoveOperation["action"], Omit<UserEntityClaim.RemoveOperationData, "ueg" | "uegId">, Omit<UserEntityClaim.Filter, "ueg" | "uegId">>>;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
     operEntity$entity?: OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<OperEntity.CreateOperationData, "entity" | "entityId">>>;
     wechatQrCode$entity?: OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, Omit<WechatQrCode.Filter, "entity" | "entityId">> | OakOperation<WechatQrCode.RemoveOperation["action"], Omit<WechatQrCode.RemoveOperationData, "entity" | "entityId">, Omit<WechatQrCode.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<WechatQrCode.CreateOperationData, "entity" | "entityId">> | OakOperation<WechatQrCode.UpdateOperation["action"], Omit<WechatQrCode.UpdateOperationData, "entity" | "entityId">, Omit<WechatQrCode.Filter, "entity" | "entityId">> | OakOperation<WechatQrCode.RemoveOperation["action"], Omit<WechatQrCode.RemoveOperationData, "entity" | "entityId">, Omit<WechatQrCode.Filter, "entity" | "entityId">>>;
 };
 export type UpdateOperation = OakOperation<"update" | ParticularAction | string, UpdateOperationData, Filter, Sorter>;
 export type RemoveOperationData = {} & (({
-    relation?: Relation.UpdateOperation | Relation.RemoveOperation;
-}) & ({
     granter?: User.UpdateOperation | User.RemoveOperation;
-}) & ({
-    grantee?: User.UpdateOperation | User.RemoveOperation;
-})) & ({
-    account?: Account.UpdateOperation | Account.RemoveOperation;
-} | {
-    session?: Session.UpdateOperation | Session.RemoveOperation;
-} | {
-    toDo?: ToDo.UpdateOperation | ToDo.RemoveOperation;
-} | {
-    [k: string]: any;
-});
+}));
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
-export type RelationIdSubQuery = Selection<RelationIdProjection>;
 export type UserIdSubQuery = Selection<UserIdProjection>;
-export type AccountIdSubQuery = Selection<AccountIdProjection>;
-export type SessionIdSubQuery = Selection<SessionIdProjection>;
-export type ToDoIdSubQuery = Selection<ToDoIdProjection>;
 export type UserEntityGrantIdSubQuery = Selection<UserEntityGrantIdProjection>;
 export type EntityDef = {
     Schema: Schema;

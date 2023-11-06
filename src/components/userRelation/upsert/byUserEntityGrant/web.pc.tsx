@@ -6,10 +6,11 @@ import {
     Alert,
     InputNumber,
     Space,
-    Modal,
+    Checkbox,
     Select,
+    Switch,
 } from 'antd';
-import UserEntityGrantDetail from '../../../../pages/userEntityGrant/detail';
+import UserEntityGrantShare from '../../../userEntityGrant/share';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
 
@@ -30,6 +31,7 @@ export default function render(
             unit: Unit;
             maxes: Record<Unit, number>;
             unitArr: Array<{ label: string; value: Unit }>;
+            rules: EntityDict['userEntityGrant']['OpSchema']['rule'][];
         },
         {
             confirm: () => Promise<void>;
@@ -48,8 +50,9 @@ export default function render(
         unit,
         maxes,
         oakExecutable,
+        rules,
     } = props.data;
-    const { relationId, type, number, entity } = userEntityGrant || {};
+    const { relationIds, type, rule, multiple, relationEntity } = userEntityGrant || {};
     const { update, t, onBack, confirm, setInit, setPeriod, setUnit } =
         props.methods;
 
@@ -61,12 +64,12 @@ export default function render(
                 type="info"
                 style={{ marginBottom: 16 }}
             />
-            <UserEntityGrantDetail
+            <UserEntityGrantShare
                 showBack={false}
                 oakId={userEntityGrantId}
                 oakAutoUnmount={true}
                 oakPath="$userRelation/upsert/byUserEntityGrant-userEntityGrant/detail"
-            ></UserEntityGrantDetail>
+            ></UserEntityGrantShare>
             <div
                 style={{
                     width: '100%',
@@ -82,51 +85,48 @@ export default function render(
     ) : (
         <Form labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
             <Form.Item
-                label={t('userEntityGrant:attr.relation')}
+                label={t('userEntityGrant:attr.relationIds')}
                 required
-                // name="relation"
-                // rules={[
-                //     {
-                //         required: true,
-                //     },
-                // ]}
             >
-                <Radio.Group
-                    value={relationId}
-                    onChange={({ target }) => {
-                        const { value } = target;
-                        update({ relationId: value });
+                <Checkbox.Group
+                    value={relationIds || []}
+                    onChange={(val) => {
+                        update({ relationIds: val as string[] });
                     }}
                     options={relations?.map((ele) => ({
                         value: ele.id,
                         label:
                             ele.display ||
-                            t(`${entity as string}:r.${ele.name}`),
+                            t(`${relationEntity as string}:r.${ele.name}`),
                     }))}
                 />
             </Form.Item>
-            {type === 'grant' && (
+            {relationIds?.length > 1 && (
                 <Form.Item
-                    label={t('userEntityGrant:attr.number')}
-                    required
-                    // name="number"
-                    // rules={[
-                    //     {
-                    //         required: true,
-                    //         message: t('chooseNumber'),
-                    //     },
-                    // ]}
+                    label={t('userEntityGrant:attr.rule')}
+                    help={t('helpRule')}
                 >
                     <Radio.Group
-                        value={number}
-                        onChange={({ target }) => {
-                            const { value } = target;
-                            update({ number: value });
-                        }}
-                        options={[
-                            { value: 1, label: t('single') },
-                            { value: 10000, label: t('unlimited') },
-                        ]}
+                        value={rule as EntityDict['userEntityGrant']['OpSchema']['rule']}
+                        onChange={({ target }) => update({ rule: target.value as EntityDict['userEntityGrant']['OpSchema']['rule']})}
+                        options={rules.map(
+                            (ele) => ({
+                                value: ele,
+                                label: t(`userEntityGrant:v.rule.${ele}`)
+                            })
+                        )}
+                    />
+                </Form.Item>
+            )}
+            {type === 'grant' && (
+                <Form.Item
+                    label={t('multiple')}
+                    required
+                    help={t('helpMutiple')}
+                >
+                    <Switch
+                        checked={multiple || false}
+                        onChange={(val) => update({ multiple: val })}
                     />
                 </Form.Item>
             )}

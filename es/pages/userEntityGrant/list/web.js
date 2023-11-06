@@ -21,20 +21,6 @@ export default function render(props) {
                 },
             },
             {
-                dataIndex: 'number',
-                title: '邀请成员数',
-                render: (value, record, index) => {
-                    return `${value || 0}人`;
-                },
-            },
-            {
-                dataIndex: 'confirmed',
-                title: '加入成员数',
-                render: (value, record, index) => {
-                    return `${value || 0}人`;
-                },
-            },
-            {
                 dataIndex: 'type',
                 title: '授权类型',
                 render: (value, record, index) => {
@@ -46,7 +32,7 @@ export default function render(props) {
                 title: '权限',
                 render: (value, record, index) => {
                     return (value.display ||
-                        t(`${record.entity}:r.${value.name}`));
+                        t(`${record.relationEntity}:r.${value.name}`));
                 },
             },
             {

@@ -19,8 +19,10 @@ export const selectFreeEntities: SelectFreeEntities<EntityDict> = [
     'messageTypeTemplate',
     'articleMenu',
     'article',
-    'bridge',
+    'userEntityGrant',
 ];
 
 // 可以自由更新的对象
-export const updateFreeDict: UpdateFreeDict<EntityDict> = {};
+export const updateFreeDict: UpdateFreeDict<EntityDict> = {
+    userEntityGrant: ['claim'],
+};

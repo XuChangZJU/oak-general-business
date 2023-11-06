@@ -2,55 +2,58 @@ import { EntityDict } from '../../../oak-app-domain';
 
 export default OakComponent({
     entity: 'userEntityGrant',
-    projection: {
-        id: 1,
-        relationId: 1,
-        relation: {
+    projection() {
+        const userId = this.features.token.getUserId();
+        return {
             id: 1,
-            name: 1,
-            display: 1,
-        },
-        granterId: 1,
-        granter: {
-            id: 1,
-            name: 1,
-            nickname: 1,
-        },
-        expired: 1,
-        expiresAt: 1,
-        entity: 1,
-        entityId: 1,
-        type: 1,
-        qrCodeType: 1,
-        granteeId: 1,
-        number: 1,
-        confirmed: 1,
-        redirectTo: 1,
+            relationIds: 1,
+            granterId: 1,
+            granter: {
+                id: 1,
+                name: 1,
+                nickname: 1,
+            },
+            userEntityClaim$ueg: {
+                $entity: 'userEntityClaim',
+                data: {
+                    id: 1,
+                    relationId: 1,
+                },
+                filter: {
+                    userId,
+                },
+            },
+            expired: 1,
+            expiresAt: 1,
+            relationEntity: 1,
+            relationEntityFilter: 1,
+            type: 1,
+            qrCodeType: 1,
+            granteeId: 1,
+            redirectTo: 1,
+        };
     },
     isList: false,
-    formData({ data: userEntityGrant, features, props }) {
+    formData({ data: userEntityGrant, features }) {
         const userId = features.token.getUserId(true);
         const granter = userEntityGrant?.granter;
         const type = userEntityGrant?.type;
-        const relation = userEntityGrant?.relation;
-        const entity = userEntityGrant?.entity;
-        const relationId = userEntityGrant?.relationId;
+        const entity = userEntityGrant?.relationEntity;
+        const relationIds = userEntityGrant?.relationIds;
+        const userEntityClaims = userEntityGrant?.userEntityClaim$ueg;
 
         return {
-            relation,
-            relationId,
+            relationIds,
             type,
             expired: userEntityGrant?.expired,
             expiresAt: userEntityGrant?.expiresAt,
             granter,
             entity,
-            entityId: userEntityGrant?.entityId,
-            granteeId: userEntityGrant?.granteeId,
-            number: userEntityGrant?.number,
-            confirmed: userEntityGrant?.confirmed,
+            relationEntityFilter: userEntityGrant?.relationEntityFilter,
             userId,
             redirectTo: userEntityGrant?.redirectTo,
             id: userEntityGrant?.id,
+            claimedIds: userEntityClaims && userEntityClaims.map(ele => ele.relationId),
         };
     },
     data: {
@@ -70,37 +73,9 @@ export default OakComponent({
             }
         },
     },
-    methods: {
-        async getUserRelations() {
-            // 检查当前登陆者跟该授权实体缩手所受relation有关系了(todo)
-            const { entity, entityId, relationId } = this.state;
-            const userId = this.features.token.getUserId(true);
-            if (!userId) {
-                return;
-            }
-            const { oakId } = this.props;
-            const { data } = await this.features.cache.refresh(
-                'userRelation',
-                {
-                    data: {
-                        id: 1,
-                        userId: 1,
-                        relationId: 1,
-                    },
-                    filter: {
-                        userId,
-                        relationId,
-                        entity,
-                        entityId,
-                    },
-                }
-            );
-            this.setState({
-                hasConfirmed: data.length > 0,
-            });
-        },
+    methods: {        
         async handleConfirm() {
-            await this.execute('confirm');
+            /* await this.execute('confirm');
             // await this.features.cache.exec('confirmUserEntityGrant', {
             //     id: this.props.oakId,
             // });
@@ -114,7 +89,7 @@ export default OakComponent({
                 this.setState({
                     hasConfirmed: true,
                 });
-            }
+            } */
         },
         redirectPage() {
             const redirectTo = this.state

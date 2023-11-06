@@ -56,7 +56,10 @@ export default OakComponent({
         entity: '',
         entityId: '',
         redirectToAfterConfirm: {},
+        claimUrl: '',
         qrCodeType: '',
+        rule: 'single',
+        ruleOnRow: 'single',
     },
     lifetimes: {
         ready() {

@@ -9,5 +9,9 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     qrCodeType: QrCodeType;
     type: EntityDict['userEntityGrant']['Schema']['type'];
     relations: EntityDict['relation']['OpSchema'][];
+    claimUrl: string;
+    multiple: boolean;
+    rule: EntityDict['userEntityGrant']['Schema']['rule'];
+    ruleOnRow: EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'];
 }>) => React.ReactElement;
 export default _default;
