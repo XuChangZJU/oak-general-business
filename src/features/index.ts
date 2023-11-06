@@ -4,7 +4,6 @@ import { ExtraFile } from './extraFile';
 import { ExtraFile2 } from './extraFile2';
 import { Application } from './application';
 import { Config } from './config';
-import { Style2 } from './style2';
 import { Template } from './template';
 import { WeiXinJsSdk } from './weiXinJsSdk';
 import { WechatMenu } from './wechatMenu';
@@ -59,7 +58,6 @@ export function initialize<
     const extraFile = new ExtraFile<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application, basicFeatures.locales);
     const extraFile2 = new ExtraFile2<ED, Cxt, FrontCxt, AD>(basicFeatures.cache, application, basicFeatures.locales, basicFeatures.runningTree);
     const config = new Config<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
-    const style2 = new Style2<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
     const template = new Template<ED, Cxt, FrontCxt, AD>(basicFeatures.cache);
     const weiXinJsSdk = new WeiXinJsSdk<ED, Cxt, FrontCxt, AD>(
         basicFeatures.cache,
@@ -74,7 +72,6 @@ export function initialize<
         extraFile2,
         application,
         config,
-        style2,
         template,
         weiXinJsSdk,
         theme,
@@ -95,7 +92,6 @@ export type GeneralFeatures<
     extraFile2: ExtraFile2<ED, Cxt, FrontCxt, AD>;
     application: Application<ED, Cxt, FrontCxt, AD>;
     config: Config<ED, Cxt, FrontCxt, AD>;
-    style2: Style2<ED, Cxt, FrontCxt, AD>;
     template: Template<ED, Cxt, FrontCxt, AD>;
     weiXinJsSdk: WeiXinJsSdk<ED, Cxt, FrontCxt, AD>;
     theme: Theme<ED, Cxt, FrontCxt, AD>;
