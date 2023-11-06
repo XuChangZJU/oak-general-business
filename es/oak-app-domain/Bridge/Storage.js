@@ -26,6 +26,11 @@ export const desc = {
         redirectTo: {
             notNull: true,
             type: "object"
+        },
+        qrCodeType: {
+            notNull: true,
+            type: "enum",
+            enumeration: ["wechatMpDomainUrl", "wechatMpWxaCode", "wechatPublic", "wechatPublicForMp", "webForWechatPublic"]
         }
     },
     actionType: "crud",

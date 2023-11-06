@@ -9,7 +9,8 @@ import {
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { LocaleDef } from 'oak-domain/lib/types/Locale';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
-
+import { QrCodeType } from '../types/Config';
+import { Schema as WechatQrCode } from './WechatQrCode';
 type RedirectTo = {
     pathname: string;
     props?: Record<string, any>;
@@ -22,6 +23,8 @@ export interface Schema extends EntityShape {
     expiresAt: Datetime;
     expired: Boolean;
     redirectTo: RedirectTo;
+    qrCodeType: QrCodeType;
+    codes: Array<WechatQrCode>;
 }
 
 type IAction = 'cancel' | 'qrcode';
@@ -42,10 +45,21 @@ const entityDesc: EntityDesc<
                 redirectTo: '重定向页面',
                 entity: '关联对象',
                 entityId: '关联对象Id',
+                qrCodeType: '二维码类型',
+                codes: '微信码',
             },
             action: {
                 cancel: '作废',
                 qrcode: '二维码',
+            },
+            v: {
+                qrCodeType: {
+                    webForWechatPublic: '网站引流到公众号',
+                    wechatMpDomainUrl: '小程序url码',
+                    wechatMpWxaCode: '小程序码',
+                    wechatPublic: '公众号关注码',
+                    wechatPublicForMp: '公众号回复小程序码',
+                }
             },
         },
     },

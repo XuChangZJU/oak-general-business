@@ -1,3 +1,4 @@
+import { QrCodeType } from '../../../types/Config';
 export default OakComponent({
     isList: true,
     entity: 'bridge',
@@ -8,6 +9,7 @@ export default OakComponent({
         $$createAt$$: 1,
         expired: 1,
         expiresAt: 1,
+        qrCodeType: 1,
     },
     actions: [
         'cancel',
@@ -16,7 +18,7 @@ export default OakComponent({
     properties: {
         entity: '',
         entityId: '',
-        nameLabel: '',
+        qrCodeType: '' as QrCodeType,
     },
     filters: [
         {

@@ -15,6 +15,7 @@ export const selectFreeEntities = [
     'messageTypeTemplate',
     'articleMenu',
     'article',
+    'bridge',
 ];
 // 可以自由更新的对象
 export const updateFreeDict = {};

@@ -2,7 +2,7 @@ import { EntityDict } from '../../../oak-app-domain';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base';
-
+import { QrCodeType } from '../../../types/Config';
 export default OakComponent({
     entity: 'bridge',
     isList: false,
@@ -15,6 +15,7 @@ export default OakComponent({
     properties: {
         entity: '' as keyof EntityDict,
         entityId: '',
+        qrCodeType: '' as QrCodeType,
         redirectTo: undefined as
             | EntityDict['bridge']['Schema']['redirectTo']
             | undefined,
@@ -40,7 +41,7 @@ export default OakComponent({
             });
         },
         async confirm() {
-            const { entityId, entity, redirectTo } =
+            const { entityId, entity, redirectTo, qrCodeType } =
                 this.props;
             const { period } = this.state;
 
@@ -59,6 +60,7 @@ export default OakComponent({
                 expiresAt: Date.now() + time,
                 expired: false,
                 redirectTo,
+                qrCodeType,
             });
             const id = this.getId();
             this.execute();

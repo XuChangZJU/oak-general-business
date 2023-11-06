@@ -46,20 +46,21 @@ export default function Render(
         relation,
         period,
         bridgeId,
-        options,
-        nameLabel,
-        nameRequired,
+        oakFullpath,
     } = props.data;
-    const { setPeriod, confirm, setInit, onSelect, onSearch, setSearchValue } =
-        methods;
-
+    const { setPeriod, confirm, setInit } = methods;
     if (!!bridgeId) {
         return (
             <div className={Style.container}>
                 <BridgeDetail
                     oakId={bridgeId}
                     oakAutoUnmount={true}
-                    oakPath="$bridge/upsert-bridge/detail"
+                    oakPath={
+                        oakFullpath
+                            ? `${oakFullpath}`
+                            : undefined
+                    }
+                // oakPath="$bridge/upsert-bridge/detail"
                 />
                 <div
                     style={{

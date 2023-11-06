@@ -9,6 +9,7 @@ import applicationTriggers from './application';
 import articleMenuTriggers from './articleMenu';
 import article from './article';
 import parasiteTriggers from './parasite';
+import bridgeTriggers from './bridge';
 import extraFileTriggers from './extraFile';
 import sessionMessageTriggers from './sessionMessage';
 import wechatMenuTriggers from './wechatMenu';
@@ -34,4 +35,5 @@ export default [
     ...sessionMessageTriggers,
     ...wechatMenuTriggers,
     ...wechatPublicTag,
+    ...bridgeTriggers,
 ];

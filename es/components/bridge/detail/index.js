@@ -6,19 +6,72 @@ export default OakComponent({
         entityId: 1,
         expired: 1,
         expiresAt: 1,
+        qrCodeType: 1,
+        wechatQrCode$entity: {
+            $entity: 'wechatQrCode',
+            data: {
+                id: 1,
+                entity: 1,
+                entityId: 1,
+                type: 1,
+                ticket: 1,
+                url: 1,
+                buffer: 1,
+                expired: 1,
+                expiresAt: 1,
+                applicationId: 1,
+            },
+            filter: {
+                entity: 'bridge',
+            },
+            indexFrom: 0,
+            count: 1,
+        },
     },
     isList: false,
     formData: ({ data: bridge, props }) => {
-        const hostname = window.location.hostname;
-        const port = window.location.port ? `:${window.location.port}` : '';
-        const colon = window.location.protocol.endsWith(':') ? '' : ':';
-        const url = `${window.location.protocol}${colon}//${hostname}${port}/bridge/excess?oakId=${props.oakId}`;
+        let qrCodeUrl = bridge?.wechatQrCode$entity[0]?.url;
+        const buffer = bridge?.wechatQrCode$entity[0]?.buffer;
+        if (buffer) {
+            const newBuffer = new ArrayBuffer(buffer.length * 2);
+            const newBufferToUint16 = new Uint16Array(newBuffer);
+            for (let i = 0; i < buffer.length; i++) {
+                newBufferToUint16[i] = buffer.charCodeAt(i);
+            }
+            if (process.env.OAK_PLATFORM === 'wechatMp') {
+                const base64Str = wx.arrayBufferToBase64(newBufferToUint16);
+                qrCodeUrl = 'data:image/png;base64,' + base64Str;
+            }
+            else {
+                let binary = '';
+                const bytes = new Uint8Array(newBufferToUint16);
+                const len = bytes.byteLength;
+                for (let i = 0; i < len; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                const base64Str = window.btoa(binary);
+                // const buffer2 = Buffer.from(newBufferToUint16, 'base64');
+                // const base64Str = buffer2.toString('base64');
+                qrCodeUrl = 'data:image/png;base64,' + base64Str;
+            }
+        }
         return {
             entity: bridge?.entity,
-            url,
+            url: qrCodeUrl,
             expired: bridge?.expired,
             expiresAt: bridge?.expiresAt,
+            qrCodeType: bridge?.qrCodeType,
         };
+        // const hostname = window.location.hostname;
+        // const port = window.location.port ? `:${window.location.port}` : '';
+        // const colon = window.location.protocol.endsWith(':') ? '' : ':';
+        // const url = `${window.location.protocol}${colon}//${hostname}${port}/bridge/excess?oakId=${props.oakId}`;
+        // return {
+        //     entity: bridge?.entity,
+        //     url,
+        //     expired: bridge?.expired,
+        //     expiresAt: bridge?.expiresAt,
+        // };
     },
     methods: {
         copy(text) {

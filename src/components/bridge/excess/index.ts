@@ -25,6 +25,7 @@ export default OakComponent({
                         entity: 1,
                         entityId: 1,
                         redirectTo: 1,
+                        qrCodeType: 1,
                     },
                     filter: {
                         id: oakId || 'illegal',

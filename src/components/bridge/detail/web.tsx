@@ -6,7 +6,7 @@ import { EntityDict } from '../../../oak-app-domain';
 import { Spin, Button, Space, Input, Tooltip } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
 import copy from 'copy-to-clipboard';
-
+import { QrCodeType } from '../../../types/Config';
 export default function Render(
     props: WebComponentProps<
         EntityDict,
@@ -18,11 +18,12 @@ export default function Render(
             url: string;
             expiresAt: number;
             title?: string;
+            qrCodeType: QrCodeType;
         },
         {}
     >
 ) {
-    const { url, expiresAt, oakLoading } = props.data;
+    const { url, expiresAt, oakLoading, qrCodeType } = props.data;
     const { setMessage } = props.methods;
     return oakLoading ? (
         <div
@@ -50,24 +51,27 @@ export default function Render(
             }}
             >
                 <QrCode url={url} expiresAt={expiresAt} />
-
-                <Space.Compact block style={{ marginTop: 16 }}>
-                    <Input
-                        value={url}
-                        readOnly
-                    />
-                    <Tooltip title="复制链接">
-                        <Button icon={<CopyOutlined />} onClick={() => {
-                            copy(url);
-                            setMessage({
-                                content: '复制链接成功',
-                                type: 'success',
-                            });
-                        }}>
-                            复制链接
-                        </Button>
-                    </Tooltip>
-                </Space.Compact>
+                {
+                    qrCodeType && (qrCodeType !== 'wechatMpDomainUrl' && qrCodeType !== 'wechatMpWxaCode') && (
+                        <Space.Compact block style={{ marginTop: 16 }}>
+                            <Input
+                                value={url}
+                                readOnly
+                            />
+                            <Tooltip title="复制链接">
+                                <Button icon={<CopyOutlined />} onClick={() => {
+                                    copy(url);
+                                    setMessage({
+                                        content: '复制链接成功',
+                                        type: 'success',
+                                    });
+                                }}>
+                                    复制链接
+                                </Button>
+                            </Tooltip>
+                        </Space.Compact>
+                    )
+                }
             </div>
         </div>
 

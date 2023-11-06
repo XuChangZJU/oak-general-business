@@ -4,10 +4,12 @@ import Style from './web.module.less';
 import BridgeDetail from '../detail';
 export default function Render(props) {
     const { methods, data } = props;
-    const { entity, entityId, relation, period, bridgeId, options, nameLabel, nameRequired, } = props.data;
-    const { setPeriod, confirm, setInit, onSelect, onSearch, setSearchValue } = methods;
+    const { entity, entityId, relation, period, bridgeId, oakFullpath, } = props.data;
+    const { setPeriod, confirm, setInit } = methods;
     if (!!bridgeId) {
-        return (_jsxs("div", { className: Style.container, children: [_jsx(BridgeDetail, { oakId: bridgeId, oakAutoUnmount: true, oakPath: "$bridge/upsert-bridge/detail" }), _jsx("div", { style: {
+        return (_jsxs("div", { className: Style.container, children: [_jsx(BridgeDetail, { oakId: bridgeId, oakAutoUnmount: true, oakPath: oakFullpath
+                        ? `${oakFullpath}`
+                        : undefined }), _jsx("div", { style: {
                         width: '100%',
                         display: 'flex',
                         justifyContent: 'flex-end',

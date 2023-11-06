@@ -10,6 +10,7 @@ export default OakComponent({
     properties: {
         entity: '',
         entityId: '',
+        qrCodeType: '',
         redirectTo: undefined,
     },
     lifetimes: {
@@ -32,7 +33,7 @@ export default OakComponent({
             });
         },
         async confirm() {
-            const { entityId, entity, redirectTo } = this.props;
+            const { entityId, entity, redirectTo, qrCodeType } = this.props;
             const { period } = this.state;
             const time = period * 24 * 60 * 60 * 1000;
             if (!period) {
@@ -48,6 +49,7 @@ export default OakComponent({
                 expiresAt: Date.now() + time,
                 expired: false,
                 redirectTo,
+                qrCodeType,
             });
             const id = this.getId();
             this.execute();

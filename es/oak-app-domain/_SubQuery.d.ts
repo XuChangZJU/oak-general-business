@@ -253,7 +253,9 @@ export type ArticleMenuIdSubQuery = {
     }) | any;
 };
 export type BridgeIdSubQuery = {
-    [K in "$in" | "$nin"]?: (Bridge.BridgeIdSubQuery & {
+    [K in "$in" | "$nin"]?: (WechatQrCode.BridgeIdSubQuery & {
+        entity: "wechatQrCode";
+    }) | (Bridge.BridgeIdSubQuery & {
         entity: "bridge";
     }) | any;
 };
