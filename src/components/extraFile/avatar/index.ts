@@ -22,12 +22,12 @@ export default OakComponent({
         sort: 1,
         applicationId: 1,
     },
-    features: ['extraFile2'],
+    features: ['extraFile'],
     formData({ data: extraFiles, features }) {
         const avatar = extraFiles?.filter(
             (ele) => !ele.$$deleteAt$$ && ele.tag1 === 'avatar'
         )[0];
-        const avatarUrl = features.extraFile2.getUrl(
+        const avatarUrl = features.extraFile.getUrl(
             avatar as EntityDict['extraFile']['OpSchema']
         );
         return {
@@ -137,7 +137,7 @@ export default OakComponent({
 
             // 如果autoUpload
             if (autoUpload) {
-                await this.features.extraFile2.autoUpload(
+                await this.features.extraFile.autoUpload(
                     updateData as EntityDict['extraFile']['OpSchema'],
                     extra1
                 );
@@ -150,7 +150,7 @@ export default OakComponent({
                 if (avatar) {
                     this.removeItem(avatar.id as string);
                 }
-                this.features.extraFile2.addLocalFile(id, extra1);
+                this.features.extraFile.addLocalFile(id, extra1);
             }
         },
     },

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Space } from 'antd';
-import Style from './web.module.less';
+import Style from './web.pc.module.less';
 import OnUser from '../onUser/index';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';

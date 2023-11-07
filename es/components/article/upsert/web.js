@@ -27,17 +27,17 @@ function customCheckImageFn(src, alt, url) {
 }
 export default function Render(props) {
     const { methods: method, data } = props;
-    const { t, setEditor, check, preview, addExtraFile, uploadFile, update, setHtml, gotoPreview, } = method;
-    const { id, content, editor, origin1, oakFullpath, html, oakId, articleMenuId, changeIsEdit } = data;
-    const [articleId, setArticleId] = useState("");
+    const { t, setEditor, check, preview, uploadFile, update, setHtml, gotoPreview, } = method;
+    const { id, content, editor, origin1, oakFullpath, html, oakId, articleMenuId, changeIsEdit, } = data;
+    const [articleId, setArticleId] = useState('');
     useEffect(() => {
         if (id) {
             setArticleId(id);
         }
     }, [id]);
-    return (_jsxs("div", { className: Style.container, children: [_jsx("div", { style: { width: 'calc(100% - 20px)' }, children: _jsx(Toolbar, { editor: editor, defaultConfig: toolbarConfig, mode: "default" }) }), _jsxs(Row, { children: [_jsx(Col, { flex: 4 }), _jsx(Col, { flex: 16, children: _jsx("div", { className: Style.content, children: _jsxs("div", { className: Style.editorContainer, children: [data.contentTip && (_jsx(Alert, { type: "info", message: t("tips.content"), closable: true, onClose: () => method.clearContentTip() })), _jsx("div", { className: Style.titleContainer, children: _jsx(Input, { onChange: (e) => update({ name: e.target.value }), value: data.name, placeholder: "请输入文章标题", size: "large", maxLength: 32, suffix: `${[...(data.name || "")].length}/32`, className: Style.titleInput }) }), _jsx("div", { className: Style.editorContent, children: _jsx(Editor, { defaultConfig: {
+    return (_jsxs("div", { className: Style.container, children: [_jsx("div", { style: { width: 'calc(100% - 20px)' }, children: _jsx(Toolbar, { editor: editor, defaultConfig: toolbarConfig, mode: "default" }) }), _jsxs(Row, { children: [_jsx(Col, { flex: 4 }), _jsx(Col, { flex: 16, children: _jsx("div", { className: Style.content, children: _jsxs("div", { className: Style.editorContainer, children: [data.contentTip && (_jsx(Alert, { type: "info", message: t('tips.content'), closable: true, onClose: () => method.clearContentTip() })), _jsx("div", { className: Style.titleContainer, children: _jsx(Input, { onChange: (e) => update({ name: e.target.value }), value: data.name, placeholder: '请输入文章标题', size: "large", maxLength: 32, suffix: `${[...(data.name || '')].length}/32`, className: Style.titleInput }) }), _jsx("div", { className: Style.editorContent, children: _jsx(Editor, { defaultConfig: {
                                                 autoFocus: true,
-                                                placeholder: "请输入文章内容...",
+                                                placeholder: '请输入文章内容...',
                                                 MENU_CONF: {
                                                     checkImage: customCheckImageFn,
                                                     uploadImage: {
@@ -46,33 +46,28 @@ export default function Render(props) {
                                                             // TS 语法
                                                             // file 即选中的文件
                                                             const { name, size, type } = file;
-                                                            const extension = name.substring(name.lastIndexOf(".") + 1);
-                                                            const filename = name.substring(0, name.lastIndexOf("."));
+                                                            const extension = name.substring(name.lastIndexOf('.') + 1);
+                                                            const filename = name.substring(0, name.lastIndexOf('.'));
                                                             const extraFile = {
-                                                                entity: "article",
+                                                                entity: 'article',
                                                                 entityId: articleId,
-                                                                extra1: file,
                                                                 origin: origin1,
-                                                                type: "image",
-                                                                tag1: "source",
+                                                                type: 'image',
+                                                                tag1: 'source',
                                                                 objectId: generateNewId(),
                                                                 filename,
                                                                 size,
                                                                 extension,
-                                                                bucket: "",
+                                                                bucket: '',
                                                                 id: generateNewId(),
                                                             };
                                                             try {
                                                                 // 自己实现上传，并得到图片 url alt href
-                                                                const { url, bucket } = await uploadFile(extraFile);
-                                                                extraFile.bucket = bucket;
-                                                                extraFile.extra1 = null;
-                                                                // await addExtraFile(extraFile);
+                                                                const url = await uploadFile(extraFile, file);
                                                                 // 最后插入图片
-                                                                insertFn("http://" + url, extraFile.filename);
+                                                                insertFn(url, extraFile.filename);
                                                             }
-                                                            catch (err) {
-                                                            }
+                                                            catch (err) { }
                                                         },
                                                     },
                                                     uploadVideo: {
@@ -81,30 +76,27 @@ export default function Render(props) {
                                                             // TS 语法
                                                             // file 即选中的文件
                                                             const { name, size, type } = file;
-                                                            const extension = name.substring(name.lastIndexOf(".") + 1);
-                                                            const filename = name.substring(0, name.lastIndexOf("."));
+                                                            const extension = name.substring(name.lastIndexOf('.') + 1);
+                                                            const filename = name.substring(0, name.lastIndexOf('.'));
                                                             const extraFile = {
-                                                                entity: "article",
+                                                                entity: 'article',
                                                                 entityId: articleId,
-                                                                extra1: file,
                                                                 origin: origin1,
-                                                                type: "video",
-                                                                tag1: "source",
+                                                                type: 'video',
+                                                                tag1: 'source',
                                                                 objectId: generateNewId(),
                                                                 filename,
                                                                 size,
                                                                 extension,
-                                                                bucket: "",
+                                                                bucket: '',
                                                                 id: generateNewId(),
                                                             };
                                                             try {
                                                                 // 自己实现上传，并得到图片 url alt href
-                                                                const { url, bucket } = await uploadFile(extraFile);
-                                                                extraFile.bucket = bucket;
-                                                                extraFile.extra1 = null;
-                                                                await addExtraFile(extraFile);
+                                                                const url = await uploadFile(extraFile, file);
                                                                 // 最后插入图片
-                                                                insertFn("http://" + url, "http://" + url + "?vframe/jpg/offset/0");
+                                                                insertFn(url, url +
+                                                                    '?vframe/jpg/offset/0');
                                                             }
                                                             catch (err) { }
                                                         },
@@ -114,7 +106,8 @@ export default function Render(props) {
                                                 setHtml(editorDom.getHtml());
                                             }, style: {
                                                 minHeight: 440,
-                                            }, mode: "default" }) }), _jsx("div", { className: Style.footer, children: _jsx(Row, { align: "middle", children: _jsx(Col, { flex: "none", children: _jsxs(Space, { children: [_jsx(Button, { disabled: !data.oakDirty || data.oakExecuting, type: "primary", onClick: () => {
+                                            }, mode: "default" }) }), _jsx("div", { className: Style.footer, children: _jsx(Row, { align: "middle", children: _jsx(Col, { flex: "none", children: _jsxs(Space, { children: [_jsx(Button, { disabled: !data.oakDirty ||
+                                                                data.oakExecuting, type: "primary", onClick: () => {
                                                                 check();
                                                             }, children: "\u4FDD\u5B58" }), _jsxs(Button, { onClick: () => {
                                                                 gotoPreview(content, data.name);

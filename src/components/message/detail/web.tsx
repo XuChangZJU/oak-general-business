@@ -33,7 +33,7 @@ export default function Render(
     const pathname = router?.pathname;
 
     return (
-        <div className={Style.container}>
+        <>
             <h1 className={Style.title}>{title}</h1>
             <div className={Style.content}>{content}</div>
 
@@ -49,6 +49,6 @@ export default function Render(
                     前往
                 </Button>
             )}
-        </div>
+        </>
     );
 }

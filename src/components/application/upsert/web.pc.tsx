@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, Form, Row, Col, Select, Space, Input } from 'antd';
 import PageHeader from '../../../components/common/pageHeader';
 import ComponentStyle from '../../../components/config/style';
-import Style from './web.module.less';
 
 import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';

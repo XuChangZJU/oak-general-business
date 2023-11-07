@@ -20,10 +20,10 @@ export default OakComponent({
         sort: 1,
         applicationId: 1,
     },
-    features: ['extraFile2'],
+    features: ['extraFile'],
     formData({ data: extraFiles, features }) {
         const avatar = extraFiles?.filter((ele) => !ele.$$deleteAt$$ && ele.tag1 === 'avatar')[0];
-        const avatarUrl = features.extraFile2.getUrl(avatar);
+        const avatarUrl = features.extraFile.getUrl(avatar);
         return {
             avatar,
             avatarUrl,
@@ -117,7 +117,7 @@ export default OakComponent({
             };
             // 如果autoUpload
             if (autoUpload) {
-                await this.features.extraFile2.autoUpload(updateData, extra1);
+                await this.features.extraFile.autoUpload(updateData, extra1);
                 if (avatar) {
                     this.removeItem(avatar.id);
                     this.execute();
@@ -128,7 +128,7 @@ export default OakComponent({
                 if (avatar) {
                     this.removeItem(avatar.id);
                 }
-                this.features.extraFile2.addLocalFile(id, extra1);
+                this.features.extraFile.addLocalFile(id, extra1);
             }
         },
     },

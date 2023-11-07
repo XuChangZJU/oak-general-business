@@ -1,5 +1,4 @@
 import React from 'react';
-import Style from './mobile.module.less';
 import MessageCell from '../../../components/message/cell';
 import Empty from '../../../components/common/empty';
 
@@ -25,7 +24,7 @@ export default function Render(
     const { goDetailById } = methods;
 
     return (
-        <div className={Style.container}>
+        <>
             {messages?.length > 0 ? (
                 <div>
                     {messages?.map((message, index: number) => (
@@ -44,13 +43,11 @@ export default function Render(
                     ))}
                 </div>
             ) : (
-                <div className={Style.noData}>
-                    <Empty
-                        description="暂无消息"
-                        image={Empty.PRESENTED_IMAGE_SIMPLE}
-                    ></Empty>
-                </div>
+                <Empty
+                    description="暂无消息"
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                ></Empty>
             )}
-        </div>
+        </>
     );
 }

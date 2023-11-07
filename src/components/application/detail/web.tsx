@@ -1,7 +1,5 @@
 import React, { ReactNode, useState } from 'react';
 import { Tabs, Row, Descriptions, Typography, Button, Modal } from 'antd';
-import PageHeader from '../../../components/common/pageHeader';
-import Style from './web.module.less';
 
 import {
     AppType,
@@ -57,10 +55,7 @@ export default function Render(
                         </Button>
                     }
                 >
-                    <ApplicationUpsert
-                        oakPath={oakFullpath}
-                        oakId={id}
-                    />
+                    <ApplicationUpsert oakPath={oakFullpath} oakId={id} />
                 </Modal>
                 <Descriptions column={2} bordered>
                     <Descriptions.Item label="id">
@@ -68,21 +63,15 @@ export default function Render(
                             {id}
                         </Typography.Paragraph>
                     </Descriptions.Item>
-                    <Descriptions.Item
-                        label={t('application:attr.name')}
-                    >
+                    <Descriptions.Item label={t('application:attr.name')}>
                         {name}
                     </Descriptions.Item>
                     <Descriptions.Item
-                        label={t(
-                            'application:attr.description'
-                        )}
+                        label={t('application:attr.description')}
                     >
                         {description}
                     </Descriptions.Item>
-                    <Descriptions.Item
-                        label={t('application:attr.type')}
-                    >
+                    <Descriptions.Item label={t('application:attr.type')}>
                         {t(`application:v.type.${type}`)}
                     </Descriptions.Item>
                     <Descriptions.Item span={2}>

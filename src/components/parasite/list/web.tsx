@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import ActionBtnPanel from 'oak-frontend-base/es/components/actionBtnPanel';
 import { EntityDict } from '../../../oak-app-domain';
-import Style from './web.module.less';
 import ParasiteDetail from '../detail';
 
 import { useState } from 'react';

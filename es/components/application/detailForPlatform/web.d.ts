@@ -1,6 +1,6 @@
 import { WebConfig, WechatPublicConfig, WechatMpConfig } from '../../../oak-app-domain/Application/Schema';
-import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
+import { EntityDict } from '../../../oak-app-domain';
 type Config = WebConfig | WechatPublicConfig | WechatMpConfig;
 export default function Render(props: WebComponentProps<EntityDict, 'application', false, {
     name: string;

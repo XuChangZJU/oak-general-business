@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Button, Space } from 'antd';
-import Style from './web.module.less';
 import OnUser from '../onUser/index';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
@@ -18,7 +17,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     const { relations, entity, entityId, oakId, oakDirty, oakFullpath } = props.data;
     const { onConfirm, onReset, t } = props.methods;
     return (
-        <div className={Style.container}>
+        <>
             <OnUser
                 oakAutoUnmount={true}
                 oakPath={oakFullpath && `${oakFullpath}.user`}
@@ -46,6 +45,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                     </Space>
                 </Form.Item>
             </Form>
-        </div>
+        </>
     );
 }

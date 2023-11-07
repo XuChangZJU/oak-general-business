@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form, Row, Col, Select, Input, Space, Tooltip, Modal } from 'antd';
-import Style from './web.module.less';
+import { Button, Form, Input, Space, Modal } from 'antd';
 
 import { EntityDict } from '../../../oak-app-domain';
 import { RowWithActions, WebComponentProps } from 'oak-frontend-base';

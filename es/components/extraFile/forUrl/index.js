@@ -151,13 +151,15 @@ export default OakComponent({
                 isModalOpen1: false,
             });
         },
-        createExtraFileData(params) {
+        createExtraFileData(file) {
             const { methodsType } = this.state;
             const { tag1, tag2, entity, entityId } = this.props;
             let extension = '';
             let filename = '';
+            const applicationId = this.features.application.getApplicationId();
             const createData = {
-                extra1: params,
+                applicationId,
+                extra1: file,
                 entity,
                 entityId,
                 type: 'image',
@@ -165,11 +167,12 @@ export default OakComponent({
                 tag2,
                 bucket: '',
                 id: generateNewId(),
+                objectId: generateNewId(), // 这个域用来标识唯一性
             };
             assert(entity, '必须传入entity');
             switch (methodsType) {
                 case 'uploadLocalImg':
-                    const { name, size, type } = params;
+                    const { name, size, type } = file;
                     extension = name.substring(name.lastIndexOf('.') + 1);
                     filename = name.substring(0, name.lastIndexOf('.'));
                     Object.assign(createData, {
@@ -185,7 +188,7 @@ export default OakComponent({
                         origin: 'unknown',
                         extension,
                         filename,
-                        isBridge: this.isWechatUrlFn(params)
+                        isBridge: this.isWechatUrlFn(file),
                     });
                     break;
                 case 'original':
@@ -193,7 +196,7 @@ export default OakComponent({
                         origin: 'unknown',
                         extension,
                         filename,
-                        isBridge: this.isWechatUrlFn(params)
+                        isBridge: this.isWechatUrlFn(file),
                     });
                     break;
             }
@@ -201,17 +204,12 @@ export default OakComponent({
         },
         async myAddItem(createData) {
             // 目前只支持七牛上传
-            const { methodsType } = this.state;
-            this.addItem(Object.assign(createData, {
+            const file = createData.extra1;
+            const id = this.addItem(Object.assign(createData, {
                 extra1: null,
-            }), async () => {
-                if (createData.bucket) {
-                    // 说明本函数已经执行过了
-                    return;
-                }
-            }, async () => {
-                await this.features.extraFile.upload(createData, createData.extra1);
-            });
+                uploadState: 'uploading',
+            }));
+            this.features.extraFile.addLocalFile(id, file);
         },
         async myUpdateItem(params) {
             const { file } = this.state;

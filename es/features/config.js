@@ -21,4 +21,12 @@ export class Config extends Feature {
         });
         this.publish();
     }
+    async updateStyle(entity, entityId, style) {
+        await this.cache.exec('updateStyle', {
+            entity,
+            entityId,
+            style,
+        });
+        this.publish();
+    }
 }

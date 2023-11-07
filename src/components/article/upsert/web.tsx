@@ -52,7 +52,7 @@ function customCheckImageFn(
 export default function Render(
     props: WebComponentProps<
         EntityDict,
-        "article",
+        'article',
         false,
         {
             id: string;
@@ -73,12 +73,10 @@ export default function Render(
             setEditor: (editor: any) => void;
             check: () => void;
             preview: () => void;
-            addExtraFile: (
-                file: EntityDict["extraFile"]["CreateSingle"]["data"]
-            ) => Promise<void>;
             uploadFile: (
-                file: EntityDict["extraFile"]["CreateSingle"]["data"]
-            ) => Promise<{ bucket: string; url: string }>;
+                extraFile: EntityDict['extraFile']['CreateSingle']['data'],
+                file: File
+            ) => Promise<string>;
             clearContentTip: () => void;
             gotoPreview: (content?: string, title?: string) => void;
         }
@@ -90,14 +88,23 @@ export default function Render(
         setEditor,
         check,
         preview,
-        addExtraFile,
         uploadFile,
         update,
         setHtml,
         gotoPreview,
     } = method;
-    const { id, content, editor, origin1, oakFullpath, html, oakId, articleMenuId, changeIsEdit } = data;
-    const [articleId, setArticleId] = useState("");
+    const {
+        id,
+        content,
+        editor,
+        origin1,
+        oakFullpath,
+        html,
+        oakId,
+        articleMenuId,
+        changeIsEdit,
+    } = data;
+    const [articleId, setArticleId] = useState('');
 
     useEffect(() => {
         if (id) {
@@ -106,7 +113,13 @@ export default function Render(
     }, [id]);
     return (
         <div className={Style.container}>
-            <div style={{ width: 'calc(100% - 20px)' }}><Toolbar editor={editor} defaultConfig={toolbarConfig} mode="default" /></div>
+            <div style={{ width: 'calc(100% - 20px)' }}>
+                <Toolbar
+                    editor={editor}
+                    defaultConfig={toolbarConfig}
+                    mode="default"
+                />
+            </div>
             <Row>
                 <Col flex={4} />
                 <Col flex={16}>
@@ -115,19 +128,23 @@ export default function Render(
                             {data.contentTip && (
                                 <Alert
                                     type="info"
-                                    message={t("tips.content")}
+                                    message={t('tips.content')}
                                     closable
                                     onClose={() => method.clearContentTip()}
                                 />
                             )}
                             <div className={Style.titleContainer}>
                                 <Input
-                                    onChange={(e) => update({ name: e.target.value })}
+                                    onChange={(e) =>
+                                        update({ name: e.target.value })
+                                    }
                                     value={data.name}
-                                    placeholder={"请输入文章标题"}
+                                    placeholder={'请输入文章标题'}
                                     size="large"
                                     maxLength={32}
-                                    suffix={`${[...(data.name || "")].length}/32`}
+                                    suffix={`${
+                                        [...(data.name || '')].length
+                                    }/32`}
                                     className={Style.titleInput}
                                 />
                             </div>
@@ -135,47 +152,60 @@ export default function Render(
                                 <Editor
                                     defaultConfig={{
                                         autoFocus: true,
-                                        placeholder: "请输入文章内容...",
+                                        placeholder: '请输入文章内容...',
                                         MENU_CONF: {
                                             checkImage: customCheckImageFn,
                                             uploadImage: {
                                                 // 自定义上传
-                                                async customUpload(file: File, insertFn: InsertFnType) {
+                                                async customUpload(
+                                                    file: File,
+                                                    insertFn: InsertFnType
+                                                ) {
                                                     // TS 语法
                                                     // file 即选中的文件
-                                                    const { name, size, type } = file;
-                                                    const extension = name.substring(
-                                                        name.lastIndexOf(".") + 1
-                                                    );
-                                                    const filename = name.substring(
-                                                        0,
-                                                        name.lastIndexOf(".")
-                                                    );
+                                                    const { name, size, type } =
+                                                        file;
+                                                    const extension =
+                                                        name.substring(
+                                                            name.lastIndexOf(
+                                                                '.'
+                                                            ) + 1
+                                                        );
+                                                    const filename =
+                                                        name.substring(
+                                                            0,
+                                                            name.lastIndexOf(
+                                                                '.'
+                                                            )
+                                                        );
                                                     const extraFile = {
-                                                        entity: "article",
+                                                        entity: 'article',
                                                         entityId: articleId,
-                                                        extra1: file as any,
                                                         origin: origin1,
-                                                        type: "image",
-                                                        tag1: "source",
-                                                        objectId: generateNewId(),
+                                                        type: 'image',
+                                                        tag1: 'source',
+                                                        objectId:
+                                                            generateNewId(),
                                                         filename,
                                                         size,
                                                         extension,
-                                                        bucket: "",
+                                                        bucket: '',
                                                         id: generateNewId(),
-                                                    } as EntityDict["extraFile"]["CreateSingle"]["data"];
+                                                    } as EntityDict['extraFile']['CreateSingle']['data'];
 
                                                     try {
                                                         // 自己实现上传，并得到图片 url alt href
-                                                        const { url, bucket } = await uploadFile(extraFile);
-                                                        extraFile.bucket = bucket;
-                                                        extraFile.extra1 = null;
-                                                        // await addExtraFile(extraFile);
+                                                        const url =
+                                                            await uploadFile(
+                                                                extraFile,
+                                                                file
+                                                            );
                                                         // 最后插入图片
-                                                        insertFn("http://" + url, extraFile.filename);
-                                                    } catch (err) {
-                                                    }
+                                                        insertFn(
+                                                            url,
+                                                            extraFile.filename
+                                                        );
+                                                    } catch (err) {}
                                                 },
                                             },
                                             uploadVideo: {
@@ -186,41 +216,50 @@ export default function Render(
                                                 ) {
                                                     // TS 语法
                                                     // file 即选中的文件
-                                                    const { name, size, type } = file;
-                                                    const extension = name.substring(
-                                                        name.lastIndexOf(".") + 1
-                                                    );
-                                                    const filename = name.substring(
-                                                        0,
-                                                        name.lastIndexOf(".")
-                                                    );
+                                                    const { name, size, type } =
+                                                        file;
+                                                    const extension =
+                                                        name.substring(
+                                                            name.lastIndexOf(
+                                                                '.'
+                                                            ) + 1
+                                                        );
+                                                    const filename =
+                                                        name.substring(
+                                                            0,
+                                                            name.lastIndexOf(
+                                                                '.'
+                                                            )
+                                                        );
                                                     const extraFile = {
-                                                        entity: "article",
+                                                        entity: 'article',
                                                         entityId: articleId,
-                                                        extra1: file as any,
                                                         origin: origin1,
-                                                        type: "video",
-                                                        tag1: "source",
-                                                        objectId: generateNewId(),
+                                                        type: 'video',
+                                                        tag1: 'source',
+                                                        objectId:
+                                                            generateNewId(),
                                                         filename,
                                                         size,
                                                         extension,
-                                                        bucket: "",
+                                                        bucket: '',
                                                         id: generateNewId(),
-                                                    } as EntityDict["extraFile"]["CreateSingle"]["data"];
+                                                    } as EntityDict['extraFile']['CreateSingle']['data'];
 
                                                     try {
                                                         // 自己实现上传，并得到图片 url alt href
-                                                        const { url, bucket } = await uploadFile(extraFile);
-                                                        extraFile.bucket = bucket;
-                                                        extraFile.extra1 = null;
-                                                        await addExtraFile(extraFile);
+                                                        const url =
+                                                            await uploadFile(
+                                                                extraFile,
+                                                                file
+                                                            );
                                                         // 最后插入图片
                                                         insertFn(
-                                                            "http://" + url,
-                                                            "http://" + url + "?vframe/jpg/offset/0"
+                                                            url,
+                                                            url +
+                                                                '?vframe/jpg/offset/0'
                                                         );
-                                                    } catch (err) { }
+                                                    } catch (err) {}
                                                 },
                                             },
                                         },
@@ -240,7 +279,10 @@ export default function Render(
                                     <Col flex="none">
                                         <Space>
                                             <Button
-                                                disabled={!data.oakDirty || data.oakExecuting}
+                                                disabled={
+                                                    !data.oakDirty ||
+                                                    data.oakExecuting
+                                                }
                                                 type="primary"
                                                 onClick={() => {
                                                     check();
@@ -250,7 +292,10 @@ export default function Render(
                                             </Button>
                                             <Button
                                                 onClick={() => {
-                                                    gotoPreview(content, data.name);
+                                                    gotoPreview(
+                                                        content,
+                                                        data.name
+                                                    );
                                                 }}
                                             >
                                                 <EyeOutlined />
@@ -265,6 +310,6 @@ export default function Render(
                 </Col>
                 <Col flex={4} />
             </Row>
-        </div >
+        </div>
     );
 }

@@ -1,7 +1,7 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState } from 'react';
 import { Form, Input, Button, Space } from 'antd';
-import Style from './web.module.less';
+import Style from './web.pc.module.less';
 import OnUser from '../onUser/index';
 export default function Render(props) {
     const { mobileValue, mobileValueReady, relations, entity, entityId, userId, oakFullpath, oakExecutable, legal, isNew } = props.data;

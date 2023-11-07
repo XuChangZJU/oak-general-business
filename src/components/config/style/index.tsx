@@ -4,8 +4,6 @@ import { ClearOutlined } from '@ant-design/icons'
 import { Style as StyleType, ColorType } from '../../../types/Style';
 import { set, get } from 'oak-domain/lib/utils/lodash';
 
-import Style from './index.module.less';
-
 type StyleProps = {
     value?: StyleType | null;
     onChange: (value: StyleType) => void;

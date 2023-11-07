@@ -1,10 +1,8 @@
 import React from 'react';
 import { Form, Checkbox, Input } from 'antd-mobile';
-import Style from './mobile.module.less';
 import UserRelation from './userRelation';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
-import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
 
 export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
     name: string;
@@ -27,7 +25,10 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
 
     return (
         <>
-            <Form.Item style={{ marginBottom: 0 }} label={<div className={Style.tip}>{!isNew ? t('existedUser') : t('newUser')}</div>} />
+            <Form.Item
+                style={{ marginBottom: 0 }}
+                label={!isNew ? t('existedUser') : t('newUser')}
+            />
             <Form.Item
                 label={t('user:attr.name')}
                 name="name"
@@ -50,8 +51,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                     />
                 </>
             </Form.Item>
-            {
-                !isNew ? <Form.Item
+            {!isNew ? (
+                <Form.Item
                     label={t('user:attr.nickname')}
                     name="nickname"
                     rules={[
@@ -61,12 +62,11 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                     ]}
                 >
                     <>
-                        <Input
-                            disabled={true}
-                            value={nickname}
-                        />
+                        <Input disabled={true} value={nickname} />
                     </>
-                </Form.Item> : <Form.Item
+                </Form.Item>
+            ) : (
+                <Form.Item
                     label={t('user:attr.password')}
                     name="password"
                     rules={[
@@ -87,7 +87,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                         />
                     </>
                 </Form.Item>
-            }
+            )}
             <Form.Item
                 label={t('auth')}
                 rules={[
@@ -99,8 +99,10 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
             >
                 <UserRelation
                     oakAutoUnmount={true}
-                    oakPath={oakFullpath ? `${oakFullpath}.userRelation$user`
-                        : undefined
+                    oakPath={
+                        oakFullpath
+                            ? `${oakFullpath}.userRelation$user`
+                            : undefined
                     }
                     entity={entity}
                     entityId={entityId}
@@ -108,5 +110,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                 />
             </Form.Item>
         </>
-    )
+    );
 }

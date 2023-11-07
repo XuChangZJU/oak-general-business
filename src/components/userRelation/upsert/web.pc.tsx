@@ -131,9 +131,5 @@ export default function Render(
         }
         SubPart = <Tabs items={items2} />;
     }
-    return (
-        <>
-            {SubPart}
-        </>
-    );
+    return SubPart;
 }

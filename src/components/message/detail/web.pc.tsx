@@ -33,7 +33,7 @@ export default function Render(
 
 
     return (
-        <div className={Style.container}>
+        <>
             <div className={Style.warp}>
                 <div className={Style.inner}>
                     <h1 className={Style.title}>{title}</h1>
@@ -53,6 +53,6 @@ export default function Render(
                     )}
                 </div>
             </div>
-        </div>
+        </>
     );
 }
