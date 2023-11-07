@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Table, Button, Space, Typography, Modal, Row } from 'antd';
-import Style from './web.module.less';
 
 import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';

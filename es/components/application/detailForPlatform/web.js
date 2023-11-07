@@ -1,13 +1,12 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { useState } from 'react';
 import { Tabs, Card } from 'antd';
-import Style from './web.module.less';
 import WechatMenu from '../../wechatMenu';
 import WechatPublicAutoReply from '../../wechatPublicAutoReply';
 import UserWechatPublicTag from '../../userWechatPublicTag';
 export default function Render(props) {
-    const { oakId, tabValue, config, name, description, type, system } = props.data;
-    const { t, navigateBack, onTabClick, goWechatPublicTagList } = props.methods;
+    const { oakId, tabValue, name } = props.data;
+    const { t, navigateBack, onTabClick } = props.methods;
     const [tabKey, setTabKey] = useState('menu');
     const Actions = [];
     const items = [
@@ -27,7 +26,7 @@ export default function Render(props) {
             children: (_jsx(UserWechatPublicTag, { oakAutoUnmount: true, applicationId: oakId, oakPath: `$application-detail-user-${oakId}` }))
         }
     ];
-    return (_jsx("div", { className: Style.container, children: _jsx(Card, { title: name, bordered: false, extra: Actions, children: _jsx(Tabs, { items: items, onChange: (key) => {
-                    setTabKey(key);
-                } }) }) }));
+    return (_jsx(Card, { title: name, bordered: false, extra: Actions, children: _jsx(Tabs, { items: items, onChange: (key) => {
+                setTabKey(key);
+            } }) }));
 }

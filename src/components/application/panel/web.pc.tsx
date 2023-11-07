@@ -122,16 +122,14 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
     }
     if (id && oakFullpath) {
         return (
-            <div className={Styles.container}>
-                <Tabs
-                    tabPosition='left'
-                    onChange={(key) => {
-                        setTabKey(key);
-                    }}
-                    items={items}
-                    style={{ height: 520 }}
-                />
-            </div>
+            <Tabs
+                tabPosition="left"
+                onChange={(key) => {
+                    setTabKey(key);
+                }}
+                items={items}
+                style={{ height: 520 }}
+            />
         );
     }
 }

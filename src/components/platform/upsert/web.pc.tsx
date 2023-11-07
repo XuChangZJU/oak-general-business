@@ -1,9 +1,6 @@
 import React from 'react';
 import { Button, Form, Row, Col, Input, Space } from 'antd';
 
-import Style from './web.module.less';
-
-
 import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Tabs, Card, Descriptions, Typography, Modal, Button, Row } from 'antd';
 import { WebComponentProps } from 'oak-frontend-base';
-import Style from './web.module.less';
 
 import PlatformUpsert from '../upsert';
 import { EntityDict } from '../../../oak-app-domain';

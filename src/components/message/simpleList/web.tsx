@@ -27,7 +27,7 @@ export default function Render(
     const { goDetailById, goMessageList } = methods;
 
     return (
-        <div className={Style.container}>
+        <>
             {messages?.length > 0 ? (
                 <div>
                     {messages?.map((message, index: number) => (
@@ -55,6 +55,6 @@ export default function Render(
                     ></Empty>
                 </div>
             )}
-        </div>
+        </>
     );
 }
