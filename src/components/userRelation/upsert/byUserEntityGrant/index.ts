@@ -116,7 +116,7 @@ export default OakComponent({
                     qrCodeType: qrCodeType as QrCodeType,
                     claimUrl,
                 });
-    
+
                 this.setState({
                     userEntityGrantId: '',
                 });

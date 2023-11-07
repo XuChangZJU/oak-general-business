@@ -22,12 +22,18 @@ export default OakComponent({
         expired: 1,
         expiresAt: 1,
     },
+    properties: {
+        entity: '',
+        entityId: '',
+        relationEntity: '',
+    },
     filters: [
         {
             filter() {
                 return {
                     entity: this.props.entity,
                     entityId: this.props.entityId,
+                    relationEntity: this.props.relationEntity,
                 };
             },
         },

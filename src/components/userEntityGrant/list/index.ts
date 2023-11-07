@@ -17,10 +17,17 @@ export default OakComponent({
             name: 1,
             nickname: 1,
         },
-        granteeId: 1,
         $$createAt$$: 1,
         expired: 1,
         expiresAt: 1,
+    },
+    actions: [
+        'disable',
+    ],
+    properties: {
+        entity: '',
+        entityId: '',
+        relationEntity: '',
     },
     filters: [
         {
@@ -28,6 +35,7 @@ export default OakComponent({
                 return {
                     entity: this.props.entity,
                     entityId: this.props.entityId,
+                    relationEntity: this.props.relationEntity,
                 };
             },
         },
