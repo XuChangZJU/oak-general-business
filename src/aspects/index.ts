@@ -22,8 +22,7 @@ import {
     getMaterial,
     deleteMaterial,
 } from './application';
-import { updateConfig, updateApplicationConfig } from './config';
-import { updateStyle } from './style2';
+import { updateConfig, updateApplicationConfig, updateStyle } from './config';
 import { syncMessageTemplate } from './template';
 import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user';
 import { createWechatLogin } from './wechatLogin';

@@ -20,7 +20,7 @@ export default OakComponent({
         isBridge: 1,
         uploadState: 1,
     },
-    features: ['extraFile2'],
+    features: ['extraFile'],
     formData({ data, features }) {
         let files = data?.sort((ele1, ele2) => ele1.sort - ele2.sort);
         if (this.props.tag1) {
@@ -30,9 +30,9 @@ export default OakComponent({
             files = files?.filter((ele) => ele?.tag2 === this.props.tag2);
         }
         const files2 = files.map((ele) => {
-            const url = features.extraFile2.getUrl(ele);
-            const thumbUrl = features.extraFile2.getUrl(ele, this.props.style);
-            const fileName = features.extraFile2.getFileName(ele);
+            const url = features.extraFile.getUrl(ele);
+            const thumbUrl = features.extraFile.getUrl(ele, this.props.style);
+            const fileName = features.extraFile.getFileName(ele);
             return {
                 url,
                 thumbUrl,

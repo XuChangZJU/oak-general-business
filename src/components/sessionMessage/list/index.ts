@@ -102,10 +102,8 @@ export default OakComponent({
         },
     },
     formData({ data, features }) {
-        const sessionMessages = data?.filter(
-                (ele) => ele.$$createAt$$ !== 1
-            )
- 
+        const sessionMessages = data?.filter((ele) => ele.$$createAt$$ !== 1);
+
         // 获取用户最后一条sessionMessage
         const userLastMessage = this.getUserLastMessage() as RowWithActions<
             EntityDict,
@@ -328,7 +326,7 @@ export default OakComponent({
                 entityId: sessionMessageId,
             } as EntityDict['extraFile']['CreateSingle']['data'];
 
-            await this.features.extraFile2.autoUpload(
+            await this.features.extraFile.autoUpload(
                 extraFile as EntityDict['extraFile']['OpSchema'],
                 originFileObj
             );
@@ -348,12 +346,12 @@ export default OakComponent({
                     },
                     sessionMessageId
                 );
-                // this.features.extraFile2.addLocalFile(
+                // this.features.extraFile.addLocalFile(
                 //     extraFile?.id,
                 //     originFileObj
                 // );
                 await this.execute(undefined, false);
-                // this.features.extraFile2.upload(extraFile?.id);
+                // this.features.extraFile.upload(extraFile?.id);
                 this.pageScroll('comment');
                 this.createItem();
             } catch (err) {
@@ -424,12 +422,12 @@ export default OakComponent({
         //                 },
         //             ],
         //         } as EntityDict['sessionMessage']['CreateSingle']['data']);
-        //         this.features.extraFile2.addLocalFile(
+        //         this.features.extraFile.addLocalFile(
         //             extraFile?.id,
         //             originFileObj
         //         );
         //         await this.execute(undefined, false);
-        //         this.features.extraFile2.upload(extraFile?.id);
+        //         this.features.extraFile.upload(extraFile?.id);
         //     } catch (err) {
         //         throw err;
         //     }

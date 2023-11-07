@@ -1,24 +1,25 @@
-import { WebComponentProps } from "oak-frontend-base";
+import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 import React, { useState, useEffect, useRef } from 'react';
 import { Table, Button, Space, Typography, Input, Select, Modal } from 'antd';
-import Styles from './web.module.less';
 
-export default function Render(props: WebComponentProps<
-    EntityDict,
-    'messageTypeTemplate',
-    true,
-    {
-        mtt: EntityDict['messageTypeTemplate']['Schema'][];
-        wechatPublicTemplates: EntityDict['wechatPublicTemplate']['Schema'][];
-        dirtyIds: string[];
-        messageTypes: string[];
-        applicationId: string;
-    },
-    {
-        syncTemplate: () => Promise<void>;
-    }>) {
-
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'messageTypeTemplate',
+        true,
+        {
+            mtt: EntityDict['messageTypeTemplate']['Schema'][];
+            wechatPublicTemplates: EntityDict['wechatPublicTemplate']['Schema'][];
+            dirtyIds: string[];
+            messageTypes: string[];
+            applicationId: string;
+        },
+        {
+            syncTemplate: () => Promise<void>;
+        }
+    >
+) {
     const {
         oakPagination,
         mtt = [],
@@ -28,18 +29,33 @@ export default function Render(props: WebComponentProps<
         applicationId,
         wechatPublicTemplates = [],
     } = props.data;
-    const { setCurrentPage, setPageSize, t, addItem, syncTemplate,
-        removeItem, updateItem, recoverItem, resetItem, execute } = props.methods;
+    const {
+        setCurrentPage,
+        setPageSize,
+        t,
+        addItem,
+        syncTemplate,
+        removeItem,
+        updateItem,
+        recoverItem,
+        resetItem,
+        execute,
+    } = props.methods;
     const [syncDisable, setSyncDisable] = useState(false);
     const [open, setOpen] = useState(false);
 
     const { pageSize, total, currentPage } = oakPagination || {};
     return (
-        <div className={Styles.container}>
+        <>
             <Space>
                 <Button
                     type="default"
-                    disabled={!(messageTypes.length > 0 && wechatPublicTemplates.length > 0)}
+                    disabled={
+                        !(
+                            messageTypes.length > 0 &&
+                            wechatPublicTemplates.length > 0
+                        )
+                    }
                     onClick={() => {
                         addItem({
                             templateId: wechatPublicTemplates[0].id,
@@ -67,18 +83,16 @@ export default function Render(props: WebComponentProps<
                 >
                     {'查看现有模板'}
                 </Button>
-                {
-                    dirtyIds.length > 0 && (
-                        <Button
-                            type="primary"
-                            onClick={() => {
-                                execute();
-                            }}
-                        >
-                            {t('common::action.confirm')}
-                        </Button>
-                    )
-                }
+                {dirtyIds.length > 0 && (
+                    <Button
+                        type="primary"
+                        onClick={() => {
+                            execute();
+                        }}
+                    >
+                        {t('common::action.confirm')}
+                    </Button>
+                )}
             </Space>
             <Table
                 loading={oakLoading}
@@ -90,28 +104,38 @@ export default function Render(props: WebComponentProps<
                         title: '消息类型',
                         width: 180,
                         render: (value, record, index) => {
-                            if (dirtyIds.includes(record.id) && !record.$$deleteAt$$) {
+                            if (
+                                dirtyIds.includes(record.id) &&
+                                !record.$$deleteAt$$
+                            ) {
                                 return (
                                     <Select
                                         style={{
                                             width: '100%',
                                         }}
                                         value={value}
-                                        onChange={(e) => updateItem({
-                                            type: e,
-                                        }, record.id)}
-                                        options={messageTypes.map(
-                                            ele => ({
-                                                value: ele,
-                                                label: ele
-                                            })
-                                        )}
+                                        onChange={(e) =>
+                                            updateItem(
+                                                {
+                                                    type: e,
+                                                },
+                                                record.id
+                                            )
+                                        }
+                                        options={messageTypes.map((ele) => ({
+                                            value: ele,
+                                            label: ele,
+                                        }))}
                                     />
                                 );
                             }
                             return (
                                 <Typography.Text
-                                    type={!!record.$$deleteAt$$ ? 'danger' : undefined}
+                                    type={
+                                        !!record.$$deleteAt$$
+                                            ? 'danger'
+                                            : undefined
+                                    }
                                     delete={!!record.$$deleteAt$$}
                                 >
                                     {value}
@@ -124,20 +148,28 @@ export default function Render(props: WebComponentProps<
                         title: '模板消息标题',
                         width: 300,
                         render: (value, record, index) => {
-                            if (dirtyIds.includes(record.id) && !record.$$deleteAt$$) {
+                            if (
+                                dirtyIds.includes(record.id) &&
+                                !record.$$deleteAt$$
+                            ) {
                                 return (
                                     <Select
                                         style={{
                                             width: '100%',
                                         }}
                                         value={value}
-                                        onChange={(e) => updateItem({
-                                            type: e,
-                                        }, record.id)}
+                                        onChange={(e) =>
+                                            updateItem(
+                                                {
+                                                    type: e,
+                                                },
+                                                record.id
+                                            )
+                                        }
                                         options={wechatPublicTemplates.map(
-                                            ele => ({
+                                            (ele) => ({
                                                 value: ele.id,
-                                                label: ele.title
+                                                label: ele.title,
                                             })
                                         )}
                                     />
@@ -145,7 +177,11 @@ export default function Render(props: WebComponentProps<
                             }
                             return (
                                 <Typography.Text
-                                    type={!!record.$$deleteAt$$ ? 'danger' : undefined}
+                                    type={
+                                        !!record.$$deleteAt$$
+                                            ? 'danger'
+                                            : undefined
+                                    }
                                     delete={!!record.$$deleteAt$$}
                                 >
                                     {record?.template?.title}
@@ -161,30 +197,28 @@ export default function Render(props: WebComponentProps<
                         render: (value, record, index) => {
                             return (
                                 <>
-                                    {
-                                        !record.$$deleteAt$$ ? (
-                                            <Button
-                                                type="link"
-                                                danger
-                                                onClick={() => {
-                                                    removeItem(record.id);
-                                                }}
-                                            >
-                                                {t('common::action.remove')}
-                                            </Button>
-                                        ) : (
-                                            <Button
-                                                type="link"
-                                                onClick={() => {
-                                                    recoverItem(record.id);
-                                                }}
-                                            >
-                                                恢复
-                                            </Button>
-                                        )
-                                    }
-                                    {
-                                        !record.$$deleteAt$$ && (!dirtyIds.includes(record.id) ? (
+                                    {!record.$$deleteAt$$ ? (
+                                        <Button
+                                            type="link"
+                                            danger
+                                            onClick={() => {
+                                                removeItem(record.id);
+                                            }}
+                                        >
+                                            {t('common::action.remove')}
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            type="link"
+                                            onClick={() => {
+                                                recoverItem(record.id);
+                                            }}
+                                        >
+                                            恢复
+                                        </Button>
+                                    )}
+                                    {!record.$$deleteAt$$ &&
+                                        (!dirtyIds.includes(record.id) ? (
                                             <Button
                                                 type="link"
                                                 onClick={() => {
@@ -202,8 +236,7 @@ export default function Render(props: WebComponentProps<
                                             >
                                                 恢复
                                             </Button>
-                                        ))
-                                    }
+                                        ))}
                                 </>
                             );
                         },
@@ -223,11 +256,11 @@ export default function Render(props: WebComponentProps<
                 }}
             />
             <Modal
-                title='模板列表'
+                title="模板列表"
                 open={open}
                 destroyOnClose={true}
                 onCancel={() => {
-                    setOpen(false)
+                    setOpen(false);
                 }}
                 width={'80%'}
                 footer={null}
@@ -249,5 +282,6 @@ export default function Render(props: WebComponentProps<
                     ]}
                 />
             </Modal>
-        </div>);
+        </>
+    );
 }

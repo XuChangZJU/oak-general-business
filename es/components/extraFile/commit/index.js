@@ -2,7 +2,7 @@ import assert from 'assert';
 export default OakComponent({
     formData({ features }) {
         const ids = this.getEfIds();
-        const states = ids.map((id) => features.extraFile2.getFileState(id));
+        const states = ids.map((id) => features.extraFile.getFileState(id));
         let state = 'uploaded';
         states.forEach((ele) => {
             if (ele) {
@@ -60,7 +60,7 @@ export default OakComponent({
                         assert(v[attr] instanceof Array);
                         const [e2, fk2] = rel;
                         if (e2 === 'extraFile') {
-                            efIds.push(...(v[attr].map((ele) => ele.id)));
+                            efIds.push(...v[attr].map((ele) => ele.id));
                         }
                         else {
                             v[attr].forEach((ele) => getRecursive(e2, ele));
@@ -69,7 +69,7 @@ export default OakComponent({
                 }
             };
             if (value instanceof Array) {
-                value.forEach(ele => getRecursive(entity, ele));
+                value.forEach((ele) => getRecursive(entity, ele));
             }
             getRecursive(entity, value);
             return efIds;
@@ -81,11 +81,11 @@ export default OakComponent({
             }
             const promises = [];
             ids.forEach((id) => {
-                const fileState = this.features.extraFile2.getFileState(id);
+                const fileState = this.features.extraFile.getFileState(id);
                 if (fileState) {
                     const { state } = fileState;
                     if (['local', 'failed'].includes(state)) {
-                        promises.push(this.features.extraFile2.upload(id));
+                        promises.push(this.features.extraFile.upload(id));
                     }
                 }
             });
@@ -117,5 +117,5 @@ export default OakComponent({
             }
         },
     },
-    features: ['extraFile2'],
+    features: ['extraFile'],
 });

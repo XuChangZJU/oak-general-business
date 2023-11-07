@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Button, Space } from 'antd-mobile';
-import Style from './mobile.module.less';
 import OnUser from '../onUser/index';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
@@ -20,7 +19,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     return (
         <Form
             footer={
-                <div className={Style['btn-container']}>
+                <Space>
                     <Button
                         color="primary"
                         style={{ flex: 2 }}
@@ -31,13 +30,10 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                     >
                         {t('common::action.confirm')}
                     </Button>
-                    <Button
-                        style={{ flex: 1 }}
-                        onClick={() => onReset()}
-                    >
+                    <Button style={{ flex: 1 }} onClick={() => onReset()}>
                         {t('common::reset')}
                     </Button>
-                </div>
+                </Space>
             }
         >
             <OnUser
@@ -49,5 +45,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                 oakId={oakId}
             />
         </Form>
-    )
+    );
 }

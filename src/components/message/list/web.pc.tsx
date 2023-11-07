@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Badge, Table, Space, Typography } from 'antd';
 import dayjs from 'dayjs';
-import Style from './web.module.less';
 import ActionBtnPanel from 'oak-frontend-base/es/components/actionBtnPanel';
 
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
@@ -32,134 +31,125 @@ export default function Render(
     const { pageSize, total, currentPage } = oakPagination || {};
 
     return (
-        <div className={Style.container}>
-            <Table
-                loading={oakLoading}
-                dataSource={messages || []}
-                rowKey="id"
-                // scroll={{ x: 1200 }}
-                columns={[
-                    // {
-                    //     dataIndex: 'serial-number',
-                    //     title: '序号',
-                    //     render: (value, record, index) => {
-                    //         return index + 1;
-                    //     },
-                    // },
-                    {
-                        dataIndex: 'title',
-                        title: '消息内容',
-                        render: (value, record, index) => {
-                            if (record.visitState === 'unvisited') {
-                                return (
-                                    <>
-                                        <Badge
-                                            style={{ marginRight: 5 }}
-                                            status="processing"
-                                        ></Badge>
-                                        <Typography.Link
-                                            onClick={() => {
-                                                goDetailById(record.id!);
-                                            }}
-                                        >
-                                            {value}
-                                        </Typography.Link>
-                                    </>
-                                );
-                            }
+        <Table
+            loading={oakLoading}
+            dataSource={messages || []}
+            rowKey="id"
+            // scroll={{ x: 1200 }}
+            columns={[
+                // {
+                //     dataIndex: 'serial-number',
+                //     title: '序号',
+                //     render: (value, record, index) => {
+                //         return index + 1;
+                //     },
+                // },
+                {
+                    dataIndex: 'title',
+                    title: '消息内容',
+                    render: (value, record, index) => {
+                        if (record.visitState === 'unvisited') {
                             return (
-                                <Typography.Text
-                                    onClick={() => {
-                                        goDetailById(record.id!);
-                                    }}
-                                >
-                                    {value}
-                                </Typography.Text>
+                                <>
+                                    <Badge
+                                        style={{ marginRight: 5 }}
+                                        status="processing"
+                                    ></Badge>
+                                    <Typography.Link
+                                        onClick={() => {
+                                            goDetailById(record.id!);
+                                        }}
+                                    >
+                                        {value}
+                                    </Typography.Link>
+                                </>
                             );
-                        },
+                        }
+                        return (
+                            <Typography.Text
+                                onClick={() => {
+                                    goDetailById(record.id!);
+                                }}
+                            >
+                                {value}
+                            </Typography.Text>
+                        );
                     },
-                    {
-                        dataIndex: 'type',
-                        title: '类型',
-                        render: (value, record, index) => {
-                            return MessageType[
-                                value as keyof typeof MessageType
-                            ];
-                        },
+                },
+                {
+                    dataIndex: 'type',
+                    title: '类型',
+                    render: (value, record, index) => {
+                        return MessageType[value as keyof typeof MessageType];
                     },
-                    {
-                        dataIndex: 'visitState',
-                        title: '是否已读',
-                        render: (value, record, index) => {
-                            return value === 'unvisited' ? '未读' : '已读';
-                        },
+                },
+                {
+                    dataIndex: 'visitState',
+                    title: '是否已读',
+                    render: (value, record, index) => {
+                        return value === 'unvisited' ? '未读' : '已读';
                     },
-                    {
-                        dataIndex: '$$createAt$$',
-                        title: '接收时间',
-                        render: (value, record, index) => {
-                            return (
-                                <div>
-                                    {dayjs(value).format(
-                                        'YYYY-MM-DD HH:mm:ss'
-                                    )}
-                                </div>
-                            );
-                        },
+                },
+                {
+                    dataIndex: '$$createAt$$',
+                    title: '接收时间',
+                    render: (value, record, index) => {
+                        return (
+                            <div>
+                                {dayjs(value).format('YYYY-MM-DD HH:mm:ss')}
+                            </div>
+                        );
                     },
-                    {
-                        dataIndex: 'op',
-                        width: 300,
-                        title: '操作',
-                        align: 'center',
-                        render: (value, record, index) => {
-                            return (
-                                <ActionBtnPanel
-                                    mode="table-cell"
-                                    entity="message"
-                                    items={[
-                                        {
-                                            label: '详情',
-                                            onClick: () => {
-                                                goDetailById(record.id!);
-                                            },
+                },
+                {
+                    dataIndex: 'op',
+                    width: 300,
+                    title: '操作',
+                    align: 'center',
+                    render: (value, record, index) => {
+                        return (
+                            <ActionBtnPanel
+                                mode="table-cell"
+                                entity="message"
+                                items={[
+                                    {
+                                        label: '详情',
+                                        onClick: () => {
+                                            goDetailById(record.id!);
                                         },
-                                        {
-                                            action: 'visit',
-                                            show: record[
-                                                '#oakLegalActions'
-                                            ]?.includes('visit'),
-                                            onClick: async () => {
-                                                methods.updateItem(
-                                                    {},
-                                                    record.id!,
-                                                    'visit'
-                                                );
-                                                await methods.execute();
-                                            },
+                                    },
+                                    {
+                                        action: 'visit',
+                                        show: record[
+                                            '#oakLegalActions'
+                                        ]?.includes('visit'),
+                                        onClick: async () => {
+                                            methods.updateItem(
+                                                {},
+                                                record.id!,
+                                                'visit'
+                                            );
+                                            await methods.execute();
                                         },
-                                    ]}
-                                ></ActionBtnPanel>
-                            );
-                        },
-                        fixed: 'right',
+                                    },
+                                ]}
+                            ></ActionBtnPanel>
+                        );
                     },
-                ]}
-                pagination={{
-                    total: total,
-                    pageSize: pageSize,
-                    current: currentPage,
-                    onShowSizeChange: (
-                        current: number,
-                        pageSize: number
-                    ) => {
-                        setPageSize(pageSize);
-                    },
-                    onChange: (page: number, pageSize: number) => {
-                        setCurrentPage(page);
-                    },
-                }}
-            />
-        </div>
+                    fixed: 'right',
+                },
+            ]}
+            pagination={{
+                total: total,
+                pageSize: pageSize,
+                current: currentPage,
+                onShowSizeChange: (current: number, pageSize: number) => {
+                    setPageSize(pageSize);
+                },
+                onChange: (page: number, pageSize: number) => {
+                    setCurrentPage(page);
+                },
+            }}
+        />
     );
 }

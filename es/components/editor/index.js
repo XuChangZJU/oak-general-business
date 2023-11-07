@@ -1,5 +1,4 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
-import { OakUnloggedInException } from 'oak-domain/lib/types';
 export default OakComponent({
     isList: true,
     properties: {
@@ -49,26 +48,6 @@ export default OakComponent({
                 this.triggerEvent('statuschange', e);
             }
         },
-        async addExtraFile(extraFile) {
-            try {
-                const result = await this.features.cache.operate('extraFile', {
-                    action: 'create',
-                    data: extraFile,
-                    id: generateNewId(),
-                });
-                return result;
-            }
-            catch (error) {
-                if (error.constructor.name ===
-                    OakUnloggedInException.name) {
-                    this.navigateTo({
-                        url: '/login',
-                    });
-                    return;
-                }
-                throw error;
-            }
-        },
         async onPickMp(event) {
             if (process.env.OAK_PLATFORM === 'wechatMp') {
                 const { mediaType } = event.currentTarget.dataset;
@@ -90,7 +69,6 @@ export default OakComponent({
                         const extension = tempFilePath.substring(tempFilePath.lastIndexOf('.') + 1);
                         const filename = tempFilePath.substring(0, tempFilePath.lastIndexOf('.'));
                         const extraFile = {
-                            extra1: tempFilePath,
                             origin: 'qiniu',
                             type: 'image',
                             tag1: this.props.tag1 || 'editorImg',
@@ -104,11 +82,11 @@ export default OakComponent({
                             entityId: this.props.entityId,
                             bucket: '',
                             id: generateNewId(),
+                            uploadState: 'uploading'
                         };
-                        const { url } = await this.features.extraFile.createAndUpload(extraFile, extraFile.extra1);
-                        // await this.addExtraFile(extraFile);
+                        const url = await this.features.extraFile.autoUpload(extraFile, tempFilePath);
                         this.editorCtx.insertImage({
-                            src: 'http://' + url,
+                            src: url,
                         });
                     }
                 }

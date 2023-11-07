@@ -1,7 +1,5 @@
 import React, { ReactNode, useState } from 'react';
-import { Tabs, Card, Descriptions, Typography, Button, TabsProps } from 'antd';
-import PageHeader from '../../common/pageHeader';
-import Style from './web.module.less';
+import { Tabs, Card, TabsProps } from 'antd';
 
 import {
     AppType,
@@ -10,9 +8,8 @@ import {
     WechatMpConfig,
 } from '../../../oak-app-domain/Application/Schema';
 
-import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
-import MessageTypeTemplateIdList from '../../messageTypeTemplate/list';
+import { EntityDict } from '../../../oak-app-domain';
 import WechatMenu from '../../wechatMenu';
 import WechatPublicAutoReply from '../../wechatPublicAutoReply';
 import UserWechatPublicTag from '../../userWechatPublicTag';
@@ -40,9 +37,8 @@ export default function Render(
         }
     >
 ) {
-    const { oakId, tabValue, config, name, description, type, system } =
-        props.data;
-    const { t, navigateBack, onTabClick, goWechatPublicTagList } = props.methods;
+    const { oakId, tabValue, name } = props.data;
+    const { t, navigateBack, onTabClick } = props.methods;
     const [tabKey, setTabKey] = useState('menu');
     const Actions: ReactNode[] = [];
     const items: TabsProps['items'] = [
@@ -84,15 +80,13 @@ export default function Render(
     ]
 
     return (
-            <div className={Style.container}>
-                <Card title={name} bordered={false} extra={Actions}>
-                    <Tabs
-                        items={items}
-                        onChange={(key) => {
-                            setTabKey(key);
-                        }}
-                    />
-                </Card>
-            </div>
+        <Card title={name} bordered={false} extra={Actions}>
+            <Tabs
+                items={items}
+                onChange={(key) => {
+                    setTabKey(key);
+                }}
+            />
+        </Card>
     );
 }

@@ -1,4 +1,4 @@
-import { WebComponentProps } from "oak-frontend-base";
+import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'messageTypeTemplate', true, {
     mtt: EntityDict['messageTypeTemplate']['Schema'][];

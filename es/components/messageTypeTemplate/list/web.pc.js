@@ -1,14 +1,14 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import { useState } from 'react';
 import { Table, Button, Space, Typography, Select, Modal } from 'antd';
-import Styles from './web.module.less';
 export default function Render(props) {
     const { oakPagination, mtt = [], dirtyIds = [], oakLoading, messageTypes = [], applicationId, wechatPublicTemplates = [], } = props.data;
-    const { setCurrentPage, setPageSize, t, addItem, syncTemplate, removeItem, updateItem, recoverItem, resetItem, execute } = props.methods;
+    const { setCurrentPage, setPageSize, t, addItem, syncTemplate, removeItem, updateItem, recoverItem, resetItem, execute, } = props.methods;
     const [syncDisable, setSyncDisable] = useState(false);
     const [open, setOpen] = useState(false);
     const { pageSize, total, currentPage } = oakPagination || {};
-    return (_jsxs("div", { className: Styles.container, children: [_jsxs(Space, { children: [_jsx(Button, { type: "default", disabled: !(messageTypes.length > 0 && wechatPublicTemplates.length > 0), onClick: () => {
+    return (_jsxs(_Fragment, { children: [_jsxs(Space, { children: [_jsx(Button, { type: "default", disabled: !(messageTypes.length > 0 &&
+                            wechatPublicTemplates.length > 0), onClick: () => {
                             addItem({
                                 templateId: wechatPublicTemplates[0].id,
                             });
@@ -26,17 +26,20 @@ export default function Render(props) {
                         title: '消息类型',
                         width: 180,
                         render: (value, record, index) => {
-                            if (dirtyIds.includes(record.id) && !record.$$deleteAt$$) {
+                            if (dirtyIds.includes(record.id) &&
+                                !record.$$deleteAt$$) {
                                 return (_jsx(Select, { style: {
                                         width: '100%',
                                     }, value: value, onChange: (e) => updateItem({
                                         type: e,
-                                    }, record.id), options: messageTypes.map(ele => ({
+                                    }, record.id), options: messageTypes.map((ele) => ({
                                         value: ele,
-                                        label: ele
+                                        label: ele,
                                     })) }));
                             }
-                            return (_jsx(Typography.Text, { type: !!record.$$deleteAt$$ ? 'danger' : undefined, delete: !!record.$$deleteAt$$, children: value }));
+                            return (_jsx(Typography.Text, { type: !!record.$$deleteAt$$
+                                    ? 'danger'
+                                    : undefined, delete: !!record.$$deleteAt$$, children: value }));
                         },
                     },
                     {
@@ -44,17 +47,20 @@ export default function Render(props) {
                         title: '模板消息标题',
                         width: 300,
                         render: (value, record, index) => {
-                            if (dirtyIds.includes(record.id) && !record.$$deleteAt$$) {
+                            if (dirtyIds.includes(record.id) &&
+                                !record.$$deleteAt$$) {
                                 return (_jsx(Select, { style: {
                                         width: '100%',
                                     }, value: value, onChange: (e) => updateItem({
                                         type: e,
-                                    }, record.id), options: wechatPublicTemplates.map(ele => ({
+                                    }, record.id), options: wechatPublicTemplates.map((ele) => ({
                                         value: ele.id,
-                                        label: ele.title
+                                        label: ele.title,
                                     })) }));
                             }
-                            return (_jsx(Typography.Text, { type: !!record.$$deleteAt$$ ? 'danger' : undefined, delete: !!record.$$deleteAt$$, children: record?.template?.title }));
+                            return (_jsx(Typography.Text, { type: !!record.$$deleteAt$$
+                                    ? 'danger'
+                                    : undefined, delete: !!record.$$deleteAt$$, children: record?.template?.title }));
                         },
                     },
                     {
@@ -67,11 +73,12 @@ export default function Render(props) {
                                             removeItem(record.id);
                                         }, children: t('common::action.remove') })) : (_jsx(Button, { type: "link", onClick: () => {
                                             recoverItem(record.id);
-                                        }, children: "\u6062\u590D" })), !record.$$deleteAt$$ && (!dirtyIds.includes(record.id) ? (_jsx(Button, { type: "link", onClick: () => {
-                                            updateItem({}, record.id);
-                                        }, children: t('common::action.update') })) : (_jsx(Button, { type: "link", onClick: () => {
-                                            resetItem(record.id);
-                                        }, children: "\u6062\u590D" })))] }));
+                                        }, children: "\u6062\u590D" })), !record.$$deleteAt$$ &&
+                                        (!dirtyIds.includes(record.id) ? (_jsx(Button, { type: "link", onClick: () => {
+                                                updateItem({}, record.id);
+                                            }, children: t('common::action.update') })) : (_jsx(Button, { type: "link", onClick: () => {
+                                                resetItem(record.id);
+                                            }, children: "\u6062\u590D" })))] }));
                         },
                         fixed: 'right',
                     },
@@ -85,7 +92,7 @@ export default function Render(props) {
                     onChange: (current) => {
                         setCurrentPage(current);
                     },
-                } }), _jsx(Modal, { title: '\u6A21\u677F\u5217\u8868', open: open, destroyOnClose: true, onCancel: () => {
+                } }), _jsx(Modal, { title: "\u6A21\u677F\u5217\u8868", open: open, destroyOnClose: true, onCancel: () => {
                     setOpen(false);
                 }, width: '80%', footer: null, children: _jsx(Table, { dataSource: wechatPublicTemplates, rowKey: "id", columns: [
                         {

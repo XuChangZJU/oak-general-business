@@ -14,18 +14,6 @@ export default OakComponent({
         dirty: false,
         currentStyle: {} as Style,
     },
-    // listeners: {
-    //     config(prev, next) {
-    //         if (prev.config !== next.config) {
-    //             const config2 = next.config || {};
-    //             this.setState({
-    //                 initialConfig: config2,
-    //                 dirty: false,
-    //                 currentConfig: cloneDeep(config2),
-    //             });
-    //         }
-    //     },
-    // },
     lifetimes: {
         ready() {
             const { style } = this.props;
@@ -37,36 +25,13 @@ export default OakComponent({
         }
     },
     methods: {
-        setValue(newStyle: Style) {
-            const newStyle2 = cloneDeep(newStyle || {});
+        setValue(style: Style) {
+            const newStyle = cloneDeep(style || {});
             this.setState({
-                currentStyle: newStyle2,
+                currentStyle: newStyle,
                 dirty: true,
             });
         },
-
-        // cleanKey(path: string, key: string) {   
-        //     const { currentConfig } = this.state;
-        //     const obj = get(currentConfig, path);
-        //     const obj2 = omit(obj, [key]);
-        //     set(currentConfig, path, obj2);
-        //     const newConfig = cloneDeep(currentConfig);
-        //     this.setState({
-        //         currentConfig: newConfig,
-        //         dirty: true,
-        //     });
-        // },
-
-        // removeItem(path: string, index: number) {
-        //     const { currentConfig } = this.state;
-        //     const array = get(currentConfig, path);
-        //     (array as any[]).splice(index, 1);
-        //     const newConfig = cloneDeep(currentConfig || {});
-        //     this.setState({
-        //         currentConfig: newConfig,
-        //         dirty: true,
-        //     });
-        // },
 
         resetStyle() {
             const { initialStyle } = this.state;
@@ -80,7 +45,7 @@ export default OakComponent({
             const { currentStyle } = this.state;
             const { entity, entityId } = this.props;
 
-            await this.features.style2.updateStyle(
+            await this.features.config.updateStyle(
                 entity!,
                 entityId!,
                 currentStyle,

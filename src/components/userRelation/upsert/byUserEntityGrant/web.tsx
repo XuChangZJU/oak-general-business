@@ -57,7 +57,7 @@ export default function render(
 
     const P = !!userEntityGrantId ? (
         <>
-            <NoticeBar content={t('shareCode')} color='info' />
+            <NoticeBar content={t('shareCode')} color="info" />
             <UserEntityGrantShare
                 oakId={userEntityGrantId}
                 oakAutoUnmount={true}
@@ -77,26 +77,24 @@ export default function render(
         </>
     ) : (
         <Form>
-            <Form.Item
-                label={t('userEntityGrant:attr.relationIds')}
-                required
-            >
+            <Form.Item label={t('userEntityGrant:attr.relationIds')} required>
                 <Checkbox.Group
                     value={relationIds || []}
                     onChange={(val) => {
                         update({ relationIds: val as string[] });
                     }}
                 >
-                    <Space direction='vertical'>
-                        {
-                            relations?.map(
-                                (ele) => (
-                                    <Checkbox value={ele.id}>
-                                        {ele.display || t(`${relationEntity as string}:r.${ele.name}`)}
-                                    </Checkbox>
-                                )
-                            )
-                        }
+                    <Space direction="vertical">
+                        {relations?.map((ele) => (
+                            <Checkbox value={ele.id}>
+                                {ele.display ||
+                                    t(
+                                        `${relationEntity as string}:r.${
+                                            ele.name
+                                        }`
+                                    )}
+                            </Checkbox>
+                        ))}
                     </Space>
                 </Checkbox.Group>
             </Form.Item>
@@ -107,15 +105,21 @@ export default function render(
                     help={t('helpRule')}
                 >
                     <Radio.Group
-                        value={rule as EntityDict['userEntityGrant']['OpSchema']['rule']}
-                        onChange={(val) => update({ rule: val as EntityDict['userEntityGrant']['OpSchema']['rule'] })}
+                        value={
+                            rule as EntityDict['userEntityGrant']['OpSchema']['rule']
+                        }
+                        onChange={(val) =>
+                            update({
+                                rule: val as EntityDict['userEntityGrant']['OpSchema']['rule'],
+                            })
+                        }
                     >
-                        <Space direction='vertical'>
-                            {
-                                rules.map(
-                                    (ele) => <Radio value={ele}>{t(`userEntityGrant:v.rule.${ele}`)}</Radio>
-                                )
-                            }
+                        <Space direction="vertical">
+                            {rules.map((ele) => (
+                                <Radio value={ele}>
+                                    {t(`userEntityGrant:v.rule.${ele}`)}
+                                </Radio>
+                            ))}
                         </Space>
                     </Radio.Group>
                 </Form.Item>
@@ -152,7 +156,7 @@ export default function render(
                             {
                                 label: t('unit.minute'),
                                 value: 'minute',
-                            }
+                            },
                         ]}
                         defaultValue={['minute']}
                         value={unit && [unit]}
@@ -174,7 +178,7 @@ export default function render(
                     />
                 </>
             </Form.Item>
-            <div className={Style['btn-container']}>
+            <div className={Style.btnContainer}>
                 <Button
                     color="primary"
                     onClick={() => confirm()}
@@ -183,10 +187,7 @@ export default function render(
                 >
                     {t('common::action.confirm')}
                 </Button>
-                <Button
-                    onClick={() => onBack()}
-                    style={{ flex: 1 }}
-                >
+                <Button onClick={() => onBack()} style={{ flex: 1 }}>
                     {t('common::back')}
                 </Button>
             </div>
