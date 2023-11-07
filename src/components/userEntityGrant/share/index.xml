@@ -1,11 +1,5 @@
 <!-- index.wxml -->
 <view class="qrcode_view">
-    <!-- <view class="row">
-        <text class="text">分享权限</text>
-        <view class="icon-view">
-            <g-icon name="person_add" size="30" />
-        </view>
-    </view> -->
     <view class="col">
         <block wx:if="{{oakLoading}}">
             <l-loading show="{{true}}" type="circle"></l-loading>

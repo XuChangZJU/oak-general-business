@@ -65,7 +65,6 @@ export default function render(
                 style={{ marginBottom: 16 }}
             />
             <UserEntityGrantShare
-                showBack={false}
                 oakId={userEntityGrantId}
                 oakAutoUnmount={true}
                 oakPath="$userRelation/upsert/byUserEntityGrant-userEntityGrant/detail"
