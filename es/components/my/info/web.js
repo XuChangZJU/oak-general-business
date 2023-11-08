@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Styles from './web.pc.module.less';
 import { Button, List, Popup, Tag, Input, Radio, Form, Space } from 'antd-mobile';
 import MyAvatar from '../avatar';
-import OakIcon from '../../icon';
+import OakIcon from 'oak-frontend-base/es/components/icon';
 const PrimaryColor = getComputedStyle(document.documentElement).getPropertyValue('--oak-color-primary');
 const WarningColor = getComputedStyle(document.documentElement).getPropertyValue('--oak-color-warning');
 const ErrorColor = getComputedStyle(document.documentElement).getPropertyValue('--oak-color-error');

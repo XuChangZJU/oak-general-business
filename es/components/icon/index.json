@@ -1,3 +1,4 @@
 {
-    "component": true
+    "navigationBarTitleText": "OakIcon示例",
+    "usingComponents": {}
 }

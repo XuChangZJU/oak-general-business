@@ -1,9 +1,9 @@
 import React from 'react';
-import { Dropdown, Button, Avatar } from 'antd';
+import { Avatar } from 'antd';
 import Styles from './web.module.less';
 
 import { EntityDict } from '../../../oak-app-domain';
-import OakIcon from '../../icon/index';
+import OakIcon from 'oak-frontend-base/es/components/icon';
 import { WebComponentProps } from 'oak-frontend-base';
 import { AvatarSize } from 'antd/es/avatar/AvatarContext';
 

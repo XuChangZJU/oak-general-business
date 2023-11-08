@@ -3,7 +3,8 @@ import { Button, Space, Drawer, Modal, Tooltip } from 'antd';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 import Style from './web.module.less';
-import OakIcon from '../../icon'
+import OakIcon from 'oak-frontend-base/es/components/icon';
+import IconDemo from '../../icon';
 
 export default function render(props: WebComponentProps<EntityDict, 'address', true, {
     placement: 'top' | 'bottom' | 'left' | 'right',
@@ -19,6 +20,7 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
     const { placement = 'bottom', style = {} } = props.data;
     const { printCachedStore, printDebugStore, printRunningTree, resetInitialData, downloadEnv, resetEnv } = props.methods;
     const [visible, setVisible] = useState(false);
+    const [iconOpen, setIconOpen] = useState(false);
     return (
         <React.Fragment>
             <Button
@@ -182,7 +184,7 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
                             type="primary"
                             shape="circle"
                             onClick={() => {
-                                window.open('/icon')
+                                setIconOpen(true);
                             }}
                         >
                             Icon
@@ -190,6 +192,23 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
                     </Tooltip>
                 </Space>
             </Drawer>
+            <Modal
+                width={960}
+                title="oak-icon"
+                footer={null}
+                open={iconOpen}
+                onCancel={() => {
+                    setIconOpen(false);
+                }}
+                styles={{
+                    body: {
+                        height: window.innerHeight - 200,
+                        overflowY: 'auto'
+                    }
+                }}
+            >
+                <IconDemo />
+            </Modal>
         </React.Fragment>
     );
 }
