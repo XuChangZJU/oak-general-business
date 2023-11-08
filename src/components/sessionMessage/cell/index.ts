@@ -86,7 +86,7 @@ export default OakComponent({
             userMobile:
                 session?.user?.mobile$user &&
                 session?.user?.mobile$user[0]?.mobile,
-            userAvatar: features.extraFile2.getUrl(
+            userAvatar: features.extraFile.getUrl(
                 session?.user?.extraFile$entity &&
                     session?.user?.extraFile$entity[0]
             ),
@@ -96,7 +96,7 @@ export default OakComponent({
             const extraFile$entity = sessionMessage?.extraFile$entity;
 
             Object.assign(newSessionMessage, {
-                picUrl: features.extraFile2.getUrl(
+                picUrl: features.extraFile.getUrl(
                     extraFile$entity && extraFile$entity[0]
                 ),
             });

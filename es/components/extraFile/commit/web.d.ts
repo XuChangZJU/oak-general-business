@@ -1,7 +1,7 @@
 import { WebComponentProps } from 'oak-frontend-base';
 import { ButtonProps } from 'antd-mobile';
 import { EntityDict } from '../../../oak-app-domain';
-import { FileState } from '../../../features/extraFile2';
+import { FileState } from '../../../features/extraFile';
 export default function render(props: WebComponentProps<EntityDict, any, true, {
     state: FileState;
     size?: ButtonProps['size'];

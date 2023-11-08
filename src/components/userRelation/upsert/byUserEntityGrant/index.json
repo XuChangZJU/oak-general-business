@@ -10,7 +10,10 @@
         "l-list": "@oak-frontend-base/miniprogram_npm/lin-ui/list/index",
         "l-radio": "@oak-frontend-base/miniprogram_npm/lin-ui/radio/index",
         "l-radio-group": "@oak-frontend-base/miniprogram_npm/lin-ui/radio-group/index",
+        "l-checkbox-group": "@oak-frontend-base/miniprogram_npm/lin-ui/checkbox-group/index",
+        "l-checkbox": "@oak-frontend-base/miniprogram_npm/lin-ui/checkbox/index",
         "l-counter": "@oak-frontend-base/miniprogram_npm/lin-ui/counter/index",
-        "userEntityGrant-detail": "../../../../pages/userEntityGrant/detail/index"
+        "l-switch": "@oak-frontend-base/miniprogram_npm/lin-ui/switch/index",
+        "userEntityGrant-share": "../../../userEntityGrant/share/index"
     }
 }

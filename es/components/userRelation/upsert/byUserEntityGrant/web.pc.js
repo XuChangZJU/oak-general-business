@@ -1,7 +1,7 @@
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
 import { Form, Radio, Button, Alert, InputNumber, Space, Checkbox, Select, Switch, } from 'antd';
 import UserEntityGrantShare from '../../../userEntityGrant/share';
-import Style from './web.module.less';
+import Style from './web.pc.module.less';
 export default function render(props) {
     const { relations, userEntityGrant, userEntityGrantId, period, unit, maxes, oakExecutable, rules, } = props.data;
     const { relationIds, type, rule, multiple, relationEntity } = userEntityGrant || {};

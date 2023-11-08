@@ -14,7 +14,7 @@ import UserEntityGrantShare from '../../../userEntityGrant/share';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
 
-import Style from './web.module.less';
+import Style from './web.pc.module.less';
 
 type Unit = 'minute' | 'hour' | 'day';
 
@@ -65,7 +65,6 @@ export default function render(
                 style={{ marginBottom: 16 }}
             />
             <UserEntityGrantShare
-                showBack={false}
                 oakId={userEntityGrantId}
                 oakAutoUnmount={true}
                 oakPath="$userRelation/upsert/byUserEntityGrant-userEntityGrant/detail"

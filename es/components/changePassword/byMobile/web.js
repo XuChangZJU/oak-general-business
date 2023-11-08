@@ -1,7 +1,6 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState } from 'react';
 import { Form, Input, Space, Button, Select } from 'antd';
-import Style from './web.module.less';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 export default function Render(props) {
     const { data, methods } = props;
@@ -33,7 +32,7 @@ export default function Render(props) {
                     },
                 ], children: _jsx(Input, { allowClear: true, value: captcha, maxLength: 4, placeholder: '请输入验证码', onChange: (e) => {
                         setCaptcha(e.target.value);
-                    }, className: Style['loginbox-input'], suffix: _jsx(Button, { size: "small", type: "link", disabled: (!mobile) || counter > 0, onClick: () => sendCaptcha(mobile), children: counter > 0 ? `${counter}秒后可重发` : '发送验证码' }) }) }), _jsx(Form.Item, { label: '输入新密码', name: "password", help: validateHelp, rules: [
+                    }, suffix: _jsx(Button, { size: "small", type: "link", disabled: (!mobile) || counter > 0, onClick: () => sendCaptcha(mobile), children: counter > 0 ? `${counter}秒后可重发` : '发送验证码' }) }) }), _jsx(Form.Item, { label: '输入新密码', name: "password", help: validateHelp, rules: [
                     {
                         required: true,
                         message: '请输入密码',

@@ -55,8 +55,8 @@ export default function Render(props) {
         });
     }
     if (id && oakFullpath) {
-        return (_jsx("div", { className: Styles.container, children: _jsx(Tabs, { tabPosition: 'left', onChange: (key) => {
-                    setTabKey(key);
-                }, items: items, style: { height: 520 } }) }));
+        return (_jsx(Tabs, { tabPosition: "left", onChange: (key) => {
+                setTabKey(key);
+            }, items: items, style: { height: 520 } }));
     }
 }

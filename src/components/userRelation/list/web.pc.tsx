@@ -57,110 +57,114 @@ export default function Render(
 
     return (
         <>
-            <div className={Style.container}>
-                <Space style={{ marginBottom: 16 }}>
-                    <Button type="primary" onClick={() => goUpsert()}>
-                        添加
-                    </Button>
-                    {/* <Button
+            <Space style={{ marginBottom: 16 }}>
+                <Button type="primary" onClick={() => goUpsert()}>
+                    添加
+                </Button>
+                {/* <Button
                         onClick={() => setInviteVisible(true)}
                     >
                         邀请记录
                     </Button> */}
-                </Space>
+            </Space>
 
-                <Table
-                    loading={oakLoading}
-                    rowKey="id"
-                    columns={[
-                        {
-                            width: 100,
-                            dataIndex: 'index',
-                            title: '序号',
-                            render: (value, record, index) => index + 1,
+            <Table
+                loading={oakLoading}
+                rowKey="id"
+                columns={[
+                    {
+                        width: 100,
+                        dataIndex: 'index',
+                        title: '序号',
+                        render: (value, record, index) => index + 1,
+                    },
+                    {
+                        dataIndex: 'avatar',
+                        title: '头像',
+                        render: (value, record, index) => {
+                            return value ? (
+                                <Avatar src={value} shape="circle" />
+                            ) : (
+                                <span>未设置</span>
+                            );
                         },
-                        {
-                            dataIndex: 'avatar',
-                            title: '头像',
-                            render: (value, record, index) => {
-                                return value ? (
-                                    <Avatar src={value} shape="circle" />
-                                ) : (
-                                    <span>未设置</span>
-                                );
-                            },
+                    },
+                    {
+                        dataIndex: 'name',
+                        title: '姓名',
+                    },
+                    {
+                        dataIndex: 'nickname',
+                        title: '昵称',
+                    },
+                    {
+                        dataIndex: 'mobile',
+                        title: '手机号',
+                    },
+                    {
+                        dataIndex: 'relations',
+                        title: '权限',
+                        render: (value, record, index) => {
+                            return (
+                                <Space>
+                                    {record.userRelation$user?.map(
+                                        (ele, index) => (
+                                            <Tag key={index}>
+                                                {ele.relation.name
+                                                    ? t(
+                                                          entity +
+                                                              ':r.' +
+                                                              ele.relation.name
+                                                      )
+                                                    : ele.relation.display}
+                                            </Tag>
+                                        )
+                                    )}
+                                </Space>
+                            );
                         },
-                        {
-                            dataIndex: 'name',
-                            title: '姓名',
-                        },
-                        {
-                            dataIndex: 'nickname',
-                            title: '昵称',
-                        },
-                        {
-                            dataIndex: 'mobile',
-                            title: '手机号',
-                        },
-                        {
-                            dataIndex: 'relations',
-                            title: '权限',
-                            render: (value, record, index) => {
-                                return (
-                                    <Space>
-                                        {record.userRelation$user?.map(
-                                            (ele, index) => (
-                                                <Tag key={index}>
-                                                    {ele.relation.name ? t(entity + ':r.' + ele.relation.name) : ele.relation.display}
-                                                </Tag>
-                                            )
-                                        )}
-                                    </Space>
-                                );
-                            },
-                        },
-                        {
-                            title: '操作',
-                            dataIndex: 'operate',
-                            render: (value, record, index) => {
-                                return (
-                                    <Space>
-                                        <a onClick={(e) => goUpdate(record.id)}>
-                                            {!!record.userRelation$user?.length
-                                                ? t('common::action.update')
-                                                : t('common::action.grant')}
+                    },
+                    {
+                        title: '操作',
+                        dataIndex: 'operate',
+                        render: (value, record, index) => {
+                            return (
+                                <Space>
+                                    <a onClick={(e) => goUpdate(record.id)}>
+                                        {!!record.userRelation$user?.length
+                                            ? t('common::action.update')
+                                            : t('common::action.grant')}
+                                    </a>
+                                    {!!record.userRelation$user?.length && (
+                                        <a
+                                            style={{
+                                                color: 'var(--oak-color-error)',
+                                            }}
+                                            onClick={() =>
+                                                setIdRemove(record.id)
+                                            }
+                                        >
+                                            {t('common::action.revoke')}
                                         </a>
-                                        {!!record.userRelation$user?.length && (
-                                            <a
-                                                style={{
-                                                    color: 'var(--oak-color-error)',
-                                                }}
-                                                onClick={() =>
-                                                    setIdRemove(record.id)
-                                                }
-                                            >
-                                                {t('common::action.revoke')}
-                                            </a>
-                                        )}
-                                    </Space>
-                                );
-                            },
+                                    )}
+                                </Space>
+                            );
                         },
-                    ]}
-                    dataSource={users}
-                    pagination={{
-                        total,
-                        pageSize,
-                        current: currentPage,
-                        onShowSizeChange: (current: number, size: number) => {
-                            setPageSize(current);
-                        },
-                        onChange: (page: number, pageSize: number) => {
-                            setCurrentPage(page);
-                        },
-                    }}
-                />
-            </div>
+                    },
+                ]}
+                dataSource={users}
+                pagination={{
+                    total,
+                    pageSize,
+                    current: currentPage,
+                    onShowSizeChange: (current: number, size: number) => {
+                        setPageSize(current);
+                    },
+                    onChange: (page: number, pageSize: number) => {
+                        setCurrentPage(page);
+                    },
+                }}
+            />
             <Modal
                 title={t('common::areYouSure')}
                 open={!!idRemove}

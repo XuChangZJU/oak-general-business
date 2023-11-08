@@ -95,7 +95,7 @@ export default OakComponent({
             }
         },
     },
-    features: ['extraFile2'],
+    features: ['extraFile'],
     formData({ data, features }) {
         let files = data
             ?.filter((ele) => !ele.$$deleteAt$$)
@@ -107,10 +107,10 @@ export default OakComponent({
             files = files?.filter((ele) => ele?.tag2 === this.props.tag2);
         }
         const files2 = files.map((ele) => {
-            const url = features.extraFile2.getUrl(ele);
-            const thumbUrl = features.extraFile2.getUrl(ele, 'thumbnail');
-            const fileState = features.extraFile2.getFileState(ele.id);
-            const fileName = features.extraFile2.getFileName(ele);
+            const url = features.extraFile.getUrl(ele);
+            const thumbUrl = features.extraFile.getUrl(ele, 'thumbnail');
+            const fileState = features.extraFile.getFileState(ele.id);
+            const fileName = features.extraFile.getFileName(ele);
             return {
                 url,
                 thumbUrl,
@@ -127,7 +127,7 @@ export default OakComponent({
     methods: {
         onRemove(file) {
             this.removeItem(file.id);
-            this.features.extraFile2.removeLocalFiles([file.id]);
+            this.features.extraFile.removeLocalFiles([file.id]);
         },
         addExtraFileInner(options, file) {
             const { type, origin = 'qiniu', // 默认qiniu
@@ -154,7 +154,7 @@ export default OakComponent({
                 sort,
                 uploadState: 'uploading',
             });
-            this.features.extraFile2.addLocalFile(id, file);
+            this.features.extraFile.addLocalFile(id, file);
         },
         addFileByWeb(file) {
             const { size, type, name } = file;

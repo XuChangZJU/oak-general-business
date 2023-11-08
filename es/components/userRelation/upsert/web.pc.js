@@ -52,5 +52,5 @@ export default function Render(props) {
         }
         SubPart = _jsx(Tabs, { items: items2 });
     }
-    return (_jsx(_Fragment, { children: SubPart }));
+    return SubPart;
 }

@@ -7,8 +7,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'domain', fa
     apiPath: string;
     port: number;
     protocol: EntityDict['domain']['Schema']['protocol'];
-    variant: 'inline' | 'alone' | 'dialog';
-    showBack: boolean;
 }, {
     confirm: () => void;
 }>): import("react/jsx-runtime").JSX.Element;

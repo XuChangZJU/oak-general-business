@@ -39,14 +39,12 @@ export default function Render(
                                 您正在更新
                                 <Typography.Text
                                     keyboard
-                                    className={Style.weight}
                                 >
                                     {entity}
                                 </Typography.Text>
                                 对象
                                 <Typography.Text
                                     keyboard
-                                    className={Style.weight}
                                 >
                                     {name}
                                 </Typography.Text>

@@ -8,7 +8,6 @@ import {
     Typography,
     AutoComplete,
 } from 'antd';
-import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 import ParasiteDetail from '../detail';
@@ -55,7 +54,7 @@ export default function Render(
 
     if (!!parasiteId) {
         return (
-            <div className={Style.container}>
+            <>
                 <ParasiteDetail
                     oakId={parasiteId}
                     oakAutoUnmount={true}
@@ -77,57 +76,55 @@ export default function Render(
                         重新生成
                     </Button>
                 </div>
-            </div>
+            </>
         );
     }
 
     return (
         <>
-            <div className={Style.container}>
-                <Form labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
-                    <Form.Item label={nameLabel || '名称'} required={nameRequired}>
-                        <>
-                            <AutoComplete
-                                options={options}
-                                style={{ width: 200 }}
-                                onSelect={onSelect}
-                                onSearch={(text) => onSearch(text)}
-                                placeholder="请输入"
-                                onChange={(value) => {
-                                    setSearchValue(value);
-                                }}
-                            />
-                        </>
-                    </Form.Item>
-                    <Form.Item label="有效期" required>
-                        <>
-                            <InputNumber
-                                min={1}
-                                max={30}
-                                placeholder="请输入"
-                                onChange={(value) => {
-                                    setPeriod(value!);
-                                }}
-                                value={period}
-                                addonAfter={<Typography>天</Typography>}
-                            ></InputNumber>
-                        </>
-                    </Form.Item>
+            <Form labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
+                <Form.Item label={nameLabel || '名称'} required={nameRequired}>
+                    <>
+                        <AutoComplete
+                            options={options}
+                            style={{ width: 200 }}
+                            onSelect={onSelect}
+                            onSearch={(text) => onSearch(text)}
+                            placeholder="请输入"
+                            onChange={(value) => {
+                                setSearchValue(value);
+                            }}
+                        />
+                    </>
+                </Form.Item>
+                <Form.Item label="有效期" required>
+                    <>
+                        <InputNumber
+                            min={1}
+                            max={30}
+                            placeholder="请输入"
+                            onChange={(value) => {
+                                setPeriod(value!);
+                            }}
+                            value={period}
+                            addonAfter={<Typography>天</Typography>}
+                        ></InputNumber>
+                    </>
+                </Form.Item>
 
-                    <Form.Item wrapperCol={{ offset: 4 }}>
-                        <Space>
-                            <Button
-                                type="primary"
-                                onClick={() => {
-                                    confirm();
-                                }}
-                            >
-                                提交
-                            </Button>
-                        </Space>
-                    </Form.Item>
-                </Form>
-            </div>
+                <Form.Item wrapperCol={{ offset: 4 }}>
+                    <Space>
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                confirm();
+                            }}
+                        >
+                            提交
+                        </Button>
+                    </Space>
+                </Form.Item>
+            </Form>
         </>
     );
 }

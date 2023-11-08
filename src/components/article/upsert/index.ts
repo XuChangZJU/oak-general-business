@@ -76,21 +76,14 @@ export default OakComponent({
         },
     },
     methods: {
-        // async addExtraFile(
-        //     extraFile: EntityDict['extraFile']['CreateSingle']['data']
-        // ) {
-        //     const result = await this.features.cache.operate('extraFile', {
-        //         action: 'create',
-        //         data: extraFile,
-        //         id: generateNewId(),
-        //     });
-        //     return result;
-        // },
-
         async uploadFile(
-            extraFile: EntityDict['extraFile']['CreateSingle']['data']
+            extraFile: EntityDict['extraFile']['CreateSingle']['data'],
+            file: File | string
         ) {
-            const result = await this.features.extraFile.createAndUpload(extraFile, extraFile.extra1!);
+            const result = await this.features.extraFile.autoUpload(
+                extraFile as EntityDict['extraFile']['OpSchema'],
+                file!
+            );
             return result;
         },
 

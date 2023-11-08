@@ -285,7 +285,7 @@ export default OakComponent({
                 entity: 'sessionMessage',
                 entityId: sessionMessageId,
             };
-            await this.features.extraFile2.autoUpload(extraFile, originFileObj);
+            await this.features.extraFile.autoUpload(extraFile, originFileObj);
             try {
                 this.updateItem({
                     createTime: Date.now(),
@@ -298,12 +298,12 @@ export default OakComponent({
                     //     },
                     // ],
                 }, sessionMessageId);
-                // this.features.extraFile2.addLocalFile(
+                // this.features.extraFile.addLocalFile(
                 //     extraFile?.id,
                 //     originFileObj
                 // );
                 await this.execute(undefined, false);
-                // this.features.extraFile2.upload(extraFile?.id);
+                // this.features.extraFile.upload(extraFile?.id);
                 this.pageScroll('comment');
                 this.createItem();
             }
@@ -368,12 +368,12 @@ export default OakComponent({
         //                 },
         //             ],
         //         } as EntityDict['sessionMessage']['CreateSingle']['data']);
-        //         this.features.extraFile2.addLocalFile(
+        //         this.features.extraFile.addLocalFile(
         //             extraFile?.id,
         //             originFileObj
         //         );
         //         await this.execute(undefined, false);
-        //         this.features.extraFile2.upload(extraFile?.id);
+        //         this.features.extraFile.upload(extraFile?.id);
         //     } catch (err) {
         //         throw err;
         //     }

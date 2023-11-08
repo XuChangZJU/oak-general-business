@@ -70,18 +70,8 @@ export default OakComponent({
         },
     },
     methods: {
-        // async addExtraFile(
-        //     extraFile: EntityDict['extraFile']['CreateSingle']['data']
-        // ) {
-        //     const result = await this.features.cache.operate('extraFile', {
-        //         action: 'create',
-        //         data: extraFile,
-        //         id: generateNewId(),
-        //     });
-        //     return result;
-        // },
-        async uploadFile(extraFile) {
-            const result = await this.features.extraFile.createAndUpload(extraFile, extraFile.extra1);
+        async uploadFile(extraFile, file) {
+            const result = await this.features.extraFile.autoUpload(extraFile, file);
             return result;
         },
         setEditor(editor) {

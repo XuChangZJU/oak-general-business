@@ -2,15 +2,16 @@ export default OakComponent({
     isList: false,
     properties: {
         // 背景色
-        bgColor: '',
+        backgroundColor: '',
         // 背景图
-        bgImgUrl: '',
+        backgroundUrl: '',
         // 当前选中索引
         selectedIndex: 0,
         // tab 项
         list: [],
         color: '#666',
         selectedColor: '',
+        border: false,
     },
     lifetimes: {
         show() {

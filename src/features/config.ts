@@ -3,6 +3,7 @@ import AspectDict from '../aspects/AspectDict';
 import { EntityDict } from '../oak-app-domain';
 import { Cache } from 'oak-frontend-base/es/features/cache';
 import { Config as ConfigDef } from '../types/Config';
+import { Style as StyleDef } from '../types/Style';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
@@ -44,6 +45,19 @@ export class Config<
             entity,
             entityId,
             config,
+        });
+        this.publish();
+    }
+
+    async updateStyle(
+        entity: 'platform' | 'system' | 'application',
+        entityId: string,
+        style: StyleDef
+    ) {
+        await this.cache.exec('updateStyle', {
+            entity,
+            entityId,
+            style,
         });
         this.publish();
     }
