@@ -1,7 +1,7 @@
 {
     "component": true,
     "usingComponents": {
-        "oak-icon": "@oak-frontend-base/icon/index",
+        "oak-icon": "@oak-frontend-base/components/icon/index",
         "l-badge": "@oak-frontend-base/miniprogram_npm/lin-ui/badge/index"
     }
 }
