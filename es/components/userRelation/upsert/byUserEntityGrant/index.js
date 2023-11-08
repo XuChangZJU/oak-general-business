@@ -149,8 +149,8 @@ export default OakComponent({
             this.update({ multiple: m });
         },
         setMultipleMp(e) {
-            const { value } = e.detail;
-            this.setMultiple(value);
+            const { checked } = e.detail;
+            this.setMultiple(checked);
         },
         setRule(m) {
             this.update({ rule: m });
