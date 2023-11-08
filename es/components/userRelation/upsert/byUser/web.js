@@ -6,5 +6,5 @@ export default function Render(props) {
     const { onConfirm, onReset, t } = props.methods;
     return (_jsx(Form, { footer: _jsxs(Space, { children: [_jsx(Button, { color: "primary", style: { flex: 2 }, onClick: () => {
                         onConfirm();
-                    }, disabled: oakExecutable !== true, children: t('common::action.confirm') }), _jsx(Button, { style: { flex: 1 }, onClick: () => onReset(), children: t('common::reset') })] }), children: _jsx(OnUser, { oakAutoUnmount: true, oakPath: oakFullpath && `${oakFullpath}.user`, entity: entity, entityId: entityId, relations: relations, oakId: oakId }) }));
+                    }, disabled: oakExecutable !== true, children: t('common::action.confirm') }), _jsx(Button, { style: { flex: 1 }, onClick: () => onReset(), children: t('common::reset') })] }), children: _jsx(OnUser, { oakAutoUnmount: true, oakPath: `${oakFullpath}.user`, entity: entity, entityId: entityId, relations: relations, oakId: oakId }) }));
 }

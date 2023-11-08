@@ -15,9 +15,11 @@ export default OakComponent({
         qrCodeType: 1,
     },
     isList: false,
-    formData: ({ data: userEntityGrant }) => ({
-        userEntityGrant,
-    }),
+    formData({ data: userEntityGrant, props }) {
+        return {
+            userEntityGrant,
+        };
+    },
     properties: {
         entity: '',
         entityId: '',
@@ -106,12 +108,26 @@ export default OakComponent({
         },
         setRelation(value) {
             this.update({
-                relationIds: [value],
+                relationIds: value,
             });
         },
         setRelationMp(e) {
-            const { currentKey } = e.detail;
-            this.setRelation(currentKey);
+            const { key } = e.detail;
+            const { userEntityGrant } = this.state;
+            const relationIds = [...(userEntityGrant?.relationIds || [])];
+            const index = relationIds.findIndex((ele) => ele === key);
+            if (index > -1) {
+                relationIds.splice(index, 1);
+            }
+            else {
+                relationIds.push(key);
+            }
+            // 小程序 多选处理
+            const newRelations = this.props.relations?.map((ele) => Object.assign({}, ele, {
+                checked: relationIds.includes(ele.id),
+            }));
+            this.setState({ relations: newRelations });
+            this.setRelation(relationIds);
         },
         setNumber(value) {
             this.update({
@@ -128,6 +144,20 @@ export default OakComponent({
         setPeriodMp(e) {
             const { count } = e.detail;
             this.setPeriod(count);
+        },
+        setMultiple(m) {
+            this.update({ multiple: m });
+        },
+        setMultipleMp(e) {
+            const { value } = e.detail;
+            this.setMultiple(value);
+        },
+        setRule(m) {
+            this.update({ rule: m });
+        },
+        setRuleMp(e) {
+            const { currentKey } = e.detail;
+            this.setRule(currentKey);
         },
         setUnit(u) {
             const { defaultPeriods } = this.state;

@@ -1,0 +1,44 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <view class="userInfo">
+        <block wx:if="{{avatar}}">
+            <l-avatar src="{{avatar}}" />
+        </block>
+        <block wx:else>
+            <l-avatar icon="user" size="140" icon-size="86" />
+        </block>
+    </view>
+    <view class="col"> 
+        <l-list is-link="{{false}}" title="昵称">            
+            <view slot="right-section" class="value">{{nickname || '未设置'}}</view>
+        </l-list>
+        <l-list is-link="{{false}}" title="姓名">          
+            <view slot="right-section" class="value">{{name || '未设置'}}</view>
+        </l-list>
+        <l-list is-link="{{false}}" title="性别">      
+            <view slot="right-section" class="value">{{genderOptions[gender] || '未设置'}}</view>
+        </l-list>
+        <l-list is-link="{{false}}" title="生日">      
+            <view slot="right-section" class="value">{{birth || '未设置'}}</view>
+        </l-list>
+        <l-list is-link="{{false}}" title="手机号">      
+            <view slot="right-section" class="value">{{mobileText}}</view>
+        </l-list>
+        <l-list tag-position="right" is-link="{{false}}" title="用户状态">   
+            <view slot="right-section" class="value">            
+                <l-tag l-class="{{stateColor[userState]}}" size="mini" shape="circle">
+                    {{userState || '未设置'}}
+                </l-tag>
+            </view>
+        </l-list>
+        <l-list tag-position="right" is-link="{{false}}" title="认证状态">   
+            <view slot="right-section" class="value">            
+                <l-tag l-class="{{idStateColor[idState]}}" size="mini" shape="circle">
+                    {{idState || '未设置'}}
+                </l-tag>
+            </view>
+        </l-list>
+    </view>
+    <view style="flex:1" />
+    <actionPanel actions="{{executableActions}}" actionDescriptions="{{actionDescriptions}}" bind:action="onActionClickMp" />
+</view>

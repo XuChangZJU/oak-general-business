@@ -24,7 +24,7 @@ export default OakComponent({
         entityId: '',
         relationEntity: '',
         relationEntityFilter: {} as any,
-        relationIds: [] as EntityDict['relation']['OpSchema'][],
+        relationIds: [] as string[],
         type: 'grant' as EntityDict['userEntityGrant']['Schema']['type'],
         redirectToAfterConfirm:
             {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
@@ -32,7 +32,8 @@ export default OakComponent({
         qrCodeType: '' as QrCodeType,
         multiple: false,
         rule: 'single' as EntityDict['userEntityGrant']['OpSchema']['rule'],
-        ruleOnRow: 'single' as EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'],
+        ruleOnRow:
+            'single' as EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'],
     },
     lifetimes: {
         ready() {
@@ -110,7 +111,6 @@ export default OakComponent({
             this.setState({
                 userEntityGrantId: id,
             });
-
         },
-    }
+    },
 });

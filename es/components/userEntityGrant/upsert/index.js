@@ -22,7 +22,7 @@ export default OakComponent({
         entityId: '',
         relationEntity: '',
         relationEntityFilter: {},
-        relations: [],
+        relationIds: [],
         type: 'grant',
         redirectToAfterConfirm: {},
         claimUrl: '',
@@ -44,13 +44,17 @@ export default OakComponent({
         },
         setInit() {
             const userId = this.features.token.getUserId();
-            const { entity, entityId, relationEntity, relationEntityFilter, type, redirectToAfterConfirm, qrCodeType, claimUrl, multiple, rule, ruleOnRow, } = this.props;
+            const { entity, entityId, relationEntity, relationEntityFilter, relationIds, type, redirectToAfterConfirm, qrCodeType, claimUrl, multiple, rule, ruleOnRow, } = this.props;
+            this.setState({
+                userEntityGrantId: '',
+            });
             if (this.isCreation()) {
                 this.update({
                     entity,
                     entityId,
                     relationEntity,
                     relationEntityFilter,
+                    relationIds,
                     type: type || 'grant',
                     multiple,
                     rule: rule || 'single',
@@ -60,9 +64,9 @@ export default OakComponent({
                     qrCodeType: qrCodeType,
                     claimUrl,
                 });
-                this.setState({
-                    userEntityGrantId: '',
-                });
+                // this.setState({
+                //     userEntityGrantId: '',
+                // });
             }
         },
         async confirm() {
@@ -87,5 +91,5 @@ export default OakComponent({
                 userEntityGrantId: id,
             });
         },
-    }
+    },
 });

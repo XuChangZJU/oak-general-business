@@ -136,7 +136,7 @@ export default OakComponent({
         setRelationMp(e: any) {
             const { key } = e.detail;
             const { userEntityGrant } = this.state;
-            const relationIds = [...(userEntityGrant.relationIds || [])];
+            const relationIds = [...(userEntityGrant?.relationIds || [])];
             const index = relationIds.findIndex((ele) => ele === key);
             if (index > -1) {
                 relationIds.splice(index, 1);
@@ -150,7 +150,7 @@ export default OakComponent({
                     checked: relationIds.includes(ele.id),
                 })
             );
-            this.setState({ relations: newRelations });
+            this.setState({ relations: newRelations } as any);
             this.setRelation(relationIds);
         },
         setNumber(value: number) {
@@ -170,14 +170,14 @@ export default OakComponent({
             this.setPeriod(count);
         },
         setMultiple(m: boolean) {
-            this.setState({ multiple: m });
+            this.update({ multiple: m });
         },
         setMultipleMp(e: any) {
             const { value } = e.detail;
             this.setMultiple(value);
         },
-        setRule(m: string) {
-            this.setState({ rule: m });
+        setRule(m: EntityDict['userEntityGrant']['Schema']['rule']) {
+            this.update({ rule: m });
         },
         setRuleMp(e: any) {
             const { currentKey } = e.detail;

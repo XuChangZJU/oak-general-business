@@ -6,7 +6,7 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     entityId: string;
     relationEntity: string;
     relationEntityFilter: any;
-    relations: import("../../../oak-app-domain/Relation/Schema").OpSchema[];
+    relationIds: string[];
     type: "grant" | "transfer";
     redirectToAfterConfirm: import("../../../oak-app-domain/UserEntityGrant/Schema").RedirectToProps | null | undefined;
     claimUrl: string;

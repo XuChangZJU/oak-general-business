@@ -11,7 +11,7 @@ const triggers = [
             const fn = async (userEntityGrantData) => {
                 const { userId } = context.getToken();
                 assert(userId);
-                const { id } = userEntityGrantData;
+                const { id, claimUrl } = userEntityGrantData;
                 Object.assign(userEntityGrantData, {
                     granterId: userId,
                     expired: false,
@@ -28,7 +28,7 @@ const triggers = [
                         data: {
                             id: await generateNewIdAsync(),
                             props: {
-                                pathname: '/userEntityGrant/confirm',
+                                pathname: claimUrl || '/userEntityGrant/claim',
                                 props: {
                                     oakId: id,
                                 },

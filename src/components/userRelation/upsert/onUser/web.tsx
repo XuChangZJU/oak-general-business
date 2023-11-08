@@ -99,11 +99,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
             >
                 <UserRelation
                     oakAutoUnmount={true}
-                    oakPath={
-                        oakFullpath
-                            ? `${oakFullpath}.userRelation$user`
-                            : undefined
-                    }
+                    oakPath={`${oakFullpath}.userRelation$user`}
                     entity={entity}
                     entityId={entityId}
                     relations={relations}

@@ -1,0 +1,61 @@
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--oak-bg-color-page);
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 10px 10px 10px;
+  margin-bottom: 10px;
+  background-color: var(--oak-bg-color-container);
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nickname {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  .userIcon {
+    color: #fff;
+    font-size: 24px;
+  }
+}
+
+.list {
+  background-color: #fff;
+  padding: 0 10px;
+
+  :global {
+    .t-list-item__meta {
+
+      &-avatar {
+        width: auto !important;
+        height: auto !important;
+        background: transparent;
+        border-radius: unset;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      &-title {
+        margin: 0 !important;
+
+      }
+    }
+  }
+}

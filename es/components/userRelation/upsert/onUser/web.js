@@ -28,7 +28,5 @@ export default function Render(props) {
                     {
                         required: true,
                     },
-                ], name: "relation", children: _jsx(UserRelation, { oakAutoUnmount: true, oakPath: oakFullpath
-                        ? `${oakFullpath}.userRelation$user`
-                        : undefined, entity: entity, entityId: entityId, relations: relations }) })] }));
+                ], name: "relation", children: _jsx(UserRelation, { oakAutoUnmount: true, oakPath: `${oakFullpath}.userRelation$user`, entity: entity, entityId: entityId, relations: relations }) })] }));
 }
