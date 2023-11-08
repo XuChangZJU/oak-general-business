@@ -8,8 +8,7 @@ export default OakComponent({
             if (ele) {
                 if (['failed', 'local'].includes(ele.state)) {
                     state = ele.state;
-                }
-                else if (ele.state === 'uploading' && state === 'uploaded') {
+                } else if (ele.state === 'uploading' && state === 'uploaded') {
                     state = 'uploading';
                 }
             }
@@ -25,13 +24,17 @@ export default OakComponent({
         type: 'primary',
         executeText: '',
         buttonProps: {},
-        afterCommit: () => { },
-        beforeCommit: (() => true),
+        afterCommit: () => {},
+        beforeCommit: () => true,
     },
     methods: {
         getEfIds() {
-            const entity = this.features.runningTree.getEntity(this.state.oakFullpath);
-            const value = this.features.runningTree.getFreshValue(this.state.oakFullpath);
+            const entity = this.features.runningTree.getEntity(
+                this.state.oakFullpath
+            );
+            const value = this.features.runningTree.getFreshValue(
+                this.state.oakFullpath
+            );
             const efIds = [];
             const getRecursive = (e, v) => {
                 for (const attr in v) {
@@ -41,28 +44,23 @@ export default OakComponent({
                         if (attr === 'extraFile') {
                             assert(v[attr].id);
                             efIds.push(v[attr].id);
-                        }
-                        else {
+                        } else {
                             getRecursive(attr, v[attr]);
                         }
-                    }
-                    else if (typeof rel === 'string') {
+                    } else if (typeof rel === 'string') {
                         assert(typeof v[attr] === 'object');
                         if (rel === 'extraFile') {
                             assert(v[attr].id);
                             efIds.push(v[attr].id);
-                        }
-                        else {
+                        } else {
                             getRecursive(rel, v[attr]);
                         }
-                    }
-                    else if (rel instanceof Array) {
+                    } else if (rel instanceof Array) {
                         assert(v[attr] instanceof Array);
                         const [e2, fk2] = rel;
                         if (e2 === 'extraFile') {
                             efIds.push(...v[attr].map((ele) => ele.id));
-                        }
-                        else {
+                        } else {
                             v[attr].forEach((ele) => getRecursive(e2, ele));
                         }
                     }
@@ -71,10 +69,13 @@ export default OakComponent({
             if (value instanceof Array) {
                 value.forEach((ele) => getRecursive(entity, ele));
             }
-            getRecursive(entity, value);
+            else {
+                getRecursive(entity, value);
+            }
+           
             return efIds;
         },
-        async upload() {
+        async upload(ids) {
             const ids = this.getEfIds();
             if (ids.length === 0) {
                 return;
@@ -96,6 +97,7 @@ export default OakComponent({
         async onSubmit() {
             const { oakExecutable } = this.state;
             const { beforeCommit, afterCommit, action } = this.props;
+            const ids = this.getEfIds();
             if (oakExecutable) {
                 if (beforeCommit) {
                     const beforeCommitResult = await beforeCommit();
@@ -104,13 +106,12 @@ export default OakComponent({
                     }
                 }
                 await this.execute(action || undefined);
-                await this.upload();
+                await this.upload(ids);
                 if (afterCommit) {
                     afterCommit();
                 }
-            }
-            else {
-                await this.upload();
+            } else {
+                await this.upload(ids);
                 if (afterCommit) {
                     afterCommit();
                 }

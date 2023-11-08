@@ -87,12 +87,12 @@ export default OakComponent({
 
             if (value instanceof Array) {
                 value.forEach((ele) => getRecursive(entity, ele));
+            } else {
+                getRecursive(entity, value as any);
             }
-            getRecursive(entity, value as any);
             return efIds;
         },
-        async upload() {
-            const ids = this.getEfIds();
+        async upload(ids: string[]) {
             if (ids.length === 0) {
                 return;
             }
@@ -115,6 +115,8 @@ export default OakComponent({
         async onSubmit() {
             const { oakExecutable } = this.state;
             const { beforeCommit, afterCommit, action } = this.props;
+            const ids = this.getEfIds();
+
             if (oakExecutable) {
                 if (beforeCommit) {
                     const beforeCommitResult = await beforeCommit();
@@ -122,13 +124,14 @@ export default OakComponent({
                         return;
                     }
                 }
+
                 await this.execute(action || undefined);
-                await this.upload();
+                await this.upload(ids);
                 if (afterCommit) {
                     afterCommit();
                 }
             } else {
-                await this.upload();
+                await this.upload(ids);
                 if (afterCommit) {
                     afterCommit();
                 }
