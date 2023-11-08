@@ -1,0 +1,82 @@
+<view class="page-body">
+    <view class="col">
+        <l-list title="头像">
+            <view slot="right-section" class="avatar">
+                <oak-extraFile-avatar oakAutoUnmount="{{true}}" oakPath="{{ oakFullpath ? oakFullpath + '.extraFile$entity' : undefined }}" entity="user" entityId="{{id}}" autoUpload="{{true}}"/>
+            </view>
+        </l-list>
+        <l-list title="昵称" data-attr="nickname" bind:lintap="setVisibleMp">
+            <view slot="right-section" class="value">{{nickname || '未设置'}}</view>
+        </l-list>
+        <l-list title="姓名" data-attr="name" bind:lintap="setVisibleMp">
+            <view slot="right-section" class="value">{{name || '未设置'}}</view>
+        </l-list>
+        <l-list title="性别" data-attr="gender" bind:lintap="setVisibleMp">
+            <view slot="right-section" class="value">{{genderStr || '未设置'}}</view>
+        </l-list>
+        <l-list title="生日" data-attr="birth" bind:lintap="setVisibleMp">
+            <view slot="right-section" class="value">{{birthText || '未设置'}}</view>
+        </l-list>
+        <l-list title="手机号" bind:lintap="goAddMobile">
+            <view slot="right-section" class="value">{{mobile || '未绑定'}}</view>
+        </l-list>
+        <!-- <l-list tag-position="right" is-link="{{false}}" title="用户状态">   
+            <view slot="right-section" class="value">            
+                <l-tag l-class="{{stateColor[userState]}}" size="mini" shape="circle">
+                    {{userState || '未设置'}}
+                </l-tag>
+            </view>
+        </l-list> -->
+        <l-list tag-position="right" is-link="{{false}}" title="认证状态">
+            <view slot="right-section" class="value">
+                <l-tag l-class="{{idStateColor[idState]}}" size="mini" shape="circle">
+                    {{t('user:v.idState.' +  idState) || '未设置'}}
+                </l-tag>
+            </view>
+        </l-list>
+    </view>
+    <view style="flex:1" />
+
+    <l-popup show="{{visible}}" content-align="bottom" locked="{{false}}">
+        <view class='pupop-content'>
+            <view class="pupop-header">
+                <view class="close" bind:tap="onPupopCloseMp">
+                    <l-icon name="close" size="24"></l-icon>
+                </view>
+            </view>
+            <view class='pupop-form'>
+                <block wx:if="{{ attr === 'nickname' }}">
+                    <l-input label="昵称" value="{{nickname}}" placeholder="请输入昵称" bind:lininput="setCustomDataMp" />
+                </block>
+                <block wx:elif="{{ attr === 'name' }}">
+                    <l-input label="姓名" value="{{name}}" placeholder="请输入姓名" bind:lininput="setCustomDataMp" />
+                </block>
+                <block wx:elif="{{ attr === 'gender' }}">
+                    <l-form-item label="性别" label-width="100rpx">
+                        <l-radio-group current="{{gender}}" placement="row" length="2" bind:linchange="genderChangeMp">
+                            <l-radio l-class="l-radio" wx:for="{{genderOptions}}" wx:key="id" key="{{item.value}}" placement="left">
+                                {{item.label}}
+                            </l-radio>
+                        </l-radio-group>
+                    </l-form-item>
+
+                </block>
+
+            </block>
+            <block wx:elif="{{ attr === 'birth' }}">
+                <picker mode="date" end="{{birthEnd}}" value="{{birthText}}" bind:change="birthChangeMp">
+                    <l-input label="出生日期" value="{{birthText2 || birthText || '选择日期'}}" disabled="{{true}}" l-label-class="label">
+                        <l-icon slot="right" name="right" size="20" />
+                    </l-input>
+                </picker>
+
+            </block>
+
+
+        </view>
+        <l-button size="long" bind:lintap="onConfirmMp">
+           提交
+        </l-button>
+    </view>
+</l-popup>
+</view>

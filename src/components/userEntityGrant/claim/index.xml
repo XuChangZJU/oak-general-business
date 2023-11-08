@@ -1,0 +1,32 @@
+<!-- index.wxml -->
+<view class="view" wx:if="{{userEntityGrant}}">
+    <block>
+        <l-notice-bar show="{{!hideTip && !isGranter && !hasClaimed}}">
+               {{t('tip')}}
+        </l-notice-bar>
+        <l-notice-bar show="{{isGranter}}">
+               {{t('isGranter')}}
+        </l-notice-bar>
+        <l-notice-bar show="{{hasClaimed}}">
+               {{t('hasClaimed')}}
+        </l-notice-bar>
+    </block>
+    <block wx:if="{{!hideInfo}}">
+        <view class="info">
+            <l-list  title="{{t('granterName')}}" right-desc="{{userEntityGrant.granter.name || userEntityGrant.granter.nickname}}" is-link="{{false}}" />
+            <l-list  title="{{expired ? t('isExpired') : t('counter')}}" right-desc="{{expired ? t('expired') : counterStr}}" is-link="{{false}}" />
+        </view>
+    </block>
+
+
+
+    <view style="flex: 1" />
+    <view class="btn">
+        <l-button 
+        type="{{isGranter || hasClaimed ? 'error' : (!expired ? 'default' : 'warning')}}"
+        disabled="{{oakExecutable !== true || !!expired || isGranter || hasClaimed}}" 
+        size="long" bind:lintap="claim">
+            {{isGranter ? t('isGranter') : ( hasClaimed ? t('hasClaimed') : (!expired ? t('userEntityGrant:action.claim') : t('expired')))}}
+        </l-button>
+    </view>
+</view>

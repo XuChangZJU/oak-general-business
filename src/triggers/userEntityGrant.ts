@@ -20,7 +20,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
             ) => {
                 const { userId } = context.getToken()!;
                 assert(userId);
-                const { id } = userEntityGrantData;
+                const { id, claimUrl } = userEntityGrantData;
 
                 Object.assign(userEntityGrantData, {
                     granterId: userId,
@@ -38,7 +38,7 @@ const triggers: Trigger<EntityDict, 'userEntityGrant', BRC>[] = [
                         data: {
                             id: await generateNewIdAsync(),
                             props: {
-                                pathname: '/userEntityGrant/confirm',
+                                pathname: claimUrl || '/userEntityGrant/claim',
                                 props: {
                                     oakId: id,
                                 },

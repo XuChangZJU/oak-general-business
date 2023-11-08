@@ -59,7 +59,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
             {mobileValueReady && userId && (
                 <OnUser
                     oakAutoUnmount={true}
-                    oakPath={oakFullpath ? `${oakFullpath}.user` : undefined}
+                    oakPath={`${oakFullpath}.user`}
                     entity={entity}
                     entityId={entityId}
                     relations={relations}

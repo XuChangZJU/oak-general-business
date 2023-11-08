@@ -6,7 +6,7 @@ export default function render(props) {
     const { relations, userEntityGrant, userEntityGrantId, period, unit, maxes, oakExecutable, rules, } = props.data;
     const { relationIds, type, rule, multiple, relationEntity } = userEntityGrant || {};
     const { update, t, onBack, confirm, setInit, setPeriod, setUnit } = props.methods;
-    const P = !!userEntityGrantId ? (_jsxs(_Fragment, { children: [_jsx(Alert, { showIcon: true, message: t('shareCode'), type: "info", style: { marginBottom: 16 } }), _jsx(UserEntityGrantShare, { showBack: false, oakId: userEntityGrantId, oakAutoUnmount: true, oakPath: "$userRelation/upsert/byUserEntityGrant-userEntityGrant/detail" }), _jsx("div", { style: {
+    const P = !!userEntityGrantId ? (_jsxs(_Fragment, { children: [_jsx(Alert, { showIcon: true, message: t('shareCode'), type: "info", style: { marginBottom: 16 } }), _jsx(UserEntityGrantShare, { oakId: userEntityGrantId, oakAutoUnmount: true, oakPath: "$userRelation/upsert/byUserEntityGrant-userEntityGrant/detail" }), _jsx("div", { style: {
                     width: '100%',
                     display: 'flex',
                     justifyContent: 'flex-end',

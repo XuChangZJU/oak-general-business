@@ -81,8 +81,6 @@
     "lib",
     "es",
     "node_modules",
-    "src/pages/**/*",
-    "src/components/**/*",
     "**/*.spec.ts",
     "package.json",
     "tsconfig.json",

@@ -86,7 +86,7 @@
         "copy-xml": "copyfiles -u 1 src/**/*.xml es/",
         "copy-wxml": "copyfiles -u 1 src/**/*.wxml es/",
         "prebuild": "npm run make:locale",
-        "build": "tsc -p tsconfig.json && tsc -p tsconfig.es.json && npm run copy-js && npm run copy-less && npm run copy-wxs && npm run copy-svg && npm run copy-xml && npm run copy-wxml",
+        "build": "tsc -p tsconfig.lib.json && tsc -p tsconfig.es.json && npm run copy-js && npm run copy-less && npm run copy-wxs && npm run copy-svg && npm run copy-xml && npm run copy-wxml",
         "gen:areaDebug": "ts-node ./scripts/generateAreaDebug.ts",
         "gen:subway": "ts-node ./scripts/local/getAmapSubway.ts",
         "clean:dir": "ts-node ./scripts/cleanDtsAndJs",

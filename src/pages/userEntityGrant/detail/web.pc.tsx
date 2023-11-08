@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Style from './web.module.less';
-import PageHeader from '../../../components/common/pageHeader';
 import QrCode from '../../../components/common/qrCode';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
@@ -12,25 +10,19 @@ export default function Render(
         'userEntityGrant',
         true,
         {
-            showBack: boolean;
-            variant: 'alone' | 'inline' | 'dialog';
             url: string;
             expiresAt: number;
-            title?: string
         },
         {}
     >
 ) {
     const {
-        variant,
-        showBack = true,
         url,
         expiresAt,
-        title = '授权二维码',
         oakLoading,
     } = props.data;
     return (
-        <Container showBack={showBack} variant={variant} title={title}>
+        <>
             {
                 oakLoading? (
                     <div
@@ -46,29 +38,6 @@ export default function Render(
                     <QrCode url={url} expiresAt={expiresAt} />
                 )
             }
-        </Container>
-    );
-}
-
-
-function Container(props: {
-    children: React.ReactNode;
-    variant?: 'inline' | 'alone' | 'dialog';
-    showBack?: boolean;
-    title?: string;
-}) {
-    const {
-        children,
-        variant = 'alone',
-        showBack,
-        title,
-    } = props;
-    if (['inline', 'dialog'].includes(variant)) {
-        return <>{children}</>;
-    }
-    return (
-        <PageHeader showBack={showBack} title={title}>
-            <div className={Style.container}>{children}</div>
-        </PageHeader>
+        </>
     );
 }

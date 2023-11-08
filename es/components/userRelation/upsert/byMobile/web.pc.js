@@ -24,7 +24,7 @@ export default function Render(props) {
                     ], children: _jsx(Input, { maxLength: 11, value: mobileValue, onChange: (e) => {
                             const strValue = e.target.value;
                             onMobileChange(strValue);
-                        }, placeholder: "\u8BF7\u8F93\u5165\u624B\u673A\u53F7\u7801", type: "tel" }) }) }), mobileValueReady && userId && (_jsx(OnUser, { oakAutoUnmount: true, oakPath: oakFullpath ? `${oakFullpath}.user` : undefined, entity: entity, entityId: entityId, relations: relations, oakId: userId, setPasswordConfirm: setPasswordConfirm })), _jsx(Form, { colon: true, labelCol: { span: 4 }, wrapperCol: { span: 8 }, children: _jsx(Form.Item, { wrapperCol: { offset: 4 }, children: _jsxs(Space, { children: [_jsx(Button, { style: { flex: 2 }, type: "primary", htmlType: "reset", onClick: async () => {
+                        }, placeholder: "\u8BF7\u8F93\u5165\u624B\u673A\u53F7\u7801", type: "tel" }) }) }), mobileValueReady && userId && (_jsx(OnUser, { oakAutoUnmount: true, oakPath: `${oakFullpath}.user`, entity: entity, entityId: entityId, relations: relations, oakId: userId, setPasswordConfirm: setPasswordConfirm })), _jsx(Form, { colon: true, labelCol: { span: 4 }, wrapperCol: { span: 8 }, children: _jsx(Form.Item, { wrapperCol: { offset: 4 }, children: _jsxs(Space, { children: [_jsx(Button, { style: { flex: 2 }, type: "primary", htmlType: "reset", onClick: async () => {
                                     await onConfirm();
                                     setPasswordConfirm(true);
                                 }, disabled: !legal ||

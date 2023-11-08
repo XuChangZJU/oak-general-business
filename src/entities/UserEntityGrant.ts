@@ -1,4 +1,4 @@
-import { String, Text, Datetime, Int, Boolean} from 'oak-domain/lib/types/DataType';
+import { String, Text, Datetime, Int, Boolean } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as User } from './User';
 import { Schema as WechatQrCode } from './WechatQrCode';
@@ -35,7 +35,7 @@ export interface Schema extends EntityShape {
     claimUrl: String<128>;
 }
 
-type Action = 'claim';
+type Action = 'claim' | 'disable';
 
 const entityDesc: EntityDesc<Schema, Action, '', {
     type: Schema['type'];
@@ -67,6 +67,7 @@ const entityDesc: EntityDesc<Schema, Action, '', {
             },
             action: {
                 claim: '领取',
+                disable: '失效',
             },
             v: {
                 type: {

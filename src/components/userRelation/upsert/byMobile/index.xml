@@ -23,7 +23,7 @@
                 style="display: flex;flex-direction: column; flex: 1; margin-top: 30rpx"
                 oakId="{{userId}}"
                 mobile="{{mobileValue}}"
-                oakPath="{{oakFullpath ? oakFullpath + '.user' : undefined}}"
+                oakPath="{{oakFullpath + '.user'}}"
                 oakAutoUnmount="{{true}}"
                 entity="{{entity}}"
                 entityId="{{entityId}}"

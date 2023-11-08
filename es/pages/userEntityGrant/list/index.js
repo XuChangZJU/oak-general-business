@@ -3,6 +3,8 @@ export default OakComponent({
     entity: 'userEntityGrant',
     projection: {
         id: 1,
+        entity: 1,
+        entityId: 1,
         relationEntity: 1,
         relationEntityFilter: 1,
         relationIds: 1,

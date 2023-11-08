@@ -22,9 +22,11 @@ export default OakComponent({
         qrCodeType: 1,
     },
     isList: false,
-    formData: ({ data: userEntityGrant }) => ({
-        userEntityGrant,
-    }),
+    formData({ data: userEntityGrant, props }) {
+        return {
+            userEntityGrant,
+        };
+    },
     properties: {
         entity: '' as keyof EntityDict,
         entityId: '',
@@ -36,7 +38,8 @@ export default OakComponent({
         qrCodeType: '' as QrCodeType,
         multiple: false,
         rule: 'single' as EntityDict['userEntityGrant']['OpSchema']['rule'],
-        ruleOnRow: 'single' as EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'],
+        ruleOnRow:
+            'single' as EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'],
     },
     data: {
         period: 15,
@@ -116,7 +119,7 @@ export default OakComponent({
                     qrCodeType: qrCodeType as QrCodeType,
                     claimUrl,
                 });
-    
+
                 this.setState({
                     userEntityGrantId: '',
                 });
@@ -127,12 +130,28 @@ export default OakComponent({
         },
         setRelation(value: any) {
             this.update({
-                relationIds: [value],
+                relationIds: value,
             });
         },
         setRelationMp(e: any) {
-            const { currentKey } = e.detail;
-            this.setRelation(currentKey);
+            const { key } = e.detail;
+            const { userEntityGrant } = this.state;
+            const relationIds = [...(userEntityGrant?.relationIds || [])];
+            const index = relationIds.findIndex((ele) => ele === key);
+            if (index > -1) {
+                relationIds.splice(index, 1);
+            } else {
+                relationIds.push(key);
+            }
+
+            // 小程序 多选处理
+            const newRelations = this.props.relations?.map((ele) =>
+                Object.assign({}, ele, {
+                    checked: relationIds.includes(ele.id),
+                })
+            );
+            this.setState({ relations: newRelations } as any);
+            this.setRelation(relationIds);
         },
         setNumber(value: number) {
             this.update({
@@ -149,6 +168,20 @@ export default OakComponent({
         setPeriodMp(e: any) {
             const { count } = e.detail;
             this.setPeriod(count);
+        },
+        setMultiple(m: boolean) {
+            this.update({ multiple: m });
+        },
+        setMultipleMp(e: any) {
+            const { value } = e.detail;
+            this.setMultiple(value);
+        },
+        setRule(m: EntityDict['userEntityGrant']['Schema']['rule']) {
+            this.update({ rule: m });
+        },
+        setRuleMp(e: any) {
+            const { currentKey } = e.detail;
+            this.setRule(currentKey);
         },
         setUnit(u: Unit) {
             const { defaultPeriods } = this.state;
@@ -222,10 +255,10 @@ export default OakComponent({
             qrCodeType: QrCodeType;
             type: EntityDict['userEntityGrant']['Schema']['type'];
             relations: EntityDict['relation']['OpSchema'][];
-            claimUrl: string,
+            claimUrl: string;
             multiple: boolean;
             rule: EntityDict['userEntityGrant']['Schema']['rule'];
-            ruleOnRow: EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'],
+            ruleOnRow: EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'];
         }
     >
 ) => React.ReactElement;

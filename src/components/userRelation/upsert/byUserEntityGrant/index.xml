@@ -1,112 +1,68 @@
 <!-- index.wxml -->
 <view class="page-body">
-    <block wx:if="{{!!userEntityGrantId}}">    
-        <l-notice-bar
-            front-icon-name="notification"
-            show="{{true}}"
-        >
+    <block wx:if="{{!!userEntityGrantId}}">
+        <l-notice-bar front-icon-name="notification" show="{{true}}">
             请通过分享或者截屏二维码方式分享权限
         </l-notice-bar>
         <view class="ueg-container">
-            <userEntityGrant-detail            
-                oakId="{{userEntityGrantId}}"
-                oakAutoUnmount="{{true}}"
-                oakPath="$userRelation/upsert/byUserEntityGrant-userEntityGrant/detail"
-            />
-            <view
-                class="share"
-            >
-                <l-button
-                    size="medium"
-                    type="success"
-                    open-type="share"
-                >
+            <userEntityGrant-share oakId="{{userEntityGrantId}}" oakAutoUnmount="{{true}}" oakPath="$userRelation/upsert/byUserEntityGrant-userEntityGrant/detail" />
+            <view class="share">
+                <l-button size="medium" type="success" open-type="share">
                     分享
                 </l-button>
-            </view
-        </view>
-    </block>
-    <block wx:else>
-        <view class="list-item">
-            <view class="label">权限：</view>
-            <view class="value">
-                <l-radio-group
-                    placement="row"
-                    l-class="radio-container"
-                    bind:linchange="setRelationMp"
-                    current="{{userEntityGrant.relationId}}"
-                >
-                    <l-radio
-                        wx:for-items="{{relations}}"
-                        wx:key="index"
-                        key="{{item.id}}"
-                        l-class="radio"
-                        size="48rpx"
-                    >                    
-                        {{item.display || t(entity + ':r.' + item.name)}}
-                    </l-radio>
-                </l-radio-group>
             </view>
         </view>
+        </block>
+        <block wx:else>
         <view class="list-item">
-            <view class="label">人次：</view>
+            <view class="label">{{t('userEntityGrant:attr.relationIds')}}：</view>
             <view class="value">
-                <l-radio-group
-                    placement="row"
-                    l-class="radio-container"
-                    bind:linchange="setNumberMp"
-                    current="{{userEntityGrant.number}}"
-                >
-                    <l-radio
-                        wx:key="1"
-                        key="1"
-                        size="48rpx"
-                        l-class="radio"
-                    >                    
-                        单人次
-                    </l-radio>
-                    <l-radio
-                        wx:key="10000"
-                        key="10000"
-                        size="48rpx"
-                    >                    
-                        不限人次
-                    </l-radio>
-                </l-radio-group>
+                <l-checkbox-group placement="row" bind:linchange="setRelationMp">
+                    <l-checkbox wx:for-items="{{relations}}" wx:key="index" key="{{item.id}}" l-class="radio" size="48rpx" checked="{{item.checked}}">
+                    {{item.display || t(entity + ':r.' + item.name)}}
+                    </l-checkbox>
+                </l-checkbox-group>
             </view>
-        </view>        
+        </view>
+        <block wx:if="{{userEntityGrant.relationIds && userEntityGrant.relationIds.length > 1}}">
+            <view class="list-item">
+                <view class="label">{{t('userEntityGrant:attr.rule')}}：</view>
+                <view class="value">
+                    <l-radio-group placement="row" l-class="radio-container" bind:linchange="setRuleMp" current="{{userEntityGrant.rule}}">
+<l-radio wx:for-items="{{rules}}" wx:key="index" key="{{item}}" size="48rpx">         
+                               {{t('userEntityGrant:v.rule.' + item)}}
+</l-radio>
+                    </l-radio-group>
+                </view>
+            </view>
+        </block>
+        <block wx:if="{{ userEntityGrant.type === 'grant' }}">
+            <view class="list-item">
+                <view class="label">{{t('multiple')}}：</view>
+                <view class="value">
+                    <l-switch checked="{{ userEntityGrant.multiple || false }}" size="50rpx" bind:linchange="setMultipleMp" />
+                </view>
+            </view>
+        </block>
         <view class="list-item">
-            <view class="label">有效期：</view>
+            <view class="label">{{t('userEntityGrant:attr.expiresAt')}}：</view>
             <view class="value-period">
-                <l-counter 
-                    count="{{userEntityGrant.period}}" 
-                    max="{{ maxes[unit] }}" 
-                    min="1" 
-                    round-float="{{true}}"
-                    bind:linchange="setPeriodMp"
-                />
-                <!-- <view style="margin-left: 30rpx">
-                    分钟
-                </view> -->
+                <l-counter count="{{period}}" max="{{ maxes[unit] }}" min="1" round-float="{{true}}" bind:linchange="setPeriodMp" />
                 <picker range="{{unitArr}}" range-key="label" value="{{unitIndex}}" bind:change="setUnitMp">
                     <view class="unit-box">
-                    <view class="unit">
+                        <view class="unit">
                        {{unitArr[unitIndex].label}}
+                        </view>
+
+                        <l-icon l-class="icon" name="down" size="18" />
                     </view>
 
-                       <l-icon l-class="icon" name="down" size="18" />
-                    </view>
-                   
                 </picker>
             </view>
         </view>
         <view style="flex: 1" />
-        <l-button 
-            size="long" 
-            type="default"
-            bind:lintap="confirm"
-        >
-            确定
+        <l-button size="long" type="default" bind:lintap="confirm">
+            {{t('common::action.confirm')}}
         </l-button>
     </block>
 </view>
