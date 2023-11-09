@@ -2,11 +2,13 @@ import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-run
 import React, { useState } from 'react';
 import { Button, Space, Drawer, Modal, Tooltip } from 'antd';
 import Style from './web.module.less';
-import OakIcon from '../../icon';
+import OakIcon from 'oak-frontend-base/es/components/icon';
+import IconDemo from '../../icon';
 export default function render(props) {
     const { placement = 'bottom', style = {} } = props.data;
     const { printCachedStore, printDebugStore, printRunningTree, resetInitialData, downloadEnv, resetEnv } = props.methods;
     const [visible, setVisible] = useState(false);
+    const [iconOpen, setIconOpen] = useState(false);
     return (_jsxs(React.Fragment, { children: [_jsx(Button, { type: "text", shape: "circle", icon: _jsx(OakIcon, { name: "packup" }), style: {
                     position: 'fixed',
                     bottom: 0,
@@ -68,6 +70,13 @@ export default function render(props) {
                                             },
                                         });
                                     }, children: "Reset" }) }), _jsx(Tooltip, { title: "\u67E5\u770BOakIcon", children: _jsx(Button, { size: "large", type: "primary", shape: "circle", onClick: () => {
-                                        window.open('/icon');
-                                    }, children: "Icon" }) })] })] })] }));
+                                        setIconOpen(true);
+                                    }, children: "Icon" }) })] })] }), _jsx(Modal, { width: 960, title: "oak-icon", footer: null, open: iconOpen, onCancel: () => {
+                    setIconOpen(false);
+                }, styles: {
+                    body: {
+                        height: window.innerHeight - 200,
+                        overflowY: 'auto'
+                    }
+                }, children: _jsx(IconDemo, {}) })] }));
 }

@@ -173,8 +173,8 @@ export default OakComponent({
             this.update({ multiple: m });
         },
         setMultipleMp(e: any) {
-            const { value } = e.detail;
-            this.setMultiple(value);
+            const { checked } = e.detail;
+            this.setMultiple(checked);
         },
         setRule(m: EntityDict['userEntityGrant']['Schema']['rule']) {
             this.update({ rule: m });

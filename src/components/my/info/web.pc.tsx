@@ -4,7 +4,7 @@ import { EntityDict } from '../../../oak-app-domain';
 import Styles from './web.pc.module.less';
 import { Button, List, Modal, Tag, Input, Radio } from 'antd';
 import MyAvatar from '../avatar';
-import OakIcon from '../../icon';
+import OakIcon from 'oak-frontend-base/es/components/icon';
 
 
 const PrimaryColor = getComputedStyle(document.documentElement).getPropertyValue('--oak-color-primary');
