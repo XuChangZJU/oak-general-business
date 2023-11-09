@@ -9,7 +9,7 @@ export const desc: StorageDesc<OpSchema> = {
             params: {
                 length: 32
             },
-            ref: ["bridge", "user", "userEntityGrant", "wechatLogin"]
+            ref: ["user", "userEntityGrant", "wechatLogin"]
         },
         entityId: {
             notNull: true,

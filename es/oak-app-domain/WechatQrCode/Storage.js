@@ -7,7 +7,7 @@ export const desc = {
             params: {
                 length: 32
             },
-            ref: ["bridge", "user", "userEntityGrant", "wechatLogin"]
+            ref: ["user", "userEntityGrant", "wechatLogin"]
         },
         entityId: {
             notNull: true,

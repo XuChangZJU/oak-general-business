@@ -5,7 +5,6 @@ export declare const ActionDefDict: {
     account: {
         ableState: import("oak-domain").ActionDef<import("oak-domain").AbleAction, import("oak-domain").AbleState>;
     };
-    bridge: {};
     captcha: {
         iState: import("oak-domain").ActionDef<string, string>;
     };

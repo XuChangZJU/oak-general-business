@@ -5,7 +5,6 @@ import Style from './web.module.less';
 export default function Render(props) {
     const { oakId, oakFullpath, entity, entityId, relationEntity, showBack = true, userEntityGrantId, period } = props.data;
     const { setPeriod, confirm, setInit } = props.methods;
-    console.log(userEntityGrantId);
     if (!!userEntityGrantId) {
         return (_jsxs("div", { className: Style.container, children: [_jsx(UserEntityGrantShare, { oakId: userEntityGrantId, oakAutoUnmount: true, oakPath: "$userEntityGrant/upsert-userEntityGrant/detail" }), _jsx("div", { style: {
                         width: '100%',

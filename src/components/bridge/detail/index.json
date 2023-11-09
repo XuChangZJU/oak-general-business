@@ -1,6 +1,0 @@
-{
-    "navigationBarTitleText": "二维码",
-    "usingComponents": {
-        "l-loading": "@oak-frontend-base/miniprogram_npm/lin-ui/loading/index"
-    }
-}

@@ -17,7 +17,6 @@ import { desc as applicationDesc } from "./Application/Storage";
 import { desc as areaDesc } from "./Area/Storage";
 import { desc as articleDesc } from "./Article/Storage";
 import { desc as articleMenuDesc } from "./ArticleMenu/Storage";
-import { desc as bridgeDesc } from "./Bridge/Storage";
 import { desc as captchaDesc } from "./Captcha/Storage";
 import { desc as changePasswordTempDesc } from "./ChangePasswordTemp/Storage";
 import { desc as domainDesc } from "./Domain/Storage";
@@ -73,7 +72,6 @@ export const storageSchema = {
     area: areaDesc,
     article: articleDesc,
     articleMenu: articleMenuDesc,
-    bridge: bridgeDesc,
     captcha: captchaDesc,
     changePasswordTemp: changePasswordTempDesc,
     domain: domainDesc,

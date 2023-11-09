@@ -36,7 +36,7 @@ export default function Render(
 ) {
     const { oakId, oakFullpath, entity, entityId, relationEntity, showBack = true, userEntityGrantId, period } = props.data;
     const { setPeriod, confirm, setInit } = props.methods;
-    console.log(userEntityGrantId)
+
     if (!!userEntityGrantId) {
         return (
             <div className={Style.container}>

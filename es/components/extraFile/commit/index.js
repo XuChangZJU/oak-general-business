@@ -28,6 +28,9 @@ export default OakComponent({
         afterCommit: () => { },
         beforeCommit: (() => true),
     },
+    data: {
+        failureIds: undefined,
+    },
     methods: {
         getEfIds() {
             const entity = this.features.runningTree.getEntity(this.state.oakFullpath);
@@ -81,17 +84,35 @@ export default OakComponent({
                 return;
             }
             const promises = [];
+            const failureIds = [];
             ids.forEach((id) => {
                 const fileState = this.features.extraFile.getFileState(id);
                 if (fileState) {
                     const { state } = fileState;
                     if (['local', 'failed'].includes(state)) {
-                        promises.push(this.features.extraFile.upload(id));
+                        promises.push((async () => {
+                            try {
+                                await this.features.extraFile.upload(id);
+                            }
+                            catch (err) {
+                                failureIds.push(id);
+                            }
+                        })());
                     }
                 }
             });
             if (promises.length > 0) {
                 await Promise.all(promises);
+                if (failureIds.length > 0) {
+                    this.setState({
+                        failureIds,
+                    });
+                }
+                else {
+                    this.setState({
+                        failureIds: undefined,
+                    });
+                }
             }
         },
         async onSubmit() {
@@ -112,7 +133,9 @@ export default OakComponent({
                 }
             }
             else {
-                await this.upload(ids);
+                const { failureIds } = this.state;
+                assert(failureIds && failureIds.length > 0);
+                await this.upload(failureIds);
                 if (afterCommit) {
                     afterCommit();
                 }

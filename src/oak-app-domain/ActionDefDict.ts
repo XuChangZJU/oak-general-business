@@ -1,6 +1,5 @@
 import { ActionDefDict as Modi } from "./Modi/Action";
 import { ActionDefDict as Account } from "./Account/Action";
-import { ActionDefDict as Bridge } from "./Bridge/Action";
 import { ActionDefDict as Captcha } from "./Captcha/Action";
 import { ActionDefDict as Email } from "./Email/Action";
 import { ActionDefDict as Message } from "./Message/Action";
@@ -18,7 +17,6 @@ import { ActionDefDict as WechatPublicTag } from "./WechatPublicTag/Action";
 export const ActionDefDict = {
     modi: Modi,
     account: Account,
-    bridge: Bridge,
     captcha: Captcha,
     email: Email,
     message: Message,
