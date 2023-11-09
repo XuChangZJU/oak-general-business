@@ -37,6 +37,9 @@ export default OakComponent({
             | undefined
             | Promise<boolean | undefined>,
     },
+    data: {
+        failureIds: undefined as string[] | undefined,
+    },
     methods: {
         getEfIds() {
             const entity = this.features.runningTree.getEntity(
@@ -98,18 +101,38 @@ export default OakComponent({
             }
 
             const promises: Promise<void>[] = [];
+            const failureIds = [] as string[];  
             ids.forEach((id) => {
                 const fileState = this.features.extraFile.getFileState(id);
                 if (fileState) {
                     const { state } = fileState;
                     if (['local', 'failed'].includes(state)) {
-                        promises.push(this.features.extraFile.upload(id));
+                        promises.push(
+                            (async () => {
+                                try {
+                                    await this.features.extraFile.upload(id);
+                                }
+                                catch (err) {
+                                    failureIds.push(id);
+                                }
+                            })()
+                        );
                     }
                 }
             });
 
-            if (promises.length > 0) {
+            if (promises.length > 0) {              
                 await Promise.all(promises);
+                if (failureIds.length > 0) {
+                    this.setState({
+                        failureIds,
+                    });
+                }
+                else {
+                    this.setState({
+                        failureIds: undefined,
+                    });
+                }
             }
         },
         async onSubmit() {
@@ -131,7 +154,9 @@ export default OakComponent({
                     afterCommit();
                 }
             } else {
-                await this.upload(ids);
+                const { failureIds } = this.state;
+                assert(failureIds && failureIds.length > 0);
+                await this.upload(failureIds);
                 if (afterCommit) {
                     afterCommit();
                 }

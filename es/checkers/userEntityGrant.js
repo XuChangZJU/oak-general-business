@@ -22,6 +22,14 @@ const checkers = [
         },
     },
     {
+        type: 'row',
+        entity: 'userEntityGrant',
+        action: 'claim',
+        filter: {
+            expired: false,
+        },
+    },
+    {
         type: 'logical',
         entity: 'userEntityGrant',
         action: 'claim',
@@ -35,11 +43,16 @@ const checkers = [
                 data: {
                     id: 1,
                     relationEntity: 1,
+                    multiple: 1,
                 },
                 filter,
             }, option);
-            const createUserRelations = (userEntityGrant) => {
-                const { relationEntity } = userEntityGrant;
+            const dealInner = (userEntityGrant) => {
+                const { relationEntity, multiple } = userEntityGrant;
+                if (!multiple) {
+                    userEntityGrant.expired = true;
+                    userEntityGrant.expiresAt = Date.now();
+                }
                 userEntityClaim$ueg.forEach((uec) => {
                     const { action, data } = uec;
                     assert(action === 'create');
@@ -61,9 +74,9 @@ const checkers = [
                 return userEntityClaim$ueg.length;
             };
             if (result instanceof Promise) {
-                return result.then(([ueg]) => createUserRelations(ueg));
+                return result.then(([ueg]) => dealInner(ueg));
             }
-            return createUserRelations(result[0]);
+            return dealInner(result[0]);
         }
     }
 ];

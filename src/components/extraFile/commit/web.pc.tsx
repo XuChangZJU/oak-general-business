@@ -16,6 +16,7 @@ export default function render(
             type?: ButtonProps['type'];
             executeText?: string;
             action?: string;
+            failureIds?: string[];
             buttonProps?: ButtonProps;
         },
         {
@@ -30,15 +31,15 @@ export default function render(
         size,
         block,
         type,
+        failureIds,
         executeText,
         buttonProps = {},
     } = props.data;
     const { t, onSubmit } = props.methods;
 
-    const disabled =
-        oakExecuting ||
+    const disabled = (oakExecuting ||
         ['uploading'].includes(state) ||
-        (oakExecutable !== true && ['uploaded'].includes(state));
+        (oakExecutable !== true && ['uploaded'].includes(state))) && !failureIds;
     let text = executeText || t('common::submit');
     if (oakExecuting) {
         text = t('executing', { text });
