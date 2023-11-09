@@ -1,5 +1,4 @@
 {
-    "navigationBarTitleText": "扫码结果",
     "usingComponents": {
         "l-icon": "@oak-frontend-base/miniprogram_npm/lin-ui/icon/index"
     }

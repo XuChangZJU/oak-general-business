@@ -1,5 +1,4 @@
 {
-    "navigationBarTitleText": "绑定/登录",
     "usingComponents": {
         "l-icon": "@oak-frontend-base/miniprogram_npm/lin-ui/icon/index",
         "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index"
