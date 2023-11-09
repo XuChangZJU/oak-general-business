@@ -72,7 +72,7 @@ export type Projection = {
         $entity: "operEntity";
     };
 } & Partial<ExprOp<OpAttr | string>>;
-type wechatPublicAutoReplyIdProjection = OneOf<{
+type WechatPublicAutoReplyIdProjection = OneOf<{
     id: number;
 }>;
 type ApplicationIdProjection = OneOf<{
@@ -146,7 +146,7 @@ export type RemoveOperationData = {} & (({
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
-export type wechatPublicAutoReplyIdSubQuery = Selection<wechatPublicAutoReplyIdProjection>;
+export type WechatPublicAutoReplyIdSubQuery = Selection<WechatPublicAutoReplyIdProjection>;
 export type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

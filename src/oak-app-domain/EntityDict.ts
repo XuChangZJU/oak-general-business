@@ -48,7 +48,7 @@ import { EntityDef as UserSystem } from "./UserSystem/Schema";
 import { EntityDef as UserWechatPublicTag } from "./UserWechatPublicTag/Schema";
 import { EntityDef as WechatLogin } from "./WechatLogin/Schema";
 import { EntityDef as WechatMenu } from "./WechatMenu/Schema";
-import { EntityDef as wechatPublicAutoReply } from "./wechatPublicAutoReply/Schema";
+import { EntityDef as WechatPublicAutoReply } from "./WechatPublicAutoReply/Schema";
 import { EntityDef as WechatPublicTag } from "./WechatPublicTag/Schema";
 import { EntityDef as WechatPublicTemplate } from "./WechatPublicTemplate/Schema";
 import { EntityDef as WechatQrCode } from "./WechatQrCode/Schema";
@@ -104,7 +104,7 @@ export type EntityDict = {
     userWechatPublicTag: UserWechatPublicTag;
     wechatLogin: WechatLogin;
     wechatMenu: WechatMenu;
-    wechatPublicAutoReply: wechatPublicAutoReply;
+    wechatPublicAutoReply: WechatPublicAutoReply;
     wechatPublicTag: WechatPublicTag;
     wechatPublicTemplate: WechatPublicTemplate;
     wechatQrCode: WechatQrCode;
