@@ -78,31 +78,48 @@ export function createComponent(option, features) {
             ready() {
                 if (relatedMessageTypes) {
                     const applicationId = this.features.application.getApplicationId();
-                    const existedOnes = this.features.cache.get('messageTypeTemplateId', {
-                        data: {
-                            id: 1,
-                            templateId: 1,
-                            type: 1,
-                        },
-                        filter: {
-                            type: {
-                                $in: relatedMessageTypes,
-                            },
-                            applicationId,
-                        },
-                    });
-                    if (existedOnes.length === 0) {
-                        this.features.cache.refresh('messageTypeTemplateId', {
+                    const existedOnes = this.features.cache.get(
+                        'messageTypeTemplate',
+                        {
                             data: {
                                 id: 1,
                                 templateId: 1,
+                                template: {
+                                    id: 1,
+                                    applicationId: 1,
+                                    wechatId: 1,
+                                },
                                 type: 1,
                             },
                             filter: {
                                 type: {
                                     $in: relatedMessageTypes,
                                 },
-                                applicationId,
+                                template: {
+                                    applicationId,
+                                },
+                            },
+                        }
+                    );
+                    if (existedOnes.length === 0) {
+                        this.features.cache.refresh('messageTypeTemplate', {
+                            data: {
+                                id: 1,
+                                templateId: 1,
+                                template: {
+                                    id: 1,
+                                    applicationId: 1,
+                                    wechatId: 1,
+                                },
+                                type: 1,
+                            },
+                            filter: {
+                                type: {
+                                    $in: relatedMessageTypes,
+                                },
+                                template: {
+                                    applicationId,
+                                },
                             },
                         });
                     }
