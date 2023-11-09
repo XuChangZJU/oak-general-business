@@ -141,13 +141,26 @@ export default OakComponent({
                 return afterClaim(userEntityGrant as EntityDict['userEntityGrant']['OpSchema']);
             }
             else if (redirectTo) {
-                const { pathname, props, state } = redirectTo;
+                const { pathname, props = {}, state, isTabBar } = redirectTo;
                 
                 if (pathname) {
-                    this.navigateTo({
-                        url: pathname,
-                        ...props,
-                    }, state);
+                    if (isTabBar) {
+                        this.switchTab(
+                            {
+                                url: pathname,
+                                ...props,
+                            },
+                            state
+                        );
+                        return;
+                    }
+                    this.navigateTo(
+                        {
+                            url: pathname,
+                            ...props,
+                        },
+                        state
+                    );
                     return;
                 }
             }

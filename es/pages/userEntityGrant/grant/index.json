@@ -1,8 +1,0 @@
-{
-    "navigationBarTitleText": "授予权限",
-    "usingComponents": {
-        "t-button": "@oak-frontend-base/miniprogram_npm/tdesign/button/button",
-        "t-radio": "@oak-frontend-base/miniprogram_npm/tdesign/radio/radio",
-        "t-radio-group": "@oak-frontend-base/miniprogram_npm/tdesign/radio-group/radio-group"
-    }
-}

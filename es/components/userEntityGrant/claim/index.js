@@ -116,8 +116,15 @@ export default OakComponent({
                 return afterClaim(userEntityGrant);
             }
             else if (redirectTo) {
-                const { pathname, props, state } = redirectTo;
+                const { pathname, props = {}, state, isTabBar } = redirectTo;
                 if (pathname) {
+                    if (isTabBar) {
+                        this.switchTab({
+                            url: pathname,
+                            ...props,
+                        }, state);
+                        return;
+                    }
                     this.navigateTo({
                         url: pathname,
                         ...props,

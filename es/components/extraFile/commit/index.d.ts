@@ -20,7 +20,7 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
         loadingIcon?: import("react").ReactNode;
         disabled?: boolean | undefined;
         onClick?: ((event: import("react").MouseEvent<HTMLButtonElement, MouseEvent>) => unknown) | undefined;
-        type?: "button" | "submit" | "reset" | undefined;
+        type?: "button" | "reset" | "submit" | undefined;
         shape?: "default" | "rounded" | "rectangular" | undefined;
         children?: import("react").ReactNode;
     } & Pick<import("react").ClassAttributes<HTMLButtonElement> & import("react").ButtonHTMLAttributes<HTMLButtonElement>, "id" | "onMouseUp" | "onMouseDown" | "onTouchStart" | "onTouchEnd"> & {
