@@ -27,7 +27,7 @@ export default OakComponent({
         buttonProps: {},
         afterCommit: undefined,
         beforeCommit: undefined,
-        fnSet: {
+        fnSetMp: {
             afterCommit: undefined,
             beforeCommit: undefined,
         }, //小程序传递函数 需要以对象形式传入组件
@@ -112,10 +112,10 @@ export default OakComponent({
         },
         async onSubmit(e) {
             const { oakExecutable } = this.state;
-            const { beforeCommit, afterCommit, action, fnSet } = this.props;
+            const { beforeCommit, afterCommit, action, fnSetMp } = this.props;
             const ids = this.getEfIds();
-            const beforeCommit2 = fnSet?.beforeCommit || beforeCommit;
-            const afterCommit2 = fnSet?.afterCommit || afterCommit;
+            const beforeCommit2 = fnSetMp?.beforeCommit || beforeCommit;
+            const afterCommit2 = fnSetMp?.afterCommit || afterCommit;
             if (oakExecutable) {
                 if (typeof beforeCommit2 === 'function') {
                     const beforeCommitResult = await beforeCommit2();

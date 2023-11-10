@@ -138,11 +138,11 @@ export default OakComponent({
         },
         async onSubmit(e: any) {
             const { oakExecutable } = this.state;
-            const { beforeCommit, afterCommit, action, fnSet } = this.props;
+            const { beforeCommit, afterCommit, action, fnSetMp } = this.props;
             const ids = this.getEfIds();
 
-            const beforeCommit2 = fnSet?.beforeCommit || beforeCommit;
-            const afterCommit2 = fnSet?.afterCommit || afterCommit;
+            const beforeCommit2 = fnSetMp?.beforeCommit || beforeCommit;
+            const afterCommit2 = fnSetMp?.afterCommit || afterCommit;
 
             if (oakExecutable) {
                 if (typeof beforeCommit2 === 'function') {
