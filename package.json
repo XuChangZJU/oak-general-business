@@ -79,7 +79,7 @@
         "make:locale": "ts-node ./scripts/buildLocale.ts",
         "make:domain": "ts-node ./scripts/make.ts",
         "clean": "rimraf lib/* && rimraf es/*",
-        "copy-js": "copyfiles -u 1 src/**/*.js lib/ & copyfiles -u 1 src/**/*.js es/",
+        "copy-js": "copyfiles -u 1 src/**/*.js es/",
         "copy-svg": "copyfiles -u 1 src/**/*.svg es/ & copyfiles -u 1 src/**/*.png es/",
         "copy-less": "copyfiles -u 1 src/**/*.less es/ & copyfiles -u 1 src/**/*.wxss es/ & copyfiles -u 1 src/**/*.css es/",
         "copy-wxs": "copyfiles -u 1 src/**/*.wxs es/",

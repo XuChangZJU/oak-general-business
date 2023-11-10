@@ -4,6 +4,8 @@ import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 import { ButtonProps } from 'antd';
 import { ButtonProps as AmButtonProps } from 'antd-mobile';
+type AfterCommit = (() => void) | undefined;
+type BeforeCommit = (() => boolean | undefined | Promise<boolean | undefined>) | undefined;
 declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(props: ReactComponentProps<ED2, T2, true, {
     action?: string | undefined;
     size?: ButtonProps['size'] | AmButtonProps['size'];
@@ -28,7 +30,11 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
         style?: (import("react").CSSProperties & Partial<Record<"--text-color" | "--background-color" | "--border-radius" | "--border-width" | "--border-style" | "--border-color", string>>) | undefined;
         tabIndex?: number | undefined;
     } & import("react").AriaAttributes) | undefined;
-    afterCommit?: (() => any) | undefined;
-    beforeCommit?: (() => boolean | undefined | Promise<boolean | undefined>) | undefined;
+    afterCommit?: AfterCommit;
+    beforeCommit?: BeforeCommit;
+    fnSetMp?: {
+        afterCommit?: AfterCommit;
+        beforeCommit?: BeforeCommit;
+    } | undefined;
 }>) => React.ReactElement;
 export default _default;

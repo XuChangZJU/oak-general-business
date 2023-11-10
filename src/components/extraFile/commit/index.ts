@@ -6,6 +6,11 @@ import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 import { ButtonProps } from 'antd';
 import { ButtonProps as AmButtonProps } from 'antd-mobile';
 
+type AfterCommit = (() => void) | undefined;
+type BeforeCommit =
+    | (() => boolean | undefined | Promise<boolean | undefined>)
+    | undefined;
+
 export default OakComponent({
     formData({ features }) {
         const ids: string[] = this.getEfIds();
@@ -31,11 +36,17 @@ export default OakComponent({
         type: 'primary',
         executeText: '',
         buttonProps: {},
-        afterCommit: () => {},
-        beforeCommit: (() => true) as () =>
-            | boolean
-            | undefined
-            | Promise<boolean | undefined>,
+        afterCommit: undefined as AfterCommit,
+        beforeCommit: undefined as BeforeCommit,
+        fnSetMp: {
+            afterCommit: undefined,
+            beforeCommit: undefined,
+        } as
+            | {
+                  afterCommit?: AfterCommit;
+                  beforeCommit?: BeforeCommit;
+              }
+            | undefined, //小程序传递函数 需要以对象形式传入组件
     },
     data: {
         failureIds: undefined as string[] | undefined,
@@ -101,7 +112,7 @@ export default OakComponent({
             }
 
             const promises: Promise<void>[] = [];
-            const failureIds = [] as string[];  
+            const failureIds = [] as string[];
             ids.forEach((id) => {
                 const fileState = this.features.extraFile.getFileState(id);
                 if (fileState) {
@@ -111,8 +122,7 @@ export default OakComponent({
                             (async () => {
                                 try {
                                     await this.features.extraFile.upload(id);
-                                }
-                                catch (err) {
+                                } catch (err) {
                                     failureIds.push(id);
                                 }
                             })()
@@ -121,44 +131,56 @@ export default OakComponent({
                 }
             });
 
-            if (promises.length > 0) {              
+            if (promises.length > 0) {
                 await Promise.all(promises);
-                if (failureIds.length > 0) {
-                    this.setState({
-                        failureIds,
-                    });
-                }
-                else {
-                    this.setState({
-                        failureIds: undefined,
-                    });
-                }
             }
+            return failureIds;
         },
-        async onSubmit() {
+        async onSubmit(e: any) {
             const { oakExecutable } = this.state;
-            const { beforeCommit, afterCommit, action } = this.props;
+            const { beforeCommit, afterCommit, action, fnSet } = this.props;
             const ids = this.getEfIds();
 
+            const beforeCommit2 = fnSet?.beforeCommit || beforeCommit;
+            const afterCommit2 = fnSet?.afterCommit || afterCommit;
+
             if (oakExecutable) {
-                if (beforeCommit) {
-                    const beforeCommitResult = await beforeCommit();
+                if (typeof beforeCommit2 === 'function') {
+                    const beforeCommitResult = await beforeCommit2();
                     if (beforeCommitResult === false) {
                         return;
                     }
                 }
 
                 await this.execute(action || undefined);
-                await this.upload(ids);
-                if (afterCommit) {
-                    afterCommit();
+                const failureIds = await this.upload(ids);
+                if (failureIds && failureIds.length > 0) {
+                    this.setState({
+                        failureIds,
+                    });
+                    return;
+                }
+                this.setState({
+                    failureIds: undefined,
+                });
+                if (typeof afterCommit2 === 'function') {
+                    afterCommit2();
                 }
             } else {
                 const { failureIds } = this.state;
                 assert(failureIds && failureIds.length > 0);
-                await this.upload(failureIds);
-                if (afterCommit) {
-                    afterCommit();
+                const failureIds2 = await this.upload(failureIds);
+                if (failureIds2 && failureIds2.length > 0) {
+                    this.setState({
+                        failureIds: failureIds2,
+                    });
+                    return;
+                }
+                this.setState({
+                    failureIds: undefined,
+                });
+                if (typeof afterCommit2 === 'function') {
+                    afterCommit2();
                 }
             }
         },
@@ -176,11 +198,13 @@ export default OakComponent({
             type?: ButtonProps['type'] | AmButtonProps['type'];
             executeText?: string;
             buttonProps?: ButtonProps & AmButtonProps;
-            afterCommit?: () => any;
-            beforeCommit?: () =>
-                | boolean
-                | undefined
-                | Promise<boolean | undefined>;
+            afterCommit?: AfterCommit;
+            beforeCommit?: BeforeCommit;
+            fnSetMp?: {
+                //小程序传递函数 需要以对象形式传入组件
+                afterCommit?: AfterCommit;
+                beforeCommit?: BeforeCommit;
+            };
         }
     >
 ) => React.ReactElement;

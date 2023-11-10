@@ -1,6 +1,6 @@
-import { WebComponentProps } from 'oak-frontend-base';
 import React from 'react';
 import { Button, ButtonProps } from 'antd';
+import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 import { FileState } from '../../../features/extraFile';
 

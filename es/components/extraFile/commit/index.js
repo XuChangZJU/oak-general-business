@@ -25,8 +25,12 @@ export default OakComponent({
         type: 'primary',
         executeText: '',
         buttonProps: {},
-        afterCommit: () => { },
-        beforeCommit: (() => true),
+        afterCommit: undefined,
+        beforeCommit: undefined,
+        fnSet: {
+            afterCommit: undefined,
+            beforeCommit: undefined,
+        }, //小程序传递函数 需要以对象形式传入组件
     },
     data: {
         failureIds: undefined,
@@ -103,41 +107,52 @@ export default OakComponent({
             });
             if (promises.length > 0) {
                 await Promise.all(promises);
-                if (failureIds.length > 0) {
-                    this.setState({
-                        failureIds,
-                    });
-                }
-                else {
-                    this.setState({
-                        failureIds: undefined,
-                    });
-                }
             }
+            return failureIds;
         },
-        async onSubmit() {
+        async onSubmit(e) {
             const { oakExecutable } = this.state;
-            const { beforeCommit, afterCommit, action } = this.props;
+            const { beforeCommit, afterCommit, action, fnSet } = this.props;
             const ids = this.getEfIds();
+            const beforeCommit2 = fnSet?.beforeCommit || beforeCommit;
+            const afterCommit2 = fnSet?.afterCommit || afterCommit;
             if (oakExecutable) {
-                if (beforeCommit) {
-                    const beforeCommitResult = await beforeCommit();
+                if (typeof beforeCommit2 === 'function') {
+                    const beforeCommitResult = await beforeCommit2();
                     if (beforeCommitResult === false) {
                         return;
                     }
                 }
                 await this.execute(action || undefined);
-                await this.upload(ids);
-                if (afterCommit) {
-                    afterCommit();
+                const failureIds = await this.upload(ids);
+                if (failureIds && failureIds.length > 0) {
+                    this.setState({
+                        failureIds,
+                    });
+                    return;
+                }
+                this.setState({
+                    failureIds: undefined,
+                });
+                if (typeof afterCommit2 === 'function') {
+                    afterCommit2();
                 }
             }
             else {
                 const { failureIds } = this.state;
                 assert(failureIds && failureIds.length > 0);
-                await this.upload(failureIds);
-                if (afterCommit) {
-                    afterCommit();
+                const failureIds2 = await this.upload(failureIds);
+                if (failureIds2 && failureIds2.length > 0) {
+                    this.setState({
+                        failureIds: failureIds2,
+                    });
+                    return;
+                }
+                this.setState({
+                    failureIds: undefined,
+                });
+                if (typeof afterCommit2 === 'function') {
+                    afterCommit2();
                 }
             }
         },
