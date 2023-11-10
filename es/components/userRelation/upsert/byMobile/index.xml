@@ -20,7 +20,7 @@
     <block wx:if="{{mobileValueReady}}">
         <block wx:if="{{userId}}">
             <relation-on-user
-                style="display: flex;flex-direction: column; flex: 1; margin-top: 30rpx"
+                style="display: flex;flex-direction: column; flex: 1; margin-top: 30rpx; ; margin-bottom: 30rpx"
                 oakId="{{userId}}"
                 mobile="{{mobileValue}}"
                 oakPath="{{oakFullpath + '.user'}}"

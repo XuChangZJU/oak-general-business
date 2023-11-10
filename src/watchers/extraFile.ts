@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict } from '../oak-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { Watcher, BBWatcher } from 'oak-domain/lib/types/Watcher';

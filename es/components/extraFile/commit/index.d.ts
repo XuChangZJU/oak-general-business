@@ -32,9 +32,5 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     } & import("react").AriaAttributes) | undefined;
     afterCommit?: AfterCommit;
     beforeCommit?: BeforeCommit;
-    fnSetMp?: {
-        afterCommit?: AfterCommit;
-        beforeCommit?: BeforeCommit;
-    } | undefined;
 }>) => React.ReactElement;
 export default _default;

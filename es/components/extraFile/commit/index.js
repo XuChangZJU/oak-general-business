@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 export default OakComponent({
     formData({ features }) {
         const ids = this.getEfIds();
@@ -27,10 +27,6 @@ export default OakComponent({
         buttonProps: {},
         afterCommit: undefined,
         beforeCommit: undefined,
-        fnSetMp: {
-            afterCommit: undefined,
-            beforeCommit: undefined,
-        }, //小程序传递函数 需要以对象形式传入组件
     },
     data: {
         failureIds: undefined,
@@ -112,13 +108,11 @@ export default OakComponent({
         },
         async onSubmit(e) {
             const { oakExecutable } = this.state;
-            const { beforeCommit, afterCommit, action, fnSetMp } = this.props;
+            const { beforeCommit, afterCommit, action } = this.props;
             const ids = this.getEfIds();
-            const beforeCommit2 = fnSetMp?.beforeCommit || beforeCommit;
-            const afterCommit2 = fnSetMp?.afterCommit || afterCommit;
             if (oakExecutable) {
-                if (typeof beforeCommit2 === 'function') {
-                    const beforeCommitResult = await beforeCommit2();
+                if (beforeCommit) {
+                    const beforeCommitResult = await beforeCommit();
                     if (beforeCommitResult === false) {
                         return;
                     }
@@ -134,8 +128,8 @@ export default OakComponent({
                 this.setState({
                     failureIds: undefined,
                 });
-                if (typeof afterCommit2 === 'function') {
-                    afterCommit2();
+                if (afterCommit) {
+                    afterCommit();
                 }
             }
             else {
@@ -151,8 +145,8 @@ export default OakComponent({
                 this.setState({
                     failureIds: undefined,
                 });
-                if (typeof afterCommit2 === 'function') {
-                    afterCommit2();
+                if (afterCommit) {
+                    afterCommit();
                 }
             }
         },

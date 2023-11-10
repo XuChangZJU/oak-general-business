@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict } from '../../../oak-app-domain';
 import { FileState } from '../../../features/extraFile';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
@@ -38,15 +38,6 @@ export default OakComponent({
         buttonProps: {},
         afterCommit: undefined as AfterCommit,
         beforeCommit: undefined as BeforeCommit,
-        fnSetMp: {
-            afterCommit: undefined,
-            beforeCommit: undefined,
-        } as
-            | {
-                  afterCommit?: AfterCommit;
-                  beforeCommit?: BeforeCommit;
-              }
-            | undefined, //小程序传递函数 需要以对象形式传入组件
     },
     data: {
         failureIds: undefined as string[] | undefined,
@@ -138,15 +129,12 @@ export default OakComponent({
         },
         async onSubmit(e: any) {
             const { oakExecutable } = this.state;
-            const { beforeCommit, afterCommit, action, fnSetMp } = this.props;
+            const { beforeCommit, afterCommit, action } = this.props;
             const ids = this.getEfIds();
 
-            const beforeCommit2 = fnSetMp?.beforeCommit || beforeCommit;
-            const afterCommit2 = fnSetMp?.afterCommit || afterCommit;
-
             if (oakExecutable) {
-                if (typeof beforeCommit2 === 'function') {
-                    const beforeCommitResult = await beforeCommit2();
+                if (beforeCommit) {
+                    const beforeCommitResult = await beforeCommit();
                     if (beforeCommitResult === false) {
                         return;
                     }
@@ -163,8 +151,8 @@ export default OakComponent({
                 this.setState({
                     failureIds: undefined,
                 });
-                if (typeof afterCommit2 === 'function') {
-                    afterCommit2();
+                if (afterCommit) {
+                    afterCommit();
                 }
             } else {
                 const { failureIds } = this.state;
@@ -179,8 +167,8 @@ export default OakComponent({
                 this.setState({
                     failureIds: undefined,
                 });
-                if (typeof afterCommit2 === 'function') {
-                    afterCommit2();
+                if (afterCommit) {
+                    afterCommit();
                 }
             }
         },
@@ -200,11 +188,6 @@ export default OakComponent({
             buttonProps?: ButtonProps & AmButtonProps;
             afterCommit?: AfterCommit;
             beforeCommit?: BeforeCommit;
-            fnSetMp?: {
-                //小程序传递函数 需要以对象形式传入组件
-                afterCommit?: AfterCommit;
-                beforeCommit?: BeforeCommit;
-            };
         }
     >
 ) => React.ReactElement;
