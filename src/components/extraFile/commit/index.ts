@@ -6,7 +6,7 @@ import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 import { ButtonProps } from 'antd';
 import { ButtonProps as AmButtonProps } from 'antd-mobile';
 
-type AfterCommit = (() => void) | undefined;
+type AfterCommit = ((id?: string) => void) | undefined;
 type BeforeCommit =
     | (() => boolean | undefined | Promise<boolean | undefined>)
     | undefined;
@@ -41,6 +41,7 @@ export default OakComponent({
     },
     data: {
         failureIds: undefined as string[] | undefined,
+        currentId: undefined as string | undefined,
     },
     methods: {
         getEfIds() {
@@ -139,36 +140,42 @@ export default OakComponent({
                         return;
                     }
                 }
+                const id = this.getId();
 
                 await this.execute(action || undefined);
                 const failureIds = await this.upload(ids);
                 if (failureIds && failureIds.length > 0) {
                     this.setState({
                         failureIds,
+                        currentId: id,
                     });
                     return;
                 }
                 this.setState({
                     failureIds: undefined,
+                    currentId: undefined,
                 });
                 if (afterCommit) {
-                    afterCommit();
+                    afterCommit(id);
                 }
             } else {
-                const { failureIds } = this.state;
+                const { failureIds, currentId } = this.state;
+                const id2 = currentId;
                 assert(failureIds && failureIds.length > 0);
                 const failureIds2 = await this.upload(failureIds);
                 if (failureIds2 && failureIds2.length > 0) {
                     this.setState({
                         failureIds: failureIds2,
+                        currentId: id2,
                     });
                     return;
                 }
                 this.setState({
                     failureIds: undefined,
+                    currentId: undefined,
                 });
                 if (afterCommit) {
-                    afterCommit();
+                    afterCommit(id2);
                 }
             }
         },
