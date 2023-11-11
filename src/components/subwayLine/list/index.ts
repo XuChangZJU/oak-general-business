@@ -1,140 +1,130 @@
-import { pull } from "oak-domain/lib/utils/lodash";
+
+// import { TreeNode } from '@project/types/interface';
+import { EntityDict } from '../../../oak-app-domain';
+
+
+type TreeNode = {
+    key: string;
+    title: string;
+    children?: TreeNode[];
+    isLeaf?: boolean;
+};
 
 export default OakComponent({
-    isList: true,
-
-    lifetimes: {
-        async ready() {
-            const { data: areas } = await this.features.cache.refresh('area', {
-                data: {
+    entity: 'subway',
+    projection: {
+        id: 1,
+        name: 1,
+        areaId: 1,
+        subwayStation$subway: {
+            $entity: 'subwayStation',
+            data: {
+                id: 1,
+                subwayId: 1,
+                stationId: 1,
+                station: {
                     id: 1,
                     name: 1,
-                    level: 1,
-                },
-                filter: {
-                    subway$area: {
-                    },
-                    level: 'city',
-                },
+                }
+            }
+        }
+    },
+    pagination: {
+        currentPage: 1,
+        pageSize: 100,
+        more: true,
+    },
+    isList: true,
+    data: {
+        areaId: '330100' as string,
+        areaOptions: [] as Array<{ label: string, value: string }>,
+    },
+    properties: {},
+    filters: [
+        {
+            filter() {
+                return {
+                    areaId: '330100'
+                }
+            },
+            '#name': 'area',
+        },
+        // {
+        //     filter() {
+        //         return {
+        //         };
+        //     },
+        //     '#name': 'type',
+        // },
+    ],
+    listeners: {},
+    formData: ({ data: subway }) => {
+        const treeData: TreeNode[] = subway
+            // ?.filter((ele) => !ele!.subwayStation$subway)
+            .map((ele) => {
+                return {
+                    title: ele!.name!,
+                    key: ele!.id!,
+                    isLeaf: false,
+                    children:
+                        ele.subwayStation$subway!
+                            .map((ele2) => ({
+                                title: ele2!.station!.name,
+                                key: `${ele.id}/${ele2!.station!.id}`,
+                                isLeaf: true,
+                            })) || [],
+                };
             });
-            const areaId = this.props.areaId || areas[0].id;
-            const { data: subways } = await this.features.cache.refresh(
-                'subway',
+
+        return {
+            treeData,
+        };
+    },
+    lifetimes: {
+        async ready() {
+            const { data: area } = await this.features.cache.refresh(
+                'area',
                 {
                     data: {
                         id: 1,
                         name: 1,
+                        level: 1,
+
                     },
                     filter: {
-                        areaId,
+                        subway$area: {
+                        },
+                        level: 'city',
                     },
                 }
             );
+            const areaOptions = area?.map(
+                (ele: any) => ({
+                    label: ele.name,
+                    value: ele.id,
+                })
+            )
             this.setState({
-                areas,
-                subways,
-                subwayId: subways[0]?.id,
+                areaOptions,
             });
-            this.getStations(subways[0]?.id!);
         },
-    },
-    data: {
-        open: false,
-        stationIds: [] as string[],
-    },
-    properties: {
-        areaId: '' as string | undefined | null,
-        onCancel: undefined as (() => void) | undefined,
-        onConfirm: undefined as ((stationIds: string[]) => void) | undefined,
-        selectIds: [] as string[] | undefined,
     },
     methods: {
-        setAeraId(areaId: string) {
-            this.setState({
-                areaId,
-            });
-        },
-        setCheckedList(value: string, flag: boolean) {
-            const { stationIds } = this.state;
-            if (flag) {
-                this.setState({
-                    stationIds: stationIds.concat(value),
-                });
-                // stationIds.push(value);
-            } else {
-                var index = stationIds.indexOf(value);
-                // stationIds.splice(index, 1);
-                this.setState({
-                    stationIds: pull(stationIds, value),
-                });
-            }
-        },
-        async getSubways(areaId: string) {
-            this.setState({
-                areaId,
-            });
-            const { data: subways } = await this.features.cache.refresh(
-                'subway',
+        setFilterByAreaId(areaId: string) {
+            this.addNamedFilter(
                 {
-                    data: {
-                        id: 1,
-                        name: 1,
-                    },
                     filter: {
                         areaId,
                     },
-                }
+                    '#name': 'area',
+                },
+                true
             );
-            this.getStations(subways[0]!.id!);
-            this.setState({
-                subways,
-            });
         },
-        async getStations(subwayId: string) {
+        setAreaId(areaId: string) {
             this.setState({
-                subwayId,
-            });
-            const { data: subwayStations } = await this.features.cache.refresh(
-                'subwayStation',
-                {
-                    data: {
-                        id: 1,
-                        subwayId: 1,
-                        stationId: 1,
-                        station: {
-                            id: 1,
-                            name: 1,
-                        },
-                    },
-                    filter: {
-                        subwayId,
-                    },
-                }
-            );
-            const stations = subwayStations?.map((ele: any) => ({
-                label: ele.station.name,
-                value: ele.station.id,
-            }));
-            this.setState({
-                stations,
-            });
-        },
-
-        cancel() {
-            this.setState({
-                stationIds: [],
-            });
-            if (this.props.onCancel) {
-                this.props.onCancel();
-            }
-        },
-        confirm() {
-            if (this.props.onConfirm) {
-                this.props.onConfirm(this.state.stationIds);
-            }
-            this.setState({
-                stationIds: [],
-            });
-        },
+                areaId,
+            })
+        }
     },
 });

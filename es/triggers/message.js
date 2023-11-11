@@ -165,6 +165,16 @@ async function createNotification(message, context) {
                 }
                 case 'wechatPublic': {
                     const apps = applications.filter(ele => ele.type === 'wechatPublic');
+                    const [user] = await context.select('user', {
+                        data: {
+                            id: 1,
+                            refId: 1,
+                        },
+                        filter: {
+                            id: userId
+                        }
+                    }, { dontCollect: true });
+                    const userId2 = user.refId ? user.refId : userId;
                     const wechatUsers = await context.select('wechatUser', {
                         data: {
                             id: 1,
@@ -173,10 +183,10 @@ async function createNotification(message, context) {
                         },
                         filter: {
                             applicationId: {
-                                $in: apps.map(ele => ele.id),
+                                $in: apps.map((ele) => ele.id),
                             },
-                            userId,
-                        }
+                            userId: userId2,
+                        },
                     }, { dontCollect: true });
                     for (const app of apps) {
                         // 如果是wechatMp或者wechat，还要保证用户已经有openId
