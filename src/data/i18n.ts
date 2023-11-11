@@ -72,18 +72,6 @@ const i18ns: I18n[] = [
         language: "zh-CN",
         module: "oak-general-business",
         position: "src/components/extraFile/gallery",
-        data: {
-            "waiting": "等待上传",
-            "success": "上传成功",
-            "uploading": "上传中"
-        }
-    },
-    {
-        id: "d30e4a47c1d768d74efae1fade371595",
-        namespace: "oak-general-business-c-extraFile-gallery2",
-        language: "zh-CN",
-        module: "oak-general-business",
-        position: "src/components/extraFile/gallery2",
         data: {}
     },
     {

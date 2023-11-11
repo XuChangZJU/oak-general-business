@@ -2,7 +2,7 @@ import { EntityDict } from '../../../oak-app-domain';
 import { FileState } from '../../../features/extraFile';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
-import { generateNewId } from 'oak-domain';
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { assert } from 'oak-domain/lib/utils/assert';
 
 type ExtraFile = EntityDict['extraFile']['OpSchema'];

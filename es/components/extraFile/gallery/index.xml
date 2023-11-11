@@ -1,46 +1,9 @@
-<block wx:if="{{ theme === 'image' || theme === 'image-flow' }}">
-    <view class="file-list__container oak-class">
-        <block wx:for="{{files}}" wx:key="index">
-            <block wx:if="{{item}}">
-                <view class="file-list__item  file-list__item--{{size}} oak-item-class" style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:'xxx'}}">
-                    <oak-display data-index="{{index}}" bind:tap="onItemTapped" mode="{{mode}}" oakId="{{item.id}}" oakAutoUnmount="{{true}}" oakPath="{{oakFullpath}}.{{item.id}}" />
-                    <view wx:if="{{!disableDelete}}" mut-bind:tap="onDeleteByMp" class="file-list__remove" data-value="{{item}}">
-                        <l-icon name="close" color="#ffffff" size="18" />
-                    </view>
-                </view>
-            </block>
-        </block>
-        <view class="file-list__item file-list__item--add  file-list__item--{{size}} oak-item-class" style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:''}}" wx:if="{{!disableInsert && !disableAdd}}" bind:tap="onPickByMp">
-            <view class="file-list__item-slot-wrapper">
-                <slot />
-            </view>
-            <view class="file-list__image--add">
-                <l-icon name="add" size="80" />
-            </view>
-        </view>
-    </view>
-</block>
-<block wx:else >
-<view class="file-list-flow__container oak-class">
-    <view class="file-list-flow__item--add oak-item-add-class" wx:if="{{!disableInsert && !disableAdd}}">
-        <l-button bind:lintap="onPickByMp" plain="{{true}}" type="default">选择文件</l-button>
-    </view>
+<view class="file-list__container oak-class">
     <block wx:for="{{files}}" wx:key="index">
         <block wx:if="{{item}}">
-             <view class="file-list-flow__item">
-               <view class="file-list-flow__item--name" mut-bind:tap="onOpenByMp" data-value="{{item}}">
-                   {{ item.filename }}{{ item.extension ? '.' + item.extension : '' }}
-               </view>
-               <view class="file-list-flow__item--btns">
-               <!-- <view wx:if="{{!disableDownload}}" mut-bind:tap="onDownloadByMp" class="file-list-flow__download" data-value="{{item}}">
-                    <l-icon name="download" size="36" />
-                </view> -->
-                <view wx:if="{{!disableDelete}}" mut-bind:tap="onDeleteByMp" class="file-list-flow__remove" data-value="{{item}}">
-                    <l-icon name="delete" size="36" />
-                </view>
-               <view> 
-             </view>
+            <view class="file-list__item  file-list__item--{{size}} oak-item-class" style="{{itemSizePercentage?'width:'+itemSizePercentage+'padding-bottom:'+itemSizePercentage:'xxx'}}">
+                <image data-index="{{index}}" bind:tap="onPreviewByMp" src="{{item.thumbUrl}}" mode="{{mode}}" class="file-list__image"/>
+            </view>
         </block>
     </block>
 </view>
-</block>
