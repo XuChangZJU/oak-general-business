@@ -18,7 +18,7 @@ export declare class ExtraFile<ED extends EntityDict, Cxt extends BackendRuntime
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>, application: Application<ED, Cxt, FrontCxt, AD>, locales: Locales<ED, Cxt, FrontCxt, AD>, runningTree: RunningTree<ED, Cxt, FrontCxt, AD>);
     addLocalFile(id: string, file: File | string): void;
     removeLocalFiles(ids: string[]): void;
-    upload(id: string): Promise<void>;
+    upload(id: string, entity: keyof ED): Promise<void>;
     getUrl(extraFile?: EntityDict['extraFile']['OpSchema'] | EntityDict['extraFile']['Schema'] | null, style?: string): string;
     getFileState(id: string): {
         state: FileState;

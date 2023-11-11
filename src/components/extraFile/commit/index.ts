@@ -48,53 +48,48 @@ export default OakComponent({
             const entity = this.features.runningTree.getEntity(
                 this.state.oakFullpath
             );
-            const value = this.features.runningTree.getFreshValue(
+            const operations = this.features.runningTree.getOperations(
                 this.state.oakFullpath
             );
             const efIds = [] as string[];
 
-            const getRecursive = (e: string, v: Record<string, any>) => {
-                for (const attr in v) {
+            const getRecursive = (e: string, o: any) => {
+                const { action, data } = o;
+                if (e === 'extraFile') {
+                    if (action === 'create') {
+                        assert(!(data instanceof Array));
+                        efIds.push(data.id!);
+                    }
+                    return;
+                }
+
+                for (const attr in data) {
                     const rel = this.features.cache.judgeRelation(
                         e as keyof EntityDict,
                         attr
                     );
                     if (rel === 2) {
-                        assert(typeof v[attr] === 'object');
-                        if (attr === 'extraFile') {
-                            assert(v[attr].id);
-                            efIds.push(v[attr].id);
-                        } else {
-                            getRecursive(attr, v[attr]);
-                        }
+                        assert(typeof data[attr] === 'object' && !(data[attr] instanceof Array));
+                        getRecursive(attr, data[attr]);
                     } else if (typeof rel === 'string') {
-                        assert(typeof v[attr] === 'object');
-                        if (rel === 'extraFile') {
-                            assert(v[attr].id);
-                            efIds.push(v[attr].id);
-                        } else {
-                            getRecursive(rel, v[attr]);
-                        }
+                        assert(typeof data[attr] === 'object' && !(data[attr] instanceof Array));
+                        getRecursive(rel, data[attr]);
                     } else if (rel instanceof Array) {
-                        assert(v[attr] instanceof Array);
-                        const [e2, fk2] = rel;
-                        if (e2 === 'extraFile') {
-                            efIds.push(
-                                ...v[attr].map((ele: { id: string }) => ele.id)
+                        const [e2] = rel;
+                        if (data[attr] instanceof Array) {
+                            data[attr].forEach(
+                                (o2: any) => getRecursive(e2, o2)
                             );
-                        } else {
-                            v[attr].forEach((ele: any) =>
-                                getRecursive(e2, ele)
-                            );
+                        }
+                        else {
+                            getRecursive(e2, data[attr]);
                         }
                     }
                 }
             };
 
-            if (value instanceof Array) {
-                value.forEach((ele) => getRecursive(entity, ele));
-            } else {
-                getRecursive(entity, value as any);
+            if (operations instanceof Array) {
+                operations.forEach((ele) => getRecursive(entity, ele.operation));
             }
             return efIds;
         },
@@ -105,6 +100,9 @@ export default OakComponent({
 
             const promises: Promise<void>[] = [];
             const failureIds = [] as string[];
+            const entity = this.features.runningTree.getEntity(
+                this.state.oakFullpath
+            );
             ids.forEach((id) => {
                 const fileState = this.features.extraFile.getFileState(id);
                 if (fileState) {
@@ -113,7 +111,7 @@ export default OakComponent({
                         promises.push(
                             (async () => {
                                 try {
-                                    await this.features.extraFile.upload(id);
+                                    await this.features.extraFile.upload(id, entity);
                                 } catch (err) {
                                     failureIds.push(id);
                                 }
