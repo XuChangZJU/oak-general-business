@@ -162,6 +162,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "applicationId" 
     applicationId: ForeignKey<"application">;
     application?: Application.UpdateOperation;
 } | {
+    application?: never;
     applicationId: ForeignKey<"application">;
 }) & ({
     sessionId?: never;
@@ -170,6 +171,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "applicationId" 
     sessionId: ForeignKey<"session">;
     session?: Session.UpdateOperation;
 } | {
+    session?: never;
     sessionId: ForeignKey<"session">;
 }) & ({
     userId?: never;
@@ -178,6 +180,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "applicationId" 
     userId: ForeignKey<"user">;
     user?: User.UpdateOperation;
 } | {
+    user?: never;
     userId?: ForeignKey<"user">;
 }) & ({
     wechatUserId?: never;
@@ -186,6 +189,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "applicationId" 
     wechatUserId: ForeignKey<"wechatUser">;
     wechatUser?: WechatUser.UpdateOperation;
 } | {
+    wechatUser?: never;
     wechatUserId?: ForeignKey<"wechatUser">;
 })) & {
     extraFile$entity?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">>>;
@@ -194,49 +198,49 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "applicationId" | "sessionId" | "userId" | "wechatUserId">> & (({
-    application: Application.CreateSingleOperation;
+    application?: Application.CreateSingleOperation;
     applicationId?: never;
 } | {
-    application: Application.UpdateOperation;
+    application?: Application.UpdateOperation;
     applicationId?: never;
 } | {
-    application: Application.RemoveOperation;
+    application?: Application.RemoveOperation;
     applicationId?: never;
 } | {
     application?: never;
-    applicationId?: ForeignKey<"application"> | null;
+    applicationId?: ForeignKey<"application">;
 }) & ({
-    session: Session.CreateSingleOperation;
+    session?: Session.CreateSingleOperation;
     sessionId?: never;
 } | {
-    session: Session.UpdateOperation;
+    session?: Session.UpdateOperation;
     sessionId?: never;
 } | {
-    session: Session.RemoveOperation;
+    session?: Session.RemoveOperation;
     sessionId?: never;
 } | {
     session?: never;
-    sessionId?: ForeignKey<"session"> | null;
+    sessionId?: ForeignKey<"session">;
 }) & ({
-    user: User.CreateSingleOperation;
+    user?: User.CreateSingleOperation;
     userId?: never;
 } | {
-    user: User.UpdateOperation;
+    user?: User.UpdateOperation;
     userId?: never;
 } | {
-    user: User.RemoveOperation;
+    user?: User.RemoveOperation;
     userId?: never;
 } | {
     user?: never;
     userId?: ForeignKey<"user"> | null;
 }) & ({
-    wechatUser: WechatUser.CreateSingleOperation;
+    wechatUser?: WechatUser.CreateSingleOperation;
     wechatUserId?: never;
 } | {
-    wechatUser: WechatUser.UpdateOperation;
+    wechatUser?: WechatUser.UpdateOperation;
     wechatUserId?: never;
 } | {
-    wechatUser: WechatUser.RemoveOperation;
+    wechatUser?: WechatUser.RemoveOperation;
     wechatUserId?: never;
 } | {
     wechatUser?: never;

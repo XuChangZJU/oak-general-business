@@ -87,6 +87,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "userId" | "sess
     userId: ForeignKey<"user">;
     user?: User.UpdateOperation;
 } | {
+    user?: never;
     userId: ForeignKey<"user">;
 }) & ({
     sessionId?: never;
@@ -95,35 +96,36 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "userId" | "sess
     sessionId: ForeignKey<"session">;
     session?: Session.UpdateOperation;
 } | {
+    session?: never;
     sessionId: ForeignKey<"session">;
 }));
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId" | "sessionId">> & (({
-    user: User.CreateSingleOperation;
+    user?: User.CreateSingleOperation;
     userId?: never;
 } | {
-    user: User.UpdateOperation;
+    user?: User.UpdateOperation;
     userId?: never;
 } | {
-    user: User.RemoveOperation;
+    user?: User.RemoveOperation;
     userId?: never;
 } | {
     user?: never;
-    userId?: ForeignKey<"user"> | null;
+    userId?: ForeignKey<"user">;
 }) & ({
-    session: Session.CreateSingleOperation;
+    session?: Session.CreateSingleOperation;
     sessionId?: never;
 } | {
-    session: Session.UpdateOperation;
+    session?: Session.UpdateOperation;
     sessionId?: never;
 } | {
-    session: Session.RemoveOperation;
+    session?: Session.RemoveOperation;
     sessionId?: never;
 } | {
     session?: never;
-    sessionId?: ForeignKey<"session"> | null;
+    sessionId?: ForeignKey<"session">;
 })) & {
     [k: string]: any;
 };

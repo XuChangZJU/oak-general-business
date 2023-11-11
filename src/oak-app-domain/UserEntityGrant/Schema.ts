@@ -210,6 +210,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     granterId: ForeignKey<"granter">;
     granter?: User.UpdateOperation;
 } | {
+    granter?: never;
     granterId: ForeignKey<"granter">;
 })) & ({
     entity?: string;
@@ -225,17 +226,17 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "granterId">> & (({
-    granter: User.CreateSingleOperation;
+    granter?: User.CreateSingleOperation;
     granterId?: never;
 } | {
-    granter: User.UpdateOperation;
+    granter?: User.UpdateOperation;
     granterId?: never;
 } | {
-    granter: User.RemoveOperation;
+    granter?: User.RemoveOperation;
     granterId?: never;
 } | {
     granter?: never;
-    granterId?: ForeignKey<"granter"> | null;
+    granterId?: ForeignKey<"granter">;
 })) & {
     [k: string]: any;
     userEntityClaim$ueg?: OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "ueg" | "uegId">, Omit<UserEntityClaim.Filter, "ueg" | "uegId">> | OakOperation<UserEntityClaim.RemoveOperation["action"], Omit<UserEntityClaim.RemoveOperationData, "ueg" | "uegId">, Omit<UserEntityClaim.Filter, "ueg" | "uegId">> | OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "ueg" | "uegId">[]> | Array<OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "ueg" | "uegId">> | OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "ueg" | "uegId">, Omit<UserEntityClaim.Filter, "ueg" | "uegId">> | OakOperation<UserEntityClaim.RemoveOperation["action"], Omit<UserEntityClaim.RemoveOperationData, "ueg" | "uegId">, Omit<UserEntityClaim.Filter, "ueg" | "uegId">>>;

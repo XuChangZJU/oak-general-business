@@ -142,6 +142,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "userId">> & (({
     userId: ForeignKey<"user">;
     user?: User.UpdateOperation;
 } | {
+    user?: never;
     userId?: ForeignKey<"user">;
 })) & {
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
@@ -152,13 +153,13 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId">> & (({
-    user: User.CreateSingleOperation;
+    user?: User.CreateSingleOperation;
     userId?: never;
 } | {
-    user: User.UpdateOperation;
+    user?: User.UpdateOperation;
     userId?: never;
 } | {
-    user: User.RemoveOperation;
+    user?: User.RemoveOperation;
     userId?: never;
 } | {
     user?: never;

@@ -181,6 +181,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     operId?: never;
     oper: Oper.CreateSingleOperation;
 } | {
+    oper?: never;
     operId: ForeignKey<"oper">;
 })) & ({
     entity?: never;
@@ -189,10 +190,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "user";
     entityId: ForeignKey<"User">;
-    user: User.UpdateOperation;
+    user?: User.UpdateOperation;
 } | {
     entity: "user";
     entityId: ForeignKey<"User">;
+    user?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -200,10 +202,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "userEntityGrant";
     entityId: ForeignKey<"UserEntityGrant">;
-    userEntityGrant: UserEntityGrant.UpdateOperation;
+    userEntityGrant?: UserEntityGrant.UpdateOperation;
 } | {
     entity: "userEntityGrant";
     entityId: ForeignKey<"UserEntityGrant">;
+    userEntityGrant?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -211,10 +214,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "userSystem";
     entityId: ForeignKey<"UserSystem">;
-    userSystem: UserSystem.UpdateOperation;
+    userSystem?: UserSystem.UpdateOperation;
 } | {
     entity: "userSystem";
     entityId: ForeignKey<"UserSystem">;
+    userSystem?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -222,10 +226,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "userWechatPublicTag";
     entityId: ForeignKey<"UserWechatPublicTag">;
-    userWechatPublicTag: UserWechatPublicTag.UpdateOperation;
+    userWechatPublicTag?: UserWechatPublicTag.UpdateOperation;
 } | {
     entity: "userWechatPublicTag";
     entityId: ForeignKey<"UserWechatPublicTag">;
+    userWechatPublicTag?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -233,10 +238,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "wechatLogin";
     entityId: ForeignKey<"WechatLogin">;
-    wechatLogin: WechatLogin.UpdateOperation;
+    wechatLogin?: WechatLogin.UpdateOperation;
 } | {
     entity: "wechatLogin";
     entityId: ForeignKey<"WechatLogin">;
+    wechatLogin?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -244,10 +250,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "wechatMenu";
     entityId: ForeignKey<"WechatMenu">;
-    wechatMenu: WechatMenu.UpdateOperation;
+    wechatMenu?: WechatMenu.UpdateOperation;
 } | {
     entity: "wechatMenu";
     entityId: ForeignKey<"WechatMenu">;
+    wechatMenu?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -255,10 +262,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "wechatPublicAutoReply";
     entityId: ForeignKey<"WechatPublicAutoReply">;
-    wechatPublicAutoReply: WechatPublicAutoReply.UpdateOperation;
+    wechatPublicAutoReply?: WechatPublicAutoReply.UpdateOperation;
 } | {
     entity: "wechatPublicAutoReply";
     entityId: ForeignKey<"WechatPublicAutoReply">;
+    wechatPublicAutoReply?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -266,10 +274,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "wechatPublicTag";
     entityId: ForeignKey<"WechatPublicTag">;
-    wechatPublicTag: WechatPublicTag.UpdateOperation;
+    wechatPublicTag?: WechatPublicTag.UpdateOperation;
 } | {
     entity: "wechatPublicTag";
     entityId: ForeignKey<"WechatPublicTag">;
+    wechatPublicTag?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -277,10 +286,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "wechatPublicTemplate";
     entityId: ForeignKey<"WechatPublicTemplate">;
-    wechatPublicTemplate: WechatPublicTemplate.UpdateOperation;
+    wechatPublicTemplate?: WechatPublicTemplate.UpdateOperation;
 } | {
     entity: "wechatPublicTemplate";
     entityId: ForeignKey<"WechatPublicTemplate">;
+    wechatPublicTemplate?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -288,10 +298,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "wechatQrCode";
     entityId: ForeignKey<"WechatQrCode">;
-    wechatQrCode: WechatQrCode.UpdateOperation;
+    wechatQrCode?: WechatQrCode.UpdateOperation;
 } | {
     entity: "wechatQrCode";
     entityId: ForeignKey<"WechatQrCode">;
+    wechatQrCode?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -299,10 +310,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "wechatUser";
     entityId: ForeignKey<"WechatUser">;
-    wechatUser: WechatUser.UpdateOperation;
+    wechatUser?: WechatUser.UpdateOperation;
 } | {
     entity: "wechatUser";
     entityId: ForeignKey<"WechatUser">;
+    wechatUser?: never;
 } | {
     entity?: string;
     entityId?: string;
@@ -312,11 +324,11 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "operId">> & (({
-    oper: Oper.CreateSingleOperation;
+    oper?: Oper.CreateSingleOperation;
     operId?: never;
 } | {
     oper?: never;
-    operId?: ForeignKey<"oper"> | null;
+    operId?: ForeignKey<"oper">;
 })) & ({
     user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
     entityId?: never;
@@ -364,6 +376,17 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity?: ("user" | "userEntityGrant" | "userSystem" | "userWechatPublicTag" | "wechatLogin" | "wechatMenu" | "wechatPublicAutoReply" | "wechatPublicTag" | "wechatPublicTemplate" | "wechatQrCode" | "wechatUser" | string) | null;
     entityId?: ForeignKey<"User" | "UserEntityGrant" | "UserSystem" | "UserWechatPublicTag" | "WechatLogin" | "WechatMenu" | "WechatPublicAutoReply" | "WechatPublicTag" | "WechatPublicTemplate" | "WechatQrCode" | "WechatUser"> | null;
+    user?: never;
+    userEntityGrant?: never;
+    userSystem?: never;
+    userWechatPublicTag?: never;
+    wechatLogin?: never;
+    wechatMenu?: never;
+    wechatPublicAutoReply?: never;
+    wechatPublicTag?: never;
+    wechatPublicTemplate?: never;
+    wechatQrCode?: never;
+    wechatUser?: never;
 }) & {
     [k: string]: any;
 };

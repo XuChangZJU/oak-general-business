@@ -145,6 +145,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     userId: ForeignKey<"user">;
     user?: User.UpdateOperation;
 } | {
+    user?: never;
     userId?: ForeignKey<"user">;
 })) & ({
     entity?: never;
@@ -153,10 +154,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "application";
     entityId: ForeignKey<"Application">;
-    application: Application.UpdateOperation;
+    application?: Application.UpdateOperation;
 } | {
     entity: "application";
     entityId: ForeignKey<"Application">;
+    application?: never;
 } | {
     entity?: string;
     entityId?: string;
@@ -171,13 +173,13 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "userId">> & (({
-    user: User.CreateSingleOperation;
+    user?: User.CreateSingleOperation;
     userId?: never;
 } | {
-    user: User.UpdateOperation;
+    user?: User.UpdateOperation;
     userId?: never;
 } | {
-    user: User.RemoveOperation;
+    user?: User.RemoveOperation;
     userId?: never;
 } | {
     user?: never;
@@ -189,6 +191,7 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity?: ("application" | string) | null;
     entityId?: ForeignKey<"Application"> | null;
+    application?: never;
 }) & {
     [k: string]: any;
     readRemark$session?: OakOperation<ReadRemark.UpdateOperation["action"], Omit<ReadRemark.UpdateOperationData, "session" | "sessionId">, Omit<ReadRemark.Filter, "session" | "sessionId">> | OakOperation<ReadRemark.RemoveOperation["action"], Omit<ReadRemark.RemoveOperationData, "session" | "sessionId">, Omit<ReadRemark.Filter, "session" | "sessionId">> | OakOperation<"create", Omit<ReadRemark.CreateOperationData, "session" | "sessionId">[]> | Array<OakOperation<"create", Omit<ReadRemark.CreateOperationData, "session" | "sessionId">> | OakOperation<ReadRemark.UpdateOperation["action"], Omit<ReadRemark.UpdateOperationData, "session" | "sessionId">, Omit<ReadRemark.Filter, "session" | "sessionId">> | OakOperation<ReadRemark.RemoveOperation["action"], Omit<ReadRemark.RemoveOperationData, "session" | "sessionId">, Omit<ReadRemark.Filter, "session" | "sessionId">>>;

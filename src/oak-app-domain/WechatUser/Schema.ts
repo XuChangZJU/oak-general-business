@@ -221,6 +221,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "userId" | "appl
     userId: ForeignKey<"user">;
     user?: User.UpdateOperation;
 } | {
+    user?: never;
     userId?: ForeignKey<"user">;
 }) & ({
     applicationId?: never;
@@ -229,6 +230,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "userId" | "appl
     applicationId: ForeignKey<"application">;
     application?: Application.UpdateOperation;
 } | {
+    application?: never;
     applicationId: ForeignKey<"application">;
 })) & {
     sessionMessage$wechatUser?: OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "wechatUser" | "wechatUserId">, Omit<SessionMessage.Filter, "wechatUser" | "wechatUserId">> | OakOperation<"create", Omit<SessionMessage.CreateOperationData, "wechatUser" | "wechatUserId">[]> | Array<OakOperation<"create", Omit<SessionMessage.CreateOperationData, "wechatUser" | "wechatUserId">> | OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "wechatUser" | "wechatUserId">, Omit<SessionMessage.Filter, "wechatUser" | "wechatUserId">>>;
@@ -241,29 +243,29 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId" | "applicationId">> & (({
-    user: User.CreateSingleOperation;
+    user?: User.CreateSingleOperation;
     userId?: never;
 } | {
-    user: User.UpdateOperation;
+    user?: User.UpdateOperation;
     userId?: never;
 } | {
-    user: User.RemoveOperation;
+    user?: User.RemoveOperation;
     userId?: never;
 } | {
     user?: never;
     userId?: ForeignKey<"user"> | null;
 }) & ({
-    application: Application.CreateSingleOperation;
+    application?: Application.CreateSingleOperation;
     applicationId?: never;
 } | {
-    application: Application.UpdateOperation;
+    application?: Application.UpdateOperation;
     applicationId?: never;
 } | {
-    application: Application.RemoveOperation;
+    application?: Application.RemoveOperation;
     applicationId?: never;
 } | {
     application?: never;
-    applicationId?: ForeignKey<"application"> | null;
+    applicationId?: ForeignKey<"application">;
 })) & {
     [k: string]: any;
     sessionMessage$wechatUser?: OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "wechatUser" | "wechatUserId">, Omit<SessionMessage.Filter, "wechatUser" | "wechatUserId">> | OakOperation<SessionMessage.RemoveOperation["action"], Omit<SessionMessage.RemoveOperationData, "wechatUser" | "wechatUserId">, Omit<SessionMessage.Filter, "wechatUser" | "wechatUserId">> | OakOperation<"create", Omit<SessionMessage.CreateOperationData, "wechatUser" | "wechatUserId">[]> | Array<OakOperation<"create", Omit<SessionMessage.CreateOperationData, "wechatUser" | "wechatUserId">> | OakOperation<SessionMessage.UpdateOperation["action"], Omit<SessionMessage.UpdateOperationData, "wechatUser" | "wechatUserId">, Omit<SessionMessage.Filter, "wechatUser" | "wechatUserId">> | OakOperation<SessionMessage.RemoveOperation["action"], Omit<SessionMessage.RemoveOperationData, "wechatUser" | "wechatUserId">, Omit<SessionMessage.Filter, "wechatUser" | "wechatUserId">>>;

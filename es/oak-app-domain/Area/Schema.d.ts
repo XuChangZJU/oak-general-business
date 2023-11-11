@@ -130,6 +130,7 @@ export type SelectOperation<P extends Object = Projection> = OakSelection<"selec
 export type Selection<P extends Object = Projection> = SelectOperation<P>;
 export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export type CreateOperationData = FormCreateData<Omit<OpSchema, "parentId">> & ({
+    parent?: never;
     parentId?: ForeignKey<"parent">;
 }) & {
     address$area?: OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "area" | "areaId">, Omit<Address.Filter, "area" | "areaId">> | OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId">[]> | Array<OakOperation<"create", Omit<Address.CreateOperationData, "area" | "areaId">> | OakOperation<Address.UpdateOperation["action"], Omit<Address.UpdateOperationData, "area" | "areaId">, Omit<Address.Filter, "area" | "areaId">>>;

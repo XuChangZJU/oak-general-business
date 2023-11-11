@@ -93,6 +93,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "relationId" | "
     relationId: ForeignKey<"relation">;
     relation?: Relation.UpdateOperation;
 } | {
+    relation?: never;
     relationId?: ForeignKey<"relation">;
 }) & ({
     pathId?: never;
@@ -101,35 +102,36 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "relationId" | "
     pathId: ForeignKey<"path">;
     path?: Path.UpdateOperation;
 } | {
+    path?: never;
     pathId: ForeignKey<"path">;
 }));
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "relationId" | "pathId">> & (({
-    relation: Relation.CreateSingleOperation;
+    relation?: Relation.CreateSingleOperation;
     relationId?: never;
 } | {
-    relation: Relation.UpdateOperation;
+    relation?: Relation.UpdateOperation;
     relationId?: never;
 } | {
-    relation: Relation.RemoveOperation;
+    relation?: Relation.RemoveOperation;
     relationId?: never;
 } | {
     relation?: never;
     relationId?: ForeignKey<"relation"> | null;
 }) & ({
-    path: Path.CreateSingleOperation;
+    path?: Path.CreateSingleOperation;
     pathId?: never;
 } | {
-    path: Path.UpdateOperation;
+    path?: Path.UpdateOperation;
     pathId?: never;
 } | {
-    path: Path.RemoveOperation;
+    path?: Path.RemoveOperation;
     pathId?: never;
 } | {
     path?: never;
-    pathId?: ForeignKey<"path"> | null;
+    pathId?: ForeignKey<"path">;
 })) & {
     [k: string]: any;
 };

@@ -71,7 +71,8 @@ async function getWechatPublicTagId(params, context) {
     }, {
         dontCollect: true
     });
-    return tag.id || null;
+    assert(tag.id);
+    return tag.id;
 }
 async function getUserWechatPublicTagsByOpenId(applicationId, openId, context) {
     const userWechatPublicTags = await context.select('userWechatPublicTag', {

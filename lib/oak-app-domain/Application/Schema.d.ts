@@ -258,6 +258,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "systemId">> & (
     systemId: ForeignKey<"system">;
     system?: System.UpdateOperation;
 } | {
+    system?: never;
     systemId: ForeignKey<"system">;
 })) & {
     extraFile$application?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "application" | "applicationId">, Omit<ExtraFile.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "application" | "applicationId">> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "application" | "applicationId">, Omit<ExtraFile.Filter, "application" | "applicationId">>>;
@@ -276,17 +277,17 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "systemId">> & (({
-    system: System.CreateSingleOperation;
+    system?: System.CreateSingleOperation;
     systemId?: never;
 } | {
-    system: System.UpdateOperation;
+    system?: System.UpdateOperation;
     systemId?: never;
 } | {
-    system: System.RemoveOperation;
+    system?: System.RemoveOperation;
     systemId?: never;
 } | {
     system?: never;
-    systemId?: ForeignKey<"system"> | null;
+    systemId?: ForeignKey<"system">;
 })) & {
     [k: string]: any;
     extraFile$application?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "application" | "applicationId">, Omit<ExtraFile.Filter, "application" | "applicationId">> | OakOperation<ExtraFile.RemoveOperation["action"], Omit<ExtraFile.RemoveOperationData, "application" | "applicationId">, Omit<ExtraFile.Filter, "application" | "applicationId">> | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "application" | "applicationId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "application" | "applicationId">> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "application" | "applicationId">, Omit<ExtraFile.Filter, "application" | "applicationId">> | OakOperation<ExtraFile.RemoveOperation["action"], Omit<ExtraFile.RemoveOperationData, "application" | "applicationId">, Omit<ExtraFile.Filter, "application" | "applicationId">>>;

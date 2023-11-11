@@ -77,23 +77,24 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "templateId">> &
     templateId: ForeignKey<"template">;
     template?: WechatPublicTemplate.UpdateOperation;
 } | {
+    template?: never;
     templateId: ForeignKey<"template">;
 }));
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "templateId">> & (({
-    template: WechatPublicTemplate.CreateSingleOperation;
+    template?: WechatPublicTemplate.CreateSingleOperation;
     templateId?: never;
 } | {
-    template: WechatPublicTemplate.UpdateOperation;
+    template?: WechatPublicTemplate.UpdateOperation;
     templateId?: never;
 } | {
-    template: WechatPublicTemplate.RemoveOperation;
+    template?: WechatPublicTemplate.RemoveOperation;
     templateId?: never;
 } | {
     template?: never;
-    templateId?: ForeignKey<"template"> | null;
+    templateId?: ForeignKey<"template">;
 })) & {
     [k: string]: any;
 };

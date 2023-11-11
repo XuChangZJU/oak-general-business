@@ -217,6 +217,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     applicationId: ForeignKey<"application">;
     application?: Application.UpdateOperation;
 } | {
+    application?: never;
     applicationId: ForeignKey<"application">;
 })) & ({
     entity?: never;
@@ -225,10 +226,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "article";
     entityId: ForeignKey<"Article">;
-    article: Article.UpdateOperation;
+    article?: Article.UpdateOperation;
 } | {
     entity: "article";
     entityId: ForeignKey<"Article">;
+    article?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -236,10 +238,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "articleMenu";
     entityId: ForeignKey<"ArticleMenu">;
-    articleMenu: ArticleMenu.UpdateOperation;
+    articleMenu?: ArticleMenu.UpdateOperation;
 } | {
     entity: "articleMenu";
     entityId: ForeignKey<"ArticleMenu">;
+    articleMenu?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -247,10 +250,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "sessionMessage";
     entityId: ForeignKey<"SessionMessage">;
-    sessionMessage: SessionMessage.UpdateOperation;
+    sessionMessage?: SessionMessage.UpdateOperation;
 } | {
     entity: "sessionMessage";
     entityId: ForeignKey<"SessionMessage">;
+    sessionMessage?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -258,10 +262,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "user";
     entityId: ForeignKey<"User">;
-    user: User.UpdateOperation;
+    user?: User.UpdateOperation;
 } | {
     entity: "user";
     entityId: ForeignKey<"User">;
+    user?: never;
 } | {
     entity?: string;
     entityId?: string;
@@ -271,17 +276,17 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "applicationId">> & (({
-    application: Application.CreateSingleOperation;
+    application?: Application.CreateSingleOperation;
     applicationId?: never;
 } | {
-    application: Application.UpdateOperation;
+    application?: Application.UpdateOperation;
     applicationId?: never;
 } | {
-    application: Application.RemoveOperation;
+    application?: Application.RemoveOperation;
     applicationId?: never;
 } | {
     application?: never;
-    applicationId?: ForeignKey<"application"> | null;
+    applicationId?: ForeignKey<"application">;
 })) & ({
     article?: Article.CreateSingleOperation | Article.UpdateOperation | Article.RemoveOperation;
     entityId?: never;
@@ -301,6 +306,10 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity?: ("article" | "articleMenu" | "sessionMessage" | "user" | string) | null;
     entityId?: ForeignKey<"Article" | "ArticleMenu" | "SessionMessage" | "User"> | null;
+    article?: never;
+    articleMenu?: never;
+    sessionMessage?: never;
+    user?: never;
 }) & {
     [k: string]: any;
 };

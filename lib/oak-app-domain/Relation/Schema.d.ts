@@ -152,36 +152,39 @@ export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
     entity?: never;
     entityId?: never;
-    account: Account.CreateSingleOperation;
-} | {
-    entity: "account";
-    entityId: ForeignKey<"Account">;
-    account: Account.UpdateOperation;
+    account?: Account.CreateSingleOperation;
 } | {
     entity: "account";
     entityId?: ForeignKey<"Account">;
+    account?: Account.UpdateOperation;
+} | {
+    entity: "account";
+    entityId?: ForeignKey<"Account">;
+    account?: never;
 } | {
     entity?: never;
     entityId?: never;
-    session: Session.CreateSingleOperation;
-} | {
-    entity: "session";
-    entityId: ForeignKey<"Session">;
-    session: Session.UpdateOperation;
+    session?: Session.CreateSingleOperation;
 } | {
     entity: "session";
     entityId?: ForeignKey<"Session">;
+    session?: Session.UpdateOperation;
+} | {
+    entity: "session";
+    entityId?: ForeignKey<"Session">;
+    session?: never;
 } | {
     entity?: never;
     entityId?: never;
-    toDo: ToDo.CreateSingleOperation;
-} | {
-    entity: "toDo";
-    entityId: ForeignKey<"ToDo">;
-    toDo: ToDo.UpdateOperation;
+    toDo?: ToDo.CreateSingleOperation;
 } | {
     entity: "toDo";
     entityId?: ForeignKey<"ToDo">;
+    toDo?: ToDo.UpdateOperation;
+} | {
+    entity: "toDo";
+    entityId?: ForeignKey<"ToDo">;
+    toDo?: never;
 } | {
     entity?: string;
     entityId?: string;
@@ -210,7 +213,10 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
     entity?: never;
 } | {
     entity?: ("account" | "session" | "toDo" | string) | null;
-    entityId?: ForeignKey<"Account" | "Session" | "ToDo"> | null;
+    entityId?: ForeignKey<"Account" | "Session" | "ToDo">;
+    account?: never;
+    session?: never;
+    toDo?: never;
 }) & {
     [k: string]: any;
     actionAuth$relation?: OakOperation<ActionAuth.UpdateOperation["action"], Omit<ActionAuth.UpdateOperationData, "relation" | "relationId">, Omit<ActionAuth.Filter, "relation" | "relationId">> | OakOperation<ActionAuth.RemoveOperation["action"], Omit<ActionAuth.RemoveOperationData, "relation" | "relationId">, Omit<ActionAuth.Filter, "relation" | "relationId">> | OakOperation<"create", Omit<ActionAuth.CreateOperationData, "relation" | "relationId">[]> | Array<OakOperation<"create", Omit<ActionAuth.CreateOperationData, "relation" | "relationId">> | OakOperation<ActionAuth.UpdateOperation["action"], Omit<ActionAuth.UpdateOperationData, "relation" | "relationId">, Omit<ActionAuth.Filter, "relation" | "relationId">> | OakOperation<ActionAuth.RemoveOperation["action"], Omit<ActionAuth.RemoveOperationData, "relation" | "relationId">, Omit<ActionAuth.Filter, "relation" | "relationId">>>;

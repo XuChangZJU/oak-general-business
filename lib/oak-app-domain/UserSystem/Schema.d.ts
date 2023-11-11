@@ -105,6 +105,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "userId" | "syst
     userId: ForeignKey<"user">;
     user?: User.UpdateOperation;
 } | {
+    user?: never;
     userId: ForeignKey<"user">;
 }) & ({
     systemId?: never;
@@ -113,6 +114,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "userId" | "syst
     systemId: ForeignKey<"system">;
     system?: System.UpdateOperation;
 } | {
+    system?: never;
     systemId: ForeignKey<"system">;
 })) & {
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
@@ -122,29 +124,29 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId" | "systemId">> & (({
-    user: User.CreateSingleOperation;
+    user?: User.CreateSingleOperation;
     userId?: never;
 } | {
-    user: User.UpdateOperation;
+    user?: User.UpdateOperation;
     userId?: never;
 } | {
-    user: User.RemoveOperation;
+    user?: User.RemoveOperation;
     userId?: never;
 } | {
     user?: never;
-    userId?: ForeignKey<"user"> | null;
+    userId?: ForeignKey<"user">;
 }) & ({
-    system: System.CreateSingleOperation;
+    system?: System.CreateSingleOperation;
     systemId?: never;
 } | {
-    system: System.UpdateOperation;
+    system?: System.UpdateOperation;
     systemId?: never;
 } | {
-    system: System.RemoveOperation;
+    system?: System.RemoveOperation;
     systemId?: never;
 } | {
     system?: never;
-    systemId?: ForeignKey<"system"> | null;
+    systemId?: ForeignKey<"system">;
 })) & {
     [k: string]: any;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;

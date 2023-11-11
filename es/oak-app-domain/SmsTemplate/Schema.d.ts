@@ -111,6 +111,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "systemId">> & (
     systemId: ForeignKey<"system">;
     system?: System.UpdateOperation;
 } | {
+    system?: never;
     systemId: ForeignKey<"system">;
 })) & {
     messageTypeSmsTemplate$template?: OakOperation<MessageTypeSmsTemplate.UpdateOperation["action"], Omit<MessageTypeSmsTemplate.UpdateOperationData, "template" | "templateId">, Omit<MessageTypeSmsTemplate.Filter, "template" | "templateId">> | OakOperation<"create", Omit<MessageTypeSmsTemplate.CreateOperationData, "template" | "templateId">[]> | Array<OakOperation<"create", Omit<MessageTypeSmsTemplate.CreateOperationData, "template" | "templateId">> | OakOperation<MessageTypeSmsTemplate.UpdateOperation["action"], Omit<MessageTypeSmsTemplate.UpdateOperationData, "template" | "templateId">, Omit<MessageTypeSmsTemplate.Filter, "template" | "templateId">>>;
@@ -119,17 +120,17 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "systemId">> & (({
-    system: System.CreateSingleOperation;
+    system?: System.CreateSingleOperation;
     systemId?: never;
 } | {
-    system: System.UpdateOperation;
+    system?: System.UpdateOperation;
     systemId?: never;
 } | {
-    system: System.RemoveOperation;
+    system?: System.RemoveOperation;
     systemId?: never;
 } | {
     system?: never;
-    systemId?: ForeignKey<"system"> | null;
+    systemId?: ForeignKey<"system">;
 })) & {
     [k: string]: any;
     messageTypeSmsTemplate$template?: OakOperation<MessageTypeSmsTemplate.UpdateOperation["action"], Omit<MessageTypeSmsTemplate.UpdateOperationData, "template" | "templateId">, Omit<MessageTypeSmsTemplate.Filter, "template" | "templateId">> | OakOperation<MessageTypeSmsTemplate.RemoveOperation["action"], Omit<MessageTypeSmsTemplate.RemoveOperationData, "template" | "templateId">, Omit<MessageTypeSmsTemplate.Filter, "template" | "templateId">> | OakOperation<"create", Omit<MessageTypeSmsTemplate.CreateOperationData, "template" | "templateId">[]> | Array<OakOperation<"create", Omit<MessageTypeSmsTemplate.CreateOperationData, "template" | "templateId">> | OakOperation<MessageTypeSmsTemplate.UpdateOperation["action"], Omit<MessageTypeSmsTemplate.UpdateOperationData, "template" | "templateId">, Omit<MessageTypeSmsTemplate.Filter, "template" | "templateId">> | OakOperation<MessageTypeSmsTemplate.RemoveOperation["action"], Omit<MessageTypeSmsTemplate.RemoveOperationData, "template" | "templateId">, Omit<MessageTypeSmsTemplate.Filter, "template" | "templateId">>>;

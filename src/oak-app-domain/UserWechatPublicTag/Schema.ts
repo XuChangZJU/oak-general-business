@@ -127,6 +127,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "wechatPublicTag
     wechatPublicTagId: ForeignKey<"wechatPublicTag">;
     wechatPublicTag?: WechatPublicTag.UpdateOperation;
 } | {
+    wechatPublicTag?: never;
     wechatPublicTagId: ForeignKey<"wechatPublicTag">;
 }) & ({
     wechatUserId?: never;
@@ -135,6 +136,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "wechatPublicTag
     wechatUserId: ForeignKey<"wechatUser">;
     wechatUser?: WechatUser.UpdateOperation;
 } | {
+    wechatUser?: never;
     wechatUserId: ForeignKey<"wechatUser">;
 })) & {
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
@@ -144,29 +146,29 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "wechatPublicTagId" | "wechatUserId">> & (({
-    wechatPublicTag: WechatPublicTag.CreateSingleOperation;
+    wechatPublicTag?: WechatPublicTag.CreateSingleOperation;
     wechatPublicTagId?: never;
 } | {
-    wechatPublicTag: WechatPublicTag.UpdateOperation;
+    wechatPublicTag?: WechatPublicTag.UpdateOperation;
     wechatPublicTagId?: never;
 } | {
-    wechatPublicTag: WechatPublicTag.RemoveOperation;
+    wechatPublicTag?: WechatPublicTag.RemoveOperation;
     wechatPublicTagId?: never;
 } | {
     wechatPublicTag?: never;
-    wechatPublicTagId?: ForeignKey<"wechatPublicTag"> | null;
+    wechatPublicTagId?: ForeignKey<"wechatPublicTag">;
 }) & ({
-    wechatUser: WechatUser.CreateSingleOperation;
+    wechatUser?: WechatUser.CreateSingleOperation;
     wechatUserId?: never;
 } | {
-    wechatUser: WechatUser.UpdateOperation;
+    wechatUser?: WechatUser.UpdateOperation;
     wechatUserId?: never;
 } | {
-    wechatUser: WechatUser.RemoveOperation;
+    wechatUser?: WechatUser.RemoveOperation;
     wechatUserId?: never;
 } | {
     wechatUser?: never;
-    wechatUserId?: ForeignKey<"wechatUser"> | null;
+    wechatUserId?: ForeignKey<"wechatUser">;
 })) & {
     [k: string]: any;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;

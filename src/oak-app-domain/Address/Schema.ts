@@ -117,18 +117,20 @@ export type SelectOperation<P extends Object = Projection> = OakSelection<"selec
 export type Selection<P extends Object = Projection> = SelectOperation<P>;
 export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId" | "areaId">> & ({
+    area?: never;
     areaId: ForeignKey<"area">;
 }) & ({
     entity?: never;
     entityId?: never;
-    user: User.CreateSingleOperation;
-} | {
-    entity: "user";
-    entityId: ForeignKey<"User">;
-    user: User.UpdateOperation;
+    user?: User.CreateSingleOperation;
 } | {
     entity?: "user";
     entityId?: ForeignKey<"User">;
+    user?: User.UpdateOperation;
+} | {
+    entity?: "user";
+    entityId?: ForeignKey<"User">;
+    user?: never;
 } | {
     entity?: string;
     entityId?: string;
@@ -139,14 +141,15 @@ export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperati
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "areaId">> & ({
     area?: never;
-    areaId?: ForeignKey<"area"> | null;
+    areaId?: ForeignKey<"area">;
 }) & ({
     user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("user" | string) | null;
-    entityId?: ForeignKey<"User"> | null;
+    entity?: "user" | string;
+    entityId?: ForeignKey<"User">;
+    user?: never;
 }) & {
     [k: string]: any;
 };

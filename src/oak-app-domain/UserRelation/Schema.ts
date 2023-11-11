@@ -138,6 +138,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     userId: ForeignKey<"user">;
     user?: User.UpdateOperation;
 } | {
+    user?: never;
     userId: ForeignKey<"user">;
 }) & ({
     relationId?: never;
@@ -146,6 +147,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     relationId: ForeignKey<"relation">;
     relation?: Relation.UpdateOperation;
 } | {
+    relation?: never;
     relationId: ForeignKey<"relation">;
 })) & ({
     entity?: never;
@@ -154,10 +156,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "account";
     entityId: ForeignKey<"Account">;
-    account: Account.UpdateOperation;
+    account?: Account.UpdateOperation;
 } | {
     entity: "account";
     entityId: ForeignKey<"Account">;
+    account?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -165,10 +168,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "session";
     entityId: ForeignKey<"Session">;
-    session: Session.UpdateOperation;
+    session?: Session.UpdateOperation;
 } | {
     entity: "session";
     entityId: ForeignKey<"Session">;
+    session?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -176,10 +180,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "toDo";
     entityId: ForeignKey<"ToDo">;
-    toDo: ToDo.UpdateOperation;
+    toDo?: ToDo.UpdateOperation;
 } | {
     entity: "toDo";
     entityId: ForeignKey<"ToDo">;
+    toDo?: never;
 } | {
     entity?: string;
     entityId?: string;
@@ -191,29 +196,29 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "userId" | "relationId">> & (({
-    user: User.CreateSingleOperation;
+    user?: User.CreateSingleOperation;
     userId?: never;
 } | {
-    user: User.UpdateOperation;
+    user?: User.UpdateOperation;
     userId?: never;
 } | {
-    user: User.RemoveOperation;
+    user?: User.RemoveOperation;
     userId?: never;
 } | {
     user?: never;
-    userId?: ForeignKey<"user"> | null;
+    userId?: ForeignKey<"user">;
 }) & ({
-    relation: Relation.CreateSingleOperation;
+    relation?: Relation.CreateSingleOperation;
     relationId?: never;
 } | {
-    relation: Relation.UpdateOperation;
+    relation?: Relation.UpdateOperation;
     relationId?: never;
 } | {
-    relation: Relation.RemoveOperation;
+    relation?: Relation.RemoveOperation;
     relationId?: never;
 } | {
     relation?: never;
-    relationId?: ForeignKey<"relation"> | null;
+    relationId?: ForeignKey<"relation">;
 })) & ({
     account?: Account.CreateSingleOperation | Account.UpdateOperation | Account.RemoveOperation;
     entityId?: never;
@@ -229,6 +234,9 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity?: ("account" | "session" | "toDo" | string) | null;
     entityId?: ForeignKey<"Account" | "Session" | "ToDo"> | null;
+    account?: never;
+    session?: never;
+    toDo?: never;
 }) & {
     [k: string]: any;
     userEntityClaim$userRelation?: OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "userRelation" | "userRelationId">, Omit<UserEntityClaim.Filter, "userRelation" | "userRelationId">> | OakOperation<UserEntityClaim.RemoveOperation["action"], Omit<UserEntityClaim.RemoveOperationData, "userRelation" | "userRelationId">, Omit<UserEntityClaim.Filter, "userRelation" | "userRelationId">> | OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "userRelation" | "userRelationId">[]> | Array<OakOperation<"create", Omit<UserEntityClaim.CreateOperationData, "userRelation" | "userRelationId">> | OakOperation<UserEntityClaim.UpdateOperation["action"], Omit<UserEntityClaim.UpdateOperationData, "userRelation" | "userRelationId">, Omit<UserEntityClaim.Filter, "userRelation" | "userRelationId">> | OakOperation<UserEntityClaim.RemoveOperation["action"], Omit<UserEntityClaim.RemoveOperationData, "userRelation" | "userRelationId">, Omit<UserEntityClaim.Filter, "userRelation" | "userRelationId">>>;

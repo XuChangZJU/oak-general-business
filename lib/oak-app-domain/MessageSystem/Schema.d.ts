@@ -95,6 +95,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "messageId" | "s
     messageId: ForeignKey<"message">;
     message?: Message.UpdateOperation;
 } | {
+    message?: never;
     messageId: ForeignKey<"message">;
 }) & ({
     systemId?: never;
@@ -103,6 +104,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "messageId" | "s
     systemId: ForeignKey<"system">;
     system?: System.UpdateOperation;
 } | {
+    system?: never;
     systemId: ForeignKey<"system">;
 })) & {
     notification$messageSystem?: OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">> | OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">[]> | Array<OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">> | OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">>>;
@@ -111,29 +113,29 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "messageId" | "systemId">> & (({
-    message: Message.CreateSingleOperation;
+    message?: Message.CreateSingleOperation;
     messageId?: never;
 } | {
-    message: Message.UpdateOperation;
+    message?: Message.UpdateOperation;
     messageId?: never;
 } | {
-    message: Message.RemoveOperation;
+    message?: Message.RemoveOperation;
     messageId?: never;
 } | {
     message?: never;
-    messageId?: ForeignKey<"message"> | null;
+    messageId?: ForeignKey<"message">;
 }) & ({
-    system: System.CreateSingleOperation;
+    system?: System.CreateSingleOperation;
     systemId?: never;
 } | {
-    system: System.UpdateOperation;
+    system?: System.UpdateOperation;
     systemId?: never;
 } | {
-    system: System.RemoveOperation;
+    system?: System.RemoveOperation;
     systemId?: never;
 } | {
     system?: never;
-    systemId?: ForeignKey<"system"> | null;
+    systemId?: ForeignKey<"system">;
 })) & {
     [k: string]: any;
     notification$messageSystem?: OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">> | OakOperation<Notification.RemoveOperation["action"], Omit<Notification.RemoveOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">> | OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">[]> | Array<OakOperation<"create", Omit<Notification.CreateOperationData, "messageSystem" | "messageSystemId">> | OakOperation<Notification.UpdateOperation["action"], Omit<Notification.UpdateOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">> | OakOperation<Notification.RemoveOperation["action"], Omit<Notification.RemoveOperationData, "messageSystem" | "messageSystemId">, Omit<Notification.Filter, "messageSystem" | "messageSystemId">>>;

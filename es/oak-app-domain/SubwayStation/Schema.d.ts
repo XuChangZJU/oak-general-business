@@ -85,6 +85,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "stationId" | "s
     stationId: ForeignKey<"station">;
     station?: Station.UpdateOperation;
 } | {
+    station?: never;
     stationId: ForeignKey<"station">;
 }) & ({
     subwayId?: never;
@@ -93,35 +94,36 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "stationId" | "s
     subwayId: ForeignKey<"subway">;
     subway?: Subway.UpdateOperation;
 } | {
+    subway?: never;
     subwayId: ForeignKey<"subway">;
 }));
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "stationId" | "subwayId">> & (({
-    station: Station.CreateSingleOperation;
+    station?: Station.CreateSingleOperation;
     stationId?: never;
 } | {
-    station: Station.UpdateOperation;
+    station?: Station.UpdateOperation;
     stationId?: never;
 } | {
-    station: Station.RemoveOperation;
+    station?: Station.RemoveOperation;
     stationId?: never;
 } | {
     station?: never;
-    stationId?: ForeignKey<"station"> | null;
+    stationId?: ForeignKey<"station">;
 }) & ({
-    subway: Subway.CreateSingleOperation;
+    subway?: Subway.CreateSingleOperation;
     subwayId?: never;
 } | {
-    subway: Subway.UpdateOperation;
+    subway?: Subway.UpdateOperation;
     subwayId?: never;
 } | {
-    subway: Subway.RemoveOperation;
+    subway?: Subway.RemoveOperation;
     subwayId?: never;
 } | {
     subway?: never;
-    subwayId?: ForeignKey<"subway"> | null;
+    subwayId?: ForeignKey<"subway">;
 })) & {
     [k: string]: any;
 };

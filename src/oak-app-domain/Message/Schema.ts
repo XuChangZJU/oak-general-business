@@ -181,6 +181,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     userId: ForeignKey<"user">;
     user?: User.UpdateOperation;
 } | {
+    user?: never;
     userId: ForeignKey<"user">;
 }) & ({
     platformId?: never;
@@ -189,6 +190,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     platformId: ForeignKey<"platform">;
     platform?: Platform.UpdateOperation;
 } | {
+    platform?: never;
     platformId?: ForeignKey<"platform">;
 })) & ({
     entity?: string;
@@ -201,25 +203,25 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId" | "platformId">> & (({
-    user: User.CreateSingleOperation;
+    user?: User.CreateSingleOperation;
     userId?: never;
 } | {
-    user: User.UpdateOperation;
+    user?: User.UpdateOperation;
     userId?: never;
 } | {
-    user: User.RemoveOperation;
+    user?: User.RemoveOperation;
     userId?: never;
 } | {
     user?: never;
-    userId?: ForeignKey<"user"> | null;
+    userId?: ForeignKey<"user">;
 }) & ({
-    platform: Platform.CreateSingleOperation;
+    platform?: Platform.CreateSingleOperation;
     platformId?: never;
 } | {
-    platform: Platform.UpdateOperation;
+    platform?: Platform.UpdateOperation;
     platformId?: never;
 } | {
-    platform: Platform.RemoveOperation;
+    platform?: Platform.RemoveOperation;
     platformId?: never;
 } | {
     platform?: never;

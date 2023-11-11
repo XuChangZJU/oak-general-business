@@ -81,6 +81,7 @@ export type SelectOperation<P extends Object = Projection> = OakSelection<"selec
 export type Selection<P extends Object = Projection> = SelectOperation<P>;
 export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export type CreateOperationData = FormCreateData<Omit<OpSchema, "areaId">> & ({
+    area?: never;
     areaId: ForeignKey<"area">;
 }) & {
     subwayStation$subway?: OakOperation<SubwayStation.UpdateOperation["action"], Omit<SubwayStation.UpdateOperationData, "subway" | "subwayId">, Omit<SubwayStation.Filter, "subway" | "subwayId">> | OakOperation<"create", Omit<SubwayStation.CreateOperationData, "subway" | "subwayId">[]> | Array<OakOperation<"create", Omit<SubwayStation.CreateOperationData, "subway" | "subwayId">> | OakOperation<SubwayStation.UpdateOperation["action"], Omit<SubwayStation.UpdateOperationData, "subway" | "subwayId">, Omit<SubwayStation.Filter, "subway" | "subwayId">>>;
@@ -90,7 +91,7 @@ export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperati
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "areaId">> & ({
     area?: never;
-    areaId?: ForeignKey<"area"> | null;
+    areaId?: ForeignKey<"area">;
 }) & {
     [k: string]: any;
     subwayStation$subway?: OakOperation<SubwayStation.UpdateOperation["action"], Omit<SubwayStation.UpdateOperationData, "subway" | "subwayId">, Omit<SubwayStation.Filter, "subway" | "subwayId">> | OakOperation<SubwayStation.RemoveOperation["action"], Omit<SubwayStation.RemoveOperationData, "subway" | "subwayId">, Omit<SubwayStation.Filter, "subway" | "subwayId">> | OakOperation<"create", Omit<SubwayStation.CreateOperationData, "subway" | "subwayId">[]> | Array<OakOperation<"create", Omit<SubwayStation.CreateOperationData, "subway" | "subwayId">> | OakOperation<SubwayStation.UpdateOperation["action"], Omit<SubwayStation.UpdateOperationData, "subway" | "subwayId">, Omit<SubwayStation.Filter, "subway" | "subwayId">> | OakOperation<SubwayStation.RemoveOperation["action"], Omit<SubwayStation.RemoveOperationData, "subway" | "subwayId">, Omit<SubwayStation.Filter, "subway" | "subwayId">>>;

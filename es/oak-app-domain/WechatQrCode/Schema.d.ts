@@ -203,6 +203,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     applicationId: ForeignKey<"application">;
     application?: Application.UpdateOperation;
 } | {
+    application?: never;
     applicationId: ForeignKey<"application">;
 })) & ({
     entity?: never;
@@ -211,10 +212,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "user";
     entityId: ForeignKey<"User">;
-    user: User.UpdateOperation;
+    user?: User.UpdateOperation;
 } | {
     entity: "user";
     entityId: ForeignKey<"User">;
+    user?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -222,10 +224,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "userEntityGrant";
     entityId: ForeignKey<"UserEntityGrant">;
-    userEntityGrant: UserEntityGrant.UpdateOperation;
+    userEntityGrant?: UserEntityGrant.UpdateOperation;
 } | {
     entity: "userEntityGrant";
     entityId: ForeignKey<"UserEntityGrant">;
+    userEntityGrant?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -233,10 +236,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "wechatLogin";
     entityId: ForeignKey<"WechatLogin">;
-    wechatLogin: WechatLogin.UpdateOperation;
+    wechatLogin?: WechatLogin.UpdateOperation;
 } | {
     entity: "wechatLogin";
     entityId: ForeignKey<"WechatLogin">;
+    wechatLogin?: never;
 } | {
     entity?: string;
     entityId?: string;
@@ -249,17 +253,17 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "applicationId">> & (({
-    application: Application.CreateSingleOperation;
+    application?: Application.CreateSingleOperation;
     applicationId?: never;
 } | {
-    application: Application.UpdateOperation;
+    application?: Application.UpdateOperation;
     applicationId?: never;
 } | {
-    application: Application.RemoveOperation;
+    application?: Application.RemoveOperation;
     applicationId?: never;
 } | {
     application?: never;
-    applicationId?: ForeignKey<"application"> | null;
+    applicationId?: ForeignKey<"application">;
 })) & ({
     user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
     entityId?: never;
@@ -275,6 +279,9 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity?: ("user" | "userEntityGrant" | "wechatLogin" | string) | null;
     entityId?: ForeignKey<"User" | "UserEntityGrant" | "WechatLogin"> | null;
+    user?: never;
+    userEntityGrant?: never;
+    wechatLogin?: never;
 }) & {
     [k: string]: any;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;

@@ -117,6 +117,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "applicationId" 
     applicationId: ForeignKey<"application">;
     application?: Application.UpdateOperation;
 } | {
+    application?: never;
     applicationId?: ForeignKey<"application">;
 }) & ({
     messageSystemId?: never;
@@ -125,35 +126,36 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "applicationId" 
     messageSystemId: ForeignKey<"messageSystem">;
     messageSystem?: MessageSystem.UpdateOperation;
 } | {
+    messageSystem?: never;
     messageSystemId: ForeignKey<"messageSystem">;
 }));
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "applicationId" | "messageSystemId">> & (({
-    application: Application.CreateSingleOperation;
+    application?: Application.CreateSingleOperation;
     applicationId?: never;
 } | {
-    application: Application.UpdateOperation;
+    application?: Application.UpdateOperation;
     applicationId?: never;
 } | {
-    application: Application.RemoveOperation;
+    application?: Application.RemoveOperation;
     applicationId?: never;
 } | {
     application?: never;
     applicationId?: ForeignKey<"application"> | null;
 }) & ({
-    messageSystem: MessageSystem.CreateSingleOperation;
+    messageSystem?: MessageSystem.CreateSingleOperation;
     messageSystemId?: never;
 } | {
-    messageSystem: MessageSystem.UpdateOperation;
+    messageSystem?: MessageSystem.UpdateOperation;
     messageSystemId?: never;
 } | {
-    messageSystem: MessageSystem.RemoveOperation;
+    messageSystem?: MessageSystem.RemoveOperation;
     messageSystemId?: never;
 } | {
     messageSystem?: never;
-    messageSystemId?: ForeignKey<"messageSystem"> | null;
+    messageSystemId?: ForeignKey<"messageSystem">;
 })) & {
     [k: string]: any;
 };

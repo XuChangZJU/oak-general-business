@@ -122,6 +122,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "uegId" | "userI
     uegId: ForeignKey<"ueg">;
     ueg?: UserEntityGrant.UpdateOperation;
 } | {
+    ueg?: never;
     uegId: ForeignKey<"ueg">;
 }) & ({
     userId?: never;
@@ -130,6 +131,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "uegId" | "userI
     userId: ForeignKey<"user">;
     user?: User.UpdateOperation;
 } | {
+    user?: never;
     userId: ForeignKey<"user">;
 }) & ({
     relationId?: never;
@@ -138,6 +140,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "uegId" | "userI
     relationId: ForeignKey<"relation">;
     relation?: Relation.UpdateOperation;
 } | {
+    relation?: never;
     relationId: ForeignKey<"relation">;
 }) & ({
     userRelationId?: never;
@@ -146,59 +149,60 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "uegId" | "userI
     userRelationId: ForeignKey<"userRelation">;
     userRelation?: UserRelation.UpdateOperation;
 } | {
+    userRelation?: never;
     userRelationId: ForeignKey<"userRelation">;
 }));
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "uegId" | "userId" | "relationId" | "userRelationId">> & (({
-    ueg: UserEntityGrant.CreateSingleOperation;
+    ueg?: UserEntityGrant.CreateSingleOperation;
     uegId?: never;
 } | {
-    ueg: UserEntityGrant.UpdateOperation;
+    ueg?: UserEntityGrant.UpdateOperation;
     uegId?: never;
 } | {
-    ueg: UserEntityGrant.RemoveOperation;
+    ueg?: UserEntityGrant.RemoveOperation;
     uegId?: never;
 } | {
     ueg?: never;
-    uegId?: ForeignKey<"ueg"> | null;
+    uegId?: ForeignKey<"ueg">;
 }) & ({
-    user: User.CreateSingleOperation;
+    user?: User.CreateSingleOperation;
     userId?: never;
 } | {
-    user: User.UpdateOperation;
+    user?: User.UpdateOperation;
     userId?: never;
 } | {
-    user: User.RemoveOperation;
+    user?: User.RemoveOperation;
     userId?: never;
 } | {
     user?: never;
-    userId?: ForeignKey<"user"> | null;
+    userId?: ForeignKey<"user">;
 }) & ({
-    relation: Relation.CreateSingleOperation;
+    relation?: Relation.CreateSingleOperation;
     relationId?: never;
 } | {
-    relation: Relation.UpdateOperation;
+    relation?: Relation.UpdateOperation;
     relationId?: never;
 } | {
-    relation: Relation.RemoveOperation;
+    relation?: Relation.RemoveOperation;
     relationId?: never;
 } | {
     relation?: never;
-    relationId?: ForeignKey<"relation"> | null;
+    relationId?: ForeignKey<"relation">;
 }) & ({
-    userRelation: UserRelation.CreateSingleOperation;
+    userRelation?: UserRelation.CreateSingleOperation;
     userRelationId?: never;
 } | {
-    userRelation: UserRelation.UpdateOperation;
+    userRelation?: UserRelation.UpdateOperation;
     userRelationId?: never;
 } | {
-    userRelation: UserRelation.RemoveOperation;
+    userRelation?: UserRelation.RemoveOperation;
     userRelationId?: never;
 } | {
     userRelation?: never;
-    userRelationId?: ForeignKey<"userRelation"> | null;
+    userRelationId?: ForeignKey<"userRelation">;
 })) & {
     [k: string]: any;
 };

@@ -266,7 +266,7 @@ async function tryCreateSmsNotification(message: EntityDict['message']['Schema']
                 action: 'create',
                 data: Object.assign(smsNotification, {
                     messageSystemId: id,
-                }),
+                }) as CreateNotificationData,
             }, { dontCollect: true });
         }
         return messageSystem$message!.length;

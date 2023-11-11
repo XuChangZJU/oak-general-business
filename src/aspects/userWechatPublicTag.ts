@@ -128,7 +128,9 @@ async function getWechatPublicTagId<
             dontCollect: true
         }
     );
-    return tag.id || null;
+
+    assert(tag.id);
+    return tag.id;
 }
 
 async function getUserWechatPublicTagsByOpenId<

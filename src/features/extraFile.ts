@@ -112,44 +112,6 @@ export class ExtraFile<
         }
     }
 
-    async uploadCommit(efPaths: string[], oakFullpath: string) {
-        assert(false, '方法已经废弃');
-        assert(efPaths && efPaths.length > 0);
-        let ids = [] as string[];
-        if (oakFullpath) {
-            ids = efPaths
-                .map((path) => {
-                    const path2 = path ? `${oakFullpath}.${path}` : oakFullpath;
-                    const data = this.runningTree.getFreshValue(path2);
-                    assert(
-                        data,
-                        `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`
-                    );
-                    return (
-                        data as Partial<EntityDict['extraFile']['OpSchema']>[]
-                    ).map((ele) => ele.id);
-                })
-                .flat()
-                .filter((ele) => !!ele) as string[];
-        }
-        assert(ids.length > 0);
-
-        const promises: Promise<void>[] = [];
-        ids.forEach((id) => {
-            const fileState = this.getFileState(id);
-            if (fileState) {
-                const { state } = fileState;
-                if (['local', 'failed'].includes(state)) {
-                    promises.push(this.upload(id));
-                }
-            }
-        });
-
-        if (promises.length > 0) {
-            await Promise.all(promises);
-        }
-    }
-
     getUrl(
         extraFile?:
             | EntityDict['extraFile']['OpSchema']
