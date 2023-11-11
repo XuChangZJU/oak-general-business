@@ -1,13 +1,14 @@
-import { generateNewId } from 'oak-domain/lib/utils/uuid';
-import { useState } from 'react';
+import React from 'react';
 import { Alert, Card, Button, Row, Col, Space, Affix, Input } from 'antd';
 import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
 import { IToolbarConfig } from '@wangeditor/editor';
-import OakGallery from '../../extraFile/gallery';
+import ExtraFileUpload from '../../extraFile/upload';
+import ExtraFileCommit from '../../extraFile/commit';
+
 import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
-
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 
 import Style from './web.module.less';
 
@@ -60,27 +61,24 @@ export default function Render(
             setEditor: (editor: any) => void;
             confirm: () => void;
             preview: () => void;
-            addExtraFile: (
-                file: EntityDict['extraFile']['CreateSingle']['data']
-            ) => Promise<void>;
             uploadFile: (
-                file: EntityDict['extraFile']['CreateSingle']['data']
-            ) => Promise<{ bucket: string; url: string }>;
+                extraFile: EntityDict['extraFile']['CreateSingle']['data'],
+                file: File
+            ) => Promise<string>;
             clearContentTip: () => void;
         }
     >
 ) {
-    const { methods: method, data } = props;
+    const { methods, data } = props;
     const {
         t,
         setEditor,
-        confirm,
         preview,
-        addExtraFile,
         uploadFile,
         update,
         setHtml,
-    } = method;
+        navigateBack,
+    } = methods;
     const { editor, origin, oakFullpath } = data;
 
     return (
@@ -108,8 +106,9 @@ export default function Render(
                                     placeholder={t('placeholder.title')}
                                     size="large"
                                     maxLength={64}
-                                    suffix={`${[...(data.title || '')].length
-                                        }/64`}
+                                    suffix={`${
+                                        [...(data.title || '')].length
+                                    }/64`}
                                     className={Style.titleInput}
                                 />
                             </div>
@@ -129,7 +128,7 @@ export default function Render(
                                     type="info"
                                     message={t('tips.content')}
                                     closable
-                                    onClose={() => method.clearContentTip()}
+                                    onClose={() => methods.clearContentTip()}
                                 />
                             )}
                             <Editor
@@ -159,14 +158,13 @@ export default function Render(
                                                 const extension =
                                                     name.substring(
                                                         name.lastIndexOf('.') +
-                                                        1
+                                                            1
                                                     );
                                                 const filename = name.substring(
                                                     0,
                                                     name.lastIndexOf('.')
                                                 );
                                                 const extraFile = {
-                                                    extra1: file,
                                                     origin: origin,
                                                     type: 'image',
                                                     tag1: 'source',
@@ -176,25 +174,23 @@ export default function Render(
                                                     extension,
                                                     bucket: '',
                                                     id: generateNewId(),
-                                                } as any;
+                                                    sort: 1000,
+                                                    uploadState: 'uploading',
+                                                } as EntityDict['extraFile']['CreateSingle']['data'];
 
                                                 try {
                                                     // 自己实现上传，并得到图片 url alt href
-                                                    const { url, bucket } =
+                                                    const url =
                                                         await uploadFile(
-                                                            extraFile
+                                                            extraFile,
+                                                            file
                                                         );
-                                                    // extraFile.bucket = bucket;
-                                                    // extraFile.extra1 = null;
-                                                    // await addExtraFile(
-                                                    //     extraFile
-                                                    // );
                                                     // 最后插入图片
                                                     insertFn(
-                                                        'http://' + url,
+                                                        url,
                                                         extraFile.filename
                                                     );
-                                                } catch (err) { }
+                                                } catch (err) {}
                                             },
                                         },
                                         uploadVideo: {
@@ -210,14 +206,13 @@ export default function Render(
                                                 const extension =
                                                     name.substring(
                                                         name.lastIndexOf('.') +
-                                                        1
+                                                            1
                                                     );
                                                 const filename = name.substring(
                                                     0,
                                                     name.lastIndexOf('.')
                                                 );
                                                 const extraFile = {
-                                                    extra1: file,
                                                     origin: origin,
                                                     type: 'video',
                                                     tag1: 'source',
@@ -227,27 +222,24 @@ export default function Render(
                                                     extension,
                                                     bucket: '',
                                                     id: generateNewId(),
-                                                } as any;
+                                                    sort: 1000,
+                                                    uploadState: 'uploading',
+                                                } as EntityDict['extraFile']['CreateSingle']['data'];
 
                                                 try {
                                                     // 自己实现上传，并得到图片 url alt href
-                                                    const { url, bucket } =
+                                                    const url =
                                                         await uploadFile(
-                                                            extraFile
+                                                            extraFile,
+                                                            file
                                                         );
-                                                    extraFile.bucket = bucket;
-                                                    extraFile.extra1 = null;
-                                                    await addExtraFile(
-                                                        extraFile
-                                                    );
                                                     // 最后插入图片
                                                     insertFn(
-                                                        'http://' + url,
-                                                        'http://' +
+                                                        url,
                                                         url +
-                                                        '?vframe/jpg/offset/0'
+                                                            '?vframe/jpg/offset/0'
                                                     );
-                                                } catch (err) { }
+                                                } catch (err) {}
                                             },
                                         },
                                     },
@@ -271,18 +263,14 @@ export default function Render(
                                 >
                                     <Row>
                                         <Col flex="none">
-                                            <OakGallery
+                                            <ExtraFileUpload
                                                 maxNumber={1}
-                                                oakPath={
-                                                    oakFullpath
-                                                        ? `${oakFullpath}.extraFile$entity`
-                                                        : undefined
-                                                }
+                                                oakPath={`${oakFullpath}.extraFile$entity`}
                                                 type="image"
                                                 origin="qiniu"
                                                 tag1="cover"
                                                 entity="article"
-                                            ></OakGallery>
+                                            ></ExtraFileUpload>
                                         </Col>
                                         <Col flex="auto">
                                             <Input.TextArea
@@ -314,14 +302,12 @@ export default function Render(
                                     </Col>
                                     <Col flex="none">
                                         <Space>
-                                            <Button
-                                                type="primary"
-                                                onClick={() => {
-                                                    confirm();
+                                            <ExtraFileCommit
+                                                afterCommit={() => {
+                                                    navigateBack();
                                                 }}
-                                            >
-                                                保存
-                                            </Button>
+                                                oakPath={oakFullpath}
+                                            />
                                             <Button
                                                 onClick={() => {
                                                     preview();

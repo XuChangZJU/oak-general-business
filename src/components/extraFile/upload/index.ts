@@ -3,6 +3,7 @@ import { FileState } from '../../../features/extraFile';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 import { generateNewId } from 'oak-domain';
+import { assert } from 'oak-domain/lib/utils/assert';
 
 type ExtraFile = EntityDict['extraFile']['OpSchema'];
 export interface EnhancedExtraFile extends ExtraFile {
@@ -76,7 +77,6 @@ export default OakComponent({
     ],
     properties: {
         bucket: '',
-        removeLater: true,
         autoUpload: false,
         maxNumber: 20,
         extension: [] as string[], //小程序独有 chooseMessageFile
@@ -170,7 +170,7 @@ export default OakComponent({
             this.removeItem(file.id);
             this.features.extraFile.removeLocalFiles([file.id]);
         },
-        addExtraFileInner(
+        async addExtraFileInner(
             options: {
                 name: string;
                 fileType: string;
@@ -187,6 +187,7 @@ export default OakComponent({
                 entity,
                 entityId,
                 bucket,
+                autoUpload,
             } = this.props;
             const { name, fileType, size, sort } = options;
             const extension = name.substring(name.lastIndexOf('.') + 1);
@@ -194,7 +195,7 @@ export default OakComponent({
             const { files } = this.state;
 
             const applicationId = this.features.application.getApplicationId();
-            const id = this.addItem({
+            const updateData = {
                 applicationId,
                 bucket,
                 origin,
@@ -210,8 +211,18 @@ export default OakComponent({
                 entityId,
                 sort,
                 uploadState: 'uploading',
-            });
-            this.features.extraFile.addLocalFile(id, file);
+            } as EntityDict['extraFile']['CreateSingle']['data'];
+            // autoUpload设置为true，直接上传
+            if (autoUpload) {
+                assert(entityId, 'autoUpload设置为true，entityId必须存在');
+                await this.features.extraFile.autoUpload(
+                    updateData as EntityDict['extraFile']['OpSchema'],
+                    file
+                );
+            } else {
+                const id = this.addItem(updateData);
+                this.features.extraFile.addLocalFile(id, file);
+            }
         },
         addFileByWeb(file: File) {
             const { size, type, name } = file;
@@ -334,6 +345,136 @@ export default OakComponent({
                 });
             }
         },
+        // async onDownloadByMp(event: WechatMiniprogram.Touch) {
+        //     const { value } = event.currentTarget.dataset;
+        //     const fileUrl = this.features.extraFile.getUrl(value);
+        //     const name = this.features.extraFile.getFileName(value);
+        //     const that = this;
+        //     wx.showLoading({
+        //         title: '下载请求中...',
+        //     });
+        //     wx.downloadFile({
+        //         url: fileUrl,
+        //         success: function (res) {
+        //             const filePath = res.tempFilePath || res.filePath;
+        //             const fs = wx.getFileSystemManager();
+        //             fs.saveFile({
+        //                 tempFilePath: filePath,
+        //                 success: (res) => {
+        //                     wx.hideLoading();
+        //                     const savedFilePath = res.savedFilePath;
+        //                     // 打开文件
+        //                     wx.openDocument({
+        //                         filePath: savedFilePath,
+        //                         showMenu: true,
+        //                         success: function (res) {
+        //                             // console.log('打开文档成功');
+        //                         },
+        //                         fail: function (res) {
+        //                             const { errMsg } = res;
+        //                             if (
+        //                                 errMsg.includes(
+        //                                     'fail filetype not supported'
+        //                                 )
+        //                             ) {
+        //                                 that.setMessage({
+        //                                     type: 'error',
+        //                                     content: '该文件类型不支持打开',
+        //                                 });
+        //                                 return;
+        //                             }
+        //                             that.setMessage({
+        //                                 type: 'error',
+        //                                 content: '该文件类型打开失败',
+        //                             });
+        //                         },
+        //                     });
+        //                 },
+        //                 fail: function (res) {
+        //                     wx.hideLoading();
+        //                     that.setMessage({
+        //                         type: 'error',
+        //                         content: '保存文件失败',
+        //                     });
+        //                 },
+        //             });
+        //         },
+        //         fail: function (res) {
+        //             wx.hideLoading();
+        //             that.setMessage({
+        //                 type: 'error',
+        //                 content: '下载文件失败',
+        //             });
+        //         },
+        //         complete: function (res) {},
+        //     });
+        // },
+        // async onOpenByMp(event: WechatMiniprogram.Touch) {
+        //     const { value } = event.currentTarget.dataset;
+        //     const fileUrl = this.features.extraFile.getUrl(value);
+        //     const that = this;
+        //     let extension = value.extension.toLowerCase();
+        //     let extensions = [
+        //         'doc',
+        //         'docx',
+        //         'xls',
+        //         'xlsx',
+        //         'ppt',
+        //         'pptx',
+        //         'pdf',
+        //     ]; //openDocument fileType目前只支持范围
+        //     if (!extensions.includes(extension)) {
+        //         this.setMessage({
+        //             type: 'error',
+        //             content: `目前仅支持打开${extensions.join(',')}类型的文件`,
+        //         });
+        //         return;
+        //     }
+
+        //     wx.showLoading({
+        //         title: '下载请求中...',
+        //     });
+        //     wx.downloadFile({
+        //         url: fileUrl,
+        //         success: function (res) {
+        //             const filePath = res.tempFilePath || res.filePath;
+        //             wx.hideLoading();
+        //             wx.openDocument({
+        //                 //打开文件
+        //                 filePath: filePath,
+        //                 fileType: extension,
+        //                 showMenu: true, // 是否显示右上角菜单按钮 默认为false(看自身需求，可要可不要。后期涉及到右上角分享功能)
+        //                 success: function () {
+        //                     //console.log(`打开文件成功`);
+        //                 },
+        //                 fail: function (res) {
+        //                     const { errMsg } = res;
+        //                     if (
+        //                         errMsg.includes('fail filetype not supported')
+        //                     ) {
+        //                         that.setMessage({
+        //                             type: 'error',
+        //                             content: '该文件类型不支持打开',
+        //                         });
+        //                         return;
+        //                     }
+        //                     that.setMessage({
+        //                         type: 'error',
+        //                         content: '该文件类型打开失败',
+        //                     });
+        //                 },
+        //             });
+        //         },
+        //         fail: function (res) {
+        //             wx.hideLoading();
+        //             that.setMessage({
+        //                 type: 'error',
+        //                 content: '下载文件失败',
+        //             });
+        //         },
+        //         complete: function (res) {},
+        //     });
+        // },
         getSort(index: number = 0) {
             const { files } = this.state;
             const currentSort = files?.length
@@ -363,7 +504,6 @@ export default OakComponent({
         true,
         {
             bucket: string; // 上传的存储桶位置
-            removeLater: boolean;
             autoUpload: boolean;
             maxNumber: number;
             extension: string[];

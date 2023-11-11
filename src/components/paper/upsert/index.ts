@@ -61,38 +61,13 @@ export default OakComponent({
         },
     },
     methods: {
-        async addExtraFile(
-            extraFile: EntityDict['extraFile']['CreateSingle']['data']
+        uploadFile(
+            extraFile: EntityDict['extraFile']['CreateSingle']['data'],
+            file: File
         ) {
-            try {
-                const result = await this.features.cache.operate('extraFile', {
-                    action: 'create',
-                    data: extraFile,
-                    id: generateNewId(),
-                });
-                return result;
-            } catch (error) {
-                // if (
-                //     (<OakException>error).constructor.name ===
-                //     OakUnloggedInException.name
-                // ) {
-                //     this.navigateTo(
-                //         {
-                //             url: '/login',
-                //         },
-                //         undefined,
-                //         true
-                //     );
-                //     return;
-                // }
-                throw error;
-            }
-        },
-
-        uploadFile(extraFile: EntityDict['extraFile']['CreateSingle']['data']) {
             return this.features.extraFile.autoUpload(
                 extraFile as EntityDict['extraFile']['OpSchema'],
-                extraFile.extra1!
+                file
             );
         },
 
@@ -105,10 +80,6 @@ export default OakComponent({
             this.setState({
                 contentTip: false,
             });
-        },
-        async confirm() {
-            await this.execute();
-            this.navigateBack();
         },
         async reset() {
             // 重置

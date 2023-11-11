@@ -4,7 +4,7 @@ import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
 import { ButtonProps } from 'antd';
 import { ButtonProps as AmButtonProps } from 'antd-mobile';
-type AfterCommit = (() => void) | undefined;
+type AfterCommit = ((id?: string) => void) | undefined;
 type BeforeCommit = (() => boolean | undefined | Promise<boolean | undefined>) | undefined;
 declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(props: ReactComponentProps<ED2, T2, true, {
     action?: string | undefined;

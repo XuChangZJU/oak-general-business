@@ -1,6 +1,6 @@
 import { OakUserException } from 'oak-domain/lib/types';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import assert from "assert";
+import { assert } from 'oak-domain/lib/utils/assert';
 export async function unbindingWechat(params, context) {
     const { wechatUserId, captcha, mobile } = params;
     const fn = async () => {

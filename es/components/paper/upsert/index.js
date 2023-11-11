@@ -1,4 +1,3 @@
-import { generateNewId } from 'oak-domain/lib/utils/uuid';
 export default OakComponent({
     entity: 'article',
     projection: {
@@ -54,34 +53,8 @@ export default OakComponent({
         },
     },
     methods: {
-        async addExtraFile(extraFile) {
-            try {
-                const result = await this.features.cache.operate('extraFile', {
-                    action: 'create',
-                    data: extraFile,
-                    id: generateNewId(),
-                });
-                return result;
-            }
-            catch (error) {
-                // if (
-                //     (<OakException>error).constructor.name ===
-                //     OakUnloggedInException.name
-                // ) {
-                //     this.navigateTo(
-                //         {
-                //             url: '/login',
-                //         },
-                //         undefined,
-                //         true
-                //     );
-                //     return;
-                // }
-                throw error;
-            }
-        },
-        uploadFile(extraFile) {
-            return this.features.extraFile.autoUpload(extraFile, extraFile.extra1);
+        uploadFile(extraFile, file) {
+            return this.features.extraFile.autoUpload(extraFile, file);
         },
         setEditor(editor) {
             this.setState({
@@ -92,10 +65,6 @@ export default OakComponent({
             this.setState({
                 contentTip: false,
             });
-        },
-        async confirm() {
-            await this.execute();
-            this.navigateBack();
         },
         async reset() {
             // 重置
