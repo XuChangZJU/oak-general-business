@@ -1,5 +1,5 @@
-import assert from 'assert';
-import Qiniu from "./qiniu";
+import { assert } from 'oak-domain/lib/utils/assert';
+import Qiniu from './qiniu';
 import Wechat from './wechat';
 const qiniu = new Qiniu();
 const wechat = new Wechat();

@@ -4,11 +4,4 @@ export default OakComponent({
     properties: {
         applicationId: '',
     },
-    lifetimes: {
-        async ready() {
-            const { applicationId } = this.props;
-        }
-    },
-    methods: {
-    },
 });

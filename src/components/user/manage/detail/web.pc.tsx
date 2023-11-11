@@ -2,12 +2,9 @@ import React from 'react';
 
 import { Tag, Avatar, Descriptions } from 'antd';
 
-import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
 import ActionPanel from '../../../../components/func/actionPanel';
-import PageHeader from '../../../../components/common/pageHeader';
-
 
 export default function render(
     props: WebComponentProps<
@@ -58,55 +55,53 @@ export default function render(
     const { t, onActionClick } = props.methods;
 
     return (
-        <PageHeader>
-            <div className={Style.container}>
-                <Descriptions
-                    extra={
-                        <ActionPanel
-                            actions={executableActions}
-                            actionDescriptions={actionDescriptions}
-                            onActionClick={(action: string) =>
-                                onActionClick(action)
-                            }
-                        />
-                    }
-                >
-                    <Descriptions.Item label={t('avatar')}>
-                        {avatar ? <Avatar src={avatar} /> : t('unset')}
-                    </Descriptions.Item>
+        <>
+            <Descriptions
+                extra={
+                    <ActionPanel
+                        actions={executableActions}
+                        actionDescriptions={actionDescriptions}
+                        onActionClick={(action: string) =>
+                            onActionClick(action)
+                        }
+                    />
+                }
+            >
+                <Descriptions.Item label={t('avatar')}>
+                    {avatar ? <Avatar src={avatar} /> : t('unset')}
+                </Descriptions.Item>
 
-                    <Descriptions.Item label={t('user:attr.nickname')}>
-                        {nickname || t('unset')}
-                    </Descriptions.Item>
+                <Descriptions.Item label={t('user:attr.nickname')}>
+                    {nickname || t('unset')}
+                </Descriptions.Item>
 
-                    <Descriptions.Item label={t('user:attr.name')}>
-                        {name || t('unset')}
-                    </Descriptions.Item>
+                <Descriptions.Item label={t('user:attr.name')}>
+                    {name || t('unset')}
+                </Descriptions.Item>
 
-                    <Descriptions.Item label={t('user:attr.gender')}>
-                        {gender ? t(`user:v.gender.${gender}`) : t('unset')}
-                    </Descriptions.Item>
+                <Descriptions.Item label={t('user:attr.gender')}>
+                    {gender ? t(`user:v.gender.${gender}`) : t('unset')}
+                </Descriptions.Item>
 
-                    <Descriptions.Item label={t('user:attr.birth')}>
-                        {birth || t('unset')}
-                    </Descriptions.Item>
+                <Descriptions.Item label={t('user:attr.birth')}>
+                    {birth || t('unset')}
+                </Descriptions.Item>
 
-                    <Descriptions.Item label={t('mobile')}>
-                        {mobileText || t('unset')}
-                    </Descriptions.Item>
+                <Descriptions.Item label={t('mobile')}>
+                    {mobileText || t('unset')}
+                </Descriptions.Item>
 
-                    <Descriptions.Item label={t('user:attr.userState')}>
-                        <Tag color={stateColor[userState!]}>
-                            {t(`user:v.userState.${userState}`)}
-                        </Tag>
-                    </Descriptions.Item>
-                    <Descriptions.Item label={t('user:attr.idState')}>
-                        <Tag color={idStateColor[idState!]}>
-                            {t(`user:v.idState.${idState}`)}
-                        </Tag>
-                    </Descriptions.Item>
-                </Descriptions>
-            </div>
-        </PageHeader>
+                <Descriptions.Item label={t('user:attr.userState')}>
+                    <Tag color={stateColor[userState!]}>
+                        {t(`user:v.userState.${userState}`)}
+                    </Tag>
+                </Descriptions.Item>
+                <Descriptions.Item label={t('user:attr.idState')}>
+                    <Tag color={idStateColor[idState!]}>
+                        {t(`user:v.idState.${idState}`)}
+                    </Tag>
+                </Descriptions.Item>
+            </Descriptions>
+        </>
     );
 }

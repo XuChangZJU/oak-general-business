@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 export default OakComponent({
     formData({ features }) {
         const ids = this.getEfIds();
@@ -25,11 +25,12 @@ export default OakComponent({
         type: 'primary',
         executeText: '',
         buttonProps: {},
-        afterCommit: () => { },
-        beforeCommit: (() => true),
+        afterCommit: undefined,
+        beforeCommit: undefined,
     },
     data: {
         failureIds: undefined,
+        currentId: undefined,
     },
     methods: {
         getEfIds() {
@@ -103,19 +104,10 @@ export default OakComponent({
             });
             if (promises.length > 0) {
                 await Promise.all(promises);
-                if (failureIds.length > 0) {
-                    this.setState({
-                        failureIds,
-                    });
-                }
-                else {
-                    this.setState({
-                        failureIds: undefined,
-                    });
-                }
             }
+            return failureIds;
         },
-        async onSubmit() {
+        async onSubmit(e) {
             const { oakExecutable } = this.state;
             const { beforeCommit, afterCommit, action } = this.props;
             const ids = this.getEfIds();
@@ -126,18 +118,42 @@ export default OakComponent({
                         return;
                     }
                 }
+                const id = this.getId();
                 await this.execute(action || undefined);
-                await this.upload(ids);
+                const failureIds = await this.upload(ids);
+                if (failureIds && failureIds.length > 0) {
+                    this.setState({
+                        failureIds,
+                        currentId: id,
+                    });
+                    return;
+                }
+                this.setState({
+                    failureIds: undefined,
+                    currentId: undefined,
+                });
                 if (afterCommit) {
-                    afterCommit();
+                    afterCommit(id);
                 }
             }
             else {
-                const { failureIds } = this.state;
+                const { failureIds, currentId } = this.state;
+                const id2 = currentId;
                 assert(failureIds && failureIds.length > 0);
-                await this.upload(failureIds);
+                const failureIds2 = await this.upload(failureIds);
+                if (failureIds2 && failureIds2.length > 0) {
+                    this.setState({
+                        failureIds: failureIds2,
+                        currentId: id2,
+                    });
+                    return;
+                }
+                this.setState({
+                    failureIds: undefined,
+                    currentId: undefined,
+                });
                 if (afterCommit) {
-                    afterCommit();
+                    afterCommit(id2);
                 }
             }
         },

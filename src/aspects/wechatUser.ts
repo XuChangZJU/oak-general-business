@@ -4,7 +4,7 @@ import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { OakUserException } from 'oak-domain/lib/types';
 
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import assert from "assert";
+import { assert } from 'oak-domain/lib/utils/assert';
 
 export async function unbindingWechat<
     ED extends EntityDict,

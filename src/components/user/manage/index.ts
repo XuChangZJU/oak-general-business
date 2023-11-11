@@ -88,12 +88,11 @@ export default OakComponent({
             normal: 'success',
             disabled: 'danger',
         },
+        searchValue: '',
     },
     methods: {
-        async bindClicked(input: WechatMiniprogram.Input) {
-            // resolveInput拿的是target，原来代码拿的是currentTarget
-            const { dataset } = this.resolveInput(input);
-            const { id } = dataset!;
+        async bindClicked(e: WechatMiniprogram.Touch) {
+            const { id } = e.currentTarget.dataset;
             this.onCellClicked(id);
         },
         async onCellClicked(id: string) {
@@ -101,9 +100,7 @@ export default OakComponent({
             if (event) {
                 this.pubEvent(
                     event,
-                    this.state.userArr.find(
-                        (ele) => ele.id === id
-                    )
+                    this.state.userArr.find((ele) => ele.id === id)
                 );
             } else {
                 this.navigateTo({
@@ -116,6 +113,55 @@ export default OakComponent({
             this.navigateTo({
                 url: '/user/manage/upsert',
             });
+        },
+        searchChangeMp(event: WechatMiniprogram.Input) {
+            const { value } = event.detail;
+            const searchValue = value.trim();
+
+            this.setState({
+                searchValue,
+            });
+            if (!searchValue) {
+                this.removeNamedFilterByName('nameOrNickname', true);
+                return;
+            }
+            // 后面根据 输入是否为手机号来判断
+            this.addNamedFilter({
+                filter: {
+                    $or: [
+                        {
+                            $text: {
+                                $search: searchValue,
+                            },
+                        },
+                        {
+                            mobile$user: {
+                                mobile: {
+                                    $startsWith: searchValue,
+                                },
+                            },
+                        },
+                    ],
+                },
+                '#name': 'nameOrNickname',
+            });
+        },
+        searchClear() {
+            this.setState({
+                searchValue: '',
+            });
+            this.removeNamedFilterByName('nameOrNickname', true);
+        },
+        searchConfirm() {
+            const { searchValue } = this.state;
+            if (!searchValue) {
+                this.setMessage({
+                    content: '请输入',
+                    type: 'warning',
+                });
+                return;
+            }
+            this.refresh();
         },
     },
     lifetimes: {

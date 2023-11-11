@@ -81,8 +81,19 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
             // 网络错误
             throw new OakNetworkException('网络异常，请求失败');
         }
+        let isSuccess = false;
+        if (process.env.OAK_PLATFORM === 'wechatMp') {
+            // 小程序端上传 使用wx.uploadFile
+            if (result.errMsg === 'uploadFile:ok') {
+                const jsonData = JSON.parse(result.data);
+                isSuccess = !!jsonData.key;
+            }
+        }
+        else {
+           isSuccess = !!(result.success === true || result.key);
+        }
         // 解析回调
-        if (result.success === true || result.key) {
+        if (isSuccess) {
             return;
         } else {
             throw new OakUploadException('图片上传七牛失败');

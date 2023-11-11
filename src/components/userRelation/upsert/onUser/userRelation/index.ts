@@ -1,6 +1,6 @@
-import assert from "assert";
-import { firstLetterUpperCase } from "oak-domain/lib/utils/string";
-import { EntityDict } from "../../../../../oak-app-domain";
+import { assert } from 'oak-domain/lib/utils/assert';
+import { firstLetterUpperCase } from 'oak-domain/lib/utils/string';
+import { EntityDict } from '../../../../../oak-app-domain';
 
 export default OakComponent({
     entity: 'userRelation',
@@ -15,30 +15,34 @@ export default OakComponent({
         relations: [] as EntityDict['relation']['OpSchema'][],
     },
     isList: true,
-    filters: [{
-        filter() {
-            const { entity, entityId } = this.props;
-            return {
-                entity: entity as string,
-                entityId,
-            };
-        }
-    }],
+    filters: [
+        {
+            filter() {
+                const { entity, entityId } = this.props;
+                return {
+                    entity: entity as string,
+                    entityId,
+                };
+            },
+        },
+    ],
     formData({ data: userRelations }) {
         const { relations } = this.props;
         const relations2: Array<{
-            isChecked: boolean; relation: EntityDict['relation']['OpSchema'];
-        }> = relations ? relations.map(
-            (relation) => {
-                const isChecked = !!(userRelations?.find(
-                    (ele: any) => ele.relationId === relation.id && !ele.$$deleteAt$$
-                ));
-                return {
-                    isChecked,
-                    relation,
-                };
-            }
-        ) : [];
+            isChecked: boolean;
+            relation: EntityDict['relation']['OpSchema'];
+        }> = relations
+            ? relations.map((relation) => {
+                  const isChecked = !!userRelations?.find(
+                      (ele: any) =>
+                          ele.relationId === relation.id && !ele.$$deleteAt$$
+                  );
+                  return {
+                      isChecked,
+                      relation,
+                  };
+              })
+            : [];
         return {
             relations2,
             userRelations,
@@ -50,28 +54,31 @@ export default OakComponent({
         },
     },
     methods: {
-        onRelationChange(relation: EntityDict['relation']['OpSchema'], checked: boolean) {
+        onRelationChange(
+            relation: EntityDict['relation']['OpSchema'],
+            checked: boolean
+        ) {
             const { entity, entityId } = this.props;
             const { userRelations } = this.state;
             if (checked) {
                 const userRelation = userRelations?.find(
-                    (ele: EntityDict['userRelation']['OpSchema']) => ele.relationId === relation.id
+                    (ele: EntityDict['userRelation']['OpSchema']) =>
+                        ele.relationId === relation.id
                 );
                 if (userRelation) {
                     assert(userRelation.$$deleteAt$$);
                     this.recoverItem(userRelation.id);
-                }
-                else {
+                } else {
                     this.addItem({
                         relationId: relation.id,
                         entity,
                         entityId,
                     });
                 }
-            }
-            else {
+            } else {
                 const userRelation = userRelations!.find(
-                    (ele: EntityDict['userRelation']['OpSchema']) => ele.relationId === relation.id,
+                    (ele: EntityDict['userRelation']['OpSchema']) =>
+                        ele.relationId === relation.id
                 );
                 assert(userRelation);
                 this.removeItem(userRelation.id);
@@ -87,6 +94,6 @@ export default OakComponent({
                 }) => ele.relation.id === relationId
             );
             this.onRelationChange(userRelation?.relation, checked);
-        }
-    }
-})
+        },
+    },
+});

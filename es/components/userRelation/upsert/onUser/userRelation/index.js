@@ -1,4 +1,4 @@
-import assert from "assert";
+import { assert } from 'oak-domain/lib/utils/assert';
 export default OakComponent({
     entity: 'userRelation',
     projection: {
@@ -12,24 +12,28 @@ export default OakComponent({
         relations: [],
     },
     isList: true,
-    filters: [{
+    filters: [
+        {
             filter() {
                 const { entity, entityId } = this.props;
                 return {
                     entity: entity,
                     entityId,
                 };
-            }
-        }],
+            },
+        },
+    ],
     formData({ data: userRelations }) {
         const { relations } = this.props;
-        const relations2 = relations ? relations.map((relation) => {
-            const isChecked = !!(userRelations?.find((ele) => ele.relationId === relation.id && !ele.$$deleteAt$$));
-            return {
-                isChecked,
-                relation,
-            };
-        }) : [];
+        const relations2 = relations
+            ? relations.map((relation) => {
+                const isChecked = !!userRelations?.find((ele) => ele.relationId === relation.id && !ele.$$deleteAt$$);
+                return {
+                    isChecked,
+                    relation,
+                };
+            })
+            : [];
         return {
             relations2,
             userRelations,
@@ -69,6 +73,6 @@ export default OakComponent({
             const { relations2 } = this.state;
             const userRelation = relations2?.find((ele) => ele.relation.id === relationId);
             this.onRelationChange(userRelation?.relation, checked);
-        }
-    }
+        },
+    },
 });

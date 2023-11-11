@@ -10,7 +10,7 @@ import { BackendRuntimeContext } from "../context/BackendRuntimeContext";
 import { OakPreConditionUnsetException, OakUserException } from 'oak-domain/lib/types';
 
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import assert from "assert";
+import { assert } from 'oak-domain/lib/utils/assert';
 import { User } from '../types/WeChat';
 
 async function getWechatPublicConfig<

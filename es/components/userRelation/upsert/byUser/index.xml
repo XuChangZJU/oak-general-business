@@ -2,7 +2,7 @@
     <relation-on-user style="display: flex;flex-direction: column; flex: 1; margin-top: 30rpx" oakAutoUnmount="{{true}}" oakPath="{{oakFullpath + '.user'}}" entity="{{entity}}" entityId="{{entityId}}" relations="{{relations}}" oakId="{{oakId}}" />
 
     <view style="flex: 1" />
-    <l-button disabled="{{!oakDirty}}" size="long" bind:lintap="onConfirm">
+    <l-button disabled="{{!oakDirty}}" size="long" bind:lintap="onConfirm" loading="{{oakExecuting}}">
         {{t('common::action.confirm')}}
     </l-button>
 </view>

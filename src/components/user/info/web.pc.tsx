@@ -9,12 +9,12 @@ import {
     Form,
     Typography,
     Modal,
-    Descriptions
+    Descriptions,
+    Card,
 } from 'antd';
 import dayjs from 'dayjs';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
-import PageHeader from '../../../components/common/pageHeader';
 import OakAvatar from '../../../components/extraFile/avatar';
 import ExtraFileCommit from '../../../components/extraFile/commit';
 import MobileLogin from '../../../components/mobile/login';
@@ -89,9 +89,8 @@ export default function Render(
     const [captcha, setCaptcha] = useState('');
 
     return (
-        <PageHeader title="个人信息" showBack={showBack}>
-            <div className={Style.container}>
-                <Descriptions title={'基本信息'}></Descriptions>
+        <>
+            <Card title={'基本信息'}>
                 <Form
                     labelCol={{ xs: { span: 4 }, md: { span: 6 } }}
                     wrapperCol={{ xs: { span: 16 }, md: { span: 12 } }}
@@ -100,11 +99,7 @@ export default function Render(
                         <>
                             <OakAvatar
                                 oakAutoUnmount={true}
-                                oakPath={
-                                    oakFullpath
-                                        ? oakFullpath + '.extraFile$entity'
-                                        : undefined
-                                }
+                                oakPath={oakFullpath + '.extraFile$entity'}
                                 entity="user"
                             />
                         </>
@@ -151,7 +146,7 @@ export default function Render(
                     </Form.Item>
                     <Form.Item
                         label={t('user:attr.gender')}
-                    // rules={[{ required: true }]}
+                        // rules={[{ required: true }]}
                     >
                         <Space direction="vertical">
                             <Radio.Group
@@ -165,11 +160,11 @@ export default function Render(
                     </Form.Item>
                     <Form.Item
                         label={t('user:attr.birth')}
-                    // rules={[
-                    //     {
-                    //         required: true,
-                    //     },
-                    // ]}
+                        // rules={[
+                        //     {
+                        //         required: true,
+                        //     },
+                        // ]}
                     >
                         <>
                             <DatePicker
@@ -213,16 +208,14 @@ export default function Render(
                             >
                                 确定
                             </Button> */}
-                            <ExtraFileCommit
-                                oakPath={oakFullpath}
-                            />
+                            <ExtraFileCommit oakPath={oakFullpath} />
                         </Space>
                     </Form.Item>
                 </Form>
-            </div>
-            <div style={{ marginTop: '10px' }}></div>
-            <div className={Style.container}>
-                <Descriptions title={'安全信息'}></Descriptions>
+            </Card>
+            <div style={{ marginTop: 10 }}></div>
+
+            <Card title={'安全信息'}>
                 <Form
                     labelCol={{ xs: { span: 4 }, md: { span: 6 } }}
                     wrapperCol={{ xs: { span: 16 }, md: { span: 12 } }}
@@ -303,7 +296,8 @@ export default function Render(
                         </Form.Item>
                     )}
                 </Form>
-            </div>
+            </Card>
+
             <Modal
                 title="绑定手机号"
                 open={open}
@@ -397,6 +391,6 @@ export default function Render(
                     </Form.Item>
                 </Space>
             </Modal>
-        </PageHeader>
+        </>
     );
 }

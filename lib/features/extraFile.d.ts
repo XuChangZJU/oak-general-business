@@ -19,7 +19,6 @@ export declare class ExtraFile<ED extends EntityDict, Cxt extends BackendRuntime
     addLocalFile(id: string, file: File | string): void;
     removeLocalFiles(ids: string[]): void;
     upload(id: string): Promise<void>;
-    uploadCommit(efPaths: string[], oakFullpath: string): Promise<void>;
     getUrl(extraFile?: EntityDict['extraFile']['OpSchema'] | EntityDict['extraFile']['Schema'] | null, style?: string): string;
     getFileState(id: string): {
         state: FileState;

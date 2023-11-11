@@ -4,7 +4,7 @@ import {
 import { EntityDict } from '../oak-app-domain';
 import { checkAttributesNotNull } from 'oak-domain/lib/utils/validator';
 import { RuntimeCxt } from '../types/RuntimeCxt';
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { generateNewId } from 'oak-domain';
 
 const checkers: Checker<

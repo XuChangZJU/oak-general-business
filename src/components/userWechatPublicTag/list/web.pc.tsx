@@ -10,12 +10,13 @@ import {
     Modal,
     Descriptions,
 } from 'antd';
-const { confirm } = Modal;
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 import PageHeader from '../../../components/common/pageHeader';
-import Style from './web.module.less';
 import dayjs from 'dayjs';
+
+const { confirm } = Modal;
+
 
 export default function Render(
     props: WebComponentProps<
@@ -51,7 +52,7 @@ export default function Render(
     const { pageSize, total, currentPage } = oakPagination || {};
 
     return (
-        <div className={Style.container}>
+        <>
             <Table
                 loading={oakLoading}
                 dataSource={userWechatPublicTags}
@@ -123,6 +124,6 @@ export default function Render(
                     },
                 }}
             />
-        </div>
+        </>
     );
 }

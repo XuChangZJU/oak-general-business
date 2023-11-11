@@ -10,5 +10,5 @@ export default OakComponent({
         addTag: () => undefined,
         changeText: (text) => undefined,
     },
-    methods: {}
+    methods: {},
 });

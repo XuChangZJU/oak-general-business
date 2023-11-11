@@ -90,6 +90,17 @@ export default OakComponent({
             const birthEnd = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
             this.setState({ birthEnd });
         },
+        attached() {
+            const that = this;
+            this.setState({
+                afterCommit: () => {
+                    return that.afterCommitMp();
+                },
+                beforeCommit: () => {
+                    return that.beforeCommitMp();
+                },
+            });
+        },
     },
     methods: {
         setValueMp(input) {
@@ -98,13 +109,28 @@ export default OakComponent({
             const { value } = detail;
             this.update({ [attr]: value });
         },
-        async confirm() {
+        beforeCommitMp() {
+            if (!this.checkData()) {
+                return false;
+            }
+            return true;
+        },
+        afterCommitMp() {
+            this.navigateBack();
+        },
+        checkData() {
             const { nickname } = this.state;
             if (!nickname) {
                 this.setMessage({
                     type: 'warning',
-                    content: '请输入昵称'
+                    content: '请输入昵称',
                 });
+                return false;
+            }
+            return true;
+        },
+        async confirm() {
+            if (!this.checkData()) {
                 return;
             }
             await this.execute();

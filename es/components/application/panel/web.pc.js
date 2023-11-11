@@ -9,7 +9,7 @@ import Styles from './web.pc.module.less';
 import WechatMenu from '../../wechatMenu';
 import UserWechatPublicTag from '../../userWechatPublicTag';
 import WechatPublicTag from '../..//wechatPublicTag/list';
-import WechatPublicAutoReply from '../..//wechatPublicAutoReply';
+import WechatPublicAutoReply from '../../wechatPublicAutoReply';
 export default function Render(props) {
     const { id, config, oakFullpath, name, style, type } = props.data;
     const { t, update } = props.methods;

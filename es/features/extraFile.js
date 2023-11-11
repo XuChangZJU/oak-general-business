@@ -70,36 +70,7 @@ export class ExtraFile extends Feature {
             item.state = 'failed';
             item.percentage = undefined;
             this.publish();
-        }
-    }
-    async uploadCommit(efPaths, oakFullpath) {
-        assert(false, '方法已经废弃');
-        assert(efPaths && efPaths.length > 0);
-        let ids = [];
-        if (oakFullpath) {
-            ids = efPaths
-                .map((path) => {
-                const path2 = path ? `${oakFullpath}.${path}` : oakFullpath;
-                const data = this.runningTree.getFreshValue(path2);
-                assert(data, `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`);
-                return data.map((ele) => ele.id);
-            })
-                .flat()
-                .filter((ele) => !!ele);
-        }
-        assert(ids.length > 0);
-        const promises = [];
-        ids.forEach((id) => {
-            const fileState = this.getFileState(id);
-            if (fileState) {
-                const { state } = fileState;
-                if (['local', 'failed'].includes(state)) {
-                    promises.push(this.upload(id));
-                }
-            }
-        });
-        if (promises.length > 0) {
-            await Promise.all(promises);
+            throw err;
         }
     }
     getUrl(extraFile, style) {
@@ -160,6 +131,7 @@ export class ExtraFile extends Feature {
         try {
             const cos = getCos(newExtraFile.origin);
             await cos.upload(newExtraFile, up.uploadFile, file, this.uploadToAspect.bind(this));
+            this.publish();
             return this.getUrl(newExtraFile);
         }
         catch (err) {
@@ -171,6 +143,7 @@ export class ExtraFile extends Feature {
                 },
                 id: await generateNewIdAsync(),
             });
+            this.publish();
             throw err;
         }
     }

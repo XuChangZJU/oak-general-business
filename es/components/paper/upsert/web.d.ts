@@ -15,10 +15,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
     setEditor: (editor: any) => void;
     confirm: () => void;
     preview: () => void;
-    addExtraFile: (file: EntityDict['extraFile']['CreateSingle']['data']) => Promise<void>;
-    uploadFile: (file: EntityDict['extraFile']['CreateSingle']['data']) => Promise<{
-        bucket: string;
-        url: string;
-    }>;
+    uploadFile: (extraFile: EntityDict['extraFile']['CreateSingle']['data'], file: File) => Promise<string>;
     clearContentTip: () => void;
 }>): import("react/jsx-runtime").JSX.Element;
