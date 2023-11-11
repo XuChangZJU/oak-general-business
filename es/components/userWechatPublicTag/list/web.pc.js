@@ -1,14 +1,13 @@
 import { jsx as _jsx, Fragment as _Fragment } from "react/jsx-runtime";
 import { Button, Table, Modal, } from 'antd';
-const { confirm } = Modal;
-import Style from './web.module.less';
 import dayjs from 'dayjs';
+const { confirm } = Modal;
 export default function Render(props) {
     const { data, methods } = props;
     const { t, setPageSize, setCurrentPage, sync, } = methods;
     const { userWechatPublicTags, showBack = true, oakLoading, oakPagination, applicationId, oakFullpath } = data;
     const { pageSize, total, currentPage } = oakPagination || {};
-    return (_jsx("div", { className: Style.container, children: _jsx(Table, { loading: oakLoading, dataSource: userWechatPublicTags, rowKey: "id", columns: [
+    return (_jsx(_Fragment, { children: _jsx(Table, { loading: oakLoading, dataSource: userWechatPublicTags, rowKey: "id", columns: [
                 {
                     dataIndex: 'text',
                     title: '标签名称',

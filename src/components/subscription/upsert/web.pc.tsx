@@ -1,7 +1,5 @@
 import React from 'react';
 import { Button, Form, Row, Col, Select, Space, Input } from 'antd';
-import PageHeader from '../../../components/common/pageHeader';
-import Style from './web.module.less';
 
 import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -14,8 +12,6 @@ export default function Render(
         {
             name: string;
             description: string;
-            variant: 'inline' | 'alone' | 'dialog';
-            showBack: boolean;
             entity: string;
             entityId: string;
             oakId: string;
@@ -28,107 +24,74 @@ export default function Render(
     const {
         name,
         description,
-        variant,
-        showBack = true,
         entityId,
         entity,
         oakId,
     } = props.data;
     const { t, update, navigateBack, confirm } = props.methods;
     return (
-        <Container variant={variant} showBack={showBack}>
-            <Row>
-                <Col xs={24} sm={12}>
-                    <Form
-                        colon={true}
-                        labelCol={{ span: 6 }}
-                        wrapperCol={{ span: 16 }}
+        <Row>
+            <Col xs={24} sm={12}>
+                <Form
+                    colon={true}
+                    labelCol={{ span: 6 }}
+                    wrapperCol={{ span: 16 }}
+                >
+                    <Form.Item
+                        label="名称"
+                        required
+                        name="name"
+                        rules={[
+                            {
+                                required: true,
+                            },
+                        ]}
                     >
-                        <Form.Item
-                            label="名称"
-                            required
-                            name="name"
-                            rules={[
-                                {
-                                    required: true,
-                                },
-                            ]}
-                        >
-                            <>
-                                <Input
-                                    onChange={(e) => {
-                                        update({
-                                            name: e.target.value,
-                                        });
-                                    }}
-                                    value={name}
-                                />
-                            </>
-                        </Form.Item>
-                        <Form.Item label="描述" required name="description">
-                            <>
-                                <Input.TextArea
-                                    onChange={(e) => {
-                                        update({
-                                            description: e.target.value,
-                                        });
-                                    }}
-                                    value={description}
-                                />
-                            </>
-                        </Form.Item>
+                        <>
+                            <Input
+                                onChange={(e) => {
+                                    update({
+                                        name: e.target.value,
+                                    });
+                                }}
+                                value={name}
+                            />
+                        </>
+                    </Form.Item>
+                    <Form.Item label="描述" required name="description">
+                        <>
+                            <Input.TextArea
+                                onChange={(e) => {
+                                    update({
+                                        description: e.target.value,
+                                    });
+                                }}
+                                value={description}
+                            />
+                        </>
+                    </Form.Item>
 
-                        <Action variant={variant}>
-                            <Form.Item wrapperCol={{ offset: 6 }}>
-                                <Space>
-                                    <Button
-                                        type="primary"
-                                        onClick={() => {
-                                            confirm();
-                                        }}
-                                    >
-                                        确定
-                                    </Button>
-                                    <Button
-                                        onClick={() => {
-                                            navigateBack();
-                                        }}
-                                    >
-                                        返回
-                                    </Button>
-                                </Space>
-                            </Form.Item>
-                        </Action>
-                    </Form>
-                </Col>
-            </Row>
-        </Container>
-    );
-}
-
-function Action(props: {
-    children: React.ReactNode;
-    variant?: 'inline' | 'alone' | 'dialog';
-}) {
-    const { children, variant } = props;
-    if (variant === 'dialog') {
-        return null;
-    }
-    return (
-        <>{children}</>
-    )
-}
-
-function Container(props: {
-    children: React.ReactNode;
-    variant?: 'inline' | 'alone' | 'dialog';
-    showBack?: boolean;
-}) {
-    const { children, variant, showBack } = props;
-    if (variant === 'inline' || variant === 'dialog') {
-        return <>{children}</>;
-    }
-    return (
-            <div className={Style.container}>{children}</div>
+                    <Form.Item wrapperCol={{ offset: 6 }}>
+                        <Space>
+                            <Button
+                                type="primary"
+                                onClick={() => {
+                                    confirm();
+                                }}
+                            >
+                                确定
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    navigateBack();
+                                }}
+                            >
+                                返回
+                            </Button>
+                        </Space>
+                    </Form.Item>
+                </Form>
+            </Col>
+        </Row>
     );
 }

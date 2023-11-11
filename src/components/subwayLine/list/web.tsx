@@ -36,17 +36,7 @@ export default function Render(
     const [stationId, setStationId] = useState('');
 
     return (
-        <div className={Style.container}>
-            {/* <Space className={Style.space}>
-                    <Button
-                        type="primary"
-                        onClick={() => {
-                            goServiceUpsert();
-                        }}
-                    >
-                        创建
-                    </Button>
-                </Space> */}
+        <>
             <div>
                 点击切换城市：
                 <Select
@@ -67,35 +57,39 @@ export default function Render(
                 treeData={treeData}
                 titleRender={(nodeData) => {
                     return (
-
                         <Row align="middle" style={{ flex: 1 }}>
-                            <Col flex="auto">
-                                {(nodeData as any).title}
-                            </Col>
+                            <Col flex="auto">{(nodeData as any).title}</Col>
 
                             <Col flex="none">
                                 <Space>
-                                    {!nodeData.isLeaf ? <Button
-                                        onClick={() => {
-                                            setSubwayId((nodeData as any).key)
-                                            setSubway(true)
-                                        }
-                                        }
-                                    >
-                                        编辑
-                                    </Button> :
+                                    {!nodeData.isLeaf ? (
                                         <Button
                                             onClick={() => {
-                                                const index = (nodeData as any).key.indexOf('/') + 1;
-                                                const temp = (nodeData as any).key.substr(index);
-                                                setStationId(temp)
-                                                setStation(true)
-                                            }
-                                            }
+                                                setSubwayId(
+                                                    (nodeData as any).key
+                                                );
+                                                setSubway(true);
+                                            }}
                                         >
                                             编辑
                                         </Button>
-                                    }
+                                    ) : (
+                                        <Button
+                                            onClick={() => {
+                                                const index =
+                                                    (
+                                                        nodeData as any
+                                                    ).key.indexOf('/') + 1;
+                                                const temp = (
+                                                    nodeData as any
+                                                ).key.substr(index);
+                                                setStationId(temp);
+                                                setStation(true);
+                                            }}
+                                        >
+                                            编辑
+                                        </Button>
+                                    )}
 
                                     {/* {!nodeData.isLeaf && (
                                             <Button
@@ -146,6 +140,6 @@ export default function Render(
                     oakAutoUnmount={true}
                 />
             )}
-        </div>
+        </>
     );
 }

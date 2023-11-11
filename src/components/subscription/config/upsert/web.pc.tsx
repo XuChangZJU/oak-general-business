@@ -1,8 +1,5 @@
 import React from 'react';
 import ConfigUpsert from '../../../../components/config/application';
-import PageHeader from '../../../../components/common/pageHeader';
-
-import Style from './web.module.less';
 
 import { WechatPublicConfig } from '../../../../oak-app-domain/Application/Schema';
 
@@ -27,15 +24,13 @@ export default function render(
 ) {
     const { oakId, config, name } = props.data;
     return (
-            <div className={Style.container}>
-                <ConfigUpsert
-                    isService={false}
-                    type="wechatPublic"
-                    config={config}
-                    entity="subscription"
-                    entityId={oakId}
-                    name={name}
-                />
-            </div>
+        <ConfigUpsert
+            isService={false}
+            type="wechatPublic"
+            config={config}
+            entity="subscription"
+            entityId={oakId}
+            name={name}
+        />
     );
 }

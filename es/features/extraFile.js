@@ -131,6 +131,7 @@ export class ExtraFile extends Feature {
         try {
             const cos = getCos(newExtraFile.origin);
             await cos.upload(newExtraFile, up.uploadFile, file, this.uploadToAspect.bind(this));
+            this.publish();
             return this.getUrl(newExtraFile);
         }
         catch (err) {
@@ -142,6 +143,7 @@ export class ExtraFile extends Feature {
                 },
                 id: await generateNewIdAsync(),
             });
+            this.publish();
             throw err;
         }
     }

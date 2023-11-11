@@ -81,11 +81,7 @@ export default function render(
                         <div style={{ marginTop: 5, marginBottom: 5 }}>
                             <OakAvatar
                                 oakAutoUnmount={true}
-                                oakPath={
-                                    oakFullpath
-                                        ? oakFullpath + '.extraFile$entity'
-                                        : undefined
-                                }
+                                oakPath={oakFullpath + '.extraFile$entity'}
                                 entity="user"
                                 entityId={id}
                                 autoUpload={true}

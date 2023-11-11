@@ -3,11 +3,11 @@ import { EntityDict } from "../../../oak-app-domain";
 import { WebComponentProps } from 'oak-frontend-base';
 import { Modal, Button, Table, Space, Tag, Descriptions, Image, Checkbox, Form } from 'antd';
 import type { CheckboxValueType } from 'antd/es/checkbox/Group';
-const { confirm } = Modal;
-import Style from './web.module.less';
 import dayjs from 'dayjs';
 import UserWechatPublicTagList from '../list';
 import FilterPanel from 'oak-frontend-base/es/components/filterPanel';
+
+const { confirm } = Modal;
 
 export default function Render(
     props: WebComponentProps<
@@ -52,58 +52,16 @@ export default function Render(
         tags: { id: string, text: string }[],
     });
     return (
-        <div className={Style.container}>
-            <Modal
-                title='给用户打标签'
-                open={editOpen}
-                onCancel={() => { setEditOpen(false); setEditTags([]); setOpenId('') }}
-                footer={
-                    <Space style={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button onClick={() => { setEditOpen(false); setEditTags([]); setOpenId('')}}>取消</Button>
-                        <Button type='primary' onClick={() => {
-                            setEditOpen(false);
-                            setEditTags([]);
-                            tagging(editTags, openId);
-                            setOpenId('');
-                        }}>确定</Button>
-                    </Space>
-                }
-            >
-                <Form.Item label='选择标签' required>
-                    <Checkbox.Group
-                        options={tags}
-                        onChange={(values: CheckboxValueType[]) => {
-                            setEditTags(values as number[])
-                        }}
-                        value={editTags}
-                    />
-                </Form.Item>
-            </Modal>
-            <Modal
-                open={syncOpen}
-                onCancel={() => {setSyncOpen(false); setOpenId('')}}
-                footer={null}
-                title="同步标签"
-                width={800}
-            >
-                <UserWechatPublicTagList
-                    oakAutoUnmount={true}
-                    oakPath={`$wechatUser-userWechatPublcTag-list-${openId}`}
-                    openId={openId}
-                    applicationId={applicationId}
-                />
-            </Modal>
+        <>
             <FilterPanel
                 entity="wechatUser"
                 oakPath={oakFullpath}
-                columns={
-                    [
-                        {
-                            attr: 'nickname',
-                            op: '$includes',
-                        },
-                    ]
-                }
+                columns={[
+                    {
+                        attr: 'nickname',
+                        op: '$includes',
+                    },
+                ]}
             />
             <Table
                 loading={oakLoading}
@@ -120,26 +78,28 @@ export default function Render(
                         title: '同步状态',
                         width: 100,
                         render: (value, record, index) => {
-                            return value ? '同步' : '未同步'
-                        }
+                            return value ? '同步' : '未同步';
+                        },
                     },
                     {
                         dataIndex: 'tags',
                         title: '用户标签',
                         render: (value, record, index) => {
-                            return <div>
-                                {
-                                    value && value.length > 0 ?
-                                        value.map((ele: { id: string, text: string }) => {
-                                            return <Tag>
-                                                {
-                                                    ele.text
-                                                }
-                                            </Tag>
-                                        }) : '暂无标签'
-                                }
-                            </div>
-                        }
+                            return (
+                                <div>
+                                    {value && value.length > 0
+                                        ? value.map(
+                                              (ele: {
+                                                  id: string;
+                                                  text: string;
+                                              }) => {
+                                                  return <Tag>{ele.text}</Tag>;
+                                              }
+                                          )
+                                        : '暂无标签'}
+                                </div>
+                            );
+                        },
                     },
                     {
                         dataIndex: 'op',
@@ -163,9 +123,10 @@ export default function Render(
                                             onClick={() => {
                                                 setEditOpen(true);
                                                 getTags();
-                                                const tagIdList = record.tags?.map((ele) => {
-                                                    return ele.wechatId
-                                                })
+                                                const tagIdList =
+                                                    record.tags?.map((ele) => {
+                                                        return ele.wechatId;
+                                                    });
                                                 setEditTags(tagIdList);
                                                 setOpenId(record.openId);
                                             }}
@@ -186,11 +147,14 @@ export default function Render(
                                             onClick={() => {
                                                 const modal = confirm({
                                                     title: '确定拉取吗？',
-                                                    content: '拉取微信微信公众号用户标签可能会导致列表数据发生变化',
+                                                    content:
+                                                        '拉取微信微信公众号用户标签可能会导致列表数据发生变化',
                                                     okText: '确定',
                                                     cancelText: '取消',
                                                     onOk: (e) => {
-                                                        syncToLocale(record.openId);
+                                                        syncToLocale(
+                                                            record.openId
+                                                        );
                                                         modal!.destroy();
                                                     },
                                                 });
@@ -201,8 +165,8 @@ export default function Render(
                                     </Space>
                                 </>
                             );
-                        }
-                    }
+                        },
+                    },
                 ]}
                 pagination={{
                     total,
@@ -217,7 +181,7 @@ export default function Render(
                 }}
             />
             <Modal
-                title='用户详情'
+                title="用户详情"
                 open={open}
                 onCancel={() => {
                     setOpen(false);
@@ -225,57 +189,103 @@ export default function Render(
                 footer={null}
                 width={750}
             >
-                <Descriptions
-                    bordered
-                    column={3}
-                >
-                    <Descriptions.Item
-                        label='昵称'
-                    >
+                <Descriptions bordered column={3}>
+                    <Descriptions.Item label="昵称">
                         {user.nickname ? user.nickname : '--'}
                     </Descriptions.Item>
-                    <Descriptions.Item
-                        label='头像'
-                    >
-                        {
-                            user.avatar ? <Image src={user.avatar} /> : '--'
-                        }
+                    <Descriptions.Item label="头像">
+                        {user.avatar ? <Image src={user.avatar} /> : '--'}
                     </Descriptions.Item>
-                    <Descriptions.Item
-                        label='用户标识'
-                    >
+                    <Descriptions.Item label="用户标识">
                         {user.openId ? user.openId : '--'}
                     </Descriptions.Item>
-                    <Descriptions.Item
-                        label='同步状态'
-                    >
+                    <Descriptions.Item label="同步状态">
                         {user.sync ? '同步' : '未同步'}
                     </Descriptions.Item>
-                    <Descriptions.Item
-                        label='同步时间'
-                    >
-                        {user.syncAt ? dayjs(user.syncAt).format('YYYY-MM-DD HH:mm') : '--'}
+                    <Descriptions.Item label="同步时间">
+                        {user.syncAt
+                            ? dayjs(user.syncAt).format('YYYY-MM-DD HH:mm')
+                            : '--'}
                     </Descriptions.Item>
-                    <Descriptions.Item
-                        label='关注时间'
-                    >
-                        {user.subscribedAt ? dayjs(user.subscribedAt * 1000).format('YYYY-MM-DD HH:mm') : '--'}
+                    <Descriptions.Item label="关注时间">
+                        {user.subscribedAt
+                            ? dayjs(user.subscribedAt * 1000).format(
+                                  'YYYY-MM-DD HH:mm'
+                              )
+                            : '--'}
                     </Descriptions.Item>
-                    <Descriptions.Item
-                        label='用户标签'
-                    >
-                        {
-                            user.tags && user.tags.length > 0 ?
-                                user.tags.map((tag) => {
-                                    return <Tag>
-                                        {tag.text}
-                                    </Tag>
-                                }) : '暂无标签'
-                        }
+                    <Descriptions.Item label="用户标签">
+                        {user.tags && user.tags.length > 0
+                            ? user.tags.map((tag) => {
+                                  return <Tag>{tag.text}</Tag>;
+                              })
+                            : '暂无标签'}
                     </Descriptions.Item>
                 </Descriptions>
             </Modal>
-        </div>
+            <Modal
+                title="给用户打标签"
+                open={editOpen}
+                onCancel={() => {
+                    setEditOpen(false);
+                    setEditTags([]);
+                    setOpenId('');
+                }}
+                footer={
+                    <Space
+                        style={{ display: 'flex', justifyContent: 'center' }}
+                    >
+                        <Button
+                            onClick={() => {
+                                setEditOpen(false);
+                                setEditTags([]);
+                                setOpenId('');
+                            }}
+                        >
+                            取消
+                        </Button>
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                setEditOpen(false);
+                                setEditTags([]);
+                                tagging(editTags, openId);
+                                setOpenId('');
+                            }}
+                        >
+                            确定
+                        </Button>
+                    </Space>
+                }
+            >
+                <Form.Item label="选择标签" required>
+                    <Checkbox.Group
+                        options={tags}
+                        onChange={(values: CheckboxValueType[]) => {
+                            setEditTags(values as number[]);
+                        }}
+                        value={editTags}
+                    />
+                </Form.Item>
+            </Modal>
+            <Modal
+                open={syncOpen}
+                onCancel={() => {
+                    setSyncOpen(false);
+                    setOpenId('');
+                }}
+                footer={null}
+                title="同步标签"
+                width={800}
+            >
+                <UserWechatPublicTagList
+                    oakAutoUnmount={true}
+                    oakPath={`$wechatUser-userWechatPublcTag-list-${openId}`}
+                    openId={openId}
+                    applicationId={applicationId}
+                />
+            </Modal>
+        </>
     );
 }
 

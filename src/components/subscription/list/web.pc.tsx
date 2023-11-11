@@ -1,8 +1,6 @@
 import React from 'react';
 import { Table, Button, Space, Typography, Modal } from 'antd';
-import PageHeader from '../../../components/common/pageHeader';
 
-import Style from './web.module.less';
 import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 
@@ -12,10 +10,7 @@ export default function Render(
         'subscription',
         true,
         {
-            searchValue: string;
             list: EntityDict['subscription']['Schema'][];
-            showBack: boolean;
-            variant?: 'inline' | 'alone' | 'dialog';
         },
         {
             goDetail: (id: string) => void;
@@ -30,8 +25,6 @@ export default function Render(
         oakPagination,
         list = [],
         oakLoading,
-        showBack,
-        variant,
         oakFullpath,
     } = props.data;
 
@@ -49,7 +42,7 @@ export default function Render(
     } = props.methods;
 
     return (
-        <Container variant={variant}>
+        <>
             <Space style={{ marginBottom: 16 }}>
                 <Button
                     type="primary"
@@ -164,22 +157,6 @@ export default function Render(
                     },
                 }}
             />
-        </Container>
-    );
-}
-
-function Container(props: {
-    children: React.ReactNode;
-    variant?: 'inline' | 'alone' | 'dialog';
-    showBack?: boolean;
-}) {
-    const { children, variant = 'alone', showBack } = props;
-    if (['inline', 'dialog'].includes(variant)) {
-        return <>{children}</>;
-    }
-    return (
-        <PageHeader showBack={showBack} title="应用管理">
-            <div className={Style.container}>{children}</div>
-        </PageHeader>
+        </>
     );
 }

@@ -1,5 +1,4 @@
 
-// import { TreeNode } from '@project/types/interface';
 import { EntityDict } from '../../../oak-app-domain';
 
 
@@ -49,18 +48,10 @@ export default OakComponent({
             },
             '#name': 'area',
         },
-        // {
-        //     filter() {
-        //         return {
-        //         };
-        //     },
-        //     '#name': 'type',
-        // },
     ],
     listeners: {},
     formData: ({ data: subway }) => {
         const treeData: TreeNode[] = subway
-            // ?.filter((ele) => !ele!.subwayStation$subway)
             .map((ele) => {
                 return {
                     title: ele!.name!,
@@ -92,8 +83,6 @@ export default OakComponent({
 
                     },
                     filter: {
-                        subway$area: {
-                        },
                         level: 'city',
                     },
                 }

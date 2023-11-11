@@ -1,11 +1,9 @@
 import React from 'react';
-import QrCode from '../../../components/common/qrCode';
+import { Space } from 'antd';
 import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
-import { Space } from 'antd';
 import UnbindBtn from '../unbindBtn';
 
-import Style from './web.module.less';
 
 export default function Render(
     props: WebComponentProps<
@@ -25,7 +23,7 @@ export default function Render(
             {wechatUsers && wechatUsers.map((ele) => (
                 <UnbindBtn
                     oakId={ele.id}
-                    oakPath={oakFullpath ? `${oakFullpath}.${ele.id}` : undefined}
+                    oakPath={`${oakFullpath}.${ele.id}`}
                 />
             ))}
         </Space>

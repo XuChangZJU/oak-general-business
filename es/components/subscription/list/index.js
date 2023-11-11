@@ -12,7 +12,6 @@ export default OakComponent({
     properties: {
         entityId: '',
         entity: '',
-        variant: 'inline',
     },
     filters: [
         {

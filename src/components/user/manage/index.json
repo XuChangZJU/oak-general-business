@@ -4,6 +4,7 @@
         "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index",
         "l-icon": "@oak-frontend-base/miniprogram_npm/lin-ui/icon/index",
         "l-tag": "@oak-frontend-base/miniprogram_npm/lin-ui/tag/index",
-        "l-avatar": "@oak-frontend-base/miniprogram_npm/lin-ui/avatar/index"
+        "l-avatar": "@oak-frontend-base/miniprogram_npm/lin-ui/avatar/index",
+        "l-search-bar": "@oak-frontend-base/miniprogram_npm/lin-ui/search-bar/index"
     }
 }

@@ -34,31 +34,29 @@ export default function Render(
         onClose,
     } = data;
     return (
-        <div>
-            <Modal
-                title={oakId ? '编辑地铁' : '新增地铁'}
-                open={openSubway}
-                destroyOnClose={true}
-                okText="确定"
-                cancelText="取消"
-                onOk={async () => {
-                    methods.execute();
-                    onClose();
-                }}
-                onCancel={() => {
-                    onClose();
-                }}
-            >
-                <>
-                    <Input
-                        placeholder="请输入线路名称"
-                        value={name}
-                        onChange={({ target: { value } }) => {
-                            methods.update({ name: value });
-                        }}
-                    />
-                </>
-            </Modal>
-        </div>
+        <Modal
+            title={oakId ? '编辑地铁' : '新增地铁'}
+            open={openSubway}
+            destroyOnClose={true}
+            okText="确定"
+            cancelText="取消"
+            onOk={async () => {
+                methods.execute();
+                onClose();
+            }}
+            onCancel={() => {
+                onClose();
+            }}
+        >
+            <>
+                <Input
+                    placeholder="请输入线路名称"
+                    value={name}
+                    onChange={({ target: { value } }) => {
+                        methods.update({ name: value });
+                    }}
+                />
+            </>
+        </Modal>
     );
 }

@@ -198,6 +198,7 @@ export class ExtraFile<
                 file,
                 this.uploadToAspect.bind(this)
             );
+            this.publish();
             return this.getUrl(
                 newExtraFile as EntityDict['extraFile']['Schema']
             );
@@ -210,6 +211,7 @@ export class ExtraFile<
                 },
                 id: await generateNewIdAsync(),
             } as EntityDict['extraFile']['Operation']);
+            this.publish();
             throw err;
         }
     }

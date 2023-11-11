@@ -9,8 +9,4 @@ export default OakComponent({
             wechatUsers: data?.filter((ele) => !!ele.userId),
         };
     },
-    lifetimes: {},
-    data: {},
-    properties: {},
-    methods: {},
 });

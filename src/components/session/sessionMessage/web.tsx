@@ -19,7 +19,7 @@ export default function Render(
     return newSessionId ? (
         <SessionMessageList
             oakAutoUnmount={true}
-            oakPath={oakFullpath ? `$$sessionMessage/list` : undefined}
+            oakPath={`${oakFullpath}.sessionMessages`}
             sessionId={newSessionId}
             isEntity={false}
         />

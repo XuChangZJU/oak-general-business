@@ -6,6 +6,7 @@
         "l-input": "@oak-frontend-base/miniprogram_npm/lin-ui/input/index",
         "l-icon": "@oak-frontend-base/miniprogram_npm/lin-ui/icon/index",
         "mobile-manage-list": "../../../../components/mobile/manageList/index",
-        "oak-extraFile-avatar": "../../../../components/extraFile/avatar/index"
+        "extraFile-avatar": "../../../../components/extraFile/avatar/index",
+        "extraFile-commit": "../../../../components/extraFile/commit/index"
     }
 }

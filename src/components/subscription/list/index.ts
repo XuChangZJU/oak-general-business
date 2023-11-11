@@ -16,7 +16,6 @@ export default OakComponent({
     properties: {
         entityId: '',
         entity: '' as keyof EntityDict,
-        variant: 'inline' as 'inline' | 'alone' | 'dialog',
     },
     filters: [
         {
@@ -76,7 +75,6 @@ export default OakComponent({
         {
             entityId: string,
             entity: keyof ED2,
-            variant?: 'inline' | 'alone' | 'dialog',
         }
     >
 ) => React.ReactElement;
