@@ -17,7 +17,7 @@
             <l-list  title="{{expired ? t('isExpired') : t('counter')}}" right-desc="{{expired ? t('expired') : counterStr}}" is-link="{{false}}" />
         </view>
     </block>
-
+    <ueg-picker />
 
 
     <view style="flex: 1" />

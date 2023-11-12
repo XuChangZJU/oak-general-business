@@ -3,7 +3,13 @@
     "usingComponents": {
       "l-notice-bar": "@oak-frontend-base/miniprogram_npm/lin-ui/notice-bar/index",
       "l-button": "@oak-frontend-base/miniprogram_npm/lin-ui/button/index",
-      "l-list": "@oak-frontend-base/miniprogram_npm/lin-ui/list/index"
+      "l-list": "@oak-frontend-base/miniprogram_npm/lin-ui/list/index",
+      "xxx": "./ubPicker/index"
+    },
+    "componentGenerics": {
+      "ueg-picker": {
+        "default": "./ubPicker/index"
+      }
     }
   }
   

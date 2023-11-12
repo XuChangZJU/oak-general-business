@@ -13,7 +13,7 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     type?: ButtonProps['type'] | AmButtonProps['type'];
     executeText?: string | undefined;
     buttonProps?: (ButtonProps & {
-        color?: "default" | "success" | "primary" | "warning" | "danger" | undefined;
+        color?: "primary" | "success" | "warning" | "default" | "danger" | undefined;
         fill?: "none" | "solid" | "outline" | undefined;
         size?: "small" | "large" | "middle" | "mini" | undefined;
         block?: boolean | undefined;
