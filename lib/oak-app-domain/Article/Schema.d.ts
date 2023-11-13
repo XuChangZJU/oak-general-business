@@ -93,6 +93,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "articleMenuId">
     articleMenuId: ForeignKey<"articleMenu">;
     articleMenu?: ArticleMenu.UpdateOperation;
 } | {
+    articleMenu?: never;
     articleMenuId: ForeignKey<"articleMenu">;
 })) & {
     extraFile$entity?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">>>;
@@ -101,17 +102,17 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "articleMenuId">> & (({
-    articleMenu: ArticleMenu.CreateSingleOperation;
+    articleMenu?: ArticleMenu.CreateSingleOperation;
     articleMenuId?: never;
 } | {
-    articleMenu: ArticleMenu.UpdateOperation;
+    articleMenu?: ArticleMenu.UpdateOperation;
     articleMenuId?: never;
 } | {
-    articleMenu: ArticleMenu.RemoveOperation;
+    articleMenu?: ArticleMenu.RemoveOperation;
     articleMenuId?: never;
 } | {
     articleMenu?: never;
-    articleMenuId?: ForeignKey<"articleMenu"> | null;
+    articleMenuId?: ForeignKey<"articleMenu">;
 })) & {
     [k: string]: any;
     extraFile$entity?: OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">> | OakOperation<ExtraFile.RemoveOperation["action"], Omit<ExtraFile.RemoveOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ExtraFile.CreateOperationData, "entity" | "entityId">> | OakOperation<ExtraFile.UpdateOperation["action"], Omit<ExtraFile.UpdateOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">> | OakOperation<ExtraFile.RemoveOperation["action"], Omit<ExtraFile.RemoveOperationData, "entity" | "entityId">, Omit<ExtraFile.Filter, "entity" | "entityId">>>;

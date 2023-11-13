@@ -166,6 +166,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     applicationId: ForeignKey<"application">;
     application?: Application.UpdateOperation;
 } | {
+    application?: never;
     applicationId?: ForeignKey<"application">;
 }) & ({
     userId?: never;
@@ -174,6 +175,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     userId: ForeignKey<"user">;
     user?: User.UpdateOperation;
 } | {
+    user?: never;
     userId?: ForeignKey<"user">;
 }) & ({
     playerId?: never;
@@ -182,6 +184,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     playerId: ForeignKey<"player">;
     player?: User.UpdateOperation;
 } | {
+    player?: never;
     playerId?: ForeignKey<"player">;
 })) & ({
     entity?: never;
@@ -190,10 +193,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "email";
     entityId: ForeignKey<"Email">;
-    email: Email.UpdateOperation;
+    email?: Email.UpdateOperation;
 } | {
     entity: "email";
     entityId: ForeignKey<"Email">;
+    email?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -201,10 +205,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "mobile";
     entityId: ForeignKey<"Mobile">;
-    mobile: Mobile.UpdateOperation;
+    mobile?: Mobile.UpdateOperation;
 } | {
     entity: "mobile";
     entityId: ForeignKey<"Mobile">;
+    mobile?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -212,10 +217,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "parasite";
     entityId: ForeignKey<"Parasite">;
-    parasite: Parasite.UpdateOperation;
+    parasite?: Parasite.UpdateOperation;
 } | {
     entity: "parasite";
     entityId: ForeignKey<"Parasite">;
+    parasite?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -223,10 +229,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "wechatUser";
     entityId: ForeignKey<"WechatUser">;
-    wechatUser: WechatUser.UpdateOperation;
+    wechatUser?: WechatUser.UpdateOperation;
 } | {
     entity: "wechatUser";
     entityId: ForeignKey<"WechatUser">;
+    wechatUser?: never;
 } | {
     entity?: string;
     entityId?: string;
@@ -236,37 +243,37 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "applicationId" | "userId" | "playerId">> & (({
-    application: Application.CreateSingleOperation;
+    application?: Application.CreateSingleOperation;
     applicationId?: never;
 } | {
-    application: Application.UpdateOperation;
+    application?: Application.UpdateOperation;
     applicationId?: never;
 } | {
-    application: Application.RemoveOperation;
+    application?: Application.RemoveOperation;
     applicationId?: never;
 } | {
     application?: never;
     applicationId?: ForeignKey<"application"> | null;
 }) & ({
-    user: User.CreateSingleOperation;
+    user?: User.CreateSingleOperation;
     userId?: never;
 } | {
-    user: User.UpdateOperation;
+    user?: User.UpdateOperation;
     userId?: never;
 } | {
-    user: User.RemoveOperation;
+    user?: User.RemoveOperation;
     userId?: never;
 } | {
     user?: never;
     userId?: ForeignKey<"user"> | null;
 }) & ({
-    player: User.CreateSingleOperation;
+    player?: User.CreateSingleOperation;
     playerId?: never;
 } | {
-    player: User.UpdateOperation;
+    player?: User.UpdateOperation;
     playerId?: never;
 } | {
-    player: User.RemoveOperation;
+    player?: User.RemoveOperation;
     playerId?: never;
 } | {
     player?: never;
@@ -290,6 +297,10 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity?: ("email" | "mobile" | "parasite" | "wechatUser" | string) | null;
     entityId?: ForeignKey<"Email" | "Mobile" | "Parasite" | "WechatUser"> | null;
+    email?: never;
+    mobile?: never;
+    parasite?: never;
+    wechatUser?: never;
 }) & {
     [k: string]: any;
 };

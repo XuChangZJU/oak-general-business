@@ -60,7 +60,8 @@ export default OakComponent({
         const birthText = birthDate && birthDate.toLocaleDateString();
         const birthDayValue =
             birthDate &&
-            `${birthDate.getFullYear()}-${birthDate.getMonth() + 1
+            `${birthDate.getFullYear()}-${
+                birthDate.getMonth() + 1
             }-${birthDate.getDate()}`;
         const genderOption =
             gender && GenderOptions.find((ele) => ele.value === gender);
@@ -84,8 +85,9 @@ export default OakComponent({
             idCardTypeText,
             idCardTypeOptionIndex,
             oldestBirthday: `${now.getFullYear() - 120}-01-01`,
-            today: `${now.getFullYear()}-${now.getMonth() + 1
-                }-${now.getDate()}`,
+            today: `${now.getFullYear()}-${
+                now.getMonth() + 1
+            }-${now.getDate()}`,
             genderOptionIndex,
             idCardTypeIndex,
         });
@@ -99,9 +101,21 @@ export default OakComponent({
     lifetimes: {
         ready() {
             const today = new Date();
-            const birthEnd = `${today.getFullYear()}-${today.getMonth() + 1
-                }-${today.getDate()}`;
+            const birthEnd = `${today.getFullYear()}-${
+                today.getMonth() + 1
+            }-${today.getDate()}`;
             this.setState({ birthEnd });
+        },
+        attached() {
+            const that = this;
+            this.setState({
+                afterCommit: () => {
+                    return that.afterCommitMp();
+                },
+                beforeCommit: () => {
+                    return that.beforeCommitMp();
+                },
+            });
         },
     },
     methods: {
@@ -114,18 +128,34 @@ export default OakComponent({
             const { value } = detail;
             this.update({ [attr]: value });
         },
-        async confirm() {
+        beforeCommitMp() {
+            if (!this.checkData()) {
+                return false;
+            }
+            return true
+        },
+        afterCommitMp() {
+            this.navigateBack();
+        },
+        checkData() {
             const { nickname } = this.state;
             if (!nickname) {
                 this.setMessage({
                     type: 'warning',
-                    content: '请输入昵称'
-                })
-                return
+                    content: '请输入昵称',
+                });
+                return false;
+            }
+            return true;
+        },
+        async confirm() {
+            if (!this.checkData()) {
+                return;
             }
             await this.execute();
             this.navigateBack();
         },
+
         onBirthChange(e: WechatMiniprogram.Input) {
             const {
                 detail: { value },

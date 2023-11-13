@@ -2,7 +2,7 @@ import { WechatSDK, } from 'oak-external-sdk';
 import { handleException } from "../utils/wechatPublicException";
 import { OakPreConditionUnsetException } from 'oak-domain/lib/types';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import assert from "assert";
+import { assert } from 'oak-domain/lib/utils/assert';
 async function getWechatPublicConfig(applicationId, context) {
     const [application] = await context.select('application', {
         data: {
@@ -71,7 +71,8 @@ async function getWechatPublicTagId(params, context) {
     }, {
         dontCollect: true
     });
-    return tag.id || null;
+    assert(tag.id);
+    return tag.id;
 }
 async function getUserWechatPublicTagsByOpenId(applicationId, openId, context) {
     const userWechatPublicTags = await context.select('userWechatPublicTag', {

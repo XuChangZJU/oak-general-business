@@ -9,6 +9,7 @@ export default function render(props: WebComponentProps<EntityDict, any, true, {
     type?: ButtonProps['type'];
     executeText?: string;
     action?: string;
+    failureIds?: string[];
     buttonProps?: ButtonProps;
 }, {
     onSubmit: () => Promise<void>;

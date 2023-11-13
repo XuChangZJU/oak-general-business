@@ -1,4 +1,4 @@
-import assert from 'assert';
+import { assert } from 'oak-domain/lib/utils/assert';
 import { getCos } from '../utils/cos';
 import { generateNewIdAsync } from 'oak-domain';
 import { groupBy } from 'oak-domain/lib/utils/lodash';

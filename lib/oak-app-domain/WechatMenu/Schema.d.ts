@@ -130,6 +130,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "applicationId" 
     applicationId: ForeignKey<"application">;
     application?: Application.UpdateOperation;
 } | {
+    application?: never;
     applicationId: ForeignKey<"application">;
 }) & ({
     wechatPublicTagId?: never;
@@ -138,6 +139,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "applicationId" 
     wechatPublicTagId: ForeignKey<"wechatPublicTag">;
     wechatPublicTag?: WechatPublicTag.UpdateOperation;
 } | {
+    wechatPublicTag?: never;
     wechatPublicTagId?: ForeignKey<"wechatPublicTag">;
 })) & {
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
@@ -147,25 +149,25 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "applicationId" | "wechatPublicTagId">> & (({
-    application: Application.CreateSingleOperation;
+    application?: Application.CreateSingleOperation;
     applicationId?: never;
 } | {
-    application: Application.UpdateOperation;
+    application?: Application.UpdateOperation;
     applicationId?: never;
 } | {
-    application: Application.RemoveOperation;
+    application?: Application.RemoveOperation;
     applicationId?: never;
 } | {
     application?: never;
-    applicationId?: ForeignKey<"application"> | null;
+    applicationId?: ForeignKey<"application">;
 }) & ({
-    wechatPublicTag: WechatPublicTag.CreateSingleOperation;
+    wechatPublicTag?: WechatPublicTag.CreateSingleOperation;
     wechatPublicTagId?: never;
 } | {
-    wechatPublicTag: WechatPublicTag.UpdateOperation;
+    wechatPublicTag?: WechatPublicTag.UpdateOperation;
     wechatPublicTagId?: never;
 } | {
-    wechatPublicTag: WechatPublicTag.RemoveOperation;
+    wechatPublicTag?: WechatPublicTag.RemoveOperation;
     wechatPublicTagId?: never;
 } | {
     wechatPublicTag?: never;

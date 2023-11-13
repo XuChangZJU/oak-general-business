@@ -1,111 +1,145 @@
-import { Checkbox, Button, Col, Tabs, Row, Space } from 'antd';
-import type { CheckboxChangeEvent } from 'antd/es/checkbox';
+import React, { useState } from 'react';
+import { Button, Space, Tree, Row, Col, Tabs, Select } from 'antd';
 
 import Style from './web.module.less';
+
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
+import { DataNode } from 'antd/es/tree'
+import UpsertSubway from '../upsertSubway';
+import UpsertStation from '../upsertStation';
 
 
-export default function render(
+export default function Render(
     props: WebComponentProps<
         EntityDict,
-        'area',
+        'subway',
         true,
         {
-            subways: EntityDict['subway']['Schema'][];
-            areas: EntityDict['area']['Schema'][];
-            stations: { label: string; value: string }[];
+            treeData: DataNode[];
             areaId: string;
-            stationIds: string[];
-            selectIds: string[];
+            areaOptions: { label: string; value: string }[];
+
         },
         {
-            getStations: (subwayId: string) => void;
-            getSubways: (areaId: string) => void;
-            setCheckedList: (station: string, flag: boolean) => void;
-            cancel: () => void;
-            confirm: () => void;
+            setAreaId: (areaId: string) => void;
+            setFilterByAreaId: (areaId: string) => void;
         }
     >
 ) {
     const { data, methods } = props;
-    const { t, getStations, getSubways, setCheckedList, cancel, confirm } =
-        methods;
-    const { subways, stations, areaId, areas, stationIds, selectIds } = data;
-  
+    const { oakFullpath, treeData, areaOptions, areaId } = data;
+    const { t, setAreaId, setFilterByAreaId } = methods;
+    const [openSubway, setSubway] = useState(false);
+    const [openStation, setStation] = useState(false);
+    const [subwayId, setSubwayId] = useState('');
+    const [stationId, setStationId] = useState('');
+
     return (
-        <div className={Style.container}>
-            <Tabs
-                style={{ minHeight: '40vh' }}
-                tabPosition={'left'}
-                type="card"
-                defaultActiveKey={areaId}
-                onChange={(value) => {
-                    getSubways(value);
-                }}
-                items={areas?.map((ele) => ({
-                    key: ele.id,
-                    label: ele.name,
-                    children: (
-                        <Tabs
-                            tabPosition={'top'}
-                            onChange={(value) => {
-                                getStations(value);
-                            }}
-                            items={subways?.map((ele) => ({
-                                key: ele.id,
-                                label: ele.name,
-                                children: (
-                                    <Space size={[0, 16]} wrap>
-                                        {stations?.map((ele: any) => {
-                                            return (
-                                                <Checkbox
-                                                    disabled={selectIds?.includes(
-                                                        ele.value
-                                                    )}
-                                                    onChange={(
-                                                        e: CheckboxChangeEvent
-                                                    ) => {
-                                                        setCheckedList(
-                                                            e.target.value,
-                                                            e.target.checked
-                                                        );
-                                                    }}
-                                                    checked={stationIds
-                                                        .concat(selectIds || [])
-                                                        .includes(ele.value)}
-                                                    value={ele.value}
-                                                >
-                                                    {ele.label}
-                                                </Checkbox>
-                                            );
-                                        })}
-                                    </Space>
-                                ),
-                            }))}
-                        ></Tabs>
-                    ),
-                }))}
-            ></Tabs>
-            <div style={{ textAlign: 'center', marginTop: 16 }}>
-                <Space>
-                    <Button
-                        onClick={() => {
-                            cancel();
-                        }}
-                    >
-                        取消
-                    </Button>
-                    <Button
-                        type="primary"
-                        onClick={async () => {
-                            confirm();
-                        }}
-                    >
-                        确定
-                    </Button>
-                </Space>
+        <>
+            <div>
+                点击切换城市：
+                <Select
+                    placeholder={'切换城市'}
+                    value={areaId}
+                    onChange={(value) => {
+                        setAreaId(value);
+                        setFilterByAreaId(value);
+                    }}
+                    style={{ width: '20%' }}
+                    options={areaOptions}
+                    allowClear
+                ></Select>
             </div>
-        </div>
+            <Tree
+                className={Style.tree}
+                blockNode={true}
+                treeData={treeData}
+                titleRender={(nodeData) => {
+                    return (
+                        <Row align="middle" style={{ flex: 1 }}>
+                            <Col flex="auto">{(nodeData as any).title}</Col>
+
+                            <Col flex="none">
+                                <Space>
+                                    {!nodeData.isLeaf ? (
+                                        <Button
+                                            onClick={() => {
+                                                setSubwayId(
+                                                    (nodeData as any).key
+                                                );
+                                                setSubway(true);
+                                            }}
+                                        >
+                                            编辑
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            onClick={() => {
+                                                const index =
+                                                    (
+                                                        nodeData as any
+                                                    ).key.indexOf('/') + 1;
+                                                const temp = (
+                                                    nodeData as any
+                                                ).key.substr(index);
+                                                setStationId(temp);
+                                                setStation(true);
+                                            }}
+                                        >
+                                            编辑
+                                        </Button>
+                                    )}
+
+                                    {/* {!nodeData.isLeaf && (
+                                            <Button
+                                                onClick={() =>
+                                                    {
+                                                        setSubwayId((nodeData as any).key)
+                                                        setStation(true)
+                                                    }
+                                                }
+                                            >
+                                                添加站点
+                                            </Button>
+                                            // <Button
+                                            //     type="primary"
+                                            //     onClick={() =>
+                                            //         goServiceUpsert(
+                                            //             nodeData!
+                                            //                 .key as string
+                                            //         )
+                                            //     }
+                                            // >
+                                            //     添加站点
+                                            // </Button>
+                                        )} */}
+                                </Space>
+                            </Col>
+                        </Row>
+                    );
+                }}
+            />
+            {openSubway && (
+                <UpsertSubway
+                    onClose={() => setSubway(false)}
+                    openSubway={openSubway}
+                    oakId={subwayId}
+                    oakPath={`${oakFullpath}.${subwayId}`}
+                    oakAutoUnmount={true}
+                />
+            )}
+
+            {openStation && (
+                <UpsertStation
+                    onClose={() => setStation(false)}
+                    openStation={openStation}
+                    oakId={stationId}
+                    subwayId={subwayId}
+                    oakPath={`$subwayLine/upsertStation,${stationId}`}
+                    oakAutoUnmount={true}
+                />
+            )}
+        </>
     );
 }

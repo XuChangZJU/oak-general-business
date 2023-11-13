@@ -3,24 +3,12 @@ import { Button, Modal } from 'antd';
 const { confirm } = Modal;
 export default function Render(props) {
     const { data, methods } = props;
-    const { oakFullpath, qrCodeUrl, loading } = data;
+    const { oakFullpath } = data;
     const { t } = methods;
     return (_jsx(Button, { size: "small", onClick: () => {
-            // 解绑不做手机号验证
-            // if (mobile) {
-            //     setOpen3(true)
-            // }
-            // else {
-            //     confirm({
-            //         title: t('unbindingWechat'),
-            //         onOk() {
-            //             unbunding();
-            //         },
-            //     });
-            // }
             confirm({
-                title: '解绑微信账号',
-                content: '解绑后，您将无法使用该微信扫码登录',
+                title: t('unbindTip'),
+                content: t('unbindContent'),
                 okText: t('common::action.confirm'),
                 cancelText: t('common::action.cancel'),
                 onOk() {
@@ -29,10 +17,10 @@ export default function Render(props) {
                     });
                     methods.execute();
                     methods.setMessage({
-                        content: '解绑成功',
+                        content: t('unbindSuccess'),
                         type: 'success',
                     });
                 },
             });
-        }, children: "\u89E3\u7ED1" }));
+        }, children: t('unbind') }));
 }

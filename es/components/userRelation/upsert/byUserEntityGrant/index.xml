@@ -61,7 +61,7 @@
             </view>
         </view>
         <view style="flex: 1" />
-        <l-button size="long" type="default" bind:lintap="confirm">
+        <l-button size="long" type="default" bind:lintap="confirm" loading="{{oakExecuting}}">
             {{t('common::action.confirm')}}
         </l-button>
     </block>

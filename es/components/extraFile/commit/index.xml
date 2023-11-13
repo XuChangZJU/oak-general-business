@@ -1,4 +1,4 @@
 <!-- index.wxml -->
-<l-button size="long" disabled="{{disabled}}" bind:lintap="onSubmit">
-    {{ executeText || t('common:submit') }}
+<l-button size="long" disabled="{{oakExecuting}}" loading="{{oakExecuting}}" bind:lintap="onSubmit">
+    {{ executeText || t('common::submit')}}
 </l-button>

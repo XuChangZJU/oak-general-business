@@ -7,7 +7,6 @@ import { String, Text, Datetime, Boolean } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 import { QrCodeType } from "../../types/Config";
 import * as Application from "../Application/Schema";
-import * as Bridge from "../Bridge/Schema";
 import * as User from "../User/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
 import * as WechatLogin from "../WechatLogin/Schema";
@@ -20,7 +19,7 @@ export type WechatQrCodeProps = {
     isTabBar?: boolean;
 };
 export type OpSchema = EntityShape & {
-    entity: "bridge" | "user" | "userEntityGrant" | "wechatLogin" | string;
+    entity: "user" | "userEntityGrant" | "wechatLogin" | string;
     entityId: String<64>;
     type: QrCodeType;
     allowShare: Boolean;
@@ -37,7 +36,7 @@ export type OpSchema = EntityShape & {
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
-    entity: "bridge" | "user" | "userEntityGrant" | "wechatLogin" | string;
+    entity: "user" | "userEntityGrant" | "wechatLogin" | string;
     entityId: String<64>;
     type: QrCodeType;
     allowShare: Boolean;
@@ -52,7 +51,6 @@ export type Schema = EntityShape & {
     applicationId: ForeignKey<"application">;
     props: WechatQrCodeProps;
     application: Application.Schema;
-    bridge?: Bridge.Schema;
     user?: User.Schema;
     userEntityGrant?: UserEntityGrant.Schema;
     wechatLogin?: WechatLogin.Schema;
@@ -68,7 +66,7 @@ type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    entity: Q_EnumValue<"bridge" | "user" | "userEntityGrant" | "wechatLogin" | string>;
+    entity: Q_EnumValue<"user" | "userEntityGrant" | "wechatLogin" | string>;
     entityId: Q_StringValue;
     type: Q_EnumValue<QrCodeType>;
     allowShare: Q_BooleanValue;
@@ -83,7 +81,6 @@ type AttrFilter = {
     applicationId: Q_StringValue;
     application: Application.Filter;
     props: JsonFilter<WechatQrCodeProps>;
-    bridge: Bridge.Filter;
     user: User.Filter;
     userEntityGrant: UserEntityGrant.Filter;
     wechatLogin: WechatLogin.Filter;
@@ -113,7 +110,6 @@ export type Projection = {
     applicationId?: number;
     application?: Application.Projection;
     props?: number | JsonProjection<WechatQrCodeProps>;
-    bridge?: Bridge.Projection;
     user?: User.Projection;
     userEntityGrant?: UserEntityGrant.Projection;
     wechatLogin?: WechatLogin.Projection;
@@ -135,9 +131,6 @@ type WechatQrCodeIdProjection = OneOf<{
 }>;
 type ApplicationIdProjection = OneOf<{
     applicationId: number;
-}>;
-type BridgeIdProjection = OneOf<{
-    entityId: number;
 }>;
 type UserIdProjection = OneOf<{
     entityId: number;
@@ -187,8 +180,6 @@ export type SortAttr = {
 } | {
     props: number;
 } | {
-    bridge: Bridge.SortAttr;
-} | {
     user: User.SortAttr;
 } | {
     userEntityGrant: UserEntityGrant.SortAttr;
@@ -212,29 +203,20 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     applicationId: ForeignKey<"application">;
     application?: Application.UpdateOperation;
 } | {
+    application?: never;
     applicationId: ForeignKey<"application">;
 })) & ({
-    entity?: never;
-    entityId?: never;
-    bridge: Bridge.CreateSingleOperation;
-} | {
-    entity: "bridge";
-    entityId: ForeignKey<"Bridge">;
-    bridge: Bridge.UpdateOperation;
-} | {
-    entity: "bridge";
-    entityId: ForeignKey<"Bridge">;
-} | {
     entity?: never;
     entityId?: never;
     user: User.CreateSingleOperation;
 } | {
     entity: "user";
     entityId: ForeignKey<"User">;
-    user: User.UpdateOperation;
+    user?: User.UpdateOperation;
 } | {
     entity: "user";
     entityId: ForeignKey<"User">;
+    user?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -242,10 +224,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "userEntityGrant";
     entityId: ForeignKey<"UserEntityGrant">;
-    userEntityGrant: UserEntityGrant.UpdateOperation;
+    userEntityGrant?: UserEntityGrant.UpdateOperation;
 } | {
     entity: "userEntityGrant";
     entityId: ForeignKey<"UserEntityGrant">;
+    userEntityGrant?: never;
 } | {
     entity?: never;
     entityId?: never;
@@ -253,10 +236,11 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
 } | {
     entity: "wechatLogin";
     entityId: ForeignKey<"WechatLogin">;
-    wechatLogin: WechatLogin.UpdateOperation;
+    wechatLogin?: WechatLogin.UpdateOperation;
 } | {
     entity: "wechatLogin";
     entityId: ForeignKey<"WechatLogin">;
+    wechatLogin?: never;
 } | {
     entity?: string;
     entityId?: string;
@@ -269,22 +253,18 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "entityId" | "applicationId">> & (({
-    application: Application.CreateSingleOperation;
+    application?: Application.CreateSingleOperation;
     applicationId?: never;
 } | {
-    application: Application.UpdateOperation;
+    application?: Application.UpdateOperation;
     applicationId?: never;
 } | {
-    application: Application.RemoveOperation;
+    application?: Application.RemoveOperation;
     applicationId?: never;
 } | {
     application?: never;
-    applicationId?: ForeignKey<"application"> | null;
+    applicationId?: ForeignKey<"application">;
 })) & ({
-    bridge?: Bridge.CreateSingleOperation | Bridge.UpdateOperation | Bridge.RemoveOperation;
-    entityId?: never;
-    entity?: never;
-} | {
     user?: User.CreateSingleOperation | User.UpdateOperation | User.RemoveOperation;
     entityId?: never;
     entity?: never;
@@ -297,8 +277,11 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("bridge" | "user" | "userEntityGrant" | "wechatLogin" | string) | null;
-    entityId?: ForeignKey<"Bridge" | "User" | "UserEntityGrant" | "WechatLogin"> | null;
+    entity?: ("user" | "userEntityGrant" | "wechatLogin" | string) | null;
+    entityId?: ForeignKey<"User" | "UserEntityGrant" | "WechatLogin"> | null;
+    user?: never;
+    userEntityGrant?: never;
+    wechatLogin?: never;
 }) & {
     [k: string]: any;
     modiEntity$entity?: OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<ModiEntity.CreateOperationData, "entity" | "entityId">>>;
@@ -308,8 +291,6 @@ export type UpdateOperation = OakOperation<"update" | string, UpdateOperationDat
 export type RemoveOperationData = {} & (({
     application?: Application.UpdateOperation | Application.RemoveOperation;
 })) & ({
-    bridge?: Bridge.UpdateOperation | Bridge.RemoveOperation;
-} | {
     user?: User.UpdateOperation | User.RemoveOperation;
 } | {
     userEntityGrant?: UserEntityGrant.UpdateOperation | UserEntityGrant.RemoveOperation;
@@ -321,7 +302,6 @@ export type RemoveOperationData = {} & (({
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
-export type BridgeIdSubQuery = Selection<BridgeIdProjection>;
 export type UserIdSubQuery = Selection<UserIdProjection>;
 export type UserEntityGrantIdSubQuery = Selection<UserEntityGrantIdProjection>;
 export type WechatLoginIdSubQuery = Selection<WechatLoginIdProjection>;

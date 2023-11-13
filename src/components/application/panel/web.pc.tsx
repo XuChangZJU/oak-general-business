@@ -11,7 +11,7 @@ import Styles from './web.pc.module.less';
 import WechatMenu from '../../wechatMenu';
 import UserWechatPublicTag from '../../userWechatPublicTag';
 import WechatPublicTag from '../..//wechatPublicTag/list';
-import WechatPublicAutoReply from '../..//wechatPublicAutoReply';
+import WechatPublicAutoReply from '../../wechatPublicAutoReply';
 
 export default function Render(props: WebComponentProps<EntityDict, 'application', false, {
     id: string;

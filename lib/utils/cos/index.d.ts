@@ -1,7 +1,7 @@
 import { BackendRuntimeContext } from '../../context/BackendRuntimeContext';
 import { FrontendRuntimeContext, AspectDict } from '../../context/FrontendRuntimeContext';
 import { ED } from '../../types/RuntimeCxt';
-import Cos from "../../types/Cos";
+import Cos from '../../types/Cos';
 /**
  * 注入一个其它OSS上实现的uploader类
  * @param clazz

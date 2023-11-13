@@ -29,6 +29,15 @@ export default OakComponent({
 
         return proj;
     },
+    filters: [
+        {
+            filter() {
+                const { entityFilter } = this.props;
+                assert(entityFilter);
+                return entityFilter;
+            },
+        }
+    ],
     properties: {
         disabled: false as boolean | undefined,
         entity: '' as keyof EntityDict,

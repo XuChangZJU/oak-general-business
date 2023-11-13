@@ -34,18 +34,18 @@ export const desc = {
             name: 'index_source_dest_path',
             attributes: [
                 {
-                    name: 'sourceEntity',
+                    name: 'sourceEntity'
                 },
                 {
-                    name: 'value',
+                    name: 'value'
                 },
                 {
-                    name: 'destEntity',
+                    name: 'destEntity'
                 },
             ],
             config: {
-                unique: true,
-            },
+                unique: true
+            }
         }
     ]
 };

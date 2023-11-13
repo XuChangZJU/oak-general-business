@@ -1,4 +1,4 @@
-import assert from "assert";
+import { assert } from 'oak-domain/lib/utils/assert';
 
 export default OakComponent({
     isList: false,
@@ -12,6 +12,5 @@ export default OakComponent({
         addTag: () => undefined as void,
         changeText: (text: string) => undefined as void,
     },
-    methods: {
-    }
-})
+    methods: {},
+});

@@ -77,23 +77,24 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "templateId">> &
     templateId: ForeignKey<"template">;
     template?: SmsTemplate.UpdateOperation;
 } | {
+    template?: never;
     templateId: ForeignKey<"template">;
 }));
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "templateId">> & (({
-    template: SmsTemplate.CreateSingleOperation;
+    template?: SmsTemplate.CreateSingleOperation;
     templateId?: never;
 } | {
-    template: SmsTemplate.UpdateOperation;
+    template?: SmsTemplate.UpdateOperation;
     templateId?: never;
 } | {
-    template: SmsTemplate.RemoveOperation;
+    template?: SmsTemplate.RemoveOperation;
     templateId?: never;
 } | {
     template?: never;
-    templateId?: ForeignKey<"template"> | null;
+    templateId?: ForeignKey<"template">;
 })) & {
     [k: string]: any;
 };

@@ -26,7 +26,12 @@ const InitialChannalByWeightMatrix: Record<Weight, Channel[]> = {
     low: ['wechatMp', 'wechatPublic'],
 };
 
-export async function tryMakeSmsNotification(message: EntityDict['message']['Schema'], context: BackendRuntimeContext<EntityDict>) {
+export async function tryMakeSmsNotification(message: {
+    userId: string;
+    type?: string;
+    entity?: string;
+    entityId?: string;
+}, context: BackendRuntimeContext<EntityDict>) {
     const { userId, type, entity, entityId } = message;
     const [mobile] = await context.select('mobile', {
         data: {
@@ -208,19 +213,39 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                                     const apps = applications!.filter(
                                         ele => ele.type === 'wechatPublic',
                                     );
-                                    const wechatUsers = await context.select('wechatUser', {
-                                        data: {
-                                            id: 1,
-                                            applicationId: 1,
-                                            openId: 1,
-                                        },
-                                        filter: {
-                                            applicationId: {
-                                                $in: apps.map(ele => ele.id!),
+                                    const [user] = await context.select(
+                                        'user',
+                                        {
+                                            data: {
+                                                id: 1,
+                                                refId: 1,
                                             },
-                                            userId,
-                                        }
-                                    }, { dontCollect: true });
+                                            filter: {
+                                                id: userId
+                                            }
+                                        },
+                                        { dontCollect: true }
+                                    );
+                                    const userId2 = user.refId ? user.refId : userId;
+                                    const wechatUsers = await context.select(
+                                        'wechatUser',
+                                        {
+                                            data: {
+                                                id: 1,
+                                                applicationId: 1,
+                                                openId: 1,
+                                            },
+                                            filter: {
+                                                applicationId: {
+                                                    $in: apps.map(
+                                                        (ele) => ele.id!
+                                                    ),
+                                                },
+                                                userId: userId2,
+                                            },
+                                        },
+                                        { dontCollect: true }
+                                    );
                                     for (const app of apps) {
                                         // 如果是wechatMp或者wechat，还要保证用户已经有openId
                                         const wechatUser = wechatUsers.find(
@@ -259,7 +284,7 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                     )
                 );
                 if (channels2.includes('sms')) {
-                    const smsNotification = await tryMakeSmsNotification(message as EntityDict['message']['Schema'], context);
+                    const smsNotification = await tryMakeSmsNotification(message, context);
                     if (smsNotification) {
                         notificationDatas.push(smsNotification);
                     }

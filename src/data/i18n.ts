@@ -3,104 +3,6 @@
 import { CreateOperationData as I18n } from "../oak-app-domain/I18n/Schema";
 const i18ns: I18n[] = [
     {
-        id: "a85ac2eff2d138152ef083e37c2b366c",
-        namespace: "oak-general-business-p-paper-detail",
-        language: "zh-CN",
-        module: "oak-general-business",
-        position: "src/pages/paper/detail",
-        data: {
-            "detail": "详情"
-        }
-    },
-    {
-        id: "e3c5e1767a1ad30ddf15adeb43a5fbab",
-        namespace: "oak-general-business-p-paper-list",
-        language: "zh-CN",
-        module: "oak-general-business",
-        position: "src/pages/paper/list",
-        data: {
-            "action": {
-                "add": "添加"
-            }
-        }
-    },
-    {
-        id: "99445bede532d740b807f2eda058daac",
-        namespace: "oak-general-business-p-paper-preview",
-        language: "zh-CN",
-        module: "oak-general-business",
-        position: "src/pages/paper/preview",
-        data: {
-            "detail": "预览"
-        }
-    },
-    {
-        id: "65186dcd507e2a8b0bfe0f6f8e9e98e4",
-        namespace: "oak-general-business-p-paper-upsert",
-        language: "zh-CN",
-        module: "oak-general-business",
-        position: "src/pages/paper/upsert",
-        data: {
-            "submit": "提交",
-            "reset": "重置",
-            "placeholder": {
-                "author": "请输入作者",
-                "title": "请在这里输入标题",
-                "content": "从这里开始正文",
-                "abstract": "选填，摘要会在订阅号消息、转发链接等文章外的场景显露，帮助读者快速了解内容，如不填写则默认抓取正文前54字"
-            },
-            "tips": {
-                "content": "请先输入一段正文（或者标题），再点击保存按钮。"
-            }
-        }
-    },
-    {
-        id: "b40594f173c7c593719746c2f63ca126",
-        namespace: "oak-general-business-p-user-info",
-        language: "zh-CN",
-        module: "oak-general-business",
-        position: "src/pages/user/info",
-        data: {
-            "avatar": "头像",
-            "mobile": "手机号",
-            "password": "密码",
-            "manage": "管理",
-            "bind": "绑定",
-            "syncWeChat": "同步微信信息",
-            "send": "发送验证码",
-            "cancel": "取消",
-            "unbind": "解绑",
-            "Mobile-Number-Verification": "手机号验证",
-            "unbindingWechat": "确定解绑微信账号",
-            "placeholder": {
-                "Captcha": "输入4位短信验证码"
-            }
-        }
-    },
-    {
-        id: "75a707a016ee5fc0574e16507270753d",
-        namespace: "oak-general-business-p-user-manage-detail",
-        language: "zh-CN",
-        module: "oak-general-business",
-        position: "src/pages/user/manage/detail",
-        data: {
-            "mobile": "手机号",
-            "unset": "未设置",
-            "avatar": "头像"
-        }
-    },
-    {
-        id: "ce120594bf9738e2092b3c7bf4da71e9",
-        namespace: "oak-general-business-p-wechatUser-login",
-        language: "zh-CN",
-        module: "oak-general-business",
-        position: "src/pages/wechatUser/login",
-        data: {
-            "missingCodeParameter": "缺少code参数",
-            "weChatLoginFailed": "微信登录失败"
-        }
-    },
-    {
         id: "2ebe552614a81e57fa1a1c21b5dc84f8",
         namespace: "oak-general-business-c-application-panel",
         language: "zh-CN",
@@ -170,18 +72,6 @@ const i18ns: I18n[] = [
         language: "zh-CN",
         module: "oak-general-business",
         position: "src/components/extraFile/gallery",
-        data: {
-            "waiting": "等待上传",
-            "success": "上传成功",
-            "uploading": "上传中"
-        }
-    },
-    {
-        id: "d30e4a47c1d768d74efae1fade371595",
-        namespace: "oak-general-business-c-extraFile-gallery2",
-        language: "zh-CN",
-        module: "oak-general-business",
-        position: "src/components/extraFile/gallery2",
         data: {}
     },
     {
@@ -223,6 +113,58 @@ const i18ns: I18n[] = [
             "logout": "退出",
             "mobile": "手机号码",
             "moreThanOne": "多于一条手机号"
+        }
+    },
+    {
+        id: "d558d71567b4e379250a5f2cd43e4a27",
+        namespace: "oak-general-business-c-paper-detail",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/paper/detail",
+        data: {
+            "detail": "详情"
+        }
+    },
+    {
+        id: "992af92da3504b0ec27f55a4ac4e2432",
+        namespace: "oak-general-business-c-paper-list",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/paper/list",
+        data: {
+            "action": {
+                "add": "添加"
+            }
+        }
+    },
+    {
+        id: "6cedaa26d9738d509c3c99ad06064282",
+        namespace: "oak-general-business-c-paper-preview",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/paper/preview",
+        data: {
+            "detail": "预览"
+        }
+    },
+    {
+        id: "f2a1934629b4b8f7219007245cfdd332",
+        namespace: "oak-general-business-c-paper-upsert",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/paper/upsert",
+        data: {
+            "submit": "提交",
+            "reset": "重置",
+            "placeholder": {
+                "author": "请输入作者",
+                "title": "请在这里输入标题",
+                "content": "从这里开始正文",
+                "abstract": "选填，摘要会在订阅号消息、转发链接等文章外的场景显露，帮助读者快速了解内容，如不填写则默认抓取正文前54字"
+            },
+            "tips": {
+                "content": "请先输入一段正文（或者标题），再点击保存按钮。"
+            }
         }
     },
     {
@@ -445,6 +387,17 @@ const i18ns: I18n[] = [
         }
     },
     {
+        id: "460e1de83e973119439dc7c8ba77066a",
+        namespace: "oak-general-business-c-wechatUser-login",
+        language: "zh-CN",
+        module: "oak-general-business",
+        position: "src/components/wechatUser/login",
+        data: {
+            "missingCodeParameter": "缺少code参数",
+            "weChatLoginFailed": "微信登录失败"
+        }
+    },
+    {
         id: "ce2ef5c2ef3c6b4bf1682c5610f0da28",
         namespace: "oak-general-business-c-wechatUser-unbindBtn",
         language: "zh-CN",
@@ -452,7 +405,9 @@ const i18ns: I18n[] = [
         position: "src/components/wechatUser/unbindBtn",
         data: {
             "unbind": "解绑",
-            "unbindingWechat": "确定解绑该微信账号"
+            "unbindSuccess": "解绑成功",
+            "unbindTip": "解绑微信账号",
+            "unbindContent": "解绑后，您将无法使用该微信扫码登录"
         }
     },
     {

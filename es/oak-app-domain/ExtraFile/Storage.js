@@ -116,10 +116,10 @@ export const desc = {
             name: 'objectId_deleteAt',
             attributes: [
                 {
-                    name: 'objectId',
+                    name: 'objectId'
                 },
                 {
-                    name: '$$deleteAt$$',
+                    name: '$$deleteAt$$'
                 }
             ]
         }

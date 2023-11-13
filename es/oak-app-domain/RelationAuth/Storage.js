@@ -24,18 +24,18 @@ export const desc = {
             name: 'index_entity_relation_path',
             attributes: [
                 {
-                    name: "sourceRelationId",
+                    name: "sourceRelationId"
                 },
                 {
-                    name: "pathId",
+                    name: "pathId"
                 },
                 {
-                    name: "destRelationId",
+                    name: "destRelationId"
                 },
             ],
             config: {
-                unique: true,
-            },
+                unique: true
+            }
         }
     ]
 };

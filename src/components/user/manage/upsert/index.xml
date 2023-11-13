@@ -4,7 +4,7 @@
         <view class="list-box">
             <l-list title="头像">
                 <view slot="right-section" class="avatar">
-                    <oak-extraFile-avatar oakAutoUnmount="{{true}}" oakPath="{{ oakFullpath ? oakFullpath + '.extraFile$entity' : undefined }}" entity="user"/>
+                    <extraFile-avatar oakAutoUnmount="{{true}}" oakPath="{{ oakFullpath + '.extraFile$entity' }}" entity="user"/>
                 </view>
             </l-list>
         </view>
@@ -31,7 +31,7 @@
             <view class="list-item">
                 <view class="label">手机号</view>
                 <view class="mobile-box">
-                    <mobile-manage-list oakPath="{{oakFullpath ? oakFullpath + '.mobile$user' : undefined }}"/>
+                    <mobile-manage-list oakPath="{{oakFullpath + '.mobile$user' }}"/>
                 </view>
             </view>
         </block>
@@ -45,7 +45,9 @@
     </block>
 </view>
 <view style="flex: 1" />
-<l-button type="default" disabled="{{oakExecuting || !oakDirty}}" loading="{{oakExecuting}}" size="long" bind:lintap="confirm">
+<!-- <l-button type="default" disabled="{{oakExecuting || !oakDirty}}" loading="{{oakExecuting}}" size="long" bind:lintap="confirm">
         {{t('common::action.confirm')}}
-</l-button>
+</l-button> -->
+<extraFile-commit oakPath="{{oakFullpath}}" afterCommit="{{afterCommit}}" beforeCommit="{{beforeCommit}}" />
+
 </view>

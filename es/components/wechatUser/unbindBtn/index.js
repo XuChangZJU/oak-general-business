@@ -10,8 +10,4 @@ export default OakComponent({
             id: data?.id,
         };
     },
-    lifetimes: {},
-    data: {},
-    properties: {},
-    methods: {},
 });

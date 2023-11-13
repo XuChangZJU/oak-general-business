@@ -32,13 +32,44 @@ export class ExtraFile extends Feature {
         ids.forEach((id) => unset(this.files, id));
         this.publish();
     }
-    async upload(id) {
-        const [extraFile] = this.cache.get('extraFile', {
-            data: extraFileProjection,
-            filter: {
-                id,
-            },
-        });
+    async upload(id, entity) {
+        /**
+         * 这个函数假设了前台知道后台会产生modi的行为和数据结构，不是很好的设计
+         */
+        const { toModi } = this.cache.getSchema()[entity];
+        let modiEntityId = '';
+        const getExtraFileData = () => {
+            if (toModi) {
+                const [modi] = this.cache.get('modi', {
+                    data: {
+                        id: 1,
+                        data: 1,
+                        entity: 1,
+                        entityId: 1,
+                    },
+                    filter: {
+                        entity: entity,
+                        targetEntity: 'extraFile',
+                        action: 'create',
+                        filter: {
+                            id,
+                        },
+                    },
+                });
+                modiEntityId = modi.entityId;
+                return modi.data;
+            }
+            else {
+                const [extraFile] = this.cache.get('extraFile', {
+                    data: extraFileProjection,
+                    filter: {
+                        id,
+                    },
+                });
+                return extraFile;
+            }
+        };
+        const extraFile = getExtraFileData();
         assert(extraFile && extraFile.uploadState === 'uploading');
         const item = this.files[id];
         assert(item);
@@ -47,60 +78,58 @@ export class ExtraFile extends Feature {
         item.state = 'uploading';
         item.percentage = 0;
         const up = new Upload();
+        const cos = getCos(extraFile.origin);
         try {
-            const cos = getCos(extraFile.origin);
             await cos.upload(extraFile, up.uploadFile, file, this.uploadToAspect.bind(this));
-            if (!cos.autoInform()) {
-                await this.cache.exec('operate', {
-                    entity: 'extraFile',
-                    operation: {
-                        id: await generateNewIdAsync(),
-                        action: 'update',
-                        data: {
-                            uploadState: 'success',
-                        },
-                    },
-                });
-            }
-            item.state = 'uploaded';
-            item.percentage = undefined;
-            this.publish();
         }
         catch (err) {
             item.state = 'failed';
             item.percentage = undefined;
             this.publish();
+            throw err;
         }
-    }
-    async uploadCommit(efPaths, oakFullpath) {
-        assert(false, '方法已经废弃');
-        assert(efPaths && efPaths.length > 0);
-        let ids = [];
-        if (oakFullpath) {
-            ids = efPaths
-                .map((path) => {
-                const path2 = path ? `${oakFullpath}.${path}` : oakFullpath;
-                const data = this.runningTree.getFreshValue(path2);
-                assert(data, `efPath为${path}的路径上取不到extraFile数据，请设置正确的相对路径`);
-                return data.map((ele) => ele.id);
-            })
-                .flat()
-                .filter((ele) => !!ele);
-        }
-        assert(ids.length > 0);
-        const promises = [];
-        ids.forEach((id) => {
-            const fileState = this.getFileState(id);
-            if (fileState) {
-                const { state } = fileState;
-                if (['local', 'failed'].includes(state)) {
-                    promises.push(this.upload(id));
+        if (!cos.autoInform()) {
+            const informServer = async () => {
+                const operation = {
+                    id: await generateNewIdAsync(),
+                    action: 'update',
+                    data: {
+                        uploadState: 'success',
+                    },
+                    filter: {
+                        id,
+                    },
+                };
+                if (toModi) {
+                    await this.cache.exec('operate', {
+                        entity: 'modi',
+                        operation: {
+                            id: await generateNewIdAsync(),
+                            action: 'create',
+                            data: {
+                                id: await generateNewIdAsync(),
+                                entity: entity,
+                                entityId: modiEntityId,
+                                data: operation.data,
+                                action: 'update',
+                                filter: operation.filter,
+                                targetEntity: 'extraFile',
+                            },
+                        },
+                    });
                 }
-            }
-        });
-        if (promises.length > 0) {
-            await Promise.all(promises);
+                else {
+                    await this.cache.exec('operate', {
+                        entity: 'extraFile',
+                        operation,
+                    });
+                }
+            };
+            await informServer();
         }
+        item.state = 'uploaded';
+        item.percentage = undefined;
+        this.publish();
     }
     getUrl(extraFile, style) {
         if (!extraFile) {
@@ -160,6 +189,7 @@ export class ExtraFile extends Feature {
         try {
             const cos = getCos(newExtraFile.origin);
             await cos.upload(newExtraFile, up.uploadFile, file, this.uploadToAspect.bind(this));
+            this.publish();
             return this.getUrl(newExtraFile);
         }
         catch (err) {
@@ -171,6 +201,7 @@ export class ExtraFile extends Feature {
                 },
                 id: await generateNewIdAsync(),
             });
+            this.publish();
             throw err;
         }
     }

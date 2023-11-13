@@ -113,14 +113,15 @@ export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
     entity?: never;
     entityId?: never;
-    user: User.CreateSingleOperation;
-} | {
-    entity: "user";
-    entityId: ForeignKey<"User">;
-    user: User.UpdateOperation;
+    user?: User.CreateSingleOperation;
 } | {
     entity?: "user";
     entityId?: ForeignKey<"User">;
+    user?: User.UpdateOperation;
+} | {
+    entity?: "user";
+    entityId?: ForeignKey<"User">;
+    user?: never;
 } | {
     entity?: string;
     entityId?: string;
@@ -137,8 +138,9 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "entity" | "enti
     entityId?: never;
     entity?: never;
 } | {
-    entity?: ("user" | string) | null;
-    entityId?: ForeignKey<"User"> | null;
+    entity?: "user" | string;
+    entityId?: ForeignKey<"User">;
+    user?: never;
 }) & {
     [k: string]: any;
     relation$entity?: OakOperation<Relation.UpdateOperation["action"], Omit<Relation.UpdateOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">> | OakOperation<Relation.RemoveOperation["action"], Omit<Relation.RemoveOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Relation.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Relation.CreateOperationData, "entity" | "entityId">> | OakOperation<Relation.UpdateOperation["action"], Omit<Relation.UpdateOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">> | OakOperation<Relation.RemoveOperation["action"], Omit<Relation.RemoveOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">>>;

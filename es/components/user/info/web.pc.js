@@ -1,8 +1,7 @@
 import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState } from 'react';
-import { Space, Button, Input, Radio, DatePicker, Form, Typography, Modal, Descriptions } from 'antd';
+import { Space, Button, Input, Radio, DatePicker, Form, Typography, Modal, Card, } from 'antd';
 import dayjs from 'dayjs';
-import PageHeader from '../../../components/common/pageHeader';
 import OakAvatar from '../../../components/extraFile/avatar';
 import ExtraFileCommit from '../../../components/extraFile/commit';
 import MobileLogin from '../../../components/mobile/login';
@@ -18,53 +17,51 @@ export default function Render(props) {
     const [open2, setOpen2] = useState(false);
     const [open3, setOpen3] = useState(false);
     const [captcha, setCaptcha] = useState('');
-    return (_jsxs(PageHeader, { title: "\u4E2A\u4EBA\u4FE1\u606F", showBack: showBack, children: [_jsxs("div", { className: Style.container, children: [_jsx(Descriptions, { title: '基本信息' }), _jsxs(Form, { labelCol: { xs: { span: 4 }, md: { span: 6 } }, wrapperCol: { xs: { span: 16 }, md: { span: 12 } }, children: [_jsx(Form.Item, { label: t('avatar'), name: "extraFile$entity", children: _jsx(_Fragment, { children: _jsx(OakAvatar, { oakAutoUnmount: true, oakPath: oakFullpath
-                                            ? oakFullpath + '.extraFile$entity'
-                                            : undefined, entity: "user" }) }) }), _jsx(Form.Item, { label: t('user:attr.name'), rules: [
-                                    {
-                                        required: true,
-                                    },
-                                ], children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "", onChange: (e) => methods.update({
-                                            name: e.target.value,
-                                        }), value: name }) }) }), _jsx(Form.Item, { label: t('user:attr.nickname'), rules: [
-                                    {
-                                        required: true,
-                                    },
-                                ], children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "", onChange: (e) => methods.update({
-                                            nickname: e.target.value,
-                                        }), value: nickname }) }) }), _jsx(Form.Item, { label: t('user:attr.gender'), children: _jsx(Space, { direction: "vertical", children: _jsx(Radio.Group, { value: data.gender, options: genderOptions, onChange: ({ target: { value } }) => {
-                                            methods.update({ gender: value });
-                                        } }) }) }), _jsx(Form.Item, { label: t('user:attr.birth'), children: _jsx(_Fragment, { children: _jsx(DatePicker, { placeholder: "\u8BF7\u9009\u62E9", format: "YYYY-MM-DD", inputReadOnly: true, allowClear: false, value: birth ? dayjs(birth) : undefined, disabledDate: (current) => {
-                                            if (dayjs(current).valueOf() >
-                                                dayjs().valueOf()) {
-                                                return true;
-                                            }
-                                            return false;
-                                        }, onChange: (value) => {
-                                            if (value) {
-                                                methods.update({
-                                                    birth: dayjs(value).valueOf(),
-                                                });
-                                            }
-                                        } }) }) }), _jsx(Form.Item, { wrapperCol: {
-                                    xs: { offset: 4 },
-                                    md: { offset: 6 },
-                                }, children: _jsx(Space, { children: _jsx(ExtraFileCommit, { oakPath: oakFullpath }) }) })] })] }), _jsx("div", { style: { marginTop: '10px' } }), _jsxs("div", { className: Style.container, children: [_jsx(Descriptions, { title: '安全信息' }), _jsxs(Form, { labelCol: { xs: { span: 4 }, md: { span: 6 } }, wrapperCol: { xs: { span: 16 }, md: { span: 12 } }, children: [_jsx(Form.Item, { label: t('mobile'), children: _jsxs(Space, { children: [_jsx(Typography, { children: mobile || '未设置' }), _jsx(Button, { size: "small", onClick: () => {
-                                                if (mobile) {
-                                                    goAddMobile();
-                                                    return;
-                                                }
-                                                setOpen(true);
-                                            }, children: mobile ? t('manage') : t('bind') })] }) }), _jsx(Form.Item, { label: t('user:attr.password'), children: _jsxs(Space, { children: [_jsx(Typography, { children: '********' }), _jsx(Button, { size: "small", onClick: () => {
-                                                goChangePassword();
+    return (_jsxs(_Fragment, { children: [_jsx(Card, { title: '基本信息', children: _jsxs(Form, { labelCol: { xs: { span: 4 }, md: { span: 6 } }, wrapperCol: { xs: { span: 16 }, md: { span: 12 } }, children: [_jsx(Form.Item, { label: t('avatar'), name: "extraFile$entity", children: _jsx(_Fragment, { children: _jsx(OakAvatar, { oakAutoUnmount: true, oakPath: oakFullpath + '.extraFile$entity', entity: "user" }) }) }), _jsx(Form.Item, { label: t('user:attr.name'), rules: [
+                                {
+                                    required: true,
+                                },
+                            ], children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "", onChange: (e) => methods.update({
+                                        name: e.target.value,
+                                    }), value: name }) }) }), _jsx(Form.Item, { label: t('user:attr.nickname'), rules: [
+                                {
+                                    required: true,
+                                },
+                            ], children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "", onChange: (e) => methods.update({
+                                        nickname: e.target.value,
+                                    }), value: nickname }) }) }), _jsx(Form.Item, { label: t('user:attr.gender'), children: _jsx(Space, { direction: "vertical", children: _jsx(Radio.Group, { value: data.gender, options: genderOptions, onChange: ({ target: { value } }) => {
+                                        methods.update({ gender: value });
+                                    } }) }) }), _jsx(Form.Item, { label: t('user:attr.birth'), children: _jsx(_Fragment, { children: _jsx(DatePicker, { placeholder: "\u8BF7\u9009\u62E9", format: "YYYY-MM-DD", inputReadOnly: true, allowClear: false, value: birth ? dayjs(birth) : undefined, disabledDate: (current) => {
+                                        if (dayjs(current).valueOf() >
+                                            dayjs().valueOf()) {
+                                            return true;
+                                        }
+                                        return false;
+                                    }, onChange: (value) => {
+                                        if (value) {
+                                            methods.update({
+                                                birth: dayjs(value).valueOf(),
+                                            });
+                                        }
+                                    } }) }) }), _jsx(Form.Item, { wrapperCol: {
+                                xs: { offset: 4 },
+                                md: { offset: 6 },
+                            }, children: _jsx(Space, { children: _jsx(ExtraFileCommit, { oakPath: oakFullpath }) }) })] }) }), _jsx("div", { style: { marginTop: 10 } }), _jsx(Card, { title: '安全信息', children: _jsxs(Form, { labelCol: { xs: { span: 4 }, md: { span: 6 } }, wrapperCol: { xs: { span: 16 }, md: { span: 12 } }, children: [_jsx(Form.Item, { label: t('mobile'), children: _jsxs(Space, { children: [_jsx(Typography, { children: mobile || '未设置' }), _jsx(Button, { size: "small", onClick: () => {
+                                            if (mobile) {
+                                                goAddMobile();
                                                 return;
-                                            }, children: t('manage') })] }) }), process.env.NODE_ENV === 'development' && (_jsx(Form.Item, { label: "\u5FAE\u4FE1\u5E10\u53F7", children: _jsx(_Fragment, { children: wechatUser ? (_jsxs(Space, { children: [_jsx(Typography, { children: wechatUser.nickname }), _jsx(WechatUserList, { oakPath: oakFullpath
-                                                    ? `${oakFullpath}.wechatUser$user`
-                                                    : undefined })] })) : (_jsx(Button, { size: "small", onClick: () => {
-                                            setOpen2(true);
-                                        }, children: "\u7ED1\u5B9A" })) }) })), isRoot && (_jsx(Form.Item, { label: '系统用户', tooltip: "\u8D85\u7EA7\u7BA1\u7406\u5458\u53EF\u5BF9\u7CFB\u7EDF\u7528\u6237\u8FDB\u884C\u7BA1\u7406", children: _jsx(Button, { size: "small", onClick: () => {
-                                        goUserManage();
-                                    }, children: t('manage') }) }))] })] }), _jsx(Modal, { title: "\u7ED1\u5B9A\u624B\u673A\u53F7", open: open, destroyOnClose: true, footer: null, onCancel: () => {
+                                            }
+                                            setOpen(true);
+                                        }, children: mobile ? t('manage') : t('bind') })] }) }), _jsx(Form.Item, { label: t('user:attr.password'), children: _jsxs(Space, { children: [_jsx(Typography, { children: '********' }), _jsx(Button, { size: "small", onClick: () => {
+                                            goChangePassword();
+                                            return;
+                                        }, children: t('manage') })] }) }), process.env.NODE_ENV === 'development' && (_jsx(Form.Item, { label: "\u5FAE\u4FE1\u5E10\u53F7", children: _jsx(_Fragment, { children: wechatUser ? (_jsxs(Space, { children: [_jsx(Typography, { children: wechatUser.nickname }), _jsx(WechatUserList, { oakPath: oakFullpath
+                                                ? `${oakFullpath}.wechatUser$user`
+                                                : undefined })] })) : (_jsx(Button, { size: "small", onClick: () => {
+                                        setOpen2(true);
+                                    }, children: "\u7ED1\u5B9A" })) }) })), isRoot && (_jsx(Form.Item, { label: '系统用户', tooltip: "\u8D85\u7EA7\u7BA1\u7406\u5458\u53EF\u5BF9\u7CFB\u7EDF\u7528\u6237\u8FDB\u884C\u7BA1\u7406", children: _jsx(Button, { size: "small", onClick: () => {
+                                    goUserManage();
+                                }, children: t('manage') }) }))] }) }), _jsx(Modal, { title: "\u7ED1\u5B9A\u624B\u673A\u53F7", open: open, destroyOnClose: true, footer: null, onCancel: () => {
                     setOpen(false);
                 }, children: _jsx(MobileLogin, { callback: () => {
                         setOpen(false);

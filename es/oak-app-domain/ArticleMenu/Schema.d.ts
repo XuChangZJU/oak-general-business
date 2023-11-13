@@ -127,6 +127,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     parentId: ForeignKey<"parent">;
     parent?: UpdateOperation;
 } | {
+    parent?: never;
     parentId?: ForeignKey<"parent">;
 })) & ({
     entity?: string;
@@ -141,13 +142,13 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "parentId">> & (({
-    parent: CreateSingleOperation;
+    parent?: CreateSingleOperation;
     parentId?: never;
 } | {
-    parent: UpdateOperation;
+    parent?: UpdateOperation;
     parentId?: never;
 } | {
-    parent: RemoveOperation;
+    parent?: RemoveOperation;
     parentId?: never;
 } | {
     parent?: never;
