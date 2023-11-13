@@ -3,12 +3,10 @@ export default OakComponent({
     entity: 'userEntityGrant',
     isList: false,
     properties: {
-        picker: (props) => {
-            return {};
-        },
+        picker: undefined,
         hideInfo: false,
         hideTip: false,
-        afterClaim: (ueg) => undefined,
+        afterClaim: undefined,
     },
     projection() {
         const userId = this.features.token.getUserId();
