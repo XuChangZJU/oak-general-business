@@ -54,12 +54,19 @@ export default OakComponent({
             relationEntityFilter: 1,
             type: 1,
             qrCodeType: 1,
+            multiple: 1,
             redirectTo: 1,
         };
     },
     data: {
         pickedRowIds: [] as string[],
         pickedRelationIds: [] as string[],
+        onPickRelationsMp: (ids: string[]) => {
+            (this as any).onPickRelations(ids);
+        },
+        onPickRowsMp: (ids: string[]) => {
+            (this as any).onPickRows(ids);
+        }
     },
     formData({ data }) {
         const userId = this.features.token.getUserId();
@@ -74,6 +81,7 @@ export default OakComponent({
             isGranter,
             hasClaimed,
             counterStr: '',
+            expired: counter <= 0,
         }
         if (counter > 0) {
             const h = Math.floor(counter / 1000 / 3600);
