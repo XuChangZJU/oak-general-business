@@ -1,1 +1,27 @@
-<view>ubPicker</view>
+<view class="container">
+    <block wx:if="{{rows.length === 1}}">
+        <view class="info-title">
+            {{t(entity + ':name')}}
+        </view>
+        <view class="single-row-value">
+            {{rows[0].value}}
+        </view>
+    </block>
+    <block wx:else>
+        <view class="info-title">
+            {{t('pickRow', { entity: t(entity + ':name') })}}
+        </view>        
+    </block>
+    <view class="info-title">
+        {{t('pickRelation.' + pickRelationRule)}}
+    </view>
+    <view class="info-body">
+        <check-list
+            option="{{relationOption}}"
+            value="{{pickedRelationIds || []}}"
+            multiple="{{rule !== 'single'}}"
+            disabled="{{disablePickRelation || disabled}}"
+            onSelect="{{onPickRelationsMp}}"
+        />
+    </view>
+</view>

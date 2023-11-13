@@ -47,11 +47,21 @@ export default OakComponent({
         pickedRowIds: [],
         pickedRelationIds: [],
     },
+    data: {
+        relations: [],
+        onPickRelationsMp: (val) => {
+            this.props.onPickRelations(val);
+        },
+        onPickRowsMp: (val) => {
+            this.props.onPickRows(val);
+        }
+    },
     formData({ data }) {
         if (data) {
-            const { rule, ruleOnRow, relationIds } = this.props;
+            const { rule, ruleOnRow, relationIds, entity } = this.props;
             const disablePickRow = data?.length === 1 || ruleOnRow === 'all';
             const disablePickRelation = relationIds?.length === 1 || rule === 'all';
+            const { relations } = this.state;
             return {
                 rows: data.map(ele => ({
                     id: ele.id,
@@ -60,6 +70,10 @@ export default OakComponent({
                 disablePickRow,
                 disablePickRelation,
                 pickRelationRule: disablePickRelation && rule === 'single' ? 'singleFixed' : rule,
+                relationOption: relations?.map((r) => ({
+                    label: this.t(`${entity}:r.${r.name}`),
+                    value: r.id,
+                })),
             };
         }
         return {
@@ -127,7 +141,7 @@ export default OakComponent({
             });
             relations.forEach(ele => assert(ele.entity === entity));
             this.setState({
-                relations,
+                relations: relations,
             });
             assert(relations.length === relationIds.length);
             if (!disabled) {
@@ -139,5 +153,5 @@ export default OakComponent({
                 }
             }
         }
-    }
+    },
 });

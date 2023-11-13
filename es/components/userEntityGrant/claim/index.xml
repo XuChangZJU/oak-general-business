@@ -4,22 +4,45 @@
         <l-notice-bar show="{{!hideTip && !isGranter && !hasClaimed}}">
                {{t('tip')}}
         </l-notice-bar>
-        <l-notice-bar show="{{isGranter}}">
+        <l-notice-bar show="{{isGranter}}" l-class="notice-warning">
                {{t('isGranter')}}
         </l-notice-bar>
-        <l-notice-bar show="{{hasClaimed}}">
+        <l-notice-bar show="{{hasClaimed}}" l-class="notice-warning">
                {{t('hasClaimed')}}
         </l-notice-bar>
     </block>
     <block wx:if="{{!hideInfo}}">
+        <view class="info-title">
+            {{t('source')}}
+        </view>
         <view class="info">
-            <l-list  title="{{t('granterName')}}" right-desc="{{userEntityGrant.granter.name || userEntityGrant.granter.nickname}}" is-link="{{false}}" />
-            <l-list  title="{{expired ? t('isExpired') : t('counter')}}" right-desc="{{expired ? t('expired') : counterStr}}" is-link="{{false}}" />
+            <l-list 
+                title="{{t('granterName')}}"
+                right-desc="{{userEntityGrant.granter.name || userEntityGrant.granter.nickname}}" 
+                is-link="{{false}}"
+            />
+            <l-list 
+                title="{{expired ? t('isExpired') : t('counter')}}"
+                right-desc="{{expired ? t('expired') : counterStr}}"
+                is-link="{{false}}"
+            />
         </view>
     </block>
-    <ueg-picker />
-
-
+    <block wx:if={{userEntityGrant}}>
+        <ueg-picker
+            disabled="{{!!expired || hasClaimed || isGranter}}"
+            entity="{{userEntityGrant.relationEntity}}"
+            entityFilter="{{userEntityGrant.relationEntityFilter}}"
+            rule="{{userEntityGrant.rule}}"
+            ruleOnRow="{{userEntityGrant.ruleOnRow}}"
+            relationIds="{{userEntityGrant.relationIds}}"
+            onPickRows="{{onPickRowsMp}}"
+            onPickRelations="{{onPickRelationsMp}}"
+            pickedRelationIds="{{pickedRelationIds}}"
+            pickedRowIds="{{pickedRowIds}}"
+            oakPath="{{oakFullpath}}-$uegClaim-content"
+        />
+    </block>
     <view style="flex: 1" />
     <view class="btn">
         <l-button 

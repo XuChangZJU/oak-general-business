@@ -1,1 +1,5 @@
-{}
+{
+    "usingComponents": {
+        "check-list": "@oak-frontend-base/components/checklist/index"
+    }
+}
