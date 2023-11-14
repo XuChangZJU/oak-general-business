@@ -129,7 +129,7 @@ export default OakComponent({
             else if (rule === 'single') {
                 if (next.relationIds?.length === 1 && (!pickedRelationIds || next.relationIds[0] !== pickedRelationIds[0])) {
                     // 只有一行relation，直接选中
-                    onPickRelations!(next.relationIds[0]);
+                    onPickRelations!(next.relationIds);
                 }
                 else if (pickedRelationIds && pickedRelationIds[0] && (!next.relationIds || !next.relationIds.includes(pickedRelationIds[0]))) {
                     // 新的relationIds中不包括已经pick的relationId，清空
