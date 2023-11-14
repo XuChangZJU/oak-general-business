@@ -10,7 +10,14 @@
     <block wx:else>
         <view class="info-title">
             {{t('pickRow', { entity: t(entity + ':name') })}}
-        </view>        
+        </view>
+        <check-list
+            option="{{rowOption}}"
+            value="{{pickedRowIds || []}}"
+            multiple="{{rule !== 'single'}}"
+            disabled="{{disablePickRow || disabled}}"
+            onSelect="{{onPickRowsMp}}"
+        />
     </block>
     <view class="info-title">
         {{t('pickRelation.' + pickRelationRule)}}

@@ -49,10 +49,10 @@ export default OakComponent({
     },
     data: {
         relations: [],
-        onPickRelationsMp: (val) => {
+        onPickRelationsMp(val) {
             this.props.onPickRelations(val);
         },
-        onPickRowsMp: (val) => {
+        onPickRowsMp(val) {
             this.props.onPickRows(val);
         }
     },
@@ -73,6 +73,10 @@ export default OakComponent({
                 relationOption: relations?.map((r) => ({
                     label: this.t(`${entity}:r.${r.name}`),
                     value: r.id,
+                })),
+                rowOption: data.map(ele => ({
+                    value: ele.id,
+                    label: (ele.name || ele.title || ele.id),
                 })),
             };
         }

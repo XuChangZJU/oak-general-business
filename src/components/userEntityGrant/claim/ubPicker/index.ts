@@ -51,14 +51,21 @@ export default OakComponent({
         pickedRelationIds: [] as string[] | undefined,
     },
     data: {
-        relations: [] as EntityDict['relation']['OpSchema'][],
-        onPickRelationsMp: (val: string[]) => {
-            (this as any).props.onPickRelations!(val);
+        relations: [],
+        onPickRelationsMp(val: string[]) {
+            this.props.onPickRelations(val);
         },
-        onPickRowsMp: (val: string[]) => {
-            (this as any).props.onPickRows!(val);
+        onPickRowsMp(val: string[]) {
+            this.props.onPickRows(val);
         }
-    },
+    } as {
+        relations: EntityDict['relation']['OpSchema'][];
+    } & ThisType<{
+        props: {
+            onPickRelations: (val: string[]) => void;
+            onPickRows: (val: string[]) => void;
+        }
+    }>,
     formData({ data }) {
         if (data) {
             const { rule, ruleOnRow, relationIds, entity } = this.props;
@@ -79,6 +86,10 @@ export default OakComponent({
                         value: r.id,
                     })
                 ),
+                rowOption: (data as any[]).map(ele => ({
+                    value: ele.id,
+                    label: (ele.name || ele.title || ele.id) as string,
+                })),
             };
         }
         return {

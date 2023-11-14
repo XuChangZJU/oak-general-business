@@ -59,15 +59,21 @@ export default OakComponent({
         };
     },
     data: {
-        pickedRowIds: [] as string[],
-        pickedRelationIds: [] as string[],
-        onPickRelationsMp: (ids: string[]) => {
-            (this as any).onPickRelations(ids);
+        pickedRowIds: [],
+        pickedRelationIds: [],
+        onPickRelationsMp(ids: string[]) {
+            (this).onPickRelations(ids);
         },
-        onPickRowsMp: (ids: string[]) => {
-            (this as any).onPickRows(ids);
+        onPickRowsMp(ids: string[]) {
+            (this).onPickRows(ids);
         }
-    },
+    } as {
+        pickedRowIds: string[];
+        pickedRelationIds: string[];
+    } & ThisType<{
+        onPickRelations(ids: string[]): void;
+        onPickRows(ids: string[]): void;
+    }>,
     formData({ data }) {
         const userId = this.features.token.getUserId();
         const isGranter = userId === data?.granterId;

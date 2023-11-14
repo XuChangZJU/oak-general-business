@@ -46,11 +46,11 @@ export default OakComponent({
     data: {
         pickedRowIds: [],
         pickedRelationIds: [],
-        onPickRelationsMp: (ids) => {
-            this.onPickRelations(ids);
+        onPickRelationsMp(ids) {
+            (this).onPickRelations(ids);
         },
-        onPickRowsMp: (ids) => {
-            this.onPickRows(ids);
+        onPickRowsMp(ids) {
+            (this).onPickRows(ids);
         }
     },
     formData({ data }) {
