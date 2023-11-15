@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { generateNewId } from 'oak-domain';
 import { EntityDict } from '../../../oak-app-domain';
 
@@ -6,7 +5,7 @@ export default OakComponent({
     entity: 'userEntityGrant',
     isList: false,
     properties: {
-        picker: (props: {
+        picker: undefined as ((props: {
             disabled?: boolean,
             entity: keyof EntityDict,
             entityFilter: object,
@@ -18,12 +17,10 @@ export default OakComponent({
             pickedRowIds?: string[],
             pickedRelationIds?: string[],
             oakPath: string,
-        }) => {
-            return {} as React.ReactElement;
-        },
+        }) => React.ReactElement) | undefined,
         hideInfo: false,
         hideTip: false,
-        afterClaim: (ueg: EntityDict['userEntityGrant']['OpSchema']) => undefined as void,
+        afterClaim: undefined as ((ueg: EntityDict['userEntityGrant']['OpSchema']) => void) | undefined,
     },
     projection() {
         const userId = this.features.token.getUserId();
@@ -59,15 +56,21 @@ export default OakComponent({
         };
     },
     data: {
-        pickedRowIds: [] as string[],
-        pickedRelationIds: [] as string[],
-        onPickRelationsMp: (ids: string[]) => {
-            (this as any).onPickRelations(ids);
+        pickedRowIds: [],
+        pickedRelationIds: [],
+        onPickRelationsMp(ids: string[]) {
+            (this).onPickRelations(ids);
         },
-        onPickRowsMp: (ids: string[]) => {
-            (this as any).onPickRows(ids);
+        onPickRowsMp(ids: string[]) {
+            (this).onPickRows(ids);
         }
-    },
+    } as {
+        pickedRowIds: string[];
+        pickedRelationIds: string[];
+    } & ThisType<{
+        onPickRelations(ids: string[]): void;
+        onPickRows(ids: string[]): void;
+    }>,
     formData({ data }) {
         const userId = this.features.token.getUserId();
         const isGranter = userId === data?.granterId;

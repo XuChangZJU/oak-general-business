@@ -3,12 +3,10 @@ export default OakComponent({
     entity: 'userEntityGrant',
     isList: false,
     properties: {
-        picker: (props) => {
-            return {};
-        },
+        picker: undefined,
         hideInfo: false,
         hideTip: false,
-        afterClaim: (ueg) => undefined,
+        afterClaim: undefined,
     },
     projection() {
         const userId = this.features.token.getUserId();
@@ -46,11 +44,11 @@ export default OakComponent({
     data: {
         pickedRowIds: [],
         pickedRelationIds: [],
-        onPickRelationsMp: (ids) => {
-            this.onPickRelations(ids);
+        onPickRelationsMp(ids) {
+            (this).onPickRelations(ids);
         },
-        onPickRowsMp: (ids) => {
-            this.onPickRows(ids);
+        onPickRowsMp(ids) {
+            (this).onPickRows(ids);
         }
     },
     formData({ data }) {

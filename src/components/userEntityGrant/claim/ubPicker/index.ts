@@ -51,14 +51,21 @@ export default OakComponent({
         pickedRelationIds: [] as string[] | undefined,
     },
     data: {
-        relations: [] as EntityDict['relation']['OpSchema'][],
-        onPickRelationsMp: (val: string[]) => {
-            (this as any).props.onPickRelations!(val);
+        relations: [],
+        onPickRelationsMp(val: string[]) {
+            this.props.onPickRelations(val);
         },
-        onPickRowsMp: (val: string[]) => {
-            (this as any).props.onPickRows!(val);
+        onPickRowsMp(val: string[]) {
+            this.props.onPickRows(val);
         }
-    },
+    } as {
+        relations: EntityDict['relation']['OpSchema'][];
+    } & ThisType<{
+        props: {
+            onPickRelations: (val: string[]) => void;
+            onPickRows: (val: string[]) => void;
+        }
+    }>,
     formData({ data }) {
         if (data) {
             const { rule, ruleOnRow, relationIds, entity } = this.props;
@@ -79,6 +86,10 @@ export default OakComponent({
                         value: r.id,
                     })
                 ),
+                rowOption: (data as any[]).map(ele => ({
+                    value: ele.id,
+                    label: (ele.name || ele.title || ele.id) as string,
+                })),
             };
         }
         return {
@@ -118,7 +129,7 @@ export default OakComponent({
             else if (rule === 'single') {
                 if (next.relationIds?.length === 1 && (!pickedRelationIds || next.relationIds[0] !== pickedRelationIds[0])) {
                     // 只有一行relation，直接选中
-                    onPickRelations!(next.relationIds[0]);
+                    onPickRelations!(next.relationIds);
                 }
                 else if (pickedRelationIds && pickedRelationIds[0] && (!next.relationIds || !next.relationIds.includes(pickedRelationIds[0]))) {
                     // 新的relationIds中不包括已经pick的relationId，清空

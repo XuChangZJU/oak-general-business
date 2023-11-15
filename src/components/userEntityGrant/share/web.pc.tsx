@@ -1,6 +1,4 @@
-import React, { Component } from 'react';
-import Style from './web.module.less';
-import PageHeader from '../../common/pageHeader';
+import React from 'react';
 import QrCode from '../../common/qrCode';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
@@ -10,7 +8,7 @@ export default function Render(
     props: WebComponentProps<
         EntityDict,
         'userEntityGrant',
-        true,
+        false,
         {
             url: string;
             expiresAt: number;
@@ -18,15 +16,12 @@ export default function Render(
         {}
     >
 ) {
-    const {
-        url,
-        expiresAt,
-        oakLoading,
-    } = props.data;
+    const { url, expiresAt, oakLoading } = props.data;
+    if (oakLoading) {
+        return <Spin />;
+    }
     if (url) {
-        return (
-            <QrCode url={url} expiresAt={expiresAt} />
-        );
+        return <QrCode url={url} expiresAt={expiresAt} />;
     }
     return null;
 }
