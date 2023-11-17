@@ -1,0 +1,41 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <view class="user-list">
+        <view wx:for="{{list}}" wx:key="index">
+            <view class="cell" bind:tap="bindClicked" data-id="{{item.id}}">
+                <view class="info">
+                    <!-- <view class="row">
+                        <view class="nickname">{{item.nickname || '未设置'}}</view>
+                        <l-tag l-class="{{stateColor[item.userState]}}" size="mini" shape="circle">
+                            {{item.userState || '未设置'}}
+                        </l-tag>
+                    </view> -->
+                    <view class="row2">
+                        <view class="label">授予人：</view>
+                        <view class="value">{{item.granter.name || item.granter.nickname}}</view>
+                    </view>
+                    <view class="row2">
+                        <view class="label">创建时间：</view>
+                        <view class="value">{{item.createAt}}</view>
+                    </view>
+                    <view class="row2">
+                        <view class="label">状态：</view>
+                        <view class="value">{{item.expired?'失效':'有效'}}</view>
+                        <view class="value">{{!item.expired && item.expiresAt}}</view>
+                    </view>
+                </view>
+                <l-icon name="right" size="18" color="#888" />
+            </view>
+        </view>
+    </view>
+</view>
+<l-dialog 
+            show="{{open}}"
+            type="alert"     
+            title="授权码"
+            bind:linconfirm="bindClose"
+        > 
+     <block wx:if="{{userEntityGrantId}}">
+         <userEntityGrant-share oakId="{{userEntityGrantId}}" oakAutoUnmount="{{true}}" oakPath="$userEntityGrant/list-userEntityGrant/detail1" />
+        </block> 
+        </l-dialog>

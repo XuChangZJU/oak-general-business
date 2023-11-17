@@ -1,0 +1,98 @@
+/**  index.wxss  **/
+@import "../../../../config/styles/mp/index.less";
+@import "../../../../config/styles/mp/mixins.less";
+
+.page-body {
+  height: 100vh;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background-color: @oak-bg-color-page;
+  box-sizing: border-box;
+  .safe-area-inset-bottom();
+}
+
+.ueg-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  // justify-content: space-around;
+
+  .share {
+    align-self: center;
+    margin-top: 32rpx;
+  }
+}
+
+.list-item {
+  display: flex;
+  background-color: @oak-bg-color-container;
+  position: relative;
+  font-size: 28rpx;
+  color: #333;
+  min-height: 88rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-right: 25rpx;
+  box-sizing: border-box;
+  border-bottom: 1px solid #eeeeee;
+
+  .label {
+    width: 100px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 88rpx;
+    padding-left: 25rpx;
+    padding-right: 15rpx;
+    box-sizing: border-box;
+    color: @oak-text-color-primary;
+  }
+
+  .value {
+    flex: 1;
+
+    .radio-container {
+      flex-wrap: wrap;
+
+      .radio {
+        margin-right: 12rpx;
+      }
+    }
+  }
+
+  .value-period {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .confirm-btn {
+    align-self: flex-end;
+  }
+}
+
+.unit-box {
+  margin-left: 32rpx;
+
+  height: 50rpx;
+  width: 120rpx;
+  border: 1px solid @oak-color-primary;
+  color: @oak-color-primary;
+  border-radius: 10rpx;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  .unit {
+    margin-right: 16rpx;
+  }
+
+  .icon {
+  color: @oak-color-primary !important;
+  }
+}

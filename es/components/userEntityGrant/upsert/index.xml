@@ -1,0 +1,19 @@
+<!-- index.wxml -->
+<view class="page-body">
+    <block wx:if="{{userEntityGrantId}}">
+        <view class="ueg-container">
+            <userEntityGrant-share oakId="{{userEntityGrantId}}" oakAutoUnmount="{{true}}" oakPath="$userEntityGrant/upsert-userEntityGrant/detail" />
+            <view class="share">
+                <l-button  size="long"type="success" open-type="share">
+                    分享
+                </l-button>
+            </view>
+        </view>
+        </block>
+        <block wx:else>
+        <l-input placeholder="请输入" label="有效期" value="{{period}}" bind:lininput="setValueMp" data-attr="period" required="{{true}}"/>
+         <l-button size="long" type="default" bind:lintap="confirm" loading="{{oakExecuting}}">
+            {{t('common::action.confirm')}}
+        </l-button>
+        </block>
+</view>

@@ -22,15 +22,15 @@ export const desc = {
             name: 'index_relation_path',
             attributes: [
                 {
-                    name: "relationId"
+                    name: "relationId",
                 },
                 {
-                    name: "pathId"
+                    name: "pathId",
                 }
             ],
             config: {
-                unique: true
-            }
+                unique: true,
+            },
         }
     ]
 };

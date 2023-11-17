@@ -1,7 +1,6 @@
 import { jsxs as _jsxs, jsx as _jsx, Fragment as _Fragment } from "react/jsx-runtime";
 import { useState } from 'react';
 import { Table, Space, Typography, Modal } from 'antd';
-import dayjs from 'dayjs';
 import ActionBtnPanel from 'oak-frontend-base/es/components/actionBtnPanel';
 import UserEntityGrantShare from '../share';
 export default function render(props) {
@@ -43,17 +42,17 @@ export default function render(props) {
                     //     },
                     // },
                     {
-                        dataIndex: '$$createAt$$',
+                        dataIndex: 'createAt',
                         title: '创建时间',
                         render: (value, record, index) => {
-                            return dayjs(value).format('YYYY-MM-DD HH:mm');
+                            return value;
                         },
                     },
                     {
                         dataIndex: 'expired',
                         title: '状态',
                         render: (value, record, index) => {
-                            return (_jsxs(Typography.Text, { type: record.expired ? 'danger' : 'success', children: [record.expired ? '失效' : '有效', !record.expired && (_jsxs(Typography.Text, { children: ["\u00A0", dayjs(record.expiresAt).format('YYYY-MM-DD HH:mm')] }))] }));
+                            return (_jsxs(Typography.Text, { type: record.expired ? 'danger' : 'success', children: [record.expired ? '失效' : '有效', !record.expired && (_jsxs(Typography.Text, { children: ["\u00A0", record.expiresAt] }))] }));
                         },
                     },
                     {
