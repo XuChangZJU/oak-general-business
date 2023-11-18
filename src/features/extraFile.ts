@@ -199,7 +199,10 @@ export class ExtraFile<
             }
             assert(false, 'the incoming file is not supported');
         }
-        const { origin } = extraFile;
+        const { origin, extra1 } = extraFile;
+        if (origin === 'unknown') {
+            return extra1 || '';
+        }
         const cos = getCos<ED, Cxt, FrontCxt>(origin);
         const context = this.cache.begin();
         this.cache.commit();
