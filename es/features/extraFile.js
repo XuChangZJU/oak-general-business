@@ -152,7 +152,7 @@ export class ExtraFile extends Feature {
         const { origin, extra1 } = extraFile;
         if (origin === 'unknown') {
             return extra1 || '';
-        }              
+        }
         const cos = getCos(origin);
         const context = this.cache.begin();
         this.cache.commit();

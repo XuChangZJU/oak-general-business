@@ -11,4 +11,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'message', f
     router: EntityDict['message']['Schema']['router'];
     visitState: EntityDict['message']['Schema']['visitState'];
     id: string;
+    visit: (id: string) => void;
 }, {}>): import("react/jsx-runtime").JSX.Element;

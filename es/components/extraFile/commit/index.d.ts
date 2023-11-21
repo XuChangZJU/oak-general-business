@@ -13,9 +13,9 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     type?: ButtonProps['type'] | AmButtonProps['type'];
     executeText?: string | undefined;
     buttonProps?: (ButtonProps & {
-        color?: "primary" | "success" | "warning" | "default" | "danger" | undefined;
+        color?: "default" | "success" | "warning" | "primary" | "danger" | undefined;
         fill?: "none" | "solid" | "outline" | undefined;
-        size?: "small" | "large" | "middle" | "mini" | undefined;
+        size?: "small" | "middle" | "large" | "mini" | undefined;
         block?: boolean | undefined;
         loading?: boolean | "auto" | undefined;
         loadingText?: string | undefined;
@@ -25,7 +25,7 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
         type?: "button" | "reset" | "submit" | undefined;
         shape?: "default" | "rounded" | "rectangular" | undefined;
         children?: import("react").ReactNode;
-    } & Pick<import("react").ClassAttributes<HTMLButtonElement> & import("react").ButtonHTMLAttributes<HTMLButtonElement>, "id" | "onMouseUp" | "onMouseDown" | "onTouchStart" | "onTouchEnd"> & {
+    } & Pick<import("react").ClassAttributes<HTMLButtonElement> & import("react").ButtonHTMLAttributes<HTMLButtonElement>, "id" | "onMouseDown" | "onMouseUp" | "onTouchStart" | "onTouchEnd"> & {
         className?: string | undefined;
         style?: (import("react").CSSProperties & Partial<Record<"--text-color" | "--background-color" | "--border-radius" | "--border-width" | "--border-style" | "--border-color", string>>) | undefined;
         tabIndex?: number | undefined;

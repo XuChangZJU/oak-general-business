@@ -1,11 +1,14 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import Qiniu from './qiniu';
 import Wechat from './wechat';
+import CTYun from './ctyun';
+const ctyun = new CTYun();
 const qiniu = new Qiniu();
 const wechat = new Wechat();
 const CosDict = {
     [qiniu.name]: qiniu,
     [wechat.name]: wechat,
+    [ctyun.name]: ctyun,
 };
 /**
  * 注入一个其它OSS上实现的uploader类

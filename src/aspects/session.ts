@@ -122,7 +122,7 @@ export async function createSession<
                     {}
                 );
 
-                const sessionMessage = {
+                const sessionMessage: EntityDict['sessionMessage']['Update']['data'] = {
                     id: await generateNewIdAsync(),
                     applicationId: entityId,
                     wechatUserId: wechatUser?.id,

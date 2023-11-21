@@ -13,6 +13,9 @@ export declare function getConfig<ED extends EntityDict, Cxt extends BackendRunt
     instance: import("oak-external-sdk").QiniuCloudInstance;
     config: any;
 } | {
+    instance: import("oak-external-sdk").CTYunInstance;
+    config: any;
+} | {
     instance: import("oak-external-sdk").AmapInstance;
     config: any;
 };

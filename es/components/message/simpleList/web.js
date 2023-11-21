@@ -6,11 +6,12 @@ export default function Render(props) {
     const { data, methods } = props;
     const { messages, open, onClose, oakFullpath } = data;
     const { goDetailById, goMessageList } = methods;
-    return (_jsx(_Fragment, { children: messages?.length > 0 ? (_jsx("div", { children: messages?.map((message, index) => (_jsx(MessageCell, { oakId: message.id, oakPath: oakFullpath
-                    ? `${oakFullpath}.${message.id}`
-                    : '', onItemClicked: (item) => {
+    return (_jsx(_Fragment, { children: messages?.length > 0 ? (_jsx("div", { children: messages?.map((message, index) => (_jsx(MessageCell, { oakId: message.id, onItemClicked: (item) => {
                     const { id } = item;
                     onClose && onClose();
                     goDetailById(id);
+                }, title: message.title, router: message.router, id: message.id, visitState: message.visitState, visit: (id) => {
+                    methods.updateItem({}, id, 'visit');
+                    methods.execute(undefined, false);
                 } }, message.id))) })) : (_jsx("div", { className: Style.noData, children: _jsx(Empty, { description: "\u6682\u65E0\u6D88\u606F", image: Empty.PRESENTED_IMAGE_SIMPLE }) })) }));
 }
