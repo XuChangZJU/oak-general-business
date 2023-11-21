@@ -11,7 +11,7 @@ import * as ArticleMenu from "../ArticleMenu/Schema";
 import * as SessionMessage from "../SessionMessage/Schema";
 import * as User from "../User/Schema";
 export type OpSchema = EntityShape & {
-    origin: 'qiniu' | 'wechat' | 'unknown';
+    origin: 'qiniu' | 'wechat' | 'unknown' | 'ctyun';
     type: 'image' | 'video' | 'audio' | 'file';
     bucket?: String<32> | null;
     objectId?: String<64> | null;
@@ -34,7 +34,7 @@ export type OpSchema = EntityShape & {
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
-    origin: 'qiniu' | 'wechat' | 'unknown';
+    origin: 'qiniu' | 'wechat' | 'unknown' | 'ctyun';
     type: 'image' | 'video' | 'audio' | 'file';
     bucket?: String<32> | null;
     objectId?: String<64> | null;
@@ -67,7 +67,7 @@ type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    origin: Q_EnumValue<'qiniu' | 'wechat' | 'unknown'>;
+    origin: Q_EnumValue<'qiniu' | 'wechat' | 'unknown' | 'ctyun'>;
     type: Q_EnumValue<'image' | 'video' | 'audio' | 'file'>;
     bucket: Q_StringValue;
     objectId: Q_StringValue;
