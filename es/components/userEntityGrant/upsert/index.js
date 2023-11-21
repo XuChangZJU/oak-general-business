@@ -69,6 +69,12 @@ export default OakComponent({
                 // });
             }
         },
+        setValueMp(input) {
+            const { detail, target: { dataset }, } = input;
+            const { attr } = dataset;
+            const { value } = detail;
+            this.setState({ [attr]: value });
+        },
         async confirm() {
             const { period, unit, userEntityGrant } = this.state;
             const time = period * 24 * 60 * 60 * 1000;

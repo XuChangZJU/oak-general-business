@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 export default OakComponent({
     isList: true,
     entity: 'userEntityGrant',
@@ -52,12 +53,46 @@ export default OakComponent({
         },
     ],
     formData({ data }) {
+        const list = data?.map(
+            (ele) => {
+                return {
+                    id: ele?.id,
+                    type: ele?.type,
+                    granter: ele?.granter,
+                    expired: ele?.expired,
+                    createAt: dayjs(ele?.$$createAt$$).format(
+                        'YYYY-MM-DD HH:mm:ss'
+                    ),
+                    expiresAt: dayjs(ele?.expiresAt).format(
+                        'YYYY-MM-DD HH:mm:ss'
+                    ),
+                    '#oakLegalActions': ele?.['#oakLegalActions']
+                }
+            }
+        )
         return {
-            list: data,
+            list,
         };
     },
     data: {
         open: false,
+        userEntityGrantId: '',
     },
-    methods: {},
+    methods: {
+        async bindClicked(e: WechatMiniprogram.Touch) {
+            const { id } = e.currentTarget.dataset;
+            this.setState({
+                userEntityGrantId: id,
+                open: true,
+            })
+
+        },
+        async bindClose() {
+            this.setState({
+                userEntityGrantId: '',
+                open: false,
+            })
+
+        },
+    },
 });

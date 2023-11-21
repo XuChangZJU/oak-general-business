@@ -1,0 +1,8 @@
+{
+    "usingComponents": {
+        "userEntityGrant-share": "../share/index",
+      "l-dialog": "@oak-frontend-base/miniprogram_npm/lin-ui/dialog/index",
+      "l-icon": "@oak-frontend-base/miniprogram_npm/lin-ui/icon/index"
+    }
+  }
+  

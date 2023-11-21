@@ -77,10 +77,10 @@ export default function render(
                     //     },
                     // },
                     {
-                        dataIndex: '$$createAt$$',
+                        dataIndex: 'createAt',
                         title: '创建时间',
                         render: (value, record, index) => {
-                            return dayjs(value).format('YYYY-MM-DD HH:mm');
+                            return value;
                         },
                     },
                     {
@@ -95,9 +95,7 @@ export default function render(
                                     {!record.expired && (
                                         <Typography.Text>
                                             &nbsp;
-                                            {dayjs(record.expiresAt).format(
-                                                'YYYY-MM-DD HH:mm'
-                                            )}
+                                            {record.expiresAt as number}
                                         </Typography.Text>
                                     )}
                                 </Typography.Text>
