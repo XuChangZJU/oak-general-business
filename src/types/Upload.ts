@@ -4,6 +4,15 @@ export type QiniuUploadInfo = {
     uploadHost: string;
     bucket: string;
 };
+export type CTYunUploadInfo = {
+    key?: string;
+    accessKey: string;
+    uploadToken: string;
+    uploadHost: string;
+    policy: string;
+    signature: string;
+    bucket: string;
+};
 
 export type AliyunUploadInfo = {
     key?: string;
