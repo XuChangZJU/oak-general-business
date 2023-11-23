@@ -66,7 +66,7 @@ export default class CTYun {
         }
     }
     composeFileUrl(extraFile, context, style) {
-        const { config } = getConfig(context, 'Cos', 'qiniu');
+        const { config } = getConfig(context, 'Cos', 'ctyun');
         if (config) {
             let bucket = config.buckets.find((ele) => ele.name === extraFile.bucket);
             if (bucket) {

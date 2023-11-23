@@ -107,7 +107,7 @@ export default class CTYun implements Cos<ED, BRC, FRC> {
         context: FRC,
         style?: string,
     ) {
-        const { config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
+        const { config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'ctyun');
 
         if (config) {
             let bucket = (config.buckets as CTYunCosConfig['buckets']).find((ele) => ele.name === extraFile.bucket!);
