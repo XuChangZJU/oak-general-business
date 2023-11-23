@@ -34,9 +34,10 @@ export default class CTYun {
     async upload(extraFile, uploadFn, file) {
         const uploadMeta = extraFile.uploadMeta;
         let result;
+        console.log('*******', uploadMeta);
         try {
             result = await uploadFn(file, 'file', uploadMeta.uploadHost, {
-                Key: uploadMeta.key,
+                key: uploadMeta.key,
                 Policy: uploadMeta.policy,
                 AWSAccessKeyId: uploadMeta.accessKey,
                 signature: uploadMeta.signature,

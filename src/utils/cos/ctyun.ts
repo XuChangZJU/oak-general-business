@@ -72,7 +72,7 @@ export default class CTYun implements Cos<ED, BRC, FRC> {
                 'file',
                 uploadMeta.uploadHost,
                 {
-                    Key: uploadMeta.key,
+                    key: uploadMeta.key,
                     Policy: uploadMeta.policy,
                     AWSAccessKeyId: uploadMeta.accessKey,
                     signature: uploadMeta.signature,
