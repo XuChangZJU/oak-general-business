@@ -6,11 +6,10 @@ import Style from './mobile.module.less';
 export default function Render(props) {
     const { data, methods } = props;
     const { GenderOptions, IDCardTypeOptions } = data;
-    const { t, update, setDisablePulldownRefresh, confirm } = methods;
+    const { t, update, confirm } = methods;
     const [birthPickerVisible, setBirthPickerVisible] = useState(false);
     return (_jsxs("div", { className: Style.container, children: [_jsxs(Form, { layout: "horizontal", children: [_jsx(Form.Item, { label: t('user:attr.nickname'), rules: [{ required: true }], children: _jsx(Input, { onChange: (val) => update({ nickname: val }), value: data.nickname || '' }) }), _jsx(Form.Item, { label: t('user:attr.name'), children: _jsx(Input, { onChange: (val) => update({ name: val }), value: data.name || '' }) }), _jsx(Form.Item, { label: t('user:attr.birth'), onClick: () => {
                             setBirthPickerVisible(true);
-                            setDisablePulldownRefresh(true);
                         }, children: _jsx(Input, { value: data.birth
                                 ? dayjs(data.birth).format('YYYY-MM-DD')
                                 : '', readOnly: true }) }), _jsx(Form.Item, { label: t('user:attr.gender'), children: _jsx(Radio.Group, { onChange: (e) => {
@@ -26,6 +25,5 @@ export default function Render(props) {
                     update({ birth: val });
                 }, onClose: () => {
                     setBirthPickerVisible(false);
-                    setDisablePulldownRefresh(false);
                 } }), _jsx("div", { style: { flex: 1 } }), _jsx(Button, { block: true, color: "primary", onClick: () => confirm(), children: t('common::action.confirm') })] }));
 }

@@ -29,7 +29,7 @@ export default function Render(
     const { data, methods } = props;
     const { GenderOptions, IDCardTypeOptions } = data;
 
-    const { t, update, setDisablePulldownRefresh, confirm } = methods;
+    const { t, update, confirm } = methods;
     const [birthPickerVisible, setBirthPickerVisible] = useState(false);
 
     return (
@@ -54,7 +54,6 @@ export default function Render(
                     label={t('user:attr.birth')}
                     onClick={() => {
                         setBirthPickerVisible(true);
-                        setDisablePulldownRefresh(true);
                     }}
                 >
                     <Input
@@ -129,7 +128,6 @@ export default function Render(
                 }}
                 onClose={() => {
                     setBirthPickerVisible(false);
-                    setDisablePulldownRefresh(false);
                 }}
             />
             <div style={{ flex: 1 }} />

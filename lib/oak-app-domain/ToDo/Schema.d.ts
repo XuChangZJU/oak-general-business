@@ -13,10 +13,15 @@ export type RedirectToProps = {
     props?: Record<string, any>;
     state?: Record<string, any>;
 };
+export type Condition = {
+    condition?: any;
+};
 export type OpSchema = EntityShape & {
     title: Text;
     description?: Text | null;
     targetEntity: String<32>;
+    targetEntityId?: String<64> | null;
+    condition?: Condition | null;
     action: String<32>;
     redirectTo: RedirectToProps;
     iState?: IState | null;
@@ -26,6 +31,8 @@ export type Schema = EntityShape & {
     title: Text;
     description?: Text | null;
     targetEntity: String<32>;
+    targetEntityId?: String<64> | null;
+    condition?: Condition | null;
     action: String<32>;
     redirectTo: RedirectToProps;
     iState?: IState | null;
@@ -44,6 +51,8 @@ type AttrFilter = {
     title: Q_StringValue;
     description: Q_StringValue;
     targetEntity: Q_StringValue;
+    targetEntityId: Q_StringValue;
+    condition: JsonFilter<Condition>;
     action: Q_StringValue;
     redirectTo: JsonFilter<RedirectToProps>;
     iState: Q_EnumValue<IState>;
@@ -61,6 +70,8 @@ export type Projection = {
     title?: number;
     description?: number;
     targetEntity?: number;
+    targetEntityId?: number;
+    condition?: number | JsonProjection<Condition>;
     action?: number;
     redirectTo?: number | JsonProjection<RedirectToProps>;
     iState?: number;
@@ -94,6 +105,10 @@ export type SortAttr = {
     description: number;
 } | {
     targetEntity: number;
+} | {
+    targetEntityId: number;
+} | {
+    condition: number;
 } | {
     action: number;
 } | {

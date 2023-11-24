@@ -34,8 +34,10 @@ export default OakComponent({
         };
     },
     methods: {
-        setValue(input: any) {
-            const { dataset, value } = this.resolveInput(input);
+        setValue(input: WechatMiniprogram.CustomEvent) {
+            const { currentTarget, detail } = input;
+            const { dataset } = currentTarget;
+            const { value } = detail;
             const { attr } = dataset!
             this.update({
                 [attr]: value,
