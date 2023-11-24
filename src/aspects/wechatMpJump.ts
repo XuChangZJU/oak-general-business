@@ -21,10 +21,10 @@ export async function wechatMpJump<
 >(
     params: {
         applicationId: string;
-        jump_wxa: { path: string, query: string, env_version: string };
-        expireType: number;
-        expiresAt: number;
-        expireInterval: number;
+        jump_wxa: { path?: string, query?: string, env_version?: string };
+        expireType?: number;
+        expiresAt?: number;
+        expireInterval?: number;
     },
     context: Cxt
 ): Promise<any> {
