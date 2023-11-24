@@ -21,16 +21,16 @@ export default OakComponent({
     },
     listeners: {
         'visitState,userId'(prev, next) {
-             const userId2 = this.features.token.getUserId(true);
-             if (next.userId === userId2) {
-                 if (next.visitState === 'unvisited') {
-                     this.execute('visit', false);
-                 }
-             }
+            const userId2 = this.features.token.getUserId(true);
+            if (next.userId === userId2) {
+                if (next.visitState === 'unvisited') {
+                    this.execute('visit', false);
+                }
+            }
         },
     },
     methods: {
-        goPage() {
+        async goPage() {
             const { router } = this.state;
             const pathname = router?.pathname;
             const props = router?.props || {};
@@ -38,15 +38,29 @@ export default OakComponent({
             if (!pathname) {
                 return;
             }
+            try {
+                await this.redirectTo(
+                    {
+                        url: pathname,
+                        ...props,
 
-            this.redirectTo(
-                {
-                    url: pathname,
-                    ...props,
-                },
-                state,
-                true
-            );
+                    },
+                    state,
+                    true
+                );
+            }
+            catch (err: any) {
+                if (process.env.OAK_PLATFORM === 'wechatMp') {
+                    if (err?.errMsg?.includes('navigateTo:fail')) {
+                        this.features.message.setMessage({
+                            type: 'warning',
+                            content: '该功能请去电脑端操作，网址https://www.gecomebox.com/console/',
+                        });
+                        return
+                    }
+                }
+                throw err;
+            }
         },
     },
 });

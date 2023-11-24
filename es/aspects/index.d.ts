@@ -12,6 +12,7 @@ import { createSession } from './session';
 import { getCurrentMenu, getMenu, createMenu, createConditionalMenu, deleteConditionalMenu, deleteMenu } from './wechatMenu';
 import { createTag, getTags, editTag, deleteTag, syncTag, oneKeySync } from './wechatPublicTag';
 import { getTagUsers, batchtagging, batchuntagging, getUserTags, getUsers, tagging, syncToLocale, syncToWechat } from './userWechatPublicTag';
+import { wechatMpJump } from './wechatMpJump';
 declare const aspectDict: {
     mergeUser: typeof mergeUser;
     switchTo: typeof switchTo;
@@ -65,5 +66,6 @@ declare const aspectDict: {
     tagging: typeof tagging;
     syncToLocale: typeof syncToLocale;
     syncToWechat: typeof syncToWechat;
+    wechatMpJump: typeof wechatMpJump;
 };
 export default aspectDict;

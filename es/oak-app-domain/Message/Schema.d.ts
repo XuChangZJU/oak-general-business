@@ -9,6 +9,7 @@ import { Channel, Weight } from "../../types/Message";
 import * as User from "../User/Schema";
 import * as Platform from "../Platform/Schema";
 import * as MessageSystem from "../MessageSystem/Schema";
+import * as WechatMpJump from "../WechatMpJump/Schema";
 type Router = {
     pathname: string;
     props?: Record<string, any>;
@@ -56,6 +57,8 @@ export type Schema = EntityShape & {
     platform?: Platform.Schema | null;
     messageSystem$message?: Array<MessageSystem.Schema>;
     messageSystem$message$$aggr?: AggregationResult<MessageSystem.Schema>;
+    wechatMpJump$message?: Array<WechatMpJump.Schema>;
+    wechatMpJump$message$$aggr?: AggregationResult<WechatMpJump.Schema>;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -81,6 +84,7 @@ type AttrFilter = {
     iState: Q_EnumValue<IState>;
     visitState: Q_EnumValue<VisitState>;
     messageSystem$message: MessageSystem.Filter & SubQueryPredicateMetadata;
+    wechatMpJump$message: WechatMpJump.Filter & SubQueryPredicateMetadata;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export type Projection = {
@@ -111,6 +115,12 @@ export type Projection = {
     };
     messageSystem$message$$aggr?: MessageSystem.Aggregation & {
         $entity: "messageSystem";
+    };
+    wechatMpJump$message?: WechatMpJump.Selection & {
+        $entity: "wechatMpJump";
+    };
+    wechatMpJump$message$$aggr?: WechatMpJump.Aggregation & {
+        $entity: "wechatMpJump";
     };
 } & Partial<ExprOp<OpAttr | string>>;
 type MessageIdProjection = OneOf<{
@@ -195,6 +205,7 @@ export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "enti
     [K: string]: any;
 }) & {
     messageSystem$message?: OakOperation<MessageSystem.UpdateOperation["action"], Omit<MessageSystem.UpdateOperationData, "message" | "messageId">, Omit<MessageSystem.Filter, "message" | "messageId">> | OakOperation<"create", Omit<MessageSystem.CreateOperationData, "message" | "messageId">[]> | Array<OakOperation<"create", Omit<MessageSystem.CreateOperationData, "message" | "messageId">> | OakOperation<MessageSystem.UpdateOperation["action"], Omit<MessageSystem.UpdateOperationData, "message" | "messageId">, Omit<MessageSystem.Filter, "message" | "messageId">>>;
+    wechatMpJump$message?: OakOperation<WechatMpJump.UpdateOperation["action"], Omit<WechatMpJump.UpdateOperationData, "message" | "messageId">, Omit<WechatMpJump.Filter, "message" | "messageId">> | OakOperation<"create", Omit<WechatMpJump.CreateOperationData, "message" | "messageId">[]> | Array<OakOperation<"create", Omit<WechatMpJump.CreateOperationData, "message" | "messageId">> | OakOperation<WechatMpJump.UpdateOperation["action"], Omit<WechatMpJump.UpdateOperationData, "message" | "messageId">, Omit<WechatMpJump.Filter, "message" | "messageId">>>;
 };
 export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
@@ -226,6 +237,7 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "userId" | "plat
 })) & {
     [k: string]: any;
     messageSystem$message?: OakOperation<MessageSystem.UpdateOperation["action"], Omit<MessageSystem.UpdateOperationData, "message" | "messageId">, Omit<MessageSystem.Filter, "message" | "messageId">> | OakOperation<MessageSystem.RemoveOperation["action"], Omit<MessageSystem.RemoveOperationData, "message" | "messageId">, Omit<MessageSystem.Filter, "message" | "messageId">> | OakOperation<"create", Omit<MessageSystem.CreateOperationData, "message" | "messageId">[]> | Array<OakOperation<"create", Omit<MessageSystem.CreateOperationData, "message" | "messageId">> | OakOperation<MessageSystem.UpdateOperation["action"], Omit<MessageSystem.UpdateOperationData, "message" | "messageId">, Omit<MessageSystem.Filter, "message" | "messageId">> | OakOperation<MessageSystem.RemoveOperation["action"], Omit<MessageSystem.RemoveOperationData, "message" | "messageId">, Omit<MessageSystem.Filter, "message" | "messageId">>>;
+    wechatMpJump$message?: OakOperation<WechatMpJump.UpdateOperation["action"], Omit<WechatMpJump.UpdateOperationData, "message" | "messageId">, Omit<WechatMpJump.Filter, "message" | "messageId">> | OakOperation<WechatMpJump.RemoveOperation["action"], Omit<WechatMpJump.RemoveOperationData, "message" | "messageId">, Omit<WechatMpJump.Filter, "message" | "messageId">> | OakOperation<"create", Omit<WechatMpJump.CreateOperationData, "message" | "messageId">[]> | Array<OakOperation<"create", Omit<WechatMpJump.CreateOperationData, "message" | "messageId">> | OakOperation<WechatMpJump.UpdateOperation["action"], Omit<WechatMpJump.UpdateOperationData, "message" | "messageId">, Omit<WechatMpJump.Filter, "message" | "messageId">> | OakOperation<WechatMpJump.RemoveOperation["action"], Omit<WechatMpJump.RemoveOperationData, "message" | "messageId">, Omit<WechatMpJump.Filter, "message" | "messageId">>>;
 };
 export type UpdateOperation = OakOperation<"update" | ParticularAction | string, UpdateOperationData, Filter, Sorter>;
 export type RemoveOperationData = {} & (({
