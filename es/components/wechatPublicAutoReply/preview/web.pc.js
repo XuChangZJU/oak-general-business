@@ -1,5 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { WifiOutlined, LeftOutlined, UserOutlined } from '@ant-design/icons';
 import Style from './web.module.less';
 import { Editor } from '@wangeditor/editor-for-react';
@@ -29,5 +28,43 @@ export default function Render(props) {
         }
         ;
     }, [content, type]);
-    return (_jsx("div", { className: Style.container, children: _jsxs("div", { className: Style.phone, children: [_jsxs("div", { className: Style.topBar, children: [_jsx("div", { className: Style.time, children: "1:21" }), _jsx("div", { className: Style.icons, children: _jsx(WifiOutlined, { style: { fontSize: 14 } }) })] }), _jsxs("div", { className: Style.actionBar, children: [_jsx(LeftOutlined, { style: { fontSize: 20 } }), _jsx(UserOutlined, { style: { fontSize: 20 } })] }), _jsx("div", { className: Style.page, children: type === 'text' && sendMsg ? (_jsx("div", { className: Style.msg, children: _jsx(Editor, { defaultConfig: editorConfig, value: sendMsg, mode: "default", className: Style.editor }) })) : type === 'image' && sendMsg ? (_jsx("img", { src: sendMsg, className: Style.img })) : type === 'video' && sendMsg ? (_jsx("div", { className: Style.msg, children: _jsx("a", { style: { color: '#1677ff' }, href: sendMsg, download: true, children: "\u4E0B\u8F7D\u89C6\u9891\u7D20\u6750" }) })) : type === 'video' && sendMsg ? (_jsx("div", { className: Style.msg, children: _jsx("a", { style: { color: '#1677ff' }, href: sendMsg, download: true, children: "\u4E0B\u8F7D\u97F3\u9891\u7D20\u6750" }) })) : null }), _jsxs("div", { className: Style.bottomBar, children: [_jsx("div", { className: Style.keyBoard }), _jsxs("div", { className: Style.buttonList, children: [_jsx("div", { className: Style.button, children: _jsx("div", { className: Style.buttonName, children: "\u83DC\u5355\u540D\u79F0" }) }), _jsx("div", { className: Style.button, children: _jsx("div", { className: Style.buttonName, children: "\u83DC\u5355\u540D\u79F0" }) }), _jsx("div", { className: Style.button, children: _jsx("div", { className: Style.buttonName, children: "\u83DC\u5355\u540D\u79F0" }) })] })] })] }) }));
+    return (<div className={Style.container}>
+            <div className={Style.phone}>
+                <div className={Style.topBar}>
+                    <div className={Style.time}>1:21</div>
+                    <div className={Style.icons}>
+                        <WifiOutlined style={{ fontSize: 14 }}/>
+                    </div>
+                </div>
+                <div className={Style.actionBar}>
+                    <LeftOutlined style={{ fontSize: 20 }}/>
+                    <UserOutlined style={{ fontSize: 20 }}/>
+                </div>
+                <div className={Style.page}>
+                    {type === 'text' && sendMsg ? (<div className={Style.msg}>
+                                <Editor defaultConfig={editorConfig} value={sendMsg} mode="default" className={Style.editor}/>
+                            </div>) : type === 'image' && sendMsg ? (<img src={sendMsg} className={Style.img}/>) : type === 'video' && sendMsg ? (<div className={Style.msg}>
+                                <a style={{ color: '#1677ff' }} href={sendMsg} download={true}>下载视频素材</a>
+                            </div>) : type === 'video' && sendMsg ? (<div className={Style.msg}>
+                                <a style={{ color: '#1677ff' }} href={sendMsg} download={true}>下载音频素材</a>
+                            </div>) : null}
+                </div>
+                <div className={Style.bottomBar}>
+                    <div className={Style.keyBoard}>
+
+                    </div>
+                    <div className={Style.buttonList}>
+                        <div className={Style.button}>
+                            <div className={Style.buttonName}>菜单名称</div>
+                        </div>
+                        <div className={Style.button}>
+                            <div className={Style.buttonName}>菜单名称</div>
+                        </div>
+                        <div className={Style.button}>
+                            <div className={Style.buttonName}>菜单名称</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>);
 }

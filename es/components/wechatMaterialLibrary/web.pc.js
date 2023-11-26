@@ -1,5 +1,4 @@
-import { Fragment as _Fragment, jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Table, Space, Upload, Form, Input, Popover } from 'antd';
 const { TextArea } = Input;
 import { DownloadOutlined } from '@ant-design/icons';
@@ -95,7 +94,7 @@ export default function Render(props) {
             dataIndex: 'update_time',
             title: '更新时间',
             render: (value, record, index) => {
-                return _jsx(_Fragment, { children: dayjs(value * 1000).format('YYYY-MM-DD HH:mm') });
+                return <>{dayjs(value * 1000).format('YYYY-MM-DD HH:mm')}</>;
             }
         },
     ];
@@ -112,42 +111,52 @@ export default function Render(props) {
             dataIndex: 'coverImg',
             title: '封面图',
             render: (value, record, index) => {
-                return (_jsx("div", { children: record.content.news_item.map((ele) => (_jsx("div", { children: _jsx("img", { style: { width: 100 }, src: ele.coverUrl }) }))) }));
+                return (<div>
+                        {record.content.news_item.map((ele) => (<div><img style={{ width: 100 }} src={ele.coverUrl}/></div>))}
+                    </div>);
             }
         },
         {
             dataIndex: 'title',
             title: '图文消息标题',
             render: (value, record, index) => {
-                return (_jsx("div", { children: record.content.news_item.map((ele) => (_jsx("div", { children: ele.title }))) }));
+                return (<div>
+                        {record.content.news_item.map((ele) => (<div>{ele.title}</div>))}
+                    </div>);
             }
         },
         {
             // dataIndex: 'author',
             title: '作者',
             render: (value, record, index) => {
-                return (_jsx("div", { children: record.content.news_item.map((ele) => (_jsx("div", { children: ele.author }))) }));
+                return (<div>
+                        {record.content.news_item.map((ele) => (<div>{ele.author}</div>))}
+                    </div>);
             }
         },
         {
             dataIndex: 'digest',
             title: '图文信息摘要',
             render: (value, record, index) => {
-                return (_jsx("div", { children: record.content.news_item.map((ele) => (_jsx("div", { children: ele.digest }))) }));
+                return (<div>
+                        {record.content.news_item.map((ele) => (<div>{ele.digest}</div>))}
+                    </div>);
             }
         },
         {
             dataIndex: 'update_time',
             title: '更新时间',
             render: (value, record, index) => {
-                return _jsx(_Fragment, { children: dayjs(value * 1000).format('YYYY-MM-DD HH:mm') });
+                return <>{dayjs(value * 1000).format('YYYY-MM-DD HH:mm')}</>;
             }
         },
         {
             dataIndex: 'op',
             title: '操作',
             render: (value, record, index) => {
-                return _jsx(Popover, { content: _jsx("div", { style: { padding: 12 }, children: _jsx(ShowNews, { oakAutoUnmount: true, news: record.content.news_item }) }), children: _jsx("div", { style: { cursor: 'pointer', color: '#1677ff' }, children: "\u9884\u89C8" }) });
+                return <Popover content={<div style={{ padding: 12 }}><ShowNews oakAutoUnmount={true} news={record.content.news_item}/></div>}>
+                    <div style={{ cursor: 'pointer', color: '#1677ff' }}>预览</div>
+                </Popover>;
             }
         }
     ];
@@ -156,7 +165,7 @@ export default function Render(props) {
             dataIndex: 'url',
             title: '图片',
             render: (value, record, index) => {
-                return _jsx("img", { style: { width: 120, height: 70 }, src: getImg(value) });
+                return <img style={{ width: 120, height: 70 }} src={getImg(value)}/>;
             },
         });
     }
@@ -165,7 +174,7 @@ export default function Render(props) {
             dataIndex: 'url',
             title: '音频',
             render: (value, record, index) => {
-                return _jsxs("a", { href: getImg(value), download: true, style: { color: '#1677FF', cursor: 'pointer' }, children: [_jsx(DownloadOutlined, {}), record.media_id] });
+                return <a href={getImg(value)} download={true} style={{ color: '#1677FF', cursor: 'pointer' }}><DownloadOutlined />{record.media_id}</a>;
             },
         });
     }
@@ -174,68 +183,105 @@ export default function Render(props) {
             dataIndex: 'url',
             title: '视频',
             render: (value, record, index) => {
-                return _jsxs("a", { href: getImg(value), download: true, style: { color: '#1677FF', cursor: 'pointer' }, children: [_jsx(DownloadOutlined, {}), record.media_id] });
+                return <a href={getImg(value)} download={true} style={{ color: '#1677FF', cursor: 'pointer' }}><DownloadOutlined />{record.media_id}</a>;
             },
         });
     }
     else {
     }
-    return (_jsxs("div", { className: Style.container, children: [_jsx("div", { className: Style.title, children: type === 'news' ? '选择图文' : type === 'image' ? '选择图片' : type === 'voice' ? '插入音频' : '选择视频' }), type !== 'news' && _jsxs("div", { className: Style.upload, children: [_jsx("div", { className: Style.help, children: type === 'image' ? '大小不超过10M' : type === 'voice' ? '由于版本兼容的原因,你暂时只可以选择60秒内的音频发送' : null }), type === 'video' ? (_jsx(Button, { onClick: () => {
-                            setUpsertOpen(true);
-                        }, children: "\u4E0A\u4F20\u89C6\u9891" })) : (_jsx(Upload, { maxCount: 1, showUploadList: false, customRequest: ({ file }) => {
-                            uploadFile(file);
-                        }, children: _jsxs(Button, { children: ["\u4E0A\u4F20", type === 'image' ? '图片' : '音频'] }) })), _jsx(Modal, { open: upsertOpen, onCancel: () => setUpsertOpen(false), title: '上传视频', footer: _jsxs(Space, { children: [_jsx(Button, { type: 'primary', onClick: () => {
-                                        if (title.length === 0) {
-                                            setMessage({
-                                                type: 'warning',
-                                                content: '标题不能为空'
-                                            });
-                                            return;
-                                        }
-                                        if (introduction.length === 0) {
-                                            setMessage({
-                                                type: 'warning',
-                                                content: '视频介绍不能为空'
-                                            });
-                                            return;
-                                        }
-                                        if (fileList.length === 0 || fileList[0].status === 'error') {
-                                            setMessage({
-                                                type: 'warning',
-                                                content: '请上传视频文件'
-                                            });
-                                            return;
-                                        }
-                                        const formData = new FormData;
-                                        const descriptionData = {
-                                            title,
-                                            introduction,
-                                        };
-                                        if (upload(video, descriptionData)) {
-                                            setUpsertOpen(false);
-                                        }
-                                    }, children: "\u4E0A\u4F20" }), _jsx(Button, { onClick: () => setUpsertOpen(false), children: "\u53D6\u6D88" })] }), children: _jsxs("div", { children: [_jsx(Form.Item, { label: _jsx("div", { className: Style.label, children: "\u6807\u9898" }), required: true, labelAlign: 'right', labelCol: { span: 4 }, children: _jsx(Input, { showCount: true, maxLength: 20, value: title, onChange: (val) => setTitle(val.target.value) }) }), _jsx(Form.Item, { label: _jsx("div", { className: Style.label, children: "\u89C6\u9891\u4ECB\u7ECD" }), required: true, children: _jsx(TextArea, { showCount: true, maxLength: 300, value: introduction, autoSize: { minRows: 5 }, onChange: (val) => setIntroduction(val.target.value) }) }), _jsx(Form.Item, { label: _jsx("div", { className: Style.label, children: "\u4E0A\u4F20\u89C6\u9891" }), required: true, children: _jsx(Upload, { customRequest: ({ file }) => uploadVideo(file), maxCount: 1, onChange: fileChange, fileList: fileList, children: _jsxs(Button, { children: [_jsx(DownloadOutlined, {}), fileList.length > 0 ? '重新' : '', "\u4E0A\u4F20"] }) }) })] }) })] }), _jsx("div", { className: Style.list, children: _jsx(Table, { rowKey: type === 'news' ? 'article_id' : 'media_id', dataSource: materials, columns: type === 'news' ? newsColumns : columns, pagination: {
-                        total: total,
-                        pageSize: 10,
-                        current: currentPage,
-                        onChange: (page, pageSize) => {
-                            setCurrentPage(page);
-                            if (type === 'news') {
-                                getArticleList(page);
-                            }
-                            else {
-                                getMaterialList(page);
-                            }
-                        },
-                    }, rowSelection: {
-                        type: 'radio',
-                        onSelect: (record) => {
-                            if (type === 'news') {
-                                getMenuContent(record);
-                            }
-                            else {
-                                getMenuContent(record);
-                            }
-                        },
-                    } }) })] }));
+    return (<div className={Style.container}>
+            <div className={Style.title}>
+                {type === 'news' ? '选择图文' : type === 'image' ? '选择图片' : type === 'voice' ? '插入音频' : '选择视频'}
+            </div>
+            {type !== 'news' && <div className={Style.upload}>
+                    <div className={Style.help}>
+                        {type === 'image' ? '大小不超过10M' : type === 'voice' ? '由于版本兼容的原因,你暂时只可以选择60秒内的音频发送' : null}
+                    </div>
+                    {type === 'video' ? (<Button onClick={() => {
+                    setUpsertOpen(true);
+                }}>上传视频</Button>) : (<Upload maxCount={1} showUploadList={false} customRequest={({ file }) => {
+                    uploadFile(file);
+                }}>
+                                <Button>上传{type === 'image' ? '图片' : '音频'}</Button>
+                            </Upload>)}
+                    <Modal open={upsertOpen} onCancel={() => setUpsertOpen(false)} title={'上传视频'} footer={<Space>
+                                <Button type='primary' onClick={() => {
+                    if (title.length === 0) {
+                        setMessage({
+                            type: 'warning',
+                            content: '标题不能为空'
+                        });
+                        return;
+                    }
+                    if (introduction.length === 0) {
+                        setMessage({
+                            type: 'warning',
+                            content: '视频介绍不能为空'
+                        });
+                        return;
+                    }
+                    if (fileList.length === 0 || fileList[0].status === 'error') {
+                        setMessage({
+                            type: 'warning',
+                            content: '请上传视频文件'
+                        });
+                        return;
+                    }
+                    const formData = new FormData;
+                    const descriptionData = {
+                        title,
+                        introduction,
+                    };
+                    if (upload(video, descriptionData)) {
+                        setUpsertOpen(false);
+                    }
+                }}>
+                                    上传
+                                </Button>
+                                <Button onClick={() => setUpsertOpen(false)}>
+                                    取消
+                                </Button>
+                            </Space>}>
+                        <div>
+                            <Form.Item label={<div className={Style.label}>标题</div>} required labelAlign={'right'} labelCol={{ span: 4 }}>
+                                <Input showCount maxLength={20} value={title} onChange={(val) => setTitle(val.target.value)}/>
+                            </Form.Item>
+                            <Form.Item label={<div className={Style.label}>视频介绍</div>} required>
+                                <TextArea showCount maxLength={300} value={introduction} autoSize={{ minRows: 5 }} onChange={(val) => setIntroduction(val.target.value)}/>
+                            </Form.Item>
+                            <Form.Item label={<div className={Style.label}>上传视频</div>} required>
+                                <Upload customRequest={({ file }) => uploadVideo(file)} maxCount={1} onChange={fileChange} fileList={fileList}>
+                                    <Button><DownloadOutlined />{fileList.length > 0 ? '重新' : ''}上传</Button>
+                                </Upload>
+                            </Form.Item>
+                        </div>
+                    </Modal>
+                </div>}
+            <div className={Style.list}>
+                <Table rowKey={type === 'news' ? 'article_id' : 'media_id'} dataSource={materials} columns={type === 'news' ? newsColumns : columns} pagination={{
+            total: total,
+            pageSize: 10,
+            current: currentPage,
+            onChange: (page, pageSize) => {
+                setCurrentPage(page);
+                if (type === 'news') {
+                    getArticleList(page);
+                }
+                else {
+                    getMaterialList(page);
+                }
+            },
+        }} rowSelection={{
+            type: 'radio',
+            onSelect: (record) => {
+                if (type === 'news') {
+                    getMenuContent(record);
+                }
+                else {
+                    getMenuContent(record);
+                }
+            },
+        }}/>
+            </div>
+        </div>);
 }

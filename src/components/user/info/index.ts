@@ -101,7 +101,7 @@ export default OakComponent({
             user?.gender &&
             this.state.genderOptions.find((ele) => ele.value === user?.gender);
 
-        const lastSendAt = features.localStorage.load(SEND_KEY);
+        const { lastSendAt } = this.state;
         const now = Date.now();
         let counter = 0;
         if (typeof lastSendAt === 'number') {
@@ -142,6 +142,7 @@ export default OakComponent({
         };
     },
     data: {
+        lastSendAt: undefined as undefined | number,
         stateColor: {
             shadow: 'primary',
             normal: 'success',
@@ -179,7 +180,11 @@ export default OakComponent({
             if (userId !== oakId) {
                 throw new OakUserInvisibleException();
             }
-            this.setState({ birthEnd: dayjs().format('YYYY-MM-DD') });
+            const lastSendAt = await this.load(SEND_KEY);
+            this.setState({ 
+                birthEnd: dayjs().format('YYYY-MM-DD'),
+                lastSendAt,
+            }, () => this.reRender());
         },
     },
     methods: {
@@ -343,8 +348,11 @@ export default OakComponent({
                     type: 'success',
                     content: result,
                 });
-                this.save(SEND_KEY, Date.now());
-                this.reRender();
+                const lastSendAt = Date.now();
+                await this.save(SEND_KEY, lastSendAt);
+                this.setState({
+                    lastSendAt,
+                }, () => this.reRender());
             } catch (err) {
                 this.setMessage({
                     type: 'error',

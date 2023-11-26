@@ -1,4 +1,3 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { generateNewId } from "oak-domain/lib/utils/uuid";
 import { useState, useEffect } from "react";
 import { Alert, Button, Row, Col, Space, Input, } from "antd";
@@ -35,81 +34,117 @@ export default function Render(props) {
             setArticleId(id);
         }
     }, [id]);
-    return (_jsxs("div", { className: Style.container, children: [_jsx("div", { style: { width: 'calc(100% - 20px)' }, children: _jsx(Toolbar, { editor: editor, defaultConfig: toolbarConfig, mode: "default" }) }), _jsxs(Row, { children: [_jsx(Col, { flex: 4 }), _jsx(Col, { flex: 16, children: _jsx("div", { className: Style.content, children: _jsxs("div", { className: Style.editorContainer, children: [data.contentTip && (_jsx(Alert, { type: "info", message: t('tips.content'), closable: true, onClose: () => method.clearContentTip() })), _jsx("div", { className: Style.titleContainer, children: _jsx(Input, { onChange: (e) => update({ name: e.target.value }), value: data.name, placeholder: '请输入文章标题', size: "large", maxLength: 32, suffix: `${[...(data.name || '')].length}/32`, className: Style.titleInput }) }), _jsx("div", { className: Style.editorContent, children: _jsx(Editor, { defaultConfig: {
-                                                autoFocus: true,
-                                                placeholder: '请输入文章内容...',
-                                                MENU_CONF: {
-                                                    checkImage: customCheckImageFn,
-                                                    uploadImage: {
-                                                        // 自定义上传
-                                                        async customUpload(file, insertFn) {
-                                                            // TS 语法
-                                                            // file 即选中的文件
-                                                            const { name, size, type } = file;
-                                                            const extension = name.substring(name.lastIndexOf('.') + 1);
-                                                            const filename = name.substring(0, name.lastIndexOf('.'));
-                                                            const extraFile = {
-                                                                entity: 'article',
-                                                                entityId: articleId,
-                                                                origin: origin1,
-                                                                type: 'image',
-                                                                tag1: 'source',
-                                                                objectId: generateNewId(),
-                                                                filename,
-                                                                size,
-                                                                extension,
-                                                                bucket: '',
-                                                                id: generateNewId(),
-                                                            };
-                                                            try {
-                                                                // 自己实现上传，并得到图片 url alt href
-                                                                const url = await uploadFile(extraFile, file);
-                                                                // 最后插入图片
-                                                                insertFn(url, extraFile.filename);
-                                                            }
-                                                            catch (err) { }
-                                                        },
-                                                    },
-                                                    uploadVideo: {
-                                                        // 自定义上传
-                                                        async customUpload(file, insertFn) {
-                                                            // TS 语法
-                                                            // file 即选中的文件
-                                                            const { name, size, type } = file;
-                                                            const extension = name.substring(name.lastIndexOf('.') + 1);
-                                                            const filename = name.substring(0, name.lastIndexOf('.'));
-                                                            const extraFile = {
-                                                                entity: 'article',
-                                                                entityId: articleId,
-                                                                origin: origin1,
-                                                                type: 'video',
-                                                                tag1: 'source',
-                                                                objectId: generateNewId(),
-                                                                filename,
-                                                                size,
-                                                                extension,
-                                                                bucket: '',
-                                                                id: generateNewId(),
-                                                            };
-                                                            try {
-                                                                // 自己实现上传，并得到图片 url alt href
-                                                                const url = await uploadFile(extraFile, file);
-                                                                // 最后插入图片
-                                                                insertFn(url, url +
-                                                                    '?vframe/jpg/offset/0');
-                                                            }
-                                                            catch (err) { }
-                                                        },
-                                                    },
-                                                },
-                                            }, onCreated: setEditor, onChange: (editorDom) => {
-                                                setHtml(editorDom.getHtml());
-                                            }, style: {
-                                                minHeight: 440,
-                                            }, mode: "default" }) }), _jsx("div", { className: Style.footer, children: _jsx(Row, { align: "middle", children: _jsx(Col, { flex: "none", children: _jsxs(Space, { children: [_jsx(Button, { disabled: !data.oakDirty ||
-                                                                data.oakExecuting, type: "primary", onClick: () => {
-                                                                check();
-                                                            }, children: "\u4FDD\u5B58" }), _jsxs(Button, { onClick: () => {
-                                                                gotoPreview(content, data.name);
-                                                            }, children: [_jsx(EyeOutlined, {}), "\u9884\u89C8"] })] }) }) }) })] }) }) }), _jsx(Col, { flex: 4 })] })] }));
+    return (<div className={Style.container}>
+            <div style={{ width: 'calc(100% - 20px)' }}>
+                <Toolbar editor={editor} defaultConfig={toolbarConfig} mode="default"/>
+            </div>
+            <Row>
+                <Col flex={4}/>
+                <Col flex={16}>
+                    <div className={Style.content}>
+                        <div className={Style.editorContainer}>
+                            {data.contentTip && (<Alert type="info" message={t('tips.content')} closable onClose={() => method.clearContentTip()}/>)}
+                            <div className={Style.titleContainer}>
+                                <Input onChange={(e) => update({ name: e.target.value })} value={data.name} placeholder={'请输入文章标题'} size="large" maxLength={32} suffix={`${[...(data.name || '')].length}/32`} className={Style.titleInput}/>
+                            </div>
+                            <div className={Style.editorContent}>
+                                <Editor defaultConfig={{
+            autoFocus: true,
+            placeholder: '请输入文章内容...',
+            MENU_CONF: {
+                checkImage: customCheckImageFn,
+                uploadImage: {
+                    // 自定义上传
+                    async customUpload(file, insertFn) {
+                        // TS 语法
+                        // file 即选中的文件
+                        const { name, size, type } = file;
+                        const extension = name.substring(name.lastIndexOf('.') + 1);
+                        const filename = name.substring(0, name.lastIndexOf('.'));
+                        const extraFile = {
+                            entity: 'article',
+                            entityId: articleId,
+                            origin: origin1,
+                            type: 'image',
+                            tag1: 'source',
+                            objectId: generateNewId(),
+                            filename,
+                            size,
+                            extension,
+                            bucket: '',
+                            id: generateNewId(),
+                        };
+                        try {
+                            // 自己实现上传，并得到图片 url alt href
+                            const url = await uploadFile(extraFile, file);
+                            // 最后插入图片
+                            insertFn(url, extraFile.filename);
+                        }
+                        catch (err) { }
+                    },
+                },
+                uploadVideo: {
+                    // 自定义上传
+                    async customUpload(file, insertFn) {
+                        // TS 语法
+                        // file 即选中的文件
+                        const { name, size, type } = file;
+                        const extension = name.substring(name.lastIndexOf('.') + 1);
+                        const filename = name.substring(0, name.lastIndexOf('.'));
+                        const extraFile = {
+                            entity: 'article',
+                            entityId: articleId,
+                            origin: origin1,
+                            type: 'video',
+                            tag1: 'source',
+                            objectId: generateNewId(),
+                            filename,
+                            size,
+                            extension,
+                            bucket: '',
+                            id: generateNewId(),
+                        };
+                        try {
+                            // 自己实现上传，并得到图片 url alt href
+                            const url = await uploadFile(extraFile, file);
+                            // 最后插入图片
+                            insertFn(url, url +
+                                '?vframe/jpg/offset/0');
+                        }
+                        catch (err) { }
+                    },
+                },
+            },
+        }} onCreated={setEditor} onChange={(editorDom) => {
+            setHtml(editorDom.getHtml());
+        }} style={{
+            minHeight: 440,
+        }} mode="default"/>
+                            </div>
+                            <div className={Style.footer}>
+                                <Row align="middle">
+                                    <Col flex="none">
+                                        <Space>
+                                            <Button disabled={!data.oakDirty ||
+            data.oakExecuting} type="primary" onClick={() => {
+            check();
+        }}>
+                                                保存
+                                            </Button>
+                                            <Button onClick={() => {
+            gotoPreview(content, data.name);
+        }}>
+                                                <EyeOutlined />
+                                                预览
+                                            </Button>
+                                        </Space>
+                                    </Col>
+                                </Row>
+                            </div>
+                        </div>
+                    </div>
+                </Col>
+                <Col flex={4}/>
+            </Row>
+        </div>);
 }

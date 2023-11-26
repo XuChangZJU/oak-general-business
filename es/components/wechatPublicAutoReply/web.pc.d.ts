@@ -1,3 +1,4 @@
+import React from 'react';
 import { EntityDict } from '../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 import "@wangeditor/editor/dist/css/style.css";
@@ -22,4 +23,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'wechatPubli
         mediaId: string;
         url: string;
     }>;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

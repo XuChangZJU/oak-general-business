@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'message', false, {
@@ -12,4 +13,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'message', f
     visitState: EntityDict['message']['Schema']['visitState'];
     id: string;
     visit: (id: string) => void;
-}, {}>): import("react/jsx-runtime").JSX.Element;
+}, {}>): React.JSX.Element;

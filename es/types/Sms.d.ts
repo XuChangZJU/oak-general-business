@@ -1,5 +1,5 @@
 import { EntityDict } from '../oak-app-domain';
-import { EntityDict as BaseEntityDict } from 'oak-domain';
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/base-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 /**
  * 短信发送及模板同步

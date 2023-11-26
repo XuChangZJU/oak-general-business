@@ -1,4 +1,4 @@
-import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
+import React from 'react';
 import { Badge, Table, Typography } from 'antd';
 import dayjs from 'dayjs';
 import ActionBtnPanel from 'oak-frontend-base/es/components/actionBtnPanel';
@@ -11,9 +11,9 @@ export default function Render(props) {
     const { t, setPageSize, setCurrentPage, goDetailById } = methods;
     const { messages, oakFullpath, oakLoading, oakPagination } = data;
     const { pageSize, total, currentPage } = oakPagination || {};
-    return (_jsx(Table, { loading: oakLoading, dataSource: messages || [], rowKey: "id", 
-        // scroll={{ x: 1200 }}
-        columns: [
+    return (<Table loading={oakLoading} dataSource={messages || []} rowKey="id" 
+    // scroll={{ x: 1200 }}
+    columns={[
             // {
             //     dataIndex: 'serial-number',
             //     title: '序号',
@@ -26,13 +26,20 @@ export default function Render(props) {
                 title: '消息内容',
                 render: (value, record, index) => {
                     if (record.visitState === 'unvisited') {
-                        return (_jsxs(_Fragment, { children: [_jsx(Badge, { style: { marginRight: 5 }, status: "processing" }), _jsx(Typography.Link, { onClick: () => {
-                                        goDetailById(record.id);
-                                    }, children: value })] }));
+                        return (<>
+                                    <Badge style={{ marginRight: 5 }} status="processing"></Badge>
+                                    <Typography.Link onClick={() => {
+                                goDetailById(record.id);
+                            }}>
+                                        {value}
+                                    </Typography.Link>
+                                </>);
                     }
-                    return (_jsx(Typography.Text, { onClick: () => {
+                    return (<Typography.Text onClick={() => {
                             goDetailById(record.id);
-                        }, children: value }));
+                        }}>
+                                {value}
+                            </Typography.Text>);
                 },
             },
             {
@@ -53,7 +60,9 @@ export default function Render(props) {
                 dataIndex: '$$createAt$$',
                 title: '接收时间',
                 render: (value, record, index) => {
-                    return (_jsx("div", { children: dayjs(value).format('YYYY-MM-DD HH:mm:ss') }));
+                    return (<div>
+                                {dayjs(value).format('YYYY-MM-DD HH:mm:ss')}
+                            </div>);
                 },
             },
             {
@@ -62,7 +71,7 @@ export default function Render(props) {
                 title: '操作',
                 align: 'center',
                 render: (value, record, index) => {
-                    return (_jsx(ActionBtnPanel, { mode: "table-cell", entity: "message", items: [
+                    return (<ActionBtnPanel mode="table-cell" entity="message" items={[
                             {
                                 label: '详情',
                                 onClick: () => {
@@ -77,11 +86,11 @@ export default function Render(props) {
                                     await methods.execute();
                                 },
                             },
-                        ] }));
+                        ]}></ActionBtnPanel>);
                 },
                 fixed: 'right',
             },
-        ], pagination: {
+        ]} pagination={{
             total: total,
             pageSize: pageSize,
             current: currentPage,
@@ -91,5 +100,5 @@ export default function Render(props) {
             onChange: (page, pageSize) => {
                 setCurrentPage(page);
             },
-        } }));
+        }}/>);
 }

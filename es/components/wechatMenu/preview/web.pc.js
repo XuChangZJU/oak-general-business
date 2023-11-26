@@ -1,5 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Dropdown } from 'antd';
 import { WifiOutlined, LeftOutlined, UserOutlined, MenuOutlined } from '@ant-design/icons';
 import Style from './web.module.less';
@@ -61,40 +60,79 @@ export default function Render(props) {
             return;
         }
     };
-    return (_jsx("div", { className: Style.container, children: _jsxs("div", { className: Style.phone, children: [_jsxs("div", { className: Style.topBar, children: [_jsx("div", { className: Style.time, children: "1:21" }), _jsx("div", { className: Style.icons, children: _jsx(WifiOutlined, { style: { fontSize: 14 } }) })] }), _jsxs("div", { className: Style.actionBar, children: [_jsx(LeftOutlined, { style: { fontSize: 20 } }), _jsx(UserOutlined, { style: { fontSize: 20 } })] }), _jsx("div", { className: Style.page, children: (sendMsg && sendMsg.length > 0) &&
-                        sendMsg.map((ele) => {
-                            if (ele.type === 'text') {
-                                return _jsx("div", { className: Style.msg, children: _jsx(Editor, { defaultConfig: editorConfig, value: ele.content, mode: "default", className: Style.editor }) });
-                            }
-                            else if (ele.type === 'image') {
-                                return _jsx("img", { src: ele.content, className: Style.img });
-                            }
-                            else if (ele.type === 'article_id') {
-                                return _jsx("div", { className: Style.news, children: _jsx(ShowNews, { news: ele.content }) });
-                            }
-                            else if (ele.type === 'voice') {
-                                return _jsx("div", { className: Style.msg, children: _jsx("a", { style: { color: '#1677ff' }, href: ele.content.url, download: true, children: ele.content.media_id }) });
-                            }
-                            else if (ele.type === 'video') {
-                                return _jsx("div", { className: Style.msg, children: _jsx("a", { style: { color: '#1677ff' }, href: ele.content.url, download: true, children: ele.content.media_id }) });
-                            }
-                            else if (ele.type === 'miniprogram') {
-                                return _jsx("div", { className: Style.msg, children: ele.content });
-                            }
-                        }) }), _jsxs("div", { className: Style.bottomBar, children: [_jsx("div", { className: Style.keyBoard }), _jsx("div", { className: Style.buttonList, children: button?.map((ele, index) => {
-                                if (ele.sub_button && ele.sub_button.length > 0) {
-                                    const items = ele.sub_button.map((sub, index2) => {
-                                        return {
-                                            label: sub.name,
-                                            key: `${index * 10 + index2}`,
-                                        };
-                                    });
-                                    return _jsx(Dropdown, { arrow: false, menu: { items, onClick }, placement: 'top', children: _jsxs("div", { className: Style.button, children: [_jsx(MenuOutlined, { style: { fontSize: 12, color: '#d0d0d0' } }), _jsx("div", { className: Style.buttonName, style: { marginLeft: 5 }, children: ele.name })] }) });
-                                }
-                                else {
-                                    return _jsx("div", { className: Style.button, onClick: () => {
-                                            menuAction(ele);
-                                        }, children: _jsx("div", { className: Style.buttonName, children: ele.name }) });
-                                }
-                            }) })] })] }) }));
+    return (<div className={Style.container}>
+            <div className={Style.phone}>
+                <div className={Style.topBar}>
+                    <div className={Style.time}>1:21</div>
+                    <div className={Style.icons}>
+                        <WifiOutlined style={{ fontSize: 14 }}/>
+                    </div>
+                </div>
+                <div className={Style.actionBar}>
+                    <LeftOutlined style={{ fontSize: 20 }}/>
+                    <UserOutlined style={{ fontSize: 20 }}/>
+                </div>
+                <div className={Style.page}>
+                    {(sendMsg && sendMsg.length > 0) &&
+            sendMsg.map((ele) => {
+                if (ele.type === 'text') {
+                    return <div className={Style.msg}>
+                                    <Editor defaultConfig={editorConfig} value={ele.content} mode="default" className={Style.editor}/>
+                                </div>;
+                }
+                else if (ele.type === 'image') {
+                    return <img src={ele.content} className={Style.img}/>;
+                }
+                else if (ele.type === 'article_id') {
+                    return <div className={Style.news}>
+                                    <ShowNews news={ele.content}/>
+                                </div>;
+                }
+                else if (ele.type === 'voice') {
+                    return <div className={Style.msg}>
+                                    <a style={{ color: '#1677ff' }} href={ele.content.url} download={true}>{ele.content.media_id}</a>
+                                </div>;
+                }
+                else if (ele.type === 'video') {
+                    return <div className={Style.msg}>
+                                    <a style={{ color: '#1677ff' }} href={ele.content.url} download={true}>{ele.content.media_id}</a>
+                                </div>;
+                }
+                else if (ele.type === 'miniprogram') {
+                    return <div className={Style.msg}>{ele.content}</div>;
+                }
+            })}
+                </div>
+                <div className={Style.bottomBar}>
+                    <div className={Style.keyBoard}>
+
+                    </div>
+                    <div className={Style.buttonList}>
+                        {button?.map((ele, index) => {
+            if (ele.sub_button && ele.sub_button.length > 0) {
+                const items = ele.sub_button.map((sub, index2) => {
+                    return {
+                        label: sub.name,
+                        key: `${index * 10 + index2}`,
+                    };
+                });
+                return <Dropdown arrow={false} menu={{ items, onClick }} placement='top'>
+                                        <div className={Style.button}>
+                                            <MenuOutlined style={{ fontSize: 12, color: '#d0d0d0' }}/>
+                                            <div className={Style.buttonName} style={{ marginLeft: 5 }}>{ele.name}</div>
+                                        </div>
+                                    </Dropdown>;
+            }
+            else {
+                return <div className={Style.button} onClick={() => {
+                        menuAction(ele);
+                    }}>
+                                        <div className={Style.buttonName}>{ele.name}</div>
+                                    </div>;
+            }
+        })}
+                    </div>
+                </div>
+            </div>
+        </div>);
 }

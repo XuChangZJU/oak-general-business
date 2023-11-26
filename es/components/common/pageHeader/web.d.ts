@@ -21,5 +21,5 @@ type PageHeaderProps = {
 };
 export default function Render(props: WebComponentProps<EntityDict, keyof EntityDict, false, PageHeaderProps, {
     goBack: (delta?: number) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;
 export {};

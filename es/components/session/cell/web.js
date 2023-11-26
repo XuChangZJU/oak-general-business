@@ -1,4 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import React from "react";
 import { Image, Badge } from 'antd';
 import dayjs from 'dayjs';
 import classNames from 'classnames';
@@ -12,15 +12,30 @@ export default function render(props) {
     const text = sessionMessage?.text;
     const today = dayjs().startOf('day').valueOf();
     const lastCreateAt = lmts && dayjs(lmts).startOf('day').valueOf();
-    return (_jsxs("div", { className: classNames(Style.cell, {
+    return (<div className={classNames(Style.cell, {
             [Style.cell_selected]: id === selectedId,
-        }), onClick: () => {
+        })} onClick={() => {
             onSelect(id);
-        }, children: [_jsx(Badge, { dot: id !== selectedId, count: unreadLength || 0, children: _jsx(Image, { className: Style.avatar, src: getAvatarUrl(), preview: false }) }), _jsxs("div", { className: Style.inner, children: [_jsxs("div", { className: Style.top, children: [_jsx("div", { className: Style.title, children: name || getName() }), _jsx("div", { className: Style.date, children: lmts &&
-                                    (today === lastCreateAt
-                                        ? dayjs(lmts).format('HH:mm')
-                                        : dayjs(lmts).format('YYYY-MM-DD')) })] }), _jsx("div", { className: Style.message, children: type &&
-                            (type === 'text'
-                                ? `${text}`
-                                : `[${t(`sessionMessage:v.type.${type}`)}消息]`) })] })] }));
+        }}>
+            <Badge dot={id !== selectedId} count={unreadLength || 0}>
+                <Image className={Style.avatar} src={getAvatarUrl()} preview={false}/>
+            </Badge>
+            <div className={Style.inner}>
+                <div className={Style.top}>
+                    <div className={Style.title}>{name || getName()}</div>
+                    <div className={Style.date}>
+                        {lmts &&
+            (today === lastCreateAt
+                ? dayjs(lmts).format('HH:mm')
+                : dayjs(lmts).format('YYYY-MM-DD'))}
+                    </div>
+                </div>
+                <div className={Style.message}>
+                    {type &&
+            (type === 'text'
+                ? `${text}`
+                : `[${t(`sessionMessage:v.type.${type}`)}消息]`)}
+                </div>
+            </div>
+        </div>);
 }

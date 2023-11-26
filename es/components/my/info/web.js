@@ -1,5 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Styles from './web.pc.module.less';
 import { Button, List, Popup, Tag, Input, Radio, Form, Space } from 'antd-mobile';
 import MyAvatar from '../avatar';
@@ -25,9 +24,16 @@ export default function Render(props) {
     const [updateAttr, setUpdateAttr] = useState(undefined);
     const [updateValue, setUpdateValue] = useState(undefined);
     if (!userId) {
-        return (_jsxs("div", { className: Styles.container, children: [_jsx("div", { className: Styles.header, children: _jsx(Button, { onClick: () => navigateTo({
-                            url: '/login',
-                        }), children: t('login') }) }), _jsx("div", { className: Styles.body })] }));
+        return (<div className={Styles.container}>
+                <div className={Styles.header}>
+                    <Button onClick={() => navigateTo({
+                url: '/login',
+            })}>
+                        {t('login')}
+                    </Button>
+                </div>
+                <div className={Styles.body}></div>
+            </div>);
     }
     const GenderOptions = [
         {
@@ -39,18 +45,70 @@ export default function Render(props) {
             value: 'female',
         }
     ];
-    return (_jsxs("div", { className: Styles.container, children: [_jsxs("div", { className: Styles.header, children: [_jsx(MyAvatar, { size: 66, iconColor: "white" }), _jsx("div", { className: Styles.name, children: nameText || t('unset') })] }), _jsx("div", { className: Styles.body, children: _jsxs(List, { children: [_jsx(List.Item, { extra: nickname || t('unset'), onClick: () => setUpdateAttr('nickname'), children: t('user:attr.nickname') }), _jsx(List.Item, { extra: name || t('unset'), onClick: () => setUpdateAttr('name'), children: t('user:attr.name') }), _jsx(List.Item, { extra: _jsx(Tag, { color: UserStateColor[userState], children: t(`user:v.userState.${userState}`) }), children: t('user:attr.userState') }), _jsx(List.Item, { extra: _jsx(Tag, { color: IdStateColor[idState], children: t(`user:v.idState.${idState}`) }), children: t('user:attr.idState') }), _jsx(List.Item, { extra: gender ? t(`user:v.gender.${gender}`) : t('unset'), onClick: () => setUpdateAttr('gender'), children: t('user:attr.gender') }), _jsx(List.Item, { extra: mobileText, onClick: () => navigateTo({ url: '/mobile/me' }), children: t('mobile') })] }) }), showLogout && _jsxs(_Fragment, { children: [_jsx("div", { style: { flex: 1 } }), _jsx(Button, { block: true, color: "warning", onClick: () => logout(), children: t('logout') })] }), _jsx("div", { className: Styles.extraMobile, children: _jsx("a", { href: "/user/manage", children: _jsx(OakIcon, { name: "wand-magic-sparkles", size: 26, color: "warning" }) }) }), _jsx(Popup, { position: "bottom", visible: !!updateAttr, onClose: () => {
-                    setUpdateAttr(undefined);
-                    setUpdateValue(undefined);
-                }, closeOnMaskClick: true, children: _jsx(Form, { layout: "horizontal", children: _jsxs(Form.Item, { extra: _jsx(Button, { size: "middle", disabled: !updateValue, color: "primary", onClick: async () => {
-                                await updateAttribute(updateAttr, updateValue);
-                                setUpdateAttr(undefined);
-                                setUpdateValue(undefined);
-                            }, children: t('common::action.confirm') }), children: [updateAttr !== 'gender'
-                                && _jsx(Input, { className: Styles.input, maxLength: updateAttr === 'name' ? 16 : 64, value: updateValue || props.data[updateAttr], onChange: (value) => {
-                                        setUpdateValue(value);
-                                    } }), updateAttr === 'gender'
-                                && _jsx(Radio.Group, { value: updateValue || gender, onChange: (value) => {
-                                        setUpdateValue(value);
-                                    }, children: _jsx(Space, { direction: "horizontal", children: GenderOptions.map(ele => _jsx(Radio, { value: ele.value, children: ele.label })) }) })] }) }) })] }));
+    return (<div className={Styles.container}>
+            <div className={Styles.header}>
+                <MyAvatar size={66} iconColor="white"/>
+                <div className={Styles.name}>{nameText || t('unset')}</div>
+            </div>
+            <div className={Styles.body}>
+                <List>
+                    <List.Item extra={nickname || t('unset')} onClick={() => setUpdateAttr('nickname')}>
+                        {t('user:attr.nickname')}
+                    </List.Item>
+                    <List.Item extra={name || t('unset')} onClick={() => setUpdateAttr('name')}>
+                        {t('user:attr.name')}
+                    </List.Item>
+                    <List.Item extra={<Tag color={UserStateColor[userState]}>{t(`user:v.userState.${userState}`)}</Tag>}>
+                        {t('user:attr.userState')}
+                    </List.Item>
+                    <List.Item extra={<Tag color={IdStateColor[idState]}>{t(`user:v.idState.${idState}`)}</Tag>}>
+                        {t('user:attr.idState')}
+                    </List.Item>
+                    <List.Item extra={gender ? t(`user:v.gender.${gender}`) : t('unset')} onClick={() => setUpdateAttr('gender')}>
+                        {t('user:attr.gender')}
+                    </List.Item>
+                    <List.Item extra={mobileText} onClick={() => navigateTo({ url: '/mobile/me' })}>
+                        {t('mobile')}
+                    </List.Item>
+                </List>
+            </div>
+            {showLogout && <>
+                    <div style={{ flex: 1 }}/>
+                    <Button block color="warning" onClick={() => logout()}>
+                        {t('logout')}
+                    </Button>
+                </>}
+            <div className={Styles.extraMobile}>
+                <a href="/user/manage">
+                    <OakIcon name="wand-magic-sparkles" size={26} color="warning"/>
+                </a>
+            </div>
+            <Popup position="bottom" visible={!!updateAttr} onClose={() => {
+            setUpdateAttr(undefined);
+            setUpdateValue(undefined);
+        }} closeOnMaskClick={true}>
+                <Form layout="horizontal">
+                    <Form.Item extra={<Button size="middle" disabled={!updateValue} color="primary" onClick={async () => {
+                await updateAttribute(updateAttr, updateValue);
+                setUpdateAttr(undefined);
+                setUpdateValue(undefined);
+            }}>
+                                {t('common::action.confirm')}
+                            </Button>}>
+                        {updateAttr !== 'gender'
+            && <Input className={Styles.input} maxLength={updateAttr === 'name' ? 16 : 64} value={updateValue || props.data[updateAttr]} onChange={(value) => {
+                    setUpdateValue(value);
+                }}/>}
+                        {updateAttr === 'gender'
+            && <Radio.Group value={updateValue || gender} onChange={(value) => {
+                    setUpdateValue(value);
+                }}>
+                                <Space direction="horizontal">
+                                    {GenderOptions.map(ele => <Radio value={ele.value}>{ele.label}</Radio>)}
+                                </Space>
+                            </Radio.Group>}
+                    </Form.Item>
+                </Form>
+            </Popup>
+        </div>);
 }

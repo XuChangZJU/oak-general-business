@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'station', false, {
@@ -6,4 +7,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'station', f
     onClose: () => void;
     openStation: boolean;
     subwayId: string;
-}, {}>): import("react/jsx-runtime").JSX.Element;
+}, {}>): React.JSX.Element;

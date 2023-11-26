@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'user', true, {
@@ -17,4 +18,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', true
     goUpsert: () => void;
     confirmDelete: (id: string) => Promise<void>;
     goUpdate: (id: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

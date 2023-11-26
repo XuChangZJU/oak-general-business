@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'article', true, {
@@ -13,4 +14,4 @@ export default function render(props: WebComponentProps<EntityDict, 'article', t
     searchValueChange: (v: string) => Promise<void>;
     searchConfirm: () => Promise<void>;
     onRemove: (id: string) => Promise<void>;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

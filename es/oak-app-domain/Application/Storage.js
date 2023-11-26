@@ -15,7 +15,7 @@ export const desc = {
         type: {
             notNull: true,
             type: "enum",
-            enumeration: ["web", "wechatMp", "wechatPublic"]
+            enumeration: ["web", "wechatMp", "wechatPublic", "native"]
         },
         systemId: {
             notNull: true,

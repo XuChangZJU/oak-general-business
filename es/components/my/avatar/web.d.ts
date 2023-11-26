@@ -1,3 +1,4 @@
+import React from 'react';
 import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
 import { AvatarSize } from 'antd/es/avatar/AvatarContext';
@@ -9,4 +10,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', fal
     iconName?: string;
     iconLarger?: string;
     onClick?: () => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

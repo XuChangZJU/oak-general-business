@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../oak-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'wechatMenu', true, {
@@ -6,4 +7,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'wechatMenu'
     menuId: string;
     isPlatform: boolean;
     tabKey: string;
-}, {}>): import("react/jsx-runtime").JSX.Element | null;
+}, {}>): React.JSX.Element | null;

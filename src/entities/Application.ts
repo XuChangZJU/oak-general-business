@@ -7,7 +7,7 @@ import { Style } from '../types/Style';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
 export type Passport = 'email' | 'mobile' | 'wechat' | 'wechatPublic';
-export type AppType = 'web' | 'wechatMp' | 'wechatPublic';
+export type AppType = 'web' | 'wechatMp' | 'wechatPublic' | 'native';
 export type WechatMpConfig = {
     type: 'wechatMp';
     appId: string;
@@ -59,12 +59,17 @@ export type WechatPublicConfig = {
     passport?: Passport[];
 };
 
+export type NativeConfig = {
+    type: 'native',
+    passport?: Passport[];
+};
+
 export interface Schema extends EntityShape {
     name: String<32>;
     description: Text;
     type: AppType;
     system: System;
-    config: WebConfig | WechatMpConfig | WechatPublicConfig;
+    config: WebConfig | WechatMpConfig | WechatPublicConfig | NativeConfig;
     style?: Style;
     sessions?: Session[];
 };
@@ -94,6 +99,7 @@ const entityDesc: EntityDesc<
                     web: '网站',
                     wechatPublic: '微信公众号',
                     wechatMp: '微信小程序',
+                    native: 'App',
                 },
             },
         },

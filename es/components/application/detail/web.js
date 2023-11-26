@@ -1,5 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Row, Descriptions, Typography, Button, Modal } from 'antd';
 import ApplicationUpsert from '../upsert';
 export default function Render(props) {
@@ -7,12 +6,41 @@ export default function Render(props) {
     const { t, clean, execute } = props.methods;
     const [open, setOpen] = useState(false);
     if (id && oakFullpath) {
-        return (_jsxs(_Fragment, { children: [_jsx(Modal, { open: open, width: 800, onCancel: () => {
-                        clean();
-                        setOpen(false);
-                    }, footer: _jsx(Button, { type: "primary", onClick: async () => {
-                            await execute();
-                            setOpen(false);
-                        }, disabled: oakExecutable !== true || oakExecuting, children: t('common::action.confirm') }), children: _jsx(ApplicationUpsert, { oakPath: oakFullpath, oakId: id }) }), _jsxs(Descriptions, { column: 2, bordered: true, children: [_jsx(Descriptions.Item, { label: "id", children: _jsx(Typography.Paragraph, { copyable: true, children: id }) }), _jsx(Descriptions.Item, { label: t('application:attr.name'), children: name }), _jsx(Descriptions.Item, { label: t('application:attr.description'), children: description }), _jsx(Descriptions.Item, { label: t('application:attr.type'), children: t(`application:v.type.${type}`) }), _jsx(Descriptions.Item, { span: 2, children: _jsx(Row, { justify: "end", children: _jsx(Button, { type: "primary", onClick: () => setOpen(true), children: t('common::action.update') }) }) })] })] }));
+        return (<>
+                <Modal open={open} width={800} onCancel={() => {
+                clean();
+                setOpen(false);
+            }} footer={<Button type="primary" onClick={async () => {
+                    await execute();
+                    setOpen(false);
+                }} disabled={oakExecutable !== true || oakExecuting}>
+                            {t('common::action.confirm')}
+                        </Button>}>
+                    <ApplicationUpsert oakPath={oakFullpath} oakId={id}/>
+                </Modal>
+                <Descriptions column={2} bordered>
+                    <Descriptions.Item label="id">
+                        <Typography.Paragraph copyable>
+                            {id}
+                        </Typography.Paragraph>
+                    </Descriptions.Item>
+                    <Descriptions.Item label={t('application:attr.name')}>
+                        {name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label={t('application:attr.description')}>
+                        {description}
+                    </Descriptions.Item>
+                    <Descriptions.Item label={t('application:attr.type')}>
+                        {t(`application:v.type.${type}`)}
+                    </Descriptions.Item>
+                    <Descriptions.Item span={2}>
+                        <Row justify="end">
+                            <Button type="primary" onClick={() => setOpen(true)}>
+                                {t('common::action.update')}
+                            </Button>
+                        </Row>
+                    </Descriptions.Item>
+                </Descriptions>
+            </>);
     }
 }

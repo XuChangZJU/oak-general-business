@@ -1,7 +1,7 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { getConfig } from '../getContextConfig';
 import { OakUploadException } from '../../types/Exception';
-import { OakNetworkException } from 'oak-domain';
+import { OakNetworkException } from 'oak-domain/lib/types/Exception';
 export default class CTYun {
     name = 'ctyun';
     autoInform() {

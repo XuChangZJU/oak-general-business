@@ -1,5 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, Space, Radio, Form, Input } from 'antd';
 const { Search } = Input;
 const { confirm } = Modal;
@@ -222,296 +221,477 @@ export default function Render(props) {
             }
         }
     }, [url]);
-    return (_jsx("div", { className: Style.container, style: iState === 'fail' ? { border: '1px solid #FF5557' } : {}, children: config &&
+    return (<div className={Style.container} style={iState === 'fail' ? { border: '1px solid #FF5557' } : {}}>
+            {config &&
             config.button &&
             config.button.length > 0 &&
-            (selectedBtn !== 0 || selectedSubBtn !== 0) ? (_jsxs("div", { className: Style.upsertMenu, children: [_jsxs("div", { className: Style.content, children: [_jsx("div", { className: Style.title, children: selectedSubBtn !== 0 ? '子菜单信息' : '菜单信息' }), _jsx("div", { style: { marginBottom: 32 }, children: _jsx(Form.Item, { label: _jsx("div", { className: Style.label, children: "\u540D\u79F0" }), colon: false, help: _jsxs("div", { children: [_jsx("div", { children: `仅支持中英文和数字，字数不超过${selectedSubBtn !== 0 ? 8 : 4}个汉字或${selectedSubBtn !== 0 ? 16 : 8}个字母。` }), errorInfo && (_jsx("div", { style: { color: '#fa5151' }, children: errorInfo }))] }), children: _jsx(Input, { style: { width: 340 }, onChange: (val) => {
-                                        setMenuName(val.target.value);
-                                        if (selectedSubBtn !== 0) {
-                                            setErrorInfo(confirmSubName(val.target.value));
-                                            if (!confirmSubName(val.target.value)) {
-                                                editMenuName(selectedSubBtn - 1, val.target.value, currentIndex);
-                                            }
-                                        }
-                                        else {
-                                            setErrorInfo(confirmName(val.target.value));
-                                            if (!confirmName(val.target.value)) {
-                                                editMenuName(selectedBtn - 1, val.target.value);
-                                            }
-                                        }
-                                    }, status: errorInfo ? 'error' : '', value: menuName }) }) }), (config.button[currentIndex]?.sub_button?.length ===
-                            0 &&
-                            selectedSubBtn === 0) ||
-                            selectedSubBtn > 0 ? (_jsxs(_Fragment, { children: [_jsx(Form.Item, { colon: false, label: _jsx("div", { className: Style.label, children: "\u6D88\u606F\u7C7B\u578B" }), children: _jsxs(Radio.Group, { value: msgType, onChange: (val) => setMsgType(val.target.value), children: [_jsx(Radio, { value: 'sendMsg', children: "\u53D1\u9001\u6D88\u606F" }), _jsx(Radio, { value: 'view', children: "\u8DF3\u8F6C\u9875\u9762" }), _jsx(Radio, { value: 'miniprogram', children: "\u8DF3\u8F6C\u5C0F\u7A0B\u5E8F" })] }) }), msgType === 'sendMsg' ? (_jsxs(_Fragment, { children: [_jsxs(Form.Item, { colon: false, label: _jsx("div", { className: Style.label, children: decideMenuContentLabel(decidedMenuContent, type) }), children: [!decidedMenuContent &&
-                                                    type !== 'text' ? (_jsxs("div", { className: Style.menuContent, children: [_jsx("div", { className: Style.item, onClick: () => {
-                                                                setOpen(true);
-                                                                getOpen(true);
-                                                                setType('news');
-                                                            }, children: "\u56FE\u6587\u4FE1\u606F" }), _jsx("div", { className: Style.item, onClick: () => {
-                                                                setType('text');
-                                                            }, children: "\u6587\u5B57" }), _jsx("div", { className: Style.item, onClick: () => {
-                                                                setOpen(true);
-                                                                getOpen(true);
-                                                                setType('image');
-                                                            }, children: "\u56FE\u7247" }), _jsx("div", { className: Style.item, onClick: () => {
-                                                                setOpen(true);
-                                                                getOpen(true);
-                                                                setType('voice');
-                                                            }, children: "\u97F3\u9891" }), _jsx("div", { className: Style.item, onClick: () => {
-                                                                setOpen(true);
-                                                                getOpen(true);
-                                                                setType('video');
-                                                            }, children: "\u89C6\u9891" })] })) : type === 'image' ? (_jsxs("div", { className: Style.coverImage, children: [_jsx("img", { className: Style.img, src: getImg(decidedMenuContent.url) }), _jsxs("div", { className: Style.buttonGroup, children: [_jsx("div", { className: Style.buttonItem, onClick: () => {
-                                                                        const modal = confirm({
-                                                                            title: '确定删除该图片吗？',
-                                                                            content: '删除后不可恢复',
-                                                                            okText: '确定',
-                                                                            cancelText: '取消',
-                                                                            onOk: async (e) => {
-                                                                                modal.destroy();
-                                                                                setDecidedMenuContent(null);
-                                                                                if (selectedBtn >
-                                                                                    0) {
-                                                                                    deleteMenuContent(selectedBtn -
-                                                                                        1);
-                                                                                }
-                                                                                else {
-                                                                                    deleteMenuContent(selectedSubBtn -
-                                                                                        1, currentIndex);
-                                                                                }
-                                                                            },
-                                                                        });
-                                                                    }, children: _jsx(DeleteOutlined, {}) }), _jsx("div", { className: Style.buttonItem, onClick: () => {
-                                                                        setOpen(true);
-                                                                        getOpen(true);
-                                                                    }, children: _jsx(SwapOutlined, {}) })] })] })) : type === 'voice' ? (_jsxs("div", { className: Style.fileCover, children: [_jsxs("a", { href: decidedMenuContent.url, download: true, style: {
-                                                                color: '#1677FF',
-                                                                cursor: 'pointer',
-                                                            }, children: [_jsx(DownloadOutlined, {}), decidedMenuContent.media_id] }), _jsxs("div", { className: Style.buttonGroup, children: [_jsx("div", { className: Style.buttonItem, onClick: () => {
-                                                                        const modal = confirm({
-                                                                            title: '确定删除该音频吗？',
-                                                                            content: '删除后不可恢复',
-                                                                            okText: '确定',
-                                                                            cancelText: '取消',
-                                                                            onOk: async (e) => {
-                                                                                modal.destroy();
-                                                                                setDecidedMenuContent(null);
-                                                                                if (selectedBtn >
-                                                                                    0) {
-                                                                                    deleteMenuContent(selectedBtn -
-                                                                                        1);
-                                                                                }
-                                                                                else {
-                                                                                    deleteMenuContent(selectedSubBtn -
-                                                                                        1, currentIndex);
-                                                                                }
-                                                                            },
-                                                                        });
-                                                                    }, children: _jsx(DeleteOutlined, {}) }), _jsx("div", { className: Style.buttonItem, onClick: () => {
-                                                                        setOpen(true);
-                                                                        getOpen(true);
-                                                                    }, children: _jsx(SwapOutlined, {}) })] })] })) : type === 'video' ? (_jsxs("div", { className: Style.fileCover, children: [_jsxs("a", { href: decidedMenuContent.url, download: true, style: {
-                                                                color: '#1677FF',
-                                                                cursor: 'pointer',
-                                                            }, children: [_jsx(DownloadOutlined, {}), decidedMenuContent.media_id] }), _jsxs("div", { className: Style.buttonGroup, children: [_jsx("div", { className: Style.buttonItem, onClick: () => {
-                                                                        const modal = confirm({
-                                                                            title: '确定删除该视频吗？',
-                                                                            content: '删除后不可恢复',
-                                                                            okText: '确定',
-                                                                            cancelText: '取消',
-                                                                            onOk: async (e) => {
-                                                                                modal.destroy();
-                                                                                setDecidedMenuContent(null);
-                                                                                if (selectedBtn >
-                                                                                    0) {
-                                                                                    deleteMenuContent(selectedBtn -
-                                                                                        1);
-                                                                                }
-                                                                                else {
-                                                                                    deleteMenuContent(selectedSubBtn -
-                                                                                        1, currentIndex);
-                                                                                }
-                                                                            },
-                                                                        });
-                                                                    }, children: _jsx(DeleteOutlined, {}) }), _jsx("div", { className: Style.buttonItem, onClick: () => {
-                                                                        setOpen(true);
-                                                                        getOpen(true);
-                                                                    }, children: _jsx(SwapOutlined, {}) })] })] })) : type === 'news' ? (_jsxs("div", { className: Style.news, children: [_jsx(ShowNews, { news: decidedMenuContent
-                                                                ?.content
-                                                                ?.news_item, oakAutoUnmount: false }), _jsxs("div", { className: Style.buttonGroup, style: {
-                                                                height: '100%',
-                                                            }, children: [_jsx("div", { className: Style.buttonItem, onClick: () => {
-                                                                        const modal = confirm({
-                                                                            title: '确定删除该图文信息吗？',
-                                                                            content: '删除后不可恢复',
-                                                                            okText: '确定',
-                                                                            cancelText: '取消',
-                                                                            onOk: async (e) => {
-                                                                                modal.destroy();
-                                                                                setDecidedMenuContent(null);
-                                                                                if (selectedBtn >
-                                                                                    0) {
-                                                                                    deleteMenuContent(selectedBtn -
-                                                                                        1);
-                                                                                }
-                                                                                else {
-                                                                                    deleteMenuContent(selectedSubBtn -
-                                                                                        1, currentIndex);
-                                                                                }
-                                                                            },
-                                                                        });
-                                                                    }, children: _jsx(DeleteOutlined, {}) }), _jsx("div", { className: Style.buttonItem, onClick: () => {
-                                                                        setOpen(true);
-                                                                        getOpen(true);
-                                                                    }, children: _jsx(SwapOutlined, {}) })] })] })) : null, type === 'text' && (_jsxs("div", { className: Style.editor, children: [_jsx(TextClick, { oakAutoUnmount: true, value: decidedMenuContent, getDecidedMenuContent: getDecidedMenuContent }), _jsx("div", { className: Style.buttonGroup, style: {
-                                                                height: 36,
-                                                                position: 'absolute',
-                                                                right: -50,
-                                                            }, children: _jsx("div", { className: Style.buttonItem, onClick: () => {
-                                                                    const modal = confirm({
-                                                                        title: '确定删除该文字吗？',
-                                                                        content: '删除后不可恢复',
-                                                                        okText: '确定',
-                                                                        cancelText: '取消',
-                                                                        onOk: async (e) => {
-                                                                            modal.destroy();
-                                                                            setType('news');
-                                                                            setDecidedMenuContent(null);
-                                                                            if (selectedBtn >
-                                                                                0) {
-                                                                                deleteMenuContent(selectedBtn -
-                                                                                    1);
-                                                                            }
-                                                                            else {
-                                                                                deleteMenuContent(selectedSubBtn -
-                                                                                    1, currentIndex);
-                                                                            }
-                                                                        },
-                                                                    });
-                                                                }, children: _jsx(DeleteOutlined, {}) }) })] }))] }), _jsx(Modal, { open: open, footer: _jsxs(Space, { children: [_jsx(Button, { type: 'primary', disabled: !menuContent, onClick: () => {
-                                                            setOpen(false);
-                                                            getOpen(false);
-                                                            setDecidedMenuContent(menuContent);
-                                                            if (selectedBtn > 0) {
-                                                                if (type !==
-                                                                    'news') {
-                                                                    if (type ===
-                                                                        'image') {
-                                                                        setConfig(selectedBtn -
-                                                                            1, {
-                                                                            type: 'media_id',
-                                                                            media_id: menuContent.media_id,
-                                                                            subType: 'image',
-                                                                        });
-                                                                    }
-                                                                    if (type ===
-                                                                        'voice') {
-                                                                        setConfig(selectedBtn -
-                                                                            1, {
-                                                                            type: 'media_id',
-                                                                            media_id: menuContent.media_id,
-                                                                            subType: 'voice',
-                                                                        });
-                                                                    }
-                                                                    if (type ===
-                                                                        'video') {
-                                                                        setConfig(selectedBtn -
-                                                                            1, {
-                                                                            type: 'media_id',
-                                                                            media_id: menuContent.media_id,
-                                                                            subType: 'video',
-                                                                        });
-                                                                    }
-                                                                }
-                                                                else {
-                                                                    setConfig(selectedBtn -
-                                                                        1, {
-                                                                        type: 'article_id',
-                                                                        article_id: menuContent.article_id,
-                                                                    });
-                                                                }
-                                                            }
-                                                            else {
-                                                                if (type !==
-                                                                    'news') {
-                                                                    if (type ===
-                                                                        'image') {
-                                                                        setConfig(selectedSubBtn -
-                                                                            1, {
-                                                                            type: 'media_id',
-                                                                            media_id: menuContent.media_id,
-                                                                            subType: 'image',
-                                                                        }, currentIndex);
-                                                                    }
-                                                                    if (type ===
-                                                                        'voice') {
-                                                                        setConfig(selectedSubBtn -
-                                                                            1, {
-                                                                            type: 'media_id',
-                                                                            media_id: menuContent.media_id,
-                                                                            subType: 'voice',
-                                                                        }, currentIndex);
-                                                                    }
-                                                                    if (type ===
-                                                                        'video') {
-                                                                        setConfig(selectedSubBtn -
-                                                                            1, {
-                                                                            type: 'media_id',
-                                                                            media_id: menuContent.media_id,
-                                                                            subType: 'video',
-                                                                        }, currentIndex);
-                                                                    }
-                                                                }
-                                                                else {
-                                                                    setConfig(selectedSubBtn -
-                                                                        1, {
-                                                                        type: 'article_id',
-                                                                        article_id: menuContent.article_id,
-                                                                    }, currentIndex);
-                                                                }
-                                                            }
-                                                        }, children: "\u786E\u5B9A" }), _jsx(Button, { type: 'default', onClick: () => {
-                                                            setOpen(false);
-                                                            getOpen(false);
-                                                            setMenuContent(null);
-                                                        }, children: "\u53D6\u6D88" })] }), onCancel: () => {
-                                                setOpen(false);
-                                                getOpen(false);
-                                                setMenuContent(null);
-                                            }, destroyOnClose: true, width: 960, children: _jsx(WechatMaterialLibrary, { oakAutoUnmount: true, type: type, getMenuContent: getMenuContent, applicationId: applicationId }) })] })) : msgType === 'view' ? (_jsxs(Form.Item, { colon: false, label: _jsx("div", { className: Style.label, children: "\u7F51\u9875\u94FE\u63A5" }), help: _jsx(_Fragment, { children: errorUrlInfo && (_jsx("div", { style: {
-                                                color: '#fa5151',
-                                            }, children: errorUrlInfo })) }), children: [_jsxs("div", { style: {
-                                                display: 'flex',
-                                                flexDirection: 'column',
-                                            }, children: [_jsx(Input, { placeholder: "\u516C\u4F17\u53F7\u94FE\u63A5:\u8BF7\u4EE5https://\u6216http://\u5F00\u5934", style: { width: 340 }, value: url, onChange: (val) => {
-                                                        setUrl(val.target.value);
-                                                        setErrorUrlInfo(confirmUrl(val.target.value));
-                                                    }, status: errorUrlInfo ? 'error' : '' }), _jsx("a", { style: { padding: '10px 0' }, onClick: () => {
-                                                        setOpen(true);
-                                                        getOpen(true);
-                                                    }, children: "\u9009\u62E9\u56FE\u6587\u94FE\u63A5" })] }), _jsx(Modal, { open: open, footer: null, title: '选择图文链接', onCancel: () => {
-                                                setOpen(false);
-                                                getOpen(false);
-                                            }, width: 600, children: _jsx(SelectArticle, { oakAutoUnmount: true, changeOpen: changeOpen, getUrl: getUrl, applicationId: applicationId }) })] })) : (_jsxs(Form.Item, { colon: false, label: _jsx("div", { className: Style.label, children: "\u5C0F\u7A0B\u5E8F" }), children: [_jsx(Button, { onClick: () => {
-                                                setOpen(true);
-                                                getOpen(true);
-                                            }, children: "\u9009\u62E9\u5C0F\u7A0B\u5E8F" }), menuContent && menuContent.appid && (_jsx("div", { children: menuContent.appid })), _jsx(Modal, { title: '添加小程序', open: open, footer: null, onCancel: () => {
-                                                setOpen(false);
-                                                getOpen(false);
-                                            }, children: _jsx(SelectMiniprogram, { oakAutoUnmount: true, getMenuContent: getMenuContent, changeOpen: changeOpen }) })] }))] })) : null] }), _jsx("div", { className: Style.actionBar, children: _jsxs(Space, { children: [_jsxs(Button, { onClick: () => changeIsPreview(true), children: [_jsx(EyeOutlined, {}), "\u9884\u89C8"] }), _jsxs(Button, { type: "primary", onClick: async () => {
-                                    createMenu(errorInfo, errorUrlInfo);
-                                }, children: [_jsx(CheckOutlined, {}), iState !== 'fail' ? '保存并发布' : '同步'] }), menuType === 'conditional' && config && menuId && (_jsxs(Button, { type: "primary", danger: true, onClick: () => {
-                                    const modal = confirm({
-                                        title: '确定删除该个性化菜单吗？',
-                                        content: '删除后不可恢复',
-                                        okText: '确定',
-                                        cancelText: '取消',
-                                        onOk: async (e) => {
-                                            await deleteConditionalMenu();
-                                            modal.destroy();
-                                        },
+            (selectedBtn !== 0 || selectedSubBtn !== 0) ? (<div className={Style.upsertMenu}>
+                    <div className={Style.content}>
+                        <div className={Style.title}>
+                            {selectedSubBtn !== 0 ? '子菜单信息' : '菜单信息'}
+                        </div>
+                        <div style={{ marginBottom: 32 }}>
+                            <Form.Item label={<div className={Style.label}>名称</div>} colon={false} help={<div>
+                                        <div>{`仅支持中英文和数字，字数不超过${selectedSubBtn !== 0 ? 8 : 4}个汉字或${selectedSubBtn !== 0 ? 16 : 8}个字母。`}</div>
+                                        {errorInfo && (<div style={{ color: '#fa5151' }}>
+                                                {errorInfo}
+                                            </div>)}
+                                    </div>}>
+                                <Input style={{ width: 340 }} onChange={(val) => {
+                setMenuName(val.target.value);
+                if (selectedSubBtn !== 0) {
+                    setErrorInfo(confirmSubName(val.target.value));
+                    if (!confirmSubName(val.target.value)) {
+                        editMenuName(selectedSubBtn - 1, val.target.value, currentIndex);
+                    }
+                }
+                else {
+                    setErrorInfo(confirmName(val.target.value));
+                    if (!confirmName(val.target.value)) {
+                        editMenuName(selectedBtn - 1, val.target.value);
+                    }
+                }
+            }} status={errorInfo ? 'error' : ''} value={menuName}/>
+                            </Form.Item>
+                        </div>
+                        {(config.button[currentIndex]?.sub_button?.length ===
+                0 &&
+                selectedSubBtn === 0) ||
+                selectedSubBtn > 0 ? (<>
+                                <Form.Item colon={false} label={<div className={Style.label}>
+                                            消息类型
+                                        </div>}>
+                                    <Radio.Group value={msgType} onChange={(val) => setMsgType(val.target.value)}>
+                                        <Radio value={'sendMsg'}>
+                                            发送消息
+                                        </Radio>
+                                        <Radio value={'view'}>跳转页面</Radio>
+                                        <Radio value={'miniprogram'}>
+                                            跳转小程序
+                                        </Radio>
+                                    </Radio.Group>
+                                </Form.Item>
+                                {msgType === 'sendMsg' ? (<>
+                                        <Form.Item colon={false} label={<div className={Style.label}>
+                                                    {decideMenuContentLabel(decidedMenuContent, type)}
+                                                </div>}>
+                                            {!decidedMenuContent &&
+                        type !== 'text' ? (<div className={Style.menuContent}>
+                                                    <div className={Style.item} onClick={() => {
+                            setOpen(true);
+                            getOpen(true);
+                            setType('news');
+                        }}>
+                                                        图文信息
+                                                    </div>
+                                                    <div className={Style.item} onClick={() => {
+                            setType('text');
+                        }}>
+                                                        文字
+                                                    </div>
+                                                    <div className={Style.item} onClick={() => {
+                            setOpen(true);
+                            getOpen(true);
+                            setType('image');
+                        }}>
+                                                        图片
+                                                    </div>
+                                                    <div className={Style.item} onClick={() => {
+                            setOpen(true);
+                            getOpen(true);
+                            setType('voice');
+                        }}>
+                                                        音频
+                                                    </div>
+                                                    {/* <div className={Style.item}>
+                                                    视频号动态
+                                                </div> */}
+                                                    <div className={Style.item} onClick={() => {
+                            setOpen(true);
+                            getOpen(true);
+                            setType('video');
+                        }}>
+                                                        视频
+                                                    </div>
+                                                </div>) : type === 'image' ? (<div className={Style.coverImage}>
+                                                    <img className={Style.img} src={getImg(decidedMenuContent.url)}/>
+                                                    <div className={Style.buttonGroup}>
+                                                        <div className={Style.buttonItem} onClick={() => {
+                            const modal = confirm({
+                                title: '确定删除该图片吗？',
+                                content: '删除后不可恢复',
+                                okText: '确定',
+                                cancelText: '取消',
+                                onOk: async (e) => {
+                                    modal.destroy();
+                                    setDecidedMenuContent(null);
+                                    if (selectedBtn >
+                                        0) {
+                                        deleteMenuContent(selectedBtn -
+                                            1);
+                                    }
+                                    else {
+                                        deleteMenuContent(selectedSubBtn -
+                                            1, currentIndex);
+                                    }
+                                },
+                            });
+                        }}>
+                                                            <DeleteOutlined />
+                                                        </div>
+                                                        <div className={Style.buttonItem} onClick={() => {
+                            setOpen(true);
+                            getOpen(true);
+                        }}>
+                                                            <SwapOutlined />
+                                                        </div>
+                                                    </div>
+                                                </div>) : type === 'voice' ? (<div className={Style.fileCover}>
+                                                    <a href={decidedMenuContent.url} download={true} style={{
+                            color: '#1677FF',
+                            cursor: 'pointer',
+                        }}>
+                                                        <DownloadOutlined />
+                                                        {decidedMenuContent.media_id}
+                                                    </a>
+                                                    <div className={Style.buttonGroup}>
+                                                        <div className={Style.buttonItem} onClick={() => {
+                            const modal = confirm({
+                                title: '确定删除该音频吗？',
+                                content: '删除后不可恢复',
+                                okText: '确定',
+                                cancelText: '取消',
+                                onOk: async (e) => {
+                                    modal.destroy();
+                                    setDecidedMenuContent(null);
+                                    if (selectedBtn >
+                                        0) {
+                                        deleteMenuContent(selectedBtn -
+                                            1);
+                                    }
+                                    else {
+                                        deleteMenuContent(selectedSubBtn -
+                                            1, currentIndex);
+                                    }
+                                },
+                            });
+                        }}>
+                                                            <DeleteOutlined />
+                                                        </div>
+                                                        <div className={Style.buttonItem} onClick={() => {
+                            setOpen(true);
+                            getOpen(true);
+                        }}>
+                                                            <SwapOutlined />
+                                                        </div>
+                                                    </div>
+                                                </div>) : type === 'video' ? (<div className={Style.fileCover}>
+                                                    <a href={decidedMenuContent.url} download={true} style={{
+                            color: '#1677FF',
+                            cursor: 'pointer',
+                        }}>
+                                                        <DownloadOutlined />
+                                                        {decidedMenuContent.media_id}
+                                                    </a>
+                                                    <div className={Style.buttonGroup}>
+                                                        <div className={Style.buttonItem} onClick={() => {
+                            const modal = confirm({
+                                title: '确定删除该视频吗？',
+                                content: '删除后不可恢复',
+                                okText: '确定',
+                                cancelText: '取消',
+                                onOk: async (e) => {
+                                    modal.destroy();
+                                    setDecidedMenuContent(null);
+                                    if (selectedBtn >
+                                        0) {
+                                        deleteMenuContent(selectedBtn -
+                                            1);
+                                    }
+                                    else {
+                                        deleteMenuContent(selectedSubBtn -
+                                            1, currentIndex);
+                                    }
+                                },
+                            });
+                        }}>
+                                                            <DeleteOutlined />
+                                                        </div>
+                                                        <div className={Style.buttonItem} onClick={() => {
+                            setOpen(true);
+                            getOpen(true);
+                        }}>
+                                                            <SwapOutlined />
+                                                        </div>
+                                                    </div>
+                                                </div>) : type === 'news' ? (<div className={Style.news}>
+                                                    <ShowNews news={decidedMenuContent
+                            ?.content
+                            ?.news_item} oakAutoUnmount={false}/>
+                                                    <div className={Style.buttonGroup} style={{
+                            height: '100%',
+                        }}>
+                                                        <div className={Style.buttonItem} onClick={() => {
+                            const modal = confirm({
+                                title: '确定删除该图文信息吗？',
+                                content: '删除后不可恢复',
+                                okText: '确定',
+                                cancelText: '取消',
+                                onOk: async (e) => {
+                                    modal.destroy();
+                                    setDecidedMenuContent(null);
+                                    if (selectedBtn >
+                                        0) {
+                                        deleteMenuContent(selectedBtn -
+                                            1);
+                                    }
+                                    else {
+                                        deleteMenuContent(selectedSubBtn -
+                                            1, currentIndex);
+                                    }
+                                },
+                            });
+                        }}>
+                                                            <DeleteOutlined />
+                                                        </div>
+                                                        <div className={Style.buttonItem} onClick={() => {
+                            setOpen(true);
+                            getOpen(true);
+                        }}>
+                                                            <SwapOutlined />
+                                                        </div>
+                                                    </div>
+                                                </div>) : null}
+                                            {type === 'text' && (<div className={Style.editor}>
+                                                    <TextClick oakAutoUnmount={true} value={decidedMenuContent} getDecidedMenuContent={getDecidedMenuContent}/>
+                                                    <div className={Style.buttonGroup} style={{
+                            height: 36,
+                            position: 'absolute',
+                            right: -50,
+                        }}>
+                                                        <div className={Style.buttonItem} onClick={() => {
+                            const modal = confirm({
+                                title: '确定删除该文字吗？',
+                                content: '删除后不可恢复',
+                                okText: '确定',
+                                cancelText: '取消',
+                                onOk: async (e) => {
+                                    modal.destroy();
+                                    setType('news');
+                                    setDecidedMenuContent(null);
+                                    if (selectedBtn >
+                                        0) {
+                                        deleteMenuContent(selectedBtn -
+                                            1);
+                                    }
+                                    else {
+                                        deleteMenuContent(selectedSubBtn -
+                                            1, currentIndex);
+                                    }
+                                },
+                            });
+                        }}>
+                                                            <DeleteOutlined />
+                                                        </div>
+                                                    </div>
+                                                </div>)}
+                                        </Form.Item>
+                                        <Modal open={open} footer={<Space>
+                                                    <Button type={'primary'} disabled={!menuContent} onClick={() => {
+                            setOpen(false);
+                            getOpen(false);
+                            setDecidedMenuContent(menuContent);
+                            if (selectedBtn > 0) {
+                                if (type !==
+                                    'news') {
+                                    if (type ===
+                                        'image') {
+                                        setConfig(selectedBtn -
+                                            1, {
+                                            type: 'media_id',
+                                            media_id: menuContent.media_id,
+                                            subType: 'image',
+                                        });
+                                    }
+                                    if (type ===
+                                        'voice') {
+                                        setConfig(selectedBtn -
+                                            1, {
+                                            type: 'media_id',
+                                            media_id: menuContent.media_id,
+                                            subType: 'voice',
+                                        });
+                                    }
+                                    if (type ===
+                                        'video') {
+                                        setConfig(selectedBtn -
+                                            1, {
+                                            type: 'media_id',
+                                            media_id: menuContent.media_id,
+                                            subType: 'video',
+                                        });
+                                    }
+                                }
+                                else {
+                                    setConfig(selectedBtn -
+                                        1, {
+                                        type: 'article_id',
+                                        article_id: menuContent.article_id,
                                     });
-                                }, children: [_jsx(DeleteOutlined, {}), "\u5220\u9664"] }))] }) })] })) : (_jsxs("div", { className: Style.empty, children: [_jsx("div", { className: Style.content, children: "\u4F60\u672A\u6DFB\u52A0\u81EA\u5B9A\u4E49\u83DC\u5355\uFF0C\u70B9\u51FB\u5DE6\u4FA7\u6DFB\u52A0\u83DC\u5355\u4E3A\u516C\u4F17\u53F7\u521B\u5EFA\u83DC\u5355\u680F\u3002" }), _jsx("div", { className: Style.actionBar, children: _jsxs(Space, { children: [_jsxs(Button, { onClick: () => changeIsPreview(true), children: [_jsx(EyeOutlined, {}), "\u9884\u89C8"] }), _jsxs(Button, { type: "primary", onClick: async () => {
-                                    createMenu(errorInfo, errorUrlInfo);
-                                }, children: [_jsx(CheckOutlined, {}), "\u4FDD\u5B58\u5E76\u53D1\u5E03"] })] }) })] })) }));
+                                }
+                            }
+                            else {
+                                if (type !==
+                                    'news') {
+                                    if (type ===
+                                        'image') {
+                                        setConfig(selectedSubBtn -
+                                            1, {
+                                            type: 'media_id',
+                                            media_id: menuContent.media_id,
+                                            subType: 'image',
+                                        }, currentIndex);
+                                    }
+                                    if (type ===
+                                        'voice') {
+                                        setConfig(selectedSubBtn -
+                                            1, {
+                                            type: 'media_id',
+                                            media_id: menuContent.media_id,
+                                            subType: 'voice',
+                                        }, currentIndex);
+                                    }
+                                    if (type ===
+                                        'video') {
+                                        setConfig(selectedSubBtn -
+                                            1, {
+                                            type: 'media_id',
+                                            media_id: menuContent.media_id,
+                                            subType: 'video',
+                                        }, currentIndex);
+                                    }
+                                }
+                                else {
+                                    setConfig(selectedSubBtn -
+                                        1, {
+                                        type: 'article_id',
+                                        article_id: menuContent.article_id,
+                                    }, currentIndex);
+                                }
+                            }
+                        }}>
+                                                        确定
+                                                    </Button>
+                                                    <Button type={'default'} onClick={() => {
+                            setOpen(false);
+                            getOpen(false);
+                            setMenuContent(null);
+                        }}>
+                                                        取消
+                                                    </Button>
+                                                </Space>} onCancel={() => {
+                        setOpen(false);
+                        getOpen(false);
+                        setMenuContent(null);
+                    }} destroyOnClose={true} width={960}>
+                                            <WechatMaterialLibrary oakAutoUnmount={true} type={type} getMenuContent={getMenuContent} applicationId={applicationId}/>
+                                        </Modal>
+                                    </>) : msgType === 'view' ? (<Form.Item colon={false} label={<div className={Style.label}>
+                                                网页链接
+                                            </div>} help={<>
+                                                {errorUrlInfo && (<div style={{
+                                color: '#fa5151',
+                            }}>
+                                                        {errorUrlInfo}
+                                                    </div>)}
+                                            </>}>
+                                        <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                    }}>
+                                            <Input placeholder="公众号链接:请以https://或http://开头" style={{ width: 340 }} value={url} onChange={(val) => {
+                        setUrl(val.target.value);
+                        setErrorUrlInfo(confirmUrl(val.target.value));
+                    }} status={errorUrlInfo ? 'error' : ''}/>
+                                            <a style={{ padding: '10px 0' }} onClick={() => {
+                        setOpen(true);
+                        getOpen(true);
+                    }}>
+                                                选择图文链接
+                                            </a>
+                                        </div>
+                                        <Modal open={open} footer={null} title={'选择图文链接'} onCancel={() => {
+                        setOpen(false);
+                        getOpen(false);
+                    }} width={600}>
+                                            <SelectArticle oakAutoUnmount={true} changeOpen={changeOpen} getUrl={getUrl} applicationId={applicationId}/>
+                                        </Modal>
+                                    </Form.Item>) : (<Form.Item colon={false} label={<div className={Style.label}>
+                                                小程序
+                                            </div>}>
+                                        <Button onClick={() => {
+                        setOpen(true);
+                        getOpen(true);
+                    }}>
+                                            选择小程序
+                                        </Button>
+                                        {menuContent && menuContent.appid && (<div>{menuContent.appid}</div>)}
+                                        <Modal title={'添加小程序'} open={open} footer={null} onCancel={() => {
+                        setOpen(false);
+                        getOpen(false);
+                    }}>
+                                            <SelectMiniprogram oakAutoUnmount={true} getMenuContent={getMenuContent} changeOpen={changeOpen}/>
+                                        </Modal>
+                                    </Form.Item>)}
+                            </>) : null}
+                    </div>
+                    <div className={Style.actionBar}>
+                        <Space>
+                            <Button onClick={() => changeIsPreview(true)}>
+                                <EyeOutlined />
+                                预览
+                            </Button>
+                            <Button type="primary" onClick={async () => {
+                createMenu(errorInfo, errorUrlInfo);
+            }}>
+                                <CheckOutlined />
+                                {iState !== 'fail' ? '保存并发布' : '同步'}
+                            </Button>
+                            {menuType === 'conditional' && config && menuId && (<Button type="primary" danger onClick={() => {
+                    const modal = confirm({
+                        title: '确定删除该个性化菜单吗？',
+                        content: '删除后不可恢复',
+                        okText: '确定',
+                        cancelText: '取消',
+                        onOk: async (e) => {
+                            await deleteConditionalMenu();
+                            modal.destroy();
+                        },
+                    });
+                }}>
+                                    <DeleteOutlined />
+                                    删除
+                                </Button>)}
+                        </Space>
+                    </div>
+                </div>) : (<div className={Style.empty}>
+                    <div className={Style.content}>
+                        你未添加自定义菜单，点击左侧添加菜单为公众号创建菜单栏。
+                    </div>
+                    <div className={Style.actionBar}>
+                        <Space>
+                            <Button onClick={() => changeIsPreview(true)}>
+                                <EyeOutlined />
+                                预览
+                            </Button>
+                            <Button type="primary" onClick={async () => {
+                createMenu(errorInfo, errorUrlInfo);
+            }}>
+                                <CheckOutlined />
+                                保存并发布
+                            </Button>
+                        </Space>
+                    </div>
+                </div>)}
+        </div>);
 }

@@ -1,5 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Input, Form, Radio, DatePicker, Space } from 'antd-mobile';
 import dayjs from 'dayjs';
 import Style from './mobile.module.less';
@@ -8,22 +7,61 @@ export default function Render(props) {
     const { GenderOptions, IDCardTypeOptions } = data;
     const { t, update, confirm } = methods;
     const [birthPickerVisible, setBirthPickerVisible] = useState(false);
-    return (_jsxs("div", { className: Style.container, children: [_jsxs(Form, { layout: "horizontal", children: [_jsx(Form.Item, { label: t('user:attr.nickname'), rules: [{ required: true }], children: _jsx(Input, { onChange: (val) => update({ nickname: val }), value: data.nickname || '' }) }), _jsx(Form.Item, { label: t('user:attr.name'), children: _jsx(Input, { onChange: (val) => update({ name: val }), value: data.name || '' }) }), _jsx(Form.Item, { label: t('user:attr.birth'), onClick: () => {
-                            setBirthPickerVisible(true);
-                        }, children: _jsx(Input, { value: data.birth
-                                ? dayjs(data.birth).format('YYYY-MM-DD')
-                                : '', readOnly: true }) }), _jsx(Form.Item, { label: t('user:attr.gender'), children: _jsx(Radio.Group, { onChange: (e) => {
-                                update({
-                                    gender: e,
-                                });
-                            }, value: data.gender, children: _jsx(Space, { direction: "horizontal", children: GenderOptions.map((ele, idx) => (_jsx(Radio, { value: ele.value, className: Style.radio, children: ele.label }, idx))) }) }) }), _jsx(Form.Item, { label: t('user:attr.idCardType'), children: _jsx(Radio.Group, { onChange: (e) => {
-                                update({
-                                    idCardType: e,
-                                });
-                            }, value: data.idCardType, children: _jsx(Space, { direction: "vertical", children: IDCardTypeOptions.map((ele, idx) => (_jsx(Radio, { value: ele.value, className: Style.radio, children: ele.label }, idx))) }) }) }), _jsx(Form.Item, { label: t('user:attr.idNumber'), children: _jsx(Input, { onChange: (val) => update({ idNumber: val }), value: data.idNumber || '' }) })] }), _jsx(DatePicker, { visible: birthPickerVisible, max: new Date(), min: new Date('1900-01-01'), onConfirm: (value) => {
-                    const val = value.valueOf();
-                    update({ birth: val });
-                }, onClose: () => {
-                    setBirthPickerVisible(false);
-                } }), _jsx("div", { style: { flex: 1 } }), _jsx(Button, { block: true, color: "primary", onClick: () => confirm(), children: t('common::action.confirm') })] }));
+    return (<div className={Style.container}>
+            <Form layout="horizontal">
+                <Form.Item label={t('user:attr.nickname')} rules={[{ required: true }]}>
+                    <Input onChange={(val) => update({ nickname: val })} value={data.nickname || ''}/>
+                </Form.Item>
+                <Form.Item label={t('user:attr.name')}>
+                    <Input onChange={(val) => update({ name: val })} value={data.name || ''}/>
+                </Form.Item>
+                <Form.Item label={t('user:attr.birth')} onClick={() => {
+            setBirthPickerVisible(true);
+        }}>
+                    <Input value={data.birth
+            ? dayjs(data.birth).format('YYYY-MM-DD')
+            : ''} readOnly/>
+                </Form.Item>
+
+                <Form.Item label={t('user:attr.gender')}>
+                    <Radio.Group onChange={(e) => {
+            update({
+                gender: e,
+            });
+        }} value={data.gender}>
+                        <Space direction="horizontal">
+                            {GenderOptions.map((ele, idx) => (<Radio value={ele.value} key={idx} className={Style.radio}>
+                                    {ele.label}
+                                </Radio>))}
+                        </Space>
+                    </Radio.Group>
+                </Form.Item>
+                <Form.Item label={t('user:attr.idCardType')}>
+                    <Radio.Group onChange={(e) => {
+            update({
+                idCardType: e,
+            });
+        }} value={data.idCardType}>
+                        <Space direction="vertical">
+                            {IDCardTypeOptions.map((ele, idx) => (<Radio value={ele.value} key={idx} className={Style.radio}>
+                                    {ele.label}
+                                </Radio>))}
+                        </Space>
+                    </Radio.Group>
+                </Form.Item>
+                <Form.Item label={t('user:attr.idNumber')}>
+                    <Input onChange={(val) => update({ idNumber: val })} value={data.idNumber || ''}/>
+                </Form.Item>
+            </Form>
+            <DatePicker visible={birthPickerVisible} max={new Date()} min={new Date('1900-01-01')} onConfirm={(value) => {
+            const val = value.valueOf();
+            update({ birth: val });
+        }} onClose={() => {
+            setBirthPickerVisible(false);
+        }}/>
+            <div style={{ flex: 1 }}/>
+            <Button block color="primary" onClick={() => confirm()}>
+                {t('common::action.confirm')}
+            </Button>
+        </div>);
 }

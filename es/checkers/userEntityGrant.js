@@ -1,6 +1,6 @@
 import { OakInputIllegalException, } from 'oak-domain/lib/types';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { generateNewId } from 'oak-domain';
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 const checkers = [
     {
         type: 'data',

@@ -1,5 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import TreeList from '../treeList';
 import Styles from './web.pc.module.less';
 import { Button, Divider, Tooltip, Space, Drawer, Input, Image, Tag, Dropdown } from 'antd';
@@ -90,9 +89,16 @@ export default function Render(props) {
                 }
                 return {
                     key: ele.id,
-                    label: (_jsxs("div", { className: Styles.dropdownItem, onClick: () => {
+                    label: (<div className={Styles.dropdownItem} onClick={() => {
                             getArticleMenuIdByArticle(ele.id, show);
-                        }, children: [_jsxs("div", { className: Styles.topBox, children: [_jsx("div", { className: Styles.title, dangerouslySetInnerHTML: { __html: name } }), _jsx(Tag, { className: Styles.tag, children: ele.articleMenu.name })] }), _jsx("div", { className: Styles.content, dangerouslySetInnerHTML: { __html: HTMLString } })] }))
+                        }}>
+                            <div className={Styles.topBox}>
+                                <div className={Styles.title} dangerouslySetInnerHTML={{ __html: name }}></div>
+                                <Tag className={Styles.tag}>{ele.articleMenu.name}</Tag>
+                            </div>
+                            <div className={Styles.content} dangerouslySetInnerHTML={{ __html: HTMLString }}>
+                            </div>
+                        </div>)
                 };
             });
             setItems(arr);
@@ -128,22 +134,69 @@ export default function Render(props) {
     }
     if (oakFullpath) {
         if (!show) {
-            return (_jsxs("div", { className: Styles.container, children: [_jsxs("div", { className: Styles.menu, children: [_jsxs("div", { className: Styles.menuHeader, children: [_jsx("div", { className: Styles.menuTitle, children: "\u83DC\u5355" }), _jsx("div", { className: Styles.menuActions, children: _jsxs("div", { className: Styles.viewAction, children: [_jsx(Tooltip, { title: '添加分类', children: _jsx(Button, { type: "text", icon: _jsx(PlusOutlined, {}), size: "small", onClick: () => setAddOpen(true) }) }), _jsx(Tooltip, { title: '查看', children: _jsx(Button, { type: "text", icon: _jsx(EyeOutlined, {}), size: "small", onClick: () => gotoDoc() }) })] }) })] }), _jsx(Divider, { style: { margin: 0 } }), _jsx(TreeList, { oakPath: `${oakFullpath}.articleMenus`, entity: entity, entityId: entityId, onGrandChildEditArticleChange: checkEditArticle, changeAddOpen: changeAddOpen, addOpen: addOpen })] }), _jsx("div", { className: Styles.editor, children: editArticle && (_jsx(ArticleUpsert, { oakId: editArticle, oakAutoUnmount: true, oakPath: `article-upsert-${editArticle}` })) })] }));
+            return (<div className={Styles.container}>
+                    <div className={Styles.menu}>
+                        <div className={Styles.menuHeader}>
+                            <div className={Styles.menuTitle}>菜单</div>
+                            <div className={Styles.menuActions}>
+                                <div className={Styles.viewAction}>
+                                    <Tooltip title={'添加分类'}>
+                                        <Button type="text" icon={<PlusOutlined />} size="small" onClick={() => setAddOpen(true)}/>
+                                    </Tooltip>
+                                    <Tooltip title={'查看'}>
+                                        <Button type="text" icon={<EyeOutlined />} size="small" onClick={() => gotoDoc()}/>
+                                    </Tooltip>
+                                </div>
+                            </div>
+                        </div>
+                        <Divider style={{ margin: 0 }}/>
+                        <TreeList oakPath={`${oakFullpath}.articleMenus`} entity={entity} entityId={entityId} onGrandChildEditArticleChange={checkEditArticle} changeAddOpen={changeAddOpen} addOpen={addOpen}/>
+                    </div>
+                    <div className={Styles.editor}>
+                        {editArticle && (<ArticleUpsert oakId={editArticle} oakAutoUnmount={true} oakPath={`article-upsert-${editArticle}`}/>)}
+                    </div>
+                </div>);
         }
         else if (show === 'doc') {
             if (width === 'xs') {
-                return (_jsxs("div", { className: Styles.container2, children: [_jsxs("div", { className: Styles.article_v, children: [_jsxs("div", { className: Styles.topBar, children: [_jsxs("div", { className: Styles.menuHeader, onClick: () => {
-                                                setOpen(true);
-                                            }, children: [_jsx("div", { children: "\u5E2E\u52A9\u6587\u6863" }), open ? (_jsx(MenuFoldOutlined, { style: {
-                                                        fontSize: 18,
-                                                    } })) : (_jsx(MenuUnfoldOutlined, { style: {
-                                                        fontSize: 18,
-                                                    } }))] }), _jsx(Divider, { style: { margin: 0 } })] }), _jsx("div", { className: Styles.editor2, children: editArticle && (_jsxs("div", { children: [_jsx("div", { style: { fontSize: 14, display: 'flex', flexDirection: 'row', marginLeft: 10, marginBottom: 5 }, children: breadcrumbItems.length > 0 &&
-                                                    breadcrumbItems.map((breadcrumbItem, index) => {
-                                                        return index !== breadcrumbItems.length - 1 ? (_jsxs("div", { style: { color: '#B2B2B2' }, children: [breadcrumbItem, _jsx("span", { style: { margin: '0 6px' }, children: "/" })] }, index)) : (_jsx("div", { className: Styles.breadcrumbItem, children: breadcrumbItem }, index));
-                                                    }) }), _jsx(ArticleDetail, { oakId: editArticle, oakAutoUnmount: true, oakPath: `article-detail-${editArticle}` })] })) })] }), _jsx(Drawer, { className: Styles.drawerPanel, open: open, onClose: () => {
-                                setOpen(false);
-                            }, placement: "left", width: 260, children: _jsx(TreeList, { oakPath: `${oakFullpath}.articleMenus`, entity: entity, entityId: entityId, onGrandChildEditArticleChange: checkEditArticle, show: show, articleMenuId: articleMenuId ? articleMenuId : undefined, getBreadcrumbItems: getBreadcrumbItems, breadcrumbItems: [], drawerOpen: open, changeDrawerOpen: changeDrawerOpen, selectedArticleId: selectedArticleId ? selectedArticleId : undefined, defaultOpen: defaultOpen, changeDefaultOpen: changeDefaultOpen, openArray: openArray ? openArray : undefined }) })] }));
+                return (<div className={Styles.container2}>
+                        <div className={Styles.article_v}>
+                            <div className={Styles.topBar}>
+                                <div className={Styles.menuHeader} onClick={() => {
+                        setOpen(true);
+                    }}>
+                                    <div>帮助文档</div>
+                                    {open ? (<MenuFoldOutlined style={{
+                            fontSize: 18,
+                        }}/>) : (<MenuUnfoldOutlined style={{
+                            fontSize: 18,
+                        }}/>)}
+                                </div>
+                                <Divider style={{ margin: 0 }}/>
+                            </div>
+                            <div className={Styles.editor2}>
+                                {editArticle && (<div>
+                                            <div style={{ fontSize: 14, display: 'flex', flexDirection: 'row', marginLeft: 10, marginBottom: 5 }}>
+                                                {breadcrumbItems.length > 0 &&
+                            breadcrumbItems.map((breadcrumbItem, index) => {
+                                return index !== breadcrumbItems.length - 1 ? (<div style={{ color: '#B2B2B2' }} key={index}>
+                                                                {breadcrumbItem}
+                                                                <span style={{ margin: '0 6px' }}>/</span>
+                                                            </div>) : (<div className={Styles.breadcrumbItem} key={index}>
+                                                                {breadcrumbItem}
+                                                            </div>);
+                            })}
+                                            </div>
+                                            <ArticleDetail oakId={editArticle} oakAutoUnmount={true} oakPath={`article-detail-${editArticle}`}/>
+                                        </div>)}
+                            </div>
+                        </div>
+                        <Drawer className={Styles.drawerPanel} open={open} onClose={() => {
+                        setOpen(false);
+                    }} placement="left" width={260}>
+                            <TreeList oakPath={`${oakFullpath}.articleMenus`} entity={entity} entityId={entityId} onGrandChildEditArticleChange={checkEditArticle} show={show} articleMenuId={articleMenuId ? articleMenuId : undefined} getBreadcrumbItems={getBreadcrumbItems} breadcrumbItems={[]} drawerOpen={open} changeDrawerOpen={changeDrawerOpen} selectedArticleId={selectedArticleId ? selectedArticleId : undefined} defaultOpen={defaultOpen} changeDefaultOpen={changeDefaultOpen} openArray={openArray ? openArray : undefined}/>
+                        </Drawer>
+                    </div>);
             }
             else {
                 return (
@@ -195,13 +248,75 @@ export default function Render(props) {
                 //         }
                 //     </div>
                 // </div>
-                _jsxs("div", { className: Styles.test, children: [_jsxs("div", { className: Styles.leftBox, children: [_jsx("div", { className: Styles.topBox, children: _jsx("div", { className: Styles.boldFont, children: sideInfo.name }) }), _jsxs("div", { className: Styles.bottomBox, children: [_jsxs("div", { className: Styles.infoBox, children: [_jsxs("div", { className: Styles.top, children: [_jsx("div", { className: Styles.left, children: _jsx(Image, { preview: false, style: { borderRadius: '50%', width: 50, height: 50 }, src: sideInfo.coverUrl }) }), _jsxs("div", { className: Styles.right, children: [_jsx("div", { className: Styles.top, children: sideInfo.name }), _jsxs("div", { className: Styles.bottom, children: [_jsx("div", { className: Styles.circle }), _jsx("div", { className: Styles.font, children: "\u5E2E\u52A9\u6587\u6863" })] })] })] }), _jsx(Input, { placeholder: 'Search...', suffix: _jsx(SearchOutlined, {}) }), _jsx("div", { className: Styles.helpFont, children: "\u5E2E\u52A9\u6587\u6863" })] }), _jsx("div", { className: Styles.menu, children: _jsx(TreeList, { oakPath: `${oakFullpath}.articleMenus`, entity: entity, entityId: entityId, onGrandChildEditArticleChange: checkEditArticle, show: show, articleMenuId: articleMenuId ? articleMenuId : undefined, articleId: articleId ? articleId : undefined, getBreadcrumbItems: getBreadcrumbItems, breadcrumbItems: [], selectedArticleId: selectedArticleId ? selectedArticleId : undefined, defaultOpen: defaultOpen, changeDefaultOpen: changeDefaultOpen, openArray: totalOpenArray ? totalOpenArray : undefined, getSearchOpen: getSearchOpen, getTopInfo: getTopInfo, oakAutoUnmount: true, getSideInfo: getSideInfo, currentArticle: currentArticle, setCurrentArticle: getCurrentArticle }) })] })] }), _jsxs("div", { className: Styles.rightBox, children: [_jsxs("div", { className: Styles.topBox, children: [_jsx(MenuOutlined, {}), _jsx("div", { ref: dropdownRef, children: _jsx(Dropdown, { menu: { items }, open: searchOpen, children: _jsx(Search, { style: { width: 300 }, placeholder: 'Search...', onChange: (val) => {
-                                                        setSearchValue(val.target.value);
-                                                        searchArticle(val.target.value);
-                                                    } }) }) })] }), editArticle && (_jsxs("div", { className: Styles.bottomBox, children: [_jsx("div", { className: Styles.breadcrumb, children: breadcrumbItems.length > 0 &&
-                                                breadcrumbItems.map((breadcrumbItem, index) => {
-                                                    return index !== breadcrumbItems.length - 1 ? (_jsxs("div", { style: { color: '#B2B2B2' }, children: [breadcrumbItem, _jsx("span", { style: { margin: '0 6px' }, children: '>' })] }, index)) : (_jsx("div", { className: Styles.breadcrumbItem, children: breadcrumbItem }, index));
-                                                }) }), _jsxs("div", { className: Styles.article, children: [_jsxs("div", { className: Styles.top, children: [_jsx("div", { className: Styles.title, children: topInfo.name }), _jsx("div", { className: Styles.date, children: dayjs(topInfo.date).format('YYYY-MM-DD') })] }), _jsx("div", { className: Styles.editor, children: _jsx(ArticleDetail, { oakId: editArticle, oakAutoUnmount: true, oakPath: `article-detail-${editArticle}` }) })] })] }))] })] }));
+                <div className={Styles.test}>
+                        <div className={Styles.leftBox}>
+                            <div className={Styles.topBox}>
+                                <div className={Styles.boldFont}>{sideInfo.name}</div>
+                            </div>
+                            <div className={Styles.bottomBox}>
+                                <div className={Styles.infoBox}>
+                                    <div className={Styles.top}>
+                                        <div className={Styles.left}>
+                                            <Image preview={false} style={{ borderRadius: '50%', width: 50, height: 50 }} src={sideInfo.coverUrl}/>
+                                        </div>
+                                        <div className={Styles.right}>
+                                            <div className={Styles.top}>{sideInfo.name}</div>
+                                            <div className={Styles.bottom}>
+                                                <div className={Styles.circle}></div>
+                                                <div className={Styles.font}>帮助文档</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <Input placeholder='Search...' suffix={<SearchOutlined />}/>
+                                    <div className={Styles.helpFont}>帮助文档</div>
+                                </div>
+                                <div className={Styles.menu}>
+                                    <TreeList oakPath={`${oakFullpath}.articleMenus`} entity={entity} entityId={entityId} onGrandChildEditArticleChange={checkEditArticle} show={show} articleMenuId={articleMenuId ? articleMenuId : undefined} articleId={articleId ? articleId : undefined} getBreadcrumbItems={getBreadcrumbItems} breadcrumbItems={[]} selectedArticleId={selectedArticleId ? selectedArticleId : undefined} defaultOpen={defaultOpen} changeDefaultOpen={changeDefaultOpen} openArray={totalOpenArray ? totalOpenArray : undefined} getSearchOpen={getSearchOpen} getTopInfo={getTopInfo} oakAutoUnmount={true} getSideInfo={getSideInfo} currentArticle={currentArticle} setCurrentArticle={getCurrentArticle}/>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={Styles.rightBox}>
+                            <div className={Styles.topBox}>
+                                <MenuOutlined />
+                                <div ref={dropdownRef}>
+                                    <Dropdown menu={{ items }} open={searchOpen}>
+                                        <Search style={{ width: 300 }} placeholder='Search...' onChange={(val) => {
+                        setSearchValue(val.target.value);
+                        searchArticle(val.target.value);
+                    }}/>
+                                    </Dropdown>
+                                </div>
+                            </div>
+                            {editArticle && (<div className={Styles.bottomBox}>
+                                        <div className={Styles.breadcrumb}>
+                                            {breadcrumbItems.length > 0 &&
+                            breadcrumbItems.map((breadcrumbItem, index) => {
+                                return index !== breadcrumbItems.length - 1 ? (<div style={{ color: '#B2B2B2' }} key={index}>
+                                                            {breadcrumbItem}
+                                                            <span style={{ margin: '0 6px' }}>
+                                                                {'>'}
+                                                            </span>
+                                                        </div>) : (<div className={Styles.breadcrumbItem} key={index}>
+                                                            {breadcrumbItem}
+                                                        </div>);
+                            })}
+                                        </div>
+                                        <div className={Styles.article}>
+                                            <div className={Styles.top}>
+                                                <div className={Styles.title}>
+                                                    {topInfo.name}
+                                                </div>
+                                                <div className={Styles.date}>
+                                                    {dayjs(topInfo.date).format('YYYY-MM-DD')}
+                                                </div>
+                                            </div>
+                                            <div className={Styles.editor}>
+                                                <ArticleDetail oakId={editArticle} oakAutoUnmount={true} oakPath={`article-detail-${editArticle}`}/>
+                                            </div>
+                                        </div>
+                                    </div>)}
+                        </div>
+                    </div>);
             }
         }
         else {
@@ -295,22 +410,101 @@ export default function Render(props) {
             //         }
             //     </div>
             // </div>
-            _jsxs("div", { className: Styles.test, children: [_jsxs("div", { className: Styles.leftBox, children: [_jsx("div", { className: Styles.topBox, children: _jsx("div", { className: Styles.boldFont, children: sideInfo.name }) }), _jsxs("div", { className: Styles.bottomBox, children: [_jsxs("div", { className: Styles.infoBox, children: [_jsxs("div", { className: Styles.top, children: [_jsx("div", { className: Styles.left, children: _jsx(Image, { preview: false, style: { borderRadius: '50%', width: 50, height: 50 }, src: sideInfo.coverUrl }) }), _jsxs("div", { className: Styles.right, children: [_jsx("div", { className: Styles.top, children: sideInfo.name }), _jsxs("div", { className: Styles.bottom, children: [_jsx("div", { className: Styles.circle }), _jsx("div", { className: Styles.font, children: "\u5E2E\u52A9\u6587\u6863" })] })] })] }), _jsx(Input, { placeholder: 'Search...', suffix: _jsx(SearchOutlined, {}) }), _jsx("div", { className: Styles.helpFont, children: "\u5E2E\u52A9\u6587\u6863" })] }), _jsx("div", { className: Styles.menu, children: _jsx(TreeList, { oakPath: `${oakFullpath}.articleMenus`, entity: entity, entityId: entityId, onGrandChildEditArticleChange: checkEditArticle, show: show, articleMenuId: articleMenuId ? articleMenuId : undefined, articleId: articleId ? articleId : undefined, getBreadcrumbItems: getBreadcrumbItems, breadcrumbItems: [], selectedArticleId: selectedArticleId ? selectedArticleId : undefined, defaultOpen: defaultOpen, changeDefaultOpen: changeDefaultOpen, openArray: totalOpenArray ? totalOpenArray : undefined, getSearchOpen: getSearchOpen, getTopInfo: getTopInfo, oakAutoUnmount: true, getSideInfo: getSideInfo, currentArticle: currentArticle, setCurrentArticle: getCurrentArticle }) })] })] }), _jsxs("div", { className: Styles.rightBox, children: [_jsxs("div", { className: Styles.topBox, children: [_jsx(MenuOutlined, {}), _jsx("div", { ref: dropdownRef, children: _jsx(Dropdown, { menu: { items }, open: searchOpen, children: _jsx(Search, { style: { width: 300 }, placeholder: 'Search...', onChange: (val) => {
-                                                    setSearchValue(val.target.value);
-                                                    searchArticle(val.target.value);
-                                                } }) }) })] }), editArticle && (_jsxs("div", { className: Styles.bottomBox, children: [_jsx("div", { className: Styles.actions, children: _jsxs(Space, { style: { marginBottom: 10 }, children: [_jsxs(Button, { onClick: () => {
-                                                        gotoArticleDetail(editArticle);
-                                                    }, children: [_jsx(EyeOutlined, {}), "\u67E5\u770B"] }), _jsxs(Button, { onClick: () => {
-                                                        const url = `${window.location.host}/article/detail?oakId=${editArticle}`;
-                                                        copy(url);
-                                                        setMessage({
-                                                            content: '复制链接成功',
-                                                            type: 'success',
-                                                        });
-                                                    }, children: [_jsx(CopyOutlined, {}), "\u590D\u5236\u94FE\u63A5"] }), _jsxs(Button, { onClick: () => setIsEdit(true), children: [_jsx(EditOutlined, {}), "\u66F4\u65B0"] })] }) }), _jsx("div", { className: Styles.breadcrumb, children: breadcrumbItems.length > 0 &&
-                                            breadcrumbItems.map((breadcrumbItem, index) => {
-                                                return index !== breadcrumbItems.length - 1 ? (_jsxs("div", { style: { color: '#B2B2B2' }, children: [breadcrumbItem, _jsx("span", { style: { margin: '0 6px' }, children: '>' })] }, index)) : (_jsx("div", { className: Styles.breadcrumbItem, children: breadcrumbItem }, index));
-                                            }) }), _jsxs("div", { className: Styles.article, children: [_jsxs("div", { className: Styles.top, children: [_jsx("div", { className: Styles.title, children: topInfo.name }), _jsx("div", { className: Styles.date, children: dayjs(topInfo.date).format('YYYY-MM-DD') })] }), _jsx("div", { className: Styles.editor, children: isEdit ? (_jsx(ArticleUpsert, { oakId: editArticle, oakAutoUnmount: true, oakPath: `article-upsert-${editArticle}`, changeIsEdit: changeIsEdit })) : (_jsx(ArticleDetail, { oakId: editArticle, oakAutoUnmount: true, oakPath: `article-detail-${editArticle}` })) })] })] }))] })] }));
+            <div className={Styles.test}>
+                    <div className={Styles.leftBox}>
+                        <div className={Styles.topBox}>
+                            <div className={Styles.boldFont}>{sideInfo.name}</div>
+                        </div>
+                        <div className={Styles.bottomBox}>
+                            <div className={Styles.infoBox}>
+                                <div className={Styles.top}>
+                                    <div className={Styles.left}>
+                                        <Image preview={false} style={{ borderRadius: '50%', width: 50, height: 50 }} src={sideInfo.coverUrl}/>
+                                    </div>
+                                    <div className={Styles.right}>
+                                        <div className={Styles.top}>{sideInfo.name}</div>
+                                        <div className={Styles.bottom}>
+                                            <div className={Styles.circle}></div>
+                                            <div className={Styles.font}>帮助文档</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Input placeholder='Search...' suffix={<SearchOutlined />}/>
+                                <div className={Styles.helpFont}>帮助文档</div>
+                            </div>
+                            <div className={Styles.menu}>
+                                <TreeList oakPath={`${oakFullpath}.articleMenus`} entity={entity} entityId={entityId} onGrandChildEditArticleChange={checkEditArticle} show={show} articleMenuId={articleMenuId ? articleMenuId : undefined} articleId={articleId ? articleId : undefined} getBreadcrumbItems={getBreadcrumbItems} breadcrumbItems={[]} selectedArticleId={selectedArticleId ? selectedArticleId : undefined} defaultOpen={defaultOpen} changeDefaultOpen={changeDefaultOpen} openArray={totalOpenArray ? totalOpenArray : undefined} getSearchOpen={getSearchOpen} getTopInfo={getTopInfo} oakAutoUnmount={true} getSideInfo={getSideInfo} currentArticle={currentArticle} setCurrentArticle={getCurrentArticle}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={Styles.rightBox}>
+                        <div className={Styles.topBox}>
+                            <MenuOutlined />
+                            <div ref={dropdownRef}>
+                                <Dropdown menu={{ items }} open={searchOpen}>
+                                    <Search style={{ width: 300 }} placeholder='Search...' onChange={(val) => {
+                    setSearchValue(val.target.value);
+                    searchArticle(val.target.value);
+                }}/>
+                                </Dropdown>
+                            </div>
+                        </div>
+                        {editArticle && (<div className={Styles.bottomBox}>
+                                    <div className={Styles.actions}>
+                                        <Space style={{ marginBottom: 10 }}>
+                                            <Button onClick={() => {
+                        gotoArticleDetail(editArticle);
+                    }}>
+                                                <EyeOutlined />
+                                                查看
+                                            </Button>
+                                            <Button onClick={() => {
+                        const url = `${window.location.host}/article/detail?oakId=${editArticle}`;
+                        copy(url);
+                        setMessage({
+                            content: '复制链接成功',
+                            type: 'success',
+                        });
+                    }}>
+                                                <CopyOutlined />
+                                                复制链接
+                                            </Button>
+                                            <Button onClick={() => setIsEdit(true)}>
+                                                <EditOutlined />
+                                                更新
+                                            </Button>
+                                        </Space>
+                                    </div>
+                                    <div className={Styles.breadcrumb}>
+                                        {breadcrumbItems.length > 0 &&
+                        breadcrumbItems.map((breadcrumbItem, index) => {
+                            return index !== breadcrumbItems.length - 1 ? (<div style={{ color: '#B2B2B2' }} key={index}>
+                                                        {breadcrumbItem}
+                                                        <span style={{ margin: '0 6px' }}>
+                                                            {'>'}
+                                                        </span>
+                                                    </div>) : (<div className={Styles.breadcrumbItem} key={index}>
+                                                        {breadcrumbItem}
+                                                    </div>);
+                        })}
+                                    </div>
+                                    <div className={Styles.article}>
+                                        <div className={Styles.top}>
+                                            <div className={Styles.title}>
+                                                {topInfo.name}
+                                            </div>
+                                            <div className={Styles.date}>
+                                                {dayjs(topInfo.date).format('YYYY-MM-DD')}
+                                            </div>
+                                        </div>
+                                        <div className={Styles.editor}>
+                                            {isEdit ? (<ArticleUpsert oakId={editArticle} oakAutoUnmount={true} oakPath={`article-upsert-${editArticle}`} changeIsEdit={changeIsEdit}/>) : (<ArticleDetail oakId={editArticle} oakAutoUnmount={true} oakPath={`article-detail-${editArticle}`}/>)}
+
+                                        </div>
+                                    </div>
+                                </div>)}
+                    </div>
+                </div>);
         }
     }
     return null;

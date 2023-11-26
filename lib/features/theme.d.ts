@@ -11,6 +11,7 @@ export default class Theme<ED extends EntityDict, Cxt extends BackendRuntimeCont
     private cache;
     private themeState;
     private storage;
+    private loadSavedState;
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage);
     get(): IThemeState;
     set(themeState: IThemeState): void;

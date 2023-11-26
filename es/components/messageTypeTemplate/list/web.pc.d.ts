@@ -1,5 +1,6 @@
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
+import React from 'react';
 export default function Render(props: WebComponentProps<EntityDict, 'messageTypeTemplate', true, {
     mtt: EntityDict['messageTypeTemplate']['Schema'][];
     wechatPublicTemplates: EntityDict['wechatPublicTemplate']['Schema'][];
@@ -8,4 +9,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'messageType
     applicationId: string;
 }, {
     syncTemplate: () => Promise<void>;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

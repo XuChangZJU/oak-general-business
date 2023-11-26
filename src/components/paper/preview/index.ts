@@ -21,14 +21,14 @@ export default OakComponent({
         author: '',
     },
     lifetimes: {
-        attached() {
-            const data = this.load('article_html') || '{}';
+        async attached() {
+            const data = (await this.load('article_html')) || '{}';
             const data2 = typeof data === 'string' ? JSON.parse(data) : data;
             this.setState({
                 content: data2?.content,
                 title: data2?.title,
                 author: data2?.author,
-            });
+            }, () => this.reRender());
         },
         detached() {
             this.save('article_html', '{}');

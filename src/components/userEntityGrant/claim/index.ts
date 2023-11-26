@@ -1,4 +1,4 @@
-import { generateNewId } from 'oak-domain';
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../../../oak-app-domain';
 
 export default OakComponent({

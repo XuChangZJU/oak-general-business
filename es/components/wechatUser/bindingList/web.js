@@ -1,7 +1,9 @@
-import { jsx as _jsx } from "react/jsx-runtime";
+import React from 'react';
 import { Space } from 'antd';
 import UnbindBtn from '../unbindBtn';
 export default function Render(props) {
     const { wechatUsers, oakFullpath } = props.data;
-    return (_jsx(Space, { children: wechatUsers && wechatUsers.map((ele) => (_jsx(UnbindBtn, { oakId: ele.id, oakPath: `${oakFullpath}.${ele.id}` }))) }));
+    return (<Space>
+            {wechatUsers && wechatUsers.map((ele) => (<UnbindBtn oakId={ele.id} oakPath={`${oakFullpath}.${ele.id}`}/>))}
+        </Space>);
 }

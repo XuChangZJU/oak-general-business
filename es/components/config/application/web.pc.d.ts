@@ -1,3 +1,4 @@
+import React from 'react';
 import { AppType, WebConfig, WechatPublicConfig, WechatMpConfig } from '../../../oak-app-domain/Application/Schema';
 import { EntityDict } from '../../../oak-app-domain';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -15,5 +16,5 @@ export default function render(props: WebComponentProps<EntityDict, 'user', fals
     setValue: (path: string, value: string) => void;
     removeItem: (path: string, index: number) => void;
     cleanKey: (path: string, key: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;
 export {};

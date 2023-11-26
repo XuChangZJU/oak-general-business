@@ -1,16 +1,37 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import React from 'react';
 import Style from './web.module.less';
 export default function Render(props) {
     const { news } = props.data;
-    return (_jsx("div", { className: Style.container, children: news && news.length > 1 ?
-            _jsx("div", { className: Style.multiNews, children: news.map((ele, index) => {
+    return (<div className={Style.container}>
+            {news && news.length > 1 ?
+            <div className={Style.multiNews}>
+                        {news.map((ele, index) => {
                     if (index === 0) {
-                        return (_jsxs("div", { className: Style.cover, children: [_jsx("img", { className: Style.img, src: ele.coverUrl }), _jsx("div", { className: Style.articleTitle, children: ele.title })] }));
+                        return (<div className={Style.cover}>
+                                            <img className={Style.img} src={ele.coverUrl}/>
+                                            <div className={Style.articleTitle}>
+                                                {ele.title}
+                                            </div>
+                                        </div>);
                     }
                     else {
-                        return (_jsxs("div", { className: Style.newsItem, children: [_jsx("div", { className: Style.articleTitle, children: ele.title }), _jsx("div", { className: Style.imgCover, children: _jsx("img", { className: Style.img, src: ele.coverUrl }) })] }));
+                        return (<div className={Style.newsItem}>
+                                            <div className={Style.articleTitle}>
+                                                {ele.title}
+                                            </div>
+                                            <div className={Style.imgCover}>
+                                                <img className={Style.img} src={ele.coverUrl}/>
+                                            </div>
+                                        </div>);
                     }
-                }) })
+                })}
+                    </div>
             :
-                _jsxs("div", { className: Style.singleNews, children: [_jsx("div", { className: Style.cover, children: _jsx("img", { className: Style.img, src: news?.[0]?.coverUrl }) }), _jsx("div", { className: Style.articleTitle, children: news?.[0]?.title })] }) }));
+                <div className={Style.singleNews}>
+                        <div className={Style.cover}>
+                            <img className={Style.img} src={news?.[0]?.coverUrl}/>
+                        </div>
+                        <div className={Style.articleTitle}>{news?.[0]?.title}</div>
+                    </div>}
+        </div>);
 }

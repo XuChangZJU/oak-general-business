@@ -1,8 +1,45 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import React from 'react';
 import { Tag, Avatar, Descriptions } from 'antd';
 import ActionPanel from '../../../../components/func/actionPanel';
 export default function render(props) {
     const { nickname, avatar, name, userState, idState, gender, stateColor, idStateColor, mobileText, executableActions, actionDescriptions, birth, } = props.data;
     const { t, onActionClick } = props.methods;
-    return (_jsx(_Fragment, { children: _jsxs(Descriptions, { extra: _jsx(ActionPanel, { actions: executableActions, actionDescriptions: actionDescriptions, onActionClick: (action) => onActionClick(action) }), children: [_jsx(Descriptions.Item, { label: t('avatar'), children: avatar ? _jsx(Avatar, { src: avatar }) : t('unset') }), _jsx(Descriptions.Item, { label: t('user:attr.nickname'), children: nickname || t('unset') }), _jsx(Descriptions.Item, { label: t('user:attr.name'), children: name || t('unset') }), _jsx(Descriptions.Item, { label: t('user:attr.gender'), children: gender ? t(`user:v.gender.${gender}`) : t('unset') }), _jsx(Descriptions.Item, { label: t('user:attr.birth'), children: birth || t('unset') }), _jsx(Descriptions.Item, { label: t('mobile'), children: mobileText || t('unset') }), _jsx(Descriptions.Item, { label: t('user:attr.userState'), children: _jsx(Tag, { color: stateColor[userState], children: t(`user:v.userState.${userState}`) }) }), _jsx(Descriptions.Item, { label: t('user:attr.idState'), children: _jsx(Tag, { color: idStateColor[idState], children: t(`user:v.idState.${idState}`) }) })] }) }));
+    return (<>
+            <Descriptions extra={<ActionPanel actions={executableActions} actionDescriptions={actionDescriptions} onActionClick={(action) => onActionClick(action)}/>}>
+                <Descriptions.Item label={t('avatar')}>
+                    {avatar ? <Avatar src={avatar}/> : t('unset')}
+                </Descriptions.Item>
+
+                <Descriptions.Item label={t('user:attr.nickname')}>
+                    {nickname || t('unset')}
+                </Descriptions.Item>
+
+                <Descriptions.Item label={t('user:attr.name')}>
+                    {name || t('unset')}
+                </Descriptions.Item>
+
+                <Descriptions.Item label={t('user:attr.gender')}>
+                    {gender ? t(`user:v.gender.${gender}`) : t('unset')}
+                </Descriptions.Item>
+
+                <Descriptions.Item label={t('user:attr.birth')}>
+                    {birth || t('unset')}
+                </Descriptions.Item>
+
+                <Descriptions.Item label={t('mobile')}>
+                    {mobileText || t('unset')}
+                </Descriptions.Item>
+
+                <Descriptions.Item label={t('user:attr.userState')}>
+                    <Tag color={stateColor[userState]}>
+                        {t(`user:v.userState.${userState}`)}
+                    </Tag>
+                </Descriptions.Item>
+                <Descriptions.Item label={t('user:attr.idState')}>
+                    <Tag color={idStateColor[idState]}>
+                        {t(`user:v.idState.${idState}`)}
+                    </Tag>
+                </Descriptions.Item>
+            </Descriptions>
+        </>);
 }

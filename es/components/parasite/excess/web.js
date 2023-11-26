@@ -1,4 +1,4 @@
-import { jsx as _jsx } from "react/jsx-runtime";
+import React from 'react';
 import { LoadingOutlined, WarningOutlined } from '@ant-design/icons';
 import Style from './web.module.less';
 import Success from '../../../components/common/result/success';
@@ -7,16 +7,16 @@ export default function render(props) {
     const { oakLoading, expired, illegal, loading } = props.data;
     let V;
     if (oakLoading || loading) {
-        V = (_jsx(Success, { icon: _jsx(LoadingOutlined, { className: Style.brand_icon }), title: "\u52A0\u8F7D\u4E2D", description: "\u6B63\u5728\u83B7\u53D6\u6570\u636E\uFF0C\u8BF7\u7A0D\u540E" }));
+        V = (<Success icon={<LoadingOutlined className={Style.brand_icon}/>} title="加载中" description="正在获取数据，请稍后"/>);
     }
     else if (illegal) {
-        V = (_jsx(Fail, { title: "\u6570\u636E\u975E\u6CD5", description: "\u62B1\u6B49\uFF0C\u8BE5\u6570\u636E\u4E0D\u5B58\u5728" }));
+        V = (<Fail title="数据非法" description="抱歉，该数据不存在"/>);
     }
     else if (expired) {
-        V = (_jsx(Fail, { icon: _jsx(WarningOutlined, { className: Style.icon }), title: "\u6570\u636E\u5DF2\u8FC7\u671F", description: "\u62B1\u6B49\uFF0C\u8BE5\u6570\u636E\u5DF2\u8FC7\u671F" }));
+        V = (<Fail icon={<WarningOutlined className={Style.icon}/>} title="数据已过期" description="抱歉，该数据已过期"/>);
     }
     else {
-        V = (_jsx(Success, { icon: _jsx(LoadingOutlined, { className: Style.brand_icon }), title: "\u8DF3\u8F6C\u4E2D", description: "\u6B63\u5728\u8DF3\u8F6C...\uFF0C\u8BF7\u7A0D\u540E" }));
+        V = (<Success icon={<LoadingOutlined className={Style.brand_icon}/>} title="跳转中" description="正在跳转...，请稍后"/>);
     }
-    return _jsx("div", { className: Style.container, children: V });
+    return <div className={Style.container}>{V}</div>;
 }

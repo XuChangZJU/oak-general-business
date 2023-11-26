@@ -1,5 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { message, Button } from 'antd';
 import { random, template } from 'oak-domain/lib/utils/string';
 import './index.less';
@@ -22,35 +21,61 @@ function Grant(props) {
     const prefixCls2 = `${prefixCls}-loginGrant`;
     let V;
     if (dev) {
-        V = (_jsxs("div", { className: `${prefixCls2}_dev`, children: [_jsxs("div", { className: `${prefixCls2}_dev_header`, children: [_jsx("input", { maxLength: 6, value: code, className: `${prefixCls2}_dev_header_input`, onChange: (e) => {
-                                setCode(e.target.value);
-                            } }), _jsx(Button, { className: `${prefixCls2}_dev_header_btn`, type: "primary", shape: "round", size: "large", 
-                            // block
-                            onClick: () => {
-                                if (disabled) {
-                                    messageApi.info(disableText || 'disabled');
-                                    return;
-                                }
-                                const url = new URL(decodeURIComponent(redirectUri));
-                                url.searchParams.set('code', code);
-                                if (state) {
-                                    url.searchParams.set('state', state);
-                                }
-                                window.location.href = url.toString();
-                            }, children: "\u5FAE\u4FE1\u6388\u6743\u4E00\u952E\u767B\u5F55" })] }), _jsxs("div", { className: `${prefixCls2}_dev_bottom`, children: [_jsx("span", { className: `${prefixCls2}_dev_bottom_desc`, children: "1\u3001\u7531\u4E8E\u672C\u5730\u5F00\u53D1\u73AF\u5883\u9650\u5236\uFF0C\u6A21\u62DF\u5FAE\u4FE1\u6388\u6743\u540E\u52A8\u4F5C" }), _jsx("span", { className: `${prefixCls2}_dev_bottom_desc`, children: "2\u3001CODE\u53EF\u4FEE\u6539" })] })] }));
+        V = (<div className={`${prefixCls2}_dev`}>
+                <div className={`${prefixCls2}_dev_header`}>
+                    <input maxLength={6} value={code} className={`${prefixCls2}_dev_header_input`} onChange={(e) => {
+                setCode(e.target.value);
+            }}></input>
+                    <Button className={`${prefixCls2}_dev_header_btn`} type="primary" shape="round" size="large" 
+        // block
+        onClick={() => {
+                if (disabled) {
+                    messageApi.info(disableText || 'disabled');
+                    return;
+                }
+                const url = new URL(decodeURIComponent(redirectUri));
+                url.searchParams.set('code', code);
+                if (state) {
+                    url.searchParams.set('state', state);
+                }
+                window.location.href = url.toString();
+            }}>
+                        微信授权一键登录
+                    </Button>
+                </div>
+                <div className={`${prefixCls2}_dev_bottom`}>
+                    <span className={`${prefixCls2}_dev_bottom_desc`}>
+                        1、由于本地开发环境限制，模拟微信授权后动作
+                    </span>
+                    <span className={`${prefixCls2}_dev_bottom_desc`}>
+                        2、CODE可修改
+                    </span>
+                </div>
+            </div>);
     }
     else {
-        V = (_jsx("div", { className: `${prefixCls2}_prod`, children: _jsx("div", { className: `${prefixCls2}_prod_header`, children: _jsx(Button, { className: `${prefixCls2}_prod_header_btn`, type: "primary", shape: "round", size: "large", 
-                    //  block
-                    onClick: () => {
-                        if (disabled) {
-                            messageApi.info(disableText || 'disabled');
-                            return;
-                        }
-                        const url = WeChatLoginUrl(redirectUri, appId, scope, state ? `&state=${state}` : '');
-                        window.location.href = url;
-                    }, children: "\u5FAE\u4FE1\u6388\u6743\u4E00\u952E\u767B\u5F55" }) }) }));
+        V = (<div className={`${prefixCls2}_prod`}>
+                 <div className={`${prefixCls2}_prod_header`}>
+                     <Button className={`${prefixCls2}_prod_header_btn`} type="primary" shape="round" size="large" 
+        //  block
+        onClick={() => {
+                if (disabled) {
+                    messageApi.info(disableText || 'disabled');
+                    return;
+                }
+                const url = WeChatLoginUrl(redirectUri, appId, scope, state ? `&state=${state}` : '');
+                window.location.href = url;
+            }}>
+                         微信授权一键登录
+                     </Button>
+                 </div>
+             </div>);
     }
-    return (_jsxs(_Fragment, { children: [contextHolder, _jsx("div", { className: prefixCls2, id: id, children: V })] }));
+    return (<>
+            {contextHolder}
+            <div className={prefixCls2} id={id}>
+                {V}
+            </div>
+        </>);
 }
 export default Grant;

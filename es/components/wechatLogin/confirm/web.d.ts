@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'wechatLogin', true, {
@@ -14,4 +15,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'wechatLogin
     appId: string;
 }, {
     getCodeAndRedirect: () => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

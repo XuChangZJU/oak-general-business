@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 import { Config } from '../../../types/Config';
@@ -8,4 +9,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'system', fa
     name: string;
     style: Style;
     application$system: EntityDict['application']['OpSchema'][];
-}>): import("react/jsx-runtime").JSX.Element | undefined;
+}>): React.JSX.Element | undefined;

@@ -15,8 +15,6 @@ export class Application extends Feature {
         super();
         this.cache = cache;
         this.storage = storage;
-        const applicationId = storage.load(LOCAL_STORAGE_KEYS.appId);
-        this.applicationId = applicationId;
         this.type = type;
         this.domain = domain;
         this.projection = cloneDeep(applicationProjection);
@@ -58,6 +56,8 @@ export class Application extends Feature {
         this.publish();
     }
     async initialize(appId, projection) {
+        const applicationId = await this.storage.load(LOCAL_STORAGE_KEYS.appId);
+        this.applicationId = applicationId;
         //接收外层注入的projection
         this.projection = merge(this.projection, projection);
         if (process.env.NODE_ENV === 'development' && appId) {

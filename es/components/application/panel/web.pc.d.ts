@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 import { Style } from '../../../types/Style';
@@ -7,4 +8,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
     name: string;
     style: Style;
     type: string;
-}>): import("react/jsx-runtime").JSX.Element | undefined;
+}>): React.JSX.Element | undefined;

@@ -24,6 +24,7 @@ const entityDesc = {
             },
             v: {
                 origin: {
+                    native: 'App',
                     mp: '小程序',
                     public: '公众号',
                     web: '网站',

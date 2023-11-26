@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { UploadFile } from 'antd/es/upload/interface';
 import { EntityDict } from '../../../oak-app-domain';
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "sessionMessage", false, {
