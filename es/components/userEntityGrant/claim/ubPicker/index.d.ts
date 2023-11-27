@@ -4,8 +4,8 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     entity: keyof EntityDict;
     entityFilter: any;
     relationIds: string[];
-    rule: "all" | "single" | "free";
-    ruleOnRow: "all" | "single" | "free";
+    rule: "single" | "all" | "free";
+    ruleOnRow: "single" | "all" | "free";
     onPickRelations: (ids: string[]) => void;
     onPickRows: (ids: string[]) => void;
     pickedRowIds: string[] | undefined;

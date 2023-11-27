@@ -1,4 +1,3 @@
-import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { isMobile } from 'oak-domain/lib/utils/validator';
 export default OakComponent({
     entity: 'mobile',
@@ -59,13 +58,6 @@ export default OakComponent({
                     });
                     this.create({
                         mobile: value,
-                        user: {
-                            id: generateNewId(),
-                            action: 'create',
-                            data: {
-                                id: generateNewId(),
-                            }
-                        }
                     });
                 }
             }

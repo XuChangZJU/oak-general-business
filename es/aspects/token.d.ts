@@ -1,11 +1,11 @@
 import { EntityDict } from '../oak-app-domain';
-import { WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
+import { NativeEnv, WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 export declare function loginByMobile<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     captcha?: string;
     password?: string;
     mobile: string;
-    env: WebEnv | WechatMpEnv;
+    env: WebEnv | WechatMpEnv | NativeEnv;
 }, context: Cxt): Promise<string>;
 export declare function refreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({}: {}, context: Cxt): Promise<void>;
 export declare function loginByWechat<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {

@@ -65,13 +65,6 @@ export default OakComponent({
                     })
                     this.create({
                         mobile: value,
-                        user: {
-                            id: generateNewId(),
-                            action: 'create',
-                            data: {
-                                id: generateNewId(),
-                            }
-                        }
                     } as EntityDict['mobile']['CreateSingle']['data']);
                 }
             }
