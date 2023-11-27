@@ -34,14 +34,7 @@ export default OakComponent({
             : ([] as string[]);
 
         const selectedTypes = data ? data.map((ele) => ele.type) : [];
-        const messageTypes = this.features.cache
-            .get('messageType', {
-                data: {
-                    id: 1,
-                    type: 1,
-                },
-            })
-            .map((ele) => ele.type!)
+        const messageTypes = this.features.template.getMessageType()
             .filter((ele: string) => !selectedTypes.includes(ele));
         return {
             mtt: data,

@@ -58,6 +58,7 @@ export default function Render(
                     }
                     onClick={() => {
                         addItem({
+                            type: messageTypes[0],
                             templateId: wechatPublicTemplates[0].id,
                         });
                     }}
@@ -161,7 +162,7 @@ export default function Render(
                                         onChange={(e) =>
                                             updateItem(
                                                 {
-                                                    type: e,
+                                                    templateId: e,
                                                 },
                                                 record.id
                                             )

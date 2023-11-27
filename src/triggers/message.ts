@@ -226,7 +226,7 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                                         },
                                         { dontCollect: true }
                                     );
-                                    const userId2 = user.refId ? user.refId : userId;
+                                    const userIds = user.refId ? [userId, user.refId] : [userId];
                                     const wechatUsers = await context.select(
                                         'wechatUser',
                                         {
@@ -241,7 +241,9 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                                                         (ele) => ele.id!
                                                     ),
                                                 },
-                                                userId: userId2,
+                                                userId: {
+                                                    $in: userIds
+                                                },
                                             },
                                         },
                                         { dontCollect: true }

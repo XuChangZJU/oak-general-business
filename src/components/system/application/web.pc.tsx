@@ -11,10 +11,10 @@ export default function render(props: WebComponentProps<EntityDict, 'application
 }>) {
     const { oakFullpath, applications, oakExecutable, oakExecuting, systemId } = props.data;
     const { addItem, removeItem, clean, execute, t } = props.methods;
-    const [ createId, setCreateId ] = useState('');
-    const [ removeId, setRemoveId ] = useState('');
+    const [createId, setCreateId] = useState('');
+    const [removeId, setRemoveId] = useState('');
 
-    if (oakFullpath) {
+    if (oakFullpath && applications?.length > 0) {
         return (
             <>
                 <Modal
