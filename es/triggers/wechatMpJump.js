@@ -1,8 +1,8 @@
 import { assert } from 'oak-domain/lib/utils/assert';
-// import { wechatMpJump } from '@project/aspects/wechatMpJump';
+import { wechatMpJump } from '../aspects/wechatMpJump';
 const triggers = [
     {
-        name: '当创建WechatMpJump时，尝试为之创建一个wechatQrCode',
+        name: '当创建WechatMpJump时，生成openlink',
         entity: 'wechatMpJump',
         action: 'create',
         when: 'before',
@@ -10,14 +10,13 @@ const triggers = [
             const { data, filter } = operation;
             const fn = async (wechatMpJumpData) => {
                 const { jump_wxa, expiresAt, expireType, expireInterval } = wechatMpJumpData;
-                Object.assign(wechatMpJumpData, {});
+                const applicationId = context.getApplicationId();
+                assert(applicationId);
+                const openlink = await wechatMpJump({ applicationId, jump_wxa: jump_wxa, expiresAt: expiresAt, expireType, expireInterval: expireInterval }, context);
+                Object.assign(wechatMpJumpData, {
+                    openlink
+                });
             };
-            if (data instanceof Array) {
-                assert('授权不存在一对多的情况');
-            }
-            else {
-                await fn(data);
-            }
             return 0;
         },
     },

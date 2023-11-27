@@ -32,21 +32,21 @@ export default function Render() {
     const features = useFeatures();
     const themeState = features.theme.get();
     const [systemTheme, setSystemTheme] = useState(themeState?.systemTheme);
-    const [theme, setTheme] = useState(themeState?.theme);
+    const [theme, setTheme] = useState(themeState?.themeMode);
     const [color, setColor] = useState(themeState?.color);
     const handleThemeSwitch = (value) => {
         if (value === ESettingTheme.system) {
             features.theme.openSystemTheme();
         }
         else {
-            features.theme.switchTheme(value);
+            features.theme.switchThemeMode(value);
         }
     };
     useEffect(() => {
         const themeUnsub = features.theme.subscribe(() => {
             const themeState = features.theme.get();
             setSystemTheme(themeState.systemTheme);
-            setTheme(themeState.theme);
+            setTheme(themeState.themeMode);
             setColor(themeState.color);
         });
         return () => {

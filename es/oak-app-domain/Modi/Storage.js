@@ -52,9 +52,9 @@ export const desc = {
             attributes: [
                 {
                     name: 'iState',
-                    direction: 'ASC'
+                    direction: 'ASC',
                 }
-            ]
+            ],
         }
     ]
 };
