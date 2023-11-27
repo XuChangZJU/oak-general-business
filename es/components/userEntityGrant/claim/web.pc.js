@@ -1,4 +1,3 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { Alert, Space, List, Button, Row, Col, Divider, Flex } from 'antd';
 import UbPicker from './ubPicker';
 import Styles from './web.pc.module.less';
@@ -8,23 +7,55 @@ export default function Render(props) {
     if (userEntityGrant) {
         const { relationEntity, relationEntityFilter, rule, ruleOnRow, relationIds, expired, } = userEntityGrant;
         const Picker2 = Picker || UbPicker;
-        return (_jsxs(Row, { children: [_jsx(Col, { span: 2 }), _jsx(Col, { span: 20, children: _jsxs(Flex, { vertical: true, className: Styles.container, children: [!hideTip && !isGranter && !hasClaimed && (_jsx(Alert, { message: t('tip'), type: "info", showIcon: true })), isGranter && (_jsx(Alert, { message: t('isGranter'), type: "error", showIcon: true })), hasClaimed && (_jsx(Alert, { message: t('hasClaimed'), type: "error", showIcon: true })), !hideInfo && (_jsxs("div", { className: Styles.info, children: [_jsx(Divider, { orientation: "left", children: t('source') }), _jsxs(List, { itemLayout: "horizontal", children: [_jsxs(List.Item, { children: [_jsx(List.Item.Meta, { title: t('granterName') }), userEntityGrant.granter.name ||
-                                                        userEntityGrant.granter.nickname] }), _jsxs(List.Item, { children: [_jsx(List.Item.Meta, { title: expired
-                                                            ? t('isExpired')
-                                                            : t('counter') }), expired ? t('expired') : counterStr] })] })] })), _jsx(Picker2, { disabled: !!expired || hasClaimed || isGranter, entity: relationEntity, entityFilter: relationEntityFilter, rule: rule, ruleOnRow: ruleOnRow, relationIds: relationIds, onPickRows: onPickRows, onPickRelations: onPickRelations, pickedRelationIds: pickedRelationIds, pickedRowIds: pickedRowIds, oakPath: "$uegClaim-content" }), _jsx(Space, { style: { justifyContent: 'center' }, children: _jsx(Button, { color: isGranter || hasClaimed
-                                        ? 'danger'
-                                        : !expired
-                                            ? 'primary'
-                                            : 'warning', disabled: oakExecutable !== true ||
-                                        !!expired ||
-                                        isGranter ||
-                                        hasClaimed, onClick: () => claim(), children: isGranter
-                                        ? t('isGranter')
-                                        : hasClaimed
-                                            ? t('hasClaimed')
-                                            : !expired
-                                                ? t('userEntityGrant:action.claim')
-                                                : t('expired') }) })] }) }), _jsx(Col, { span: 2 })] }));
+        return (<Row>
+                <Col span={2}/>
+                <Col span={20}>
+                    <Flex vertical className={Styles.container}>
+                        {!hideTip && !isGranter && !hasClaimed && (<Alert message={t('tip')} type="info" showIcon/>)}
+                        {isGranter && (<Alert message={t('isGranter')} type="error" showIcon/>)}
+                        {hasClaimed && (<Alert message={t('hasClaimed')} type="error" showIcon/>)}
+                        {!hideInfo && (<div className={Styles.info}>
+                                <Divider orientation="left">
+                                    {t('source')}
+                                </Divider>
+
+                                <List itemLayout="horizontal">
+                                    <List.Item>
+                                        <List.Item.Meta title={t('granterName')}></List.Item.Meta>
+                                        {userEntityGrant.granter.name ||
+                    userEntityGrant.granter.nickname}
+                                    </List.Item>
+                                    <List.Item>
+                                        <List.Item.Meta title={expired
+                    ? t('isExpired')
+                    : t('counter')}></List.Item.Meta>
+                                        {expired ? t('expired') : counterStr}
+                                    </List.Item>
+                                </List>
+                            </div>)}
+                        <Picker2 disabled={!!expired || hasClaimed || isGranter} entity={relationEntity} entityFilter={relationEntityFilter} rule={rule} ruleOnRow={ruleOnRow} relationIds={relationIds} onPickRows={onPickRows} onPickRelations={onPickRelations} pickedRelationIds={pickedRelationIds} pickedRowIds={pickedRowIds} oakPath="$uegClaim-content"/>
+                        <Space style={{ justifyContent: 'center' }}>
+                            <Button color={isGranter || hasClaimed
+                ? 'danger'
+                : !expired
+                    ? 'primary'
+                    : 'warning'} disabled={oakExecutable !== true ||
+                !!expired ||
+                isGranter ||
+                hasClaimed} onClick={() => claim()}>
+                                {isGranter
+                ? t('isGranter')
+                : hasClaimed
+                    ? t('hasClaimed')
+                    : !expired
+                        ? t('userEntityGrant:action.claim')
+                        : t('expired')}
+                            </Button>
+                        </Space>
+                    </Flex>
+                </Col>
+                <Col span={2}/>
+            </Row>);
     }
     return null;
 }

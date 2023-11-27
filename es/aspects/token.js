@@ -603,7 +603,7 @@ async function tryRefreshWechatPublicUserInfo(wechatUserId, context) {
     }, { dontCollect: true });
     const application = context.getApplication();
     const { type, config } = application;
-    assert(type !== 'wechatMp' && config.type !== 'wechatMp');
+    assert(type !== 'wechatMp' && type !== 'native');
     if (type === 'web') {
         return;
     }
@@ -722,6 +722,7 @@ async function loginFromWechatEnv(code, env, context, wechatLoginId) {
         web: 'web',
         wechatPublic: 'public',
         wechatMp: 'mp',
+        native: 'native',
     };
     const createWechatUserAndReturnTokenId = async (user) => {
         const wechatUserCreateData = {

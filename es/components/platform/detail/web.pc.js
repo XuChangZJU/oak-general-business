@@ -1,5 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Descriptions, Typography, Modal, Button, Row } from 'antd';
 import PlatformUpsert from '../upsert';
 export default function Render(props) {
@@ -7,13 +6,39 @@ export default function Render(props) {
     const { t, execute, clean } = props.methods;
     const [open, setOpen] = useState(false);
     if (oakFullpath) {
-        return (_jsxs(_Fragment, { children: [_jsx(Modal, { open: open, onCancel: () => {
-                        clean();
-                        setOpen(false);
-                    }, width: 800, footer: _jsx(Button, { type: 'primary', onClick: async () => {
-                            await execute();
-                            setOpen(false);
-                        }, disabled: oakExecutable !== true || oakExecuting, children: t('common::action.confirm') }), children: _jsx(PlatformUpsert, { oakId: oakId, oakPath: oakFullpath }) }), _jsxs(Descriptions, { column: 2, bordered: true, children: [_jsx(Descriptions.Item, { label: "id", children: _jsx(Typography.Paragraph, { copyable: true, children: oakId }) }), _jsx(Descriptions.Item, { label: t('platform:attr.name'), children: name }), _jsx(Descriptions.Item, { label: t('platform:attr.description'), children: description }), _jsx(Descriptions.Item, { children: _jsx(Row, { justify: "end", children: _jsx(Button, { type: "primary", onClick: () => setOpen(true), children: t('common::action.update') }) }) })] })] }));
+        return (<>
+                <Modal open={open} onCancel={() => {
+                clean();
+                setOpen(false);
+            }} width={800} footer={<Button type='primary' onClick={async () => {
+                    await execute();
+                    setOpen(false);
+                }} disabled={oakExecutable !== true || oakExecuting}>
+                            {t('common::action.confirm')}
+                        </Button>}>
+                    <PlatformUpsert oakId={oakId} oakPath={oakFullpath}/>
+                </Modal>
+                <Descriptions column={2} bordered>
+                    <Descriptions.Item label="id">
+                        <Typography.Paragraph copyable>
+                            {oakId}
+                        </Typography.Paragraph>
+                    </Descriptions.Item>
+                    <Descriptions.Item label={t('platform:attr.name')}>
+                        {name}
+                    </Descriptions.Item>
+                    <Descriptions.Item label={t('platform:attr.description')}>
+                        {description}
+                    </Descriptions.Item>
+                    <Descriptions.Item>
+                        <Row justify="end">
+                            <Button type="primary" onClick={() => setOpen(true)}>
+                                {t('common::action.update')}
+                            </Button>
+                        </Row>
+                    </Descriptions.Item>
+                </Descriptions>
+            </>);
     }
     return null;
 }

@@ -1,7 +1,7 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { getConfig } from '../getContextConfig';
 import { OakUploadException } from '../../types/Exception';
-import { OakNetworkException } from 'oak-domain';
+import { OakNetworkException } from 'oak-domain/lib/types/Exception';
 export default class CTYun {
     name = 'ctyun';
     autoInform() {
@@ -36,7 +36,7 @@ export default class CTYun {
         let result;
         try {
             result = await uploadFn(file, 'file', uploadMeta.uploadHost, {
-                Key: uploadMeta.key,
+                key: uploadMeta.key,
                 Policy: uploadMeta.policy,
                 AWSAccessKeyId: uploadMeta.accessKey,
                 signature: uploadMeta.signature,

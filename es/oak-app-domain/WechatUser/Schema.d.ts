@@ -13,7 +13,7 @@ import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 import * as Token from "../Token/Schema";
 export type OpSchema = EntityShape & {
-    origin: 'mp' | 'public' | 'web';
+    origin: 'mp' | 'public' | 'web' | 'native';
     openId?: String<32> | null;
     unionId?: String<32> | null;
     sessionKey?: String<64> | null;
@@ -32,7 +32,7 @@ export type OpSchema = EntityShape & {
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
-    origin: 'mp' | 'public' | 'web';
+    origin: 'mp' | 'public' | 'web' | 'native';
     openId?: String<32> | null;
     unionId?: String<32> | null;
     sessionKey?: String<64> | null;
@@ -68,7 +68,7 @@ type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_StringValue;
     $$updateAt$$: Q_DateValue;
-    origin: Q_EnumValue<'mp' | 'public' | 'web'>;
+    origin: Q_EnumValue<'mp' | 'public' | 'web' | 'native'>;
     openId: Q_StringValue;
     unionId: Q_StringValue;
     sessionKey: Q_StringValue;

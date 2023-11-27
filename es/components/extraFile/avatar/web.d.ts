@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'extraFile', true, {
@@ -6,4 +7,4 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
     avatarUrl?: string;
 }, {
     onPickByWeb: (files: File[]) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

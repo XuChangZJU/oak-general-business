@@ -1,5 +1,4 @@
-import { jsx as _jsx } from "react/jsx-runtime";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Tabs } from 'antd';
 import ApplicationDetail from '../detail';
 import ConfigUpsert from '../../config/application';
@@ -16,47 +15,47 @@ export default function Render(props) {
     const [tabKey, setTabKey] = useState('detail');
     const items = [
         {
-            label: _jsx("div", { className: Styles.tabLabel, children: t('detail') }),
+            label: <div className={Styles.tabLabel}>{t('detail')}</div>,
             key: 'detail',
-            children: (_jsx(ApplicationDetail, { oakId: id, oakPath: oakFullpath })),
+            children: (<ApplicationDetail oakId={id} oakPath={oakFullpath}/>),
         },
         {
-            label: _jsx("div", { className: Styles.tabLabel, children: t('config') }),
+            label: <div className={Styles.tabLabel}>{t('config')}</div>,
             key: 'config',
-            children: (_jsx(ConfigUpsert, { entity: "application", entityId: id, config: config || {}, name: name, type: config?.type })),
+            children: (<ConfigUpsert entity="application" entityId={id} config={config || {}} name={name} type={config?.type}/>),
         },
         {
-            label: _jsx("div", { className: Styles.tabLabel, children: t('style') }),
+            label: <div className={Styles.tabLabel}>{t('style')}</div>,
             key: 'style',
-            children: (_jsx(StyleUpsert, { style: style, entity: 'platform', entityId: id, name: name })),
+            children: (<StyleUpsert style={style} entity={'platform'} entityId={id} name={name}/>),
         },
     ];
     if (type === 'wechatPublic') {
         items.push({
-            label: _jsx("div", { className: Styles.tabLabel, children: t('menu') }),
+            label: <div className={Styles.tabLabel}>{t('menu')}</div>,
             key: 'menu',
-            children: (_jsx(WechatMenu, { oakAutoUnmount: true, applicationId: id, oakPath: `$application-panel-menu-${id}`, tabKey: tabKey }))
+            children: (<WechatMenu oakAutoUnmount={true} applicationId={id} oakPath={`$application-panel-menu-${id}`} tabKey={tabKey}/>)
         }, {
-            label: _jsx("div", { className: Styles.tabLabel, children: t('autoReply') }),
+            label: <div className={Styles.tabLabel}>{t('autoReply')}</div>,
             key: 'autoReply',
-            children: (_jsx(WechatPublicAutoReply, { oakAutoUnmount: true, applicationId: id, oakPath: `$application-panel-autoReply-${id}` }))
+            children: (<WechatPublicAutoReply oakAutoUnmount={true} applicationId={id} oakPath={`$application-panel-autoReply-${id}`}/>)
         }, {
-            label: _jsx("div", { className: Styles.tabLabel, children: t('tag') }),
+            label: <div className={Styles.tabLabel}>{t('tag')}</div>,
             key: 'tag',
-            children: (_jsx(WechatPublicTag, { oakAutoUnmount: true, applicationId: id, oakPath: `$application-panel-tag-${id}` }))
+            children: (<WechatPublicTag oakAutoUnmount={true} applicationId={id} oakPath={`$application-panel-tag-${id}`}/>)
         }, {
-            label: _jsx("div", { className: Styles.tabLabel, children: t('user') }),
+            label: <div className={Styles.tabLabel}>{t('user')}</div>,
             key: 'user',
-            children: (_jsx(UserWechatPublicTag, { oakAutoUnmount: true, applicationId: id, oakPath: `$application-panel-user-${id}` }))
+            children: (<UserWechatPublicTag oakAutoUnmount={true} applicationId={id} oakPath={`$application-panel-user-${id}`}/>)
         }, {
-            label: _jsx("div", { className: Styles.tabLabel, children: t('template') }),
+            label: <div className={Styles.tabLabel}>{t('template')}</div>,
             key: 'template',
-            children: (_jsx(TemplateList, { oakAutoUnmount: true, oakPath: `templateUpsert-ApplicationId:${id}`, applicationId: id })),
+            children: (<TemplateList oakAutoUnmount={true} oakPath={`templateUpsert-ApplicationId:${id}`} applicationId={id}/>),
         });
     }
     if (id && oakFullpath) {
-        return (_jsx(Tabs, { tabPosition: "left", onChange: (key) => {
+        return (<Tabs tabPosition="left" onChange={(key) => {
                 setTabKey(key);
-            }, items: items, style: { height: 520 } }));
+            }} items={items} style={{ height: 520 }}/>);
     }
 }

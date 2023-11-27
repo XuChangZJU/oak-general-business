@@ -9,7 +9,7 @@ import { CTYunCosConfig } from '../../types/Config';
 import { CTYunInstance } from 'oak-external-sdk';
 import { urlSafeBase64Encode } from '../sign';
 import { OakUploadException } from '../../types/Exception';
-import { OakExternalException, OakNetworkException } from 'oak-domain';
+import { OakExternalException, OakNetworkException } from 'oak-domain/lib/types/Exception';
 
 export default class CTYun implements Cos<ED, BRC, FRC> {
     name = 'ctyun';
@@ -72,7 +72,7 @@ export default class CTYun implements Cos<ED, BRC, FRC> {
                 'file',
                 uploadMeta.uploadHost,
                 {
-                    Key: uploadMeta.key,
+                    key: uploadMeta.key,
                     Policy: uploadMeta.policy,
                     AWSAccessKeyId: uploadMeta.accessKey,
                     signature: uploadMeta.signature,

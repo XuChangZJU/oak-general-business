@@ -42,15 +42,15 @@ export const desc = {
             name: 'namespace_language',
             attributes: [
                 {
-                    name: 'namespace',
+                    name: 'namespace'
                 },
                 {
-                    name: 'language',
+                    name: 'language'
                 }
             ],
             config: {
-                unique: true,
-            },
+                unique: true
+            }
         }
     ]
 };

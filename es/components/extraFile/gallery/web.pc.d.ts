@@ -1,3 +1,4 @@
+import React from "react";
 import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from "../../../oak-app-domain";
 type ExtraFile = EntityDict['extraFile']['OpSchema'];
@@ -14,5 +15,5 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
     showUploadList?: boolean;
     disableDownload?: boolean;
     disablePreview?: boolean;
-}, {}>): import("react/jsx-runtime").JSX.Element;
+}, {}>): React.JSX.Element;
 export {};

@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 type Session = EntityDict['session']['Schema'];
@@ -13,5 +14,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'session', t
     entityProjection: object;
 }, {
     setSelectedSessionId: (sessionId: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;
 export {};

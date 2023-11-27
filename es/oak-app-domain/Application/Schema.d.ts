@@ -19,7 +19,7 @@ import * as WechatQrCode from "../WechatQrCode/Schema";
 import * as WechatUser from "../WechatUser/Schema";
 import * as Session from "../Session/Schema";
 export type Passport = 'email' | 'mobile' | 'wechat' | 'wechatPublic';
-export type AppType = 'web' | 'wechatMp' | 'wechatPublic';
+export type AppType = 'web' | 'wechatMp' | 'wechatPublic' | 'native';
 export type WechatMpConfig = {
     type: 'wechatMp';
     appId: string;
@@ -66,12 +66,16 @@ export type WechatPublicConfig = {
     };
     passport?: Passport[];
 };
+export type NativeConfig = {
+    type: 'native';
+    passport?: Passport[];
+};
 export type OpSchema = EntityShape & {
     name: String<32>;
     description: Text;
     type: AppType;
     systemId: ForeignKey<"system">;
-    config: WebConfig | WechatMpConfig | WechatPublicConfig;
+    config: WebConfig | WechatMpConfig | WechatPublicConfig | NativeConfig;
     style?: Style | null;
 };
 export type OpAttr = keyof OpSchema;
@@ -80,7 +84,7 @@ export type Schema = EntityShape & {
     description: Text;
     type: AppType;
     systemId: ForeignKey<"system">;
-    config: WebConfig | WechatMpConfig | WechatPublicConfig;
+    config: WebConfig | WechatMpConfig | WechatPublicConfig | NativeConfig;
     style?: Style | null;
     system: System.Schema;
     extraFile$application?: Array<ExtraFile.Schema>;
@@ -118,7 +122,7 @@ type AttrFilter = {
     type: Q_EnumValue<AppType>;
     systemId: Q_StringValue;
     system: System.Filter;
-    config: JsonFilter<WebConfig | WechatMpConfig | WechatPublicConfig>;
+    config: JsonFilter<WebConfig | WechatMpConfig | WechatPublicConfig | NativeConfig>;
     style: JsonFilter<Style>;
     extraFile$application: ExtraFile.Filter & SubQueryPredicateMetadata;
     notification$application: Notification.Filter & SubQueryPredicateMetadata;
@@ -145,7 +149,7 @@ export type Projection = {
     type?: number;
     systemId?: number;
     system?: System.Projection;
-    config?: number | JsonProjection<WebConfig | WechatMpConfig | WechatPublicConfig>;
+    config?: number | JsonProjection<WebConfig | WechatMpConfig | WechatPublicConfig | NativeConfig>;
     style?: number | JsonProjection<Style>;
     extraFile$application?: ExtraFile.Selection & {
         $entity: "extraFile";

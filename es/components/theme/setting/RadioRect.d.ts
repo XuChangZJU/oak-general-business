@@ -9,5 +9,5 @@ interface IProps {
     onChange: (value?: any) => void;
     options: IOption[];
 }
-declare const _default: React.MemoExoticComponent<(props: IProps) => import("react/jsx-runtime").JSX.Element>;
+declare const _default: React.MemoExoticComponent<(props: IProps) => React.JSX.Element>;
 export default _default;

@@ -26,6 +26,6 @@ export declare abstract class BackendRuntimeContext<ED extends EntityDict & Base
     protected getSerializedData(): SerializedData;
     isRoot(): boolean;
     isReallyRoot(): boolean;
-    sendMessage(data: ED['message']['CreateSingle']['data']): Promise<import("oak-domain").OperationResult<ED>>;
+    sendMessage(data: ED['message']['CreateSingle']['data']): Promise<import("oak-domain/lib/types").OperationResult<ED>>;
     allowUserUpdate(): boolean;
 }

@@ -47,6 +47,7 @@ import * as UserSystem from "./UserSystem/Schema";
 import * as UserWechatPublicTag from "./UserWechatPublicTag/Schema";
 import * as WechatLogin from "./WechatLogin/Schema";
 import * as WechatMenu from "./WechatMenu/Schema";
+import * as WechatMpJump from "./WechatMpJump/Schema";
 import * as WechatPublicAutoReply from "./WechatPublicAutoReply/Schema";
 import * as WechatPublicTag from "./WechatPublicTag/Schema";
 import * as WechatPublicTemplate from "./WechatPublicTemplate/Schema";
@@ -296,6 +297,8 @@ export type LivestreamIdSubQuery = {
 export type MessageIdSubQuery = {
     [K in "$in" | "$nin"]?: (MessageSystem.MessageIdSubQuery & {
         entity: "messageSystem";
+    }) | (WechatMpJump.MessageIdSubQuery & {
+        entity: "wechatMpJump";
     }) | (Message.MessageIdSubQuery & {
         entity: "message";
     }) | any;
@@ -471,6 +474,15 @@ export type WechatMenuIdSubQuery = {
         entity: "operEntity";
     }) | (WechatMenu.WechatMenuIdSubQuery & {
         entity: "wechatMenu";
+    }) | any;
+};
+export type WechatMpJumpIdSubQuery = {
+    [K in "$in" | "$nin"]?: (ModiEntity.WechatMpJumpIdSubQuery & {
+        entity: "modiEntity";
+    }) | (OperEntity.WechatMpJumpIdSubQuery & {
+        entity: "operEntity";
+    }) | (WechatMpJump.WechatMpJumpIdSubQuery & {
+        entity: "wechatMpJump";
     }) | any;
 };
 export type WechatPublicAutoReplyIdSubQuery = {

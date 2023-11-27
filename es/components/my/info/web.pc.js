@@ -1,5 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Styles from './web.pc.module.less';
 import { Button, List, Modal, Tag, Input, Radio } from 'antd';
 import MyAvatar from '../avatar';
@@ -25,9 +24,16 @@ export default function Render(props) {
     const [updateAttr, setUpdateAttr] = useState(undefined);
     const [updateValue, setUpdateValue] = useState(undefined);
     if (!userId) {
-        return (_jsxs("div", { className: Styles.container, children: [_jsx("div", { className: Styles.header, children: _jsx(Button, { onClick: () => navigateTo({
-                            url: '/login',
-                        }), children: t('login') }) }), _jsx("div", { className: Styles.body })] }));
+        return (<div className={Styles.container}>
+                <div className={Styles.header}>
+                    <Button onClick={() => navigateTo({
+                url: '/login',
+            })}>
+                        {t('login')}
+                    </Button>
+                </div>
+                <div className={Styles.body}></div>
+            </div>);
     }
     const GenderOptions = [
         {
@@ -39,22 +45,65 @@ export default function Render(props) {
             value: 'female',
         }
     ];
-    return (_jsxs("div", { className: Styles.container, children: [_jsxs("div", { className: Styles.header, children: [_jsx(MyAvatar, { size: 66, iconColor: "white" }), _jsx("div", { className: Styles.name, children: nameText || t('unset') }), showLogout && _jsx(Button, { size: 'small', onClick: () => logout(), children: t('logout') })] }), _jsx("div", { className: Styles.body, children: _jsxs(List, { itemLayout: "vertical", children: [_jsx(List.Item, { extra: _jsx(OakIcon, { name: "pen-to-square" }), onClick: () => setUpdateAttr('nickname'), children: _jsx(List.Item.Meta, { title: t('user:attr.nickname'), description: nickname || t('unset') }) }), _jsx(List.Item, { extra: _jsx(OakIcon, { name: "pen-to-square" }), onClick: () => setUpdateAttr('name'), children: _jsx(List.Item.Meta, { title: t('user:attr.name'), description: name || t('unset') }) }), _jsx(List.Item, { children: _jsx(List.Item.Meta, { title: t('user:attr.userState'), description: _jsx(Tag, { color: UserStateColor[userState], children: t(`user:v.userState.${userState}`) }) }) }), _jsx(List.Item, { children: _jsx(List.Item.Meta, { title: t('user:attr.idState'), description: _jsx(Tag, { color: IdStateColor[idState], children: t(`user:v.idState.${idState}`) }) }) }), _jsx(List.Item, { extra: _jsx(OakIcon, { name: "pen-to-square" }), onClick: () => setUpdateAttr('gender'), children: _jsx(List.Item.Meta, { title: t('user:attr.gender'), description: gender ? t(`user:v.gender.${gender}`) : t('unset') }) }), _jsx("a", { href: '/mobile/me', children: _jsx(List.Item, { extra: _jsx(OakIcon, { name: "chevron-right" }), children: _jsx(List.Item.Meta, { title: t('mobile'), description: mobileText }) }) })] }) }), _jsx("div", { className: Styles.extraContainer, children: _jsx("div", { className: Styles.extra, children: _jsx("a", { href: "/user/manage", children: _jsx(OakIcon, { name: "wand-magic-sparkles", size: 26, color: "warning" }) }) }) }), _jsxs(Modal, { open: !!updateAttr, onOk: async () => {
-                    await updateAttribute(updateAttr, updateValue);
-                    setUpdateAttr(undefined);
-                    setUpdateValue(undefined);
-                }, onCancel: () => {
-                    setUpdateAttr(undefined);
-                    setUpdateValue(undefined);
-                }, okButtonProps: {
-                    disabled: updateValue === undefined,
-                }, children: [updateAttr !== 'gender'
-                        && _jsx(Input, { maxLength: updateAttr === 'name' ? 16 : 64, value: updateValue || props.data[updateAttr], onChange: ({ target }) => {
-                                const { value } = target;
-                                setUpdateValue(value);
-                            } }), updateAttr === 'gender'
-                        && _jsx(Radio.Group, { options: GenderOptions, value: updateValue || gender, onChange: (e) => {
-                                const { value } = e.target;
-                                setUpdateValue(value);
-                            } })] })] }));
+    return (<div className={Styles.container}>
+            <div className={Styles.header}>
+                <MyAvatar size={66} iconColor="white"/>
+                <div className={Styles.name}>{nameText || t('unset')}</div>
+                {showLogout && <Button size='small' onClick={() => logout()}>
+                        {t('logout')}
+                    </Button>}
+            </div>
+            <div className={Styles.body}>
+                <List itemLayout="vertical">
+                    <List.Item extra={<OakIcon name="pen-to-square"/>} onClick={() => setUpdateAttr('nickname')}>
+                        <List.Item.Meta title={t('user:attr.nickname')} description={nickname || t('unset')}/>
+                    </List.Item>
+                    <List.Item extra={<OakIcon name="pen-to-square"/>} onClick={() => setUpdateAttr('name')}>
+                        <List.Item.Meta title={t('user:attr.name')} description={name || t('unset')}/>
+                    </List.Item>
+                    <List.Item>
+                        <List.Item.Meta title={t('user:attr.userState')} description={<Tag color={UserStateColor[userState]}>{t(`user:v.userState.${userState}`)}</Tag>}/>
+                    </List.Item>
+                    <List.Item>
+                        <List.Item.Meta title={t('user:attr.idState')} description={<Tag color={IdStateColor[idState]}>{t(`user:v.idState.${idState}`)}</Tag>}/>
+                    </List.Item>
+                    <List.Item extra={<OakIcon name="pen-to-square"/>} onClick={() => setUpdateAttr('gender')}>
+                        <List.Item.Meta title={t('user:attr.gender')} description={gender ? t(`user:v.gender.${gender}`) : t('unset')}/>
+                    </List.Item>
+                    <a href='/mobile/me'>
+                        <List.Item extra={<OakIcon name="chevron-right"/>}>
+                            <List.Item.Meta title={t('mobile')} description={mobileText}/>
+                        </List.Item>
+                    </a>
+                </List>
+            </div>
+            <div className={Styles.extraContainer}>
+                <div className={Styles.extra}>
+                    <a href="/user/manage">
+                        <OakIcon name="wand-magic-sparkles" size={26} color="warning"/>
+                    </a>
+                </div>
+            </div>
+            <Modal open={!!updateAttr} onOk={async () => {
+            await updateAttribute(updateAttr, updateValue);
+            setUpdateAttr(undefined);
+            setUpdateValue(undefined);
+        }} onCancel={() => {
+            setUpdateAttr(undefined);
+            setUpdateValue(undefined);
+        }} okButtonProps={{
+            disabled: updateValue === undefined,
+        }}>
+                {updateAttr !== 'gender'
+            && <Input maxLength={updateAttr === 'name' ? 16 : 64} value={updateValue || props.data[updateAttr]} onChange={({ target }) => {
+                    const { value } = target;
+                    setUpdateValue(value);
+                }}/>}
+                {updateAttr === 'gender'
+            && <Radio.Group options={GenderOptions} value={updateValue || gender} onChange={(e) => {
+                    const { value } = e.target;
+                    setUpdateValue(value);
+                }}/>}
+            </Modal>
+        </div>);
 }

@@ -1,4 +1,4 @@
-import { jsx as _jsx } from "react/jsx-runtime";
+import React from 'react';
 import { Button } from 'antd-mobile';
 export default function render(props) {
     const { state, oakExecutable, oakExecuting, oakDirty, size, block, type, executeText, failureIds, buttonProps, } = props.data;
@@ -18,5 +18,7 @@ export default function render(props) {
             text = t('upload');
         }
     }
-    return (_jsx(Button, { type: type, size: size, block: block, disabled: disabled, onClick: onSubmit, ...buttonProps, children: text }));
+    return (<Button type={type} size={size} block={block} disabled={disabled} onClick={onSubmit} {...buttonProps}>
+            {text}
+        </Button>);
 }

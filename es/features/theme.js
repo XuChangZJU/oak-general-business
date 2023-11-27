@@ -16,12 +16,15 @@ export default class Theme extends Feature {
     cache;
     themeState;
     storage;
+    async loadSavedState() {
+        const themeState = await this.storage.load(LOCAL_STORAGE_KEYS.themeState);
+        this.themeState = themeState;
+    }
     constructor(cache, storage) {
         super();
         this.cache = cache;
         this.storage = storage;
-        const themeState = storage.load(LOCAL_STORAGE_KEYS.themeState);
-        this.themeState = themeState || initialThemeState;
+        this.themeState = initialThemeState;
         this.switchTheme(this.themeState.theme);
         this.switchColor(this.themeState.color);
     }

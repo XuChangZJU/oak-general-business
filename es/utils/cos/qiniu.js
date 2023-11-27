@@ -1,7 +1,7 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { getConfig } from '../getContextConfig';
 import { OakUploadException } from '../../types/Exception';
-import { OakExternalException, OakNetworkException } from 'oak-domain';
+import { OakExternalException, OakNetworkException } from 'oak-domain/lib/types/Exception';
 export default class Qiniu {
     name = 'qiniu';
     autoInform() {

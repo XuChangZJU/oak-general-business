@@ -1,3 +1,3 @@
 import './index.less';
-declare const Empty: () => import("react/jsx-runtime").JSX.Element;
+declare const Empty: () => import("react").JSX.Element;
 export default Empty;

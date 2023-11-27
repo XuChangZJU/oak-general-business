@@ -1,8 +1,8 @@
 import { cloneDeep, set, get, omit } from 'oak-domain/lib/utils/lodash';
-import { AppType, WebConfig, WechatPublicConfig, WechatMpConfig } from '../../../oak-app-domain/Application/Schema';
+import { AppType, WebConfig, WechatPublicConfig, WechatMpConfig, NativeConfig } from '../../../oak-app-domain/Application/Schema';
 import { EntityDict } from '../../../oak-app-domain/EntityDict';
 
-type Config = WebConfig | WechatPublicConfig | WechatMpConfig;
+type Config = WebConfig | WechatPublicConfig | WechatMpConfig | NativeConfig;
 
 export default OakComponent({
     isList: false,

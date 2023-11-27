@@ -1,7 +1,6 @@
-import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
 // @ts-nocheck
 // Segmented这个对象在antd里的声明是错误的
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { isMobile, isPassword, isCaptcha, } from 'oak-domain/lib/utils/validator';
 import { Form, Input, Button, Segmented } from 'antd';
 import { LockOutlined, MobileOutlined, } from '@ant-design/icons';
@@ -21,18 +20,48 @@ export default function Render(props) {
     const validCaptcha = isCaptcha(captcha);
     const validPassword = isPassword(password);
     const allowSubmit = validMobile && (validCaptcha || validPassword);
-    const LoginPassword = (_jsxs(Form, { colon: true, children: [_jsx(Form.Item, { name: "mobile", children: _jsx(Input, { allowClear: true, value: mobile, type: "tel", size: "large", maxLength: 11, prefix: _jsx(MobileOutlined, {}), placeholder: t('placeholder.Mobile'), onChange: (e) => {
-                        setMobile(e.target.value);
-                    }, className: Style['loginbox-input'] }) }), _jsx(Form.Item, { name: "password", children: _jsx(Input, { allowClear: true, size: "large", value: password, prefix: _jsx(LockOutlined, {}), type: "password", placeholder: t('placeholder.Password'), onChange: (e) => {
-                        setPassword(e.target.value);
-                    }, className: Style['loginbox-input'] }) }), _jsx(Form.Item, { children: _jsx(_Fragment, { children: _jsx(Button, { block: true, size: "large", type: "primary", disabled: !!disabled || !allowSubmit || loading, loading: loading, onClick: () => loginByMobile(mobile, password, captcha), children: t('Login') }) }) })] }));
-    const LoginCaptcha = (_jsxs(Form, { colon: true, children: [_jsx(Form.Item, { name: "mobile", children: _jsx(Input, { allowClear: true, value: mobile, type: "tel", size: "large", maxLength: 11, prefix: _jsx(MobileOutlined, {}), placeholder: t('placeholder.Mobile'), onChange: (e) => {
-                        setMobile(e.target.value);
-                    }, className: Style['loginbox-input'] }) }), _jsx(Form.Item, { name: "captcha", children: _jsx(Input, { allowClear: true, value: captcha, size: "large", maxLength: 4, placeholder: t('placeholder.Captcha'), onChange: (e) => {
-                        setCaptcha(e.target.value);
-                    }, className: Style['loginbox-input'], suffix: _jsx(Button, { size: "small", type: "link", disabled: !!disabled || !validMobile || counter > 0, onClick: () => sendCaptcha(mobile), children: counter > 0
-                            ? counter + t('resendAfter')
-                            : t('Send') }) }) }), _jsx(Form.Item, { children: _jsx(Button, { block: true, size: "large", type: "primary", disabled: disabled || !allowSubmit || loading, loading: loading, onClick: () => loginByMobile(mobile, password, captcha), children: t('Login') }) })] }));
+    const LoginPassword = (<Form colon={true}>
+            <Form.Item name="mobile">
+                <Input allowClear value={mobile} type="tel" size="large" maxLength={11} prefix={<MobileOutlined />} placeholder={t('placeholder.Mobile')} onChange={(e) => {
+            setMobile(e.target.value);
+        }} className={Style['loginbox-input']}/>
+            </Form.Item>
+            <Form.Item name="password">
+                <Input allowClear size="large" value={password} prefix={<LockOutlined />} type="password" placeholder={t('placeholder.Password')} onChange={(e) => {
+            setPassword(e.target.value);
+        }} className={Style['loginbox-input']}/>
+            </Form.Item>
+
+            <Form.Item>
+                <>
+                    <Button block size="large" type="primary" disabled={!!disabled || !allowSubmit || loading} loading={loading} onClick={() => loginByMobile(mobile, password, captcha)}>
+                        {t('Login')}
+                    </Button>
+                </>
+            </Form.Item>
+        </Form>);
+    const LoginCaptcha = (<Form colon={true}>
+            <Form.Item name="mobile">
+                <Input allowClear value={mobile} type="tel" size="large" maxLength={11} prefix={<MobileOutlined />} placeholder={t('placeholder.Mobile')} onChange={(e) => {
+            setMobile(e.target.value);
+        }} className={Style['loginbox-input']}/>
+            </Form.Item>
+            <Form.Item name="captcha">
+                <Input allowClear value={captcha} size="large" maxLength={4} placeholder={t('placeholder.Captcha')} onChange={(e) => {
+            setCaptcha(e.target.value);
+        }} className={Style['loginbox-input']} suffix={<Button size="small" type="link" disabled={!!disabled || !validMobile || counter > 0} onClick={() => sendCaptcha(mobile)}>
+                            {counter > 0
+                ? counter + t('resendAfter')
+                : t('Send')}
+                        </Button>}/>
+            </Form.Item>
+
+            <Form.Item>
+                <Button block size="large" type="primary" disabled={disabled || !allowSubmit || loading} loading={loading} onClick={() => loginByMobile(mobile, password, captcha)}>
+                    {t('Login')}
+                </Button>
+            </Form.Item>
+        </Form>);
     const [options, setOptions] = useState([]);
     const getOptions = () => {
         const newOptions = [];
@@ -89,18 +118,43 @@ export default function Render(props) {
     if (url) {
         state = encodeURIComponent(decodeURIComponent(url));
     }
-    return (_jsx("div", { className: Style['loginbox-main'], children: _jsxs("div", { className: classNames(Style['loginbox-wrap'], {
-                [Style['loginbox-wrap__mobile']]: width === 'xs',
-            }), children: [options?.length > 1 && (_jsx("div", { className: Style['loginbox-hd'], children: _jsx(Segmented, { className: Style.segmented, value: loginMode, block: true, onChange: setLoginMode, options: options.map((ele) => ({
-                            value: ele.value,
-                            label: t(`${ele.label}`),
-                        })) }) })), _jsx("div", { className: classNames(Style['loginbox-bd'], {
-                        [Style['loginbox-bd__grant']]: isSupportGrant,
-                    }), children: isSupportGrant ? (_jsx("div", { className: Style['loginbox-grant'], children: _jsx(WeChatLoginGrant, { disabled: !!disabled, disableText: disabled, appId: appId, scope: "snsapi_userinfo", redirectUri: redirectUri, state: state }) })) : (_jsxs(_Fragment, { children: [_jsx("div", { className: Style['loginbox-password'], style: {
-                                    display: loginMode === 1 ? 'block' : 'none',
-                                }, children: LoginPassword }), _jsx("div", { className: Style['loginbox-mobile'], style: {
-                                    display: loginMode === 2 ? 'block' : 'none',
-                                }, children: LoginCaptcha }), _jsxs("div", { className: Style['loginbox-qrcode'], style: {
-                                    display: loginMode === 3 ? 'block' : 'none',
-                                }, children: [isSupportWechat && (_jsx(WeChatLoginQrCode, { disabled: disabled, disableText: disabled, appId: appId, scope: "snsapi_login", redirectUri: redirectUri, state: state, href: "data:text/css;base64,LmltcG93ZXJCb3ggLnFyY29kZSB7d2lkdGg6IDIwMHB4O30KLmltcG93ZXJCb3ggLnRpdGxlIHtkaXNwbGF5OiBub25lO30KLmltcG93ZXJCb3ggLmluZm8ge3dpZHRoOiAyMDBweDt9Ci5zdGF0dXNfaWNvbiB7ZGlzcGxheTogbm9uZX0KLmltcG93ZXJCb3ggLnN0YXR1cyB7dGV4dC1hbGlnbjogY2VudGVyO30gCg==" })), isSupportWechatPublic && (_jsx(WechatLoginQrCodeForPublic, { type: "login", oakPath: "$login-wechatLogin/qrCode", oakAutoUnmount: true, url: state }))] })] })) })] }) }));
+    return (<div className={Style['loginbox-main']}>
+            <div className={classNames(Style['loginbox-wrap'], {
+            [Style['loginbox-wrap__mobile']]: width === 'xs',
+        })}>
+                {options?.length > 1 && (<div className={Style['loginbox-hd']}>
+                        <Segmented className={Style.segmented} value={loginMode} block onChange={setLoginMode} options={options.map((ele) => ({
+                value: ele.value,
+                label: t(`${ele.label}`),
+            }))}></Segmented>
+                    </div>)}
+
+                <div className={classNames(Style['loginbox-bd'], {
+            [Style['loginbox-bd__grant']]: isSupportGrant,
+        })}>
+                    {isSupportGrant ? (<div className={Style['loginbox-grant']}>
+                            <WeChatLoginGrant disabled={!!disabled} disableText={disabled} appId={appId} scope="snsapi_userinfo" redirectUri={redirectUri} state={state}/>
+                        </div>) : (<>
+                            <div className={Style['loginbox-password']} style={{
+                display: loginMode === 1 ? 'block' : 'none',
+            }}>
+                                {LoginPassword}
+                            </div>
+                            <div className={Style['loginbox-mobile']} style={{
+                display: loginMode === 2 ? 'block' : 'none',
+            }}>
+                                {LoginCaptcha}
+                            </div>
+                            <div className={Style['loginbox-qrcode']} style={{
+                display: loginMode === 3 ? 'block' : 'none',
+            }}>
+                                {/* 因为在选择授权方式时，微信网站和微信公众号授权登录二者只存其一，
+                所以这里可以按这个判断分开显示   */}
+                                {isSupportWechat && (<WeChatLoginQrCode disabled={disabled} disableText={disabled} appId={appId} scope="snsapi_login" redirectUri={redirectUri} state={state} href="data:text/css;base64,LmltcG93ZXJCb3ggLnFyY29kZSB7d2lkdGg6IDIwMHB4O30KLmltcG93ZXJCb3ggLnRpdGxlIHtkaXNwbGF5OiBub25lO30KLmltcG93ZXJCb3ggLmluZm8ge3dpZHRoOiAyMDBweDt9Ci5zdGF0dXNfaWNvbiB7ZGlzcGxheTogbm9uZX0KLmltcG93ZXJCb3ggLnN0YXR1cyB7dGV4dC1hbGlnbjogY2VudGVyO30gCg=="/>)}
+                                {isSupportWechatPublic && (<WechatLoginQrCodeForPublic type="login" oakPath="$login-wechatLogin/qrCode" oakAutoUnmount={true} url={state}/>)}
+                            </div>
+                        </>)}
+                </div>
+            </div>
+        </div>);
 }

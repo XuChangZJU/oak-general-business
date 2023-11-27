@@ -1,13 +1,13 @@
-import { jsx as _jsx } from "react/jsx-runtime";
+import React from 'react';
 import QrCode from '../../common/qrCode';
 import { Spin } from 'antd';
 export default function Render(props) {
     const { url, expiresAt, oakLoading } = props.data;
     if (oakLoading) {
-        return _jsx(Spin, {});
+        return <Spin />;
     }
     if (url) {
-        return _jsx(QrCode, { url: url, expiresAt: expiresAt });
+        return <QrCode url={url} expiresAt={expiresAt}/>;
     }
     return null;
 }

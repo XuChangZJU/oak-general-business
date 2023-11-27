@@ -3,7 +3,7 @@ import { EntityDict } from '../oak-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { Watcher, BBWatcher } from 'oak-domain/lib/types/Watcher';
 import { getCos } from '../utils/cos';
-import { generateNewIdAsync } from 'oak-domain';
+import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { groupBy } from 'oak-domain/lib/utils/lodash';
 
 async function checkWhetherSuccess(context: BackendRuntimeContext<EntityDict>, applicationId: string, rows: EntityDict['extraFile']['OpSchema'][]) {    

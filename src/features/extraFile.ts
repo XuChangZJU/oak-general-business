@@ -14,7 +14,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { getCos } from '../utils/cos';
 import { OpSchema } from '../oak-app-domain/ExtraFile/Schema';
 import { unset } from 'oak-domain/lib/utils/lodash';
-import { generateNewId, generateNewIdAsync } from 'oak-domain';
+import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { extraFileProjection } from '../types/Projection';
 
 export type FileState = 'local' | 'uploading' | 'uploaded' | 'failed';

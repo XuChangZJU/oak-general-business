@@ -11,12 +11,19 @@ export type RedirectToProps = {
     state?: Record<string, any>;
 };
 
+export type Condition = {
+    condition?: any;
+};
+
 export interface Schema extends EntityShape {
     title: Text;
     description?: Text;
     targetEntity: String<32>;
+    targetEntityId?: String<64>;
+    condition?: Condition;
     action: String<32>;
     redirectTo: RedirectToProps;
+
 };
 
 type Relation = 'collaborator';
@@ -50,6 +57,8 @@ const entityDesc: EntityDesc<
                 title: '标题',
                 description: '描述',
                 targetEntity: '对象实体',
+                targetEntityId: '对象实体Id',
+                condition: '过滤条件',
                 action: '动作',
                 redirectTo: '重定向页面',
             },

@@ -21,7 +21,7 @@ export default OakComponent({
     },
     formData: function ({ data: user, features, props }) {
         let counter = 0;
-        const lastSendAt = features.localStorage.load(SEND_KEY);
+        const { lastSendAt } = this.state;
         if (typeof lastSendAt === 'number') {
             counter = Math.max(SEND_CAPTCHA_LATENCY - Math.ceil((Date.now() - lastSendAt) / 1000), 0);
             if (counter > 0) {
@@ -42,8 +42,18 @@ export default OakComponent({
         channels: [],
         failTimes: 0,
         captcha: '',
+        lastSendAt: undefined,
     },
-    lifetimes: {},
+    lifetimes: {
+        async ready() {
+            const lastSendAt = await this.load(SEND_KEY);
+            if (lastSendAt) {
+                this.setState({
+                    lastSendAt,
+                }, () => this.reRender());
+            }
+        }
+    },
     methods: {
         async sendCaptcha(mobile) {
             try {
@@ -53,8 +63,11 @@ export default OakComponent({
                     type: 'success',
                     content: result,
                 });
-                this.save(SEND_KEY, Date.now());
-                this.reRender();
+                const lastSendAt = Date.now();
+                this.save(SEND_KEY, lastSendAt);
+                this.setState({
+                    lastSendAt,
+                }, () => this.reRender());
             }
             catch (err) {
                 this.setMessage({

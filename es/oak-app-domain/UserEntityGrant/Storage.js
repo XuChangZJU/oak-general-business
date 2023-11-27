@@ -85,12 +85,12 @@ export const desc = {
             name: 'index_expired_expiredAt',
             attributes: [
                 {
-                    name: 'expired',
+                    name: 'expired'
                 },
                 {
-                    name: 'expiresAt',
+                    name: 'expiresAt'
                 }
-            ],
+            ]
         }
     ]
 };

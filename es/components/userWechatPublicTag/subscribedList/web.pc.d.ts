@@ -1,3 +1,4 @@
+import React from 'react';
 import { EntityDict } from "../../../oak-app-domain";
 import { WebComponentProps } from 'oak-frontend-base';
 export default function Render(props: WebComponentProps<EntityDict, 'wechatUser', true, {
@@ -23,4 +24,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'wechatUser'
     getTags: () => void;
     tagging: (tagIdList: number[], openId: string) => void;
     syncToLocale: (openId: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

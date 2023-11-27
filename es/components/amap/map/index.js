@@ -1,5 +1,4 @@
-import { jsx as _jsx } from "react/jsx-runtime";
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Map, APILoader } from '@uiw/react-amap';
 import classNames from 'classnames';
 import './index.less';
@@ -39,6 +38,12 @@ const memo = (props) => {
             };
         }
     }, [window.AMap, useAMapUI]);
-    return (_jsx("div", { style: style, className: classNames(`${prefixCls}-map`, className), children: _jsx(APILoader, { akey: akey, version: version, children: _jsx(Map, { ref: mapRef, ...mapProps, children: children }) }) }));
+    return (<div style={style} className={classNames(`${prefixCls}-map`, className)}>
+            <APILoader akey={akey} version={version}>
+                <Map ref={mapRef} {...mapProps}>
+                    {children}
+                </Map>
+            </APILoader>
+        </div>);
 };
 export default memo;

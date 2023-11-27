@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 export default function render(props: WebComponentProps<EntityDict, 'sessionMessage', false, {
@@ -12,4 +13,4 @@ export default function render(props: WebComponentProps<EntityDict, 'sessionMess
     id: string;
 }, {
     getAvatarUrl: (aaoe: boolean) => string;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

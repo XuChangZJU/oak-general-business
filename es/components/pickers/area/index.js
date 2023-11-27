@@ -25,7 +25,9 @@ export default OakComponent({
     },
     methods: {
         onWechatMpItemClicked(input) {
-            const { dataset } = this.resolveInput(input);
+            const { currentTarget, detail } = input;
+            const { dataset } = currentTarget;
+            ;
             const item = this.state.areas.find((ele) => ele?.id === dataset.id);
             this.onItemClicked(item);
         },

@@ -56,6 +56,9 @@ import {
     syncToLocale,
     syncToWechat,
 } from './userWechatPublicTag';
+import {
+    wechatMpJump,
+} from './wechatMpJump';
 
 const aspectDict = {
     mergeUser,
@@ -110,6 +113,7 @@ const aspectDict = {
     tagging,
     syncToLocale,
     syncToWechat,
+    wechatMpJump,
 };
 
 export default aspectDict;

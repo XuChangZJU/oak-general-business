@@ -47,6 +47,7 @@ import { desc as userSystemDesc } from "./UserSystem/Storage";
 import { desc as userWechatPublicTagDesc } from "./UserWechatPublicTag/Storage";
 import { desc as wechatLoginDesc } from "./WechatLogin/Storage";
 import { desc as wechatMenuDesc } from "./WechatMenu/Storage";
+import { desc as wechatMpJumpDesc } from "./WechatMpJump/Storage";
 import { desc as wechatPublicAutoReplyDesc } from "./WechatPublicAutoReply/Storage";
 import { desc as wechatPublicTagDesc } from "./WechatPublicTag/Storage";
 import { desc as wechatPublicTemplateDesc } from "./WechatPublicTemplate/Storage";
@@ -102,6 +103,7 @@ export const storageSchema = {
     userWechatPublicTag: userWechatPublicTagDesc,
     wechatLogin: wechatLoginDesc,
     wechatMenu: wechatMenuDesc,
+    wechatMpJump: wechatMpJumpDesc,
     wechatPublicAutoReply: wechatPublicAutoReplyDesc,
     wechatPublicTag: wechatPublicTagDesc,
     wechatPublicTemplate: wechatPublicTemplateDesc,

@@ -1,25 +1,31 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import * as React from 'react';
 import classNames from 'classnames';
 import './index.less';
 import DefaultEmptyImg from './empty';
 import SimpleEmptyImg from './simple';
-const defaultEmptyImg = _jsx(DefaultEmptyImg, {});
-const simpleEmptyImg = _jsx(SimpleEmptyImg, {});
+const defaultEmptyImg = <DefaultEmptyImg />;
+const simpleEmptyImg = <SimpleEmptyImg />;
 const Empty = (props) => {
     const { className, image = defaultEmptyImg, description, children, imageStyle, ...restProps } = props;
     const des = typeof description !== 'undefined' ? description : '暂无数据';
     const alt = typeof des === 'string' ? des : 'empty';
     let imageNode = null;
     if (typeof image === 'string') {
-        imageNode = _jsx("img", { alt: alt, src: image });
+        imageNode = <img alt={alt} src={image}/>;
     }
     else {
         imageNode = image;
     }
     const prefixCls = 'oak';
-    return (_jsxs("div", { className: classNames(`${prefixCls}-empty`, {
+    return (<div className={classNames(`${prefixCls}-empty`, {
             [`${prefixCls}-empty-normal`]: image === simpleEmptyImg,
-        }, className), ...restProps, children: [_jsx("div", { className: `${prefixCls}-empty-image`, style: imageStyle, children: imageNode }), des && _jsx("div", { className: `${prefixCls}-empty-description`, children: des }), children && (_jsx("div", { className: `${prefixCls}-empty-footer`, children: children }))] }));
+        }, className)} {...restProps}>
+            <div className={`${prefixCls}-empty-image`} style={imageStyle}>
+                {imageNode}
+            </div>
+            {des && <div className={`${prefixCls}-empty-description`}>{des}</div>}
+            {children && (<div className={`${prefixCls}-empty-footer`}>{children}</div>)}
+        </div>);
 };
 Empty.PRESENTED_IMAGE_DEFAULT = defaultEmptyImg;
 Empty.PRESENTED_IMAGE_SIMPLE = simpleEmptyImg;

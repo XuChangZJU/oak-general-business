@@ -6,7 +6,7 @@ import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
 export interface Schema extends EntityShape {
-    origin: 'mp' | 'public' | 'web';
+    origin: 'mp' | 'public' | 'web' | 'native';
     openId?: String<32>;
     unionId?: String<32>;
     sessionKey?: String<64>;
@@ -52,6 +52,7 @@ const entityDesc: EntityDesc<Schema, '', '', {
             },
             v: {
                 origin: {
+                    native: 'App',
                     mp: '小程序',
                     public: '公众号',
                     web: '网站',

@@ -1,4 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import React from "react";
 // import { UserOutlined } from '@ant-design/icons';
 import Style from './web.module.less';
 import { Button } from 'antd';
@@ -13,9 +13,17 @@ export default function render(props) {
     const defaultUrl = 'http://qiniu.gecomebox.com/static/defaultAvatar.png';
     const features = useFeatures();
     const width = useWidth();
-    return (_jsxs("div", { className: classNames(Style.header, {
+    return (<div className={classNames(Style.header, {
             [Style.header_mobile]: width === 'xs'
-        }), children: [showBack && (_jsx(Button, { type: "text", onClick: () => {
-                    features.navigator.navigateBack();
-                }, children: _jsx(LeftOutlined, { className: Style.backIcon }) })), _jsx("div", { className: Style.middle, children: session && (_jsx("div", { className: Style.name, children: getName() })) })] }));
+        })}>
+            {showBack && (<Button type="text" onClick={() => {
+                features.navigator.navigateBack();
+            }}>
+                    <LeftOutlined className={Style.backIcon}/>
+                </Button>)}
+            <div className={Style.middle}>
+                {/* <Image src={url} className={Style.icon} preview={false} /> */}
+                {session && (<div className={Style.name}>{getName()}</div>)}
+            </div>
+        </div>);
 }

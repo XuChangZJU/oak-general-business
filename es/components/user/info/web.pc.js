@@ -1,5 +1,4 @@
-import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Space, Button, Input, Radio, DatePicker, Form, Typography, Modal, Card, } from 'antd';
 import dayjs from 'dayjs';
 import OakAvatar from '../../../components/extraFile/avatar';
@@ -17,70 +16,179 @@ export default function Render(props) {
     const [open2, setOpen2] = useState(false);
     const [open3, setOpen3] = useState(false);
     const [captcha, setCaptcha] = useState('');
-    return (_jsxs(_Fragment, { children: [_jsx(Card, { title: '基本信息', children: _jsxs(Form, { labelCol: { xs: { span: 4 }, md: { span: 6 } }, wrapperCol: { xs: { span: 16 }, md: { span: 12 } }, children: [_jsx(Form.Item, { label: t('avatar'), name: "extraFile$entity", children: _jsx(_Fragment, { children: _jsx(OakAvatar, { oakAutoUnmount: true, oakPath: oakFullpath + '.extraFile$entity', entity: "user" }) }) }), _jsx(Form.Item, { label: t('user:attr.name'), rules: [
-                                {
-                                    required: true,
-                                },
-                            ], children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "", onChange: (e) => methods.update({
-                                        name: e.target.value,
-                                    }), value: name }) }) }), _jsx(Form.Item, { label: t('user:attr.nickname'), rules: [
-                                {
-                                    required: true,
-                                },
-                            ], children: _jsx(_Fragment, { children: _jsx(Input, { placeholder: "", onChange: (e) => methods.update({
-                                        nickname: e.target.value,
-                                    }), value: nickname }) }) }), _jsx(Form.Item, { label: t('user:attr.gender'), children: _jsx(Space, { direction: "vertical", children: _jsx(Radio.Group, { value: data.gender, options: genderOptions, onChange: ({ target: { value } }) => {
-                                        methods.update({ gender: value });
-                                    } }) }) }), _jsx(Form.Item, { label: t('user:attr.birth'), children: _jsx(_Fragment, { children: _jsx(DatePicker, { placeholder: "\u8BF7\u9009\u62E9", format: "YYYY-MM-DD", inputReadOnly: true, allowClear: false, value: birth ? dayjs(birth) : undefined, disabledDate: (current) => {
-                                        if (dayjs(current).valueOf() >
-                                            dayjs().valueOf()) {
-                                            return true;
-                                        }
-                                        return false;
-                                    }, onChange: (value) => {
-                                        if (value) {
-                                            methods.update({
-                                                birth: dayjs(value).valueOf(),
-                                            });
-                                        }
-                                    } }) }) }), _jsx(Form.Item, { wrapperCol: {
-                                xs: { offset: 4 },
-                                md: { offset: 6 },
-                            }, children: _jsx(Space, { children: _jsx(ExtraFileCommit, { oakPath: oakFullpath }) }) })] }) }), _jsx("div", { style: { marginTop: 10 } }), _jsx(Card, { title: '安全信息', children: _jsxs(Form, { labelCol: { xs: { span: 4 }, md: { span: 6 } }, wrapperCol: { xs: { span: 16 }, md: { span: 12 } }, children: [_jsx(Form.Item, { label: t('mobile'), children: _jsxs(Space, { children: [_jsx(Typography, { children: mobile || '未设置' }), _jsx(Button, { size: "small", onClick: () => {
-                                            if (mobile) {
-                                                goAddMobile();
-                                                return;
-                                            }
-                                            setOpen(true);
-                                        }, children: mobile ? t('manage') : t('bind') })] }) }), _jsx(Form.Item, { label: t('user:attr.password'), children: _jsxs(Space, { children: [_jsx(Typography, { children: '********' }), _jsx(Button, { size: "small", onClick: () => {
-                                            goChangePassword();
-                                            return;
-                                        }, children: t('manage') })] }) }), process.env.NODE_ENV === 'development' && (_jsx(Form.Item, { label: "\u5FAE\u4FE1\u5E10\u53F7", children: _jsx(_Fragment, { children: wechatUser ? (_jsxs(Space, { children: [_jsx(Typography, { children: wechatUser.nickname }), _jsx(WechatUserList, { oakPath: oakFullpath
-                                                ? `${oakFullpath}.wechatUser$user`
-                                                : undefined })] })) : (_jsx(Button, { size: "small", onClick: () => {
-                                        setOpen2(true);
-                                    }, children: "\u7ED1\u5B9A" })) }) })), isRoot && (_jsx(Form.Item, { label: '系统用户', tooltip: "\u8D85\u7EA7\u7BA1\u7406\u5458\u53EF\u5BF9\u7CFB\u7EDF\u7528\u6237\u8FDB\u884C\u7BA1\u7406", children: _jsx(Button, { size: "small", onClick: () => {
-                                    goUserManage();
-                                }, children: t('manage') }) }))] }) }), _jsx(Modal, { title: "\u7ED1\u5B9A\u624B\u673A\u53F7", open: open, destroyOnClose: true, footer: null, onCancel: () => {
-                    setOpen(false);
-                }, children: _jsx(MobileLogin, { callback: () => {
-                        setOpen(false);
-                    }, oakPath: "$user/info-mobile/login", oakAutoUnmount: true }) }), _jsx(Modal, { title: "\u7ED1\u5B9A\u5FAE\u4FE1", open: open2, destroyOnClose: true, footer: null, maskClosable: false, onCancel: () => {
-                    setOpen2(false);
-                }, children: _jsx(WechatLoginQrCode, { oakPath: "$user/info-wechatLogin/qrCode", oakAutoUnmount: true }) }), _jsx(Modal, { title: t('Mobile-Number-Verification'), open: open3, destroyOnClose: true, footer: [
-                    _jsx(Button, { onClick: () => setOpen3(false), children: t('cancel') }, "cancel"),
-                    _jsx(Button, { type: "primary", disabled: !isCaptcha(captcha), onClick: () => {
-                            unbindingWechat(captcha);
-                            setOpen3(false);
-                        }, children: t('unbind') }, "send"),
-                ], maskClosable: false, onCancel: () => {
+    return (<>
+            <Card title={'基本信息'}>
+                <Form labelCol={{ xs: { span: 4 }, md: { span: 6 } }} wrapperCol={{ xs: { span: 16 }, md: { span: 12 } }}>
+                    <Form.Item label={t('avatar')} name="extraFile$entity">
+                        <>
+                            <OakAvatar oakAutoUnmount={true} oakPath={oakFullpath + '.extraFile$entity'} entity="user"/>
+                        </>
+                    </Form.Item>
+                    <Form.Item label={t('user:attr.name')} rules={[
+            {
+                required: true,
+            },
+        ]}>
+                        <>
+                            <Input placeholder="" onChange={(e) => methods.update({
+            name: e.target.value,
+        })} value={name}/>
+                        </>
+                    </Form.Item>
+                    <Form.Item label={t('user:attr.nickname')} rules={[
+            {
+                required: true,
+            },
+        ]}>
+                        <>
+                            <Input placeholder="" onChange={(e) => methods.update({
+            nickname: e.target.value,
+        })} value={nickname}/>
+                        </>
+                    </Form.Item>
+                    <Form.Item label={t('user:attr.gender')}>
+                        <Space direction="vertical">
+                            <Radio.Group value={data.gender} options={genderOptions} onChange={({ target: { value } }) => {
+            methods.update({ gender: value });
+        }}/>
+                        </Space>
+                    </Form.Item>
+                    <Form.Item label={t('user:attr.birth')}>
+                        <>
+                            <DatePicker placeholder="请选择" format="YYYY-MM-DD" inputReadOnly={true} allowClear={false} value={birth ? dayjs(birth) : undefined} disabledDate={(current) => {
+            if (dayjs(current).valueOf() >
+                dayjs().valueOf()) {
+                return true;
+            }
+            return false;
+        }} onChange={(value) => {
+            if (value) {
+                methods.update({
+                    birth: dayjs(value).valueOf(),
+                });
+            }
+        }}/>
+                        </>
+                    </Form.Item>
+                    <Form.Item wrapperCol={{
+            xs: { offset: 4 },
+            md: { offset: 6 },
+        }}>
+                        <Space>
+                            {/* <Button
+            disabled={oakExecuting || !oakDirty}
+            type="primary"
+            onClick={() => {
+                updateMyInfo();
+            }}
+        >
+            确定
+        </Button> */}
+                            <ExtraFileCommit oakPath={oakFullpath}/>
+                        </Space>
+                    </Form.Item>
+                </Form>
+            </Card>
+            <div style={{ marginTop: 10 }}></div>
+
+            <Card title={'安全信息'}>
+                <Form labelCol={{ xs: { span: 4 }, md: { span: 6 } }} wrapperCol={{ xs: { span: 16 }, md: { span: 12 } }}>
+                    <Form.Item label={t('mobile')}>
+                        <Space>
+                            <Typography>{mobile || '未设置'}</Typography>
+                            <Button size="small" onClick={() => {
+            if (mobile) {
+                goAddMobile();
+                return;
+            }
+            setOpen(true);
+        }}>
+                                {mobile ? t('manage') : t('bind')}
+                            </Button>
+                        </Space>
+                    </Form.Item>
+                    <Form.Item label={t('user:attr.password')}>
+                        <Space>
+                            <Typography>{'********'}</Typography>
+                            <Button size="small" onClick={() => {
+            goChangePassword();
+            return;
+        }}>
+                                {t('manage')}
+                            </Button>
+                        </Space>
+                    </Form.Item>
+                    {process.env.NODE_ENV === 'development' && (<Form.Item label="微信帐号">
+                            <>
+                                {wechatUser ? (<Space>
+                                        <Typography>
+                                            {wechatUser.nickname}
+                                        </Typography>
+                                        <WechatUserList oakPath={oakFullpath
+                    ? `${oakFullpath}.wechatUser$user`
+                    : undefined}/>
+                                    </Space>) : (<Button size="small" onClick={() => {
+                    setOpen2(true);
+                }}>
+                                        绑定
+                                    </Button>)}
+                            </>
+                        </Form.Item>)}
+                    {isRoot && (<Form.Item label={'系统用户'} tooltip="超级管理员可对系统用户进行管理">
+                            <Button size="small" onClick={() => {
+                goUserManage();
+            }}>
+                                {t('manage')}
+                            </Button>
+                        </Form.Item>)}
+                </Form>
+            </Card>
+
+            <Modal title="绑定手机号" open={open} destroyOnClose={true} footer={null} onCancel={() => {
+            setOpen(false);
+        }}>
+                <MobileLogin callback={() => {
+            setOpen(false);
+        }} oakPath="$user/info-mobile/login" oakAutoUnmount={true}/>
+            </Modal>
+
+            <Modal title="绑定微信" open={open2} destroyOnClose={true} footer={null} maskClosable={false} onCancel={() => {
+            setOpen2(false);
+        }}>
+                <WechatLoginQrCode oakPath="$user/info-wechatLogin/qrCode" oakAutoUnmount={true}/>
+            </Modal>
+            <Modal title={t('Mobile-Number-Verification')} open={open3} destroyOnClose={true} footer={[
+            <Button key="cancel" onClick={() => setOpen3(false)}>
+                        {t('cancel')}
+                    </Button>,
+            <Button key="send" type="primary" disabled={!isCaptcha(captcha)} onClick={() => {
+                    unbindingWechat(captcha);
                     setOpen3(false);
-                }, children: _jsxs(Space, { direction: "vertical", style: { width: '100%' }, children: [_jsxs(Typography, { children: ["\u8BF7\u8F93\u5165", mobile &&
-                                    mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2'), "\u6536\u5230\u7684\u9A8C\u8BC1\u7801"] }), _jsx(Form.Item, { name: "captcha", children: _jsx(Input, { allowClear: true, value: captcha, "data-attr": "captcha", 
-                                // type="number"
-                                maxLength: 4, placeholder: t('placeholder.Captcha'), size: "large", onChange: (e) => {
-                                    setCaptcha(e.target.value);
-                                }, className: Style['loginbox-input'], suffix: _jsx(Button, { type: "link", disabled: counter > 0, onClick: () => sendCaptcha(), children: counter > 0
-                                        ? `${counter}秒后可重发`
-                                        : t('send') }) }) })] }) })] }));
+                }}>
+                        {t('unbind')}
+                    </Button>,
+        ]} maskClosable={false} onCancel={() => {
+            setOpen3(false);
+        }}>
+                <Space direction="vertical" style={{ width: '100%' }}>
+                    <Typography>
+                        请输入
+                        {mobile &&
+            mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}
+                        收到的验证码
+                    </Typography>
+                    <Form.Item name="captcha">
+                        <Input allowClear value={captcha} data-attr="captcha" 
+    // type="number"
+    maxLength={4} placeholder={t('placeholder.Captcha')} size="large" onChange={(e) => {
+            setCaptcha(e.target.value);
+        }} className={Style['loginbox-input']} suffix={<Button type="link" disabled={counter > 0} onClick={() => sendCaptcha()}>
+                                    {counter > 0
+                ? `${counter}秒后可重发`
+                : t('send')}
+                                </Button>}/>
+                    </Form.Item>
+                </Space>
+            </Modal>
+        </>);
 }

@@ -1,4 +1,3 @@
-import { jsx as _jsx } from "react/jsx-runtime";
 import { useState, useEffect } from 'react';
 import { Row, Col, Modal } from 'antd';
 const { confirm } = Modal;
@@ -20,7 +19,14 @@ export default function Render(props) {
             setValue(content);
         }
     }, [content]);
-    return (_jsx("div", { className: Style.container, children: _jsx(Row, { children: _jsx(Col, { xs: 24, sm: 16, children: content && (_jsx(Editor, { defaultConfig: editorConfig, value: content ? content : value, mode: "default", style: {
-                        width: width === 'xs' ? '100vw' : '900px',
-                    } })) }) }) }));
+    return (<div className={Style.container}>
+            <Row>
+                <Col xs={24} sm={16}>
+                    {content && (<Editor defaultConfig={editorConfig} value={content ? content : value} mode="default" style={{
+                width: width === 'xs' ? '100vw' : '900px',
+            }}/>)}
+
+                </Col>
+            </Row>
+        </div>);
 }

@@ -22,8 +22,8 @@ export default OakComponent({
         author: '',
     },
     lifetimes: {
-        attached() {
-            const data = this.load('article_html') || '{}';
+        async attached() {
+            const data = await this.load('article_html') || '{}';
             const data2 = typeof data === 'string' ? JSON.parse(data) : data;
             this.setState({
                 content: data2?.content,

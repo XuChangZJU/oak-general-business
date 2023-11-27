@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { EntityDict } from '../../../oak-app-domain/EntityDict';
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "subscription", false, {
     entityId: string;

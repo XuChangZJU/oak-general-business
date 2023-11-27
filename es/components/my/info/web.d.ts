@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'token', false, {
@@ -13,4 +14,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'token', fal
 }, {
     logout: () => void;
     updateAttribute: (attr: string, value: any) => Promise<void>;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

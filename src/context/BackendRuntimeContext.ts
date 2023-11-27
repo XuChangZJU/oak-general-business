@@ -17,7 +17,7 @@ import { SelectOpResult } from 'oak-domain/lib/types';
 import { applicationProjection } from '../types/Projection';
 import { getMpUnlimitWxaCode } from '../aspects/wechatQrCode';
 import { BackendRuntimeContext as BRC } from 'oak-frontend-base';
-import { AsyncRowStore } from 'oak-domain';
+import { AsyncRowStore } from 'oak-domain/lib/store/AsyncRowStore';
 import { IncomingHttpHeaders } from 'http';
 import { cloneDeep } from 'oak-domain/lib/utils/lodash';
 /**

@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { EntityDict } from '../../../oak-app-domain';
 import { QrCodeType } from '../../../types/Config';
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "userEntityGrant", false, {
@@ -12,7 +11,7 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     claimUrl: string;
     qrCodeType: QrCodeType;
     multiple: boolean;
-    rule: "single" | "all" | "free";
-    ruleOnRow: "single" | "all" | "free";
+    rule: "all" | "single" | "free";
+    ruleOnRow: "all" | "single" | "free";
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;
