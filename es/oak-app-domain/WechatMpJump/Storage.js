@@ -46,12 +46,12 @@ export const desc = {
             name: 'index_uuid',
             attributes: [
                 {
-                    name: 'expired'
+                    name: 'expired',
                 },
                 {
-                    name: 'expiresAt'
+                    name: 'expiresAt',
                 },
-            ]
+            ],
         }
     ]
 };

@@ -34,21 +34,21 @@ export const desc = {
             name: 'index_user_entity_entityId_relation',
             attributes: [
                 {
-                    name: "userId"
+                    name: "userId",
                 },
                 {
-                    name: 'entity'
+                    name: 'entity',
                 },
                 {
-                    name: 'entityId'
+                    name: 'entityId',
                 },
                 {
-                    name: "relationId"
+                    name: "relationId",
                 },
             ],
             config: {
-                unique: true
-            }
+                unique: true,
+            },
         }
     ]
 };

@@ -8,7 +8,7 @@ export interface IThemeState {
     /**
      * 主题：深色 浅色
      */
-    theme: ETheme;
+    themeMode: ETheme;
     /**
      * 是否开启跟随系统主题
      */

@@ -55,7 +55,7 @@ export async function wechatMpJump<
         appSecret
     ) as WechatMpInstance;
 
-    /* const result = await wechatInstance.getURLScheme({ jump_wxa, expireType, expiresAt, expireInterval });
+    const result = await wechatInstance.getURLScheme({ jump_wxa, expireType, expiresAt, expireInterval });
 
-    return result; */
+    return result;
 }

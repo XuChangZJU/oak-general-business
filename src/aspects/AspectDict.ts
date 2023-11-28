@@ -1,4 +1,4 @@
-import { WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
+import { NativeEnv, WebEnv, WechatMpEnv } from 'oak-domain/lib/types/Environment';
 import { AppType } from '../oak-app-domain/Application/Schema';
 import { EntityDict } from '../oak-app-domain';
 import { Config, Origin } from '../types/Config';
@@ -26,7 +26,7 @@ export type GeneralAspectDict<
             captcha?: string;
             password?: string;
             mobile: string;
-            env: WebEnv | WechatMpEnv;
+            env: WebEnv | WechatMpEnv | NativeEnv;
         },
         context: Cxt
     ) => Promise<string>;

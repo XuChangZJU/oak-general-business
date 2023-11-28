@@ -25,13 +25,13 @@ export const desc = {
             attributes: [
                 {
                     name: 'mobile',
-                    direction: 'ASC'
+                    direction: 'ASC',
                 },
                 {
                     name: 'ableState',
-                    direction: 'ASC'
+                    direction: 'ASC',
                 }
-            ]
+            ],
         }
     ]
 };

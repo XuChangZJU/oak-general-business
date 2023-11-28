@@ -39,7 +39,7 @@ export default function Render(this: any) {
     const features = useFeatures();
     const themeState = features.theme.get();
     const [systemTheme, setSystemTheme] = useState(themeState?.systemTheme);
-    const [theme, setTheme] = useState(themeState?.theme);
+    const [theme, setTheme] = useState(themeState?.themeMode);
     const [color, setColor] = useState(themeState?.color);
 
 
@@ -47,7 +47,7 @@ export default function Render(this: any) {
         if (value === ESettingTheme.system) {
             features.theme.openSystemTheme();
         } else {
-            features.theme.switchTheme(value);
+            features.theme.switchThemeMode(value);
         }
     };
 
@@ -55,10 +55,10 @@ export default function Render(this: any) {
         const themeUnsub = features.theme.subscribe(() => {
             const themeState = features.theme.get();
             setSystemTheme(themeState.systemTheme);
-            setTheme(themeState.theme);
+            setTheme(themeState.themeMode);
             setColor(themeState.color);
         });
-        
+
         return () => {
             themeUnsub();
         }

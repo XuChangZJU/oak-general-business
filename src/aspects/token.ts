@@ -12,6 +12,7 @@ import {
     WebConfig,
 } from '../oak-app-domain/Application/Schema';
 import {
+    NativeEnv,
     WebEnv,
     WechatMpEnv,
 } from 'oak-domain/lib/types/Environment';
@@ -205,7 +206,7 @@ async function setUpTokenAndUser<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
 >(
-    env: WebEnv | WechatMpEnv,
+    env: WebEnv | WechatMpEnv | NativeEnv,
     context: Cxt,
     entity: string, // 支持更多的登录渠道使用此函数创建token
     entityId?: string, // 如果是现有对象传id，如果没有对象传createData
@@ -486,7 +487,7 @@ async function setUpTokenAndUser<
 async function setupMobile<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
->(mobile: string, env: WebEnv | WechatMpEnv, context: Cxt) {
+>(mobile: string, env: WebEnv | WechatMpEnv | NativeEnv, context: Cxt) {
     const result2 = await context.select(
         'mobile',
         {
@@ -589,7 +590,7 @@ export async function loginByMobile<
         captcha?: string;
         password?: string;
         mobile: string;
-        env: WebEnv | WechatMpEnv;
+        env: WebEnv | WechatMpEnv | NativeEnv;
     },
     context: Cxt
 ): Promise<string> {

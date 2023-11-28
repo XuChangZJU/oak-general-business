@@ -56,14 +56,13 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
                     />
                 </Form.Item>
             </Form>
-            {mobileValueReady && userId && (
+            {mobileValueReady && (
                 <OnUser
                     oakAutoUnmount={true}
                     oakPath={`${oakFullpath}.user`}
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
-                    oakId={userId}
                     setPasswordConfirm={setPasswordConfirm}
                 />
             )}
