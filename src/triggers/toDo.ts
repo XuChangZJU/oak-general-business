@@ -3,6 +3,7 @@ import { uniq } from 'oak-domain/lib/utils/lodash';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { getUserRelationsByActions } from 'oak-domain/lib/store/RelationAuth';
+import { translateFilterToObjectPredicate } from 'oak-domain/lib/store/filter';
 import { generateNewIdAsync } from 'oak-domain';
 import assert from 'assert';
 
@@ -24,11 +25,11 @@ export async function createToDo<ED extends EntityDict & BaseEntityDict, T exten
         redirectTo: EntityDict['toDo']['OpSchema']['redirectTo'],
     },
     userIds?: string[]) {
-
+    assert(filter);
     const count = await context.count('toDo', {
         filter: {
             targetEntity: entity as string,
-            targetFilter: JSON.stringify(filter),
+            targetFilter: translateFilterToObjectPredicate(filter),
             action,
             iState: 'active',
         },
