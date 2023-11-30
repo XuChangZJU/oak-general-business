@@ -65,7 +65,7 @@ export type Schema = EntityShape & {
 type AttrFilter = {
     id: Q_StringValue;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
+    $$seq$$: Q_NumberValue;
     $$updateAt$$: Q_DateValue;
     origin: Q_EnumValue<'qiniu' | 'wechat' | 'unknown' | 'ctyun'>;
     type: Q_EnumValue<'image' | 'video' | 'audio' | 'file'>;

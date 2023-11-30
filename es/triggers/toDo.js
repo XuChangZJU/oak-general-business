@@ -1,5 +1,6 @@
 import { uniq } from 'oak-domain/lib/utils/lodash';
 import { getUserRelationsByActions } from 'oak-domain/lib/store/RelationAuth';
+import { translateFilterToObjectPredicate } from 'oak-domain/lib/store/filter';
 import { generateNewIdAsync } from 'oak-domain';
 import assert from 'assert';
 /**
@@ -10,10 +11,11 @@ import assert from 'assert';
  * @param userIds
  */
 export async function createToDo(entity, filter, action, context, data, userIds) {
+    assert(filter);
     const count = await context.count('toDo', {
         filter: {
             targetEntity: entity,
-            targetFilter: JSON.stringify(filter),
+            targetFilter: translateFilterToObjectPredicate(filter),
             action,
             iState: 'active',
         },
