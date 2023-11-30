@@ -50,6 +50,7 @@ export async function createToDo(entity, filter, action, context, data, userIds)
             targetEntity: entity,
             targetFilter: filter,
             action,
+            iState: 'active',
             ...data,
             userRelation$entity: await Promise.all(userIds2.map(async (userId) => ({
                 id: await generateNewIdAsync(),

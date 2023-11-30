@@ -69,6 +69,7 @@ export async function createToDo<ED extends EntityDict & BaseEntityDict, T exten
             targetEntity: entity as string,
             targetFilter: filter,
             action,
+            iState: 'active',
             ...data,
             userRelation$entity:
                 await Promise.all(userIds2!.map(
