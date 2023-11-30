@@ -6,7 +6,7 @@ import { RuntimeCxt } from '../types/RuntimeCxt';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { WechatMpConfig, WechatPublicConfig, WebConfig } from '../oak-app-domain/Application/Schema';
 import { WechatMpInstance, WechatPublicInstance, WechatSDK } from 'oak-external-sdk';
-import { composeUrl } from 'oak-domain/lib/utils/url';
+import { composeUrl } from 'oak-domain/lib/utils/domain';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { sendSms } from '../utils/sms';
 import { tryMakeSmsNotification } from './message';

@@ -1,6 +1,6 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { WechatSDK } from 'oak-external-sdk';
-import { composeUrl } from 'oak-domain/lib/utils/url';
+import { composeUrl } from 'oak-domain/lib/utils/domain';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { sendSms } from '../utils/sms';
 import { tryMakeSmsNotification } from './message';
