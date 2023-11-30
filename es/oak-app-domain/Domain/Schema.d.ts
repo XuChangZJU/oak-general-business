@@ -27,7 +27,7 @@ export type Schema = EntityShape & {
 type AttrFilter = {
     id: Q_StringValue;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
+    $$seq$$: Q_NumberValue;
     $$updateAt$$: Q_DateValue;
     url: Q_StringValue;
     apiPath: Q_StringValue;
