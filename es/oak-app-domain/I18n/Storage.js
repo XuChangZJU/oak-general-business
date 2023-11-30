@@ -1,4 +1,4 @@
-import { readOnlyActions as actions } from "oak-domain/lib/actions/action";
+import { genericActions as actions } from "oak-domain/lib/actions/action";
 export const desc = {
     attributes: {
         module: {
@@ -35,7 +35,7 @@ export const desc = {
         }
     },
     static: true,
-    actionType: "readOnly",
+    actionType: "crud",
     actions,
     indexes: [
         {

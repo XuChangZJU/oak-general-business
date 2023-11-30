@@ -1,7 +1,7 @@
 import { Q_DateValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
-import { ReadOnlyAction } from "oak-domain/lib/actions/action";
+import { GenericAction } from "oak-domain/lib/actions/action";
 import { String } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
 export type OpSchema = EntityShape & {
@@ -91,7 +91,7 @@ export type I18nIdSubQuery = Selection<I18nIdProjection>;
 export type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;
-    Action: OakMakeAction<ReadOnlyAction> | string;
+    Action: OakMakeAction<GenericAction> | string;
     Selection: Selection;
     Aggregation: Aggregation;
     Operation: Operation;

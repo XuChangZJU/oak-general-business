@@ -51,6 +51,7 @@ export async function syncSmsTemplate(params, context) {
                     id: await generateNewIdAsync(),
                     origin,
                     systemId,
+                    templateCode,
                     templateName,
                     templateContent,
                     syncAt: Date.now(),
