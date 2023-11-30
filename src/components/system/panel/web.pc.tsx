@@ -5,6 +5,7 @@ import SystemDetail from '../detail';
 import ConfigUpsert from '../../config/upsert';
 import StyleUpsert from '../../config/style/platform';
 import DomainList from '../../domain/list';
+import SmsTemplateList from '../../messageTypeSmsTemplate/tab';
 import ApplicationList from '../application';
 import { EntityDict } from '../../../oak-app-domain';
 import { Config } from '../../../types/Config';
@@ -77,6 +78,17 @@ export default function Render(props: WebComponentProps<EntityDict, 'system', fa
                             children: (
                                 <DomainList
                                     oakPath={`${oakFullpath}.domain$system`}
+                                    systemId={id}
+                                />
+                            ),
+                        },
+                        {
+                            label: <div className={Styles.tabLabel}>{t('smsTemplate-list')}</div>,
+                            key: 'smsTemplate-list',
+                            children: (
+                                <SmsTemplateList
+                                    oakPath={`$system-messageTypeSmsTemplateList-${id}`}
+                                    oakAutoUnmount={true}
                                     systemId={id}
                                 />
                             ),

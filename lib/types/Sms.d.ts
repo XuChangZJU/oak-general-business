@@ -9,5 +9,17 @@ export default interface Sms<ED extends EntityDict & BaseEntityDict, Cxt extends
     /**
      * 是否支持模板同步
      */
-    autoSyncTemplate(): boolean;
+    syncTemplate(systemId: string, context: Cxt): Promise<{
+        templateName: string;
+        templateCode: string;
+        templateContent: string;
+    }[]>;
+    sendSms(params: {
+        mobile: string;
+        templateParam?: Record<string, any>;
+        smsTemplate: Partial<EntityDict['smsTemplate']['Schema']>;
+    }, context: Cxt): Promise<{
+        success: boolean;
+        res: any;
+    }>;
 }

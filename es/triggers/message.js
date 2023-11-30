@@ -35,9 +35,7 @@ export async function tryMakeSmsNotification(message, context) {
                     id: await generateNewIdAsync(),
                     data: dispersedData,
                     channel: 'sms',
-                    data1: {
-                        mobile,
-                    },
+                    data1: mobile,
                 };
             }
         }
@@ -174,7 +172,7 @@ async function createNotification(message, context) {
                             id: userId
                         }
                     }, { dontCollect: true });
-                    const userId2 = user.refId ? user.refId : userId;
+                    const userIds = user.refId ? [userId, user.refId] : [userId];
                     const wechatUsers = await context.select('wechatUser', {
                         data: {
                             id: 1,
@@ -185,7 +183,9 @@ async function createNotification(message, context) {
                             applicationId: {
                                 $in: apps.map((ele) => ele.id),
                             },
-                            userId: userId2,
+                            userId: {
+                                $in: userIds
+                            },
                         },
                     }, { dontCollect: true });
                     for (const app of apps) {

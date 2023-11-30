@@ -11,12 +11,6 @@ const entityDesc = {
                 templateContent: '模板内容',
                 syncAt: '同步时间'
             },
-            v: {
-                origin: {
-                    ali: '阿里云',
-                    tencent: '腾讯云',
-                },
-            }
         },
     },
 };

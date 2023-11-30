@@ -1582,12 +1582,12 @@ export async function sendCaptcha<
                     origin: 'tencent',
                     templateName: '登录',
                     mobile,
-                    templateParamSet: [code, duration.toString()],
+                    templateParam: { code, duration: duration.toString() },
                 },
                 context
             );
             closeRootMode();
-            if (result === true) {
+            if (result.success) {
                 return '验证码已发送';
             }
             return '验证码发送失败';
@@ -1624,27 +1624,40 @@ export async function sendCaptcha<
                 dontCollect: true,
             }
         );
-
-        if (process.env.NODE_ENV === 'development' || mockSend) {
-            closeRootMode();
-            return `验证码[${code}]已创建`;
-        } else {
-            //发送短信
-            const result = await sendSms<ED, Cxt>(
-                {
-                    origin: 'tencent',
-                    templateName: '登录',
-                    mobile,
-                    templateParamSet: [code, duration.toString()],
-                },
-                context
-            );
-            closeRootMode();
-            if (result === true) {
-                return '验证码已发送';
-            }
-            return '验证码发送失败';
+        const result = await sendSms<ED, Cxt>(
+            {
+                origin: 'tencent',
+                templateName: '登录',
+                mobile,
+                templateParam: { code, duration: duration.toString() },
+            },
+            context
+        );
+        closeRootMode();
+        if (result.success) {
+            return '验证码已发送';
         }
+        return '验证码发送失败';
+        // if (process.env.NODE_ENV === 'development' || mockSend) {
+        //     closeRootMode();
+        //     return `验证码[${code}]已创建`;
+        // } else {
+        //     //发送短信
+        //     const result = await sendSms<ED, Cxt>(
+        //         {
+        //             origin: 'tencent',
+        //             templateName: '登录',
+        //             mobile,
+        //             templateParam: { code, duration: duration.toString() },
+        //         },
+        //         context
+        //     );
+        //     closeRootMode();
+        //     if (result === true) {
+        //         return '验证码已发送';
+        //     }
+        //     return '验证码发送失败';
+        // }
     }
 }
 

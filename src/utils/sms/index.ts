@@ -24,11 +24,11 @@ const SmsDict: Record<string, any> = {
  * 注入一个其它OSS上实现的uploader类
  * @param clazz
  */
-export function registerSms<
+export function registSms<
     ED2 extends ED,
     Cxt extends BackendRuntimeContext<ED2>,
     FrontCxt extends FrontendRuntimeContext<ED2, Cxt, AspectDict<ED2, Cxt>>
->(clazz: new () => Sms<ED2, Cxt, FrontCxt>) {
+>(clazz: new () => Sms<ED2, Cxt>) {
     const instance = new clazz();
     SmsDict[instance.name] = instance;
 }
@@ -39,5 +39,12 @@ export function getSms<
     FrontCxt extends FrontendRuntimeContext<ED2, Cxt, AspectDict<ED2, Cxt>>
 >(origin: string) {
     assert(SmsDict.hasOwnProperty(origin));
-    return SmsDict[origin] as Sms<ED2, Cxt, FrontCxt>;
+    return SmsDict[origin] as Sms<ED2, Cxt>;
 }
+
+export function getOrigin<ED2 extends ED,
+    Cxt extends BackendRuntimeContext<ED2>,
+    FrontCxt extends FrontendRuntimeContext<ED2, Cxt, AspectDict<ED2, Cxt>>
+>() {
+    return Object.keys(SmsDict);
+}   

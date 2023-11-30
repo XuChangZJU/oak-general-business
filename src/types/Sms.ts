@@ -9,13 +9,21 @@ import { FrontendRuntimeContext, AspectDict } from '../context/FrontendRuntimeCo
 export default interface Sms<
     ED extends EntityDict & BaseEntityDict,
     Cxt extends BackendRuntimeContext<ED>,
-    FrontCxt extends FrontendRuntimeContext<ED, Cxt, AspectDict<ED, Cxt>>> {
+> {
     name: string;
     /**
      * 是否支持模板同步
      */
-    autoSyncTemplate(systemId: string): Promise<boolean>;
-    sendSms(): Promise<void>;
+    syncTemplate(systemId: string, context: Cxt): Promise<{
+        templateName: string,
+        templateCode: string,
+        templateContent: string
+    }[]>;
+    sendSms(params: {
+        mobile: string,
+        templateParam?: Record<string, any>,
+        smsTemplate: Partial<EntityDict['smsTemplate']['Schema']>
+    }, context: Cxt): Promise<{ success: boolean, res: any }>;
     /**
      */
 }

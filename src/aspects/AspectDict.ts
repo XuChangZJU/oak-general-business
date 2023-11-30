@@ -42,7 +42,7 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<string>;
-    logout: ({}, context: Cxt) => Promise<void>;
+    logout: ({ }, context: Cxt) => Promise<void>;
     loginWechatMp: (
         {
             code,
@@ -307,6 +307,10 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<any>;
+    getMessageType: (
+        params: {},
+        content: Cxt
+    ) => Promise<string[]>;
     syncTag: (
         params: {
             applicationId: string;
@@ -380,6 +384,13 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<any>;
+    syncSmsTemplate: (
+        params: {
+            systemId: string;
+            origin: string;
+        },
+        context: Cxt
+    ) => Promise<void>;
 };
 
 export default GeneralAspectDict;

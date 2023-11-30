@@ -7,7 +7,7 @@ export default function render(props) {
     const { addItem, removeItem, clean, execute, t } = props.methods;
     const [createId, setCreateId] = useState('');
     const [removeId, setRemoveId] = useState('');
-    if (oakFullpath) {
+    if (oakFullpath && applications?.length > 0) {
         return (<>
                 <Modal open={!!createId} width={800} onCancel={() => {
                 clean();

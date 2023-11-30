@@ -7,6 +7,12 @@ import { WechatPublicInstance, WechatSDK } from 'oak-external-sdk';
 
 import { WechatPublicConfig } from '../oak-app-domain/Application/Schema';
 import { template } from 'oak-domain/lib/utils/string';
+import MessageTypes from '../config/messageType'
+
+
+export async function getMessageType() {
+    return MessageTypes;
+}
 
 function analyseContent(content: string): Object {
     let content2 = content;

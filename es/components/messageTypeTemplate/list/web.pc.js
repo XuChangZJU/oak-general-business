@@ -11,6 +11,7 @@ export default function Render(props) {
                 <Button type="default" disabled={!(messageTypes.length > 0 &&
             wechatPublicTemplates.length > 0)} onClick={() => {
             addItem({
+                type: messageTypes[0],
                 templateId: wechatPublicTemplates[0].id,
             });
         }}>
@@ -68,7 +69,7 @@ export default function Render(props) {
                         return (<Select style={{
                                 width: '100%',
                             }} value={value} onChange={(e) => updateItem({
-                                type: e,
+                                templateId: e,
                             }, record.id)} options={wechatPublicTemplates.map((ele) => ({
                                 value: ele.id,
                                 label: ele.title,

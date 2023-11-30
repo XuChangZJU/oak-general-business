@@ -53,9 +53,7 @@ export async function tryMakeSmsNotification(message: {
                     id: await generateNewIdAsync(),
                     data: dispersedData,
                     channel: 'sms',
-                    data1: {
-                        mobile,
-                    },
+                    data1: mobile,
                 } as Omit<EntityDict['notification']['CreateSingle']['data'], 'messageSystemId'>;
             }
         }

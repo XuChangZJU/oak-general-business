@@ -1,6 +1,10 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { WechatSDK } from 'oak-external-sdk';
+import MessageTypes from '../config/messageType';
+export async function getMessageType() {
+    return MessageTypes;
+}
 function analyseContent(content) {
     let content2 = content;
     let result = {};

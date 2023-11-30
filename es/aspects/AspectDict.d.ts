@@ -190,6 +190,7 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
     syncMessageTemplate: (params: {
         applicationId: string;
     }, context: Cxt) => Promise<any>;
+    getMessageType: (params: {}, content: Cxt) => Promise<string[]>;
     syncTag: (params: {
         applicationId: string;
         id: string;
@@ -233,5 +234,9 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
         id: string;
         openId: string;
     }, context: Cxt) => Promise<any>;
+    syncSmsTemplate: (params: {
+        systemId: string;
+        origin: string;
+    }, context: Cxt) => Promise<void>;
 };
 export default GeneralAspectDict;

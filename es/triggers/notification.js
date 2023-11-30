@@ -164,53 +164,51 @@ async function sendNotification(notification, context) {
         default: {
             assert(channel === 'sms');
             try {
-                await sendSms({
-                    origin: 'ali',
-                    templateName: type,
-                    templateParamSet: data.params,
+                const result = await sendSms({
+                    messageType: type,
+                    templateParam: data.params,
                     mobile: data1.mobile,
                 }, context);
+                if (result?.success === true) {
+                    await context.operate('notification', {
+                        id: await generateNewIdAsync(),
+                        action: 'succeed',
+                        data: {
+                            data2: {
+                                res: result?.res || {}
+                            }
+                        },
+                        filter: {
+                            id,
+                        }
+                    }, { dontCollect: true });
+                }
+                else {
+                    await context.operate('notification', {
+                        id: await generateNewIdAsync(),
+                        action: 'fail',
+                        data: {
+                            data2: {
+                                res: result?.res || {}
+                            }
+                        },
+                        filter: {
+                            id,
+                        }
+                    }, { dontCollect: true });
+                }
+            }
+            catch (err) {
                 await context.operate('notification', {
                     id: await generateNewIdAsync(),
-                    action: 'succeed',
+                    action: 'fail',
                     data: {},
                     filter: {
                         id,
                     }
                 }, { dontCollect: true });
+                console.warn('发短信消息失败', err);
                 return 1;
-            }
-            catch (err) {
-                console.warn('发tencent sms消息失败', err);
-                try {
-                    await sendSms({
-                        origin: 'tencent',
-                        templateName: type,
-                        templateParamSet: data.paramsArray,
-                        mobile: data1.mobile,
-                    }, context);
-                    await context.operate('notification', {
-                        id: await generateNewIdAsync(),
-                        action: 'succeed',
-                        data: {},
-                        filter: {
-                            id,
-                        }
-                    }, { dontCollect: true });
-                    return 1;
-                }
-                catch (err2) {
-                    console.warn('发aliyun sms消息失败', err2);
-                    await context.operate('notification', {
-                        id: await generateNewIdAsync(),
-                        action: 'fail',
-                        data: {},
-                        filter: {
-                            id,
-                        }
-                    }, { dontCollect: true });
-                    return 1;
-                }
             }
         }
     }

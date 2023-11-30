@@ -23,17 +23,19 @@ export class Template<
         this.messageTypes = [];
     }
 
-    registMessageType(newMessageTypes: string[]) {
-        const messageTypes2 = uniq(newMessageTypes.concat(this.messageTypes));
-        this.messageTypes = messageTypes2;
-    }
-
-    getMessageType() {
-        return this.messageTypes;
+    async getMessageType() {
+        return await this.cache.exec('getMessageType', {});
     }
     async syncMessageTemplate(applicationId: string) {
         const result = await this.cache.exec('syncMessageTemplate', {
             applicationId
+        });
+        this.publish();
+    }
+    async syncSmsTemplate(systemId: string, origin: string) {
+        const result = await this.cache.exec('syncSmsTemplate', {
+            systemId,
+            origin,
         });
         this.publish();
     }

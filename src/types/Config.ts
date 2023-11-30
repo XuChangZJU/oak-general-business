@@ -71,18 +71,17 @@ export type AmapCloudConfig = {
 
 export type AliSmsConfig = {
     accessKeyId: string;
+    accessKeySecret: string;
     defaultSignName: string;
-    templates: Record<string, {
-        signName?: string;
-        code: string;       // templateCode
-        // templateParams改成function注入
-    }>;
+    endpoint: string;
 };
 
 export type TencentSmsConfig = {
     secretId: string;
+    secretKey: string;
     smsSdkAppId: string;
     defaultSignName: string;
+    endpoint: string;
     templates: Record<
         string,
         {

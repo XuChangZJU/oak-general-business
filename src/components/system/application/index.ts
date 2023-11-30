@@ -7,6 +7,7 @@ export default OakComponent({
         config: 1,
         description: 1,
         type: 1,
+
     },
     properties: {
         systemId: '',
