@@ -15,13 +15,8 @@ export const desc = {
                 length: 32
             }
         },
-        targetEntityId: {
-            type: "varchar",
-            params: {
-                length: 64
-            }
-        },
-        condition: {
+        targetFilter: {
+            notNull: true,
             type: "object"
         },
         action: {
