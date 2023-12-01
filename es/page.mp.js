@@ -135,6 +135,7 @@ export function createComponent(option, features) {
                 ready && ready.call(this);
             },
             show() {
+                show && show.call(this);
                 if (!userInsensitive) {
                     const userId = this.features.token.getUserId(true);
                     if (userId !== this.state.__userId) {
@@ -143,6 +144,7 @@ export function createComponent(option, features) {
                 }
             },
             hide() {
+                hide && hide.call(this);
                 if (!userInsensitive) {
                     const userId = this.features.token.getUserId(true);
                     this.setState({
