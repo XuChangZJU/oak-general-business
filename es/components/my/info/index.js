@@ -27,12 +27,7 @@ export default OakComponent({
     properties: {
         showLogout: false,
     },
-    lifetimes: {
-        attached() {
-            this.subscribed.push(this.features.token.subscribe(() => this.reRender()));
-            this.subscribed.push(this.features.cache.subscribe(() => this.reRender()));
-        },
-    },
+    features: ['cache'],
     methods: {
         logout() {
             this.features.token.logout();

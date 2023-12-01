@@ -11,7 +11,7 @@ export function createComponent(option, features) {
         },
         lifetimes: {
             attached() {
-                this.subscribed.push(this.features.token.subscribe(() => this.refresh()));
+                this.addFeatureSub('token', () => this.refresh());
                 attached && attached.call(this);
             },
             ...restLifeTimes,

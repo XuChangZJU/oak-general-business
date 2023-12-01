@@ -50,11 +50,7 @@ export default OakComponent({
             messages,
         };
     },
-    lifetimes: {
-        attached() {
-            this.subscribed.push(this.features.token.subscribe(() => this.reRender()));
-        },
-    },
+    features: ['message'],
     methods: {
         goDetailById(id) {
             this.navigateTo({

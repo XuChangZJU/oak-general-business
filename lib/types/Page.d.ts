@@ -13,6 +13,7 @@ import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 export type OakComponentOption<IsList extends boolean, ED extends EntityDict & BaseEntityDict, T extends keyof ED, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD & GAD<ED, Cxt>>, AD extends Record<string, Aspect<ED, Cxt>>, FD extends Record<string, Feature>, FormedData extends Record<string, any>, TData extends Record<string, any>, TProperty extends DataOption, TMethod extends Record<string, Function>> = BaseOakComponentOption<IsList, ED, T, Cxt, FrontCxt, AD & GAD<ED, Cxt>, FD & GFD<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>, FormedData, TData, TProperty, TMethod, {
     subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean, tip?: string) => Promise<boolean>;
 }> & Partial<{
+    userInsensitive?: true;
     wechatMp: {
         relatedMessageTypes?: string[];
     };
