@@ -12,11 +12,19 @@ const triggers = [
                 const { jump_wxa, expiresAt, expireType, expireInterval } = wechatMpJumpData;
                 const applicationId = context.getApplicationId();
                 assert(applicationId);
-                const openlink = await wechatMpJump({ applicationId, jump_wxa: jump_wxa, expiresAt: expiresAt, expireType, expireInterval: expireInterval }, context);
+                const openlink = await wechatMpJump({ applicationId, jump_wxa: jump_wxa, expiresAt: expiresAt, expireType: expireType, expireInterval: expireInterval }, context);
                 Object.assign(wechatMpJumpData, {
                     openlink
                 });
             };
+            if (data instanceof Array) {
+                for (const ele of data) {
+                    await fn(ele);
+                }
+            }
+            else {
+                await fn(data);
+            }
             return 0;
         },
     },

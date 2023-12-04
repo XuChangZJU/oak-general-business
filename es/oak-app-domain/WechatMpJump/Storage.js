@@ -6,18 +6,15 @@ export const desc = {
             ref: "message"
         },
         jump_wxa: {
-            notNull: true,
             type: "object"
         },
         openlink: {
-            notNull: true,
             type: "varchar",
             params: {
                 length: 256
             }
         },
         expireType: {
-            notNull: true,
             type: "int",
             params: {
                 width: 1,
@@ -35,7 +32,6 @@ export const desc = {
             type: "datetime"
         },
         expired: {
-            notNull: true,
             type: "boolean"
         }
     },

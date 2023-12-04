@@ -22,11 +22,18 @@ const triggers: Trigger<EntityDict, 'wechatMpJump', BackendRuntimeContext<Entity
                 const { jump_wxa, expiresAt, expireType, expireInterval } = wechatMpJumpData;
                 const applicationId = context.getApplicationId();
                 assert(applicationId);
-                const openlink = await wechatMpJump({ applicationId, jump_wxa: jump_wxa!, expiresAt: expiresAt as number, expireType, expireInterval: expireInterval as number }, context);
+                const openlink = await wechatMpJump({ applicationId, jump_wxa: jump_wxa!, expiresAt: expiresAt as number, expireType: expireType as number, expireInterval: expireInterval as number }, context);
                 Object.assign(wechatMpJumpData, {
                     openlink
                 });
             };
+            if (data instanceof Array) {
+                for (const ele of data) {
+                    await fn(ele);
+                }
+            } else {
+                await fn(data);
+            }
             return 0;
         },
     } as CreateTrigger<EntityDict, 'wechatMpJump', BackendRuntimeContext<EntityDict>>,

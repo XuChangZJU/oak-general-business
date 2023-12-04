@@ -18,22 +18,22 @@ type Jump_wxa = {
 };
 export type OpSchema = EntityShape & {
     messageId?: ForeignKey<"message"> | null;
-    jump_wxa: Jump_wxa;
-    openlink: String<256>;
-    expireType: Int<1>;
+    jump_wxa?: Jump_wxa | null;
+    openlink?: String<256> | null;
+    expireType?: Int<1> | null;
     expireInterval?: Int<2> | null;
     expiresAt?: Datetime | null;
-    expired: Boolean;
+    expired?: Boolean | null;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     messageId?: ForeignKey<"message"> | null;
-    jump_wxa: Jump_wxa;
-    openlink: String<256>;
-    expireType: Int<1>;
+    jump_wxa?: Jump_wxa | null;
+    openlink?: String<256> | null;
+    expireType?: Int<1> | null;
     expireInterval?: Int<2> | null;
     expiresAt?: Datetime | null;
-    expired: Boolean;
+    expired?: Boolean | null;
     message?: Message.Schema | null;
     modiEntity$entity?: Array<ModiEntity.Schema>;
     modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;

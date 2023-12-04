@@ -12,12 +12,12 @@ type Jump_wxa = {
 };
 export interface Schema extends EntityShape {
     message?: Message;
-    jump_wxa: Jump_wxa;
-    openlink: String<256>;
-    expireType: Int<1>;//到期失效的 scheme 码失效类型，失效时间：0，失效间隔天数：1 ,默认0
+    jump_wxa?: Jump_wxa;
+    openlink?: String<256>;
+    expireType?: Int<1>;//到期失效的 scheme 码失效类型，失效时间：0，失效间隔天数：1 ,默认0
     expireInterval?: Int<2>;//expire_type 为 1 时必填,失效的间隔天数
     expiresAt?: Datetime;//expire_type 为 0 时必填,失效的时间
-    expired: Boolean;
+    expired?: Boolean;
 }
 
 

@@ -43,9 +43,28 @@ export async function wechatMpJump<
         }
     );
     assert(application);
-    const { type, config } = application!;
-    assert(type === 'wechatMp');
-
+    const { systemId } = application;
+    const { type } = application!;
+    let application2;
+    if (type === 'wechatMp') {
+        application2 = application;
+    } else {
+        [application2] = await context.select(
+            'application',
+            {
+                data: cloneDeep(applicationProjection),
+                filter: {
+                    systemId,
+                    type: 'wechatMp',
+                },
+            },
+            {
+                dontCollect: true,
+            }
+        );
+    }
+    assert(application2);
+    const { config } = application2;
     const config2 = config as WechatMpConfig;
     const { appId, appSecret } = config2;
 

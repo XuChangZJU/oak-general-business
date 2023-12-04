@@ -8,11 +8,11 @@ type Jump_wxa = {
 };
 export interface Schema extends EntityShape {
     message?: Message;
-    jump_wxa: Jump_wxa;
-    openlink: String<256>;
-    expireType: Int<1>;
+    jump_wxa?: Jump_wxa;
+    openlink?: String<256>;
+    expireType?: Int<1>;
     expireInterval?: Int<2>;
     expiresAt?: Datetime;
-    expired: Boolean;
+    expired?: Boolean;
 }
 export {};
