@@ -27,6 +27,7 @@ export class Token extends Feature {
         else {
             this.tokenValue = undefined;
         }
+        this.publish();
     }
     constructor(cache, storage, environment) {
         super();
@@ -201,7 +202,7 @@ export class Token extends Feature {
             code,
             env: env,
         });
-        this.publish();
+        // this.publish();
     }
     async wakeupParasite(id) {
         const env = await this.environment.getEnv();

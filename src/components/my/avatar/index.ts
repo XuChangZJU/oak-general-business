@@ -23,11 +23,4 @@ export default OakComponent({
             avatarUrl: '',
         };
     },
-    lifetimes: {
-        attached() {
-            this.subscribed.push(
-                this.features.token.subscribe(() => this.reRender())
-            );
-        },
-    },
 });

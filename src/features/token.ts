@@ -48,6 +48,7 @@ export class Token<
         else {
             this.tokenValue = undefined;
         }
+        this.publish();
     }
 
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage, environment: Environment) {
@@ -255,7 +256,7 @@ export class Token<
             code,
             env: env as WechatMpEnv,
         });
-        this.publish();
+        // this.publish();
     }
 
     async wakeupParasite(id: string) {

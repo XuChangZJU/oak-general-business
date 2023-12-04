@@ -31,6 +31,7 @@ export type OakComponentOption<
 > = BaseOakComponentOption<IsList, ED, T, Cxt, FrontCxt, AD & GAD<ED, Cxt>, FD & GFD<ED, Cxt, FrontCxt, AD & GAD<ED, Cxt>>, FormedData, TData, TProperty, TMethod, {
     subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean, tip?: string) => Promise<boolean>;
 }> & Partial<{
+    userInsensitive?: true;
     wechatMp: {
         relatedMessageTypes?: string[];
     }
