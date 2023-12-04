@@ -49,7 +49,7 @@ export async function tryMakeSmsNotification(message: {
     if (mobile) {
         const converter = ConverterDict[type!] && ConverterDict[type!].toSms;
         if (converter) {
-            const dispersedData = await converter(entity!, entityId!, router!, context);
+            const dispersedData = await converter(message as EntityDict['message']['OpSchema'], context);
             if (dispersedData) {
                 return {
                     id: await generateNewIdAsync(),

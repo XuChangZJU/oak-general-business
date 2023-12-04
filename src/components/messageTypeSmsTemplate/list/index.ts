@@ -1,5 +1,4 @@
 import { EntityDict } from '../../../oak-app-domain';
-import MessageTypes from '../../../config/messageType';
 export default OakComponent({
     entity: 'messageTypeSmsTemplate',
     isList: true,
@@ -34,14 +33,13 @@ export default OakComponent({
                 )
                 .filter((ele) => !!ele)
             : ([] as string[]);
-        console.log(MessageTypes);
         const selectedTypes = data ? data.map((ele) => ele.type) : [];
-        const messageTypes = MessageTypes
-            .filter((ele: string) => !selectedTypes.includes(ele));
+        // const messageTypes = MessageTypes
+        //     .filter((ele: string) => !selectedTypes.includes(ele));
         return {
             mtt: data,
             dirtyIds,
-            messageTypes,
+            selectedTypes,
         };
     },
     filters: [
@@ -57,6 +55,13 @@ export default OakComponent({
             },
         },
     ],
+    listeners: {
+        async 'selectedTypes'(prev, next) {
+            if (next.selectedTypes) {
+                await this.updateMessageTypes(next.selectedTypes);
+            }
+        },
+    },
     lifetimes: {
         async ready() {
             const { systemId, origin } = this.props;
@@ -100,6 +105,17 @@ export default OakComponent({
                 {
                     content: '操作成功',
                     type: 'success',
+                }
+            )
+        },
+        async updateMessageTypes(selectedTypes: string[]) {
+            const { result: MessageTypes } = await this.features.template.getMessageType();
+            console.log(MessageTypes);
+            const messageTypes = MessageTypes
+                .filter((ele: string) => !selectedTypes.includes(ele));
+            this.setState(
+                {
+                    messageTypes,
                 }
             )
         }

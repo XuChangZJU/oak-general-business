@@ -30,14 +30,10 @@ export default OakComponent({
             const { list } = this.props;
             const currentPagePath = '/' + getCurrentPages()[0].route;
             const namespace = this.features.navigator.getNamespace();
-
             let index;
             for (let i = 0; i < list.length; i++) {
                 const pagePath = list[i].pagePath;
-                const pathname = this.features.navigator.getPathname(
-                    pagePath,
-                    namespace
-                );
+                const pathname = this.features.navigator.getPathname(pagePath, namespace);
                 if (pathname === currentPagePath) {
                     index = i;
                     break;
@@ -72,7 +68,7 @@ export default OakComponent({
             // 切换路由
             this.switchTab({
                 url,
-                fail() {
+                fail: () => {
                     this.redirectTo({
                         url,
                         fail(error) {

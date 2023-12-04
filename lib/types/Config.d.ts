@@ -68,6 +68,7 @@ export type TencentSmsConfig = {
     secretId: string;
     secretKey: string;
     smsSdkAppId: string;
+    region: string;
     defaultSignName: string;
     endpoint: string;
     templates: Record<string, {

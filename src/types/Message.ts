@@ -61,9 +61,7 @@ export interface MessageNotificationConverter<
         | undefined
     >;
     toSms?: (
-        entity: ED['message']['OpSchema']['entity'],
-        entityId: string,
-        router: Router,
+        message: ED['message']['OpSchema'],
         context: Cxt
     ) => Promise<
         | {

@@ -13,7 +13,7 @@ import * as User from "../User/Schema";
 import * as Platform from "../Platform/Schema";
 import * as MessageSystem from "../MessageSystem/Schema";
 import * as WechatMpJump from "../WechatMpJump/Schema";
-type Router = {
+export type Router = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
