@@ -7,6 +7,7 @@ import { BRC } from '../types/RuntimeCxt';
 import { Channel, MessageNotificationConverter, Weight } from '../types/Message';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { uniqBy } from 'oak-domain/lib/utils/lodash';
+import { Router } from '../entities/Message';
 
 const ConverterDict: Record<string, MessageNotificationConverter<EntityDict, BRC>> = {}
 
@@ -30,9 +31,10 @@ export async function tryMakeSmsNotification(message: {
     userId: string;
     type?: string;
     entity?: string;
+    router?: Router | null;
     entityId?: string;
 }, context: BackendRuntimeContext<EntityDict>) {
-    const { userId, type, entity, entityId } = message;
+    const { userId, type, entity, entityId, router } = message;
     const [mobile] = await context.select('mobile', {
         data: {
             id: 1,
@@ -47,7 +49,7 @@ export async function tryMakeSmsNotification(message: {
     if (mobile) {
         const converter = ConverterDict[type!] && ConverterDict[type!].toSms;
         if (converter) {
-            const dispersedData = await converter(entity!, entityId!, context);
+            const dispersedData = await converter(entity!, entityId!, router!, context);
             if (dispersedData) {
                 return {
                     id: await generateNewIdAsync(),

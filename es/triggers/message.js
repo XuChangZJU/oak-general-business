@@ -14,7 +14,7 @@ const InitialChannalByWeightMatrix = {
     low: ['wechatMp', 'wechatPublic'],
 };
 export async function tryMakeSmsNotification(message, context) {
-    const { userId, type, entity, entityId } = message;
+    const { userId, type, entity, entityId, router } = message;
     const [mobile] = await context.select('mobile', {
         data: {
             id: 1,
@@ -29,7 +29,7 @@ export async function tryMakeSmsNotification(message, context) {
     if (mobile) {
         const converter = ConverterDict[type] && ConverterDict[type].toSms;
         if (converter) {
-            const dispersedData = await converter(entity, entityId, context);
+            const dispersedData = await converter(entity, entityId, router, context);
             if (dispersedData) {
                 return {
                     id: await generateNewIdAsync(),

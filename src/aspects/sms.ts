@@ -10,6 +10,7 @@ import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { getSms } from '../utils/sms/index';
 
+
 export async function syncSmsTemplate<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>

@@ -1,6 +1,7 @@
 import { BRC } from './RuntimeCxt';
 import { EntityDict } from '../oak-app-domain';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
+import { Router } from '../entities/Message';
 
 type WechatPublicTemplateMsgKeyword =
     | 'keyword1'
@@ -26,10 +27,10 @@ export interface MessageNotificationConverter<
         context: Cxt
     ) => Promise<
         | {
-              [K: string]: {
-                  value: string;
-              };
-          }
+            [K: string]: {
+                value: string;
+            };
+        }
         | undefined
     >;
     toWechatPublic?: (
@@ -40,35 +41,36 @@ export interface MessageNotificationConverter<
         context: Cxt
     ) => Promise<
         | {
-              data: {
-                  first?: {
-                      value: string;
-                      color?: string;
-                  };
-                  remark?: {
-                      value: string;
-                      color?: string;
-                  };
-              } & {
-                  [K in WechatPublicTemplateMsgKeyword]?: {
-                      value: string;
-                      color?: string;
-                  };
-              };
-              wechatMpAppId?: string;
-          }
+            data: {
+                first?: {
+                    value: string;
+                    color?: string;
+                };
+                remark?: {
+                    value: string;
+                    color?: string;
+                };
+            } & {
+                [K in WechatPublicTemplateMsgKeyword]?: {
+                    value: string;
+                    color?: string;
+                };
+            };
+            wechatMpAppId?: string;
+        }
         | undefined
     >;
     toSms?: (
         entity: ED['message']['OpSchema']['entity'],
         entityId: string,
+        router: Router,
         context: Cxt
     ) => Promise<
         | {
-              signName?: string; // 可能的签名
-              params?: Record<string, string>; // 模板参数,需要替换的参数名和 value 的键值对
-              paramsArray?: Array<string>; // 数组形式的模板参数，按序传入服务商接口
-          }
+            signName?: string; // 可能的签名
+            params?: Record<string, string>; // 模板参数,需要替换的参数名和 value 的键值对
+            paramsArray?: Array<string>; // 数组形式的模板参数，按序传入服务商接口
+        }
         | undefined
     >;
 }
