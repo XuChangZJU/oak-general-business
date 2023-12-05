@@ -28,7 +28,6 @@ export default OakComponent({
         }
     },
     formData({ data }) {
-        console.log(data);
         return data || {};
     },
 });

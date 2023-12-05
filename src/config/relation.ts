@@ -20,6 +20,7 @@ export const selectFreeEntities: SelectFreeEntities<EntityDict> = [
     'articleMenu',
     'article',
     'userEntityGrant',
+    'wechatMpJump',
 ];
 
 // 可以自由更新的对象
