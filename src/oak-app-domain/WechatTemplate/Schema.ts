@@ -10,28 +10,36 @@ import * as Application from "../Application/Schema";
 import * as MessageTypeTemplate from "../MessageTypeTemplate/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
+type KeywordEnumValueList = Array<{
+    keywordCode: string;
+    enumValueList: Array<string>;
+}>;
 export type OpSchema = EntityShape & {
     applicationId: ForeignKey<"application">;
     wechatId: String<64>;
     title: Text;
-    primaryIndustry: Text;
-    deputyIndustry: Text;
-    content: Text;
-    example: Text;
-    param: Object;
+    primaryIndustry?: Text | null;
+    deputyIndustry?: Text | null;
+    content?: Text | null;
+    example?: Text | null;
+    param?: Object | null;
     syncAt: Datetime;
+    keywordEnumValueList?: KeywordEnumValueList | null;
+    type?: ('2' | '3') | null;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     applicationId: ForeignKey<"application">;
     wechatId: String<64>;
     title: Text;
-    primaryIndustry: Text;
-    deputyIndustry: Text;
-    content: Text;
-    example: Text;
-    param: Object;
+    primaryIndustry?: Text | null;
+    deputyIndustry?: Text | null;
+    content?: Text | null;
+    example?: Text | null;
+    param?: Object | null;
     syncAt: Datetime;
+    keywordEnumValueList?: KeywordEnumValueList | null;
+    type?: ('2' | '3') | null;
     application: Application.Schema;
     messageTypeTemplate$template?: Array<MessageTypeTemplate.Schema>;
     messageTypeTemplate$template$$aggr?: AggregationResult<MessageTypeTemplate.Schema>;
@@ -57,6 +65,8 @@ type AttrFilter = {
     example: Q_StringValue;
     param: Object;
     syncAt: Q_DateValue;
+    keywordEnumValueList: JsonFilter<KeywordEnumValueList>;
+    type: Q_EnumValue<'2' | '3'>;
     messageTypeTemplate$template: MessageTypeTemplate.Filter & SubQueryPredicateMetadata;
     modiEntity$entity: ModiEntity.Filter & SubQueryPredicateMetadata;
     operEntity$entity: OperEntity.Filter & SubQueryPredicateMetadata;
@@ -79,6 +89,8 @@ export type Projection = {
     example?: number;
     param?: number | Object;
     syncAt?: number;
+    keywordEnumValueList?: number | JsonProjection<KeywordEnumValueList>;
+    type?: number;
     messageTypeTemplate$template?: MessageTypeTemplate.Selection & {
         $entity: "messageTypeTemplate";
     };
@@ -98,7 +110,7 @@ export type Projection = {
         $entity: "operEntity";
     };
 } & Partial<ExprOp<OpAttr | string>>;
-type WechatPublicTemplateIdProjection = OneOf<{
+type WechatTemplateIdProjection = OneOf<{
     id: number;
 }>;
 type ApplicationIdProjection = OneOf<{
@@ -130,6 +142,10 @@ export type SortAttr = {
     example: number;
 } | {
     syncAt: number;
+} | {
+    keywordEnumValueList: number;
+} | {
+    type: number;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
@@ -183,7 +199,7 @@ export type RemoveOperationData = {} & (({
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
 export type ApplicationIdSubQuery = Selection<ApplicationIdProjection>;
-export type WechatPublicTemplateIdSubQuery = Selection<WechatPublicTemplateIdProjection>;
+export type WechatTemplateIdSubQuery = Selection<WechatTemplateIdProjection>;
 export type EntityDef = {
     Schema: Schema;
     OpSchema: OpSchema;

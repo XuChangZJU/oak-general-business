@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { Table, Button, Space, Typography, Select, Modal } from 'antd';
 export default function Render(props) {
-    const { oakPagination, mtt = [], dirtyIds = [], oakLoading, messageTypes = [], applicationId, wechatPublicTemplates = [], } = props.data;
+    const { oakPagination, mtt = [], dirtyIds = [], oakLoading, messageTypes = [], applicationId, wechatTemplates = [], } = props.data;
     const { setCurrentPage, setPageSize, t, addItem, syncTemplate, removeItem, updateItem, recoverItem, resetItem, execute, } = props.methods;
     const [syncDisable, setSyncDisable] = useState(false);
     const [open, setOpen] = useState(false);
     const { pageSize, total, currentPage } = oakPagination || {};
     return (<>
-            <Space>
+            <Space style={{ marginBottom: 16 }}>
                 <Button type="default" disabled={!(messageTypes.length > 0 &&
-            wechatPublicTemplates.length > 0)} onClick={() => {
+            wechatTemplates.length > 0)} onClick={() => {
             addItem({
                 type: messageTypes[0],
-                templateId: wechatPublicTemplates[0].id,
+                templateId: wechatTemplates[0].id,
             });
         }}>
                     {t('common::action.create')}
@@ -70,7 +70,7 @@ export default function Render(props) {
                                 width: '100%',
                             }} value={value} onChange={(e) => updateItem({
                                 templateId: e,
-                            }, record.id)} options={wechatPublicTemplates.map((ele) => ({
+                            }, record.id)} options={wechatTemplates.map((ele) => ({
                                 value: ele.id,
                                 label: ele.title,
                             }))}/>);
@@ -126,7 +126,7 @@ export default function Render(props) {
             <Modal title="模板列表" open={open} destroyOnClose={true} onCancel={() => {
             setOpen(false);
         }} width={'80%'} footer={null}>
-                <Table dataSource={wechatPublicTemplates} rowKey="id" columns={[
+                <Table dataSource={wechatTemplates} rowKey="id" columns={[
             {
                 dataIndex: 'title',
                 title: '消息标题',

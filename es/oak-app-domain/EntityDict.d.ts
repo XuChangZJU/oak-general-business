@@ -50,8 +50,8 @@ import { EntityDef as WechatMenu } from "./WechatMenu/Schema";
 import { EntityDef as WechatMpJump } from "./WechatMpJump/Schema";
 import { EntityDef as WechatPublicAutoReply } from "./WechatPublicAutoReply/Schema";
 import { EntityDef as WechatPublicTag } from "./WechatPublicTag/Schema";
-import { EntityDef as WechatPublicTemplate } from "./WechatPublicTemplate/Schema";
 import { EntityDef as WechatQrCode } from "./WechatQrCode/Schema";
+import { EntityDef as WechatTemplate } from "./WechatTemplate/Schema";
 import { EntityDef as WechatUser } from "./WechatUser/Schema";
 export type EntityDict = {
     actionAuth: ActionAuth;
@@ -106,7 +106,7 @@ export type EntityDict = {
     wechatMpJump: WechatMpJump;
     wechatPublicAutoReply: WechatPublicAutoReply;
     wechatPublicTag: WechatPublicTag;
-    wechatPublicTemplate: WechatPublicTemplate;
     wechatQrCode: WechatQrCode;
+    wechatTemplate: WechatTemplate;
     wechatUser: WechatUser;
 };

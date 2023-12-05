@@ -34,23 +34,30 @@ export default function Render(props) {
         items.push({
             label: <div className={Styles.tabLabel}>{t('menu')}</div>,
             key: 'menu',
-            children: (<WechatMenu oakAutoUnmount={true} applicationId={id} oakPath={`$application-panel-menu-${id}`} tabKey={tabKey}/>)
+            children: (<WechatMenu oakAutoUnmount={true} applicationId={id} oakPath={`$application-panel-menu-${id}`} tabKey={tabKey}/>),
         }, {
             label: <div className={Styles.tabLabel}>{t('autoReply')}</div>,
             key: 'autoReply',
-            children: (<WechatPublicAutoReply oakAutoUnmount={true} applicationId={id} oakPath={`$application-panel-autoReply-${id}`}/>)
+            children: (<WechatPublicAutoReply oakAutoUnmount={true} applicationId={id} oakPath={`$application-panel-autoReply-${id}`}/>),
         }, {
             label: <div className={Styles.tabLabel}>{t('tag')}</div>,
             key: 'tag',
-            children: (<WechatPublicTag oakAutoUnmount={true} applicationId={id} oakPath={`$application-panel-tag-${id}`}/>)
+            children: (<WechatPublicTag oakAutoUnmount={true} applicationId={id} oakPath={`$application-panel-tag-${id}`}/>),
         }, {
             label: <div className={Styles.tabLabel}>{t('user')}</div>,
             key: 'user',
-            children: (<UserWechatPublicTag oakAutoUnmount={true} applicationId={id} oakPath={`$application-panel-user-${id}`}/>)
+            children: (<UserWechatPublicTag oakAutoUnmount={true} applicationId={id} oakPath={`$application-panel-user-${id}`}/>),
         }, {
             label: <div className={Styles.tabLabel}>{t('template')}</div>,
             key: 'template',
-            children: (<TemplateList oakAutoUnmount={true} oakPath={`templateUpsert-ApplicationId:${id}`} applicationId={id}/>),
+            children: (<TemplateList oakAutoUnmount={true} oakPath={`templateUpsert-wechatPublic-ApplicationId:${id}`} applicationId={id}/>),
+        });
+    }
+    else if (type === 'wechatMp') {
+        items.push({
+            label: <div className={Styles.tabLabel}>{t('template')}</div>,
+            key: 'template',
+            children: (<TemplateList oakAutoUnmount={true} oakPath={`templateUpsert-wechatMp-ApplicationId:${id}`} applicationId={id}/>),
         });
     }
     if (id && oakFullpath) {

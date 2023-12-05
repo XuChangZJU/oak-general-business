@@ -14,7 +14,7 @@ export const desc: StorageDesc<OpSchema> = {
             params: {
                 length: 32
             },
-            ref: ["user", "userEntityGrant", "userSystem", "userWechatPublicTag", "wechatLogin", "wechatMenu", "wechatMpJump", "wechatPublicAutoReply", "wechatPublicTag", "wechatPublicTemplate", "wechatQrCode", "wechatUser"]
+            ref: ["user", "userEntityGrant", "userSystem", "userWechatPublicTag", "wechatLogin", "wechatMenu", "wechatMpJump", "wechatPublicAutoReply", "wechatPublicTag", "wechatQrCode", "wechatTemplate", "wechatUser"]
         },
         entityId: {
             notNull: true,

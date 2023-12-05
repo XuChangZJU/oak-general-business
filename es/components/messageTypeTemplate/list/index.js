@@ -16,7 +16,7 @@ export default OakComponent({
         applicationId: '',
     },
     data: {
-        wechatPublicTemplates: [],
+        wechatTemplates: [],
     },
     formData({ data }) {
         const operations = this.getOperations();
@@ -26,7 +26,6 @@ export default OakComponent({
                 .data?.id || ele.operation.filter?.id)
                 .filter((ele) => !!ele)
             : [];
-        console.log(MessageTypes);
         const selectedTypes = data ? data.map((ele) => ele.type) : [];
         const messageTypes = MessageTypes
             .filter((ele) => !selectedTypes.includes(ele));
@@ -54,7 +53,7 @@ export default OakComponent({
     lifetimes: {
         async ready() {
             const applicationId = this.props.applicationId;
-            const { data: wechatPublicTemplates } = await this.features.cache.refresh('wechatPublicTemplate', {
+            const { data: wechatTemplates } = await this.features.cache.refresh('wechatTemplate', {
                 data: {
                     id: 1,
                     wechatId: 1,
@@ -65,7 +64,7 @@ export default OakComponent({
                 }
             });
             this.setState({
-                wechatPublicTemplates
+                wechatTemplates
             });
         },
     },
@@ -73,7 +72,7 @@ export default OakComponent({
         async syncTemplate() {
             const applicationId = this.props.applicationId;
             await this.features.template.syncMessageTemplate(applicationId);
-            const { data: wechatPublicTemplates } = await this.features.cache.refresh('wechatPublicTemplate', {
+            const { data: wechatTemplates } = await this.features.cache.refresh('wechatTemplate', {
                 data: {
                     id: 1,
                     wechatId: 1,
@@ -84,7 +83,7 @@ export default OakComponent({
                 }
             });
             this.setState({
-                wechatPublicTemplates
+                wechatTemplates
             });
             this.setMessage({
                 content: '操作成功',

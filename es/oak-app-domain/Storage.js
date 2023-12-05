@@ -50,8 +50,8 @@ import { desc as wechatMenuDesc } from "./WechatMenu/Storage";
 import { desc as wechatMpJumpDesc } from "./WechatMpJump/Storage";
 import { desc as wechatPublicAutoReplyDesc } from "./WechatPublicAutoReply/Storage";
 import { desc as wechatPublicTagDesc } from "./WechatPublicTag/Storage";
-import { desc as wechatPublicTemplateDesc } from "./WechatPublicTemplate/Storage";
 import { desc as wechatQrCodeDesc } from "./WechatQrCode/Storage";
+import { desc as wechatTemplateDesc } from "./WechatTemplate/Storage";
 import { desc as wechatUserDesc } from "./WechatUser/Storage";
 export const storageSchema = {
     actionAuth: actionAuthDesc,
@@ -106,7 +106,7 @@ export const storageSchema = {
     wechatMpJump: wechatMpJumpDesc,
     wechatPublicAutoReply: wechatPublicAutoReplyDesc,
     wechatPublicTag: wechatPublicTagDesc,
-    wechatPublicTemplate: wechatPublicTemplateDesc,
     wechatQrCode: wechatQrCodeDesc,
+    wechatTemplate: wechatTemplateDesc,
     wechatUser: wechatUserDesc
 };

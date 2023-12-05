@@ -17,7 +17,7 @@ export default OakComponent({
         applicationId: '' as string,
     },
     data: {
-        wechatPublicTemplates: [] as Partial<EntityDict['wechatPublicTemplate']['Schema']>[],
+        wechatTemplates: [] as Partial<EntityDict['wechatTemplate']['Schema']>[],
     },
     formData({ data }) {
         const operations = this.getOperations();
@@ -59,7 +59,7 @@ export default OakComponent({
     lifetimes: {
         async ready() {
             const applicationId = this.props.applicationId;
-            const { data: wechatPublicTemplates } = await this.features.cache.refresh('wechatPublicTemplate', {
+            const { data: wechatTemplates } = await this.features.cache.refresh('wechatTemplate', {
                 data: {
                     id: 1,
                     wechatId: 1,
@@ -70,7 +70,7 @@ export default OakComponent({
                 }
             });
             this.setState({
-                wechatPublicTemplates
+                wechatTemplates
             })
         },
     },
@@ -78,7 +78,7 @@ export default OakComponent({
         async syncTemplate() {
             const applicationId = this.props.applicationId;
             await this.features.template.syncMessageTemplate(applicationId!);
-            const { data: wechatPublicTemplates } = await this.features.cache.refresh('wechatPublicTemplate', {
+            const { data: wechatTemplates } = await this.features.cache.refresh('wechatTemplate', {
                 data: {
                     id: 1,
                     wechatId: 1,
@@ -89,7 +89,7 @@ export default OakComponent({
                 }
             });
             this.setState({
-                wechatPublicTemplates
+                wechatTemplates
             })
             this.setMessage(
                 {

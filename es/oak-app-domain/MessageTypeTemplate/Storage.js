@@ -11,7 +11,7 @@ export const desc = {
         templateId: {
             notNull: true,
             type: "ref",
-            ref: "wechatPublicTemplate"
+            ref: "wechatTemplate"
         }
     },
     actionType: "crud",

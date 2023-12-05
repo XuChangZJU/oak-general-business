@@ -7,7 +7,7 @@ export default function Render(props) {
     const [open, setOpen] = useState(false);
     const { pageSize, total, currentPage } = oakPagination || {};
     return (<>
-            <Space>
+            <Space style={{ marginBottom: 16 }}>
                 <Button type="default" disabled={!(messageTypes.length > 0 &&
             smsTemplates.length > 0)} onClick={() => {
             addItem({
@@ -60,7 +60,7 @@ export default function Render(props) {
                 },
             },
             {
-                dataIndex: 'templateId',
+                dataIndex: 'template.templateName',
                 title: '模板消息标题',
                 width: 300,
                 render: (value, record, index) => {

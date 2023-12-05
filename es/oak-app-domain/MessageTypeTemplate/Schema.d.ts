@@ -5,16 +5,16 @@ import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOper
 import { GenericAction } from "oak-domain/lib/actions/action";
 import { String } from "oak-domain/lib/types/DataType";
 import { EntityShape } from "oak-domain/lib/types/Entity";
-import * as WechatPublicTemplate from "../WechatPublicTemplate/Schema";
+import * as WechatTemplate from "../WechatTemplate/Schema";
 export type OpSchema = EntityShape & {
     type: String<64>;
-    templateId: ForeignKey<"wechatPublicTemplate">;
+    templateId: ForeignKey<"wechatTemplate">;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     type: String<64>;
-    templateId: ForeignKey<"wechatPublicTemplate">;
-    template: WechatPublicTemplate.Schema;
+    templateId: ForeignKey<"wechatTemplate">;
+    template: WechatTemplate.Schema;
 } & {
     [A in ExpressionKey]?: any;
 };
@@ -25,7 +25,7 @@ type AttrFilter = {
     $$updateAt$$: Q_DateValue;
     type: Q_StringValue;
     templateId: Q_StringValue;
-    template: WechatPublicTemplate.Filter;
+    template: WechatTemplate.Filter;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export type Projection = {
@@ -37,12 +37,12 @@ export type Projection = {
     $$seq$$?: number;
     type?: number;
     templateId?: number;
-    template?: WechatPublicTemplate.Projection;
+    template?: WechatTemplate.Projection;
 } & Partial<ExprOp<OpAttr | string>>;
 type MessageTypeTemplateIdProjection = OneOf<{
     id: number;
 }>;
-type WechatPublicTemplateIdProjection = OneOf<{
+type WechatTemplateIdProjection = OneOf<{
     templateId: number;
 }>;
 export type SortAttr = {
@@ -58,7 +58,7 @@ export type SortAttr = {
 } | {
     templateId: number;
 } | {
-    template: WechatPublicTemplate.SortAttr;
+    template: WechatTemplate.SortAttr;
 } | {
     [k: string]: any;
 } | OneOf<ExprOp<OpAttr | string>>;
@@ -72,10 +72,10 @@ export type Selection<P extends Object = Projection> = SelectOperation<P>;
 export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
 export type CreateOperationData = FormCreateData<Omit<OpSchema, "templateId">> & (({
     templateId?: never;
-    template: WechatPublicTemplate.CreateSingleOperation;
+    template: WechatTemplate.CreateSingleOperation;
 } | {
     templateId: ForeignKey<"template">;
-    template?: WechatPublicTemplate.UpdateOperation;
+    template?: WechatTemplate.UpdateOperation;
 } | {
     template?: never;
     templateId: ForeignKey<"template">;
@@ -84,13 +84,13 @@ export type CreateSingleOperation = OakOperation<"create", CreateOperationData>;
 export type CreateMultipleOperation = OakOperation<"create", Array<CreateOperationData>>;
 export type CreateOperation = CreateSingleOperation | CreateMultipleOperation;
 export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "templateId">> & (({
-    template?: WechatPublicTemplate.CreateSingleOperation;
+    template?: WechatTemplate.CreateSingleOperation;
     templateId?: never;
 } | {
-    template?: WechatPublicTemplate.UpdateOperation;
+    template?: WechatTemplate.UpdateOperation;
     templateId?: never;
 } | {
-    template?: WechatPublicTemplate.RemoveOperation;
+    template?: WechatTemplate.RemoveOperation;
     templateId?: never;
 } | {
     template?: never;
@@ -100,11 +100,11 @@ export type UpdateOperationData = FormUpdateData<Omit<OpSchema, "templateId">> &
 };
 export type UpdateOperation = OakOperation<"update" | string, UpdateOperationData, Filter, Sorter>;
 export type RemoveOperationData = {} & (({
-    template?: WechatPublicTemplate.UpdateOperation | WechatPublicTemplate.RemoveOperation;
+    template?: WechatTemplate.UpdateOperation | WechatTemplate.RemoveOperation;
 }));
 export type RemoveOperation = OakOperation<"remove", RemoveOperationData, Filter, Sorter>;
 export type Operation = CreateOperation | UpdateOperation | RemoveOperation;
-export type WechatPublicTemplateIdSubQuery = Selection<WechatPublicTemplateIdProjection>;
+export type WechatTemplateIdSubQuery = Selection<WechatTemplateIdProjection>;
 export type MessageTypeTemplateIdSubQuery = Selection<MessageTypeTemplateIdProjection>;
 export type EntityDef = {
     Schema: Schema;

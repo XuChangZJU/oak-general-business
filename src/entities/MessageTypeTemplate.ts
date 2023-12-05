@@ -7,12 +7,12 @@ import {
 } from 'oak-domain/lib/types/DataType';
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as Application } from './Application';
-import { Schema as WechatPublicTemplate } from './WechatPublicTemplate';
+import { Schema as WechatTemplate } from './WechatTemplate';
 import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
 export interface Schema extends EntityShape {
     type: String<64>,
-    template: WechatPublicTemplate,
+    template: WechatTemplate,
 };
 
 const entityDesc: EntityDesc<Schema> = {

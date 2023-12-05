@@ -7,6 +7,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'messageType
     dirtyIds: string[];
     messageTypes: string[];
     systemId: string;
+    origin: string;
 }, {
     syncTemplate: () => Promise<void>;
 }>): React.JSX.Element;

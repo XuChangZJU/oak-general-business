@@ -10,7 +10,7 @@ export default function Render(
         true,
         {
             mtt: EntityDict['messageTypeTemplate']['Schema'][];
-            wechatPublicTemplates: EntityDict['wechatPublicTemplate']['Schema'][];
+            wechatTemplates: EntityDict['wechatTemplate']['Schema'][];
             dirtyIds: string[];
             messageTypes: string[];
             applicationId: string;
@@ -27,7 +27,7 @@ export default function Render(
         oakLoading,
         messageTypes = [],
         applicationId,
-        wechatPublicTemplates = [],
+        wechatTemplates = [],
     } = props.data;
     const {
         setCurrentPage,
@@ -53,13 +53,13 @@ export default function Render(
                     disabled={
                         !(
                             messageTypes.length > 0 &&
-                            wechatPublicTemplates.length > 0
+                            wechatTemplates.length > 0
                         )
                     }
                     onClick={() => {
                         addItem({
                             type: messageTypes[0],
-                            templateId: wechatPublicTemplates[0].id,
+                            templateId: wechatTemplates[0].id,
                         });
                     }}
                 >
@@ -167,7 +167,7 @@ export default function Render(
                                                 record.id
                                             )
                                         }
-                                        options={wechatPublicTemplates.map(
+                                        options={wechatTemplates.map(
                                             (ele) => ({
                                                 value: ele.id,
                                                 label: ele.title,
@@ -267,7 +267,7 @@ export default function Render(
                 footer={null}
             >
                 <Table
-                    dataSource={wechatPublicTemplates}
+                    dataSource={wechatTemplates}
                     rowKey="id"
                     columns={[
                         {

@@ -47,14 +47,45 @@ export async function syncMessageTemplate(params, context) {
         },
     }, {});
     const { type, config } = application;
-    assert(type === 'wechatPublic', '当前只支持微信公众号的消息配置');
-    let appId, appSecret;
-    const config2 = config;
-    appId = config2.appId;
-    appSecret = config2.appSecret;
-    const wechatInstance = WechatSDK.getInstance(appId, 'wechatPublic', appSecret);
-    const { template_list } = await wechatInstance.getAllPrivateTemplate();
-    const WechatPublicTemplateList = await context.select('wechatPublicTemplate', {
+    assert(['wechatPublic', 'wechatMp'].includes(type), '当前只支持微信公众号和小程序的消息配置');
+    let template_list = [];
+    if (type === 'wechatPublic') {
+        let appId, appSecret;
+        const config2 = config;
+        appId = config2.appId;
+        appSecret = config2.appSecret;
+        const wechatPublicInstance = WechatSDK.getInstance(appId, 'wechatPublic', appSecret);
+        const publicTemplateList = await wechatPublicInstance.getAllPrivateTemplate();
+        template_list = publicTemplateList.map((ele) => {
+            return {
+                wechatId: ele.template_id,
+                title: ele.title,
+                primaryIndustry: ele.primary_industry,
+                deputyIndustry: ele.deputy_industry,
+                content: ele.content,
+                example: ele.example,
+            };
+        });
+    }
+    else {
+        let appId, appSecret;
+        const config2 = config;
+        appId = config2.appId;
+        appSecret = config2.appSecret;
+        const wechatMpInstance = WechatSDK.getInstance(appId, 'wechatMp', appSecret);
+        const mpTemplateList = await wechatMpInstance.getAllPrivateTemplate();
+        template_list = mpTemplateList.map((ele) => {
+            return {
+                wechatId: ele.priTmplId,
+                title: ele.title,
+                type: ele.type.toString(),
+                content: ele.content,
+                example: ele.example,
+                keywordEnumValueList: ele.keywordEnumValueList || [],
+            };
+        });
+    }
+    const WechatTemplateList = await context.select('wechatTemplate', {
         data: {
             id: 1,
             wechatId: 1,
@@ -63,30 +94,23 @@ export async function syncMessageTemplate(params, context) {
             applicationId,
         },
     }, {});
-    const existsTemplateIds = WechatPublicTemplateList.map((ele) => ele.wechatId);
-    const newTemplateList = template_list.filter((ele) => !existsTemplateIds.includes(ele.template_id));
-    const newTemplateIds = template_list.map((ele) => ele.template_id);
-    const removeTemplateList = WechatPublicTemplateList.filter((ele) => !newTemplateIds.includes(ele.wechatId));
+    const existsTemplateIds = WechatTemplateList.map((ele) => ele.wechatId);
+    const newTemplateList = template_list.filter((ele) => !existsTemplateIds.includes(ele.wechatId));
+    const newTemplateIds = template_list.map((ele) => ele.wechatId);
+    const removeTemplateList = WechatTemplateList.filter((ele) => !newTemplateIds.includes(ele.wechatId));
     for (const template of newTemplateList) {
-        await context.operate('wechatPublicTemplate', {
+        await context.operate('wechatTemplate', {
             id: await generateNewIdAsync(),
             action: 'create',
-            data: {
+            data: Object.assign({
                 id: await generateNewIdAsync(),
                 applicationId,
-                wechatId: template.template_id,
-                title: template.title,
-                primaryIndustry: template.primary_industry,
-                deputyIndustry: template.deputy_industry,
-                content: template.content,
-                example: template.example,
                 syncAt: Date.now(),
-                param: analyseContent(template.content),
-            },
+            }, template),
         }, {});
     }
     if (removeTemplateList.length > 0) {
-        await context.operate('wechatPublicTemplate', {
+        await context.operate('wechatTemplate', {
             id: await generateNewIdAsync(),
             action: 'remove',
             data: {},

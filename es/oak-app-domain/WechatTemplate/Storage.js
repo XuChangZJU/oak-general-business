@@ -1,7 +1,5 @@
-import { StorageDesc } from "oak-domain/lib/types/Storage";
-import { OpSchema } from "./Schema";
 import { genericActions as actions } from "oak-domain/lib/actions/action";
-export const desc: StorageDesc<OpSchema> = {
+export const desc = {
     attributes: {
         applicationId: {
             notNull: true,
@@ -20,28 +18,30 @@ export const desc: StorageDesc<OpSchema> = {
             type: "text"
         },
         primaryIndustry: {
-            notNull: true,
             type: "text"
         },
         deputyIndustry: {
-            notNull: true,
             type: "text"
         },
         content: {
-            notNull: true,
             type: "text"
         },
         example: {
-            notNull: true,
             type: "text"
         },
         param: {
-            notNull: true,
             type: "object"
         },
         syncAt: {
             notNull: true,
             type: "datetime"
+        },
+        keywordEnumValueList: {
+            type: "object"
+        },
+        type: {
+            type: "enum",
+            enumeration: ["2", "3"]
         }
     },
     actionType: "crud",

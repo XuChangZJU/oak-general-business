@@ -113,7 +113,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
                 children: (
                     <TemplateList
                         oakAutoUnmount={true}
-                        oakPath={`templateUpsert-wechatPublic-ApplicationId:${id}`}
+                        oakPath={`templateUpsert-wechat-ApplicationId:${id}`}
                         applicationId={id}
                     />
                 ),
