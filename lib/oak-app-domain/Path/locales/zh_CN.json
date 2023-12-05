@@ -1,0 +1,1 @@
+{ "name": "关系路径", "attr": { "sourceEntity": "源对象", "value": "路径（从dest到source）", "destEntity": "目标对象", "recursive": "是否递归（目标对象）" } }
