@@ -8,6 +8,7 @@ export default OakComponent({
         template: {
             id: 1,
             origin: 1,
+            systemId: 1,
             templateName: 1,
             templateCode: 1,
         },
@@ -33,9 +34,10 @@ export default OakComponent({
                 )
                 .filter((ele) => !!ele)
             : ([] as string[]);
-        const selectedTypes = data ? data.map((ele) => ele.type) : [];
+        const selectedTypes = data ? data.filter((ele) => !ele.$$deleteAt$$).map((ele) => { ele.type }) : [];
         // const messageTypes = MessageTypes
         //     .filter((ele: string) => !selectedTypes.includes(ele));
+        console.log(data);
         return {
             mtt: data,
             dirtyIds,
@@ -68,6 +70,8 @@ export default OakComponent({
             const { data: smsTemplates } = await this.features.cache.refresh('smsTemplate', {
                 data: {
                     id: 1,
+                    origin: 1,
+                    systemId: 1,
                     templateName: 1,
                     templateCode: 1,
                     templateContent: 1,
@@ -89,6 +93,8 @@ export default OakComponent({
             const { data: smsTemplates } = await this.features.cache.refresh('smsTemplate', {
                 data: {
                     id: 1,
+                    origin: 1,
+                    systemId: 1,
                     templateName: 1,
                     templateCode: 1,
                     templateContent: 1,
@@ -110,7 +116,6 @@ export default OakComponent({
         },
         async updateMessageTypes(selectedTypes: string[]) {
             const { result: MessageTypes } = await this.features.template.getMessageType();
-            console.log(MessageTypes);
             const messageTypes = MessageTypes
                 .filter((ele: string) => !selectedTypes.includes(ele));
             this.setState(

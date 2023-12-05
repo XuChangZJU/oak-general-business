@@ -14,6 +14,7 @@ export default function Render(
             dirtyIds: string[];
             messageTypes: string[];
             systemId: string;
+            origin: string;
         },
         {
             syncTemplate: () => Promise<void>;
@@ -145,7 +146,7 @@ export default function Render(
                         },
                     },
                     {
-                        dataIndex: 'templateId',
+                        dataIndex: 'template.templateName',
                         title: '模板消息标题',
                         width: 300,
                         render: (value, record, index) => {

@@ -223,7 +223,8 @@ const i18ns: I18n[] = [
             "domain-list": "域名管理",
             "config": "配置管理",
             "style": "样式管理",
-            "application-list": "应用管理"
+            "application-list": "应用管理",
+            "smsTemplate-list": "短信模板管理"
         }
     },
     {
