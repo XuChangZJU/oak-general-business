@@ -48,7 +48,7 @@ export default function Render(
     const { pageSize, total, currentPage } = oakPagination || {};
     return (
         <>
-            <Space>
+            <Space style={{ marginBottom: 16 }}>
                 <Button
                     type="default"
                     disabled={

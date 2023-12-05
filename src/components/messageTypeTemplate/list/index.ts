@@ -32,7 +32,6 @@ export default OakComponent({
                 )
                 .filter((ele) => !!ele)
             : ([] as string[]);
-        console.log(MessageTypes);
         const selectedTypes = data ? data.map((ele) => ele.type) : [];
         const messageTypes = MessageTypes
             .filter((ele: string) => !selectedTypes.includes(ele));
