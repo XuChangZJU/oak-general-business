@@ -2,6 +2,6 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     entity: string;
     entityId: string;
     relationEntity: string;
-    relationEntityFilter: object;
+    relationEntityFilter: {};
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

@@ -16,6 +16,7 @@ export const selectFreeEntities = [
     'articleMenu',
     'article',
     'userEntityGrant',
+    'wechatMpJump',
 ];
 // 可以自由更新的对象
 export const updateFreeDict = {

@@ -1,4 +1,3 @@
-import MessageTypes from '../../../config/messageType';
 export default OakComponent({
     entity: 'messageTypeTemplate',
     isList: true,
@@ -27,13 +26,18 @@ export default OakComponent({
                 .filter((ele) => !!ele)
             : [];
         const selectedTypes = data ? data.map((ele) => ele.type) : [];
-        const messageTypes = MessageTypes
-            .filter((ele) => !selectedTypes.includes(ele));
         return {
             mtt: data,
             dirtyIds,
-            messageTypes,
+            selectedTypes,
         };
+    },
+    listeners: {
+        async 'selectedTypes'(prev, next) {
+            if (next.selectedTypes) {
+                await this.updateMessageTypes(next.selectedTypes);
+            }
+        },
     },
     filters: [
         {
@@ -88,6 +92,14 @@ export default OakComponent({
             this.setMessage({
                 content: '操作成功',
                 type: 'success',
+            });
+        },
+        async updateMessageTypes(selectedTypes) {
+            const { result: MessageTypes } = await this.features.template.getMessageType();
+            const messageTypes = MessageTypes
+                .filter((ele) => !selectedTypes.includes(ele));
+            this.setState({
+                messageTypes,
             });
         }
     }

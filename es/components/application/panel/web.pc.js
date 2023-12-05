@@ -50,7 +50,7 @@ export default function Render(props) {
         }, {
             label: <div className={Styles.tabLabel}>{t('template')}</div>,
             key: 'template',
-            children: (<TemplateList oakAutoUnmount={true} oakPath={`templateUpsert-wechatPublic-ApplicationId:${id}`} applicationId={id}/>),
+            children: (<TemplateList oakAutoUnmount={true} oakPath={`templateUpsert-wechat-ApplicationId:${id}`} applicationId={id}/>),
         });
     }
     else if (type === 'wechatMp') {
