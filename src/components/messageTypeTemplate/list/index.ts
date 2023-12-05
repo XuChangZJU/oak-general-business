@@ -33,13 +33,18 @@ export default OakComponent({
                 .filter((ele) => !!ele)
             : ([] as string[]);
         const selectedTypes = data ? data.map((ele) => ele.type) : [];
-        const messageTypes = MessageTypes
-            .filter((ele: string) => !selectedTypes.includes(ele));
         return {
             mtt: data,
             dirtyIds,
-            messageTypes,
+            selectedTypes,
         };
+    },
+    listeners: {
+        async 'selectedTypes'(prev, next) {
+            if (next.selectedTypes) {
+                await this.updateMessageTypes(next.selectedTypes);
+            }
+        },
     },
     filters: [
         {
@@ -95,6 +100,16 @@ export default OakComponent({
                 {
                     content: '操作成功',
                     type: 'success',
+                }
+            )
+        },
+        async updateMessageTypes(selectedTypes: string[]) {
+            const { result: MessageTypes } = await this.features.template.getMessageType();
+            const messageTypes = MessageTypes
+                .filter((ele: string) => !selectedTypes.includes(ele));
+            this.setState(
+                {
+                    messageTypes,
                 }
             )
         }

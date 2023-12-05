@@ -146,7 +146,7 @@ export default function Render(
                         },
                     },
                     {
-                        dataIndex: 'template.templateName',
+                        dataIndex: ['template', 'templateName'],
                         title: '模板消息标题',
                         width: 300,
                         render: (value, record, index) => {

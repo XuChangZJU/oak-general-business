@@ -35,9 +35,6 @@ export default OakComponent({
                 .filter((ele) => !!ele)
             : ([] as string[]);
         const selectedTypes = data ? data.filter((ele) => !ele.$$deleteAt$$).map((ele) => { ele.type }) : [];
-        // const messageTypes = MessageTypes
-        //     .filter((ele: string) => !selectedTypes.includes(ele));
-        console.log(data);
         return {
             mtt: data,
             dirtyIds,
