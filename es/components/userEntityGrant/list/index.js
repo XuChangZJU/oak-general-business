@@ -29,6 +29,7 @@ export default OakComponent({
         entity: '',
         entityId: '',
         relationEntity: '',
+        relationEntityFilter: {},
     },
     filters: [
         {
@@ -37,6 +38,7 @@ export default OakComponent({
                     entity: this.props.entity,
                     entityId: this.props.entityId,
                     relationEntity: this.props.relationEntity,
+                    relationEntityFilter: this.props.relationEntityFilter,
                 };
             },
         },
