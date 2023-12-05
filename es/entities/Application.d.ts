@@ -4,7 +4,7 @@ import { Schema as System } from './System';
 import { Schema as Session } from './Session';
 import { Style } from '../types/Style';
 export type Passport = 'email' | 'mobile' | 'wechat' | 'wechatPublic';
-export type AppType = 'web' | 'wechatMp' | 'wechatPublic';
+export type AppType = 'web' | 'wechatMp' | 'wechatPublic' | 'native';
 export type WechatMpConfig = {
     type: 'wechatMp';
     appId: string;
@@ -51,12 +51,16 @@ export type WechatPublicConfig = {
     };
     passport?: Passport[];
 };
+export type NativeConfig = {
+    type: 'native';
+    passport?: Passport[];
+};
 export interface Schema extends EntityShape {
     name: String<32>;
     description: Text;
     type: AppType;
     system: System;
-    config: WebConfig | WechatMpConfig | WechatPublicConfig;
+    config: WebConfig | WechatMpConfig | WechatPublicConfig | NativeConfig;
     style?: Style;
     sessions?: Session[];
 }

@@ -124,13 +124,28 @@ export function createComponent<
     >,
     features: BasicFeatures<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>> & FD,
 ) {
-    const { wechatMp, methods, lifetimes, ...rest } = option;
+    const { wechatMp, data, methods, lifetimes, userInsensitive, ...rest } = option;
     const { relatedMessageTypes } = wechatMp || {};
-    const { ready, attached, ...restLifeTimes } = lifetimes || {};
+    const { ready, attached, show, hide, ...restLifeTimes } = lifetimes || {};
 
-    return createBaseComponent<IsList, ED, T, Cxt, FrontCxt, AD, FD, FormedData, TData, TProperty, TMethod & {
+    return createBaseComponent<IsList, ED, T, Cxt, FrontCxt, AD, FD, FormedData, TData & {
+        __userId: string | undefined;
+    }, TProperty, TMethod & {
         subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean, tip?: string) => Promise<boolean>;
     }>({
+        data: typeof data === 'function' ? function() {
+            return {
+                __userId: undefined,
+                ...(data.call(this)),
+            } as TData & {
+                __userId: string | undefined;
+            }
+        } : {
+            __userId: undefined,
+            ...data,
+        } as TData & {
+            __userId: string | undefined;
+        },
         methods: {
             async subscribeMpMessage(messageTypes: string[], haveToAccept?: boolean, tip?: string) {
                 return await subscribeMpMessage.call(this as any, messageTypes, haveToAccept, tip);
@@ -139,11 +154,9 @@ export function createComponent<
         },
         lifetimes: {
             attached() {
-                this.subscribed.push(
-                    this.features.token.subscribe(
-                        () => this.refresh()
-                    )
-                );
+                if (!userInsensitive) {
+                    this.addFeatureSub('token', () => this.refresh());
+                }
                 attached && attached.call(this);
             },
             ready() {
@@ -196,6 +209,24 @@ export function createComponent<
                     }
                 }
                 ready && ready.call(this);
+            },
+            show() {
+                show && show.call(this);
+                if (!userInsensitive) {
+                    const userId = this.features.token.getUserId(true);
+                    if (userId !== this.state.__userId) {
+                        this.refresh();
+                    }
+                }
+            },
+            hide() {
+                hide && hide.call(this);
+                if (!userInsensitive) {
+                    const userId = this.features.token.getUserId(true);
+                    this.setState({
+                        __userId: userId as string | undefined,
+                    } as any);
+                }
             },
             ...restLifeTimes,
         },

@@ -1,5 +1,5 @@
 import { ForeignKey } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_NumberValue, Q_StringValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
@@ -9,7 +9,7 @@ import * as System from "../System/Schema";
 import * as MessageTypeSmsTemplate from "../MessageTypeSmsTemplate/Schema";
 export type OpSchema = EntityShape & {
     systemId: ForeignKey<"system">;
-    origin: 'ali' | 'tencent';
+    origin: String<64>;
     templateName: Text;
     templateCode: String<64>;
     templateContent: Text;
@@ -18,7 +18,7 @@ export type OpSchema = EntityShape & {
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     systemId: ForeignKey<"system">;
-    origin: 'ali' | 'tencent';
+    origin: String<64>;
     templateName: Text;
     templateCode: String<64>;
     templateContent: Text;
@@ -32,11 +32,11 @@ export type Schema = EntityShape & {
 type AttrFilter = {
     id: Q_StringValue;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
+    $$seq$$: Q_NumberValue;
     $$updateAt$$: Q_DateValue;
     systemId: Q_StringValue;
     system: System.Filter;
-    origin: Q_EnumValue<'ali' | 'tencent'>;
+    origin: Q_StringValue;
     templateName: Q_StringValue;
     templateCode: Q_StringValue;
     templateContent: Q_StringValue;

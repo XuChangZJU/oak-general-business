@@ -2,7 +2,8 @@ import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCa
 import { getInfoByUrl } from './extraFile';
 import { getApplication, signatureJsSDK, uploadWechatMedia, batchGetArticle, getArticle, batchGetMaterialList, getMaterial, deleteMaterial, } from './application';
 import { updateConfig, updateApplicationConfig, updateStyle } from './config';
-import { syncMessageTemplate } from './template';
+import { syncMessageTemplate, getMessageType } from './template';
+import { syncSmsTemplate } from './sms';
 import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user';
 import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
@@ -12,6 +13,7 @@ import { createSession } from './session';
 import { getCurrentMenu, getMenu, createMenu, createConditionalMenu, deleteConditionalMenu, deleteMenu, } from './wechatMenu';
 import { createTag, getTags, editTag, deleteTag, syncTag, oneKeySync, } from './wechatPublicTag';
 import { getTagUsers, batchtagging, batchuntagging, getUserTags, getUsers, tagging, syncToLocale, syncToWechat, } from './userWechatPublicTag';
+import { wechatMpJump, } from './wechatMpJump';
 const aspectDict = {
     mergeUser,
     switchTo,
@@ -55,6 +57,7 @@ const aspectDict = {
     editTag,
     deleteTag,
     syncMessageTemplate,
+    getMessageType,
     syncTag,
     oneKeySync,
     getTagUsers,
@@ -65,5 +68,7 @@ const aspectDict = {
     tagging,
     syncToLocale,
     syncToWechat,
+    wechatMpJump,
+    syncSmsTemplate
 };
 export default aspectDict;

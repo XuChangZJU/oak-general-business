@@ -8,8 +8,10 @@ export const desc = {
         },
         origin: {
             notNull: true,
-            type: "enum",
-            enumeration: ["ali", "tencent"]
+            type: "varchar",
+            params: {
+                length: 64
+            }
         },
         templateName: {
             notNull: true,

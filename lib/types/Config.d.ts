@@ -1,5 +1,9 @@
-import { QiniuZone } from 'oak-external-sdk';
+import { QiniuZone, CTYunZone } from 'oak-external-sdk';
 export type QiniuCloudConfig = {
+    accessKey: string;
+    secretKey: string;
+};
+export type CTYunConfig = {
     accessKey: string;
     secretKey: string;
 };
@@ -17,6 +21,16 @@ export type QiniuCosConfig = {
     accessKey: string;
     buckets: {
         zone: QiniuZone;
+        name: string;
+        domain: string;
+        protocol: string | string[];
+    }[];
+    defaultBucket: string;
+};
+export type CTYunCosConfig = {
+    accessKey: string;
+    buckets: {
+        zone: CTYunZone;
         name: string;
         domain: string;
         protocol: string | string[];
@@ -46,16 +60,17 @@ export type AmapCloudConfig = {
 };
 export type AliSmsConfig = {
     accessKeyId: string;
+    accessKeySecret: string;
     defaultSignName: string;
-    templates: Record<string, {
-        signName?: string;
-        code: string;
-    }>;
+    endpoint: string;
 };
 export type TencentSmsConfig = {
     secretId: string;
+    secretKey: string;
     smsSdkAppId: string;
+    region: string;
     defaultSignName: string;
+    endpoint: string;
     templates: Record<string, {
         signName?: string;
         code: string;
@@ -67,10 +82,12 @@ export type Config = {
         ali?: AliCloudConfig[];
         tencent?: TencentCloudConfig[];
         qiniu?: QiniuCloudConfig[];
+        ctyun?: CTYunConfig[];
         amap?: AmapCloudConfig[];
     };
     Cos?: {
         qiniu?: QiniuCosConfig;
+        ctyun?: CTYunCosConfig;
     };
     Live?: {
         qiniu?: QiniuLiveConfig;
@@ -91,5 +108,5 @@ export type Config = {
         mergeUserDirectly?: boolean;
     };
 };
-export type Origin = 'ali' | 'tencent' | 'qiniu' | 'amap';
+export type Origin = 'ali' | 'tencent' | 'qiniu' | 'amap' | 'ctyun';
 export type Service = 'Map' | 'Cos' | 'Live' | 'Sms';

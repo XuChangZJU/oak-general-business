@@ -60,10 +60,19 @@ export async function subscribeMpMessage(messageTypes, haveToAccept, tip) {
     return true;
 }
 export function createComponent(option, features) {
-    const { wechatMp, methods, lifetimes, ...rest } = option;
+    const { wechatMp, data, methods, lifetimes, userInsensitive, ...rest } = option;
     const { relatedMessageTypes } = wechatMp || {};
-    const { ready, attached, ...restLifeTimes } = lifetimes || {};
+    const { ready, attached, show, hide, ...restLifeTimes } = lifetimes || {};
     return createBaseComponent({
+        data: typeof data === 'function' ? function () {
+            return {
+                __userId: undefined,
+                ...(data.call(this)),
+            };
+        } : {
+            __userId: undefined,
+            ...data,
+        },
         methods: {
             async subscribeMpMessage(messageTypes, haveToAccept, tip) {
                 return await subscribeMpMessage.call(this, messageTypes, haveToAccept, tip);
@@ -72,7 +81,9 @@ export function createComponent(option, features) {
         },
         lifetimes: {
             attached() {
-                this.subscribed.push(this.features.token.subscribe(() => this.refresh()));
+                if (!userInsensitive) {
+                    this.addFeatureSub('token', () => this.refresh());
+                }
                 attached && attached.call(this);
             },
             ready() {
@@ -122,6 +133,24 @@ export function createComponent(option, features) {
                     }
                 }
                 ready && ready.call(this);
+            },
+            show() {
+                show && show.call(this);
+                if (!userInsensitive) {
+                    const userId = this.features.token.getUserId(true);
+                    if (userId !== this.state.__userId) {
+                        this.refresh();
+                    }
+                }
+            },
+            hide() {
+                hide && hide.call(this);
+                if (!userInsensitive) {
+                    const userId = this.features.token.getUserId(true);
+                    this.setState({
+                        __userId: userId,
+                    });
+                }
             },
             ...restLifeTimes,
         },

@@ -15,6 +15,10 @@ export const desc = {
                 length: 32
             }
         },
+        targetFilter: {
+            notNull: true,
+            type: "object"
+        },
         action: {
             notNull: true,
             type: "varchar",

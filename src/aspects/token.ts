@@ -12,6 +12,7 @@ import {
     WebConfig,
 } from '../oak-app-domain/Application/Schema';
 import {
+    NativeEnv,
     WebEnv,
     WechatMpEnv,
 } from 'oak-domain/lib/types/Environment';
@@ -205,7 +206,7 @@ async function setUpTokenAndUser<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
 >(
-    env: WebEnv | WechatMpEnv,
+    env: WebEnv | WechatMpEnv | NativeEnv,
     context: Cxt,
     entity: string, // 支持更多的登录渠道使用此函数创建token
     entityId?: string, // 如果是现有对象传id，如果没有对象传createData
@@ -486,7 +487,7 @@ async function setUpTokenAndUser<
 async function setupMobile<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
->(mobile: string, env: WebEnv | WechatMpEnv, context: Cxt) {
+>(mobile: string, env: WebEnv | WechatMpEnv | NativeEnv, context: Cxt) {
     const result2 = await context.select(
         'mobile',
         {
@@ -589,7 +590,7 @@ export async function loginByMobile<
         captcha?: string;
         password?: string;
         mobile: string;
-        env: WebEnv | WechatMpEnv;
+        env: WebEnv | WechatMpEnv | NativeEnv;
     },
     context: Cxt
 ): Promise<string> {
@@ -833,7 +834,7 @@ async function tryRefreshWechatPublicUserInfo<
     const application = context.getApplication();
     const { type, config } = application!;
 
-    assert(type !== 'wechatMp' && config!.type !== 'wechatMp');
+    assert(type !== 'wechatMp' && type !== 'native');
     if (type === 'web') {
         return;
     }
@@ -1033,6 +1034,7 @@ async function loginFromWechatEnv<
         web: 'web',
         wechatPublic: 'public',
         wechatMp: 'mp',
+        native: 'native',
     };
 
     const createWechatUserAndReturnTokenId = async (
@@ -1580,12 +1582,12 @@ export async function sendCaptcha<
                     origin: 'tencent',
                     templateName: '登录',
                     mobile,
-                    templateParamSet: [code, duration.toString()],
+                    templateParam: { code, duration: duration.toString() },
                 },
                 context
             );
             closeRootMode();
-            if (result === true) {
+            if (result.success) {
                 return '验证码已发送';
             }
             return '验证码发送失败';
@@ -1622,27 +1624,40 @@ export async function sendCaptcha<
                 dontCollect: true,
             }
         );
-
-        if (process.env.NODE_ENV === 'development' || mockSend) {
-            closeRootMode();
-            return `验证码[${code}]已创建`;
-        } else {
-            //发送短信
-            const result = await sendSms<ED, Cxt>(
-                {
-                    origin: 'tencent',
-                    templateName: '登录',
-                    mobile,
-                    templateParamSet: [code, duration.toString()],
-                },
-                context
-            );
-            closeRootMode();
-            if (result === true) {
-                return '验证码已发送';
-            }
-            return '验证码发送失败';
+        const result = await sendSms<ED, Cxt>(
+            {
+                origin: 'tencent',
+                templateName: '登录',
+                mobile,
+                templateParam: { code, duration: duration.toString() },
+            },
+            context
+        );
+        closeRootMode();
+        if (result.success) {
+            return '验证码已发送';
         }
+        return '验证码发送失败';
+        // if (process.env.NODE_ENV === 'development' || mockSend) {
+        //     closeRootMode();
+        //     return `验证码[${code}]已创建`;
+        // } else {
+        //     //发送短信
+        //     const result = await sendSms<ED, Cxt>(
+        //         {
+        //             origin: 'tencent',
+        //             templateName: '登录',
+        //             mobile,
+        //             templateParam: { code, duration: duration.toString() },
+        //         },
+        //         context
+        //     );
+        //     closeRootMode();
+        //     if (result === true) {
+        //         return '验证码已发送';
+        //     }
+        //     return '验证码发送失败';
+        // }
     }
 }
 

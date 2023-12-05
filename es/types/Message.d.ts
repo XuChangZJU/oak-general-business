@@ -28,7 +28,7 @@ export interface MessageNotificationConverter<ED extends EntityDict, Cxt extends
         };
         wechatMpAppId?: string;
     } | undefined>;
-    toSms?: (entity: ED['message']['OpSchema']['entity'], entityId: string, context: Cxt) => Promise<{
+    toSms?: (message: ED['message']['OpSchema'], context: Cxt) => Promise<{
         signName?: string;
         params?: Record<string, string>;
         paramsArray?: Array<string>;

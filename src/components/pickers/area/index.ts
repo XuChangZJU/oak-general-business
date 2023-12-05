@@ -27,8 +27,9 @@ export default OakComponent({
         itemSelectedEvent: '',
     },
     methods: {
-        onWechatMpItemClicked(input: any) {
-            const { dataset } = this.resolveInput(input);
+        onWechatMpItemClicked(input: WechatMiniprogram.CustomEvent) {
+            const { currentTarget, detail } = input;
+            const { dataset } = currentTarget;;
             const item = this.state.areas!.find(
                 (ele) => ele?.id === dataset!.id
             );

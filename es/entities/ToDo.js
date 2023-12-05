@@ -1,7 +1,7 @@
 ;
 const IActionDef = {
     stm: {
-        done: ['active', 'done'],
+        complete: ['active', 'done'],
     },
 };
 const entityDesc = {
@@ -13,6 +13,7 @@ const entityDesc = {
                 title: '标题',
                 description: '描述',
                 targetEntity: '对象实体',
+                targetFilter: '过滤条件',
                 action: '动作',
                 redirectTo: '重定向页面',
             },
@@ -20,7 +21,7 @@ const entityDesc = {
                 collaborator: '协作者',
             },
             action: {
-                done: '完成',
+                complete: '完成',
             },
             v: {
                 iState: {

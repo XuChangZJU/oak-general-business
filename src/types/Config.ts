@@ -1,9 +1,14 @@
-import { QiniuZone } from 'oak-external-sdk';
+import { QiniuZone, CTYunZone } from 'oak-external-sdk';
 
 export type QiniuCloudConfig = {
     accessKey: string;
     secretKey: string;
 };
+
+export type CTYunConfig = {
+    accessKey: string;
+    secretKey: string;
+}
 
 export type QiniuLiveConfig = {
     accessKey: string;
@@ -20,6 +25,17 @@ export type QiniuCosConfig = {
     accessKey: string;
     buckets: {                  // 七牛配置的桶信息
         zone: QiniuZone;        // 七牛存储区域(https://developer.qiniu.com/kodo/1671/region-endpoint-fq)
+        name: string;
+        domain: string;
+        protocol: string | string[];
+    }[];
+    defaultBucket: string;      // 默认上传桶
+}
+
+export type CTYunCosConfig = {
+    accessKey: string;
+    buckets: {                  // 七牛配置的桶信息
+        zone: CTYunZone;        // 七牛存储区域(https://developer.qiniu.com/kodo/1671/region-endpoint-fq)
         name: string;
         domain: string;
         protocol: string | string[];
@@ -55,18 +71,18 @@ export type AmapCloudConfig = {
 
 export type AliSmsConfig = {
     accessKeyId: string;
+    accessKeySecret: string;
     defaultSignName: string;
-    templates: Record<string, {
-        signName?: string;
-        code: string;       // templateCode
-        // templateParams改成function注入
-    }>;
+    endpoint: string;
 };
 
 export type TencentSmsConfig = {
     secretId: string;
+    secretKey: string;
     smsSdkAppId: string;
+    region: string;
     defaultSignName: string;
+    endpoint: string;
     templates: Record<
         string,
         {
@@ -84,10 +100,12 @@ export type Config = {
         ali?: AliCloudConfig[];
         tencent?: TencentCloudConfig[];
         qiniu?: QiniuCloudConfig[];
+        ctyun?: CTYunConfig[];
         amap?: AmapCloudConfig[];
     };
     Cos?: {
         qiniu?: QiniuCosConfig;
+        ctyun?: CTYunCosConfig;
     };
     Live?: {
         qiniu?: QiniuLiveConfig;
@@ -109,5 +127,5 @@ export type Config = {
     };
 };
 
-export type Origin = 'ali' | 'tencent' | 'qiniu' | 'amap';
+export type Origin = 'ali' | 'tencent' | 'qiniu' | 'amap' | 'ctyun';
 export type Service = 'Map' | 'Cos' | 'Live' | 'Sms';

@@ -1,4 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import React from 'react';
 import JsonData from './iconfont.json';
 import OakIcon from 'oak-frontend-base/es/components/icon';
 import Style from './web.module.less';
@@ -33,15 +33,24 @@ function copy(value, cb) {
 export default function Render(props) {
     const { methods } = props;
     const icons = JsonData.glyphs;
-    return (_jsx("div", { className: Style.container, children: _jsx("ul", { className: Style.dibBox, children: icons.map((ele) => {
-                return (_jsxs("li", { className: Style.dib, onClick: () => {
-                        const content = `<OakIcon name='${ele.name}' />`;
-                        copy(content, () => {
-                            methods.setMessage({
-                                type: 'success',
-                                content,
-                            });
+    return (<div className={Style.container}>
+            <ul className={Style.dibBox}>
+                {icons.map((ele) => {
+            return (<li className={Style.dib} onClick={() => {
+                    const content = `<OakIcon name='${ele.name}' />`;
+                    copy(content, () => {
+                        methods.setMessage({
+                            type: 'success',
+                            content,
                         });
-                    }, children: [_jsx("div", { className: Style.iconBox, children: _jsx(OakIcon, { name: ele.name, size: 40 }) }), _jsx("div", { className: Style.name, children: ele.name })] }));
-            }) }) }));
+                    });
+                }}>
+                            <div className={Style.iconBox}>
+                                <OakIcon name={ele.name} size={40}/>
+                            </div>
+                            <div className={Style.name}>{ele.name}</div>
+                        </li>);
+        })}
+            </ul>
+        </div>);
 }

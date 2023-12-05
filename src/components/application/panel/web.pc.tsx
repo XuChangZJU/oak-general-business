@@ -72,7 +72,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
                         oakPath={`$application-panel-menu-${id}`}
                         tabKey={tabKey}
                     />
-                )
+                ),
             },
             {
                 label: <div className={Styles.tabLabel}>{t('autoReply')}</div>,
@@ -83,7 +83,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
                         applicationId={id}
                         oakPath={`$application-panel-autoReply-${id}`}
                     />
-                )
+                ),
             },
             {
                 label: <div className={Styles.tabLabel}>{t('tag')}</div>,
@@ -94,7 +94,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
                         applicationId={id}
                         oakPath={`$application-panel-tag-${id}`}
                     />
-                )
+                ),
             },
             {
                 label: <div className={Styles.tabLabel}>{t('user')}</div>,
@@ -105,7 +105,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
                         applicationId={id}
                         oakPath={`$application-panel-user-${id}`}
                     />
-                )
+                ),
             },
             {
                 label: <div className={Styles.tabLabel}>{t('template')}</div>,
@@ -113,12 +113,25 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
                 children: (
                     <TemplateList
                         oakAutoUnmount={true}
-                        oakPath={`templateUpsert-ApplicationId:${id}`}
+                        oakPath={`templateUpsert-wechatPublic-ApplicationId:${id}`}
                         applicationId={id}
                     />
                 ),
-            },
-        )
+            }
+        );
+    }
+    else if (type === 'wechatMp') {
+        items.push({
+            label: <div className={Styles.tabLabel}>{t('template')}</div>,
+            key: 'template',
+            children: (
+                <TemplateList
+                    oakAutoUnmount={true}
+                    oakPath={`templateUpsert-wechatMp-ApplicationId:${id}`}
+                    applicationId={id}
+                />
+            ),
+        });
     }
     if (id && oakFullpath) {
         return (

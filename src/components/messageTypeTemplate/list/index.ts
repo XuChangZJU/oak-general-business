@@ -1,5 +1,5 @@
 import { EntityDict } from '../../../oak-app-domain';
-
+import MessageTypes from '../../../config/messageType';
 export default OakComponent({
     entity: 'messageTypeTemplate',
     isList: true,
@@ -32,16 +32,8 @@ export default OakComponent({
                 )
                 .filter((ele) => !!ele)
             : ([] as string[]);
-
         const selectedTypes = data ? data.map((ele) => ele.type) : [];
-        const messageTypes = this.features.cache
-            .get('messageType', {
-                data: {
-                    id: 1,
-                    type: 1,
-                },
-            })
-            .map((ele) => ele.type!)
+        const messageTypes = MessageTypes
             .filter((ele: string) => !selectedTypes.includes(ele));
         return {
             mtt: data,
@@ -66,12 +58,6 @@ export default OakComponent({
     ],
     lifetimes: {
         async ready() {
-            this.features.cache.refresh('messageType', {
-                data: {
-                    id: 1,
-                    type: 1,
-                },
-            });
             const applicationId = this.props.applicationId;
             const { data: wechatPublicTemplates } = await this.features.cache.refresh('wechatPublicTemplate', {
                 data: {

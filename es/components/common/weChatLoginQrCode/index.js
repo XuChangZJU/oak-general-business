@@ -1,5 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { random } from 'oak-domain/lib/utils/string';
 import classNames from 'classnames';
 import './index.less';
@@ -65,23 +64,57 @@ function QrCode(props) {
     let V;
     let DisableV;
     if (disabled) {
-        DisableV = (_jsxs("div", { className: classNames(prefixCls2, rootClassName), style: rootStyle, children: [_jsx("div", { className: `${prefixCls2}_disable`, children: _jsx("div", { className: `${prefixCls2}_disable_border`, children: disableText || '禁用微信二维码' }) }), _jsx("div", { className: `${prefixCls2}_disable_info`, children: _jsx("span", { children: "\u5FAE\u4FE1\u626B\u4E00\u626B" }) })] }));
+        DisableV = (<div className={classNames(prefixCls2, rootClassName)} style={rootStyle}>
+                <div className={`${prefixCls2}_disable`}>
+                    <div className={`${prefixCls2}_disable_border`}>
+                        {disableText || '禁用微信二维码'}
+                    </div>
+                </div>
+                <div className={`${prefixCls2}_disable_info`}>
+                    <span>微信扫一扫</span>
+                </div>
+            </div>);
     }
     if (dev) {
-        V = (_jsxs("div", { className: `${prefixCls2}_dev`, children: [_jsxs("div", { className: `${prefixCls2}_dev_header`, children: [_jsx("input", { maxLength: 6, value: code, className: `${prefixCls2}_dev_header_input`, onChange: (e) => {
-                                setCode(e.target.value);
-                            } }), _jsx("button", { className: `${prefixCls2}_dev_header_btn`, onClick: () => {
-                                const url = new URL(decodeURIComponent(redirectUri));
-                                url.searchParams.set('code', code);
-                                if (state) {
-                                    url.searchParams.set('state', state);
-                                }
-                                window.location.href = url.toString();
-                            }, children: "\u767B\u5F55" })] }), _jsxs("div", { className: `${prefixCls2}_dev_bottom`, children: [_jsx("span", { className: `${prefixCls2}_dev_bottom_title`, children: "\u6A21\u62DF\u5FAE\u4FE1\u626B\u4E00\u626B" }), _jsx("span", { className: `${prefixCls2}_dev_bottom_desc`, children: "1\u3001\u7531\u4E8E\u672C\u5730\u5F00\u53D1\u73AF\u5883\u9650\u5236\uFF0C\u6A21\u62DF\u5FAE\u4FE1\u626B\u7801\u540E\u52A8\u4F5C" }), _jsx("span", { className: `${prefixCls2}_dev_bottom_desc`, children: "2\u3001CODE\u53EF\u4FEE\u6539" })] })] }));
+        V = (<div className={`${prefixCls2}_dev`}>
+                <div className={`${prefixCls2}_dev_header`}>
+                    <input maxLength={6} value={code} className={`${prefixCls2}_dev_header_input`} onChange={(e) => {
+                setCode(e.target.value);
+            }}></input>
+                    <button className={`${prefixCls2}_dev_header_btn`} onClick={() => {
+                const url = new URL(decodeURIComponent(redirectUri));
+                url.searchParams.set('code', code);
+                if (state) {
+                    url.searchParams.set('state', state);
+                }
+                window.location.href = url.toString();
+            }}>
+                        登录
+                    </button>
+                </div>
+                <div className={`${prefixCls2}_dev_bottom`}>
+                    <span className={`${prefixCls2}_dev_bottom_title`}>
+                        模拟微信扫一扫
+                    </span>
+                    <span className={`${prefixCls2}_dev_bottom_desc`}>
+                        1、由于本地开发环境限制，模拟微信扫码后动作
+                    </span>
+                    <span className={`${prefixCls2}_dev_bottom_desc`}>
+                        2、CODE可修改
+                    </span>
+                </div>
+            </div>);
     }
     if (!appId) {
-        V = (_jsx("div", { className: `${prefixCls2}_err`, children: _jsx("div", { className: `${prefixCls2}_err_text`, children: "\u7F3A\u5C11\u53C2\u6570" }) }));
+        V = (<div className={`${prefixCls2}_err`}>
+                <div className={`${prefixCls2}_err_text`}>缺少参数</div>
+            </div>);
     }
-    return (_jsxs(_Fragment, { children: [DisableV, _jsx("div", { className: classNames(prefixCls2, rootClassName), id: id, style: disabled ? { display: 'none' } : rootStyle, children: V })] }));
+    return (<>
+            {DisableV}
+            <div className={classNames(prefixCls2, rootClassName)} id={id} style={disabled ? { display: 'none' } : rootStyle}>
+                {V}
+            </div>
+        </>);
 }
 export default QrCode;

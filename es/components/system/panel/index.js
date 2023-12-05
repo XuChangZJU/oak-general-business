@@ -16,6 +16,16 @@ export default OakComponent({
                 url: 1,
             },
         },
+        application$system: {
+            $entity: 'application',
+            data: {
+                id: 1,
+                name: 1,
+                config: 1,
+                description: 1,
+                type: 1,
+            }
+        }
     },
     formData({ data }) {
         return data || {};

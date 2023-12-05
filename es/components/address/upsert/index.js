@@ -34,7 +34,9 @@ export default OakComponent({
     },
     methods: {
         setValue(input) {
-            const { dataset, value } = this.resolveInput(input);
+            const { currentTarget, detail } = input;
+            const { dataset } = currentTarget;
+            const { value } = detail;
             const { attr } = dataset;
             this.update({
                 [attr]: value,

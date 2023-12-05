@@ -1,4 +1,3 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Row, Col, Button, Input, List, Empty, Spin, } from 'antd';
 import { SearchOutlined, CheckCircleFilled } from '@ant-design/icons';
@@ -171,72 +170,113 @@ const Location = (props) => {
         setSearchValue('');
         setRefresh(true);
     };
-    return (_jsx(Modal, { width: "80%", okText: "\u786E\u5B9A", cancelText: "\u53D6\u6D88", title: "\u9009\u62E9\u4F4D\u7F6E", ...dialogProps, open: visible, destroyOnClose: false, onCancel: () => {
+    return (<Modal width="80%" okText="确定" cancelText="取消" title="选择位置" {...dialogProps} open={visible} destroyOnClose={false} onCancel={() => {
             onClose && onClose();
             clearData();
-        }, onOk: () => {
+        }} onOk={() => {
             if (!currentPoi) {
                 return;
             }
             onConfirm &&
                 onConfirm(currentPoi, mode === 'dragMap' ? positionPickerResult : searchResult);
             clearData();
-        }, children: _jsx("div", { className: `${prefixCls}-location`, children: _jsxs(Row, { gutter: [16, 16], children: [_jsx(Col, { xs: 24, sm: 14, children: _jsxs(Map, { className: `${prefixCls}-location-map`, akey: akey, version: version, useAMapUI: true, mapRef: (instance) => {
-                                if (instance && instance.map && !map) {
-                                    setMap(instance.map);
-                                }
-                            }, mapProps: {
-                                onDragStart: () => {
-                                    setRefresh(true);
-                                    setMode('dragMap');
-                                    setSearchValue('');
-                                    setShow(false);
-                                },
-                            }, children: [_jsx(PositionPicker, { loadUI: loadUI, __map__: map, onSuccess: (result) => {
-                                        setPositionPickerResult(result);
-                                    } }), useGeolocation && (_jsx(Geolocation, { maximumAge: 100000, borderRadius: "5px", position: "RB", offset: [10, 10], zoomToAccuracy: true, showCircle: true, ...geolocationProps, onComplete: (data) => { }, onError: (err) => {
-                                        console.error(err);
-                                    } }))] }) }), _jsx(Col, { xs: 24, sm: 10, children: _jsx("div", { children: _jsxs(List, { className: `${prefixCls}-location-list`, header: _jsxs("div", { className: `${prefixCls}-location-list-header`, children: [_jsx(Input, { ref: searchRef, placeholder: "\u641C\u7D22\u5730\u70B9", value: searchValue, allowClear: true, onChange: (e) => {
-                                                setSearchValue(e.target.value);
-                                            }, prefix: _jsx(SearchOutlined, {}), onFocus: () => {
-                                                setMode('searchPoi');
-                                                setFocus(true);
-                                            }, onBlur: () => {
-                                                setFocus(false);
-                                            } }), mode === 'searchPoi' && (_jsx(Button, { style: { marginLeft: 5 }, type: "link", onClick: () => {
-                                                setMode('dragMap');
-                                                setSearchValue('');
-                                                setShow(false);
-                                                //@ts-ignore
-                                                searchRef?.current?.blur();
-                                            }, children: "\u53D6\u6D88" }))] }), children: [mode === 'dragMap' &&
-                                        pois?.map((poi, index) => {
-                                            return (_jsx("div", { onClick: () => {
-                                                    setRefresh(false);
-                                                    setCurrentPoi(poi);
-                                                }, children: _jsx(List.Item, { actions: [
-                                                        _jsx("div", { style: {
-                                                                width: 24,
-                                                            }, children: currentPoi?.id ===
-                                                                poi.id && (_jsx(CheckCircleFilled, { className: `${prefixCls}-location-list-checked` })) }),
-                                                    ], children: _jsx(List.Item.Meta, { title: poi.name, description: `${poi.distance
-                                                            ? `${poi.distance}m内 | `
-                                                            : ''}${poi.address}` }) }) }, poi.id));
-                                        }), mode === 'searchPoi' && (_jsxs(React.Fragment, { children: [searchLoading && (_jsx("div", { className: `${prefixCls}-location-list-loadingBox`, children: _jsx(Spin, { delay: 0, spinning: true, size: "default" }) })), pois?.length
-                                                ? pois.map((poi, index) => {
-                                                    return (_jsx("div", { onClick: () => {
-                                                            setRefresh(false);
-                                                            setCurrentPoi(poi);
-                                                        }, children: _jsx(List.Item, { actions: [
-                                                                _jsx("div", { style: {
-                                                                        width: 24,
-                                                                    }, children: currentPoi?.id ===
-                                                                        poi.id && (_jsx(CheckCircleFilled, { className: `${prefixCls}-location-list-checked` })) }),
-                                                            ], children: _jsx(List.Item.Meta, { title: poi.name, description: `${poi.distance
-                                                                    ? `${poi.distance}m内 | `
-                                                                    : ''}${poi.address}` }) }) }, poi.id));
-                                                })
-                                                : show &&
-                                                    !searchLoading && (_jsx(Empty, { description: "\u65E0\u641C\u7D22\u7ED3\u679C", image: Empty.PRESENTED_IMAGE_SIMPLE }))] }))] }) }) })] }) }) }));
+        }}>
+            <div className={`${prefixCls}-location`}>
+                <Row gutter={[16, 16]}>
+                    <Col xs={24} sm={14}>
+                        <Map className={`${prefixCls}-location-map`} akey={akey} version={version} useAMapUI={true} mapRef={(instance) => {
+            if (instance && instance.map && !map) {
+                setMap(instance.map);
+            }
+        }} mapProps={{
+            onDragStart: () => {
+                setRefresh(true);
+                setMode('dragMap');
+                setSearchValue('');
+                setShow(false);
+            },
+        }}>
+                            <PositionPicker loadUI={loadUI} __map__={map} onSuccess={(result) => {
+            setPositionPickerResult(result);
+        }}/>
+                            {useGeolocation && (<Geolocation maximumAge={100000} borderRadius="5px" position="RB" offset={[10, 10]} zoomToAccuracy={true} showCircle={true} {...geolocationProps} onComplete={(data) => { }} onError={(err) => {
+                console.error(err);
+            }}/>)}
+                        </Map>
+                    </Col>
+                    <Col xs={24} sm={10}>
+                        <div>
+                            <List className={`${prefixCls}-location-list`} header={<div className={`${prefixCls}-location-list-header`}>
+                                        <Input ref={searchRef} placeholder="搜索地点" value={searchValue} allowClear onChange={(e) => {
+                setSearchValue(e.target.value);
+            }} prefix={<SearchOutlined />} onFocus={() => {
+                setMode('searchPoi');
+                setFocus(true);
+            }} onBlur={() => {
+                setFocus(false);
+            }}/>
+                                        {mode === 'searchPoi' && (<Button style={{ marginLeft: 5 }} type="link" onClick={() => {
+                    setMode('dragMap');
+                    setSearchValue('');
+                    setShow(false);
+                    //@ts-ignore
+                    searchRef?.current?.blur();
+                }}>
+                                                取消
+                                            </Button>)}
+                                    </div>}>
+                                {mode === 'dragMap' &&
+            pois?.map((poi, index) => {
+                return (<div key={poi.id} onClick={() => {
+                        setRefresh(false);
+                        setCurrentPoi(poi);
+                    }}>
+                                                <List.Item actions={[
+                        <div style={{
+                                width: 24,
+                            }}>
+                                                            {currentPoi?.id ===
+                                poi.id && (<CheckCircleFilled className={`${prefixCls}-location-list-checked`}/>)}
+                                                        </div>,
+                    ]}>
+                                                    <List.Item.Meta title={poi.name} description={`${poi.distance
+                        ? `${poi.distance}m内 | `
+                        : ''}${poi.address}`}/>
+                                                </List.Item>
+                                            </div>);
+            })}
+                                {mode === 'searchPoi' && (<React.Fragment>
+                                        {searchLoading && (<div className={`${prefixCls}-location-list-loadingBox`}>
+                                                <Spin delay={0} spinning size="default"/>
+                                            </div>)}
+                                        {pois?.length
+                ? pois.map((poi, index) => {
+                    return (<div key={poi.id} onClick={() => {
+                            setRefresh(false);
+                            setCurrentPoi(poi);
+                        }}>
+                                                          <List.Item actions={[
+                            <div style={{
+                                    width: 24,
+                                }}>
+                                                                      {currentPoi?.id ===
+                                    poi.id && (<CheckCircleFilled className={`${prefixCls}-location-list-checked`}/>)}
+                                                                  </div>,
+                        ]}>
+                                                              <List.Item.Meta title={poi.name} description={`${poi.distance
+                            ? `${poi.distance}m内 | `
+                            : ''}${poi.address}`}/>
+                                                          </List.Item>
+                                                      </div>);
+                })
+                : show &&
+                    !searchLoading && (<Empty description="无搜索结果" image={Empty.PRESENTED_IMAGE_SIMPLE}/>)}
+                                    </React.Fragment>)}
+                            </List>
+                        </div>
+                    </Col>
+                </Row>
+            </div>
+        </Modal>);
 };
 export default Location;

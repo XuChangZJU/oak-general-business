@@ -13,7 +13,7 @@ const defaultTheme = ETheme.light;
 
 const initialThemeState: IThemeState = {
     setting: false,
-    theme: defaultTheme,
+    themeMode: defaultTheme,
     systemTheme: false,
     isFullPage: false,
     color: '#0052d9',
@@ -32,6 +32,11 @@ export default class Theme<
     private themeState: IThemeState;
     private storage: LocalStorage;
 
+    private async loadSavedState() {        
+        const themeState = await this.storage.load(LOCAL_STORAGE_KEYS.themeState);
+        this.themeState = themeState;
+    }
+
     constructor(
         cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>,
         storage: LocalStorage
@@ -39,9 +44,8 @@ export default class Theme<
         super();
         this.cache = cache;
         this.storage = storage;
-        const themeState = storage.load(LOCAL_STORAGE_KEYS.themeState);
-        this.themeState = themeState || initialThemeState;
-        this.switchTheme(this.themeState.theme);
+        this.themeState = initialThemeState;
+        this.switchThemeMode(this.themeState.themeMode);
         this.switchColor(this.themeState.color);
     }
 
@@ -61,15 +65,18 @@ export default class Theme<
         this.set(state);
     }
 
-    switchTheme(finalTheme: ETheme) {
+    switchThemeMode(finalThemeMode: ETheme) {
         const state = this.themeState;
         // 切换主题颜色
-        state.theme = finalTheme;
+        state.themeMode = finalThemeMode;
         // 关闭跟随系统
         state.systemTheme = false;
         switch (process.env.OAK_PLATFORM) {
             case 'web': {
-                document.documentElement.setAttribute('theme-mode', finalTheme);
+                document.documentElement.setAttribute(
+                    'theme-mode',
+                    finalThemeMode
+                );
                 break;
             }
             default: {
@@ -83,22 +90,22 @@ export default class Theme<
         const state = this.themeState;
         const media = window.matchMedia('(prefers-color-scheme:dark)');
         if (media.matches) {
-            const finalTheme = media.matches ? ETheme.dark : ETheme.light;
-            // 切换主题颜色
-            state.theme = finalTheme;
+            const finalThemeMode = media.matches ? ETheme.dark : ETheme.light;
+            // 切换黑暗主题
+            state.themeMode = finalThemeMode;
             state.systemTheme = true;
             switch (process.env.OAK_PLATFORM) {
                 case 'web': {
                     document.documentElement.setAttribute(
                         'theme-mode',
-                        finalTheme
+                        finalThemeMode
                     );
                     break;
                 }
                 default: {
                     break;
                 }
-            }     
+            }
             this.set(state);
         }
     }
@@ -111,14 +118,18 @@ export default class Theme<
     switchColor(color: string) {
         const state = this.themeState;
         if (color) {
-            state.color = color;
-            const colorType = 'blue';
+            state.color = color; // 某主题 主题色
+            const themeColor = 'blue'; // 主题颜色类型
             switch (process.env.OAK_PLATFORM) {
                 case 'web': {
-                    this.insertThemeStylesheet('blue', color, state.theme);
+                    this.insertThemeStylesheet(
+                        themeColor,
+                        color,
+                        state.themeMode
+                    );
                     document.documentElement.setAttribute(
                         'theme-color',
-                        colorType || ''
+                        themeColor
                     );
                     break;
                 }
@@ -130,11 +141,7 @@ export default class Theme<
         }
     }
 
-    insertThemeStylesheet(
-        theme: string,
-        color: string,
-        mode: 'light' | 'dark'
-    ) {
+    insertThemeStylesheet(theme: string, color: string, mode: ETheme) {
         const isDarkMode = mode === 'dark';
         const root = !isDarkMode
             ? `:root[theme-color='${theme}']`

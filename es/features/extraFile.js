@@ -4,7 +4,7 @@ import { bytesToSize, getFileURL } from '../utils/extraFile';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { getCos } from '../utils/cos';
 import { unset } from 'oak-domain/lib/utils/lodash';
-import { generateNewId, generateNewIdAsync } from 'oak-domain';
+import { generateNewId, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { extraFileProjection } from '../types/Projection';
 export class ExtraFile extends Feature {
     cache;
@@ -152,7 +152,7 @@ export class ExtraFile extends Feature {
         const { origin, extra1 } = extraFile;
         if (origin === 'unknown') {
             return extra1 || '';
-        }              
+        }
         const cos = getCos(origin);
         const context = this.cache.begin();
         this.cache.commit();

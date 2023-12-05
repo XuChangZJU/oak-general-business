@@ -1,5 +1,4 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
-import { useRef } from 'react';
+import React, { useRef } from 'react';
 import { Button, Input, Upload } from 'antd';
 import { PictureOutlined } from '@ant-design/icons';
 import Style from './web.module.less';
@@ -14,11 +13,26 @@ export default function render(props) {
             sendMessage();
         }
     };
-    return (_jsxs(_Fragment, { children: [_jsx("div", { className: Style.toolbar, children: _jsx(Upload, { accept: 'image/*', multiple: false, showUploadList: false, customRequest: () => { }, onChange: ({ file }) => {
-                        upload(file);
-                    }, children: _jsx(PictureOutlined, { className: Style.icon }) }) }), _jsxs("div", { className: Style.textareaBox, children: [_jsx(Input.TextArea, { ref: textareaRef, className: Style.textarea, maxLength: 500, placeholder: t('placeholder'), rows: 5, onChange: (e) => {
-                            setContent(e.target.value);
-                        }, onFocus: () => { }, onKeyDown: handleKeyDown, value: text }), _jsx("div", { className: Style.btn, children: _jsx(Button, { type: "primary", disabled: !text, onClick: () => {
-                                sendMessage();
-                            }, children: t('send') }) })] })] }));
+    return (<>
+            <div className={Style.toolbar}>
+                <Upload accept={'image/*'} multiple={false} showUploadList={false} customRequest={() => { }} onChange={({ file }) => {
+            upload(file);
+        }}>
+                    <PictureOutlined className={Style.icon}/>
+                </Upload>
+            </div>
+
+            <div className={Style.textareaBox}>
+                <Input.TextArea ref={textareaRef} className={Style.textarea} maxLength={500} placeholder={t('placeholder')} rows={5} onChange={(e) => {
+            setContent(e.target.value);
+        }} onFocus={() => { }} onKeyDown={handleKeyDown} value={text}/>
+                <div className={Style.btn}>
+                    <Button type="primary" disabled={!text} onClick={() => {
+            sendMessage();
+        }}>
+                        {t('send')}
+                    </Button>
+                </div>
+            </div>
+        </>);
 }

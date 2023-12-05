@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { EntityDict } from '../../../oak-app-domain';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
@@ -13,7 +12,7 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     type?: ButtonProps['type'] | AmButtonProps['type'];
     executeText?: string | undefined;
     buttonProps?: (ButtonProps & {
-        color?: "primary" | "success" | "warning" | "default" | "danger" | undefined;
+        color?: "default" | "success" | "primary" | "warning" | "danger" | undefined;
         fill?: "none" | "solid" | "outline" | undefined;
         size?: "small" | "large" | "middle" | "mini" | undefined;
         block?: boolean | undefined;

@@ -1,5 +1,5 @@
 import { getCos } from '../utils/cos';
-import { OakException } from 'oak-domain';
+import { OakException } from 'oak-domain/lib/types/Exception';
 const triggers = [
     {
         name: '生成extraFile需要的上传meta',

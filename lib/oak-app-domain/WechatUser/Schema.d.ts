@@ -1,5 +1,5 @@
 import { ForeignKey } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_BooleanValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
@@ -13,7 +13,7 @@ import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 import * as Token from "../Token/Schema";
 export type OpSchema = EntityShape & {
-    origin: 'mp' | 'public' | 'web';
+    origin: 'mp' | 'public' | 'web' | 'native';
     openId?: String<32> | null;
     unionId?: String<32> | null;
     sessionKey?: String<64> | null;
@@ -32,7 +32,7 @@ export type OpSchema = EntityShape & {
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
-    origin: 'mp' | 'public' | 'web';
+    origin: 'mp' | 'public' | 'web' | 'native';
     openId?: String<32> | null;
     unionId?: String<32> | null;
     sessionKey?: String<64> | null;
@@ -66,9 +66,9 @@ export type Schema = EntityShape & {
 type AttrFilter = {
     id: Q_StringValue;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
+    $$seq$$: Q_NumberValue;
     $$updateAt$$: Q_DateValue;
-    origin: Q_EnumValue<'mp' | 'public' | 'web'>;
+    origin: Q_EnumValue<'mp' | 'public' | 'web' | 'native'>;
     openId: Q_StringValue;
     unionId: Q_StringValue;
     sessionKey: Q_StringValue;

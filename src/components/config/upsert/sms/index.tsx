@@ -50,52 +50,52 @@ function Ali(props: {
                 items={
                     sms.length > 0
                         ? sms.map((ele, idx) => ({
-                              key: `${idx}`,
-                              label: `短信${idx + 1}`,
-                              children: (
-                                  <Form
-                                      colon={false}
-                                      labelAlign="left"
-                                      layout="vertical"
-                                      style={{ marginTop: 10 }}
-                                  >
-                                      <Form.Item
-                                          label="accessKeyId"
-                                          name="accessKeyId"
-                                      >
-                                          <>
-                                              <Input
-                                                  placeholder="请输入accessKeyId"
-                                                  type="text"
-                                                  value={ele.accessKeyId}
-                                                  onChange={(e) =>
-                                                      setValue(
-                                                          `${idx}.accessKeyId`,
-                                                          e.target.value
-                                                      )
-                                                  }
-                                              />
-                                          </>
-                                      </Form.Item>
-                                      <Form.Item
-                                          label="defaultSignName"
-                                          name="defaultSignName"
-                                      >
-                                          <>
-                                              <Input
-                                                  placeholder="请输入defaultSignName"
-                                                  type="text"
-                                                  value={ele.defaultSignName}
-                                                  onChange={(e) =>
-                                                      setValue(
-                                                          `${idx}.defaultSignName`,
-                                                          e.target.value
-                                                      )
-                                                  }
-                                              />
-                                          </>
-                                      </Form.Item>
-                                      <Form.Item
+                            key: `${idx}`,
+                            label: `短信${idx + 1}`,
+                            children: (
+                                <Form
+                                    colon={false}
+                                    labelAlign="left"
+                                    layout="vertical"
+                                    style={{ marginTop: 10 }}
+                                >
+                                    <Form.Item
+                                        label="accessKeyId"
+                                        name="accessKeyId"
+                                    >
+                                        <>
+                                            <Input
+                                                placeholder="请输入accessKeyId"
+                                                type="text"
+                                                value={ele.accessKeyId}
+                                                onChange={(e) =>
+                                                    setValue(
+                                                        `${idx}.accessKeyId`,
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </>
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="defaultSignName"
+                                        name="defaultSignName"
+                                    >
+                                        <>
+                                            <Input
+                                                placeholder="请输入defaultSignName"
+                                                type="text"
+                                                value={ele.defaultSignName}
+                                                onChange={(e) =>
+                                                    setValue(
+                                                        `${idx}.defaultSignName`,
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </>
+                                    </Form.Item>
+                                    {/* <Form.Item
                                           label="templates"
                                           name="templates"
                                       >
@@ -198,10 +198,10 @@ function Ali(props: {
                                                       : []
                                               }
                                           ></Tabs>
-                                      </Form.Item>
-                                  </Form>
-                              ),
-                          }))
+                                      </Form.Item> */}
+                                </Form>
+                            ),
+                        }))
                         : []
                 }
             ></Tabs>
@@ -297,176 +297,176 @@ function Tencent(props: {
                 items={
                     sms.length > 0
                         ? sms.map((ele, idx) => ({
-                              key: `${idx}`,
-                              label: `短信${idx + 1}`,
-                              children: (
-                                  <Form
-                                      colon={false}
-                                      labelAlign="left"
-                                      layout="vertical"
-                                      style={{ marginTop: 10 }}
-                                  >
-                                      <Form.Item
-                                          label="secretId"
-                                          //name="secretId"
-                                      >
-                                          <>
-                                              <Input
-                                                  placeholder="请输入secretId"
-                                                  type="text"
-                                                  value={ele.secretId}
-                                                  onChange={(e) =>
-                                                      setValue(
-                                                          `${idx}.secretId`,
-                                                          e.target.value
-                                                      )
-                                                  }
-                                              />
-                                          </>
-                                      </Form.Item>
-                                      <Form.Item
-                                          label="smsSdkAppId"
-                                          //name="smsSdkAppId"
-                                      >
-                                          <>
-                                              <Input
-                                                  placeholder="请输入smsSdkAppId"
-                                                  type="text"
-                                                  value={ele.smsSdkAppId}
-                                                  onChange={(e) =>
-                                                      setValue(
-                                                          `${idx}.smsSdkAppId`,
-                                                          e.target.value
-                                                      )
-                                                  }
-                                              />
-                                          </>
-                                      </Form.Item>
-                                      <Form.Item
-                                          label="defaultSignName"
-                                          //name="defaultSignName"
-                                      >
-                                          <>
-                                              <Input
-                                                  placeholder="请输入defaultSignName"
-                                                  type="text"
-                                                  value={ele.defaultSignName}
-                                                  onChange={(e) =>
-                                                      setValue(
-                                                          `${idx}.defaultSignName`,
-                                                          e.target.value
-                                                      )
-                                                  }
-                                              />
-                                          </>
-                                      </Form.Item>
-                                      <Form.Item
-                                          label="templates"
-                                          //name="templates"
-                                      >
-                                          <Tabs
-                                              tabPosition={'top'}
-                                              size={'middle'}
-                                              type="editable-card"
-                                              // hideAdd={!(Object.keys(ele.templates).length > 0)}
-                                              onEdit={(
-                                                  targetKey: any,
-                                                  action: 'add' | 'remove'
-                                              ) => {
-                                                  if (action === 'add') {
-                                                      setSmsIndex(`${idx}`);
-                                                      setModal(true);
-                                                  } else {
-                                                      cleanKey(
-                                                          `${idx}.templates`,
-                                                          targetKey
-                                                      );
-                                                  }
-                                              }}
-                                              items={
-                                                  Object.keys(
-                                                      ele.templates || {}
-                                                  ).length > 0
-                                                      ? Object.keys(
-                                                            ele.templates
-                                                        ).map((name, idx) => {
-                                                            const template =
-                                                                ele.templates[
-                                                                    name
-                                                                ];
-                                                            return {
-                                                                key: `${name}`,
-                                                                label: `${name}`,
-                                                                children: (
-                                                                    <Form
-                                                                        colon={
-                                                                            true
-                                                                        }
-                                                                        labelAlign="left"
-                                                                        layout="vertical"
-                                                                        style={{
-                                                                            marginTop: 10,
-                                                                        }}
+                            key: `${idx}`,
+                            label: `短信${idx + 1}`,
+                            children: (
+                                <Form
+                                    colon={false}
+                                    labelAlign="left"
+                                    layout="vertical"
+                                    style={{ marginTop: 10 }}
+                                >
+                                    <Form.Item
+                                        label="secretId"
+                                    //name="secretId"
+                                    >
+                                        <>
+                                            <Input
+                                                placeholder="请输入secretId"
+                                                type="text"
+                                                value={ele.secretId}
+                                                onChange={(e) =>
+                                                    setValue(
+                                                        `${idx}.secretId`,
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </>
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="smsSdkAppId"
+                                    //name="smsSdkAppId"
+                                    >
+                                        <>
+                                            <Input
+                                                placeholder="请输入smsSdkAppId"
+                                                type="text"
+                                                value={ele.smsSdkAppId}
+                                                onChange={(e) =>
+                                                    setValue(
+                                                        `${idx}.smsSdkAppId`,
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </>
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="defaultSignName"
+                                    //name="defaultSignName"
+                                    >
+                                        <>
+                                            <Input
+                                                placeholder="请输入defaultSignName"
+                                                type="text"
+                                                value={ele.defaultSignName}
+                                                onChange={(e) =>
+                                                    setValue(
+                                                        `${idx}.defaultSignName`,
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        </>
+                                    </Form.Item>
+                                    <Form.Item
+                                        label="templates"
+                                    //name="templates"
+                                    >
+                                        <Tabs
+                                            tabPosition={'top'}
+                                            size={'middle'}
+                                            type="editable-card"
+                                            // hideAdd={!(Object.keys(ele.templates).length > 0)}
+                                            onEdit={(
+                                                targetKey: any,
+                                                action: 'add' | 'remove'
+                                            ) => {
+                                                if (action === 'add') {
+                                                    setSmsIndex(`${idx}`);
+                                                    setModal(true);
+                                                } else {
+                                                    cleanKey(
+                                                        `${idx}.templates`,
+                                                        targetKey
+                                                    );
+                                                }
+                                            }}
+                                            items={
+                                                Object.keys(
+                                                    ele.templates || {}
+                                                ).length > 0
+                                                    ? Object.keys(
+                                                        ele.templates
+                                                    ).map((name, idx) => {
+                                                        const template =
+                                                            ele.templates[
+                                                            name
+                                                            ];
+                                                        return {
+                                                            key: `${name}`,
+                                                            label: `${name}`,
+                                                            children: (
+                                                                <Form
+                                                                    colon={
+                                                                        true
+                                                                    }
+                                                                    labelAlign="left"
+                                                                    layout="vertical"
+                                                                    style={{
+                                                                        marginTop: 10,
+                                                                    }}
+                                                                >
+                                                                    <Form.Item
+                                                                        label="signName"
+                                                                    //name="signName"
                                                                     >
-                                                                        <Form.Item
-                                                                            label="signName"
-                                                                            //name="signName"
-                                                                        >
-                                                                            <>
-                                                                                <Input
-                                                                                    placeholder="请输入signName"
-                                                                                    type="text"
-                                                                                    value={
-                                                                                        template.signName
-                                                                                    }
-                                                                                    onChange={(
+                                                                        <>
+                                                                            <Input
+                                                                                placeholder="请输入signName"
+                                                                                type="text"
+                                                                                value={
+                                                                                    template.signName
+                                                                                }
+                                                                                onChange={(
+                                                                                    e
+                                                                                ) =>
+                                                                                    setValue(
+                                                                                        `${idx}.templates.${name}.signName`,
                                                                                         e
-                                                                                    ) =>
-                                                                                        setValue(
-                                                                                            `${idx}.templates.${name}.signName`,
-                                                                                            e
-                                                                                                .target
-                                                                                                .value
-                                                                                        )
-                                                                                    }
-                                                                                />
-                                                                            </>
-                                                                        </Form.Item>
-                                                                        <Form.Item
-                                                                            label="code"
-                                                                            //name="code"
-                                                                        >
-                                                                            <>
-                                                                                <Input
-                                                                                    placeholder="请输入code"
-                                                                                    type="text"
-                                                                                    value={
-                                                                                        template.code
-                                                                                    }
-                                                                                    onChange={(
+                                                                                            .target
+                                                                                            .value
+                                                                                    )
+                                                                                }
+                                                                            />
+                                                                        </>
+                                                                    </Form.Item>
+                                                                    <Form.Item
+                                                                        label="code"
+                                                                    //name="code"
+                                                                    >
+                                                                        <>
+                                                                            <Input
+                                                                                placeholder="请输入code"
+                                                                                type="text"
+                                                                                value={
+                                                                                    template.code
+                                                                                }
+                                                                                onChange={(
+                                                                                    e
+                                                                                ) =>
+                                                                                    setValue(
+                                                                                        `${idx}.templates.${name}.code`,
                                                                                         e
-                                                                                    ) =>
-                                                                                        setValue(
-                                                                                            `${idx}.templates.${name}.code`,
-                                                                                            e
-                                                                                                .target
-                                                                                                .value
-                                                                                        )
-                                                                                    }
-                                                                                />
-                                                                            </>
-                                                                        </Form.Item>
-                                                                    </Form>
-                                                                ),
-                                                            };
-                                                        })
-                                                      : []
-                                              }
-                                          ></Tabs>
-                                      </Form.Item>
-                                  </Form>
-                              ),
-                          }))
+                                                                                            .target
+                                                                                            .value
+                                                                                    )
+                                                                                }
+                                                                            />
+                                                                        </>
+                                                                    </Form.Item>
+                                                                </Form>
+                                                            ),
+                                                        };
+                                                    })
+                                                    : []
+                                            }
+                                        ></Tabs>
+                                    </Form.Item>
+                                </Form>
+                            ),
+                        }))
                         : []
                 }
             ></Tabs>

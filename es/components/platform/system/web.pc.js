@@ -1,5 +1,4 @@
-import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "react/jsx-runtime";
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Tabs, Modal, Button } from 'antd';
 import SystemPanel from '../../system/panel';
 import SystemUpsert from '../../system/upsert';
@@ -9,36 +8,48 @@ export default function render(props) {
     const [createId, setCreateId] = useState('');
     const [removeId, setRemoveId] = useState('');
     if (oakFullpath) {
-        return (_jsxs(_Fragment, { children: [_jsx(Modal, { open: !!createId, width: 800, onCancel: () => {
-                        clean();
-                        setCreateId('');
-                    }, footer: _jsx(Button, { type: 'primary', onClick: async () => {
-                            await execute();
-                            setCreateId('');
-                        }, disabled: oakExecutable !== true || oakExecuting, children: t('common::action.confirm') }), children: _jsx(SystemUpsert, { oakId: createId, oakPath: `${oakFullpath}.${createId}` }) }), _jsx(Modal, { open: !!removeId, onCancel: () => {
-                        clean();
-                        setRemoveId('');
-                    }, footer: _jsx(Button, { type: 'primary', onClick: async () => {
-                            removeItem(removeId);
-                            await execute();
-                            setRemoveId('');
-                        }, children: t('common::action.confirm') }), children: t('confirmToRemove') }), _jsx(Tabs, { type: "editable-card", onEdit: (key, action) => {
-                        if (action === 'add') {
-                            const id = addItem({ platformId, config: { App: {} } });
-                            setCreateId(id);
-                        }
-                        else if (action === 'remove') {
-                            const systemId = systems[Number(key)].id;
-                            setRemoveId(systemId);
-                        }
-                    }, items: systems?.length > 0 ?
-                        systems.map((item, idx) => {
-                            return {
-                                label: item.name,
-                                key: `${idx}`,
-                                children: (_jsx(SystemPanel, { oakPath: `${oakFullpath}.${item.id}`, oakId: item.id }))
-                            };
-                        })
-                        : [] })] }));
+        return (<>
+                <Modal open={!!createId} width={800} onCancel={() => {
+                clean();
+                setCreateId('');
+            }} footer={<Button type='primary' onClick={async () => {
+                    await execute();
+                    setCreateId('');
+                }} disabled={oakExecutable !== true || oakExecuting}>
+                            {t('common::action.confirm')}
+                        </Button>}>
+                    <SystemUpsert oakId={createId} oakPath={`${oakFullpath}.${createId}`}/>
+                </Modal>
+                <Modal open={!!removeId} onCancel={() => {
+                clean();
+                setRemoveId('');
+            }} footer={<Button type='primary' onClick={async () => {
+                    removeItem(removeId);
+                    await execute();
+                    setRemoveId('');
+                }}>
+                            {t('common::action.confirm')}
+                        </Button>}>
+                    {t('confirmToRemove')}
+                </Modal>
+                <Tabs type="editable-card" onEdit={(key, action) => {
+                if (action === 'add') {
+                    const id = addItem({ platformId, config: { App: {} } });
+                    setCreateId(id);
+                }
+                else if (action === 'remove') {
+                    const systemId = systems[Number(key)].id;
+                    setRemoveId(systemId);
+                }
+            }} items={systems?.length > 0 ?
+                systems.map((item, idx) => {
+                    return {
+                        label: item.name,
+                        key: `${idx}`,
+                        children: (<SystemPanel oakPath={`${oakFullpath}.${item.id}`} oakId={item.id}/>)
+                    };
+                })
+                : []}/>
+            </>);
     }
 }

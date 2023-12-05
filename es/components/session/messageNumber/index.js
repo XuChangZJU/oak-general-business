@@ -1,10 +1,20 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import React from 'react';
 import Style from './index.module.less';
 import { ClearOutlined } from '@ant-design/icons';
 function MessageNumber(props) {
     const { number = 0, clear } = props;
-    return (_jsxs("div", { className: Style.messageNumberBox, children: [_jsxs("div", { className: Style.messageNumber, children: [_jsx("span", { className: Style.messageText, children: "\u6D88\u606F" }), _jsxs("span", { className: Style.numberText, children: ["(", number, ")"] })] }), _jsx("div", { onClick: () => {
-                    clear();
-                }, children: _jsx(ClearOutlined, { className: Style.clearIcon }) })] }));
+    return (<div className={Style.messageNumberBox}>
+            <div className={Style.messageNumber}>
+                <span className={Style.messageText}>消息</span>
+                <span className={Style.numberText}>({number})</span>
+            </div>
+
+            {/* 清除发给自己的消息 */}
+            {<div onClick={() => {
+                clear();
+            }}>
+                    <ClearOutlined className={Style.clearIcon}/>
+                </div>}
+        </div>);
 }
 export default MessageNumber;

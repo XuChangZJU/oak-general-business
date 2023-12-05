@@ -34,15 +34,19 @@ export default function Render(
                         <MessageCell
                             oakId={message.id}
                             key={message.id}
-                            oakPath={
-                                oakFullpath
-                                    ? `${oakFullpath}.${message.id}`
-                                    : ''
-                            }
                             onItemClicked={(item: { id: string }) => {
                                 const { id } = item;
                                 onClose && onClose();
                                 goDetailById(id);
+                            }}
+                            title={message.title}
+                            router={message.router}
+                            id={message.id}
+                            visitState={message.visitState}
+                            visit={(id: string) => {
+                                methods.updateItem({
+                                }, id, 'visit');
+                                methods.execute(undefined, false);
                             }}
                         />
                     ))}

@@ -1,4 +1,3 @@
-import { Fragment as _Fragment, jsx as _jsx } from "react/jsx-runtime";
 import * as React from 'react';
 const onDownload = (arrayBuffer, filename) => {
     const blob = new Blob(arrayBuffer ? [arrayBuffer] : []);
@@ -43,7 +42,8 @@ const base64ToArrayBuffer = (base64String) => {
 };
 function Download(props) {
     const { children, beforeDownload, filename = 'download.xlsx', className, style, } = props;
-    return (_jsx(_Fragment, { children: React.createElement('div', {
+    return (<>
+            {React.createElement('div', {
             onClick: async () => {
                 let arrayBuffer;
                 if (typeof beforeDownload === 'function') {
@@ -53,7 +53,8 @@ function Download(props) {
             },
             className,
             style,
-        }, children) }));
+        }, children)}
+        </>);
 }
 Download.onDownload = onDownload;
 Download.base64ToBlob = base64ToBlob;

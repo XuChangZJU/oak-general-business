@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../oak-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'message', false, {
@@ -6,4 +7,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'message', f
     oakId: string;
 }, {
     goToMobile: () => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

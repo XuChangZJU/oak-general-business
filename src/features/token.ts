@@ -30,18 +30,14 @@ export class Token<
     private storage: LocalStorage;
     private isLoading = false;
 
-    constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage, environment: Environment) {
-        super();
-        this.cache = cache;
-        this.storage = storage;
-        this.environment = environment;
-        let tokenValue = storage.load(LOCAL_STORAGE_KEYS.token);
+    private async loadSavedToken() {
+        let tokenValue = await this.storage.load(LOCAL_STORAGE_KEYS.token);
         if (!tokenValue) {
             // 历史数据，原来用的key太随意
-            tokenValue = storage.load('token:token');
+            tokenValue = await this.storage.load('token:token');
             if (tokenValue) {
-                storage.save(LOCAL_STORAGE_KEYS.token, tokenValue);
-                storage.remove('token:token');
+                await this.storage.save(LOCAL_STORAGE_KEYS.token, tokenValue);
+                await this.storage.remove('token:token');
             }
         }
         
@@ -49,6 +45,19 @@ export class Token<
             this.tokenValue = tokenValue;
             // this.loadTokenInfo();
         }
+        else {
+            this.tokenValue = undefined;
+        }
+        this.publish();
+    }
+
+    constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage, environment: Environment) {
+        super();
+        this.cache = cache;
+        this.storage = storage;
+        this.environment = environment;
+        this.tokenValue = '';   // 置个空字符串代表还在load storage缓存的数据
+        this.loadSavedToken();
     }
 
     async loadTokenInfo() {
@@ -74,7 +83,7 @@ export class Token<
             env,
         });
         this.tokenValue = result;
-        this.storage.save(LOCAL_STORAGE_KEYS.token, result);
+        await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
         this.publish();
     }
 
@@ -85,7 +94,7 @@ export class Token<
             wechatLoginId,
         });
         this.tokenValue = result;
-        this.storage.save(LOCAL_STORAGE_KEYS.token, result);
+        await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
         this.publish();
     }
 
@@ -97,7 +106,7 @@ export class Token<
             wechatLoginId: params?.wechatLoginId,
         });
         this.tokenValue = result;
-        this.storage.save(LOCAL_STORAGE_KEYS.token, result);
+        await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
         this.publish();
     }
 
@@ -110,7 +119,7 @@ export class Token<
             env: env as WechatMpEnv,
         });
         this.tokenValue = result;
-        this.storage.save(LOCAL_STORAGE_KEYS.token, result);
+        await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
         this.publish();
     }
 
@@ -152,6 +161,9 @@ export class Token<
     }
 
     getToken(allowUnloggedIn?: boolean) {
+        if (this.tokenValue === '') {
+            throw new OakUserInfoLoadingException();
+        }
         if (this.tokenValue) {
             const token = this.cache.get(
                 'token',
@@ -244,7 +256,7 @@ export class Token<
             code,
             env: env as WechatMpEnv,
         });
-        this.publish();
+        // this.publish();
     }
 
     async wakeupParasite(id: string) {
@@ -254,7 +266,7 @@ export class Token<
             env: env as WechatMpEnv,
         });
         this.tokenValue = result;
-        this.storage.save(LOCAL_STORAGE_KEYS.token, result);
+        await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
         this.publish();
     }
 }

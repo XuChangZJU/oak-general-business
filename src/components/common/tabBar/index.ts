@@ -39,10 +39,16 @@ export default OakComponent({
         parseCurrentPage() {
             const { list } = this.props;
             const currentPagePath = '/' + getCurrentPages()[0].route;
+            const namespace = this.features.navigator.getNamespace();
 
             let index;
             for (let i = 0; i < list!.length; i++) {
-                if (list![i].pagePath === currentPagePath) {
+                const pagePath = list![i].pagePath;
+                const pathname = this.features.navigator.getPathname(
+                    pagePath,
+                    namespace
+                );
+                if (pathname === currentPagePath) {
                     index = i;
                     break;
                 }
@@ -61,7 +67,7 @@ export default OakComponent({
 
             // 触发事件
             const item = list![index];
-            this.triggerEvent('linchange', { index, item });
+            this.triggerEvent('oakchange', { index, item });
         },
 
         /**
@@ -71,7 +77,7 @@ export default OakComponent({
             const index = e.currentTarget.dataset.index;
             const url = this.props.list![index].pagePath;
 
-            this.triggerEvent('lintap', {
+            this.triggerEvent('oaktap', {
                 index,
                 item: this.props.list![index],
             });
@@ -80,12 +86,12 @@ export default OakComponent({
                 return;
             }
             // 切换路由
-            wx.switchTab({
+            this.switchTab({
                 url,
-                fail() {
-                    wx.navigateTo({
+                fail: () => {
+                    this.redirectTo({
                         url,
-                        fail(error) {
+                        fail(error: any) {
                             console.warn('路由跳转错误，错误信息为：', error);
                         },
                     });

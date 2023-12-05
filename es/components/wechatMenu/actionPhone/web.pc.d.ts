@@ -1,3 +1,4 @@
+import React from 'react';
 import { WechatPublicInstance } from 'oak-external-sdk';
 import { EntityDict } from "../../../oak-app-domain";
 import { WebComponentProps } from 'oak-frontend-base';
@@ -23,4 +24,4 @@ export default function Render(props: WebComponentProps<EntityDict, keyof Entity
     toLeft: (index: number) => void;
     toUp: (currentIndex: number, index: number) => void;
     toDown: (currentIndex: number, index: number) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

@@ -3,7 +3,8 @@ import { EntityDict } from '../oak-app-domain/EntityDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
 import { getCos } from '../utils/cos';
-import { OakException, RemoveTrigger } from 'oak-domain';
+import { OakException } from 'oak-domain/lib/types/Exception';
+import { RemoveTrigger } from 'oak-domain/lib/types/Trigger';
 
 const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDict>>[] = [
     {

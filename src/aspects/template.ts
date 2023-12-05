@@ -8,6 +8,20 @@ import { WechatPublicInstance, WechatSDK } from 'oak-external-sdk';
 import { WechatPublicConfig } from '../oak-app-domain/Application/Schema';
 import { template } from 'oak-domain/lib/utils/string';
 
+import { uniq } from 'oak-domain/lib/utils/lodash';
+
+let messageTypes = [] as string[];
+
+export function registMessageType(messageType: string[]) {
+    let messageTypes2 = messageTypes.concat(messageType);
+    messageTypes = uniq(messageTypes2);
+}
+
+export async function getMessageType() {
+    return messageTypes;
+}
+
+
 function analyseContent(content: string): Object {
     let content2 = content;
     let result = {};

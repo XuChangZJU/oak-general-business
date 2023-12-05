@@ -23,6 +23,7 @@ export default function Render(
             router: EntityDict['message']['Schema']['router'];
             visitState: EntityDict['message']['Schema']['visitState'];
             id: string;
+            visit: (id: string) => void;
         },
         {}
     >
@@ -37,6 +38,7 @@ export default function Render(
         visitState,
         oakLegalActions,
         onItemClicked,
+        visit,
     } = data;
     const { navigateTo, execute } = methods;
 
@@ -66,7 +68,8 @@ export default function Render(
                     <div
                         className={Style.notify_mask}
                         onClick={(event) => {
-                            execute('visit', false);
+                            // execute('visit', false);
+                            visit(id);
                             event.stopPropagation();
                         }}
                     >

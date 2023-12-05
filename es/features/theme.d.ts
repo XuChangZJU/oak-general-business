@@ -11,13 +11,14 @@ export default class Theme<ED extends EntityDict, Cxt extends BackendRuntimeCont
     private cache;
     private themeState;
     private storage;
+    private loadSavedState;
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage);
     get(): IThemeState;
     set(themeState: IThemeState): void;
     toggleSetting(): void;
-    switchTheme(finalTheme: ETheme): void;
+    switchThemeMode(finalThemeMode: ETheme): void;
     openSystemTheme(): void;
     getColor(): string;
     switchColor(color: string): void;
-    insertThemeStylesheet(theme: string, color: string, mode: 'light' | 'dark'): void;
+    insertThemeStylesheet(theme: string, color: string, mode: ETheme): void;
 }

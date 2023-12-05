@@ -1,4 +1,4 @@
-import { jsx as _jsx } from "react/jsx-runtime";
+import React from 'react';
 import { Button } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { isWeiXin } from 'oak-frontend-base/es/utils/utils';
@@ -9,12 +9,16 @@ export default function render(props) {
     const { error, loading } = props.data;
     let V;
     if (loading) {
-        V = (_jsx(Success, { icon: _jsx(LoadingOutlined, { className: Style.brand_icon }), title: "\u767B\u5F55\u4E2D", description: "\u6B63\u5728\u767B\u5F55..\uFF0C\u8BF7\u7A0D\u540E" }));
+        V = (<Success icon={<LoadingOutlined className={Style.brand_icon}/>} title="登录中" description="正在登录..，请稍后"/>);
     }
     else if (error) {
-        V = (_jsx(Fail, { title: error, description: "\u62B1\u6B49\uFF0C\u767B\u5F55\u5931\u8D25\uFF0C\u8BF7\u8054\u7CFB\u7BA1\u7406\u5458\u8FDB\u884C\u6392\u67E5\uFF01", children: isWeiXin && (_jsx(Button, { type: "primary", onClick: () => {
+        V = (<Fail title={error} description="抱歉，登录失败，请联系管理员进行排查！">
+                {isWeiXin && (<Button type="primary" onClick={() => {
                     WeixinJSBridge.call('closeWindow');
-                }, children: "\u5173\u95ED" })) }));
+                }}>
+                        关闭
+                    </Button>)}
+            </Fail>);
     }
-    return _jsx("div", { className: Style.container, children: V });
+    return <div className={Style.container}>{V}</div>;
 }

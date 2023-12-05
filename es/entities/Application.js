@@ -17,6 +17,7 @@ const entityDesc = {
                     web: '网站',
                     wechatPublic: '微信公众号',
                     wechatMp: '微信小程序',
+                    native: 'App',
                 },
             },
         },

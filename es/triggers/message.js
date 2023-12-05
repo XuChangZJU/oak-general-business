@@ -14,7 +14,7 @@ const InitialChannalByWeightMatrix = {
     low: ['wechatMp', 'wechatPublic'],
 };
 export async function tryMakeSmsNotification(message, context) {
-    const { userId, type, entity, entityId } = message;
+    const { userId, type, entity, entityId, router } = message;
     const [mobile] = await context.select('mobile', {
         data: {
             id: 1,
@@ -29,15 +29,13 @@ export async function tryMakeSmsNotification(message, context) {
     if (mobile) {
         const converter = ConverterDict[type] && ConverterDict[type].toSms;
         if (converter) {
-            const dispersedData = await converter(entity, entityId, context);
+            const dispersedData = await converter(message, context);
             if (dispersedData) {
                 return {
                     id: await generateNewIdAsync(),
                     data: dispersedData,
                     channel: 'sms',
-                    data1: {
-                        mobile,
-                    },
+                    data1: mobile,
                 };
             }
         }
@@ -174,7 +172,7 @@ async function createNotification(message, context) {
                             id: userId
                         }
                     }, { dontCollect: true });
-                    const userId2 = user.refId ? user.refId : userId;
+                    const userIds = user.refId ? [userId, user.refId] : [userId];
                     const wechatUsers = await context.select('wechatUser', {
                         data: {
                             id: 1,
@@ -185,7 +183,9 @@ async function createNotification(message, context) {
                             applicationId: {
                                 $in: apps.map((ele) => ele.id),
                             },
-                            userId: userId2,
+                            userId: {
+                                $in: userIds
+                            },
                         },
                     }, { dontCollect: true });
                     for (const app of apps) {

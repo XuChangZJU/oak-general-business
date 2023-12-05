@@ -1,3 +1,4 @@
+import React from 'react';
 import { UploadFile } from "antd";
 import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from "../../../oak-app-domain";
@@ -25,4 +26,4 @@ export default function render(props: WebComponentProps<EntityDict, 'extraFile',
     onRemove: (file: UploadFile) => void;
     addFileByWeb: (file: UploadFile) => void;
     checkSort: (sort: number) => boolean;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

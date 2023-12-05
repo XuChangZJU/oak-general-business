@@ -1,3 +1,4 @@
+import React from 'react';
 import { UploadFile } from 'antd/es/upload/interface';
 import { WebComponentProps, RowWithActions } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
@@ -12,4 +13,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'sessionMess
     customUpload: (file: UploadFile) => void;
     setContent: (text: string) => void;
     sendMessage: () => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

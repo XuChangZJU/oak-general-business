@@ -13,6 +13,7 @@ import extraFileTriggers from './extraFile';
 import sessionMessageTriggers from './sessionMessage';
 import wechatMenuTriggers from './wechatMenu';
 import wechatPublicTag from './wechatPublicTag';
+import wechatMpJump from './wechatMpJump';
 
 import accountTriggers from './account';
 
@@ -34,4 +35,5 @@ export default [
     ...sessionMessageTriggers,
     ...wechatMenuTriggers,
     ...wechatPublicTag,
+    ...wechatMpJump,
 ];

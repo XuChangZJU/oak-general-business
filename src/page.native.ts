@@ -7,7 +7,7 @@ import { CommonAspectDict } from 'oak-common-aspect';
 import { BackendRuntimeContext } from './context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from './context/FrontendRuntimeContext';
 import { GAD, GFD, OakComponentOption } from './types/Page';
-import { createComponent as createBaseComponent } from 'oak-frontend-base/es/page.web';
+import { createComponent as createBaseComponent } from 'oak-frontend-base/es/page.native';
 
 
 export function createComponent<
@@ -46,17 +46,13 @@ export function createComponent<
     }>({
         methods: {
             async subscribeMpMessage(messageTypes: string[], haveToAccept?: boolean, tip?: string) {
-                throw new Error('小程序环境专有函数在web下不成立');
+                throw new Error('小程序环境专有函数在native下不成立');
             },
             ...(methods as TMethod),
         },
         lifetimes: {
             attached() {
-                this.subscribed.push(
-                    this.features.token.subscribe(
-                        () => this.refresh()
-                    )
-                );
+                this.addFeatureSub('token', () => this.refresh());
                 attached && attached.call(this);
             },
             ...restLifeTimes,

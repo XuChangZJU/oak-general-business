@@ -1,6 +1,6 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { OakDataException } from 'oak-domain/lib/types/Exception';
-import { AmapSDK, QiniuSDK } from 'oak-external-sdk';
+import { AmapSDK, QiniuSDK, CTYunSDk } from 'oak-external-sdk';
 import {
     AliCloudConfig,
     AmapCloudConfig,
@@ -9,6 +9,7 @@ import {
     QiniuCloudConfig,
     Service,
     TencentCloudConfig,
+    CTYunConfig
 } from '../types/Config';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext, AspectDict } from '../context/FrontendRuntimeContext';
@@ -84,6 +85,23 @@ export function getConfig<
             );
             return {
                 instance: qiniuInstance,
+                config: originConfig,
+            };
+        }
+        case 'ctyun': {
+            const ctyunAccount = (
+                originCloudAccounts as CTYunConfig[]
+            ).find((ele) => ele.accessKey === originConfig.accessKey);
+            assert(
+                ctyunAccount,
+                `调用的服务${service}源${origin}找不到相应的云平台帐号，请联系管理员`
+            );
+            const ctyunInstance = CTYunSDk.getInstance(
+                ctyunAccount!.accessKey,
+                ctyunAccount!.secretKey,
+            );
+            return {
+                instance: ctyunInstance,
                 config: originConfig,
             };
         }

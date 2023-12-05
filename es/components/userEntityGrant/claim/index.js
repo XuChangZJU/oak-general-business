@@ -1,4 +1,4 @@
-import { generateNewId } from 'oak-domain';
+import { generateNewId } from 'oak-domain/lib/utils/uuid';
 export default OakComponent({
     entity: 'userEntityGrant',
     isList: false,

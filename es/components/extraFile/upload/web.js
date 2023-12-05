@@ -1,4 +1,3 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import React, { useCallback } from 'react';
 import { Space, Upload, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -45,7 +44,9 @@ const DraggableUploadListItem = ({ originNode, moveRow, file, fileList, }) => {
         }),
     });
     drop(drag(ref));
-    return (_jsx("div", { ref: ref, className: `ant-upload-draggable-list-item ${isOver ? dropClassName : ""}`, style: { cursor: "move", height: "100%" }, children: originNode }));
+    return (<div ref={ref} className={`ant-upload-draggable-list-item ${isOver ? dropClassName : ""}`} style={{ cursor: "move", height: "100%" }}>
+            {originNode}
+        </div>);
 };
 export default function render(props) {
     const { accept = 'image/*', maxNumber = 20, multiple = maxNumber !== 1, draggable = false, theme = 'image', beforeUpload, style, className, directory = false, onPreview, onDownload, children, showUploadList = true, files = [], disableInsert = false, disableDownload = false, disableDelete = false, disablePreview = false, } = props.data;
@@ -56,9 +57,12 @@ export default function render(props) {
             return children;
         }
         if (listType === 'picture-card') {
-            return (_jsxs("div", { children: [_jsx(PlusOutlined, {}), _jsx("div", { style: { marginTop: 8 }, children: t('choosePicture') })] }));
+            return (<div>
+                    <PlusOutlined />
+                    <div style={{ marginTop: 8 }}>{t('choosePicture')}</div>
+                </div>);
         }
-        return _jsx(Button, { type: "default", children: t('chooseFile') });
+        return <Button type="default">{t('chooseFile')}</Button>;
     };
     const transformToUploadFile = () => {
         return files.map((file) => {
@@ -149,27 +153,33 @@ export default function render(props) {
             updateItem({ sort }, dragRow.id);
         }
     }, [files]);
-    return (_jsx(Space, { direction: "vertical", className: Style['oak-upload'], style: { width: '100%' }, children: _jsx(DndProvider, { backend: isPc ? HTML5Backend : TouchBackend, children: _jsx(Upload, { className: classNames(Style['oak-upload__upload'], className), style: style, directory: directory, showUploadList: showUploadList
-                    ? {
-                        showPreviewIcon: !disablePreview,
-                        showRemoveIcon: !disableDelete,
-                        showDownloadIcon: !disableDownload,
-                    }
-                    : false, beforeUpload: async (file) => {
-                    if (typeof beforeUpload === 'function') {
-                        const result = await beforeUpload(file);
-                        if (result) {
-                            return false;
-                        }
-                    }
+    return (<Space direction="vertical" className={Style['oak-upload']} style={{ width: '100%' }}>
+            <DndProvider backend={isPc ? HTML5Backend : TouchBackend}>
+                <Upload className={classNames(Style['oak-upload__upload'], className)} style={style} directory={directory} showUploadList={showUploadList
+            ? {
+                showPreviewIcon: !disablePreview,
+                showRemoveIcon: !disableDelete,
+                showDownloadIcon: !disableDownload,
+            }
+            : false} beforeUpload={async (file) => {
+            if (typeof beforeUpload === 'function') {
+                const result = await beforeUpload(file);
+                if (result) {
                     return false;
-                }, multiple: multiple, accept: accept, listType: listType, fileList: transformToUploadFile(), onChange: ({ file, fileList, event }) => {
-                    if (file instanceof File) {
-                        addFileByWeb(file);
-                    }
-                }, onRemove: onRemove, onPreview: onPreview, onDownload: onDownload, itemRender: (originNode, currentFile, currentFileList) => {
-                    return (_jsx(DraggableUploadListItem, { originNode: originNode, file: currentFile, fileList: currentFileList, moveRow: moveRow }));
-                }, children: !disableInsert && files.length < maxNumber
-                    ? getUploadButton()
-                    : null }) }) }));
+                }
+            }
+            return false;
+        }} multiple={multiple} accept={accept} listType={listType} fileList={transformToUploadFile()} onChange={({ file, fileList, event }) => {
+            if (file instanceof File) {
+                addFileByWeb(file);
+            }
+        }} onRemove={onRemove} onPreview={onPreview} onDownload={onDownload} itemRender={(originNode, currentFile, currentFileList) => {
+            return (<DraggableUploadListItem originNode={originNode} file={currentFile} fileList={currentFileList} moveRow={moveRow}/>);
+        }}>
+                    {!disableInsert && files.length < maxNumber
+            ? getUploadButton()
+            : null}
+                </Upload>
+            </DndProvider>
+        </Space>);
 }

@@ -1,5 +1,5 @@
 import { EntityDict } from '../oak-app-domain';
-import { EntityDict as BaseEntityDict } from 'oak-domain'
+import { EntityDict as BaseEntityDict } from 'oak-domain/lib/base-app-domain'
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext, AspectDict } from '../context/FrontendRuntimeContext';
 
@@ -8,17 +8,22 @@ import { FrontendRuntimeContext, AspectDict } from '../context/FrontendRuntimeCo
  */
 export default interface Sms<
     ED extends EntityDict & BaseEntityDict,
-    Cxt extends BackendRuntimeContext<ED>> {
+    Cxt extends BackendRuntimeContext<ED>,
+> {
     name: string;
-
     /**
      * 是否支持模板同步
      */
-    autoSyncTemplate(): boolean;
+    syncTemplate(systemId: string, context: Cxt): Promise<{
+        templateName: string,
+        templateCode: string,
+        templateContent: string
+    }[]>;
+    sendSms(params: {
+        mobile: string,
+        templateParam?: Record<string, any>,
+        smsTemplate: Partial<EntityDict['smsTemplate']['Schema']>
+    }, context: Cxt): Promise<{ success: boolean, res: any }>;
     /**
-     * 注入在后台extrafile生成之前，将上传所需要的token等信息生成并存放在uploadMeta属性中
-     * @param extraFile，要生成的extraFile数据
-     * @param context 后台上下文
-     * @returns
      */
 }

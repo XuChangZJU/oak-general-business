@@ -16,4 +16,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'userEntityG
     disablePickRow?: boolean;
     disablePickRelation?: boolean;
     pickRelationRule: string;
-}>): import("react/jsx-runtime").JSX.Element | null;
+}>): import("react").JSX.Element | null;

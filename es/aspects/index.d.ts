@@ -2,7 +2,8 @@ import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCa
 import { getInfoByUrl } from './extraFile';
 import { getApplication, signatureJsSDK, uploadWechatMedia, batchGetArticle, getArticle, batchGetMaterialList, getMaterial, deleteMaterial } from './application';
 import { updateConfig, updateApplicationConfig, updateStyle } from './config';
-import { syncMessageTemplate } from './template';
+import { syncMessageTemplate, getMessageType } from './template';
+import { syncSmsTemplate } from './sms';
 import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user';
 import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
@@ -12,6 +13,7 @@ import { createSession } from './session';
 import { getCurrentMenu, getMenu, createMenu, createConditionalMenu, deleteConditionalMenu, deleteMenu } from './wechatMenu';
 import { createTag, getTags, editTag, deleteTag, syncTag, oneKeySync } from './wechatPublicTag';
 import { getTagUsers, batchtagging, batchuntagging, getUserTags, getUsers, tagging, syncToLocale, syncToWechat } from './userWechatPublicTag';
+import { wechatMpJump } from './wechatMpJump';
 declare const aspectDict: {
     mergeUser: typeof mergeUser;
     switchTo: typeof switchTo;
@@ -55,6 +57,7 @@ declare const aspectDict: {
     editTag: typeof editTag;
     deleteTag: typeof deleteTag;
     syncMessageTemplate: typeof syncMessageTemplate;
+    getMessageType: typeof getMessageType;
     syncTag: typeof syncTag;
     oneKeySync: typeof oneKeySync;
     getTagUsers: typeof getTagUsers;
@@ -65,5 +68,7 @@ declare const aspectDict: {
     tagging: typeof tagging;
     syncToLocale: typeof syncToLocale;
     syncToWechat: typeof syncToWechat;
+    wechatMpJump: typeof wechatMpJump;
+    syncSmsTemplate: typeof syncSmsTemplate;
 };
 export default aspectDict;

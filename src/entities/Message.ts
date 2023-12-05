@@ -8,7 +8,7 @@ import { Schema as System } from './System';
 import { Schema as Platform } from './Platform';
 
 
-type Router = {
+export type Router = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;

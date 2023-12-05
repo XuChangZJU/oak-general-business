@@ -1,13 +1,39 @@
-import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import React from 'react';
 import { Button, Alert, Affix, Space, Typography } from 'antd';
 import Style from './web.module.less';
 import StyleUpsert from '../../style';
 export default function Render(props) {
     const { entity, currentStyle, dirty, name } = props.data;
     const { resetStyle, updateStyle, setValue, t } = props.methods;
-    return (_jsxs(_Fragment, { children: [_jsx(Affix, { offsetTop: 64, children: _jsx(Alert, { message: _jsx("div", { children: _jsxs("text", { children: ["\u60A8\u6B63\u5728\u66F4\u65B0", _jsx(Typography.Text, { keyboard: true, children: entity }), "\u5BF9\u8C61", _jsx(Typography.Text, { keyboard: true, children: name }), "\u7684\u6837\u5F0F\uFF0C\u8BF7\u8C28\u614E\u64CD\u4F5C"] }) }), type: "info", showIcon: true, action: _jsxs(Space, { children: [_jsx(Button, { disabled: !dirty, type: "primary", danger: true, onClick: () => resetStyle(), style: {
-                                    marginRight: 10,
-                                }, children: t('common::reset') }), _jsx(Button, { disabled: !dirty, type: "primary", onClick: () => updateStyle(), children: t('common::action.confirm') })] }) }) }), _jsx("div", { className: Style.contains, children: _jsx(StyleUpsert, { value: currentStyle, onChange: (s) => {
-                        setValue(s);
-                    } }) })] }));
+    return (<>
+            <Affix offsetTop={64}>
+                <Alert message={<div>
+                            <text>
+                                您正在更新
+                                <Typography.Text keyboard>
+                                    {entity}
+                                </Typography.Text>
+                                对象
+                                <Typography.Text keyboard>
+                                    {name}
+                                </Typography.Text>
+                                的样式，请谨慎操作
+                            </text>
+                        </div>} type="info" showIcon action={<Space>
+                            <Button disabled={!dirty} type="primary" danger onClick={() => resetStyle()} style={{
+                marginRight: 10,
+            }}>
+                                {t('common::reset')}
+                            </Button>
+                            <Button disabled={!dirty} type="primary" onClick={() => updateStyle()}>
+                                {t('common::action.confirm')}
+                            </Button>
+                        </Space>}/>
+            </Affix>
+            <div className={Style.contains}>
+                <StyleUpsert value={currentStyle} onChange={(s) => {
+            setValue(s);
+        }}/>
+            </div>
+        </>);
 }

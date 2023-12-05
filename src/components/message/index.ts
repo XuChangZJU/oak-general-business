@@ -24,13 +24,5 @@ export default OakComponent({
             data,
         };
     },
-    lifetimes: {
-        attached() {
-            this.subscribed!.push(
-                this.features.message.subscribe(
-                    () => this.reRender()
-                )
-            );
-        }
-    }
+    features: ['message'],
 });

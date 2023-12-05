@@ -14,5 +14,5 @@ interface QrCodeProps {
     rootStyle?: React.CSSProperties;
     rootClassName?: string;
 }
-declare function QrCode(props: QrCodeProps): import("react/jsx-runtime").JSX.Element;
+declare function QrCode(props: QrCodeProps): React.JSX.Element;
 export default QrCode;

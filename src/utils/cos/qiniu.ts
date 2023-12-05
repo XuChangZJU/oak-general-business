@@ -9,7 +9,7 @@ import { QiniuCosConfig } from '../../types/Config';
 import { QiniuCloudInstance } from 'oak-external-sdk';
 import { urlSafeBase64Encode } from '../sign';
 import { OakUploadException } from '../../types/Exception';
-import { OakExternalException, OakNetworkException } from 'oak-domain';
+import { OakExternalException, OakNetworkException } from 'oak-domain/lib/types/Exception';
 
 export default class Qiniu implements Cos<ED, BRC, FRC> {
     name = 'qiniu';

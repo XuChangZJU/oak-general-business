@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from "oak-frontend-base";
 import { EntityDict } from "../../../oak-app-domain";
 export default function Render(props: WebComponentProps<EntityDict, 'articleMenu', true, {
@@ -33,4 +34,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
     createOne: (name?: string) => Promise<void>;
     getDefaultArticle: (rows: EntityDict['articleMenu']['OpSchema'][]) => void;
     getSearchArticle: () => Promise<string[]>;
-}>): import("react/jsx-runtime").JSX.Element | null;
+}>): React.JSX.Element | null;

@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 import { DataNode } from 'antd/es/tree';
@@ -11,4 +12,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'subway', tr
 }, {
     setAreaId: (areaId: string) => void;
     setFilterByAreaId: (areaId: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): React.JSX.Element;

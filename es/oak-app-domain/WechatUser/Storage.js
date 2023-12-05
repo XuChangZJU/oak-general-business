@@ -4,7 +4,7 @@ export const desc = {
         origin: {
             notNull: true,
             type: "enum",
-            enumeration: ["mp", "public", "web"]
+            enumeration: ["mp", "public", "web", "native"]
         },
         openId: {
             type: "varchar",

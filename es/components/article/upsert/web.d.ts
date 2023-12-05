@@ -22,4 +22,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'article', f
     uploadFile: (extraFile: EntityDict['extraFile']['CreateSingle']['data'], file: File) => Promise<string>;
     clearContentTip: () => void;
     gotoPreview: (content?: string, title?: string) => void;
-}>): import("react/jsx-runtime").JSX.Element;
+}>): import("react").JSX.Element;

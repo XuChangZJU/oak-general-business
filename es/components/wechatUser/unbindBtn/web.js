@@ -1,11 +1,11 @@
-import { jsx as _jsx } from "react/jsx-runtime";
+import React from 'react';
 import { Button, Modal } from 'antd';
 const { confirm } = Modal;
 export default function Render(props) {
     const { data, methods } = props;
     const { oakFullpath } = data;
     const { t } = methods;
-    return (_jsx(Button, { size: "small", onClick: () => {
+    return (<Button size="small" onClick={() => {
             confirm({
                 title: t('unbindTip'),
                 content: t('unbindContent'),
@@ -22,5 +22,7 @@ export default function Render(props) {
                     });
                 },
             });
-        }, children: t('unbind') }));
+        }}>
+            {t('unbind')}
+        </Button>);
 }

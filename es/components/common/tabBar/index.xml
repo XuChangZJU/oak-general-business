@@ -6,18 +6,18 @@
       <l-badge show="{{item.redDot}}" dot="{{item.redDot===true}}" value="{{item.redDot}}" data-index="{{index}}" mut-bind:lintap="onTapItem">
         <block wx:if="{{selectedIndex===index}}">
            <block wx:if="{{item.selectedIconPath}}">
-              <image class="tab-bar__item-image" src={{item.selectedIconPath}} style="{{item.iconSize ? 'width: '+item.iconSize+ 'px;' : ''}} {{item.iconSize ? 'height: '+item.iconSize+ 'px;' : ''}}" />
+              <image class="tab-bar__item-image" src={{item.selectedIconPath}} style="{{item.iconSize ? 'width: '+item.iconSize+ 'rpx;' : ''}} {{item.iconSize ? 'height: '+item.iconSize+ 'rpx;' : ''}}" />
            </block>
           <block wx:else>
-             <oak-icon name="{{item.selectedIconName}}" size="{{item.iconSize || 22}}" color="{{selectedColor}}" />
+             <oak-icon name="{{item.selectedIconName}}" size="{{item.iconSize || 24}}" color="{{selectedColor}}" />
           </block>
         </block>
         <block wx:else>
         <block wx:if="{{item.iconPath}}">
-          <image class="tab-bar__item-image" src={{item.iconPath}} style="{{item.iconSize ? 'width: '+item.iconSize+ 'px;' : ''}} {{item.iconSize ? 'height: '+item.iconSize+ 'px;' : ''}}" />
+          <image class="tab-bar__item-image" src={{item.iconPath}} style="{{item.iconSize ? 'width: '+item.iconSize+ 'rpx;' : ''}} {{item.iconSize ? 'height: '+item.iconSize+ 'rpx;' : ''}}" />
         </block>
         <block wx:else>
-          <oak-icon name="{{item.iconName}}" size="{{item.iconSize || 22}}" color="{{color}}" />
+          <oak-icon name="{{item.iconName}}" size="{{item.iconSize || 24}}" color="{{color}}" />
         </block>
       </block>
     

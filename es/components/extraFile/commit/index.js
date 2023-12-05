@@ -1,5 +1,6 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 export default OakComponent({
+    isList: false,
     formData({ features }) {
         const ids = this.getEfIds();
         const states = ids.map((id) => features.extraFile.getFileState(id));

@@ -14,7 +14,7 @@ import { WechatMpConfig, WechatPublicConfig } from '../entities/Application';
 import { WechatPublicEventData, WechatMpEventData } from 'oak-external-sdk';
 import { expandUuidTo36Bytes, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { composeDomainUrl } from '../utils/domain';
-import { composeUrl } from 'oak-domain/lib/utils/url';
+import { composeUrl } from 'oak-domain/lib/utils/domain';
 import { createSession } from '../aspects/session';
 import { getMaterial } from '../aspects/application';
 

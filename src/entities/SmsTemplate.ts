@@ -5,7 +5,7 @@ import { EntityDesc } from 'oak-domain/lib/types/EntityDesc';
 
 export interface Schema extends EntityShape {
     system: System;
-    origin: 'ali' | 'tencent';
+    origin: String<64>;
     templateName: Text;
     templateCode: String<64>;
     templateContent: Text;
@@ -24,12 +24,6 @@ const entityDesc: EntityDesc<Schema> = {
                 templateContent: '模板内容',
                 syncAt: '同步时间'
             },
-            v: {
-                origin: {
-                    ali: '阿里云',
-                    tencent: '腾讯云',
-                },
-            }
         },
     },
 };

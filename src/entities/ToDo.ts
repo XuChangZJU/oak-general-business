@@ -6,15 +6,15 @@ import { ActionDef } from 'oak-domain/lib/types/Action';
 
 
 export type RedirectToProps = {
-    pathname: string;
-    props?: Record<string, any>;
-    state?: Record<string, any>;
+    batchPath: string;
+    singlePath?: string;
 };
 
 export interface Schema extends EntityShape {
     title: Text;
     description?: Text;
     targetEntity: String<32>;
+    targetFilter: Object;
     action: String<32>;
     redirectTo: RedirectToProps;
 };
@@ -22,12 +22,12 @@ export interface Schema extends EntityShape {
 type Relation = 'collaborator';
 type IState = 'active' | 'done'
 
-type IAction = 'done'; //触发器执行
+type IAction = 'complete'; //触发器执行
 
 
 const IActionDef: ActionDef<IAction, IState> = {
     stm: {
-        done: ['active', 'done'],
+        complete: ['active', 'done'],
     },
 };
 
@@ -50,6 +50,7 @@ const entityDesc: EntityDesc<
                 title: '标题',
                 description: '描述',
                 targetEntity: '对象实体',
+                targetFilter: '过滤条件',
                 action: '动作',
                 redirectTo: '重定向页面',
             },
@@ -57,7 +58,7 @@ const entityDesc: EntityDesc<
                 collaborator: '协作者',
             },
             action: {
-                done: '完成',
+                complete: '完成',
             },
             v: {
                 iState: {

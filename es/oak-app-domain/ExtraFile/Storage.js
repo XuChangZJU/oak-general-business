@@ -4,7 +4,7 @@ export const desc = {
         origin: {
             notNull: true,
             type: "enum",
-            enumeration: ["qiniu", "wechat", "unknown"]
+            enumeration: ["qiniu", "wechat", "unknown", "ctyun"]
         },
         type: {
             notNull: true,

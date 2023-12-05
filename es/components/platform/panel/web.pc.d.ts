@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 import { Style } from '../../../types/Style';
@@ -7,4 +8,4 @@ export default function render(props: WebComponentProps<EntityDict, 'platform', 
     name: string;
     config: Config;
     style: Style;
-}>): import("react/jsx-runtime").JSX.Element | null;
+}>): React.JSX.Element | null;

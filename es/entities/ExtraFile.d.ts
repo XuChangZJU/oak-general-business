@@ -2,7 +2,7 @@ import { String, Int, Text, Float, Boolean } from 'oak-domain/lib/types/DataType
 import { EntityShape } from 'oak-domain/lib/types/Entity';
 import { Schema as Application } from './Application';
 export interface Schema extends EntityShape {
-    origin: 'qiniu' | 'wechat' | 'unknown';
+    origin: 'qiniu' | 'wechat' | 'unknown' | 'ctyun';
     type: 'image' | 'video' | 'audio' | 'file';
     bucket?: String<32>;
     objectId?: String<64>;

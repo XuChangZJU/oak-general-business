@@ -13,6 +13,7 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     private cache;
     private storage;
     private isLoading;
+    private loadSavedToken;
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage, environment: Environment);
     loadTokenInfo(): Promise<void>;
     loginByMobile(mobile: string, password?: string, captcha?: string): Promise<void>;

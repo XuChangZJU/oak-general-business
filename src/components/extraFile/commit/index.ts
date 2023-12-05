@@ -12,6 +12,7 @@ type BeforeCommit =
     | undefined;
 
 export default OakComponent({
+    isList: false,
     formData({ features }) {
         const ids: string[] = this.getEfIds();
         const states = ids.map((id) => features.extraFile.getFileState(id));

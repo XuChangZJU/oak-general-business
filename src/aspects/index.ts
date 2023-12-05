@@ -23,7 +23,8 @@ import {
     deleteMaterial,
 } from './application';
 import { updateConfig, updateApplicationConfig, updateStyle } from './config';
-import { syncMessageTemplate } from './template';
+import { syncMessageTemplate, getMessageType } from './template';
+import { syncSmsTemplate } from './sms';
 import { mergeUser, getChangePasswordChannels, updateUserPassword } from './user';
 import { createWechatLogin } from './wechatLogin';
 import { unbindingWechat } from './wechatUser';
@@ -56,6 +57,9 @@ import {
     syncToLocale,
     syncToWechat,
 } from './userWechatPublicTag';
+import {
+    wechatMpJump,
+} from './wechatMpJump';
 
 const aspectDict = {
     mergeUser,
@@ -100,6 +104,7 @@ const aspectDict = {
     editTag,
     deleteTag,
     syncMessageTemplate,
+    getMessageType,
     syncTag,
     oneKeySync,
     getTagUsers,
@@ -110,6 +115,8 @@ const aspectDict = {
     tagging,
     syncToLocale,
     syncToWechat,
+    wechatMpJump,
+    syncSmsTemplate
 };
 
 export default aspectDict;

@@ -1,5 +1,5 @@
 import { JsonProjection } from "oak-domain/lib/types/DataType";
-import { Q_DateValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
+import { Q_DateValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
 import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
@@ -9,14 +9,14 @@ import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as Relation from "../Relation/Schema";
 import * as UserRelation from "../UserRelation/Schema";
 export type RedirectToProps = {
-    pathname: string;
-    props?: Record<string, any>;
-    state?: Record<string, any>;
+    batchPath: string;
+    singlePath?: string;
 };
 export type OpSchema = EntityShape & {
     title: Text;
     description?: Text | null;
     targetEntity: String<32>;
+    targetFilter: Object;
     action: String<32>;
     redirectTo: RedirectToProps;
     iState?: IState | null;
@@ -26,6 +26,7 @@ export type Schema = EntityShape & {
     title: Text;
     description?: Text | null;
     targetEntity: String<32>;
+    targetFilter: Object;
     action: String<32>;
     redirectTo: RedirectToProps;
     iState?: IState | null;
@@ -39,11 +40,12 @@ export type Schema = EntityShape & {
 type AttrFilter = {
     id: Q_StringValue;
     $$createAt$$: Q_DateValue;
-    $$seq$$: Q_StringValue;
+    $$seq$$: Q_NumberValue;
     $$updateAt$$: Q_DateValue;
     title: Q_StringValue;
     description: Q_StringValue;
     targetEntity: Q_StringValue;
+    targetFilter: Object;
     action: Q_StringValue;
     redirectTo: JsonFilter<RedirectToProps>;
     iState: Q_EnumValue<IState>;
@@ -61,6 +63,7 @@ export type Projection = {
     title?: number;
     description?: number;
     targetEntity?: number;
+    targetFilter?: number | Object;
     action?: number;
     redirectTo?: number | JsonProjection<RedirectToProps>;
     iState?: number;
