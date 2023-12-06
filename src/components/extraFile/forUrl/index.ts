@@ -197,7 +197,7 @@ export default OakComponent({
                     Object.assign(createData, {
                         origin: 'unknown',
                         extension,
-                        filename,
+                        filename: 'unknown',
                         isBridge: this.isWechatUrlFn(file),
                     });
                     break;
@@ -205,7 +205,7 @@ export default OakComponent({
                     Object.assign(createData, {
                         origin: 'unknown',
                         extension,
-                        filename,
+                        filename: 'unknown',
                         isBridge: this.isWechatUrlFn(file),
                     });
                     break;
