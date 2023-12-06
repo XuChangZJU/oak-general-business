@@ -12,6 +12,8 @@ export default OakComponent({
         color: '#666',
         selectedColor: '',
         border: false,
+        selectedIconPath: '',
+        iconPath: '',
     },
     lifetimes: {
         show() {
@@ -33,7 +35,10 @@ export default OakComponent({
             let index;
             for (let i = 0; i < list.length; i++) {
                 const pagePath = list[i].pagePath;
-                const pathname = this.features.navigator.getPathname(pagePath, namespace);
+                const pathname = this.features.navigator.getPathname(
+                    pagePath,
+                    namespace
+                );
                 if (pathname === currentPagePath) {
                     index = i;
                     break;

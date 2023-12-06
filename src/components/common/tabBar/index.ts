@@ -22,6 +22,8 @@ export default OakComponent({
         color: '#666',
         selectedColor: '',
         border: false,
+        selectedIconPath: '', //一般在list设置
+        iconPath: '',
     },
     lifetimes: {
         show() {
