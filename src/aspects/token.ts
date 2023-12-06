@@ -709,7 +709,7 @@ export async function loginByMobile<
         );
         if (!existMobile) {
             closeRootMode();
-            throw new OakUserException('手机号无效，请先联系管理员获取权限');
+            throw new OakUserException('账号不存在');
         }
     }
     const tokenId = await loginLogic();
