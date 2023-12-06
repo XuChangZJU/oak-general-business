@@ -17,6 +17,12 @@ const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDic
 
             const formMeta = async (data: EntityDict['extraFile']['OpSchema']): Promise<void> => {
                 const { origin } = data;
+                if (origin === 'unknown') {
+                    Object.assign(data, {
+                        uploadState: 'success',
+                    });
+                    return;
+                }
                 const cos = getCos(origin!);
                 if (!cos) {
                     throw new OakException(`origin为${origin}的extraFile没有定义Cos类，请调用registerCos注入`);

@@ -215,14 +215,19 @@ export default OakComponent({
 
         async myAddItem(createData: EntityDict['extraFile']['CreateSingle']['data']) {
             // 目前只支持七牛上传
-            const file = createData.extra1;
-            const id = this.addItem(
-                Object.assign(createData, {
-                    extra1: null,
-                    uploadState: 'uploading',
-                })
-            );
-            this.features.extraFile.addLocalFile(id, file as any);
+            if (createData.origin === 'qiniu') {
+                const file = createData.extra1;
+                const id = this.addItem(
+                    Object.assign(createData, {
+                        extra1: null,
+                        uploadState: 'uploading',
+                    })
+                );
+                this.features.extraFile.addLocalFile(id, file as any);
+            }
+            else {
+                this.addItem(createData);
+            }
         },
         async myUpdateItem(params: File | string) {
             const { file } = this.state;
