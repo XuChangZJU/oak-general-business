@@ -590,6 +590,7 @@ export async function loginByMobile<
         captcha?: string;
         password?: string;
         mobile: string;
+        disableRegist?: boolean;
         env: WebEnv | WechatMpEnv | NativeEnv;
     },
     context: Cxt
@@ -690,8 +691,27 @@ export async function loginByMobile<
             }
         }
     };
-
     const closeRootMode = context.openRootMode();
+    if (params?.disableRegist) {
+        const [existMobile] = await context.select(
+            'mobile',
+            {
+                data: {
+                    id: 1,
+                    mobile: 1,
+                },
+                filter: {
+                    mobile: params.mobile!,
+                    ableState: 'enabled',
+                },
+            },
+            { dontCollect: true }
+        );
+        if (!existMobile) {
+            closeRootMode();
+            throw new OakUserException('手机号无效，请先联系管理员获取权限');
+        }
+    }
     const tokenId = await loginLogic();
     await loadTokenInfo<ED, Cxt>(tokenId, context);
     closeRootMode();

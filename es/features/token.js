@@ -50,12 +50,13 @@ export class Token extends Feature {
             this.isLoading = false;
         }
     }
-    async loginByMobile(mobile, password, captcha) {
+    async loginByMobile(mobile, password, captcha, disableRegist) {
         const env = await this.environment.getEnv();
         const { result } = await this.cache.exec('loginByMobile', {
             password,
             mobile,
             captcha,
+            disableRegist,
             env,
         });
         this.tokenValue = result;

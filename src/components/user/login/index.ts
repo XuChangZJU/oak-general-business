@@ -68,7 +68,7 @@ export default OakComponent({
         },
         async ready() {
             const application = this.features.application.getApplication();
-    
+
             let loginMode = await this.load(LOGIN_MODE) || 2;
             const lastSendAt = await this.load(SEND_KEY);
 
@@ -94,7 +94,7 @@ export default OakComponent({
                 isSupportWechat = !!config2?.passport?.includes('wechat');
                 isSupportWechatPublic = !!config2?.passport?.includes('wechatPublic') //是否开启
             }
-    
+
             if (isSupportGrant) {
                 loginMode = 1;
             } else if (this.props.onlyPassword) {
@@ -143,7 +143,7 @@ export default OakComponent({
             captcha?: string
         ) {
             const { url } = this.props;
-            
+
             try {
                 this.setState({
                     loading: true,
@@ -151,7 +151,7 @@ export default OakComponent({
                 await this.features.token.loginByMobile(
                     mobile,
                     password,
-                    captcha
+                    captcha,
                 );
                 this.setState({
                     loading: false,

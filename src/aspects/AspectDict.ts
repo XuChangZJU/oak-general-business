@@ -26,6 +26,7 @@ export type GeneralAspectDict<
             captcha?: string;
             password?: string;
             mobile: string;
+            disableRegist?: boolean;
             env: WebEnv | WechatMpEnv | NativeEnv;
         },
         context: Cxt

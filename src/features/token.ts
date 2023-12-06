@@ -40,7 +40,7 @@ export class Token<
                 await this.storage.remove('token:token');
             }
         }
-        
+
         if (tokenValue) {
             this.tokenValue = tokenValue;
             // this.loadTokenInfo();
@@ -74,12 +74,13 @@ export class Token<
         }
     }
 
-    async loginByMobile(mobile: string, password?: string, captcha?: string) {
+    async loginByMobile(mobile: string, password?: string, captcha?: string, disableRegist?: boolean) {
         const env = await this.environment.getEnv();
         const { result } = await this.cache.exec('loginByMobile', {
             password,
             mobile,
             captcha,
+            disableRegist,
             env,
         });
         this.tokenValue = result;
