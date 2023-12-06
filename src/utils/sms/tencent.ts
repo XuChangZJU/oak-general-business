@@ -3,13 +3,10 @@ import { BackendRuntimeContext } from '../../context/BackendRuntimeContext';
 import { assert } from 'oak-domain/lib/utils/assert';
 import Sms from "../../types/Sms";
 import { ED } from '../../types/RuntimeCxt';
-import { OpSchema } from '../../oak-app-domain/ExtraFile/Schema';
-import { urlSafeBase64Encode } from '../sign';
-import { OakUploadException } from '../../types/Exception';
-import { OakExternalException, OakNetworkException } from 'oak-domain';
 import { EntityDict } from '../../oak-app-domain';
 import { get } from 'oak-domain/lib/utils/lodash';
 import SDK, { TencentSmsInstance } from 'oak-external-sdk/lib/SmsSdk';
+import { TencentSmsConfig } from '../../types/Config';
 
 export default class Tencent implements Sms<ED, BackendRuntimeContext<ED>> {
     name = 'tencent';
@@ -36,7 +33,11 @@ export default class Tencent implements Sms<ED, BackendRuntimeContext<ED>> {
             system = context.getApplication()!.system;
         }
         const { config: systemConfig } = system as EntityDict['system']['Schema'];
-        const tencentConfig = get(systemConfig, 'Sms.tencent.0', {});
+        const tencentConfig = get(
+            systemConfig,
+            'Sms.tencent.0',
+            {}
+        ) as TencentSmsConfig;
         const { secretId,
             secretKey,
             region,
@@ -126,7 +127,7 @@ export default class Tencent implements Sms<ED, BackendRuntimeContext<ED>> {
             TemplateId: templateCode!,
             SignName: defaultSignName,
         })
-        const code = get(result, 'SendStatusSet.[0].Code', '');
+        const code = result?.SendStatusSet?.[0]?.Code || '';
         if (code === 'Ok') {
             return {
                 success: true,
@@ -134,7 +135,7 @@ export default class Tencent implements Sms<ED, BackendRuntimeContext<ED>> {
             };
         }
         return {
-            success: true,
+            success: false,
             res: result,
         };
     }

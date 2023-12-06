@@ -3,14 +3,10 @@ import { BackendRuntimeContext } from '../../context/BackendRuntimeContext';
 import { assert } from 'oak-domain/lib/utils/assert';
 import Sms from "../../types/Sms";
 import { ED } from '../../types/RuntimeCxt';
-import { OpSchema } from '../../oak-app-domain/ExtraFile/Schema';
-import { getConfig } from '../getContextConfig';
-import { urlSafeBase64Encode } from '../sign';
-import { OakUploadException } from '../../types/Exception';
-import { OakExternalException, OakNetworkException } from 'oak-domain';
 import { EntityDict } from '../../oak-app-domain';
 import { get } from 'oak-domain/lib/utils/lodash';
 import SDK, { AliSmsInstance } from 'oak-external-sdk/lib/SmsSdk';
+import { AliSmsConfig } from '../../types/Config';
 
 export default class Ali implements Sms<ED, BackendRuntimeContext<ED>> {
     name = 'ali';
@@ -18,7 +14,7 @@ export default class Ali implements Sms<ED, BackendRuntimeContext<ED>> {
     getConfig(context: BackendRuntimeContext<ED>) {
         const { system } = context.getApplication()!;
         const { config: systemConfig } = system as EntityDict['system']['Schema'];
-        const aliConfig = get(systemConfig, 'Sms.ali.0', {});
+        const aliConfig = get(systemConfig, 'Sms.ali.0', {}) as AliSmsConfig;
         const { accessKeyId,
             accessKeySecret,
             defaultSignName,
@@ -54,13 +50,12 @@ export default class Ali implements Sms<ED, BackendRuntimeContext<ED>> {
             signName: defaultSignName,
         })
         const { code, message, requestId } = result;
-        if (result?.code === 'Ok') {
+        if (code === 'Ok') {
             return {
                 success: true,
                 res: result,
             };
         }
-        console.warn(message);
         return {
             success: false,
             res: result,

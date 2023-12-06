@@ -65,9 +65,9 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
         file: string | File
     ) {
         const uploadMeta = extraFile.uploadMeta! as QiniuUploadInfo;
-        let result;
+        let response;
         try {
-            result = await uploadFn(
+            response = await uploadFn(
                 file,
                 'file',
                 uploadMeta.uploadHost,
@@ -84,13 +84,14 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
         let isSuccess = false;
         if (process.env.OAK_PLATFORM === 'wechatMp') {
             // 小程序端上传 使用wx.uploadFile
-            if (result.errMsg === 'uploadFile:ok') {
-                const jsonData = JSON.parse(result.data);
-                isSuccess = !!jsonData.key;
+            if (response.errMsg === 'uploadFile:ok') {
+                const data = JSON.parse(response.data);
+                isSuccess = !!(data.success === true || data.key);
             }
         }
         else {
-           isSuccess = !!(result.success === true || result.key);
+           const data = await response.json();
+           isSuccess = !!(data.success === true || data.key);
         }
         // 解析回调
         if (isSuccess) {

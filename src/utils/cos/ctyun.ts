@@ -65,9 +65,9 @@ export default class CTYun implements Cos<ED, BRC, FRC> {
         file: string | File
     ) {
         const uploadMeta = extraFile.uploadMeta! as CTYunUploadInfo;
-        let result;
+        let response;
         try {
-            result = await uploadFn(
+            response = await uploadFn(
                 file,
                 'file',
                 uploadMeta.uploadHost,
@@ -85,20 +85,21 @@ export default class CTYun implements Cos<ED, BRC, FRC> {
         }
         let isSuccess = false;
         if (process.env.OAK_PLATFORM === 'wechatMp') {
-            // 小程序端上传 使用wx.uploadFile
-            if (result.errMsg === 'uploadFile:ok') {
-                const jsonData = JSON.parse(result.data);
-                isSuccess = !!jsonData.key;
+            // 小程序端上传 使用wx.uploadFile 
+            // 待测试
+            if (response.errMsg === 'uploadFile:ok') {
+                const data = JSON.parse(response.data);
+                isSuccess = !!(data.status === 204);
             }
         }
         else {
-            isSuccess = !!(result.success === true || result.key);
+            isSuccess = !!(response.status === 204);
         }
         // 解析回调
         if (isSuccess) {
             return;
         } else {
-            throw new OakUploadException('图片上传七牛失败');
+            throw new OakUploadException('图片上传天翼云失败');
         }
     }
 
