@@ -30,13 +30,12 @@ export default class Ali {
             signName: defaultSignName,
         });
         const { code, message, requestId } = result;
-        if (result?.code === 'Ok') {
+        if (code === 'Ok') {
             return {
                 success: true,
                 res: result,
             };
         }
-        console.warn(message);
         return {
             success: false,
             res: result,

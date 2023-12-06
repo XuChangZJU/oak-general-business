@@ -78,7 +78,7 @@ export default class Tencent {
             TemplateId: templateCode,
             SignName: defaultSignName,
         });
-        const code = get(result, 'SendStatusSet.[0].Code', '');
+        const code = result?.SendStatusSet?.[0]?.Code || '';
         if (code === 'Ok') {
             return {
                 success: true,
@@ -86,7 +86,7 @@ export default class Tencent {
             };
         }
         return {
-            success: true,
+            success: false,
             res: result,
         };
     }
