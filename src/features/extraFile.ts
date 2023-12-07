@@ -262,6 +262,21 @@ export class ExtraFile<
                 file,
                 this.uploadToAspect.bind(this)
             );
+            if (!cos.autoInform()) {
+                await this.cache.exec('operate', {
+                    entity: 'extraFile',
+                    operation: {
+                        id: await generateNewIdAsync(),
+                        action: 'update',
+                        data: {
+                            uploadState: 'success',
+                        },
+                        filter: {
+                            id: extraFileId,
+                        },
+                    } as ED['extraFile']['Operation'],
+                });
+            }
             this.publish();
             return this.getUrl(
                 newExtraFile as EntityDict['extraFile']['Schema']
