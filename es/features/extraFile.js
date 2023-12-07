@@ -192,6 +192,21 @@ export class ExtraFile extends Feature {
         try {
             const cos = getCos(newExtraFile.origin);
             await cos.upload(newExtraFile, up.uploadFile, file, this.uploadToAspect.bind(this));
+            if (!cos.autoInform()) {
+                await this.cache.exec('operate', {
+                    entity: 'extraFile',
+                    operation: {
+                        id: await generateNewIdAsync(),
+                        action: 'update',
+                        data: {
+                            uploadState: 'success',
+                        },
+                        filter: {
+                            id: extraFileId,
+                        },
+                    },
+                });
+            }
             this.publish();
             return this.getUrl(newExtraFile);
         }
