@@ -1,4 +1,5 @@
 import { DATA_SUBSCRIBER_KEYS } from '../../../config/constants';
+import assert from 'assert';
 export default OakComponent({
     entity: 'session',
     projection() {
@@ -108,18 +109,26 @@ export default OakComponent({
             }
         },
         async ready() {
-            const { entityFilter } = this.props;
-            const userId = this.features.token.getUserId();
-            await this.subData([
-                {
-                    entity: 'session',
-                    filter: entityFilter ? { ...entityFilter } : { userId },
-                    id: `${DATA_SUBSCRIBER_KEYS.sessionList}`,
-                },
-            ]);
+            const { entityFilter, entityFilterSubStr } = this.props;
+            if (entityFilter) {
+                assert(entityFilterSubStr);
+                this.subDataEvents([entityFilterSubStr]);
+            }
+            else {
+                const userId = this.features.token.getUserId();
+                this.subDataEvents([`${DATA_SUBSCRIBER_KEYS.sessionList}-u-${userId}`]);
+            }
         },
         detached() {
-            this.unSubData([`${DATA_SUBSCRIBER_KEYS.sessionList}`]);
+            const { entityFilter, entityFilterSubStr } = this.props;
+            if (entityFilter) {
+                assert(entityFilterSubStr);
+                this.unsubDataEvents([entityFilterSubStr]);
+            }
+            else {
+                const userId = this.features.token.getUserId();
+                this.unsubDataEvents([`${DATA_SUBSCRIBER_KEYS.sessionList}-u-${userId}`]);
+            }
         },
     },
     data: {
@@ -129,6 +138,7 @@ export default OakComponent({
     properties: {
         entity: '',
         entityFilter: null,
+        entityFilterSubStr: '',
         entityDisplay: (data) => [],
         entityProjection: null,
         sessionId: '',

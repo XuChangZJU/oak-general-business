@@ -48,23 +48,13 @@ export default OakComponent({
     lifetimes: {
         async ready() {
             const { sessionId } = this.props;
-            this.subData([
-                {
-                    entity: 'sessionMessage',
-                    filter: {
-                        sessionId: sessionId,
-                    },
-                    id: `${DATA_SUBSCRIBER_KEYS.sessionMessageList}-${sessionId}`,
-                },
-            ], async () => {
-                await this.pageScroll('comment');
-            });
+            this.subDataEvents([`${DATA_SUBSCRIBER_KEYS.sessionMessageList}-${sessionId}`]);
             this.createItem();
             this.getSessionInfo();
         },
         detached() {
             const { sessionId } = this.props;
-            this.unSubData([
+            this.unsubDataEvents([
                 `${DATA_SUBSCRIBER_KEYS.sessionMessageList}-${sessionId}`,
             ]);
         },

@@ -1,6 +1,7 @@
 import { DATA_SUBSCRIBER_KEYS } from '../../../config/constants';
 import { EntityDict } from '../../../oak-app-domain';
 import { RowWithActions } from 'oak-frontend-base';
+import assert from 'assert';
 
 export default OakComponent({
     entity: 'session',
@@ -121,18 +122,28 @@ export default OakComponent({
             }
         },
         async ready() {
-            const { entityFilter } = this.props;
-            const userId = this.features.token.getUserId();
-            await this.subData([
-                {
-                    entity: 'session',
-                    filter: entityFilter ? { ...entityFilter } : { userId },
-                    id: `${DATA_SUBSCRIBER_KEYS.sessionList}`,
-                },
-            ]);
+            const { entityFilter, entityFilterSubStr } = this.props;
+
+            if (entityFilter) {
+                assert (entityFilterSubStr);
+                this.subDataEvents([entityFilterSubStr]);
+            }
+            else {
+                const userId = this.features.token.getUserId();
+                this.subDataEvents([`${DATA_SUBSCRIBER_KEYS.sessionList}-u-${userId}`]);
+            }
         },
         detached() {
-            this.unSubData([`${DATA_SUBSCRIBER_KEYS.sessionList}`]);
+            const { entityFilter, entityFilterSubStr } = this.props;
+
+            if (entityFilter) {
+                assert (entityFilterSubStr);
+                this.unsubDataEvents([entityFilterSubStr]);
+            }
+            else {
+                const userId = this.features.token.getUserId();
+                this.unsubDataEvents([`${DATA_SUBSCRIBER_KEYS.sessionList}-u-${userId}`]);
+            }
         },
     },
     data: {
@@ -142,6 +153,7 @@ export default OakComponent({
     properties: {
         entity: '' as string, // entity端，指示相应的entity
         entityFilter: null as any, // entity端，指示相应的entity查询条件
+        entityFilterSubStr: '',
         entityDisplay: (
             data:
                 | EntityDict['session']['Schema'][]

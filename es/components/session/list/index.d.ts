@@ -3,6 +3,7 @@ import { RowWithActions } from 'oak-frontend-base';
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "session", true, {
     entity: string;
     entityFilter: any;
+    entityFilterSubStr: string;
     entityDisplay: (data: EntityDict['session']['Schema'][] | RowWithActions<EntityDict, 'session'>[]) => any[];
     entityProjection: any;
     sessionId: string;

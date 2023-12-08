@@ -2,9 +2,24 @@ import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { WechatSDK, } from 'oak-external-sdk';
 import { extraFileProjection } from '../types/Projection';
+import { DATA_SUBSCRIBER_KEYS } from '../config/constants';
 const triggers = [
     {
-        name: '当sessionMessage创建时时，使其相关session更新lmts',
+        name: '当sessionMessage创建时，发送消息到相应事件上',
+        entity: 'sessionMessage',
+        action: 'create',
+        when: 'before',
+        fn: async ({ operation }, context) => {
+            const { data, id } = operation;
+            assert(!(data instanceof Array));
+            const { sessionId } = data;
+            assert(sessionId);
+            context.saveOperationToEvent(id, `${DATA_SUBSCRIBER_KEYS.sessionMessageList}-${sessionId}`);
+            return 1;
+        },
+    },
+    {
+        name: '当sessionMessage创建时，使其相关session更新lmts',
         entity: 'sessionMessage',
         action: 'create',
         when: 'after',
