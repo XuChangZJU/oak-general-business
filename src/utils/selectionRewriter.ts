@@ -155,7 +155,10 @@ function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof E
 export function rewriteSelection<ED extends EntityDict & BaseEntityDict, T extends keyof ED>(
     schema: StorageSchema<ED>, 
     entity: T, 
-    selection: ED[T]['Selection'] | ED[T]['Aggregation']
+    selection: ED[T]['Selection'] | ED[T]['Aggregation'],
+    context: any,
+    option: any,
+    isAggr?: true,
     ) {
     const { filter, data } = selection;
     if (filter && !filter['#oak-general-business--rewrited']) {
@@ -177,17 +180,23 @@ export function rewriteSelection<ED extends EntityDict & BaseEntityDict, T exten
                 rewriteProjection(rel, (d as ED[keyof ED]['Selection']['data'])[attr]);
             }
             else if (typeof rel === 'object' && rel instanceof Array) {
-                rewriteSelection(schema, rel[0], (d as ED[keyof ED]['Selection']['data'])[attr]);
+                rewriteSelection(schema, rel[0], (d as ED[keyof ED]['Selection']['data'])[attr], context, option, isAggr);
             }
         }
     }
 
-    rewriteProjection(entity, data);
+    if (!isAggr) {
+        rewriteProjection(entity, data);
+    }
     return;
 }
 
 
-export function rewriteOperation<ED extends EntityDict & BaseEntityDict, T extends keyof ED>(schema: StorageSchema<ED>, entity: T, operation: ED[T]['Operation']) {
+export function rewriteOperation<ED extends EntityDict & BaseEntityDict, T extends keyof ED>(
+    schema: StorageSchema<ED>,
+    entity: T, 
+    operation: ED[T]['Operation']
+    ) {
     const { filter } = operation;
     if (filter && !filter['#oak-general-business--rewrited']) {
         const filter2 = rewriteFilter(schema, entity, filter as NonNullable<ED[T]['Selection']['filter']>);

@@ -141,7 +141,7 @@ function rewriteFilter(schema, entity, filter) {
     }
     return filter2;
 }
-export function rewriteSelection(schema, entity, selection) {
+export function rewriteSelection(schema, entity, selection, context, option, isAggr) {
     const { filter, data } = selection;
     if (filter && !filter['#oak-general-business--rewrited']) {
         const filter2 = rewriteFilter(schema, entity, filter);
@@ -162,11 +162,13 @@ export function rewriteSelection(schema, entity, selection) {
                 rewriteProjection(rel, d[attr]);
             }
             else if (typeof rel === 'object' && rel instanceof Array) {
-                rewriteSelection(schema, rel[0], d[attr]);
+                rewriteSelection(schema, rel[0], d[attr], context, option, isAggr);
             }
         }
     };
-    rewriteProjection(entity, data);
+    if (!isAggr) {
+        rewriteProjection(entity, data);
+    }
     return;
 }
 export function rewriteOperation(schema, entity, operation) {
