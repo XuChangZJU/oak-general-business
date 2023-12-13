@@ -39,8 +39,18 @@ const triggers = [
         strict: 'makeSure',
         entity: 'extraFile',
         action: 'remove',
-        fn: async ({ rows }, context) => {
+        fn: async ({ ids }, context) => {
             let number = 0;
+            const rows = await context.select('extraFile', {
+                data: {
+                    id: 1,
+                    origin: 1,
+                    objectId: 1,
+                },
+                filter: {
+                    id: { $in: ids },
+                },
+            }, {});
             for (const extraFile of rows) {
                 const { origin, objectId } = extraFile;
                 // 用objectId来去重，只有当没有还有效的objectId方可删除

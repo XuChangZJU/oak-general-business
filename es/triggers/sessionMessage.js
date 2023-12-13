@@ -53,11 +53,10 @@ const triggers = [
         action: 'create',
         when: 'commit',
         strict: 'takeEasy',
-        fn: async ({ rows }, context) => {
+        fn: async ({ ids }, context) => {
             const closeRootMode = context.openRootMode();
             try {
-                for (const row of rows) {
-                    const { id } = row;
+                for (const id of ids) {
                     const [currentSessionMessage] = await context.select('sessionMessage', {
                         data: {
                             id: 1,

@@ -5,13 +5,13 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 
 import { rewriteOperation, rewriteSelection } from '../utils/selectionRewriter';
 
-const startRoutines: Array<Routine<EntityDict & BaseEntityDict, BackendRuntimeContext<EntityDict & BaseEntityDict>>> = [
+const startRoutines: Array<Routine<EntityDict & BaseEntityDict, keyof EntityDict & BaseEntityDict, BackendRuntimeContext<EntityDict & BaseEntityDict>>> = [
     {
         name: '注入对合并的user的selection的改写',
-        fn: async (context) => {
+        routine: async (context) => {
             context.rowStore.registerSelectionRewriter(rewriteSelection);
             context.rowStore.registerOperationRewriter(rewriteOperation);
-            return '注入成功';
+            return {};
         },
     }
 ];

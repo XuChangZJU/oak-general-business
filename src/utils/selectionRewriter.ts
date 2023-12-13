@@ -152,7 +152,11 @@ function rewriteFilter<ED extends EntityDict & BaseEntityDict, T extends keyof E
     return filter2;
 }
 
-export function rewriteSelection<ED extends EntityDict & BaseEntityDict, T extends keyof ED>(schema: StorageSchema<ED>, entity: T, selection: ED[T]['Selection']) {
+export function rewriteSelection<ED extends EntityDict & BaseEntityDict, T extends keyof ED>(
+    schema: StorageSchema<ED>, 
+    entity: T, 
+    selection: ED[T]['Selection'] | ED[T]['Aggregation']
+    ) {
     const { filter, data } = selection;
     if (filter && !filter['#oak-general-business--rewrited']) {
         const filter2 = rewriteFilter(schema, entity, filter as NonNullable<ED[T]['Selection']['filter']>);
@@ -163,17 +167,17 @@ export function rewriteSelection<ED extends EntityDict & BaseEntityDict, T exten
         selection.filter = filter2;
     }
     // RewriteSelection只在入口处调用一次，因此需要在这里处理一对多的projection
-    const rewriteProjection = (e: keyof ED, d: ED[keyof ED]['Selection']['data']) => {
+    const rewriteProjection = (e: keyof ED, d: ED[keyof ED]['Selection']['data'] | ED[keyof ED]['Aggregation']['data']) => {
         for (const attr in d) {
             const rel = judgeRelation(schema, e, attr);
             if (rel === 2) {
-                rewriteProjection(attr, d[attr]);
+                rewriteProjection(attr, (d as ED[keyof ED]['Selection']['data'])[attr]);
             }
             else if (typeof rel === 'string') {
-                rewriteProjection(rel, d[attr]);
+                rewriteProjection(rel, (d as ED[keyof ED]['Selection']['data'])[attr]);
             }
             else if (typeof rel === 'object' && rel instanceof Array) {
-                rewriteSelection(schema, rel[0], d[attr]);
+                rewriteSelection(schema, rel[0], (d as ED[keyof ED]['Selection']['data'])[attr]);
             }
         }
     }

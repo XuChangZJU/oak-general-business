@@ -48,8 +48,18 @@ const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDic
         strict: 'makeSure',
         entity: 'extraFile',
         action: 'remove',
-        fn: async ({ rows }, context) => {
+        fn: async ({ ids }, context) => {
             let number = 0;
+            const rows = await context.select('extraFile', {
+                data: {
+                    id: 1,
+                    origin: 1,
+                    objectId: 1,
+                },
+                filter: {
+                    id: { $in: ids },
+                },
+            }, {});
             for (const extraFile of rows) {
                 const { origin, objectId } = extraFile;
 

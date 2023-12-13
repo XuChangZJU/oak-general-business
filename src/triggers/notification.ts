@@ -276,11 +276,24 @@ const triggers: Trigger<EntityDict, 'notification', BackendRuntimeContext<Entity
         action: 'create',
         when: 'commit',
         strict: 'takeEasy',
-        fn: async ({ rows }, context) => {
+        fn: async ({ ids }, context) => {
             const closeRootMode = context.openRootMode();
             try {
-                for (const row of rows) {
-                    await sendNotification(row, context);
+                for (const id of ids) {
+                    const [row] = await context.select('notification', {
+                        data: {
+                            id: 1,
+                            data: 1, 
+                            templateId: 1, 
+                            channel: 1,
+                            messageSystemId: 1,
+                            data1: 1,
+                        },
+                        filter: {
+                            id,
+                        },
+                    }, {});
+                    await sendNotification(row as EntityDict['notification']['OpSchema'], context);
                 }
             } catch (err) {
                 closeRootMode();

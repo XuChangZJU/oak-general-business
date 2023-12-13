@@ -43,8 +43,8 @@ export function initialize<
     triggers: Array<Trigger<ED, keyof ED, Cxt>>,
     checkers: Array<Checker<ED, keyof ED, FrontCxt | Cxt>>,
     watchers: Array<Watcher<ED, keyof ED, Cxt>>,
-    timers: Array<Timer<ED, Cxt>>,
-    startRoutines: Array<Routine<ED, Cxt>>,
+    timers: Array<Timer<ED, keyof ED, Cxt>>,
+    startRoutines: Array<Routine<ED, keyof ED, Cxt>>,
     initialData: {
         [T in keyof ED]?: Array<ED[T]['OpSchema']>;
     },
@@ -61,7 +61,7 @@ export function initialize<
     const checkers2 = (generalCheckers as Array<Checker<ED, keyof ED, FrontCxt | Cxt>>).concat(checkers || []);
     const triggers2 = (generalTriggers as Array<Trigger<ED, keyof ED, Cxt>>).concat(triggers || []);
     const watchers2 = (generalWatchers as Array<Watcher<ED, keyof ED, Cxt>>).concat(watchers || []);
-    const startRoutines2 = (generalStartRoutines as Array<Routine<ED, Cxt>>).concat(startRoutines || []);
+    const startRoutines2 = (generalStartRoutines as Array<Routine<ED, keyof ED, Cxt>>).concat(startRoutines || []);
 
     const data2 = Object.assign({}, generalData, initialData);
     if (initialData) {
