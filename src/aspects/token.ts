@@ -1509,17 +1509,17 @@ export async function sendCaptcha<
     {
         mobile,
         env,
-        type: type2
+        type: type2,
     }: {
         mobile: string;
-        env: WechatMpEnv | WebEnv;
+        env: WechatMpEnv | WebEnv | NativeEnv;
         type: 'login' | 'changePassword' | 'confirm';
     },
     context: Cxt
 ): Promise<string> {
     const { type } = env;
 
-    assert(type === 'web');
+    assert(type === 'web' || type === 'native');
     let { visitorId } = env;
     const application = context.getApplication();
     const { system } = application!;
@@ -1591,8 +1591,7 @@ export async function sendCaptcha<
         if (process.env.NODE_ENV !== 'production' || mockSend) {
             closeRootMode();
             return `验证码[${code}]已创建`;
-        }
-        else if (captcha.$$createAt$$! as number - now < 60000) {
+        } else if ((captcha.$$createAt$$! as number) - now < 60000) {
             closeRootMode();
             throw new OakUserException('您的操作太迅捷啦，请稍等再点吧');
         } else {

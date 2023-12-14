@@ -1036,7 +1036,7 @@ export async function syncUserInfoWechatMp({ nickname, avatarUrl, encryptedData,
 }
 export async function sendCaptcha({ mobile, env, type: type2 }, context) {
     const { type } = env;
-    assert(type === 'web');
+    assert(type === 'web' || type === 'native');
     let { visitorId } = env;
     const application = context.getApplication();
     const { system } = application;
