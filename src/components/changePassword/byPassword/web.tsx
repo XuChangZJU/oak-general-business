@@ -9,7 +9,7 @@ import { EyeInvisibleOutlined, EyeTwoTone, MobileOutlined } from '@ant-design/ic
 export default function Render(
     props: WebComponentProps<
         EntityDict,
-        'message',
+        'user',
         false,
         {
             user: EntityDict['user']['Schema'],

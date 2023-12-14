@@ -8,7 +8,8 @@
     "files": [
         "lib/**/*",
         "es/**/*",
-        "src/entities/*"
+        "src/entities/*",
+        "src/types/*"
     ],
     "dependencies": {
         "@uiw/react-amap": "^5.0.12",
