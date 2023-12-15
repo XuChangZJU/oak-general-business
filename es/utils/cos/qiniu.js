@@ -35,17 +35,12 @@ export default class Qiniu {
         const uploadMeta = extraFile.uploadMeta;
         let response;
         try {
-            response = await uploadFn(
-                file,
-                'file',
-                uploadMeta.uploadHost,
-                {
-                    key: uploadMeta.key,
-                    token: uploadMeta.uploadToken,
-                },
-                true
-            );
-        } catch (err) {
+            response = await uploadFn(file, 'file', uploadMeta.uploadHost, {
+                key: uploadMeta.key,
+                token: uploadMeta.uploadToken,
+            }, true);
+        }
+        catch (err) {
             // 网络错误
             throw new OakNetworkException('网络异常，请求失败');
         }
@@ -56,14 +51,16 @@ export default class Qiniu {
                 const data = JSON.parse(response.data);
                 isSuccess = !!(data.success === true || data.key);
             }
-        } else {
+        }
+        else {
             const data = await response.json();
             isSuccess = !!(data.success === true || data.key);
         }
         // 解析回调
         if (isSuccess) {
             return;
-        } else {
+        }
+        else {
             throw new OakUploadException('图片上传七牛失败');
         }
     }
@@ -74,9 +71,7 @@ export default class Qiniu {
         }
         const { config } = getConfig(context, 'Cos', 'qiniu');
         if (config) {
-            let bucket = config.buckets.find(
-                (ele) => ele.name === extraFile.bucket
-            );
+            let bucket = config.buckets.find((ele) => ele.name === extraFile.bucket);
             if (bucket) {
                 const { domain, protocol } = bucket;
                 let protocol2 = protocol;
@@ -96,23 +91,15 @@ export default class Qiniu {
         const key = this.formKey(extraFile);
         const { instance, config } = getConfig(context, 'Cos', 'qiniu');
         // web环境下访问不了七牛接口，用mockData过
-        const mockData =
-            process.env.OAK_PLATFORM === 'web' ? { fsize: 100 } : undefined;
+        const mockData = process.env.OAK_PLATFORM === 'web' ? { fsize: 100 } : undefined;
         const b = config.buckets.find((ele) => ele.name === extraFile.bucket);
-        assert(
-            b,
-            `extraFile中的bucket名称在七牛配置中找不到「${extraFile.bucket}」`
-        );
+        assert(b, `extraFile中的bucket名称在七牛配置中找不到「${extraFile.bucket}」`);
         try {
-            const result = await instance.getKodoFileStat(
-                extraFile.bucket,
-                b.zone,
-                key,
-                mockData
-            );
+            const result = await instance.getKodoFileStat(extraFile.bucket, b.zone, key, mockData);
             const { fsize } = result;
             return fsize > 0;
-        } catch (err) {
+        }
+        catch (err) {
             // 七牛如果文件不存在会抛出status ＝ 612的异常
             if (err instanceof OakExternalException) {
                 const data = err.data;
@@ -129,18 +116,11 @@ export default class Qiniu {
         // web环境下访问不了七牛接口，用mockData过
         const mockData = process.env.OAK_PLATFORM === 'web' ? true : undefined;
         const b = config.buckets.find((ele) => ele.name === extraFile.bucket);
-        assert(
-            b,
-            `extraFile中的bucket名称在七牛配置中找不到「${extraFile.bucket}」`
-        );
+        assert(b, `extraFile中的bucket名称在七牛配置中找不到「${extraFile.bucket}」`);
         try {
-            await instance.removeKodoFile(
-                extraFile.bucket,
-                b.zone,
-                key,
-                mockData
-            );
-        } catch (err) {
+            await instance.removeKodoFile(extraFile.bucket, b.zone, key, mockData);
+        }
+        catch (err) {
             // 七牛如果文件不存在会抛出status ＝ 612的异常
             if (err instanceof OakExternalException) {
                 const data = err.data;

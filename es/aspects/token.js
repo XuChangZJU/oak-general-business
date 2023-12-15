@@ -1034,7 +1034,7 @@ export async function syncUserInfoWechatMp({ nickname, avatarUrl, encryptedData,
     // 实测发现解密出来的和userInfo完全一致……
     await setUserInfoFromWechat(user, { nickname, avatar: avatarUrl }, context);
 }
-export async function sendCaptcha({ mobile, env, type: type2 }, context) {
+export async function sendCaptcha({ mobile, env, type: type2, }, context) {
     const { type } = env;
     assert(type === 'web' || type === 'native');
     let { visitorId } = env;

@@ -24,7 +24,7 @@ export default class CTYun {
             bucket2 = defaultBucket;
         }
         assert(bucket2);
-        const b = buckets.find((ele) => ele.name === bucket2);
+        const b = buckets.find(ele => ele.name === bucket2);
         assert(b, `${bucket2}不是一个有效的桶配置`);
         Object.assign(extraFile, {
             bucket: bucket2,
@@ -35,37 +35,34 @@ export default class CTYun {
         const uploadMeta = extraFile.uploadMeta;
         let response;
         try {
-            response = await uploadFn(
-                file,
-                'file',
-                uploadMeta.uploadHost,
-                {
-                    key: uploadMeta.key,
-                    Policy: uploadMeta.policy,
-                    AWSAccessKeyId: uploadMeta.accessKey,
-                    signature: uploadMeta.signature,
-                },
-                true
-            );
-        } catch (err) {
+            response = await uploadFn(file, 'file', uploadMeta.uploadHost, {
+                key: uploadMeta.key,
+                Policy: uploadMeta.policy,
+                AWSAccessKeyId: uploadMeta.accessKey,
+                signature: uploadMeta.signature,
+            }, true);
+        }
+        catch (err) {
             // 网络错误
             throw new OakNetworkException('网络异常，请求失败');
         }
         let isSuccess = false;
         if (process.env.OAK_PLATFORM === 'wechatMp') {
-            // 小程序端上传 使用wx.uploadFile
+            // 小程序端上传 使用wx.uploadFile 
             // 待测试
             if (response.errMsg === 'uploadFile:ok') {
                 const data = JSON.parse(response.data);
                 isSuccess = !!(data.status === 204);
             }
-        } else {
+        }
+        else {
             isSuccess = !!(response.status === 204);
         }
         // 解析回调
         if (isSuccess) {
             return;
-        } else {
+        }
+        else {
             throw new OakUploadException('图片上传天翼云失败');
         }
     }
@@ -76,9 +73,7 @@ export default class CTYun {
         }
         const { config } = getConfig(context, 'Cos', 'ctyun');
         if (config) {
-            let bucket = config.buckets.find(
-                (ele) => ele.name === extraFile.bucket
-            );
+            let bucket = config.buckets.find((ele) => ele.name === extraFile.bucket);
             if (bucket) {
                 const { domain, protocol } = bucket;
                 let protocol2 = protocol;
@@ -97,6 +92,7 @@ export default class CTYun {
     async checkWhetherSuccess(extraFile, context) {
         return true;
     }
-    async removeFile(extraFile, context) {}
+    async removeFile(extraFile, context) {
+    }
 }
 ;
