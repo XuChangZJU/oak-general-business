@@ -128,7 +128,7 @@ export default class CTYun implements Cos<ED, BRC, FRC> {
                         : 0;
                     protocol2 = protocol[index];
                 }
-                return `${protocol2}://${domain}/${this.formKey(extraFile)}`;
+                return `${protocol2}://${domain}/${this.formKey(extraFile)}${style ? '?' + style : ''}`;
             }
         }
         return '';
