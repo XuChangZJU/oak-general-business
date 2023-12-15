@@ -108,6 +108,10 @@ export default class CTYun implements Cos<ED, BRC, FRC> {
         context: FRC,
         style?: string,
     ) {
+        const application = context.getApplication();
+        if (!application) {
+            return ''
+        }
         const { config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'ctyun');
 
         if (config) {

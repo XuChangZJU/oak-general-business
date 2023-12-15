@@ -25,14 +25,15 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
         return `extraFile/${objectId}${extension ? '.' + extension : ''}`;
     }
 
-    async formUploadMeta(
-        extraFile: OpSchema,
-        context: BRC
-    ) {
+    async formUploadMeta(extraFile: OpSchema, context: BRC) {
         const { bucket } = extraFile;
         // 构造文件上传所需的key
         const key = this.formKey(extraFile);
-        const { instance, config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
+        const { instance, config } = getConfig<ED, BRC, FRC>(
+            context,
+            'Cos',
+            'qiniu'
+        );
 
         const { buckets } = config as QiniuCosConfig;
         let bucket2 = bucket;
@@ -41,7 +42,7 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
             bucket2 = defaultBucket!;
         }
         assert(bucket2);
-        const b = buckets.find(ele => ele.name === bucket2);
+        const b = buckets.find((ele) => ele.name === bucket2);
         assert(b, `${bucket2}不是一个有效的桶配置`);
         Object.assign(extraFile, {
             bucket: bucket2,
@@ -88,10 +89,9 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
                 const data = JSON.parse(response.data);
                 isSuccess = !!(data.success === true || data.key);
             }
-        }
-        else {
-           const data = await response.json();
-           isSuccess = !!(data.success === true || data.key);
+        } else {
+            const data = await response.json();
+            isSuccess = !!(data.success === true || data.key);
         }
         // 解析回调
         if (isSuccess) {
@@ -104,12 +104,18 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
     composeFileUrl(
         extraFile: ED['extraFile']['OpSchema'],
         context: FRC,
-        style?: string,
+        style?: string
     ) {
+        const application = context.getApplication();
+        if (!application) {
+            return '';
+        }
         const { config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
 
         if (config) {
-            let bucket = (config.buckets as QiniuCosConfig['buckets']).find((ele) => ele.name === extraFile.bucket!);
+            let bucket = (config.buckets as QiniuCosConfig['buckets']).find(
+                (ele) => ele.name === extraFile.bucket!
+            );
             if (bucket) {
                 const { domain, protocol } = bucket!;
                 let protocol2 = protocol;
@@ -128,26 +134,34 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
         return '';
     }
 
-    async checkWhetherSuccess(
-        extraFile: OpSchema,
-        context: BRC
-    ) {
+    async checkWhetherSuccess(extraFile: OpSchema, context: BRC) {
         const key = this.formKey(extraFile);
-        const { instance, config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
+        const { instance, config } = getConfig<ED, BRC, FRC>(
+            context,
+            'Cos',
+            'qiniu'
+        );
 
         // web环境下访问不了七牛接口，用mockData过
-        const mockData = process.env.OAK_PLATFORM === 'web' ? { fsize: 100 } : undefined;
+        const mockData =
+            process.env.OAK_PLATFORM === 'web' ? { fsize: 100 } : undefined;
 
-        const b = (config as QiniuCosConfig).buckets.find(ele => ele.name === extraFile.bucket);
-        assert(b, `extraFile中的bucket名称在七牛配置中找不到「${extraFile.bucket}」`);
+        const b = (config as QiniuCosConfig).buckets.find(
+            (ele) => ele.name === extraFile.bucket
+        );
+        assert(
+            b,
+            `extraFile中的bucket名称在七牛配置中找不到「${extraFile.bucket}」`
+        );
 
         try {
-            const result = await (instance as QiniuCloudInstance).getKodoFileStat(extraFile.bucket!, b.zone, key, mockData);
+            const result = await (
+                instance as QiniuCloudInstance
+            ).getKodoFileStat(extraFile.bucket!, b.zone, key, mockData);
 
             const { fsize } = result;
             return fsize > 0;
-        }
-        catch (err: any) {
+        } catch (err: any) {
             // 七牛如果文件不存在会抛出status ＝ 612的异常
             if (err instanceof OakExternalException) {
                 const data = err.data;
@@ -159,19 +173,31 @@ export default class Qiniu implements Cos<ED, BRC, FRC> {
         }
     }
 
-
     async removeFile(extraFile: OpSchema, context: BRC) {
         const key = this.formKey(extraFile);
-        const { instance, config } = getConfig<ED, BRC, FRC>(context, 'Cos', 'qiniu');
+        const { instance, config } = getConfig<ED, BRC, FRC>(
+            context,
+            'Cos',
+            'qiniu'
+        );
 
         // web环境下访问不了七牛接口，用mockData过
         const mockData = process.env.OAK_PLATFORM === 'web' ? true : undefined;
-        const b = (config as QiniuCosConfig).buckets.find(ele => ele.name === extraFile.bucket);
-        assert(b, `extraFile中的bucket名称在七牛配置中找不到「${extraFile.bucket}」`);
+        const b = (config as QiniuCosConfig).buckets.find(
+            (ele) => ele.name === extraFile.bucket
+        );
+        assert(
+            b,
+            `extraFile中的bucket名称在七牛配置中找不到「${extraFile.bucket}」`
+        );
         try {
-            await (instance as QiniuCloudInstance).removeKodoFile(extraFile.bucket!, b.zone, key, mockData);
-        }
-        catch (err: any) {
+            await (instance as QiniuCloudInstance).removeKodoFile(
+                extraFile.bucket!,
+                b.zone,
+                key,
+                mockData
+            );
+        } catch (err: any) {
             // 七牛如果文件不存在会抛出status ＝ 612的异常
             if (err instanceof OakExternalException) {
                 const data = err.data;
