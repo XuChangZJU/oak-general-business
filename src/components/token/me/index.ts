@@ -36,6 +36,19 @@ export default OakComponent({
                 indexFrom: 0,
                 count: 1,
             },
+            user$ref: {
+                $entity: 'user',
+                data: {
+                    id: 1,
+                    mobile$user: {
+                        $entity: 'mobile',
+                        data: {
+                            id: 1,
+                            mobile: 1,
+                        },
+                    },
+                }
+            },
             mobile$user: {
                 $entity: 'mobile',
                 data: {
@@ -71,7 +84,9 @@ export default OakComponent({
         const avatarFile = user?.extraFile$entity && user?.extraFile$entity[0];
         const avatar = features.extraFile.getUrl(avatarFile);
         const nickname = user && user.nickname;
-        const mobileData = user && user.mobile$user && user.mobile$user[0];
+        const mobileData = user && user.mobile$user && user.mobile$user[0] || user && user.user$ref && user.user$ref.filter(
+            (ele) => ele.mobile$user
+        )[0]?.mobile$user![0];
         const { mobile } = mobileData || {};
         const mobileCount = user?.mobile$user?.length || 0;
 
