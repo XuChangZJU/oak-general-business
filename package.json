@@ -1,6 +1,6 @@
 {
     "name": "oak-general-business",
-    "version": "4.0.2",
+    "version": "4.0.3",
     "description": "oak框架中公共业务逻辑的实现",
     "author": {
         "name": "XuChang"
@@ -18,11 +18,11 @@
         "classnames": "^2.3.1",
         "copy-to-clipboard": "^3.3.3",
         "dayjs": "^1.11.9",
-        "oak-common-aspect": "^2.2.3",
-        "oak-domain": "^4.0.1",
-        "oak-external-sdk": "^2.0.2",
-        "oak-frontend-base": "^4.0.2",
-        "oak-memory-tree-store": "^3.1.2",
+        "oak-common-aspect": "file:../oak-common-aspect",
+        "oak-domain": "file:../oak-domain",
+        "oak-external-sdk": "file:../oak-external-sdk",
+        "oak-frontend-base": "file:../oak-frontend-base",
+        "oak-memory-tree-store": "file:../oak-memory-tree-store",
         "qrcode.react": "^3.1.0",
         "react-dnd": "^16.0.1",
         "react-dnd-html5-backend": "^16.0.1",
