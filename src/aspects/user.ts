@@ -100,7 +100,9 @@ export async function getChangePasswordChannels<ED extends EntityDict & BaseEnti
                 ableState: 'enabled',
             },
         },
-        {}
+        {
+            dontCollect: true,
+        }
     );
     const [user] = await context.select(
         'user',
@@ -113,7 +115,9 @@ export async function getChangePasswordChannels<ED extends EntityDict & BaseEnti
                 id: userId,
             }
         },
-        {}
+        {
+            dontCollect: true
+        }
     )
     const result = [];
     if (mobileList.length > 0) {
@@ -135,10 +139,15 @@ export async function updateUserPassword<ED extends EntityDict & BaseEntityDict,
                 data: {
                     id: 1,
                     password: 1,
-                }
+                },
+                filter: {
+                    id: userId,
+                },
             },
-            {}
-        )
+            {
+                dontCollect: true
+            }
+        );
         if (prevPassword) {
             const [lastSuccessfulTemp] = await context.select(
                 'changePasswordTemp',
@@ -165,28 +174,33 @@ export async function updateUserPassword<ED extends EntityDict & BaseEntityDict,
                     indexFrom: 0,
                     count: 1,
                 },
-                {}
-            )
+                {
+                    dontCollect: true,
+                }
+            );
             const count1 = await context.count(
                 'changePasswordTemp',
                 {
-                    filter: lastSuccessfulTemp ? {
-                        userId,
-                        $$seq$$: {
-                            $gt: lastSuccessfulTemp.$$seq$$!,
-                        },
-                        result: 'fail',
-                    } : {
-                        userId,
-                        $$createAt$$: {
-                            $gt: dayjs().startOf('day').valueOf(),
-                        },
-                        result: 'fail',
-                    },
+                    filter: lastSuccessfulTemp
+                        ? {
+                              userId,
+                              $$seq$$: {
+                                  $gt: lastSuccessfulTemp.$$seq$$!,
+                              },
+                              result: 'fail',
+                          }
+                        : {
+                              userId,
+                              $$createAt$$: {
+                                  $gt: dayjs().startOf('day').valueOf(),
+                              },
+                              result: 'fail',
+                          },
                 },
                 {
+                    dontCollect: true,
                 }
-            )
+            );
             if (count1 >= 5) {
                 closeRootMode();
                 return {
@@ -203,13 +217,15 @@ export async function updateUserPassword<ED extends EntityDict & BaseEntityDict,
                         action: 'update',
                         data: {
                             password: newPassword,
-                            passwordSha1: encryptPasswordSha1(newPassword)
+                            passwordSha1: encryptPasswordSha1(newPassword),
                         },
                         filter: {
                             id: userId,
                         },
                     },
-                    {}
+                    {
+                        dontCollect: true,
+                    }
                 );
                 await context.operate(
                     'changePasswordTemp',
@@ -224,7 +240,9 @@ export async function updateUserPassword<ED extends EntityDict & BaseEntityDict,
                             result: 'success',
                         },
                     },
-                    {}
+                    {
+                        dontCollect: true,
+                    }
                 );
                 closeRootMode();
                 return {
@@ -244,7 +262,9 @@ export async function updateUserPassword<ED extends EntityDict & BaseEntityDict,
                             result: 'fail',
                         },
                     },
-                    {}
+                    {
+                        dontCollect: true,
+                    }
                 );
                 closeRootMode();
                 return {
@@ -268,7 +288,9 @@ export async function updateUserPassword<ED extends EntityDict & BaseEntityDict,
                     indexFrom: 0,
                     count: 1,
                 },
-                {}
+                {
+                    dontCollect: true,
+                }
             );
             if (aliveCaptcha) {
                 await context.operate(
@@ -278,13 +300,15 @@ export async function updateUserPassword<ED extends EntityDict & BaseEntityDict,
                         action: 'update',
                         data: {
                             password: newPassword,
-                            passwordSha1: encryptPasswordSha1(newPassword)
+                            passwordSha1: encryptPasswordSha1(newPassword),
                         },
                         filter: {
                             id: userId,
                         },
                     },
-                    {}
+                    {
+                        dontCollect: true,
+                    }
                 );
                 await context.operate(
                     'changePasswordTemp',
@@ -299,7 +323,9 @@ export async function updateUserPassword<ED extends EntityDict & BaseEntityDict,
                             result: 'success',
                         },
                     },
-                    {}
+                    {
+                        dontCollect: true,
+                    }
                 );
                 closeRootMode();
                 return {
