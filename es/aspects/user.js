@@ -90,7 +90,9 @@ export async function getChangePasswordChannels(params, context, innerLogic) {
             userId,
             ableState: 'enabled',
         },
-    }, {});
+    }, {
+        dontCollect: true,
+    });
     const [user] = await context.select('user', {
         data: {
             id: 1,
@@ -99,7 +101,9 @@ export async function getChangePasswordChannels(params, context, innerLogic) {
         filter: {
             id: userId,
         }
-    }, {});
+    }, {
+        dontCollect: true
+    });
     const result = [];
     if (mobileList.length > 0) {
         result.push('mobile');
@@ -117,8 +121,13 @@ export async function updateUserPassword(params, context, innerLogic) {
             data: {
                 id: 1,
                 password: 1,
-            }
-        }, {});
+            },
+            filter: {
+                id: userId,
+            },
+        }, {
+            dontCollect: true
+        });
         if (prevPassword) {
             const [lastSuccessfulTemp] = await context.select('changePasswordTemp', {
                 data: {
@@ -142,22 +151,28 @@ export async function updateUserPassword(params, context, innerLogic) {
                 ],
                 indexFrom: 0,
                 count: 1,
-            }, {});
+            }, {
+                dontCollect: true,
+            });
             const count1 = await context.count('changePasswordTemp', {
-                filter: lastSuccessfulTemp ? {
-                    userId,
-                    $$seq$$: {
-                        $gt: lastSuccessfulTemp.$$seq$$,
+                filter: lastSuccessfulTemp
+                    ? {
+                        userId,
+                        $$seq$$: {
+                            $gt: lastSuccessfulTemp.$$seq$$,
+                        },
+                        result: 'fail',
+                    }
+                    : {
+                        userId,
+                        $$createAt$$: {
+                            $gt: dayjs().startOf('day').valueOf(),
+                        },
+                        result: 'fail',
                     },
-                    result: 'fail',
-                } : {
-                    userId,
-                    $$createAt$$: {
-                        $gt: dayjs().startOf('day').valueOf(),
-                    },
-                    result: 'fail',
-                },
-            }, {});
+            }, {
+                dontCollect: true,
+            });
             if (count1 >= 5) {
                 closeRootMode();
                 return {
@@ -171,12 +186,14 @@ export async function updateUserPassword(params, context, innerLogic) {
                     action: 'update',
                     data: {
                         password: newPassword,
-                        passwordSha1: encryptPasswordSha1(newPassword)
+                        passwordSha1: encryptPasswordSha1(newPassword),
                     },
                     filter: {
                         id: userId,
                     },
-                }, {});
+                }, {
+                    dontCollect: true,
+                });
                 await context.operate('changePasswordTemp', {
                     id: await generateNewIdAsync(),
                     action: 'create',
@@ -187,7 +204,9 @@ export async function updateUserPassword(params, context, innerLogic) {
                         newPassword,
                         result: 'success',
                     },
-                }, {});
+                }, {
+                    dontCollect: true,
+                });
                 closeRootMode();
                 return {
                     result: 'success'
@@ -204,7 +223,9 @@ export async function updateUserPassword(params, context, innerLogic) {
                         newPassword,
                         result: 'fail',
                     },
-                }, {});
+                }, {
+                    dontCollect: true,
+                });
                 closeRootMode();
                 return {
                     result: '原密码不正确，请检查后输入',
@@ -224,19 +245,23 @@ export async function updateUserPassword(params, context, innerLogic) {
                 },
                 indexFrom: 0,
                 count: 1,
-            }, {});
+            }, {
+                dontCollect: true,
+            });
             if (aliveCaptcha) {
                 await context.operate('user', {
                     id: await generateNewIdAsync(),
                     action: 'update',
                     data: {
                         password: newPassword,
-                        passwordSha1: encryptPasswordSha1(newPassword)
+                        passwordSha1: encryptPasswordSha1(newPassword),
                     },
                     filter: {
                         id: userId,
                     },
-                }, {});
+                }, {
+                    dontCollect: true,
+                });
                 await context.operate('changePasswordTemp', {
                     id: await generateNewIdAsync(),
                     action: 'create',
@@ -247,7 +272,9 @@ export async function updateUserPassword(params, context, innerLogic) {
                         newPassword,
                         result: 'success',
                     },
-                }, {});
+                }, {
+                    dontCollect: true,
+                });
                 closeRootMode();
                 return {
                     result: 'success'
