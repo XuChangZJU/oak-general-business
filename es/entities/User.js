@@ -7,7 +7,7 @@ const IdActionDef = {
     },
     is: 'unverified',
 };
-const UserActionDef = {
+export const UserActionDef = {
     stm: {
         activate: ['shadow', 'normal'],
         disable: [['normal', 'shadow'], 'disabled'],
@@ -16,7 +16,7 @@ const UserActionDef = {
         mergeFrom: ['normal', 'normal'],
     },
 };
-const entityDesc = {
+export const entityDesc = {
     locales: {
         "zh_CN": {
             name: '用户',
@@ -110,4 +110,3 @@ const entityDesc = {
         },
     ]
 };
-export {};
