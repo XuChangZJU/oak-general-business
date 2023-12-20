@@ -5,6 +5,7 @@ import station from "./station";
 import subwayStation from "./subwayStation";
 import actionAuth from './actionAuth';
 import path from './path';
+import i18n from "./i18n";
 export default {
     user: users,
     mobile: mobiles,
@@ -15,4 +16,5 @@ export default {
     subwayStation,
     actionAuth,
     path,
+    i18n,
 };

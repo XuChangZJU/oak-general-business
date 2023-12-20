@@ -36,7 +36,7 @@ const IdActionDef: ActionDef<IdAction, IdState> = {
 };
 
 type UserAction = 'activate' | 'disable' | 'enable' | 'mergeTo' | 'mergeFrom';
-export type UserState = 'shadow' | 'normal' | 'disabled' | 'merged';
+type UserState = 'shadow' | 'normal' | 'disabled' | 'merged';
 export const UserActionDef: ActionDef<UserAction, UserState> = {
     stm: {
         activate: ['shadow', 'normal'],
@@ -47,7 +47,7 @@ export const UserActionDef: ActionDef<UserAction, UserState> = {
     },
 };
 
-export type Action = UserAction | IdAction;
+type Action = UserAction | IdAction;
 
 export const entityDesc: EntityDesc<Schema, Action, '', {
     userState: UserState;

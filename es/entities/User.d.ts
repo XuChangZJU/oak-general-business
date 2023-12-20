@@ -25,9 +25,9 @@ export interface Schema extends EntityShape {
 type IdAction = 'verify' | 'accept' | 'reject';
 type IdState = 'unverified' | 'verified' | 'verifying';
 type UserAction = 'activate' | 'disable' | 'enable' | 'mergeTo' | 'mergeFrom';
-export type UserState = 'shadow' | 'normal' | 'disabled' | 'merged';
+type UserState = 'shadow' | 'normal' | 'disabled' | 'merged';
 export declare const UserActionDef: ActionDef<UserAction, UserState>;
-export type Action = UserAction | IdAction;
+type Action = UserAction | IdAction;
 export declare const entityDesc: EntityDesc<Schema, Action, '', {
     userState: UserState;
     idState: IdState;

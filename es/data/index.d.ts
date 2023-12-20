@@ -30,5 +30,6 @@ declare const _default: {
     subwayStation: import("../oak-app-domain/SubwayStation/Schema").CreateOperationData[];
     actionAuth: import("../oak-app-domain/ActionAuth/Schema").CreateOperationData[];
     path: import("../oak-app-domain/Path/Schema").CreateOperationData[];
+    i18n: import("../oak-app-domain/I18n/Schema").CreateOperationData[];
 };
 export default _default;

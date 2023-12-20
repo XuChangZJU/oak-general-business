@@ -6,7 +6,7 @@ const IdActionDef = {
     },
     is: 'unverified',
 };
-const UserActionDef = {
+export const UserActionDef = {
     stm: {
         activate: ['shadow', 'normal'],
         disable: [['normal', 'shadow'], 'disabled'],

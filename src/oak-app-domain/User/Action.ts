@@ -12,7 +12,7 @@ const IdActionDef: ActionDef<IdAction, IdState> = {
 };
 export type UserAction = 'activate' | 'disable' | 'enable' | 'mergeTo' | 'mergeFrom' | string;
 export type UserState = 'shadow' | 'normal' | 'disabled' | 'merged' | string;
-const UserActionDef: ActionDef<UserAction, UserState> = {
+export const UserActionDef: ActionDef<UserAction, UserState> = {
     stm: {
         activate: ['shadow', 'normal'],
         disable: [['normal', 'shadow'], 'disabled'],
