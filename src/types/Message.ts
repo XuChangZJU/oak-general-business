@@ -20,44 +20,42 @@ export interface MessageNotificationConverter<
 > {
     type: string;
     toWechatMp?: (
-        entity: ED['message']['OpSchema']['entity'],
-        entityId: string,
+        message: ED['message']['OpSchema'],
         applications: EntityDict['application']['Schema'][],
         application: EntityDict['application']['Schema'],
         context: Cxt
     ) => Promise<
         | {
-            [K: string]: {
-                value: string;
-            };
-        }
+              [K: string]: {
+                  value: string;
+              };
+          }
         | undefined
     >;
     toWechatPublic?: (
-        entity: ED['message']['OpSchema']['entity'],
-        entityId: string,
+        message: ED['message']['OpSchema'],
         applications: EntityDict['application']['Schema'][],
         application: EntityDict['application']['Schema'],
         context: Cxt
     ) => Promise<
         | {
-            data: {
-                first?: {
-                    value: string;
-                    color?: string;
-                };
-                remark?: {
-                    value: string;
-                    color?: string;
-                };
-            } & {
-                [K in WechatPublicTemplateMsgKeyword]?: {
-                    value: string;
-                    color?: string;
-                };
-            };
-            wechatMpAppId?: string;
-        }
+              data: {
+                  first?: {
+                      value: string;
+                      color?: string;
+                  };
+                  remark?: {
+                      value: string;
+                      color?: string;
+                  };
+              } & {
+                  [K in WechatPublicTemplateMsgKeyword]?: {
+                      value: string;
+                      color?: string;
+                  };
+              };
+              wechatMpAppId?: string;
+          }
         | undefined
     >;
     toSms?: (
@@ -65,10 +63,10 @@ export interface MessageNotificationConverter<
         context: Cxt
     ) => Promise<
         | {
-            signName?: string; // 可能的签名
-            params?: Record<string, string>; // 模板参数,需要替换的参数名和 value 的键值对
-            paramsArray?: Array<string>; // 数组形式的模板参数，按序传入服务商接口
-        }
+              signName?: string; // 可能的签名
+              params?: Record<string, string>; // 模板参数,需要替换的参数名和 value 的键值对
+              paramsArray?: Array<string>; // 数组形式的模板参数，按序传入服务商接口
+          }
         | undefined
     >;
 }

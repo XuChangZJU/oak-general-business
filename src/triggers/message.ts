@@ -192,7 +192,14 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                                         );
                                         if (messageTypeTemplate && wechatUser) {
                                             const converter = ConverterDict[type!] && ConverterDict[type!]!.toWechatMp;
-                                            const dispersedData = converter && await converter(entity!, entityId!, apps, app, context);
+                                            const dispersedData =
+                                                converter &&
+                                                (await converter(
+                                                    message as EntityDict['message']['OpSchema'],
+                                                    apps,
+                                                    app,
+                                                    context
+                                                ));
                                             if (dispersedData) {
                                                 notificationDatas.push({
                                                     id: await generateNewIdAsync(),
@@ -258,7 +265,14 @@ async function createNotification(message: CreateMessageData, context: BRC) {
                                         );
                                         if (messageTypeTemplate && wechatUser) {
                                             const converter = ConverterDict[type!] && ConverterDict[type!]!.toWechatPublic;
-                                            const disperseResult = converter && await converter(entity!, entityId!, apps, app, context);
+                                            const disperseResult =
+                                                converter &&
+                                                (await converter(
+                                                    message as EntityDict['message']['OpSchema'],
+                                                    apps,
+                                                    app,
+                                                    context
+                                                ));
                                             if (disperseResult) {
                                                 const { data, wechatMpAppId } = disperseResult;
                                                 notificationDatas.push({
