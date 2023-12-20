@@ -5,12 +5,12 @@ export type Channel = 'wechatPublic' | 'jPush' | 'jim' | 'wechatMp' | 'sms';
 export type Weight = 'high' | 'medium' | 'low';
 export interface MessageNotificationConverter<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>> {
     type: string;
-    toWechatMp?: (entity: ED['message']['OpSchema']['entity'], entityId: string, applications: EntityDict['application']['Schema'][], application: EntityDict['application']['Schema'], context: Cxt) => Promise<{
+    toWechatMp?: (message: ED['message']['OpSchema'], applications: EntityDict['application']['Schema'][], application: EntityDict['application']['Schema'], context: Cxt) => Promise<{
         [K: string]: {
             value: string;
         };
     } | undefined>;
-    toWechatPublic?: (entity: ED['message']['OpSchema']['entity'], entityId: string, applications: EntityDict['application']['Schema'][], application: EntityDict['application']['Schema'], context: Cxt) => Promise<{
+    toWechatPublic?: (message: ED['message']['OpSchema'], applications: EntityDict['application']['Schema'][], application: EntityDict['application']['Schema'], context: Cxt) => Promise<{
         data: {
             first?: {
                 value: string;

@@ -1,5 +1,4 @@
 import { EntityDict } from '../../../oak-app-domain';
-import MessageTypes from '../../../config/messageType';
 export default OakComponent({
     entity: 'messageTypeTemplate',
     isList: true,

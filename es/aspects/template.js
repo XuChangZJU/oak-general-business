@@ -3,7 +3,7 @@ import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { WechatSDK } from 'oak-external-sdk';
 import { uniq } from 'oak-domain/lib/utils/lodash';
 let messageTypes = [];
-export function registMessageType(messageType) {
+export function registerMessageType(messageType) {
     let messageTypes2 = messageTypes.concat(messageType);
     messageTypes = uniq(messageTypes2);
 }

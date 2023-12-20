@@ -144,7 +144,8 @@ async function createNotification(message, context) {
                         const messageTypeTemplate = messageTypeTemplates.find(ele => ele.template.applicationId === app.id && ele.type === type);
                         if (messageTypeTemplate && wechatUser) {
                             const converter = ConverterDict[type] && ConverterDict[type].toWechatMp;
-                            const dispersedData = converter && await converter(entity, entityId, apps, app, context);
+                            const dispersedData = converter &&
+                                (await converter(message, apps, app, context));
                             if (dispersedData) {
                                 notificationDatas.push({
                                     id: await generateNewIdAsync(),
@@ -194,7 +195,8 @@ async function createNotification(message, context) {
                         const messageTypeTemplate = messageTypeTemplates.find(ele => ele.template.applicationId === app.id && ele.type === type);
                         if (messageTypeTemplate && wechatUser) {
                             const converter = ConverterDict[type] && ConverterDict[type].toWechatPublic;
-                            const disperseResult = converter && await converter(entity, entityId, apps, app, context);
+                            const disperseResult = converter &&
+                                (await converter(message, apps, app, context));
                             if (disperseResult) {
                                 const { data, wechatMpAppId } = disperseResult;
                                 notificationDatas.push({
