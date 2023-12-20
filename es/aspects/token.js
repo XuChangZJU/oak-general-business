@@ -125,6 +125,10 @@ async function dealWithUserState(user, context, tokenData) {
         }
     }
 }
+function autoMergeUser(context) {
+    const { system } = context.getApplication();
+    return !!system.config.App.mergeUserDirectly;
+}
 /**
  * 根据user的不同情况，完成登录动作
  * @param env
@@ -153,25 +157,21 @@ createData, user) {
                     if (currentToken.userId === user.id) {
                         return currentToken.id;
                     }
-                    await mergeUser({ from: user.id, to: currentToken.userId }, context, true);
-                    return currentToken.id;
+                    const autoMerge = autoMergeUser(context);
+                    if (autoMerge) {
+                        await mergeUser({ from: user.id, to: currentToken.userId, mergeMobile: true, mergeWechatUser: true, mergeEmail: true }, context, true);
+                        return currentToken.id;
+                    }
+                    throw await makeDistinguishException(user.id, context);
                 }
                 case 'shadow': {
                     assert(currentToken.userId !== user.id);
-                    await mergeUser({ from: user.id, to: currentToken.userId }, context, true);
-                    // await context.operate(
-                    //     'user',
-                    //     {
-                    //         id: await generateNewIdAsync(),
-                    //         action: 'activate',
-                    //         data: {},
-                    //         filter: {
-                    //             id: user.id!,
-                    //         },
-                    //     },
-                    //     { dontCollect: true }
-                    // );
-                    return currentToken.id;
+                    const autoMerge = autoMergeUser(context);
+                    if (autoMerge) {
+                        await mergeUser({ from: user.id, to: currentToken.userId, mergeMobile: true, mergeWechatUser: true, mergeEmail: true }, context, true);
+                        return currentToken.id;
+                    }
+                    throw await makeDistinguishException(user.id, context);
                 }
                 case 'disabled': {
                     throw new OakUserDisabledException();
@@ -181,10 +181,14 @@ createData, user) {
                     if (user.refId === currentToken.userId) {
                         return currentToken.id;
                     }
-                    // 说明一个用户被其他用户merge了，现在还是暂时先merge，后面再说
-                    console.warn(`用户${user.id}已经是merged状态「${user.refId}」，再次被merged到「${currentToken.userId}]」`);
-                    await mergeUser({ from: user.id, to: currentToken.userId }, context, true);
-                    return currentToken.id;
+                    const autoMerge = autoMergeUser(context);
+                    if (autoMerge) {
+                        // 说明一个用户被其他用户merge了，现在还是暂时先merge，后面再说
+                        console.warn(`用户${user.id}已经是merged状态「${user.refId}」，再次被merged到「${currentToken.userId}]」`);
+                        await mergeUser({ from: user.id, to: currentToken.userId, mergeMobile: true, mergeWechatUser: true, mergeEmail: true }, context, true);
+                        return currentToken.id;
+                    }
+                    throw await makeDistinguishException(user.id, context);
                 }
                 default: {
                     assert(false, `不能理解的user状态「${userState}」`);

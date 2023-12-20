@@ -7,11 +7,19 @@ import { encryptPasswordSha1 } from '../utils/password';
 import { assert } from 'oak-domain/lib/utils/assert';
 import dayjs from 'dayjs';
 
-export async function mergeUser<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(params: { from: string, to: string }, context: Cxt, innerLogic?: boolean) {
+export async function mergeUser<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(
+    params: { 
+        from: string, 
+        to: string,
+        mergeMobile?: true,
+        mergeEmail?: true,
+        mergeWechatUser?: true,
+    }, context: Cxt, innerLogic?: boolean
+    ) {
     if (!innerLogic && !context.isRoot()) {
         throw new OakUserUnpermittedException('不允许执行mergeUser操作');
     }
-    const { from, to } = params;
+    const { from, to, mergeMobile, mergeEmail, mergeWechatUser } = params;
     assert(from);
     assert(to);
     assert(from !== to, '不能merge到相同user');
@@ -83,6 +91,43 @@ export async function mergeUser<ED extends EntityDict & BaseEntityDict, Cxt exte
             ],
         },
     }, {});
+    
+    if (mergeEmail) {
+        await context.operate('email', {
+            id: await generateNewIdAsync(),
+            action: 'update',
+            data: {
+                userId: to,
+            },
+            filter: {
+                userId: from,
+            }
+        }, { dontCollect: true });
+    }
+    if (mergeMobile) {
+        await context.operate('mobile', {
+            id: await generateNewIdAsync(),
+            action: 'update',
+            data: {
+                userId: to,
+            },
+            filter: {
+                userId: from,
+            }
+        }, { dontCollect: true });
+    }
+    if (mergeWechatUser) {
+        await context.operate('wechatUser', {
+            id: await generateNewIdAsync(),
+            action: 'update',
+            data: {
+                userId: to,
+            },
+            filter: {
+                userId: from,
+            }
+        }, { dontCollect: true });
+    }
 }
 
 export async function getChangePasswordChannels<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>>(params: { userId: string }, context: Cxt, innerLogic?: boolean) {

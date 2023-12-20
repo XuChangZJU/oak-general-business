@@ -7,7 +7,7 @@ export async function mergeUser(params, context, innerLogic) {
     if (!innerLogic && !context.isRoot()) {
         throw new OakUserUnpermittedException('不允许执行mergeUser操作');
     }
-    const { from, to } = params;
+    const { from, to, mergeMobile, mergeEmail, mergeWechatUser } = params;
     assert(from);
     assert(to);
     assert(from !== to, '不能merge到相同user');
@@ -77,6 +77,42 @@ export async function mergeUser(params, context, innerLogic) {
             ],
         },
     }, {});
+    if (mergeEmail) {
+        await context.operate('email', {
+            id: await generateNewIdAsync(),
+            action: 'update',
+            data: {
+                userId: to,
+            },
+            filter: {
+                userId: from,
+            }
+        }, { dontCollect: true });
+    }
+    if (mergeMobile) {
+        await context.operate('mobile', {
+            id: await generateNewIdAsync(),
+            action: 'update',
+            data: {
+                userId: to,
+            },
+            filter: {
+                userId: from,
+            }
+        }, { dontCollect: true });
+    }
+    if (mergeWechatUser) {
+        await context.operate('wechatUser', {
+            id: await generateNewIdAsync(),
+            action: 'update',
+            data: {
+                userId: to,
+            },
+            filter: {
+                userId: from,
+            }
+        }, { dontCollect: true });
+    }
 }
 export async function getChangePasswordChannels(params, context, innerLogic) {
     const { userId } = params;
