@@ -306,7 +306,7 @@ async function setUpTokenAndUser<
                             userId: currentToken.userId,
                         }),
                     } as any,
-                    { dontCollect: true }
+                    { dontCollect: entity !== 'mobile' }
                 );
             } else {
                 assert(entityId);
@@ -322,7 +322,7 @@ async function setUpTokenAndUser<
                             id: entityId,
                         },
                     } as any,
-                    { dontCollect: true }
+                    { dontCollect: entity !== 'mobile' }
                 );
             }
             return currentToken.id;

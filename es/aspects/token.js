@@ -205,7 +205,7 @@ createData, user) {
                     data: Object.assign(createData, {
                         userId: currentToken.userId,
                     }),
-                }, { dontCollect: true });
+                }, { dontCollect: entity !== 'mobile' });
             }
             else {
                 assert(entityId);
@@ -218,7 +218,7 @@ createData, user) {
                     filter: {
                         id: entityId,
                     },
-                }, { dontCollect: true });
+                }, { dontCollect: entity !== 'mobile' });
             }
             return currentToken.id;
         }
