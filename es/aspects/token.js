@@ -1148,37 +1148,30 @@ export async function sendCaptcha({ mobile, env, type: type2, }, context) {
         }, {
             dontCollect: true,
         });
-        const result = await sendSms({
-            origin: 'tencent',
-            templateName: '登录',
-            mobile,
-            templateParam: { code, duration: duration.toString() },
-        }, context);
-        closeRootMode();
-        if (result.success) {
-            return '验证码已发送';
+
+        if (process.env.NODE_ENV === 'development' || mockSend) {
+            closeRootMode();
+            return `验证码[${code}]已创建`;
+        } else {
+            //发送短信
+            const result = await sendSms(
+                {
+                    origin: 'tencent',
+                    templateName: '登录',
+                    mobile,
+                    templateParam: {
+                        code,
+                        duration: duration.toString(),
+                    },
+                },
+                context
+            );
+            closeRootMode();
+            if (result.success) {
+                return '验证码已发送';
+            }
+            return '验证码发送失败';
         }
-        return '验证码发送失败';
-        // if (process.env.NODE_ENV === 'development' || mockSend) {
-        //     closeRootMode();
-        //     return `验证码[${code}]已创建`;
-        // } else {
-        //     //发送短信
-        //     const result = await sendSms<ED, Cxt>(
-        //         {
-        //             origin: 'tencent',
-        //             templateName: '登录',
-        //             mobile,
-        //             templateParam: { code, duration: duration.toString() },
-        //         },
-        //         context
-        //     );
-        //     closeRootMode();
-        //     if (result === true) {
-        //         return '验证码已发送';
-        //     }
-        //     return '验证码发送失败';
-        // }
     }
 }
 export async function switchTo({ userId }, context) {
