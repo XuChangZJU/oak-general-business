@@ -55,6 +55,9 @@ export async function getApplication<
             application,
             '微信小程序环境下 application必须存在小程序相关配置'
         );
+    }
+    else if (type === 'native') {
+       assert(application, 'APP环境下 application必须存在APP相关配置'); 
     } else {
         //web 或 wechatPublic
         if (type === 'wechatPublic') {
