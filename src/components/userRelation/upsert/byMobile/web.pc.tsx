@@ -5,22 +5,42 @@ import OnUser from '../onUser/index';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
 
-export default function Render(props: WebComponentProps<EntityDict, 'mobile', false, {
-    entity: keyof EntityDict;
-    entityId: string;
-    relations: EntityDict['relation']['OpSchema'][];
-    mobileValue: string;
-    mobileValueReady: boolean;
-    userId: string;
-    legal: boolean;
-    isNew: boolean;
-}, {
-    onMobileChange: (value: string) => Promise<void>;
-    onConfirm: () => Promise<void>;
-    onReset: () => void;
-}>) {
-    const { mobileValue, mobileValueReady, relations, entity, entityId, userId,
-        oakFullpath, oakExecutable, legal, isNew } = props.data;
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'mobile',
+        false,
+        {
+            entity: keyof EntityDict;
+            entityId: string;
+            relations: EntityDict['relation']['OpSchema'][];
+            mobileValue: string;
+            mobileValueReady: boolean;
+            userId: string;
+            legal: boolean;
+            isNew: boolean;
+            passwordRequire: boolean;
+        },
+        {
+            onMobileChange: (value: string) => Promise<void>;
+            onConfirm: () => Promise<void>;
+            onReset: () => void;
+        }
+    >
+) {
+    const {
+        mobileValue,
+        mobileValueReady,
+        relations,
+        entity,
+        entityId,
+        userId,
+        oakFullpath,
+        oakExecutable,
+        legal,
+        isNew,
+        passwordRequire,
+    } = props.data;
     const { onConfirm, onMobileChange, onReset, t } = props.methods;
     const [passwordConfirm, setPasswordConfirm] = useState(true);
     return (

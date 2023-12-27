@@ -26,6 +26,7 @@ export default function Render(
             qrCodeType?: QrCodeType;
             rule: EntityDict['userEntityGrant']['OpSchema']['rule'];
             ruleOnRow: EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'];
+            passwordRequire: boolean;
         },
         {}
     >
@@ -44,6 +45,7 @@ export default function Render(
         claimUrl,
         rule,
         ruleOnRow,
+        passwordRequire,
     } = props.data;
     let SubPart: JSX.Element = <></>;
     if (grantMethodCount === 0) {
@@ -58,6 +60,7 @@ export default function Render(
         } else if (grantByMobile) {
             SubPart = (
                 <ByMobile
+                    passwordRequire={passwordRequire}
                     entity={entity}
                     entityId={entityId}
                     relations={relations}

@@ -66,7 +66,9 @@ export default OakComponent({
         claimUrl: '',
         qrCodeType: '' as QrCodeType,
         rule: 'single' as EntityDict['userEntityGrant']['OpSchema']['rule'],
-        ruleOnRow: 'single' as EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'],
+        ruleOnRow:
+            'single' as EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'],
+        passwordRequire: false,
     },
     lifetimes: {
         ready() {
@@ -113,8 +115,9 @@ export default OakComponent({
             entity: keyof ED2;
             entityId: string;
             redirectToAfterConfirm: ED2['userEntityGrant']['Schema']['redirectTo'];
-            claimUrl: string,
+            claimUrl: string;
             qrCodeType: string;
+            passwordRequire: boolean;
         }
     >
 ) => React.ReactElement;

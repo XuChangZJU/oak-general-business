@@ -16,7 +16,11 @@ export default OakComponent({
     formData({ data: mobile }) {
         const { oakFullpath } = this.state;
 
-        const userRelations = oakFullpath && this.features.runningTree.getOperations(`${oakFullpath}.user.userRelation$user`);
+        const userRelations =
+            oakFullpath &&
+            this.features.runningTree.getOperations(
+                `${oakFullpath}.user.userRelation$user`
+            );
 
         return {
             userId: mobile?.userId,
@@ -27,6 +31,7 @@ export default OakComponent({
         entity: '' as keyof EntityDict,
         entityId: '',
         relations: [] as EntityDict['relation']['OpSchema'][],
+        passwordRequire: false,
     },
     data: {
         mobileValue: '',
@@ -47,7 +52,7 @@ export default OakComponent({
                     filter: {
                         mobile: value,
                         ableState: 'enabled',
-                    }
+                    },
                 });
                 if (data.length > 0) {
                     this.clean();
@@ -55,20 +60,18 @@ export default OakComponent({
                     this.setId(data[0].id!);
                     this.setState({
                         isNew: false,
-                    })
-                }
-                else {
+                    });
+                } else {
                     this.clean();
                     this.unsetId();
                     this.setState({
                         isNew: true,
-                    })
+                    });
                     this.create({
                         mobile: value,
                     } as EntityDict['mobile']['CreateSingle']['data']);
                 }
-            }
-            else {
+            } else {
                 this.clean();
                 // this.unsetId();
             }
@@ -79,16 +82,14 @@ export default OakComponent({
         },
         async onConfirm() {
             if (this.state.isNew) {
-                const userValue = this.getFreshValue(
-                    'user'
-                ) as Partial<EntityDict['user']['Schema']>;
+                const userValue = this.getFreshValue('user') as Partial<
+                    EntityDict['user']['Schema']
+                >;
                 if (!userValue.name) {
-                    this.setMessage(
-                        {
-                            type: 'error',
-                            content: '用户姓名未填写',
-                        }
-                    )
+                    this.setMessage({
+                        type: 'error',
+                        content: '用户姓名未填写',
+                    });
                     return;
                 }
             }
@@ -115,7 +116,7 @@ export default OakComponent({
         },
         searchCancelMp() {
             this.onReset();
-        }
+        },
     },
 }) as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
     props: ReactComponentProps<
@@ -126,6 +127,7 @@ export default OakComponent({
             entity: keyof ED2;
             entityId: string;
             relations: EntityDict['relation']['OpSchema'][];
+            passwordRequire: boolean;
         }
     >
 ) => React.ReactElement;

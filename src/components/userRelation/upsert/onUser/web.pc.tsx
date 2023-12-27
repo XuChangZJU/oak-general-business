@@ -6,29 +6,51 @@ import { EntityDict } from '../../../../oak-app-domain';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { encryptPasswordSha1 } from '../../../../utils/password';
 
-export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
-    name: string;
-    nickname: string;
-    password: string;
-    mobileValue: string;
-    mobileValueReady: boolean;
-    oakId: string;
-    relations: EntityDict['relation']['OpSchema'][];
-    entity: keyof EntityDict;
-    entityId: string;
-    isNew: boolean;
-    setPasswordConfirm: (value: boolean) => void;
-}, {
-    onMobileChange: (value: string) => Promise<void>;
-    onConfirm: () => Promise<void>;
-    onReset: () => void;
-}>) {
-    const { name, isNew, nickname, password, relations, oakFullpath, entity, entityId, setPasswordConfirm } = props.data;
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'user',
+        false,
+        {
+            name: string;
+            nickname: string;
+            password: string;
+            mobileValue: string;
+            mobileValueReady: boolean;
+            oakId: string;
+            relations: EntityDict['relation']['OpSchema'][];
+            entity: keyof EntityDict;
+            entityId: string;
+            isNew: boolean;
+            setPasswordConfirm: (value: boolean) => void;
+            passwordRequire: boolean;
+        },
+        {
+            onMobileChange: (value: string) => Promise<void>;
+            onConfirm: () => Promise<void>;
+            onReset: () => void;
+        }
+    >
+) {
+    const {
+        name,
+        isNew,
+        nickname,
+        password,
+        relations,
+        oakFullpath,
+        entity,
+        entityId,
+        setPasswordConfirm,
+        passwordRequire,
+    } = props.data;
     const { t, update } = props.methods;
     const [password2, setPassword2] = useState('');
     const [validateHelp, setValidateHelp] = useState('');
     const [validateHelp1, setValidateHelp1] = useState('');
-    const [validateStatus, setValidateStatus] = useState('' as '' | "success" | "warning" | "error" | "validating" | undefined);
+    const [validateStatus, setValidateStatus] = useState(
+        '' as '' | 'success' | 'warning' | 'error' | 'validating' | undefined
+    );
     return (
         <>
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
@@ -82,6 +104,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                             help={validateHelp1}
                             rules={[
                                 {
+                                    require: passwordRequire,
                                     message: '请输入密码',
                                     validator: (_, value) => {
                                         if (!value && !password2) {
@@ -148,6 +171,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                             name="passwordConfirm"
                             rules={[
                                 {
+                                    require: passwordRequire,
                                     validator: (_, value) => {
                                         if (!value && !password) {
                                             setValidateHelp('');
