@@ -14,17 +14,17 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     buttonProps?: (ButtonProps & {
         color?: "success" | "default" | "warning" | "primary" | "danger" | undefined;
         fill?: "none" | "solid" | "outline" | undefined;
-        size?: "small" | "middle" | "large" | "mini" | undefined;
+        size?: "small" | "large" | "middle" | "mini" | undefined;
         block?: boolean | undefined;
         loading?: boolean | "auto" | undefined;
         loadingText?: string | undefined;
         loadingIcon?: import("react").ReactNode;
         disabled?: boolean | undefined;
         onClick?: ((event: import("react").MouseEvent<HTMLButtonElement, MouseEvent>) => unknown) | undefined;
-        type?: "button" | "reset" | "submit" | undefined;
+        type?: "button" | "submit" | "reset" | undefined;
         shape?: "default" | "rounded" | "rectangular" | undefined;
         children?: import("react").ReactNode;
-    } & Pick<import("react").ClassAttributes<HTMLButtonElement> & import("react").ButtonHTMLAttributes<HTMLButtonElement>, "id" | "onMouseDown" | "onMouseUp" | "onTouchStart" | "onTouchEnd"> & {
+    } & Pick<import("react").ClassAttributes<HTMLButtonElement> & import("react").ButtonHTMLAttributes<HTMLButtonElement>, "id" | "onMouseDown" | "onMouseUp" | "onTouchEnd" | "onTouchStart"> & {
         className?: string | undefined;
         style?: (import("react").CSSProperties & Partial<Record<"--text-color" | "--background-color" | "--border-radius" | "--border-width" | "--border-style" | "--border-color", string>>) | undefined;
         tabIndex?: number | undefined;

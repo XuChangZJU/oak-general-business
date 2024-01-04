@@ -60,6 +60,7 @@ export default OakComponent({
         qrCodeType: '',
         rule: 'single',
         ruleOnRow: 'single',
+        passwordRequire: false,
     },
     lifetimes: {
         ready() {

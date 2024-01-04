@@ -14,4 +14,5 @@ export default function Render(props: WebComponentProps<EntityDict, 'relation', 
     qrCodeType?: QrCodeType;
     rule: EntityDict['userEntityGrant']['OpSchema']['rule'];
     ruleOnRow: EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'];
+    passwordRequire: boolean;
 }, {}>): JSX.Element;

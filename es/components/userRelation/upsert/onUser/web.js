@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input } from 'antd-mobile';
 import UserRelation from './userRelation';
 export default function Render(props) {
-    const { name, isNew, nickname, password, relations, oakFullpath, entity, entityId } = props.data;
+    const { name, isNew, nickname, password, relations, oakFullpath, entity, entityId, passwordRequire, } = props.data;
     const { t, update } = props.methods;
     return (<>
             <Form.Item style={{ marginBottom: 0 }} label={!isNew ? t('existedUser') : t('newUser')}/>
@@ -29,7 +29,7 @@ export default function Render(props) {
                     </>
                 </Form.Item>) : (<Form.Item label={t('user:attr.password')} name="password" rules={[
                 {
-                    required: true,
+                    required: passwordRequire,
                 },
             ]}>
                     <>
