@@ -3,7 +3,7 @@ import { Form, Input, Button } from 'antd-mobile';
 import Style from './web.module.less';
 import OnUser from '../onUser/index';
 export default function Render(props) {
-    const { mobileValue, mobileValueReady, relations, entity, entityId, userId, oakFullpath, oakExecutable, oakDirty } = props.data;
+    const { mobileValue, mobileValueReady, relations, entity, entityId, userId, oakFullpath, oakExecutable, oakDirty, passwordRequire, } = props.data;
     const { onConfirm, onMobileChange, onReset, t } = props.methods;
     return (<Form footer={<div className={Style.btnContainer}>
                     <Button color="primary" style={{ flex: 2 }} onClick={() => {

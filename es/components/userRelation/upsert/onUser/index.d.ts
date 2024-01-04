@@ -6,5 +6,6 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     mobile: string;
     isComponent: boolean;
     setPasswordConfirm: (value: boolean) => void;
+    passwordRequire: boolean;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

@@ -1148,24 +1148,18 @@ export async function sendCaptcha({ mobile, env, type: type2, }, context) {
         }, {
             dontCollect: true,
         });
-
         if (process.env.NODE_ENV === 'development' || mockSend) {
             closeRootMode();
             return `验证码[${code}]已创建`;
-        } else {
+        }
+        else {
             //发送短信
-            const result = await sendSms(
-                {
-                    origin: 'tencent',
-                    templateName: '登录',
-                    mobile,
-                    templateParam: {
-                        code,
-                        duration: duration.toString(),
-                    },
-                },
-                context
-            );
+            const result = await sendSms({
+                origin: 'tencent',
+                templateName: '登录',
+                mobile,
+                templateParam: { code, duration: duration.toString() },
+            }, context);
             closeRootMode();
             if (result.success) {
                 return '验证码已发送';

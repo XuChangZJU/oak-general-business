@@ -5,7 +5,7 @@ import ByMobile from './byMobile/index';
 import ByUserEntityGrant from './byUserEntityGrant';
 import { assert } from 'oak-domain/lib/utils/assert';
 export default function Render(props) {
-    const { entity, entityId, relations, grantByUserEntityGrant, grantByEmail, grantByMobile, grantMethodCount, oakFullpath, redirectToAfterConfirm, qrCodeType, claimUrl, rule, ruleOnRow, } = props.data;
+    const { entity, entityId, relations, grantByUserEntityGrant, grantByEmail, grantByMobile, grantMethodCount, oakFullpath, redirectToAfterConfirm, qrCodeType, claimUrl, rule, ruleOnRow, passwordRequire, } = props.data;
     let SubPart = <></>;
     if (grantMethodCount === 0) {
         SubPart = (<div className={Style.container}>
@@ -17,7 +17,7 @@ export default function Render(props) {
             SubPart = <div className={Style.container}>尚未实现</div>;
         }
         else if (grantByMobile) {
-            SubPart = (<ByMobile entity={entity} entityId={entityId} relations={relations} oakPath="$userRelation-upsert-by-mobile" oakAutoUnmount={true}/>);
+            SubPart = (<ByMobile passwordRequire={passwordRequire} entity={entity} entityId={entityId} relations={relations} oakPath="$userRelation-upsert-by-mobile" oakAutoUnmount={true}/>);
         }
         else {
             assert(grantByUserEntityGrant === true);

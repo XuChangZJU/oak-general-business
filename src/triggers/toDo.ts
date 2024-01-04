@@ -116,6 +116,7 @@ export async function completeToDo<ED extends EntityDict & BaseEntityDict, T ext
             targetEntity: entity as string,
             targetFilter: filter,
             action,
+            iState: 'active',
         }
     }, {});
     assert(toDos.length > 0, `对${entity as string}相关的todo进行完成操作时，找不到对应的数据。filter是${JSON.stringify(filter)}`);

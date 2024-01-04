@@ -72,6 +72,7 @@ export default OakComponent({
         relations: [],
         mobile: '',
         isComponent: false,
-        setPasswordConfirm: (value) => { }
+        setPasswordConfirm: (value) => { },
+        passwordRequire: false,
     },
 });

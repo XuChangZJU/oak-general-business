@@ -21,39 +21,32 @@ export async function getApplication(params, context) {
     }, {});
     //微信小程序环境下 没有就报错
     if (type === 'wechatMp') {
-        assert(
-            application,
-            '微信小程序环境下 application必须存在小程序相关配置'
-        );
-    } else if (type === 'native') {
+        assert(application, '微信小程序环境下 application必须存在小程序相关配置');
+    }
+    else if (type === 'native') {
         assert(application, 'APP环境下 application必须存在APP相关配置');
-    } else {
+    }
+    else {
         //web 或 wechatPublic
         if (type === 'wechatPublic') {
             // 如果微信公众号环境下 application不存在公众号配置，但又在公众号访问，这时可以使用web的application
             if (!application) {
-                const [application2] = await context.select(
-                    'application',
-                    {
-                        data: cloneDeep(applicationProjection),
-                        filter: {
-                            type: 'web',
-                            system: {
-                                domain$system: {
-                                    url: domain,
-                                },
+                const [application2] = await context.select('application', {
+                    data: cloneDeep(applicationProjection),
+                    filter: {
+                        type: 'web',
+                        system: {
+                            domain$system: {
+                                url: domain,
                             },
                         },
                     },
-                    {}
-                );
-                assert(
-                    application2,
-                    '微信公众号环境下 application不存在公众号配置，但必须存在web相关配置'
-                );
+                }, {});
+                assert(application2, '微信公众号环境下 application不存在公众号配置，但必须存在web相关配置');
                 return application2.id;
             }
-        } else {
+        }
+        else {
             assert(application, 'web环境下 application必须存在web相关配置');
         }
     }

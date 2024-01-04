@@ -10,7 +10,8 @@ export default OakComponent({
     isList: false,
     formData({ data: mobile }) {
         const { oakFullpath } = this.state;
-        const userRelations = oakFullpath && this.features.runningTree.getOperations(`${oakFullpath}.user.userRelation$user`);
+        const userRelations = oakFullpath &&
+            this.features.runningTree.getOperations(`${oakFullpath}.user.userRelation$user`);
         return {
             userId: mobile?.userId,
             legal: userRelations && userRelations.length > 0,
@@ -20,6 +21,7 @@ export default OakComponent({
         entity: '',
         entityId: '',
         relations: [],
+        passwordRequire: false,
     },
     data: {
         mobileValue: '',
@@ -40,7 +42,7 @@ export default OakComponent({
                     filter: {
                         mobile: value,
                         ableState: 'enabled',
-                    }
+                    },
                 });
                 if (data.length > 0) {
                     this.clean();
@@ -102,6 +104,6 @@ export default OakComponent({
         },
         searchCancelMp() {
             this.onReset();
-        }
+        },
     },
 });
