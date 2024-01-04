@@ -13,9 +13,9 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
     printDebugStore: () => void;
     printCachedStore: () =>void;
     printRunningTree: () => void;
-    resetInitialData: () => void;
-    downloadEnv: () => void;
-    resetEnv: (data: Record<string, any>) => void;
+    resetInitialData: () => Promise<void>;
+    downloadEnv: () => Promise<void>;
+    resetEnv: (data: Record<string, any>) => Promise<void>;
 }>) {
     const { placement = 'bottom', style = {} } = props.data;
     const { printCachedStore, printDebugStore, printRunningTree, resetInitialData, downloadEnv, resetEnv } = props.methods;
@@ -64,12 +64,12 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
                         } else {
                             const reader = new FileReader();
                             reader.readAsText(file);
-                            reader.onload = function () {
+                            reader.onload = async function () {
                                 try {
                                     const data = JSON.parse(
                                         this.result as string
                                     );
-                                    resetEnv(data);
+                                    await resetEnv(data);
                                     window.location.reload();
                                 } catch (err) {
                                     console.error(err);
@@ -115,8 +115,8 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
                             size="large"
                             type="primary"
                             shape="circle"
-                            onClick={() => {
-                                const data = downloadEnv();
+                            onClick={async () => {
+                                const data = await downloadEnv();
                                 const element = document.createElement('a');
                                 element.setAttribute(
                                     'href',
@@ -163,8 +163,8 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
                                     content: '重置后，原来的数据不可恢复',
                                     okText: '确定',
                                     cancelText: '取消',
-                                    onOk: (e) => {
-                                        resetInitialData();
+                                    onOk: async (e) => {
+                                        await resetInitialData();
                                         modal.destroy!();
                                         window.location.reload();
                                     },
