@@ -1,7 +1,7 @@
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
-import React, { useState, useEffect, useRef } from 'react';
-import { Table, Button, Space, Typography, Input, Select, Modal, Tabs } from 'antd';
+import React, { useState } from 'react';
+import { Tabs } from 'antd';
 import MessageTypeSmsTemplateList from '../list';
 
 export default function Render(
