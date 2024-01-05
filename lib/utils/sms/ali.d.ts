@@ -5,8 +5,12 @@ import { EntityDict } from '../../oak-app-domain';
 import { AliSmsConfig } from '../../types/Config';
 export default class Ali implements Sms<ED, BackendRuntimeContext<ED>> {
     name: string;
-    getConfig(context: BackendRuntimeContext<ED>): AliSmsConfig;
-    syncTemplate(systemId: string): Promise<never[]>;
+    getConfig(context: BackendRuntimeContext<ED>, systemId?: string): Promise<AliSmsConfig>;
+    syncTemplate(systemId: string, context: BackendRuntimeContext<ED>): Promise<{
+        templateCode: string;
+        templateName: string;
+        templateContent: string;
+    }[]>;
     sendSms(params: {
         mobile: string;
         templateParam?: Record<string, any>;

@@ -109,7 +109,7 @@ export type Config = {
         ali?: AliCloudConfig[];
         tencent?: TencentCloudConfig[];
         qiniu?: QiniuCloudConfig[];
-        ctyun?: CTYunConfig[];
+        ctyun?: CTYunCloudConfig[];
         amap?: AmapCloudConfig[];
     };
     Cos?: {

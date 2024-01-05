@@ -3,10 +3,6 @@ export type QiniuCloudConfig = {
     accessKey: string;
     secretKey: string;
 };
-export type CTYunConfig = {
-    accessKey: string;
-    secretKey: string;
-};
 export type QiniuLiveConfig = {
     accessKey: string;
     liveHost: string;
@@ -55,12 +51,24 @@ export type TencentCloudConfig = {
     endpoint: string;
     smsEndpoint: string;
 };
+export type CTYunCloudConfig = {
+    accessKey: string;
+    securityKey: string;
+    smsEndpoint: string;
+};
 export type AmapCloudConfig = {
     webApiKey: string;
 };
 export type AliSmsConfig = {
     accessKeyId: string;
     accessKeySecret: string;
+    defaultSignName: string;
+    apiVersion: string;
+    endpoint: string;
+};
+export type CTYunSmsConfig = {
+    accessKey: string;
+    securityKey: string;
     defaultSignName: string;
     endpoint: string;
 };
@@ -82,7 +90,7 @@ export type Config = {
         ali?: AliCloudConfig[];
         tencent?: TencentCloudConfig[];
         qiniu?: QiniuCloudConfig[];
-        ctyun?: CTYunConfig[];
+        ctyun?: CTYunCloudConfig[];
         amap?: AmapCloudConfig[];
     };
     Cos?: {
@@ -99,6 +107,7 @@ export type Config = {
         mockSend?: boolean;
         ali?: AliSmsConfig[];
         tencent?: TencentSmsConfig[];
+        ctyun?: CTYunSmsConfig[];
     };
     App: {
         qrCodeType?: QrCodeType;

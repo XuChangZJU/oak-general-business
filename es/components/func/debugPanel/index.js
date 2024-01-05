@@ -14,8 +14,8 @@ export default OakComponent({
         printRunningTree() {
             console.log(this.features.runningTree.getRoot());
         },
-        resetInitialData() {
-            this.features.localStorage.clear();
+        async resetInitialData() {
+            await this.features.localStorage.clear();
             this.features.token.logout();
         },
         setVisible(visible) {
@@ -54,12 +54,12 @@ export default OakComponent({
                 dialogVisible: false,
             });
         },
-        downloadEnv() {
-            const data = this.features.localStorage.loadAll();
+        async downloadEnv() {
+            const data = await this.features.localStorage.loadAll();
             return data;
         },
-        resetEnv(data) {
-            this.features.localStorage.resetAll(data);
+        async resetEnv(data) {
+            await this.features.localStorage.resetAll(data);
         },
     },
 });

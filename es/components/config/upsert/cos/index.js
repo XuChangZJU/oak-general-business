@@ -130,9 +130,175 @@ function QiniuCos(props) {
         ]}></Tabs>
         </Col>);
 }
+const CTYunZoneArray = [
+    {
+        label: '郑州',
+        value: 'hazz',
+    },
+    {
+        label: '沈阳',
+        value: 'lnsy',
+    },
+    {
+        label: '四川成都',
+        value: 'sccd',
+    },
+    {
+        label: '乌鲁木齐',
+        value: 'xjwlmq',
+    },
+    {
+        label: '甘肃兰州',
+        value: 'gslz',
+    },
+    {
+        label: '山东青岛',
+        value: 'sdqd',
+    },
+    {
+        label: '贵州贵阳',
+        value: 'gzgy',
+    },
+    {
+        label: '湖北武汉',
+        value: 'hbwh',
+    },
+    {
+        label: '西藏拉萨',
+        value: 'xzls',
+    },
+    {
+        label: '安徽芜湖',
+        value: 'ahwh',
+    },
+    {
+        label: '广东深圳',
+        value: 'gdsz',
+    },
+    {
+        label: '江苏苏州',
+        value: 'jssz',
+    },
+    {
+        label: '上海2',
+        value: 'sh2',
+    },
+];
+function CTYunCos(props) {
+    const { cos, setValue, removeItem } = props;
+    return (<Col flex="auto">
+            <Divider orientation="left" className={Styles.title}>
+                天翼云配置
+            </Divider>
+            <Tabs tabPosition={'top'} size={'middle'} type="card" items={[
+            {
+                key: '0',
+                label: '配置项',
+                children: (<Form colon={true} labelAlign="left" layout="vertical" style={{ marginTop: 10 }}>
+                                <Form.Item label="accessKey">
+                                    <>
+                                        <Input placeholder="请输入accessKey" type="text" value={cos?.accessKey} onChange={(e) => setValue(`accessKey`, e.target.value)}/>
+                                    </>
+                                </Form.Item>
+                                {/* <Form.Item
+                        label="bucket"
+                        //name="bucket"
+                    >
+                        <>
+                            <Input
+                                placeholder="请输入bucket"
+                                type="text"
+                                value={cos?.bucket}
+                                onChange={(e) =>
+                                    setValue(
+                                        `bucket`,
+                                        e.target.value
+                                    )
+                                }
+                            />
+                        </>
+                    </Form.Item> */}
+                                <Divider orientation="left" className={Styles.title}>
+                                    bucket配置
+                                </Divider>
+                                <Tabs tabPosition={'top'} size={'middle'} type="editable-card" 
+                // hideAdd={!(sms.length > 0)}
+                onEdit={(targetKey, action) => {
+                        if (action === 'add') {
+                            setValue(`buckets.${cos?.buckets?.length || 0}`, {});
+                        }
+                        else {
+                            removeItem('buckets', parseInt(targetKey, 10));
+                        }
+                    }} items={cos?.buckets?.length > 0
+                        ? cos.buckets.map((ele, idx) => ({
+                            key: `${idx}`,
+                            label: `bucket:${idx + 1}`,
+                            children: (<Form colon={false} labelAlign="left" layout="vertical" style={{
+                                    marginTop: 10,
+                                }}>
+                                                          <Form.Item label="name">
+                                                              <>
+                                                                  <Input placeholder="请输入name" type="text" value={ele.name} onChange={(e) => setValue(`buckets.${idx}.name`, e
+                                    .target
+                                    .value)}/>
+                                                              </>
+                                                          </Form.Item>
+                                                          <Form.Item label="zone">
+                                                              <>
+                                                                  <Select style={{
+                                    width: '100%',
+                                }} placeholder="请选择存储区域" value={ele.zone} onChange={(value) => {
+                                    setValue(`buckets.${idx}.zone`, value);
+                                }} options={CTYunZoneArray}/>
+                                                              </>
+                                                          </Form.Item>
+                                                          <Form.Item label="domain">
+                                                              <>
+                                                                  <Input placeholder="请输入domain" type="text" value={ele.domain} onChange={(e) => setValue(`buckets.${idx}.domain`, e
+                                    .target
+                                    .value)}/>
+                                                              </>
+                                                          </Form.Item>
+                                                          <Form.Item label="protocol">
+                                                              <>
+                                                                  <Select mode="multiple" allowClear style={{
+                                    width: '100%',
+                                }} placeholder="请选择协议" value={ele?.protocol} onChange={(value) => {
+                                    setValue(`buckets.${idx}.protocol`, value);
+                                }} options={[
+                                    {
+                                        label: 'http',
+                                        value: 'http',
+                                    },
+                                    {
+                                        label: 'https',
+                                        value: 'https',
+                                    },
+                                ]}/>
+                                                              </>
+                                                          </Form.Item>
+                                                      </Form>),
+                        }))
+                        : []}/>
+                                {cos?.buckets?.length > 0 && (<Form.Item label="defaultBucket">
+                                        <>
+                                            <Select allowClear style={{ width: '100%' }} placeholder="请选择默认bucket" value={cos.defaultBucket} onChange={(value) => {
+                            setValue(`defaultBucket`, value);
+                        }} options={cos.buckets.map((ele) => ({
+                            label: ele.name,
+                            value: ele.name,
+                        }))}/>
+                                        </>
+                                    </Form.Item>)}
+                            </Form>),
+            },
+        ]}></Tabs>
+        </Col>);
+}
 export default function Cos(props) {
     const { cos, setValue, removeItem } = props;
-    const { qiniu } = cos;
+    const { qiniu, ctyun } = cos;
     return (<Space direction="vertical" size="middle" style={{ display: 'flex' }}>
             <Row>
                 <Card className={Styles.tips}>
@@ -140,5 +306,6 @@ export default function Cos(props) {
                 </Card>
             </Row>
             <QiniuCos cos={qiniu} setValue={(path, value) => setValue(`qiniu.${path}`, value)} removeItem={(path, index) => removeItem(`qiniu.${path}`, index)}/>
+            <CTYunCos cos={ctyun} setValue={(path, value) => setValue(`ctyun.${path}`, value)} removeItem={(path, index) => removeItem(`ctyun.${path}`, index)}/>
         </Space>);
 }

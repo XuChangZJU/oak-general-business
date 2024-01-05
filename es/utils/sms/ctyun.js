@@ -1,8 +1,8 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { get } from 'oak-domain/lib/utils/lodash';
 import SDK from 'oak-external-sdk/lib/SmsSdk';
-export default class Ali {
-    name = 'ali';
+export default class CTYun {
+    name = 'ctyun';
     async getConfig(context, systemId) {
         let system;
         if (systemId) {
@@ -22,27 +22,25 @@ export default class Ali {
             system = context.getApplication().system;
         }
         const { config: systemConfig } = system;
-        const aliConfig = get(systemConfig, 'Sms.ali.0', {});
-        const { accessKeyId, accessKeySecret, defaultSignName, endpoint } = aliConfig;
-        assert(accessKeyId, 'accessKeyId未配置');
-        assert(accessKeySecret, 'accessKeySecret未配置');
-        assert(defaultSignName, 'defaultSignName未配置');
-        assert(endpoint, 'endpoint未配置');
-        return aliConfig;
+        const ctyunConfig = get(systemConfig, 'Sms.ctyun.0', {});
+        const { accessKey, securityKey, endpoint } = ctyunConfig;
+        assert(accessKey, 'accessKey未配置');
+        assert(securityKey, 'securityKey未配置');
+        return ctyunConfig;
     }
     async syncTemplate(systemId, context) {
-        const { accessKeyId, accessKeySecret, endpoint, apiVersion } = await this.getConfig(context, systemId);
-        const aliInstance = SDK.getInstance('ali', accessKeyId, accessKeySecret, endpoint, undefined, apiVersion);
-        const result = await aliInstance.syncTemplate({
-            PageIndex: 1,
-            PageSize: 100,
+        const { accessKey, securityKey, endpoint } = await this.getConfig(context, systemId);
+        const ctyunInstance = SDK.getInstance('ctyun', accessKey, securityKey, endpoint);
+        const result = await ctyunInstance.syncTemplate({
+            pageIndex: 1,
+            pageSize: 50, // pageSize必须小于或等于50
         });
         // // todo  templateName: string,
         // templateCode: string,
         // templateContent: string
-        const { smsTemplateList } = result;
-        if (smsTemplateList) {
-            return smsTemplateList.map((ele) => {
+        const { data } = result;
+        if (data) {
+            return data.map((ele) => {
                 return {
                     templateCode: ele.templateCode,
                     templateName: ele.templateName,
@@ -55,15 +53,15 @@ export default class Ali {
     async sendSms(params, context) {
         const { mobile, templateParam, smsTemplate } = params;
         const { templateCode } = smsTemplate;
-        const { accessKeyId, accessKeySecret, defaultSignName, endpoint } = await this.getConfig(context);
-        const aliInstance = SDK.getInstance('ali', accessKeyId, accessKeySecret, endpoint);
-        const result = await aliInstance.sendSms({
-            phoneNumbers: [mobile],
+        const { accessKey, securityKey, endpoint, defaultSignName, } = await this.getConfig(context);
+        const ctyunInstance = SDK.getInstance('ctyun', accessKey, securityKey, endpoint);
+        const result = await ctyunInstance.sendSms({
+            phoneNumber: mobile,
+            templateParam,
             templateCode: templateCode,
-            templateParam: templateParam,
             signName: defaultSignName,
         });
-        const { code, message, requestId } = result;
+        const code = result?.code || '';
         if (code === 'OK') {
             return {
                 success: true,

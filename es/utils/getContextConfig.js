@@ -48,7 +48,7 @@ export function getConfig(context, service, origin) {
         case 'ctyun': {
             const ctyunAccount = originCloudAccounts.find((ele) => ele.accessKey === originConfig.accessKey);
             assert(ctyunAccount, `调用的服务${service}源${origin}找不到相应的云平台帐号，请联系管理员`);
-            const ctyunInstance = CTYunSDk.getInstance(ctyunAccount.accessKey, ctyunAccount.secretKey);
+            const ctyunInstance = CTYunSDk.getInstance(ctyunAccount.accessKey, ctyunAccount.securityKey);
             return {
                 instance: ctyunInstance,
                 config: originConfig,

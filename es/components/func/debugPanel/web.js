@@ -32,10 +32,10 @@ export default function render(props) {
             else {
                 const reader = new FileReader();
                 reader.readAsText(file);
-                reader.onload = function () {
+                reader.onload = async function () {
                     try {
                         const data = JSON.parse(this.result);
-                        resetEnv(data);
+                        await resetEnv(data);
                         window.location.reload();
                     }
                     catch (err) {
@@ -62,8 +62,8 @@ export default function render(props) {
                         </Button>
                     </Tooltip>
                     <Tooltip title="下载Store">
-                        <Button size="large" type="primary" shape="circle" onClick={() => {
-            const data = downloadEnv();
+                        <Button size="large" type="primary" shape="circle" onClick={async () => {
+            const data = await downloadEnv();
             const element = document.createElement('a');
             element.setAttribute('href', 'data:text/plain;charset=utf-8,' +
                 encodeURIComponent(JSON.stringify(data)));
@@ -92,8 +92,8 @@ export default function render(props) {
                 content: '重置后，原来的数据不可恢复',
                 okText: '确定',
                 cancelText: '取消',
-                onOk: (e) => {
-                    resetInitialData();
+                onOk: async (e) => {
+                    await resetInitialData();
                     modal.destroy();
                     window.location.reload();
                 },

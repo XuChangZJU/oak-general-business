@@ -104,7 +104,7 @@ export default function Render(
                             help={validateHelp1}
                             rules={[
                                 {
-                                    require: passwordRequire,
+                                    required: passwordRequire,
                                     message: '请输入密码',
                                     validator: (_, value) => {
                                         if (!value && !password2) {
@@ -171,7 +171,7 @@ export default function Render(
                             name="passwordConfirm"
                             rules={[
                                 {
-                                    require: passwordRequire,
+                                    required: passwordRequire,
                                     validator: (_, value) => {
                                         if (!value && !password) {
                                             setValidateHelp('');

@@ -9,7 +9,7 @@ import {
     QiniuCloudConfig,
     Service,
     TencentCloudConfig,
-    CTYunConfig
+    CTYunCloudConfig
 } from '../types/Config';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext, AspectDict } from '../context/FrontendRuntimeContext';
@@ -90,7 +90,7 @@ export function getConfig<
         }
         case 'ctyun': {
             const ctyunAccount = (
-                originCloudAccounts as CTYunConfig[]
+                originCloudAccounts as CTYunCloudConfig[]
             ).find((ele) => ele.accessKey === originConfig.accessKey);
             assert(
                 ctyunAccount,
@@ -98,7 +98,7 @@ export function getConfig<
             );
             const ctyunInstance = CTYunSDk.getInstance(
                 ctyunAccount!.accessKey,
-                ctyunAccount!.secretKey,
+                ctyunAccount!.securityKey,
             );
             return {
                 instance: ctyunInstance,

@@ -4,7 +4,7 @@ import UserRelation from './userRelation';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { encryptPasswordSha1 } from '../../../../utils/password';
 export default function Render(props) {
-    const { name, isNew, nickname, password, relations, oakFullpath, entity, entityId, setPasswordConfirm } = props.data;
+    const { name, isNew, nickname, password, relations, oakFullpath, entity, entityId, setPasswordConfirm, passwordRequire, } = props.data;
     const { t, update } = props.methods;
     const [password2, setPassword2] = useState('');
     const [validateHelp, setValidateHelp] = useState('');
@@ -38,6 +38,7 @@ export default function Render(props) {
                     </Form.Item>) : (<>
                         <Form.Item label={t('user:attr.password')} name="password" help={validateHelp1} rules={[
                 {
+                    required: passwordRequire,
                     message: '请输入密码',
                     validator: (_, value) => {
                         if (!value && !password2) {
@@ -79,6 +80,7 @@ export default function Render(props) {
                         </Form.Item>
                         <Form.Item label={'确认密码'} name="passwordConfirm" rules={[
                 {
+                    required: passwordRequire,
                     validator: (_, value) => {
                         if (!value && !password) {
                             setValidateHelp('');

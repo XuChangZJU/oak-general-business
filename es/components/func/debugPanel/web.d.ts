@@ -8,7 +8,7 @@ export default function render(props: WebComponentProps<EntityDict, 'address', t
     printDebugStore: () => void;
     printCachedStore: () => void;
     printRunningTree: () => void;
-    resetInitialData: () => void;
-    downloadEnv: () => void;
-    resetEnv: (data: Record<string, any>) => void;
+    resetInitialData: () => Promise<void>;
+    downloadEnv: () => Promise<void>;
+    resetEnv: (data: Record<string, any>) => Promise<void>;
 }>): React.JSX.Element;
