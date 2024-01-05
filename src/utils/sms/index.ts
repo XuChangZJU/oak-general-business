@@ -10,13 +10,16 @@ import Sms from '../../types/Sms';
 
 import Ali from './ali';
 import Tencent from './tencent';
+import CTYun from './ctyun';
 
 const ali = new Ali();
 const tencent = new Tencent();
+const ctyun = new CTYun();
 
 const SmsDict: Record<string, any> = {
     [ali.name]: ali,
     [tencent.name]: tencent,
+    [ctyun.name]: ctyun,
 };
 
 
