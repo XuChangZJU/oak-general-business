@@ -50,7 +50,7 @@ export default class Ali implements Sms<ED, BackendRuntimeContext<ED>> {
             signName: defaultSignName,
         })
         const { code, message, requestId } = result;
-        if (code === 'Ok') {
+        if (code === 'OK') {
             return {
                 success: true,
                 res: result,

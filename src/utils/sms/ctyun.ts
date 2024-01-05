@@ -103,7 +103,7 @@ export default class CTYun implements Sms<ED, BackendRuntimeContext<ED>> {
             signName: defaultSignName,
         });
         const code = result?.code || '';
-        if (code === 'Ok') {
+        if (code === 'OK') {
             return {
                 success: true,
                 res: result,
