@@ -56,7 +56,7 @@ export default class CTYun implements Sms<ED, BackendRuntimeContext<ED>> {
         ) as CTYunSmsInstance;
         const result = await ctyunInstance.syncTemplate({
             pageIndex: 1,
-            pageSize: 100,
+            pageSize: 50, // pageSize必须小于或等于50
         });
         // // todo  templateName: string,
         // templateCode: string,
