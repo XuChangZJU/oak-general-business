@@ -7,7 +7,7 @@ import {
     Config,
     QiniuCloudConfig,
     TencentCloudConfig,
-    CTYunConfig
+    CTYunCloudConfig,
 } from '../../../../types/Config';
 
 
@@ -369,7 +369,7 @@ function QiniuAccount(props: {
 }
 
 function CTYunAccount(props: {
-    accounts: CTYunConfig[];
+    accounts: CTYunCloudConfig[];
     setValue: (path: string, value: any) => void;
     removeItem: (path: string, index: number) => void;
     addItem: (path: string, index: number) => void;
@@ -423,17 +423,17 @@ function CTYunAccount(props: {
                                           </>
                                       </Form.Item>
                                       <Form.Item
-                                          label="secretKey"
-                                          // name="secretKey"
+                                          label="securityKey"
+                                          // name="securityKey"
                                       >
                                           <>
                                               <Input
-                                                  placeholder="请输入secretKey"
+                                                  placeholder="请输入securityKey"
                                                   type="text"
-                                                  value={ele.secretKey}
+                                                  value={ele.securityKey}
                                                   onChange={(e) =>
                                                       setValue(
-                                                          `${idx}.secretKey`,
+                                                          `${idx}.securityKey`,
                                                           e.target.value
                                                       )
                                                   }
@@ -473,17 +473,17 @@ function CTYunAccount(props: {
                                               </>
                                           </Form.Item>
                                           <Form.Item
-                                              label="secretKey"
-                                              // name="secretKey"
+                                              label="securityKey"
+                                              // name="securityKey"
                                           >
                                               <>
                                                   <Input
-                                                      placeholder="请输入secretKey"
+                                                      placeholder="请输入securityKey"
                                                       type="text"
                                                       value=""
                                                       onChange={(e) =>
                                                           setValue(
-                                                              `0.secretKey`,
+                                                              `0.securityKey`,
                                                               e.target.value
                                                           )
                                                       }
