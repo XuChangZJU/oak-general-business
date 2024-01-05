@@ -3,7 +3,7 @@ import { Form, Input, Button, Space } from 'antd';
 import Style from './web.pc.module.less';
 import OnUser from '../onUser/index';
 export default function Render(props) {
-    const { mobileValue, mobileValueReady, relations, entity, entityId, userId, oakFullpath, oakExecutable, legal, isNew } = props.data;
+    const { mobileValue, mobileValueReady, relations, entity, entityId, userId, oakFullpath, oakExecutable, legal, isNew, passwordRequire, } = props.data;
     const { onConfirm, onMobileChange, onReset, t } = props.methods;
     const [passwordConfirm, setPasswordConfirm] = useState(true);
     return (<div className={Style.container}>

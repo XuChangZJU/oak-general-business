@@ -38,11 +38,8 @@ export default class Tencent implements Sms<ED, BackendRuntimeContext<ED>> {
             'Sms.tencent.0',
             {}
         ) as TencentSmsConfig;
-        const { secretId,
-            secretKey,
-            region,
-            endpoint,
-            smsSdkAppId } = tencentConfig;
+        const { secretId, secretKey, region, endpoint, smsSdkAppId } =
+            tencentConfig;
         assert(secretId, 'secretId未配置');
         assert(secretKey, 'secretKey未配置');
         assert(region, 'region未配置');

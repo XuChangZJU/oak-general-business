@@ -26,6 +26,7 @@ export default OakComponent({
         }
         return {
             id: 1,
+            $$createAt$$: 1,
             name: 1,
             nickname: 1,
             mobile$user: {
@@ -91,6 +92,18 @@ export default OakComponent({
             },
         };
     },
+    sorters: [
+        {
+            sorter() {
+                return {
+                    $attr: {
+                        $$createAt$$: 1,
+                    },
+                    $direction: 'desc'
+                };
+            },
+        }
+    ],
     filters: [
         {
             filter() {

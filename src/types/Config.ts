@@ -5,11 +5,6 @@ export type QiniuCloudConfig = {
     secretKey: string;
 };
 
-export type CTYunConfig = {
-    accessKey: string;
-    secretKey: string;
-}
-
 export type QiniuLiveConfig = {
     accessKey: string;
     liveHost: string; // 七牛直播云接口域名
@@ -65,6 +60,12 @@ export type TencentCloudConfig = {
     smsEndpoint: string;
 };
 
+export type CTYunCloudConfig = {
+    accessKey: string;
+    securityKey: string;
+    smsEndpoint: string;
+};
+
 export type AmapCloudConfig = {
     webApiKey: string;
 }
@@ -72,6 +73,14 @@ export type AmapCloudConfig = {
 export type AliSmsConfig = {
     accessKeyId: string;
     accessKeySecret: string;
+    defaultSignName: string;
+    apiVersion: string;
+    endpoint: string;
+};
+
+export type CTYunSmsConfig = {
+    accessKey: string;
+    securityKey: string;
     defaultSignName: string;
     endpoint: string;
 };
@@ -117,13 +126,14 @@ export type Config = {
         mockSend?: boolean;
         ali?: AliSmsConfig[];
         tencent?: TencentSmsConfig[];
+        ctyun?: CTYunSmsConfig[];
     };
     App: {
-        qrCodeType?: QrCodeType;            // 生成二维码时，优先生成的类型
-        qrCodeApplicationId?: string;       // 生成二维码时，优先使用的appId
-        qrCodePublicForMpId?: string;       // 如果qrCodeType是wechatPublicForMp，在此指明关联的小程序appId
-        mpShareImageUrl?: string;           // 小程序分享时的imageUrl（使用网络图片，5：4）
-        mergeUserDirectly?: boolean;        // 当发现用户具有相同的特征时直接合并
+        qrCodeType?: QrCodeType; // 生成二维码时，优先生成的类型
+        qrCodeApplicationId?: string; // 生成二维码时，优先使用的appId
+        qrCodePublicForMpId?: string; // 如果qrCodeType是wechatPublicForMp，在此指明关联的小程序appId
+        mpShareImageUrl?: string; // 小程序分享时的imageUrl（使用网络图片，5：4）
+        mergeUserDirectly?: boolean; // 当发现用户具有相同的特征时直接合并
     };
 };
 

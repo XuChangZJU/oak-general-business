@@ -20,7 +20,7 @@ export interface Schema extends EntityShape {
     codes: Array<WechatQrCode>;
     isRoot?: Boolean;
     addresses?: Address[];
-    accounts: Account[];
+    accounts?: Account[];
 }
 type IdAction = 'verify' | 'accept' | 'reject';
 type IdState = 'unverified' | 'verified' | 'verifying';

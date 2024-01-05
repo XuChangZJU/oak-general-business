@@ -7,5 +7,6 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     redirectToAfterConfirm: ED2["userEntityGrant"]["Schema"]["redirectTo"];
     claimUrl: string;
     qrCodeType: string;
+    passwordRequire: boolean;
 }>) => React.ReactElement;
 export default _default;

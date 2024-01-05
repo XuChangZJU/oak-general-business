@@ -8,6 +8,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'mobile', fa
     mobileValue: string;
     mobileValueReady: boolean;
     userId: string;
+    passwordRequire: boolean;
 }, {
     onMobileChange: (value: string) => Promise<void>;
     onConfirm: () => Promise<void>;

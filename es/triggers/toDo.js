@@ -88,6 +88,7 @@ export async function completeToDo(entity, filter, action, context) {
             targetEntity: entity,
             targetFilter: filter,
             action,
+            iState: 'active',
         }
     }, {});
     assert(toDos.length > 0, `对${entity}相关的todo进行完成操作时，找不到对应的数据。filter是${JSON.stringify(filter)}`);
