@@ -42,19 +42,19 @@ export type AliCloudConfig = {
     regionId: string;
     apiVersion: string;
     endpoint: string;
-    smsEndpoint: string;
+    smsEndpoint?: string;
 };
 export type TencentCloudConfig = {
     secretId: string;
     secretKey: string;
     region: string;
     endpoint: string;
-    smsEndpoint: string;
+    smsEndpoint?: string;
 };
 export type CTYunCloudConfig = {
     accessKey: string;
     securityKey: string;
-    smsEndpoint: string;
+    smsEndpoint?: string;
 };
 export type AmapCloudConfig = {
     webApiKey: string;
