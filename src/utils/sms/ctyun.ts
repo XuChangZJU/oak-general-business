@@ -48,13 +48,13 @@ export default class CTYun implements Sms<ED, BackendRuntimeContext<ED>> {
     async syncTemplate(systemId: string, context: BackendRuntimeContext<ED>) {
         const { accessKey, securityKey, endpoint } =
             await this.getConfig(context, systemId);
-        const tencentInstance = SDK.getInstance(
+        const ctyunInstance = SDK.getInstance(
             'ctyun',
             accessKey,
             securityKey,
             endpoint
         ) as CTYunSmsInstance;
-        const result = await tencentInstance.syncTemplate({
+        const result = await ctyunInstance.syncTemplate({
             pageIndex: 1,
             pageSize: 100,
         });
