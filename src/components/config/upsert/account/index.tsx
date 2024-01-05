@@ -7,6 +7,7 @@ import {
     Config,
     QiniuCloudConfig,
     TencentCloudConfig,
+    CTYunConfig
 } from '../../../../types/Config';
 
 
@@ -361,6 +362,138 @@ function QiniuAccount(props: {
                                 ),
                             },
                         ]
+                }
+            ></Tabs>
+        </Col>
+    );
+}
+
+function CTYunAccount(props: {
+    accounts: CTYunConfig[];
+    setValue: (path: string, value: any) => void;
+    removeItem: (path: string, index: number) => void;
+    addItem: (path: string, index: number) => void;
+}) {
+    const { accounts, setValue, removeItem, addItem } = props;
+    return (
+        <Col flex="auto">
+            <Divider orientation="left" className={Styles.title}>
+                天翼云配置
+            </Divider>
+            <Tabs
+                tabPosition={'top'}
+                size={'middle'}
+                type="editable-card"
+                hideAdd={!(accounts.length > 0)}
+                onEdit={(targetKey: any, action: 'add' | 'remove') => {
+                    if (action === 'add') {
+                        addItem('', accounts.length);
+                    } else {
+                        removeItem('', parseInt(targetKey, 10));
+                    }
+                }}
+                items={
+                    accounts.length > 0
+                        ? accounts.map((ele, idx) => ({
+                              key: `${idx}`,
+                              label: `帐号${idx + 1}`,
+                              children: (
+                                  <Form
+                                      colon={false}
+                                      labelAlign="left"
+                                      layout="vertical"
+                                      style={{ marginTop: 10 }}
+                                  >
+                                      <Form.Item
+                                          label="accessKey"
+                                          // name="accessKey"
+                                      >
+                                          <>
+                                              <Input
+                                                  placeholder="请输入accessKey"
+                                                  type="text"
+                                                  value={ele.accessKey}
+                                                  onChange={(e) =>
+                                                      setValue(
+                                                          `${idx}.accessKey`,
+                                                          e.target.value
+                                                      )
+                                                  }
+                                              />
+                                          </>
+                                      </Form.Item>
+                                      <Form.Item
+                                          label="secretKey"
+                                          // name="secretKey"
+                                      >
+                                          <>
+                                              <Input
+                                                  placeholder="请输入secretKey"
+                                                  type="text"
+                                                  value={ele.secretKey}
+                                                  onChange={(e) =>
+                                                      setValue(
+                                                          `${idx}.secretKey`,
+                                                          e.target.value
+                                                      )
+                                                  }
+                                              />
+                                          </>
+                                      </Form.Item>
+                                  </Form>
+                              ),
+                          }))
+                        : [
+                              {
+                                  label: '新建帐号',
+                                  key: '0',
+                                  children: (
+                                      <Form
+                                          colon={true}
+                                          labelAlign="left"
+                                          layout="vertical"
+                                          style={{ marginTop: 10 }}
+                                      >
+                                          <Form.Item
+                                              label="accessKey"
+                                              // name="accessKey"
+                                          >
+                                              <>
+                                                  <Input
+                                                      placeholder="请输入accessKey"
+                                                      type="text"
+                                                      value=""
+                                                      onChange={(e) =>
+                                                          setValue(
+                                                              `0.accessKey`,
+                                                              e.target.value
+                                                          )
+                                                      }
+                                                  />
+                                              </>
+                                          </Form.Item>
+                                          <Form.Item
+                                              label="secretKey"
+                                              // name="secretKey"
+                                          >
+                                              <>
+                                                  <Input
+                                                      placeholder="请输入secretKey"
+                                                      type="text"
+                                                      value=""
+                                                      onChange={(e) =>
+                                                          setValue(
+                                                              `0.secretKey`,
+                                                              e.target.value
+                                                          )
+                                                      }
+                                                  />
+                                              </>
+                                          </Form.Item>
+                                      </Form>
+                                  ),
+                              },
+                          ]
                 }
             ></Tabs>
         </Col>
@@ -749,7 +882,7 @@ export default function Account(props: {
     removeItem: (path: string, index: number) => void;
 }) {
     const { account, setValue, removeItem } = props;
-    const { tencent, qiniu, ali, amap } = account;
+    const { tencent, qiniu, ali, amap, ctyun } = account;
     return (
         <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
             <Row>
@@ -768,6 +901,12 @@ export default function Account(props: {
                 setValue={(path, value) => setValue(`qiniu.${path}`, value)}
                 removeItem={(path, index) => removeItem(`qiniu`, index)}
                 addItem={(path, index) => setValue(`qiniu.${index}`, {})}
+            />
+            <CTYunAccount
+                accounts={ctyun || []}
+                setValue={(path, value) => setValue(`ctyun.${path}`, value)}
+                removeItem={(path, index) => removeItem(`ctyun`, index)}
+                addItem={(path, index) => setValue(`ctyun.${index}`, {})}
             />
             <AliAccount
                 accounts={ali || []}
