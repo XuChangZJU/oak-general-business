@@ -230,9 +230,6 @@ export class Token<
     }
 
     async switchTo(userId: string) {
-        if (!this.isReallyRoot()) {
-            throw new OakUserUnpermittedException();
-        }
         const currentUserId = this.getUserId();
         if (currentUserId === userId) {
             throw new OakRowInconsistencyException(

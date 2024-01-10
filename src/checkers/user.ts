@@ -19,7 +19,7 @@ const checkers: Checker<EntityDict, 'user', RuntimeCxt> [] = [
         entity: 'user',
         relationFilter: () => {
             // 只有root才能进行操作
-            throw new OakUserUnpermittedException();
+            throw new OakUserUnpermittedException('user', { id: 'disable', action: 'disable', data: {} });
         },
         errMsg: '越权操作',
     },

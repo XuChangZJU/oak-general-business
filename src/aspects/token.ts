@@ -1678,7 +1678,7 @@ export async function switchTo<
 >({ userId }: { userId: string }, context: Cxt) {
     const reallyRoot = context.isReallyRoot();
     if (!reallyRoot) {
-        throw new OakUserUnpermittedException();
+        throw new OakUserUnpermittedException('user', { id: 'switchTo', action: 'switch', data: { }, filter: { id: userId }});
     }
     const currentUserId = context.getCurrentUserId();
     if (currentUserId === userId) {
