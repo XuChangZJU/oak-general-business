@@ -40,9 +40,24 @@ export default OakComponent({
         afterCommit: undefined as AfterCommit,
         beforeCommit: undefined as BeforeCommit,
     },
+    listeners: {
+        action(prev, next) {
+            if (next.action !== prev.action) {
+                this.update({}, next.action || 'update');
+            }
+        },
+    },
     data: {
         failureIds: undefined as string[] | undefined,
         currentId: undefined as string | undefined,
+    },
+    lifetimes: {
+        ready() {
+            const { action } = this.props;
+            if (action) {
+                this.update({}, action);
+            }
+        }
     },
     methods: {
         getEfIds() {
@@ -129,7 +144,7 @@ export default OakComponent({
         },
         async onSubmit(e: any) {
             const { oakExecutable } = this.state;
-            const { beforeCommit, afterCommit, action } = this.props;
+            const { beforeCommit, afterCommit } = this.props;
             const ids = this.getEfIds();
 
             if (oakExecutable) {
@@ -141,7 +156,7 @@ export default OakComponent({
                 }
                 const id = this.getId();
 
-                await this.execute(action || undefined);
+                await this.execute();
                 const failureIds = await this.upload(ids);
                 if (failureIds && failureIds.length > 0) {
                     this.setState({

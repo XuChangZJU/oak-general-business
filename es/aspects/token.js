@@ -1171,7 +1171,7 @@ export async function sendCaptcha({ mobile, env, type: type2, }, context) {
 export async function switchTo({ userId }, context) {
     const reallyRoot = context.isReallyRoot();
     if (!reallyRoot) {
-        throw new OakUserUnpermittedException();
+        throw new OakUserUnpermittedException('user', { id: 'switchTo', action: 'switch', data: {}, filter: { id: userId } });
     }
     const currentUserId = context.getCurrentUserId();
     if (currentUserId === userId) {

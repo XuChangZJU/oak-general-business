@@ -164,7 +164,7 @@ export default OakComponent({
             const { oakId } = this.props;
             const userId = this.features.token.getUserId();
             if (userId !== oakId) {
-                throw new OakUserInvisibleException();
+                throw new OakUserInvisibleException('user', { data: { id: 1 }, filter: { id: oakId } });
             }
             const lastSendAt = await this.load(SEND_KEY);
             this.setState({

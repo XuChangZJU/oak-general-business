@@ -4,10 +4,10 @@ import { encryptPasswordSha1 } from '../utils/password';
 import { assert } from 'oak-domain/lib/utils/assert';
 import dayjs from 'dayjs';
 export async function mergeUser(params, context, innerLogic) {
-    if (!innerLogic && !context.isRoot()) {
-        throw new OakUserUnpermittedException('不允许执行mergeUser操作');
-    }
     const { from, to, mergeMobile, mergeEmail, mergeWechatUser } = params;
+    if (!innerLogic && !context.isRoot()) {
+        throw new OakUserUnpermittedException('user', { id: 'merge', action: 'merge', data: {}, filter: { id: from } }, '不允许执行mergeUser操作');
+    }
     assert(from);
     assert(to);
     assert(from !== to, '不能merge到相同user');

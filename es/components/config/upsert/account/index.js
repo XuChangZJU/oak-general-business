@@ -162,6 +162,13 @@ function CTYunAccount(props) {
                                               <Input placeholder="请输入securityKey" type="text" value={ele.securityKey} onChange={(e) => setValue(`${idx}.securityKey`, e.target.value)}/>
                                           </>
                                       </Form.Item>
+                                      <Form.Item label="短信endpoint" 
+                //name="smsEndpoint"
+                tooltip="访问的域名，如：sms-global.ctapi.ctyun.cn">
+                                          <>
+                                              <Input placeholder="请输入短信endpoint" type="text" value={ele.smsEndpoint} onChange={(e) => setValue(`${idx}.smsEndpoint`, e.target.value)}/>
+                                          </>
+                                      </Form.Item>
                                   </Form>),
             }))
             : [
