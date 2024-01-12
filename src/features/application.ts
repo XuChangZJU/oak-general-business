@@ -13,7 +13,12 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 
 import { applicationProjection } from '../types/Projection';
-import { MediaType, MediaVideoDescription } from '../types/WeChat'
+import { MediaType, MediaVideoDescription } from '../types/WeChat';
+import {
+    OakTokenExpiredException,
+    OakUserDisabledException,
+} from '../types/Exception';
+import { Token } from './token';
 
 export class Application<
     ED extends EntityDict,
@@ -28,12 +33,14 @@ export class Application<
     private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
     private storage: LocalStorage;
     private projection: EntityDict['application']['Selection']['data'];
+    private token: Token<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
 
     constructor(
         type: AppType,
         domain: string,
         cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>,
-        storage: LocalStorage
+        storage: LocalStorage,
+        token: Token<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>
     ) {
         super();
         this.cache = cache;
@@ -41,6 +48,7 @@ export class Application<
         this.type = type;
         this.domain = domain;
         this.projection = cloneDeep(applicationProjection);
+        this.token = token;
     }
 
     private async refresh() {
@@ -75,20 +83,35 @@ export class Application<
     }
 
     private async loadApplicationInfo(type: AppType, domain: string) {
-        const { result: applicationId } = await this.cache.exec(
-            'getApplication',
-            {
+        let applicationId;
+        try {
+            const { result } = await this.cache.exec('getApplication', {
                 type,
                 domain,
+            });
+            applicationId = result;
+        } catch (err) {
+            if (
+                err instanceof OakTokenExpiredException ||
+                err instanceof OakUserDisabledException
+            ) {
+                // 出现上面的异常，先清除本地token, 重新发起一次请求
+                this.token.removeToken(true);
+                const { result } = await this.cache.exec('getApplication', {
+                    type,
+                    domain,
+                });
+                applicationId = result;
             }
-        );
+            throw err;
+        }
         this.applicationId = applicationId;
         this.getApplicationFromCache();
 
-        // 如果取得的type和当前环境不同，则不缓存id(未来可能有type相同的appliction上线)
-        if (this.application?.type === type) {
-            this.storage.save(LOCAL_STORAGE_KEYS.appId, applicationId);
-        }
+        // 如果取得的type和当前环境不同，则不缓存id(未来可能有type相同的application上线)
+        // if (this.application?.type === type) {
+        //     this.storage.save(LOCAL_STORAGE_KEYS.appId, applicationId);
+        // }
         this.publish();
     }
 
@@ -96,19 +119,23 @@ export class Application<
         appId?: string | null,
         projection?: EntityDict['application']['Selection']['data']
     ) {
-        const applicationId = await this.storage.load(LOCAL_STORAGE_KEYS.appId);
-        this.applicationId = applicationId;
+        // const applicationId = await this.storage.load(LOCAL_STORAGE_KEYS.appId);
+        // this.applicationId = applicationId;
         //接收外层注入的projection
         this.projection = merge(this.projection, projection);
         if (process.env.NODE_ENV === 'development' && appId) {
             // development环境下允许注入一个线上的appId
             this.applicationId = appId;
+            if (this.applicationId) {
+                return await this.refresh();
+            }
         }
-        if (this.applicationId) {
-            await this.refresh();
-        } else {
-            await this.loadApplicationInfo(this.type, this.domain);
-        }
+        // if (this.applicationId) {
+        //     await this.refresh();
+        // } else {
+        //     await this.loadApplicationInfo(this.type, this.domain);
+        // }
+        return await this.loadApplicationInfo(this.type, this.domain);
     }
 
     getApplication() {

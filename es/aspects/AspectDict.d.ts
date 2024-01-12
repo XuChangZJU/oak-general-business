@@ -20,7 +20,7 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
         captcha?: string;
         password?: string;
         mobile: string;
-        disableRegist?: boolean;
+        disableRegister?: boolean;
         env: WebEnv | WechatMpEnv | NativeEnv;
     }, context: Cxt) => Promise<string>;
     loginWechat: ({ code, env, wechatLoginId, }: {

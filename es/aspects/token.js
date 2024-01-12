@@ -415,8 +415,8 @@ async function loadTokenInfo(tokenId, context) {
     }, {});
 }
 export async function loginByMobile(params, context) {
+    const { mobile, captcha, password, env, disableRegister } = params;
     const loginLogic = async () => {
-        const { mobile, captcha, password, env } = params;
         const systemId = context.getSystemId();
         if (captcha) {
             const result = await context.select('captcha', {
@@ -500,14 +500,14 @@ export async function loginByMobile(params, context) {
         }
     };
     const closeRootMode = context.openRootMode();
-    if (params?.disableRegist) {
+    if (disableRegister) {
         const [existMobile] = await context.select('mobile', {
             data: {
                 id: 1,
                 mobile: 1,
             },
             filter: {
-                mobile: params.mobile,
+                mobile: mobile,
                 ableState: 'enabled',
             },
         }, { dontCollect: true });

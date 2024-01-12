@@ -595,13 +595,14 @@ export async function loginByMobile<
         captcha?: string;
         password?: string;
         mobile: string;
-        disableRegist?: boolean;
+        disableRegister?: boolean;
         env: WebEnv | WechatMpEnv | NativeEnv;
     },
     context: Cxt
 ): Promise<string> {
+    const { mobile, captcha, password, env, disableRegister } = params;
+
     const loginLogic = async () => {
-        const { mobile, captcha, password, env } = params;
         const systemId = context.getSystemId();
         if (captcha) {
             const result = await context.select(
@@ -697,7 +698,7 @@ export async function loginByMobile<
         }
     };
     const closeRootMode = context.openRootMode();
-    if (params?.disableRegist) {
+    if (disableRegister) {
         const [existMobile] = await context.select(
             'mobile',
             {
@@ -706,7 +707,7 @@ export async function loginByMobile<
                     mobile: 1,
                 },
                 filter: {
-                    mobile: params.mobile!,
+                    mobile: mobile!,
                     ableState: 'enabled',
                 },
             },

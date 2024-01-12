@@ -22,7 +22,6 @@ export class Token extends Feature {
         }
         if (tokenValue) {
             this.tokenValue = tokenValue;
-            // this.loadTokenInfo();
         }
         else {
             this.tokenValue = undefined;
@@ -50,15 +49,15 @@ export class Token extends Feature {
             this.isLoading = false;
         }
     }
-    async loginByMobile(mobile, password, captcha, disableRegist) {
+    async loginByMobile(mobile, password, captcha, disableRegister) {
         const env = await this.environment.getEnv();
         const { result } = await this.cache.exec('loginByMobile', {
             password,
             mobile,
             captcha,
-            disableRegist,
+            disableRegister,
             env,
-        });
+        }, undefined, true);
         this.tokenValue = result;
         await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
         this.publish();
@@ -113,10 +112,12 @@ export class Token extends Feature {
         await this.cache.exec('logout', {});
         this.removeToken();
     }
-    removeToken() {
+    removeToken(disablePublish) {
         this.tokenValue = undefined;
         this.storage.remove(LOCAL_STORAGE_KEYS.token);
-        this.publish();
+        if (!disablePublish) {
+            this.publish();
+        }
     }
     getTokenValue() {
         return this.tokenValue;
@@ -192,7 +193,6 @@ export class Token extends Feature {
     }
     async refreshWechatPublicUserInfo() {
         await this.cache.exec('refreshWechatPublicUserInfo', {});
-        this.publish();
     }
     async getWechatMpUserPhoneNumber(code) {
         const env = await this.environment.getEnv();
@@ -200,7 +200,6 @@ export class Token extends Feature {
             code,
             env: env,
         });
-        // this.publish();
     }
     async wakeupParasite(id) {
         const env = await this.environment.getEnv();

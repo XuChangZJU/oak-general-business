@@ -26,16 +26,17 @@ export function initialize<
     type: AppType,
     domain: string,
 ): GeneralFeatures<ED, Cxt, FrontCxt, AD> {
-    const application = new Application<ED, Cxt, FrontCxt, AD>(
-        type,
-        domain,
-        basicFeatures.cache,
-        basicFeatures.localStorage
-    );
     const token = new Token<ED, Cxt, FrontCxt, AD>(
         basicFeatures.cache,
         basicFeatures.localStorage,
         basicFeatures.environment
+    );
+    const application = new Application<ED, Cxt, FrontCxt, AD>(
+        type,
+        domain,
+        basicFeatures.cache,
+        basicFeatures.localStorage,
+        token
     );
 
     const wechatMenu = new WechatMenu<ED, Cxt, FrontCxt, AD>(

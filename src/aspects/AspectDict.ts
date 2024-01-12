@@ -26,7 +26,7 @@ export type GeneralAspectDict<
             captcha?: string;
             password?: string;
             mobile: string;
-            disableRegist?: boolean;
+            disableRegister?: boolean;
             env: WebEnv | WechatMpEnv | NativeEnv;
         },
         context: Cxt
@@ -43,7 +43,7 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<string>;
-    logout: ({ }, context: Cxt) => Promise<void>;
+    logout: ({}, context: Cxt) => Promise<void>;
     loginWechatMp: (
         {
             code,
@@ -308,10 +308,7 @@ export type GeneralAspectDict<
         },
         context: Cxt
     ) => Promise<any>;
-    getMessageType: (
-        params: {},
-        content: Cxt
-    ) => Promise<string[]>;
+    getMessageType: (params: {}, content: Cxt) => Promise<string[]>;
     syncTag: (
         params: {
             applicationId: string;

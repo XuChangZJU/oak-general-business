@@ -5,7 +5,7 @@ export declare function loginByMobile<ED extends EntityDict, Cxt extends Backend
     captcha?: string;
     password?: string;
     mobile: string;
-    disableRegist?: boolean;
+    disableRegister?: boolean;
     env: WebEnv | WechatMpEnv | NativeEnv;
 }, context: Cxt): Promise<string>;
 export declare function refreshWechatPublicUserInfo<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>({}: {}, context: Cxt): Promise<void>;

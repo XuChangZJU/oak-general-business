@@ -16,7 +16,7 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     private loadSavedToken;
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage, environment: Environment);
     loadTokenInfo(): Promise<void>;
-    loginByMobile(mobile: string, password?: string, captcha?: string, disableRegist?: boolean): Promise<void>;
+    loginByMobile(mobile: string, password?: string, captcha?: string, disableRegister?: boolean): Promise<void>;
     loginByWechatInWebEnv(wechatLoginId: string): Promise<void>;
     loginWechat(code: string, params?: {
         wechatLoginId?: string;
@@ -24,7 +24,7 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     loginWechatMp(): Promise<void>;
     syncUserInfoWechatMp(): Promise<void>;
     logout(): Promise<void>;
-    removeToken(): void;
+    removeToken(disablePublish?: boolean): void;
     getTokenValue(): string | undefined;
     getToken(allowUnloggedIn?: boolean): Partial<ED["token"]["Schema"]> | undefined;
     getUserId(allowUnloggedIn?: boolean): NonNullable<ED["token"]["Schema"]["userId"]> | undefined;

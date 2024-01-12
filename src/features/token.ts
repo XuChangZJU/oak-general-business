@@ -43,20 +43,22 @@ export class Token<
 
         if (tokenValue) {
             this.tokenValue = tokenValue;
-            // this.loadTokenInfo();
-        }
-        else {
+        } else {
             this.tokenValue = undefined;
         }
         this.publish();
     }
 
-    constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage, environment: Environment) {
+    constructor(
+        cache: Cache<ED, Cxt, FrontCxt, AD>,
+        storage: LocalStorage,
+        environment: Environment
+    ) {
         super();
         this.cache = cache;
         this.storage = storage;
         this.environment = environment;
-        this.tokenValue = '';   // 置个空字符串代表还在load storage缓存的数据
+        this.tokenValue = ''; // 置个空字符串代表还在load storage缓存的数据
         this.loadSavedToken();
     }
 
@@ -74,15 +76,25 @@ export class Token<
         }
     }
 
-    async loginByMobile(mobile: string, password?: string, captcha?: string, disableRegist?: boolean) {
+    async loginByMobile(
+        mobile: string,
+        password?: string,
+        captcha?: string,
+        disableRegister?: boolean
+    ) {
         const env = await this.environment.getEnv();
-        const { result } = await this.cache.exec('loginByMobile', {
-            password,
-            mobile,
-            captcha,
-            disableRegist,
-            env,
-        });
+        const { result } = await this.cache.exec(
+            'loginByMobile',
+            {
+                password,
+                mobile,
+                captcha,
+                disableRegister,
+                env,
+            },
+            undefined,
+            true
+        );
         this.tokenValue = result;
         await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
         this.publish();
@@ -151,10 +163,12 @@ export class Token<
         this.removeToken();
     }
 
-    removeToken() {
+    removeToken(disablePublish?: boolean) {
         this.tokenValue = undefined;
         this.storage.remove(LOCAL_STORAGE_KEYS.token);
-        this.publish();
+        if (!disablePublish) {
+            this.publish();
+        }
     }
 
     getTokenValue() {
@@ -166,15 +180,12 @@ export class Token<
             throw new OakUserInfoLoadingException();
         }
         if (this.tokenValue) {
-            const token = this.cache.get(
-                'token',
-                {
-                    data: cloneDeep(tokenProjection),
-                    filter: {
-                        id: this.tokenValue!,
-                    },
+            const token = this.cache.get('token', {
+                data: cloneDeep(tokenProjection),
+                filter: {
+                    id: this.tokenValue!,
                 },
-            )[0];
+            })[0];
             if (!token) {
                 this.loadTokenInfo();
                 if (allowUnloggedIn) {
@@ -219,7 +230,10 @@ export class Token<
         return !!token?.player?.isRoot;
     }
 
-    async sendCaptcha(mobile: string, type: 'login' | 'changePassword' | 'confirm') {
+    async sendCaptcha(
+        mobile: string,
+        type: 'login' | 'changePassword' | 'confirm'
+    ) {
         const env = await this.environment.getEnv();
         const { result } = await this.cache.exec('sendCaptcha', {
             mobile,
@@ -245,7 +259,6 @@ export class Token<
 
     async refreshWechatPublicUserInfo() {
         await this.cache.exec('refreshWechatPublicUserInfo', {});
-        this.publish();
     }
 
     async getWechatMpUserPhoneNumber(code: string) {
@@ -254,7 +267,6 @@ export class Token<
             code,
             env: env as WechatMpEnv,
         });
-        // this.publish();
     }
 
     async wakeupParasite(id: string) {
