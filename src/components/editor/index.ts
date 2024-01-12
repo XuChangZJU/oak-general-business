@@ -1,7 +1,6 @@
-import React from 'react';
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../../oak-app-domain';
-import { OakException, OakUnloggedInException } from 'oak-domain/lib/types';
+
 export default OakComponent({
     isList: true,
     properties: {

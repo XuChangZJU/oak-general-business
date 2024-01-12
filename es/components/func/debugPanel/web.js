@@ -13,7 +13,7 @@ export default function render(props) {
             position: 'fixed',
             bottom: 0,
             right: 'calc(100% / 2 - 16px)',
-            zIndex: 999,
+            zIndex: 1999,
             width: 32,
             height: 32,
             ...style,
