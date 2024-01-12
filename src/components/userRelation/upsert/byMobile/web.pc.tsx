@@ -84,6 +84,7 @@ export default function Render(
                     entityId={entityId}
                     relations={relations}
                     setPasswordConfirm={setPasswordConfirm}
+                    passwordRequire={passwordRequire}
                 />
             )}
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>

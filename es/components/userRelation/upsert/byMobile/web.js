@@ -35,6 +35,6 @@ export default function Render(props) {
         }} placeholder={t('inputMobile')} type="tel" clearable/>
                 </>
             </Form.Item>
-            {mobileValueReady && (<OnUser oakAutoUnmount={true} oakPath={`${oakFullpath}.user`} entity={entity} entityId={entityId} relations={relations}/>)}
+            {mobileValueReady && (<OnUser oakAutoUnmount={true} oakPath={`${oakFullpath}.user`} entity={entity} entityId={entityId} relations={relations} passwordRequire={passwordRequire}/>)}
         </Form>);
 }

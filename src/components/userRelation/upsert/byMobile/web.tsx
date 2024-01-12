@@ -97,6 +97,7 @@ export default function Render(
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
+                    passwordRequire={passwordRequire}
                 />
             )}
         </Form>
