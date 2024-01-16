@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { EntityDict } from '../../../../oak-app-domain';
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, keyof EntityDict, true, {
     disabled: boolean | undefined;

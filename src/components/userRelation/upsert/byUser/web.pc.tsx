@@ -5,16 +5,35 @@ import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
 
 
-export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
-    relations: EntityDict['relation']['OpSchema'][];
-    entity: keyof EntityDict;
-    entityId: string;
-    oakId: string;
-}, {
-    onConfirm: () => Promise<void>;
-    onReset: () => void;
-}>) {
-    const { relations, entity, entityId, oakId, oakDirty, oakFullpath } = props.data;
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'user',
+        false,
+        {
+            relations: EntityDict['relation']['OpSchema'][];
+            entity: keyof EntityDict;
+            entityId: string;
+            oakId: string;
+            allowUpdateName?: boolean;
+            allowUpdateNickname?: boolean;
+        },
+        {
+            onConfirm: () => Promise<void>;
+            onReset: () => void;
+        }
+    >
+) {
+    const {
+        relations,
+        entity,
+        entityId,
+        oakId,
+        oakDirty,
+        oakFullpath,
+        allowUpdateName,
+        allowUpdateNickname,
+    } = props.data;
     const { onConfirm, onReset, t } = props.methods;
     return (
         <>
@@ -25,6 +44,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                 entityId={entityId}
                 relations={relations}
                 oakId={oakId}
+                allowUpdateName={allowUpdateName}
+                allowUpdateNickname={allowUpdateNickname}
             />
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
                 <Form.Item wrapperCol={{ offset: 4 }}>
@@ -36,10 +57,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                         >
                             {t('common::action.confirm')}
                         </Button>
-                        <Button
-                            htmlType="reset"
-                            onClick={() => onReset()}
-                        >
+                        <Button htmlType="reset" onClick={() => onReset()}>
                             {t('common::reset')}
                         </Button>
                     </Space>

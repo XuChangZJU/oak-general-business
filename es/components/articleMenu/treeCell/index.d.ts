@@ -1,3 +1,4 @@
+/// <reference types="react" />
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<import("../../../oak-app-domain").EntityDict, "articleMenu", false, {
     onRemove: () => void;
     onUpdateName: (name: string) => Promise<void>;

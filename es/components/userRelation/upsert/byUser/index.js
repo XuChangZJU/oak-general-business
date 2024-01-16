@@ -3,6 +3,8 @@ export default OakComponent({
     properties: {
         entity: '',
         entityId: '',
+        allowUpdateName: false,
+        allowUpdateNickname: false,
     },
     data: {
         relations: [],
@@ -21,7 +23,7 @@ export default OakComponent({
                         entityId: {
                             $exists: false,
                         },
-                    }
+                    },
                 ],
             };
             if (!isRoot) {
@@ -47,7 +49,7 @@ export default OakComponent({
             this.setState({
                 relations: relations,
             });
-        }
+        },
     },
     methods: {
         onConfirm() {
@@ -55,6 +57,6 @@ export default OakComponent({
         },
         onReset() {
             this.clean();
-        }
-    }
+        },
+    },
 });

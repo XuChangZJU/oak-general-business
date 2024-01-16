@@ -378,11 +378,17 @@ const i18ns = [
             "placeholder": {
                 "name": "请输入姓名",
                 "password": "密码不少于8位",
-                "relation": "至少应选择一个权限"
+                "relation": "至少应选择一个权限",
+                "confirmPassword": "请再次输入密码",
+                "nickname": "请输入昵称"
+            },
+            "error": {
+                "The passwords entered twice do not match, please check": "两次输入的密码不一致，请检查"
             },
             "auth": "权限",
             "existedUser": "现有用户",
-            "newUser": "新建用户"
+            "newUser": "新建用户",
+            "confirmPassword": "确认密码"
         }
     },
     {

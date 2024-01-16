@@ -5,16 +5,36 @@ import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
 
 
-export default function Render(props: WebComponentProps<EntityDict, 'user', false, {
-    relations: EntityDict['relation']['OpSchema'][];
-    entity: keyof EntityDict;
-    entityId: string;
-    oakId: string;
-}, {
-    onConfirm: () => Promise<void>;
-    onReset: () => void;
-}>) {
-    const { relations, entity, entityId, oakId, oakDirty, oakFullpath, oakExecutable } = props.data;
+export default function Render(
+    props: WebComponentProps<
+        EntityDict,
+        'user',
+        false,
+        {
+            relations: EntityDict['relation']['OpSchema'][];
+            entity: keyof EntityDict;
+            entityId: string;
+            oakId: string;
+            allowUpdateName?: boolean;
+            allowUpdateNickname?: boolean;
+        },
+        {
+            onConfirm: () => Promise<void>;
+            onReset: () => void;
+        }
+    >
+) {
+    const {
+        relations,
+        entity,
+        entityId,
+        oakId,
+        oakDirty,
+        oakFullpath,
+        oakExecutable,
+        allowUpdateName,
+        allowUpdateNickname,
+    } = props.data;
     const { onConfirm, onReset, t } = props.methods;
     return (
         <Form
@@ -43,6 +63,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
                 entityId={entityId}
                 relations={relations}
                 oakId={oakId}
+                allowUpdateName={allowUpdateName}
+                allowUpdateNickname={allowUpdateNickname}
             />
         </Form>
     );

@@ -6,6 +6,8 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     entity: keyof EntityDict;
     entityId: string;
     oakId: string;
+    allowUpdateName?: boolean;
+    allowUpdateNickname?: boolean;
 }, {
     onConfirm: () => Promise<void>;
     onReset: () => void;

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Form, Checkbox, Input } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Input } from 'antd';
 import UserRelation from './userRelation';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
@@ -24,6 +24,8 @@ export default function Render(
             isNew: boolean;
             setPasswordConfirm: (value: boolean) => void;
             passwordRequire: boolean;
+            allowUpdateName?: boolean;
+            allowUpdateNickname?: boolean;
         },
         {
             onMobileChange: (value: string) => Promise<void>;
@@ -43,17 +45,38 @@ export default function Render(
         entityId,
         setPasswordConfirm,
         passwordRequire,
+        allowUpdateName,
+        allowUpdateNickname,
     } = props.data;
     const { t, update } = props.methods;
+    const [form] = Form.useForm();
     const [password2, setPassword2] = useState('');
     const [validateHelp, setValidateHelp] = useState('');
     const [validateHelp1, setValidateHelp1] = useState('');
     const [validateStatus, setValidateStatus] = useState(
         '' as '' | 'success' | 'warning' | 'error' | 'validating' | undefined
     );
+
+    useEffect(() => {
+        form.setFieldsValue({
+            name,
+        });
+    }, [name]);
+
+    useEffect(() => {
+        form.setFieldsValue({
+            nickname,
+        });
+    }, [nickname]);
+
     return (
         <>
-            <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
+            <Form
+                form={form}
+                colon
+                labelCol={{ span: 4 }}
+                wrapperCol={{ span: 8 }}
+            >
                 <Form.Item
                     style={{ marginBottom: 0 }}
                     label={!isNew ? t('existedUser') : t('newUser')}
@@ -70,7 +93,7 @@ export default function Render(
                 >
                     <>
                         <Input
-                            disabled={!isNew}
+                            disabled={!isNew && !allowUpdateName}
                             onChange={(e) => {
                                 const strValue = e.target.value;
                                 update({
@@ -82,21 +105,22 @@ export default function Render(
                         />
                     </>
                 </Form.Item>
-                {!isNew ? (
-                    <Form.Item
-                        label={t('user:attr.nickname')}
-                        name="nickname"
-                        rules={[
-                            {
-                                required: true,
-                            },
-                        ]}
-                    >
-                        <>
-                            <Input disabled={true} value={nickname} />
-                        </>
-                    </Form.Item>
-                ) : (
+                <Form.Item label={t('user:attr.nickname')} name="nickname">
+                    <>
+                        <Input
+                            disabled={!isNew && !allowUpdateNickname}
+                            value={nickname}
+                            onChange={(e) => {
+                                const strValue = e.target.value;
+                                update({
+                                    nickname: strValue,
+                                });
+                            }}
+                            placeholder={t('placeholder.nickname')}
+                        />
+                    </>
+                </Form.Item>
+                {isNew ? (
                     <>
                         <Form.Item
                             label={t('user:attr.password')}
@@ -168,7 +192,7 @@ export default function Render(
                         </Form.Item>
                         <Form.Item
                             label={'确认密码'}
-                            name="passwordConfirm"
+                            name="confirmPassword"
                             rules={[
                                 {
                                     required: passwordRequire,
@@ -223,11 +247,11 @@ export default function Render(
                                         <EyeInvisibleOutlined />
                                     )
                                 }
-                                placeholder={'请再次输入密码'}
+                                placeholder={t('placeholder.confirmPassword')}
                             />
                         </Form.Item>
                     </>
-                )}
+                ) : null}
                 <Form.Item
                     label={t('auth')}
                     rules={[

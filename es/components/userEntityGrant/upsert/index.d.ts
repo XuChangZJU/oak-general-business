@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { EntityDict } from '../../../oak-app-domain';
 import { QrCodeType } from '../../../types/Config';
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "userEntityGrant", false, {

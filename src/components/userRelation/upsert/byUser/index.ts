@@ -7,6 +7,8 @@ export default OakComponent({
     properties: {
         entity: '' as keyof EntityDict,
         entityId: '',
+        allowUpdateName: false,
+        allowUpdateNickname: false,
     },
     data: {
         relations: [] as EntityDict['relation']['OpSchema'][],
@@ -25,7 +27,7 @@ export default OakComponent({
                         entityId: {
                             $exists: false,
                         },
-                    }
+                    },
                 ],
             };
             if (!isRoot) {
@@ -38,20 +40,23 @@ export default OakComponent({
                     },
                 };
             }
-            const { data: relations } = await this.features.cache.refresh('relation', {
-                data: {
-                    id: 1,
-                    entity: 1,
-                    entityId: 1,
-                    name: 1,
-                    display: 1,
-                },
-                filter,
-            });
+            const { data: relations } = await this.features.cache.refresh(
+                'relation',
+                {
+                    data: {
+                        id: 1,
+                        entity: 1,
+                        entityId: 1,
+                        name: 1,
+                        display: 1,
+                    },
+                    filter,
+                }
+            );
             this.setState({
                 relations: relations as EntityDict['relation']['OpSchema'][],
             });
-        }
+        },
     },
     methods: {
         onConfirm() {
@@ -59,16 +64,18 @@ export default OakComponent({
         },
         onReset() {
             this.clean();
-        }
-    }
-})as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
+        },
+    },
+}) as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
     props: ReactComponentProps<
         ED2,
         T2,
         true,
         {
-            entity: keyof ED2,
-            entityId: string,
+            entity: keyof ED2;
+            entityId: string;
+            allowUpdateName?: boolean;
+            allowUpdateNickname?: boolean;
         }
     >
 ) => React.ReactElement;

@@ -71,8 +71,9 @@ export default OakComponent({
         entityId: '',
         relations: [],
         mobile: '',
-        isComponent: false,
         setPasswordConfirm: (value) => { },
         passwordRequire: false,
+        allowUpdateName: false,
+        allowUpdateNickname: false,
     },
 });

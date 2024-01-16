@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Button, Space } from 'antd-mobile';
 import OnUser from '../onUser/index';
 export default function Render(props) {
-    const { relations, entity, entityId, oakId, oakDirty, oakFullpath, oakExecutable } = props.data;
+    const { relations, entity, entityId, oakId, oakDirty, oakFullpath, oakExecutable, allowUpdateName, allowUpdateNickname, } = props.data;
     const { onConfirm, onReset, t } = props.methods;
     return (<Form footer={<Space>
                     <Button color="primary" style={{ flex: 2 }} onClick={() => {
@@ -14,6 +14,6 @@ export default function Render(props) {
                         {t('common::reset')}
                     </Button>
                 </Space>}>
-            <OnUser oakAutoUnmount={true} oakPath={`${oakFullpath}.user`} entity={entity} entityId={entityId} relations={relations} oakId={oakId}/>
+            <OnUser oakAutoUnmount={true} oakPath={`${oakFullpath}.user`} entity={entity} entityId={entityId} relations={relations} oakId={oakId} allowUpdateName={allowUpdateName} allowUpdateNickname={allowUpdateNickname}/>
         </Form>);
 }

@@ -76,8 +76,9 @@ export default OakComponent({
         entityId: '',
         relations: [] as EntityDict['relation']['OpSchema'][],
         mobile: '',
-        isComponent: false,
         setPasswordConfirm: (value: boolean) => {},
         passwordRequire: false,
+        allowUpdateName: false,
+        allowUpdateNickname: false,
     },
 });

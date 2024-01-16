@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Checkbox, Input } from 'antd-mobile';
 import UserRelation from './userRelation';
 import { WebComponentProps } from 'oak-frontend-base';
@@ -21,6 +21,8 @@ export default function Render(
             entityId: string;
             isNew: boolean;
             passwordRequire: boolean;
+            allowUpdateName?: boolean;
+            allowUpdateNickname?: boolean;
         },
         {
             onMobileChange: (value: string) => Promise<void>;
@@ -39,11 +41,28 @@ export default function Render(
         entity,
         entityId,
         passwordRequire,
+        allowUpdateName,
+        allowUpdateNickname,
     } = props.data;
+        
     const { t, update } = props.methods;
+    const [form] = Form.useForm();
+
+
+    useEffect(() => {
+        form.setFieldsValue({
+            name,
+        });
+    }, [name]);
+
+    useEffect(() => {
+        form.setFieldsValue({
+            nickname,
+        });
+    }, [nickname]);
 
     return (
-        <>
+        <Form form={form}>
             <Form.Item
                 style={{ marginBottom: 0 }}
                 label={!isNew ? t('existedUser') : t('newUser')}
@@ -59,7 +78,7 @@ export default function Render(
             >
                 <>
                     <Input
-                        disabled={!isNew}
+                        disabled={!isNew && !allowUpdateName}
                         onChange={(value) => {
                             update({
                                 name: value,
@@ -70,21 +89,21 @@ export default function Render(
                     />
                 </>
             </Form.Item>
-            {!isNew ? (
-                <Form.Item
-                    label={t('user:attr.nickname')}
-                    name="nickname"
-                    rules={[
-                        {
-                            required: true,
-                        },
-                    ]}
-                >
-                    <>
-                        <Input disabled={true} value={nickname} />
-                    </>
-                </Form.Item>
-            ) : (
+            <Form.Item label={t('user:attr.nickname')} name="nickname">
+                <>
+                    <Input
+                        disabled={!isNew && !allowUpdateNickname}
+                        value={nickname}
+                        onChange={(value) => {
+                            update({
+                                nickname: value,
+                            });
+                        }}
+                        placeholder={t('placeholder.nickname')}
+                    />
+                </>
+            </Form.Item>
+            {isNew ? (
                 <Form.Item
                     label={t('user:attr.password')}
                     name="password"
@@ -106,7 +125,7 @@ export default function Render(
                         />
                     </>
                 </Form.Item>
-            )}
+            ) : null}
             <Form.Item
                 label={t('auth')}
                 rules={[
@@ -124,6 +143,6 @@ export default function Render(
                     relations={relations}
                 />
             </Form.Item>
-        </>
+        </Form>
     );
 }
