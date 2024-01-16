@@ -18,6 +18,8 @@ export default function Render(
             mobileValueReady: boolean;
             userId: string;
             passwordRequire: boolean;
+            allowUpdateName?: boolean;
+            allowUpdateNickname?: boolean;
         },
         {
             onMobileChange: (value: string) => Promise<void>;
@@ -37,6 +39,8 @@ export default function Render(
         oakExecutable,
         oakDirty,
         passwordRequire,
+        allowUpdateName,
+        allowUpdateNickname,
     } = props.data;
     const { onConfirm, onMobileChange, onReset, t } = props.methods;
     return (
@@ -98,6 +102,8 @@ export default function Render(
                     entityId={entityId}
                     relations={relations}
                     passwordRequire={passwordRequire}
+                    allowUpdateName={allowUpdateName}
+                    allowUpdateNickname={allowUpdateNickname}
                 />
             )}
         </Form>

@@ -32,6 +32,8 @@ export default OakComponent({
         entityId: '',
         relations: [] as EntityDict['relation']['OpSchema'][],
         passwordRequire: false,
+        allowUpdateName: false,
+        allowUpdateNickname: false,
     },
     data: {
         mobileValue: '',
@@ -127,7 +129,9 @@ export default OakComponent({
             entity: keyof ED2;
             entityId: string;
             relations: EntityDict['relation']['OpSchema'][];
-            passwordRequire: boolean;
+            passwordRequire?: boolean;
+            allowUpdateName?: boolean;
+            allowUpdateNickname?: boolean;
         }
     >
 ) => React.ReactElement;

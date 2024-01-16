@@ -27,6 +27,8 @@ export default function Render(
             rule: EntityDict['userEntityGrant']['OpSchema']['rule'];
             ruleOnRow: EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'];
             passwordRequire: boolean;
+            allowUpdateName?: boolean;
+            allowUpdateNickname?: boolean;
         },
         {}
     >
@@ -46,6 +48,8 @@ export default function Render(
         rule,
         ruleOnRow,
         passwordRequire,
+        allowUpdateName,
+        allowUpdateNickname,
     } = props.data;
     let SubPart: JSX.Element = <></>;
     if (grantMethodCount === 0) {
@@ -60,6 +64,8 @@ export default function Render(
         } else if (grantByMobile) {
             SubPart = (
                 <ByMobile
+                    allowUpdateName={allowUpdateName}
+                    allowUpdateNickname={allowUpdateNickname}
                     passwordRequire={passwordRequire}
                     entity={entity}
                     entityId={entityId}
@@ -95,6 +101,9 @@ export default function Render(
                 key: 'item-2',
                 children: (
                     <ByMobile
+                        allowUpdateName={allowUpdateName}
+                        allowUpdateNickname={allowUpdateNickname}
+                        passwordRequire={passwordRequire}
                         entity={entity}
                         entityId={entityId}
                         relations={relations}

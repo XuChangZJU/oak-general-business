@@ -27,6 +27,8 @@ export default function Render(
             rule: EntityDict['userEntityGrant']['OpSchema']['rule'];
             ruleOnRow: EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'];
             passwordRequire: boolean;
+            allowUpdateName?: boolean;
+            allowUpdateNickname?: boolean;
         },
         {}
     >
@@ -46,6 +48,8 @@ export default function Render(
         rule,
         ruleOnRow,
         passwordRequire,
+        allowUpdateName,
+        allowUpdateNickname,
     } = props.data;
     let SubPart: JSX.Element = <></>;
     if (grantMethodCount === 0) {

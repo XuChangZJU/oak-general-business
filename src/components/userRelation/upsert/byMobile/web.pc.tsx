@@ -20,6 +20,8 @@ export default function Render(
             legal: boolean;
             isNew: boolean;
             passwordRequire: boolean;
+            allowUpdateName?: boolean;
+            allowUpdateNickname?: boolean;
         },
         {
             onMobileChange: (value: string) => Promise<void>;
@@ -40,6 +42,8 @@ export default function Render(
         legal,
         isNew,
         passwordRequire,
+        allowUpdateName,
+        allowUpdateNickname,
     } = props.data;
     const { onConfirm, onMobileChange, onReset, t } = props.methods;
     const [passwordConfirm, setPasswordConfirm] = useState(true);
@@ -85,6 +89,8 @@ export default function Render(
                     relations={relations}
                     setPasswordConfirm={setPasswordConfirm}
                     passwordRequire={passwordRequire}
+                    allowUpdateName={allowUpdateName}
+                    allowUpdateNickname={allowUpdateNickname}
                 />
             )}
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>

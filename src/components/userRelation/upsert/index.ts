@@ -69,6 +69,8 @@ export default OakComponent({
         ruleOnRow:
             'single' as EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'],
         passwordRequire: false,
+        allowUpdateName: false,
+        allowUpdateNickname: false,
     },
     lifetimes: {
         ready() {
@@ -117,7 +119,9 @@ export default OakComponent({
             redirectToAfterConfirm: ED2['userEntityGrant']['Schema']['redirectTo'];
             claimUrl: string;
             qrCodeType: string;
-            passwordRequire: boolean;
+            passwordRequire?: boolean;
+            allowUpdateName?: boolean;
+            allowUpdateNickname?: boolean;
         }
     >
 ) => React.ReactElement;
