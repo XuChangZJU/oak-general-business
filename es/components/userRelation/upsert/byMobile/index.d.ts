@@ -5,6 +5,8 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     entity: keyof ED2;
     entityId: string;
     relations: EntityDict['relation']['OpSchema'][];
-    passwordRequire: boolean;
+    passwordRequire?: boolean | undefined;
+    allowUpdateName?: boolean | undefined;
+    allowUpdateNickname?: boolean | undefined;
 }>) => React.ReactElement;
 export default _default;

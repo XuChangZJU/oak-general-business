@@ -11,4 +11,6 @@ export interface Schema extends EntityShape {
     targetFilter: Object;
     action: String<32>;
     redirectTo: RedirectToProps;
+    entity: String<32>;
+    entityId: String<64>;
 }

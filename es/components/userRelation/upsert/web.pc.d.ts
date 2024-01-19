@@ -15,4 +15,6 @@ export default function Render(props: WebComponentProps<EntityDict, 'relation', 
     rule: EntityDict['userEntityGrant']['OpSchema']['rule'];
     ruleOnRow: EntityDict['userEntityGrant']['OpSchema']['ruleOnRow'];
     passwordRequire: boolean;
+    allowUpdateName?: boolean;
+    allowUpdateNickname?: boolean;
 }, {}>): JSX.Element;

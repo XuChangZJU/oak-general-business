@@ -19,6 +19,8 @@ export type OpSchema = EntityShape & {
     targetFilter: Object;
     action: String<32>;
     redirectTo: RedirectToProps;
+    entity: String<32>;
+    entityId: String<64>;
     iState?: IState | null;
 };
 export type OpAttr = keyof OpSchema;
@@ -29,6 +31,8 @@ export type Schema = EntityShape & {
     targetFilter: Object;
     action: String<32>;
     redirectTo: RedirectToProps;
+    entity: String<32>;
+    entityId: String<64>;
     iState?: IState | null;
     relation$entity?: Array<Relation.Schema>;
     relation$entity$$aggr?: AggregationResult<Relation.Schema>;
@@ -48,6 +52,8 @@ type AttrFilter = {
     targetFilter: Object;
     action: Q_StringValue;
     redirectTo: JsonFilter<RedirectToProps>;
+    entity: Q_StringValue;
+    entityId: Q_StringValue;
     iState: Q_EnumValue<IState>;
     relation$entity: Relation.Filter & SubQueryPredicateMetadata;
     userRelation$entity: UserRelation.Filter & SubQueryPredicateMetadata;
@@ -66,6 +72,8 @@ export type Projection = {
     targetFilter?: number | Object;
     action?: number;
     redirectTo?: number | JsonProjection<RedirectToProps>;
+    entity?: number;
+    entityId?: number;
     iState?: number;
     relation$entity?: Relation.Selection & {
         $entity: "relation";
@@ -102,6 +110,10 @@ export type SortAttr = {
 } | {
     redirectTo: number;
 } | {
+    entity: number;
+} | {
+    entityId: number;
+} | {
     iState: number;
 } | {
     [k: string]: any;
@@ -114,7 +126,11 @@ export type Sorter = SortNode[];
 export type SelectOperation<P extends Object = Projection> = OakSelection<"select", P, Filter, Sorter>;
 export type Selection<P extends Object = Projection> = SelectOperation<P>;
 export type Aggregation = DeduceAggregation<Projection, Filter, Sorter>;
-export type CreateOperationData = FormCreateData<OpSchema> & {
+export type CreateOperationData = FormCreateData<Omit<OpSchema, "entity" | "entityId">> & ({
+    entity?: string;
+    entityId?: string;
+    [K: string]: any;
+}) & {
     relation$entity?: OakOperation<Relation.UpdateOperation["action"], Omit<Relation.UpdateOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<Relation.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<Relation.CreateOperationData, "entity" | "entityId">> | OakOperation<Relation.UpdateOperation["action"], Omit<Relation.UpdateOperationData, "entity" | "entityId">, Omit<Relation.Filter, "entity" | "entityId">>>;
     userRelation$entity?: OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "entity" | "entityId">, Omit<UserRelation.Filter, "entity" | "entityId">> | OakOperation<"create", Omit<UserRelation.CreateOperationData, "entity" | "entityId">[]> | Array<OakOperation<"create", Omit<UserRelation.CreateOperationData, "entity" | "entityId">> | OakOperation<UserRelation.UpdateOperation["action"], Omit<UserRelation.UpdateOperationData, "entity" | "entityId">, Omit<UserRelation.Filter, "entity" | "entityId">>>;
 };

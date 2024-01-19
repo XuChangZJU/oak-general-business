@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { WebConfig, WechatPublicConfig, WechatMpConfig, NativeConfig } from '../../../oak-app-domain/Application/Schema';
 import { EntityDict } from '../../../oak-app-domain/EntityDict';
 type Config = WebConfig | WechatPublicConfig | WechatMpConfig | NativeConfig;

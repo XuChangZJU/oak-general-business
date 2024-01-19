@@ -16,6 +16,8 @@ const entityDesc = {
                 targetFilter: '过滤条件',
                 action: '动作',
                 redirectTo: '重定向页面',
+                entity: '关联对象',
+                entityId: '关联对象id',
             },
             r: {
                 collaborator: '协作者',

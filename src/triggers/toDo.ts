@@ -23,6 +23,8 @@ export async function createToDo<ED extends EntityDict & BaseEntityDict, T exten
         title: string,
         description?: string,
         redirectTo: EntityDict['toDo']['OpSchema']['redirectTo'],
+        entity: any,
+        entityId: string,
     },
     userIds?: string[]) {
     assert(filter);
@@ -32,6 +34,8 @@ export async function createToDo<ED extends EntityDict & BaseEntityDict, T exten
             targetFilter: translateFilterToObjectPredicate(filter),
             action,
             iState: 'active',
+            entity: data.entity,
+            entityId: data.entityId,
         },
         count: 1
     }, {});

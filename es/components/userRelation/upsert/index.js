@@ -61,6 +61,8 @@ export default OakComponent({
         rule: 'single',
         ruleOnRow: 'single',
         passwordRequire: false,
+        allowUpdateName: false,
+        allowUpdateNickname: false,
     },
     lifetimes: {
         ready() {

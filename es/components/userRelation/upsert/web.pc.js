@@ -5,7 +5,7 @@ import ByMobile from './byMobile/index';
 import ByUserEntityGrant from './byUserEntityGrant';
 import { assert } from 'oak-domain/lib/utils/assert';
 export default function Render(props) {
-    const { entity, entityId, relations, grantByUserEntityGrant, grantByEmail, grantByMobile, grantMethodCount, oakFullpath, redirectToAfterConfirm, qrCodeType, claimUrl, rule, ruleOnRow, passwordRequire, } = props.data;
+    const { entity, entityId, relations, grantByUserEntityGrant, grantByEmail, grantByMobile, grantMethodCount, oakFullpath, redirectToAfterConfirm, qrCodeType, claimUrl, rule, ruleOnRow, passwordRequire, allowUpdateName, allowUpdateNickname, } = props.data;
     let SubPart = <></>;
     if (grantMethodCount === 0) {
         SubPart = (<div className={Style.container}>
@@ -17,7 +17,7 @@ export default function Render(props) {
             SubPart = <div className={Style.container}>尚未实现</div>;
         }
         else if (grantByMobile) {
-            SubPart = (<ByMobile passwordRequire={passwordRequire} entity={entity} entityId={entityId} relations={relations} oakPath="$userRelation-upsert-by-mobile" oakAutoUnmount={true}/>);
+            SubPart = (<ByMobile allowUpdateName={allowUpdateName} allowUpdateNickname={allowUpdateNickname} passwordRequire={passwordRequire} entity={entity} entityId={entityId} relations={relations} oakPath="$userRelation-upsert-by-mobile" oakAutoUnmount={true}/>);
         }
         else {
             assert(grantByUserEntityGrant === true);
@@ -34,7 +34,7 @@ export default function Render(props) {
             {
                 label: '手机号',
                 key: 'item-2',
-                children: (<ByMobile entity={entity} entityId={entityId} relations={relations} oakPath="$userRelation-upsert-by-mobile" oakAutoUnmount={true}/>),
+                children: (<ByMobile allowUpdateName={allowUpdateName} allowUpdateNickname={allowUpdateNickname} passwordRequire={passwordRequire} entity={entity} entityId={entityId} relations={relations} oakPath="$userRelation-upsert-by-mobile" oakAutoUnmount={true}/>),
             },
             {
                 label: '二维码',
