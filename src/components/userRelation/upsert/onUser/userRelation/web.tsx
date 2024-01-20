@@ -16,21 +16,20 @@ export default function Render(props: WebComponentProps<EntityDict, 'user', fals
     const { t, onRelationChange } = props.methods;
     return (
         <>
-            {
-                relations2?.map(
-                    ({ relation, isChecked }) => (
-                        <Checkbox
-                            style={{ marginRight: 20 }}
-                            checked={isChecked}
-                            onChange={(checked) => {
-                                onRelationChange(relation, checked);
-                            }}
-                        >
-                            {relation.name ? t(`${entity}:r.${relation.name}`) : relation.display}
-                        </Checkbox>
-                    )
-                )
-            }
+            {relations2?.map(({ relation, isChecked }) => (
+                <Checkbox
+                    key={`userRelation_${relation}`}
+                    style={{ marginRight: 20 }}
+                    checked={isChecked}
+                    onChange={(checked) => {
+                        onRelationChange(relation, checked);
+                    }}
+                >
+                    {relation.name
+                        ? t(`${entity}:r.${relation.name}`)
+                        : relation.display}
+                </Checkbox>
+            ))}
         </>
     );
 }

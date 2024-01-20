@@ -37,10 +37,10 @@ export default function Render(
 
     return (
         <>
-            <div>
-                点击切换城市：
+            <div style={{ marginBottom: 16 }}>
+                城市：
                 <Select
-                    placeholder={'切换城市'}
+                    placeholder={'选择城市'}
                     value={areaId}
                     onChange={(value) => {
                         setAreaId(value);
