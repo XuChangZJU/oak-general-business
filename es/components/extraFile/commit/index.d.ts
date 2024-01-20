@@ -1,6 +1,7 @@
 import { EntityDict } from '../../../oak-app-domain';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import { MessageProps } from 'oak-frontend-base/lib/types/Message';
 import { ButtonProps } from 'antd';
 import { ButtonProps as AmButtonProps } from 'antd-mobile';
 type AfterCommit = ((id?: string) => void) | undefined;
@@ -31,5 +32,6 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     } & import("react").AriaAttributes) | undefined;
     afterCommit?: AfterCommit;
     beforeCommit?: BeforeCommit;
+    messageProps?: MessageProps | boolean | undefined,
 }>) => React.ReactElement;
 export default _default;

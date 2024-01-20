@@ -3,6 +3,7 @@ import { EntityDict } from '../../../oak-app-domain';
 import { FileState } from '../../../features/extraFile';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { ReactComponentProps } from 'oak-frontend-base/lib/types/Page';
+import { MessageProps } from 'oak-frontend-base/lib/types/Message';
 import { ButtonProps } from 'antd';
 import { ButtonProps as AmButtonProps } from 'antd-mobile';
 
@@ -39,6 +40,7 @@ export default OakComponent({
         buttonProps: {},
         afterCommit: undefined as AfterCommit,
         beforeCommit: undefined as BeforeCommit,
+        messageProps: undefined as MessageProps | boolean | undefined,
     },
     listeners: {
         action(prev, next) {
@@ -57,7 +59,7 @@ export default OakComponent({
             if (action) {
                 this.update({}, action);
             }
-        }
+        },
     },
     methods: {
         getEfIds() {
@@ -85,19 +87,24 @@ export default OakComponent({
                         attr
                     );
                     if (rel === 2) {
-                        assert(typeof data[attr] === 'object' && !(data[attr] instanceof Array));
+                        assert(
+                            typeof data[attr] === 'object' &&
+                                !(data[attr] instanceof Array)
+                        );
                         getRecursive(attr, data[attr]);
                     } else if (typeof rel === 'string') {
-                        assert(typeof data[attr] === 'object' && !(data[attr] instanceof Array));
+                        assert(
+                            typeof data[attr] === 'object' &&
+                                !(data[attr] instanceof Array)
+                        );
                         getRecursive(rel, data[attr]);
                     } else if (rel instanceof Array) {
                         const [e2] = rel;
                         if (data[attr] instanceof Array) {
-                            data[attr].forEach(
-                                (o2: any) => getRecursive(e2, o2)
+                            data[attr].forEach((o2: any) =>
+                                getRecursive(e2, o2)
                             );
-                        }
-                        else {
+                        } else {
                             getRecursive(e2, data[attr]);
                         }
                     }
@@ -105,7 +112,9 @@ export default OakComponent({
             };
 
             if (operations instanceof Array) {
-                operations.forEach((ele) => getRecursive(entity, ele.operation));
+                operations.forEach((ele) =>
+                    getRecursive(entity, ele.operation)
+                );
             }
             return efIds;
         },
@@ -127,7 +136,10 @@ export default OakComponent({
                         promises.push(
                             (async () => {
                                 try {
-                                    await this.features.extraFile.upload(id, entity);
+                                    await this.features.extraFile.upload(
+                                        id,
+                                        entity
+                                    );
                                 } catch (err) {
                                     failureIds.push(id);
                                 }
@@ -144,7 +156,7 @@ export default OakComponent({
         },
         async onSubmit(e: any) {
             const { oakExecutable } = this.state;
-            const { beforeCommit, afterCommit } = this.props;
+            const { beforeCommit, afterCommit, messageProps } = this.props;
             const ids = this.getEfIds();
 
             if (oakExecutable) {
@@ -156,7 +168,7 @@ export default OakComponent({
                 }
                 const id = this.getId();
 
-                await this.execute();
+                await this.execute(undefined, messageProps);
                 const failureIds = await this.upload(ids);
                 if (failureIds && failureIds.length > 0) {
                     this.setState({
