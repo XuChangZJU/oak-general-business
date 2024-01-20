@@ -1,6 +1,6 @@
-import { WebComponentProps } from 'oak-frontend-base';
 import React from 'react';
 import { Button, ButtonProps } from 'antd-mobile';
+import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
 import { FileState } from '../../../features/extraFile';
 
@@ -41,7 +41,7 @@ export default function render(
     const disabled = (oakExecuting ||
         ['uploading'].includes(state) ||
         (oakExecutable !== true && ['uploaded'].includes(state))) && !failureIds;
-    let text = executeText || t('common:submit');
+    let text = executeText || t('common::submit');
     if (oakExecuting) {
         text = t('executing', { text });
     } else if (oakExecutable === false) {
