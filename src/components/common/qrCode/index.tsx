@@ -53,10 +53,8 @@ function QrCode(props: IQrCodeProps) {
             V = (
                 <span className={`${prefixCls}-qrCodeBox-caption`}>
                     该二维码
-                    <span>{diff}</span>
-                    天内(
                     <span>{expiresAtStr}</span>
-                    前)有效，失效请重新生成
+                    前有效
                 </span>
             );
         } else {
@@ -66,15 +64,15 @@ function QrCode(props: IQrCodeProps) {
             if (diff2 > 0) {
                 V = (
                     <span className={`${prefixCls}-qrCodeBox_caption`}>
-                        该二维码1天内(
+                        该二维码
                         <span>{expiresAtStr}</span>
-                        前)有效，失效请重新生成
+                        前有效
                     </span>
                 );
             } else {
                 V = (
                     <span className={`${prefixCls}-qrCodeBox_caption`}>
-                        该二维码已失效，请重新生成
+                        该二维码已失效
                     </span>
                 );
             }

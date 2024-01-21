@@ -143,7 +143,7 @@ export default function render(
                                             },
                                         },
                                         {
-                                            label: '采集码',
+                                            label: '详情',
                                             action: 'qrcode',
                                             show: record[
                                                 '#oakLegalActions'
