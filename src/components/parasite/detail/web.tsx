@@ -49,7 +49,7 @@ export default function Render(
                 maxWidth: 800
             }}
             >
-                <Alert message="温馨提示：请扫描二维码或打开链接填写信息！" type="info" />
+                <Alert message="将二维码或下方链接发送给使用者" type="info" />
                 <QrCode url={url} expiresAt={expiresAt} />
 
                 <Space.Compact block style={{ marginTop: 16 }}>
