@@ -33,6 +33,20 @@ export const desc: StorageDesc<OpSchema> = {
             notNull: true,
             type: "object"
         },
+        entity: {
+            notNull: true,
+            type: "varchar",
+            params: {
+                length: 32
+            }
+        },
+        entityId: {
+            notNull: true,
+            type: "varchar",
+            params: {
+                length: 64
+            }
+        },
         iState: {
             type: "enum",
             enumeration: ["active", "done"]

@@ -3,7 +3,7 @@ import Style from './web.module.less';
 import QrCode from '../../../components/common/qrCode';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
-import { Spin, Button, Space, Input, Tooltip } from 'antd';
+import { Spin, Button, Space, Input, Tooltip, Alert } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
 import copy from 'copy-to-clipboard';
 
@@ -49,6 +49,7 @@ export default function Render(
                 maxWidth: 800
             }}
             >
+                <Alert message="温馨提示：请扫描二维码或打开链接填写信息！" type="info" />
                 <QrCode url={url} expiresAt={expiresAt} />
 
                 <Space.Compact block style={{ marginTop: 16 }}>

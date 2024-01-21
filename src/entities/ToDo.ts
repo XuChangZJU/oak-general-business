@@ -17,6 +17,8 @@ export interface Schema extends EntityShape {
     targetFilter: Object;
     action: String<32>;
     redirectTo: RedirectToProps;
+    entity: String<32>;
+    entityId: String<64>;
 };
 
 type Relation = 'collaborator';
@@ -53,6 +55,8 @@ const entityDesc: EntityDesc<
                 targetFilter: '过滤条件',
                 action: '动作',
                 redirectTo: '重定向页面',
+                entity: '关联对象',
+                entityId: '关联对象id',
             },
             r: {
                 collaborator: '协作者',

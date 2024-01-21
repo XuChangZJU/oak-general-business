@@ -18,6 +18,8 @@ export async function createToDo(entity, filter, action, context, data, userIds)
             targetFilter: translateFilterToObjectPredicate(filter),
             action,
             iState: 'active',
+            entity: data.entity,
+            entityId: data.entityId,
         },
         count: 1
     }, {});

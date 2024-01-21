@@ -3,7 +3,7 @@ import { Form, Input, Button, Space } from 'antd';
 import Style from './web.pc.module.less';
 import OnUser from '../onUser/index';
 export default function Render(props) {
-    const { mobileValue, mobileValueReady, relations, entity, entityId, userId, oakFullpath, oakExecutable, legal, isNew, passwordRequire, } = props.data;
+    const { mobileValue, mobileValueReady, relations, entity, entityId, userId, oakFullpath, oakExecutable, legal, isNew, passwordRequire, allowUpdateName, allowUpdateNickname, } = props.data;
     const { onConfirm, onMobileChange, onReset, t } = props.methods;
     const [passwordConfirm, setPasswordConfirm] = useState(true);
     return (<div className={Style.container}>
@@ -29,7 +29,7 @@ export default function Render(props) {
         }} placeholder="请输入手机号码" type="tel"/>
                 </Form.Item>
             </Form>
-            {mobileValueReady && (<OnUser oakAutoUnmount={true} oakPath={`${oakFullpath}.user`} entity={entity} entityId={entityId} relations={relations} setPasswordConfirm={setPasswordConfirm} passwordRequire={passwordRequire}/>)}
+            {mobileValueReady && (<OnUser oakAutoUnmount={true} oakPath={`${oakFullpath}.user`} entity={entity} entityId={entityId} relations={relations} setPasswordConfirm={setPasswordConfirm} passwordRequire={passwordRequire} allowUpdateName={allowUpdateName} allowUpdateNickname={allowUpdateNickname}/>)}
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
                 <Form.Item wrapperCol={{ offset: 4 }}>
                     <Space>

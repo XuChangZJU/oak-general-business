@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { EntityDict } from '../../../oak-app-domain';
 import { RowWithActions } from 'oak-frontend-base';
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<EntityDict, "session", true, {

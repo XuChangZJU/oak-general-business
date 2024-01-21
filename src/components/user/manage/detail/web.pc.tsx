@@ -3,8 +3,8 @@ import React from 'react';
 import { Tag, Avatar, Descriptions } from 'antd';
 
 import { WebComponentProps } from 'oak-frontend-base';
+import ActionPanel from 'oak-frontend-base/es/components/func/actionPanel';
 import { EntityDict } from '../../../../oak-app-domain';
-import ActionPanel from '../../../../components/func/actionPanel';
 
 export default function render(
     props: WebComponentProps<

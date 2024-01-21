@@ -22,6 +22,8 @@ export default OakComponent({
         entityId: '',
         relations: [],
         passwordRequire: false,
+        allowUpdateName: false,
+        allowUpdateNickname: false,
     },
     data: {
         mobileValue: '',

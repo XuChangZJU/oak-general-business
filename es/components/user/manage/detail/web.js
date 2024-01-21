@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, Tag, Avatar } from 'antd-mobile';
 import Style from './mobile.module.less';
-import ActionPanel from '../../../../components/func/actionPanel';
+import ActionPanel from 'oak-frontend-base/es/components/func/actionPanel';
 export default function render(props) {
     const { nickname, avatar, name, userState, idState, gender, stateColor, idStateColor, mobileText, executableActions, actionDescriptions, birth, } = props.data;
     const { t, onActionClick } = props.methods;

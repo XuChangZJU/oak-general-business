@@ -186,7 +186,7 @@ export default OakComponent({
                 tokenLifeLength: time,
             });
             const id = this.getId();
-            this.execute();
+            await this.execute();
             this.setState({
                 parasiteId: id,
             });

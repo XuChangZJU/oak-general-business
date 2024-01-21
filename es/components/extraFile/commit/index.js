@@ -9,8 +9,7 @@ export default OakComponent({
             if (ele) {
                 if (['failed', 'local'].includes(ele.state)) {
                     state = ele.state;
-                }
-                else if (ele.state === 'uploading' && state === 'uploaded') {
+                } else if (ele.state === 'uploading' && state === 'uploaded') {
                     state = 'uploading';
                 }
             }
@@ -28,6 +27,7 @@ export default OakComponent({
         buttonProps: {},
         afterCommit: undefined,
         beforeCommit: undefined,
+        messageProps: undefined,
     },
     listeners: {
         action(prev, next) {
@@ -46,12 +46,16 @@ export default OakComponent({
             if (action) {
                 this.update({}, action);
             }
-        }
+        },
     },
     methods: {
         getEfIds() {
-            const entity = this.features.runningTree.getEntity(this.state.oakFullpath);
-            const operations = this.features.runningTree.getOperations(this.state.oakFullpath);
+            const entity = this.features.runningTree.getEntity(
+                this.state.oakFullpath
+            );
+            const operations = this.features.runningTree.getOperations(
+                this.state.oakFullpath
+            );
             const efIds = [];
             const getRecursive = (e, o) => {
                 const { action, data } = o;
@@ -65,26 +69,31 @@ export default OakComponent({
                 for (const attr in data) {
                     const rel = this.features.cache.judgeRelation(e, attr);
                     if (rel === 2) {
-                        assert(typeof data[attr] === 'object' && !(data[attr] instanceof Array));
+                        assert(
+                            typeof data[attr] === 'object' &&
+                                !(data[attr] instanceof Array)
+                        );
                         getRecursive(attr, data[attr]);
-                    }
-                    else if (typeof rel === 'string') {
-                        assert(typeof data[attr] === 'object' && !(data[attr] instanceof Array));
+                    } else if (typeof rel === 'string') {
+                        assert(
+                            typeof data[attr] === 'object' &&
+                                !(data[attr] instanceof Array)
+                        );
                         getRecursive(rel, data[attr]);
-                    }
-                    else if (rel instanceof Array) {
+                    } else if (rel instanceof Array) {
                         const [e2] = rel;
                         if (data[attr] instanceof Array) {
                             data[attr].forEach((o2) => getRecursive(e2, o2));
-                        }
-                        else {
+                        } else {
                             getRecursive(e2, data[attr]);
                         }
                     }
                 }
             };
             if (operations instanceof Array) {
-                operations.forEach((ele) => getRecursive(entity, ele.operation));
+                operations.forEach((ele) =>
+                    getRecursive(entity, ele.operation)
+                );
             }
             return efIds;
         },
@@ -94,20 +103,26 @@ export default OakComponent({
             }
             const promises = [];
             const failureIds = [];
-            const entity = this.features.runningTree.getEntity(this.state.oakFullpath);
+            const entity = this.features.runningTree.getEntity(
+                this.state.oakFullpath
+            );
             ids.forEach((id) => {
                 const fileState = this.features.extraFile.getFileState(id);
                 if (fileState) {
                     const { state } = fileState;
                     if (['local', 'failed'].includes(state)) {
-                        promises.push((async () => {
-                            try {
-                                await this.features.extraFile.upload(id, entity);
-                            }
-                            catch (err) {
-                                failureIds.push(id);
-                            }
-                        })());
+                        promises.push(
+                            (async () => {
+                                try {
+                                    await this.features.extraFile.upload(
+                                        id,
+                                        entity
+                                    );
+                                } catch (err) {
+                                    failureIds.push(id);
+                                }
+                            })()
+                        );
                     }
                 }
             });
@@ -118,7 +133,7 @@ export default OakComponent({
         },
         async onSubmit(e) {
             const { oakExecutable } = this.state;
-            const { beforeCommit, afterCommit } = this.props;
+            const { beforeCommit, afterCommit, messageProps } = this.props;
             const ids = this.getEfIds();
             if (oakExecutable) {
                 if (beforeCommit) {
@@ -128,7 +143,7 @@ export default OakComponent({
                     }
                 }
                 const id = this.getId();
-                await this.execute();
+                await this.execute(undefined, messageProps);
                 const failureIds = await this.upload(ids);
                 if (failureIds && failureIds.length > 0) {
                     this.setState({
@@ -144,8 +159,7 @@ export default OakComponent({
                 if (afterCommit) {
                     afterCommit(id);
                 }
-            }
-            else {
+            } else {
                 const { failureIds, currentId } = this.state;
                 const id2 = currentId;
                 assert(failureIds && failureIds.length > 0);

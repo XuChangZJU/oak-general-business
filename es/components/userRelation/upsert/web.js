@@ -5,7 +5,7 @@ import ByMobile from './byMobile/index';
 import ByUserEntityGrant from './byUserEntityGrant';
 import { assert } from 'oak-domain/lib/utils/assert';
 export default function Render(props) {
-    const { entity, entityId, relations, grantByUserEntityGrant, grantByEmail, grantByMobile, grantMethodCount, oakFullpath, redirectToAfterConfirm, qrCodeType, claimUrl, rule, ruleOnRow, passwordRequire, } = props.data;
+    const { entity, entityId, relations, grantByUserEntityGrant, grantByEmail, grantByMobile, grantMethodCount, oakFullpath, redirectToAfterConfirm, qrCodeType, claimUrl, rule, ruleOnRow, passwordRequire, allowUpdateName, allowUpdateNickname, } = props.data;
     let SubPart = <></>;
     if (grantMethodCount === 0) {
         SubPart = (<div className={Style.container}>
