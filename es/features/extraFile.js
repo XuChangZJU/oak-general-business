@@ -171,7 +171,7 @@ export class ExtraFile extends Feature {
     formatBytes(size) {
         return bytesToSize(size);
     }
-    async autoUpload(extraFile, file) {
+    async autoUpload(extraFile, file, style) {
         const extraFileId = extraFile.id || generateNewId();
         const applicationId = extraFile.applicationId || this.application.getApplicationId();
         await this.cache.operate('extraFile', {
@@ -208,7 +208,7 @@ export class ExtraFile extends Feature {
                 });
             }
             this.publish();
-            return this.getUrl(newExtraFile);
+            return this.getUrl(newExtraFile, style);
         }
         catch (err) {
             await this.cache.operate('extraFile', {

@@ -26,6 +26,6 @@ export declare class ExtraFile<ED extends EntityDict, Cxt extends BackendRuntime
     } | undefined;
     getFileName(extraFile: EntityDict['extraFile']['OpSchema']): string;
     formatBytes(size: number): string;
-    autoUpload(extraFile: EntityDict['extraFile']['OpSchema'], file: File | string): Promise<string>;
+    autoUpload(extraFile: EntityDict['extraFile']['OpSchema'], file: File | string, style?: string): Promise<string>;
     private uploadToAspect;
 }

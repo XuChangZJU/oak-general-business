@@ -24,7 +24,7 @@ export class ExtraFile<
     Cxt extends BackendRuntimeContext<ED>,
     FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>,
     AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>
-    > extends Feature {
+> extends Feature {
     private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
     private application: Application<ED, Cxt, FrontCxt, AD>;
     private locales: Locales<ED, Cxt, FrontCxt, AD>;
@@ -92,8 +92,7 @@ export class ExtraFile<
                 });
                 modiEntityId = modi.entityId!;
                 return modi.data as ED['extraFile']['OpSchema'];
-            }
-            else {
+            } else {
                 const [extraFile] = this.cache.get('extraFile', {
                     data: extraFileProjection,
                     filter: {
@@ -158,9 +157,7 @@ export class ExtraFile<
                             },
                         } as ED['modi']['Operation'],
                     });
-
-                }
-                else {
+                } else {
                     await this.cache.exec('operate', {
                         entity: 'extraFile',
                         operation,
@@ -211,9 +208,9 @@ export class ExtraFile<
 
     getFileState(id: string):
         | {
-            state: FileState;
-            percentage?: number;
-        }
+              state: FileState;
+              percentage?: number;
+          }
         | undefined {
         if (this.files[id]) {
             return this.files[id];
@@ -234,7 +231,8 @@ export class ExtraFile<
 
     async autoUpload(
         extraFile: EntityDict['extraFile']['OpSchema'],
-        file: File | string
+        file: File | string,
+        style?: string
     ) {
         const extraFileId = extraFile.id || generateNewId();
         const applicationId =
@@ -279,7 +277,8 @@ export class ExtraFile<
             }
             this.publish();
             return this.getUrl(
-                newExtraFile as EntityDict['extraFile']['Schema']
+                newExtraFile as EntityDict['extraFile']['Schema'],
+                style
             );
         } catch (err) {
             await this.cache.operate('extraFile', {
