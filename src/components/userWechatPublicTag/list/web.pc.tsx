@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
 import {
-    Avatar,
-    Space,
     Button,
-    Input,
-    Typography,
-    DatePicker,
     Table,
     Modal,
-    Descriptions,
 } from 'antd';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../oak-app-domain';
-import PageHeader from '../../../components/common/pageHeader';
 import dayjs from 'dayjs';
 
 const { confirm } = Modal;

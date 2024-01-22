@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Table, Tag, Button, Space, Input, Modal, Col, Row, Select, Tabs } from 'antd';
+import { Input, Modal } from 'antd';
 
-import PageHeader from '../../../components/common/pageHeader';
-import dayjs from 'dayjs';
 import Style from './web.module.less';
 
 import { WebComponentProps } from 'oak-frontend-base';

@@ -5,14 +5,12 @@ import {
     Form,
     Space,
     Button,
-    Input,
     InputNumber,
     Typography,
-    AutoComplete,
 } from 'antd';
 import UserEntityGrantShare from '../share';
-import PageHeader from '../../common/pageHeader';
 import Style from './web.module.less';
+
 export default function Render(
     props: WebComponentProps<
         EntityDict,
