@@ -42,7 +42,7 @@ export default function render(props) {
                         </Space>
                     </Radio.Group>
                 </Form.Item>)}
-            {type === 'grant' && (<Form.Item label={t('multiple')} required help={t('helpMutiple')}>
+            {type === 'grant' && (<Form.Item label={t('multiple')} required help={t('helpMultiple')}>
                     <Switch checked={multiple || false} onChange={(val) => update({ multiple: val })}/>
                 </Form.Item>)}
             <Form.Item label={t('userEntityGrant:attr.expiresAt')} name="period" rules={[

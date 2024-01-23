@@ -3,7 +3,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { WechatSDK } from 'oak-external-sdk';
 const triggers = [
     {
-        name: '当生成wechatQrCode时,调用外部接口完善数据',
+        name: '当生成wechatQrCode时, 调用外部接口完善数据',
         entity: 'wechatQrCode',
         action: 'create',
         when: 'before',
@@ -114,7 +114,8 @@ const triggers = [
                             appId = self.id;
                             if (self.config.qrCodePrefix) {
                                 appType = 'wechatMpDomainUrl';
-                                url = `${self.config.qrCodePrefix}/${shrinkUuidTo32Bytes(id)}`;
+                                url = `${self.config
+                                    .qrCodePrefix}/${shrinkUuidTo32Bytes(id)}`;
                             }
                             else {
                                 appType = 'wechatMpWxaCode';
@@ -132,9 +133,10 @@ const triggers = [
                                 const mpApp = applications.find((ele) => ele.type === 'wechatMp');
                                 if (mpApp) {
                                     appId = mpApp.id;
-                                    if (mpApp.config.qrCodePrefix) {
+                                    const mpConfig = mpApp.config;
+                                    if (mpConfig?.qrCodePrefix) {
                                         appType = 'wechatMpDomainUrl';
-                                        url = `${mpApp.config.qrCodePrefix}/${shrinkUuidTo32Bytes(id)}`;
+                                        url = `${mpConfig.qrCodePrefix}/${shrinkUuidTo32Bytes(id)}`;
                                     }
                                     else {
                                         appType = 'wechatMpWxaCode';
@@ -190,8 +192,8 @@ const triggers = [
                                 expireSeconds: 2592000,
                             });
                             Object.assign(updateData, {
-                                ticket: result?.ticket,
-                                url: result?.url,
+                                ticket: result.ticket,
+                                url: result.url,
                             });
                         }
                         break;

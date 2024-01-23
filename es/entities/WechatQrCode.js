@@ -21,12 +21,12 @@ const entityDesc = {
             v: {
                 type: {
                     webForWechatPublic: '网站引流到公众号',
-                    wechatMpDomainUrl: '小程序url码',
+                    wechatMpDomainUrl: '小程序普通链接二维码',
                     wechatMpWxaCode: '小程序码',
                     wechatPublic: '公众号关注码',
                     wechatPublicForMp: '公众号回复小程序码',
-                }
-            }
+                },
+            },
         },
     },
     indexes: [
@@ -41,7 +41,7 @@ const entityDesc = {
                 },
                 {
                     name: 'tag',
-                }
+                },
             ],
         },
         {
@@ -63,6 +63,6 @@ const entityDesc = {
                 },
             ],
         },
-    ]
+    ],
 };
 export {};

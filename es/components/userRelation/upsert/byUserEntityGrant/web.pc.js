@@ -29,12 +29,14 @@ export default function render(props) {
         }))}/>
             </Form.Item>
             {relationIds?.length > 1 && (<Form.Item label={t('userEntityGrant:attr.rule')} help={t('helpRule')}>
-                    <Radio.Group value={rule} onChange={({ target }) => update({ rule: target.value })} options={rules.map((ele) => ({
+                    <Radio.Group value={rule} onChange={({ target }) => update({
+                rule: target.value,
+            })} options={rules.map((ele) => ({
                 value: ele,
-                label: t(`userEntityGrant:v.rule.${ele}`)
+                label: t(`userEntityGrant:v.rule.${ele}`),
             }))}/>
                 </Form.Item>)}
-            {type === 'grant' && (<Form.Item label={t('multiple')} required help={t('helpMutiple')}>
+            {type === 'grant' && (<Form.Item label={t('multiple')} required help={t('helpMultiple')}>
                     <Switch checked={multiple || false} onChange={(val) => update({ multiple: val })}/>
                 </Form.Item>)}
             <Form.Item label={t('userEntityGrant:attr.expiresAt')} required 

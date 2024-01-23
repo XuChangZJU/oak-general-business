@@ -15,6 +15,7 @@ export default OakComponent({
     isList: true,
     properties: {
         scene: '',
+        q: '',
     },
     data: {
         loading: false,
@@ -35,8 +36,17 @@ export default OakComponent({
     filters: [
         {
             filter() {
-                const scene = decodeURIComponent(this.props.scene);
-                const uuid = scene && expandUuidTo36Bytes(scene);
+                let uuid;
+                if (this.props.scene) {
+                    // 小程序码扫码
+                    const scene = decodeURIComponent(this.props.scene);
+                    uuid = expandUuidTo36Bytes(scene);
+                }
+                else if (this.props.q) {
+                    // 普通链接二维码扫码
+                    const q = decodeURIComponent(this.props.q);
+                    uuid = expandUuidTo36Bytes(q);
+                }
                 return {
                     id: uuid || 'illegal',
                 };

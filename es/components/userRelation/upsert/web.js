@@ -32,24 +32,24 @@ export default function Render(props) {
                 children: <div className={Style.container}>尚未实现</div>,
             },
             {
-                label: '手机号',
+                label: '二维码',
                 key: 'item-2',
-                children: (<ByMobile entity={entity} entityId={entityId} relations={relations} oakPath="$userRelation-upsert-by-mobile" oakAutoUnmount={true}/>),
+                children: (<ByUserEntityGrant entity={entity} entityId={entityId} relations={relations} qrCodeType={qrCodeType} oakPath="$userRelation-upsert-by-userEntityGrant" oakAutoUnmount={true} redirectToAfterConfirm={redirectToAfterConfirm} claimUrl={claimUrl} rule={rule} ruleOnRow={ruleOnRow}/>),
             },
             {
-                label: '二维码',
+                label: '手机号',
                 key: 'item-3',
-                children: (<ByUserEntityGrant entity={entity} entityId={entityId} relations={relations} qrCodeType={qrCodeType} oakPath="$userRelation-upsert-by-userEntityGrant" oakAutoUnmount={true} redirectToAfterConfirm={redirectToAfterConfirm} claimUrl={claimUrl} rule={rule} ruleOnRow={ruleOnRow}/>),
+                children: (<ByMobile entity={entity} entityId={entityId} relations={relations} oakPath="$userRelation-upsert-by-mobile" oakAutoUnmount={true}/>),
             },
         ];
         const items2 = [];
         if (grantByEmail) {
             items2.push(items[0]);
         }
-        if (grantByMobile) {
+        if (grantByUserEntityGrant) {
             items2.push(items[1]);
         }
-        if (grantByUserEntityGrant) {
+        if (grantByMobile) {
             items2.push(items[2]);
         }
         SubPart = (<Tabs className={Style.tab}>

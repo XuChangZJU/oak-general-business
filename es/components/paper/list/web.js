@@ -1,34 +1,31 @@
 import React from 'react';
 import { Table, Tag, Button, Modal, Space, Row, Col, Input, } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import Style from './web.module.less';
-import PageHeader from '../../common/pageHeader';
 export default function render(props) {
     const { pagination, articles = [], oakLoading, searchValue, title, showBack = false, } = props.data;
     const { pageSize, total, currentPage } = pagination || {};
     const { t, goUpsert, goDetailById, goUpsertById, searchConfirm, searchValueChange, setCurrentPage, setPageSize, onRemove, } = props.methods;
-    return (<PageHeader title={title || '文章管理'} showBack={showBack}>
-            <div className={Style.container}>
-                <Row>
-                    <Col flex="auto">
-                        <Space>
-                            <Button type="primary" onClick={() => {
+    return (<>
+            <Row>
+                <Col flex="auto">
+                    <Space>
+                        <Button type="primary" onClick={() => {
             goUpsert();
         }}>
-                                {t('action.add')}
-                            </Button>
-                        </Space>
-                    </Col>
-                    <Col flex="none">
-                        <Input placeholder="请输入标题" value={searchValue} allowClear onChange={(e) => {
+                            {t('action.add')}
+                        </Button>
+                    </Space>
+                </Col>
+                <Col flex="none">
+                    <Input placeholder="请输入标题" value={searchValue} allowClear onChange={(e) => {
             searchValueChange(e.target.value);
         }} suffix={<SearchOutlined />} onPressEnter={(e) => {
             searchConfirm();
         }}/>
-                    </Col>
-                </Row>
+                </Col>
+            </Row>
 
-                <Table loading={oakLoading} dataSource={articles} rowKey="index" columns={[
+            <Table loading={oakLoading} dataSource={articles} rowKey="index" columns={[
             {
                 align: 'center',
                 dataIndex: 'serial-number',
@@ -42,8 +39,8 @@ export default function render(props) {
                 title: t('book:attr.iState'),
                 render: (value, record, index) => {
                     return (<Tag color="processing">
-                                        {t(`book:v.iState.${value}`)}
-                                    </Tag>);
+                                    {t(`book:v.iState.${value}`)}
+                                </Tag>);
                 },
             },
             {
@@ -65,17 +62,17 @@ export default function render(props) {
                 align: 'center',
                 render: (value, record, index) => {
                     return (<Space>
-                                        <Button type="link" onClick={() => {
+                                    <Button type="link" onClick={() => {
                             goDetailById(record.id);
                         }}>
-                                            详情
-                                        </Button>
-                                        <Button type="link" onClick={() => {
+                                        详情
+                                    </Button>
+                                    <Button type="link" onClick={() => {
                             goUpsertById(record.id);
                         }}>
-                                            编辑
-                                        </Button>
-                                        <Button type="link" onClick={() => {
+                                        编辑
+                                    </Button>
+                                    <Button type="link" onClick={() => {
                             const modal = Modal.confirm({
                                 title: '确认删除该文章吗？',
                                 content: '删除后，文章不可恢复',
@@ -90,9 +87,9 @@ export default function render(props) {
                                 },
                             });
                         }}>
-                                            删除
-                                        </Button>
-                                    </Space>);
+                                        删除
+                                    </Button>
+                                </Space>);
                 },
                 fixed: 'right',
             },
@@ -107,6 +104,5 @@ export default function render(props) {
                 setCurrentPage(current);
             },
         }}/>
-            </div>
-        </PageHeader>);
+        </>);
 }
