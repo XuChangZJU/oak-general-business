@@ -97,24 +97,8 @@ export default function Render(
                 children: <div className={Style.container}>尚未实现</div>,
             },
             {
-                label: '手机号',
-                key: 'item-2',
-                children: (
-                    <ByMobile
-                        allowUpdateName={allowUpdateName}
-                        allowUpdateNickname={allowUpdateNickname}
-                        passwordRequire={passwordRequire}
-                        entity={entity}
-                        entityId={entityId}
-                        relations={relations}
-                        oakPath="$userRelation-upsert-by-mobile"
-                        oakAutoUnmount={true}
-                    />
-                ),
-            },
-            {
                 label: '二维码',
-                key: 'item-3',
+                key: 'item-2',
                 children: (
                     <ByUserEntityGrant
                         entity={entity}
@@ -130,15 +114,31 @@ export default function Render(
                     />
                 ),
             },
+            {
+                label: '手机号',
+                key: 'item-3',
+                children: (
+                    <ByMobile
+                        allowUpdateName={allowUpdateName}
+                        allowUpdateNickname={allowUpdateNickname}
+                        passwordRequire={passwordRequire}
+                        entity={entity}
+                        entityId={entityId}
+                        relations={relations}
+                        oakPath="$userRelation-upsert-by-mobile"
+                        oakAutoUnmount={true}
+                    />
+                ),
+            },
         ];
         const items2: typeof items = [];
         if (grantByEmail) {
             items2.push(items[0]);
         }
-        if (grantByMobile) {
+        if (grantByUserEntityGrant) {
             items2.push(items[1]);
         }
-        if (grantByUserEntityGrant) {
+        if (grantByMobile) {
             items2.push(items[2]);
         }
         SubPart = <Tabs items={items2} />;

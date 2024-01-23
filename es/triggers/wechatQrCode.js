@@ -62,7 +62,7 @@ const triggers = [
                                 self.config.qrCodePrefix)) {
                                 throw new Error('无法生成小程序地址码，未配置跳转前缀');
                             }
-                            url = `${self.config.qrCodePrefix}/${id}`;
+                            url = `${self.config.qrCodePrefix}/${shrinkUuidTo32Bytes(id)}`;
                             appId = self.id;
                             appType = 'wechatMpDomainUrl';
                             break;
@@ -114,7 +114,7 @@ const triggers = [
                             appId = self.id;
                             if (self.config.qrCodePrefix) {
                                 appType = 'wechatMpDomainUrl';
-                                url = `${self.config.qrCodePrefix}/${id}`;
+                                url = `${self.config.qrCodePrefix}/${shrinkUuidTo32Bytes(id)}`;
                             }
                             else {
                                 appType = 'wechatMpWxaCode';
@@ -134,7 +134,7 @@ const triggers = [
                                     appId = mpApp.id;
                                     if (mpApp.config.qrCodePrefix) {
                                         appType = 'wechatMpDomainUrl';
-                                        url = `${mpApp.config.qrCodePrefix}/${id}`;
+                                        url = `${mpApp.config.qrCodePrefix}/${shrinkUuidTo32Bytes(id)}`;
                                     }
                                     else {
                                         appType = 'wechatMpWxaCode';

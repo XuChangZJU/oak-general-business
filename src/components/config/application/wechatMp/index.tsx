@@ -43,9 +43,10 @@ export default function WechatMp(props: {
                     layout="vertical"
                     style={{ marginTop: 10 }}
                 >
-                    <Form.Item label="appId"
-                     //name="appId"
-                     >
+                    <Form.Item
+                        label="appId"
+                        //name="appId"
+                    >
                         <>
                             <Input
                                 placeholder="请输入appId"
@@ -57,9 +58,10 @@ export default function WechatMp(props: {
                             />
                         </>
                     </Form.Item>
-                    <Form.Item label="appSecret"
-                     //name="appSecret"
-                     >
+                    <Form.Item
+                        label="appSecret"
+                        //name="appSecret"
+                    >
                         <>
                             <Input
                                 placeholder="请输入appSecret"
@@ -71,9 +73,10 @@ export default function WechatMp(props: {
                             />
                         </>
                     </Form.Item>
-                    <Form.Item label="原始ID"
-                     //name="originalId"
-                     >
+                    <Form.Item
+                        label="原始ID"
+                        //name="originalId"
+                    >
                         <>
                             <Input
                                 placeholder="请输入原始ID"
@@ -85,12 +88,14 @@ export default function WechatMp(props: {
                             />
                         </>
                     </Form.Item>
-                    <Form.Item label="qrCodePrefix"
-                    // name="qrCodePrefix"
-                     >
+                    <Form.Item
+                        label="普通链接二维码规则"
+                        tooltip="扫普通链接二维码打开小程序，如原有二维码链接为 http://www.qq.com/a/123456 ，其中12345为uuid，则可配置规则 http://www.qq.com/a/ 。 请在输入框中填写 http://www.qq.com/a ，系统将在生成二维码时，在链接末尾加上'/'和uuid，从而实现扫码打开小程序的规则。"
+                        // name="qrCodePrefix"
+                    >
                         <>
                             <Input
-                                placeholder="请输入qrCodePrefix"
+                                placeholder="请输入普通链接二维码规则"
                                 type="text"
                                 value={config?.qrCodePrefix}
                                 onChange={(e) =>
@@ -111,8 +116,9 @@ export default function WechatMp(props: {
                     layout="vertical"
                     style={{ marginTop: 10 }}
                 >
-                    <Form.Item label="服务器地址(URL)" 
-                   //name="url"
+                    <Form.Item
+                        label="服务器地址(URL)"
+                        //name="url"
                     >
                         <>
                             <Input
@@ -125,9 +131,10 @@ export default function WechatMp(props: {
                             />
                         </>
                     </Form.Item>
-                    <Form.Item label="令牌(Token)"
-                     //name="token"
-                     >
+                    <Form.Item
+                        label="令牌(Token)"
+                        //name="token"
+                    >
                         <>
                             <Input
                                 placeholder="请输入令牌(Token)"
@@ -141,7 +148,7 @@ export default function WechatMp(props: {
                     </Form.Item>
                     <Form.Item
                         label="消息加解密密钥(EncodingAESKey)"
-                       // name="encodingAESKey"
+                        // name="encodingAESKey"
                         tooltip="消息加解密密钥将用于消息体加解密过程。具体功能请参见微信文档"
                     >
                         <>
@@ -158,9 +165,10 @@ export default function WechatMp(props: {
                             />
                         </>
                     </Form.Item>
-                    <Form.Item label="消息加解密方式"
-                     //name="mode"
-                     >
+                    <Form.Item
+                        label="消息加解密方式"
+                        //name="mode"
+                    >
                         <>
                             <Select
                                 placeholder="请选择消息加解密方式"
@@ -185,9 +193,10 @@ export default function WechatMp(props: {
                             />
                         </>
                     </Form.Item>
-                    <Form.Item label="数据格式"
-                     //name="dataFormat"
-                     >
+                    <Form.Item
+                        label="数据格式"
+                        //name="dataFormat"
+                    >
                         <>
                             <Select
                                 placeholder="请选择消息加解密方式"

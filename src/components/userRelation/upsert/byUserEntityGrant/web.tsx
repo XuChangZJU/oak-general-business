@@ -128,7 +128,7 @@ export default function render(
                 <Form.Item
                     label={t('multiple')}
                     required
-                    help={t('helpMutiple')}
+                    help={t('helpMultiple')}
                 >
                     <Switch
                         checked={multiple || false}
