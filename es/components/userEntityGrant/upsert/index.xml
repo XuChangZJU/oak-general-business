@@ -4,7 +4,7 @@
         <view class="ueg-container">
             <userEntityGrant-share oakId="{{userEntityGrantId}}" oakAutoUnmount="{{true}}" oakPath="$userEntityGrant/upsert-userEntityGrant/detail" />
             <view class="share">
-                <l-button  size="long"type="success" open-type="share">
+                <l-button size="long" type="success" open-type="share">
                     分享
                 </l-button>
             </view>
