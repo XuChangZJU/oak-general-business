@@ -86,34 +86,6 @@ export default function render(
                             );
                         },
                     },
-                    // {
-                    //     dataIndex: 'op',
-                    //     width: 200,
-                    //     title: '操作',
-                    //     align: 'center',
-                    //     render: (value, record, index) => {
-                    //         return (
-                    //             <>
-                    //                 <Button
-                    //                     type="link"
-                    //                     onClick={() => {
-                    //                         updateItem(
-                    //                             {
-                    //                                 expired: true
-                    //                             },
-                    //                             record.id!,
-                    //                             'cancel'
-                    //                         );
-                    //                         execute();
-                    //                     }}
-                    //                 >
-                    //                     失效
-                    //                 </Button>
-                    //             </>
-                    //         );
-                    //     },
-                    //     fixed: 'right',
-                    // },
                     {
                         width: 200,
                         title: '操作',
@@ -129,7 +101,8 @@ export default function render(
                                         {
                                             label: '失效',
                                             action: 'cancel',
-                                            // alerted: true,
+                                            alerted: true,
+                                            alertContent: '确实失效此采集码吗？',
                                             show: record[
                                                 '#oakLegalActions'
                                             ]?.includes('cancel'),
