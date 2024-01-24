@@ -64,13 +64,26 @@ export default OakComponent({
             };
         }
 
-        const scene = decodeURIComponent(props.scene!);
-        const uuid = scene && expandUuidTo36Bytes(scene!);
-        if (wechatQrCode.id !== uuid) {
-            return {
-                illegal: true,
-            };
+        if (props.scene) {
+            const scene = decodeURIComponent(props.scene!);
+            const uuid = expandUuidTo36Bytes(scene!);
+            if (wechatQrCode.id !== uuid) {
+                return {
+                    illegal: true,
+                };
+            }
         }
+
+        if (props.q) {
+            const q = decodeURIComponent(props.q!);
+            const uuid = expandUuidTo36Bytes(q!);
+            if (wechatQrCode.id !== uuid) {
+                return {
+                    illegal: true,
+                };
+            }
+        }
+        
 
         if (!wechatQrCode.expired) {
             const { props = {}, state = {}, pathname } = wechatQrCode!.props!;
