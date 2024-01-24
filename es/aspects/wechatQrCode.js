@@ -12,7 +12,7 @@ import { shrinkUuidTo32Bytes } from 'oak-domain/lib/utils/uuid';
  * @returns
  */
 export async function createWechatQrCode(options, context) {
-    const { entity, entityId, tag, permanent = false, props, type: qrCodeType } = options;
+    const { entity, entityId, tag, permanent = false, props, type: qrCodeType, } = options;
     const applicationId = context.getApplicationId();
     assert(applicationId);
     const [system] = await context.select('system', {
@@ -32,7 +32,7 @@ export async function createWechatQrCode(options, context) {
         filter: {
             application$system: {
                 id: applicationId,
-            }
+            },
         },
     }, {
         dontCollect: true,
@@ -46,24 +46,24 @@ export async function createWechatQrCode(options, context) {
     const id = generateNewId();
     if (qrCodeType) {
         switch (qrCodeType) {
-            case 'wechatPublic':
-                {
-                    const self = applications.find((ele) => ele.type === 'wechatPublic');
-                    if (!(self && self.type === 'wechatPublic' &&
-                        self.config.isService)) {
-                        throw new Error('无法生成公众号二维码，服务号未正确配置');
-                    }
-                    appId = self.id;
-                    appType = 'wechatPublic';
-                    break;
+            case 'wechatPublic': {
+                const self = applications.find((ele) => ele.type === 'wechatPublic');
+                if (!(self &&
+                    self.type === 'wechatPublic' &&
+                    self.config.isService)) {
+                    throw new Error('无法生成公众号二维码，服务号未正确配置');
                 }
+                appId = self.id;
+                appType = 'wechatPublic';
+                break;
+            }
             case 'wechatMpDomainUrl': {
                 const self = applications.find((ele) => ele.type === 'wechatMp');
                 if (!(self.type === 'wechatMp' &&
                     self.config.qrCodePrefix)) {
                     throw new Error('无法生成小程序地址码，未配置跳转前缀');
                 }
-                url = `${self.config.qrCodePrefix}/${id}`;
+                url = `${self.config.qrCodePrefix}/${shrinkUuidTo32Bytes(id)}`;
                 appId = self.id;
                 appType = 'wechatMpDomainUrl';
                 break;
@@ -79,12 +79,14 @@ export async function createWechatQrCode(options, context) {
             }
             case 'wechatPublicForMp': {
                 const self = applications.find((ele) => ele.type === 'wechatPublic');
-                if (!(self && self.type === 'wechatPublic' &&
+                if (!(self &&
+                    self.type === 'wechatPublic' &&
                     self.config.isService)) {
                     throw new Error('无法生成公众号-小程序二维码，服务号未正确配置');
                 }
                 const selfMp = applications.find((ele) => ele.type === 'wechatMp');
-                if (!(selfMp && selfMp.config.appId &&
+                if (!(selfMp &&
+                    selfMp.config.appId &&
                     selfMp.config.appSecret)) {
                     throw new Error('无法生成公众号-小程序二维码，小程序未正确配置');
                 }
@@ -115,7 +117,7 @@ export async function createWechatQrCode(options, context) {
                 appId = self.id;
                 if (self.config.qrCodePrefix) {
                     appType = 'wechatMpDomainUrl';
-                    url = `${self.config.qrCodePrefix}/${id}`;
+                    url = `${self.config.qrCodePrefix}/${shrinkUuidTo32Bytes(id)}`;
                 }
                 else {
                     appType = 'wechatMpWxaCode';
@@ -135,7 +137,7 @@ export async function createWechatQrCode(options, context) {
                         appId = mpApp.id;
                         if (mpApp.config.qrCodePrefix) {
                             appType = 'wechatMpDomainUrl';
-                            url = `${mpApp.config.qrCodePrefix}/${id}`;
+                            url = `${mpApp.config.qrCodePrefix}/${shrinkUuidTo32Bytes(id)}`;
                         }
                         else {
                             appType = 'wechatMpWxaCode';
@@ -170,40 +172,6 @@ export async function createWechatQrCode(options, context) {
     switch (type) {
         case 'wechatMpWxaCode': {
             assert(applicationType === 'wechatMp' && config.type === 'wechatMp');
-            const config2 = config;
-            const { appId, appSecret } = config2;
-            // if (process.env.OAK_PLATFORM === 'web') {
-            //     Object.assign(data, {
-            //         buffer: 'develop环境下无法真实获取二维码数据',
-            //     });
-            // }
-            // else {
-            //     // 小程序码去实时获取（暂时不考虑缓存）
-            //     const wechatInstance = WechatSDK.getInstance(
-            //         appId,
-            //         'wechatMp',
-            //         appSecret
-            //     ) as WechatMpInstance;
-            //     const envVersionVersionDict = {
-            //         development: 'develop',
-            //         staging: 'trial',
-            //         production: 'release',
-            //     };
-            //     const buffer = await wechatInstance.getMpUnlimitWxaCode({
-            //         scene: shrinkUuidTo32Bytes(id),
-            //         envVersion:
-            //             envVersionVersionDict[
-            //                 process.env
-            //                     .NODE_ENV as keyof typeof envVersionVersionDict
-            //             ] as 'release',
-            //         page: 'pages/wechatQrCode/scan/index', // todo，这里用其它的页面微信服务器拒绝，因为没发布。应该是 pages/wechatQrCode/scan/index
-            //     });
-            //     // 把arrayBuffer转成字符串返回
-            //     const str = String.fromCharCode(...new Uint8Array(buffer));
-            //     Object.assign(data, {
-            //         buffer: str,
-            //     });
-            // }
             break;
         }
         case 'wechatPublicForMp':
@@ -226,8 +194,8 @@ export async function createWechatQrCode(options, context) {
                     expireSeconds: 2592000,
                 });
                 Object.assign(data, {
-                    ticket: result?.ticket,
-                    url: result?.url,
+                    ticket: result.ticket,
+                    url: result.url,
                 });
             }
             break;
@@ -243,9 +211,7 @@ export async function createWechatQrCode(options, context) {
         id: generateNewId(),
         action: 'create',
         data,
-    }, {
-        dontCollect: true,
-    });
+    }, {});
 }
 export async function getMpUnlimitWxaCode(wechatQrCodeId, context) {
     const [wechatQrCode] = await context.select('wechatQrCode', {

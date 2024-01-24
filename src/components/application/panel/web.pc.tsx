@@ -133,7 +133,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
             ),
         });
     }
-    if (id && oakFullpath) {
+    if (id) {
         return (
             <Tabs
                 tabPosition="left"
@@ -141,7 +141,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'application
                     setTabKey(key);
                 }}
                 items={items}
-                style={{ height: 520 }}
+                style={{ minHeight: 520 }}
             />
         );
     }

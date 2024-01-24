@@ -37,12 +37,17 @@ export interface Schema extends EntityShape {
 
 type Action = 'claim' | 'disable';
 
-const entityDesc: EntityDesc<Schema, Action, '', {
-    type: Schema['type'];
-    qrCodeType: QrCodeType;
-    rule: Schema['rule'];
-    ruleOnRow: Schema['ruleOnRow'];
-}> = {
+const entityDesc: EntityDesc<
+    Schema,
+    Action,
+    '',
+    {
+        type: Schema['type'];
+        qrCodeType: QrCodeType;
+        rule: Schema['rule'];
+        ruleOnRow: Schema['ruleOnRow'];
+    }
+> = {
     locales: {
         zh_CN: {
             name: '用户授权',
@@ -76,7 +81,7 @@ const entityDesc: EntityDesc<Schema, Action, '', {
                 },
                 qrCodeType: {
                     webForWechatPublic: '网站引流到公众号',
-                    wechatMpDomainUrl: '小程序url码',
+                    wechatMpDomainUrl: '小程序普通链接二维码',
                     wechatMpWxaCode: '小程序码',
                     wechatPublic: '公众号关注码',
                     wechatPublicForMp: '公众号回复小程序码',
@@ -84,12 +89,12 @@ const entityDesc: EntityDesc<Schema, Action, '', {
                 rule: {
                     single: '单选',
                     all: '全选',
-                    free: '自由选择'
+                    free: '自由选择',
                 },
                 ruleOnRow: {
                     single: '单选',
                     all: '全选',
-                    free: '自由选择'
+                    free: '自由选择',
                 },
             },
         },
@@ -103,7 +108,7 @@ const entityDesc: EntityDesc<Schema, Action, '', {
                 },
                 {
                     name: 'expiresAt',
-                }
+                },
             ],
         },
     ],

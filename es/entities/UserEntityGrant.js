@@ -32,7 +32,7 @@ const entityDesc = {
                 },
                 qrCodeType: {
                     webForWechatPublic: '网站引流到公众号',
-                    wechatMpDomainUrl: '小程序url码',
+                    wechatMpDomainUrl: '小程序普通链接二维码',
                     wechatMpWxaCode: '小程序码',
                     wechatPublic: '公众号关注码',
                     wechatPublicForMp: '公众号回复小程序码',
@@ -40,12 +40,12 @@ const entityDesc = {
                 rule: {
                     single: '单选',
                     all: '全选',
-                    free: '自由选择'
+                    free: '自由选择',
                 },
                 ruleOnRow: {
                     single: '单选',
                     all: '全选',
-                    free: '自由选择'
+                    free: '自由选择',
                 },
             },
         },
@@ -59,7 +59,7 @@ const entityDesc = {
                 },
                 {
                     name: 'expiresAt',
-                }
+                },
             ],
         },
     ],

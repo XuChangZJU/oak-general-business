@@ -15,7 +15,7 @@ export default function render(
         {
             searchValue: string;
             nameLabel: string;
-            list: RowWithActions<EntityDict, 'userEntityGrant'>[];
+            list: RowWithActions<EntityDict, 'parasite'>[];
         },
         {
             cancel: () => void;
@@ -31,10 +31,10 @@ export default function render(
         nameLabel,
     } = props.data;
 
-
     const { pageSize, total, currentPage } = oakPagination || {};
 
-    const { t, setPageSize, setCurrentPage, updateItem, execute, getQrCode } = props.methods;
+    const { t, setPageSize, setCurrentPage, updateItem, execute, getQrCode } =
+        props.methods;
     const [qrCodeOpen, setQrCodeOpen] = useState(false);
     const [parasiteId, setParasiteId] = useState('');
     return (
@@ -55,7 +55,7 @@ export default function render(
                         dataIndex: ['user', 'nickname'],
                         title: nameLabel || '名称',
                         render: (value, record, index) => {
-                            return value !== 'shadow_user' && value || '--';
+                            return (value !== 'shadow_user' && value) || '--';
                         },
                     },
                     {

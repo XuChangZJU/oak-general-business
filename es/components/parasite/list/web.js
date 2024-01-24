@@ -23,7 +23,7 @@ export default function render(props) {
                 dataIndex: ['user', 'nickname'],
                 title: nameLabel || '名称',
                 render: (value, record, index) => {
-                    return value !== 'shadow_user' && value || '--';
+                    return (value !== 'shadow_user' && value) || '--';
                 },
             },
             {
@@ -94,7 +94,7 @@ export default function render(props) {
                                 },
                             },
                             {
-                                label: '采集码',
+                                label: '详情',
                                 action: 'qrcode',
                                 show: record['#oakLegalActions']?.includes('qrcode'),
                                 // alerted: true,

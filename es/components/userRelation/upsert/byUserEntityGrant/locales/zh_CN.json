@@ -5,8 +5,8 @@
     "chooseExpiresAt": "请选择有效时长",
     "expiresHelp": "支持分钟、小时选择",
     "helpRule": "当一次分享多个权限时，可规定单个用户（对多个权限）的认领规则",
-    "helpMutiple": "是否允许多个用户来认领",
-    "shareCode": "请将二维码发给待分享权限的用户使用微信扫描",
+    "helpMultiple": "是否允许多个用户来认领",
+    "shareCode": "请将二维码发给待认领权限的用户，让他们使用微信扫描。",
     "unit": {
         "hour": "小时",
         "minute": "分钟"

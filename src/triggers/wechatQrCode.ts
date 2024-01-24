@@ -13,7 +13,7 @@ import { Config as SysConfig, QrCodeType } from '../types/Config';
 
 const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeCxt>[] = [
     {
-        name: '当生成wechatQrCode时,调用外部接口完善数据',
+        name: '当生成wechatQrCode时, 调用外部接口完善数据',
         entity: 'wechatQrCode',
         action: 'create',
         when: 'before',
@@ -87,7 +87,7 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeCxt>[] = [
                             ) {
                                 throw new Error('无法生成小程序地址码，未配置跳转前缀');
                             }
-                            url = `${(self!.config as WechatMpConfig).qrCodePrefix}/${id}`;
+                            url = `${(self!.config as WechatMpConfig).qrCodePrefix}/${shrinkUuidTo32Bytes(id)}`;
                             appId = self!.id;
                             appType = 'wechatMpDomainUrl';
                             break;
@@ -148,8 +148,10 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeCxt>[] = [
                             appId = self.id;
                             if ((self!.config as WechatMpConfig).qrCodePrefix) {
                                 appType = 'wechatMpDomainUrl';
-                                url = `${(self!.config as WechatMpConfig).qrCodePrefix
-                                    }/${id}`;
+                                url = `${
+                                    (self!.config as WechatMpConfig)
+                                        .qrCodePrefix
+                                }/${shrinkUuidTo32Bytes(id)}`;
                             } else {
                                 appType = 'wechatMpWxaCode';
                             }
@@ -169,10 +171,10 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeCxt>[] = [
                                 );
                                 if (mpApp) {
                                     appId = mpApp.id;
-                                    if ((mpApp!.config as WechatMpConfig).qrCodePrefix) {
+                                    const mpConfig = mpApp!.config as WechatMpConfig;
+                                    if (mpConfig?.qrCodePrefix) {
                                         appType = 'wechatMpDomainUrl';
-                                        url = `${(mpApp!.config as WechatMpConfig).qrCodePrefix
-                                            }/${id}`;
+                                        url = `${mpConfig.qrCodePrefix}/${shrinkUuidTo32Bytes(id)}`;
                                     } else {
                                         appType = 'wechatMpWxaCode';
                                     }
@@ -198,11 +200,9 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeCxt>[] = [
                 }
 
                 if (!wechatQrCode.type) {
-                    Object.assign(
-                        updateData, {
+                    Object.assign(updateData, {
                         type: appType,
-                    }
-                    )
+                    });
                 }
                 // 直接创建
 
@@ -248,8 +248,8 @@ const triggers: Trigger<EntityDict, 'wechatQrCode', RuntimeCxt>[] = [
                                 expireSeconds: 2592000,
                             });
                             Object.assign(updateData, {
-                                ticket: result?.ticket,
-                                url: result?.url,
+                                ticket: result.ticket,
+                                url: result.url,
                             });
                         }
                         break;

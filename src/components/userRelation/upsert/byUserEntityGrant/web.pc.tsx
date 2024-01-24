@@ -83,10 +83,7 @@ export default function render(
         </>
     ) : (
         <Form labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
-            <Form.Item
-                label={t('userEntityGrant:attr.relationIds')}
-                required
-            >
+            <Form.Item label={t('userEntityGrant:attr.relationIds')} required>
                 <Checkbox.Group
                     value={relationIds || []}
                     onChange={(val) => {
@@ -106,14 +103,18 @@ export default function render(
                     help={t('helpRule')}
                 >
                     <Radio.Group
-                        value={rule as EntityDict['userEntityGrant']['OpSchema']['rule']}
-                        onChange={({ target }) => update({ rule: target.value as EntityDict['userEntityGrant']['OpSchema']['rule']})}
-                        options={rules.map(
-                            (ele) => ({
-                                value: ele,
-                                label: t(`userEntityGrant:v.rule.${ele}`)
+                        value={
+                            rule as EntityDict['userEntityGrant']['OpSchema']['rule']
+                        }
+                        onChange={({ target }) =>
+                            update({
+                                rule: target.value as EntityDict['userEntityGrant']['OpSchema']['rule'],
                             })
-                        )}
+                        }
+                        options={rules.map((ele) => ({
+                            value: ele,
+                            label: t(`userEntityGrant:v.rule.${ele}`),
+                        }))}
                     />
                 </Form.Item>
             )}
@@ -121,7 +122,7 @@ export default function render(
                 <Form.Item
                     label={t('multiple')}
                     required
-                    help={t('helpMutiple')}
+                    help={t('helpMultiple')}
                 >
                     <Switch
                         checked={multiple || false}

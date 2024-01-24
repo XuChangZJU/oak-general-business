@@ -29,9 +29,9 @@ export default function WechatMp(props) {
                             <Input placeholder="请输入原始ID" type="text" value={config?.originalId} onChange={(e) => setValue(`originalId`, e.target.value)}/>
                         </>
                     </Form.Item>
-                    <Form.Item label="qrCodePrefix">
+                    <Form.Item label="普通链接二维码规则" tooltip="扫普通链接二维码打开小程序，如原有二维码链接为 http://www.qq.com/a/123456 ，其中12345为uuid，则可配置规则 http://www.qq.com/a/ 。 请在输入框中填写 http://www.qq.com/a ，系统将在生成二维码时，在链接末尾加上'/'和uuid，从而实现扫码打开小程序的规则。">
                         <>
-                            <Input placeholder="请输入qrCodePrefix" type="text" value={config?.qrCodePrefix} onChange={(e) => setValue(`qrCodePrefix`, e.target.value)}/>
+                            <Input placeholder="请输入普通链接二维码规则" type="text" value={config?.qrCodePrefix} onChange={(e) => setValue(`qrCodePrefix`, e.target.value)}/>
                         </>
                     </Form.Item>
                 </Form>

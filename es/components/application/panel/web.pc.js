@@ -60,9 +60,9 @@ export default function Render(props) {
             children: (<TemplateList oakAutoUnmount={true} oakPath={`templateUpsert-wechatMp-ApplicationId:${id}`} applicationId={id}/>),
         });
     }
-    if (id && oakFullpath) {
+    if (id) {
         return (<Tabs tabPosition="left" onChange={(key) => {
                 setTabKey(key);
-            }} items={items} style={{ height: 520 }}/>);
+            }} items={items} style={{ minHeight: 520 }}/>);
     }
 }
