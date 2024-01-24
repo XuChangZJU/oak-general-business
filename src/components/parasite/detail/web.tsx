@@ -43,10 +43,11 @@ export default function Render(
                 justifyContent: 'center',
                 alignItems: 'center',
                 padding: '48px',
+                minHeight: 560
             }}
         >
             <div style={{
-                maxWidth: 800
+                maxWidth: 800,
             }}
             >
                 <Alert message="将二维码或下方链接发送给使用者" type="info" />

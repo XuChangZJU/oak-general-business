@@ -85,7 +85,8 @@ export default function render(props) {
                             {
                                 label: '失效',
                                 action: 'cancel',
-                                // alerted: true,
+                                alerted: true,
+                                alertContent: '确实失效此采集码吗？',
                                 show: record['#oakLegalActions']?.includes('cancel'),
                                 onClick: () => {
                                     updateItem({ expired: true }, record.id, 'cancel');

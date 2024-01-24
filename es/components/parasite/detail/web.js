@@ -18,6 +18,7 @@ export default function Render(props) {
             justifyContent: 'center',
             alignItems: 'center',
             padding: '48px',
+            minHeight:600,
         }}>
             <div style={{
             maxWidth: 800
