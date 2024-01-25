@@ -1,12 +1,10 @@
 import { PrimaryKey, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf, ValueOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction, AppendOnlyAction, ReadOnlyAction, ExcludeUpdateAction, ExcludeRemoveAction, RelationAction } from "oak-domain/lib/actions/action";
-import { String, Int, Datetime, Image, Boolean, Text } from "oak-domain/lib/types/DataType";
-import { EntityShape } from "oak-domain/lib/types/Entity";
+import { String, Text } from "oak-domain/lib/types/DataType";
 import { Style } from "../../types/Style";
-import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 import * as System from "../System/Schema";
 import * as ExtraFile from "../ExtraFile/Schema";
 import * as Notification from "../Notification/Schema";
@@ -19,57 +17,56 @@ import * as WechatQrCode from "../WechatQrCode/Schema";
 import * as WechatTemplate from "../WechatTemplate/Schema";
 import * as WechatUser from "../WechatUser/Schema";
 import * as Session from "../Session/Schema";
-export type Passport = 'email' | 'mobile' | 'wechat' | 'wechatPublic';
-export type AppType = 'web' | 'wechatMp' | 'wechatPublic' | 'native';
+export type Passport = "email" | "mobile" | "wechat" | "wechatPublic";
+export type AppType = "web" | "wechatMp" | "wechatPublic" | "native";
 export type WechatMpConfig = {
-    type: 'wechatMp';
+    type: "wechatMp";
     appId: string;
     appSecret: string;
-    originalId?: string; //原始id
-    qrCodePrefix?: string; // 扫描二维码跳转的前缀(在小程序后台配置，必须统一跳转到weCharQrCode/scan/index)
+    originalId?: string;
+    qrCodePrefix?: string;
     server?: {
-        url?: string; //服务器地址(URL)
-        token: string; //令牌(Token)
-        encodingAESKey: string; //消息加解密密钥(EncodingAESKey)
-        mode: 'clear' | 'compatible' | 'safe'; //消息加解密方式 明文模式 兼容模式 安全模式
-        dataFormat: 'json' | 'xml';
+        url?: string;
+        token: string;
+        encodingAESKey: string;
+        mode: "clear" | "compatible" | "safe";
+        dataFormat: "json" | "xml";
     };
     passport?: Passport[];
 };
 export type WebConfig = {
-    type: 'web';
+    type: "web";
     wechat?: {
         appId: string;
-        appSecret: string; //网站 微信扫码登录
+        appSecret: string;
         domain?: string;
-        enable?: boolean; //启用扫码登录
+        enable?: boolean;
     };
     passport?: Passport[];
 };
-export type WechatPublicTemplateMsgsConfig = Record<string, string>; // key值代表messageTypeId，value的值代表对应的templateId，data的转换改成message上的函数注入
+export type WechatPublicTemplateMsgsConfig = Record<string, string>;
 export type WechatPublicConfig = {
-    type: 'wechatPublic';
-    isService: boolean; // 是否服务号
+    type: "wechatPublic";
+    isService: boolean;
     appId: string;
     appSecret: string;
-    originalId?: string; //原始id
+    originalId?: string;
     enable?: boolean;
     templateMsgs?: WechatPublicTemplateMsgsConfig;
     server?: {
-        url?: string; //服务器地址(URL)
-        token: string; //令牌(Token)
-        encodingAESKey: string; //消息加解密密钥(EncodingAESKey)
-        mode: 'clear' | 'compatible' | 'safe'; //消息加解密方式 明文模式 兼容模式 安全模式
+        url?: string;
+        token: string;
+        encodingAESKey: string;
+        mode: "clear" | "compatible" | "safe";
     };
     wechatMp?: {
         appId: string;
-        //公众号跳小程序配置 originalId
-        originalId: string; //原始id
+        originalId: string;
     };
     passport?: Passport[];
 };
 export type NativeConfig = {
-    type: 'native';
+    type: "native";
     passport?: Passport[];
 };
 export type OpSchema = EntityShape & {

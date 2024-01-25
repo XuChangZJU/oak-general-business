@@ -1,4 +1,4 @@
-import { OakUserException, makeException as makeException2 } from "oak-domain/lib/types";
+import { OakUserException, makeException as makeException2, OakException } from "oak-domain/lib/types";
 export class OakNotEnoughMoneyException extends OakUserException {
     constructor(message) {
         super(message || '您的余额不足');
@@ -82,9 +82,21 @@ export class OakMpHaveToSubscribeMessage extends Error {
         this.rejectedMessageType = rejectedMessageType;
     }
 }
-export class OakUserInfoLoadingException extends OakUserException {
+/**
+ * 前端用户信息还没加载完整
+ */
+export class OakUserInfoLoadingException extends OakException {
     constructor(message) {
         super(message || '正在装载用户信息');
+    }
+}
+;
+/**
+ * 前端application信息还没加载完整
+ */
+export class OakApplicationLoadingException extends OakException {
+    constructor(message) {
+        super(message || '正在装载应用信息');
     }
 }
 ;
@@ -128,11 +140,6 @@ export function makeException(data) {
         }
         case 'OakUserInfoUncompletedException': {
             const e = new OakUserInfoUncompletedException(message);
-            e.setOpRecords(opRecords);
-            return e;
-        }
-        case 'OakUserInfoLoadingException': {
-            const e = new OakUserInfoLoadingException(message);
             e.setOpRecords(opRecords);
             return e;
         }

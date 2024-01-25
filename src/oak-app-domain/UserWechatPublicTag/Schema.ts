@@ -1,13 +1,10 @@
 import { PrimaryKey, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf, ValueOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult, EntityShape } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
 import { RelationAction } from "oak-domain/lib/actions/action";
-import { String, Text, Datetime, Boolean, Uint } from "oak-domain/lib/types/DataType";
-import { EntityShape } from "oak-domain/lib/types/Entity";
-import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
-import { ActionDef } from "oak-domain/lib/types/Action";
+import { Boolean, Datetime } from "oak-domain/lib/types/DataType";
 import * as WechatPublicTag from "../WechatPublicTag/Schema";
 import * as WechatUser from "../WechatUser/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";

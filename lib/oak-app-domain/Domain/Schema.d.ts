@@ -1,15 +1,14 @@
 import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import { String, Int } from "oak-domain/lib/types/DataType";
-import { EntityShape } from "oak-domain/lib/types/Entity";
 import * as System from "../System/Schema";
 export type OpSchema = EntityShape & {
     url: String<64>;
     apiPath?: String<32> | null;
-    protocol: 'http' | 'https';
+    protocol: "http" | "https";
     port: Int<2>;
     systemId: ForeignKey<"system">;
 };
@@ -17,7 +16,7 @@ export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     url: String<64>;
     apiPath?: String<32> | null;
-    protocol: 'http' | 'https';
+    protocol: "http" | "https";
     port: Int<2>;
     systemId: ForeignKey<"system">;
     system: System.Schema;
@@ -31,7 +30,7 @@ type AttrFilter = {
     $$updateAt$$: Q_DateValue;
     url: Q_StringValue;
     apiPath: Q_StringValue;
-    protocol: Q_EnumValue<'http' | 'https'>;
+    protocol: Q_EnumValue<"http" | "https">;
     port: Q_NumberValue;
     systemId: Q_StringValue;
     system: System.Filter;

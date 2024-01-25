@@ -1,11 +1,10 @@
 import { ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction } from "./Action";
-import { String, Datetime } from "oak-domain/lib/types/DataType";
 import { AbleState } from "oak-domain/lib/actions/action";
-import { EntityShape } from "oak-domain/lib/types/Entity";
+import { String, Datetime } from "oak-domain/lib/types/DataType";
 import { Environment } from "oak-domain/lib/types/Environment";
 import * as Application from "../Application/Schema";
 import * as User from "../User/Schema";
@@ -21,6 +20,8 @@ export type OpSchema = EntityShape & {
     playerId?: ForeignKey<"user"> | null;
     disablesAt?: Datetime | null;
     env: Environment;
+    refreshedAt: Datetime;
+    value: String<64>;
     ableState?: AbleState | null;
 };
 export type OpAttr = keyof OpSchema;
@@ -32,6 +33,8 @@ export type Schema = EntityShape & {
     playerId?: ForeignKey<"user"> | null;
     disablesAt?: Datetime | null;
     env: Environment;
+    refreshedAt: Datetime;
+    value: String<64>;
     ableState?: AbleState | null;
     application?: Application.Schema | null;
     user?: User.Schema | null;
@@ -58,6 +61,8 @@ type AttrFilter = {
     player: User.Filter;
     disablesAt: Q_DateValue;
     env: JsonFilter<Environment>;
+    refreshedAt: Q_DateValue;
+    value: Q_StringValue;
     ableState: Q_EnumValue<AbleState>;
     email: Email.Filter;
     mobile: Mobile.Filter;
@@ -82,6 +87,8 @@ export type Projection = {
     player?: User.Projection;
     disablesAt?: number;
     env?: number | JsonProjection<Environment>;
+    refreshedAt?: number;
+    value?: number;
     ableState?: number;
     email?: Email.Projection;
     mobile?: Mobile.Projection;
@@ -138,6 +145,10 @@ export type SortAttr = {
     disablesAt: number;
 } | {
     env: number;
+} | {
+    refreshedAt: number;
+} | {
+    value: number;
 } | {
     ableState: number;
 } | {

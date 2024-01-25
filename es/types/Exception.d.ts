@@ -37,7 +37,16 @@ export declare class OakMpHaveToSubscribeMessage extends Error {
     rejectedMessageType: string[];
     constructor(rejectedMessageType: string[], message?: string);
 }
-export declare class OakUserInfoLoadingException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {
+/**
+ * 前端用户信息还没加载完整
+ */
+export declare class OakUserInfoLoadingException<ED extends EntityDict & BaseEntityDict> extends OakException<ED> {
+    constructor(message?: string);
+}
+/**
+ * 前端application信息还没加载完整
+ */
+export declare class OakApplicationLoadingException<ED extends EntityDict & BaseEntityDict> extends OakException<ED> {
     constructor(message?: string);
 }
 export declare class OakUploadException<ED extends EntityDict & BaseEntityDict> extends OakUserException<ED> {

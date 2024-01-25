@@ -1,10 +1,9 @@
 import { ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
 import { String, Text } from "oak-domain/lib/types/DataType";
-import { EntityShape } from "oak-domain/lib/types/Entity";
 import { Style } from "../../types/Style";
 import * as System from "../System/Schema";
 import * as ExtraFile from "../ExtraFile/Schema";
@@ -18,10 +17,10 @@ import * as WechatQrCode from "../WechatQrCode/Schema";
 import * as WechatTemplate from "../WechatTemplate/Schema";
 import * as WechatUser from "../WechatUser/Schema";
 import * as Session from "../Session/Schema";
-export type Passport = 'email' | 'mobile' | 'wechat' | 'wechatPublic';
-export type AppType = 'web' | 'wechatMp' | 'wechatPublic' | 'native';
+export type Passport = "email" | "mobile" | "wechat" | "wechatPublic";
+export type AppType = "web" | "wechatMp" | "wechatPublic" | "native";
 export type WechatMpConfig = {
-    type: 'wechatMp';
+    type: "wechatMp";
     appId: string;
     appSecret: string;
     originalId?: string;
@@ -30,13 +29,13 @@ export type WechatMpConfig = {
         url?: string;
         token: string;
         encodingAESKey: string;
-        mode: 'clear' | 'compatible' | 'safe';
-        dataFormat: 'json' | 'xml';
+        mode: "clear" | "compatible" | "safe";
+        dataFormat: "json" | "xml";
     };
     passport?: Passport[];
 };
 export type WebConfig = {
-    type: 'web';
+    type: "web";
     wechat?: {
         appId: string;
         appSecret: string;
@@ -47,7 +46,7 @@ export type WebConfig = {
 };
 export type WechatPublicTemplateMsgsConfig = Record<string, string>;
 export type WechatPublicConfig = {
-    type: 'wechatPublic';
+    type: "wechatPublic";
     isService: boolean;
     appId: string;
     appSecret: string;
@@ -58,7 +57,7 @@ export type WechatPublicConfig = {
         url?: string;
         token: string;
         encodingAESKey: string;
-        mode: 'clear' | 'compatible' | 'safe';
+        mode: "clear" | "compatible" | "safe";
     };
     wechatMp?: {
         appId: string;
@@ -67,7 +66,7 @@ export type WechatPublicConfig = {
     passport?: Passport[];
 };
 export type NativeConfig = {
-    type: 'native';
+    type: "native";
     passport?: Passport[];
 };
 export type OpSchema = EntityShape & {

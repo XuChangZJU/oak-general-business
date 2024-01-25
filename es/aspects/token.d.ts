@@ -66,5 +66,9 @@ export declare function logout<ED extends EntityDict, Cxt extends BackendRuntime
  */
 export declare function wakeupParasite<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
     id: string;
-    env: WebEnv | WechatMpEnv;
+    env: WebEnv | WechatMpEnv | NativeEnv;
+}, context: Cxt): Promise<string>;
+export declare function refreshToken<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>>(params: {
+    env: WebEnv | WechatMpEnv | NativeEnv;
+    tokenValue: string;
 }, context: Cxt): Promise<string>;

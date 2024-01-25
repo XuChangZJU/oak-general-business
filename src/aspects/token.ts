@@ -240,7 +240,7 @@ async function setUpTokenAndUser<
             switch (userState) {
                 case 'normal': {
                     if (currentToken.userId === user.id) {
-                        return currentToken.id;
+                        return currentToken.value!;
                     }
                     const autoMerge = autoMergeUser<ED, Cxt>(context);
                     if (autoMerge) {
@@ -249,7 +249,7 @@ async function setUpTokenAndUser<
                             context,
                             true
                         );
-                        return currentToken.id;
+                        return currentToken.value!;
                     }
                     throw await makeDistinguishException<ED, Cxt>(user.id!, context);
                 }
@@ -262,7 +262,7 @@ async function setUpTokenAndUser<
                             context,
                             true
                         );
-                        return currentToken.id;
+                        return currentToken.value!;
                     }
                     throw await makeDistinguishException<ED, Cxt>(user.id!, context);
                 }
@@ -272,7 +272,7 @@ async function setUpTokenAndUser<
                 case 'merged': {
                     assert(user.refId);
                     if (user.refId === currentToken.userId) {
-                        return currentToken.id;
+                        return currentToken.value!;
                     }
                     const autoMerge = autoMergeUser<ED, Cxt>(context);
                     if (autoMerge) {
@@ -285,7 +285,7 @@ async function setUpTokenAndUser<
                             context,
                             true
                         );
-                        return currentToken.id;
+                        return currentToken.value!;
                     }
                     throw await makeDistinguishException<ED, Cxt>(user.id!, context);
                 }
@@ -325,7 +325,7 @@ async function setUpTokenAndUser<
                     { dontCollect: entity !== 'mobile' }
                 );
             }
-            return currentToken.id;
+            return currentToken.value!;
         }
     } else {
         if (entityId) {
@@ -336,6 +336,7 @@ async function setUpTokenAndUser<
                 {
                     data: {
                         id: 1,
+                        value: 1,
                     },
                     filter: {
                         applicationId: application!.id,
@@ -347,12 +348,14 @@ async function setUpTokenAndUser<
                 { dontCollect: true }
             );
             if (originToken) {
-                return originToken.id!;
+                return originToken.value!;
             }
         }
         const tokenData: EntityDict['token']['CreateSingle']['data'] = {
             id: await generateNewIdAsync(),
             env,
+            refreshAt: Date.now(),
+            value: await generateNewIdAsync(),
         };
         if (user) {
             // 根据此用户状态进行处理
@@ -417,7 +420,7 @@ async function setUpTokenAndUser<
                 },
                 { dontCollect: true }
             );
-            return tokenData.id;
+            return tokenData.value!;
         } else {
             // 创建新用户
             // 要先create token，再create entity。不然可能权限会被挡住
@@ -452,7 +455,7 @@ async function setUpTokenAndUser<
                 },
                 { dontCollect: true }
             );
-            await context.setTokenValue(tokenData.id);
+            await context.setTokenValue(tokenData.value!);
 
             if (createData) {
                 await context.operate(
@@ -484,7 +487,7 @@ async function setUpTokenAndUser<
                 );
             }
 
-            return tokenData.id;
+            return tokenData.value!;
         }
     }
 }
@@ -1003,7 +1006,7 @@ export async function loginByWechat<
             dontCollect: true,
         }
     );
-    const tokenId = await setUpTokenAndUser<ED, Cxt>(
+    const tokenValue = await setUpTokenAndUser<ED, Cxt>(
         env,
         context,
         'wechatUser',
@@ -1011,9 +1014,9 @@ export async function loginByWechat<
         undefined,
         (wechatUserLogin as EntityDict['wechatUser']['Schema']).user!
     );
-    await loadTokenInfo<ED, Cxt>(tokenId, context);
+    await loadTokenInfo<ED, Cxt>(tokenValue, context);
     closeRootMode();
-    return tokenId;
+    return tokenValue;
 }
 
 async function loginFromWechatEnv<
@@ -1075,7 +1078,7 @@ async function loginFromWechatEnv<
             ...wechatUserData,
         };
 
-        const tokenId = await setUpTokenAndUser<ED, Cxt>(
+        const tokenValue = await setUpTokenAndUser<ED, Cxt>(
             env,
             context,
             'wechatUser',
@@ -1083,7 +1086,7 @@ async function loginFromWechatEnv<
             wechatUserCreateData,
             user
         );
-        return tokenId;
+        return tokenValue;
     };
 
     // 扫码者
@@ -1199,7 +1202,7 @@ async function loginFromWechatEnv<
                     },
                     { dontCollect: true }
                 );
-                const tokenId = await setUpTokenAndUser<ED, Cxt>(
+                const tokenValue = await setUpTokenAndUser<ED, Cxt>(
                     env,
                     context,
                     'wechatUser',
@@ -1209,20 +1212,20 @@ async function loginFromWechatEnv<
                         .user!
                 );
                 await updateWechatLogin({ successed: true });
-                return tokenId;
+                return tokenValue;
             } else {
-                const tokenId = await createWechatUserAndReturnTokenId(
+                const tokenValue = await createWechatUserAndReturnTokenId(
                     wechatLoginData.user!
                 );
                 await updateWechatLogin({ successed: true });
-                return tokenId;
+                return tokenValue;
             }
         }
         // 用户未登录情况下
         else if (wechatLoginData.type === 'login') {
             // wechatUser存在直接登录
             if (wechatUser) {
-                const tokenId = await setUpTokenAndUser<ED, Cxt>(
+                const tokenValue = await setUpTokenAndUser<ED, Cxt>(
                     env,
                     context,
                     'wechatUser',
@@ -1231,7 +1234,7 @@ async function loginFromWechatEnv<
                     wechatUser.user!
                 );
                 await updateWechatLogin({ successed: true });
-                return tokenId;
+                return tokenValue;
             } else {
                 // 创建user和wechatUser(绑定并登录)
                 const userId = await generateNewIdAsync();
@@ -1257,7 +1260,7 @@ async function loginFromWechatEnv<
         }
     } else {
         if (wechatUser) {
-            const tokenId = await setUpTokenAndUser<ED, Cxt>(
+            const tokenValue = await setUpTokenAndUser<ED, Cxt>(
                 env,
                 context,
                 'wechatUser',
@@ -1284,7 +1287,7 @@ async function loginFromWechatEnv<
                 { dontCollect: true }
             );
 
-            return tokenId;
+            return tokenValue;
         } else if (unionId) {
             // 如果有unionId，查找同一个system下有没有相同的unionId
             const [wechatUser3] = await context.select(
@@ -1320,7 +1323,7 @@ async function loginFromWechatEnv<
                     applicationId: application!.id!,
                     ...wechatUserData,
                 };
-                const tokenId = await setUpTokenAndUser<ED, Cxt>(
+                const tokenValue = await setUpTokenAndUser<ED, Cxt>(
                     env,
                     context,
                     'wechatUser',
@@ -1347,7 +1350,7 @@ async function loginFromWechatEnv<
                     );
                 }
 
-                return tokenId;
+                return tokenValue;
             }
         }
     }
@@ -1377,19 +1380,19 @@ export async function loginWechat<
     context: Cxt
 ): Promise<string> {
     const closeRootMode = context.openRootMode();
-    const tokenId = await loginFromWechatEnv<ED, Cxt>(
+    const tokenValue = await loginFromWechatEnv<ED, Cxt>(
         code,
         env,
         context,
         wechatLoginId
     );
-    const [tokenInfo] = await loadTokenInfo<ED, Cxt>(tokenId, context);
+    const [tokenInfo] = await loadTokenInfo<ED, Cxt>(tokenValue, context);
     assert(tokenInfo.entity === 'wechatUser');
-    await context.setTokenValue(tokenId);
+    await context.setTokenValue(tokenValue);
     await tryRefreshWechatPublicUserInfo<ED, Cxt>(tokenInfo.entityId!, context);
     closeRootMode();
 
-    return tokenId;
+    return tokenValue;
 }
 
 /**
@@ -1679,7 +1682,7 @@ export async function switchTo<
 >({ userId }: { userId: string }, context: Cxt) {
     const reallyRoot = context.isReallyRoot();
     if (!reallyRoot) {
-        throw new OakUserUnpermittedException('user', { id: 'switchTo', action: 'switch', data: { }, filter: { id: userId }});
+        throw new OakUserUnpermittedException('user', { id: 'switchTo', action: 'switch', data: {}, filter: { id: userId } });
     }
     const currentUserId = context.getCurrentUserId();
     if (currentUserId === userId) {
@@ -1768,7 +1771,7 @@ export async function wakeupParasite<
 >(
     params: {
         id: string;
-        env: WebEnv | WechatMpEnv;
+        env: WebEnv | WechatMpEnv | NativeEnv;
     },
     context: Cxt
 ) {
@@ -1851,4 +1854,70 @@ export async function wakeupParasite<
     await loadTokenInfo<ED, Cxt>(tokenId, context);
     closeRootMode();
     return tokenId;
+}
+
+/**
+ * todo 检查登录环境一致性，同一个token不能跨越不同设备
+ * @param env1 
+ * @param env2 
+ * @returns 
+ */
+function checkTokenEnvConsistency(env1: WebEnv | WechatMpEnv | NativeEnv, env2: WebEnv | WechatMpEnv | NativeEnv) {
+    return true;
+}
+
+export async function refreshToken<
+    ED extends EntityDict,
+    Cxt extends BackendRuntimeContext<ED>
+>(
+    params: {
+        env: WebEnv | WechatMpEnv | NativeEnv;
+        tokenValue: string;
+    },
+    context: Cxt
+) {
+    const { env, tokenValue } = params;
+    const fn = context.openRootMode();
+    let [ token ] = await context.select('token', {
+        data: tokenProjection,
+        filter: {
+            value: tokenValue,
+        },
+    }, {});
+
+    assert(token);
+    const now = Date.now();
+    if (!checkTokenEnvConsistency(env, token.env as WebEnv)) {
+        await context.operate('token', {
+            id: await generateNewIdAsync(),
+            action: 'disable',
+            data: {
+            },
+            filter: {
+                id: token.id,
+            }
+        }, { dontCollect: true });
+        fn();
+        return '';
+    }
+    else if (now - (token.refreshedAt as number) > 600 * 1000) {
+        const newValue = await generateNewIdAsync();
+        await context.operate('token', {
+            id: await generateNewIdAsync(),
+            action: 'update',
+            data: {
+                value: newValue,
+                refreshedAt: now,
+            },
+            filter: {
+                id: token.id,
+            }
+        }, { });
+        fn();
+        return newValue;
+    }
+    else {
+        fn();
+    }
+    return tokenValue;
 }

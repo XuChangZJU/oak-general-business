@@ -17,6 +17,7 @@ import { MediaType, MediaVideoDescription } from '../types/WeChat';
 import {
     OakTokenExpiredException,
     OakUserDisabledException,
+    OakApplicationLoadingException,
 } from '../types/Exception';
 import { Token } from './token';
 
@@ -63,6 +64,7 @@ export class Application<
             `refresh:applicationId${this.applicationId}没有取到有效数据`
         );
         this.application = data[0];
+        this.publish();
         if (this.application!.type !== this.type) {
             this.storage.remove(LOCAL_STORAGE_KEYS.appId);
         }
@@ -88,7 +90,7 @@ export class Application<
             const { result } = await this.cache.exec('getApplication', {
                 type,
                 domain,
-            });
+            }, undefined, undefined, true);
             applicationId = result;
         } catch (err) {
             if (
@@ -100,7 +102,7 @@ export class Application<
                 const { result } = await this.cache.exec('getApplication', {
                     type,
                     domain,
-                });
+                }, undefined, undefined, true);
                 applicationId = result;
             }
             throw err;
@@ -139,10 +141,16 @@ export class Application<
     }
 
     getApplication() {
+        if (this.applicationId === undefined) {
+            throw new OakApplicationLoadingException();
+        }
         return this.application;
     }
 
     getApplicationId() {
+        if (this.applicationId === undefined) {
+            throw new OakApplicationLoadingException();
+        }
         return this.applicationId;
     }
 

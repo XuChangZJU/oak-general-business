@@ -12,15 +12,17 @@ import { SyncRowStore } from 'oak-domain/lib/store/SyncRowStore';
 import { GeneralFeatures } from '../features';
 import { BackendRuntimeContext } from './BackendRuntimeContext';
 import {
+    OakApplicationLoadingException,
     OakTokenExpiredException,
     OakUserDisabledException,
+    OakUserInfoLoadingException,
 } from '../types/Exception';
 import { OakUnloggedInException } from 'oak-domain/lib/types';
 
 export type AspectDict<
     ED extends EntityDict & BaseEntityDict,
     Cxt extends BackendRuntimeContext<ED>
-> = GeneralAspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>;
+    > = GeneralAspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>;
 // 上下文被serialize后的数据内容
 export interface SerializedData extends Fsd {
     a?: string;
@@ -29,13 +31,12 @@ export interface SerializedData extends Fsd {
 };
 
 export abstract class FrontendRuntimeContext<
-        ED extends EntityDict & BaseEntityDict,
-        Cxt extends BackendRuntimeContext<ED>,
-        AD extends AspectDict<ED, Cxt>
+    ED extends EntityDict & BaseEntityDict,
+    Cxt extends BackendRuntimeContext<ED>,
+    AD extends AspectDict<ED, Cxt>
     >
     extends Frc<ED, Cxt, AD>
-    implements RuntimeContext
-{
+    implements RuntimeContext {
     private application: Application<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>;
     private token: Token<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>;
     constructor(
@@ -47,21 +48,66 @@ export abstract class FrontendRuntimeContext<
         this.token = features.token;
     }
 
-    protected getSerializedData(): SerializedData {
-        const data = super.getSerializedData();
-        const appId = this.application.getApplicationId();
-        if (appId) {
-            Object.assign(data, {
-                a: appId,
-            });
-        }
-        const tokenValue = this.token.getTokenValue();
-        if (tokenValue) {
-            Object.assign(data, {
-                t: tokenValue,
-            });
-        }
+    protected async getSerializedData(): Promise<SerializedData> {
+        const data = await super.getSerializedData();
 
+        const setAppId = async () => {
+            // appId必须要取到，不能失败
+            const setInner = (resolve: (value: unknown) => void, reject: (reason?: any) => void) => {
+                try {
+                    const appId = this.application.getApplicationId();
+                    assert(appId);
+                    Object.assign(data, {
+                        a: appId,
+                    });
+                    resolve(undefined);
+                }
+                catch (err: any) {
+                    if (err instanceof OakApplicationLoadingException) {
+                        const fn = this.application.subscribe(() => {
+                            fn();
+                            setInner(resolve, reject);
+                        });
+                    }
+                    else {
+                        reject(err);
+                    }
+                }
+            };
+            return new Promise(
+                (resolve, reject) => setInner(resolve, reject)
+            );
+        };
+        await setAppId();
+
+        const setTokenValue = async() => {
+            const setInner = (resolve: (value: unknown) => void, reject: (reason?: any) => void) => {
+                try {
+                    const tokenValue = this.token.getTokenValue();
+                    if (tokenValue) {
+                        Object.assign(data, {
+                            t: tokenValue,
+                        });
+                    }
+                    resolve(undefined);
+                }
+                catch (err: any) {
+                    if (err instanceof OakUserInfoLoadingException) {
+                        const fn = this.token.subscribe(() => {
+                            fn();
+                            setInner(resolve, reject);
+                        });
+                    }
+                    else {
+                        reject(err);
+                    }
+                }
+            };
+            return new Promise(
+                (resolve, reject) => setInner(resolve, reject)
+            );
+        };
+        await setTokenValue();
         return data;
     }
 

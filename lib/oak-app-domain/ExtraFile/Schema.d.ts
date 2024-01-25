@@ -1,18 +1,17 @@
 import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
-import { String, Int, Text, Float, Boolean } from "oak-domain/lib/types/DataType";
-import { EntityShape } from "oak-domain/lib/types/Entity";
+import { String, Text, Int, Float, Boolean } from "oak-domain/lib/types/DataType";
 import * as Application from "../Application/Schema";
 import * as Article from "../Article/Schema";
 import * as ArticleMenu from "../ArticleMenu/Schema";
 import * as SessionMessage from "../SessionMessage/Schema";
 import * as User from "../User/Schema";
 export type OpSchema = EntityShape & {
-    origin: 'qiniu' | 'wechat' | 'unknown' | 'ctyun';
-    type: 'image' | 'video' | 'audio' | 'file';
+    origin: "qiniu" | "wechat" | "unknown" | "ctyun";
+    type: "image" | "video" | "audio" | "file";
     bucket?: String<32> | null;
     objectId?: String<64> | null;
     tag1?: String<32> | null;
@@ -28,14 +27,14 @@ export type OpSchema = EntityShape & {
     sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
     isBridge?: Boolean | null;
-    uploadState: 'success' | 'failed' | 'uploading';
+    uploadState: "success" | "failed" | "uploading";
     uploadMeta?: Object | null;
     applicationId: ForeignKey<"application">;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
-    origin: 'qiniu' | 'wechat' | 'unknown' | 'ctyun';
-    type: 'image' | 'video' | 'audio' | 'file';
+    origin: "qiniu" | "wechat" | "unknown" | "ctyun";
+    type: "image" | "video" | "audio" | "file";
     bucket?: String<32> | null;
     objectId?: String<64> | null;
     tag1?: String<32> | null;
@@ -51,7 +50,7 @@ export type Schema = EntityShape & {
     sort?: Float<22, 10> | null;
     fileType?: String<128> | null;
     isBridge?: Boolean | null;
-    uploadState: 'success' | 'failed' | 'uploading';
+    uploadState: "success" | "failed" | "uploading";
     uploadMeta?: Object | null;
     applicationId: ForeignKey<"application">;
     application: Application.Schema;
@@ -67,8 +66,8 @@ type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_NumberValue;
     $$updateAt$$: Q_DateValue;
-    origin: Q_EnumValue<'qiniu' | 'wechat' | 'unknown' | 'ctyun'>;
-    type: Q_EnumValue<'image' | 'video' | 'audio' | 'file'>;
+    origin: Q_EnumValue<"qiniu" | "wechat" | "unknown" | "ctyun">;
+    type: Q_EnumValue<"image" | "video" | "audio" | "file">;
     bucket: Q_StringValue;
     objectId: Q_StringValue;
     tag1: Q_StringValue;
@@ -84,7 +83,7 @@ type AttrFilter = {
     sort: Q_NumberValue;
     fileType: Q_StringValue;
     isBridge: Q_BooleanValue;
-    uploadState: Q_EnumValue<'success' | 'failed' | 'uploading'>;
+    uploadState: Q_EnumValue<"success" | "failed" | "uploading">;
     uploadMeta: Object;
     applicationId: Q_StringValue;
     application: Application.Filter;

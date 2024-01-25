@@ -1,17 +1,15 @@
 import { PrimaryKey, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf, ValueOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction, AppendOnlyAction, ReadOnlyAction, ExcludeUpdateAction, ExcludeRemoveAction, RelationAction } from "oak-domain/lib/actions/action";
 import { String, Geo } from "oak-domain/lib/types/DataType";
-import { EntityShape, Configuration } from "oak-domain/lib/types/Entity";
-import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 import * as Address from "../Address/Schema";
 import * as Station from "../Station/Schema";
 import * as Subway from "../Subway/Schema";
 export type OpSchema = EntityShape & {
     name: String<32>;
-    level: 'province' | 'city' | 'district' | 'street' | 'country';
+    level: "province" | "city" | "district" | "street" | "country";
     depth: 0 | 1 | 2 | 3 | 4;
     parentId?: ForeignKey<"area"> | null;
     code: String<12>;
@@ -20,7 +18,7 @@ export type OpSchema = EntityShape & {
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     name: String<32>;
-    level: 'province' | 'city' | 'district' | 'street' | 'country';
+    level: "province" | "city" | "district" | "street" | "country";
     depth: 0 | 1 | 2 | 3 | 4;
     parentId?: ForeignKey<"area"> | null;
     code: String<12>;
@@ -43,7 +41,7 @@ type AttrFilter = {
     $$seq$$: Q_NumberValue;
     $$updateAt$$: Q_DateValue;
     name: Q_StringValue;
-    level: Q_EnumValue<'province' | 'city' | 'district' | 'street' | 'country'>;
+    level: Q_EnumValue<"province" | "city" | "district" | "street" | "country">;
     depth: Q_EnumValue<0 | 1 | 2 | 3 | 4>;
     parentId: Q_StringValue;
     parent: Filter;

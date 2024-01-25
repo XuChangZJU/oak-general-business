@@ -17,8 +17,8 @@ export declare abstract class FrontendRuntimeContext<ED extends EntityDict & Bas
     private application;
     private token;
     constructor(store: SyncRowStore<ED, FrontendRuntimeContext<ED, Cxt, AD>>, features: GeneralFeatures<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD> & BasicFeatures<ED, Cxt, FrontendRuntimeContext<ED, Cxt, AD>, AD>);
-    protected getSerializedData(): SerializedData;
-    getApplicationId(): string | undefined;
+    protected getSerializedData(): Promise<SerializedData>;
+    getApplicationId(): string;
     getSystemId(): string | undefined;
     getApplication(): Partial<import("../oak-app-domain/Application/Schema").Schema> | undefined;
     getTokenValue(): string | undefined;

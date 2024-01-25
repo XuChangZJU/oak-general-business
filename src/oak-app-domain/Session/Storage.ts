@@ -34,5 +34,5 @@ export const desc: StorageDesc<OpSchema> = {
     },
     actionType: "crud",
     actions,
-    relation: ['partner']
+    relation: ["partner"]
 };

@@ -83,13 +83,14 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
                         userState: 1,
                         isRoot: 1,
                     },
+                    value: 1,
                     player: {
                         id: 1,
                         isRoot: 1,
                     },
                 },
                 filter: {
-                    id: tokenValue,
+                    value: tokenValue,
                 },
             },
             {
@@ -197,7 +198,7 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         if (!this.token && !allowUnloggedIn) {
             throw new OakUnloggedInException();
         }
-        return this.token?.id;
+        return this.token?.value;
     }
 
     getToken(allowUnloggedIn?: boolean) {
@@ -221,12 +222,12 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         return token?.userId as string;
     }
 
-    protected getSerializedData(): SerializedData {
-        const data = super.getSerializedData();
+    protected async getSerializedData(): Promise<SerializedData> {
+        const data = await super.getSerializedData();
         return {
             ...data,
             a: this.application?.id,
-            t: this.token?.id,
+            t: this.token?.value,
             rm: this.rootMode,
         };
     }

@@ -1,11 +1,9 @@
 import { PrimaryKey, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf, ValueOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction, AppendOnlyAction, ReadOnlyAction, ExcludeUpdateAction, ExcludeRemoveAction, RelationAction } from "oak-domain/lib/actions/action";
-import { String, Int, Datetime, Image, Boolean } from "oak-domain/lib/types/DataType";
-import { EntityShape } from "oak-domain/lib/types/Entity";
-import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
+import { String, Datetime, Boolean, Image } from "oak-domain/lib/types/DataType";
 import * as User from "../User/Schema";
 import * as Application from "../Application/Schema";
 import * as SessionMessage from "../SessionMessage/Schema";
@@ -14,7 +12,7 @@ import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
 import * as Token from "../Token/Schema";
 export type OpSchema = EntityShape & {
-    origin: 'mp' | 'public' | 'web' | 'native';
+    origin: "mp" | "public" | "web" | "native";
     openId?: String<32> | null;
     unionId?: String<32> | null;
     sessionKey?: String<64> | null;
@@ -33,7 +31,7 @@ export type OpSchema = EntityShape & {
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
-    origin: 'mp' | 'public' | 'web' | 'native';
+    origin: "mp" | "public" | "web" | "native";
     openId?: String<32> | null;
     unionId?: String<32> | null;
     sessionKey?: String<64> | null;
@@ -69,7 +67,7 @@ type AttrFilter = {
     $$createAt$$: Q_DateValue;
     $$seq$$: Q_NumberValue;
     $$updateAt$$: Q_DateValue;
-    origin: Q_EnumValue<'mp' | 'public' | 'web' | 'native'>;
+    origin: Q_EnumValue<"mp" | "public" | "web" | "native">;
     openId: Q_StringValue;
     unionId: Q_StringValue;
     sessionKey: Q_StringValue;

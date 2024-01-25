@@ -19,7 +19,7 @@ export const desc = {
         type: {
             notNull: true,
             type: "enum",
-            enumeration: ["wechatMpDomainUrl", "wechatMpWxaCode", "wechatPublic", "wechatPublicForMp", "webForWechatPublic"]
+            enumeration: ["wechatPublic", "wechatMpDomainUrl", "wechatMpWxaCode", "wechatPublicForMp", "webForWechatPublic"]
         },
         allowShare: {
             notNull: true,
@@ -82,7 +82,7 @@ export const desc = {
                 },
                 {
                     name: 'tag',
-                }
+                },
             ],
         },
         {

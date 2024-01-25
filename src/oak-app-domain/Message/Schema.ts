@@ -1,14 +1,11 @@
 import { PrimaryKey, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf, ValueOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult, EntityShape } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState, VisitState } from "./Action";
 import { RelationAction } from "oak-domain/lib/actions/action";
-import { String, Int, Text, Image } from "oak-domain/lib/types/DataType";
-import { EntityShape } from "oak-domain/lib/types/Entity";
-import { Index, ActionDef } from "oak-domain/lib/types";
-import { Channel, Weight } from "../../types/Message";
-import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
+import { String, Text } from "oak-domain/lib/types/DataType";
+import { Weight, Channel } from "../../types/Message";
 import * as User from "../User/Schema";
 import * as Platform from "../Platform/Schema";
 import * as MessageSystem from "../MessageSystem/Schema";
@@ -17,11 +14,11 @@ export type Router = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
-    isTabBar?: boolean; //小程序独有 小程序跳回tabBar的话 必须使用 wx.switchTab
+    isTabBar?: boolean;
 };
 type MessageRestriction = {
-    systemIds?: string[]; // 允许发送的system
-    channels?: Array<Channel>; // 允许推送的渠道
+    systemIds?: string[];
+    channels?: Array<Channel>;
 };
 type Chaanels = Channel[];
 export type OpSchema = EntityShape & {

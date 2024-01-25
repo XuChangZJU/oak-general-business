@@ -1,13 +1,10 @@
 import { PrimaryKey, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf, ValueOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult, EntityShape } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
 import { RelationAction } from "oak-domain/lib/actions/action";
-import { ActionType, EntityShape } from "oak-domain/lib/types/Entity";
 import { String, Text, Boolean, Datetime } from "oak-domain/lib/types/DataType";
-import { ActionDef, Index } from "oak-domain/lib/types";
-import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 export type OpSchema = EntityShape & {
     mobile: String<11>;
     code: String<4>;
@@ -16,7 +13,7 @@ export type OpSchema = EntityShape & {
     env: Object;
     expired: Boolean;
     expiresAt: Datetime;
-    type: 'login' | 'changePassword' | 'confirm';
+    type: "login" | "changePassword" | "confirm";
     iState?: IState | null;
 };
 export type OpAttr = keyof OpSchema;
@@ -28,7 +25,7 @@ export type Schema = EntityShape & {
     env: Object;
     expired: Boolean;
     expiresAt: Datetime;
-    type: 'login' | 'changePassword' | 'confirm';
+    type: "login" | "changePassword" | "confirm";
     iState?: IState | null;
 } & {
     [A in ExpressionKey]?: any;
@@ -45,7 +42,7 @@ type AttrFilter = {
     env: Object;
     expired: Q_BooleanValue;
     expiresAt: Q_DateValue;
-    type: Q_EnumValue<'login' | 'changePassword' | 'confirm'>;
+    type: Q_EnumValue<"login" | "changePassword" | "confirm">;
     iState: Q_EnumValue<IState>;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;

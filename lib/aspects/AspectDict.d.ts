@@ -44,6 +44,10 @@ export type GeneralAspectDict<ED extends EntityDict, Cxt extends BackendRuntimeC
         id: string;
         env: WebEnv | WechatMpEnv;
     }, context: Cxt) => Promise<string>;
+    refreshToken: (params: {
+        tokenValue: string;
+        env: WebEnv | WechatMpEnv | NativeEnv;
+    }, context: Cxt) => Promise<string>;
     sendCaptcha: (params: {
         mobile: string;
         env: WechatMpEnv | WebEnv;

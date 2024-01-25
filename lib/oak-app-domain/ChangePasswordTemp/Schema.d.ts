@@ -1,23 +1,22 @@
 import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction } from "oak-domain/lib/actions/action";
-import { EntityShape } from "oak-domain/lib/types/Entity";
 import { String } from "oak-domain/lib/types/DataType";
 import * as User from "../User/Schema";
 export type OpSchema = EntityShape & {
     userId: ForeignKey<"user">;
     prevPassword?: String<32> | null;
     newPassword?: String<32> | null;
-    result: 'success' | 'fail';
+    result: "success" | "fail";
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     userId: ForeignKey<"user">;
     prevPassword?: String<32> | null;
     newPassword?: String<32> | null;
-    result: 'success' | 'fail';
+    result: "success" | "fail";
     user: User.Schema;
 } & {
     [A in ExpressionKey]?: any;
@@ -31,7 +30,7 @@ type AttrFilter = {
     user: User.Filter;
     prevPassword: Q_StringValue;
     newPassword: Q_StringValue;
-    result: Q_EnumValue<'success' | 'fail'>;
+    result: Q_EnumValue<"success" | "fail">;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
 export type Projection = {

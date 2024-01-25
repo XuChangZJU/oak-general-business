@@ -20,10 +20,10 @@ export declare abstract class BackendRuntimeContext<ED extends EntityDict & Base
     getSystemId(): ED["application"]["Schema"]["systemId"] | undefined;
     getApplication(): Partial<ED["application"]["Schema"]> | undefined;
     openRootMode(): () => void;
-    getTokenValue(allowUnloggedIn?: boolean): "oak-root-token" | ED["token"]["Schema"]["id"] | undefined;
+    getTokenValue(allowUnloggedIn?: boolean): "oak-root-token" | ED["token"]["Schema"]["value"] | undefined;
     getToken(allowUnloggedIn?: boolean): Partial<ED["token"]["Schema"]> | undefined;
     getCurrentUserId(allowUnloggedIn?: boolean): string;
-    protected getSerializedData(): SerializedData;
+    protected getSerializedData(): Promise<SerializedData>;
     isRoot(): boolean;
     isReallyRoot(): boolean;
     sendMessage(data: ED['message']['CreateSingle']['data']): Promise<import("oak-domain/lib/types").OperationResult<ED>>;

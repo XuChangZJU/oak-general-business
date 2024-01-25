@@ -1,11 +1,8 @@
 import { PrimaryKey, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf, ValueOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction, AppendOnlyAction, ReadOnlyAction, ExcludeUpdateAction, ExcludeRemoveAction, RelationAction } from "oak-domain/lib/actions/action";
-import { String, Text, Datetime, Boolean, Uint } from "oak-domain/lib/types/DataType";
-import { EntityShape } from "oak-domain/lib/types/Entity";
-import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 import * as Application from "../Application/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
 import * as OperEntity from "../OperEntity/Schema";
@@ -18,15 +15,15 @@ type content = {
 export type OpSchema = EntityShape & {
     content: content;
     applicationId: ForeignKey<"application">;
-    type: 'text' | 'image' | 'video' | 'voice';
-    event: 'subscribe' | 'unsubscribe' | 'keyword' | 'auto';
+    type: "text" | "image" | "video" | "voice";
+    event: "subscribe" | "unsubscribe" | "keyword" | "auto";
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     content: content;
     applicationId: ForeignKey<"application">;
-    type: 'text' | 'image' | 'video' | 'voice';
-    event: 'subscribe' | 'unsubscribe' | 'keyword' | 'auto';
+    type: "text" | "image" | "video" | "voice";
+    event: "subscribe" | "unsubscribe" | "keyword" | "auto";
     application: Application.Schema;
     modiEntity$entity?: Array<ModiEntity.Schema>;
     modiEntity$entity$$aggr?: AggregationResult<ModiEntity.Schema>;
@@ -43,8 +40,8 @@ type AttrFilter = {
     content: JsonFilter<content>;
     applicationId: Q_StringValue;
     application: Application.Filter;
-    type: Q_EnumValue<'text' | 'image' | 'video' | 'voice'>;
-    event: Q_EnumValue<'subscribe' | 'unsubscribe' | 'keyword' | 'auto'>;
+    type: Q_EnumValue<"text" | "image" | "video" | "voice">;
+    event: Q_EnumValue<"subscribe" | "unsubscribe" | "keyword" | "auto">;
     modiEntity$entity: ModiEntity.Filter & SubQueryPredicateMetadata;
     operEntity$entity: OperEntity.Filter & SubQueryPredicateMetadata;
 };

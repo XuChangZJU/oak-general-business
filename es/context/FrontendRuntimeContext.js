@@ -1,6 +1,6 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { FrontendRuntimeContext as Frc } from 'oak-frontend-base';
-import { OakTokenExpiredException, OakUserDisabledException, } from '../types/Exception';
+import { OakApplicationLoadingException, OakTokenExpiredException, OakUserDisabledException, OakUserInfoLoadingException, } from '../types/Exception';
 import { OakUnloggedInException } from 'oak-domain/lib/types';
 ;
 export class FrontendRuntimeContext extends Frc {
@@ -11,20 +11,60 @@ export class FrontendRuntimeContext extends Frc {
         this.application = features.application;
         this.token = features.token;
     }
-    getSerializedData() {
-        const data = super.getSerializedData();
-        const appId = this.application.getApplicationId();
-        if (appId) {
-            Object.assign(data, {
-                a: appId,
-            });
-        }
-        const tokenValue = this.token.getTokenValue();
-        if (tokenValue) {
-            Object.assign(data, {
-                t: tokenValue,
-            });
-        }
+    async getSerializedData() {
+        const data = await super.getSerializedData();
+        const setAppId = async () => {
+            // appId必须要取到，不能失败
+            const setInner = (resolve, reject) => {
+                try {
+                    const appId = this.application.getApplicationId();
+                    assert(appId);
+                    Object.assign(data, {
+                        a: appId,
+                    });
+                    resolve(undefined);
+                }
+                catch (err) {
+                    if (err instanceof OakApplicationLoadingException) {
+                        const fn = this.application.subscribe(() => {
+                            fn();
+                            setInner(resolve, reject);
+                        });
+                    }
+                    else {
+                        reject(err);
+                    }
+                }
+            };
+            return new Promise((resolve, reject) => setInner(resolve, reject));
+        };
+        await setAppId();
+        const setTokenValue = async () => {
+            const setInner = (resolve, reject) => {
+                try {
+                    const tokenValue = this.token.getTokenValue();
+                    if (tokenValue) {
+                        Object.assign(data, {
+                            t: tokenValue,
+                        });
+                    }
+                    resolve(undefined);
+                }
+                catch (err) {
+                    if (err instanceof OakUserInfoLoadingException) {
+                        const fn = this.token.subscribe(() => {
+                            fn();
+                            setInner(resolve, reject);
+                        });
+                    }
+                    else {
+                        reject(err);
+                    }
+                }
+            };
+            return new Promise((resolve, reject) => setInner(resolve, reject));
+        };
+        await setTokenValue();
         return data;
     }
     getApplicationId() {

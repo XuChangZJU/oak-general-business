@@ -15,6 +15,8 @@ export interface Schema extends EntityShape {
     player?: User;
     disablesAt?: Datetime;
     env: Environment;
+    refreshedAt: Datetime;
+    value: String<64>;
 };
 
 type Action = AbleAction;
@@ -36,6 +38,8 @@ const entityDesc: EntityDesc<Schema, Action, '', {
                 env: '环境',
                 ableState: '状态',
                 disablesAt: '禁用时间',
+                refreshedAt: "刷新时间",
+                value: "令牌值"
             },
             action: {
                 enable: '激活',
@@ -48,5 +52,21 @@ const entityDesc: EntityDesc<Schema, Action, '', {
                 },
             },
         },
-    }
+    },
+    indexes: [
+        {
+            name: 'index_value',
+            attributes: [
+                {
+                    name: 'value',
+                },
+                {
+                    name: '$$deleteAt$$',
+                },
+            ],
+            config: {
+                unique: true,
+            },
+        },
+    ],
 };

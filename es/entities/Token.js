@@ -14,6 +14,8 @@ const entityDesc = {
                 env: '环境',
                 ableState: '状态',
                 disablesAt: '禁用时间',
+                refreshedAt: "刷新时间",
+                value: "令牌值"
             },
             action: {
                 enable: '激活',
@@ -26,5 +28,21 @@ const entityDesc = {
                 },
             },
         },
-    }
+    },
+    indexes: [
+        {
+            name: 'index_value',
+            attributes: [
+                {
+                    name: 'value',
+                },
+                {
+                    name: '$$deleteAt$$',
+                },
+            ],
+            config: {
+                unique: true,
+            },
+        },
+    ],
 };

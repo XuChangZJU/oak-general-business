@@ -1,10 +1,9 @@
 import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult, EntityShape } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction } from "./Action";
 import { Boolean, Text, Datetime } from "oak-domain/lib/types/DataType";
-import { EntityShape } from "oak-domain/lib/types/Entity";
 import { QrCodeType } from "../../types/Config";
 import * as User from "../User/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
@@ -12,7 +11,7 @@ import * as OperEntity from "../OperEntity/Schema";
 import * as WechatQrCode from "../WechatQrCode/Schema";
 export type OpSchema = EntityShape & {
     userId?: ForeignKey<"user"> | null;
-    type: 'bind' | 'login';
+    type: "bind" | "login";
     successed: Boolean;
     remark?: Text | null;
     qrCodeType: QrCodeType;
@@ -22,7 +21,7 @@ export type OpSchema = EntityShape & {
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
     userId?: ForeignKey<"user"> | null;
-    type: 'bind' | 'login';
+    type: "bind" | "login";
     successed: Boolean;
     remark?: Text | null;
     qrCodeType: QrCodeType;
@@ -45,7 +44,7 @@ type AttrFilter = {
     $$updateAt$$: Q_DateValue;
     userId: Q_StringValue;
     user: User.Filter;
-    type: Q_EnumValue<'bind' | 'login'>;
+    type: Q_EnumValue<"bind" | "login">;
     successed: Q_BooleanValue;
     remark: Q_StringValue;
     qrCodeType: Q_EnumValue<QrCodeType>;

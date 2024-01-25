@@ -1,11 +1,10 @@
 import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
-import { String } from "oak-domain/lib/types/DataType";
-import { EntityShape } from "oak-domain/lib/types/Entity";
 import { Channel } from "../../types/Message";
+import { String } from "oak-domain/lib/types/DataType";
 import * as Application from "../Application/Schema";
 import * as MessageSystem from "../MessageSystem/Schema";
 export type OpSchema = EntityShape & {

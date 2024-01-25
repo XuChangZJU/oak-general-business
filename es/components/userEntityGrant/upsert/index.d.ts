@@ -11,7 +11,7 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     claimUrl: string;
     qrCodeType: QrCodeType;
     multiple: boolean;
-    rule: "all" | "single" | "free";
-    ruleOnRow: "all" | "single" | "free";
+    rule: "single" | "all" | "free";
+    ruleOnRow: "single" | "all" | "free";
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

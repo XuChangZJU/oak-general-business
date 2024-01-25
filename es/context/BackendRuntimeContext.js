@@ -52,13 +52,14 @@ export class BackendRuntimeContext extends BRC {
                     userState: 1,
                     isRoot: 1,
                 },
+                value: 1,
                 player: {
                     id: 1,
                     isRoot: 1,
                 },
             },
             filter: {
-                id: tokenValue,
+                value: tokenValue,
             },
         }, {
             dontCollect: true,
@@ -148,7 +149,7 @@ export class BackendRuntimeContext extends BRC {
         if (!this.token && !allowUnloggedIn) {
             throw new OakUnloggedInException();
         }
-        return this.token?.id;
+        return this.token?.value;
     }
     getToken(allowUnloggedIn) {
         if (!this.token && !allowUnloggedIn) {
@@ -167,12 +168,12 @@ export class BackendRuntimeContext extends BRC {
         const token = this.getToken(allowUnloggedIn);
         return token?.userId;
     }
-    getSerializedData() {
-        const data = super.getSerializedData();
+    async getSerializedData() {
+        const data = await super.getSerializedData();
         return {
             ...data,
             a: this.application?.id,
-            t: this.token?.id,
+            t: this.token?.value,
             rm: this.rootMode,
         };
     }

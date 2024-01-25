@@ -46,34 +46,6 @@ export default function render(props) {
                                 </Typography.Text>);
                 },
             },
-            // {
-            //     dataIndex: 'op',
-            //     width: 200,
-            //     title: '操作',
-            //     align: 'center',
-            //     render: (value, record, index) => {
-            //         return (
-            //             <>
-            //                 <Button
-            //                     type="link"
-            //                     onClick={() => {
-            //                         updateItem(
-            //                             {
-            //                                 expired: true
-            //                             },
-            //                             record.id!,
-            //                             'cancel'
-            //                         );
-            //                         execute();
-            //                     }}
-            //                 >
-            //                     失效
-            //                 </Button>
-            //             </>
-            //         );
-            //     },
-            //     fixed: 'right',
-            // },
             {
                 width: 200,
                 title: '操作',

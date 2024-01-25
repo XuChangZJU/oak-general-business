@@ -10,6 +10,7 @@ import {
     logout,
     loginByWechat,
     wakeupParasite,
+    refreshToken,
 } from './token';
 import { getInfoByUrl } from './extraFile';
 import {
@@ -69,6 +70,7 @@ const aspectDict = {
     loginWechat,
     loginWechatMp,
     wakeupParasite,
+    refreshToken,
     syncUserInfoWechatMp,
     sendCaptcha,
     getApplication,

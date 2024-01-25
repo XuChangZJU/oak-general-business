@@ -9,19 +9,24 @@ export class Token extends Feature {
     environment;
     cache;
     storage;
-    isLoading = false;
     async loadSavedToken() {
         let tokenValue = await this.storage.load(LOCAL_STORAGE_KEYS.token);
-        if (!tokenValue) {
+        /* if (!tokenValue) {
             // 历史数据，原来用的key太随意
             tokenValue = await this.storage.load('token:token');
             if (tokenValue) {
                 await this.storage.save(LOCAL_STORAGE_KEYS.token, tokenValue);
                 await this.storage.remove('token:token');
             }
-        }
+        } */
         if (tokenValue) {
             this.tokenValue = tokenValue;
+            const env = await this.environment.getEnv();
+            const { result } = await this.cache.exec('refreshToken', {
+                tokenValue,
+                env,
+            }, undefined, true, true);
+            this.tokenValue = result;
         }
         else {
             this.tokenValue = undefined;
@@ -35,19 +40,6 @@ export class Token extends Feature {
         this.environment = environment;
         this.tokenValue = ''; // 置个空字符串代表还在load storage缓存的数据
         this.loadSavedToken();
-    }
-    async loadTokenInfo() {
-        if (this.tokenValue && !this.isLoading) {
-            this.isLoading = true;
-            await this.cache.refresh('token', {
-                data: cloneDeep(tokenProjection),
-                filter: {
-                    id: this.tokenValue,
-                },
-            });
-            this.publish();
-            this.isLoading = false;
-        }
     }
     async loginByMobile(mobile, password, captcha, disableRegister) {
         const env = await this.environment.getEnv();
@@ -120,6 +112,9 @@ export class Token extends Feature {
         }
     }
     getTokenValue() {
+        if (this.tokenValue === '') {
+            throw new OakUserInfoLoadingException();
+        }
         return this.tokenValue;
     }
     getToken(allowUnloggedIn) {
@@ -130,11 +125,10 @@ export class Token extends Feature {
             const token = this.cache.get('token', {
                 data: cloneDeep(tokenProjection),
                 filter: {
-                    id: this.tokenValue,
+                    value: this.tokenValue,
                 },
             })[0];
             if (!token) {
-                this.loadTokenInfo();
                 if (allowUnloggedIn) {
                     return undefined;
                 }

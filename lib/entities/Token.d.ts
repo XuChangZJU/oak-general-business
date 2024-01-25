@@ -11,4 +11,6 @@ export interface Schema extends EntityShape {
     player?: User;
     disablesAt?: Datetime;
     env: Environment;
+    refreshedAt: Datetime;
+    value: String<64>;
 }

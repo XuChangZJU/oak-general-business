@@ -22,7 +22,7 @@ export const desc: StorageDesc<OpSchema> = {
         qrCodeType: {
             notNull: true,
             type: "enum",
-            enumeration: ["wechatMpDomainUrl", "wechatMpWxaCode", "wechatPublic", "wechatPublicForMp", "webForWechatPublic"]
+            enumeration: ["wechatPublic", "wechatMpDomainUrl", "wechatMpWxaCode", "wechatPublicForMp", "webForWechatPublic"]
         },
         expiresAt: {
             type: "datetime"

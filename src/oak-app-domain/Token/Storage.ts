@@ -37,11 +37,38 @@ export const desc: StorageDesc<OpSchema> = {
             notNull: true,
             type: "object"
         },
+        refreshedAt: {
+            notNull: true,
+            type: "datetime"
+        },
+        value: {
+            notNull: true,
+            type: "varchar",
+            params: {
+                length: 64
+            }
+        },
         ableState: {
             type: "enum",
             enumeration: ["enabled", "disabled"]
         }
     },
     actionType: "crud",
-    actions
+    actions,
+    indexes: [
+        {
+            name: 'index_value',
+            attributes: [
+                {
+                    name: 'value',
+                },
+                {
+                    name: '$$deleteAt$$',
+                },
+            ],
+            config: {
+                unique: true,
+            },
+        }
+    ]
 };

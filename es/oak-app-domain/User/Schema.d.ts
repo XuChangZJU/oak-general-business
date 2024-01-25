@@ -1,11 +1,10 @@
 import { ForeignKey } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
-import { Action, ParticularAction, UserState, IdState } from "./Action";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult, EntityShape } from "oak-domain/lib/types/Entity";
+import { Action, ParticularAction, IdState, UserState } from "./Action";
 import { RelationAction } from "oak-domain/lib/actions/action";
-import { String, Text, Boolean, Datetime } from "oak-domain/lib/types/DataType";
-import { EntityShape } from "oak-domain/lib/types/Entity";
+import { String, Text, Datetime, Boolean } from "oak-domain/lib/types/DataType";
 import * as Oper from "../Oper/Schema";
 import * as UserEntityClaim from "../UserEntityClaim/Schema";
 import * as UserRelation from "../UserRelation/Schema";
@@ -34,8 +33,8 @@ export type OpSchema = EntityShape & {
     password?: Text | null;
     passwordSha1?: Text | null;
     birth?: Datetime | null;
-    gender?: ('male' | 'female') | null;
-    idCardType?: ('ID-Card' | 'passport' | 'Mainland-passport') | null;
+    gender?: ("male" | "female") | null;
+    idCardType?: ("ID-Card" | "passport" | "Mainland-passport") | null;
     idNumber?: String<32> | null;
     refId?: ForeignKey<"user"> | null;
     isRoot?: Boolean | null;
@@ -49,8 +48,8 @@ export type Schema = EntityShape & {
     password?: Text | null;
     passwordSha1?: Text | null;
     birth?: Datetime | null;
-    gender?: ('male' | 'female') | null;
-    idCardType?: ('ID-Card' | 'passport' | 'Mainland-passport') | null;
+    gender?: ("male" | "female") | null;
+    idCardType?: ("ID-Card" | "passport" | "Mainland-passport") | null;
     idNumber?: String<32> | null;
     refId?: ForeignKey<"user"> | null;
     isRoot?: Boolean | null;
@@ -118,8 +117,8 @@ type AttrFilter = {
     password: Q_StringValue;
     passwordSha1: Q_StringValue;
     birth: Q_DateValue;
-    gender: Q_EnumValue<'male' | 'female'>;
-    idCardType: Q_EnumValue<'ID-Card' | 'passport' | 'Mainland-passport'>;
+    gender: Q_EnumValue<"male" | "female">;
+    idCardType: Q_EnumValue<"ID-Card" | "passport" | "Mainland-passport">;
     idNumber: Q_StringValue;
     refId: Q_StringValue;
     ref: Filter;

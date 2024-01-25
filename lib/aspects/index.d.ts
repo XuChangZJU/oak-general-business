@@ -1,4 +1,4 @@
-import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCaptcha, switchTo, refreshWechatPublicUserInfo, getWechatMpUserPhoneNumber, logout, loginByWechat, wakeupParasite } from './token';
+import { loginByMobile, loginWechat, loginWechatMp, syncUserInfoWechatMp, sendCaptcha, switchTo, refreshWechatPublicUserInfo, getWechatMpUserPhoneNumber, logout, loginByWechat, wakeupParasite, refreshToken } from './token';
 import { getInfoByUrl } from './extraFile';
 import { getApplication, signatureJsSDK, uploadWechatMedia, batchGetArticle, getArticle, batchGetMaterialList, getMaterial, deleteMaterial } from './application';
 import { updateConfig, updateApplicationConfig, updateStyle } from './config';
@@ -22,6 +22,7 @@ declare const aspectDict: {
     loginWechat: typeof loginWechat;
     loginWechatMp: typeof loginWechatMp;
     wakeupParasite: typeof wakeupParasite;
+    refreshToken: typeof refreshToken;
     syncUserInfoWechatMp: typeof syncUserInfoWechatMp;
     sendCaptcha: typeof sendCaptcha;
     getApplication: typeof getApplication;

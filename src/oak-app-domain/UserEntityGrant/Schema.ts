@@ -1,13 +1,11 @@
 import { PrimaryKey, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf, ValueOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult, EntityShape } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction } from "./Action";
 import { RelationAction } from "oak-domain/lib/actions/action";
-import { String, Text, Datetime, Int, Boolean } from "oak-domain/lib/types/DataType";
-import { EntityShape } from "oak-domain/lib/types/Entity";
+import { String, Boolean, Text, Datetime } from "oak-domain/lib/types/DataType";
 import { QrCodeType } from "../../types/Config";
-import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 import * as User from "../User/Schema";
 import * as UserEntityClaim from "../UserEntityClaim/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
@@ -18,16 +16,16 @@ export type RedirectToProps = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
-    isTabBar?: boolean; //小程序独有 小程序跳回tabBar的话 必须使用 wx.switchTab
+    isTabBar?: boolean;
 };
-type Rule = 'single' | 'all' | 'free';
+type Rule = "single" | "all" | "free";
 export type OpSchema = EntityShape & {
     entity: String<32>;
     entityId: String<64>;
     relationEntity: String<32>;
     relationEntityFilter: Object;
     relationIds: RelationIds;
-    type: 'grant' | 'transfer';
+    type: "grant" | "transfer";
     rule: Rule;
     ruleOnRow: Rule;
     multiple?: Boolean | null;
@@ -46,7 +44,7 @@ export type Schema = EntityShape & {
     relationEntity: String<32>;
     relationEntityFilter: Object;
     relationIds: RelationIds;
-    type: 'grant' | 'transfer';
+    type: "grant" | "transfer";
     rule: Rule;
     ruleOnRow: Rule;
     multiple?: Boolean | null;
@@ -79,7 +77,7 @@ type AttrFilter = {
     relationEntity: Q_StringValue;
     relationEntityFilter: Object;
     relationIds: JsonFilter<RelationIds>;
-    type: Q_EnumValue<'grant' | 'transfer'>;
+    type: Q_EnumValue<"grant" | "transfer">;
     rule: Q_EnumValue<Rule>;
     ruleOnRow: Q_EnumValue<Rule>;
     multiple: Q_BooleanValue;

@@ -69,6 +69,8 @@ export const tokenProjection = {
     },
     entity: 1,
     entityId: 1,
+    refreshedAt: 1,
+    value: 1,
     mobile: {
         id: 1,
         mobile: 1,

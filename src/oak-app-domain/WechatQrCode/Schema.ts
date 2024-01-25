@@ -1,12 +1,10 @@
 import { PrimaryKey, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf, ValueOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction, AppendOnlyAction, ReadOnlyAction, ExcludeUpdateAction, ExcludeRemoveAction, RelationAction } from "oak-domain/lib/actions/action";
-import { String, Text, Datetime, Boolean } from "oak-domain/lib/types/DataType";
-import { EntityShape } from "oak-domain/lib/types/Entity";
+import { String, Boolean, Datetime, Text } from "oak-domain/lib/types/DataType";
 import { QrCodeType } from "../../types/Config";
-import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
 import * as Application from "../Application/Schema";
 import * as User from "../User/Schema";
 import * as UserEntityGrant from "../UserEntityGrant/Schema";
@@ -17,7 +15,7 @@ export type WechatQrCodeProps = {
     pathname: string;
     props?: Record<string, any>;
     state?: Record<string, any>;
-    isTabBar?: boolean; //小程序独有 小程序跳回tabBar的话 必须使用 wx.switchTab
+    isTabBar?: boolean;
 };
 export type OpSchema = EntityShape & {
     entity: "user" | "userEntityGrant" | "wechatLogin" | string;

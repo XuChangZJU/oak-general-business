@@ -1,11 +1,9 @@
 import { PrimaryKey, ForeignKey, JsonProjection } from "oak-domain/lib/types/DataType";
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, FulltextFilter, ExprOp, ExpressionKey, JsonFilter, SubQueryPredicateMetadata } from "oak-domain/lib/types/Demand";
 import { OneOf, ValueOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, AggregationResult, EntityShape } from "oak-domain/lib/types/Entity";
 import { GenericAction, AppendOnlyAction, ReadOnlyAction, ExcludeUpdateAction, ExcludeRemoveAction, RelationAction } from "oak-domain/lib/actions/action";
-import { String, Text, Datetime, Boolean, Uint } from "oak-domain/lib/types/DataType";
-import { EntityShape } from "oak-domain/lib/types/Entity";
-import { EntityDesc } from "oak-domain/lib/types/EntityDesc";
+import { String, Text, Datetime } from "oak-domain/lib/types/DataType";
 import * as Application from "../Application/Schema";
 import * as MessageTypeTemplate from "../MessageTypeTemplate/Schema";
 import * as ModiEntity from "../ModiEntity/Schema";
@@ -25,7 +23,7 @@ export type OpSchema = EntityShape & {
     param?: Object | null;
     syncAt: Datetime;
     keywordEnumValueList?: KeywordEnumValueList | null;
-    type?: ('2' | '3') | null;
+    type?: ("2" | "3") | null;
 };
 export type OpAttr = keyof OpSchema;
 export type Schema = EntityShape & {
@@ -39,7 +37,7 @@ export type Schema = EntityShape & {
     param?: Object | null;
     syncAt: Datetime;
     keywordEnumValueList?: KeywordEnumValueList | null;
-    type?: ('2' | '3') | null;
+    type?: ("2" | "3") | null;
     application: Application.Schema;
     messageTypeTemplate$template?: Array<MessageTypeTemplate.Schema>;
     messageTypeTemplate$template$$aggr?: AggregationResult<MessageTypeTemplate.Schema>;
@@ -66,7 +64,7 @@ type AttrFilter = {
     param: Object;
     syncAt: Q_DateValue;
     keywordEnumValueList: JsonFilter<KeywordEnumValueList>;
-    type: Q_EnumValue<'2' | '3'>;
+    type: Q_EnumValue<"2" | "3">;
     messageTypeTemplate$template: MessageTypeTemplate.Filter & SubQueryPredicateMetadata;
     modiEntity$entity: ModiEntity.Filter & SubQueryPredicateMetadata;
     operEntity$entity: OperEntity.Filter & SubQueryPredicateMetadata;

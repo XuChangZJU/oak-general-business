@@ -3,7 +3,7 @@ import { Feature } from 'oak-frontend-base';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { cloneDeep, merge } from 'oak-domain/lib/utils/lodash';
 import { applicationProjection } from '../types/Projection';
-import { OakTokenExpiredException, OakUserDisabledException, } from '../types/Exception';
+import { OakTokenExpiredException, OakUserDisabledException, OakApplicationLoadingException, } from '../types/Exception';
 export class Application extends Feature {
     type;
     domain; //域名
@@ -31,6 +31,7 @@ export class Application extends Feature {
         });
         assert(data.length === 1, `refresh:applicationId${this.applicationId}没有取到有效数据`);
         this.application = data[0];
+        this.publish();
         if (this.application.type !== this.type) {
             this.storage.remove(LOCAL_STORAGE_KEYS.appId);
         }
@@ -51,7 +52,7 @@ export class Application extends Feature {
             const { result } = await this.cache.exec('getApplication', {
                 type,
                 domain,
-            });
+            }, undefined, undefined, true);
             applicationId = result;
         }
         catch (err) {
@@ -62,7 +63,7 @@ export class Application extends Feature {
                 const { result } = await this.cache.exec('getApplication', {
                     type,
                     domain,
-                });
+                }, undefined, undefined, true);
                 applicationId = result;
             }
             throw err;
@@ -95,9 +96,15 @@ export class Application extends Feature {
         return await this.loadApplicationInfo(this.type, this.domain);
     }
     getApplication() {
+        if (this.applicationId === undefined) {
+            throw new OakApplicationLoadingException();
+        }
         return this.application;
     }
     getApplicationId() {
+        if (this.applicationId === undefined) {
+            throw new OakApplicationLoadingException();
+        }
         return this.applicationId;
     }
     async uploadWechatMedia(params) {

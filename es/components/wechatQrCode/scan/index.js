@@ -69,7 +69,6 @@ export default OakComponent({
                 };
             }
         }
-
         if (props.q) {
             const q = decodeURIComponent(props.q);
             const uuid = expandUuidTo36Bytes(q);

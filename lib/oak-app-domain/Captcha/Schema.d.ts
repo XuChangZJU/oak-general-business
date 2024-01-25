@@ -1,8 +1,7 @@
 import { Q_DateValue, Q_BooleanValue, Q_NumberValue, Q_StringValue, Q_EnumValue, NodeId, MakeFilter, ExprOp, ExpressionKey } from "oak-domain/lib/types/Demand";
 import { OneOf } from "oak-domain/lib/types/Polyfill";
-import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction } from "oak-domain/lib/types/Entity";
+import { FormCreateData, FormUpdateData, DeduceAggregation, Operation as OakOperation, Selection as OakSelection, MakeAction as OakMakeAction, EntityShape } from "oak-domain/lib/types/Entity";
 import { Action, ParticularAction, IState } from "./Action";
-import { EntityShape } from "oak-domain/lib/types/Entity";
 import { String, Text, Boolean, Datetime } from "oak-domain/lib/types/DataType";
 export type OpSchema = EntityShape & {
     mobile: String<11>;
@@ -12,7 +11,7 @@ export type OpSchema = EntityShape & {
     env: Object;
     expired: Boolean;
     expiresAt: Datetime;
-    type: 'login' | 'changePassword' | 'confirm';
+    type: "login" | "changePassword" | "confirm";
     iState?: IState | null;
 };
 export type OpAttr = keyof OpSchema;
@@ -24,7 +23,7 @@ export type Schema = EntityShape & {
     env: Object;
     expired: Boolean;
     expiresAt: Datetime;
-    type: 'login' | 'changePassword' | 'confirm';
+    type: "login" | "changePassword" | "confirm";
     iState?: IState | null;
 } & {
     [A in ExpressionKey]?: any;
@@ -41,7 +40,7 @@ type AttrFilter = {
     env: Object;
     expired: Q_BooleanValue;
     expiresAt: Q_DateValue;
-    type: Q_EnumValue<'login' | 'changePassword' | 'confirm'>;
+    type: Q_EnumValue<"login" | "changePassword" | "confirm">;
     iState: Q_EnumValue<IState>;
 };
 export type Filter = MakeFilter<AttrFilter & ExprOp<OpAttr | string>>;
