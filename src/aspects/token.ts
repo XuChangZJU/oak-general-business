@@ -354,7 +354,7 @@ async function setUpTokenAndUser<
         const tokenData: EntityDict['token']['CreateSingle']['data'] = {
             id: await generateNewIdAsync(),
             env,
-            refreshAt: Date.now(),
+            refreshedAt: Date.now(),
             value: await generateNewIdAsync(),
         };
         if (user) {
