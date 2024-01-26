@@ -1900,7 +1900,10 @@ export async function refreshToken<
     const { env, tokenValue } = params;
     const fn = context.openRootMode();
     let [ token ] = await context.select('token', {
-        data: tokenProjection,
+        data: Object.assign({
+            env: 1,
+            ...tokenProjection,
+        }),
         filter: {
             value: tokenValue,
         },
