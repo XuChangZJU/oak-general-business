@@ -93,7 +93,7 @@ export default function render(
                         value: ele.id,
                         label:
                             ele.display ||
-                            t(`${relationEntity as string}:r.${ele.name}`),
+                            relationEntity && t(`${relationEntity as string}:r.${ele.name}`),
                     }))}
                 />
             </Form.Item>

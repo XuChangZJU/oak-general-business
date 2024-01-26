@@ -1,4 +1,4 @@
-import { makeAbleActionDef } from 'oak-domain/lib/actions/action';
+import { makeAbleActionDef } from "oak-domain/lib/actions/action";
 export const actions = ["count", "stat", "download", "select", "aggregate", "create", "remove", "update", "enable", "disable", "charge", "withdraw", "cost", "refund", "loan", "repay"];
 const AbleActionDef = makeAbleActionDef('enabled');
 export const ActionDefDict = {

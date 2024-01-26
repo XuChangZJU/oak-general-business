@@ -32,5 +32,5 @@ export const desc = {
     },
     actionType: "crud",
     actions,
-    relation: ['partner']
+    relation: ["partner"]
 };
