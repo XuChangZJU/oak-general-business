@@ -4,6 +4,14 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import { WechatSDK, } from 'oak-external-sdk';
 export async function wechatMpJump(params, context) {
     const { applicationId, jump_wxa, expireType, expiresAt, expireInterval } = params;
+    const envVersionVersionDict = {
+        development: 'develop',
+        staging: 'trial',
+        production: 'release',
+    };
+    Object.assign(jump_wxa, {
+        env_version: envVersionVersionDict[process.env.NODE_ENV],
+    });
     assert(applicationId);
     const [application] = await context.select('application', {
         data: cloneDeep(applicationProjection),

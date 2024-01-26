@@ -25,7 +25,7 @@ export default function render(props) {
         }} options={relations?.map((ele) => ({
             value: ele.id,
             label: ele.display ||
-            relationEntity && t(`${relationEntity}:r.${ele.name}`),
+                relationEntity && t(`${relationEntity}:r.${ele.name}`),
         }))}/>
             </Form.Item>
             {relationIds?.length > 1 && (<Form.Item label={t('userEntityGrant:attr.rule')} help={t('helpRule')}>

@@ -14,7 +14,7 @@ export declare function createToDo<ED extends EntityDict & BaseEntityDict, T ext
     redirectTo: EntityDict['toDo']['OpSchema']['redirectTo'];
     entity: any;
     entityId: string;
-}, userIds?: string[]): Promise<0 | 1>;
+}, userIds?: string[]): Promise<1 | 0>;
 /**
  * 完成todo例程，当在entity对象上进行action操作时（操作条件是filter），将对应的todo完成
  * 必须在entity的action的后trigger中调用

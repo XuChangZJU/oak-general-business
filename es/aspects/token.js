@@ -224,25 +224,30 @@ createData, user) {
         }
     }
     else {
-        if (entityId) {
+        /* if (entityId) {
             // 已经有相应对象，判定一下能否重用上一次的token
+            // 不再重用了
             const application = context.getApplication();
-            const [originToken] = await context.select('token', {
-                data: {
-                    id: 1,
-                    value: 1,
+            const [originToken] = await context.select(
+                'token',
+                {
+                    data: {
+                        id: 1,
+                        value: 1,
+                    },
+                    filter: {
+                        applicationId: application!.id,
+                        ableState: 'enabled',
+                        entity,
+                        entityId: entityId,
+                    },
                 },
-                filter: {
-                    applicationId: application.id,
-                    ableState: 'enabled',
-                    entity,
-                    entityId: entityId,
-                },
-            }, { dontCollect: true });
+                { dontCollect: true }
+            );
             if (originToken) {
-                return originToken.value;
+                return originToken.value!;
             }
-        }
+        } */
         const tokenData = {
             id: await generateNewIdAsync(),
             env,
@@ -1306,6 +1311,23 @@ export async function wakeupParasite(params, context) {
  * @returns
  */
 function checkTokenEnvConsistency(env1, env2) {
+    if (env1.type !== env2.type) {
+        return false;
+    }
+    switch (env1.type) {
+        case 'web': {
+            return env1.visitorId === env2.visitorId;
+        }
+        case 'wechatMp': {
+            return true;
+        }
+        case 'native': {
+            return env1.visitorId === env2.visitorId;
+        }
+        default: {
+            return false;
+        }
+    }
     return true;
 }
 export async function refreshToken(params, context) {

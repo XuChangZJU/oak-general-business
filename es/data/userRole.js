@@ -27,5 +27,7 @@ export const tokens = [
         },
         userId: ROOT_USER_ID,
         playerId: ROOT_USER_ID,
+        refreshedAt: Date.now(),
+        value: ROOT_TOKEN_ID,
     }
 ];

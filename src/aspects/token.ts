@@ -328,8 +328,9 @@ async function setUpTokenAndUser<
             return currentToken.value!;
         }
     } else {
-        if (entityId) {
+        /* if (entityId) {
             // 已经有相应对象，判定一下能否重用上一次的token
+            // 不再重用了
             const application = context.getApplication();
             const [originToken] = await context.select(
                 'token',
@@ -350,7 +351,7 @@ async function setUpTokenAndUser<
             if (originToken) {
                 return originToken.value!;
             }
-        }
+        } */
         const tokenData: EntityDict['token']['CreateSingle']['data'] = {
             id: await generateNewIdAsync(),
             env,
@@ -1865,6 +1866,24 @@ export async function wakeupParasite<
  * @returns 
  */
 function checkTokenEnvConsistency(env1: WebEnv | WechatMpEnv | NativeEnv, env2: WebEnv | WechatMpEnv | NativeEnv) {
+    if (env1.type !== env2.type) {
+        return false;
+    }
+
+    switch (env1.type) {
+        case 'web': {
+            return env1.visitorId === (<WebEnv>env2).visitorId;
+        }
+        case 'wechatMp': {
+            return true;
+        }
+        case 'native': {
+            return env1.visitorId === (<NativeEnv>env2).visitorId;
+        }
+        default: {
+            return false;
+        }
+    }
     return true;
 }
 
