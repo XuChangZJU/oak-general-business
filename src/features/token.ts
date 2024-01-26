@@ -41,19 +41,26 @@ export class Token<
         } */
 
         if (tokenValue) {
-            this.tokenValue = tokenValue;
             const env = await this.environment.getEnv();
-            const { result } = await this.cache.exec(
-                'refreshToken',
-                {
-                    tokenValue,
-                    env,
-                },
-                undefined,
-                true,
-                true
-            );
-            this.tokenValue = result;
+            try {
+                const { result } = await this.cache.exec(
+                    'refreshToken',
+                    {
+                        tokenValue,
+                        env,
+                    },
+                    undefined,
+                    true,
+                    true
+                );
+                this.tokenValue = result;
+            }
+            catch (err) {
+                // refresh出了任何错都无视，直接放弃此token
+                console.warn(err);
+                this.tokenValue = undefined;
+                this.removeToken(true);
+            }
         } else {
             this.tokenValue = undefined;
         }
@@ -156,7 +163,9 @@ export class Token<
     }
 
     async logout() {
-        await this.cache.exec('logout', {});
+        await this.cache.exec('logout', {
+            tokenValue: this.tokenValue!,
+        }, undefined, undefined, true);
         this.removeToken();
     }
 

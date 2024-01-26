@@ -205,7 +205,7 @@ function autoMergeUser<ED extends EntityDict, Cxt extends BackendRuntimeContext<
  * @param env
  * @param context
  * @param user
- * @return tokenId
+ * @return tokenValue
  */
 async function setUpTokenAndUser<
     ED extends EntityDict,
@@ -577,13 +577,13 @@ async function setupMobile<
 async function loadTokenInfo<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
->(tokenId: string, context: Cxt) {
+>(tokenValue: string, context: Cxt) {
     return await context.select(
         'token',
         {
             data: cloneDeep(tokenProjection),
             filter: {
-                id: tokenId,
+                value: tokenValue,
             },
         },
         {}
@@ -721,11 +721,11 @@ export async function loginByMobile<
             throw new OakUserException('账号不存在');
         }
     }
-    const tokenId = await loginLogic();
-    await loadTokenInfo<ED, Cxt>(tokenId, context);
+    const tokenValue = await loginLogic();
+    await loadTokenInfo<ED, Cxt>(tokenValue, context);
     closeRootMode();
 
-    return tokenId;
+    return tokenValue;
 }
 
 async function setUserInfoFromWechat<
@@ -1251,11 +1251,11 @@ async function loginFromWechatEnv<
                     },
                     {}
                 );
-                const tokenId = await createWechatUserAndReturnTokenId(
+                const tokenValue = await createWechatUserAndReturnTokenId(
                     userData as EntityDict['user']['Schema']
                 );
                 await updateWechatLogin({ userId, successed: true });
-                return tokenId;
+                return tokenValue;
             }
         }
     } else {
@@ -1415,10 +1415,10 @@ export async function loginWechatMp<
     context: Cxt
 ): Promise<string> {
     const closeRootMode = context.openRootMode();
-    const tokenId = await loginFromWechatEnv<ED, Cxt>(code, env, context);
-    await loadTokenInfo<ED, Cxt>(tokenId, context);
+    const tokenValue = await loginFromWechatEnv<ED, Cxt>(code, env, context);
+    await loadTokenInfo<ED, Cxt>(tokenValue, context);
     closeRootMode();
-    return tokenId;
+    return tokenValue;
 }
 
 /**
@@ -1733,9 +1733,9 @@ export async function getWechatMpUserPhoneNumber<
 export async function logout<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>
->({ }, context: Cxt) {
-    const tokenId = context.getTokenValue();
-    if (tokenId) {
+>(params: { tokenValue: string }, context: Cxt) {
+    const { tokenValue } = params;
+    if (tokenValue) {
         const closeRootMode = context.openRootMode();
 
         try {
@@ -1746,7 +1746,8 @@ export async function logout<
                     action: 'disable',
                     data: {},
                     filter: {
-                        id: tokenId,
+                        value: tokenValue,
+                        ableState: 'enabled',
                     },
                 },
                 { dontCollect: true }
@@ -1831,29 +1832,30 @@ export async function wakeupParasite<
         );
     }
 
-    const tokenId = await generateNewIdAsync();
+    const tokenValue = await generateNewIdAsync();
     await context.operate(
         'token',
         {
             id: await generateNewIdAsync(),
             action: 'create',
             data: {
-                id: tokenId,
+                id: await generateNewIdAsync(),
                 entity: 'parasite',
                 entityId: id,
                 userId: parasite.userId,
                 playerId: parasite.userId,
                 disablesAt: Date.now() + parasite.tokenLifeLength!,
                 env,
+                tokenValue,
                 applicationId: context.getApplicationId(),
             },
         },
         { dontCollect: true }
     );
 
-    await loadTokenInfo<ED, Cxt>(tokenId, context);
+    await loadTokenInfo<ED, Cxt>(tokenValue, context);
     closeRootMode();
-    return tokenId;
+    return tokenValue;
 }
 
 /**

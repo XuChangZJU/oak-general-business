@@ -43,7 +43,7 @@ export type GeneralAspectDict<
             },
             context: Cxt
         ) => Promise<string>;
-        logout: ({ }, context: Cxt) => Promise<void>;
+        logout: (params: { tokenValue: string }, context: Cxt) => Promise<void>;
         loginWechatMp: (
             {
                 code,

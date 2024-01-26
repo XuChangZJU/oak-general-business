@@ -134,7 +134,7 @@ function autoMergeUser(context) {
  * @param env
  * @param context
  * @param user
- * @return tokenId
+ * @return tokenValue
  */
 async function setUpTokenAndUser(env, context, entity, // 支持更多的登录渠道使用此函数创建token
 entityId, // 如果是现有对象传id，如果没有对象传createData
@@ -409,11 +409,11 @@ async function setupMobile(mobile, env, context) {
         });
     }
 }
-async function loadTokenInfo(tokenId, context) {
+async function loadTokenInfo(tokenValue, context) {
     return await context.select('token', {
         data: cloneDeep(tokenProjection),
         filter: {
-            id: tokenId,
+            value: tokenValue,
         },
     }, {});
 }
@@ -519,10 +519,10 @@ export async function loginByMobile(params, context) {
             throw new OakUserException('账号不存在');
         }
     }
-    const tokenId = await loginLogic();
-    await loadTokenInfo(tokenId, context);
+    const tokenValue = await loginLogic();
+    await loadTokenInfo(tokenValue, context);
     closeRootMode();
-    return tokenId;
+    return tokenValue;
 }
 async function setUserInfoFromWechat(user, userInfo, context) {
     const application = context.getApplication();
@@ -883,9 +883,9 @@ async function loginFromWechatEnv(code, env, context, wechatLoginId) {
                     action: 'create',
                     data: userData,
                 }, {});
-                const tokenId = await createWechatUserAndReturnTokenId(userData);
+                const tokenValue = await createWechatUserAndReturnTokenId(userData);
                 await updateWechatLogin({ userId, successed: true });
-                return tokenId;
+                return tokenValue;
             }
         }
     }
@@ -983,10 +983,10 @@ export async function loginWechat({ code, env, wechatLoginId, }, context) {
  */
 export async function loginWechatMp({ code, env, }, context) {
     const closeRootMode = context.openRootMode();
-    const tokenId = await loginFromWechatEnv(code, env, context);
-    await loadTokenInfo(tokenId, context);
+    const tokenValue = await loginFromWechatEnv(code, env, context);
+    await loadTokenInfo(tokenValue, context);
     closeRootMode();
-    return tokenId;
+    return tokenValue;
 }
 /**
  * 同步从wx.getUserProfile拿到的用户信息
@@ -1207,9 +1207,9 @@ export async function getWechatMpUserPhoneNumber({ code, env }, context) {
     closeRootMode();
     return reuslt;
 }
-export async function logout({}, context) {
-    const tokenId = context.getTokenValue();
-    if (tokenId) {
+export async function logout(params, context) {
+    const { tokenValue } = params;
+    if (tokenValue) {
         const closeRootMode = context.openRootMode();
         try {
             await context.operate('token', {
@@ -1217,7 +1217,8 @@ export async function logout({}, context) {
                 action: 'disable',
                 data: {},
                 filter: {
-                    id: tokenId,
+                    value: tokenValue,
+                    ableState: 'enabled',
                 },
             }, { dontCollect: true });
         }
@@ -1278,24 +1279,25 @@ export async function wakeupParasite(params, context) {
             },
         }, { dontCollect: true });
     }
-    const tokenId = await generateNewIdAsync();
+    const tokenValue = await generateNewIdAsync();
     await context.operate('token', {
         id: await generateNewIdAsync(),
         action: 'create',
         data: {
-            id: tokenId,
+            id: await generateNewIdAsync(),
             entity: 'parasite',
             entityId: id,
             userId: parasite.userId,
             playerId: parasite.userId,
             disablesAt: Date.now() + parasite.tokenLifeLength,
             env,
+            tokenValue,
             applicationId: context.getApplicationId(),
         },
     }, { dontCollect: true });
-    await loadTokenInfo(tokenId, context);
+    await loadTokenInfo(tokenValue, context);
     closeRootMode();
-    return tokenId;
+    return tokenValue;
 }
 /**
  * todo 检查登录环境一致性，同一个token不能跨越不同设备
@@ -1329,7 +1331,7 @@ export async function refreshToken(params, context) {
         fn();
         return '';
     }
-    else if (now - token.refreshedAt < 600 * 1000) {
+    else if (now - token.refreshedAt > 600 * 1000) {
         const newValue = await generateNewIdAsync();
         await context.operate('token', {
             id: await generateNewIdAsync(),
