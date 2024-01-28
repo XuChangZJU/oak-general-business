@@ -53,7 +53,10 @@ export class Token<
                     true,
                     true
                 );
-                this.tokenValue = result;
+                if (this.tokenValue !== result) {
+                    this.tokenValue = result;
+                    await this.storage.save(LOCAL_STORAGE_KEYS.token, result);                    
+                }
             }
             catch (err) {
                 // refresh出了任何错都无视，直接放弃此token

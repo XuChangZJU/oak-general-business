@@ -12,9 +12,9 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     type?: ButtonProps['type'] | AmButtonProps['type'];
     executeText?: string | undefined;
     buttonProps?: (ButtonProps & {
-        color?: "default" | "success" | "warning" | "primary" | "danger" | undefined;
+        color?: "success" | "default" | "primary" | "warning" | "danger" | undefined;
         fill?: "none" | "solid" | "outline" | undefined;
-        size?: "small" | "large" | "middle" | "mini" | undefined;
+        size?: "small" | "middle" | "large" | "mini" | undefined;
         block?: boolean | undefined;
         loading?: boolean | "auto" | undefined;
         loadingText?: string | undefined;
