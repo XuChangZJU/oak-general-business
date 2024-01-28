@@ -1,6 +1,6 @@
 {
     "name": "oak-general-business",
-    "version": "4.0.5",
+    "version": "4.1.1",
     "description": "oak框架中公共业务逻辑的实现",
     "author": {
         "name": "XuChang"
