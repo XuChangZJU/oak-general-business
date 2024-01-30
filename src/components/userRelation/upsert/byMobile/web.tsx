@@ -20,6 +20,7 @@ export default function Render(
             passwordRequire: boolean;
             allowUpdateName?: boolean;
             allowUpdateNickname?: boolean;
+            isNew: boolean;
         },
         {
             onMobileChange: (value: string) => Promise<void>;
@@ -41,6 +42,7 @@ export default function Render(
         passwordRequire,
         allowUpdateName,
         allowUpdateNickname,
+        isNew,
     } = props.data;
     const { onConfirm, onMobileChange, onReset, t } = props.methods;
     return (
@@ -104,6 +106,7 @@ export default function Render(
                     passwordRequire={passwordRequire}
                     allowUpdateName={allowUpdateName}
                     allowUpdateNickname={allowUpdateNickname}
+                    isNew={isNew}
                 />
             )}
         </Form>

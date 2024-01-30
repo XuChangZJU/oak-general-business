@@ -68,7 +68,7 @@ export default OakComponent({
             password,
             name,
             nickname,
-            isNew: $$createAt$$ === 1,
+            // isNew: $$createAt$$ === 1,
         };
     },
     properties: {
@@ -76,9 +76,10 @@ export default OakComponent({
         entityId: '',
         relations: [] as EntityDict['relation']['OpSchema'][],
         mobile: '',
-        setPasswordConfirm: (value: boolean) => {},
+        setPasswordConfirm: (value: boolean) => { },
         passwordRequire: false,
         allowUpdateName: false,
         allowUpdateNickname: false,
+        isNew: false,
     },
 });
