@@ -40,6 +40,9 @@ const userProjection = {
     user$ref: {
         $entity: 'user',
         data: {
+            id: 1,
+            userState: 1,
+            refId: 1,
             mobile$user: {
                 $entity: 'mobile',
                 data: {
