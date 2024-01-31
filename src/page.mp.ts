@@ -138,7 +138,7 @@ export function createComponent<
         FD,
         FormedData,
         TData & {
-            __userId: string | undefined;
+            __userId: string | undefined | null;
         },
         TProperty,
         TMethod & {
