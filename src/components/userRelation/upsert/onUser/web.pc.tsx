@@ -96,9 +96,11 @@ export default function Render(
                             disabled={!isNew && !allowUpdateName}
                             onChange={(e) => {
                                 const strValue = e.target.value;
-                                update({
-                                    name: strValue,
-                                });
+                                if (isNew) {
+                                    update({
+                                        name: strValue,
+                                    });
+                                }
                             }}
                             value={name}
                             placeholder={t('placeholder.name')}
@@ -112,9 +114,11 @@ export default function Render(
                             value={nickname}
                             onChange={(e) => {
                                 const strValue = e.target.value;
-                                update({
-                                    nickname: strValue,
-                                });
+                                if (isNew) {
+                                    update({
+                                        nickname: strValue,
+                                    });
+                                }
                             }}
                             placeholder={t('placeholder.nickname')}
                         />

@@ -23,19 +23,23 @@ export default function Render(props) {
             },
         ]}>
                 <>
-                    <Input disabled={!isNew && !allowUpdateName} onChange={(value) => {
-            update({
-                name: value,
-            });
+                <Input disabled={!isNew && !allowUpdateName} onChange={(value) => {
+                    if (isNew) {
+                        update({
+                            name: value,
+                        });
+                    }
         }} value={name} placeholder={t('placeholder.name')}/>
                 </>
             </Form.Item>
             <Form.Item label={t('user:attr.nickname')} name="nickname">
                 <>
-                    <Input disabled={!isNew && !allowUpdateNickname} value={nickname} onChange={(value) => {
-            update({
-                nickname: value,
-            });
+                <Input disabled={!isNew && !allowUpdateNickname} value={nickname} onChange={(value) => {
+                     if (isNew) {
+                        update({
+                            nickname: value,
+                        });
+                    }
         }} placeholder={t('placeholder.nickname')}/>
                 </>
             </Form.Item>
