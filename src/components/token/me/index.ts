@@ -6,6 +6,7 @@ export default OakComponent({
         id: 1,
         userId: 1,
         playerId: 1,
+        value: 1,
         user: {
             id: 1,
             nickname: 1,
@@ -65,18 +66,25 @@ export default OakComponent({
     filters: [
         {
             filter() {
-                const tokenId = this.features.token.getTokenValue();
-                if (tokenId) {
-                    return {
-                        id: tokenId,
-                    };
-                }
+                const value = this.features.token.getTokenValue();
+                // if (tokenId) {
+                //     return {
+                //         id: tokenId,
+                //     };
+                // }
+                // return {
+                //     id: 'none',
+                // };
                 return {
-                    id: 'none',
+                    value,
                 };
             },
         },
     ],
+    features: [{
+        feature: 'token',
+        behavior: 'refresh',
+    }],
     formData: ({ data, features }) => {
         const [token] = data || [];
         const user = token?.user;
