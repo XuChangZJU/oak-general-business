@@ -531,6 +531,7 @@ export async function loginByMobile(params, context) {
 }
 async function setUserInfoFromWechat(user, userInfo, context) {
     const application = context.getApplication();
+    const applicationId = context.getApplicationId();
     const config = application?.system?.config || application?.system?.platform?.config;
     const { nickname, gender, avatar } = userInfo;
     const { nickname: originalNickname, gender: originalGender, extraFile$entity, } = user;
@@ -564,6 +565,7 @@ async function setUserInfoFromWechat(user, userInfo, context) {
                     type: 'image',
                     filename: '',
                     bucket: '',
+                    applicationId: applicationId,
                 }),
             },
         ];
@@ -1328,7 +1330,6 @@ function checkTokenEnvConsistency(env1, env2) {
             return false;
         }
     }
-    return true;
 }
 export async function refreshToken(params, context) {
     const { env, tokenValue } = params;

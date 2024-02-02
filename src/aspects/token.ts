@@ -742,6 +742,7 @@ async function setUserInfoFromWechat<
     context: Cxt
 ) {
     const application = context.getApplication();
+    const applicationId = context.getApplicationId();
     const config =
         application?.system?.config || application?.system?.platform?.config;
     const { nickname, gender, avatar } = userInfo;
@@ -782,6 +783,7 @@ async function setUserInfoFromWechat<
                     type: 'image',
                     filename: '',
                     bucket: '',
+                    applicationId: applicationId!,
                 }),
             },
         ];
@@ -1899,7 +1901,7 @@ export async function refreshToken<
 ) {
     const { env, tokenValue } = params;
     const fn = context.openRootMode();
-    let [ token ] = await context.select('token', {
+    let [token] = await context.select('token', {
         data: Object.assign({
             env: 1,
             ...tokenProjection,
@@ -1936,7 +1938,7 @@ export async function refreshToken<
             filter: {
                 id: token.id,
             }
-        }, { });
+        }, {});
         fn();
         return newValue;
     }
