@@ -17,7 +17,7 @@ type ConfigOptions = {
     jsApiList?: wx.jsApiList;
     openTagList?: wx.openTagList;
 };
-type ParamOptions = wx.IcheckJsApi | wx.IaddCard | wx.IchooseCard | wx.IonMenuShareTimeline | wx.IonMenuShareAppMessage | wx.IonMenuShareQQ | wx.IonMenuShareWeibo | wx.IonMenuShareQZone | wx.IchooseImage | wx.IpreviewImage | wx.IuploadImage | wx.IdownloadImage | wx.IgetLocalImgData | wx.IplaypausestopVoice | wx.IupdownloadVoice | wx.IopenLocation | wx.IgetLocation | wx.IscanQRCode | wx.IopenProductSpecificView | wx.IchooseCard | wx.IopenCard | wx.IchooseWXPay;
+type ParamOptions = wx.IcheckJsApi | wx.IaddCard | wx.IchooseCard | wx.IonMenuShareTimeline | wx.IonMenuShareAppMessage | wx.IonMenuShareQQ | wx.IonMenuShareWeibo | wx.IonMenuShareQZone | wx.IchooseImage | wx.IpreviewImage | wx.IgetLocalImgData | wx.IplaypausestopVoice | wx.IopenLocation | wx.IgetLocation | wx.IscanQRCode | wx.IopenProductSpecificView | wx.IchooseCard | wx.IopenCard | wx.IchooseWXPay;
 export declare class WeiXinJsSdk<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>> extends Feature {
     private cache;
     private storage;

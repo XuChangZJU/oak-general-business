@@ -4,8 +4,13 @@ import ByMobile from './byMobile';
 import ByPassword from './byPassword';
 export default function Render(props) {
     const { data, methods } = props;
-    const { channels, user, oakFullpath, oakId } = data;
+    const { channels, oakFullpath, oakId, loading } = data;
     const { goToMobile } = methods;
+
+    if (loading) {
+        return null;
+    }
+
     const items = [
         {
             key: 'password',
