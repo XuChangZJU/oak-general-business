@@ -15,12 +15,24 @@ export default function Render(props) {
         {
             key: 'password',
             label: '原密码验证',
-            children: <ByPassword oakId={oakId} oakPath={oakFullpath}/>,
+            children: (
+                <ByPassword
+                    oakId={oakId}
+                    oakPath={oakFullpath + '.user'}
+                    oakAutoUnmount={true}
+                />
+            ),
         },
         {
             key: 'mobile',
             label: '手机号验证',
-            children: <ByMobile oakId={oakId} oakPath={oakFullpath}/>,
+            children: (
+                <ByMobile
+                    oakId={oakId}
+                    oakPath={oakFullpath + '.user'}
+                    oakAutoUnmount={true}
+                />
+            ),
         },
     ];
     if (channels.length === 0) {
