@@ -29,7 +29,7 @@ export default function Render(props) {
         }} placeholder="请输入手机号码" type="tel"/>
                 </Form.Item>
             </Form>
-            {mobileValueReady && (<OnUser oakAutoUnmount={true} oakPath={`${oakFullpath}.user`} entity={entity} entityId={entityId} relations={relations} setPasswordConfirm={setPasswordConfirm} passwordRequire={passwordRequire} allowUpdateName={allowUpdateName} allowUpdateNickname={allowUpdateNickname}/>)}
+        {mobileValueReady && (<OnUser oakAutoUnmount={true} oakPath={`${oakFullpath}.user`} entity={entity} entityId={entityId} relations={relations} setPasswordConfirm={setPasswordConfirm} passwordRequire={passwordRequire} allowUpdateName={allowUpdateName} allowUpdateNickname={allowUpdateNickname} isNew={isNew} />)}
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>
                 <Form.Item wrapperCol={{ offset: 4 }}>
                     <Space>

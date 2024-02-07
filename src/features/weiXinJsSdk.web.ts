@@ -40,11 +40,8 @@ type ParamOptions =
     | wx.IonMenuShareQZone
     | wx.IchooseImage
     | wx.IpreviewImage
-    | wx.IuploadImage
-    | wx.IdownloadImage
     | wx.IgetLocalImgData
     | wx.IplaypausestopVoice
-    | wx.IupdownloadVoice
     | wx.IopenLocation
     | wx.IgetLocation
     | wx.IscanQRCode
@@ -112,12 +109,17 @@ export class WeiXinJsSdk<
     async init(options?: {
         jsApiList?: wx.jsApiList;
         openTagList?: wx.openTagList;
+        debug?: boolean;
     }) {
         if (!isWeiXin) {
             console.warn('只能在微信客户端初始化JSSDK');
             return;
         }
-        const { jsApiList, openTagList } = options || {};
+        const {
+            jsApiList,
+            openTagList,
+            debug = process.env.NODE_ENV === 'development',
+        } = options || {};
 
         let url = window.location.href;
         //在ios上 实际真正有效的的签名URL是【第一次进入应用时的URL】
@@ -153,7 +155,7 @@ export class WeiXinJsSdk<
         }
 
         return this.getConfig({
-            debug: process.env.NODE_ENV === 'development',
+            debug: debug,
             appId: result.appId,
             timestamp: result.timestamp,
             nonceStr: result.noncestr,

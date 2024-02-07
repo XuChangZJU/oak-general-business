@@ -63,7 +63,7 @@ export default OakComponent({
             password,
             name,
             nickname,
-            isNew: $$createAt$$ === 1,
+            // isNew: $$createAt$$ === 1,
         };
     },
     properties: {
@@ -75,5 +75,6 @@ export default OakComponent({
         passwordRequire: false,
         allowUpdateName: false,
         allowUpdateNickname: false,
+        isNew: false,
     },
 });

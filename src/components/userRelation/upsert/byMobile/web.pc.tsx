@@ -91,6 +91,7 @@ export default function Render(
                     passwordRequire={passwordRequire}
                     allowUpdateName={allowUpdateName}
                     allowUpdateNickname={allowUpdateNickname}
+                    isNew={isNew}
                 />
             )}
             <Form colon labelCol={{ span: 4 }} wrapperCol={{ span: 8 }}>

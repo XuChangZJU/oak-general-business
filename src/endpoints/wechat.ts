@@ -280,7 +280,7 @@ async function setUserSubscribed(
                                     nickname: 1,
                                 },
                                 expired: 1,
-                                relationalEntity: 1,
+                                relationEntity: 1,
                             },
                             filter: {
                                 id: entityId,
@@ -518,17 +518,17 @@ async function setClickEventKey(openId: string, eventKey: string, context: BRC) 
                 filter:
                     indexOfDollarSign !== -1
                         ? {
-                              applicationId,
-                              wechatPublicTag: {
-                                  wechatId: Number(resultString),
-                              },
-                          }
+                            applicationId,
+                            wechatPublicTag: {
+                                wechatId: Number(resultString),
+                            },
+                        }
                         : {
-                              applicationId,
-                              wechatPublicTagId: {
-                                  $exists: false,
-                              },
-                          },
+                            applicationId,
+                            wechatPublicTagId: {
+                                $exists: false,
+                            },
+                        },
             },
             { dontCollect: true }
         );
@@ -714,9 +714,9 @@ async function onWeChatPublicEvent(data: WechatPublicEventData, context: BRC) {
             break;
         }
     }
-   if (process.env.NODE_ENV === 'development') {
-       console.log(evt);
-   }
+    if (process.env.NODE_ENV === 'development') {
+        console.log(evt);
+    }
     try {
         await createSession(
             {
@@ -923,7 +923,7 @@ const endpoints: Record<string, Endpoint<EntityDict, BRC>> = {
                 const applicationId = searchParams.get('applicationId');
                 const mediaId = searchParams.get('mediaId');
                 const isPermanent = searchParams.get('isPermanent');
-     
+
                 const base64 = await getMaterial(
                     {
                         applicationId: applicationId!,

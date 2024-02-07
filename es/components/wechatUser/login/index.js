@@ -17,8 +17,8 @@ export default OakComponent({
             this.setState({
                 loading: true,
             });
-            const { features, t } = this;
-            const token = features.token.getToken(true);
+            // const { features, t } = this;
+            const token = this.features.token.getToken(true);
             const url = window.location.href;
             const urlParse = new URL(url);
             //格式 xx?code=xx&state=/xx/xx?d=xx
@@ -27,7 +27,7 @@ export default OakComponent({
             const wechatLoginId = urlParse?.searchParams?.get('wechatLoginId');
             if (!code) {
                 this.setState({
-                    error: t('missingCodeParameter'),
+                    error: this.t('missingCodeParameter'),
                     loading: false,
                 });
                 return;
@@ -42,7 +42,7 @@ export default OakComponent({
             else {
                 try {
                     // web微信扫码跟公众号授权
-                    await features.token.loginWechat(code, {
+                    await this.features.token.loginWechat(code, {
                         wechatLoginId,
                     });
                     this.setState({
@@ -52,7 +52,7 @@ export default OakComponent({
                 }
                 catch (err) {
                     this.setState({
-                        error: t('weChatLoginFailed'),
+                        error: this.t('weChatLoginFailed'),
                         loading: false,
                     });
                     throw err;

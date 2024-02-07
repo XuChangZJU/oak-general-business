@@ -188,7 +188,7 @@ export class Token<
     }
 
     getToken(allowUnloggedIn?: boolean) {
-        if (this.tokenValue === '') {
+        if (!allowUnloggedIn && this.tokenValue === '') {
             throw new OakUserInfoLoadingException();
         }
         if (this.tokenValue) {

@@ -130,7 +130,7 @@ export class Token extends Feature {
         return this.tokenValue;
     }
     getToken(allowUnloggedIn) {
-        if (this.tokenValue === '') {
+        if (!allowUnloggedIn && this.tokenValue === '') {
             throw new OakUserInfoLoadingException();
         }
         if (this.tokenValue) {

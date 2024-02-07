@@ -4,18 +4,35 @@ import ByMobile from './byMobile';
 import ByPassword from './byPassword';
 export default function Render(props) {
     const { data, methods } = props;
-    const { channels, user, oakFullpath, oakId } = data;
+    const { channels, oakFullpath, oakId, loading } = data;
     const { goToMobile } = methods;
+
+    if (loading) {
+        return null;
+    }
+
     const items = [
         {
             key: 'password',
             label: '原密码验证',
-            children: <ByPassword oakId={oakId} oakPath={oakFullpath}/>,
+            children: (
+                <ByPassword
+                    oakId={oakId}
+                    oakPath={oakFullpath + '.user'}
+                    oakAutoUnmount={true}
+                />
+            ),
         },
         {
             key: 'mobile',
             label: '手机号验证',
-            children: <ByMobile oakId={oakId} oakPath={oakFullpath}/>,
+            children: (
+                <ByMobile
+                    oakId={oakId}
+                    oakPath={oakFullpath + '.user'}
+                    oakAutoUnmount={true}
+                />
+            ),
         },
     ];
     if (channels.length === 0) {
