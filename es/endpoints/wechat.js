@@ -59,7 +59,7 @@ async function setUserUnsubscribed(openId, context) {
                 filter: {
                     id: weChatUser.id,
                 },
-            }, { dontCollect: true, dontCreateOper: true });
+            }, { dontCollect: true });
         }
     }
     else {
@@ -72,7 +72,7 @@ async function setUserUnsubscribed(openId, context) {
                 applicationId: context.getApplicationId(),
                 openId,
             },
-        }, { dontCollect: true, dontCreateOper: true });
+        }, { dontCollect: true });
     }
     return;
 }
@@ -112,7 +112,7 @@ async function setUserSubscribed(openId, eventKey, context) {
                 filter: {
                     id: wechatUser.id,
                 },
-            }, { dontCollect: true, dontCreateOper: true });
+            }, { dontCollect: true });
         }
         Object.assign(data, {
             id: await generateNewIdAsync(),

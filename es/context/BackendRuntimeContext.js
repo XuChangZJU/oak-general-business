@@ -16,6 +16,7 @@ export class BackendRuntimeContext extends BRC {
     amIRoot;
     amIReallyRoot;
     rootMode;
+    userId;
     async refineOpRecords() {
         for (const opRecord of this.opRecords) {
             if (opRecord.a === 's') {
@@ -165,8 +166,15 @@ export class BackendRuntimeContext extends BRC {
         return this.token;
     }
     getCurrentUserId(allowUnloggedIn) {
+        if (this.userId) {
+            return this.userId;
+        }
         const token = this.getToken(allowUnloggedIn);
         return token?.userId;
+    }
+    setCurrentUserId(userId) {
+        assert(this.isReallyRoot);
+        this.userId = userId;
     }
     async getSerializedData() {
         const data = await super.getSerializedData();

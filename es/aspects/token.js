@@ -660,7 +660,7 @@ async function tryRefreshWechatPublicUserInfo(wechatUserId, context) {
                 atExpiredAt: ate2,
                 scope: s2,
             },
-        }, { dontCollect: true, dontCreateModi: true, dontCreateOper: true });
+        }, { dontCollect: true });
         accessToken = at2;
     }
     const { nickname, gender, avatar } = await wechatInstance.getUserInfo(accessToken, openId);
@@ -1330,6 +1330,7 @@ function checkTokenEnvConsistency(env1, env2) {
             return false;
         }
     }
+    return true;
 }
 export async function refreshToken(params, context) {
     const { env, tokenValue } = params;

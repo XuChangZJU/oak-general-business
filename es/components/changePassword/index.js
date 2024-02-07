@@ -25,6 +25,7 @@ export default OakComponent({
     // },
     data: {
         channels: [],
+        loading: false,
     },
     properties: {
         oakId: '',
@@ -36,17 +37,15 @@ export default OakComponent({
                 loading: true,
             });
             try {
-                const { result } = await this.features.cache.exec(
-                    'getChangePasswordChannels',
-                    {
-                        userId: userId,
-                    }
-                );
+                const { result } = await this.features.cache.exec('getChangePasswordChannels', {
+                    userId: userId,
+                });
                 this.setState({
                     channels: result,
                     loading: false,
                 });
-            } catch {
+            }
+            catch {
                 this.setState({
                     loading: false,
                     channels: [],

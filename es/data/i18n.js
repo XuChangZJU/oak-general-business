@@ -437,11 +437,14 @@ const i18ns = [
                 "detail": "详情",
                 "editor": "编辑",
                 "newAdd": "新增",
-                "add": "添加"
+                "add": "添加",
+                "submit": "提交"
             },
+            "operate": "操作",
             "submit": "提交",
             "reset": "重置",
             "select": "查询",
+            "search": "搜索",
             "expand": "展开",
             "shrink": "收起",
             "back": "返回",
@@ -457,7 +460,8 @@ const i18ns = [
             "true": "是",
             "false": "否",
             "open": "开",
-            "close": "关"
+            "close": "关",
+            "other": "其他"
         }
     }
 ];

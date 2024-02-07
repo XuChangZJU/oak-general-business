@@ -30,6 +30,10 @@ export const desc: StorageDesc<OpSchema> = {
             params: {
                 length: 32
             }
+        },
+        bornAt: {
+            notNull: true,
+            type: "datetime"
         }
     },
     actionType: "appendOnly",

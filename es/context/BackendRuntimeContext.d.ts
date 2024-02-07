@@ -12,6 +12,7 @@ export declare abstract class BackendRuntimeContext<ED extends EntityDict & Base
     protected amIRoot?: boolean;
     protected amIReallyRoot?: boolean;
     protected rootMode?: boolean;
+    private userId?;
     refineOpRecords(): Promise<void>;
     setTokenValue(tokenValue: string): Promise<void>;
     setApplication(appId: string): Promise<void>;
@@ -23,6 +24,7 @@ export declare abstract class BackendRuntimeContext<ED extends EntityDict & Base
     getTokenValue(allowUnloggedIn?: boolean): "oak-root-token" | ED["token"]["Schema"]["value"] | undefined;
     getToken(allowUnloggedIn?: boolean): Partial<ED["token"]["Schema"]> | undefined;
     getCurrentUserId(allowUnloggedIn?: boolean): string;
+    setCurrentUserId(userId: string | undefined): void;
     protected getSerializedData(): Promise<SerializedData>;
     isRoot(): boolean;
     isReallyRoot(): boolean;

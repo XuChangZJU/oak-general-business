@@ -33,7 +33,7 @@ export async function mergeUser(params, context, innerLogic) {
                     filter: {
                         [attr]: from,
                     }
-                } as any, { dontCollect: true, dontCreateOper: true, dontCreateModi: true });
+                } as any, { dontCollect: true });
             }
             if (attr === 'entity' && attributes.hasOwnProperty('entityId')) {
                 await context.operate(entity, {
@@ -45,7 +45,7 @@ export async function mergeUser(params, context, innerLogic) {
                         entity: 'user',
                         entityId: from,
                     }
-                } as any, { dontCollect: true, dontCreateOper: true, dontCreateModi: true });
+                } as any, { dontCollect: true });
             }
         }
     } */

@@ -8,5 +8,6 @@ declare const _default: (props: import("oak-frontend-base").ReactComponentProps<
     passwordRequire: boolean;
     allowUpdateName: boolean;
     allowUpdateNickname: boolean;
+    isNew: boolean;
 }>) => import("react").ReactElement<any, string | import("react").JSXElementConstructor<any>>;
 export default _default;

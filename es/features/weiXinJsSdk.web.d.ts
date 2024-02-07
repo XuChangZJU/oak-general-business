@@ -30,6 +30,7 @@ export declare class WeiXinJsSdk<ED extends EntityDict, Cxt extends BackendRunti
     init(options?: {
         jsApiList?: wx.jsApiList;
         openTagList?: wx.openTagList;
+        debug?: boolean;
     }): Promise<unknown>;
     /**
      * 微信jssdk 传入方法名
