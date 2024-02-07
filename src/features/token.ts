@@ -130,7 +130,7 @@ export class Token<
         this.publish();
     }
 
-    async loginWechatMp() {
+    async loginWechatMp() {        
         const { code } = await wx.login();
 
         const env = await this.environment.getEnv();

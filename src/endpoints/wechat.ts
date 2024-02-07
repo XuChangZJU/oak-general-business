@@ -94,7 +94,7 @@ async function setUserUnsubscribed(openId: string, context: BRC) {
                         id: weChatUser.id,
                     },
                 },
-                { dontCollect: true, dontCreateOper: true }
+                { dontCollect: true }
             );
         }
     } else {
@@ -110,7 +110,7 @@ async function setUserUnsubscribed(openId: string, context: BRC) {
                     openId,
                 },
             },
-            { dontCollect: true, dontCreateOper: true }
+            { dontCollect: true }
         );
     }
     return;
@@ -168,7 +168,7 @@ async function setUserSubscribed(
                         id: wechatUser.id,
                     },
                 },
-                { dontCollect: true, dontCreateOper: true }
+                { dontCollect: true }
             );
         }
 

@@ -912,7 +912,7 @@ async function tryRefreshWechatPublicUserInfo<
                     scope: s2,
                 },
             },
-            { dontCollect: true, dontCreateModi: true, dontCreateOper: true }
+            { dontCollect: true }
         );
         accessToken = at2;
     }

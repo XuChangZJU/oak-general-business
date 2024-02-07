@@ -32,6 +32,7 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
     protected amIRoot?: boolean;
     protected amIReallyRoot?: boolean;
     protected rootMode?: boolean;
+    private userId?: string;
 
     async refineOpRecords(): Promise<void> {
         for (const opRecord of this.opRecords) {
@@ -218,8 +219,16 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
     }
 
     getCurrentUserId(allowUnloggedIn?: boolean) {
-        const token = this.getToken(allowUnloggedIn);
+        if (this.userId) {
+            return this.userId;
+        }
+        const token = this.getToken(allowUnloggedIn);        
         return token?.userId as string;
+    }
+
+    setCurrentUserId(userId: string | undefined): void {
+        assert(this.isReallyRoot);
+        this.userId = userId;
     }
 
     protected async getSerializedData(): Promise<SerializedData> {
