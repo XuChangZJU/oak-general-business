@@ -1,6 +1,6 @@
 import { generateNewId } from 'oak-domain/lib/utils/uuid';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { WechatSDK, } from 'oak-external-sdk';
+import WechatSDK from 'oak-external-sdk/lib/WechatSDK';
 import { shrinkUuidTo32Bytes } from 'oak-domain/lib/utils/uuid';
 /**
  * 生成二维码优先级如下：

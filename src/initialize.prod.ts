@@ -8,7 +8,7 @@ import {
     StorageSchema,
 } from 'oak-domain/lib/types';
 import { EntityDict, ActionDefDict as generalActionDefDict } from './oak-app-domain';
-import { CacheStore } from 'oak-frontend-base';
+import { CacheStore } from 'oak-frontend-base/es/cacheStore/CacheStore';
 import { intersection } from 'oak-domain/lib/utils/lodash';
 import { BackendRuntimeContext } from './context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from './context/FrontendRuntimeContext';

@@ -1,4 +1,4 @@
-import { Feature } from 'oak-frontend-base';
+import { Feature } from 'oak-frontend-base/es/types/Feature';
 import { isIos, isWeiXin, isWeiXinDevTools, } from 'oak-frontend-base/es/utils/utils';
 import { promisify as wxPromisify } from 'oak-frontend-base/es/utils/promisify';
 import { uniq } from 'oak-domain/lib/utils/lodash';

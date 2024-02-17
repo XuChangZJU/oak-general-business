@@ -1,4 +1,4 @@
-import { Feature } from 'oak-frontend-base';
+import { Feature } from 'oak-frontend-base/es/types/Feature';
 import { Upload } from 'oak-frontend-base/es/utils/upload';
 import { Cache } from 'oak-frontend-base/es/features/cache';
 import { RunningTree } from 'oak-frontend-base/es/features/runningTree';

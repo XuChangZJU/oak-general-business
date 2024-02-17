@@ -9,7 +9,7 @@ import {
     Watcher,
 } from 'oak-domain/lib/types';
 import { EntityDict, ActionDefDict as generalActionDefDict } from './oak-app-domain';
-import { CacheStore } from 'oak-frontend-base';
+import { CacheStore } from 'oak-frontend-base/es/cacheStore/CacheStore';
 import { initialize as initDev } from 'oak-frontend-base/es/initialize-dev';
 import { AsyncRowStore } from 'oak-domain/lib/store/AsyncRowStore';
 import { intersection } from 'oak-domain/lib/utils/lodash';

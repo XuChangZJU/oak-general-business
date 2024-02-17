@@ -1,5 +1,5 @@
 import { LOCAL_STORAGE_KEYS } from '../config/constants';
-import { Feature } from 'oak-frontend-base';
+import { Feature } from 'oak-frontend-base/es/types/Feature';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { cloneDeep, merge } from 'oak-domain/lib/utils/lodash';
 import { applicationProjection } from '../types/Projection';

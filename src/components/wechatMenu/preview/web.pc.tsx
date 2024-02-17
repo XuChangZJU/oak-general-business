@@ -6,7 +6,7 @@ import { WifiOutlined, LeftOutlined, UserOutlined, MenuOutlined } from '@ant-des
 import Style from './web.module.less';
 import { Editor } from '@wangeditor/editor-for-react';
 import { IEditorConfig } from '@wangeditor/editor';
-import { WechatMpInstance, WechatPublicInstance, WechatSDK } from 'oak-external-sdk';
+import WechatSDK, { WechatMpInstance, WechatPublicInstance } from 'oak-external-sdk/es/WechatSDK';
 import ShowNews from '../showNews';
 
 export default function Render(

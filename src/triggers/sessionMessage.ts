@@ -6,11 +6,10 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { CreateOperationData as CreateSessionMessageData } from '../oak-app-domain/SessionMessage/Schema';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { WechatMpConfig, WechatPublicConfig } from '../entities/Application';
-import {
-    WechatSDK,
+import WechatSDK, {
     WechatMpInstance,
     WechatPublicInstance,
-} from 'oak-external-sdk';
+} from 'oak-external-sdk/lib/WechatSDK';
 import { extraFileProjection } from '../types/Projection'
 import { DATA_SUBSCRIBER_KEYS } from '../config/constants';
 

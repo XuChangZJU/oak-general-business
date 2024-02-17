@@ -1,6 +1,6 @@
 import { LocalStorage } from 'oak-frontend-base/es/features/localStorage';
 import { Cache } from 'oak-frontend-base/es/features/cache';
-import { Feature } from 'oak-frontend-base';
+import { Feature } from 'oak-frontend-base/es/types/Feature';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { EntityDict } from '../oak-app-domain';
 import { AppType } from '../oak-app-domain/Application/Schema';

@@ -1,5 +1,5 @@
 import { assert } from 'oak-domain/lib/utils/assert';
-import { FrontendRuntimeContext as Frc } from 'oak-frontend-base';
+import { FrontendRuntimeContext as Frc } from 'oak-frontend-base/es/context/FrontendRuntimeContext';
 import { OakApplicationLoadingException, OakTokenExpiredException, OakUserDisabledException, OakUserInfoLoadingException, } from '../types/Exception';
 import { OakUnloggedInException } from 'oak-domain/lib/types';
 ;

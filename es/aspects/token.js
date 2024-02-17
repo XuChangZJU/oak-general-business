@@ -1,5 +1,5 @@
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import { WechatSDK, } from 'oak-external-sdk';
+import WechatSDK from 'oak-external-sdk/lib/WechatSDK';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { OakRowInconsistencyException, OakUnloggedInException, OakUserException, OakUserUnpermittedException, } from 'oak-domain/lib/types';
 import { composeFileUrl } from '../utils/cos';

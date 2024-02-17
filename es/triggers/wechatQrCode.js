@@ -1,6 +1,6 @@
 import { shrinkUuidTo32Bytes } from 'oak-domain/lib/utils/uuid';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { WechatSDK } from 'oak-external-sdk';
+import WechatSDK from 'oak-external-sdk/lib/WechatSDK';
 const triggers = [
     {
         name: '当生成wechatQrCode时, 调用外部接口完善数据',

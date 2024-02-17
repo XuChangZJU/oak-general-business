@@ -2,7 +2,7 @@ import { RuntimeContext } from './RuntimeContext';
 import { EntityDict } from '../oak-app-domain';
 import { SerializedData } from './FrontendRuntimeContext';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
-import { BackendRuntimeContext as BRC } from 'oak-frontend-base';
+import { BackendRuntimeContext as BRC } from 'oak-frontend-base/lib/context/BackendRuntimeContext';
 /**
  * general数据结构要求的后台上下文
  */

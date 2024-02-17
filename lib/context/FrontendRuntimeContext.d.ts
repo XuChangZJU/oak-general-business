@@ -1,5 +1,6 @@
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
-import { FrontendRuntimeContext as Frc, SerializedData as Fsd, BasicFeatures } from 'oak-frontend-base';
+import { FrontendRuntimeContext as Frc, SerializedData as Fsd } from 'oak-frontend-base/es/context/FrontendRuntimeContext';
+import { BasicFeatures } from 'oak-frontend-base';
 import { EntityDict } from '../oak-app-domain';
 import { RuntimeContext } from './RuntimeContext';
 import GeneralAspectDict from '../aspects/AspectDict';

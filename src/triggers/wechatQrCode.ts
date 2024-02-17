@@ -1,7 +1,7 @@
 import { CreateTrigger, CreateTriggerInTxn, SelectTriggerAfter, Trigger } from 'oak-domain/lib/types/Trigger';
 import { shrinkUuidTo32Bytes } from 'oak-domain/lib/utils/uuid';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { WechatSDK, WechatMpInstance, WechatPublicInstance } from 'oak-external-sdk';
+import WechatSDK, { WechatMpInstance, WechatPublicInstance } from 'oak-external-sdk/lib/WechatSDK';
 
 import { WechatMpConfig, WechatPublicConfig } from '../oak-app-domain/Application/Schema';
 import { EntityDict } from '../oak-app-domain/EntityDict';

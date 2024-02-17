@@ -1,4 +1,4 @@
-import { WechatMpInstance, WechatPublicInstance, WechatSDK } from 'oak-external-sdk';
+import WechatSDK, { WechatMpInstance, WechatPublicInstance } from 'oak-external-sdk/es/WechatSDK';
 import { WechatMpConfig, WechatPublicConfig } from '../../../oak-app-domain/Application/Schema';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 export default OakComponent({

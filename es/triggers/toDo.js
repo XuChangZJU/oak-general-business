@@ -1,7 +1,7 @@
 import { uniq } from 'oak-domain/lib/utils/lodash';
 import { getUserRelationsByActions } from 'oak-domain/lib/store/RelationAuth';
 import { translateFilterToObjectPredicate } from 'oak-domain/lib/store/filter';
-import { generateNewIdAsync } from 'oak-domain';
+import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import assert from 'assert';
 /**
  * 创建todo例程，为entity对象上满足filter条件的，需要以action进行处理的行创建一个todo

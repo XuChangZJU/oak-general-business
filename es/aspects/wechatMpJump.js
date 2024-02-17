@@ -1,7 +1,7 @@
 import { cloneDeep } from 'oak-domain/lib/utils/lodash';
 import { applicationProjection } from '../types/Projection';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { WechatSDK, } from 'oak-external-sdk';
+import WechatSDK from 'oak-external-sdk/lib/WechatSDK';
 export async function wechatMpJump(params, context) {
     const { applicationId, jump_wxa, expireType, expiresAt, expireInterval } = params;
     const envVersionVersionDict = {

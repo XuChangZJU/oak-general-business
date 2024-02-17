@@ -1,10 +1,9 @@
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { EntityDict } from '../oak-app-domain';
-import {
+import WechatSDK, {
     WechatMpInstance,
     WechatPublicInstance,
-    WechatSDK,
-} from 'oak-external-sdk';
+} from 'oak-external-sdk/lib/WechatSDK';
 import { assert } from 'oak-domain/lib/utils/assert';
 import {
     WechatMpConfig,

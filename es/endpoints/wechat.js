@@ -2,7 +2,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import URL from 'url';
 import sha1 from 'sha1';
 import x2js from 'x2js';
-import { WechatSDK, } from 'oak-external-sdk';
+import WechatSDK from 'oak-external-sdk/lib/WechatSDK';
 import { expandUuidTo36Bytes, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { composeDomainUrl } from '../utils/domain';
 import { composeUrl } from 'oak-domain/lib/utils/domain';
