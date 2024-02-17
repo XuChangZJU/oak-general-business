@@ -1,7 +1,7 @@
 import { ROOT_MOBILE_ID, ROOT_TOKEN_ID, ROOT_USER_ID } from '../constants';
 export const users = [
     {
-        password: 'oak@2022',
+        password: '',
         nickname: 'root',
         name: 'root',
         isRoot: true,

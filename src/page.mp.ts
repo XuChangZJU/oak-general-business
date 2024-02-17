@@ -124,10 +124,13 @@ export function createComponent<
     >,
     features: BasicFeatures<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>> & FD,
 ) {
-    const { wechatMp, data, methods, lifetimes, userInsensitive, ...rest } = option;
+    const { wechatMp, data, methods, lifetimes, userInsensitive, features: optionFeatures, ...rest } = option;
     const { relatedMessageTypes } = wechatMp || {};
     const { ready, attached, show, hide, ...restLifeTimes } = lifetimes || {};
 
+    const tokenFeatures = optionFeatures?.find(
+        ele => ele === 'token' || (typeof ele === 'object' && ele.feature === 'token')
+    );
     return createBaseComponent<
         IsList,
         ED,
@@ -249,9 +252,6 @@ export function createComponent<
             },
             lifetimes: {
                 attached() {
-                    if (!userInsensitive) {
-                        this.addFeatureSub('token', () => this.refresh());
-                    }
                     this.addFeatureSub('application', () =>
                         this.getMessageTypeTemplate()
                     );
@@ -281,6 +281,10 @@ export function createComponent<
                 },
                 ...restLifeTimes,
             },
+            features: (userInsensitive || !!tokenFeatures) ? optionFeatures : (optionFeatures || []).concat([{
+                feature: 'token',
+                behavior: 'refresh'
+            }]),
             wechatMp,
             ...rest,
         },

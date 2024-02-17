@@ -250,92 +250,90 @@ export default function Render(
     }
 
     return (
-        <div className={Style['loginbox-main']}>
+        <div
+            className={classNames(Style['loginbox-wrap'], {
+                [Style['loginbox-wrap__mobile']]: width === 'xs',
+            })}
+        >
+            {options?.length > 1 && (
+                <div className={Style['loginbox-hd']}>
+                    <Segmented
+                        className={Style.segmented}
+                        value={loginMode}
+                        block
+                        onChange={setLoginMode}
+                        options={options.map((ele) => ({
+                            value: ele.value,
+                            label: t(`${ele.label}`),
+                        }))}
+                    ></Segmented>
+                </div>
+            )}
+
             <div
-                className={classNames(Style['loginbox-wrap'], {
-                    [Style['loginbox-wrap__mobile']]: width === 'xs',
+                className={classNames(Style['loginbox-bd'], {
+                    [Style['loginbox-bd__grant']]: isSupportGrant,
                 })}
             >
-                {options?.length > 1 && (
-                    <div className={Style['loginbox-hd']}>
-                        <Segmented
-                            className={Style.segmented}
-                            value={loginMode}
-                            block
-                            onChange={setLoginMode}
-                            options={options.map((ele) => ({
-                                value: ele.value,
-                                label: t(`${ele.label}`),
-                            }))}
-                        ></Segmented>
+                {isSupportGrant ? (
+                    <div className={Style['loginbox-grant']}>
+                        <WeChatLoginGrant
+                            disabled={!!disabled}
+                            disableText={disabled}
+                            appId={appId}
+                            scope="snsapi_userinfo"
+                            redirectUri={redirectUri}
+                            state={state}
+                        />
                     </div>
-                )}
-
-                <div
-                    className={classNames(Style['loginbox-bd'], {
-                        [Style['loginbox-bd__grant']]: isSupportGrant,
-                    })}
-                >
-                    {isSupportGrant ? (
-                        <div className={Style['loginbox-grant']}>
-                            <WeChatLoginGrant
-                                disabled={!!disabled}
-                                disableText={disabled}
-                                appId={appId}
-                                scope="snsapi_userinfo"
-                                redirectUri={redirectUri}
-                                state={state}
-                            />
+                ) : (
+                    <>
+                        <div
+                            className={Style['loginbox-password']}
+                            style={{
+                                display: loginMode === 1 ? 'block' : 'none',
+                            }}
+                        >
+                            {LoginPassword}
                         </div>
-                    ) : (
-                        <>
-                            <div
-                                className={Style['loginbox-password']}
-                                style={{
-                                    display: loginMode === 1 ? 'block' : 'none',
-                                }}
-                            >
-                                {LoginPassword}
-                            </div>
-                            <div
-                                className={Style['loginbox-mobile']}
-                                style={{
-                                    display: loginMode === 2 ? 'block' : 'none',
-                                }}
-                            >
-                                {LoginCaptcha}
-                            </div>
-                            <div
-                                className={Style['loginbox-qrcode']}
-                                style={{
-                                    display: loginMode === 3 ? 'block' : 'none',
-                                }}
-                            >
-                                {/* 因为在选择授权方式时，微信网站和微信公众号授权登录二者只存其一，
+                        <div
+                            className={Style['loginbox-mobile']}
+                            style={{
+                                display: loginMode === 2 ? 'block' : 'none',
+                            }}
+                        >
+                            {LoginCaptcha}
+                        </div>
+                        <div
+                            className={Style['loginbox-qrcode']}
+                            style={{
+                                display: loginMode === 3 ? 'block' : 'none',
+                            }}
+                        >
+                            {/* 因为在选择授权方式时，微信网站和微信公众号授权登录二者只存其一，
                                     所以这里可以按这个判断分开显示   */}
-                                {isSupportWechat && (
-                                    <WeChatLoginQrCode
-                                        disabled={disabled}
-                                        disableText={disabled}
-                                        appId={appId}
-                                        scope="snsapi_login"
-                                        redirectUri={redirectUri}
-                                        state={state}
-                                        href="data:text/css;base64,LmltcG93ZXJCb3ggLnFyY29kZSB7d2lkdGg6IDIwMHB4O30KLmltcG93ZXJCb3ggLnRpdGxlIHtkaXNwbGF5OiBub25lO30KLmltcG93ZXJCb3ggLmluZm8ge3dpZHRoOiAyMDBweDt9Ci5zdGF0dXNfaWNvbiB7ZGlzcGxheTogbm9uZX0KLmltcG93ZXJCb3ggLnN0YXR1cyB7dGV4dC1hbGlnbjogY2VudGVyO30gCg=="
-                                    />
-                                )}
-                                {isSupportWechatPublic && (
-                                    <WechatLoginQrCodeForPublic
-                                        type="login"
-                                        oakPath="$login-wechatLogin/qrCode"
-                                        oakAutoUnmount={true}
-                                        url={state}
-                                    />
-                                )}
-                            </div>
-                        </>
-                    )}
-                </div>
+                            {isSupportWechat && (
+                                <WeChatLoginQrCode
+                                    disabled={disabled}
+                                    disableText={disabled}
+                                    appId={appId}
+                                    scope="snsapi_login"
+                                    redirectUri={redirectUri}
+                                    state={state}
+                                    href="data:text/css;base64,LmltcG93ZXJCb3ggLnFyY29kZSB7d2lkdGg6IDIwMHB4O30KLmltcG93ZXJCb3ggLnRpdGxlIHtkaXNwbGF5OiBub25lO30KLmltcG93ZXJCb3ggLmluZm8ge3dpZHRoOiAyMDBweDt9Ci5zdGF0dXNfaWNvbiB7ZGlzcGxheTogbm9uZX0KLmltcG93ZXJCb3ggLnN0YXR1cyB7dGV4dC1hbGlnbjogY2VudGVyO30gCg=="
+                                />
+                            )}
+                            {isSupportWechatPublic && (
+                                <WechatLoginQrCodeForPublic
+                                    type="login"
+                                    oakPath="$login-wechatLogin/qrCode"
+                                    oakAutoUnmount={true}
+                                    url={state}
+                                />
+                            )}
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     );

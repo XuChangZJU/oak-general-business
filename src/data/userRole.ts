@@ -5,7 +5,7 @@ import { ROOT_MOBILE_ID, ROOT_ROLE_ID, ROOT_TOKEN_ID, ROOT_USER_ID } from '../co
 
 export const users: Array<UserCreate> = [
     {
-        password: 'oak@2022',
+        password: '',
         nickname: 'root',
         name: 'root',
         isRoot: true,

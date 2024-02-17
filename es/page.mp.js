@@ -60,9 +60,10 @@ export async function subscribeMpMessage(messageTypes, haveToAccept, tip) {
     return true;
 }
 export function createComponent(option, features) {
-    const { wechatMp, data, methods, lifetimes, userInsensitive, ...rest } = option;
+    const { wechatMp, data, methods, lifetimes, userInsensitive, features: optionFeatures, ...rest } = option;
     const { relatedMessageTypes } = wechatMp || {};
     const { ready, attached, show, hide, ...restLifeTimes } = lifetimes || {};
+    const tokenFeatures = optionFeatures?.find(ele => ele === 'token' || (typeof ele === 'object' && ele.feature === 'token'));
     return createBaseComponent({
         data: typeof data === 'function'
             ? function () {
@@ -142,9 +143,6 @@ export function createComponent(option, features) {
         },
         lifetimes: {
             attached() {
-                if (!userInsensitive) {
-                    this.addFeatureSub('token', () => this.refresh());
-                }
                 this.addFeatureSub('application', () => this.getMessageTypeTemplate());
                 attached && attached.call(this);
             },
@@ -172,6 +170,10 @@ export function createComponent(option, features) {
             },
             ...restLifeTimes,
         },
+        features: (userInsensitive || !!tokenFeatures) ? optionFeatures : (optionFeatures || []).concat([{
+                feature: 'token',
+                behavior: 'refresh'
+            }]),
         wechatMp,
         ...rest,
     }, features);
