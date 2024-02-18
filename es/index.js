@@ -1,6 +1,6 @@
 // import { registerMessageNotificationConverters } from './triggers/message';
 // import { registerWeChatPublicEventCallback } from './endpoints';
-// export * from './types/Exception';
+export * from './types/Exception';
 export * from './types/Page';
 export * from './types/Message';
 export * from './types/RuntimeCxt';

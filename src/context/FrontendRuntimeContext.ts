@@ -1,6 +1,6 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
-import { FrontendRuntimeContext as Frc, SerializedData as Fsd } from 'oak-frontend-base/es/context/FrontendRuntimeContext';
+import { FrontendRuntimeContext as Frc, SerializedData as Fsd } from 'oak-frontend-base';
 import { BasicFeatures } from 'oak-frontend-base'
 import { EntityDict } from '../oak-app-domain';
 

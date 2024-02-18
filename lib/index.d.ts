@@ -1,5 +1,6 @@
 export type { GeneralFeatures } from './features';
 export type { GeneralAspectDict } from './aspects/AspectDict';
+export * from './types/Exception';
 export * from './types/Page';
 export * from './types/Message';
 export * from './types/RuntimeCxt';

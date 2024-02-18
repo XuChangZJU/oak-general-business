@@ -16,7 +16,7 @@ import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { SelectOpResult } from 'oak-domain/lib/types';
 import { applicationProjection } from '../types/Projection';
 import { getMpUnlimitWxaCode } from '../aspects/wechatQrCode';
-import { BackendRuntimeContext as BRC } from 'oak-frontend-base/lib/context/BackendRuntimeContext';
+import { BackendRuntimeContext as BRC } from 'oak-frontend-base';
 import { cloneDeep } from 'oak-domain/lib/utils/lodash';
 /**
  * general数据结构要求的后台上下文

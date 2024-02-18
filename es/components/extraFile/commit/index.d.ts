@@ -12,16 +12,16 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     type?: ButtonProps['type'] | AmButtonProps['type'];
     executeText?: string | undefined;
     buttonProps?: (ButtonProps & {
-        color?: "default" | "success" | "warning" | "primary" | "danger" | undefined;
+        color?: "success" | "warning" | "default" | "primary" | "danger" | undefined;
         fill?: "none" | "solid" | "outline" | undefined;
-        size?: "small" | "large" | "middle" | "mini" | undefined;
+        size?: "small" | "middle" | "large" | "mini" | undefined;
         block?: boolean | undefined;
         loading?: boolean | "auto" | undefined;
         loadingText?: string | undefined;
         loadingIcon?: import("react").ReactNode;
         disabled?: boolean | undefined;
         onClick?: ((event: import("react").MouseEvent<HTMLButtonElement, MouseEvent>) => unknown) | undefined;
-        type?: "button" | "reset" | "submit" | undefined;
+        type?: "button" | "submit" | "reset" | undefined;
         shape?: "default" | "rounded" | "rectangular" | undefined;
         children?: import("react").ReactNode;
     } & Pick<import("react").ClassAttributes<HTMLButtonElement> & import("react").ButtonHTMLAttributes<HTMLButtonElement>, "id" | "onMouseDown" | "onMouseUp" | "onTouchEnd" | "onTouchStart"> & {
