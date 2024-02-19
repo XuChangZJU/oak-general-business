@@ -1,8 +1,6 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { OakDataException } from 'oak-domain/lib/types/Exception';
-import AmapSDK from 'oak-external-sdk/es/AmapSDK';
-import QiniuSDK from 'oak-external-sdk/es/QiniuSDK';
-import CTYunSDk from 'oak-external-sdk/es/CTYunSDK';
+import { AmapSDK, QiniuSDK, CTYunSDk } from 'oak-external-sdk';
 /**
  * 目前虽然数据结构上config也可能在platform上，但是实际中暂时还没有
  * @param context

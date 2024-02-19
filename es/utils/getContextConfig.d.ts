@@ -10,12 +10,12 @@ import { ED as EntityDict } from '../types/RuntimeCxt';
  * @returns
  */
 export declare function getConfig<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AspectDict<ED, Cxt>>>(context: Cxt | FrontCxt, service: Service, origin: Origin): {
-    instance: import("oak-external-sdk/es/QiniuSDK").QiniuCloudInstance;
+    instance: import("oak-external-sdk").QiniuCloudInstance;
     config: any;
 } | {
-    instance: import("oak-external-sdk/es/CTYunSDK").CTYunInstance;
+    instance: import("oak-external-sdk").CTYunInstance;
     config: any;
 } | {
-    instance: import("oak-external-sdk/es/service/amap/Amap").AmapInstance;
+    instance: import("oak-external-sdk").AmapInstance;
     config: any;
 };

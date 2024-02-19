@@ -6,7 +6,7 @@ import { OpSchema } from '../../oak-app-domain/ExtraFile/Schema';
 import { QiniuUploadInfo } from '../../types/Upload';
 import { getConfig } from '../getContextConfig';
 import { QiniuCosConfig } from '../../types/Config';
-import { QiniuCloudInstance } from 'oak-external-sdk/es/service/qiniu/QiniuCloud';
+import { QiniuCloudInstance } from 'oak-external-sdk';
 import { urlSafeBase64Encode } from '../sign';
 import { OakUploadException } from '../../types/Exception';
 import { OakExternalException, OakNetworkException } from 'oak-domain/lib/types/Exception';

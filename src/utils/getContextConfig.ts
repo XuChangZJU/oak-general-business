@@ -1,8 +1,6 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { OakDataException } from 'oak-domain/lib/types/Exception';
-import AmapSDK from 'oak-external-sdk/lib/AmapSDK';
-import QiniuSDK from 'oak-external-sdk/lib/QiniuSDK';
-import CTYunSDk from 'oak-external-sdk/lib/CTYunSDK';
+import { AmapSDK, QiniuSDK, CTYunSDk } from 'oak-external-sdk';
 import {
     AliCloudConfig,
     AmapCloudConfig,
