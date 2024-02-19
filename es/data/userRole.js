@@ -12,10 +12,10 @@ export const users = [
 ];
 export const mobiles = [
     {
-        mobile: '13000000000',
+        mobile: 'root_mobile',
         id: ROOT_MOBILE_ID,
         userId: ROOT_USER_ID,
-    }
+    },
 ];
 export const tokens = [
     {

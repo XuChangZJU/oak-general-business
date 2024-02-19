@@ -17,7 +17,7 @@ export const users: Array<UserCreate> = [
 
 export const mobiles: Array<MobileCreate> = [
     {
-        mobile: '13000000000',
+        mobile: 'root_mobile',
         id: ROOT_MOBILE_ID,
         userId: ROOT_USER_ID,
     }
