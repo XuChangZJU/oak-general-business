@@ -35,8 +35,7 @@ export function initialize<
         type,
         domain,
         basicFeatures.cache,
-        basicFeatures.localStorage,
-        token
+        basicFeatures.localStorage
     );
 
     const wechatMenu = new WechatMenu<ED, Cxt, FrontCxt, AD>(

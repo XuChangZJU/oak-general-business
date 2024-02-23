@@ -8,7 +8,6 @@ import AspectDict from '../aspects/AspectDict';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from '../context/FrontendRuntimeContext';
 import { MediaType, MediaVideoDescription } from '../types/WeChat';
-import { Token } from './token';
 export declare class Application<ED extends EntityDict, Cxt extends BackendRuntimeContext<ED>, FrontCxt extends FrontendRuntimeContext<ED, Cxt, AD>, AD extends AspectDict<ED, Cxt> & CommonAspectDict<ED, Cxt>> extends Feature {
     private type;
     private domain;
@@ -17,8 +16,7 @@ export declare class Application<ED extends EntityDict, Cxt extends BackendRunti
     private cache;
     private storage;
     private projection;
-    private token;
-    constructor(type: AppType, domain: string, cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage, token: Token<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>);
+    constructor(type: AppType, domain: string, cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>, storage: LocalStorage);
     private refresh;
     private getApplicationFromCache;
     private loadApplicationInfo;

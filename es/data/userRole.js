@@ -15,7 +15,7 @@ export const mobiles = [
         mobile: 'root_mobile',
         id: ROOT_MOBILE_ID,
         userId: ROOT_USER_ID,
-    },
+    }
 ];
 export const tokens = [
     {

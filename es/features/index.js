@@ -10,7 +10,7 @@ import { UserWechatPublicTag } from './userWechatPublicTag';
 import Theme from './theme';
 export function initialize(basicFeatures, type, domain) {
     const token = new Token(basicFeatures.cache, basicFeatures.localStorage, basicFeatures.environment);
-    const application = new Application(type, domain, basicFeatures.cache, basicFeatures.localStorage, token);
+    const application = new Application(type, domain, basicFeatures.cache, basicFeatures.localStorage);
     const wechatMenu = new WechatMenu(basicFeatures.cache, basicFeatures.localStorage);
     const wechatPublicTag = new WechatPublicTag(basicFeatures.cache, basicFeatures.localStorage);
     const userWechatPublicTag = new UserWechatPublicTag(basicFeatures.cache, basicFeatures.localStorage);

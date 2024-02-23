@@ -34,14 +34,12 @@ export class Application<
     private cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
     private storage: LocalStorage;
     private projection: EntityDict['application']['Selection']['data'];
-    private token: Token<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>;
 
     constructor(
         type: AppType,
         domain: string,
         cache: Cache<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>,
-        storage: LocalStorage,
-        token: Token<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>>
+        storage: LocalStorage
     ) {
         super();
         this.cache = cache;
@@ -49,7 +47,6 @@ export class Application<
         this.type = type;
         this.domain = domain;
         this.projection = cloneDeep(applicationProjection);
-        this.token = token;
     }
 
     private async refresh() {
@@ -90,21 +87,9 @@ export class Application<
             const { result } = await this.cache.exec('getApplication', {
                 type,
                 domain,
-            }, undefined, undefined, true);
+            }, undefined, true, true);
             applicationId = result;
         } catch (err) {
-            if (
-                err instanceof OakTokenExpiredException ||
-                err instanceof OakUserDisabledException
-            ) {
-                // 出现上面的异常，先清除本地token, 重新发起一次请求
-                this.token.removeToken(true);
-                const { result } = await this.cache.exec('getApplication', {
-                    type,
-                    domain,
-                }, undefined, undefined, true);
-                applicationId = result;
-            }
             throw err;
         }
         this.applicationId = applicationId;
