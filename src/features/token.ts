@@ -40,33 +40,34 @@ export class Token<
             }
         } */
 
-        if (tokenValue) {
-            const env = await this.environment.getEnv();
-            try {
-                const { result } = await this.cache.exec(
-                    'refreshToken',
-                    {
-                        tokenValue,
-                        env,
-                    },
-                    undefined,
-                    true,
-                    true
-                );
-                if (this.tokenValue !== result) {
-                    this.tokenValue = result;
-                    await this.storage.save(LOCAL_STORAGE_KEYS.token, result);                    
-                }
-            }
-            catch (err) {
-                // refresh出了任何错都无视，直接放弃此token
-                console.warn(err);
-                this.tokenValue = undefined;
-                this.removeToken(true);
-            }
-        } else {
-            this.tokenValue = undefined;
-        }
+        // if (tokenValue) {
+        //     const env = await this.environment.getEnv();
+        //     try {
+        //         const { result } = await this.cache.exec(
+        //             'refreshToken',
+        //             {
+        //                 tokenValue,
+        //                 env,
+        //             },
+        //             undefined,
+        //             true,
+        //             true
+        //         );
+        //         if (this.tokenValue !== result) {
+        //             this.tokenValue = result;
+        //             await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
+        //         }
+        //     }
+        //     catch (err) {
+        //         // refresh出了任何错都无视，直接放弃此token
+        //         console.warn(err);
+        //         this.tokenValue = undefined;
+        //         this.removeToken(true);
+        //     }
+        // } else {
+        //     this.tokenValue = undefined;
+        // }
+        await this.refreshTokenData(tokenValue)
         this.publish();
     }
 
@@ -81,6 +82,42 @@ export class Token<
         this.environment = environment;
         this.tokenValue = ''; // 置个空字符串代表还在load storage缓存的数据
         this.loadSavedToken();
+
+        if (process.env.OAK_PLATFORM === 'web') {
+            // 在web下可能多窗口，一个窗口更新了token，其它窗口应跟着变
+            window.addEventListener('storage', async (e) => {
+                if (e.key === LOCAL_STORAGE_KEYS.token) {
+                    this.tokenValue = e.newValue ? JSON.parse(e.newValue) : undefined;
+                    await this.refreshTokenData(this.tokenValue)
+                    this.publish();
+                }
+            });
+        }
+    }
+
+    async refreshTokenData(tokenValue?: string) {
+        if (tokenValue) {
+            const env = await this.environment.getEnv();
+            try {
+                const { result } = await this.cache.exec('refreshToken', {
+                    tokenValue,
+                    env,
+                }, undefined, true, true);
+                if (this.tokenValue !== result) {
+                    this.tokenValue = result;
+                    await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
+                }
+            }
+            catch (err) {
+                // refresh出了任何错都无视，直接放弃此token
+                console.warn(err);
+                this.tokenValue = undefined;
+                this.removeToken(true);
+            }
+        }
+        else {
+            this.tokenValue = undefined;
+        }
     }
 
     async loginByMobile(
@@ -130,7 +167,7 @@ export class Token<
         this.publish();
     }
 
-    async loginWechatMp() {        
+    async loginWechatMp() {
         const { code } = await wx.login();
 
         const env = await this.environment.getEnv();

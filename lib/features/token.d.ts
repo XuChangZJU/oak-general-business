@@ -14,6 +14,7 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     private storage;
     private loadSavedToken;
     constructor(cache: Cache<ED, Cxt, FrontCxt, AD>, storage: LocalStorage, environment: Environment);
+    refreshTokenData(tokenValue?: string): Promise<void>;
     loginByMobile(mobile: string, password?: string, captcha?: string, disableRegister?: boolean): Promise<void>;
     loginByWechatInWebEnv(wechatLoginId: string): Promise<void>;
     loginWechat(code: string, params?: {
