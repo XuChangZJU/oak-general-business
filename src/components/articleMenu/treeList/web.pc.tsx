@@ -129,6 +129,7 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                                 (ele, idx) => (
                                     <>
                                         <TreeCell
+                                            oakAutoUnmount={true}
                                             onChildEditArticleChange={onGrandChildEditArticleChange}
                                             oakId={ele.id}
                                             oakPath={`${oakFullpath}.${ele.id}`}
