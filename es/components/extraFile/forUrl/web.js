@@ -47,8 +47,8 @@ export default function render(props) {
 			<Modal width={800} title={t('chooseImage')} open={isModalOpen1} onOk={() => onModal1Confirm(selectedId)} onCancel={closeModal1}>
 				{(renderImgs && renderImgs.length) ? (<>
 						<Row gutter={[4, 4]}>
-							{renderImgs.map((img) => <Col span={4}>
-									<ImgBox width={"100%"} bordered={true} mode="select" src={img.renderUrl} key={img.id} selected={selectedId === img.id} onClick={() => {
+							{renderImgs.map((img) => <Col span={4}  key={img.id} >
+									<ImgBox width={"100%"} bordered={true} mode="select" src={img.renderUrl} selected={selectedId === img.id} onClick={() => {
                     if (selectedId === img.id) {
                         setSelectedId(-1);
                     }
