@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Row, Col, Modal } from 'antd';
 const { confirm } = Modal;
 import '@wangeditor/editor/dist/css/style.css'; // 引入 css

@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { EntityDict } from '../../../../oak-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'userEntityGrant', false, {
@@ -16,4 +17,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'userEntityG
     disablePickRow?: boolean;
     disablePickRelation?: boolean;
     pickRelationRule: string;
-}>): import("react").JSX.Element | null;
+}>): React.JSX.Element | null;

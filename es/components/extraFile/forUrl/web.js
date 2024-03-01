@@ -14,21 +14,21 @@ export default function render(props) {
         closeModal();
     };
     return (<div className={Style.imgBox}>
-			<Space direction="vertical" size={4}>
-				<PlusOutlined />
-				<div>选择封面</div>
-			</Space>
-			<img id="previewImg" src={src} alt="previewImg" className={Style.previewImg} style={{ display: src ? 'inline-block' : 'none' }}/>
-			<div className={Style.methodList}>
-				{methods && methods.map((ele) => (<div className={Style.methodListItem} onClick={() => {
+            <Space direction="vertical" size={4}>
+                <PlusOutlined />
+                <div>选择封面</div>
+            </Space>
+            <img id="previewImg" src={src} alt="previewImg" className={Style.previewImg} style={{ display: src ? 'inline-block' : 'none' }}/>
+            <div className={Style.methodList}>
+                {methods && methods.map((ele) => (<div className={Style.methodListItem} onClick={() => {
                 chooseMethod(ele);
             }}>
-						{t(ele)}
-					</div>))}
-			</div>
-			<Modal title={t('fillInImageLink')} open={isModalOpen} onOk={handleOk} onCancel={closeModal}>
-				<Form form={form} className={Style.formMT}>
-					<Form.Item name="url" rules={[
+                        {t(ele)}
+                    </div>))}
+            </div>
+            <Modal title={t('fillInImageLink')} open={isModalOpen} onOk={handleOk} onCancel={closeModal}>
+                <Form form={form} className={Style.formMT}>
+                    <Form.Item name="url" rules={[
             {
                 required: true,
                 message: '外部链接不能为空',
@@ -38,17 +38,17 @@ export default function render(props) {
                 message: '请输入正确的外链',
             }
         ]}>
-						<Input onChange={({ target: { value } }) => {
+                        <Input onChange={({ target: { value } }) => {
             form.setFieldValue('url', value);
         }} placeholder='如：https://www.xxx.com'/>
-					</Form.Item>
-				</Form>
-			</Modal>
-			<Modal width={800} title={t('chooseImage')} open={isModalOpen1} onOk={() => onModal1Confirm(selectedId)} onCancel={closeModal1}>
-				{(renderImgs && renderImgs.length) ? (<>
-						<Row gutter={[4, 4]}>
-							{renderImgs.map((img) => <Col span={4}  key={img.id} >
-									<ImgBox width={"100%"} bordered={true} mode="select" src={img.renderUrl} selected={selectedId === img.id} onClick={() => {
+                    </Form.Item>
+                </Form>
+            </Modal>
+            <Modal width={800} title={t('chooseImage')} open={isModalOpen1} onOk={() => onModal1Confirm(selectedId)} onCancel={closeModal1}>
+                {(renderImgs && renderImgs.length > 0) ? (<>
+                        <Row gutter={[4, 4]}>
+                            {renderImgs.map((img, index) => <Col key={img.id} span={4}>
+                                    <ImgBox width={"100%"} bordered={true} mode="select" src={img.renderUrl} selected={selectedId === img.id} onClick={() => {
                     if (selectedId === img.id) {
                         setSelectedId(-1);
                     }
@@ -56,9 +56,9 @@ export default function render(props) {
                         setSelectedId(img.id);
                     }
                 }}/>
-								</Col>)}
-						</Row>
-					</>) : (<Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>)}
-			</Modal>
-		</div>);
+                                </Col>)}
+                        </Row>
+                    </>) : (<Empty image={Empty.PRESENTED_IMAGE_SIMPLE}/>)}
+            </Modal>
+        </div>);
 }

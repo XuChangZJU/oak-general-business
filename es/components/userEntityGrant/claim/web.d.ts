@@ -1,4 +1,5 @@
 import { WebComponentProps } from 'oak-frontend-base';
+import React from 'react';
 import { EntityDict } from '../../../oak-app-domain';
 export default function Render(props: WebComponentProps<EntityDict, 'userEntityGrant', false, {
     userEntityGrant: EntityDict['userEntityGrant']['Schema'];
@@ -26,4 +27,4 @@ export default function Render(props: WebComponentProps<EntityDict, 'userEntityG
     onPickRelations: (ids: string[]) => void;
     onPickRows: (ids: string[]) => void;
     claim: () => void;
-}>): import("react").JSX.Element | null;
+}>): React.JSX.Element | null;

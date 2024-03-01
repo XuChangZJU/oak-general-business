@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { Style } from '../../../../types/Style';
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<import("../../../../oak-app-domain").EntityDict, keyof import("../../../../oak-app-domain").EntityDict, false, {
     style: Style;

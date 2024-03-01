@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button, Input, Form, TextArea, List } from 'antd-mobile';
 import Style from './web.module.less';
 import { WebComponentProps } from 'oak-frontend-base';

@@ -21,7 +21,7 @@ export default OakComponent({
         sort: 1,
         isBridge: 1,
     },
-    features:['extraFile'],
+    features: ['extraFile'],
     filters: [
         {
             filter() {

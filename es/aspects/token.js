@@ -1330,6 +1330,7 @@ function checkTokenEnvConsistency(env1, env2) {
             return false;
         }
     }
+    return true;
 }
 export async function refreshToken(params, context) {
     const { env, tokenValue } = params;

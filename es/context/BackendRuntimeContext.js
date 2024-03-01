@@ -43,7 +43,7 @@ export class BackendRuntimeContext extends BRC {
             }
         }
     }
-    async setTokenValue(tokenValue) {
+    async setTokenValue(tokenValue, later) {
         const result = await this.select('token', {
             data: {
                 id: 1,
@@ -73,7 +73,7 @@ export class BackendRuntimeContext extends BRC {
             return;
         }
         const token = result[0];
-        if (token.ableState === 'disabled') {
+        if (token.ableState === 'disabled' && !later) {
             console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}已经被disable`);
             throw new OakTokenExpiredException();
             // this.tokenException = new OakTokenExpiredException();
@@ -97,7 +97,7 @@ export class BackendRuntimeContext extends BRC {
         assert(result.length > 0, `构建BackendRuntimeContext对应appId「${appId}」找不到application`);
         this.application = result[0];
     }
-    async initialize(data) {
+    async initialize(data, later) {
         await super.initialize(data);
         if (data) {
             const closeRootMode = this.openRootMode();
@@ -108,7 +108,7 @@ export class BackendRuntimeContext extends BRC {
                     promises.push(this.setApplication(appId));
                 }
                 if (tokenValue) {
-                    promises.push(this.setTokenValue(tokenValue));
+                    promises.push(this.setTokenValue(tokenValue, later));
                 }
                 if (promises.length > 0) {
                     await Promise.all(promises);

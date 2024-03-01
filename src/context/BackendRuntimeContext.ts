@@ -70,7 +70,7 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         }
     }
 
-    async setTokenValue(tokenValue: string) {
+    async setTokenValue(tokenValue: string, later?: boolean) {
         const result = await this.select(
             'token',
             {
@@ -106,7 +106,7 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
             return;
         }
         const token = result[0];
-        if (token.ableState === 'disabled') {
+        if (token.ableState === 'disabled' && !later) {
             console.log(
                 `构建BackendRuntimeContext对应tokenValue「${tokenValue}已经被disable`
             );
@@ -141,7 +141,7 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         this.application = result[0];
     }
 
-    async initialize(data?: SerializedData) {
+    async initialize(data?: SerializedData, later?: boolean) {
         await super.initialize(data);
         if (data) {
             const closeRootMode = this.openRootMode();
@@ -152,7 +152,7 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
                     promises.push(this.setApplication(appId));
                 }
                 if (tokenValue) {
-                    promises.push(this.setTokenValue(tokenValue));
+                    promises.push(this.setTokenValue(tokenValue, later));
                 }
                 if (promises.length > 0) {
                     await Promise.all(promises);

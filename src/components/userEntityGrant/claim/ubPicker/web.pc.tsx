@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { Typography, Radio, Checkbox, List, Divider, Flex, Space } from 'antd';
 import { EntityDict } from '../../../../oak-app-domain';

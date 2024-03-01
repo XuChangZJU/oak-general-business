@@ -1,3 +1,4 @@
+import React from 'react';
 import { NoticeBar, List, Button } from 'antd-mobile';
 import UbPicker from './ubPicker';
 import Styles from './web.module.less';

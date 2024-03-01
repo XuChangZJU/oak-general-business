@@ -44,7 +44,11 @@ export default function Render(props) {
     }, [row]);
     if (oakFullpath && row) {
         if (!show) {
-            const Sub = showSub && hasSubArticles ? (<ArticleTreeList onChildEditArticleChange={onChildEditArticleChange} articleMenuId={row.id} oakPath={`${oakFullpath}.article$articleMenu`}/>) : (<ArticleMenuTreeList parentId={row.id} oakPath={`${oakFullpath}.articleMenu$parent`} entity={row.entity} entityId={row.entityId} onGrandChildEditArticleChange={onChildEditArticleChange}/>);
+            const Sub = showSub && hasSubArticles ? (<ArticleTreeList onChildEditArticleChange={onChildEditArticleChange} articleMenuId={row.id} 
+            // oakPath={`${oakFullpath}.article$articleMenu`}
+            oakPath={`$article-articleMenu-${row.id}`}/>) : (<ArticleMenuTreeList oakAutoUnmount={true} parentId={row.id} 
+            // oakPath={`${oakFullpath}.articleMenu$parent`}
+            oakPath={`$articleMenu-parent-${row.id}`} entity={row.entity} entityId={row.entityId} onGrandChildEditArticleChange={onChildEditArticleChange}/>);
             const items = [];
             if (allowCreateSubArticle) {
                 items.push({
@@ -217,7 +221,11 @@ export default function Render(props) {
                 </>);
         }
         else {
-            const Sub = showSub && hasSubArticles ? (<ArticleTreeList onChildEditArticleChange={onChildEditArticleChange} articleMenuId={row.id} oakPath={`${oakFullpath}.article$articleMenu`} show={show} getBreadcrumbItemsByParent={getBreadcrumbItemsByParent} breadcrumbItems={newBreadcrumbItems} drawerOpen={drawerOpen} changeDrawerOpen={changeDrawerOpen} selectedArticleId={selectedArticleId} openArray={openArray ? openArray : undefined} getTopInfo={getTopInfo} articleId={articleId} currentArticle={currentArticle} setCurrentArticle={setCurrentArticle}/>) : (<ArticleMenuTreeList parentId={row.id} oakPath={`${oakFullpath}.articleMenu$parent`} onGrandChildEditArticleChange={onChildEditArticleChange} show={show} getBreadcrumbItems={getBreadcrumbItemsByParent} breadcrumbItems={newBreadcrumbItems} drawerOpen={drawerOpen} changeDrawerOpen={changeDrawerOpen} selectedArticleId={selectedArticleId} openArray={openArray ? openArray : undefined} getTopInfo={getTopInfo} articleId={articleId} currentArticle={currentArticle} setCurrentArticle={setCurrentArticle}/>);
+            const Sub = showSub && hasSubArticles ? (<ArticleTreeList oakAutoUnmount={true} onChildEditArticleChange={onChildEditArticleChange} articleMenuId={row.id} 
+            // oakPath={`${oakFullpath}.article$articleMenu`}
+            oakPath={`$article-articleMenu-${row.id}`} show={show} getBreadcrumbItemsByParent={getBreadcrumbItemsByParent} breadcrumbItems={newBreadcrumbItems} drawerOpen={drawerOpen} changeDrawerOpen={changeDrawerOpen} selectedArticleId={selectedArticleId} openArray={openArray ? openArray : undefined} getTopInfo={getTopInfo} articleId={articleId} currentArticle={currentArticle} setCurrentArticle={setCurrentArticle}/>) : (<ArticleMenuTreeList oakAutoUnmount={true} parentId={row.id} 
+            // oakPath={`${oakFullpath}.articleMenu$parent`}
+            oakPath={`$articleMenu-parent-${row.id}`} onGrandChildEditArticleChange={onChildEditArticleChange} show={show} getBreadcrumbItems={getBreadcrumbItemsByParent} breadcrumbItems={newBreadcrumbItems} drawerOpen={drawerOpen} changeDrawerOpen={changeDrawerOpen} selectedArticleId={selectedArticleId} openArray={openArray ? openArray : undefined} getTopInfo={getTopInfo} articleId={articleId} currentArticle={currentArticle} setCurrentArticle={setCurrentArticle}/>);
             if (!row.parentId && articleMenuId) {
                 return (<>
                         <div>

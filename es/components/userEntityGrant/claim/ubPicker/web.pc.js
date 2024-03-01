@@ -1,3 +1,4 @@
+import React from 'react';
 import { Typography, Radio, Checkbox, List, Divider, Flex, Space } from 'antd';
 import Styles from './web.pc.module.less';
 export default function Render(props) {

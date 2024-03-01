@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { Config } from '../../../types/Config';
 declare const _default: (props: import("oak-frontend-base").ReactComponentProps<import("../../../oak-app-domain").EntityDict, keyof import("../../../oak-app-domain").EntityDict, false, {
     config: Config;

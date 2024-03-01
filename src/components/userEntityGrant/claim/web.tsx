@@ -1,4 +1,5 @@
 import { WebComponentProps } from 'oak-frontend-base';
+import React from 'react';
 import { NoticeBar, Space, List, Button } from 'antd-mobile';
 import UbPicker from './ubPicker';
 import { EntityDict } from '../../../oak-app-domain';

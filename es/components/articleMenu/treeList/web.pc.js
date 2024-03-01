@@ -63,7 +63,7 @@ export default function Render(props) {
                 }
                 return (<div className={Styles.container}>
                         {rows.map((ele, idx) => (<>
-                                        <TreeCell onChildEditArticleChange={onGrandChildEditArticleChange} oakId={ele.id} oakPath={`${oakFullpath}.${ele.id}`} onRemove={() => {
+                                        <TreeCell oakAutoUnmount={true} onChildEditArticleChange={onGrandChildEditArticleChange} oakId={ele.id} oakPath={`${oakFullpath}.${ele.id}`} onRemove={() => {
                             modal.confirm({
                                 title: '请确认',
                                 content: '确认删除吗？',
