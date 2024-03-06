@@ -28,6 +28,7 @@ export type AspectDict<
 export interface SerializedData extends Fsd {
     a?: string;
     t?: string;
+    userId?: string;            // 后台专用
     rm?: boolean;
 };
 

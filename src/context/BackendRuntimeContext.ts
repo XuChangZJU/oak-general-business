@@ -23,8 +23,7 @@ import { cloneDeep } from 'oak-domain/lib/utils/lodash';
  */
 export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDict>
     extends BRC<ED>
-    implements RuntimeContext
-{
+    implements RuntimeContext {
     protected application?: Partial<ED['application']['Schema']>;
     protected token?: Partial<ED['token']['Schema']>;
     protected amIRoot?: boolean;
@@ -70,54 +69,69 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         }
     }
 
-    async setTokenValue(tokenValue: string, later?: boolean) {
-        const result = await this.select(
-            'token',
-            {
-                data: {
-                    id: 1,
-                    ableState: 1,
-                    user: {
+    async setTokenValue(tokenValue: string, later?: boolean, userId?: string) {
+        if (!later || !userId) {
+            const result = await this.select(
+                'token',
+                {
+                    data: {
                         id: 1,
-                        userState: 1,
-                        isRoot: 1,
+                        ableState: 1,
+                        user: {
+                            id: 1,
+                            userState: 1,
+                            isRoot: 1,
+                        },
+                        value: 1,
+                        player: {
+                            id: 1,
+                            isRoot: 1,
+                        },
                     },
-                    value: 1,
-                    player: {
-                        id: 1,
-                        isRoot: 1,
+                    filter: {
+                        value: tokenValue,
                     },
                 },
-                filter: {
-                    value: tokenValue,
-                },
-            },
-            {
-                dontCollect: true,
-                blockTrigger: true,
+                {
+                    dontCollect: true,
+                    blockTrigger: true,
+                }
+            );
+            if (result.length === 0) {
+                console.log(
+                    `构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`
+                );
+                if (!later) {
+                    throw new OakTokenExpiredException();
+                }
+                // this.tokenException = new OakTokenExpiredException();
+                return;
             }
-        );
-        if (result.length === 0) {
-            console.log(
-                `构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`
-            );
-            throw new OakTokenExpiredException();
-            // this.tokenException = new OakTokenExpiredException();
-            return;
+            const token = result[0];
+            if (token.ableState === 'disabled' && !later) {
+                console.log(
+                    `构建BackendRuntimeContext对应tokenValue「${tokenValue}已经被disable`
+                );
+                throw new OakTokenExpiredException();
+                // this.tokenException = new OakTokenExpiredException();
+                return;
+            }
+            const { user, player } = token;
+            this.amIRoot = user?.isRoot!;
+            this.amIReallyRoot = player?.isRoot!;
+            this.token = token;
         }
-        const token = result[0];
-        if (token.ableState === 'disabled' && !later) {
-            console.log(
-                `构建BackendRuntimeContext对应tokenValue「${tokenValue}已经被disable`
-            );
-            throw new OakTokenExpiredException();
-            // this.tokenException = new OakTokenExpiredException();
-            return;
-        }
-        const { user, player } = token;
-        this.amIRoot = user?.isRoot!;
-        this.amIReallyRoot = player?.isRoot!;
-        this.token = token;
+        const [user] = await this.select('user', {
+            data: {
+                id: 1,
+                isRoot: 1,
+            },
+            filter: { id: userId },
+        }, { dontCollect: true });
+        assert(user, '初始化context时有userId但查询不到user');
+        this.amIRoot = user.isRoot!;
+        this.amIReallyRoot = user.isRoot!;
+        this.userId = userId;
     }
 
     async setApplication(appId: string) {
@@ -146,13 +160,13 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         if (data) {
             const closeRootMode = this.openRootMode();
             try {
-                const { a: appId, t: tokenValue, rm } = data;
+                const { a: appId, t: tokenValue, rm, userId } = data;
                 const promises: Promise<void>[] = [];
                 if (appId) {
                     promises.push(this.setApplication(appId));
                 }
                 if (tokenValue) {
-                    promises.push(this.setTokenValue(tokenValue, later));
+                    promises.push(this.setTokenValue(tokenValue, later, userId));
                 }
                 if (promises.length > 0) {
                     await Promise.all(promises);
@@ -220,7 +234,7 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         if (this.userId) {
             return this.userId;
         }
-        const token = this.getToken(allowUnloggedIn);        
+        const token = this.getToken(allowUnloggedIn);
         return token?.userId as string;
     }
 
@@ -236,6 +250,7 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
             a: this.application?.id,
             t: this.token?.value,
             rm: this.rootMode,
+            userId: this.getCurrentUserId(),
         };
     }
 
