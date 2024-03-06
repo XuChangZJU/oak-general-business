@@ -14,7 +14,7 @@ export declare abstract class BackendRuntimeContext<ED extends EntityDict & Base
     protected rootMode?: boolean;
     private userId?;
     refineOpRecords(): Promise<void>;
-    setTokenValue(tokenValue: string, later?: boolean): Promise<void>;
+    setTokenValue(tokenValue: string, later?: boolean, userId?: string): Promise<void>;
     setApplication(appId: string): Promise<void>;
     initialize(data?: SerializedData, later?: boolean): Promise<void>;
     getApplicationId(): ED["application"]["Schema"]["id"] | undefined;

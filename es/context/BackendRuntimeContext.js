@@ -43,46 +43,61 @@ export class BackendRuntimeContext extends BRC {
             }
         }
     }
-    async setTokenValue(tokenValue, later) {
-        const result = await this.select('token', {
+    async setTokenValue(tokenValue, later, userId) {
+        if (!later || !userId) {
+            const result = await this.select('token', {
+                data: {
+                    id: 1,
+                    ableState: 1,
+                    user: {
+                        id: 1,
+                        userState: 1,
+                        isRoot: 1,
+                    },
+                    value: 1,
+                    player: {
+                        id: 1,
+                        isRoot: 1,
+                    },
+                },
+                filter: {
+                    value: tokenValue,
+                },
+            }, {
+                dontCollect: true,
+                blockTrigger: true,
+            });
+            if (result.length === 0) {
+                console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`);
+                if (!later) {
+                    throw new OakTokenExpiredException();
+                }
+                // this.tokenException = new OakTokenExpiredException();
+                return;
+            }
+            const token = result[0];
+            if (token.ableState === 'disabled' && !later) {
+                console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}已经被disable`);
+                throw new OakTokenExpiredException();
+                // this.tokenException = new OakTokenExpiredException();
+                return;
+            }
+            const { user, player } = token;
+            this.amIRoot = user?.isRoot;
+            this.amIReallyRoot = player?.isRoot;
+            this.token = token;
+        }
+        const [user] = await this.select('user', {
             data: {
                 id: 1,
-                ableState: 1,
-                user: {
-                    id: 1,
-                    userState: 1,
-                    isRoot: 1,
-                },
-                value: 1,
-                player: {
-                    id: 1,
-                    isRoot: 1,
-                },
+                isRoot: 1,
             },
-            filter: {
-                value: tokenValue,
-            },
-        }, {
-            dontCollect: true,
-            blockTrigger: true,
-        });
-        if (result.length === 0) {
-            console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`);
-            throw new OakTokenExpiredException();
-            // this.tokenException = new OakTokenExpiredException();
-            return;
-        }
-        const token = result[0];
-        if (token.ableState === 'disabled' && !later) {
-            console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}已经被disable`);
-            throw new OakTokenExpiredException();
-            // this.tokenException = new OakTokenExpiredException();
-            return;
-        }
-        const { user, player } = token;
-        this.amIRoot = user?.isRoot;
-        this.amIReallyRoot = player?.isRoot;
-        this.token = token;
+            filter: { id: userId },
+        }, { dontCollect: true });
+        assert(user, '初始化context时有userId但查询不到user');
+        this.amIRoot = user.isRoot;
+        this.amIReallyRoot = user.isRoot;
+        this.userId = userId;
     }
     async setApplication(appId) {
         const result = await this.select('application', {
@@ -102,13 +117,13 @@ export class BackendRuntimeContext extends BRC {
         if (data) {
             const closeRootMode = this.openRootMode();
             try {
-                const { a: appId, t: tokenValue, rm } = data;
+                const { a: appId, t: tokenValue, rm, userId } = data;
                 const promises = [];
                 if (appId) {
                     promises.push(this.setApplication(appId));
                 }
                 if (tokenValue) {
-                    promises.push(this.setTokenValue(tokenValue, later));
+                    promises.push(this.setTokenValue(tokenValue, later, userId));
                 }
                 if (promises.length > 0) {
                     await Promise.all(promises);
@@ -183,6 +198,7 @@ export class BackendRuntimeContext extends BRC {
             a: this.application?.id,
             t: this.token?.value,
             rm: this.rootMode,
+            userId: this.getCurrentUserId(),
         };
     }
     isRoot() {
