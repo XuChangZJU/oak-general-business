@@ -80,7 +80,7 @@ export function createComponent(option, features) {
             async subscribeMpMessage(messageTypes, haveToAccept, tip) {
                 return await subscribeMpMessage.call(this, messageTypes, haveToAccept, tip);
             },
-            getMessageTypeTemplate() {
+            async getMessageTypeTemplate() {
                 if (relatedMessageTypes) {
                     try {
                         const applicationId = this.features.application.getApplicationId();
@@ -105,7 +105,7 @@ export function createComponent(option, features) {
                             },
                         });
                         if (existedOnes.length === 0) {
-                            this.features.cache.refresh('messageTypeTemplate', {
+                            await this.features.cache.refresh('messageTypeTemplate', {
                                 data: {
                                     id: 1,
                                     templateId: 1,

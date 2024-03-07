@@ -182,7 +182,7 @@ export function createComponent<
                         tip
                     );
                 },
-                getMessageTypeTemplate() {
+                async getMessageTypeTemplate() {
                     if (relatedMessageTypes) {
                         try {
                             const applicationId =
@@ -211,7 +211,7 @@ export function createComponent<
                                 }
                             );
                             if (existedOnes.length === 0) {
-                                this.features.cache.refresh(
+                                await this.features.cache.refresh(
                                     'messageTypeTemplate',
                                     {
                                         data: {
