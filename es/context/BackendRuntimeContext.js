@@ -86,7 +86,9 @@ export class BackendRuntimeContext extends BRC {
             this.amIRoot = user?.isRoot;
             this.amIReallyRoot = player?.isRoot;
             this.token = token;
+            return;
         }
+        // 若是later环境，用userId来查询处理
         const [user] = await this.select('user', {
             data: {
                 id: 1,
@@ -198,7 +200,7 @@ export class BackendRuntimeContext extends BRC {
             a: this.application?.id,
             t: this.token?.value,
             rm: this.rootMode,
-            userId: this.getCurrentUserId(),
+            userId: this.getCurrentUserId(true),
         };
     }
     isRoot() {
