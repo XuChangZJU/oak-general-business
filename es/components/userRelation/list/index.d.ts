@@ -10,5 +10,6 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     showBack: false;
     onCreate: () => void;
     onUpdate: (id: string) => void;
+    disableDisplay: false;
 }>) => React.ReactElement;
 export default _default;

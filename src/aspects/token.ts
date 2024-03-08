@@ -1925,24 +1925,36 @@ export async function refreshToken<
         fn();
         return '';
     }
-    else if (now - (token.refreshedAt as number) > 600 * 1000) {
-        const newValue = await generateNewIdAsync();
-        await context.operate('token', {
-            id: await generateNewIdAsync(),
-            action: 'update',
-            data: {
-                value: newValue,
-                refreshedAt: now,
-            },
-            filter: {
-                id: token.id,
-            }
-        }, {});
-        fn();
-        return newValue;
+    if (process.env.OAK_PLATFORM === 'server') {
+        // 只有server模式去刷新token
+        // 'development' | 'production' | 'staging'
+        const intervals = {
+            development: 7200 * 1000, // 2小时
+            staging: 600 * 1000, // 十分钟
+            production: 600 * 1000, // 十分钟
+        };
+        const interval = intervals[process.env.NODE_ENV] || 600 * 1000;
+        if (now - (token.refreshedAt as number) > interval) {
+            const newValue = await generateNewIdAsync();
+            await context.operate(
+                'token',
+                {
+                    id: await generateNewIdAsync(),
+                    action: 'update',
+                    data: {
+                        value: newValue,
+                        refreshedAt: now,
+                    },
+                    filter: {
+                        id: token.id,
+                    },
+                },
+                {}
+            );
+            fn();
+            return newValue;
+        }
     }
-    else {
-        fn();
-    }
+    fn();
     return tokenValue;
 }

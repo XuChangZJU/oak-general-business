@@ -21,7 +21,7 @@ export default OakComponent({
                             userId,
                         },
                     },
-                }
+                },
             };
         }
         return {
@@ -59,12 +59,12 @@ export default OakComponent({
                                         data: {
                                             id: 1,
                                             userId: 1,
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
                 },
                 filter: userRelationFilter,
             },
@@ -99,10 +99,10 @@ export default OakComponent({
                     $attr: {
                         $$createAt$$: 1,
                     },
-                    $direction: 'desc'
+                    $direction: 'desc',
                 };
             },
-        }
+        },
     ],
     filters: [
         {
@@ -120,9 +120,9 @@ export default OakComponent({
                             sourceRelation: {
                                 userRelation$relation: {
                                     userId,
-                                }
-                            }
-                        }
+                                },
+                            },
+                        },
                     };
                     /* filter.relationId = {
                         $in: {
@@ -162,14 +162,24 @@ export default OakComponent({
         },
     ],
     isList: true,
-    formData({ data: users, props, features }) {
+    formData({ data: rows, props, features }) {
         const { entity, entityId } = props;
         const filter = this.getFilterByName('fulltext');
+        const users = props.disableDisplay
+            ? rows?.filter((ele) => {
+                  const userRelations = ele.userRelation$user?.filter(
+                      (ele) => !ele.$$deleteAt$$
+                  );
+                  return !!(userRelations && userRelations.length > 0);
+              })
+            : rows;
         return {
             users: users?.map((ele) => {
                 const { mobile$user, extraFile$entity } = ele;
                 const mobile = mobile$user && mobile$user[0]?.mobile;
-                const avatar = features.extraFile.getUrl(extraFile$entity && extraFile$entity[0]);
+                const avatar = features.extraFile.getUrl(
+                    extraFile$entity && extraFile$entity[0]
+                );
                 const user2 = Object.assign({}, ele, {
                     mobile,
                     avatar,
@@ -185,8 +195,9 @@ export default OakComponent({
         redirectToAfterConfirm: {},
         claimUrl: '',
         qrCodeType: '',
-        onUpdate: (id) => { },
-        onCreate: () => { },
+        onUpdate: (id) => {},
+        onCreate: () => {},
+        disableDisplay: false,
     },
     data: {
         searchValue: '',
@@ -206,7 +217,10 @@ export default OakComponent({
     listeners: {
         'entity,entityId'(prev, next) {
             if (this.state.oakFullpath) {
-                if (prev.entity !== next.entity || prev.entityId !== next.entityId) {
+                if (
+                    prev.entity !== next.entity ||
+                    prev.entityId !== next.entityId
+                ) {
                     this.refresh();
                 }
             }
@@ -222,33 +236,45 @@ export default OakComponent({
     },
     methods: {
         goUpsert() {
-            const { entity, entityId, redirectToAfterConfirm, qrCodeType, claimUrl, onCreate, } = this.props;
+            const {
+                entity,
+                entityId,
+                redirectToAfterConfirm,
+                qrCodeType,
+                claimUrl,
+                onCreate,
+            } = this.props;
             if (onCreate) {
                 onCreate();
-            }
-            else {
+            } else {
                 if (process.env.NODE_ENV === 'development') {
-                    console.warn('userRelation将不再作为page直接使用，请使用回调函数处理');
+                    console.warn(
+                        'userRelation将不再作为page直接使用，请使用回调函数处理'
+                    );
                 }
-                this.navigateTo({
-                    url: '/userRelation/upsert',
-                    entity,
-                    entityId,
-                }, {
-                    redirectToAfterConfirm,
-                    qrCodeType,
-                    claimUrl,
-                });
+                this.navigateTo(
+                    {
+                        url: '/userRelation/upsert',
+                        entity,
+                        entityId,
+                    },
+                    {
+                        redirectToAfterConfirm,
+                        qrCodeType,
+                        claimUrl,
+                    }
+                );
             }
         },
         goUpdate(id) {
             const { entity, entityId, onUpdate } = this.props;
             if (onUpdate) {
                 onUpdate(id);
-            }
-            else {
+            } else {
                 if (process.env.NODE_ENV === 'development') {
-                    console.warn('userRelation将不再作为page直接使用，请使用回调函数处理');
+                    console.warn(
+                        'userRelation将不再作为page直接使用，请使用回调函数处理'
+                    );
                 }
                 this.navigateTo({
                     url: '/userRelation/upsert/byUser',
@@ -265,23 +291,26 @@ export default OakComponent({
             const user = users.find((ele) => ele.id === idRemove);
             const relations = user.userRelation$user;
             try {
-                this.updateItem({
-                    userRelation$user: [
-                        {
-                            id: generateNewId(),
-                            action: 'remove',
-                            data: {},
-                            filter: {
-                                id: {
-                                    $in: relations.map((ele) => ele.id),
+                this.updateItem(
+                    {
+                        userRelation$user: [
+                            {
+                                id: generateNewId(),
+                                action: 'remove',
+                                data: {},
+                                filter: {
+                                    id: {
+                                        $in: relations.map((ele) => ele.id),
+                                    },
                                 },
                             },
-                        },
-                    ],
-                }, idRemove, 'revoke');
+                        ],
+                    },
+                    idRemove,
+                    'revoke'
+                );
                 await this.execute();
-            }
-            catch (err) {
+            } catch (err) {
                 if (err instanceof OakUserUnpermittedException) {
                     this.setMessage({
                         type: 'error',
@@ -309,16 +338,18 @@ export default OakComponent({
             this.refresh();
         },
         chooseActionMp(e) {
-            const { entity, entityId, redirectToAfterConfirm, qrCodeType, } = this.props;
-            const { item: { mode }, } = e.detail;
+            const { entity, entityId, redirectToAfterConfirm, qrCodeType } =
+                this.props;
+            const {
+                item: { mode },
+            } = e.detail;
             if (mode === 'byMobile') {
                 this.navigateTo({
                     url: '/userRelation/upsert/byMobile',
                     entity,
                     entityId,
                 });
-            }
-            else {
+            } else {
                 this.navigateTo({
                     url: '/userRelation/upsert/byUserEntityGrant',
                     entity,
@@ -363,8 +394,7 @@ export default OakComponent({
             const { idRemoveMp } = this.state;
             try {
                 await this.confirmDelete(idRemoveMp);
-            }
-            catch (err) {
+            } catch (err) {
                 this.setState({
                     idRemoveMp: '',
                 });
