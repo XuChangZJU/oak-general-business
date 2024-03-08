@@ -82,8 +82,8 @@ export class Token<
         this.environment = environment;
         this.tokenValue = ''; // 置个空字符串代表还在load storage缓存的数据
         this.loadSavedToken();
-
-        if (process.env.OAK_PLATFORM === 'web') {
+        if (process.env.OAK_PLATFORM === 'web' && (process.env.NODE_ENV !== 'development' || process.env.PROD === 'true')) {
+            // 纯前台模式 多窗口时不监听storage
             // 在web下可能多窗口，一个窗口更新了token，其它窗口应跟着变
             window.addEventListener('storage', async (e) => {
                 if (e.key === LOCAL_STORAGE_KEYS.token) {
