@@ -1298,7 +1298,8 @@ export async function wakeupParasite(params, context) {
             playerId: parasite.userId,
             disablesAt: Date.now() + parasite.tokenLifeLength,
             env,
-            tokenValue,
+            refreshedAt: Date.now(),
+                value: tokenValue,
             applicationId: context.getApplicationId(),
         },
     }, { dontCollect: true });
@@ -1330,7 +1331,6 @@ function checkTokenEnvConsistency(env1, env2) {
             return false;
         }
     }
-    return true;
 }
 export async function refreshToken(params, context) {
     const { env, tokenValue } = params;

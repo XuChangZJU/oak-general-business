@@ -1848,7 +1848,8 @@ export async function wakeupParasite<
                 playerId: parasite.userId,
                 disablesAt: Date.now() + parasite.tokenLifeLength!,
                 env,
-                tokenValue,
+                refreshedAt: Date.now(),
+                value: tokenValue,
                 applicationId: context.getApplicationId(),
             },
         },
@@ -1885,7 +1886,6 @@ function checkTokenEnvConsistency(env1: WebEnv | WechatMpEnv | NativeEnv, env2: 
             return false;
         }
     }
-    return true;
 }
 
 export async function refreshToken<
