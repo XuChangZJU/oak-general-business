@@ -57,4 +57,4 @@ export declare function makeException<ED extends EntityDict & BaseEntityDict>(da
     message?: string;
     opRecords: SelectOpResult<ED>;
     [A: string]: any;
-}): OakException<BaseEntityDict> | undefined;
+}): OakUploadException<EntityDict & BaseEntityDict> | OakTokenExpiredException<EntityDict & BaseEntityDict> | OakUserDisabledException<EntityDict & BaseEntityDict> | OakDistinguishUserException<EntityDict & BaseEntityDict> | OakException<ED> | OakNotEnoughMoneyException<EntityDict & BaseEntityDict> | OakMobileUnsetException<EntityDict & BaseEntityDict> | OakUserInfoUncompletedException<EntityDict & BaseEntityDict> | undefined;

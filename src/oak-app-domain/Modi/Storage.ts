@@ -28,7 +28,7 @@ export const desc: StorageDesc<OpSchema> = {
             notNull: true,
             type: "varchar",
             params: {
-                length: 16
+                length: 24
             }
         },
         data: {

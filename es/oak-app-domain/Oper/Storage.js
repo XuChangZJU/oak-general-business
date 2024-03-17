@@ -5,7 +5,7 @@ export const desc = {
             notNull: true,
             type: "varchar",
             params: {
-                length: 16
+                length: 24
             }
         },
         data: {
@@ -35,5 +35,19 @@ export const desc = {
         }
     },
     actionType: "appendOnly",
-    actions
+    actions,
+    indexes: [
+        {
+            name: 'index_bornAt_operatorId',
+            attributes: [
+                {
+                    name: 'bornAt',
+                    direction: 'DESC',
+                },
+                {
+                    name: "operatorId",
+                },
+            ]
+        }
+    ]
 };

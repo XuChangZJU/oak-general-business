@@ -26,7 +26,7 @@ export const desc = {
             notNull: true,
             type: "varchar",
             params: {
-                length: 16
+                length: 24
             }
         },
         data: {

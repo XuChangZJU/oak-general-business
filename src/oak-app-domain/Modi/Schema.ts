@@ -10,7 +10,7 @@ export type OpSchema = EntityShape & {
     targetEntity: String<32>;
     entity: String<32>;
     entityId: String<64>;
-    action: String<16>;
+    action: String<24>;
     data: Object;
     filter?: Object | null;
     extra?: Object | null;
@@ -21,7 +21,7 @@ export type Schema = EntityShape & {
     targetEntity: String<32>;
     entity: String<32>;
     entityId: String<64>;
-    action: String<16>;
+    action: String<24>;
     data: Object;
     filter?: Object | null;
     extra?: Object | null;

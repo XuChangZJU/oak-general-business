@@ -7,7 +7,7 @@ export const desc: StorageDesc<OpSchema> = {
             notNull: true,
             type: "varchar",
             params: {
-                length: 16
+                length: 24
             }
         },
         data: {
@@ -37,5 +37,19 @@ export const desc: StorageDesc<OpSchema> = {
         }
     },
     actionType: "appendOnly",
-    actions
+    actions,
+    indexes: [
+        {
+            name: 'index_bornAt_operatorId',
+            attributes: [
+                {
+                    name: 'bornAt',
+                    direction: 'DESC',
+                },
+                {
+                    name: "operatorId",
+                },
+            ]
+        }
+    ]
 };

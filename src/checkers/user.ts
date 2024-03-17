@@ -1,6 +1,6 @@
 import { judgeRelation } from "oak-domain/lib/store/relation";
 import { OakInputIllegalException, Checker, OakUserUnpermittedException } from "oak-domain/lib/types";
-import { ROOT_ROLE_ID } from "../constants";
+import { checkFilterContains } from 'oak-domain/lib/store/filter';
 import { EntityDict } from '../oak-app-domain';
 import { RuntimeCxt } from "../types/RuntimeCxt";
 
@@ -14,14 +14,15 @@ const checkers: Checker<EntityDict, 'user', RuntimeCxt> [] = [
         }
     },
     {
-        type: 'relation',
+        type: 'logical',
         action: ['remove', 'disable', 'enable'],
         entity: 'user',
-        relationFilter: () => {
+        checker: (operation, context) => {
             // 只有root才能进行操作
-            throw new OakUserUnpermittedException('user', { id: 'disable', action: 'disable', data: {} });
-        },
-        errMsg: '越权操作',
+            if (!context.isRoot()) {
+                throw new OakUserUnpermittedException('user', { id: 'disable', action: 'disable', data: {} });
+            }
+        }
     },
     {
         type: 'data',
@@ -42,49 +43,46 @@ const checkers: Checker<EntityDict, 'user', RuntimeCxt> [] = [
         },
         errMsg: '不能禁用root用户',
     },
-    // {
-    //     type: 'row',
-    //     action: 'select',
-    //     entity: 'user',
-    //     filter: (operation, context) => {
-    //         const systemId = context.getSystemId();
-    //         // todo 查询用户 先不加systemId
-    //         if (systemId) {
-    //             return {
-    //                 id: {
-    //                     $in: {
-    //                         entity: 'userSystem',
-    //                         data: {
-    //                             userId: 1,
-    //                         },
-    //                         filter: {
-    //                             systemId,
-    //                         },
-    //                     },
-    //                 },
-    //             };
-    //         }
-    //     },
-    // },
-    {
-        entity: 'user',
-        action: 'update',
-        type: 'relation',
-        relationFilter: (operation, context) => {
-            const userId = context.getCurrentUserId();  
-            const { data } = operation as EntityDict['user']['Update'];
-            for (const attr in data) {
-                const rel = judgeRelation(context.getSchema(), 'user', attr);
-                if (rel === 1) {
-                    return {
-                        id: userId,
-                    };
-                }
-            }
-            return undefined;
-        },
-        errMsg: '您不能更新他人信息',
-    }
 ];
 
 export default checkers;
+
+export const UserCheckers: Checker<EntityDict, 'user', RuntimeCxt>[] = [
+    {
+        entity: 'user',
+        action: 'update',
+        type: 'logical',
+        checker: (operation, context) => {
+            // 在大部分应用中，除了root，其他人不应该有权利更新其他人信息，但是shadow用户应当除外
+            // 但这些条件不一定对所有的应用都成立，应用如果有更复杂的用户相互更新策略，就不要引入这个checker
+            // 这也是个例子，如何对user这样的特殊对象进行权限控制
+            const userId = context.getCurrentUserId();
+            if (context.isRoot())  {
+                return;
+            }
+            const { filter, data } = operation as EntityDict['user']['Update'];
+            for (const attr in data) {
+                const rel = judgeRelation(context.getSchema(), 'user', attr);
+                if (rel !== 1) {
+                    throw new OakUserUnpermittedException('user', operation, '您不能更新他人信息');
+                }
+            }
+            const result = checkFilterContains<EntityDict, 'user', RuntimeCxt>('user', context, {
+                id: userId,
+            }, filter, true);
+
+            if (result instanceof Promise) {
+                return result.then(
+                    (r) => {
+                        if (!r) {
+                            throw new OakUserUnpermittedException('user', operation, '您不能更新他人信息');
+                        }
+                    }
+                );
+            }
+            if (!result) {
+                throw new OakUserUnpermittedException('user', operation, '您不能更新他人信息');
+            }
+        },
+    }
+];
