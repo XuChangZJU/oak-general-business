@@ -1299,7 +1299,7 @@ export async function wakeupParasite(params, context) {
             disablesAt: Date.now() + parasite.tokenLifeLength,
             env,
             refreshedAt: Date.now(),
-                value: tokenValue,
+            value: tokenValue,
             applicationId: context.getApplicationId(),
         },
     }, { dontCollect: true });

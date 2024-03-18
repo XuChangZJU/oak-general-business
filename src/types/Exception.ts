@@ -133,37 +133,37 @@ export function makeException<ED extends EntityDict & BaseEntityDict>(data: {
     const { name, message, opRecords } = data;
     switch (name) {
         case 'OakNotEnoughMoneyException': {
-            const e = new OakNotEnoughMoneyException(message);
+            const e = new OakNotEnoughMoneyException<ED>(message);
             e.setOpRecords(opRecords);
             return e;
         }
         case 'OakDistinguishUserException': {
-            const e = new OakDistinguishUserException(data.userId, data.usingPassword, data.usingIdCard, data.usingWechatUser, data.usingEmail, message);
+            const e = new OakDistinguishUserException<ED>(data.userId, data.usingPassword, data.usingIdCard, data.usingWechatUser, data.usingEmail, message);
             e.setOpRecords(opRecords);
             return e;
         }
         case 'OakUserDisabledException': {
-            const e = new OakUserDisabledException(message);
+            const e = new OakUserDisabledException<ED>(message);
             e.setOpRecords(opRecords);
             return e;
         }
         case 'OakTokenExpiredException': {
-            const e = new OakTokenExpiredException(message);
+            const e = new OakTokenExpiredException<ED>(message);
             e.setOpRecords(opRecords);
             return e;
         }
         case 'OakMobileUnsetException': {
-            const e = new OakMobileUnsetException(message);
+            const e = new OakMobileUnsetException<ED>(message);
             e.setOpRecords(opRecords);
             return e;
         }
         case 'OakUserInfoUncompletedException': {
-            const e = new OakUserInfoUncompletedException(message);
+            const e = new OakUserInfoUncompletedException<ED>(message);
             e.setOpRecords(opRecords);
             return e;
         }
         case 'OakUploadException': {
-            const e = new OakUploadException(message);
+            const e = new OakUploadException<ED>(message);
             e.setOpRecords(opRecords);
             return e;
         }
