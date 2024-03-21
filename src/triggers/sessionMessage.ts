@@ -263,7 +263,6 @@ const triggers: Trigger<
                 throw err;
             }
             closeRootMode();
-            return 0;
         },
     } as CreateTrigger<
         EntityDict,

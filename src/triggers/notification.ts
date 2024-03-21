@@ -300,7 +300,6 @@ const triggers: Trigger<EntityDict, 'notification', BackendRuntimeContext<Entity
                 throw err;
             }
             closeRootMode();
-            return 0;
         }
     } as CreateTrigger<EntityDict, 'notification', BackendRuntimeContext<EntityDict>>,
     {

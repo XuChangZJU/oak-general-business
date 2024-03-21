@@ -40,7 +40,6 @@ const triggers = [
         entity: 'extraFile',
         action: 'remove',
         fn: async ({ ids }, context) => {
-            let number = 0;
             const rows = await context.select('extraFile', {
                 data: {
                     id: 1,
@@ -62,10 +61,8 @@ const triggers = [
                 if (count === 0) {
                     const uploader = getCos(origin);
                     await uploader.removeFile(extraFile, context);
-                    number++;
                 }
             }
-            return number;
         }
     },
 ];

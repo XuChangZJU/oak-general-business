@@ -30,7 +30,6 @@ export const desc = {
             }
         },
         bornAt: {
-            notNull: true,
             type: "datetime"
         }
     },

@@ -195,7 +195,6 @@ const triggers = [
                 throw err;
             }
             closeRootMode();
-            return 0;
         },
     },
 ];
