@@ -59,7 +59,7 @@ function QrCode(props: IQrCodeProps) {
             );
         } else {
             const diff2 = dayjs(expiresAt).diff(dayjs(), 'minutes');
-            const expiresAtStr = dayjs(expiresAt).format('HH:mm');
+            const expiresAtStr = dayjs(expiresAt).format('YYYY年MM月DD日 HH:mm');
 
             if (diff2 > 0) {
                 V = (
