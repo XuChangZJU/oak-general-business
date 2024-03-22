@@ -48,6 +48,7 @@ export default function Render(
                                 }, id, 'visit');
                                 methods.execute(undefined, false);
                             }}
+                            $$createAt$$={message.$$createAt$$}
                         />
                     ))}
                 </div>

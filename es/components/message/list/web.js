@@ -9,7 +9,7 @@ export default function Render(props) {
             {messages?.length > 0 ? (<div>
                     {messages?.map((message, index) => (<MessageCell oakId={message.id} key={message.id} onItemClicked={(item) => {
                     goDetailById(item.id);
-                }} title={message.title} router={message.router} id={message.id} visitState={message.visitState} visit={(id) => {
+                }} title={message.title} router={message.router} id={message.id} visitState={message.visitState} $$createAt$$={message.$$createAt$$} visit={(id) => {
                     methods.updateItem({}, id, 'visit');
                     methods.execute(undefined, false);
                 }}/>))}

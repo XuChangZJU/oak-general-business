@@ -12,7 +12,7 @@ export default function Render(props) {
                     const { id } = item;
                     onClose && onClose();
                     goDetailById(id);
-                }} title={message.title} router={message.router} id={message.id} visitState={message.visitState} visit={(id) => {
+                }} title={message.title} router={message.router} id={message.id} visitState={message.visitState} $$createAt$$={message.$$createAt$$} visit={(id) => {
                     methods.updateItem({}, id, 'visit');
                     methods.execute(undefined, false);
                 }}/>))}

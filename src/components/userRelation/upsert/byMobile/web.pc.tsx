@@ -84,6 +84,7 @@ export default function Render(
                 <OnUser
                     oakAutoUnmount={true}
                     oakPath={`${oakFullpath}.user`}
+                    oakId={userId}
                     entity={entity}
                     entityId={entityId}
                     relations={relations}
