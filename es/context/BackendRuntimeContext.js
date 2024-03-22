@@ -16,6 +16,7 @@ export class BackendRuntimeContext extends BRC {
     amIRoot;
     amIReallyRoot;
     rootMode;
+    userId;
     async refineOpRecords() {
         for (const opRecord of this.opRecords) {
             if (opRecord.a === 's') {
@@ -42,46 +43,63 @@ export class BackendRuntimeContext extends BRC {
             }
         }
     }
-    async setTokenValue(tokenValue) {
-        const result = await this.select('token', {
+    async setTokenValue(tokenValue, later, userId) {
+        if (!later || !userId) {
+            const result = await this.select('token', {
+                data: {
+                    id: 1,
+                    ableState: 1,
+                    user: {
+                        id: 1,
+                        userState: 1,
+                        isRoot: 1,
+                    },
+                    value: 1,
+                    player: {
+                        id: 1,
+                        isRoot: 1,
+                    },
+                },
+                filter: {
+                    value: tokenValue,
+                },
+            }, {
+                dontCollect: true,
+                blockTrigger: true,
+            });
+            if (result.length === 0) {
+                console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`);
+                if (!later) {
+                    throw new OakTokenExpiredException();
+                }
+                // this.tokenException = new OakTokenExpiredException();
+                return;
+            }
+            const token = result[0];
+            if (token.ableState === 'disabled' && !later) {
+                console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}已经被disable`);
+                throw new OakTokenExpiredException();
+                // this.tokenException = new OakTokenExpiredException();
+                return;
+            }
+            const { user, player } = token;
+            this.amIRoot = user?.isRoot;
+            this.amIReallyRoot = player?.isRoot;
+            this.token = token;
+            return;
+        }
+        // 若是later环境，用userId来查询处理
+        const [user] = await this.select('user', {
             data: {
                 id: 1,
-                ableState: 1,
-                user: {
-                    id: 1,
-                    userState: 1,
-                    isRoot: 1,
-                },
-                value: 1,
-                player: {
-                    id: 1,
-                    isRoot: 1,
-                },
+                isRoot: 1,
             },
-            filter: {
-                value: tokenValue,
-            },
-        }, {
-            dontCollect: true,
-            blockTrigger: true,
-        });
-        if (result.length === 0) {
-            console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`);
-            throw new OakTokenExpiredException();
-            // this.tokenException = new OakTokenExpiredException();
-            return;
-        }
-        const token = result[0];
-        if (token.ableState === 'disabled') {
-            console.log(`构建BackendRuntimeContext对应tokenValue「${tokenValue}已经被disable`);
-            throw new OakTokenExpiredException();
-            // this.tokenException = new OakTokenExpiredException();
-            return;
-        }
-        const { user, player } = token;
-        this.amIRoot = user?.isRoot;
-        this.amIReallyRoot = player?.isRoot;
-        this.token = token;
+            filter: { id: userId },
+        }, { dontCollect: true });
+        assert(user, '初始化context时有userId但查询不到user');
+        this.amIRoot = user.isRoot;
+        this.amIReallyRoot = user.isRoot;
+        this.userId = userId;
     }
     async setApplication(appId) {
         const result = await this.select('application', {
@@ -96,18 +114,18 @@ export class BackendRuntimeContext extends BRC {
         assert(result.length > 0, `构建BackendRuntimeContext对应appId「${appId}」找不到application`);
         this.application = result[0];
     }
-    async initialize(data) {
+    async initialize(data, later) {
         await super.initialize(data);
         if (data) {
             const closeRootMode = this.openRootMode();
             try {
-                const { a: appId, t: tokenValue, rm } = data;
+                const { a: appId, t: tokenValue, rm, userId } = data;
                 const promises = [];
                 if (appId) {
                     promises.push(this.setApplication(appId));
                 }
                 if (tokenValue) {
-                    promises.push(this.setTokenValue(tokenValue));
+                    promises.push(this.setTokenValue(tokenValue, later, userId));
                 }
                 if (promises.length > 0) {
                     await Promise.all(promises);
@@ -165,8 +183,15 @@ export class BackendRuntimeContext extends BRC {
         return this.token;
     }
     getCurrentUserId(allowUnloggedIn) {
+        if (this.userId) {
+            return this.userId;
+        }
         const token = this.getToken(allowUnloggedIn);
         return token?.userId;
+    }
+    setCurrentUserId(userId) {
+        assert(this.isReallyRoot);
+        this.userId = userId;
     }
     async getSerializedData() {
         const data = await super.getSerializedData();
@@ -175,6 +200,7 @@ export class BackendRuntimeContext extends BRC {
             a: this.application?.id,
             t: this.token?.value,
             rm: this.rootMode,
+            userId: this.getCurrentUserId(true),
         };
     }
     isRoot() {

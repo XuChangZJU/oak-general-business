@@ -14,10 +14,11 @@ export default OakComponent({
         const isRoot = this.features.token.isRoot();
         assert(userId);
         const { entity, entityId } = this.props;
-        const userRelationFilter: EntityDict['userRelation']['Selection']['filter'] = {
-            entity: entity as string,
-            entityId,
-        };
+        const userRelationFilter: EntityDict['userRelation']['Selection']['filter'] =
+            {
+                entity: entity as string,
+                entityId,
+            };
         if (!isRoot) {
             userRelationFilter.relation = {
                 relationAuth$destRelation: {
@@ -26,8 +27,8 @@ export default OakComponent({
                             userId,
                         },
                     },
-                }
-            }
+                },
+            };
         }
         return {
             id: 1,
@@ -64,13 +65,12 @@ export default OakComponent({
                                         data: {
                                             id: 1,
                                             userId: 1,
-                                        }
-                                    }
-
-                                }
-                            }
-                        }
-                    }
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
                 },
                 filter: userRelationFilter,
             },
@@ -105,10 +105,10 @@ export default OakComponent({
                     $attr: {
                         $$createAt$$: 1,
                     },
-                    $direction: 'desc'
-                }
+                    $direction: 'desc',
+                };
             },
-        }
+        },
     ],
     filters: [
         {
@@ -116,61 +116,40 @@ export default OakComponent({
                 const userId = this.features.token.getUserId();
                 const isRoot = this.features.token.isRoot();
                 const { entityId, entity } = this.props;
-                const filter: EntityDict['userRelation']['Selection']['filter'] = {
-                    entity,
-                    entityId,
-                };
+                const filter: EntityDict['userRelation']['Selection']['filter'] =
+                    {
+                        entity,
+                        entityId,
+                    };
                 if (!isRoot) {
                     filter.relation = {
                         relationAuth$destRelation: {
                             sourceRelation: {
                                 userRelation$relation: {
                                     userId,
-                                }
-                            }
-                        }
-                    };
-                    /* filter.relationId = {
-                        $in: {
-                            entity: 'relationAuth',
-                            data: {
-                                destRelationId: 1,
-                            },
-                            filter: {
-                                sourceRelationId: {
-                                    $in: {
-                                        entity: 'userRelation',
-                                        data: {
-                                            relationId: 1,
-                                        },
-                                        filter: {
-                                            userId,
-                                        },
-                                    },
                                 },
                             },
                         },
-                    }; */
+                    };
                 }
                 return {
                     userRelation$user: filter,
-                    /* id: {
-                        $in: {
-                            entity: 'userRelation',
-                            data: {
-                                userId: 1,
-                            },
-                            filter,
-                        },
-                    }, */
                 };
             },
         },
     ],
     isList: true,
-    formData({ data: users, props, features }) {
+    formData({ data: rows, props, features }) {
         const { entity, entityId } = props;
         const filter = this.getFilterByName('fulltext');
+        const users = props.disableDisplay
+            ? rows?.filter((ele) => {
+                  const userRelations = ele.userRelation$user?.filter(
+                      (ele) => !ele.$$deleteAt$$
+                  );
+                  return !!(userRelations && userRelations.length > 0);
+              })
+            : rows;
         return {
             users: users?.map((ele: any) => {
                 const { mobile$user, extraFile$entity } = ele;
@@ -190,11 +169,13 @@ export default OakComponent({
     properties: {
         entity: '' as keyof EntityDict,
         entityId: '',
-        redirectToAfterConfirm: {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
+        redirectToAfterConfirm:
+            {} as EntityDict['userEntityGrant']['Schema']['redirectTo'],
         claimUrl: '',
-        qrCodeType: '' as string,
+        qrCodeType: '',
         onUpdate: (id: string) => {},
         onCreate: () => {},
+        disableDisplay: false,
     },
     data: {
         searchValue: '',
@@ -214,7 +195,10 @@ export default OakComponent({
     listeners: {
         'entity,entityId'(prev, next) {
             if (this.state.oakFullpath) {
-                if (prev.entity !== next.entity || prev.entityId !== next.entityId) {
+                if (
+                    prev.entity !== next.entity ||
+                    prev.entityId !== next.entityId
+                ) {
                     this.refresh();
                 }
             }
@@ -240,10 +224,11 @@ export default OakComponent({
             } = this.props;
             if (onCreate) {
                 onCreate();
-            }
-            else {
+            } else {
                 if (process.env.NODE_ENV === 'development') {
-                    console.warn('userRelation将不再作为page直接使用，请使用回调函数处理');
+                    console.warn(
+                        'userRelation将不再作为page直接使用，请使用回调函数处理'
+                    );
                 }
                 this.navigateTo(
                     {
@@ -263,19 +248,18 @@ export default OakComponent({
             const { entity, entityId, onUpdate } = this.props;
             if (onUpdate) {
                 onUpdate(id);
-            }
-            else {
+            } else {
                 if (process.env.NODE_ENV === 'development') {
-                    console.warn('userRelation将不再作为page直接使用，请使用回调函数处理');
+                    console.warn(
+                        'userRelation将不再作为page直接使用，请使用回调函数处理'
+                    );
                 }
-                this.navigateTo(
-                    {
-                        url: '/userRelation/upsert/byUser',
-                        entity,
-                        entityId,
-                        oakId: id,
-                    },
-                );
+                this.navigateTo({
+                    url: '/userRelation/upsert/byUser',
+                    entity,
+                    entityId,
+                    oakId: id,
+                });
             }
         },
         async confirmDelete(idRemove: string) {
@@ -338,12 +322,8 @@ export default OakComponent({
         },
 
         chooseActionMp(e: WechatMiniprogram.TouchEvent) {
-            const {
-                entity,
-                entityId,
-                redirectToAfterConfirm,
-                qrCodeType,
-            } = this.props;
+            const { entity, entityId, redirectToAfterConfirm, qrCodeType } =
+                this.props;
             const {
                 item: { mode },
             } = e.detail;
@@ -422,19 +402,20 @@ export default OakComponent({
         },
     },
 }) as <ED2 extends EntityDict & BaseEntityDict, T2 extends keyof ED2>(
-        props: ReactComponentProps<
-            ED2,
-            T2,
-            true,
-            {
-                entity: keyof ED2,
-                entityId: string,
-                redirectToAfterConfirm: ED2['userEntityGrant']['Schema']['redirectTo'],
-                qrCodeType: string,
-                showTitle: true,
-                showBack: false,
-                onCreate: () => void,
-                onUpdate: (id: string) => void,
-            }
-        >
-    ) => React.ReactElement;
+    props: ReactComponentProps<
+        ED2,
+        T2,
+        true,
+        {
+            entity: keyof ED2;
+            entityId: string;
+            redirectToAfterConfirm: ED2['userEntityGrant']['Schema']['redirectTo'];
+            qrCodeType: string;
+            showTitle: true;
+            showBack: false;
+            onCreate: () => void;
+            onUpdate: (id: string) => void;
+            disableDisplay: false;
+        }
+    >
+) => React.ReactElement;

@@ -1,9 +1,9 @@
 import { LOCAL_STORAGE_KEYS } from '../config/constants';
-import { Feature } from 'oak-frontend-base';
+import { Feature } from 'oak-frontend-base/es/types/Feature';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { cloneDeep, merge } from 'oak-domain/lib/utils/lodash';
 import { applicationProjection } from '../types/Projection';
-import { OakTokenExpiredException, OakUserDisabledException, OakApplicationLoadingException, } from '../types/Exception';
+import { OakApplicationLoadingException, } from '../types/Exception';
 export class Application extends Feature {
     type;
     domain; //域名
@@ -12,15 +12,13 @@ export class Application extends Feature {
     cache;
     storage;
     projection;
-    token;
-    constructor(type, domain, cache, storage, token) {
+    constructor(type, domain, cache, storage) {
         super();
         this.cache = cache;
         this.storage = storage;
         this.type = type;
         this.domain = domain;
         this.projection = cloneDeep(applicationProjection);
-        this.token = token;
     }
     async refresh() {
         const { data } = await this.cache.refresh('application', {
@@ -52,20 +50,10 @@ export class Application extends Feature {
             const { result } = await this.cache.exec('getApplication', {
                 type,
                 domain,
-            }, undefined, undefined, true);
+            }, undefined, true, true);
             applicationId = result;
         }
         catch (err) {
-            if (err instanceof OakTokenExpiredException ||
-                err instanceof OakUserDisabledException) {
-                // 出现上面的异常，先清除本地token, 重新发起一次请求
-                this.token.removeToken(true);
-                const { result } = await this.cache.exec('getApplication', {
-                    type,
-                    domain,
-                }, undefined, undefined, true);
-                applicationId = result;
-            }
             throw err;
         }
         this.applicationId = applicationId;

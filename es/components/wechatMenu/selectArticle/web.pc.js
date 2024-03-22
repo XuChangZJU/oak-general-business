@@ -28,7 +28,7 @@ export default function Render(props) {
                     const urlList = record.content.news_item.map((ele) => {
                         return ele.url;
                     });
-                    return (<div>
+                    return (<div className={Style.selectArticle}>
                             <Select ref={selectRef} style={{ width: 160 }} bordered={false} value={urlList.includes(url) ? url : '请选择一篇文章'} dropdownRender={() => <div className={Style.select}>
                                     {record.content.news_item.map((ele, index) => (<Popover content={<div style={{ padding: 12 }}><ShowNews oakAutoUnmount={true} news={record.content.news_item.filter((ele, index2) => index === index2)}/></div>} placement='right'>
                                                 <div className={Style.selectItem} onClick={() => {

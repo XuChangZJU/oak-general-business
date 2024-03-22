@@ -32,6 +32,7 @@ export default OakComponent({
         }
     ],
     formData({ data: rows }) {
+        console.log(rows);
         return {
             rows,
         };

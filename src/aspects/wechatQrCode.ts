@@ -4,11 +4,10 @@ import { EntityDict } from "../oak-app-domain";
 import { Config as SysConfig, QrCodeType } from '../types/Config';
 import { Schema as Application, WechatMpConfig, WechatPublicConfig } from "../oak-app-domain/Application/Schema";
 import { CreateOperationData as CreateWechatQrcodeData, WechatQrCodeProps } from '../oak-app-domain/WechatQrCode/Schema';
-import {
-    WechatSDK,
+import WechatSDK, {
     WechatMpInstance,
     WechatPublicInstance,
-} from 'oak-external-sdk';
+} from 'oak-external-sdk/lib/WechatSDK';
 import { shrinkUuidTo32Bytes } from 'oak-domain/lib/utils/uuid';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 

@@ -1,4 +1,4 @@
-import { Feature } from 'oak-frontend-base';
+import { Feature } from 'oak-frontend-base/es/types/Feature';
 import { isIos, isWeiXin, isWeiXinDevTools, } from 'oak-frontend-base/es/utils/utils';
 import { promisify as wxPromisify } from 'oak-frontend-base/es/utils/promisify';
 import { uniq } from 'oak-domain/lib/utils/lodash';
@@ -46,7 +46,7 @@ export class WeiXinJsSdk extends Feature {
             console.warn('只能在微信客户端初始化JSSDK');
             return;
         }
-        const { jsApiList, openTagList } = options || {};
+        const { jsApiList, openTagList, debug = process.env.NODE_ENV === 'development', } = options || {};
         let url = window.location.href;
         //在ios上 实际真正有效的的签名URL是【第一次进入应用时的URL】
         if (isIos && !isWeiXinDevTools && this.landingUrl) {
@@ -78,7 +78,7 @@ export class WeiXinJsSdk extends Feature {
             openTagList2 = uniq(openTagList2.concat(openTagList));
         }
         return this.getConfig({
-            debug: process.env.NODE_ENV === 'development',
+            debug: debug,
             appId: result.appId,
             timestamp: result.timestamp,
             nonceStr: result.noncestr,

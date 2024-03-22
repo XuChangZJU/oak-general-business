@@ -38,9 +38,11 @@ export function createComponent<
     >,
     features: BasicFeatures<ED, Cxt, FrontCxt, AD & CommonAspectDict<ED, Cxt>> & FD,
 ) {
-    const { lifetimes, methods, ...rest } = option;
-    const { attached, ...restLifeTimes } = lifetimes || {};
+    const { methods, features: optionFeatures, userInsensitive, ...rest } = option;
 
+    const tokenFeatures = optionFeatures?.find(
+        ele => ele === 'token' || (typeof ele === 'object' && ele.feature === 'token')
+    );
     return createBaseComponent<IsList, ED, T, Cxt, FrontCxt, AD, FD, FormedData, TData, TProperty, TMethod & {
         subscribeMpMessage: (messageTypes: string[], haveToAccept?: boolean, tip?: string) => Promise<boolean>;
     }>({
@@ -50,13 +52,10 @@ export function createComponent<
             },
             ...(methods as TMethod),
         },
-        lifetimes: {
-            attached() {
-                this.addFeatureSub('token', () => this.refresh());
-                attached && attached.call(this);
-            },
-            ...restLifeTimes,
-        },
+        features: (userInsensitive || !!tokenFeatures) ? optionFeatures : (optionFeatures || []).concat([{
+            feature: 'token',
+            behavior: 'refresh'
+        }]),
         ...rest,
     }, features) as React.ForwardRefExoticComponent<React.RefAttributes<unknown>>;
 }

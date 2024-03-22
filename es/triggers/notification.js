@@ -1,5 +1,5 @@
 import { assert } from 'oak-domain/lib/utils/assert';
-import { WechatSDK } from 'oak-external-sdk';
+import WechatSDK from 'oak-external-sdk/lib/WechatSDK';
 import { composeUrl } from 'oak-domain/lib/utils/domain';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { sendSms } from '../utils/sms';
@@ -263,7 +263,6 @@ const triggers = [
                 throw err;
             }
             closeRootMode();
-            return 0;
         }
     },
     {

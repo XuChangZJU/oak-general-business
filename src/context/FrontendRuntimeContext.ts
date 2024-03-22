@@ -1,6 +1,7 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
-import { FrontendRuntimeContext as Frc, BackendRuntimeContext as Brc, SerializedData as Fsd, BasicFeatures } from 'oak-frontend-base';
+import { FrontendRuntimeContext as Frc, SerializedData as Fsd } from 'oak-frontend-base';
+import { BasicFeatures } from 'oak-frontend-base'
 import { EntityDict } from '../oak-app-domain';
 
 import { RuntimeContext } from './RuntimeContext';
@@ -27,6 +28,7 @@ export type AspectDict<
 export interface SerializedData extends Fsd {
     a?: string;
     t?: string;
+    userId?: string;            // 后台专用
     rm?: boolean;
 };
 

@@ -34,8 +34,6 @@ export default OakComponent({
             data: {
                 id: 1,
             },
-            indexFrom: 0,
-            count: 1,
         },
         article$articleMenu: {
             $entity: 'article',
@@ -43,8 +41,6 @@ export default OakComponent({
                 id: 1,
                 name: 1,
             },
-            indexFrom: 0,
-            count: 1,
         },
     },
     properties: {

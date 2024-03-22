@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button, Input, Form, TextArea } from 'antd-mobile';
 import Style from './web.module.less';
 import { OakInputIllegalException } from 'oak-domain/lib/types';

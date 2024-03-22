@@ -1,3 +1,4 @@
+import React from 'react';
 import { Alert, Space, List, Button, Row, Col, Divider, Flex } from 'antd';
 import UbPicker from './ubPicker';
 import Styles from './web.pc.module.less';

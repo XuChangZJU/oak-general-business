@@ -17,7 +17,6 @@ export default OakComponent({
             this.setState({
                 loading: true,
             });
-            // const { features, t } = this;
             const token = this.features.token.getToken(true);
             const url = window.location.href;
             const urlParse = new URL(url);

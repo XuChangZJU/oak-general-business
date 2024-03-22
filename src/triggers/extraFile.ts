@@ -49,7 +49,6 @@ const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDic
         entity: 'extraFile',
         action: 'remove',
         fn: async ({ ids }, context) => {
-            let number = 0;
             const rows = await context.select('extraFile', {
                 data: {
                     id: 1,
@@ -72,10 +71,8 @@ const triggers: Trigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDic
                 if (count === 0) {
                     const uploader = getCos(origin!);
                     await uploader.removeFile(extraFile as EntityDict['extraFile']['OpSchema'], context);
-                    number ++;
                 }
             }
-            return number;
         }
     } as RemoveTrigger<EntityDict, 'extraFile', BackendRuntimeContext<EntityDict>>,
 ];

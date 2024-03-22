@@ -37,9 +37,9 @@ export default function render(
     } = props.data;
     const { t, onSubmit } = props.methods;
 
-    const disabled = (oakExecuting ||
+    const disabled = oakExecuting ||
         ['uploading'].includes(state) ||
-        (oakExecutable !== true && ['uploaded'].includes(state))) && !failureIds;
+        oakExecutable !== true && !failureIds;
     let text = executeText || t('common::submit');
     if (oakExecuting) {
         text = t('executing', { text });

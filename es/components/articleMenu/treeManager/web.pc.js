@@ -1,13 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import TreeList from '../treeList';
 import Styles from './web.pc.module.less';
-import { Button, Divider, Tooltip, Space, Drawer, Input, Image, Tag, Dropdown } from 'antd';
+import { Button, Divider, Tooltip, Space, Drawer, Input, Tag } from 'antd';
 const { Search } = Input;
-import { EyeOutlined, CopyOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlusOutlined, EditOutlined, MenuOutlined, SearchOutlined } from '@ant-design/icons';
+import { EyeOutlined, CopyOutlined, MenuFoldOutlined, MenuUnfoldOutlined, PlusOutlined, EditOutlined } from '@ant-design/icons';
 import ArticleUpsert from '../../article/upsert';
 import ArticleDetail from '../../article/cell';
 import copy from 'copy-to-clipboard';
-import dayjs from 'dayjs';
 export default function Render(props) {
     const { entity, entityId, oakFullpath, show, articleMenuId, width, filteredArticles, articleId } = props.data;
     const { gotoDoc, setMessage, gotoArticleDetail, searchArticle, getArticleMenuIdByArticle } = props.methods;
@@ -199,36 +198,110 @@ export default function Render(props) {
                     </div>);
             }
             else {
-                return (
-                // <div className={Styles.container2}>
-                //     <div className={Styles.menu}>
-                //         <TreeList
-                //             oakPath={`${oakFullpath}.articleMenus`}
-                //             entity={entity}
-                //             entityId={entityId}
-                //             onGrandChildEditArticleChange={checkEditArticle}
-                //             show={show}
-                //             articleMenuId={articleMenuId ? articleMenuId : undefined}
-                //             getBreadcrumbItems={getBreadcrumbItems}
-                //             breadcrumbItems={[]}
-                //             selectedArticleId={selectedArticleId ? selectedArticleId : undefined}
-                //             defaultOpen={defaultOpen}
-                //             changeDefaultOpen={changeDefaultOpen}
-                //             openArray={openArray ? openArray : undefined}
-                //         />
+                return (<div className={Styles.container2}>
+                        <div className={Styles.menu}>
+                            <TreeList oakPath={`${oakFullpath}.articleMenus`} entity={entity} entityId={entityId} onGrandChildEditArticleChange={checkEditArticle} show={show} articleMenuId={articleMenuId ? articleMenuId : undefined} getBreadcrumbItems={getBreadcrumbItems} breadcrumbItems={[]} selectedArticleId={selectedArticleId ? selectedArticleId : undefined} defaultOpen={defaultOpen} changeDefaultOpen={changeDefaultOpen} openArray={openArray ? openArray : undefined}/>
+                        </div>
+                        <div className={Styles.editor}>
+                            {editArticle && (<div>
+                                        <div style={{ fontSize: 14, display: 'flex', flexDirection: 'row', marginLeft: 10, marginBottom: 5 }}>
+                                            {breadcrumbItems.length > 0 &&
+                            breadcrumbItems.map((breadcrumbItem, index) => {
+                                return index !== breadcrumbItems.length - 1 ? (<div style={{ color: '#B2B2B2' }} key={index}>
+                                                            {breadcrumbItem}
+                                                            <span style={{ margin: '0 6px' }}>/</span>
+                                                        </div>) : (<div className={Styles.breadcrumbItem} key={index}>
+                                                            {breadcrumbItem}
+                                                        </div>);
+                            })}
+                                        </div>
+                                        <ArticleDetail oakId={editArticle} oakAutoUnmount={true} oakPath={`article-detail-${editArticle}`}/>
+                                    </div>)}
+                        </div>
+                    </div>
+                // <div className={Styles.test}>
+                //     <div className={Styles.leftBox}>
+                //         <div className={Styles.topBox}>
+                //             <div className={Styles.boldFont}>{sideInfo.name}</div>
+                //         </div>
+                //         <div className={Styles.bottomBox}>
+                //             <div className={Styles.infoBox}>
+                //                 <div className={Styles.top}>
+                //                     <div className={Styles.left}>
+                //                         <Image
+                //                             preview={false}
+                //                             style={{ borderRadius: '50%', width: 50, height: 50 }}
+                //                             src={sideInfo.coverUrl}
+                //                         />
+                //                     </div>
+                //                     <div className={Styles.right}>
+                //                         <div className={Styles.top}>{sideInfo.name}</div>
+                //                         <div className={Styles.bottom}>
+                //                             <div className={Styles.circle}></div>
+                //                             <div className={Styles.font}>帮助文档</div>
+                //                         </div>
+                //                     </div>
+                //                 </div>
+                //                 <Input
+                //                     placeholder='Search...'
+                //                     suffix={<SearchOutlined />}
+                //                 />
+                //                 <div className={Styles.helpFont}>帮助文档</div>
+                //             </div>
+                //             <div className={Styles.menu}>
+                //                 <TreeList
+                //                     oakPath={`${oakFullpath}.articleMenus`}
+                //                     entity={entity}
+                //                     entityId={entityId}
+                //                     onGrandChildEditArticleChange={checkEditArticle}
+                //                     show={show}
+                //                     articleMenuId={articleMenuId ? articleMenuId : undefined}
+                //                     articleId={articleId ? articleId : undefined}
+                //                     getBreadcrumbItems={getBreadcrumbItems}
+                //                     breadcrumbItems={[]}
+                //                     selectedArticleId={selectedArticleId ? selectedArticleId : undefined}
+                //                     defaultOpen={defaultOpen}
+                //                     changeDefaultOpen={changeDefaultOpen}
+                //                     openArray={totalOpenArray ? totalOpenArray : undefined}
+                //                     getSearchOpen={getSearchOpen}
+                //                     getTopInfo={getTopInfo}
+                //                     oakAutoUnmount={true}
+                //                     getSideInfo={getSideInfo}
+                //                     currentArticle={currentArticle}
+                //                     setCurrentArticle={getCurrentArticle}
+                //                 />
+                //             </div>
+                //         </div>
                 //     </div>
-                //     <div className={Styles.editor}>
+                //     <div className={Styles.rightBox}>
+                //         <div className={Styles.topBox}>
+                //             <MenuOutlined />
+                //             <div ref={dropdownRef}>
+                //                 <Dropdown menu={{ items }} open={searchOpen}>
+                //                     <Search
+                //                         style={{ width: 300 }}
+                //                         placeholder='Search...'
+                //                         onChange={(val) => {
+                //                             setSearchValue(val.target.value);
+                //                             searchArticle(val.target.value);
+                //                         }}
+                //                     />
+                //                 </Dropdown>
+                //             </div>
+                //         </div>
                 //         {
                 //             editArticle && (
-                //                 <div>
-                //                     <div style={{ fontSize: 14, display: 'flex', flexDirection: 'row', marginLeft: 10, marginBottom: 5 }}>
+                //                 <div className={Styles.bottomBox}>
+                //                     <div className={Styles.breadcrumb}>
                 //                         {
                 //                             breadcrumbItems.length > 0 &&
                 //                             breadcrumbItems.map((breadcrumbItem: string, index: number) => {
                 //                                 return index !== breadcrumbItems.length - 1 ? (
                 //                                     <div style={{ color: '#B2B2B2' }} key={index}>
                 //                                         {breadcrumbItem}
-                //                                         <span style={{ margin: '0 6px' }}>/</span>
+                //                                         <span style={{ margin: '0 6px' }}>
+                //                                             {'>'}
+                //                                         </span>
                 //                                     </div>
                 //                                 ) : (
                 //                                     <div className={Styles.breadcrumbItem} key={index}>
@@ -238,109 +311,151 @@ export default function Render(props) {
                 //                             })
                 //                         }
                 //                     </div>
-                //                     <ArticleDetail
-                //                         oakId={editArticle}
-                //                         oakAutoUnmount={true}
-                //                         oakPath={`article-detail-${editArticle}`}
-                //                     />
+                //                     <div className={Styles.article}>
+                //                         <div className={Styles.top}>
+                //                             <div className={Styles.title}>
+                //                                 {topInfo.name}
+                //                             </div>
+                //                             <div className={Styles.date}>
+                //                                 {dayjs(topInfo.date).format('YYYY-MM-DD')}
+                //                             </div>
+                //                         </div>
+                //                         <div className={Styles.editor}>
+                //                             <ArticleDetail
+                //                                 oakId={editArticle}
+                //                                 oakAutoUnmount={true}
+                //                                 oakPath={`article-detail-${editArticle}`}
+                //                             />
+                //                         </div>
+                //                     </div>
                 //                 </div>
                 //             )
                 //         }
                 //     </div>
                 // </div>
-                <div className={Styles.test}>
-                        <div className={Styles.leftBox}>
-                            <div className={Styles.topBox}>
-                                <div className={Styles.boldFont}>{sideInfo.name}</div>
-                            </div>
-                            <div className={Styles.bottomBox}>
-                                <div className={Styles.infoBox}>
-                                    <div className={Styles.top}>
-                                        <div className={Styles.left}>
-                                            <Image preview={false} style={{ borderRadius: '50%', width: 50, height: 50 }} src={sideInfo.coverUrl}/>
-                                        </div>
-                                        <div className={Styles.right}>
-                                            <div className={Styles.top}>{sideInfo.name}</div>
-                                            <div className={Styles.bottom}>
-                                                <div className={Styles.circle}></div>
-                                                <div className={Styles.font}>帮助文档</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <Input placeholder='Search...' suffix={<SearchOutlined />}/>
-                                    <div className={Styles.helpFont}>帮助文档</div>
-                                </div>
-                                <div className={Styles.menu}>
-                                    <TreeList oakPath={`${oakFullpath}.articleMenus`} entity={entity} entityId={entityId} onGrandChildEditArticleChange={checkEditArticle} show={show} articleMenuId={articleMenuId ? articleMenuId : undefined} articleId={articleId ? articleId : undefined} getBreadcrumbItems={getBreadcrumbItems} breadcrumbItems={[]} selectedArticleId={selectedArticleId ? selectedArticleId : undefined} defaultOpen={defaultOpen} changeDefaultOpen={changeDefaultOpen} openArray={totalOpenArray ? totalOpenArray : undefined} getSearchOpen={getSearchOpen} getTopInfo={getTopInfo} oakAutoUnmount={true} getSideInfo={getSideInfo} currentArticle={currentArticle} setCurrentArticle={getCurrentArticle}/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={Styles.rightBox}>
-                            <div className={Styles.topBox}>
-                                <MenuOutlined />
-                                <div ref={dropdownRef}>
-                                    <Dropdown menu={{ items }} open={searchOpen}>
-                                        <Search style={{ width: 300 }} placeholder='Search...' onChange={(val) => {
-                        setSearchValue(val.target.value);
-                        searchArticle(val.target.value);
-                    }}/>
-                                    </Dropdown>
-                                </div>
-                            </div>
-                            {editArticle && (<div className={Styles.bottomBox}>
-                                        <div className={Styles.breadcrumb}>
-                                            {breadcrumbItems.length > 0 &&
-                            breadcrumbItems.map((breadcrumbItem, index) => {
-                                return index !== breadcrumbItems.length - 1 ? (<div style={{ color: '#B2B2B2' }} key={index}>
-                                                            {breadcrumbItem}
-                                                            <span style={{ margin: '0 6px' }}>
-                                                                {'>'}
-                                                            </span>
-                                                        </div>) : (<div className={Styles.breadcrumbItem} key={index}>
-                                                            {breadcrumbItem}
-                                                        </div>);
-                            })}
-                                        </div>
-                                        <div className={Styles.article}>
-                                            <div className={Styles.top}>
-                                                <div className={Styles.title}>
-                                                    {topInfo.name}
-                                                </div>
-                                                <div className={Styles.date}>
-                                                    {dayjs(topInfo.date).format('YYYY-MM-DD')}
-                                                </div>
-                                            </div>
-                                            <div className={Styles.editor}>
-                                                <ArticleDetail oakId={editArticle} oakAutoUnmount={true} oakPath={`article-detail-${editArticle}`}/>
-                                            </div>
-                                        </div>
-                                    </div>)}
-                        </div>
-                    </div>);
+                );
             }
         }
         else {
-            return (
-            // <div className={Styles.container3}>
-            //     <div className={Styles.menu}>
-            //         <TreeList
-            //             oakPath={`${oakFullpath}.articleMenus`}
-            //             entity={entity}
-            //             entityId={entityId}
-            //             onGrandChildEditArticleChange={checkEditArticle}
-            //             show={show}
-            //             getBreadcrumbItems={getBreadcrumbItems}
-            //             breadcrumbItems={[]}
-            //             selectedArticleId={selectedArticleId ? selectedArticleId : undefined}
-            //             defaultOpen={defaultOpen}
-            //             changeDefaultOpen={changeDefaultOpen}
-            //             openArray={openArray ? openArray : undefined}
-            //         />
+            return (<div className={Styles.container3}>
+                    <div className={Styles.menu}>
+                        <TreeList oakPath={`${oakFullpath}.articleMenus`} entity={entity} entityId={entityId} onGrandChildEditArticleChange={checkEditArticle} show={show} getBreadcrumbItems={getBreadcrumbItems} breadcrumbItems={[]} selectedArticleId={selectedArticleId ? selectedArticleId : undefined} defaultOpen={defaultOpen} changeDefaultOpen={changeDefaultOpen} openArray={openArray ? openArray : undefined}/>
+                    </div>
+                    <div className={Styles.editor}>
+                        {editArticle && (<div>
+                                    <div className={Styles.actions}>
+                                        <Space style={{ marginBottom: 10 }}>
+                                            <Button onClick={() => {
+                        gotoArticleDetail(editArticle);
+                    }}>
+                                                <EyeOutlined />
+                                                查看
+                                            </Button>
+                                            <Button onClick={() => {
+                        const url = `${window.location.host}/article/detail?oakId=${editArticle}`;
+                        copy(url);
+                        setMessage({
+                            content: '复制链接成功',
+                            type: 'success',
+                        });
+                    }}>
+                                                <CopyOutlined />
+                                                复制链接
+                                            </Button>
+                                            <Button onClick={() => setIsEdit(true)}>
+                                                <EditOutlined />
+                                                更新
+                                            </Button>
+                                        </Space>
+                                    </div>
+                                    <div style={{ fontSize: 14, display: 'flex', flexDirection: 'row', marginLeft: 10, marginBottom: 5 }}>
+                                        {breadcrumbItems.length > 0 &&
+                        breadcrumbItems.map((breadcrumbItem, index) => {
+                            return index !== breadcrumbItems.length - 1 ? (<div style={{ color: '#B2B2B2' }} key={index}>
+                                                        {breadcrumbItem}
+                                                        <span style={{ margin: '0 6px' }}>/</span>
+                                                    </div>) : (<div className={Styles.breadcrumbItem} key={index}>
+                                                        {breadcrumbItem}
+                                                    </div>);
+                        })}
+                                    </div>
+                                    {isEdit ? (<ArticleUpsert oakId={editArticle} oakAutoUnmount={true} oakPath={`article-upsert-${editArticle}`} changeIsEdit={changeIsEdit}/>) : (<ArticleDetail oakId={editArticle} oakAutoUnmount={true} oakPath={`article-detail-${editArticle}`}/>)}
+                                </div>)}
+                    </div>
+                </div>
+            // <div className={Styles.test}>
+            //     <div className={Styles.leftBox}>
+            //         <div className={Styles.topBox}>
+            //             <div className={Styles.boldFont}>{sideInfo.name}</div>
+            //         </div>
+            //         <div className={Styles.bottomBox}>
+            //             <div className={Styles.infoBox}>
+            //                 <div className={Styles.top}>
+            //                     <div className={Styles.left}>
+            //                         <Image
+            //                             preview={false}
+            //                             style={{ borderRadius: '50%', width: 50, height: 50 }}
+            //                             src={sideInfo.coverUrl}
+            //                         />
+            //                     </div>
+            //                     <div className={Styles.right}>
+            //                         <div className={Styles.top}>{sideInfo.name}</div>
+            //                         <div className={Styles.bottom}>
+            //                             <div className={Styles.circle}></div>
+            //                             <div className={Styles.font}>帮助文档</div>
+            //                         </div>
+            //                     </div>
+            //                 </div>
+            //                 <Input
+            //                     placeholder='Search...'
+            //                     suffix={<SearchOutlined />}
+            //                 />
+            //                 <div className={Styles.helpFont}>帮助文档</div>
+            //             </div>
+            //             <div className={Styles.menu}>
+            //                 <TreeList
+            //                     oakPath={`${oakFullpath}.articleMenus`}
+            //                     entity={entity}
+            //                     entityId={entityId}
+            //                     onGrandChildEditArticleChange={checkEditArticle}
+            //                     show={show}
+            //                     articleMenuId={articleMenuId ? articleMenuId : undefined}
+            //                     articleId={articleId ? articleId : undefined}
+            //                     getBreadcrumbItems={getBreadcrumbItems}
+            //                     breadcrumbItems={[]}
+            //                     selectedArticleId={selectedArticleId ? selectedArticleId : undefined}
+            //                     defaultOpen={defaultOpen}
+            //                     changeDefaultOpen={changeDefaultOpen}
+            //                     openArray={totalOpenArray ? totalOpenArray : undefined}
+            //                     getSearchOpen={getSearchOpen}
+            //                     getTopInfo={getTopInfo}
+            //                     oakAutoUnmount={true}
+            //                     getSideInfo={getSideInfo}
+            //                     currentArticle={currentArticle}
+            //                     setCurrentArticle={getCurrentArticle}
+            //                 />
+            //             </div>
+            //         </div>
             //     </div>
-            //     <div className={Styles.editor}>
+            //     <div className={Styles.rightBox}>
+            //         <div className={Styles.topBox}>
+            //             <MenuOutlined />
+            //             <div ref={dropdownRef}>
+            //                 <Dropdown menu={{ items }} open={searchOpen}>
+            //                     <Search
+            //                         style={{ width: 300 }}
+            //                         placeholder='Search...'
+            //                         onChange={(val) => {
+            //                             setSearchValue(val.target.value);
+            //                             searchArticle(val.target.value);
+            //                         }}
+            //                     />
+            //                 </Dropdown>
+            //             </div>
+            //         </div>
             //         {
             //             editArticle && (
-            //                 <div>
+            //                 <div className={Styles.bottomBox}>
             //                     <div className={Styles.actions}>
             //                         <Space style={{ marginBottom: 10 }}>
             //                             <Button
@@ -372,14 +487,16 @@ export default function Render(props) {
             //                             </Button>
             //                         </Space>
             //                     </div>
-            //                     <div style={{ fontSize: 14, display: 'flex', flexDirection: 'row', marginLeft: 10, marginBottom: 5 }}>
+            //                     <div className={Styles.breadcrumb}>
             //                         {
             //                             breadcrumbItems.length > 0 &&
             //                             breadcrumbItems.map((breadcrumbItem: string, index: number) => {
             //                                 return index !== breadcrumbItems.length - 1 ? (
             //                                     <div style={{ color: '#B2B2B2' }} key={index}>
             //                                         {breadcrumbItem}
-            //                                         <span style={{ margin: '0 6px' }}>/</span>
+            //                                         <span style={{ margin: '0 6px' }}>
+            //                                             {'>'}
+            //                                         </span>
             //                                     </div>
             //                                 ) : (
             //                                     <div className={Styles.breadcrumbItem} key={index}>
@@ -389,122 +506,40 @@ export default function Render(props) {
             //                             })
             //                         }
             //                     </div>
-            //                     {
-            //                         isEdit ? (
-            //                             <ArticleUpsert
-            //                                 oakId={editArticle}
-            //                                 oakAutoUnmount={true}
-            //                                 oakPath={`article-upsert-${editArticle}`}
-            //                                 changeIsEdit={changeIsEdit}
-            //                             />
-            //                         ) : (
-            //                             <ArticleDetail
-            //                                 oakId={editArticle}
-            //                                 oakAutoUnmount={true}
-            //                                 oakPath={`article-detail-${editArticle}`}
-            //                             />
-            //                         )
-            //                     }
+            //                     <div className={Styles.article}>
+            //                         <div className={Styles.top}>
+            //                             <div className={Styles.title}>
+            //                                 {topInfo.name}
+            //                             </div>
+            //                             <div className={Styles.date}>
+            //                                 {dayjs(topInfo.date).format('YYYY-MM-DD')}
+            //                             </div>
+            //                         </div>
+            //                         <div className={Styles.editor}>
+            //                             {
+            //                                 isEdit ? (
+            //                                     <ArticleUpsert
+            //                                         oakId={editArticle}
+            //                                         oakAutoUnmount={true}
+            //                                         oakPath={`article-upsert-${editArticle}`}
+            //                                         changeIsEdit={changeIsEdit}
+            //                                     />
+            //                                 ) : (
+            //                                     <ArticleDetail
+            //                                         oakId={editArticle}
+            //                                         oakAutoUnmount={true}
+            //                                         oakPath={`article-detail-${editArticle}`}
+            //                                     />
+            //                                 )
+            //                             }
+            //                         </div>
+            //                     </div>
             //                 </div>
             //             )
             //         }
             //     </div>
             // </div>
-            <div className={Styles.test}>
-                    <div className={Styles.leftBox}>
-                        <div className={Styles.topBox}>
-                            <div className={Styles.boldFont}>{sideInfo.name}</div>
-                        </div>
-                        <div className={Styles.bottomBox}>
-                            <div className={Styles.infoBox}>
-                                <div className={Styles.top}>
-                                    <div className={Styles.left}>
-                                        <Image preview={false} style={{ borderRadius: '50%', width: 50, height: 50 }} src={sideInfo.coverUrl}/>
-                                    </div>
-                                    <div className={Styles.right}>
-                                        <div className={Styles.top}>{sideInfo.name}</div>
-                                        <div className={Styles.bottom}>
-                                            <div className={Styles.circle}></div>
-                                            <div className={Styles.font}>帮助文档</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <Input placeholder='Search...' suffix={<SearchOutlined />}/>
-                                <div className={Styles.helpFont}>帮助文档</div>
-                            </div>
-                            <div className={Styles.menu}>
-                                <TreeList oakPath={`${oakFullpath}.articleMenus`} entity={entity} entityId={entityId} onGrandChildEditArticleChange={checkEditArticle} show={show} articleMenuId={articleMenuId ? articleMenuId : undefined} articleId={articleId ? articleId : undefined} getBreadcrumbItems={getBreadcrumbItems} breadcrumbItems={[]} selectedArticleId={selectedArticleId ? selectedArticleId : undefined} defaultOpen={defaultOpen} changeDefaultOpen={changeDefaultOpen} openArray={totalOpenArray ? totalOpenArray : undefined} getSearchOpen={getSearchOpen} getTopInfo={getTopInfo} oakAutoUnmount={true} getSideInfo={getSideInfo} currentArticle={currentArticle} setCurrentArticle={getCurrentArticle}/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={Styles.rightBox}>
-                        <div className={Styles.topBox}>
-                            <MenuOutlined />
-                            <div ref={dropdownRef}>
-                                <Dropdown menu={{ items }} open={searchOpen}>
-                                    <Search style={{ width: 300 }} placeholder='Search...' onChange={(val) => {
-                    setSearchValue(val.target.value);
-                    searchArticle(val.target.value);
-                }}/>
-                                </Dropdown>
-                            </div>
-                        </div>
-                        {editArticle && (<div className={Styles.bottomBox}>
-                                    <div className={Styles.actions}>
-                                        <Space style={{ marginBottom: 10 }}>
-                                            <Button onClick={() => {
-                        gotoArticleDetail(editArticle);
-                    }}>
-                                                <EyeOutlined />
-                                                查看
-                                            </Button>
-                                            <Button onClick={() => {
-                        const url = `${window.location.host}/article/detail?oakId=${editArticle}`;
-                        copy(url);
-                        setMessage({
-                            content: '复制链接成功',
-                            type: 'success',
-                        });
-                    }}>
-                                                <CopyOutlined />
-                                                复制链接
-                                            </Button>
-                                            <Button onClick={() => setIsEdit(true)}>
-                                                <EditOutlined />
-                                                更新
-                                            </Button>
-                                        </Space>
-                                    </div>
-                                    <div className={Styles.breadcrumb}>
-                                        {breadcrumbItems.length > 0 &&
-                        breadcrumbItems.map((breadcrumbItem, index) => {
-                            return index !== breadcrumbItems.length - 1 ? (<div style={{ color: '#B2B2B2' }} key={index}>
-                                                        {breadcrumbItem}
-                                                        <span style={{ margin: '0 6px' }}>
-                                                            {'>'}
-                                                        </span>
-                                                    </div>) : (<div className={Styles.breadcrumbItem} key={index}>
-                                                        {breadcrumbItem}
-                                                    </div>);
-                        })}
-                                    </div>
-                                    <div className={Styles.article}>
-                                        <div className={Styles.top}>
-                                            <div className={Styles.title}>
-                                                {topInfo.name}
-                                            </div>
-                                            <div className={Styles.date}>
-                                                {dayjs(topInfo.date).format('YYYY-MM-DD')}
-                                            </div>
-                                        </div>
-                                        <div className={Styles.editor}>
-                                            {isEdit ? (<ArticleUpsert oakId={editArticle} oakAutoUnmount={true} oakPath={`article-upsert-${editArticle}`} changeIsEdit={changeIsEdit}/>) : (<ArticleDetail oakId={editArticle} oakAutoUnmount={true} oakPath={`article-detail-${editArticle}`}/>)}
-
-                                        </div>
-                                    </div>
-                                </div>)}
-                    </div>
-                </div>);
+            );
         }
     }
     return null;

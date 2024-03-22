@@ -17,21 +17,19 @@ import { SelectOpResult } from 'oak-domain/lib/types';
 import { applicationProjection } from '../types/Projection';
 import { getMpUnlimitWxaCode } from '../aspects/wechatQrCode';
 import { BackendRuntimeContext as BRC } from 'oak-frontend-base';
-import { AsyncRowStore } from 'oak-domain/lib/store/AsyncRowStore';
-import { IncomingHttpHeaders } from 'http';
 import { cloneDeep } from 'oak-domain/lib/utils/lodash';
 /**
  * general数据结构要求的后台上下文
  */
 export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDict>
     extends BRC<ED>
-    implements RuntimeContext
-{
+    implements RuntimeContext {
     protected application?: Partial<ED['application']['Schema']>;
     protected token?: Partial<ED['token']['Schema']>;
     protected amIRoot?: boolean;
     protected amIReallyRoot?: boolean;
     protected rootMode?: boolean;
+    private userId?: string;
 
     async refineOpRecords(): Promise<void> {
         for (const opRecord of this.opRecords) {
@@ -71,54 +69,71 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         }
     }
 
-    async setTokenValue(tokenValue: string) {
-        const result = await this.select(
-            'token',
-            {
-                data: {
-                    id: 1,
-                    ableState: 1,
-                    user: {
+    async setTokenValue(tokenValue: string, later?: boolean, userId?: string) {
+        if (!later || !userId) {
+            const result = await this.select(
+                'token',
+                {
+                    data: {
                         id: 1,
-                        userState: 1,
-                        isRoot: 1,
+                        ableState: 1,
+                        user: {
+                            id: 1,
+                            userState: 1,
+                            isRoot: 1,
+                        },
+                        value: 1,
+                        player: {
+                            id: 1,
+                            isRoot: 1,
+                        },
                     },
-                    value: 1,
-                    player: {
-                        id: 1,
-                        isRoot: 1,
+                    filter: {
+                        value: tokenValue,
                     },
                 },
-                filter: {
-                    value: tokenValue,
-                },
-            },
-            {
-                dontCollect: true,
-                blockTrigger: true,
+                {
+                    dontCollect: true,
+                    blockTrigger: true,
+                }
+            );
+            if (result.length === 0) {
+                console.log(
+                    `构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`
+                );
+                if (!later) {
+                    throw new OakTokenExpiredException();
+                }
+                // this.tokenException = new OakTokenExpiredException();
+                return;
             }
-        );
-        if (result.length === 0) {
-            console.log(
-                `构建BackendRuntimeContext对应tokenValue「${tokenValue}找不到相关的user`
-            );
-            throw new OakTokenExpiredException();
-            // this.tokenException = new OakTokenExpiredException();
+            const token = result[0];
+            if (token.ableState === 'disabled' && !later) {
+                console.log(
+                    `构建BackendRuntimeContext对应tokenValue「${tokenValue}已经被disable`
+                );
+                throw new OakTokenExpiredException();
+                // this.tokenException = new OakTokenExpiredException();
+                return;
+            }
+            const { user, player } = token;
+            this.amIRoot = user?.isRoot!;
+            this.amIReallyRoot = player?.isRoot!;
+            this.token = token;
             return;
         }
-        const token = result[0];
-        if (token.ableState === 'disabled') {
-            console.log(
-                `构建BackendRuntimeContext对应tokenValue「${tokenValue}已经被disable`
-            );
-            throw new OakTokenExpiredException();
-            // this.tokenException = new OakTokenExpiredException();
-            return;
-        }
-        const { user, player } = token;
-        this.amIRoot = user?.isRoot!;
-        this.amIReallyRoot = player?.isRoot!;
-        this.token = token;
+        // 若是later环境，用userId来查询处理
+        const [user] = await this.select('user', {
+            data: {
+                id: 1,
+                isRoot: 1,
+            },
+            filter: { id: userId },
+        }, { dontCollect: true });
+        assert(user, '初始化context时有userId但查询不到user');
+        this.amIRoot = user.isRoot!;
+        this.amIReallyRoot = user.isRoot!;
+        this.userId = userId;
     }
 
     async setApplication(appId: string) {
@@ -142,18 +157,18 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
         this.application = result[0];
     }
 
-    async initialize(data?: SerializedData) {
+    async initialize(data?: SerializedData, later?: boolean) {
         await super.initialize(data);
         if (data) {
             const closeRootMode = this.openRootMode();
             try {
-                const { a: appId, t: tokenValue, rm } = data;
+                const { a: appId, t: tokenValue, rm, userId } = data;
                 const promises: Promise<void>[] = [];
                 if (appId) {
                     promises.push(this.setApplication(appId));
                 }
                 if (tokenValue) {
-                    promises.push(this.setTokenValue(tokenValue));
+                    promises.push(this.setTokenValue(tokenValue, later, userId));
                 }
                 if (promises.length > 0) {
                     await Promise.all(promises);
@@ -218,8 +233,16 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
     }
 
     getCurrentUserId(allowUnloggedIn?: boolean) {
+        if (this.userId) {
+            return this.userId;
+        }
         const token = this.getToken(allowUnloggedIn);
         return token?.userId as string;
+    }
+
+    setCurrentUserId(userId: string | undefined): void {
+        assert(this.isReallyRoot);
+        this.userId = userId;
     }
 
     protected async getSerializedData(): Promise<SerializedData> {
@@ -229,6 +252,7 @@ export abstract class BackendRuntimeContext<ED extends EntityDict & BaseEntityDi
             a: this.application?.id,
             t: this.token?.value,
             rm: this.rootMode,
+            userId: this.getCurrentUserId(true),
         };
     }
 

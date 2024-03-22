@@ -3,7 +3,7 @@ import { Form, Input, Button } from 'antd-mobile';
 import Style from './web.module.less';
 import OnUser from '../onUser/index';
 export default function Render(props) {
-    const { mobileValue, mobileValueReady, relations, entity, entityId, userId, oakFullpath, oakExecutable, oakDirty, passwordRequire, allowUpdateName, allowUpdateNickname,isNew } = props.data;
+    const { mobileValue, mobileValueReady, relations, entity, entityId, userId, oakFullpath, oakExecutable, oakDirty, passwordRequire, allowUpdateName, allowUpdateNickname, isNew, } = props.data;
     const { onConfirm, onMobileChange, onReset, t } = props.methods;
     return (<Form footer={<div className={Style.btnContainer}>
                     <Button color="primary" style={{ flex: 2 }} onClick={() => {
@@ -35,6 +35,6 @@ export default function Render(props) {
         }} placeholder={t('inputMobile')} type="tel" clearable/>
                 </>
             </Form.Item>
-        {mobileValueReady && (<OnUser oakAutoUnmount={true} oakPath={`${oakFullpath}.user`} entity={entity} entityId={entityId} relations={relations} passwordRequire={passwordRequire} allowUpdateName={allowUpdateName} allowUpdateNickname={allowUpdateNickname} isNew={isNew} />)}
+            {mobileValueReady && (<OnUser oakAutoUnmount={true} oakPath={`${oakFullpath}.user`} entity={entity} entityId={entityId} relations={relations} passwordRequire={passwordRequire} allowUpdateName={allowUpdateName} allowUpdateNickname={allowUpdateNickname} isNew={isNew}/>)}
         </Form>);
 }

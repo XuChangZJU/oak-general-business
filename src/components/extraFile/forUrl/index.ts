@@ -28,6 +28,7 @@ export default OakComponent({
         sort: 1,
         isBridge: 1,
     },
+    features: ['extraFile'],
     filters: [
         {
             filter() {
@@ -199,6 +200,8 @@ export default OakComponent({
                         extension,
                         filename: 'unknown',
                         isBridge: this.isWechatUrlFn(file),
+                        uploadState: 'success'
+
                     });
                     break;
                 case 'original':
@@ -207,6 +210,7 @@ export default OakComponent({
                         extension,
                         filename: 'unknown',
                         isBridge: this.isWechatUrlFn(file),
+                        uploadState: 'success'
                     });
                     break;
             }

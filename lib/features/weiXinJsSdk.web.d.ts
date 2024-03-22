@@ -1,4 +1,4 @@
-import { Feature } from 'oak-frontend-base';
+import { Feature } from 'oak-frontend-base/es/types/Feature';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { EntityDict } from '../oak-app-domain';
 import AspectDict from '../aspects/AspectDict';
@@ -30,6 +30,7 @@ export declare class WeiXinJsSdk<ED extends EntityDict, Cxt extends BackendRunti
     init(options?: {
         jsApiList?: wx.jsApiList;
         openTagList?: wx.openTagList;
+        debug?: boolean;
     }): Promise<unknown>;
     /**
      * 微信jssdk 传入方法名

@@ -8,7 +8,7 @@ import {
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { EntityDict } from '../oak-app-domain';
 import { Aspect } from 'oak-domain/lib/types/Aspect';
-import { Feature } from 'oak-frontend-base';
+import { Feature } from 'oak-frontend-base/es/types/Feature';
 import { BasicFeatures } from 'oak-frontend-base';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { GeneralFeatures } from '../features';

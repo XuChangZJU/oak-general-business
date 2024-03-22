@@ -2,7 +2,7 @@ import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { InitializeOptions } from 'oak-frontend-base';
 import { Aspect, Checker, Connector, StorageSchema } from 'oak-domain/lib/types';
 import { EntityDict } from './oak-app-domain';
-import { CacheStore } from 'oak-frontend-base';
+import { CacheStore } from 'oak-frontend-base/es/cacheStore/CacheStore';
 import { BackendRuntimeContext } from './context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from './context/FrontendRuntimeContext';
 import { GAD, GFD } from './types/Page';

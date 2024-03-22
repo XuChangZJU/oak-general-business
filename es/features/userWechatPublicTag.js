@@ -1,4 +1,4 @@
-import { Feature } from 'oak-frontend-base';
+import { Feature } from 'oak-frontend-base/es/types/Feature';
 export class UserWechatPublicTag extends Feature {
     cache;
     storage;

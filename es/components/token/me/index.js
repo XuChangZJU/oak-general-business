@@ -66,12 +66,24 @@ export default OakComponent({
         {
             filter() {
                 const value = this.features.token.getTokenValue();
+                // if (tokenId) {
+                //     return {
+                //         id: tokenId,
+                //     };
+                // }
+                // return {
+                //     id: 'none',
+                // };
                 return {
                     value,
                 };
             },
         },
     ],
+    features: [{
+            feature: 'token',
+            behavior: 'refresh',
+        }],
     formData: ({ data, features }) => {
         const [token] = data || [];
         const user = token?.user;

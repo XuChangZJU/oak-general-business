@@ -3,15 +3,14 @@ import URL from 'url';
 import sha1 from 'sha1';
 import x2js from 'x2js';
 import { Endpoint } from 'oak-domain/lib/types/Endpoint';
-import {
-    WechatSDK,
+import WechatSDK, {
     WechatMpInstance,
     WechatPublicInstance,
-} from 'oak-external-sdk';
+} from 'oak-external-sdk/lib/WechatSDK';
 import { EntityDict } from '../oak-app-domain';
 import { BRC } from '../types/RuntimeCxt';
 import { WechatMpConfig, WechatPublicConfig } from '../entities/Application';
-import { WechatPublicEventData, WechatMpEventData } from 'oak-external-sdk';
+import { WechatPublicEventData, WechatMpEventData } from 'oak-external-sdk/lib/types/Wechat';
 import { expandUuidTo36Bytes, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { composeDomainUrl } from '../utils/domain';
 import { composeUrl } from 'oak-domain/lib/utils/domain';
@@ -94,7 +93,7 @@ async function setUserUnsubscribed(openId: string, context: BRC) {
                         id: weChatUser.id,
                     },
                 },
-                { dontCollect: true, dontCreateOper: true }
+                { dontCollect: true }
             );
         }
     } else {
@@ -110,7 +109,7 @@ async function setUserUnsubscribed(openId: string, context: BRC) {
                     openId,
                 },
             },
-            { dontCollect: true, dontCreateOper: true }
+            { dontCollect: true }
         );
     }
     return;
@@ -168,7 +167,7 @@ async function setUserSubscribed(
                         id: wechatUser.id,
                     },
                 },
-                { dontCollect: true, dontCreateOper: true }
+                { dontCollect: true }
             );
         }
 

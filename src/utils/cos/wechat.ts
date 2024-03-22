@@ -8,7 +8,7 @@ import {
     WechatPublicConfig,
 } from '../../oak-app-domain/Application/Schema';
 
-import { WechatPublicInstance, WechatSDK } from 'oak-external-sdk';
+import WechatSDK, { WechatPublicInstance } from 'oak-external-sdk/lib/WechatSDK';
 import { OakUploadException } from '../../types/Exception';
 import { composeServerUrl } from '../../utils/domain';
 

@@ -81,30 +81,30 @@ export default OakComponent({
         setInit() {
             const userId = this.features.token.getUserId();
             const { entity, entityId, type, redirectToAfterConfirm, qrCodeType, claimUrl, multiple, rule, ruleOnRow, } = this.props;
-            if (this.isCreation()) {
-                this.update({
-                    entity,
-                    entityId,
-                    relationEntity: entity,
-                    relationEntityFilter: {
-                        id: entityId,
-                    },
-                    type: type || 'grant',
-                    multiple,
-                    rule: rule || 'single',
-                    ruleOnRow: ruleOnRow || 'single',
-                    granterId: userId,
-                    redirectTo: redirectToAfterConfirm,
-                    qrCodeType: qrCodeType,
-                    claimUrl,
-                });
-                this.setState({
-                    userEntityGrantId: '',
-                });
-                if (process.env.OAK_PLATFORM === 'wechatMp') {
-                    wx.hideShareMenu();
-                }
+            // if (this.isCreation()) {
+            this.update({
+                entity,
+                entityId,
+                relationEntity: entity,
+                relationEntityFilter: {
+                    id: entityId,
+                },
+                type: type || 'grant',
+                multiple,
+                rule: rule || 'single',
+                ruleOnRow: ruleOnRow || 'single',
+                granterId: userId,
+                redirectTo: redirectToAfterConfirm,
+                qrCodeType: qrCodeType,
+                claimUrl,
+            });
+            this.setState({
+                userEntityGrantId: '',
+            });
+            if (process.env.OAK_PLATFORM === 'wechatMp') {
+                wx.hideShareMenu();
             }
+            // }
         },
         setRelation(value) {
             this.update({

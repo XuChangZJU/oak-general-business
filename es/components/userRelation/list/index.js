@@ -21,7 +21,7 @@ export default OakComponent({
                             userId,
                         },
                     },
-                }
+                },
             };
         }
         return {
@@ -59,12 +59,12 @@ export default OakComponent({
                                         data: {
                                             id: 1,
                                             userId: 1,
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
                 },
                 filter: userRelationFilter,
             },
@@ -99,10 +99,10 @@ export default OakComponent({
                     $attr: {
                         $$createAt$$: 1,
                     },
-                    $direction: 'desc'
+                    $direction: 'desc',
                 };
             },
-        }
+        },
     ],
     filters: [
         {
@@ -120,51 +120,27 @@ export default OakComponent({
                             sourceRelation: {
                                 userRelation$relation: {
                                     userId,
-                                }
-                            }
-                        }
-                    };
-                    /* filter.relationId = {
-                        $in: {
-                            entity: 'relationAuth',
-                            data: {
-                                destRelationId: 1,
-                            },
-                            filter: {
-                                sourceRelationId: {
-                                    $in: {
-                                        entity: 'userRelation',
-                                        data: {
-                                            relationId: 1,
-                                        },
-                                        filter: {
-                                            userId,
-                                        },
-                                    },
                                 },
                             },
                         },
-                    }; */
+                    };
                 }
                 return {
                     userRelation$user: filter,
-                    /* id: {
-                        $in: {
-                            entity: 'userRelation',
-                            data: {
-                                userId: 1,
-                            },
-                            filter,
-                        },
-                    }, */
                 };
             },
         },
     ],
     isList: true,
-    formData({ data: users, props, features }) {
+    formData({ data: rows, props, features }) {
         const { entity, entityId } = props;
         const filter = this.getFilterByName('fulltext');
+        const users = props.disableDisplay
+            ? rows?.filter((ele) => {
+                const userRelations = ele.userRelation$user?.filter((ele) => !ele.$$deleteAt$$);
+                return !!(userRelations && userRelations.length > 0);
+            })
+            : rows;
         return {
             users: users?.map((ele) => {
                 const { mobile$user, extraFile$entity } = ele;
@@ -187,6 +163,7 @@ export default OakComponent({
         qrCodeType: '',
         onUpdate: (id) => { },
         onCreate: () => { },
+        disableDisplay: false,
     },
     data: {
         searchValue: '',
@@ -206,7 +183,8 @@ export default OakComponent({
     listeners: {
         'entity,entityId'(prev, next) {
             if (this.state.oakFullpath) {
-                if (prev.entity !== next.entity || prev.entityId !== next.entityId) {
+                if (prev.entity !== next.entity ||
+                    prev.entityId !== next.entityId) {
                     this.refresh();
                 }
             }
@@ -309,7 +287,7 @@ export default OakComponent({
             this.refresh();
         },
         chooseActionMp(e) {
-            const { entity, entityId, redirectToAfterConfirm, qrCodeType, } = this.props;
+            const { entity, entityId, redirectToAfterConfirm, qrCodeType } = this.props;
             const { item: { mode }, } = e.detail;
             if (mode === 'byMobile') {
                 this.navigateTo({

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { WechatMpInstance, WechatPublicInstance, WechatSDK } from 'oak-external-sdk';
+import { WechatMpInstance, WechatPublicInstance } from 'oak-external-sdk/es/WechatSDK';
 import { WechatMpConfig, WechatPublicConfig } from '../../../oak-app-domain/Application/Schema';
 import { EntityDict } from "../../../oak-app-domain";
 import { WebComponentProps } from 'oak-frontend-base';

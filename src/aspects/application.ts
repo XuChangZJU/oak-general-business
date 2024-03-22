@@ -9,11 +9,10 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { applicationProjection } from '../types/Projection';
 import { MediaType, MaterialType } from '../types/WeChat';
 import { WebEnv } from 'oak-domain/lib/types/Environment';
-import {
+import WechatSDK, {
     WechatPublicInstance,
-    WechatMpInstance,
-    WechatSDK,
-} from 'oak-external-sdk';
+    WechatMpInstance    
+} from 'oak-external-sdk/lib/WechatSDK';
 import fs from 'fs';
 import { File } from 'formidable';
 import { cloneDeep } from 'oak-domain/lib/utils/lodash';

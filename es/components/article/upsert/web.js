@@ -1,5 +1,5 @@
 import { generateNewId } from "oak-domain/lib/utils/uuid";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Alert, Button, Row, Col, Space, Input, } from "antd";
 import "@wangeditor/editor/dist/css/style.css"; // 引入 css
 import { Editor, Toolbar } from "@wangeditor/editor-for-react";

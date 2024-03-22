@@ -3,9 +3,9 @@ import { Button } from 'antd-mobile';
 export default function render(props) {
     const { state, oakExecutable, oakExecuting, oakDirty, size, block, type, executeText, failureIds, buttonProps, } = props.data;
     const { t, onSubmit } = props.methods;
-    const disabled = (oakExecuting ||
+    const disabled = oakExecuting ||
         ['uploading'].includes(state) ||
-        (oakExecutable !== true && ['uploaded'].includes(state))) && !failureIds;
+        oakExecutable !== true && !failureIds;
     let text = executeText || t('common::submit');
     if (oakExecuting) {
         text = t('executing', { text });

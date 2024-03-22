@@ -2,7 +2,7 @@ import { assert } from 'oak-domain/lib/utils/assert';
 import URL from 'url';
 import sha1 from 'sha1';
 import x2js from 'x2js';
-import { WechatSDK, } from 'oak-external-sdk';
+import WechatSDK from 'oak-external-sdk/lib/WechatSDK';
 import { expandUuidTo36Bytes, generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { composeDomainUrl } from '../utils/domain';
 import { composeUrl } from 'oak-domain/lib/utils/domain';
@@ -59,7 +59,7 @@ async function setUserUnsubscribed(openId, context) {
                 filter: {
                     id: weChatUser.id,
                 },
-            }, { dontCollect: true, dontCreateOper: true });
+            }, { dontCollect: true });
         }
     }
     else {
@@ -72,7 +72,7 @@ async function setUserUnsubscribed(openId, context) {
                 applicationId: context.getApplicationId(),
                 openId,
             },
-        }, { dontCollect: true, dontCreateOper: true });
+        }, { dontCollect: true });
     }
     return;
 }
@@ -112,7 +112,7 @@ async function setUserSubscribed(openId, eventKey, context) {
                 filter: {
                     id: wechatUser.id,
                 },
-            }, { dontCollect: true, dontCreateOper: true });
+            }, { dontCollect: true });
         }
         Object.assign(data, {
             id: await generateNewIdAsync(),

@@ -14,7 +14,7 @@ const actionAuths: ActionAuth[] = [
     {
         id: 'token-user',
         pathId: 'token-user',
-        deActions: ['create', 'update', 'remove', 'select'],
+        deActions: ['create', 'update', 'remove', 'select', 'disable'],
     },
     {
         id: 'wechatLogin-user',

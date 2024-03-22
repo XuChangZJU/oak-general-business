@@ -1,12 +1,3 @@
-import {
-    WechatMpInstance,
-    WechatPublicInstance,
-    WechatSDK,
-} from 'oak-external-sdk';
-import {
-    WechatMpConfig,
-    WechatPublicConfig,
-} from '../../../oak-app-domain/Application/Schema';
 export default OakComponent({
     isList: false,
     properties: {

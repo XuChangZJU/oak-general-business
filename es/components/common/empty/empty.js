@@ -1,4 +1,5 @@
 import './index.less';
+import React from 'react';
 const Empty = () => {
     const prefixCls = 'oak';
     const themeMode = document.documentElement.getAttribute('theme-mode');

@@ -94,19 +94,22 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
         } else {
             getSideInfo({ id: '', name: '帮助文档', coverUrl: '' });
         }
-    }, [row])
+    }, [row]);
     if (oakFullpath && row) {
         if (!show) {
             const Sub = showSub && hasSubArticles ? (
                 <ArticleTreeList
                     onChildEditArticleChange={onChildEditArticleChange}
                     articleMenuId={row.id}
-                    oakPath={`${oakFullpath}.article$articleMenu`}
+                    // oakPath={`${oakFullpath}.article$articleMenu`}
+                    oakPath={`$article-articleMenu-${row.id}`}
                 />
             ) : (
                 <ArticleMenuTreeList
+                    oakAutoUnmount={true}
                     parentId={row.id}
-                    oakPath={`${oakFullpath}.articleMenu$parent`}
+                    // oakPath={`${oakFullpath}.articleMenu$parent`}
+                    oakPath={`$articleMenu-parent-${row.id}`}
                     entity={row.entity}
                     entityId={row.entityId}
                     onGrandChildEditArticleChange={onChildEditArticleChange}
@@ -380,9 +383,11 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
         } else {
             const Sub = showSub && hasSubArticles ? (
                 <ArticleTreeList
+                    oakAutoUnmount={true}
                     onChildEditArticleChange={onChildEditArticleChange}
                     articleMenuId={row.id}
-                    oakPath={`${oakFullpath}.article$articleMenu`}
+                    // oakPath={`${oakFullpath}.article$articleMenu`}
+                    oakPath={`$article-articleMenu-${row.id}`}
                     show={show}
                     getBreadcrumbItemsByParent={getBreadcrumbItemsByParent}
                     breadcrumbItems={newBreadcrumbItems}
@@ -397,8 +402,10 @@ export default function Render(props: WebComponentProps<EntityDict, 'articleMenu
                 />
             ) : (
                 <ArticleMenuTreeList
+                    oakAutoUnmount={true}
                     parentId={row.id}
-                    oakPath={`${oakFullpath}.articleMenu$parent`}
+                    // oakPath={`${oakFullpath}.articleMenu$parent`}
+                    oakPath={`$articleMenu-parent-${row.id}`}
                     onGrandChildEditArticleChange={onChildEditArticleChange}
                     show={show}
                     getBreadcrumbItems={getBreadcrumbItemsByParent}

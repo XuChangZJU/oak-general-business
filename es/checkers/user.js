@@ -1,5 +1,6 @@
 import { judgeRelation } from "oak-domain/lib/store/relation";
 import { OakInputIllegalException, OakUserUnpermittedException } from "oak-domain/lib/types";
+import { checkFilterContains } from 'oak-domain/lib/store/filter';
 const checkers = [
     {
         type: 'row',
@@ -10,14 +11,15 @@ const checkers = [
         }
     },
     {
-        type: 'relation',
+        type: 'logical',
         action: ['remove', 'disable', 'enable'],
         entity: 'user',
-        relationFilter: () => {
+        checker: (operation, context) => {
             // 只有root才能进行操作
-            throw new OakUserUnpermittedException('user', { id: 'disable', action: 'disable', data: {} });
-        },
-        errMsg: '越权操作',
+            if (!context.isRoot()) {
+                throw new OakUserUnpermittedException('user', { id: 'disable', action: 'disable', data: {} });
+            }
+        }
     },
     {
         type: 'data',
@@ -38,48 +40,41 @@ const checkers = [
         },
         errMsg: '不能禁用root用户',
     },
-    // {
-    //     type: 'row',
-    //     action: 'select',
-    //     entity: 'user',
-    //     filter: (operation, context) => {
-    //         const systemId = context.getSystemId();
-    //         // todo 查询用户 先不加systemId
-    //         if (systemId) {
-    //             return {
-    //                 id: {
-    //                     $in: {
-    //                         entity: 'userSystem',
-    //                         data: {
-    //                             userId: 1,
-    //                         },
-    //                         filter: {
-    //                             systemId,
-    //                         },
-    //                     },
-    //                 },
-    //             };
-    //         }
-    //     },
-    // },
+];
+export default checkers;
+export const UserCheckers = [
     {
         entity: 'user',
         action: 'update',
-        type: 'relation',
-        relationFilter: (operation, context) => {
+        type: 'logical',
+        checker: (operation, context) => {
+            // 在大部分应用中，除了root，其他人不应该有权利更新其他人信息，但是shadow用户应当除外
+            // 但这些条件不一定对所有的应用都成立，应用如果有更复杂的用户相互更新策略，就不要引入这个checker
+            // 这也是个例子，如何对user这样的特殊对象进行权限控制
             const userId = context.getCurrentUserId();
-            const { data } = operation;
+            if (context.isRoot()) {
+                return;
+            }
+            const { filter, data } = operation;
             for (const attr in data) {
                 const rel = judgeRelation(context.getSchema(), 'user', attr);
-                if (rel === 1) {
-                    return {
-                        id: userId,
-                    };
+                if (rel !== 1) {
+                    throw new OakUserUnpermittedException('user', operation, '您不能更新他人信息');
                 }
             }
-            return undefined;
+            const result = checkFilterContains('user', context, {
+                id: userId,
+            }, filter, true);
+            if (result instanceof Promise) {
+                return result.then((r) => {
+                    if (!r) {
+                        throw new OakUserUnpermittedException('user', operation, '您不能更新他人信息');
+                    }
+                });
+            }
+            if (!result) {
+                throw new OakUserUnpermittedException('user', operation, '您不能更新他人信息');
+            }
         },
-        errMsg: '您不能更新他人信息',
     }
 ];
-export default checkers;

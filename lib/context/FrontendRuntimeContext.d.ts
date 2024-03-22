@@ -1,5 +1,6 @@
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
-import { FrontendRuntimeContext as Frc, SerializedData as Fsd, BasicFeatures } from 'oak-frontend-base';
+import { FrontendRuntimeContext as Frc, SerializedData as Fsd } from 'oak-frontend-base';
+import { BasicFeatures } from 'oak-frontend-base';
 import { EntityDict } from '../oak-app-domain';
 import { RuntimeContext } from './RuntimeContext';
 import GeneralAspectDict from '../aspects/AspectDict';
@@ -11,6 +12,7 @@ export type AspectDict<ED extends EntityDict & BaseEntityDict, Cxt extends Backe
 export interface SerializedData extends Fsd {
     a?: string;
     t?: string;
+    userId?: string;
     rm?: boolean;
 }
 export declare abstract class FrontendRuntimeContext<ED extends EntityDict & BaseEntityDict, Cxt extends BackendRuntimeContext<ED>, AD extends AspectDict<ED, Cxt>> extends Frc<ED, Cxt, AD> implements RuntimeContext {

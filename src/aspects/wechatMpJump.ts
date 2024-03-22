@@ -10,11 +10,10 @@ import {
     WechatPublicConfig,
     WechatMpConfig,
 } from '../oak-app-domain/Application/Schema';
-import {
+import WechatSDK, {
     WechatPublicInstance,
     WechatMpInstance,
-    WechatSDK,
-} from 'oak-external-sdk';
+} from 'oak-external-sdk/lib/WechatSDK';
 export async function wechatMpJump<
     ED extends EntityDict,
     Cxt extends BackendRuntimeContext<ED>

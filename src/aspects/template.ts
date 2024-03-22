@@ -3,7 +3,7 @@ import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { EntityDict } from '../oak-app-domain';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import { WechatMpInstance, WechatPublicInstance, WechatSDK } from 'oak-external-sdk';
+import  WechatSDK, { WechatMpInstance, WechatPublicInstance } from 'oak-external-sdk/lib/WechatSDK';
 
 import { WechatPublicConfig } from '../oak-app-domain/Application/Schema';
 import { template } from 'oak-domain/lib/utils/string';

@@ -32,7 +32,6 @@ export default OakComponent({
         onlyPassword: false,
         disabled: '',
         redirectUri: '',        // 微信登录后的redirectUri，要指向wechatUser/login去处理
-        url: '',                // 登录成功后redirectTo的页面，不配置的话就认为是goBack
     },
     formData({ features, props }) {
         const { lastSendAt } = this.state;
@@ -59,13 +58,6 @@ export default OakComponent({
         };
     },
     lifetimes: {
-        attached() {
-            // 如果已登录， 返回上一页
-            const token = this.features.token.getTokenValue();
-            if (token) {
-                this.navigateBack();
-            }
-        },
         async ready() {
             const application = this.features.application.getApplication();
 
@@ -142,8 +134,6 @@ export default OakComponent({
             password?: string,
             captcha?: string
         ) {
-            const { url } = this.props;
-
             try {
                 this.setState({
                     loading: true,
@@ -156,13 +146,6 @@ export default OakComponent({
                 this.setState({
                     loading: false,
                 });
-                if (url) {
-                    this.redirectTo({
-                        url,
-                    });
-                    return;
-                }
-                this.navigateBack();
             } catch (err) {
                 this.setState({
                     loading: false,

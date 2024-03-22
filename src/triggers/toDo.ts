@@ -4,7 +4,7 @@ import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { BackendRuntimeContext } from '../context/BackendRuntimeContext';
 import { getUserRelationsByActions } from 'oak-domain/lib/store/RelationAuth';
 import { translateFilterToObjectPredicate } from 'oak-domain/lib/store/filter';
-import { generateNewIdAsync } from 'oak-domain';
+import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import assert from 'assert';
 
 /**

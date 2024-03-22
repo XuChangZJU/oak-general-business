@@ -1,5 +1,5 @@
 
-import { SmsSdk, TencentSmsInstance } from 'oak-external-sdk';
+import { TencentSmsInstance } from 'oak-external-sdk/lib/service/tencent/Sms';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { EntityDict } from '../oak-app-domain';

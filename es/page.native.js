@@ -1,7 +1,7 @@
 import { createComponent as createBaseComponent } from 'oak-frontend-base/es/page.native';
 export function createComponent(option, features) {
-    const { lifetimes, methods, ...rest } = option;
-    const { attached, ...restLifeTimes } = lifetimes || {};
+    const { methods, features: optionFeatures, userInsensitive, ...rest } = option;
+    const tokenFeatures = optionFeatures?.find(ele => ele === 'token' || (typeof ele === 'object' && ele.feature === 'token'));
     return createBaseComponent({
         methods: {
             async subscribeMpMessage(messageTypes, haveToAccept, tip) {
@@ -9,13 +9,10 @@ export function createComponent(option, features) {
             },
             ...methods,
         },
-        lifetimes: {
-            attached() {
-                this.addFeatureSub('token', () => this.refresh());
-                attached && attached.call(this);
-            },
-            ...restLifeTimes,
-        },
+        features: (userInsensitive || !!tokenFeatures) ? optionFeatures : (optionFeatures || []).concat([{
+                feature: 'token',
+                behavior: 'refresh'
+            }]),
         ...rest,
     }, features);
 }

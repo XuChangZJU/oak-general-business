@@ -1,8 +1,7 @@
-import {
+import WechatSDK, {
     WechatMpInstance,
     WechatPublicInstance,
-    WechatSDK,
-} from 'oak-external-sdk';
+} from 'oak-external-sdk/lib/WechatSDK';
 import { handleException } from "../utils/wechatPublicException";
 import { EntityDict } from "../oak-app-domain";
 import { AppType, WechatPublicConfig } from "../oak-app-domain/Application/Schema";
@@ -11,7 +10,6 @@ import { OakPreConditionUnsetException, OakUserException } from 'oak-domain/lib/
 
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { User } from '../types/WeChat';
 
 async function getWechatPublicConfig<
     ED extends EntityDict,

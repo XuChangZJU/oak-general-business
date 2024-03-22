@@ -1,6 +1,6 @@
 import { assert } from 'oak-domain/lib/utils/assert';
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import { WechatSDK } from 'oak-external-sdk';
+import WechatSDK from 'oak-external-sdk/lib/WechatSDK';
 import { uniq } from 'oak-domain/lib/utils/lodash';
 let messageTypes = [];
 export function registerMessageType(messageType) {

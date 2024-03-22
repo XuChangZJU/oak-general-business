@@ -39,16 +39,12 @@ export default OakComponent({
             data: {
                 id: 1,
             },
-            // indexFrom: 0,
-            // count: 1,
         },
         article$articleMenu: {
             $entity: 'article',
             data: {
                 id: 1,
             },
-            // indexFrom: 0,
-            // count: 1,
         },
         extraFile$entity: {
             $entity: 'extraFile',
@@ -81,17 +77,6 @@ export default OakComponent({
             }),
         },
     ],
-    // listeners: {
-    //     articleId(prev, next) {
-    //         if (prev.articleId !== next.articleId) {
-    //             this.getSearchArticle().then((getSearchArr: string[]) => {
-    //                 this.setState({
-    //                     getSearchArr,
-    //                 })
-    //             })
-    //         }
-    //     }
-    // },
     filters: [
         {
             filter() {

@@ -1,6 +1,6 @@
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
 import { assert } from 'oak-domain/lib/utils/assert';
-import { WechatSDK, } from 'oak-external-sdk';
+import WechatSDK from 'oak-external-sdk/lib/WechatSDK';
 import { extraFileProjection } from '../types/Projection';
 import { DATA_SUBSCRIBER_KEYS } from '../config/constants';
 const triggers = [
@@ -195,7 +195,6 @@ const triggers = [
                 throw err;
             }
             closeRootMode();
-            return 0;
         },
     },
 ];

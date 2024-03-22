@@ -1,7 +1,7 @@
 import { EntityDict as BaseEntityDict } from 'oak-domain/lib/types/Entity';
 import { Aspect, Checker, Routine, StorageSchema, Timer, Trigger, Watcher } from 'oak-domain/lib/types';
 import { EntityDict } from './oak-app-domain';
-import { CacheStore } from 'oak-frontend-base';
+import { CacheStore } from 'oak-frontend-base/es/cacheStore/CacheStore';
 import { AsyncRowStore } from 'oak-domain/lib/store/AsyncRowStore';
 import { BackendRuntimeContext } from './context/BackendRuntimeContext';
 import { FrontendRuntimeContext } from './context/FrontendRuntimeContext';

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Form, CheckList, List } from 'antd-mobile';
 import Styles from './web.module.less';
 export default function Render(props) {

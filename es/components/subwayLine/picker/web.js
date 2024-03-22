@@ -1,3 +1,4 @@
+import React from 'react';
 import { Checkbox, Button, Tabs, Space } from 'antd';
 import Style from './web.module.less';
 export default function render(props) {

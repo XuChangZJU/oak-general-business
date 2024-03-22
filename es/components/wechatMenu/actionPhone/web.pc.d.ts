@@ -1,5 +1,5 @@
 import React from 'react';
-import { WechatPublicInstance } from 'oak-external-sdk';
+import { WechatPublicInstance } from 'oak-external-sdk/es/WechatSDK';
 import { EntityDict } from "../../../oak-app-domain";
 import { WebComponentProps } from 'oak-frontend-base';
 export default function Render(props: WebComponentProps<EntityDict, keyof EntityDict, false, {

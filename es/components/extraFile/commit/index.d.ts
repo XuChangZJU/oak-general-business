@@ -12,7 +12,7 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
     type?: ButtonProps['type'] | AmButtonProps['type'];
     executeText?: string | undefined;
     buttonProps?: (ButtonProps & {
-        color?: "success" | "default" | "primary" | "warning" | "danger" | undefined;
+        color?: "default" | "success" | "warning" | "primary" | "danger" | undefined;
         fill?: "none" | "solid" | "outline" | undefined;
         size?: "small" | "middle" | "large" | "mini" | undefined;
         block?: boolean | undefined;
@@ -24,7 +24,7 @@ declare const _default: <ED2 extends EntityDict & BaseEntityDict, T2 extends key
         type?: "button" | "submit" | "reset" | undefined;
         shape?: "default" | "rounded" | "rectangular" | undefined;
         children?: import("react").ReactNode;
-    } & Pick<import("react").ClassAttributes<HTMLButtonElement> & import("react").ButtonHTMLAttributes<HTMLButtonElement>, "id" | "onMouseDown" | "onMouseUp" | "onTouchEnd" | "onTouchStart"> & {
+    } & Pick<import("react").ClassAttributes<HTMLButtonElement> & import("react").ButtonHTMLAttributes<HTMLButtonElement>, "id" | "onMouseDown" | "onMouseUp" | "onTouchStart" | "onTouchEnd"> & {
         className?: string | undefined;
         style?: (import("react").CSSProperties & Partial<Record<"--text-color" | "--background-color" | "--border-radius" | "--border-width" | "--border-style" | "--border-color", string>>) | undefined;
         tabIndex?: number | undefined;

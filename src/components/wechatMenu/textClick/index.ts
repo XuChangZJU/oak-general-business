@@ -1,4 +1,3 @@
-import { WechatMpInstance, WechatPublicInstance, WechatSDK } from 'oak-external-sdk';
 import { WechatMpConfig, WechatPublicConfig } from '../../../oak-app-domain/Application/Schema';
 import { IDomEditor } from '@wangeditor/editor';
 export default OakComponent({

@@ -1,3 +1,4 @@
+import React from 'react';
 import { WebComponentProps } from 'oak-frontend-base';
 import { Form, CheckList, Radio, Checkbox, List } from 'antd-mobile';
 import { EntityDict } from '../../../../oak-app-domain';

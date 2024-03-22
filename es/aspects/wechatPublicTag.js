@@ -1,4 +1,4 @@
-import { WechatSDK, } from 'oak-external-sdk';
+import WechatSDK from 'oak-external-sdk/lib/WechatSDK';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { OakPreConditionUnsetException } from 'oak-domain/lib/types';
 import { generateNewIdAsync } from "oak-domain/lib/utils/uuid";

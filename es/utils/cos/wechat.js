@@ -1,5 +1,5 @@
 import { assert } from 'oak-domain/lib/utils/assert';
-import { WechatSDK } from 'oak-external-sdk';
+import WechatSDK from 'oak-external-sdk/lib/WechatSDK';
 import { OakUploadException } from '../../types/Exception';
 import { composeServerUrl } from '../../utils/domain';
 export default class Wechat {

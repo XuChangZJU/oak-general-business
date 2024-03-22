@@ -1,5 +1,5 @@
 import { EntityDict } from '../oak-app-domain';
-import { Feature } from 'oak-frontend-base';
+import { Feature } from 'oak-frontend-base/es/types/Feature';
 import { CommonAspectDict } from 'oak-common-aspect';
 import { Cache } from 'oak-frontend-base/es/features/cache';
 import { LocalStorage } from 'oak-frontend-base/es/features/localStorage';

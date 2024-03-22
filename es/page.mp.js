@@ -1,9 +1,5 @@
-import {
-    OakMpHaveToSubscribeMessage,
-    OakApplicationLoadingException,
-} from './types/Exception';
+import { OakMpHaveToSubscribeMessage, OakApplicationLoadingException } from './types/Exception';
 import { createComponent as createBaseComponent } from 'oak-frontend-base/es/page.mp';
-
 /**
  * 这里的逻辑暴露出去，是为了让general可以被其它库重载
  * @param this
@@ -64,137 +60,121 @@ export async function subscribeMpMessage(messageTypes, haveToAccept, tip) {
     return true;
 }
 export function createComponent(option, features) {
-    const { wechatMp, data, methods, lifetimes, userInsensitive, ...rest } = option;
+    const { wechatMp, data, methods, lifetimes, userInsensitive, features: optionFeatures, ...rest } = option;
     const { relatedMessageTypes } = wechatMp || {};
     const { ready, attached, show, hide, ...restLifeTimes } = lifetimes || {};
-    return createBaseComponent(
-        {
-            data:
-                typeof data === 'function'
-                    ? function () {
-                          return {
-                              __userId: null,
-                              ...data.call(this),
-                          };
-                      }
-                    : {
-                          __userId: null,
-                          ...data,
-                      },
-            methods: {
-                async subscribeMpMessage(messageTypes, haveToAccept, tip) {
-                    return await subscribeMpMessage.call(
-                        this,
-                        messageTypes,
-                        haveToAccept,
-                        tip
-                    );
-                },
-                getMessageTypeTemplate() {
-                    if (relatedMessageTypes) {
-                        try {
-                            const applicationId =
-                                this.features.application.getApplicationId();
-                            const existedOnes = this.features.cache.get(
-                                'messageTypeTemplate',
-                                {
-                                    data: {
-                                        id: 1,
-                                        templateId: 1,
-                                        template: {
-                                            id: 1,
-                                            applicationId: 1,
-                                            wechatId: 1,
-                                        },
-                                        type: 1,
-                                    },
-                                    filter: {
-                                        type: {
-                                            $in: relatedMessageTypes,
-                                        },
-                                        template: {
-                                            applicationId,
-                                        },
-                                    },
-                                }
-                            );
-                            if (existedOnes.length === 0) {
-                                this.features.cache.refresh(
-                                    'messageTypeTemplate',
-                                    {
-                                        data: {
-                                            id: 1,
-                                            templateId: 1,
-                                            template: {
-                                                id: 1,
-                                                applicationId: 1,
-                                                wechatId: 1,
-                                            },
-                                            type: 1,
-                                        },
-                                        filter: {
-                                            type: {
-                                                $in: relatedMessageTypes,
-                                            },
-                                            template: {
-                                                applicationId,
-                                            },
-                                        },
-                                    }
-                                );
-                            }
-                        } catch (err) {
-                            if (err instanceof OakApplicationLoadingException) {
-                                if (process.env.NODE_ENV === 'development') {
-                                    console.warn(
-                                        '当Application（全局应用程序）对象正在加载和配置时，为了确保正确地获取模板消息类型的数据，我们会在Application准备就绪之后重新执行getMessageTypeTemplate方法来安全地获取并应用所需模版'
-                                    );
-                                }
-                            } else {
-                                throw err;
-                            }
-                        }
-                    }
-                },
-                ...methods,
+    const tokenFeatures = optionFeatures?.find(ele => ele === 'token' || (typeof ele === 'object' && ele.feature === 'token'));
+    return createBaseComponent({
+        data: typeof data === 'function'
+            ? function () {
+                return {
+                    __userId: null,
+                    ...data.call(this),
+                };
+            }
+            : {
+                __userId: null,
+                ...data,
             },
-            lifetimes: {
-                attached() {
-                    if (!userInsensitive) {
-                        this.addFeatureSub('token', () => this.refresh());
-                    }
-                    this.addFeatureSub('application', () =>
-                        this.getMessageTypeTemplate()
-                    );
-                    attached && attached.call(this);
-                },
-                ready() {
-                    this.getMessageTypeTemplate();
-                    ready && ready.call(this);
-                },
-                show() {
-                    show && show.call(this);
-                    if (!userInsensitive) {
-                        const userId = this.features.token.getUserId(true);
-                        if (userId !== this.state.__userId) {
-                            this.refresh();
-                        }
-                    }
-                },
-                hide() {
-                    hide && hide.call(this);
-                    if (!userInsensitive) {
-                        const userId = this.features.token.getUserId(true);
-                        this.setState({
-                            __userId: userId,
+        methods: {
+            async subscribeMpMessage(messageTypes, haveToAccept, tip) {
+                return await subscribeMpMessage.call(this, messageTypes, haveToAccept, tip);
+            },
+            async getMessageTypeTemplate() {
+                if (relatedMessageTypes) {
+                    try {
+                        const applicationId = this.features.application.getApplicationId();
+                        const existedOnes = this.features.cache.get('messageTypeTemplate', {
+                            data: {
+                                id: 1,
+                                templateId: 1,
+                                template: {
+                                    id: 1,
+                                    applicationId: 1,
+                                    wechatId: 1,
+                                },
+                                type: 1,
+                            },
+                            filter: {
+                                type: {
+                                    $in: relatedMessageTypes,
+                                },
+                                template: {
+                                    applicationId,
+                                },
+                            },
                         });
+                        if (existedOnes.length === 0) {
+                            await this.features.cache.refresh('messageTypeTemplate', {
+                                data: {
+                                    id: 1,
+                                    templateId: 1,
+                                    template: {
+                                        id: 1,
+                                        applicationId: 1,
+                                        wechatId: 1,
+                                    },
+                                    type: 1,
+                                },
+                                filter: {
+                                    type: {
+                                        $in: relatedMessageTypes,
+                                    },
+                                    template: {
+                                        applicationId,
+                                    },
+                                },
+                            });
+                        }
                     }
-                },
-                ...restLifeTimes,
+                    catch (err) {
+                        if (err instanceof OakApplicationLoadingException) {
+                            if (process.env.NODE_ENV === 'development') {
+                                console.warn('当Application（全局应用程序）对象正在加载和配置时，为了确保正确地获取模板消息类型的数据，我们会在Application准备就绪之后重新执行getMessageTypeTemplate方法来安全地获取并应用所需模版');
+                            }
+                        }
+                        else {
+                            throw err;
+                        }
+                    }
+                }
             },
-            wechatMp,
-            ...rest,
+            ...methods,
         },
-        features
-    );
+        lifetimes: {
+            attached() {
+                this.addFeatureSub('application', () => this.getMessageTypeTemplate());
+                attached && attached.call(this);
+            },
+            ready() {
+                this.getMessageTypeTemplate();
+                ready && ready.call(this);
+            },
+            show() {
+                show && show.call(this);
+                if (!userInsensitive) {
+                    const userId = this.features.token.getUserId(true);
+                    if (userId !== this.state.__userId) {
+                        this.refresh();
+                    }
+                }
+            },
+            hide() {
+                hide && hide.call(this);
+                if (!userInsensitive) {
+                    const userId = this.features.token.getUserId(true);
+                    this.setState({
+                        __userId: userId,
+                    });
+                }
+            },
+            ...restLifeTimes,
+        },
+        features: (userInsensitive || !!tokenFeatures) ? optionFeatures : (optionFeatures || []).concat([{
+                feature: 'token',
+                behavior: 'refresh'
+            }]),
+        wechatMp,
+        ...rest,
+    }, features);
 }

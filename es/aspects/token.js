@@ -1,5 +1,5 @@
 import { generateNewIdAsync } from 'oak-domain/lib/utils/uuid';
-import { WechatSDK, } from 'oak-external-sdk';
+import WechatSDK from 'oak-external-sdk/lib/WechatSDK';
 import { assert } from 'oak-domain/lib/utils/assert';
 import { OakRowInconsistencyException, OakUnloggedInException, OakUserException, OakUserUnpermittedException, } from 'oak-domain/lib/types';
 import { composeFileUrl } from '../utils/cos';
@@ -660,7 +660,7 @@ async function tryRefreshWechatPublicUserInfo(wechatUserId, context) {
                 atExpiredAt: ate2,
                 scope: s2,
             },
-        }, { dontCollect: true, dontCreateModi: true, dontCreateOper: true });
+        }, { dontCollect: true });
         accessToken = at2;
     }
     const { nickname, gender, avatar } = await wechatInstance.getUserInfo(accessToken, openId);
@@ -1298,7 +1298,8 @@ export async function wakeupParasite(params, context) {
             playerId: parasite.userId,
             disablesAt: Date.now() + parasite.tokenLifeLength,
             env,
-            tokenValue,
+            refreshedAt: Date.now(),
+            value: tokenValue,
             applicationId: context.getApplicationId(),
         },
     }, { dontCollect: true });
@@ -1357,24 +1358,32 @@ export async function refreshToken(params, context) {
         fn();
         return '';
     }
-    else if (now - token.refreshedAt > 600 * 1000) {
-        const newValue = await generateNewIdAsync();
-        await context.operate('token', {
-            id: await generateNewIdAsync(),
-            action: 'update',
-            data: {
-                value: newValue,
-                refreshedAt: now,
-            },
-            filter: {
-                id: token.id,
-            }
-        }, {});
-        fn();
-        return newValue;
+    if (process.env.OAK_PLATFORM === 'server') {
+        // 只有server模式去刷新token
+        // 'development' | 'production' | 'staging'
+        const intervals = {
+            development: 7200 * 1000,
+            staging: 600 * 1000,
+            production: 600 * 1000, // 十分钟
+        };
+        const interval = intervals[process.env.NODE_ENV] || 600 * 1000;
+        if (now - token.refreshedAt > interval) {
+            const newValue = await generateNewIdAsync();
+            await context.operate('token', {
+                id: await generateNewIdAsync(),
+                action: 'update',
+                data: {
+                    value: newValue,
+                    refreshedAt: now,
+                },
+                filter: {
+                    id: token.id,
+                },
+            }, {});
+            fn();
+            return newValue;
+        }
     }
-    else {
-        fn();
-    }
+    fn();
     return tokenValue;
 }

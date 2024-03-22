@@ -1,3 +1,4 @@
+import React from 'react';
 import './index.less';
 const Empty = () => {
     const prefixCls = 'oak';
