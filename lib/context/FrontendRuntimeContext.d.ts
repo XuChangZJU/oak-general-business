@@ -23,7 +23,7 @@ export declare abstract class FrontendRuntimeContext<ED extends EntityDict & Bas
     getApplicationId(): string;
     getSystemId(): string | undefined;
     getApplication(): Partial<import("../oak-app-domain/Application/Schema").Schema> | undefined;
-    getTokenValue(): string | undefined;
+    getTokenValue(allowUnloggedIn?: boolean): string | undefined;
     getToken(allowUnloggedIn?: boolean): Partial<ED["token"]["Schema"]> | undefined;
     getCurrentUserId(allowUnloggedIn?: boolean): string | undefined;
     isRoot(): boolean;

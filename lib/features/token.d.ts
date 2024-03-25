@@ -22,9 +22,9 @@ export declare class Token<ED extends EntityDict, Cxt extends BackendRuntimeCont
     }): Promise<void>;
     loginWechatMp(): Promise<void>;
     syncUserInfoWechatMp(): Promise<void>;
-    logout(): Promise<void>;
-    removeToken(disablePublish?: boolean): void;
-    getTokenValue(): string | undefined;
+    logout(dontPublish?: boolean): Promise<void>;
+    removeToken(dontPublish?: boolean): void;
+    getTokenValue(allowUnloggedIn?: boolean): string | undefined;
     getToken(allowUnloggedIn?: boolean): Partial<ED["token"]["Schema"]> | undefined;
     getUserId(allowUnloggedIn?: boolean): NonNullable<ED["token"]["Schema"]["userId"]> | undefined;
     getUserInfo(): NonNullable<ED["token"]["Schema"]["user"]> | undefined;

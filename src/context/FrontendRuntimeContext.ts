@@ -85,7 +85,7 @@ export abstract class FrontendRuntimeContext<
         const setTokenValue = async() => {
             const setInner = (resolve: (value: unknown) => void, reject: (reason?: any) => void) => {
                 try {
-                    const tokenValue = this.token.getTokenValue();
+                    const tokenValue = this.token.getTokenValue(true);
                     if (tokenValue) {
                         Object.assign(data, {
                             t: tokenValue,
@@ -126,8 +126,8 @@ export abstract class FrontendRuntimeContext<
         return this.application?.getApplication();
     }
 
-    getTokenValue() {
-        return this.token?.getTokenValue();
+    getTokenValue(allowUnloggedIn?: boolean) {
+        return this.token?.getTokenValue(allowUnloggedIn);
     }
 
     getToken(allowUnloggedIn?: boolean) {

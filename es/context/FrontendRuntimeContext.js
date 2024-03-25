@@ -23,15 +23,13 @@ export class FrontendRuntimeContext extends Frc {
                         a: appId,
                     });
                     resolve(undefined);
-                }
-                catch (err) {
+                } catch (err) {
                     if (err instanceof OakApplicationLoadingException) {
                         const fn = this.application.subscribe(() => {
                             fn();
                             setInner(resolve, reject);
                         });
-                    }
-                    else {
+                    } else {
                         reject(err);
                     }
                 }
@@ -42,22 +40,20 @@ export class FrontendRuntimeContext extends Frc {
         const setTokenValue = async () => {
             const setInner = (resolve, reject) => {
                 try {
-                    const tokenValue = this.token.getTokenValue();
+                    const tokenValue = this.token.getTokenValue(true);
                     if (tokenValue) {
                         Object.assign(data, {
                             t: tokenValue,
                         });
                     }
                     resolve(undefined);
-                }
-                catch (err) {
+                } catch (err) {
                     if (err instanceof OakUserInfoLoadingException) {
                         const fn = this.token.subscribe(() => {
                             fn();
                             setInner(resolve, reject);
                         });
-                    }
-                    else {
+                    } else {
                         reject(err);
                     }
                 }
@@ -77,8 +73,8 @@ export class FrontendRuntimeContext extends Frc {
     getApplication() {
         return this.application?.getApplication();
     }
-    getTokenValue() {
-        return this.token?.getTokenValue();
+    getTokenValue(allowUnloggedIn) {
+        return this.token?.getTokenValue(allowUnloggedIn);
     }
     getToken(allowUnloggedIn) {
         return this.token?.getToken(allowUnloggedIn);
@@ -97,12 +93,14 @@ export class FrontendRuntimeContext extends Frc {
         if (userInfo) {
             const { userState } = userInfo;
             if (userState === 'disabled') {
-                throw new OakUserDisabledException('您的帐号已经被禁用，请联系客服');
-            }
-            else if (['merged'].includes(userState)) {
-                throw new OakTokenExpiredException('您的登录状态有异常，请重新登录 ');
-            }
-            else {
+                throw new OakUserDisabledException(
+                    '您的帐号已经被禁用，请联系客服'
+                );
+            } else if (['merged'].includes(userState)) {
+                throw new OakTokenExpiredException(
+                    '您的登录状态有异常，请重新登录 '
+                );
+            } else {
                 assert(userState === 'normal' || userState === 'shadow');
             }
             return true;

@@ -11,41 +11,6 @@ export class Token extends Feature {
     storage;
     async loadSavedToken() {
         let tokenValue = await this.storage.load(LOCAL_STORAGE_KEYS.token);
-        /* if (!tokenValue) {
-            // 历史数据，原来用的key太随意
-            tokenValue = await this.storage.load('token:token');
-            if (tokenValue) {
-                await this.storage.save(LOCAL_STORAGE_KEYS.token, tokenValue);
-                await this.storage.remove('token:token');
-            }
-        } */
-        // if (tokenValue) {
-        //     const env = await this.environment.getEnv();
-        //     try {
-        //         const { result } = await this.cache.exec(
-        //             'refreshToken',
-        //             {
-        //                 tokenValue,
-        //                 env,
-        //             },
-        //             undefined,
-        //             true,
-        //             true
-        //         );
-        //         if (this.tokenValue !== result) {
-        //             this.tokenValue = result;
-        //             await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
-        //         }
-        //     }
-        //     catch (err) {
-        //         // refresh出了任何错都无视，直接放弃此token
-        //         console.warn(err);
-        //         this.tokenValue = undefined;
-        //         this.removeToken(true);
-        //     }
-        // } else {
-        //     this.tokenValue = undefined;
-        // }
         await this.refreshTokenData(tokenValue);
         this.publish();
     }
@@ -56,12 +21,18 @@ export class Token extends Feature {
         this.environment = environment;
         this.tokenValue = ''; // 置个空字符串代表还在load storage缓存的数据
         this.loadSavedToken();
-        if (process.env.OAK_PLATFORM === 'web' && (process.env.NODE_ENV !== 'development' || process.env.PROD === 'true')) {
+        if (
+            process.env.OAK_PLATFORM === 'web' &&
+            (process.env.NODE_ENV !== 'development' ||
+                process.env.PROD === 'true')
+        ) {
             // 纯前台模式 多窗口时不监听storage
             // 在web下可能多窗口，一个窗口更新了token，其它窗口应跟着变
             window.addEventListener('storage', async (e) => {
                 if (e.key === LOCAL_STORAGE_KEYS.token) {
-                    this.tokenValue = e.newValue ? JSON.parse(e.newValue) : undefined;
+                    this.tokenValue = e.newValue
+                        ? JSON.parse(e.newValue)
+                        : undefined;
                     await this.refreshTokenData(this.tokenValue);
                     this.publish();
                 }
@@ -72,35 +43,44 @@ export class Token extends Feature {
         if (tokenValue) {
             const env = await this.environment.getEnv();
             try {
-                const { result } = await this.cache.exec('refreshToken', {
-                    tokenValue,
-                    env,
-                }, undefined, true, true);
+                const { result } = await this.cache.exec(
+                    'refreshToken',
+                    {
+                        tokenValue,
+                        env,
+                    },
+                    undefined,
+                    true,
+                    true
+                );
                 if (this.tokenValue !== result) {
                     this.tokenValue = result;
                     await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
                 }
-            }
-            catch (err) {
+            } catch (err) {
                 // refresh出了任何错都无视，直接放弃此token
                 console.warn(err);
                 this.tokenValue = undefined;
                 this.removeToken(true);
             }
-        }
-        else {
+        } else {
             this.tokenValue = undefined;
         }
     }
     async loginByMobile(mobile, password, captcha, disableRegister) {
         const env = await this.environment.getEnv();
-        const { result } = await this.cache.exec('loginByMobile', {
-            password,
-            mobile,
-            captcha,
-            disableRegister,
-            env,
-        }, undefined, true);
+        const { result } = await this.cache.exec(
+            'loginByMobile',
+            {
+                password,
+                mobile,
+                captcha,
+                disableRegister,
+                env,
+            },
+            undefined,
+            true
+        );
         this.tokenValue = result;
         await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
         this.publish();
@@ -141,7 +121,12 @@ export class Token extends Feature {
         const info = await wx.getUserProfile({
             desc: '同步微信昵称和头像信息',
         });
-        const { userInfo: { nickName: nickname, avatarUrl }, encryptedData, signature, iv, } = info;
+        const {
+            userInfo: { nickName: nickname, avatarUrl },
+            encryptedData,
+            signature,
+            iv,
+        } = info;
         await this.cache.exec('syncUserInfoWechatMp', {
             nickname,
             avatarUrl,
@@ -151,21 +136,27 @@ export class Token extends Feature {
         });
         this.publish();
     }
-    async logout() {
-        await this.cache.exec('logout', {
-            tokenValue: this.tokenValue,
-        }, undefined, undefined, true);
-        this.removeToken();
+    async logout(dontPublish) {
+        await this.cache.exec(
+            'logout',
+            {
+                tokenValue: this.tokenValue,
+            },
+            undefined,
+            undefined,
+            true
+        );
+        this.removeToken(dontPublish);
     }
-    removeToken(disablePublish) {
+    removeToken(dontPublish) {
         this.tokenValue = undefined;
         this.storage.remove(LOCAL_STORAGE_KEYS.token);
-        if (!disablePublish) {
+        if (!dontPublish) {
             this.publish();
         }
     }
-    getTokenValue() {
-        if (this.tokenValue === '') {
+    getTokenValue(allowUnloggedIn) {
+        if (!allowUnloggedIn && this.tokenValue === '') {
             throw new OakUserInfoLoadingException();
         }
         return this.tokenValue;
@@ -231,7 +222,10 @@ export class Token extends Feature {
     async switchTo(userId) {
         const currentUserId = this.getUserId();
         if (currentUserId === userId) {
-            throw new OakRowInconsistencyException(undefined, '您已经是当前用户');
+            throw new OakRowInconsistencyException(
+                undefined,
+                '您已经是当前用户'
+            );
         }
         await this.cache.exec('switchTo', {
             userId,

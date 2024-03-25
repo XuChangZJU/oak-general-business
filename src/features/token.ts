@@ -31,43 +31,7 @@ export class Token<
 
     private async loadSavedToken() {
         let tokenValue = await this.storage.load(LOCAL_STORAGE_KEYS.token);
-        /* if (!tokenValue) {
-            // 历史数据，原来用的key太随意
-            tokenValue = await this.storage.load('token:token');
-            if (tokenValue) {
-                await this.storage.save(LOCAL_STORAGE_KEYS.token, tokenValue);
-                await this.storage.remove('token:token');
-            }
-        } */
-
-        // if (tokenValue) {
-        //     const env = await this.environment.getEnv();
-        //     try {
-        //         const { result } = await this.cache.exec(
-        //             'refreshToken',
-        //             {
-        //                 tokenValue,
-        //                 env,
-        //             },
-        //             undefined,
-        //             true,
-        //             true
-        //         );
-        //         if (this.tokenValue !== result) {
-        //             this.tokenValue = result;
-        //             await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
-        //         }
-        //     }
-        //     catch (err) {
-        //         // refresh出了任何错都无视，直接放弃此token
-        //         console.warn(err);
-        //         this.tokenValue = undefined;
-        //         this.removeToken(true);
-        //     }
-        // } else {
-        //     this.tokenValue = undefined;
-        // }
-        await this.refreshTokenData(tokenValue)
+        await this.refreshTokenData(tokenValue);
         this.publish();
     }
 
@@ -82,13 +46,19 @@ export class Token<
         this.environment = environment;
         this.tokenValue = ''; // 置个空字符串代表还在load storage缓存的数据
         this.loadSavedToken();
-        if (process.env.OAK_PLATFORM === 'web' && (process.env.NODE_ENV !== 'development' || process.env.PROD === 'true')) {
+        if (
+            process.env.OAK_PLATFORM === 'web' &&
+            (process.env.NODE_ENV !== 'development' ||
+                process.env.PROD === 'true')
+        ) {
             // 纯前台模式 多窗口时不监听storage
             // 在web下可能多窗口，一个窗口更新了token，其它窗口应跟着变
             window.addEventListener('storage', async (e) => {
                 if (e.key === LOCAL_STORAGE_KEYS.token) {
-                    this.tokenValue = e.newValue ? JSON.parse(e.newValue) : undefined;
-                    await this.refreshTokenData(this.tokenValue)
+                    this.tokenValue = e.newValue
+                        ? JSON.parse(e.newValue)
+                        : undefined;
+                    await this.refreshTokenData(this.tokenValue);
                     this.publish();
                 }
             });
@@ -96,27 +66,31 @@ export class Token<
     }
 
     async refreshTokenData(tokenValue?: string) {
-        if (tokenValue) {
-            const env = await this.environment.getEnv();
-            try {
-                const { result } = await this.cache.exec('refreshToken', {
+        if (!tokenValue) {
+            this.tokenValue = undefined;
+            return;
+        }
+        const env = await this.environment.getEnv();
+        try {
+            const { result } = await this.cache.exec(
+                'refreshToken',
+                {
                     tokenValue,
                     env,
-                }, undefined, true, true);
-                if (this.tokenValue !== result) {
-                    this.tokenValue = result;
-                    await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
-                }
+                },
+                undefined,
+                true,
+                true
+            );
+            if (this.tokenValue !== result) {
+                this.tokenValue = result;
+                await this.storage.save(LOCAL_STORAGE_KEYS.token, result);
             }
-            catch (err) {
-                // refresh出了任何错都无视，直接放弃此token
-                console.warn(err);
-                this.tokenValue = undefined;
-                this.removeToken(true);
-            }
-        }
-        else {
+        } catch (err) {
+            // refresh出了任何错都无视，直接放弃此token
+            console.warn(err);
             this.tokenValue = undefined;
+            this.removeToken(true);
         }
     }
 
@@ -202,23 +176,29 @@ export class Token<
         this.publish();
     }
 
-    async logout() {
-        await this.cache.exec('logout', {
-            tokenValue: this.tokenValue!,
-        }, undefined, undefined, true);
-        this.removeToken();
+    async logout(dontPublish?: boolean) {
+        await this.cache.exec(
+            'logout',
+            {
+                tokenValue: this.tokenValue!,
+            },
+            undefined,
+            undefined,
+            true
+        );
+        this.removeToken(dontPublish);
     }
 
-    removeToken(disablePublish?: boolean) {
+    removeToken(dontPublish?: boolean) {
         this.tokenValue = undefined;
         this.storage.remove(LOCAL_STORAGE_KEYS.token);
-        if (!disablePublish) {
+        if (!dontPublish) {
             this.publish();
         }
     }
 
-    getTokenValue() {
-        if (this.tokenValue === '') {
+    getTokenValue(allowUnloggedIn?: boolean) {
+        if (!allowUnloggedIn && this.tokenValue === '') {
             throw new OakUserInfoLoadingException();
         }
         return this.tokenValue;
